@@ -15,8 +15,8 @@ add_image_path(path)
 
 
 def navigate(url):
-    wait("reload.png", 10)
-    type((Pattern("reload.png").targetOffset(221, 0)), url + Key.ENTER)
+    wait("refresh.png", 10)
+    type((Pattern("refresh.png").targetOffset(221, 0)), url + Key.ENTER)
     return
 
 

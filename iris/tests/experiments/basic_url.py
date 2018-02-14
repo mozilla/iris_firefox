@@ -25,7 +25,7 @@ class test(base_test):
         image = "google_search.png"
 
         # core api function
-        if exists(image, 5):
+        if exists(image, 10):
             result = "PASS"
         else:
             result = "FAIL"

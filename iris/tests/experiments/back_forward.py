@@ -22,26 +22,26 @@ class test(base_test):
         # helper function from "awesome_bar"
         navigate(url)
 
-        if exists("search_the_web.png", 5):
+        if exists("search_the_web.png", 10):
             url = "www.google.com"
 
             # helper function from "awesome_bar"
             navigate(url)
 
             # core api function
-            if exists("google_search.png", 2):
+            if exists("google_search.png", 10):
 
                 # helper function from "awesome_bar"
                 back_in_history()
 
                 # core api function
-                if exists("search_the_web.png", 2):
+                if exists("search_the_web.png", 10):
 
                     # helper function from "awesome_bar"
                     forward_in_history()
 
                     # core api function
-                    if exists("google_search.png", 2):
+                    if exists("google_search.png", 10):
                         result =  "PASS"
                     else:
                         result = "FAIL"

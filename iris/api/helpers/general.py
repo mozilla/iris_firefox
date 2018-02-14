@@ -44,38 +44,43 @@ def launch_firefox(profile='empty_profile', url=None):
 
 
 def clean_profiles():
+    # currently not working on Windows
+    if get_os() == "win":
+        return
     path = os.path.join (os.path.split(__file__)[0], "test_profiles")
     if get_os() == "osx" or get_os() == "linux":
         cmd = ['rm', '-rf', path]
     else:
-        cmd = ['rmdir', path, '/s']
+        cmd = ['rmdir', path, '/s', '/q']
     p = subprocess.Popen(cmd)
     return
 
 
 def new_tab():
-    type(text=Key.F2, modifier=get_menu_modifier())
-    type(text="File")
-    type(text=Key.DOWN)
-    type(text="t", modifier=get_main_modifier())
-    type(text=Key.UP)
+    if get_os() == "osx":
+        type(text=Key.F2, modifier=Key.CMD)
+        type(text="t", modifier=Key.CMD)
+    elif get_os() == "win":
+        click("menu.png")
+        type(text="t", modifier=Key.CTRL)
 
 
 def new_window():
-    type(text=Key.F2, modifier=get_menu_modifier())
-    type(text="File")
-    type(text=Key.DOWN)
-    type(text="n", modifier=get_main_modifier())
-    type(text=Key.UP)
+    if get_os() == "osx":
+        type(text=Key.F2, modifier=Key.CMD)
+        type(text="n", modifier=Key.CMD)
+    elif get_os() == "win":
+        click("menu.png")
+        type(text="n", modifier=Key.CTRL)
 
 
 def close_window():
-    type(text=Key.F2, modifier=get_menu_modifier())
-    type(text="File")
-    type(text=Key.DOWN)
-    #close()
-    get_screen().type("w", Key.SHIFT, get_main_modifier())
-    type(text=Key.UP)
+    if get_os() == "osx":
+        type(text=Key.F2, modifier=Key.CMD)
+        type(text="w", modifier=Key.CMD)
+    elif get_os() == "win":
+        click("menu.png")
+        type(text="w", modifier=Key.CTRL+Key.SHIFT)
 
 
 def restart_firefox(args):
@@ -84,11 +89,13 @@ def restart_firefox(args):
 
 
 def quit_firefox():
-    # just as it says, with options
-    type(text=Key.F2, modifier=get_menu_modifier())
-    type(text="Firefox")
-    type(text="q", modifier=get_main_modifier())
-    return
+    if get_os() == "osx":
+        type(text=Key.F2, modifier=Key.CMD)
+        type(text="q", modifier=Key.CMD)
+    elif get_os() == "win":
+        click("menu.png")
+        type(text="q", modifier=Key.CTRL+Key.SHIFT)
+
 
 def get_menu_modifier():
     if get_os() == "osx":
