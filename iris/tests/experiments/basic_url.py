@@ -22,7 +22,7 @@ class test(base_test):
         # helper function from "awesome_bar"
         navigate(url)
 
-        image = "1516891870986.png"
+        image = "google_search.png"
 
         # core api function
         if exists(image, 5):

@@ -18,7 +18,7 @@ class test(base_test):
 
     def run(self):
 
-        fx_ui = "1517869118302.png"
+        fx_ui = "reload.png"
 
         # core api function
         wait(fx_ui, 10)

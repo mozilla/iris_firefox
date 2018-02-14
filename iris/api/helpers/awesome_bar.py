@@ -4,28 +4,29 @@
 
 
 from api.core import *
+from general import *
 import os
 
 
 # this will set the image path for this module
 current_dir = os.path.split(__file__)[0]
-path = os.path.join(current_dir, "images")
+path = os.path.join(current_dir, "images", get_os())
 add_image_path(path)
 
 
 def navigate(url):
-    wait("1516888289228.png", 10)
-    type((Pattern("1516888289228.png").targetOffset(221, 0)), url + Key.ENTER)
+    wait("reload.png", 10)
+    type((Pattern("reload.png").targetOffset(221, 0)), url + Key.ENTER)
     return
 
 
 def back_in_history():
-    wait("1517514241697.png", 5)
-    click("1517514241697.png")
+    wait("back.png", 5)
+    click("back.png")
     return
 
 
 def forward_in_history():
-    wait("1517514418304.png", 5)
-    click("1517514418304.png")
+    wait("forward.png", 5)
+    click("forward.png")
     return
