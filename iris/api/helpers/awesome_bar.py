@@ -15,18 +15,18 @@ add_image_path(path)
 
 
 def navigate(url):
-    wait("refresh.png", 10)
-    type((Pattern("refresh.png").targetOffset(221, 0)), url + Key.ENTER)
+    wait("home.png", 10)
+    type((Pattern("home.png").targetOffset(220, 0)), url + Key.ENTER)
     return
 
 
 def back_in_history():
-    wait("back.png", 5)
+    wait("back.png", 10)
     click("back.png")
     return
 
 
 def forward_in_history():
-    wait("forward.png", 5)
+    wait("forward.png", 10)
     click("forward.png")
     return
