@@ -5,7 +5,6 @@ sudo apt-get -y install \
     default-jre \
     python-dev \
     python-pip \
-    xvfb \
     libopencv-dev \
     tesseract-ocr
 
@@ -15,5 +14,3 @@ sudo apt-get -y install virtualenv \
 
 # sudo python -m pip install --upgrade --force pip
 
-# This allows support for headless mode on AWS
-Xvfb :99
