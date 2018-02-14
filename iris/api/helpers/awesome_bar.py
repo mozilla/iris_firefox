@@ -15,8 +15,8 @@ add_image_path(path)
 
 
 def navigate(url):
-    wait("home.png", 10)
-    type((Pattern("home.png").targetOffset(220, 0)), url + Key.ENTER)
+    wait("home.png", 20)
+    type((Pattern("home.png").targetOffset(400, 0)), url + Key.ENTER)
     return
 
 

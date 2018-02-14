@@ -18,7 +18,7 @@ class test(base_test):
 
     def run(self):
 
-        fx_ui = "refresh.png"
+        fx_ui = "home.png"
 
         # core api function
         wait(fx_ui, 10)

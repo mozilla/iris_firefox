@@ -58,10 +58,12 @@ def clean_profiles():
 
 def new_tab():
     if get_os() == "osx":
-        type(text=Key.F2, modifier=Key.CMD)
+        # optional: force app focus
+        #type(text=Key.F2, modifier=Key.CMD)
         type(text="t", modifier=Key.CMD)
     elif get_os() == "win":
-        click("menu.png")
+        # optional: force app focus
+        #click("menu.png")
         type(text="t", modifier=Key.CTRL)
 
 
