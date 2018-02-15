@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
+import shutil
 import subprocess
 
 from api.core import *
@@ -43,16 +44,11 @@ def launch_firefox(profile='empty_profile', url=None):
 
 
 def clean_profiles():
-    # currently not working on Windows
-    if get_os() == "win":
-        return
     path = os.path.join (os.path.split(__file__)[0], "test_profiles")
-    if get_os() == "osx" or get_os() == "linux":
-        cmd = ['rm', '-rf', path]
-    else:
-        cmd = ['rmdir', path, '/s', '/q']
-    p = subprocess.Popen(cmd)
-    return
+    if os.path.exists(path):
+        shutil.rmtree(path)
+    os.mkdir(path)
+
 
 
 def new_tab():

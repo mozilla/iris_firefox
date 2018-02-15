@@ -23,12 +23,9 @@ def run(app):
 
     # Hard-code for now, but we will build a dynamic array of tests to run later
     all_tests = []
-
-    # Currently these experiments only work on Mac/Windows; they need Linux images
-    if get_os() == "osx" or get_os() == "win":
-        all_tests.append(tabs)
-        all_tests.append(back_forward)
-        all_tests.append(basic_url)
+    all_tests.append(tabs)
+    all_tests.append(back_forward)
+    all_tests.append(basic_url)
 
     # then we'd dynamically call test() and run on this list of test cases
     for module in all_tests:
