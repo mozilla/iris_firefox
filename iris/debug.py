@@ -1,5 +1,14 @@
 
 import subprocess
+import os
+
+
+
+module_dir = os.path.split(__file__)[0]
+
+path = os.path.join(module_dir, "..")
+
+print path
 
 jar_path = "~/Sikuli/sikulix.jar"
 
