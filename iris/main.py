@@ -31,7 +31,8 @@ def main(argv=None):
     elif detect_os() == "win":
         jar_path = "c:\Sikuli\sikulix.jar"
     else:
-        jar_path = "~/Sikuli/sikulix.jar"
+        temp = os.path.expanduser(os.getcwd()).split("/")
+        jar_path = os.path.join("/", temp[1], temp[2], "Sikuli/sikulix.jar")
 
 
     package = "org.python.util.jython"
