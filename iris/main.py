@@ -39,6 +39,7 @@ def main(argv=None):
 
 
     cmd = ['java', '-cp', jar_path, package, init_path]
+    print cmd
     p = subprocess.Popen(cmd).communicate()
 
 
