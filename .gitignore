@@ -42,11 +42,13 @@ doc/
 .installed.cfg
 pip-selfcheck.json
 .local
+local/
 
 # Our project
 .DS_Store
 .gitignore
 *.class
+*.sh.swp
 test_profiles/
 
 # PyInstaller
