@@ -41,6 +41,7 @@ doc/
 .coverage
 .installed.cfg
 pip-selfcheck.json
+.local
 
 # Our project
 .DS_Store
