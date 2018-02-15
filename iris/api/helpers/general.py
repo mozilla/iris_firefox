@@ -18,7 +18,7 @@ def launch_firefox(profile='empty_profile', url=None):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
-
+    os.mkdir(active_profile)
 
     # TEMP: hard-coding app path until we implement dynamic Fx installation
     if get_os() == "osx":
@@ -48,7 +48,6 @@ def clean_profiles():
     if os.path.exists(path):
         shutil.rmtree(path)
     os.mkdir(path)
-
 
 
 def new_tab():
@@ -98,7 +97,7 @@ def get_menu_modifier():
     if get_os() == "osx":
         menu_modifier = Key.CTRL
     else:
-        menu_modifier = Key.CTRL
+        menu_modifier = Key.CMD
     return menu_modifier
 
 
@@ -106,7 +105,7 @@ def get_main_modifier():
     if get_os() == "osx":
         main_modifier = Key.CMD
     else:
-        main_modifier = Key.CMD
+        main_modifier = Key.CTRL
     return main_modifier
 
 
