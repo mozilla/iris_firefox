@@ -13,7 +13,7 @@ print dir_path
 path = os.path.join(dir_path, "../")
 print path
 
-print os.getcwd()
+print os.path.expanduser(os.getcwd())
 
 jar_path = "~/Sikuli/sikulix.jar"
 
