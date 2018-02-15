@@ -18,7 +18,8 @@ def launch_firefox(profile='empty_profile', url=None):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
-    os.mkdir(active_profile)
+    if not os.path.exists (active_profile):
+        os.mkdir(active_profile)
 
     # TEMP: hard-coding app path until we implement dynamic Fx installation
     if get_os() == "osx":
@@ -39,7 +40,7 @@ def launch_firefox(profile='empty_profile', url=None):
         cmd.append('-url')
         cmd.append(url)
 
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(cmd).communicate()
     return
 
 
