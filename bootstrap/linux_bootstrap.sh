@@ -6,7 +6,8 @@ sudo apt-get -y install \
     python-dev \
     python-pip \
     libopencv-dev \
-    tesseract-ocr
+    tesseract-ocr \
+    firefox
 
 # The virtualenv package is not consistently named across distros
 sudo apt-get -y install virtualenv \

@@ -25,8 +25,7 @@ def launch_firefox(profile='empty_profile', url=None):
     elif get_os() == "win":
         path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
     else:
-        # linux TBD
-        path = ''
+        path = '/usr/bin/firefox'
 
     cmd = [path]
     cmd.append('-foreground')
