@@ -31,11 +31,11 @@ def main(argv=None):
     elif detect_os() == "win":
         jar_path = "c:\Sikuli\sikulix.jar"
     else:
-        temp = os.path.expanduser(os.getcwd()).split("/")
-        jar_path = os.path.join("/", temp[1], temp[2], "Sikuli/sikulix.jar")
+        temp = os.path.expanduser("~")
+        jar_path = os.path.join(temp, "Sikuli/sikulix.jar")
 
     package = "org.python.util.jython"
-    init_path = os.path.join(module_dir, "app.py")
+    init_path = os.path.join(module_dir, "iris.py")
 
     cmd = ['java', '-cp', jar_path, package, init_path]
     p = subprocess.Popen(cmd).communicate()

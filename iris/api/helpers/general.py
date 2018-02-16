@@ -19,7 +19,8 @@ def launch_firefox(profile='empty_profile', url=None):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
-
+    if not os.path.exists (active_profile):
+        os.mkdir(active_profile)
 
     # TEMP: hard-coding app path until we implement dynamic Fx installation
     if get_os() == "osx":
@@ -50,12 +51,11 @@ def clean_profiles():
         shutil.rmtree(path)
     os.mkdir(path)
 
-
 # waits for firefox to exist by waiting for the home button to be present
 def firefox_exists():
     wait("home.png", 20)
 
-
+    
 # navigates, via the location bar, to a given URL
 #
 # @param  url    the string to type into the location bar. The function
@@ -68,13 +68,13 @@ def navigate_to(url):
     Settings.TypeDelay = 0.1
     type(url + Key.ENTER)
 
-
+    
 def new_tab():
     if get_os() == "osx":
         # optional: force app focus
         #type(text=Key.F2, modifier=Key.CMD)
         type(text="t", modifier=Key.CMD)
-    elif get_os() == "win":
+    else:
         # optional: force app focus
         #click("menu.png")
         type(text="t", modifier=Key.CTRL)
@@ -84,7 +84,7 @@ def new_window():
     if get_os() == "osx":
         type(text=Key.F2, modifier=Key.CMD)
         type(text="n", modifier=Key.CMD)
-    elif get_os() == "win":
+    else:
         click("menu.png")
         type(text="n", modifier=Key.CTRL)
 
@@ -93,7 +93,7 @@ def close_window():
     if get_os() == "osx":
         type(text=Key.F2, modifier=Key.CMD)
         type(text="w", modifier=Key.CMD)
-    elif get_os() == "win":
+    else:
         click("menu.png")
         type(text="w", modifier=Key.CTRL+Key.SHIFT)
 
@@ -110,13 +110,17 @@ def quit_firefox():
     elif get_os() == "win":
         click("menu.png")
         type(text="q", modifier=Key.CTRL+Key.SHIFT)
+    else:
+        # don't force focus
+        #click("menu.png")
+        type(text="q", modifier=Key.CTRL)
 
 
 def get_menu_modifier():
     if get_os() == "osx":
         menu_modifier = Key.CTRL
     else:
-        menu_modifier = Key.CTRL
+        menu_modifier = Key.CMD
     return menu_modifier
 
 
@@ -124,13 +128,23 @@ def get_main_modifier():
     if get_os() == "osx":
         main_modifier = Key.CMD
     else:
-        main_modifier = Key.CMD
+        main_modifier = Key.CTRL
     return main_modifier
 
 
 def get_os():
-    return os.environ["OS_NAME"]
+    # working around a current Linux bug
+    try:
+        os_name = os.environ["OS_NAME"]
+    except:
+        os_name = "linux"
+    return os_name
 
 
 def get_platform():
-    return os.environ["PLATFORM_NAME"]
+    # working around a current Linux bug
+    try:
+        platform_name = os.environ["PLATFORM_NAME"]
+    except:
+        platform_name = "linux"
+    return platform_name
