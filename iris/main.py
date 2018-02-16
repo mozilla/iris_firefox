@@ -35,7 +35,7 @@ def main(argv=None):
         jar_path = os.path.join(temp, "Sikuli/sikulix.jar")
 
     package = "org.python.util.jython"
-    init_path = os.path.join(module_dir, "app.py")
+    init_path = os.path.join(module_dir, "iris.py")
 
     cmd = ['java', '-cp', jar_path, package, init_path]
     p = subprocess.Popen(cmd).communicate()

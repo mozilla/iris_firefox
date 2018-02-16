@@ -5,7 +5,7 @@
 import os
 import test_runner
 
-class App(object):
+class Iris(object):
 
     def __init__(self):
         print "app.py: This is our main app"
@@ -16,10 +16,15 @@ class App(object):
             * download and install Firefox
             * set up logging
         """
-        self.platform = os.environ["PLATFORM_NAME"]
-        self.os = os.environ["OS_NAME"]
+        try:
+            self.platform = os.environ["PLATFORM_NAME"]
+            self.os = os.environ["OS_NAME"]
+        except:
+            # temp fix for Linux issues
+            self.platform = "linux"
+            self.os = "linux"
 
         test_runner.run(self)
 
 
-App()
+Iris()
