@@ -4,6 +4,7 @@
 
 
 from test_case import *
+from api.helpers.awesome_bar import *
 
 
 
@@ -35,8 +36,11 @@ class test(base_test):
         new_tab()
         new_tab()
 
+        # helper function
+        navigate("google.com")
+
         # core api function
-        if exists(fx_ui, 5):
+        if exists("google_search.png", 5):
             result = "PASS"
         else:
             result = "FAIL"

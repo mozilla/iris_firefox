@@ -40,7 +40,7 @@ def launch_firefox(profile='empty_profile', url=None):
         cmd.append('-url')
         cmd.append(url)
 
-    p = subprocess.Popen(cmd)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return
 
 
@@ -89,9 +89,13 @@ def quit_firefox():
     if get_os() == "osx":
         type(text=Key.F2, modifier=Key.CMD)
         type(text="q", modifier=Key.CMD)
-    else:
+    elif get_os() == "win":
         click("menu.png")
         type(text="q", modifier=Key.CTRL+Key.SHIFT)
+    else:
+        # don't force focus
+        #click("menu.png")
+        type(text="q", modifier=Key.CTRL)
 
 
 def get_menu_modifier():
