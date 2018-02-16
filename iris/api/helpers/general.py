@@ -56,7 +56,7 @@ def new_tab():
         # optional: force app focus
         #type(text=Key.F2, modifier=Key.CMD)
         type(text="t", modifier=Key.CMD)
-    elif get_os() == "win":
+    else:
         # optional: force app focus
         #click("menu.png")
         type(text="t", modifier=Key.CTRL)
@@ -66,7 +66,7 @@ def new_window():
     if get_os() == "osx":
         type(text=Key.F2, modifier=Key.CMD)
         type(text="n", modifier=Key.CMD)
-    elif get_os() == "win":
+    else:
         click("menu.png")
         type(text="n", modifier=Key.CTRL)
 
@@ -75,7 +75,7 @@ def close_window():
     if get_os() == "osx":
         type(text=Key.F2, modifier=Key.CMD)
         type(text="w", modifier=Key.CMD)
-    elif get_os() == "win":
+    else:
         click("menu.png")
         type(text="w", modifier=Key.CTRL+Key.SHIFT)
 
@@ -89,7 +89,7 @@ def quit_firefox():
     if get_os() == "osx":
         type(text=Key.F2, modifier=Key.CMD)
         type(text="q", modifier=Key.CMD)
-    elif get_os() == "win":
+    else:
         click("menu.png")
         type(text="q", modifier=Key.CTRL+Key.SHIFT)
 
