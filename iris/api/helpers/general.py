@@ -7,6 +7,7 @@ import shutil
 import subprocess
 
 from api.core import *
+from api.helpers.keyboard_shortcuts import *
 
 
 
@@ -49,6 +50,23 @@ def clean_profiles():
         shutil.rmtree(path)
     os.mkdir(path)
 
+
+# waits for firefox to exist by waiting for the home button to be present
+def firefox_exists():
+    wait("home.png", 20)
+
+
+# navigates, via the location bar, to a given URL
+#
+# @param  url    the string to type into the location bar. The function
+#                   handles typing "Enter" to complete the action.
+#
+def navigate_to(url):
+    #helper funcion from "keyboard_shotcuts"
+    select_location_bar()
+    # increase the delay between each keystroke while typing strings (sikuli defaults to .02 sec)
+    Settings.TypeDelay = 0.1
+    type(url + Key.ENTER)
 
 
 def new_tab():

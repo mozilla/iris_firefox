@@ -4,7 +4,7 @@
 
 
 from api.core import *
-from general import *
+from api.helpers.general import *
 import os
 
 
@@ -14,10 +14,10 @@ path = os.path.join(current_dir, "images", get_os())
 add_image_path(path)
 
 
-def navigate(url):
-    wait("home.png", 20)
-    type((Pattern("home.png").targetOffset(400, 0)), url + Key.ENTER)
-    return
+# Navigates via the location bar to a given URL
+def navigate_to(url):
+    select_location_bar()
+    slowType(url + Key.ENTER, 0.1)
 
 
 def back_in_history():
