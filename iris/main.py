@@ -32,7 +32,7 @@ def main(argv=None):
         jar_path = "c:\Sikuli\sikulix.jar"
     else:
         temp = os.path.expanduser("~")
-        jar_path = os.path.join(temp, "/Sikuli/sikulix.jar")
+        jar_path = os.path.join(temp, "Sikuli/sikulix.jar")
 
     package = "org.python.util.jython"
     init_path = os.path.join(module_dir, "app.py")
