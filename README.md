@@ -1,11 +1,13 @@
 # iris
 Visual Test Suite for Firefox
 
-Supports Mac and Windows. Ubuntu Linux coming soon.
+* Supports Mac, Windows and Ubuntu Linux.
 
-Requires Java SDK 8 (Mac) or 7/8 (Linux). Does not work with Java 9.
+* Requires Java SDK 8 (Mac) or 7/8 (Linux). Does not work with Java 9.
 
-All instructions assume that Git is already installed.
+* All instructions assume that Git is already installed.
+
+* Please note that this project is in its earliest stage and may have issues.
 
 ## Mac instructions:
 
@@ -44,7 +46,10 @@ pip install -e .
 iris
 ```
 
-## Ubuntu Linux instructions (coming soon):
+## Ubuntu Linux instructions:
+
+Note: We are having some problems on Linux at the moment, but the tests can be run via a workaround.
+
 1. Launch the terminal and run the following commands:
 ```
 cd ~
@@ -61,6 +66,9 @@ cd ~/iris
 virtualenv .
 source bin/activate
 pip install -e .
-iris
+```
+5. This next line is the workaround. Take note of your user name.
+```
+java -cp /home/YOUR_USER_NAME_HERE/Sikuli/sikulix.jar org.python.util.jython ./iris.py
 ```
     
