@@ -40,7 +40,7 @@ def launch_firefox(profile='empty_profile', url=None):
         cmd.append('-url')
         cmd.append(url)
 
-    p = subprocess.Popen(cmd).communicate()
+    p = subprocess.Popen(cmd)
     return
 
 
@@ -111,8 +111,18 @@ def get_main_modifier():
 
 
 def get_os():
-    return os.environ["OS_NAME"]
+    # working around a current Linux bug
+    try:
+        os_name = os.environ["OS_NAME"]
+    except:
+        os_name = "linux"
+    return os_name
 
 
 def get_platform():
-    return os.environ["PLATFORM_NAME"]
+    # working around a current Linux bug
+    try:
+        platform_name = os.environ["PLATFORM_NAME"]
+    except:
+        platform_name = "linux"
+    return platform_name
