@@ -40,7 +40,7 @@ class test(base_test):
         navigate("google.com")
 
         # core api function
-        if exists("google_search.png", 5):
+        if exists("google_search.png", 15):
             result = "PASS"
         else:
             result = "FAIL"
