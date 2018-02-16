@@ -2,20 +2,21 @@
 Visual Test Suite for Firefox
 
 * Supports Mac, Windows and Ubuntu Linux.
-
 * Requires Java SDK 8 (Mac) or 7/8 (Linux). Does not work with Java 9.
-
 * All instructions assume that Git is already installed.
-
 * Please note that this project is in its earliest stage and may have issues.
 
 ## Mac instructions:
 
 1. Download and install the [Java 8 JRE](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
 ).
-2. Download and install the [Sikuli IDE](https://launchpad.net/sikuli/sikulix/1.1.1/+download/sikulixsetup-1.1.1.jar). When prompted for options, choose all three packages.
+2. In your file `~/.bash_profile`, add this line:
+```
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home
+```
+3. Download and install the [Sikuli IDE](https://launchpad.net/sikuli/sikulix/1.1.1/+download/sikulixsetup-1.1.1.jar). When prompted for options, choose all three packages.
 * Note: Sikuli must be installed in `/Applications/Sikuli`
-3. In your console, type the following to run the test suite.
+4. In your console, type the following to run the test suite.
 ```
 git clone https://github.com/mozilla/iris
 cd iris
