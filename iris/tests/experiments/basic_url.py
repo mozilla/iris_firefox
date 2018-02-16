@@ -3,7 +3,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from api.helpers.awesome_bar import *
+from api.helpers.general import *
+from api.helpers.keyboard_shortcuts import *
 from test_case import *
 
 
@@ -17,15 +18,20 @@ class test(base_test):
 
 
     def run(self):
+        #helper function from "general"
+        firefox_exists()
 
         url = "www.google.com"
         # helper function from "awesome_bar"
-        navigate(url)
+        navigate_to(url)
 
+        # image: "Google Search" button
+        # details: below the search field in page content
+        # location: www.google.com
         image = "google_search.png"
 
         # core api function
-        if exists(image, 10):
+        if exists(image, 1):
             result = "PASS"
         else:
             result = "FAIL"
