@@ -67,8 +67,8 @@ virtualenv .
 source bin/activate
 pip install -e .
 ```
-5. This next line is the workaround. Take note of your user name.
+5. This next line is the workaround.
 ```
-java -cp /home/YOUR_USER_NAME_HERE/Sikuli/sikulix.jar org.python.util.jython ./iris/iris.py
+java -cp ~/Sikuli/sikulix.jar org.python.util.jython ./iris/iris.py
 ```
     
