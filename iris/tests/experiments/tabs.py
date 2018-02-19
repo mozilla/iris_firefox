@@ -4,7 +4,6 @@
 
 
 from test_case import *
-from api.helpers.awesome_bar import *
 
 
 
@@ -18,11 +17,6 @@ class test(base_test):
 
 
     def run(self):
-
-        fx_ui = "home.png"
-
-        # core api function
-        wait(fx_ui, 10)
 
         # helper function
         new_tab()
