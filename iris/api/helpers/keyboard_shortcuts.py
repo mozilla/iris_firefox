@@ -73,7 +73,6 @@ def open_file_picker():
 
 def quit_firefox():
     if get_os() == "osx":
-        type(text=Key.F2, modifier=Key.CMD)
         type(text="q", modifier=Key.CMD)
     elif get_os() == "win":
         type(text="q", modifier=Key.CTRL+Key.SHIFT)
@@ -90,7 +89,6 @@ def new_tab():
 
 def new_window():
     if get_os() == "osx":
-        type(text=Key.F2, modifier=Key.CMD)
         type(text="n", modifier=Key.CMD)
     else:
         type(text="n", modifier=Key.CTRL)
@@ -98,7 +96,6 @@ def new_window():
 
 def close_window():
     if get_os() == "osx":
-        type(text=Key.F2, modifier=Key.CMD)
         type(text="w", modifier=Key.CMD)
     else:
         type(text="w", modifier=Key.CTRL+Key.SHIFT)
