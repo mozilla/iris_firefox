@@ -17,7 +17,6 @@ class test(base_test):
 
     def run(self):
 
-
         url = "about:home"
         # helper function from "keyboard_shortcuts"
         navigate(url)
@@ -31,20 +30,28 @@ class test(base_test):
             # core api function
             if exists("google_search.png", 10):
 
-                wait("back.png", 10)
-                click("back.png")
-
-                # core api function
-                if exists("search_the_web.png", 10):
-                    wait("forward.png", 10)
-                    click("forward.png")
+                try:
+                    wait("back.png", 10)
+                    click("back.png")
 
                     # core api function
-                    if exists("google_search.png", 10):
-                        result =  "PASS"
+                    if exists("search_the_web.png", 10):
+
+                        try:
+                            wait("forward.png", 10)
+                            click("forward.png")
+
+                            # core api function
+                            if exists("google_search.png", 10):
+                                result = "PASS"
+                            else:
+                                result = "FAIL"
+                        except:
+                            result = "FAIL"
                     else:
                         result = "FAIL"
-                else:
+
+                except:
                     result = "FAIL"
             else:
                 result = "FAIL"
