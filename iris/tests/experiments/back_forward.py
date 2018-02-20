@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from api.helpers.awesome_bar import *
 from test_case import *
 
 
@@ -19,33 +18,40 @@ class test(base_test):
     def run(self):
 
         url = "about:home"
-        # helper function from "awesome_bar"
+        # helper function from "keyboard_shortcuts"
         navigate(url)
 
         if exists("search_the_web.png", 10):
             url = "www.google.com"
 
-            # helper function from "awesome_bar"
+            # helper function from "keyboard_shortcuts"
             navigate(url)
 
             # core api function
             if exists("google_search.png", 10):
 
-                # helper function from "awesome_bar"
-                back_in_history()
-
-                # core api function
-                if exists("search_the_web.png", 10):
-
-                    # helper function from "awesome_bar"
-                    forward_in_history()
+                try:
+                    wait("back.png", 10)
+                    click("back.png")
 
                     # core api function
-                    if exists("google_search.png", 10):
-                        result =  "PASS"
+                    if exists("search_the_web.png", 10):
+
+                        try:
+                            wait("forward.png", 10)
+                            click("forward.png")
+
+                            # core api function
+                            if exists("google_search.png", 10):
+                                result = "PASS"
+                            else:
+                                result = "FAIL"
+                        except:
+                            result = "FAIL"
                     else:
                         result = "FAIL"
-                else:
+
+                except:
                     result = "FAIL"
             else:
                 result = "FAIL"

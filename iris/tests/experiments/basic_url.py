@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from api.helpers.awesome_bar import *
+
 from test_case import *
 
 
@@ -22,6 +22,9 @@ class test(base_test):
         # helper function from "awesome_bar"
         navigate(url)
 
+        # image: "Google Search" button
+        # details: below the search field in page content
+        # location: www.google.com
         image = "google_search.png"
 
         # core api function

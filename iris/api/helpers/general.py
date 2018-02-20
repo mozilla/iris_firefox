@@ -7,6 +7,7 @@ import shutil
 import subprocess
 
 from api.core import *
+from api.helpers.keyboard_shortcuts import *
 
 
 
@@ -51,51 +52,39 @@ def clean_profiles():
     os.mkdir(path)
 
 
-def new_tab():
-    if get_os() == "osx":
-        # optional: force app focus
-        #type(text=Key.F2, modifier=Key.CMD)
-        type(text="t", modifier=Key.CMD)
-    else:
-        # optional: force app focus
-        #click("menu.png")
-        type(text="t", modifier=Key.CTRL)
+# waits for firefox to exist by waiting for the home button to be present
+def confirm_firefox_launch():
+    try:
+        wait("home.png", 10)
+    except:
+        print "Can't launch Firefox - aborting test run."
+        exit(1)
 
 
-def new_window():
-    if get_os() == "osx":
-        type(text=Key.F2, modifier=Key.CMD)
-        type(text="n", modifier=Key.CMD)
-    else:
-        click("menu.png")
-        type(text="n", modifier=Key.CTRL)
+def confirm_firefox_quit():
+    try:
+        waitVanish("home.png", 10)
+    except:
+        print "Firefox still around - aborting test run."
+        exit(1)
 
 
-def close_window():
-    if get_os() == "osx":
-        type(text=Key.F2, modifier=Key.CMD)
-        type(text="w", modifier=Key.CMD)
-    else:
-        click("menu.png")
-        type(text="w", modifier=Key.CTRL+Key.SHIFT)
+# navigates, via the location bar, to a given URL
+#
+# @param  url    the string to type into the location bar. The function
+#                   handles typing "Enter" to complete the action.
+#
+def navigate(url):
+    #helper funcion from "keyboard_shotcuts"
+    select_location_bar()
+    # increase the delay between each keystroke while typing strings (sikuli defaults to .02 sec)
+    Settings.TypeDelay = 0.1
+    type(url + Key.ENTER)
 
 
 def restart_firefox(args):
     # just as it says, with options
     return
-
-
-def quit_firefox():
-    if get_os() == "osx":
-        type(text=Key.F2, modifier=Key.CMD)
-        type(text="q", modifier=Key.CMD)
-    elif get_os() == "win":
-        click("menu.png")
-        type(text="q", modifier=Key.CTRL+Key.SHIFT)
-    else:
-        # don't force focus
-        #click("menu.png")
-        type(text="q", modifier=Key.CTRL)
 
 
 def get_menu_modifier():
@@ -112,21 +101,3 @@ def get_main_modifier():
     else:
         main_modifier = Key.CTRL
     return main_modifier
-
-
-def get_os():
-    # working around a current Linux bug
-    try:
-        os_name = os.environ["OS_NAME"]
-    except:
-        os_name = "linux"
-    return os_name
-
-
-def get_platform():
-    # working around a current Linux bug
-    try:
-        platform_name = os.environ["PLATFORM_NAME"]
-    except:
-        platform_name = "linux"
-    return platform_name
