@@ -3,9 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from api.helpers.awesome_bar import *
-from api.helpers.general import *
-from api.helpers.keyboard_shortcuts import *
 from test_case import *
 
 
@@ -19,18 +16,17 @@ class test(base_test):
 
 
     def run(self):
-        #check to ensure firefox is running
-        firefox_exists()
+
 
         url = "about:home"
         # helper function from "keyboard_shortcuts"
-        navigate_to(url)
+        navigate(url)
 
         if exists("search_the_web.png", 10):
             url = "www.google.com"
 
             # helper function from "keyboard_shortcuts"
-            navigate_to(url)
+            navigate(url)
 
             # core api function
             if exists("google_search.png", 10):

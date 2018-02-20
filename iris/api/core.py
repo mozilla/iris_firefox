@@ -19,8 +19,23 @@ Key = Sikuli.Key
 Screen = Sikuli.Screen
 
 
-def close():
-    Sikuli.Screen().type("w", Sikuli.KeyModifier.CMD + Sikuli.KeyModifier.SHIFT)
+def get_os():
+    if os.path.exists("C:\\"):
+        return "win"
+    if os.path.exists("/Applications"):
+        return "osx"
+    else:
+        return "linux"
+
+
+def get_platform():
+    if get_os() == "osx":
+        return "osx"
+    if sys.maxsize == 2**31:
+        return get_os() + "32"
+    else:
+        return get_os()
+
 
 def add_image_path(path):
     Sikuli.addImagePath(path)

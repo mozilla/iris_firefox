@@ -5,6 +5,7 @@
 
 from api.core import *
 from api.helpers.general import *
+from api.helpers.keyboard_shortcuts import *
 import os
 import time
 

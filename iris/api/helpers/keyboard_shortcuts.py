@@ -4,18 +4,14 @@
 
 
 from api.core import *
-from api.helpers.general import *
-import os
 
 # This helper defines keyboard shortcuts for many common actions in Firefox usage.
 # We should be using these keyboard shortcuts whenever possible.
 
-# Get the operating system so we use the correct key combinations
-op_sys = os.environ["OS_NAME"]
 
 # Navigates back in browsing history one page visit
 def navigate_back():
-    if op_sys == "osx":
+    if get_os() == "osx":
         type(text="[", modifier=KeyModifier.CMD)
     else:
         type(text="{", modifier=KeyModifier.ALT)
@@ -23,7 +19,7 @@ def navigate_back():
 
 # Navigates forward in browsing history one page visit
 def navigate_forward():
-    if op_sys == "osx":
+    if get_os() == "osx":
         type(text="]", modifier=KeyModifier.CMD)
     else:
         type(text="]", modifier=KeyModifier.ALT)
@@ -34,9 +30,8 @@ def navigate_home():
     type(text=Key.HOME, modifier=KeyModifier.ALT)
 
 
-# Selects the location bar
 def select_location_bar():
-    if op_sys == "osx":
+    if get_os() == "osx":
         type(text="l", modifier=KeyModifier.CMD)
     else:
         type(text="l", modifier=KeyModifier.CTRL)
@@ -46,15 +41,15 @@ def select_location_bar():
 
 # Reload the current web page
 def reload_page():
-    if op_sys == "osx":
-        type(text="r", mmodifier=KeyModifier.CMD)
+    if get_os() == "osx":
+        type(text="r", modifier=KeyModifier.CMD)
     else:
         type(text="r", modifier=KeyModifier.CTRL)
 
 
 # Reload the current web page with cache override
 def force_reload_page():
-    if op_sys == "osx":
+    if get_os() == "osx":
         type(text="r", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text="r", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
@@ -62,15 +57,48 @@ def force_reload_page():
 
 # Stop the current in progress web page from loading
 def stop_page_load():
-    if op_sys == "osx":
+    if get_os() == "osx":
         type(text=Key.ESC)
     else:
         type(text=Key.ESC)
+    # is this right? both actions are the same
 
 
-# Open the file picker
 def open_file_picker():
-    if op_sys == "osx":
+    if get_os() == "osx":
         type(text="o", modifier=KeyModifier.CMD)
     else:
         type(text="o", modifier=KeyModifier.CTRL)
+
+
+def quit_firefox():
+    if get_os() == "osx":
+        type(text=Key.F2, modifier=Key.CMD)
+        type(text="q", modifier=Key.CMD)
+    elif get_os() == "win":
+        type(text="q", modifier=Key.CTRL+Key.SHIFT)
+    else:
+        type(text="q", modifier=Key.CTRL)
+
+
+def new_tab():
+    if get_os() == "osx":
+        type(text="t", modifier=Key.CMD)
+    else:
+        type(text="t", modifier=Key.CTRL)
+
+
+def new_window():
+    if get_os() == "osx":
+        type(text=Key.F2, modifier=Key.CMD)
+        type(text="n", modifier=Key.CMD)
+    else:
+        type(text="n", modifier=Key.CTRL)
+
+
+def close_window():
+    if get_os() == "osx":
+        type(text=Key.F2, modifier=Key.CMD)
+        type(text="w", modifier=Key.CMD)
+    else:
+        type(text="w", modifier=Key.CTRL+Key.SHIFT)

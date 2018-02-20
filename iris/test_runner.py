@@ -17,8 +17,8 @@ from tests.experiments import empty, tabs, back_forward, basic_url
 def run(app):
     print "test_runner.py: Running tests"
 
+
     # start with no saved profiles
-    # TBD: fix Windows support
     clean_profiles()
 
     # Hard-code for now, but we will build a dynamic array of tests to run later
@@ -29,12 +29,24 @@ def run(app):
 
     # then we'd dynamically call test() and run on this list of test cases
     for module in all_tests:
+
         current = module.test(app)
         print "Running test case: %s " % current.meta
 
+        # Initialize and launch Firefox
         current.setup()
+
+        # Verify that Firefox has launched
+        confirm_firefox_launch()
+
+        # Run the test logic
         current.run()
+
+        # Quit Firefox
         current.teardown()
+
+        confirm_firefox_quit()
+
 
     # We may remove profiles here, but likely still in use and can't do it yet
     #clean_profiles()
