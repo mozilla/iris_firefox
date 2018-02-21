@@ -28,6 +28,13 @@ def main(argv=None):
         temp = os.path.expanduser("~")
         jar_path = os.path.join(temp, "Sikuli/sikulix.jar")
 
+    if not os.path.exists(jar_path):
+        print "\nCan't find the Sikuli jar file. Terminating project now."
+        print "Please consult the Iris wiki for information on setting up Sikuli"
+        print "and its dependencies."
+        print "https://github.com/mozilla/iris/wiki/Setup\n"
+        exit (1)
+
     package = "org.python.util.jython"
     init_path = os.path.join(module_dir, "iris.py")
 
