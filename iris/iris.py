@@ -16,8 +16,13 @@ class Iris(object):
             * argument parsing
             * download and install Firefox
             * set up logging
+            * save data to 'self' object
         """
-        print ' '.join(sys.argv[1:])
+
+        # Checking for arguments
+        if len (sys.argv[1]):
+            print "args: %s" % ' '.join(sys.argv[1:])
+
         test_runner.run(self)
 
 
