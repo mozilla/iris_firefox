@@ -31,7 +31,7 @@ class test(base_test):
         new_tab()
 
         # helper function
-        navigate("google.com")
+        navigate("https://www.google.com/?hl=EN")
 
         # core api function
         if exists("google_search.png", 15):

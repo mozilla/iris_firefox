@@ -18,7 +18,7 @@ class test(base_test):
 
     def run(self):
 
-        url = "www.google.com"
+        url = "https://www.google.com/?hl=EN"
         # helper function from "awesome_bar"
         navigate(url)
 
