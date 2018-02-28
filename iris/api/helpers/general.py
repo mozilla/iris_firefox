@@ -58,7 +58,7 @@ def clean_profiles():
 # waits for firefox to exist by waiting for the home button to be present
 def confirm_firefox_launch():
     try:
-        wait("home.png", 10)
+        wait("home.png", 20)
     except:
         print "Can't launch Firefox - aborting test run."
         exit(1)
