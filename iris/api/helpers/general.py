@@ -26,7 +26,10 @@ def launch_firefox(profile='empty_profile', url=None):
     if get_os() == "osx":
         path = '/Applications/Firefox.app/Contents/MacOS/firefox'
     elif get_os() == "win":
-        path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
+        if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
+            path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
+        else:
+            path = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe'
     else:
         path = '/usr/bin/firefox'
 
@@ -55,7 +58,7 @@ def clean_profiles():
 # waits for firefox to exist by waiting for the home button to be present
 def confirm_firefox_launch():
     try:
-        wait("home.png", 10)
+        wait("home.png", 20)
     except:
         print "Can't launch Firefox - aborting test run."
         exit(1)

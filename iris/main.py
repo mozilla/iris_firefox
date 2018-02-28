@@ -6,7 +6,7 @@
 import os
 import subprocess
 import sys
-from logger.irisLogger import *
+from logger.iris_logger import *
 
 logger = getLogger(__name__)
 
