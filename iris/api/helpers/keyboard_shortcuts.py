@@ -99,3 +99,24 @@ def close_window():
         type(text="w", modifier=Key.CMD)
     else:
         type(text="w", modifier=Key.CTRL+Key.SHIFT)
+
+
+def add_bookmark():
+    if get_os() == "osx":
+        type(text = "d", modifier=Key.CMD)
+    else:
+        type(text = "d", modifier=Key.CTRL)
+
+
+
+def open_bookmark_menu():
+    if get_os() == "osx":
+        type(text = "i", modifier=Key.CMD)
+    else:
+        type(text = "i", modifier=Key.CTRL)
+        Settings.TypeDelay = 0.2
+        type(" amazon")
+
+
+
+
