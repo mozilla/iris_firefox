@@ -6,7 +6,7 @@ class test(base_test):
         base_test.__init__(self, app)
         base_test.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "This is a test for adding an website in the bookmarks section"
+        self.meta = "This is a test for adding a website in the bookmarks section"
 
     def run(self):
         url = "www.amazon.com"
@@ -15,7 +15,7 @@ class test(base_test):
 
         if exists("amazon.png", 10):
 
-            # adding bookmark with keyboard shortcut
+            # Add bookmark with keyboard shortcut
             add_bookmark()
 
             # Look for new bookmark via library menu button
@@ -37,4 +37,4 @@ class test(base_test):
                 print "FAIL"
 
         else:
-            "FAIL"
+            print "FAIL"
