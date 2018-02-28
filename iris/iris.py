@@ -5,6 +5,7 @@
 import os
 import sys
 import test_runner
+from api.core import *
 from logger.iris_logger import *
 
 class Iris(object):
@@ -20,6 +21,9 @@ class Iris(object):
             * set up logging
             * save data to 'self' object
         """
+        self.module_dir = get_module_dir()
+        self.platform = get_platform()
+        self.os = get_os()
 
         # Checking for arguments
         # Can throw if invoked via java
