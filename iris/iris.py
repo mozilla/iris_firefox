@@ -5,7 +5,7 @@
 import os
 import sys
 import test_runner
-from logger.irisLogger import *
+from logger.iris_logger import *
 
 class Iris(object):
 
@@ -22,8 +22,12 @@ class Iris(object):
         """
 
         # Checking for arguments
-        if len (sys.argv[1]):
-            print "args: %s" % ' '.join(sys.argv[1:])
+        # Can throw if invoked via java
+        try:
+            if len (sys.argv[1]):
+                print "args: %s" % ' '.join(sys.argv[1:])
+        except:
+            pass
 
         test_runner.run(self)
 

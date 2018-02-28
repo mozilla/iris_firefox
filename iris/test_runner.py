@@ -4,7 +4,7 @@
 
 from api.core import *
 from api.helpers.general import *
-from logger.irisLogger import *
+from logger.iris_logger import *
 
 # Temporarily hard-coded for just a few tests
 from tests.experiments import tabs, back_forward, basic_url
