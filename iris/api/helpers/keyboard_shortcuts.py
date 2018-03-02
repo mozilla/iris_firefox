@@ -99,3 +99,19 @@ def close_window():
         type(text="w", modifier=Key.CMD)
     else:
         type(text="w", modifier=Key.CTRL+Key.SHIFT)
+
+
+def add_bookmark():
+    if get_os() == "osx":
+        type(text="d", modifier=Key.CMD)
+        type(text=Key.ENTER)
+    else:
+        type(text="d", modifier=Key.CTRL)
+        type(text=Key.ENTER)
+
+
+def open_bookmark_menu():
+    if get_os() == "osx":
+        type(text="b", modifier=Key.CMD)
+    else:
+        type(text="b", modifier=Key.CTRL)
