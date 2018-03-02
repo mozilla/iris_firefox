@@ -55,7 +55,7 @@ def select_location_bar():
     else:
         type(text="l", modifier=KeyModifier.CTRL)
     # wait a little bit to allow location bar to become responsive
-    sleep(0.5)
+    sleep(1)
 
 
 # Reload the current web page
@@ -325,7 +325,7 @@ def open_search_manager():
 ########## Windows & Tabs ##########
 
 # Close the currently focused tab (Except for app tabs)
-def close_window():
+def close_tab():
     if get_os() == "osx":
         type(text="w", modifier=KeyModifier.CMD)
     else:
@@ -338,15 +338,6 @@ def close_window():
         type(text="w", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text="w", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
-# Quit the browser
-def quit_firefox():
-    if get_os() == "osx":
-        type(text="q", modifier=KeyModifier.CMD)
-    elif get_os() == "win":
-        type(text="q", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-    else:
-        type(text="q", modifier=KeyModifier.CTRL)
 
 
 # Mute/Unmute audio
@@ -385,7 +376,38 @@ def next_tab():
 
 # Focus the previous tab (one over to the left)
 def previous_tab():
-    type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    type(text=Key.TAB, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
+# Quit the browser
+def quit_firefox():
+    if get_os() == "osx":
+        type(text="q", modifier=KeyModifier.CMD)
+    elif get_os() == "win":
+        type(text="q", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    else:
+        type(text="q", modifier=KeyModifier.CTRL)
+
+
+# Select a given tab (only 1-8)
+# param:  num  is a string 1-8. example: "4"
+def select_tab(num):
+    if get_os() == "osx":
+        type(text=num, modifier=KeyModifier.CMD)
+    elif get_os() == "win":
+        type(text=num, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    else:
+        type(text=num, modifier=KeyModifier.CTRL)
+
+
+# Select the last tab
+def select_last_tab():
+    if get_os() == "osx":
+        type(text="9", modifier=KeyModifier.CMD)
+    elif get_os() == "win":
+        type(text="9", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    else:
+        type(text="9", modifier=KeyModifier.CTRL)
 
 
 # Re-opens the previously closed tab
@@ -397,7 +419,7 @@ def undo_close_tab():
 
 
 # Re-opens the previously closed browser window
-def undo_close_tab():
+def undo_close_window():
     if get_os() == "osx":
         type(text="n", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
