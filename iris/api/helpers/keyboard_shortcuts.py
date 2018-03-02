@@ -9,9 +9,12 @@ from api.core import *
 # We should be using these keyboard shortcuts whenever possible.
 #
 # Try to keep them organized by area of influence
+# Roughly follow the organization from
+# https://support.mozilla.org/en-US/kb/keyboard-shortcuts-perform-firefox-tasks-quickly
 # - Navigation
 # - Current Page
 # - Editing
+# - Search
 
 
 ########## Navigation ##########
@@ -35,6 +38,14 @@ def navigate_forward():
 # Navigates the browser to whatever is set as the Home page
 def navigate_home():
     type(text=Key.HOME, modifier=KeyModifier.ALT)
+
+
+# Opens the system file picker
+def open_file_picker():
+    if get_os() == "osx":
+        type(text="o", modifier=KeyModifier.CMD)
+    else:
+        type(text="o", modifier=KeyModifier.CTRL)
 
 
 # Set focus to the locationbar
@@ -67,6 +78,7 @@ def force_reload_page():
 def stop_page_load():
     type(text=Key.ESC)
 
+
 ########## end Navigation ##########
 
 ########## Current Page ##########
@@ -88,7 +100,7 @@ def page_down():
 
 # Jump up one screen
 def page_up():
-    type(text=key.SPACE, KeyModifier.SHIFT)
+    type(text=Key.SPACE, modifier=KeyModifier.SHIFT)
 
 
 # Jump to the bottom of the page
@@ -108,7 +120,7 @@ def focus_next_item():
 
 # Focus previous actionable item
 def focus_previous_item():
-    type(text=key.TAB, KeyModifier.SHIFT)
+    type(text=Key.TAB, modifier=KeyModifier.SHIFT)
 
 
 # Move to the next frame (can be in content or in chrome)
@@ -118,7 +130,7 @@ def next_frame():
 
 # Move to the previous frame (can be in content or in chrome)
 def previous_frame():
-    type(text=Key.F6, KeyModifier.SHIFT)
+    type(text=Key.F6, modifier=KeyModifier.SHIFT)
 
 
 # Open the print dialog
@@ -159,6 +171,7 @@ def restore_zoom():
         type(text="0", modifier=KeyModifier.CMD)
     else:
         type(text="0", modifier=KeyModifier.CTRL)
+
 
 ########## end Current Page ##########
 
@@ -224,40 +237,170 @@ def edit_undo():
     else:
         type(text="z", modifier=KeyModifier.CTRL)
 
+
 ########## end Editing ##########
 
-def open_file_picker():
+########## Search ##########
+
+# Open the find toolbar
+def open_find():
     if get_os() == "osx":
-        type(text="o", modifier=KeyModifier.CMD)
+        type(text="f", modifier=KeyModifier.CMD)
     else:
-        type(text="o", modifier=KeyModifier.CTRL)
+        type(text="f", modifier=KeyModifier.CTRL)
 
 
-def quit_firefox():
+# Find next occurance of term if find is already active on a search term
+# Find next (again) can also find the next occurance of a term without opening the find toolbar
+def find_next():
     if get_os() == "osx":
-        type(text="q", modifier=Key.CMD)
-    elif get_os() == "win":
-        type(text="q", modifier=Key.CTRL+Key.SHIFT)
+        type(text="g", modifier=KeyModifier.CMD)
     else:
-        type(text="q", modifier=Key.CTRL)
+        type(text="g", modifier=KeyModifier.CTRL)
 
 
-def new_tab():
+# Find the previous occurance of term if find is already active on a search term
+# Find previous can also find the next occurance of a term without opening the find toolbar
+def find_previous():
     if get_os() == "osx":
-        type(text="t", modifier=Key.CMD)
+        type(text="g", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
-        type(text="t", modifier=Key.CTRL)
+        type(text="g", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
-def new_window():
+# Quick find opens simple find toolbar that remains active for only six seconds
+def quick_find():
     if get_os() == "osx":
-        type(text="n", modifier=Key.CMD)
+        type(text="/", modifier=KeyModifier.CMD)
     else:
-        type(text="n", modifier=Key.CTRL)
+        type(text="/", modifier=KeyModifier.CTRL)
 
 
+# Quick find opens simple find link toolbar that remains active for only six seconds
+def quick_find_link():
+    if get_os() == "osx":
+        type(text="'", modifier=KeyModifier.CMD)
+    else:
+        type(text="'", modifier=KeyModifier.CTRL)
+
+
+# Close the regular find toolbar or quick find toolbar, if  it has focus
+def close_find():
+    type(text=Key.ESC)
+
+
+# If the search bar is present, select the search bar, otherwise this selects the location bar
+def select_search_bar():
+    if get_os() == "osx":
+        type(text="k", modifier=KeyModifier.CMD)
+    else:
+        type(text="k", modifier=KeyModifier.CTRL)
+
+
+# If the search bar has focus change the search engine to the next in the list
+# (side effect: this also opens the search engine manager, if it wasn't alredy open)
+def change_search_next():
+    if get_os() == "osx":
+        type(text=Key.DOWN, modifier=KeyModifier.CMD)
+    else:
+        type(text=Key.DOWN, modifier=KeyModifier.CTRL)
+
+
+# If the search bar has focus change the search engine to the prvious in the list
+# (side effect: this also opens the search engine manager, if it wasn't alredy open)
+def change_search_previous():
+    if get_os() == "osx":
+        type(text=Key.UP, modifier=KeyModifier.CMD)
+    else:
+        type(text=Key.UP, modifier=KeyModifier.CTRL)
+
+
+# If the search bar has focus open the search engine manager
+def open_search_manager():
+    type(text=Key.DOWN, modifier=KeyModifier.ALT)
+
+
+########## end Search ##########
+
+########## Windows & Tabs ##########
+
+# Close the currently focused tab (Except for app tabs)
 def close_window():
     if get_os() == "osx":
-        type(text="w", modifier=Key.CMD)
+        type(text="w", modifier=KeyModifier.CMD)
     else:
-        type(text="w", modifier=Key.CTRL+Key.SHIFT)
+        type(text="w", modifier=KeyModifier.CTRL)
+
+
+# Close the currently focused window
+def close_window():
+    if get_os() == "osx":
+        type(text="w", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="w", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+# Quit the browser
+def quit_firefox():
+    if get_os() == "osx":
+        type(text="q", modifier=KeyModifier.CMD)
+    elif get_os() == "win":
+        type(text="q", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    else:
+        type(text="q", modifier=KeyModifier.CTRL)
+
+
+# Mute/Unmute audio
+def toggle_audio():
+    type(text="m", modifier=KeyModifier.CTRL)
+
+
+# Open a new browser tab
+def new_tab():
+    if get_os() == "osx":
+        type(text="t", modifier=KeyModifier.CMD)
+    else:
+        type(text="t", modifier=KeyModifier.CTRL)
+
+
+# Open a new browser window
+def new_window():
+    if get_os() == "osx":
+        type(text="n", modifier=KeyModifier.CMD)
+    else:
+        type(text="n", modifier=KeyModifier.CTRL)
+
+
+# Open a new private browser window
+def new_private_window():
+    if get_os() == "osx":
+        type(text="p", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="p", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
+# Focus the next tab (one over to the right)
+def next_tab():
+    type(text=Key.TAB, modifier=KeyModifier.CTRL)
+
+
+# Focus the previous tab (one over to the left)
+def previous_tab():
+    type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
+# Re-opens the previously closed tab
+def undo_close_tab():
+    if get_os() == "osx":
+        type(text="t", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="t", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
+# Re-opens the previously closed browser window
+def undo_close_tab():
+    if get_os() == "osx":
+        type(text="n", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="n", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+########## end Windows & Tabs ##########
