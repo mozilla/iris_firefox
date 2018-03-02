@@ -6,12 +6,14 @@
 import os
 import subprocess
 import sys
+from logger.iris_logger import *
 
+logger = getLogger(__name__)
 
 # This is the main entry point defined in setup.py
 
 def main(argv=None):
-    print "main.py: main"
+    logger.info("main")
 
     # Required for Linux window communication
     os.environ["DISPLAY"] = ":99"

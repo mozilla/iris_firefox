@@ -26,10 +26,10 @@ def launch_firefox(profile='empty_profile', url=None):
     if get_os() == "osx":
         path = '/Applications/Firefox.app/Contents/MacOS/firefox'
     elif get_os() == "win":
-        if os.path.exists('C:\\Program Files\\Mozilla Firefox\\'):
-            path = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe'
-        else:
+        if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
             path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
+        else:
+            path = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe'
     else:
         path = '/usr/bin/firefox'
 
