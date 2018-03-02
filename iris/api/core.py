@@ -37,6 +37,10 @@ def get_platform():
         return get_os()
 
 
+def get_module_dir():
+    return os.path.realpath (os.path.split(__file__)[0] + "/../..")
+
+
 def add_image_path(path):
     Sikuli.addImagePath(path)
 

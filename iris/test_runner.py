@@ -2,8 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from api.core import *
 from api.helpers.general import *
+from logger.iris_logger import *
 
 # Temporarily hard-coded for just a few tests
 from tests.experiments import tabs, back_forward, basic_url
@@ -13,13 +13,10 @@ from tests.experiments import tabs, back_forward, basic_url
 # directory and dynamically import what it finds.
 #
 # Additionally, we will create logic to only run certain tests and test sets.
-
+logger = getLogger(__name__)
 
 def run(app):
-    print "test_runner.py: Running tests"
-
-    app.platform = get_platform()
-    app.os = get_os()
+    logger.info("Running tests")
 
     # Start with no saved profiles
     clean_profiles()
@@ -34,7 +31,7 @@ def run(app):
     for module in all_tests:
 
         current = module.test(app)
-        print "Running test case: %s " % current.meta
+        logger.info("Running test case: %s " % current.meta)
 
         # Initialize and launch Firefox
         current.setup()

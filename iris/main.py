@@ -6,12 +6,14 @@
 import os
 import subprocess
 import sys
+from logger.iris_logger import *
 
+logger = getLogger(__name__)
 
 # This is the main entry point defined in setup.py
 
 def main(argv=None):
-    print "main.py: main"
+    logger.info("main")
 
     # Required for Linux window communication
     os.environ["DISPLAY"] = ":99"
@@ -28,10 +30,18 @@ def main(argv=None):
         temp = os.path.expanduser("~")
         jar_path = os.path.join(temp, "Sikuli/sikulix.jar")
 
+    if not os.path.exists(jar_path):
+        print "\nCan't find the Sikuli jar file. Terminating project now."
+        print "Please consult the Iris wiki for information on setting up Sikuli"
+        print "and its dependencies."
+        print "https://github.com/mozilla/iris/wiki/Setup\n"
+        exit (1)
+
     package = "org.python.util.jython"
     init_path = os.path.join(module_dir, "iris.py")
+    args = ' '.join(sys.argv[1:])
 
-    cmd = ['java', '-cp', jar_path, package, init_path]
+    cmd = ['java', '-cp', jar_path, package, init_path, args]
 
     # There is a problem at the moment invoking Firefox from jython, on Linux only
     # We will instruct Linux users on how to work around it in the meantime
