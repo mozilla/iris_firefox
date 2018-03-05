@@ -683,3 +683,30 @@ def open_bookmark_menu():
     else:
         type(text="b", modifier=Key.CTRL)
 
+
+
+
+def new_incognito_window():
+    if get_os() == "osx":
+        type(text="p", modifier=Key.CMD)
+    else:
+        type(text="p", modifier=Key.CTRL+Key.SHIFT)
+
+
+def search_in_page():
+    if get_os() == "osx":
+        type(text="f", modifier=Key.CMD)
+    else:
+        type(text="f", modifier=Key.CTRL)
+
+
+def open_history_menu():
+    if get_os() == "osx":
+        type(text="h", modifier=Key.CMD)
+    else:
+        type(text="h", modifier=Key.CTRL)
+
+
+
+
+
