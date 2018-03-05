@@ -146,6 +146,8 @@ def change_preference(pref_name,value):
     type(pref_name)
     time.sleep(2)
     type(Key.TAB)
+    time.sleep(2)
+
 
     if compare_strings(copy_to_clipboard(), value)==True:
         logger.debug("Flag is already set to value:" + value)
@@ -155,6 +157,6 @@ def change_preference(pref_name,value):
         type(Key.ENTER)
         # For non-boolean values, a dialog box should appear
         dialog_box = Pattern("preference_dialog_icon.png")
-        if exists(dialog_box,5):
+        if exists(dialog_box,3):
             type(dialog_box,value)
             type(Key.ENTER)
