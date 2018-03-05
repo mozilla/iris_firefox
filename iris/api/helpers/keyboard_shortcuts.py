@@ -14,28 +14,28 @@ def cut():
     if get_os() == "osx":
         type(text="x", modifier=KeyModifier.CMD)
     else:
-        type(text="x", modifier=KeyModifier.ALT)
+        type(text="x", modifier=KeyModifier.CTRL)
 
 
 def copy():
     if get_os() == "osx":
         type(text="c", modifier=KeyModifier.CMD)
     else:
-        type(text="c", modifier=KeyModifier.ALT)
+        type(text="c", modifier=KeyModifier.CTRL)
 
 
 def paste():
     if get_os() == "osx":
         type(text="p", modifier=KeyModifier.CMD)
     else:
-        type(text="p", modifier=KeyModifier.ALT)
+        type(text="p", modifier=KeyModifier.CTRL)
 
 
 def select_all():
     if get_os() == "osx":
         type(text="a", modifier=KeyModifier.CMD)
     else:
-        type(text="a", modifier=KeyModifier.ALT)
+        type(text="a", modifier=KeyModifier.CTRL)
 
 
 # Navigates back in browsing history one page visit
