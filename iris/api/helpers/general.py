@@ -122,13 +122,20 @@ def change_preference(preference,value):
     #warning_box=Pattern("show_this_warning.png")
     if exists("accept_risk.png",5):
         click("accept_risk.png")
+
+    # Temporarily disabling clicking on search icon
+    # as it seems that we automatically have focus upon
+    # entering about:config and should be able to type immediately
+    """
     search = Pattern("preference_search_icon.png")
     if exists(search,5):
-        #Settings.TypeDelay = 0.05
+        Settings.TypeDelay = 0.05
         click(search)
-        type(search, preference)
-        time.sleep(2)
-        type(Key.TAB)
+    type(search, preference)
+    """
+    type(preference)
+    time.sleep(2)
+    type(Key.TAB)
 
     if compare_strings(copy_to_clipboard(), value)==True:
         print "Flag is already set to value:"+value
