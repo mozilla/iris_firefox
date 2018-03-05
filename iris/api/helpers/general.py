@@ -104,3 +104,45 @@ def get_main_modifier():
     else:
         main_modifier = Key.CTRL
     return main_modifier
+
+
+def copy_to_clibord():
+    type("a",KeyModifier.CTRL)
+    type("c",KeyModifier.CTRL)
+    value=Env.getClipboard().strip()
+    return value
+
+
+def compareStrings(expected):
+    value=copy_to_clibord()
+    actual=value.split(";"[0])
+    if actual[1] == expected:
+        return True
+    else:
+        return False
+
+
+
+
+def change_preferences(preference,state):
+    warning_box=Pattern("show_this_warning.png")
+    if exists(warning_box,5):
+        click(warning_box)
+        click("accept_risk.png")
+    dialog_box=Pattern("dialog_box.png")
+    search = Pattern("preference_search_icon.png")
+    if exists(search,5):
+        Settings.TypeDelay = 0.05
+        click(search)
+        type(search, preference)
+        time.sleep(4)
+        type(Key.TAB)
+
+    if compareStrings(state)==True:
+        print "Flag is already set to value:"+state
+        return None
+    else:
+        type(Key.ENTER)
+        if exists(dialog_box,5):
+            type(dialog_box,state)
+            type(Key.ENTER)
