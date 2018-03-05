@@ -9,6 +9,35 @@ from api.core import *
 # We should be using these keyboard shortcuts whenever possible.
 
 
+
+def cut():
+    if get_os() == "osx":
+        type(text="x", modifier=KeyModifier.CMD)
+    else:
+        type(text="x", modifier=KeyModifier.ALT)
+
+
+def copy():
+    if get_os() == "osx":
+        type(text="c", modifier=KeyModifier.CMD)
+    else:
+        type(text="c", modifier=KeyModifier.ALT)
+
+
+def paste():
+    if get_os() == "osx":
+        type(text="p", modifier=KeyModifier.CMD)
+    else:
+        type(text="p", modifier=KeyModifier.ALT)
+
+
+def select_all():
+    if get_os() == "osx":
+        type(text="a", modifier=KeyModifier.CMD)
+    else:
+        type(text="a", modifier=KeyModifier.ALT)
+
+
 # Navigates back in browsing history one page visit
 def navigate_back():
     if get_os() == "osx":
