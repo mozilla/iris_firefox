@@ -120,7 +120,7 @@ def copy_to_clipboard():
     return value
 
 
-def compare_strings(value, expected):
+def _compare_strings(value, expected):
     actual=value.split(";"[0])
     if actual[1] == expected:
         return True
@@ -148,8 +148,8 @@ def change_preference(pref_name,value):
     type(Key.TAB)
     time.sleep(2)
 
-
-    if compare_strings(copy_to_clipboard(), value)==True:
+    #if _compare_strings(copy_to_clipboard(), value)==True:
+    if copy_to_clipboard().split(";"[0])[1] == value:
         logger.debug("Flag is already set to value:" + value)
         return None
     else:
