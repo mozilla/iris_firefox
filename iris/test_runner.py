@@ -23,10 +23,10 @@ def run(app):
 
     # Hard-code for now, but we will build a dynamic array of tests to run later
     all_tests = []
-    all_tests.append(tabs)
-    all_tests.append(back_forward)
-    all_tests.append(basic_url)
-    all_tests.append(amazon_bookmarks)
+    #all_tests.append(tabs)
+    #all_tests.append(back_forward)
+    #all_tests.append(basic_url)
+    #all_tests.append(amazon_bookmarks)
     all_tests.append(deactivate_activity_stream)
 
 

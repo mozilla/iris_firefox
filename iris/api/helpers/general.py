@@ -8,6 +8,8 @@ import subprocess
 
 from api.core import *
 from api.helpers.keyboard_shortcuts import *
+from logger.iris_logger import *
+
 
 add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
 
@@ -69,6 +71,14 @@ def confirm_firefox_quit():
         exit(1)
 
 
+def get_firefox_region():
+    # TODO: needs better logic to determine bounds
+    home = find("home.png")
+    x = home.getX() - 100
+    y = home.getY() - 30;
+    return Region(x,y,800,800)
+
+
 # navigates, via the location bar, to a given URL
 #
 # @param  url    the string to type into the location bar. The function
@@ -118,7 +128,7 @@ def compare_strings(value, expected):
         return False
 
 
-def change_preference(preference,value):
+def change_preference(pref_name,value):
     #warning_box=Pattern("show_this_warning.png")
     if exists("accept_risk.png",5):
         click("accept_risk.png")
@@ -131,14 +141,14 @@ def change_preference(preference,value):
     if exists(search,5):
         Settings.TypeDelay = 0.05
         click(search)
-    type(search, preference)
+    type(search, pref_name)
     """
-    type(preference)
+    type(pref_name)
     time.sleep(2)
     type(Key.TAB)
 
     if compare_strings(copy_to_clipboard(), value)==True:
-        print "Flag is already set to value:"+value
+        logger.debug("Flag is already set to value:" + value)
         return None
     else:
         # Typing enter here will toggle a boolean value

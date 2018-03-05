@@ -21,12 +21,13 @@ class test(base_test):
         preference="browser.newtabpage.activity-stream.enabled"
 
         navigate(url)
-        change_preference(preference,"false")
+        change_preference(preference, "false")
         new_tab()
         new_tab()
+        time.sleep(2)
 
         # Verify that activity stream has been disabled
-        if exists("top_sites.png", 5):
+        if "TOP SITES" in get_firefox_region().text():
             result = "FAIL"
         else:
             result = "PASS"
@@ -34,12 +35,13 @@ class test(base_test):
         print (result)
 
         navigate(url)
-        change_preference(preference,"true")
+        change_preference(preference, "true")
         new_tab()
         new_tab()
+        time.sleep(2)
 
         # Verify that activity stream has been enabled
-        if exists("top_sites.png", 5):
+        if "TOP SITES" in get_firefox_region().text():
             result = "PASS"
         else:
             result = "FAIL"
