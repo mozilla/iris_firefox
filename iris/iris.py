@@ -3,26 +3,35 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
+import sys
 import test_runner
+from api.core import *
+from logger.iris_logger import *
 
 class Iris(object):
 
     def __init__(self):
-        print "app.py: This is our main app"
+        logger = getLogger(__name__)
+        logger.info('This is our main app')
 
         """
         Things to do here:
             * argument parsing
             * download and install Firefox
             * set up logging
+            * save data to 'self' object
         """
+        self.module_dir = get_module_dir()
+        self.platform = get_platform()
+        self.os = get_os()
+
+        # Checking for arguments
+        # Can throw if invoked via java
         try:
-            self.platform = os.environ["PLATFORM_NAME"]
-            self.os = os.environ["OS_NAME"]
+            if len (sys.argv[1]):
+                print "args: %s" % ' '.join(sys.argv[1:])
         except:
-            # temp fix for Linux issues
-            self.platform = "linux"
-            self.os = "linux"
+            pass
 
         test_runner.run(self)
 

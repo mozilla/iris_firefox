@@ -3,22 +3,22 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from api.helpers.general import *
+from logger.iris_logger import *
 
 # Temporarily hard-coded for just a few tests
-from tests.experiments import empty, tabs, back_forward, basic_url
+from tests.experiments import tabs, back_forward, basic_url, amazon_bookmarks
 
 
 # The test runner will be written so that it can iterate through the "tests"
 # directory and dynamically import what it finds.
 #
 # Additionally, we will create logic to only run certain tests and test sets.
-
+logger = getLogger(__name__)
 
 def run(app):
-    print "test_runner.py: Running tests"
+    logger.info("Running tests")
 
-
-    # start with no saved profiles
+    # Start with no saved profiles
     clean_profiles()
 
     # Hard-code for now, but we will build a dynamic array of tests to run later
@@ -26,12 +26,13 @@ def run(app):
     all_tests.append(tabs)
     all_tests.append(back_forward)
     all_tests.append(basic_url)
+    all_tests.append(amazon_bookmarks)
 
-    # then we'd dynamically call test() and run on this list of test cases
+    # Then we'd dynamically call test() and run on this list of test cases
     for module in all_tests:
 
         current = module.test(app)
-        print "Running test case: %s " % current.meta
+        logger.info("Running test case: %s " % current.meta)
 
         # Initialize and launch Firefox
         current.setup()
@@ -44,7 +45,6 @@ def run(app):
 
         # Quit Firefox
         current.teardown()
-
         confirm_firefox_quit()
 
 

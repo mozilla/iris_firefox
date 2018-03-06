@@ -22,7 +22,7 @@ class test(base_test):
         navigate(url)
 
         if exists("search_the_web.png", 10):
-            url = "www.google.com"
+            url = "https://www.google.com/?hl=EN"
 
             # helper function from "keyboard_shortcuts"
             navigate(url)
