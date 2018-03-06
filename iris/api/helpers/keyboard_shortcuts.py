@@ -530,7 +530,6 @@ def toggle_audio():
     type(text="m", modifier=KeyModifier.CTRL)
 
 
-
 def undo_close_tab():
     """
     Re-opens the previously closed tab.
@@ -603,6 +602,7 @@ def bookmarks_sidebar():
         type(text="b", modifier=KeyModifier.CMD)
     else:
         type(text="b", modifier=KeyModifier.CTRL)
+    sleep(1) # wait for the sidebar to become active
 
 
 def open_library():
@@ -651,17 +651,4 @@ def open_page_source():
         type(text="u", modifier=KeyModifier.CTRL)
 
 
-def add_bookmark():
-    if get_os() == "osx":
-        type(text="d", modifier=Key.CMD)
-        type(text=Key.ENTER)
-    else:
-        type(text="d", modifier=Key.CTRL)
-        type(text=Key.ENTER)
-
-
-def open_bookmark_menu():
-    if get_os() == "osx":
-        type(text="b", modifier=Key.CMD)
-    else:
-        type(text="b", modifier=Key.CTRL)
+# End Tools keyboard shortcuts.
