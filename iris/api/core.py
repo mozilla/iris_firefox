@@ -13,7 +13,8 @@ Settings.MoveMouseDelay = 0
 Settings.ActionLogs = False
 Settings.InfoLogs = False
 Settings.DebugLogs = False
-
+Settings.OcrTextRead = True
+Settings.OcrTextSearch = True
 
 Key = Sikuli.Key
 Screen = Sikuli.Screen
