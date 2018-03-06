@@ -73,9 +73,12 @@ def confirm_firefox_quit():
 
 def get_firefox_region():
     # TODO: needs better logic to determine bounds
+    # Currently incomplete implementation
     home = find("home.png")
+    # Find the approximate upper left corner
     x = home.getX() - 100
     y = home.getY() - 30;
+    # Define a region equivalent to Firefox open at 800x800 pixels
     return Region(x,y,800,800)
 
 
@@ -85,9 +88,9 @@ def get_firefox_region():
 #                   handles typing "Enter" to complete the action.
 #
 def navigate(url):
-    #helper funcion from "keyboard_shotcuts"
     select_location_bar()
-    # increase the delay between each keystroke while typing strings (sikuli defaults to .02 sec)
+    # increase the delay between each keystroke while typing strings
+    # (sikuli defaults to .02 sec)
     Settings.TypeDelay = 0.1
     type(url + Key.ENTER)
 
@@ -114,41 +117,21 @@ def get_main_modifier():
 
 
 def copy_to_clipboard():
-    select_all()
-    copy()
+    edit_select_all()
+    edit_copy()
     value=Env.getClipboard().strip()
     return value
 
 
-def _compare_strings(value, expected):
-    actual=value.split(";"[0])
-    if actual[1] == expected:
-        return True
-    else:
-        return False
-
-
 def change_preference(pref_name,value):
-    #warning_box=Pattern("show_this_warning.png")
     if exists("accept_risk.png",5):
         click("accept_risk.png")
 
-    # Temporarily disabling clicking on search icon
-    # as it seems that we automatically have focus upon
-    # entering about:config and should be able to type immediately
-    """
-    search = Pattern("preference_search_icon.png")
-    if exists(search,5):
-        Settings.TypeDelay = 0.05
-        click(search)
-    type(search, pref_name)
-    """
     type(pref_name)
     time.sleep(2)
     type(Key.TAB)
     time.sleep(2)
 
-    #if _compare_strings(copy_to_clipboard(), value)==True:
     if copy_to_clipboard().split(";"[0])[1] == value:
         logger.debug("Flag is already set to value:" + value)
         return None
