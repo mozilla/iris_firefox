@@ -4,36 +4,22 @@
 
 from api.helpers.general import *
 from logger.iris_logger import *
+import os
+import sys
+import importlib
 
-# Temporarily hard-coded for just a few tests
-from tests.experiments import tabs, back_forward, basic_url, amazon_bookmarks, deactivate_activity_stream
-
-
-# The test runner will be written so that it can iterate through the "tests"
-# directory and dynamically import what it finds.
-#
-# Additionally, we will create logic to only run certain tests and test sets.
 logger = getLogger(__name__)
 
 def run(app):
     logger.info("Running tests")
-
+    sys.path.append(app.tests_package)
     # Start with no saved profiles
     clean_profiles()
 
-    # Hard-code for now, but we will build a dynamic array of tests to run later
-    all_tests = []
-    all_tests.append(tabs)
-    all_tests.append(back_forward)
-    all_tests.append(basic_url)
-    all_tests.append(amazon_bookmarks)
-    all_tests.append(deactivate_activity_stream)
-
-
-# Then we'd dynamically call test() and run on this list of test cases
-    for module in all_tests:
-
-        current = module.test(app)
+    # Then we'd dynamically call test() and run on this list of test cases
+    for module in app.tests_list:
+        current_module = importlib.import_module(module)
+        current = current_module.test(app)
         logger.info("Running test case: %s " % current.meta)
 
         # Initialize and launch Firefox

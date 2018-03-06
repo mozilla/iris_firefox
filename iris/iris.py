@@ -34,11 +34,26 @@ class Iris(object):
                     exit(1)
                 else:
                     tests_package = tests_directory
-                    logger.info("Module for tests: %s", tests_package)
+                    logger.info("Test package: %s", tests_package)
                     logger.info("List of tests to execute: [%s]" % ', '.join(map(str, tests_list)))
             else:
                 logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
                 exit(1)
+        elif args.test:
+            test_name = str(args.test + ('.py' if not args.test.endswith('.py') else '')).strip()
+            tests_directory =  os.path.join(os.path.split(__file__)[0], "tests");
+            for dirpath, subdirs, files in os.walk(tests_directory):
+                if test_name in files:
+                    tests_list.append(os.path.splitext(test_name)[0])
+                    tests_package = os.path.join(os.path.split(__file__)[0], dirpath.strip())
+            if len(tests_list) == 0:
+                logger.error("Could not locate %s . Exiting program ...", str(test_name))
+                exit(1)
+            else:
+                logger.info("FOUND %s", test_name)
+
+        print tests_package
+
 
         self.module_dir = get_module_dir()
         self.platform = get_platform()
