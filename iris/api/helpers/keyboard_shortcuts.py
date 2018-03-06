@@ -99,3 +99,16 @@ def close_window():
         type(text="w", modifier=Key.CMD)
     else:
         type(text="w", modifier=Key.CTRL+Key.SHIFT)
+
+
+def maximize_window():
+    if get_os() == "osx":
+        print("maximize is unsupported for OSX")
+    else:
+        type(text=Key.UP, modifier=KeyModifier.WIN)
+
+def minimize_window():
+    if get_os() == "osx":
+        type(text="m", modifier=Key.CMD)
+    else:
+        type(text=Key.DOWN, modifier=KeyModifier.WIN)
