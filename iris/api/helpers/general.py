@@ -12,6 +12,7 @@ from logger.iris_logger import *
 
 
 add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
+logger = getLogger(__name__)
 
 
 def launch_firefox(profile='empty_profile', url=None):
