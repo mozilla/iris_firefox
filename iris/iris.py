@@ -14,10 +14,25 @@ class Iris(object):
     def __init__(self):
         logger = getLogger(__name__)
 
+        self.parse_args()
+        self.module_dir = get_module_dir()
+        self.platform = get_platform()
+        self.os = get_os()
 
+        test_runner.run(self)
+
+
+    def parse_args(self):
         parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
-
+        parser.add_argument('-d', '--directory',
+                            help='Directory where tests are located',
+                            type=str, metavar='test_directory',
+                            default=os.path.join("tests"))
+        parser.add_argument('-t', '--test',
+                            help='Test name',
+                            type=str, metavar='test_name.py')
         """
+        # These arguments will be added soon, putting them in now to reserve their flags
         parser.add_argument("-debug", "--debug",
                             help="Enable debug",
                             action="store_true")
@@ -31,23 +46,13 @@ class Iris(object):
                                  "or a build directory (default: `%s`)") % (",".join(release_choice), test_default),
                            action='store',
                            default=test_default)
+        parser.add_argument("-l", "--locale",
+                            help="Locale to use for Firefox",
+                            type=str,
+                            action="store",
+                            default="en-US")                   
         """
-        parser.add_argument('-d', '--directory',
-                            help='Directory where tests are located',
-                            type=str, metavar='test_directory',
-                            default=os.path.join("tests"))
-        parser.add_argument('-t', '--test',
-                            help='Test name',
-                            type=str, metavar='test_name.py')
-
-
-
         self.args = parser.parse_args()
-        self.module_dir = get_module_dir()
-        self.platform = get_platform()
-        self.os = get_os()
-
-        test_runner.run(self)
 
 
 Iris()

@@ -80,7 +80,6 @@ def load_tests(app):
             logger.error("Directory %s does not contain test files. Exiting program ...", tests_directory)
             exit(1)
         else:
-            #app.test_packages.append(tests_directory)
             logger.info("Test packages: %s", app.test_packages)
             logger.info("List of tests to execute: [%s]" % ', '.join(map(str, app.test_list)))
     else:
