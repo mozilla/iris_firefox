@@ -7,31 +7,59 @@ import sys
 import test_runner
 from api.core import *
 from logger.iris_logger import *
+import argparse
 
 class Iris(object):
 
     def __init__(self):
         logger = getLogger(__name__)
-        logger.info('This is our main app')
 
-        """
-        Things to do here:
-            * argument parsing
-            * download and install Firefox
-            * set up logging
-            * save data to 'self' object
-        """
+        parser = argparse.ArgumentParser(description='Run Iris testsuit', prog='iris')
+        parser.add_argument('-d', '--directory', type=str, metavar='tests_directory', help='Directory where tests are located')
+        parser.add_argument('-t', '--test', type=str, metavar='test_name.py', help='Test name')
+        args = parser.parse_args()
+
+        tests_list = []
+        tests_package = []
+
+        if args.directory:
+            tests_directory =  os.path.join(os.path.split(__file__)[0], args.directory.strip())
+            if (os.path.isdir(tests_directory)):
+                logger.info("Path %s found. Checking content ...", tests_directory)
+                for file in os.listdir(tests_directory):
+                    if file.endswith(".py") and not file.startswith("__init__"):
+                        tests_list.append(os.path.splitext(file)[0])
+                if len(tests_list) == 0:
+                    logger.error("Directory %s does not contain test files. Exiting program ...", tests_directory)
+                    exit(1)
+                else:
+                    tests_package = tests_directory
+                    logger.info("Test package: %s", tests_package)
+                    logger.info("List of tests to execute: [%s]" % ', '.join(map(str, tests_list)))
+            else:
+                logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
+                exit(1)
+        elif args.test:
+            test_name = str(args.test + ('.py' if not args.test.endswith('.py') else '')).strip()
+            tests_directory =  os.path.join(os.path.split(__file__)[0], "tests");
+            for dirpath, subdirs, files in os.walk(tests_directory):
+                if test_name in files:
+                    tests_list.append(os.path.splitext(test_name)[0])
+                    tests_package = os.path.join(os.path.split(__file__)[0], dirpath.strip())
+            if len(tests_list) == 0:
+                logger.error("Could not locate %s . Exiting program ...", str(test_name))
+                exit(1)
+            else:
+                logger.info("FOUND %s", test_name)
+
+        print tests_package
+
+
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = get_os()
-
-        # Checking for arguments
-        # Can throw if invoked via java
-        try:
-            if len (sys.argv[1]):
-                print "args: %s" % ' '.join(sys.argv[1:])
-        except:
-            pass
+        self.tests_package = tests_package
+        self.tests_list = tests_list
 
         test_runner.run(self)
 
