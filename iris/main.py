@@ -39,9 +39,12 @@ def main(argv=None):
 
     package = "org.python.util.jython"
     init_path = os.path.join(module_dir, "iris.py")
-    args = ' '.join(sys.argv[1:])
 
-    cmd = ['java', '-cp', jar_path, package, init_path, args]
+    cmd = ['java', '-cp', jar_path, package, init_path]
+
+    if len(sys.argv[1:]):
+        cmd.append(' '.join(sys.argv[1:]))
+
 
     # There is a problem at the moment invoking Firefox from jython, on Linux only
     # We will instruct Linux users on how to work around it in the meantime

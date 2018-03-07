@@ -18,9 +18,10 @@ def run(app):
     clean_profiles()
 
     load_tests(app)
-    sys.path.append(app.tests_package)
+    for package in app.test_packages:
+        sys.path.append(package)
 
-    for module in app.tests_list:
+    for module in app.test_list:
         current_module = importlib.import_module(module)
         current = current_module.test(app)
         logger.info("Running test case: %s " % current.meta)
@@ -44,38 +45,45 @@ def run(app):
 
 
 def load_tests(app):
-    app.tests_list = []
-    app.tests_package = None
+    app.test_list = []
+    app.test_packages = []
 
-    if app.args.directory:
-        tests_directory = os.path.join(os.path.split(__file__)[0], app.args.directory.strip())
-        if (os.path.isdir(tests_directory)):
-            logger.info("Path %s found. Checking content ...", tests_directory)
-            for file in os.listdir(tests_directory):
-                if file.endswith(".py") and not file.startswith("__init__"):
-                    app.tests_list.append(os.path.splitext(file)[0])
-            if len(app.tests_list) == 0:
-                logger.error("Directory %s does not contain test files. Exiting program ...", tests_directory)
-                exit(1)
-            else:
-                app.tests_package = tests_directory
-                logger.info("Test package: %s", app.tests_package)
-                logger.info("List of tests to execute: [%s]" % ', '.join(map(str, app.tests_list)))
-        else:
-            logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
-            exit(1)
-    elif app.args.test:
+    # Test loading is either by test or by directory
+    # If a test name is provided, this will be used above all else
+    if app.args.test:
         test_name = str(app.args.test + ('.py' if not app.args.test.endswith('.py') else '')).strip()
         tests_directory = os.path.join(os.path.split(__file__)[0], "tests")
         for dirpath, subdirs, files in os.walk(tests_directory):
             if test_name in files:
-                app.tests_list.append(os.path.splitext(test_name)[0])
-                app.tests_package = os.path.join(os.path.split(__file__)[0], dirpath.strip())
-        if len(app.tests_list) == 0:
+                app.test_list.append(os.path.splitext(test_name)[0])
+                app.test_packages.append(os.path.join(os.path.split(__file__)[0], dirpath.strip()))
+        if len(app.test_list) == 0:
             logger.error("Could not locate %s . Exiting program ...", str(test_name))
             exit(1)
         else:
             logger.info("FOUND %s", test_name)
+        return
+
+    # There is always a default test directory,
+    # but this can be overridden via command line
+    tests_directory = os.path.join(os.path.split(__file__)[0], app.args.directory.strip())
+
+    if (os.path.isdir(tests_directory)):
+        logger.debug("Path %s found. Checking content ...", tests_directory)
+        for dirpath, subdirs, files in os.walk(tests_directory):
+            for file in files:
+                if file.endswith(".py") and not file.startswith("__init__"):
+                    app.test_list.append(os.path.splitext(file)[0])
+                    if not dirpath in app.test_packages:
+                        app.test_packages.append(dirpath)
+        if len(app.test_list) == 0:
+            logger.error("Directory %s does not contain test files. Exiting program ...", tests_directory)
+            exit(1)
+        else:
+            #app.test_packages.append(tests_directory)
+            logger.info("Test packages: %s", app.test_packages)
+            logger.info("List of tests to execute: [%s]" % ', '.join(map(str, app.test_list)))
     else:
-        # what is default behavior w/o these two arguments?
-        pass
+        logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
+        exit(1)
+
