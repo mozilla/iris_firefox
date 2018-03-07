@@ -10,18 +10,18 @@ import subprocess
 import sys
 
 import cache
-from firefox_app import FirefoxApp
+from app import FirefoxApp
+from downloader import FirefoxDownloader
+
+from logger.iris_logger import *
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 def extract(archive_file, workdir, cache_timeout=24*60*60, use_cache=True):
-    print "firefox_extractor.py: extract"
 
     """Extract a Firefox archive file into a subfolder in the given temp dir."""
-    global logger
-
     logger.info("Extracting Firefox archive `%s`" % archive_file)
 
     # Find 7zip binary
@@ -71,6 +71,13 @@ def extract(archive_file, workdir, cache_timeout=24*60*60, use_cache=True):
     app = FirefoxApp(cache_dir)
 
     # Workaround until 7zip learns to maintain file attributes
-    os.chmod(app.exe, stat.S_IREAD | stat.S_IEXEC | stat.S_IWUSR)
+    os.chmod(app.exe, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+
+    # Workaround for Mac
+    if FirefoxDownloader.detect_os() == "osx":
+        p = os.path.join (app.app_dir, "Contents", "MacOS", "plugin-container.app",
+                          "Contents", "MacOS", "plugin-container")
+        os.chmod (p, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+
 
     return app

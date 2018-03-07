@@ -2,21 +2,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import logging
 import os
 import struct
 import sys
 import urllib2
 
 import cache
+from logger.iris_logger import *
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 def get_to_file(url, filename):
-    print "firefox_downloader.py: get_to_file"
-    global logger
 
     try:
         # TODO: Validate the server's SSL certificate
@@ -71,9 +69,8 @@ def get_to_file(url, filename):
 
 class FirefoxDownloader(object):
 
-    # Hard-codingto locale 'en-US' for now, will support other locales later
     __base_url = 'https://download.mozilla.org/?product=firefox' \
-                '-{release}&os={platform}&lang=en-US'
+                '-{release}&os={platform}'
     build_urls = {
         'esr':     __base_url.format(release='esr-latest', platform='{platform}'),
         'release': __base_url.format(release='latest', platform='{platform}'),
@@ -121,7 +118,8 @@ class FirefoxDownloader(object):
         # internal platform name to the platform name used in download URL.
         download_platform = FirefoxDownloader.__platforms[platform]['platform']
         if build in FirefoxDownloader.build_urls:
-            return FirefoxDownloader.build_urls[build].format(platform=download_platform)
+            url = FirefoxDownloader.build_urls[build].format(platform=download_platform)
+            return url
         else:
             return None
 
@@ -129,7 +127,7 @@ class FirefoxDownloader(object):
         self.__workdir = workdir
         self.__cache = cache.DiskCache(os.path.join(workdir, "cache"), cache_timeout, purge=True)
 
-    def download(self, release, platform=None, use_cache=True):
+    def download(self, release, locale, platform=None, use_cache=True):
 
         if platform is None:
             platform = FirefoxDownloader.detect_platform()
@@ -140,7 +138,7 @@ class FirefoxDownloader(object):
             raise Exception("Failed to download for unknown platform `%s`" % platform)
 
         extension = self.__platforms[platform]['extension']
-        url = self.get_download_url(release, platform)
+        url = self.get_download_url(release, platform) + "&lang=" + locale
         cache_id = 'firefox-%s_%s.%s' % (release, platform, extension)
 
         # Always delete cached file when cache function is overridden

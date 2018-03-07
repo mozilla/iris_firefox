@@ -5,15 +5,16 @@
 import atexit
 import signal
 import sys
+from logger.iris_logger import *
 
 
+logger = getLogger(__name__)
 __cleanup_done = False
 
 
 def init():
     """Register cleanup handler"""
-
-    print "Registering cleanup handler"
+    logger.debug("Registering cleanup handler")
 
     global __cleanup_done
     __cleanup_done = False

@@ -4,74 +4,72 @@
 
 
 import argparse
-import logging
-#import coloredlogs
 import os
-#import pkg_resources
 import shutil
 import sys
 import tempfile
-import time
 
-import cleanup
-import firefox_app as fa
-import firefox_downloader as fd
-import firefox_extractor as fe
-
-
+from firefox import cleanup
+import firefox.app as fa
+import firefox.downloader as fd
+import firefox.extractor as fe
 
 import test_runner
+from api.core import *
+from logger.iris_logger import *
 
 
-
-# Initialize coloredlogs
-logging.Formatter.converter = time.gmtime
-logger = logging.getLogger(__name__)
-#coloredlogs.DEFAULT_LOG_FORMAT = "%(asctime)s %(levelname)s %(threadName)s %(name)s %(message)s"
-#coloredlogs.install(level="INFO")
-
+logger = getLogger(__name__)
+tmp_dir = None
+restore_terminal_encoding = None
 
 
 class Iris(object):
 
-    tmp_dir = None
-    module_dir = None
-    restore_terminal_encoding = None
 
 
-    def parse_args(self, argv=None):
-        """
-        Argument parsing.
-        :return: parsed arguments
-        """
-        if argv is None:
-            argv = sys.argv[1:]
+    def __init__(self):
+        self.parse_args()
+        self.module_dir = get_module_dir()
+        self.platform = get_platform()
+        self.os = get_os()
+        self.main()
+        test_runner.run(self)
 
 
-        # Jython issues with pkg_resources, disabling for now
-        #pkg_version = pkg_resources.require("iris")[0].version
-        home = os.path.expanduser("~")
-        release_choice, _, test_default = fd.FirefoxDownloader.list()
+    def main(self, argv=None):
+        global tmp_dir
+
+        logger.debug("Command arguments: %s" % self.args)
+
+        cleanup.init()
+        Iris.fix_terminal_encoding()
+        tmp_dir = self.__create_tempdir()
 
 
-        # Set up the parser with shared arguments
-        parser = argparse.ArgumentParser(prog="iris")
-        #parser.add_argument("--version", action="version", version="%(prog)s " + pkg_version)
-        parser.add_argument("-d", "--debug",
-                            help="Enable debug",
-                            action="store_true")
-        parser.add_argument("-w", "--workdir",
-                            help="Path to working directory",
-                            type=os.path.abspath,
-                            action="store",
-                            default="%s/.iris" % home)
-        parser.add_argument('-t', '--test',
-                           help=("Firefox version to test. It can be one of {%s}, a package file, "
-                                 "or a build directory (default: `%s`)") % (",".join(release_choice), test_default),
-                           action='store',
-                           default=test_default)
+        # Create workdir (usually ~/.iris, used for caching etc.)
+        # Assumes that no previous code must write to it.
+        if not os.path.exists(self.args.workdir):
+            logger.debug('Creating working directory %s' % self.args.workdir)
+            os.makedirs(self.args.workdir)
 
-        return parser.parse_args(argv)
+
+        if self.args.firefox:
+            self.fx_path = self.get_test_candidate(self.args.firefox).exe
+        else:
+            # Use default Firefox installation
+            logger.info("Running with default installed Firefox build")
+            if get_os() == "osx":
+                self.fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
+            elif get_os() == "win":
+                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
+                    self.fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
+                else:
+                    self.fx_path = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe'
+            else:
+                self.fx_path = '/usr/bin/firefox'
+
+        return 0
 
 
     def __create_tempdir(self):
@@ -84,12 +82,12 @@ class Iris(object):
         logger.debug('Created temp dir `%s`' % temp_dir)
         return temp_dir
 
+
     @staticmethod
     def get_terminal_encoding():
         """
         Helper function to get current terminal encoding
         """
-        global logger
         if sys.platform.startswith("win"):
             logger.debug("Running `chcp` shell command")
             chcp_output = os.popen("chcp").read().strip()
@@ -105,12 +103,12 @@ class Iris(object):
             logger.debug("Platform does not require switching terminal encoding")
             return None
 
+
     @staticmethod
     def set_terminal_encoding(encoding):
         """
         Helper function to set terminal encoding.
         """
-        global logger
         if os.path.exists("C:\\"):
             logger.debug("Running `chcp` shell command, setting codepage to `%s`", encoding)
             chcp_output = os.popen("chcp %s" % encoding).read().strip()
@@ -119,6 +117,7 @@ class Iris(object):
                 logger.debug("Successfully set codepage to `%s`" % encoding)
             else:
                 logger.warning("Can't set codepage for terminal")
+
 
     @staticmethod
     def fix_terminal_encoding():
@@ -142,9 +141,8 @@ class Iris(object):
         Download and extract a build candidate. build may either refer
         to a Firefox release identifier, package, or build directory.
         :param build: str with firefox build
-        :return: two FirefoxApp objects for test and base candidate
+        :return: FirefoxApp object for test candidate
         """
-        global logger
 
         platform = fd.FirefoxDownloader.detect_platform()
         if platform is None:
@@ -157,7 +155,7 @@ class Iris(object):
             # Download test candidate by Firefox release ID
             logger.info("Downloading Firefox `%s` build for platform `%s`" % (build, platform))
             fdl = fd.FirefoxDownloader(self.args.workdir, cache_timeout=1 * 60 * 60)
-            build_archive_file = fdl.download(build, platform)
+            build_archive_file = fdl.download(build, self.args.locale, platform)
             if build_archive_file is None:
                 sys.exit(-1)
             # Extract candidate archive
@@ -202,78 +200,40 @@ class Iris(object):
         return candidate_app
 
 
-    def main(self, argv=None):
-        print "main"
-        global logger, tmp_dir, module_dir
+    def parse_args(self):
+        home = os.path.expanduser("~")
+        release_choice, _, test_default = fd.FirefoxDownloader.list()
 
-        module_dir = os.path.split(__file__)[0]
+        parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
+        parser.add_argument('-d', '--directory',
+                            help='Directory where tests are located',
+                            type=str, metavar='test_directory',
+                            default=os.path.join("tests"))
+        parser.add_argument('-t', '--test',
+                            help='Test name',
+                            type=str, metavar='test_name.py')
 
-        self.args = self.parse_args(argv)
-
-        #if self.args.debug:
-            #coloredlogs.install(level='DEBUG')
-
-        logger.debug("Command arguments: %s" % self.args)
-
-        cleanup.init()
-        Iris.fix_terminal_encoding()
-        tmp_dir = self.__create_tempdir()
-
-        # If 'list' is specified as test, list available test sets, builds, and platforms
-        if "source" in self.args and self.args.source == "list":
-            #coloredlogs.install(level='ERROR')
-            build_list, platform_list, _, _ = fd.FirefoxDownloader.list()
-            print "Available builds: %s" % ' '.join(build_list)
-            print "Available platforms: %s" % ' '.join(platform_list)
-
-        # Create workdir (usually ~/.iris, used for caching etc.)
-        # Assumes that no previous code must write to it.
-        if not os.path.exists(self.args.workdir):
-            logger.debug('Creating working directory %s' % self.args.workdir)
-            os.makedirs(self.args.workdir)
-
-        # Load the specified test mode
-        """
-        try:
-            loader.run(args, module_dir, tmp_dir)
-
-        except KeyboardInterrupt:
-            logger.critical("\nUser interrupt. Quitting...")
-            return 10
-
-        if len(threading.enumerate()) > 1:
-            logger.info("Waiting for background threads to finish")
-            while len(threading.enumerate()) > 1:
-                logger.debug("Remaining threads: %s" % threading.enumerate())
-                time.sleep(2)
-        """
-
-        test_app = self.get_test_candidate(self.args.test)
-        print test_app.exe
-
-        return 0
-
-
-
-    def __init__(self):
-        print "iris.py: This is our main app"
-
-        """
-        Things to do here:
-            * argument parsing
-            * download and install Firefox
-            * set up logging
-            * save data to 'self' object
-        """
-
-        # Checking for arguments
-        if len (sys.argv[1:]):
-            print "args: %s" % ' '.join(sys.argv[1:])
-
-
-        self.main()
-
-        #test_runner.run(self)
+        # These arguments will be added soon, putting them in now to reserve their flags
+        parser.add_argument("-log", "--log",
+                            help="Configure log level",
+                            type=str,
+                            action="store",
+                            default="INFO")
+        parser.add_argument("-w", "--workdir",
+                            help="Path to working directory",
+                            type=os.path.abspath,
+                            action="store",
+                            default="%s/.iris" % home)
+        parser.add_argument('-f', '--firefox',
+                           help=("Firefox version to test. It can be one of {%s}, a package file, "
+                                 "or a build directory (default: `%s`)") % (",".join(release_choice), test_default),
+                           action='store')
+        parser.add_argument("-l", "--locale",
+                            help="Locale to use for Firefox",
+                            type=str,
+                            action="store",
+                            default="en-US")
+        self.args = parser.parse_args()
 
 class RemoveTempDir(cleanup.CleanUp):
     """
@@ -298,5 +258,7 @@ class ResetTerminalEncoding(cleanup.CleanUp):
         global restore_terminal_encoding
         if restore_terminal_encoding is not None:
             Iris.set_terminal_encoding(restore_terminal_encoding)
+
+
 
 Iris()

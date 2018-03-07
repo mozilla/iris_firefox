@@ -13,7 +13,8 @@ Settings.MoveMouseDelay = 0
 Settings.ActionLogs = False
 Settings.InfoLogs = False
 Settings.DebugLogs = False
-
+Settings.OcrTextRead = True
+Settings.OcrTextSearch = True
 
 Key = Sikuli.Key
 Screen = Sikuli.Screen
@@ -35,6 +36,10 @@ def get_platform():
         return get_os() + "32"
     else:
         return get_os()
+
+
+def get_module_dir():
+    return os.path.realpath (os.path.split(__file__)[0] + "/../..")
 
 
 def add_image_path(path):

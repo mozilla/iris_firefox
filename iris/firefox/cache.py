@@ -2,19 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import logging
 import os
 from shutil import rmtree
 from time import time
+from logger.iris_logger import *
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class DiskCache(object):
 
     def __init__(self, root_directory, maximum_age=24*60*60, purge=False):
-        global logger
         self.__root = os.path.abspath(root_directory)
         self.__maximum_age = maximum_age
         if not os.path.exists(self.__root):
@@ -29,7 +28,6 @@ class DiskCache(object):
 
     def __clear(self):
         """Remove all entries from cache directory"""
-        global logger
         logger.debug("Clearing cache directory `%s`" % self.__root)
         for cache_id in self:
             path = self[cache_id]
@@ -54,7 +52,6 @@ class DiskCache(object):
 
     def purge(self, maximum_age=None):
         """Remove stale entries from cache directory"""
-        global logger
         logger.debug("Purging stale cache entries from `%s`" % self.__root)
         if maximum_age is None:
             maximum_age = self.__maximum_age
