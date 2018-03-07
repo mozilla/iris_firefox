@@ -7,31 +7,21 @@ import sys
 import test_runner
 from api.core import *
 from logger.iris_logger import *
+import argparse
 
 class Iris(object):
 
     def __init__(self):
         logger = getLogger(__name__)
-        logger.info('This is our main app')
 
-        """
-        Things to do here:
-            * argument parsing
-            * download and install Firefox
-            * set up logging
-            * save data to 'self' object
-        """
+        parser = argparse.ArgumentParser(description='Run Iris testsuit', prog='iris')
+        parser.add_argument('-d', '--directory', type=str, metavar='tests_directory', help='Directory where tests are located')
+        parser.add_argument('-t', '--test', type=str, metavar='test_name.py', help='Test name')
+        self.args = parser.parse_args()
+
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = get_os()
-
-        # Checking for arguments
-        # Can throw if invoked via java
-        try:
-            if len (sys.argv[1]):
-                print "args: %s" % ' '.join(sys.argv[1:])
-        except:
-            pass
 
         test_runner.run(self)
 

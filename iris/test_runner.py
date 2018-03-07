@@ -4,16 +4,11 @@
 
 from api.helpers.general import *
 from logger.iris_logger import *
+import os
+import sys
+import importlib
 
-# Temporarily hard-coded for just a few tests
-from tests.experiments import tabs, back_forward, \
-    basic_url, amazon_bookmarks, deactivate_activity_stream, customize_new_tab
 
-
-# The test runner will be written so that it can iterate through the "tests"
-# directory and dynamically import what it finds.
-#
-# Additionally, we will create logic to only run certain tests and test sets.
 logger = getLogger(__name__)
 
 def run(app):
@@ -22,20 +17,12 @@ def run(app):
     # Start with no saved profiles
     clean_profiles()
 
-    # Hard-code for now, but we will build a dynamic array of tests to run later
-    all_tests = []
-    all_tests.append(tabs)
-    all_tests.append(back_forward)
-    all_tests.append(basic_url)
-    all_tests.append(amazon_bookmarks)
-    all_tests.append(deactivate_activity_stream)
-    all_tests.append(customize_new_tab)
+    load_tests(app)
+    sys.path.append(app.tests_package)
 
-
-# Then we'd dynamically call test() and run on this list of test cases
-    for module in all_tests:
-
-        current = module.test(app)
+    for module in app.tests_list:
+        current_module = importlib.import_module(module)
+        current = current_module.test(app)
         logger.info("Running test case: %s " % current.meta)
 
         # Initialize and launch Firefox
@@ -54,3 +41,41 @@ def run(app):
 
     # We may remove profiles here, but likely still in use and can't do it yet
     #clean_profiles()
+
+
+def load_tests(app):
+    app.tests_list = []
+    app.tests_package = None
+
+    if app.args.directory:
+        tests_directory = os.path.join(os.path.split(__file__)[0], app.args.directory.strip())
+        if (os.path.isdir(tests_directory)):
+            logger.info("Path %s found. Checking content ...", tests_directory)
+            for file in os.listdir(tests_directory):
+                if file.endswith(".py") and not file.startswith("__init__"):
+                    app.tests_list.append(os.path.splitext(file)[0])
+            if len(app.tests_list) == 0:
+                logger.error("Directory %s does not contain test files. Exiting program ...", tests_directory)
+                exit(1)
+            else:
+                app.tests_package = tests_directory
+                logger.info("Test package: %s", app.tests_package)
+                logger.info("List of tests to execute: [%s]" % ', '.join(map(str, app.tests_list)))
+        else:
+            logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
+            exit(1)
+    elif app.args.test:
+        test_name = str(app.args.test + ('.py' if not app.args.test.endswith('.py') else '')).strip()
+        tests_directory = os.path.join(os.path.split(__file__)[0], "tests")
+        for dirpath, subdirs, files in os.walk(tests_directory):
+            if test_name in files:
+                app.tests_list.append(os.path.splitext(test_name)[0])
+                app.tests_package = os.path.join(os.path.split(__file__)[0], dirpath.strip())
+        if len(app.tests_list) == 0:
+            logger.error("Could not locate %s . Exiting program ...", str(test_name))
+            exit(1)
+        else:
+            logger.info("FOUND %s", test_name)
+    else:
+        # what is default behavior w/o these two arguments?
+        pass
