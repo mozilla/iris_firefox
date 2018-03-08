@@ -42,8 +42,11 @@ def main(argv=None):
 
     cmd = ['java', '-cp', jar_path, package, init_path]
 
-    if len(sys.argv[1:]):
-        cmd.append(' '.join(sys.argv[1:]))
+    args = sys.argv[1:]
+
+    if len(args):
+        for arg in args:
+            cmd.append(arg)
 
 
     # There is a problem at the moment invoking Firefox from jython, on Linux only
