@@ -4,6 +4,7 @@
 
 
 from api.core import *
+from logger.iris_logger import *
 
 # This helper defines keyboard shortcuts for many common actions in Firefox usage.
 # We should be using these keyboard shortcuts whenever possible.
@@ -24,6 +25,8 @@ from api.core import *
 
 
 # Navigates back in browsing history one page visit
+
+logger = getLogger(__name__)
 
 def navigate_back():
     """
@@ -442,6 +445,20 @@ def full_screen():
         type(text=Key.F11)
 
 
+def maximize_window():
+    if get_os() == "osx":
+        logger.warning("maximize is unsupported for OSX")
+    else:
+        type(text=Key.UP, modifier=KeyModifier.WIN)
+
+
+def minimize_window():
+    if get_os() == "osx":
+        type(text="m", modifier=Key.CMD)
+    else:
+        type(text=Key.DOWN, modifier=KeyModifier.WIN)
+
+
 def new_tab():
     """
     Open a new browser tab.
@@ -665,3 +682,4 @@ def open_bookmark_menu():
         type(text="b", modifier=Key.CMD)
     else:
         type(text="b", modifier=Key.CTRL)
+
