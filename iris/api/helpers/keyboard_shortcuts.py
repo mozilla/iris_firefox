@@ -1047,6 +1047,3 @@ def open_page_source():
         type(text="u", modifier=KeyModifier.CMD)
     else:
         type(text="u", modifier=KeyModifier.CTRL)
-
-
-# End Tools keyboard shortcuts.
