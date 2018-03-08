@@ -40,11 +40,8 @@ def main(argv=None):
     package = "org.python.util.jython"
     init_path = os.path.join(module_dir, "iris.py")
 
-
     cmd = ['java', '-cp', jar_path, package, init_path]
-
     args = sys.argv[1:]
-
     if len(args):
         for arg in args:
             cmd.append(arg)
