@@ -6,7 +6,9 @@ from api.helpers.general import *
 from logger.iris_logger import *
 
 # Temporarily hard-coded for just a few tests
-from tests.experiments import tabs, back_forward, basic_url, amazon_bookmarks
+
+from tests.experiments import tabs, back_forward,  basic_url, amazon_bookmarks, deactivate_activity_stream, customize_new_tab,incognito_mode, search_in_page, clear_history
+
 
 
 # The test runner will be written so that it can iterate through the "tests"
@@ -27,8 +29,16 @@ def run(app):
     all_tests.append(back_forward)
     all_tests.append(basic_url)
     all_tests.append(amazon_bookmarks)
+    all_tests.append(deactivate_activity_stream)
+    all_tests.append(customize_new_tab)
+    all_tests.append(incognito_mode)
+    all_tests.append(search_in_page)
+    all_tests.append(clear_history)
 
-    # Then we'd dynamically call test() and run on this list of test cases
+
+
+
+# Then we'd dynamically call test() and run on this list of test cases
     for module in all_tests:
 
         current = module.test(app)
