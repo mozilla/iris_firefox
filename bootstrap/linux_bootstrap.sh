@@ -6,6 +6,7 @@ sudo apt-get -y install \
     python-dev \
     python-pip \
     xvfb \
+    p7zip-full \
     libopencv-dev \
     tesseract-ocr \
     firefox \

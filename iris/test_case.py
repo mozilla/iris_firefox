@@ -13,11 +13,11 @@ import time
 class base_test(object):
 
     def __init__(self, app):
-        self._app = app
+        self.app = app
 
 
     def set_image_path(self, path):
-        add_image_path(os.path.join(path, "images", self._app.os))
+        add_image_path(os.path.join(path, "images", self.app.os))
 
 
     def _create_unique_profile_name(self):
@@ -32,7 +32,7 @@ class base_test(object):
         Also, by default, a new Firefox instance is created, with a blank profile and URL.
         If you wish to change this, override this method in your test case.
         """
-        launch_firefox(profile=self._create_unique_profile_name(), url="about:blank")
+        launch_firefox(path=self.app.fx_path, profile=self._create_unique_profile_name(), url="about:blank")
         return
 
 
