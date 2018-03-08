@@ -16,7 +16,7 @@ class test(base_test):
         if exists("amazon.png", 10):
 
             # Add bookmark with keyboard shortcut
-            add_bookmark()
+            bookmark_page()
 
             # Look for new bookmark via library menu button
             click("library.png")
@@ -29,7 +29,7 @@ class test(base_test):
                 print "FAIL"
 
             # Look for bookmark in bookmark menu
-            open_bookmark_menu()
+            bookmarks_sidebar()
             type("amazon")
             if exists("amazon_bookmark.png", 10):
                 print "PASS"
