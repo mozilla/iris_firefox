@@ -21,6 +21,7 @@ class test(base_test):
         clear_recent_history()
         time.sleep(2)
         type(Key.ENTER)
+        time.sleep(2)
         click ("home.png")
         history_sidebar()
         time.sleep(2)
