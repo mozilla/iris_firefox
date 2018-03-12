@@ -24,6 +24,7 @@ class test(base_test):
             return
 
         time.sleep(2)
+        clear_recent_history()
         type(Key.ENTER)
         time.sleep(2)
         click ("home.png")
