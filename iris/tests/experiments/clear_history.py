@@ -13,37 +13,20 @@ class test(base_test):
 
     def run(self):
 
-        url = "https://www.google.com/?hl=EN"
-        history = "history.png"
-        clear_history = "clear_history.png"
-        clear_button = "clear_button.png"
-        library = "library.png"
-        access_history = "access_history"
+        url = "https://www.amazon.com"
+        amazon_history = "amazon_history.png"
 
         navigate(url)
-
+        wait ("amazon.png", 10)
+        clear_recent_history()
+        time.sleep(2)
+        type(Key.ENTER)
+        click ("home.png")
         history_sidebar()
+        time.sleep(2)
+        type ("amazon")
 
-        if exists(history, 10):
-            click(library)
-            wait(access_history, 10)
-            click(access_history)
-            wait(clear_history, 10)
-            click(clear_history)
-            wait(clear_button, 10)
-            click(clear_button)
-
-            time.sleep(1)
-
-            if exists(history, 10):
-                print "FAIL"
-            else:
-                print "PASS"
-
+        if exists(amazon_history, 5):
+            print "FAIL"
         else:
-            print "Browser history has been cleared already"
-
-
-
-
-
+            print "PASS"
