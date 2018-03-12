@@ -17,12 +17,12 @@ class test(base_test):
         pattern = "search_in_page.png"
         navigate(url)
 
-        time.sleep(3)
+        wait ("google_search.png", 10)
 
         open_find()
         type("Gmail")
 
-        if exists(pattern, 10):
+        if exists(pattern, 5):
             result = "PASS"
         else:
             result = "FAIL"
