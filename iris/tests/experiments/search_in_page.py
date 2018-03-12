@@ -8,7 +8,7 @@ class test(base_test):
         base_test.__init__(self, app)
         base_test.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "This is a test for checking private browsing navigation"
+        self.meta = "This is a test for text search in page"
 
 
     def run(self):
