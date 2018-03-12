@@ -1,6 +1,5 @@
 from test_case import *
 
-from sikuli import *
 
 
 class test(base_test):

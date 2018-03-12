@@ -1,6 +1,5 @@
 from test_case import *
 
-from sikuli import *
 
 
 class test(base_test):
@@ -17,7 +16,11 @@ class test(base_test):
         pattern = "search_in_page.png"
         navigate(url)
 
-        wait ("google_search.png", 10)
+        try:
+            wait ("google_search.png", 10)
+        except:
+            logger.error("Can't find Google image in page, aborting test")
+            return
 
         open_find()
         type("Gmail")

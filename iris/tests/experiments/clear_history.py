@@ -1,6 +1,5 @@
 from test_case import *
 
-from sikuli import *
 
 
 class test(base_test):
@@ -17,8 +16,13 @@ class test(base_test):
         amazon_history = "amazon_history.png"
 
         navigate(url)
-        wait ("amazon.png", 10)
-        clear_recent_history()
+
+        try:
+            wait ("amazon.png", 10)
+        except:
+            logger.error ("Can't find Amazon image in page, aborting test.")
+            return
+
         time.sleep(2)
         type(Key.ENTER)
         time.sleep(2)
