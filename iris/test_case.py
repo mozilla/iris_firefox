@@ -14,6 +14,7 @@ class base_test(object):
 
     def __init__(self, app):
         self.app = app
+        self.enable = True
 
 
     def set_image_path(self, path):
