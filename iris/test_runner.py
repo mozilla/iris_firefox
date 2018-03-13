@@ -34,6 +34,9 @@ def run(app):
             # Verify that Firefox has launched
             confirm_firefox_launch()
 
+            # Adjust Firefox window size
+            current.resize_window()
+
             # Run the test logic
             current.run()
 
