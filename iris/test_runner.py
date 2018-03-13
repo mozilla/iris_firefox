@@ -8,10 +8,9 @@ import os
 import sys
 import importlib
 
-
-logger = getLogger(__name__)
-
 def run(app):
+    print app.args
+    logger = initialize_logger(app)
     logger.info("Running tests")
 
     # Start with no saved profiles
@@ -45,6 +44,7 @@ def run(app):
 
 
 def load_tests(app):
+    logger = initialize_logger(app)
     app.test_list = []
     app.test_packages = []
 
@@ -86,3 +86,7 @@ def load_tests(app):
         logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
         exit(1)
 
+def initialize_logger(app):
+    logger = getLogger(__name__)
+    logger.setLevel(app.args.level)
+    return logger

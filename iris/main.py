@@ -8,12 +8,9 @@ import subprocess
 import sys
 from logger.iris_logger import *
 
-logger = getLogger(__name__)
-
 # This is the main entry point defined in setup.py
 
 def main(argv=None):
-    logger.info("main")
 
     # Required for Linux window communication
     os.environ["DISPLAY"] = ":99"
@@ -42,8 +39,11 @@ def main(argv=None):
 
     cmd = ['java', '-cp', jar_path, package, init_path]
 
-    if len(sys.argv[1:]):
-        cmd.append(' '.join(sys.argv[1:]))
+    args = sys.argv[1:]
+
+    if len(args):
+        for arg in args:
+            cmd.append(arg)
 
 
     # There is a problem at the moment invoking Firefox from jython, on Linux only
