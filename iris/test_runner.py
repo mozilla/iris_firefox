@@ -25,23 +25,26 @@ def run(app):
         current_module = importlib.import_module(module)
         try:
             current = current_module.test(app)
-            logger.info("Running test case: %s " % current.meta)
+            if current.enable:
+                logger.info("Running test case: %s " % current.meta)
 
-            # Initialize and launch Firefox
-            current.setup()
+                # Initialize and launch Firefox
+                current.setup()
 
-            # Verify that Firefox has launched
-            confirm_firefox_launch()
+                # Verify that Firefox has launched
+                confirm_firefox_launch()
 
-            # Adjust Firefox window size
-            current.resize_window()
+                # Adjust Firefox window size
+                current.resize_window()
 
-            # Run the test logic
-            current.run()
+                # Run the test logic
+                current.run()
 
-            # Quit Firefox
-            current.teardown()
-            confirm_firefox_quit()
+                # Quit Firefox
+                current.teardown()
+                confirm_firefox_quit()
+            else:
+                logger.info("Skipping disabled test case: %s" % current.meta)
         except AttributeError:
             logger.warning('[%s] is not a test file. Skipping...', module)
 
