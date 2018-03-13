@@ -23,7 +23,7 @@ class test(base_test):
             logger.error ("Can't find Amazon image in page, aborting test.")
             return
 
-        time.sleep(2)
+        time.sleep(4)
         clear_recent_history()
         type(Key.ENTER)
         time.sleep(2)
