@@ -648,13 +648,31 @@ def full_screen():
 
 
 def maximize_window():
+    """
+    Maximize the browser window to fill the screen
+    This is NOT Full Screen mode
+    """
     if get_os() == "osx":
-        logger.warning("maximize is unsupported for OSX")
+        # There is no keybpard shortcut for this on Mac. We'll o it the old fashioned way.
+        # This image is of the three window control buttons at top left of the window.
+        window_controls = "window_controls.png"
+        # Set target to the maximize button
+        maximize_button = Pattern(window_controls).targetOffset(21,0)
+
+        # We must hover the controls so the ALT key can take effect there.
+        hover(window_controls)
+        # Alt key changes maximize button from full screen to maximize window.
+        keyDown(Key.ALT)
+        click(maximize_button)
+        keyUp(Key.ALT)
     else:
         type(text=Key.UP, modifier=KeyModifier.WIN)
 
 
 def minimize_window():
+    """
+    Minimize the browser window to the application launch bar
+    """
     if get_os() == "osx":
         type(text="m", modifier=Key.CMD)
     else:
@@ -803,9 +821,9 @@ def clear_recent_history():
     Open the Clear Recent History dialog.
     """
     if get_os() == "osx":
-        type(text=Key.TAB, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        type(text=Key.DEL, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
-        type(text=Key.TAB, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        type(text=Key.DEL, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
 def bookmark_all_tabs():
