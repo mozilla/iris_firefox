@@ -8,10 +8,10 @@ import os
 import sys
 import importlib
 
-
 logger = getLogger(__name__)
 
 def run(app):
+
     logger.info("Running tests")
 
     # Start with no saved profiles
@@ -53,6 +53,7 @@ def run(app):
 
 
 def load_tests(app):
+
     app.test_list = []
     app.test_packages = []
 
@@ -69,7 +70,7 @@ def load_tests(app):
             logger.error("Could not locate %s . Exiting program ...", str(test_name))
             exit(1)
         else:
-            logger.info("FOUND %s", test_name)
+            logger.debug("FOUND %s", test_name)
         return
 
     # There is always a default test directory,
@@ -88,8 +89,8 @@ def load_tests(app):
             logger.error("Directory %s does not contain test files. Exiting program ...", tests_directory)
             exit(1)
         else:
-            logger.info("Test packages: %s", app.test_packages)
-            logger.info("List of tests to execute: [%s]" % ', '.join(map(str, app.test_list)))
+            logger.debug("Test packages: %s", app.test_packages)
+            logger.debug("List of tests to execute: [%s]" % ', '.join(map(str, app.test_list)))
     else:
         logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
         exit(1)

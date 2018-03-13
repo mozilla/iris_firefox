@@ -6,14 +6,11 @@
 import os
 import subprocess
 import sys
-from logger.iris_logger import *
 
-logger = getLogger(__name__)
 
 # This is the main entry point defined in setup.py
 
 def main(argv=None):
-    logger.info("main")
 
     # Required for Linux window communication
     os.environ["DISPLAY"] = ":99"
@@ -51,7 +48,7 @@ def main(argv=None):
     if detect_os() == "linux":
         print "Unable to launch iris on Linux via python due to outstanding issues."
         print "However, you can run iris via java instead."
-        print "\tjava -cp %s %s %s" % (jar_path, package, init_path)
+        print "\njava -cp %s %s %s" % (jar_path, package, init_path)
     else:
         p = subprocess.Popen(cmd).communicate()
 
