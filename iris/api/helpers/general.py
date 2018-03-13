@@ -63,13 +63,8 @@ def confirm_firefox_quit():
 
 def get_firefox_region():
     # TODO: needs better logic to determine bounds
-    # Currently incomplete implementation
-    home = find("home.png")
-    # Find the approximate upper left corner
-    x = home.getX() - 100
-    y = home.getY() - 30;
-    # Define a region equivalent to Firefox open at 800x800 pixels
-    return Region(x,y,800,800)
+    # For now, just return the whole screen
+    return get_screen()
 
 
 # navigates, via the location bar, to a given URL
