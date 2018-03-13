@@ -821,9 +821,9 @@ def clear_recent_history():
     Open the Clear Recent History dialog.
     """
     if get_os() == "osx":
-        type(text=Key.DEL, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
-        type(text=Key.DEL, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
 def bookmark_all_tabs():
@@ -980,16 +980,6 @@ def history_sidebar():
         type(text="h", modifier=KeyModifier.CTRL)
 
 
-def clear_recent_history():
-    """
-    Open the Clear Recent History dialog.
-    """
-    if get_os() == "osx":
-        type(text=Key.TAB, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-    else:
-        type(text=Key.TAB, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
-
 def bookmark_all_tabs():
     """
     Open the Bookmark All Tabs dialog.
@@ -1065,6 +1055,3 @@ def open_page_source():
         type(text="u", modifier=KeyModifier.CMD)
     else:
         type(text="u", modifier=KeyModifier.CTRL)
-
-
-# End Tools keyboard shortcuts.

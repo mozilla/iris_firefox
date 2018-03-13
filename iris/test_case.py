@@ -2,18 +2,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
+import time
 
 from api.core import *
 from api.helpers.general import *
 from api.helpers.keyboard_shortcuts import *
-import os
-import time
+from logger.iris_logger import *
 
+
+logger = getLogger(__name__)
 
 class base_test(object):
 
     def __init__(self, app):
         self.app = app
+        self.enable = True
 
 
     def set_image_path(self, path):

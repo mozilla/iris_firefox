@@ -24,20 +24,24 @@ def run(app):
     for module in app.test_list:
         current_module = importlib.import_module(module)
         current = current_module.test(app)
-        logger.info("Running test case: %s " % current.meta)
 
-        # Initialize and launch Firefox
-        current.setup()
+        if current.enable:
+            logger.info("Running test case: %s " % current.meta)
 
-        # Verify that Firefox has launched
-        confirm_firefox_launch()
+            # Initialize and launch Firefox
+            current.setup()
 
-        # Run the test logic
-        current.run()
+            # Verify that Firefox has launched
+            confirm_firefox_launch()
 
-        # Quit Firefox
-        current.teardown()
-        confirm_firefox_quit()
+            # Run the test logic
+            current.run()
+
+            # Quit Firefox
+            current.teardown()
+            confirm_firefox_quit()
+        else:
+            logger.info("Skipping disabled test case: %s" % current.meta)
 
 
     # We may remove profiles here, but likely still in use and can't do it yet
