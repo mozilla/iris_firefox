@@ -19,17 +19,17 @@ from api.core import *
 from logger.iris_logger import *
 
 
-logger = getLogger(__name__)
+logger = None
 tmp_dir = None
 restore_terminal_encoding = None
 
 
 class Iris(object):
 
-
-
     def __init__(self):
+        global logger
         self.parse_args()
+        logger = initialize_logger(self)
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = get_os()
@@ -38,7 +38,7 @@ class Iris(object):
 
 
     def main(self, argv=None):
-        global tmp_dir
+        global tmp_dir, logger
 
         logger.debug("Command arguments: %s" % self.args)
 
@@ -78,6 +78,7 @@ class Iris(object):
         Writes to the global variable tmp_dir
         :return: Path of temporary directory
         """
+        global logger
         temp_dir = tempfile.mkdtemp(prefix='iris_')
         logger.debug('Created temp dir `%s`' % temp_dir)
         return temp_dir
@@ -88,6 +89,7 @@ class Iris(object):
         """
         Helper function to get current terminal encoding
         """
+        global logger
         if sys.platform.startswith("win"):
             logger.debug("Running `chcp` shell command")
             chcp_output = os.popen("chcp").read().strip()
@@ -109,6 +111,7 @@ class Iris(object):
         """
         Helper function to set terminal encoding.
         """
+        global logger
         if os.path.exists("C:\\"):
             logger.debug("Running `chcp` shell command, setting codepage to `%s`", encoding)
             chcp_output = os.popen("chcp %s" % encoding).read().strip()
@@ -143,7 +146,7 @@ class Iris(object):
         :param build: str with firefox build
         :return: FirefoxApp object for test candidate
         """
-
+        global logger
         platform = fd.FirefoxDownloader.detect_platform()
         if platform is None:
             logger.error("Unsupported platform: `%s`" % sys.platform)
@@ -204,6 +207,17 @@ class Iris(object):
         home = os.path.expanduser("~")
         release_choice, _, test_default = fd.FirefoxDownloader.list()
 
+        LOG_LEVEL_STRINGS = ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG']
+
+        def log_level_string_to_int(log_level_string):
+            if not log_level_string in LOG_LEVEL_STRINGS:
+                logger.error('Invalid choice: %s (choose from %s)', log_level_string, LOG_LEVEL_STRINGS)
+                exit(1)
+
+            log_level_int = getattr(logging, log_level_string, logging.INFO)
+            assert isinstance(log_level_int, int)
+            return log_level_int
+
         parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
         parser.add_argument('-d', '--directory',
                             help='Directory where tests are located',
@@ -212,13 +226,11 @@ class Iris(object):
         parser.add_argument('-t', '--test',
                             help='Test name',
                             type=str, metavar='test_name.py')
-
-        # These arguments will be added soon, putting them in now to reserve their flags
-        parser.add_argument("-log", "--log",
-                            help="Configure log level",
-                            type=str,
-                            action="store",
-                            default="INFO")
+        parser.add_argument('-i', '--level',
+                            help='Set the logging output level',
+                            type=log_level_string_to_int,
+                            dest='level',
+                            default='INFO')
         parser.add_argument("-w", "--workdir",
                             help="Path to working directory",
                             type=os.path.abspath,
@@ -235,12 +247,13 @@ class Iris(object):
                             default="en-US")
         self.args = parser.parse_args()
 
+
 class RemoveTempDir(cleanup.CleanUp):
     """
     Class definition for cleanup helper responsible
     for deleting the temporary directory prior to exit.
     """
-
+    global logger
     @staticmethod
     def at_exit():
         global tmp_dir
@@ -259,6 +272,11 @@ class ResetTerminalEncoding(cleanup.CleanUp):
         if restore_terminal_encoding is not None:
             Iris.set_terminal_encoding(restore_terminal_encoding)
 
+def initialize_logger(app):
+    global logger
+    logger = getLogger(__name__)
+    logger.setLevel(app.args.level)
+    return logger
 
 
 Iris()
