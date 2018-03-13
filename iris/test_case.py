@@ -33,6 +33,7 @@ class base_test(object):
         If you wish to change this, override this method in your test case.
         """
         launch_firefox(path=self.app.fx_path, profile=self._create_unique_profile_name(), url="about:blank")
+        maximize_window()
         return
 
 

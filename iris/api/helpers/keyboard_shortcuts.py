@@ -653,7 +653,7 @@ def maximize_window():
     This is NOT Full Screen mode
     """
     if get_os() == "osx":
-        # There is no keybpard shortcut for this on Mac. We'll o it the old fashioned way.
+        # There is no keybpard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
         window_controls = "window_controls.png"
         # Set target to the maximize button
