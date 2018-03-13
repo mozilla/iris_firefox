@@ -40,6 +40,14 @@ class base_test(object):
         return
 
 
+    def resize_window(self):
+        """
+        By default, we will maximize the window.
+        If this is not desired, override this method in your test case.
+        """
+        maximize_window()
+
+
     def run (self):
         """
         This is your test logic.
