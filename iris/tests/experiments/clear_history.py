@@ -23,10 +23,21 @@ class test(base_test):
             logger.error ("Can't find Amazon image in page, aborting test.")
             return
 
-        time.sleep(2)
+        # The various calls to time.sleep are necessary to
+        # account for lag times incurred by underlying operations.
+        # We can always switch to image detection as a mechanism to
+        # confirm presence of UI before interaction, but that
+        # has its own cost.
+
         clear_recent_history()
+        time.sleep(2)
         type(Key.ENTER)
         time.sleep(2)
+
+        # The click here is required, because the Firefox window loses
+        # focus after invoking the above dialog, and without it,
+        # the keyboard shortcuts don't work
+
         click ("home.png")
         history_sidebar()
         time.sleep(2)
