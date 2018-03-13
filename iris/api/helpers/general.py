@@ -15,23 +15,12 @@ add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
 logger = getLogger(__name__)
 
 
-def launch_firefox(profile='empty_profile', url=None):
+def launch_firefox(path, profile='empty_profile', url=None):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
     if not os.path.exists (active_profile):
         os.mkdir(active_profile)
-
-    # TEMP: hard-coding app path until we implement dynamic Fx installation
-    if get_os() == "osx":
-        path = '/Applications/Firefox.app/Contents/MacOS/firefox'
-    elif get_os() == "win":
-        if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
-            path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
-        else:
-            path = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe'
-    else:
-        path = '/usr/bin/firefox'
 
     cmd = [path]
     cmd.append('-foreground')
@@ -74,13 +63,8 @@ def confirm_firefox_quit():
 
 def get_firefox_region():
     # TODO: needs better logic to determine bounds
-    # Currently incomplete implementation
-    home = find("home.png")
-    # Find the approximate upper left corner
-    x = home.getX() - 100
-    y = home.getY() - 30;
-    # Define a region equivalent to Firefox open at 800x800 pixels
-    return Region(x,y,800,800)
+    # For now, just return the whole screen
+    return get_screen()
 
 
 # navigates, via the location bar, to a given URL

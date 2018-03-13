@@ -2,22 +2,26 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
+import time
 
 from api.core import *
 from api.helpers.general import *
 from api.helpers.keyboard_shortcuts import *
-import os
-import time
+from logger.iris_logger import *
 
+
+logger = getLogger(__name__)
 
 class base_test(object):
 
     def __init__(self, app):
-        self._app = app
+        self.app = app
+        self.enable = True
 
 
     def set_image_path(self, path):
-        add_image_path(os.path.join(path, "images", self._app.os))
+        add_image_path(os.path.join(path, "images", self.app.os))
 
 
     def _create_unique_profile_name(self):
@@ -32,8 +36,16 @@ class base_test(object):
         Also, by default, a new Firefox instance is created, with a blank profile and URL.
         If you wish to change this, override this method in your test case.
         """
-        launch_firefox(profile=self._create_unique_profile_name(), url="about:blank")
+        launch_firefox(path=self.app.fx_path, profile=self._create_unique_profile_name(), url="about:blank")
         return
+
+
+    def resize_window(self):
+        """
+        By default, we will maximize the window.
+        If this is not desired, override this method in your test case.
+        """
+        maximize_window()
 
 
     def run (self):

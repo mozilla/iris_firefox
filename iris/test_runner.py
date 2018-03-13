@@ -33,6 +33,9 @@ def run(app):
             # Verify that Firefox has launched
             confirm_firefox_launch()
 
+            # Adjust Firefox window size
+            current.resize_window()
+
             # Run the test logic
             current.run()
 
@@ -40,8 +43,7 @@ def run(app):
             current.teardown()
             confirm_firefox_quit()
         except AttributeError:
-            logger.warning('[%s] is not a test file. Skipping ...', module)
-
+            logger.warning('[%s] is not a test file. Skipping...', module)
 
     # We may remove profiles here, but likely still in use and can't do it yet
     #clean_profiles()
