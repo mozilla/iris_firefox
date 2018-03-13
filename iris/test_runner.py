@@ -23,29 +23,30 @@ def run(app):
 
     for module in app.test_list:
         current_module = importlib.import_module(module)
-        current = current_module.test(app)
+        try:
+            current = current_module.test(app)
+            if current.enable:
+                logger.info("Running test case: %s " % current.meta)
 
-        if current.enable:
-            logger.info("Running test case: %s " % current.meta)
+                # Initialize and launch Firefox
+                current.setup()
 
-            # Initialize and launch Firefox
-            current.setup()
+                # Verify that Firefox has launched
+                confirm_firefox_launch()
 
-            # Verify that Firefox has launched
-            confirm_firefox_launch()
+                # Adjust Firefox window size
+                current.resize_window()
 
-            # Adjust Firefox window size
-            current.resize_window()
+                # Run the test logic
+                current.run()
 
-            # Run the test logic
-            current.run()
-
-            # Quit Firefox
-            current.teardown()
-            confirm_firefox_quit()
-        else:
-            logger.info("Skipping disabled test case: %s" % current.meta)
-
+                # Quit Firefox
+                current.teardown()
+                confirm_firefox_quit()
+            else:
+                logger.info("Skipping disabled test case: %s" % current.meta)
+        except AttributeError:
+            logger.warning('[%s] is not a test file. Skipping...', module)
 
     # We may remove profiles here, but likely still in use and can't do it yet
     #clean_profiles()
@@ -79,7 +80,7 @@ def load_tests(app):
         logger.debug("Path %s found. Checking content ...", tests_directory)
         for dirpath, subdirs, files in os.walk(tests_directory):
             for file in files:
-                if file.endswith(".py") and not file.startswith("__init__"):
+                if file.endswith(".py") and not file.startswith("__"):
                     app.test_list.append(os.path.splitext(file)[0])
                     if not dirpath in app.test_packages:
                         app.test_packages.append(dirpath)
@@ -92,4 +93,3 @@ def load_tests(app):
     else:
         logger.error("Path: %s does not exist. Exiting program ...", tests_directory)
         exit(1)
-
