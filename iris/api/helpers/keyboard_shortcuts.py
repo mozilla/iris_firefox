@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+import time
 from api.core import *
 from logger.iris_logger import *
 
@@ -661,10 +661,15 @@ def maximize_window():
 
         # We must hover the controls so the ALT key can take effect there.
         hover(window_controls)
+        # Adding a pause to help prevent RobotDesktop mouse move errors
+        time.sleep(2)
         # Alt key changes maximize button from full screen to maximize window.
         keyDown(Key.ALT)
         click(maximize_button)
         keyUp(Key.ALT)
+        # Adding a pause to help prevent RobotDesktop mouse move errors
+        time.sleep(1)
+
     else:
         type(text=Key.UP, modifier=KeyModifier.WIN)
 

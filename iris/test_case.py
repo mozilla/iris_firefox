@@ -21,7 +21,9 @@ class base_test(object):
 
 
     def set_image_path(self, path):
-        add_image_path(os.path.join(path, "images", self.app.os))
+        image_path = os.path.join(path, "images", self.app.os)
+        #logger.debug("Setting image path for %s" % image_path)
+        add_image_path(image_path)
 
 
     def _create_unique_profile_name(self):

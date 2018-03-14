@@ -117,7 +117,14 @@ def change_preference(pref_name,value):
     type(Key.TAB)
     time.sleep(2)
 
-    if copy_to_clipboard().split(";"[0])[1] == value:
+    retrieved_value = None
+    try:
+        retrieved_value = copy_to_clipboard().split(";"[0])[1]
+    except:
+        logger.error("Failed to retrieve preference value")
+        return None
+
+    if retrieved_value == value:
         logger.debug("Flag is already set to value:" + value)
         return None
     else:
@@ -128,3 +135,6 @@ def change_preference(pref_name,value):
         if exists(dialog_box,3):
             type(dialog_box,value)
             type(Key.ENTER)
+
+def reset_mouse():
+    hover(Location(0, 0))
