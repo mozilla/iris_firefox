@@ -9,6 +9,8 @@ import subprocess
 from api.core import *
 from api.helpers.keyboard_shortcuts import *
 from logger.iris_logger import *
+from configuration.config_parser import *
+
 
 
 add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
@@ -138,3 +140,18 @@ def change_preference(pref_name,value):
 
 def reset_mouse():
     hover(Location(0, 0))
+
+
+
+
+def login_url(url_name):
+    username=get_credentials(url_name,"username")
+    password=get_credentials(url_name,"password")
+    type(username)
+    type(Key.TAB)
+    type(password)
+    type(Key.TAB)
+    type(Key.ENTER)
+
+
+
