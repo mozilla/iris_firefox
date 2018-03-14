@@ -31,6 +31,9 @@ def run(app):
                 # Initialize and launch Firefox
                 current.setup()
 
+                # Move the mouse to upper left corner of the screen
+                reset_mouse()
+
                 # Verify that Firefox has launched
                 confirm_firefox_launch()
 
