@@ -9,6 +9,7 @@ from api.core import *
 from api.helpers.general import *
 from api.helpers.keyboard_shortcuts import *
 from logger.iris_logger import *
+from configuration.config_parser import *
 
 
 logger = getLogger(__name__)
