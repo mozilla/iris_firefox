@@ -39,6 +39,12 @@ class test(base_test):
         # the keyboard shortcuts don't work
 
         click ("home.png")
+
+        # Navigate to new page; otherwise, our bitmap for the history item
+        # looks identical to the image in the title bar and we'll get
+        # a false match
+        navigate("about:blank")
+
         history_sidebar()
         time.sleep(2)
         type ("amazon")

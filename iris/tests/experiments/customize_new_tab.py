@@ -17,7 +17,6 @@ class test(base_test):
 
     def run(self):
 
-        maximize_window()
         url = "about:home"
         customize_new_tab_page_image = "customize_new_tab_icon.png"
         tab_preference_search_button = "tab_preference_search_button.png"
