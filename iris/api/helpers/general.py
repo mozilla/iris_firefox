@@ -143,9 +143,9 @@ def reset_mouse():
     hover(Location(0, 0))
 
 
-def login_url(url_name):
-    username = get_credential(url_name,"username")
-    password = get_credential(url_name,"password")
+def login_site(site_name):
+    username = get_credential(site_name,"username")
+    password = get_credential(site_name,"password")
     type(username)
     type(Key.TAB)
     type(password)

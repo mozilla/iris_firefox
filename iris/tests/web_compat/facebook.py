@@ -23,7 +23,7 @@ class test(base_test):
 
         time.sleep(5)
 
-        login_url("Facebook")
+        login_site("Facebook")
         time.sleep(3)
 
         print "Hello world!"
