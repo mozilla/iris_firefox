@@ -79,8 +79,8 @@ def navigate(url):
     # increase the delay between each keystroke while typing strings
     # (sikuli defaults to .02 sec)
     Settings.TypeDelay = 0.1
-    paste(url)
-    type(Key.ENTER)
+    #paste(url)
+    type(url + Key.ENTER)
 
 
 def restart_firefox(args):
@@ -112,8 +112,11 @@ def copy_to_clipboard():
 
 
 def change_preference(pref_name,value):
-    if exists("accept_risk.png",5):
-        click("accept_risk.png")
+    navigate("about:config")
+    time.sleep(1)
+
+    type(Key.SPACE)
+    time.sleep(1)
 
     type(pref_name)
     time.sleep(2)
@@ -138,7 +141,7 @@ def change_preference(pref_name,value):
         if exists(dialog_box,3):
             type(dialog_box,value)
             type(Key.ENTER)
-
+    navigate_back()
 
 def reset_mouse():
     hover(Location(0, 0))
