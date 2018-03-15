@@ -8,7 +8,9 @@ import subprocess
 
 from api.core import *
 from api.helpers.keyboard_shortcuts import *
+from configuration.config_parser import *
 from logger.iris_logger import *
+
 
 
 add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
@@ -77,7 +79,8 @@ def navigate(url):
     # increase the delay between each keystroke while typing strings
     # (sikuli defaults to .02 sec)
     Settings.TypeDelay = 0.1
-    type(url + Key.ENTER)
+    paste(url)
+    type(Key.ENTER)
 
 
 def restart_firefox(args):
@@ -136,5 +139,16 @@ def change_preference(pref_name,value):
             type(dialog_box,value)
             type(Key.ENTER)
 
+
 def reset_mouse():
     hover(Location(0, 0))
+
+
+def login_site(site_name):
+    username = get_credential(site_name,"username")
+    password = get_credential(site_name,"password")
+    type(username)
+    type(Key.TAB)
+    type(password)
+    type(Key.TAB)
+    type(Key.ENTER)

@@ -656,19 +656,17 @@ def maximize_window():
         # There is no keybpard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
         window_controls = "window_controls.png"
+
         # Set target to the maximize button
         maximize_button = Pattern(window_controls).targetOffset(21,0)
 
         # We must hover the controls so the ALT key can take effect there.
         hover(window_controls)
-        # Adding a pause to help prevent RobotDesktop mouse move errors
-        time.sleep(2)
+
         # Alt key changes maximize button from full screen to maximize window.
         keyDown(Key.ALT)
         click(maximize_button)
         keyUp(Key.ALT)
-        # Adding a pause to help prevent RobotDesktop mouse move errors
-        time.sleep(1)
 
     else:
         type(text=Key.UP, modifier=KeyModifier.WIN)
