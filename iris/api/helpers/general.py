@@ -8,8 +8,8 @@ import subprocess
 
 from api.core import *
 from api.helpers.keyboard_shortcuts import *
-from logger.iris_logger import *
 from configuration.config_parser import *
+from logger.iris_logger import *
 
 
 
@@ -138,20 +138,16 @@ def change_preference(pref_name,value):
             type(dialog_box,value)
             type(Key.ENTER)
 
+
 def reset_mouse():
     hover(Location(0, 0))
 
 
-
-
 def login_url(url_name):
-    username=get_credentials(url_name,"username")
-    password=get_credentials(url_name,"password")
+    username = get_credential(url_name,"username")
+    password = get_credential(url_name,"password")
     type(username)
     type(Key.TAB)
     type(password)
     type(Key.TAB)
     type(Key.ENTER)
-
-
-
