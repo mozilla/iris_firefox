@@ -80,8 +80,15 @@ def navigate(url):
     # increase the delay between each keystroke while typing strings
     # (sikuli defaults to .02 sec)
     Settings.TypeDelay = 0.1
-    #paste(url)
     type(url + Key.ENTER)
+
+
+def navigate_fast(url):
+    select_location_bar()
+    edit_select_all()
+    type(Key.DELETE)
+    paste(url)
+    type(Key.ENTER)
 
 
 def restart_firefox(args):
