@@ -60,4 +60,3 @@ class test(base_test):
         time.sleep (5)
         quit_firefox()
         time.sleep (5)
-        

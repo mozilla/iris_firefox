@@ -26,10 +26,11 @@ def launch_firefox(path, profile='empty_profile', url=None, args=[]):
 
     cmd = [path]
     cmd.append('-foreground')
+    cmd.append('-no-remote')
     cmd.append('-profile')
     cmd.append(active_profile)
 
-    # TBD: other Firefox flags
+    # Add other Firefox flags
     for arg in args:
         cmd.append(arg)
 
@@ -114,6 +115,7 @@ def copy_to_clipboard():
 
 
 def change_preference(pref_name,value):
+    
     if exists("accept_risk.png",5):
         click("accept_risk.png")
 
