@@ -17,7 +17,7 @@ add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
 logger = getLogger(__name__)
 
 
-def launch_firefox(path, profile='empty_profile', url=None):
+def launch_firefox(path, profile='empty_profile', url=None, args=[]):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
@@ -30,6 +30,8 @@ def launch_firefox(path, profile='empty_profile', url=None):
     cmd.append(active_profile)
 
     # TBD: other Firefox flags
+    for arg in args:
+        cmd.append(arg)
 
     if url is not None:
         cmd.append('-url')
