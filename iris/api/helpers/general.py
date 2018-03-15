@@ -26,6 +26,7 @@ def launch_firefox(path, profile='empty_profile', url=None):
 
     cmd = [path]
     cmd.append('-foreground')
+    cmd.append('-no-remote')
     cmd.append('-profile')
     cmd.append(active_profile)
 
