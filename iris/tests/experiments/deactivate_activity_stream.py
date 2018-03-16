@@ -17,10 +17,8 @@ class test(base_test):
 
 
     def run(self):
-        url="about:config"
-        preference="browser.newtabpage.activity-stream.enabled"
 
-        navigate(url)
+        preference="browser.newtabpage.activity-stream.enabled"
         change_preference(preference, "false")
         new_tab()
         new_tab()
@@ -34,7 +32,6 @@ class test(base_test):
 
         print (result)
 
-        navigate(url)
         change_preference(preference, "true")
         new_tab()
         new_tab()
