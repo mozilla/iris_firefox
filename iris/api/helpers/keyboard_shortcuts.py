@@ -6,6 +6,8 @@ import time
 from api.core import *
 from logger.iris_logger import *
 
+logger = getLogger(__name__)
+
 # This helper defines keyboard shortcuts for many common actions in Firefox usage.
 # We should be using these keyboard shortcuts whenever possible.
 #
@@ -22,11 +24,6 @@ from logger.iris_logger import *
 # - Tools
 
 # Keyboard shortcuts for Navigation.
-
-# Navigates back in browsing history one page visit
-
-logger = getLogger(__name__)
-
 
 def navigate_back():
     """
