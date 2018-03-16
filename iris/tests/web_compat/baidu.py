@@ -7,6 +7,7 @@ from test_case import *
 
 
 
+
 class test(base_test):
 
     def __init__(self, app):
@@ -17,8 +18,27 @@ class test(base_test):
 
 
     def run(self):
-        """
-        This is where your test logic goes.
-        """
-        print "Hello world!"
-        return
+        url = "www.baidu.com"
+        home = "baidu_home.png"
+        search_item = "Barack Obama"
+        search_page = "search_page.png"
+
+        logger.info("Accessing " + url + "...")
+        navigate(url)
+
+        if exists(home, 10):
+            logger.info(url + " successfully loaded")
+            type(search_item)
+            type(Key.ENTER)
+            time.sleep(3)
+            logger.info("Searching " + search_item)
+
+            if exists(search_page, 10):
+                result = "PASS"
+            else:
+                result = "FAIL"
+
+            print result
+        else:
+            logger.error(url + " can not be accessed...")
+
