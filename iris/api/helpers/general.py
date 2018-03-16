@@ -17,7 +17,7 @@ add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
 logger = getLogger(__name__)
 
 
-def launch_firefox(path, profile='empty_profile', url=None):
+def launch_firefox(path, profile='empty_profile', url=None, args=[]):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
@@ -31,6 +31,8 @@ def launch_firefox(path, profile='empty_profile', url=None):
     cmd.append(active_profile)
 
     # Add other Firefox flags
+    for arg in args:
+        cmd.append(arg)
 
     if url is not None:
         cmd.append('-url')
@@ -75,7 +77,7 @@ def get_firefox_region():
 # @param  url    the string to type into the location bar. The function
 #                   handles typing "Enter" to complete the action.
 #
-def navigate(url):
+def navigate_slow(url):
     select_location_bar()
     # increase the delay between each keystroke while typing strings
     # (sikuli defaults to .02 sec)
@@ -83,10 +85,10 @@ def navigate(url):
     type(url + Key.ENTER)
 
 
-def navigate_fast(url):
+def navigate(url):
     select_location_bar()
-    edit_select_all()
-    type(Key.DELETE)
+    #edit_select_all()
+    #type(Key.DELETE)
     paste(url)
     type(Key.ENTER)
 
@@ -120,11 +122,17 @@ def copy_to_clipboard():
 
 
 def change_preference(pref_name,value):
+<<<<<<< HEAD
     navigate("about:config")
     time.sleep(1)
 
     type(Key.SPACE)
     time.sleep(1)
+=======
+    
+    if exists("accept_risk.png",5):
+        click("accept_risk.png")
+>>>>>>> fx_args
 
     type(pref_name)
     time.sleep(2)
