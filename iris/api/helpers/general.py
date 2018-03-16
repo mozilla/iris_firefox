@@ -30,7 +30,7 @@ def launch_firefox(path, profile='empty_profile', url=None):
     cmd.append('-profile')
     cmd.append(active_profile)
 
-    # TBD: other Firefox flags
+    # Add other Firefox flags
 
     if url is not None:
         cmd.append('-url')
