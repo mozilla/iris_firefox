@@ -122,18 +122,12 @@ def copy_to_clipboard():
 
 
 def change_preference(pref_name,value):
-<<<<<<< HEAD
     navigate("about:config")
     time.sleep(1)
 
     type(Key.SPACE)
     time.sleep(1)
-=======
     
-    if exists("accept_risk.png",5):
-        click("accept_risk.png")
->>>>>>> fx_args
-
     type(pref_name)
     time.sleep(2)
     type(Key.TAB)
