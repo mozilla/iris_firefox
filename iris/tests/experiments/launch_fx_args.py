@@ -44,8 +44,9 @@ class test(base_test):
         args.append("400")
         args.append("-height")
         args.append("400")
-        args.append("-private")
-        launch_firefox(path=self.app.fx_path, profile="size_400", url="amazon.com", args=args)
+        args.append("-private-window")
+        args.append("amazon.com")
+        launch_firefox(path=self.app.fx_path, profile="size_400", args=args)
 
 
         if exists("amazon.png", 20):

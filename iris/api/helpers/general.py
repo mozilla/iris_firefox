@@ -35,7 +35,7 @@ def launch_firefox(path, profile='empty_profile', url=None, args=[]):
         cmd.append(arg)
 
     if url is not None:
-        cmd.append('-url')
+        cmd.append('-new-tab')
         cmd.append(url)
 
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
