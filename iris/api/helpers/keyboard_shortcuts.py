@@ -465,7 +465,7 @@ def maximize_window():
         click(maximize_button)
         keyUp(Key.ALT)
 
-    else if get_os() == "win":
+    elif get_os() == "win":
         type(text=Key.UP, modifier=KeyModifier.WIN)
     else:
         # This is the documented method for window maximize,
