@@ -40,6 +40,9 @@ class test(base_test):
             # We need to close the library menu before next test
             type(Key.ESC)
 
+            # Sometimes we need to wait a bit for favicon to be loaded
+            time.sleep(3)
+
             # Look for bookmark in bookmark menu
             bookmarks_sidebar()
             time.sleep(1)
