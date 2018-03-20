@@ -38,6 +38,11 @@ class test(base_test):
         time.sleep(2)
 
         # Verify that activity stream has been enabled
+
+        # NOTE: sometimes fails due to poor text recognition
+        # e.g. "TOP SITES" is seen as "TOP srres" on at least one Linux config
+        # TODO: make more robust
+        
         if "TOP SITES" in get_firefox_region().text():
             result = "PASS"
         else:

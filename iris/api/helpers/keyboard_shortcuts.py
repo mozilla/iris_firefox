@@ -465,8 +465,12 @@ def maximize_window():
         click(maximize_button)
         keyUp(Key.ALT)
 
-    else:
+    elif get_os() == "win":
         type(text=Key.UP, modifier=KeyModifier.WIN)
+    else:
+        # This is the documented method for window maximize,
+        # but isn't working on one Linux config for unknown reasons,
+        type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.WIN)
 
 
 def minimize_window():
