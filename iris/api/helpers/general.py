@@ -165,3 +165,24 @@ def login_site(site_name):
     type(password)
     type(Key.TAB)
     type(Key.ENTER)
+
+def login_youtube():
+    try:
+        wait ("youtube_banner.png", 10)
+    except:
+        logger.error ("Can't find Youtube image in page, aborting test.")
+    else:
+        for i in range(5):
+            type(Key.TAB)
+        type(Key.ENTER)
+        if exists("youtube_sign_in.png",10):
+            type( get_credential("Youtube","username"))
+            time.sleep(3)
+            for i in range(2):
+                type(Key.TAB)
+            type(Key.ENTER)
+            time.sleep(3)
+            type( get_credential("Youtube","password"))
+            time.sleep(3)
+            type(Key.TAB)
+            type(Key.ENTER)

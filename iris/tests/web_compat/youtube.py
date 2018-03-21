@@ -17,8 +17,34 @@ class test(base_test):
 
 
     def run(self):
-        """
-        This is where your test logic goes.
-        """
-        print "Hello world!"
-        return
+        url="youtube.com"
+        youtube_banner="youtube_banner.png"
+        youtube_filter="filter_youtube_results.png"
+        navigate(url)
+        time.sleep(4)
+        login_youtube()
+        if exists(youtube_banner,10):
+            logger.debug("Youtube Search")
+            type("lord of the rings")
+            type(Key.ENTER)
+            if exists(youtube_filter,10):
+                logger.debug("Results are displayed")
+                time.sleep(3)
+                #focus needs to be changed from search bar in order to scrool the page
+                type(Key.TAB)
+                for i in range(3):
+                    scroll_down()
+                time.sleep(4)
+                logger.debug("Scrooling down")
+                #wait scrool action to perform
+                time.sleep(3)
+                for i in range(4):
+                    scroll_up()
+                logger.debug("Scrooling up")
+                if exists(youtube_filter,10):
+                    logger.debug( "Test pass")
+                else:
+                    logger.debug( "Test failed")
+        else:
+            logger.debug( "Test failed")
+
