@@ -157,11 +157,14 @@ def reset_mouse():
     hover(Location(0, 0))
 
 
-def login_site(site_name):
-    username = get_credential(site_name,"username")
-    password = get_credential(site_name,"password")
-    type(username)
-    type(Key.TAB)
-    type(password)
-    type(Key.TAB)
-    type(Key.ENTER)
+def login_facebook():
+    username = get_credential("Facebook","username")
+    password = get_credential("Facebook","password")
+    if exists("login_check.png", 10):
+        type(username)
+        type(Key.TAB)
+        type(password)
+        type(Key.TAB)
+        type(Key.ENTER)
+    else:
+        logger.error("Facebook page was not loaded...")
