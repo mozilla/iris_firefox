@@ -7,76 +7,115 @@ from test_case import *
 
 
 
-
-
-
 class test(base_test):
 
     def __init__(self, app):
         base_test.__init__(self, app)
         base_test.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "Access wikipedia and select english language"
+        self.meta = "Search Wikipedia and change language"
 
 
     def run(self):
-        url="www.wikipedia.org"
-        page_title="wikipedia.png"
-        keyword='iris'
+        url = "www.wikipedia.org"
+        page_title = "wikipedia.png"
+        iris_text = "wikipedia_iris.png"
+        keyword = "iris"
 
         navigate(url)
 
         try:
             wait (page_title, 10)
+            logger.debug("Page is succesfully loaded")
         except:
+            # If we can't find the Wikipedia logo, there is no sense going further
             logger.error ("Can't find Wikipedia image in page, aborting test.")
-        if exists(page_title,3):
-            logger.debug("Page is succesfully loaded!!")
-            #access wikipedia on english version
+            print "FAIL"
+            return
 
-            logger.debug("Search in wikipedia with default language")
-            type(keyword)
+        # Access Wikipedia on English version
+        logger.debug("Search in Wikipedia with default English language")
+        type(keyword)
+        type(Key.ENTER)
+
+        # Test if we get a search result
+        try:
+            wait(iris_text, 10)
+            logger.debug("Search is succesfully loaded")
+            print "PASS"
+        except:
+            # If we can't find the search text, we will fail the test
+            # but we can keep running the rest of the tests
+            logger.error ("Can't find search image in page")
+            print "FAIL"
+
+
+        """
+        What does this next part do? Why do we scroll up and down the page?
+        """
+        #Scroll down
+        logger.debug("Scroll down")
+        for x in range(10):
+            scroll_down()
+
+        #Scroll up
+        logger.debug("Scroll up")
+        time.sleep(3)
+        for x in range(10):
+            scroll_up()
+
+        logger.debug("Navigate back")
+        navigate_back()
+
+        try:
+            wait (page_title, 10)
+            logger.debug("Page is succesfully loaded")
+        except:
+            # If we can't find the Wikipedia logo, there is no sense going further
+            logger.error ("Can't find Wikipedia image in page, aborting test.")
+            print "FAIL"
+            return
+
+        logger.debug("Change language to Spanish")
+        type(keyword)
+        if get_os() == "osx":
+            type(Key.TAB)
+            time.sleep(1)
+            type(Key.DOWN)
+            time.sleep(1)
+            type(Key.DOWN)
             type(Key.ENTER)
-                #  wait("iris.png",5)
-            time.sleep(3)
-                #Scrool down
-            logger.debug("Scroll down")
-            for x in range(10):
-                scroll_down()
-            logger.debug("Scroll up")
-                #Scrool up
-            time.sleep(3)
-            for x in range(10):
-                scroll_up()
-            if exists("iris.png",5):
-                logger.debug("Navigate back")
-                navigate_back()
-                wait(page_title,5)
-                logger.debug("Change language")
-                type(keyword)
-                if get_os() == "osx":
-                    print "sistem is osx"
-                    type(Key.TAB)
-                    time.sleep(2)
-                    type(Key.DOWN)
-                    time.sleep(2)
-                    type(Key.DOWN)
-                    time.sleep(2)
-                    type(Key.ENTER)
-                    type(Key.TAB)
-                    type(Key.ENTER)
-                else:
-                    type(Key.TAB)
-                    type(Key.DOWN)
-                    type(Key.TAB)
-                    type(Key.ENTER)
-                if exists("iris.png",5):
-                    logger.debug( "Test passed")
-                else:
-                    logger.debug ("Test failed")
+            time.sleep(1)
+            type(Key.TAB)
+            type(Key.ENTER)
+        else:
+            type(Key.TAB)
+            type(Key.DOWN)
+            type(Key.TAB)
+            type(Key.ENTER)
+
+
+        # We will replace PASS/FAIL with proper assert functions soon
+        if exists(iris_text, 10):
+
+            # Using text recognition, we can verify if the results are in Spanish
+            results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
+            page_text = get_firefox_region().text()
+
+            # Text recognition sometimes mistranslates words, so let's check that
+            # at least one Spanish word appears in the page
+            found = False
+            for word in results_spanish:
+                if word in page_text:
+                    found = True
+                    break
+
+            if found:
+                logger.debug("Found Spanish search results")
+                print "PASS"
             else:
-
-                logger.debug( "Test failed")
-
-
-
+                logger.debug("Can not find Spanish search results")
+                print "FAIL"
+        else:
+            logger.debug("Can't find search image in page")
+            print "FAIL"
