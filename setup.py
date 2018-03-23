@@ -10,7 +10,11 @@ PACKAGE_VERSION = '0.1'
 INSTALL_REQUIRES = [
     'coloredlogs',
     'hashfs',
-    'python-dateutil'
+    'python-dateutil',
+    'opencv-python==3.4.0.12',
+    'PyAutoGUI==0.9.36',
+    'pytesseract==0.2.0',
+    'numpy==1.14.2'
 ]
 
 TESTS_REQUIRE = [

@@ -5,14 +5,12 @@
 
 from test_case import *
 
+
 class test(base_test):
 
     def __init__(self, app):
         base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test for opening the first default topsite from TOP SITES list by clicking on it"
-
 
     def run(self):
         url = "about:home"
@@ -22,9 +20,8 @@ class test(base_test):
             click("youtube_top_site.png")
             # Check that the first default TOP SITE is opened
             if exists("youtube.png", 10):
-                print "PASS"
+                print ("PASS")
             else:
-                print "FAIL"
+                print ("FAIL")
         else:
-            print "FAIL"
-
+            print ("FAIL")
