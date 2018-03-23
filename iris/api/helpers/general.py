@@ -8,14 +8,16 @@ import subprocess
 
 from api.core import *
 from api.helpers.keyboard_shortcuts import *
+from configuration.config_parser import *
 from logger.iris_logger import *
+
 
 
 add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
 logger = getLogger(__name__)
 
 
-def launch_firefox(path, profile='empty_profile', url=None):
+def launch_firefox(path, profile='empty_profile', url=None, args=[]):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
@@ -24,10 +26,13 @@ def launch_firefox(path, profile='empty_profile', url=None):
 
     cmd = [path]
     cmd.append('-foreground')
+    cmd.append('-no-remote')
     cmd.append('-profile')
     cmd.append(active_profile)
 
-    # TBD: other Firefox flags
+    # Add other Firefox flags
+    for arg in args:
+        cmd.append(arg)
 
     if url is not None:
         cmd.append('-url')
@@ -72,12 +77,20 @@ def get_firefox_region():
 # @param  url    the string to type into the location bar. The function
 #                   handles typing "Enter" to complete the action.
 #
-def navigate(url):
+def navigate_slow(url):
     select_location_bar()
     # increase the delay between each keystroke while typing strings
     # (sikuli defaults to .02 sec)
     Settings.TypeDelay = 0.1
     type(url + Key.ENTER)
+
+
+def navigate(url):
+    select_location_bar()
+    #edit_select_all()
+    #type(Key.DELETE)
+    paste(url)
+    type(Key.ENTER)
 
 
 def restart_firefox(args):
@@ -109,9 +122,12 @@ def copy_to_clipboard():
 
 
 def change_preference(pref_name,value):
-    if exists("accept_risk.png",5):
-        click("accept_risk.png")
+    navigate("about:config")
+    time.sleep(1)
 
+    type(Key.SPACE)
+    time.sleep(1)
+    
     type(pref_name)
     time.sleep(2)
     type(Key.TAB)
@@ -135,6 +151,17 @@ def change_preference(pref_name,value):
         if exists(dialog_box,3):
             type(dialog_box,value)
             type(Key.ENTER)
+    navigate_back()
 
 def reset_mouse():
     hover(Location(0, 0))
+
+
+def login_site(site_name):
+    username = get_credential(site_name,"username")
+    password = get_credential(site_name,"password")
+    type(username)
+    type(Key.TAB)
+    type(password)
+    type(Key.TAB)
+    type(Key.ENTER)

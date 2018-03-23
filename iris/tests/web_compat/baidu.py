@@ -21,17 +21,16 @@ class test(base_test):
         url = "www.baidu.com"
         home = "baidu_home.png"
         search_item = "Barack Obama"
-        search_page = "search_page.png"
+        search_page = "baidu_search_page.png"
 
-        logger.info("Accessing " + url + "...")
+        logger.debug("Accessing " + url + "...")
         navigate(url)
 
         if exists(home, 10):
-            logger.info(url + " successfully loaded")
+            logger.debug(url + " successfully loaded")
             type(search_item)
             type(Key.ENTER)
-            time.sleep(3)
-            logger.info("Searching " + search_item)
+            logger.debug("Searching " + search_item)
 
             if exists(search_page, 10):
                 result = "PASS"
