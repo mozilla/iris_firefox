@@ -4,11 +4,14 @@
 
 import time
 from api.core import *
-from logger.iris_logger import *
+import pyautogui
+
+pyautogui.FAILSAFE = False
 
 
-logger = getLogger(__name__)
+# from logger.iris_logger import *
 
+# logger = getLogger(__name__)
 
 # This helper defines keyboard shortcuts for many common actions in Firefox usage.
 # We should be using these keyboard shortcuts whenever possible.
@@ -27,14 +30,26 @@ logger = getLogger(__name__)
 
 # Keyboard shortcuts for Navigation.
 
+def typewrite(text, interval=0.02):
+    print("Type: " + str(text))
+    pyautogui.typewrite(text, interval)
+
+
+def press(key):
+    print("Press: " + key)
+    pyautogui.keyDown(str(key))
+    pyautogui.keyUp(str(key))
+
+
 def navigate_back():
     """
     Navigate back in browsing history one page visit.
     """
     if get_os() == "osx":
-        type(text="[", modifier=KeyModifier.CMD)
+        # @todo double check on mac
+        pyautogui.hotkey('alt', 'left')
     else:
-        type(text=Key.LEFT, modifier=KeyModifier.ALT)
+        pyautogui.hotkey('alt', 'left')
 
 
 def navigate_forward():
@@ -42,16 +57,17 @@ def navigate_forward():
     Navigate forward in browsing history one page visit.
     """
     if get_os() == "osx":
-        type(text="]", modifier=KeyModifier.CMD)
+        # @todo double check on mac
+        pyautogui.hotkey('alt', 'right')
     else:
-        type(text="]", modifier=KeyModifier.ALT)
+        pyautogui.hotkey('alt', 'right')
 
 
 def navigate_home():
     """
     Navigate the browser to whatever is set as the Home page.
     """
-    type(text=Key.HOME, modifier=KeyModifier.ALT)
+    pyautogui.hotkey('alt', 'home')
 
 
 def open_file_picker():
@@ -59,9 +75,9 @@ def open_file_picker():
     Open the system file picker.
     """
     if get_os() == "osx":
-        type(text="o", modifier=KeyModifier.CMD)
+        pyautogui.hotkey('command', 'o')
     else:
-        type(text="o", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 'o')
 
 
 def select_location_bar():
@@ -69,9 +85,9 @@ def select_location_bar():
     Set focus to the locationbar.
     """
     if get_os() == "osx":
-        type(text="l", modifier=KeyModifier.CMD)
+        pyautogui.hotkey('command', 'l')
     else:
-        type(text="l", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 'l')
     # wait to allow the location bar to become responsive.
     time.sleep(1)
 
@@ -81,9 +97,9 @@ def reload_page():
     Reload the current web page.
     """
     if get_os() == "osx":
-        type(text="r", modifier=KeyModifier.CMD)
+        pyautogui.hotkey('command', 'r')
     else:
-        type(text="r", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 'r')
 
 
 def force_reload_page():
@@ -91,55 +107,55 @@ def force_reload_page():
     Reload the current web page with cache override.
     """
     if get_os() == "osx":
-        type(text="r", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        pyautogui.hotkey('command', 'shift', 'r')
     else:
-        type(text="r", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        pyautogui.hotkey('ctrl', 'shift', 'r')
 
 
 def stop_page_load():
     """
     Stop the current in progress web page from loading.
     """
-    type(text=Key.ESC)
+    pyautogui.hotkey('escape')
 
 
 # End of Navigation keyboard shortcuts.
 
 # Keyboard shortcuts for Current Page.
 
-def scroll_down():
+def scroll_down(clicks=3):
     """
     Scroll down one increment (equivalant to 3 mousewheel steps).
     """
-    type(text=Key.DOWN)
+    pyautogui.scroll(clicks)
 
 
-def scroll_up():
+def scroll_up(clicks=-3):
     """
     Scroll up one increment (equivalant to 3 mousewheel steps).
     """
-    type(text=Key.UP)
+    pyautogui.scroll(clicks)
 
 
 def page_down():
     """
     Jump down one screen.
     """
-    type(text=Key.SPACE)
+    pyautogui.press("space")
 
 
 def page_up():
     """
     Jump up one screen.
     """
-    type(text=Key.SPACE, modifier=KeyModifier.SHIFT)
+    pyautogui.hotkey('shift', 'space')
 
 
 def page_end():
     """
     Jump to the bottom of the page.
     """
-    type(text=Key.END)
+    pyautogui.press("end")
 
 
 def page_home():
@@ -468,7 +484,7 @@ def maximize_window():
         keyUp(Key.ALT)
 
     elif get_os() == "win":
-        type(text=Key.UP, modifier=KeyModifier.WIN)
+        pyautogui.hotkey('win', 'up')
     else:
         # This is the documented method for window maximize,
         # but isn't working on one Linux config for unknown reasons,
@@ -490,9 +506,9 @@ def new_tab():
     Open a new browser tab.
     """
     if get_os() == "osx":
-        type(text="t", modifier=KeyModifier.CMD)
+        pyautogui.hotkey('command', 't')
     else:
-        type(text="t", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 't')
 
 
 def new_window():
@@ -534,11 +550,11 @@ def quit_firefox():
     Quit the browser.
     """
     if get_os() == "osx":
-        type(text="q", modifier=KeyModifier.CMD)
+        pyautogui.hotkey('command', 'q')
     elif get_os() == "win":
-        type(text="q", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        pyautogui.hotkey('ctrl', 'shift', 'q')
     else:
-        type(text="q", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 'd')
 
 
 def select_tab(num):
@@ -602,9 +618,9 @@ def history_sidebar():
     Toggle open/close the history sidebar.
     """
     if get_os() == "osx":
-        type(text="h", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        pyautogui.hotkey('command', 'shift', 'h')
     else:
-        type(text="h", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 'shift', 'h')
 
 
 def clear_recent_history():
@@ -612,9 +628,9 @@ def clear_recent_history():
     Open the Clear Recent History dialog.
     """
     if get_os() == "osx":
-        type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        pyautogui.hotkey('command', 'shift', 'delete')
     else:
-        type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        pyautogui.hotkey('ctrl', 'shift', 'delete')
 
 
 def bookmark_all_tabs():
@@ -622,9 +638,9 @@ def bookmark_all_tabs():
     Open the Bookmark All Tabs dialog.
     """
     if get_os() == "osx":
-        type(text="d", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        pyautogui.hotkey('command', 'shift', 'd')
     else:
-        type(text="d", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        pyautogui.hotkey('ctrl', 'shift', 'd')
 
 
 def bookmark_page():
@@ -632,9 +648,9 @@ def bookmark_page():
     Bookmark the current page.
     """
     if get_os() == "osx":
-        type(text="d", modifier=KeyModifier.CMD)
+        pyautogui.hotkey('command', 'd')
     else:
-        type(text="d", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 'd')
 
 
 def bookmarks_sidebar():
@@ -642,9 +658,9 @@ def bookmarks_sidebar():
     Toggle open/close the bookmarks sidebar.
     """
     if get_os() == "osx":
-        type(text="b", modifier=KeyModifier.CMD)
+        pyautogui.hotkey('command', 'b')
     else:
-        type(text="b", modifier=KeyModifier.CTRL)
+        pyautogui.hotkey('ctrl', 'b')
 
 
 def open_library():
@@ -691,6 +707,5 @@ def open_page_source():
         type(text="u", modifier=KeyModifier.CMD)
     else:
         type(text="u", modifier=KeyModifier.CTRL)
-
 
 # End Tools keyboard shortcuts

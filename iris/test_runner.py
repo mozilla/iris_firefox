@@ -10,8 +10,8 @@ import importlib
 
 logger = getLogger(__name__)
 
-def run(app):
 
+def run(app):
     logger.info("Running tests")
 
     # Start with no saved profiles
@@ -30,7 +30,7 @@ def run(app):
 
                 # Move the mouse to upper left corner of the screen
                 reset_mouse()
-                
+
                 # Initialize and launch Firefox
                 current.setup()
 
@@ -52,11 +52,10 @@ def run(app):
             logger.warning('[%s] is not a test file. Skipping...', module)
 
     # We may remove profiles here, but likely still in use and can't do it yet
-    #clean_profiles()
+    # clean_profiles()
 
 
 def load_tests(app):
-
     app.test_list = []
     app.test_packages = []
 
