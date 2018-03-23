@@ -57,15 +57,17 @@ class test(base_test):
         logger.debug("Scroll down")
         for x in range(10):
             scroll_down()
-
-        #Scroll up
-        logger.debug("Scroll up")
-        time.sleep(3)
-        for x in range(10):
-            scroll_up()
-
-        logger.debug("Navigate back")
-        navigate_back()
+        if exists(iris_text,1):
+            logger.debug("Scroll down was not performed")
+        else:
+            logger.debug("Scroll up")
+            time.sleep(3)
+            for x in range(10):
+                scroll_up()
+        if exists(iris_text,1):
+            logger.debug("Page was scrolled back up")
+            navigate_back()
+            logger.debug("Navigate back")
 
         try:
             wait (page_title, 10)
@@ -75,47 +77,47 @@ class test(base_test):
             logger.error ("Can't find Wikipedia image in page, aborting test.")
             print "FAIL"
             return
-
-        logger.debug("Change language to Spanish")
-        type(keyword)
-        if get_os() == "osx":
-            type(Key.TAB)
-            time.sleep(1)
-            type(Key.DOWN)
-            time.sleep(1)
-            type(Key.DOWN)
-            type(Key.ENTER)
-            time.sleep(1)
-            type(Key.TAB)
-            type(Key.ENTER)
         else:
-            type(Key.TAB)
-            type(Key.DOWN)
-            type(Key.TAB)
-            type(Key.ENTER)
-
-
-        # We will replace PASS/FAIL with proper assert functions soon
-        if exists(iris_text, 10):
-
-            # Using text recognition, we can verify if the results are in Spanish
-            results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
-            page_text = get_firefox_region().text()
-
-            # Text recognition sometimes mistranslates words, so let's check that
-            # at least one Spanish word appears in the page
-            found = False
-            for word in results_spanish:
-                if word in page_text:
-                    found = True
-                    break
-
-            if found:
-                logger.debug("Found Spanish search results")
-                print "PASS"
+            logger.debug("Change language to Spanish")
+            type(keyword)
+            if get_os() == "osx":
+                type(Key.TAB)
+                time.sleep(1)
+                type(Key.DOWN)
+                time.sleep(1)
+                type(Key.DOWN)
+                type(Key.ENTER)
+                time.sleep(1)
+                type(Key.TAB)
+                type(Key.ENTER)
             else:
-                logger.debug("Can not find Spanish search results")
+                type(Key.TAB)
+                type(Key.DOWN)
+                type(Key.TAB)
+                type(Key.ENTER)
+
+
+                # We will replace PASS/FAIL with proper assert functions soon
+            if exists(iris_text, 10):
+                # Using text recognition, we can verify if the results are in Spanish
+                results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
+                page_text = get_firefox_region().text()
+
+                # Text recognition sometimes mistranslates words, so let's check that
+                # at least one Spanish word appears in the page
+                found = False
+                for word in results_spanish:
+
+                    if word in page_text:
+                        found = True
+                        break
+
+                if found:
+                    logger.debug("Found Spanish search results")
+                    print "PASS"
+                else:
+                    logger.debug("Can not find Spanish search results")
+                    print "FAIL"
+            else:
+                logger.debug("Can't find search image in page")
                 print "FAIL"
-        else:
-            logger.debug("Can't find search image in page")
-            print "FAIL"
