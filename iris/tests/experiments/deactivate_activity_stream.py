@@ -6,19 +6,15 @@
 from test_case import *
 
 
-
 class test(base_test):
 
     def __init__(self, app):
         base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This tests the ability to activate/deactivate the activity stream"
-
 
     def run(self):
 
-        preference="browser.newtabpage.activity-stream.enabled"
+        preference = "browser.newtabpage.activity-stream.enabled"
         change_preference(preference, "false")
         new_tab()
         new_tab()
@@ -42,7 +38,7 @@ class test(base_test):
         # NOTE: sometimes fails due to poor text recognition
         # e.g. "TOP SITES" is seen as "TOP srres" on at least one Linux config
         # TODO: make more robust
-        
+
         if "TOP SITES" in get_firefox_region().text():
             result = "PASS"
         else:

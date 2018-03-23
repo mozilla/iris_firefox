@@ -11,8 +11,8 @@ from api.helpers.keyboard_shortcuts import *
 from logger.iris_logger import *
 from configuration.config_parser import *
 
-
 logger = getLogger(__name__)
+
 
 class base_test(object):
 
@@ -20,20 +20,12 @@ class base_test(object):
         self.app = app
         self.enable = True
 
-
-    def set_image_path(self, path):
-        image_path = os.path.join(path, "images", self.app.os)
-        #logger.debug("Setting image path for %s" % image_path)
-        add_image_path(image_path)
-
-
     def _create_unique_profile_name(self):
         ts = int(time.time())
         profile_name = "profile_%s" % ts
         return profile_name
 
-
-    def setup (self):
+    def setup(self):
         """
         This might be a good place to declare variables or initialize Fx state.
         Also, by default, a new Firefox instance is created, with a blank profile and URL.
@@ -42,7 +34,6 @@ class base_test(object):
         launch_firefox(path=self.app.fx_path, profile=self._create_unique_profile_name(), url="about:blank")
         return
 
-
     def resize_window(self):
         """
         By default, we will maximize the window.
@@ -50,13 +41,11 @@ class base_test(object):
         """
         maximize_window()
 
-
-    def run (self):
+    def run(self):
         """
         This is your test logic.
         """
         return
-
 
     def teardown(self):
         """

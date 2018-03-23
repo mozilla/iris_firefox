@@ -10,10 +10,7 @@ class test(base_test):
 
     def __init__(self, app):
         base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test of new tab preferences search"
-
 
     def run(self):
 
@@ -30,7 +27,7 @@ class test(base_test):
                 if exists(tab_preference_search_button, 2):
                     try:
                         click(tab_preference_search_button)
-                        if waitVanish(Pattern(tab_search_section).exact(), 2):
+                        if waitVanish(tab_search_section, 2):
                             result = "PASS"
                         else:
                             result = "FAIL"
