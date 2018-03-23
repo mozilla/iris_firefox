@@ -81,9 +81,9 @@ class test(base_test):
             else:
                 if exists(search_field, 10):
                     click(search_field)
-                    type(Key.TAB)
                     time.sleep(2)
-                    type(Key.TAB)
+                    for i in range(2):
+                        type(Key.TAB)
                     time.sleep(2)
                     type(Key.ENTER)
                     time.sleep(2)
