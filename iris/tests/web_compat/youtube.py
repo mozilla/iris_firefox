@@ -21,8 +21,10 @@ class test(base_test):
         youtube_banner="youtube_banner.png"
         youtube_filter="filter_youtube_results.png"
         navigate(url)
+
+        # replace with wait method for youtube_banner
         time.sleep(4)
-        login_youtube()
+        self.login_youtube()
         if exists(youtube_banner,10):
             logger.debug("Youtube Search")
             type("lord of the rings")
@@ -48,3 +50,24 @@ class test(base_test):
         else:
             logger.debug( "Test failed")
 
+
+    def login_youtube(self):
+        try:
+            wait ("youtube_banner.png", 10)
+        except:
+            logger.error ("Can't find Youtube image in page, aborting test.")
+        else:
+            for i in range(5):
+                type(Key.TAB)
+            type(Key.ENTER)
+            if exists("youtube_sign_in.png",10):
+                type( get_credential("Youtube","username"))
+                time.sleep(3)
+                for i in range(2):
+                    type(Key.TAB)
+                type(Key.ENTER)
+                time.sleep(3)
+                type( get_credential("Youtube","password"))
+                time.sleep(3)
+                type(Key.TAB)
+                type(Key.ENTER)
