@@ -10,11 +10,12 @@ class test(base_test):
 
     def __init__(self, app):
         base_test.__init__(self, app)
-        self.meta = "This is an empty test case that does nothing"
+        self.meta = 'This is an empty test case that does nothing'
 
     def run(self):
         """
         This is where your test logic goes.
         """
-        print ("Hello world!")
+        assert_equal(self, 1, 1, 'test')
+        assert_true(self, False, 'test')
         return
