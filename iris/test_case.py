@@ -43,7 +43,7 @@ class base_test(object):
 
     def get_results(self):
         for result in self.results:
-            if 'FAIL' == result.outcome:
+            if 'FAILED' == result.outcome:
                 self.is_complete = True
                 self.is_passed = False
                 return
@@ -52,7 +52,8 @@ class base_test(object):
 
     def print_results(self):
         for result in self.results:
-            logger.info('Step: %s, outcome: %s' % (result.message, result.outcome))
+            logger.info('Step: %s, outcome: %s %s' % (
+                result.message, result.outcome, '\n' + result.error if result.error else ""))
         logger.info('%s - %s (Finished in %s second(s))\n' % (
             self.meta, format_outcome(self.is_passed), get_duration(self.start_time, self.end_time)))
 
@@ -71,8 +72,8 @@ class base_test(object):
     def get_test_duration(self):
         return round(self.end_time - self.start_time, 2)
 
-    def add_assert_result(self, outcome, message, actual, expected, mismatch):
-        ar = Assert(outcome, message, actual, expected, mismatch)
+    def add_assert_result(self, outcome, message, actual, expected, error):
+        ar = Assert(outcome, message, actual, expected, error)
         self.add_result(ar)
 
     def _create_unique_profile_name(self):
