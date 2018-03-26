@@ -8,10 +8,10 @@ import pyautogui
 
 pyautogui.FAILSAFE = False
 
+from logger.iris_logger import *
 
-# from logger.iris_logger import *
+logger = getLogger(__name__)
 
-# logger = getLogger(__name__)
 
 # This helper defines keyboard shortcuts for many common actions in Firefox usage.
 # We should be using these keyboard shortcuts whenever possible.
@@ -31,12 +31,12 @@ pyautogui.FAILSAFE = False
 # Keyboard shortcuts for Navigation.
 
 def typewrite(text, interval=0.02):
-    print("Type: " + str(text))
+    logger.debug("Type: " + str(text))
     pyautogui.typewrite(text, interval)
 
 
 def press(key):
-    print("Press: " + key)
+    logger.debug("Press: " + key)
     pyautogui.keyDown(str(key))
     pyautogui.keyUp(str(key))
 
