@@ -8,15 +8,17 @@ PACKAGE_NAME = 'iris'
 PACKAGE_VERSION = '0.1'
 
 INSTALL_REQUIRES = [
-    'PyAutoGUI==0.9.36',
     'coloredlogs',
     'hashfs',
     'python-dateutil',
     'opencv-python==3.4.0.12',
-    'pyobjc-core',
-    'pyobjc',
     'pytesseract==0.2.0',
-    'numpy==1.14.2'
+    'numpy==1.14.2',
+    'pyobjc-core;platform_system=="Darwin"',
+    'pyobjc;platform_system=="Darwin"',
+    'pyobjc-framework-Quartz;platform_system=="Darwin"',
+    'image',
+    'PyAutoGUI==0.9.36',
 ]
 
 TESTS_REQUIRE = [
