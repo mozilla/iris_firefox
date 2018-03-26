@@ -23,8 +23,91 @@ class test(base_test):
 
         time.sleep(5)
 
-        login_site("Facebook")
-        time.sleep(3)
+        #login - please see the login_facebook method in general.py
 
-        print "Hello world!"
-        return
+        login_facebook()
+        logger.info("Successful login")
+        time.sleep(3)
+        type(Key.ESC)
+        time.sleep(4)
+        type(Key.ESC)
+
+
+        #post message
+
+
+        if exists("news_feed.png", 10):
+            if get_os() == "osx":
+                for i in range(7):
+                    type(Key.TAB)
+                time.sleep(2)
+
+                type("test")
+                for i in range(3):
+                    type(Key.TAB)
+
+                time.sleep(2)
+                type(Key.ENTER)
+                logger.info("Message has been posted successfully")
+                time.sleep(5)
+            else:
+                click("type_message.png")
+                time.sleep(2)
+                type("test")
+                click("post_message.png")
+                time.sleep(2)
+        else:
+            logger.error("Post Failed...")
+
+        #delete post
+
+        if exists("post.png", 10):
+            if get_os() == "osx":
+                for i in range(7):
+                    type(Key.TAB)
+                time.sleep(2)
+                type(Key.ESC)
+                time.sleep(2)
+                type(Key.ENTER)
+                time.sleep(2)
+                click("delete_post.png")
+                time.sleep(3)
+                for i in range(2):
+                    type(Key.TAB)
+                time.sleep(2)
+                type(Key.ENTER)
+                time.sleep(3)
+                logger.info("The message has been deleted")
+            else:
+                click("type_message.png")
+                time.sleep(1)
+                type(Key.ESC)
+                time.sleep(1)
+                type(Key.ENTER)
+                time.sleep(2)
+                click("delete_post.png")
+                time.sleep(2)
+                for i in range(5):
+                    type(Key.TAB)
+                time.sleep(2)
+                type(Key.ENTER)
+                time.sleep(2)
+
+        else:
+            logger.info("No message posted")
+
+        time.sleep(5)
+
+        #scroll down and up
+
+        for i in range(15):
+            scroll_down()
+        time.sleep(2)
+        for i in range(15):
+            scroll_up()
+        time.sleep(2)
+
+
+
+
+

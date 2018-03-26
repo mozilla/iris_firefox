@@ -157,11 +157,33 @@ def reset_mouse():
     hover(Location(0, 0))
 
 
-def login_site(site_name):
-    username = get_credential(site_name,"username")
-    password = get_credential(site_name,"password")
-    type(username)
-    type(Key.TAB)
-    type(password)
-    type(Key.TAB)
-    type(Key.ENTER)
+def login_facebook():
+    username = get_credential("Facebook","username")
+    password = get_credential("Facebook","password")
+    if exists("login_check.png", 10):
+        type(username)
+        type(Key.TAB)
+        type(password)
+        type(Key.TAB)
+        type(Key.ENTER)
+    else:
+        logger.error("Facebook page was not loaded...")
+
+
+def login_gmail():
+    username = get_credential("Gmail", "username")
+    password = get_credential("Gmail", "password")
+    if exists("login_gmail.png", 10):
+        type(username)
+        for i in range(2):
+            type(Key.TAB)
+        type(Key.ENTER)
+        time.sleep(2)
+        type(password)
+        type(Key.TAB)
+        type(Key.ENTER)
+    else:
+        logger.error("Gmail Log In PAge was not loaded..")
+
+
+
