@@ -16,7 +16,7 @@ import random
 import time
 import sys
 import os
-from image_remove_noise import process_image_for_ocr
+from helpers.image_remove_noise import process_image_for_ocr
 
 try:
     import Image
