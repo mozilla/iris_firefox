@@ -3,23 +3,25 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import traceback
+
+
 class Assert(object):
 
-    def __init__(self, outcome, message, actual, expected, mismatch):
+    def __init__(self, outcome, message, actual, expected, error):
         self.outcome = outcome
         self.message = message
         self.expected = expected
         self.actual = actual
-        self.mismatch = mismatch
+        self.error = error
 
 
 def assert_equal(test_case, actual, expected, message):
     try:
         assert actual == expected
-        test_case.add_assert_result('PASS', message, actual, expected, None)
+        test_case.add_assert_result('PASSED', message, actual, expected, None)
     except AssertionError:
-        test_case.add_assert_result('FAIL', message, actual, expected,
-                                    'Actual: %s not equal to Expected %s' % (actual, expected))
+        test_case.add_assert_result('FAILED', message, actual, expected, traceback.format_exc())
         raise AssertionError
 
 
