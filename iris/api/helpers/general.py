@@ -168,3 +168,22 @@ def login_facebook():
         type(Key.ENTER)
     else:
         logger.error("Facebook page was not loaded...")
+
+
+def login_gmail():
+    username = get_credential("Gmail", "username")
+    password = get_credential("Gmail", "password")
+    if exists("login_gmail.png", 10):
+        type(username)
+        for i in range(2):
+            type(Key.TAB)
+        type(Key.ENTER)
+        time.sleep(2)
+        type(password)
+        type(Key.TAB)
+        type(Key.ENTER)
+    else:
+        logger.error("Gmail Log In PAge was not loaded..")
+
+
+
