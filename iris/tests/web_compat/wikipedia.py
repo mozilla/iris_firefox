@@ -21,7 +21,6 @@ class test(base_test):
         page_title = "wikipedia.png"
         iris_text = "wikipedia_iris.png"
         keyword = "iris"
-
         navigate(url)
 
         try:
@@ -49,21 +48,18 @@ class test(base_test):
             logger.error ("Can't find search image in page")
             print "FAIL"
 
-
-        """
-        What does this next part do? Why do we scroll up and down the page?
-        """
         #Scroll down
         logger.debug("Scroll down")
         for x in range(10):
             scroll_down()
+            time.sleep(.25)
         if exists(iris_text,1):
             logger.debug("Scroll down was not performed")
         else:
             logger.debug("Scroll up")
-            time.sleep(3)
             for x in range(10):
                 scroll_up()
+                time.sleep(.25)
         if exists(iris_text,1):
             logger.debug("Page was scrolled back up")
             navigate_back()
@@ -97,7 +93,7 @@ class test(base_test):
                 type(Key.ENTER)
 
 
-                # We will replace PASS/FAIL with proper assert functions soon
+            # We will replace PASS/FAIL with proper assert functions soon
             if exists(iris_text, 10):
                 # Using text recognition, we can verify if the results are in Spanish
                 results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
@@ -107,11 +103,9 @@ class test(base_test):
                 # at least one Spanish word appears in the page
                 found = False
                 for word in results_spanish:
-
                     if word in page_text:
                         found = True
                         break
-
                 if found:
                     logger.debug("Found Spanish search results")
                     print "PASS"
