@@ -5,8 +5,7 @@
 import os
 import shutil
 import subprocess
-from gui_control import *
-from image_search import *
+from api.core import *
 from keyboard_shortcuts import *
 
 
