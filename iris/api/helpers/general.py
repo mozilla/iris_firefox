@@ -11,7 +11,6 @@ from api.helpers.keyboard_shortcuts import *
 from configuration.config_parser import *
 from logger.iris_logger import *
 
-add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
 logger = getLogger(__name__)
 
 
@@ -52,7 +51,7 @@ def confirm_firefox_launch():
     try:
         wait("home.png", 20)
     except:
-        print "Can't launch Firefox - aborting test run."
+        print ("Can't launch Firefox - aborting test run.")
         exit(1)
 
 
@@ -60,7 +59,7 @@ def confirm_firefox_quit():
     try:
         waitVanish("home.png", 10)
     except:
-        print "Firefox still around - aborting test run."
+        print ("Firefox still around - aborting test run.")
         exit(1)
 
 
@@ -113,17 +112,17 @@ def get_main_modifier():
 def copy_to_clipboard():
     edit_select_all()
     edit_copy()
-    value=Env.getClipboard().strip()
+    value = Env.getClipboard().strip()
     return value
 
 
-def change_preference(pref_name,value):
+def change_preference(pref_name, value):
     navigate("about:config")
     time.sleep(1)
 
     type(Key.SPACE)
     time.sleep(1)
-    
+
     type(pref_name)
     time.sleep(2)
     type(Key.TAB)
@@ -144,8 +143,8 @@ def change_preference(pref_name,value):
         type(Key.ENTER)
         # For non-boolean values, a dialog box should appear
         dialog_box = Pattern("preference_dialog_icon.png")
-        if exists(dialog_box,3):
-            type(dialog_box,value)
+        if exists(dialog_box, 3):
+            type(dialog_box, value)
             type(Key.ENTER)
     navigate_back()
 
