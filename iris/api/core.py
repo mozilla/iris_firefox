@@ -251,7 +251,6 @@ Sikuli wrappers
 
 
 def wait(image_name, max_attempts, time_sample=0.5, precision=DEFAULT_IMG_ACCURACY):
-    logger.debug("Wait for: " + image_name)
     image_path = IMAGES[image_name]
     image_found = _image_search_loop(image_path, time_sample, max_attempts, precision)
     if (image_found[0] != -1) & (image_found[1] != -1):
@@ -299,3 +298,14 @@ def hover(x=0, y=0, duration=0.0, tween='linear', pause=None):
     x = int(x)
     y = int(y)
     pyautogui.moveTo(x, y, duration, tween, pause)
+
+
+def typewrite(text, interval=0.02):
+    logger.debug("Type: " + str(text))
+    pyautogui.typewrite(text, interval)
+
+
+def press(key):
+    logger.debug("Press: " + key)
+    pyautogui.keyDown(str(key))
+    pyautogui.keyUp(str(key))
