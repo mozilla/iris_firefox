@@ -30,16 +30,6 @@ logger = getLogger(__name__)
 
 # Keyboard shortcuts for Navigation.
 
-def typewrite(text, interval=0.02):
-    logger.debug("Type: " + str(text))
-    pyautogui.typewrite(text, interval)
-
-
-def press(key):
-    logger.debug("Press: " + key)
-    pyautogui.keyDown(str(key))
-    pyautogui.keyUp(str(key))
-
 
 def navigate_back():
     """
