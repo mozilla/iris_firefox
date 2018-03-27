@@ -50,7 +50,8 @@ def clean_profiles():
 def confirm_firefox_launch():
     try:
         wait("home.png", 20)
-    except:
+    except Exception as e:
+        logger.error(e)
         print ("Can't launch Firefox - aborting test run.")
         exit(1)
 

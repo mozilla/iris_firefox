@@ -14,6 +14,8 @@ from helpers.image_remove_noise import process_image_for_ocr
 import pytesseract
 import cv2
 from logger.iris_logger import *
+import time
+import random
 
 try:
     import Image
@@ -22,6 +24,7 @@ except ImportError:
 
 pyautogui.FAILSAFE = False
 DEFAULT_IMG_ACCURACY = 0.8
+FIND_METHOD = cv2.TM_CCOEFF_NORMED
 IMAGES = {}
 DEBUG = True
 
@@ -55,7 +58,7 @@ def get_module_dir():
 
 
 CURRENT_PLATFORM = get_os()
-PROJECT_BASE_PATH = os.path.abspath(os.path.join("iris", os.pardir))
+PROJECT_BASE_PATH = get_module_dir()
 for root, dirs, files in os.walk(PROJECT_BASE_PATH):
     for file_name in files:
         if file_name.endswith(".png"):
@@ -64,19 +67,40 @@ for root, dirs, files in os.walk(PROJECT_BASE_PATH):
 
 screenWidth, screenHeight = pyautogui.size()
 
+IMAGE_DEBUG_PATH = get_module_dir() + "/image_debug"
+try:
+    os.stat(IMAGE_DEBUG_PATH)
+except:
+    os.mkdir(IMAGE_DEBUG_PATH)
+for debug_image_file in os.listdir(IMAGE_DEBUG_PATH):
+    file_path = os.path.join(IMAGE_DEBUG_PATH, debug_image_file)
+    try:
+        if os.path.isfile(file_path):
+            os.unlink(file_path)
+    except Exception as e:
+        continue
+
 '''
 Private function: Saves PIL input image for debug
 '''
 
 
-def _save_debug_image(image):
-    if DEBUG is True:
-        file_path = PROJECT_BASE_PATH + '/last_grabbed_region.png'
-        try:
-            os.remove(file_path)
-        except:
-            pass
-        image.save(file_path)
+def _save_debug_image(search_for, search_in, res_coordinates):
+    if DEBUG:
+        w, h = search_for.shape[::-1]
+
+        print(res_coordinates)
+        if isinstance(res_coordinates, list):
+            for match_coordinates in res_coordinates:
+                cv2.rectangle(search_in, (match_coordinates[0], match_coordinates[1]),
+                              (match_coordinates[0] + w, match_coordinates[1] + h), [0, 0, 255], 2)
+        else:
+            cv2.rectangle(search_in, (res_coordinates[0], res_coordinates[1]),
+                          (res_coordinates[0] + w, res_coordinates[1] + h), [0, 0, 255], 2)
+
+        current_time = int(time.time())
+        random_nr = random.randint(1, 51)
+        cv2.imwrite(IMAGE_DEBUG_PATH + '/name_' + str(current_time) + '_' + str(random_nr) + '.png', search_in)
 
 
 '''
@@ -95,7 +119,6 @@ def _region_grabber(coordinates):
     width = coordinates[2] - x1
     height = coordinates[3] - y1
     grabbed_area = pyautogui.screenshot(region=(x1, y1, width, height))
-    _save_debug_image(grabbed_area)
     return grabbed_area
 
 
@@ -104,16 +127,52 @@ Private function: Search for needle in stack
 '''
 
 
-def _match_template(search_for, search_in, precision=DEFAULT_IMG_ACCURACY):
+def _match_template(search_for, search_in, precision=DEFAULT_IMG_ACCURACY, search_multiple=False):
     img_rgb = np.array(search_in)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread(search_for, 0)
+    needle = cv2.imread(search_for, 0)
 
-    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+
     if max_val < precision:
         return [-1, -1]
-    return max_loc
+    else:
+        _save_debug_image(needle, img_rgb, max_loc)
+        return max_loc
+
+
+def _match_template_multiple(search_for, search_in, precision=DEFAULT_IMG_ACCURACY, search_multiple=False,
+                             threshold=0.7):
+    img_rgb = np.array(search_in)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    needle = cv2.imread(search_for, 0)
+
+    res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
+    w, h = needle.shape[::-1]
+    points = []
+    while True:
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+        if FIND_METHOD in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+            top_left = min_loc
+        else:
+            top_left = max_loc
+
+        if max_val > threshold:
+            sx, sy = top_left
+            for x in range(sx - w / 2, sx + w / 2):
+                for y in range(sy - h / 2, sy + h / 2):
+                    try:
+                        res[y][x] = np.float32(-10000)
+                    except IndexError:
+                        pass
+            new_match_point = (top_left[0], top_left[1])
+            points.append(new_match_point)
+        else:
+            break
+
+    _save_debug_image(needle, img_rgb, points)
+    return points
 
 
 '''
@@ -133,6 +192,24 @@ Output :
 def _image_search(image_path, precision=DEFAULT_IMG_ACCURACY):
     in_region = _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
     return _match_template(image_path, in_region, precision)
+
+
+'''
+Private function: Search for multiple matches of image on the entire screen.
+
+Input :
+    image_path : Path to the searched for image.
+    precision : OpenCv image search precision.
+
+Output :
+   Array of coordinates if found as [[x,y],[x,y]] or [] if not.
+
+'''
+
+
+def _image_search_multiple(image_path, precision=DEFAULT_IMG_ACCURACY):
+    in_region = _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
+    return _match_template_multiple(image_path, in_region, precision)
 
 
 '''
@@ -246,24 +323,26 @@ Sikuli wrappers
 - waitVanish
 - click
 - exists 
+- find
+- findAll
 
 '''
 
 
-def wait(image_name, max_attempts, time_sample=0.5, precision=DEFAULT_IMG_ACCURACY):
+def wait(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURACY):
     image_path = IMAGES[image_name]
-    image_found = _image_search_loop(image_path, time_sample, max_attempts, precision)
+    image_found = _image_search_loop(image_path, interval, max_attempts, precision)
     if (image_found[0] != -1) & (image_found[1] != -1):
         return True
     return False
 
 
-def waitVanish(image_name, max_attempts, time_sample=0.5, precision=DEFAULT_IMG_ACCURACY):
+def waitVanish(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURACY):
     logger.debug("Wait vanish for: " + image_name)
     pattern_found = wait(image_name, 1)
     tries = 0
     while (pattern_found is True) and (tries < max_attempts):
-        time.sleep(time_sample)
+        time.sleep(interval)
         pattern_found = wait(image_name, 1)
         tries += 1
 
@@ -283,7 +362,7 @@ def click(image_name):
         logger.debug("Image not found:", image_name)
 
 
-def exists(image_name, time_sample):
+def exists(image_name, interval):
     return wait(image_name, 3, 0.5)
 
 
@@ -294,10 +373,25 @@ def get_screen():
     return _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
 
 
-def hover(x=0, y=0, duration=0.0, tween='linear', pause=None):
-    x = int(x)
-    y = int(y)
-    pyautogui.moveTo(x, y, duration, tween, pause)
+def hover(x=0, y=0, duration=0.0, tween='linear', pause=None, image=None):
+    if image is not None:
+        pos = _image_search(image)
+        if pos[0] != -1:
+            pyautogui.moveTo(pos[0], pos[1])
+    else:
+        x = int(x)
+        y = int(y)
+        pyautogui.moveTo(x, y, duration, tween, pause)
+
+
+def find(image_name):
+    image_path = IMAGES[image_name]
+    return _image_search(image_path)
+
+
+def findAll(image_name):
+    image_path = IMAGES[image_name]
+    return _image_search_multiple(image_path)
 
 
 def typewrite(text, interval=0.02):
