@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -19,6 +20,20 @@ def format_outcome(outcome):
         return 'PASSED'
     else:
         return 'FAILED'
+
+
+def print_error(error):
+    lines = error.splitlines()
+    result = '\n'
+    max_len = 0
+    for line in lines:
+        if len(line) > max_len:
+            max_len = len(line)
+    result = result + '-' * (max_len + 4) + '\n'
+    for line in lines:
+        result = result + '» ' + line + ' ' * (max_len - len(line)) + ' «' + '\n'
+    result = result + '-' * (max_len + 4) + '\n'
+    return result
 
 
 def get_duration(start_time, end_time):

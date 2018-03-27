@@ -52,9 +52,9 @@ class base_test(object):
 
     def print_results(self):
         for result in self.results:
-            logger.info('Step: %s, outcome: %s %s' % (
+            logger.info('Step: %s, outcome: >>> %s <<< %s' % (
                 result.message, result.outcome, '\n' + result.error if result.error else ""))
-        logger.info('%s - %s (Finished in %s second(s))\n' % (
+        logger.info('%s - >>> %s <<< (Finished in %s second(s))\n' % (
             self.meta, format_outcome(self.is_passed), get_duration(self.start_time, self.end_time)))
 
     def get_start_time(self):
