@@ -6,7 +6,9 @@ import time
 from api.core import *
 from logger.iris_logger import *
 
+
 logger = getLogger(__name__)
+
 
 # This helper defines keyboard shortcuts for many common actions in Firefox usage.
 # We should be using these keyboard shortcuts whenever possible.
@@ -32,7 +34,7 @@ def navigate_back():
     if get_os() == "osx":
         type(text="[", modifier=KeyModifier.CMD)
     else:
-        type(text="{", modifier=KeyModifier.ALT)
+        type(text=Key.LEFT, modifier=KeyModifier.ALT)
 
 
 def navigate_forward():
