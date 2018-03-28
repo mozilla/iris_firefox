@@ -89,7 +89,6 @@ def _save_debug_image(search_for, search_in, res_coordinates):
     if DEBUG:
         w, h = search_for.shape[::-1]
 
-        print(res_coordinates)
         if isinstance(res_coordinates, list):
             for match_coordinates in res_coordinates:
                 cv2.rectangle(search_in, (match_coordinates[0], match_coordinates[1]),
@@ -403,3 +402,19 @@ def press(key):
     logger.debug("Press: " + key)
     pyautogui.keyDown(str(key))
     pyautogui.keyUp(str(key))
+
+
+def hotkey_press(*args):
+    pyautogui.hotkey(*args)
+
+
+def keyDown(key):
+    pyautogui.keyDown(key)
+
+
+def keyUp(key):
+    pyautogui.keyUp(key)
+
+
+def scroll(clicks):
+    pyautogui.scroll(clicks)
