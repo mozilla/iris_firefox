@@ -21,7 +21,7 @@ def launch_firefox(path, profile='empty_profile', url=None, args=[]):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
-    if not os.path.exists (active_profile):
+    if not os.path.exists(active_profile):
         os.mkdir(active_profile)
 
     cmd = [path]
@@ -43,7 +43,7 @@ def launch_firefox(path, profile='empty_profile', url=None, args=[]):
 
 
 def clean_profiles():
-    path = os.path.join (os.path.split(__file__)[0], "test_profiles")
+    path = os.path.join(os.path.split(__file__)[0], "test_profiles")
     if os.path.exists(path):
         shutil.rmtree(path)
     os.mkdir(path)
@@ -87,8 +87,6 @@ def navigate_slow(url):
 
 def navigate(url):
     select_location_bar()
-    #edit_select_all()
-    #type(Key.DELETE)
     paste(url)
     type(Key.ENTER)
 
@@ -153,6 +151,7 @@ def change_preference(pref_name,value):
             type(Key.ENTER)
     navigate_back()
 
+
 def reset_mouse():
     hover(Location(0, 0))
 
@@ -160,26 +159,8 @@ def reset_mouse():
 def login_site(site_name):
     username = get_credential(site_name,"username")
     password = get_credential(site_name,"password")
-    type(username)
-    type(Key.TAB)
-    type(password)
-    type(Key.TAB)
+    paste(username)
+    focus_next_item()
+    paste(password)
+    focus_next_item()
     type(Key.ENTER)
-
-def login_linkedin(site_name):
-    username = get_credential(site_name,"username")
-    password = get_credential(site_name,"password")
-    try:
-        wait("linkedinEmailField.png", 20)
-    except:
-        logger.error("Couldn't find the email field.")
-        return None
-    else:
-        click("linkedinEmailField.png")
-        paste(username)
-        time.sleep(1)
-        type(Key.TAB)
-        paste(password)
-        time.sleep(1)
-        type(Key.TAB)
-        type(Key.ENTER)

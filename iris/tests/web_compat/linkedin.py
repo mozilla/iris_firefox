@@ -18,34 +18,32 @@ class test(base_test):
 
         # Check that the login page is loaded.
         if exists("linkedinLoginPage.png", 10):
-            print "PASS"
             #  Login to linkedin.
-            login_linkedin("Linkedin")
-
-            time.sleep(5)
+            if exists("linkedinEmailField.png", 10):
+                click("linkedinEmailField.png")
+                login_site("Linkedin")
+            else:
+                print "FAIL"
 
             #  Check that user successfully logged in.
             if exists("linkedinHomePage.png", 10):
-                print "PASS"
                 click("linkedinPostButton")
                 time.sleep(2)
                 # Posting a message with a random character at the end. Same message cannot be posted twice, an error is thrown.
                 paste("This is a test message " +random.choice('abcdefghijklmnopqrstuvwxyz'))
                 click("linkedinPostButton")
-                time.sleep(2)
 
                 # Check that the message has been posted.
                 if exists("linkedinMessageIsPosted", 10):
-                    print "PASS"
                     # Scroll down.
                     for number in range(30):
-                        type(text=Key.DOWN)
+                        scroll_down()
 
                     time.sleep(2)
 
                     # Scroll up.
                     for number in range(30):
-                        type(text=Key.UP)
+                        scroll_down()
 
                     print "PASS"
                 else:
@@ -57,8 +55,6 @@ class test(base_test):
 
         click("linkedinMenu.png")
         click("linkedinSignOut.png")
-
-        time.sleep(2)
 
         # Check that user is successfully logged out.
         if exists("linkedinLoginPage.png", 10):
