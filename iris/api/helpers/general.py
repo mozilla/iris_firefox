@@ -165,3 +165,21 @@ def login_site(site_name):
     type(password)
     type(Key.TAB)
     type(Key.ENTER)
+
+def login_linkedin(site_name):
+    username = get_credential(site_name,"username")
+    password = get_credential(site_name,"password")
+    try:
+        wait("linkedinEmailField.png", 20)
+    except:
+        logger.error("Couldn't find the email field.")
+        return None
+    else:
+        click("linkedinEmailField.png")
+        paste(username)
+        time.sleep(1)
+        type(Key.TAB)
+        paste(password)
+        time.sleep(1)
+        type(Key.TAB)
+        type(Key.ENTER)
