@@ -51,6 +51,7 @@ local/
 *.sh.swp
 test_profiles/
 config.ini
+image_debug
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

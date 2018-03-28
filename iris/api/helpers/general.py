@@ -5,23 +5,15 @@
 import os
 import shutil
 import subprocess
-
 from api.core import *
-from api.helpers.keyboard_shortcuts import *
-from configuration.config_parser import *
-from logger.iris_logger import *
-
-
-
-add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
-logger = getLogger(__name__)
+from keyboard_shortcuts import *
 
 
 def launch_firefox(path, profile='empty_profile', url=None, args=[]):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
     active_profile = os.path.join(current_dir, "test_profiles", profile)
-    if not os.path.exists (active_profile):
+    if not os.path.exists(active_profile):
         os.mkdir(active_profile)
 
     cmd = [path]
@@ -43,7 +35,7 @@ def launch_firefox(path, profile='empty_profile', url=None, args=[]):
 
 
 def clean_profiles():
-    path = os.path.join (os.path.split(__file__)[0], "test_profiles")
+    path = os.path.join(os.path.split(__file__)[0], "test_profiles")
     if os.path.exists(path):
         shutil.rmtree(path)
     os.mkdir(path)
@@ -53,8 +45,9 @@ def clean_profiles():
 def confirm_firefox_launch():
     try:
         wait("home.png", 20)
-    except:
-        print "Can't launch Firefox - aborting test run."
+    except Exception as e:
+        logger.error(e)
+        print ("Can't launch Firefox - aborting test run.")
         exit(1)
 
 
@@ -62,7 +55,7 @@ def confirm_firefox_quit():
     try:
         waitVanish("home.png", 10)
     except:
-        print "Firefox still around - aborting test run."
+        print ("Firefox still around - aborting test run.")
         exit(1)
 
 
@@ -79,18 +72,14 @@ def get_firefox_region():
 #
 def navigate_slow(url):
     select_location_bar()
-    # increase the delay between each keystroke while typing strings
-    # (sikuli defaults to .02 sec)
-    Settings.TypeDelay = 0.1
-    type(url + Key.ENTER)
+    typewrite(url, 0.1)
+    typewrite(["enter"])
 
 
 def navigate(url):
     select_location_bar()
-    #edit_select_all()
-    #type(Key.DELETE)
-    paste(url)
-    type(Key.ENTER)
+    typewrite(url)
+    typewrite(["enter"])
 
 
 def restart_firefox(args):
@@ -117,17 +106,17 @@ def get_main_modifier():
 def copy_to_clipboard():
     edit_select_all()
     edit_copy()
-    value=Env.getClipboard().strip()
+    value = Env.getClipboard().strip()
     return value
 
 
-def change_preference(pref_name,value):
+def change_preference(pref_name, value):
     navigate("about:config")
     time.sleep(1)
 
     type(Key.SPACE)
     time.sleep(1)
-    
+
     type(pref_name)
     time.sleep(2)
     type(Key.TAB)
@@ -148,18 +137,19 @@ def change_preference(pref_name,value):
         type(Key.ENTER)
         # For non-boolean values, a dialog box should appear
         dialog_box = Pattern("preference_dialog_icon.png")
-        if exists(dialog_box,3):
-            type(dialog_box,value)
+        if exists(dialog_box, 3):
+            type(dialog_box, value)
             type(Key.ENTER)
     navigate_back()
 
+
 def reset_mouse():
-    hover(Location(0, 0))
+    hover(0, 0)
 
 
 def login_site(site_name):
-    username = get_credential(site_name,"username")
-    password = get_credential(site_name,"password")
+    username = get_credential(site_name, "username")
+    password = get_credential(site_name, "password")
     type(username)
     type(Key.TAB)
     type(password)

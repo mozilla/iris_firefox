@@ -11,8 +11,6 @@ class test(base_test):
 
     def __init__(self, app):
         base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "Web compability test for facebook.com--Login"
 
 
@@ -26,5 +24,5 @@ class test(base_test):
         login_site("Facebook")
         time.sleep(3)
 
-        print "Hello world!"
+        print ("Hello world!")
         return

@@ -10,10 +10,7 @@ class test(base_test):
 
     def __init__(self, app):
         base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test of browser back/forward"
-
 
     def run(self):
 
@@ -21,28 +18,28 @@ class test(base_test):
         # helper function from "keyboard_shortcuts"
         navigate(url)
 
-        if exists("search_the_web.png", 10):
+        if exists("search_the_web.png", 5):
             url = "https://www.google.com/?hl=EN"
 
             # helper function from "keyboard_shortcuts"
             navigate(url)
 
             # core api function
-            if exists("google_search.png", 10):
+            if exists("google_search.png", 5):
 
                 try:
-                    wait("back.png", 10)
+                    wait("back.png", 5)
                     click("back.png")
 
                     # core api function
-                    if exists("search_the_web.png", 10):
+                    if exists("search_the_web.png", 5):
 
                         try:
-                            wait("forward.png", 10)
+                            wait("forward.png", 5)
                             click("forward.png")
 
                             # core api function
-                            if exists("google_search.png", 10):
+                            if exists("google_search.png", 5):
                                 result = "PASS"
                             else:
                                 result = "FAIL"
