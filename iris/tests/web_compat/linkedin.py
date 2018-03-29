@@ -11,6 +11,7 @@ class test(base_test):
         base_test.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "Web compability test for linkedin.com"
+        self.enable = False
 
     def run(self):
         url="www.linkedin.com"
@@ -22,6 +23,7 @@ class test(base_test):
             if exists("linkedinEmailField.png", 10):
                 click("linkedinEmailField.png")
                 login_site("Linkedin")
+                dont_save_password()
             else:
                 print "FAIL"
 
