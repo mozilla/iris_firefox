@@ -25,9 +25,17 @@ class test(base_test):
 
         if exists("yahoo_login.png", 10):
             # Fill in the credentials and login.
-            login_yahoo("Yahoo")
+            username = get_credential("Yahoo", "username")
+            password = get_credential("Yahoo", "password")
+            paste(username)
+            type(Key.ENTER)
+            time.sleep(3)
+            paste(password)
+            type(Key.ENTER)
+
             # Don't save the credentials in Firefox.
             dont_save_password()
+
             if exists("yahoo_messenger_conversation_button.png", 10):
                 # Start a new conversation.
                 click("yahoo_messenger_conversation_button.png")

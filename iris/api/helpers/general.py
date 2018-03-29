@@ -166,16 +166,6 @@ def login_site(site_name):
     type(Key.ENTER)
 
 
-def login_yahoo(site_name):
-    username = get_credential(site_name,"username")
-    paste(username)
-    type(Key.ENTER)
-    time.sleep(3)
-    password = get_credential(site_name,"password")
-    paste(password)
-    type(Key.ENTER)
-
-
 def dont_save_password():
     try:
         if exists("dont_save_password_button.png", 10):
