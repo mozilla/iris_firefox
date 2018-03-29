@@ -148,10 +148,19 @@ def reset_mouse():
 
 
 def login_site(site_name):
-    username = get_credential(site_name, "username")
-    password = get_credential(site_name, "password")
-    type(username)
-    type(Key.TAB)
-    type(password)
-    type(Key.TAB)
+    username = get_credential(site_name,"username")
+    password = get_credential(site_name,"password")
+    paste(username)
+    focus_next_item()
+    paste(password)
+    focus_next_item()
     type(Key.ENTER)
+
+
+def dont_save_password():
+    try:
+        if exists("dont_save_password_button.png", 10):
+            click("dont_save_password_button.png")
+    except:
+        logger.error("Failed to find save password dialog")
+        return None
