@@ -22,6 +22,7 @@ class test(base_test):
             if exists("linkedinEmailField.png", 10):
                 click("linkedinEmailField.png")
                 login_site("Linkedin")
+                dont_save_password()
             else:
                 print "FAIL"
 

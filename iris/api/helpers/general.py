@@ -164,3 +164,22 @@ def login_site(site_name):
     paste(password)
     focus_next_item()
     type(Key.ENTER)
+
+
+def login_yahoo(site_name):
+    username = get_credential(site_name,"username")
+    paste(username)
+    type(Key.ENTER)
+    time.sleep(3)
+    password = get_credential(site_name,"password")
+    paste(password)
+    type(Key.ENTER)
+
+
+def dont_save_password():
+    try:
+        if exists("dont_save_password_button.png", 10):
+            click("dont_save_password_button.png")
+    except:
+        logger.error("Failed to find save password dialog")
+        return None
