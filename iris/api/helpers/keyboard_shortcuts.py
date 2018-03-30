@@ -46,7 +46,7 @@ def navigate_back():
         hotkey_press('alt', 'left')
     else:
         type(text=Key.LEFT, modifier=KeyModifier.ALT)
-        hotkey_press('alt', 'left')
+        #hotkey_press('alt', 'left')
 
 
 def navigate_forward():
@@ -58,7 +58,7 @@ def navigate_forward():
         hotkey_press('alt', 'right')
     else:
         type(text=Key.RIGHT, modifier=KeyModifier.ALT)
-        hotkey_press('alt', 'right')
+        #hotkey_press('alt', 'right')
 
 
 def navigate_home():
@@ -66,7 +66,7 @@ def navigate_home():
     Navigate the browser to whatever is set as the Home page.
     """
     type(text=Key.HOME, modifier=KeyModifier.ALT)
-    hotkey_press('alt', 'home')
+    #hotkey_press('alt', 'home')
 
 
 def open_file_picker():
@@ -87,7 +87,7 @@ def select_location_bar():
         hotkey_press('command', 'l')
     else:
         type(text="l", modifier=KeyModifier.CTRL)
-        hotkey_press('ctrl', 'l')
+        #hotkey_press('ctrl', 'l')
     # wait to allow the location bar to become responsive.
     time.sleep(1)
 
@@ -479,7 +479,7 @@ def maximize_window():
 
     elif get_os() == "win":
         type(text=Key.UP, modifier=KeyModifier.WIN)
-        hotkey_press('win', 'up')
+        #hotkey_press('win', 'up')
     else:
         # This is the documented method for window maximize,
         # but isn't working on one Linux config for unknown reasons,
@@ -504,7 +504,7 @@ def new_tab():
         hotkey_press('command', 't')
     else:
         type(text="t", modifier=KeyModifier.CTRL)
-        hotkey_press('ctrl', 't')
+        #hotkey_press('ctrl', 't')
 
 
 def new_window():
@@ -549,7 +549,7 @@ def quit_firefox():
         hotkey_press('command', 'q')
     elif get_os() == "win":
         type(text="q", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-        hotkey_press('ctrl', 'shift', 'q')
+        #hotkey_press('ctrl', 'shift', 'q')
     else:
         hotkey_press('ctrl', 'd')
 
@@ -617,8 +617,8 @@ def history_sidebar():
     if get_os() == "osx":
         hotkey_press('command', 'shift', 'h')
     else:
-        type(text="h", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-        hotkey_press('ctrl', 'shift', 'h')
+        type(text="h", modifier=KeyModifier.CTRL)
+        #hotkey_press('ctrl', 'shift', 'h')
 
 
 def clear_recent_history():
@@ -629,7 +629,7 @@ def clear_recent_history():
         hotkey_press('command', 'shift', 'delete')
     else:
         type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-        hotkey_press('ctrl', 'shift', 'delete')
+        #hotkey_press('ctrl', 'shift', 'delete')
 
 
 def bookmark_all_tabs():
@@ -650,7 +650,7 @@ def bookmark_page():
         hotkey_press('command', 'd')
     else:
         type(text="d", modifier=KeyModifier.CTRL)
-        hotkey_press('ctrl', 'd')
+        #hotkey_press('ctrl', 'd')
 
 
 def bookmarks_sidebar():
@@ -661,7 +661,7 @@ def bookmarks_sidebar():
         hotkey_press('command', 'b')
     else:
         type(text="b", modifier=KeyModifier.CTRL)
-        hotkey_press('ctrl', 'b')
+        #hotkey_press('ctrl', 'b')
 
 
 def open_library():
@@ -672,7 +672,7 @@ def open_library():
         hotkey_press("command", "shift", "b")
     else:
         type(text="b", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-        hotkey_press("ctrl", "shift", "b")
+        #hotkey_press("ctrl", "shift", "b")
 
 
 # End History & Bookmarks keyboard shortcuts.
