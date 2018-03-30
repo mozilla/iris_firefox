@@ -10,6 +10,9 @@ from api.core import keyUp
 from api.core import scroll
 from api.core import get_os
 from api.core import click
+from api.core import type
+
+from api.core import Key, KeyModifier
 
 from logger.iris_logger import *
 
@@ -471,6 +474,7 @@ def maximize_window():
         keyUp('alt')
 
     elif get_os() == "win":
+        type(text=Key.UP, modifier=KeyModifier.WIN)
         hotkey_press('win', 'up')
     else:
         # This is the documented method for window maximize,
@@ -495,6 +499,7 @@ def new_tab():
     if get_os() == "osx":
         hotkey_press('command', 't')
     else:
+        type(text="t", modifier=KeyModifier.CTRL)
         hotkey_press('ctrl', 't')
 
 
@@ -539,6 +544,7 @@ def quit_firefox():
     if get_os() == "osx":
         hotkey_press('command', 'q')
     elif get_os() == "win":
+        type(text="q", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
         hotkey_press('ctrl', 'shift', 'q')
     else:
         hotkey_press('ctrl', 'd')
