@@ -420,8 +420,6 @@ def scroll(clicks):
     pyautogui.scroll(clicks)
 
 
-# experimental
-
 def type(text=None, modifier=None, interval=0.02):
     logger.debug("type method: ")
     if modifier == None:
@@ -434,17 +432,17 @@ def type(text=None, modifier=None, interval=0.02):
             logger.debug ("Scenario 2: normal key or text block")
             logger.debug("Text %s" % text)
     else:
-        try:
-            logger.debug ("Scenario 3: combination of modifiers and other keys")
-            modifier_keys = KeyModifier.get_all_modifiers(modifier)
-            logger.debug ("Modifiers (%s) %s " % (len(modifier_keys), ' '.join(modifier_keys)) )
-            logger.debug ("text: %s" % text)
-            if len(modifier_keys) == 1:
-                pyautogui.hotkey(modifier_keys[0], text)
-            else:
-                pyautogui.hotkey(modifier_keys[0], modifier_keys[1], text)
-        except:
-            logger.error ("Key modifier value out of range")
+        logger.debug ("Scenario 3: combination of modifiers and other keys")
+        modifier_keys = KeyModifier.get_all_modifiers(modifier)
+        num_keys = len(modifier_keys)
+        logger.debug ("Modifiers (%s) %s " % (num_keys, ' '.join(modifier_keys)) )
+        logger.debug ("text: %s" % text)
+        if num_keys == 1:
+            pyautogui.hotkey(modifier_keys[0], text)
+        elif num_keys == 2:
+            pyautogui.hotkey(modifier_keys[0], modifier_keys[1], text)
+        else:
+            logger.error("Returned key modifiers out of range")
 
 
 class KeyModifier(object):
@@ -462,10 +460,9 @@ class KeyModifier(object):
 
         if get_os() == "osx":
             all_modifiers.append((KeyModifier.CMD, "cmd"))
-        elif get_os() == "win":
+        else:
+            # TODO: verify that Linux is same as Windows
             all_modifiers.append((KeyModifier.WIN, "win"))
-
-        # TODO: linux case
 
         all_modifiers.append((KeyModifier.ALT, "alt"))
 
@@ -491,6 +488,7 @@ class Key(object):
     F6 = "f6"
     F11 = "f11"
 
+
     @staticmethod
     def is_reserved_key(key):
         found = False
@@ -514,4 +512,3 @@ class Key(object):
                 found = True
                 break
         return found
-
