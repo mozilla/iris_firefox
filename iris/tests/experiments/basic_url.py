@@ -26,9 +26,5 @@ class test(base_test):
         image = "google_search.png"
 
         # core api function
-        if exists(image, 10):
-            result = "PASS"
-        else:
-            result = "FAIL"
-
-        print result
+        expected_1 = exists(image, 10)
+        assert_true(self, expected_1, 'Find image')
