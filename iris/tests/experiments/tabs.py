@@ -30,9 +30,5 @@ class test(base_test):
         navigate("https://www.google.com/?hl=EN")
 
         # core api function
-        if exists("google_search.png", 15):
-            result = "PASS"
-        else:
-            result = "FAIL"
-
-        print (result)
+        expected = exists("google_search.png", 10)
+        assert_true(self, expected, 'google_search image found')
