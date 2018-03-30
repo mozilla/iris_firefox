@@ -418,3 +418,94 @@ def keyUp(key):
 
 def scroll(clicks):
     pyautogui.scroll(clicks)
+
+
+# experimental
+
+def type(text=None, modifier=None, interval=0.02):
+    logger.debug("type method: ")
+    if modifier == None:
+        if text is Key.is_reserved_key(text):
+            #pyautogui.hotkey(text)
+            logger.debug ("Scenario 1: reserved key")
+            logger.debug ("Reserved key %s" % text)
+        else:
+            #pyautogui.typewrite(text, interval)
+            logger.debug ("Scenario 2: normal key or text block")
+            logger.debug("Text %s" % text)
+    else:
+        try:
+            logger.debug ("Scenario 3: combination of modifiers and other keys")
+            modifier_keys = KeyModifier.get_all_modifiers(modifier)
+            logger.debug ("Modifiers (%s) %s " % (len(modifier_keys), ' '.join(modifier_keys)) )
+            logger.debug ("text: %s" % text)
+            #if len(modifier_keys) == 1:
+                #pyautogui.hotkey(modifier_keys[0], text, interval)
+            #else:
+                #pyautogui.hotkey(modifier_keys[0], modifier_keys[1], text, interval)
+        except:
+            logger.error ("Key modifier value out of range")
+
+
+class KeyModifier(object):
+    SHIFT = 1<<0    # 1
+    CTRL = 1<<1     # 2
+    CMD = 1<<2      # 4
+    WIN = 1<<2      # 4
+    ALT = 1<<3      # 8
+
+    @staticmethod
+    def get_all_modifiers(value):
+        all_modifiers = [
+            (KeyModifier.SHIFT, "shift"),
+            (KeyModifier.CTRL, "ctrl"),
+            (KeyModifier.CMD, "cmd"),
+            (KeyModifier.WIN, "win"),
+            (KeyModifier.ALT, "alt")]
+
+        active_modifiers = []
+        for item in all_modifiers:
+            if item[0] & value:
+                active_modifiers.append(item[1])
+        return active_modifiers
+
+
+class Key(object):
+    SPACE = " "
+    TAB = "tab"
+    LEFT = "left"
+    RIGHT = "right"
+    UP = "up"
+    DOWN = "down"
+    ESC = "esc"
+    HOME = "home"
+    END = "end"
+    DELETE = "delete"
+    F5 = "f5"
+    F6 = "f6"
+    F11 = "f11"
+
+    @staticmethod
+    def is_reserved_key(key):
+        found = False
+        key_list = [
+            Key.SPACE,
+            Key.TAB,
+            Key.LEFT,
+            Key.RIGHT,
+            Key.UP,
+            Key.DOWN,
+            Key.ESC,
+            Key.HOME,
+            Key.END,
+            Key.DELETE,
+            Key.F5,
+            Key.F6,
+            Key.F11
+        ]
+        for item in key_list:
+            if key is item:
+                found = True
+                break
+        return found
+
