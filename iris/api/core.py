@@ -426,11 +426,11 @@ def type(text=None, modifier=None, interval=0.02):
     logger.debug("type method: ")
     if modifier == None:
         if text is Key.is_reserved_key(text):
-            #pyautogui.hotkey(text)
+            press(text)
             logger.debug ("Scenario 1: reserved key")
             logger.debug ("Reserved key %s" % text)
         else:
-            #pyautogui.typewrite(text, interval)
+            pyautogui.typewrite(text, interval)
             logger.debug ("Scenario 2: normal key or text block")
             logger.debug("Text %s" % text)
     else:
@@ -439,10 +439,10 @@ def type(text=None, modifier=None, interval=0.02):
             modifier_keys = KeyModifier.get_all_modifiers(modifier)
             logger.debug ("Modifiers (%s) %s " % (len(modifier_keys), ' '.join(modifier_keys)) )
             logger.debug ("text: %s" % text)
-            #if len(modifier_keys) == 1:
-                #pyautogui.hotkey(modifier_keys[0], text, interval)
-            #else:
-                #pyautogui.hotkey(modifier_keys[0], modifier_keys[1], text, interval)
+            if len(modifier_keys) == 1:
+                pyautogui.hotkey(modifier_keys[0], text, interval)
+            else:
+                pyautogui.hotkey(modifier_keys[0], modifier_keys[1], text, interval)
         except:
             logger.error ("Key modifier value out of range")
 
