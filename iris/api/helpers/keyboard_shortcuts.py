@@ -45,6 +45,7 @@ def navigate_back():
         # @todo double check on mac
         hotkey_press('alt', 'left')
     else:
+        type(text=Key.LEFT, modifier=KeyModifier.ALT)
         hotkey_press('alt', 'left')
 
 
@@ -56,6 +57,7 @@ def navigate_forward():
         # @todo double check on mac
         hotkey_press('alt', 'right')
     else:
+        type(text=Key.RIGHT, modifier=KeyModifier.ALT)
         hotkey_press('alt', 'right')
 
 
@@ -63,6 +65,7 @@ def navigate_home():
     """
     Navigate the browser to whatever is set as the Home page.
     """
+    type(text=Key.HOME, modifier=KeyModifier.ALT)
     hotkey_press('alt', 'home')
 
 
@@ -83,6 +86,7 @@ def select_location_bar():
     if get_os() == "osx":
         hotkey_press('command', 'l')
     else:
+        type(text="l", modifier=KeyModifier.CTRL)
         hotkey_press('ctrl', 'l')
     # wait to allow the location bar to become responsive.
     time.sleep(1)
@@ -613,6 +617,7 @@ def history_sidebar():
     if get_os() == "osx":
         hotkey_press('command', 'shift', 'h')
     else:
+        type(text="h", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
         hotkey_press('ctrl', 'shift', 'h')
 
 
@@ -623,6 +628,7 @@ def clear_recent_history():
     if get_os() == "osx":
         hotkey_press('command', 'shift', 'delete')
     else:
+        type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
         hotkey_press('ctrl', 'shift', 'delete')
 
 
@@ -643,6 +649,7 @@ def bookmark_page():
     if get_os() == "osx":
         hotkey_press('command', 'd')
     else:
+        type(text="d", modifier=KeyModifier.CTRL)
         hotkey_press('ctrl', 'd')
 
 
@@ -653,6 +660,7 @@ def bookmarks_sidebar():
     if get_os() == "osx":
         hotkey_press('command', 'b')
     else:
+        type(text="b", modifier=KeyModifier.CTRL)
         hotkey_press('ctrl', 'b')
 
 
@@ -663,6 +671,7 @@ def open_library():
     if get_os() == "osx":
         hotkey_press("command", "shift", "b")
     else:
+        type(text="b", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
         hotkey_press("ctrl", "shift", "b")
 
 

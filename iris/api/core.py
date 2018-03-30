@@ -458,10 +458,16 @@ class KeyModifier(object):
     def get_all_modifiers(value):
         all_modifiers = [
             (KeyModifier.SHIFT, "shift"),
-            (KeyModifier.CTRL, "ctrl"),
-            (KeyModifier.CMD, "cmd"),
-            (KeyModifier.WIN, "win"),
-            (KeyModifier.ALT, "alt")]
+            (KeyModifier.CTRL, "ctrl")]
+
+        if get_os() == "osx":
+            all_modifiers.append((KeyModifier.CMD, "cmd"))
+        elif get_os() == "win":
+            all_modifiers.append((KeyModifier.WIN, "win"))
+
+        # TODO: linux case
+
+        all_modifiers.append((KeyModifier.ALT, "alt"))
 
         active_modifiers = []
         for item in all_modifiers:
