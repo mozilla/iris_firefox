@@ -4,16 +4,21 @@
 
 from api.helpers.general import *
 from logger.iris_logger import *
+from api.helpers.results import *
 import os
 import sys
 import importlib
 
 logger = getLogger(__name__)
 
+passed = 0
+failed = 0
+skipped = 0
+
+
 def run(app):
-
     logger.info("Running tests")
-
+    start_time = time.time()
     # Start with no saved profiles
     clean_profiles()
 
@@ -22,41 +27,60 @@ def run(app):
         sys.path.append(package)
 
     for module in app.test_list:
+
         current_module = importlib.import_module(module)
         try:
             current = current_module.test(app)
-            if current.enable:
-                logger.info("Running test case: %s " % current.meta)
-
-                # Move the mouse to upper left corner of the screen
-                reset_mouse()
-                
-                # Initialize and launch Firefox
-                current.setup()
-
-                # Verify that Firefox has launched
-                confirm_firefox_launch()
-
-                # Adjust Firefox window size
-                current.resize_window()
-
-                # Run the test logic
-                current.run()
-
-                # Quit Firefox
-                current.teardown()
-                confirm_firefox_quit()
-            else:
-                logger.info("Skipping disabled test case: %s" % current.meta)
         except AttributeError:
             logger.warning('[%s] is not a test file. Skipping...', module)
+            return
+        logger.info('\n' + '-' * 120)
+        if current.enable:
+            logger.info("Executing: %s " % current.meta)
+            current.set_start_time(time.time())
+
+            # Move the mouse to upper left corner of the screen
+            reset_mouse()
+
+            # Initialize and launch Firefox
+            current.setup()
+
+            # Verify that Firefox has launched
+            confirm_firefox_launch()
+
+            # Adjust Firefox window size
+            current.resize_window()
+
+            # Run the test logic
+            try:
+                current.run()
+            except AssertionError:
+                global failed
+                failed += 1
+                current.set_end_time(time.time())
+                current.teardown()
+                confirm_firefox_quit()
+                continue
+
+            global passed
+            passed += 1
+            current.set_end_time(time.time())
+            # Quit Firefox
+            current.teardown()
+            confirm_firefox_quit()
+        else:
+            global skipped
+            skipped += 1
+            logger.info("Skipping disabled test case: %s" % current.meta)
+
+    end_time = time.time()
+    print_report_footer(passed, failed, skipped, get_duration(start_time, end_time))
 
     # We may remove profiles here, but likely still in use and can't do it yet
-    #clean_profiles()
+    # clean_profiles()
 
 
 def load_tests(app):
-
     app.test_list = []
     app.test_packages = []
 

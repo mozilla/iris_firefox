@@ -3,9 +3,15 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import time
-from api.core import *
-from logger.iris_logger import *
+from api.core import hotkey_press
+from api.core import press
+from api.core import keyDown
+from api.core import keyUp
+from api.core import scroll
+from api.core import get_os
+from api.core import click
 
+from logger.iris_logger import *
 
 logger = getLogger(__name__)
 
@@ -27,14 +33,16 @@ logger = getLogger(__name__)
 
 # Keyboard shortcuts for Navigation.
 
+
 def navigate_back():
     """
     Navigate back in browsing history one page visit.
     """
     if get_os() == "osx":
-        type(text="[", modifier=KeyModifier.CMD)
+        # @todo double check on mac
+        hotkey_press('alt', 'left')
     else:
-        type(text=Key.LEFT, modifier=KeyModifier.ALT)
+        hotkey_press('alt', 'left')
 
 
 def navigate_forward():
@@ -42,16 +50,17 @@ def navigate_forward():
     Navigate forward in browsing history one page visit.
     """
     if get_os() == "osx":
-        type(text="]", modifier=KeyModifier.CMD)
+        # @todo double check on mac
+        hotkey_press('alt', 'right')
     else:
-        type(text="]", modifier=KeyModifier.ALT)
+        hotkey_press('alt', 'right')
 
 
 def navigate_home():
     """
     Navigate the browser to whatever is set as the Home page.
     """
-    type(text=Key.HOME, modifier=KeyModifier.ALT)
+    hotkey_press('alt', 'home')
 
 
 def open_file_picker():
@@ -59,9 +68,9 @@ def open_file_picker():
     Open the system file picker.
     """
     if get_os() == "osx":
-        type(text="o", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'o')
     else:
-        type(text="o", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 'o')
 
 
 def select_location_bar():
@@ -69,9 +78,9 @@ def select_location_bar():
     Set focus to the locationbar.
     """
     if get_os() == "osx":
-        type(text="l", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'l')
     else:
-        type(text="l", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 'l')
     # wait to allow the location bar to become responsive.
     time.sleep(1)
 
@@ -81,9 +90,9 @@ def reload_page():
     Reload the current web page.
     """
     if get_os() == "osx":
-        type(text="r", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'r')
     else:
-        type(text="r", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 'r')
 
 
 def force_reload_page():
@@ -91,90 +100,90 @@ def force_reload_page():
     Reload the current web page with cache override.
     """
     if get_os() == "osx":
-        type(text="r", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press('command', 'shift', 'r')
     else:
-        type(text="r", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press('ctrl', 'shift', 'r')
 
 
 def stop_page_load():
     """
     Stop the current in progress web page from loading.
     """
-    type(text=Key.ESC)
+    hotkey_press('escape')
 
 
 # End of Navigation keyboard shortcuts.
 
 # Keyboard shortcuts for Current Page.
 
-def scroll_down():
+def scroll_down(clicks=3):
     """
     Scroll down one increment (equivalant to 3 mousewheel steps).
     """
-    type(text=Key.DOWN)
+    scroll(clicks)
 
 
-def scroll_up():
+def scroll_up(clicks=-3):
     """
     Scroll up one increment (equivalant to 3 mousewheel steps).
     """
-    type(text=Key.UP)
+    scroll(clicks)
 
 
 def page_down():
     """
     Jump down one screen.
     """
-    type(text=Key.SPACE)
+    press("space")
 
 
 def page_up():
     """
     Jump up one screen.
     """
-    type(text=Key.SPACE, modifier=KeyModifier.SHIFT)
+    hotkey_press('shift', 'space')
 
 
 def page_end():
     """
     Jump to the bottom of the page.
     """
-    type(text=Key.END)
+    press("end")
 
 
 def page_home():
     """
     Jump to the top of the page.
     """
-    type(text=Key.HOME)
+    press("home")
 
 
 def focus_next_item():
     """
     Focus next actionable item.
     """
-    type(text=Key.TAB)
+    press("tab")
 
 
 def focus_previous_item():
     """
     Focus previous actionable item.
     """
-    type(text=Key.TAB, modifier=KeyModifier.SHIFT)
+    hotkey_press("shift", "tab")
 
 
 def next_frame():
     """
     Move to the next frame (can be in content or in chrome).
     """
-    type(text=Key.F6)
+    press("f6")
 
 
 def previous_frame():
     """
     Move to the previous frame (can be in content or in chrome).
     """
-    type(text=Key.F6, modifier=KeyModifier.SHIFT)
+    hotkey_press("shift", 'f6')
 
 
 def open_print_page():
@@ -182,9 +191,9 @@ def open_print_page():
     Open the Print dialog.
     """
     if get_os() == "osx":
-        type(text="p", modifier=KeyModifier.CMD)
+        hotkey_press("command", "p")
     else:
-        type(text="p", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "p")
 
 
 def open_save_page():
@@ -192,9 +201,9 @@ def open_save_page():
     Open the Save dialog.
     """
     if get_os() == "osx":
-        type(text="s", modifier=KeyModifier.CMD)
+        hotkey_press("command", "s")
     else:
-        type(text="s", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "s")
 
 
 def zoom_in():
@@ -202,9 +211,9 @@ def zoom_in():
     Zoom in one increment.
     """
     if get_os() == "osx":
-        type(text="+", modifier=KeyModifier.CMD)
+        hotkey_press("command", "+")
     else:
-        type(text="+", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "+")
 
 
 def zoom_out():
@@ -212,9 +221,9 @@ def zoom_out():
     Zoom out one increment.
     """
     if get_os() == "osx":
-        type(text="-", modifier=KeyModifier.CMD)
+        hotkey_press("command", "-")
     else:
-        type(text="-", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "-")
 
 
 def restore_zoom():
@@ -222,9 +231,9 @@ def restore_zoom():
     Restores zoom level to page default.
     """
     if get_os() == "osx":
-        type(text="0", modifier=KeyModifier.CMD)
+        hotkey_press("command", "0")
     else:
-        type(text="0", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "0")
 
 
 # End of Current Page keyboard shortcuts.
@@ -236,9 +245,9 @@ def edit_copy():
     Copy selection to clipboard.
     """
     if get_os() == "osx":
-        type(text="c", modifier=KeyModifier.CMD)
+        hotkey_press("command", "c")
     else:
-        type(text="c", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "c")
 
 
 def edit_cut():
@@ -246,9 +255,9 @@ def edit_cut():
     Cut selection to clipboard.
     """
     if get_os() == "osx":
-        type(text="x", modifier=KeyModifier.CMD)
+        hotkey_press("command", "x")
     else:
-        type(text="x", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "x")
 
 
 def edit_delete():
@@ -256,7 +265,7 @@ def edit_delete():
     Delete selected text.
     If nothing is selected, delete previous character.
     """
-    type(text=Key.DELETE)
+    press("delete")
 
 
 def edit_paste():
@@ -264,9 +273,9 @@ def edit_paste():
     Paste contents of the clipboard to the focused text field.
     """
     if get_os() == "osx":
-        type(text="v", modifier=KeyModifier.CMD)
+        hotkey_press("command", "v")
     else:
-        type(text="v", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "v")
 
 
 def edit_paste_plain():
@@ -274,9 +283,9 @@ def edit_paste_plain():
     Paste contents of the clipboard, as plain text, to the focused text field.
     """
     if get_os() == "osx":
-        type(text="v", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "v")
     else:
-        type(text="v", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "v")
 
 
 def edit_redo():
@@ -284,9 +293,9 @@ def edit_redo():
     Redo the last operation of Undo.
     """
     if get_os() == "osx":
-        type(text="z", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "z")
     else:
-        type(text="z", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "z")
 
 
 def edit_select_all():
@@ -294,9 +303,9 @@ def edit_select_all():
     Selects the entire contents of focused field or page.
     """
     if get_os() == "osx":
-        type(text="a", modifier=KeyModifier.CMD)
+        hotkey_press("command", "a")
     else:
-        type(text="a", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "a")
 
 
 def edit_undo():
@@ -304,9 +313,9 @@ def edit_undo():
     Undoes the previous operation.
     """
     if get_os() == "osx":
-        type(text="z", modifier=KeyModifier.CMD)
+        hotkey_press("command", "z")
     else:
-        type(text="z", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "z")
 
 
 # End of Editing keyboard shortcuts.
@@ -318,9 +327,9 @@ def open_find():
     Open the find toolbar.
     """
     if get_os() == "osx":
-        type(text="f", modifier=KeyModifier.CMD)
+        hotkey_press("command", "f")
     else:
-        type(text="f", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "f")
 
 
 def find_next():
@@ -329,9 +338,9 @@ def find_next():
     Find next (again) can also find the next occurance of a term without opening the find toolbar.
     """
     if get_os() == "osx":
-        type(text="g", modifier=KeyModifier.CMD)
+        hotkey_press("command", "g")
     else:
-        type(text="g", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "g")
 
 
 def find_previous():
@@ -340,9 +349,9 @@ def find_previous():
     Find previous can also find the previous occurance of a term without opening the find toolbar.
     """
     if get_os() == "osx":
-        type(text="g", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "g")
     else:
-        type(text="g", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "g")
 
 
 def quick_find():
@@ -350,9 +359,9 @@ def quick_find():
     Quick find opens simple find toolbar that remains active for only six seconds.
     """
     if get_os() == "osx":
-        type(text="/", modifier=KeyModifier.CMD)
+        hotkey_press("command", "/")
     else:
-        type(text="/", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "/")
 
 
 def quick_find_link():
@@ -360,16 +369,16 @@ def quick_find_link():
     Quick find opens simple find link toolbar that remains active for only six seconds.
     """
     if get_os() == "osx":
-        type(text="'", modifier=KeyModifier.CMD)
+        hotkey_press("command", "'")
     else:
-        type(text="'", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "'")
 
 
 def close_find():
     """
     Close the regular find toolbar or quick find toolbar, if it has focus.
     """
-    type(text=Key.ESC)
+    press("escape")
 
 
 def select_search_bar():
@@ -377,9 +386,9 @@ def select_search_bar():
     If the search bar is present, select the search bar, otherwise this selects the location bar.
     """
     if get_os() == "osx":
-        type(text="k", modifier=KeyModifier.CMD)
+        hotkey_press("command", "k")
     else:
-        type(text="k", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "k")
 
 
 def change_search_next():
@@ -388,9 +397,9 @@ def change_search_next():
     (side effect: this also opens the search engine manager, if it wasn't alredy open).
     """
     if get_os() == "osx":
-        type(text=Key.DOWN, modifier=KeyModifier.CMD)
+        hotkey_press("command", "down")
     else:
-        type(text=Key.DOWN, modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "down")
 
 
 def change_search_previous():
@@ -399,16 +408,16 @@ def change_search_previous():
     (side effect: this also opens the search engine manager, if it wasn't already open).
     """
     if get_os() == "osx":
-        type(text=Key.UP, modifier=KeyModifier.CMD)
+        hotkey_press("command", "up")
     else:
-        type(text=Key.UP, modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "up")
 
 
 def open_search_manager():
     """
     If the search bar has focus open the search engine manager.
     """
-    type(text=Key.DOWN, modifier=KeyModifier.ALT)
+    hotkey_press("alt", "down")
 
 
 # End of Search keyboard shortcuts.
@@ -421,9 +430,9 @@ def close_tab():
     Close the currently focused tab (Except for app tabs).
     """
     if get_os() == "osx":
-        type(text="w", modifier=KeyModifier.CMD)
+        hotkey_press("command", "w")
     else:
-        type(text="w", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "w")
 
 
 def close_window():
@@ -431,9 +440,9 @@ def close_window():
     Close the currently focused window.
     """
     if get_os() == "osx":
-        type(text="w", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "w")
     else:
-        type(text="w", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "w")
 
 
 def full_screen():
@@ -441,9 +450,9 @@ def full_screen():
     Toggle full screen mode.
     """
     if get_os() == "osx":
-        type(text="f", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "f")
     else:
-        type(text=Key.F11)
+        press("f11")
 
 
 def maximize_window():
@@ -454,25 +463,19 @@ def maximize_window():
     if get_os() == "osx":
         # There is no keybpard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
-        window_controls = "window_controls.png"
-
-        # Set target to the maximize button
-        maximize_button = Pattern(window_controls).targetOffset(21, 0)
-
-        # We must hover the controls so the ALT key can take effect there.
-        hover(window_controls)
+        window_controls = "window_maximize.png"
 
         # Alt key changes maximize button from full screen to maximize window.
-        keyDown(Key.ALT)
-        click(maximize_button)
-        keyUp(Key.ALT)
+        keyDown('alt')
+        click(window_controls)
+        keyUp('alt')
 
     elif get_os() == "win":
-        type(text=Key.UP, modifier=KeyModifier.WIN)
+        hotkey_press('win', 'up')
     else:
         # This is the documented method for window maximize,
         # but isn't working on one Linux config for unknown reasons,
-        type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.WIN)
+        hotkey_press('win', 'ctrl', 'up')
 
 
 def minimize_window():
@@ -480,9 +483,9 @@ def minimize_window():
     Minimize the browser window to the application launch bar
     """
     if get_os() == "osx":
-        type(text="m", modifier=Key.CMD)
+        hotkey_press("command", "m")
     else:
-        type(text=Key.DOWN, modifier=KeyModifier.WIN)
+        hotkey_press("win", "down")
 
 
 def new_tab():
@@ -490,9 +493,9 @@ def new_tab():
     Open a new browser tab.
     """
     if get_os() == "osx":
-        type(text="t", modifier=KeyModifier.CMD)
+        hotkey_press('command', 't')
     else:
-        type(text="t", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 't')
 
 
 def new_window():
@@ -500,9 +503,9 @@ def new_window():
     Open a new browser window.
     """
     if get_os() == "osx":
-        type(text="n", modifier=KeyModifier.CMD)
+        hotkey_press("command", "n")
     else:
-        type(text="n", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", "n")
 
 
 def new_private_window():
@@ -510,23 +513,23 @@ def new_private_window():
     Open a new private browser window.
     """
     if get_os() == "osx":
-        type(text="p", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "p")
     else:
-        type(text="p", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "p")
 
 
 def next_tab():
     """
     Focus the next tab (one over to the right).
     """
-    type(text=Key.TAB, modifier=KeyModifier.CTRL)
+    hotkey_press("ctrl", "tab")
 
 
 def previous_tab():
     """
     Focus the previous tab (one over to the left).
     """
-    type(text=Key.TAB, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    hotkey_press("ctrl", "shift", "tab")
 
 
 def quit_firefox():
@@ -534,11 +537,11 @@ def quit_firefox():
     Quit the browser.
     """
     if get_os() == "osx":
-        type(text="q", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'q')
     elif get_os() == "win":
-        type(text="q", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press('ctrl', 'shift', 'q')
     else:
-        type(text="q", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 'd')
 
 
 def select_tab(num):
@@ -547,11 +550,11 @@ def select_tab(num):
     param:  num  is a string 1-8. example: '4'.
     """
     if get_os() == "osx":
-        type(text=num, modifier=KeyModifier.CMD)
+        hotkey_press("command", num)
     elif get_os() == "win":
-        type(text=num, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", num)
     else:
-        type(text=num, modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", num)
 
 
 def select_last_tab():
@@ -559,18 +562,18 @@ def select_last_tab():
     Select the last tab.
     """
     if get_os() == "osx":
-        type(text="9", modifier=KeyModifier.CMD)
+        hotkey_press("command", 9)
     elif get_os() == "win":
-        type(text="9", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", 9)
     else:
-        type(text="9", modifier=KeyModifier.CTRL)
+        hotkey_press("ctrl", 9)
 
 
 def toggle_audio():
     """
     Mute/Unmute audio.
     """
-    type(text="m", modifier=KeyModifier.CTRL)
+    hotkey_press("ctrl", "m")
 
 
 def undo_close_tab():
@@ -578,9 +581,9 @@ def undo_close_tab():
     Re-opens the previously closed tab.
     """
     if get_os() == "osx":
-        type(text="t", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "t")
     else:
-        type(text="t", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "t")
 
 
 def undo_close_window():
@@ -588,9 +591,9 @@ def undo_close_window():
     Re-opens the previously closed browser window.
     """
     if get_os() == "osx":
-        type(text="n", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "n")
     else:
-        type(text="n", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "n")
 
 
 # End of Windows & Tabs keyboard shortcuts.
@@ -602,9 +605,9 @@ def history_sidebar():
     Toggle open/close the history sidebar.
     """
     if get_os() == "osx":
-        type(text="h", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press('command', 'shift', 'h')
     else:
-        type(text="h", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 'shift', 'h')
 
 
 def clear_recent_history():
@@ -612,9 +615,9 @@ def clear_recent_history():
     Open the Clear Recent History dialog.
     """
     if get_os() == "osx":
-        type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press('command', 'shift', 'delete')
     else:
-        type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press('ctrl', 'shift', 'delete')
 
 
 def bookmark_all_tabs():
@@ -622,9 +625,9 @@ def bookmark_all_tabs():
     Open the Bookmark All Tabs dialog.
     """
     if get_os() == "osx":
-        type(text="d", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press('command', 'shift', 'd')
     else:
-        type(text="d", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press('ctrl', 'shift', 'd')
 
 
 def bookmark_page():
@@ -632,9 +635,9 @@ def bookmark_page():
     Bookmark the current page.
     """
     if get_os() == "osx":
-        type(text="d", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'd')
     else:
-        type(text="d", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 'd')
 
 
 def bookmarks_sidebar():
@@ -642,9 +645,9 @@ def bookmarks_sidebar():
     Toggle open/close the bookmarks sidebar.
     """
     if get_os() == "osx":
-        type(text="b", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'b')
     else:
-        type(text="b", modifier=KeyModifier.CTRL)
+        hotkey_press('ctrl', 'b')
 
 
 def open_library():
@@ -652,9 +655,9 @@ def open_library():
     Open the Library window.
     """
     if get_os() == "osx":
-        type(text="b", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "b")
     else:
-        type(text="b", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "b")
 
 
 # End History & Bookmarks keyboard shortcuts.
@@ -666,9 +669,9 @@ def open_addons():
     Open the Add-ons Manager page.
     """
     if get_os() == "osx":
-        type(text="a", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        hotkey_press("command", "shift", "a")
     else:
-        type(text="a", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        hotkey_press("ctrl", "shift", "a")
 
 
 def open_downloads():
@@ -676,11 +679,11 @@ def open_downloads():
     Open the Downloads dialog.
     """
     if get_os() == "osx":
-        type(text="j", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'j')
     elif get_os() == "win":
-        type(text="j", modifier=KeyModifier.CTRL)
+        hotkey_press('control', 'j')
     else:
-        type(text="y", modifier=KeyModifier.CTRL)
+        hotkey_press('control', 'y')
 
 
 def open_page_source():
@@ -688,9 +691,8 @@ def open_page_source():
     Open the current page's page source
     """
     if get_os() == "osx":
-        type(text="u", modifier=KeyModifier.CMD)
+        hotkey_press('command', 'u')
     else:
-        type(text="u", modifier=KeyModifier.CTRL)
-
+        hotkey_press('ctrl', 'u')
 
 # End Tools keyboard shortcuts

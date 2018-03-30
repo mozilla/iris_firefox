@@ -4,9 +4,7 @@
 
 
 import argparse
-import os
 import shutil
-import sys
 import tempfile
 
 from firefox import cleanup
@@ -17,7 +15,6 @@ import firefox.extractor as fe
 import test_runner
 from api.core import *
 from logger.iris_logger import *
-
 
 logger = None
 tmp_dir = None
@@ -36,7 +33,6 @@ class Iris(object):
         self.main()
         test_runner.run(self)
 
-
     def main(self, argv=None):
         global tmp_dir, logger
 
@@ -46,13 +42,11 @@ class Iris(object):
         Iris.fix_terminal_encoding()
         tmp_dir = self.__create_tempdir()
 
-
         # Create workdir (usually ~/.iris, used for caching etc.)
         # Assumes that no previous code must write to it.
         if not os.path.exists(self.args.workdir):
             logger.debug('Creating working directory %s' % self.args.workdir)
             os.makedirs(self.args.workdir)
-
 
         if self.args.firefox:
             self.fx_path = self.get_test_candidate(self.args.firefox).exe
@@ -71,7 +65,6 @@ class Iris(object):
 
         return 0
 
-
     def __create_tempdir(self):
         """
         Helper function for creating the temporary directory.
@@ -82,7 +75,6 @@ class Iris(object):
         temp_dir = tempfile.mkdtemp(prefix='iris_')
         logger.debug('Created temp dir `%s`' % temp_dir)
         return temp_dir
-
 
     @staticmethod
     def get_terminal_encoding():
@@ -105,7 +97,6 @@ class Iris(object):
             logger.debug("Platform does not require switching terminal encoding")
             return None
 
-
     @staticmethod
     def set_terminal_encoding(encoding):
         """
@@ -120,7 +111,6 @@ class Iris(object):
                 logger.debug("Successfully set codepage to `%s`" % encoding)
             else:
                 logger.warning("Can't set codepage for terminal")
-
 
     @staticmethod
     def fix_terminal_encoding():
@@ -137,7 +127,6 @@ class Iris(object):
             platform_utf_encoding = None
         if restore_terminal_encoding != platform_utf_encoding:
             Iris.set_terminal_encoding(platform_utf_encoding)
-
 
     def get_test_candidate(self, build):
         """
@@ -202,7 +191,6 @@ class Iris(object):
                             (candidate_app.platform, platform))
         return candidate_app
 
-
     def parse_args(self):
         home = os.path.expanduser("~")
         release_choice, _, test_default = fd.FirefoxDownloader.list()
@@ -237,9 +225,9 @@ class Iris(object):
                             action="store",
                             default="%s/.iris" % home)
         parser.add_argument('-f', '--firefox',
-                           help=("Firefox version to test. It can be one of {%s}, a package file, "
-                                 "or a build directory (default: `%s`)") % (",".join(release_choice), test_default),
-                           action='store')
+                            help=("Firefox version to test. It can be one of {%s}, a package file, "
+                                  "or a build directory (default: `%s`)") % (",".join(release_choice), test_default),
+                            action='store')
         parser.add_argument("-l", "--locale",
                             help="Locale to use for Firefox",
                             type=str,
@@ -254,12 +242,14 @@ class RemoveTempDir(cleanup.CleanUp):
     for deleting the temporary directory prior to exit.
     """
     global logger
+
     @staticmethod
     def at_exit():
         global tmp_dir
         if tmp_dir is not None:
             logger.debug('Removing temp dir `%s`' % tmp_dir)
             shutil.rmtree(tmp_dir, ignore_errors=True)
+
 
 class ResetTerminalEncoding(cleanup.CleanUp):
     """
@@ -271,6 +261,7 @@ class ResetTerminalEncoding(cleanup.CleanUp):
         global restore_terminal_encoding
         if restore_terminal_encoding is not None:
             Iris.set_terminal_encoding(restore_terminal_encoding)
+
 
 def initialize_logger(app):
     global logger
