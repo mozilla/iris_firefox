@@ -7,7 +7,6 @@ class test(base_test):
         self.meta = "This is a test for clearing browser history"
 
     def run(self):
-
         url = "https://www.amazon.com"
         amazon_image = "amazon.png"
         amazon_history_image = "amazon_history.png"
@@ -25,9 +24,9 @@ class test(base_test):
         # has its own cost.
 
         clear_recent_history()
-        time.sleep(2)
+        time.sleep(1)
         press("enter")
-        time.sleep(2)
+        time.sleep(1)
 
         # The click here is required, because the Firefox window loses
         # focus after invoking the above dialog, and without it,
@@ -44,5 +43,5 @@ class test(base_test):
         time.sleep(2)
         typewrite("amazon")
 
-        expected_2 = exists(amazon_history_image, 10)
-        assert_true(self, expected_2, 'Find amazon history image')
+        expected_2 = exists(amazon_history_image, 0.5)
+        assert_false(self, expected_2, 'Find amazon history image')

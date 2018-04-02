@@ -19,20 +19,24 @@ def get_size_of_scaled_image(im):
     return size
 
 
-def process_image_for_ocr(file_path):
-    temp_filename = set_image_dpi(file_path)
+def process_image_for_ocr(file_path=None, image_array=None):
+    temp_filename = set_image_dpi(file_path=file_path, image_array=image_array)
     im_new = remove_noise_and_smooth(temp_filename)
     return im_new
 
 
-def set_image_dpi(file_path):
-    im = Image.open(file_path)
-    # size = (1800, 1800)
-    size = get_size_of_scaled_image(im)
-    im_resized = im.resize(size, Image.ANTIALIAS)
+def set_image_dpi(file_path=None, image_array=None):
+    if image_array is None:
+        im = Image.open(file_path)
+    elif file_path is None:
+        im = image_array
+
+    no_alpha_image = im.convert("RGB")
+    input_size = get_size_of_scaled_image(no_alpha_image)
+    im_resized = no_alpha_image.resize(input_size, Image.ANTIALIAS)
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
     temp_filename = temp_file.name
-    im_resized.save(temp_filename, dpi=(300, 300))  # best for OCR
+    im_resized.save(temp_filename, dpi=(300, 300))
     return temp_filename
 
 

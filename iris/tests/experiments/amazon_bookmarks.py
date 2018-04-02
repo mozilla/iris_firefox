@@ -14,7 +14,7 @@ class test(base_test):
 
         navigate(url)
 
-        expected_1 = exists(amazon_image, 10)
+        expected_1 = exists(amazon_image, 0.5)
         assert_true(self, expected_1, 'Find amazon image')
 
         bookmark_page()
@@ -29,9 +29,11 @@ class test(base_test):
 
         # Look for new bookmark via library menu button
         click("library.png")
-        press("down")
+        press("tab")
+        press("enter")
+        time.sleep(1)
 
-        expected_2 = exists(amazon_bookmark_image_1, 10)
+        expected_2 = exists(amazon_bookmark_image_1, 0.5)
         assert_true(self, expected_2, 'Find amazon bookmark 1 image')
 
         press("escape")
@@ -43,6 +45,7 @@ class test(base_test):
         bookmarks_sidebar()
         time.sleep(1)
         typewrite("amazon")
+        time.sleep(1)
 
-        expected_3 = exists(amazon_bookmark_image_2, 10)
+        expected_3 = exists(amazon_bookmark_image_2, 0.5)
         assert_true(self, expected_3, 'Find amazon bookmark 2 image')

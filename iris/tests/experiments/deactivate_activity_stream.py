@@ -14,7 +14,6 @@ class test(base_test):
         self.enable = False
 
     def run(self):
-
         preference = "browser.newtabpage.activity-stream.enabled"
         change_preference(preference, "false")
         new_tab()
