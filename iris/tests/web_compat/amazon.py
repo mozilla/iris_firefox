@@ -34,12 +34,6 @@ class test(base_test):
                 logger.debug( "Something went wrong and the user was not logged in")
 
 
-
-
-
-
-
-
     def run(self):
         url="www.amazon.com"
         navigate(url)
@@ -47,19 +41,28 @@ class test(base_test):
         try:
             wait("amazon_logo.png",10)
         except:
-            logger.debug("Page was not loaded!!!")
+            logger.debug("Page was not loaded")
 
         else:
             self.login_amazon()
             time.sleep(4)
             type(Key.ESC)
-            search=Sikuli.Pattern("amazon_search_button.png").targetOffset(-100,0)
+            search=Pattern("amazon_search_button.png").targetOffset(-100,0)
             click(search)
             logger.debug("Amazon search")
             paste(keyword)
             type(Key.ENTER)
 
-            amazon_search_result=Sikuli.Pattern('amazon_search_results.png')
+            amazon_search_result=Pattern('amazon_search_results.png')
+
+
+            """
+            Why do we have a while loop here? This is what the wait() method is supposed
+            to do. Can you replace this logic with wait (pattern, time)? Otherwise
+            this could be stuck here forever. If we wait more than a period of time, then
+            the test should fail.
+            """
+
             found=False
             while found==False:
 
@@ -72,11 +75,10 @@ class test(base_test):
                     logger.debug("Scrolling down in page")
                     scroll_down()
 
-
             if found:
-                amazon_cart=Sikuli.Pattern('amazon_cart.png')
-                amazon_add_to_cart=Sikuli.Pattern('amazon_add_to_cart.png')
-                amazon_delete_cart=Sikuli.Pattern('amazon_delete_cart.png')
+                amazon_cart=Pattern('amazon_cart.png')
+                amazon_add_to_cart=Pattern('amazon_add_to_cart.png')
+                amazon_delete_cart=Pattern('amazon_delete_cart.png')
                 click(amazon_search_result)
                 if exists(amazon_add_to_cart,5):
                     logger.debug("Add product to cart")
@@ -89,13 +91,11 @@ class test(base_test):
                             click(amazon_delete_cart)
                             logger.debug("Product was successfully deleted from cart")
                             time.sleep(4)
-                            print"PASS"
+                            print "PASS"
 
                 else:
                     logger.debug( 'Product was not added to cart')
-                    print"FAIL"
+                    print "FAIL"
             else:
                 logger.debug( "Image not found")
-                print"FAIL"
-
-        return
+                print "FAIL"
