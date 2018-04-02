@@ -13,7 +13,6 @@ class test(base_test):
         self.meta = "This is a test of new tab preferences search"
 
     def run(self):
-
         url = "about:home"
         customize_new_tab_page_image = "customize_new_tab_icon.png"
         tab_preference_search_button = "tab_preference_search_button.png"
@@ -21,11 +20,11 @@ class test(base_test):
 
         navigate(url)
 
-        expected_1 = exists(customize_new_tab_page_image, 10)
+        expected_1 = exists(customize_new_tab_page_image, 0.5)
         assert_true(self, expected_1, 'Find customize new tab page image')
 
         click(customize_new_tab_page_image)
-        expected_2 = exists(tab_preference_search_button, 10)
+        expected_2 = exists(tab_preference_search_button, 0.5)
         assert_true(self, expected_2, 'Find tab preferences search button')
 
         click(tab_preference_search_button)

@@ -42,7 +42,7 @@ def get_os():
         pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     elif current_system == "Darwin":
         current_os = "osx"
-        pytesseract.pytesseract.tesseract_cmd = '<unknown>'
+        pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     else:
         logger.error("Iris does not yet support your current environment: " + current_system)
 
@@ -304,15 +304,38 @@ def _click_image(image_path, pos, action, time_stamp):
     pyautogui.click(button=action)
 
 
-# @todo map data form image_to_data and search for text input
-def text_search(text, debug):
-    screenWidth, screenHeight = pyautogui.size()
-    screencapture = _region_grabber(coordinates=(screenWidth / 2 - 400, 50, screenWidth / 2, 800))
-    screencapture.save('./debug.png')
+def _text_search_all(in_region=None):
+    if in_region is None:
+        in_region = _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
 
-    optimized_ocr_image = process_image_for_ocr('./debug.png')
-    cv2.imwrite("./debug_ocr_ready.png", optimized_ocr_image)
-    print(pytesseract.image_to_data(Image.fromarray(optimized_ocr_image)))
+    tesseract_match_min_len = 12
+    input_image = np.array(in_region)
+    optimized_ocr_image = process_image_for_ocr(image_array=Image.fromarray(input_image))
+
+    if DEBUG:
+        cv2.imwrite(IMAGE_DEBUG_PATH + "/debug_ocr_ready.png", optimized_ocr_image)
+
+    optimized_ocr_array = np.array(optimized_ocr_image)
+    processed_data = pytesseract.image_to_data(Image.fromarray(optimized_ocr_array))
+
+    final_data = []
+    for line in processed_data.split("\n"):
+        try:
+            data = line.encode("ascii").split()
+            if len(data) is tesseract_match_min_len:
+                precision = int(data[10]) / float(100)
+                new_match = {'x': data[6],
+                             'y': data[7],
+                             'width': data[8],
+                             'height': data[9],
+                             'precision': precision,
+                             'value': data[11]
+                             }
+                final_data.append(new_match)
+        except:
+            continue
+
+    return final_data
 
 
 '''
@@ -362,7 +385,7 @@ def click(image_name):
 
 
 def exists(image_name, interval):
-    return wait(image_name, 3, 0.5)
+    return wait(image_name, 3, interval)
 
 
 # @todo to take in consideration the number of screens

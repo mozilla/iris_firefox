@@ -15,7 +15,6 @@ class test(base_test):
         self.meta = "This is a test of creating various Firefox instances with arguments"
 
     def run(self):
-
         amazon_image = "amazon.png"
 
         time.sleep(5)
@@ -27,10 +26,10 @@ class test(base_test):
         launch_firefox(path=self.app.fx_path, profile="size_600", args=args)
 
         time.sleep(5)
-        args = ["-width", "400", "-height", "400", "-private-window", "amazon.com"]
+        args = ["-width", "400", "-height", "400", "-private-window", "http://amazon.com"]
         launch_firefox(path=self.app.fx_path, profile="size_400", args=args)
 
-        expected_1 = exists(amazon_image, 40)
+        expected_1 = exists(amazon_image, 1)
         assert_true(self, expected_1, 'Find amazon image')
 
         quit_firefox()
