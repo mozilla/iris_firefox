@@ -155,8 +155,8 @@ def reset_mouse():
 
 
 def login_site(site_name):
-    username = get_credential(site_name,"username")
-    password = get_credential(site_name,"password")
+    username = get_credential(site_name, "username")
+    password = get_credential(site_name, "password")
     paste(username)
     focus_next_item()
     paste(password)
@@ -183,12 +183,21 @@ def click_hamburger_menu_option(option):
     else:
         click("hamburger_menu.png")
         try:
-            wait(option, 10)
+            exists(option, 10)
             logger.debug(option + " option found")
         except:
             logger.error("Can't find the" + option + "in the page, aborting test.")
             return
         else:
             click(option)
-            time.sleep(2)
-            print "PASS"
+
+
+def close_customize_page():
+    try:
+        wait("customize_done_button.png", 10)
+        logger.debug("Done button found")
+    except:
+        logger.error("Can't find the Done button in the page, aborting.")
+        return
+    else:
+        click("customize_done_button.png")
