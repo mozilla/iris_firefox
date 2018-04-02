@@ -14,11 +14,11 @@ class test(base_test):
         # check if incognito mode works
         new_private_window()
 
-        expected_1 = exists(private_browsing_image, 10)
+        expected_1 = exists(private_browsing_image, 0.5)
         assert_true(self, expected_1, 'Find private browsing image')
 
         # check basic_url in incognito mode
         navigate(url)
 
-        expected_2 = exists(google_search_image, 10)
+        expected_2 = exists(google_search_image, 0.5)
         assert_true(self, expected_2, 'Find google search image')
