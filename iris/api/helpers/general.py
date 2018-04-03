@@ -11,8 +11,6 @@ from api.helpers.keyboard_shortcuts import *
 from configuration.config_parser import *
 from logger.iris_logger import *
 
-
-
 add_image_path(os.path.join(os.path.split(__file__)[0], "images", get_os()))
 logger = getLogger(__name__)
 
@@ -157,8 +155,8 @@ def reset_mouse():
 
 
 def login_site(site_name):
-    username = get_credential(site_name,"username")
-    password = get_credential(site_name,"password")
+    username = get_credential(site_name, "username")
+    password = get_credential(site_name, "password")
     paste(username)
     focus_next_item()
     paste(password)
@@ -173,3 +171,33 @@ def dont_save_password():
     except:
         logger.error("Failed to find save password dialog")
         return None
+
+
+def click_hamburger_menu_option(option):
+    try:
+        wait("hamburger_menu.png", 10)
+        logger.debug("hamburger menu found")
+    except:
+        logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
+        return
+    else:
+        click("hamburger_menu.png")
+        try:
+            exists(option, 10)
+            logger.debug(option + " option found")
+        except:
+            logger.error("Can't find the" + option + "in the page, aborting test.")
+            return
+        else:
+            click(option)
+
+
+def close_customize_page():
+    try:
+        wait("customize_done_button.png", 10)
+        logger.debug("Done button found")
+    except:
+        logger.error("Can't find the Done button in the page, aborting.")
+        return
+    else:
+        click("customize_done_button.png")
