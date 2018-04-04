@@ -2,18 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import os
-import time
-
-from api.core import *
 from api.helpers.general import *
 from api.helpers.keyboard_shortcuts import *
-from logger.iris_logger import *
 from configuration.config_parser import *
 from asserts import *
 from api.helpers.results import *
+import logging
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class base_test(object):

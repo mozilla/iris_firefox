@@ -5,10 +5,10 @@
 import os
 from shutil import rmtree
 from time import time
-from logger.iris_logger import *
+import logging
 
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class DiskCache(object):
