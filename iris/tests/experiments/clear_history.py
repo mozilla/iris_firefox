@@ -25,7 +25,7 @@ class test(base_test):
 
         clear_recent_history()
         time.sleep(1)
-        press("enter")
+        type(Key.ENTER)
         time.sleep(1)
 
         # The click here is required, because the Firefox window loses
@@ -41,7 +41,7 @@ class test(base_test):
 
         history_sidebar()
         time.sleep(2)
-        typewrite("amazon")
+        type("amazon")
 
         expected_2 = exists(amazon_history_image, 0.5)
         assert_false(self, expected_2, 'Find amazon history image')

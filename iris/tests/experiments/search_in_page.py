@@ -17,7 +17,7 @@ class test(base_test):
         assert_true(self, expected_1, 'Wait for google search image to appear')
 
         open_find()
-        typewrite("Gmail")
+        type("Gmail")
 
         expected_2 = exists(search_in_page_image, 0.5)
         assert_true(self, expected_2, 'Find search in page image')
