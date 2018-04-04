@@ -469,7 +469,7 @@ def type(text=None, modifier=None, interval=0.02):
         if isinstance(text, _key):
             logger.debug ("Scenario 1: reserved key")
             logger.debug ("Reserved key: %s" % text)
-            if str(text) is "enter":
+            if str(text) is str(Key.ENTER):
                 pyautogui.typewrite(["enter"])
             else:
                 pyautogui.keyDown(str(text))
@@ -480,7 +480,7 @@ def type(text=None, modifier=None, interval=0.02):
             pyautogui.typewrite(text, interval)
     else:
         logger.debug ("Scenario 3: combination of modifiers and other keys")
-        modifier_keys = KeyModifier.get_all_modifiers(modifier)
+        modifier_keys = KeyModifier.get_active_modifiers(modifier)
         num_keys = len(modifier_keys)
         logger.debug ("Modifiers (%s): %s " % (num_keys, ' '.join(modifier_keys)) )
         logger.debug ("text: %s" % text)
@@ -501,7 +501,7 @@ class KeyModifier(object):
     ALT = 1<<3      # 8
 
     @staticmethod
-    def get_all_modifiers(value):
+    def get_active_modifiers(value):
         all_modifiers = [
             (KeyModifier.SHIFT, "shift"),
             (KeyModifier.CTRL, "ctrl")]
@@ -550,16 +550,9 @@ class Key(object):
     F11 = _key("f11")
 
 
-    def __init__(self, label, reserved=False):
-        self.value = label
-        self.is_reserved = reserved
-
-
-    def __str__(self):
-        return self.value
-
-
-# Stub implementation, just to prevent tests from throwing an error
+"""
+Stub implementation, just to prevent tests from throwing an error
+"""
 
 class Pattern(object):
 
