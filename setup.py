@@ -18,7 +18,7 @@ INSTALL_REQUIRES = [
     'pyobjc;platform_system=="Darwin"',
     'pyobjc-framework-Quartz;platform_system=="Darwin"',
     'image',
-    'PyAutoGUI==0.9.36',
+    'PyAutoGUI==0.9.36'
 ]
 
 TESTS_REQUIRE = [

@@ -14,14 +14,14 @@ class test(base_test):
 
         navigate(url)
 
-        expected_1 = exists(amazon_image, 10)
+        expected_1 = exists(amazon_image, 0.5)
         assert_true(self, expected_1, 'Find amazon image')
 
         bookmark_page()
 
         # Sometimes we need to wait a bit for favicon to be loaded
         time.sleep(3)
-        press("enter")
+        type(Key.ENTER)
 
         # Sometimes we need to wait because UI is animating after
         # bookmark was created and library icon image isn't found
@@ -29,12 +29,14 @@ class test(base_test):
 
         # Look for new bookmark via library menu button
         click("library.png")
-        press("down")
+        type(Key.TAB)
+        type(Key.ENTER)
+        time.sleep(1)
 
-        expected_2 = exists(amazon_bookmark_image_1, 10)
+        expected_2 = exists(amazon_bookmark_image_1, 0.5)
         assert_true(self, expected_2, 'Find amazon bookmark 1 image')
 
-        press("escape")
+        type(Key.ESC)
 
         # Sometimes we need to wait a bit for favicon to be loaded
         time.sleep(3)
@@ -42,7 +44,8 @@ class test(base_test):
         # Look for bookmark in bookmark menu
         bookmarks_sidebar()
         time.sleep(1)
-        typewrite("amazon")
+        type("amazon")
+        time.sleep(1)
 
-        expected_3 = exists(amazon_bookmark_image_2, 10)
+        expected_3 = exists(amazon_bookmark_image_2, 0.5)
         assert_true(self, expected_3, 'Find amazon bookmark 2 image')

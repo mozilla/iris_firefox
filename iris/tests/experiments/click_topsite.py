@@ -21,10 +21,9 @@ class test(base_test):
 
         navigate(url)
 
-        expected_1 = exists(top_sites_image, 10)
+        expected_1 = exists(top_sites_image, 0.5)
         assert_true(self, expected_1, 'Find top sites image')
 
         click(youtube_top_site_image)
-        expected_2 = exists(youtube_image, 10)
+        expected_2 = exists(youtube_image, 0.5)
         assert_true(self, expected_2, 'Find youtube image')
-

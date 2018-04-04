@@ -42,7 +42,7 @@ def get_os():
         pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     elif current_system == "Darwin":
         current_os = "osx"
-        pytesseract.pytesseract.tesseract_cmd = '<unknown>'
+        pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     else:
         logger.error("Iris does not yet support your current environment: " + current_system)
 
@@ -304,15 +304,38 @@ def _click_image(image_path, pos, action, time_stamp):
     pyautogui.click(button=action)
 
 
-# @todo map data form image_to_data and search for text input
-def text_search(text, debug):
-    screenWidth, screenHeight = pyautogui.size()
-    screencapture = _region_grabber(coordinates=(screenWidth / 2 - 400, 50, screenWidth / 2, 800))
-    screencapture.save('./debug.png')
+def _text_search_all(in_region=None):
+    if in_region is None:
+        in_region = _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
 
-    optimized_ocr_image = process_image_for_ocr('./debug.png')
-    cv2.imwrite("./debug_ocr_ready.png", optimized_ocr_image)
-    print(pytesseract.image_to_data(Image.fromarray(optimized_ocr_image)))
+    tesseract_match_min_len = 12
+    input_image = np.array(in_region)
+    optimized_ocr_image = process_image_for_ocr(image_array=Image.fromarray(input_image))
+
+    if DEBUG:
+        cv2.imwrite(IMAGE_DEBUG_PATH + "/debug_ocr_ready.png", optimized_ocr_image)
+
+    optimized_ocr_array = np.array(optimized_ocr_image)
+    processed_data = pytesseract.image_to_data(Image.fromarray(optimized_ocr_array))
+
+    final_data = []
+    for line in processed_data.split("\n"):
+        try:
+            data = line.encode("ascii").split()
+            if len(data) is tesseract_match_min_len:
+                precision = int(data[10]) / float(100)
+                new_match = {'x': data[6],
+                             'y': data[7],
+                             'width': data[8],
+                             'height': data[9],
+                             'precision': precision,
+                             'value': data[11]
+                             }
+                final_data.append(new_match)
+        except:
+            continue
+
+    return final_data
 
 
 '''
@@ -324,6 +347,9 @@ Sikuli wrappers
 - exists 
 - find
 - findAll
+- type
+- Key
+- KeyModifier
 
 '''
 
@@ -333,19 +359,29 @@ def wait(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURA
     image_found = _image_search_loop(image_path, interval, max_attempts, precision)
     if (image_found[0] != -1) & (image_found[1] != -1):
         return True
-    return False
+    else:
+        raise Exception
 
 
 def waitVanish(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURACY):
     logger.debug("Wait vanish for: " + image_name)
-    pattern_found = wait(image_name, 1)
+    try:
+        pattern_found = wait(image_name, 1)
+    except:
+        return True
     tries = 0
     while (pattern_found is True) and (tries < max_attempts):
         time.sleep(interval)
-        pattern_found = wait(image_name, 1)
+        try:
+            pattern_found = wait(image_name, 1)
+        except:
+            pattern_found = False
         tries += 1
 
-    return pattern_found
+    if pattern_found is True:
+        raise Exception
+    else:
+        return True
 
 
 # @todo Search in regions for faster results
@@ -362,7 +398,11 @@ def click(image_name):
 
 
 def exists(image_name, interval):
-    return wait(image_name, 3, 0.5)
+    try:
+        wait(image_name, 3, interval)
+        return True
+    except:
+        return False
 
 
 # @todo to take in consideration the number of screens
@@ -393,6 +433,8 @@ def findAll(image_name):
     return _image_search_multiple(image_path)
 
 
+# Obsolete, will be removed
+"""
 def typewrite(text, interval=0.02):
     logger.debug("Type: " + str(text))
     pyautogui.typewrite(text, interval)
@@ -406,6 +448,7 @@ def press(key):
 
 def hotkey_press(*args):
     pyautogui.hotkey(*args)
+"""
 
 
 def keyDown(key):
@@ -418,3 +461,106 @@ def keyUp(key):
 
 def scroll(clicks):
     pyautogui.scroll(clicks)
+
+
+def type(text=None, modifier=None, interval=0.02):
+    logger.debug("type method: ")
+    if modifier == None:
+        if isinstance(text, _key):
+            logger.debug ("Scenario 1: reserved key")
+            logger.debug ("Reserved key: %s" % text)
+            if str(text) is str(Key.ENTER):
+                pyautogui.typewrite(["enter"])
+            else:
+                pyautogui.keyDown(str(text))
+                pyautogui.keyUp(str(text))
+        else:
+            logger.debug ("Scenario 2: normal key or text block")
+            logger.debug("Text: %s" % text)
+            pyautogui.typewrite(text, interval)
+    else:
+        logger.debug ("Scenario 3: combination of modifiers and other keys")
+        modifier_keys = KeyModifier.get_active_modifiers(modifier)
+        num_keys = len(modifier_keys)
+        logger.debug ("Modifiers (%s): %s " % (num_keys, ' '.join(modifier_keys)) )
+        logger.debug ("text: %s" % text)
+        if num_keys == 1:
+            pyautogui.hotkey(modifier_keys[0], str(text))
+        elif num_keys == 2:
+            pyautogui.hotkey(modifier_keys[0], modifier_keys[1], str(text))
+        else:
+            logger.error("Returned key modifiers out of range")
+
+
+class KeyModifier(object):
+
+    SHIFT = 1<<0    # 1
+    CTRL = 1<<1     # 2
+    CMD = 1<<2      # 4
+    WIN = 1<<2      # 4
+    ALT = 1<<3      # 8
+
+    @staticmethod
+    def get_active_modifiers(value):
+        all_modifiers = [
+            (KeyModifier.SHIFT, "shift"),
+            (KeyModifier.CTRL, "ctrl")]
+
+        if get_os() == "osx":
+            all_modifiers.append((KeyModifier.CMD, "command"))
+        else:
+            # TODO: verify that Linux is same as Windows
+            all_modifiers.append((KeyModifier.WIN, "win"))
+
+        all_modifiers.append((KeyModifier.ALT, "alt"))
+
+        active_modifiers = []
+        for item in all_modifiers:
+            if item[0] & value:
+                active_modifiers.append(item[1])
+        return active_modifiers
+
+
+class _key(object):
+
+    def __init__(self, label, reserved=True):
+        self.value = label
+        self.is_reserved = reserved
+
+
+    def __str__(self):
+        return self.value
+
+
+class Key(object):
+
+    SPACE = _key(" ")
+    TAB = _key("tab")
+    ENTER = _key("enter")
+    LEFT = _key("left")
+    RIGHT = _key("right")
+    UP = _key("up")
+    DOWN = _key("down")
+    ESC = _key("esc")
+    HOME = _key("home")
+    END = _key("end")
+    DELETE = _key("delete")
+    F5 = _key("f5")
+    F6 = _key("f6")
+    F11 = _key("f11")
+
+
+"""
+Stub implementation, just to prevent tests from throwing an error
+"""
+
+class Pattern(object):
+
+    def __init__(self, image_name):
+        self.image = image_name
+
+
+    def targetOffset(self, x, y):
+        self.x_offset = x
+        self.y_offset = y
+        return self.image
