@@ -6,16 +6,15 @@
 # This class is used to wrap methods around the Sikuli API
 
 import platform
-import sys
 import pyautogui
 import numpy as np
-import time
 from helpers.image_remove_noise import process_image_for_ocr
 import pytesseract
 import cv2
-from logger.iris_logger import *
 import time
 import random
+import logging
+import os
 
 try:
     import Image
@@ -28,10 +27,11 @@ FIND_METHOD = cv2.TM_CCOEFF_NORMED
 IMAGES = {}
 DEBUG = True
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def get_os():
+    global logger
     current_system = platform.system()
     current_os = ''
     if current_system == "Windows":
@@ -364,6 +364,7 @@ def wait(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURA
 
 
 def waitVanish(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURACY):
+    global logger
     logger.debug("Wait vanish for: " + image_name)
     try:
         pattern_found = wait(image_name, 1)
@@ -386,6 +387,7 @@ def waitVanish(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_
 
 # @todo Search in regions for faster results
 def click(image_name):
+    global logger
     logger.debug("Try click on: " + image_name)
     image_path = IMAGES[image_name]
     pos = _image_search(image_path)
@@ -464,26 +466,27 @@ def scroll(clicks):
 
 
 def type(text=None, modifier=None, interval=0.02):
+    global logger
     logger.debug("type method: ")
     if modifier == None:
         if isinstance(text, _key):
-            logger.debug ("Scenario 1: reserved key")
-            logger.debug ("Reserved key: %s" % text)
+            logger.debug("Scenario 1: reserved key")
+            logger.debug("Reserved key: %s" % text)
             if str(text) is str(Key.ENTER):
                 pyautogui.typewrite(["enter"])
             else:
                 pyautogui.keyDown(str(text))
                 pyautogui.keyUp(str(text))
         else:
-            logger.debug ("Scenario 2: normal key or text block")
+            logger.debug("Scenario 2: normal key or text block")
             logger.debug("Text: %s" % text)
             pyautogui.typewrite(text, interval)
     else:
-        logger.debug ("Scenario 3: combination of modifiers and other keys")
+        logger.debug("Scenario 3: combination of modifiers and other keys")
         modifier_keys = KeyModifier.get_active_modifiers(modifier)
         num_keys = len(modifier_keys)
-        logger.debug ("Modifiers (%s): %s " % (num_keys, ' '.join(modifier_keys)) )
-        logger.debug ("text: %s" % text)
+        logger.debug("Modifiers (%s): %s " % (num_keys, ' '.join(modifier_keys)))
+        logger.debug("text: %s" % text)
         if num_keys == 1:
             pyautogui.hotkey(modifier_keys[0], str(text))
         elif num_keys == 2:
@@ -493,12 +496,11 @@ def type(text=None, modifier=None, interval=0.02):
 
 
 class KeyModifier(object):
-
-    SHIFT = 1<<0    # 1
-    CTRL = 1<<1     # 2
-    CMD = 1<<2      # 4
-    WIN = 1<<2      # 4
-    ALT = 1<<3      # 8
+    SHIFT = 1 << 0  # 1
+    CTRL = 1 << 1  # 2
+    CMD = 1 << 2  # 4
+    WIN = 1 << 2  # 4
+    ALT = 1 << 3  # 8
 
     @staticmethod
     def get_active_modifiers(value):
@@ -527,13 +529,11 @@ class _key(object):
         self.value = label
         self.is_reserved = reserved
 
-
     def __str__(self):
         return self.value
 
 
 class Key(object):
-
     SPACE = _key(" ")
     TAB = _key("tab")
     ENTER = _key("enter")
@@ -554,11 +554,11 @@ class Key(object):
 Stub implementation, just to prevent tests from throwing an error
 """
 
+
 class Pattern(object):
 
     def __init__(self, image_name):
         self.image = image_name
-
 
     def targetOffset(self, x, y):
         self.x_offset = x
