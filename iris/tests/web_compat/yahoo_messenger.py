@@ -48,11 +48,16 @@ class test(base_test):
                 type(Key.ENTER)
                 # Delete the previously sent message.
                 if exists("yahoo_messenger_test_message.png", 10):
+                    print "Sent message is displayed properly"
                     hover("yahoo_messenger_test_message.png")
                     click("delete_button.png")
                     click("unsend_button.png")
-                    waitVanish("yahoo_messenger_test_message.png", 10)
-                    result = "PASS"
+                    if waitVanish("yahoo_messenger_test_message.png", 10):
+                        print "Message deleted successfully"
+                        result = "PASS"
+                    else:
+                        print "Message was not deleted successfully"
+                        result = "FAIL"
                 else:
                     result = "FAIL"
             else:
