@@ -3,13 +3,13 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from api.helpers.general import *
-from logger.iris_logger import *
 from api.helpers.results import *
 import os
 import sys
 import importlib
+import logging
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 passed = 0
 failed = 0
@@ -81,6 +81,7 @@ def run(app):
 
 
 def load_tests(app):
+
     app.test_list = []
     app.test_packages = []
 

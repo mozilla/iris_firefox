@@ -6,6 +6,7 @@
 import argparse
 import shutil
 import tempfile
+import glob
 
 from firefox import cleanup
 import firefox.app as fa
@@ -14,19 +15,26 @@ import firefox.extractor as fe
 
 import test_runner
 from api.core import *
-from logger.iris_logger import *
+import logging
+import coloredlogs
+import sys
 
-logger = None
 tmp_dir = None
 restore_terminal_encoding = None
+LOG_FILENAME = 'iris_log.log'
+LOG_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
+logger = logging.getLogger(__name__)
+
+coloredlogs.DEFAULT_LOG_FORMAT = LOG_FORMAT
+coloredlogs.DEFAULT_FIELD_STYLES = {'levelname': {'color': 'cyan', 'bold': True},
+                                    'name': {'color': 'cyan', 'bold': True}}
 
 
 class Iris(object):
 
     def __init__(self):
-        global logger
         self.parse_args()
-        logger = initialize_logger(self)
+        initialize_logger(LOG_FILENAME, self.args.level)
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = get_os()
@@ -34,7 +42,7 @@ class Iris(object):
         test_runner.run(self)
 
     def main(self, argv=None):
-        global tmp_dir, logger
+        global tmp_dir
 
         logger.debug("Command arguments: %s" % self.args)
 
@@ -71,7 +79,6 @@ class Iris(object):
         Writes to the global variable tmp_dir
         :return: Path of temporary directory
         """
-        global logger
         temp_dir = tempfile.mkdtemp(prefix='iris_')
         logger.debug('Created temp dir `%s`' % temp_dir)
         return temp_dir
@@ -81,7 +88,6 @@ class Iris(object):
         """
         Helper function to get current terminal encoding
         """
-        global logger
         if sys.platform.startswith("win"):
             logger.debug("Running `chcp` shell command")
             chcp_output = os.popen("chcp").read().strip()
@@ -102,7 +108,6 @@ class Iris(object):
         """
         Helper function to set terminal encoding.
         """
-        global logger
         if os.path.exists("C:\\"):
             logger.debug("Running `chcp` shell command, setting codepage to `%s`", encoding)
             chcp_output = os.popen("chcp %s" % encoding).read().strip()
@@ -135,7 +140,6 @@ class Iris(object):
         :param build: str with firefox build
         :return: FirefoxApp object for test candidate
         """
-        global logger
         platform = fd.FirefoxDownloader.detect_platform()
         if platform is None:
             logger.error("Unsupported platform: `%s`" % sys.platform)
@@ -241,7 +245,6 @@ class RemoveTempDir(cleanup.CleanUp):
     Class definition for cleanup helper responsible
     for deleting the temporary directory prior to exit.
     """
-    global logger
 
     @staticmethod
     def at_exit():
@@ -263,11 +266,23 @@ class ResetTerminalEncoding(cleanup.CleanUp):
             Iris.set_terminal_encoding(restore_terminal_encoding)
 
 
-def initialize_logger(app):
-    global logger
-    logger = getLogger(__name__)
-    logger.setLevel(app.args.level)
-    return logger
+def initialize_logger_level(level):
+    if level == 10:
+        coloredlogs.install(level='DEBUG')
+    elif level == 20:
+        coloredlogs.install(level='INFO')
+    elif level == 30:
+        coloredlogs.install(level='WARNING')
+    elif level == 40:
+        coloredlogs.install(level='ERROR')
+    elif level == 50:
+        coloredlogs.install(level='CRITICAL')
+
+
+def initialize_logger(output, level):
+    if output:
+        logging.basicConfig(filename=LOG_FILENAME, format=LOG_FORMAT)
+    initialize_logger_level(level)
 
 
 Iris()

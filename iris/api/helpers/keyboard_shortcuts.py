@@ -2,12 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import time
 from api.core import *
-from logger.iris_logger import *
-
-
-logger = getLogger(__name__)
 
 
 # This helper defines keyboard shortcuts for many common actions in Firefox usage.
