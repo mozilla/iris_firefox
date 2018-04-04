@@ -466,20 +466,23 @@ def scroll(clicks):
 def type(text=None, modifier=None, interval=0.02):
     logger.debug("type method: ")
     if modifier == None:
-        if text is Key.is_reserved_key(text):
-            pyautogui.keyDown(text)
-            pyautogui.keyUp(text)
+        if isinstance(text, _key):
             logger.debug ("Scenario 1: reserved key")
-            logger.debug ("Reserved key %s" % text)
+            logger.debug ("Reserved key: %s" % text)
+            if str(text) is "enter":
+                pyautogui.typewrite(["enter"])
+            else:
+                pyautogui.keyDown(str(text))
+                pyautogui.keyUp(str(text))
         else:
-            pyautogui.typewrite(text, interval)
             logger.debug ("Scenario 2: normal key or text block")
-            logger.debug("Text %s" % text)
+            logger.debug("Text: %s" % text)
+            pyautogui.typewrite(text, interval)
     else:
         logger.debug ("Scenario 3: combination of modifiers and other keys")
         modifier_keys = KeyModifier.get_all_modifiers(modifier)
         num_keys = len(modifier_keys)
-        logger.debug ("Modifiers (%s) %s " % (num_keys, ' '.join(modifier_keys)) )
+        logger.debug ("Modifiers (%s): %s " % (num_keys, ' '.join(modifier_keys)) )
         logger.debug ("text: %s" % text)
         if num_keys == 1:
             pyautogui.hotkey(modifier_keys[0], text)
@@ -518,46 +521,42 @@ class KeyModifier(object):
         return active_modifiers
 
 
+class _key(object):
+
+    def __init__(self, label, reserved=True):
+        self.value = label
+        self.is_reserved = reserved
+
+
+    def __str__(self):
+        return self.value
+
+
 class Key(object):
 
-    SPACE = " "
-    TAB = "tab"
-    LEFT = "left"
-    RIGHT = "right"
-    UP = "up"
-    DOWN = "down"
-    ESC = "esc"
-    HOME = "home"
-    END = "end"
-    DELETE = "delete"
-    F5 = "f5"
-    F6 = "f6"
-    F11 = "f11"
+    SPACE = _key(" ")
+    TAB = _key("tab")
+    ENTER = _key("enter")
+    LEFT = _key("left")
+    RIGHT = _key("right")
+    UP = _key("up")
+    DOWN = _key("down")
+    ESC = _key("esc")
+    HOME = _key("home")
+    END = _key("end")
+    DELETE = _key("delete")
+    F5 = _key("f5")
+    F6 = _key("f6")
+    F11 = _key("f11")
 
 
-    @staticmethod
-    def is_reserved_key(key):
-        found = False
-        key_list = [
-            Key.SPACE,
-            Key.TAB,
-            Key.LEFT,
-            Key.RIGHT,
-            Key.UP,
-            Key.DOWN,
-            Key.ESC,
-            Key.HOME,
-            Key.END,
-            Key.DELETE,
-            Key.F5,
-            Key.F6,
-            Key.F11
-        ]
-        for item in key_list:
-            if key is item:
-                found = True
-                break
-        return found
+    def __init__(self, label, reserved=False):
+        self.value = label
+        self.is_reserved = reserved
+
+
+    def __str__(self):
+        return self.value
 
 
 # Stub implementation, just to prevent tests from throwing an error
