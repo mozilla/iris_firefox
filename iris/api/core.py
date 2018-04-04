@@ -347,6 +347,9 @@ Sikuli wrappers
 - exists 
 - find
 - findAll
+- type
+- Key
+- KeyModifier
 
 '''
 
@@ -356,19 +359,29 @@ def wait(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURA
     image_found = _image_search_loop(image_path, interval, max_attempts, precision)
     if (image_found[0] != -1) & (image_found[1] != -1):
         return True
-    return False
+    else:
+        raise Exception
 
 
 def waitVanish(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_ACCURACY):
     logger.debug("Wait vanish for: " + image_name)
-    pattern_found = wait(image_name, 1)
+    try:
+        pattern_found = wait(image_name, 1)
+    except:
+        return True
     tries = 0
     while (pattern_found is True) and (tries < max_attempts):
         time.sleep(interval)
-        pattern_found = wait(image_name, 1)
+        try:
+            pattern_found = wait(image_name, 1)
+        except:
+            pattern_found = False
         tries += 1
 
-    return pattern_found
+    if pattern_found is True:
+        raise Exception
+    else:
+        return True
 
 
 # @todo Search in regions for faster results
@@ -385,7 +398,11 @@ def click(image_name):
 
 
 def exists(image_name, interval):
-    return wait(image_name, 3, interval)
+    try:
+        wait(image_name, 3, interval)
+        return True
+    except:
+        return False
 
 
 # @todo to take in consideration the number of screens
@@ -416,6 +433,8 @@ def findAll(image_name):
     return _image_search_multiple(image_path)
 
 
+# Obsolete, will be removed
+"""
 def typewrite(text, interval=0.02):
     logger.debug("Type: " + str(text))
     pyautogui.typewrite(text, interval)
@@ -429,6 +448,7 @@ def press(key):
 
 def hotkey_press(*args):
     pyautogui.hotkey(*args)
+"""
 
 
 def keyDown(key):
@@ -447,7 +467,8 @@ def type(text=None, modifier=None, interval=0.02):
     logger.debug("type method: ")
     if modifier == None:
         if text is Key.is_reserved_key(text):
-            press(text)
+            pyautogui.keyDown(text)
+            pyautogui.keyUp(text)
             logger.debug ("Scenario 1: reserved key")
             logger.debug ("Reserved key %s" % text)
         else:
@@ -469,6 +490,7 @@ def type(text=None, modifier=None, interval=0.02):
 
 
 class KeyModifier(object):
+
     SHIFT = 1<<0    # 1
     CTRL = 1<<1     # 2
     CMD = 1<<2      # 4
@@ -482,7 +504,7 @@ class KeyModifier(object):
             (KeyModifier.CTRL, "ctrl")]
 
         if get_os() == "osx":
-            all_modifiers.append((KeyModifier.CMD, "cmd"))
+            all_modifiers.append((KeyModifier.CMD, "command"))
         else:
             # TODO: verify that Linux is same as Windows
             all_modifiers.append((KeyModifier.WIN, "win"))
@@ -497,6 +519,7 @@ class KeyModifier(object):
 
 
 class Key(object):
+
     SPACE = " "
     TAB = "tab"
     LEFT = "left"
@@ -535,3 +558,17 @@ class Key(object):
                 found = True
                 break
         return found
+
+
+# Stub implementation, just to prevent tests from throwing an error
+
+class Pattern(object):
+
+    def __init__(self, image_name):
+        self.image = image_name
+
+
+    def targetOffset(self, x, y):
+        self.x_offset = x
+        self.y_offset = y
+        return self.image
