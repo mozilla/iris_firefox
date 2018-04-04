@@ -485,9 +485,9 @@ def type(text=None, modifier=None, interval=0.02):
         logger.debug ("Modifiers (%s): %s " % (num_keys, ' '.join(modifier_keys)) )
         logger.debug ("text: %s" % text)
         if num_keys == 1:
-            pyautogui.hotkey(modifier_keys[0], text)
+            pyautogui.hotkey(modifier_keys[0], str(text))
         elif num_keys == 2:
-            pyautogui.hotkey(modifier_keys[0], modifier_keys[1], text)
+            pyautogui.hotkey(modifier_keys[0], modifier_keys[1], str(text))
         else:
             logger.error("Returned key modifiers out of range")
 
