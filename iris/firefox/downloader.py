@@ -3,18 +3,18 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
-import struct
 import sys
 import urllib2
 
 import cache
-from logger.iris_logger import *
+import logging
 
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def get_to_file(url, filename):
+    global logger
 
     try:
         # TODO: Validate the server's SSL certificate

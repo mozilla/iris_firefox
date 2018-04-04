@@ -13,13 +13,11 @@ import cache
 from app import FirefoxApp
 from downloader import FirefoxDownloader
 
-from logger.iris_logger import *
+logger = logging.getLogger(__name__)
 
 
-logger = getLogger(__name__)
-
-
-def extract(archive_file, workdir, cache_timeout=24*60*60, use_cache=True):
+def extract(archive_file, workdir, cache_timeout=24 * 60 * 60, use_cache=True):
+    global logger
 
     """Extract a Firefox archive file into a subfolder in the given temp dir."""
     logger.info("Extracting Firefox archive `%s`" % archive_file)
@@ -75,9 +73,8 @@ def extract(archive_file, workdir, cache_timeout=24*60*60, use_cache=True):
 
     # Workaround for Mac
     if FirefoxDownloader.detect_os() == "osx":
-        p = os.path.join (app.app_dir, "Contents", "MacOS", "plugin-container.app",
-                          "Contents", "MacOS", "plugin-container")
-        os.chmod (p, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
-
+        p = os.path.join(app.app_dir, "Contents", "MacOS", "plugin-container.app",
+                         "Contents", "MacOS", "plugin-container")
+        os.chmod(p, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
 
     return app
