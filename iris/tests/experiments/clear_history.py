@@ -7,17 +7,15 @@ class test(base_test):
         self.meta = "This is a test for clearing browser history"
 
     def run(self):
-
         url = "https://www.amazon.com"
-        amazon_history = "amazon_history.png"
+        amazon_image = "amazon.png"
+        amazon_history_image = "amazon_history.png"
+        home_image = "home.png"
 
         navigate(url)
 
-        try:
-            wait("amazon.png", 10)
-        except:
-            logger.error("Can't find Amazon image in page, aborting test.")
-            return
+        expected_1 = wait(amazon_image)
+        assert_true(self, expected_1, 'Wait for amazon image to appear')
 
         # The various calls to time.sleep are necessary to
         # account for lag times incurred by underlying operations.
@@ -26,15 +24,15 @@ class test(base_test):
         # has its own cost.
 
         clear_recent_history()
-        time.sleep(2)
+        time.sleep(1)
         press("enter")
-        time.sleep(2)
+        time.sleep(1)
 
         # The click here is required, because the Firefox window loses
         # focus after invoking the above dialog, and without it,
         # the keyboard shortcuts don't work
 
-        click("home.png")
+        click(home_image)
 
         # Navigate to new page; otherwise, our bitmap for the history item
         # looks identical to the image in the title bar and we'll get
@@ -45,7 +43,5 @@ class test(base_test):
         time.sleep(2)
         typewrite("amazon")
 
-        if exists(amazon_history, 5):
-            print ("FAIL")
-        else:
-            print ("PASS")
+        expected_2 = exists(amazon_history_image, 0.5)
+        assert_false(self, expected_2, 'Find amazon history image')

@@ -8,26 +8,17 @@ class test(base_test):
 
     def run(self):
         url = "https://www.google.com/?hl=EN"
-        # check if incognito mode works
+        private_browsing_image = "private_browsing.png"
+        google_search_image = "google_search.png"
 
+        # check if incognito mode works
         new_private_window()
 
-        pattern = "private_browsing.png"
-        if exists(pattern, 10):
-            result = "PASS"
-        else:
-            result = "FAIL"
-
-        print result
+        expected_1 = exists(private_browsing_image, 0.5)
+        assert_true(self, expected_1, 'Find private browsing image')
 
         # check basic_url in incognito mode
         navigate(url)
 
-        pattern_navigation = "google_search.png"
-
-        if exists(pattern_navigation, 10):
-            result_nav = "PASS"
-        else:
-            result_nav = "FAIL"
-
-        print result_nav
+        expected_2 = exists(google_search_image, 0.5)
+        assert_true(self, expected_2, 'Find google search image')

@@ -148,8 +148,8 @@ def reset_mouse():
 
 
 def login_site(site_name):
-    username = get_credential(site_name,"username")
-    password = get_credential(site_name,"password")
+    username = get_credential(site_name, "username")
+    password = get_credential(site_name, "password")
     paste(username)
     focus_next_item()
     paste(password)

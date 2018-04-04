@@ -13,7 +13,6 @@ class test(base_test):
         self.meta = "This is a test of new tab preferences search"
 
     def run(self):
-
         url = "about:home"
         customize_new_tab_page_image = "customize_new_tab_icon.png"
         tab_preference_search_button = "tab_preference_search_button.png"
@@ -21,23 +20,13 @@ class test(base_test):
 
         navigate(url)
 
-        if exists(customize_new_tab_page_image, 10):
-            try:
-                click(customize_new_tab_page_image)
-                if exists(tab_preference_search_button, 2):
-                    try:
-                        click(tab_preference_search_button)
-                        if waitVanish(tab_search_section, 2):
-                            result = "PASS"
-                        else:
-                            result = "FAIL"
-                    except:
-                        result = "FAIL"
-                else:
-                    result = "FAIL"
-            except:
-                result = "FAIL"
-        else:
-            result = "FAIL"
+        expected_1 = exists(customize_new_tab_page_image, 0.5)
+        assert_true(self, expected_1, 'Find customize new tab page image')
 
-        print result
+        click(customize_new_tab_page_image)
+        expected_2 = exists(tab_preference_search_button, 0.5)
+        assert_true(self, expected_2, 'Find tab preferences search button')
+
+        click(tab_preference_search_button)
+        expected_3 = waitVanish(tab_search_section)
+        assert_false(self, expected_3, 'Wait for tab search section to vanish')

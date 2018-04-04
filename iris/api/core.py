@@ -42,7 +42,7 @@ def get_os():
         pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     elif current_system == "Darwin":
         current_os = "osx"
-        pytesseract.pytesseract.tesseract_cmd = '<unknown>'
+        pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     else:
         logger.error("Iris does not yet support your current environment: " + current_system)
 
@@ -304,15 +304,38 @@ def _click_image(image_path, pos, action, time_stamp):
     pyautogui.click(button=action)
 
 
-# @todo map data form image_to_data and search for text input
-def text_search(text, debug):
-    screenWidth, screenHeight = pyautogui.size()
-    screencapture = _region_grabber(coordinates=(screenWidth / 2 - 400, 50, screenWidth / 2, 800))
-    screencapture.save('./debug.png')
+def _text_search_all(in_region=None):
+    if in_region is None:
+        in_region = _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
 
-    optimized_ocr_image = process_image_for_ocr('./debug.png')
-    cv2.imwrite("./debug_ocr_ready.png", optimized_ocr_image)
-    print(pytesseract.image_to_data(Image.fromarray(optimized_ocr_image)))
+    tesseract_match_min_len = 12
+    input_image = np.array(in_region)
+    optimized_ocr_image = process_image_for_ocr(image_array=Image.fromarray(input_image))
+
+    if DEBUG:
+        cv2.imwrite(IMAGE_DEBUG_PATH + "/debug_ocr_ready.png", optimized_ocr_image)
+
+    optimized_ocr_array = np.array(optimized_ocr_image)
+    processed_data = pytesseract.image_to_data(Image.fromarray(optimized_ocr_array))
+
+    final_data = []
+    for line in processed_data.split("\n"):
+        try:
+            data = line.encode("ascii").split()
+            if len(data) is tesseract_match_min_len:
+                precision = int(data[10]) / float(100)
+                new_match = {'x': data[6],
+                             'y': data[7],
+                             'width': data[8],
+                             'height': data[9],
+                             'precision': precision,
+                             'value': data[11]
+                             }
+                final_data.append(new_match)
+        except:
+            continue
+
+    return final_data
 
 
 '''
@@ -362,7 +385,7 @@ def click(image_name):
 
 
 def exists(image_name, interval):
-    return wait(image_name, 3, 0.5)
+    return wait(image_name, 3, interval)
 
 
 # @todo to take in consideration the number of screens
@@ -418,97 +441,3 @@ def keyUp(key):
 
 def scroll(clicks):
     pyautogui.scroll(clicks)
-
-
-def type(text=None, modifier=None, interval=0.02):
-    logger.debug("type method: ")
-    if modifier == None:
-        if text is Key.is_reserved_key(text):
-            press(text)
-            logger.debug ("Scenario 1: reserved key")
-            logger.debug ("Reserved key %s" % text)
-        else:
-            pyautogui.typewrite(text, interval)
-            logger.debug ("Scenario 2: normal key or text block")
-            logger.debug("Text %s" % text)
-    else:
-        logger.debug ("Scenario 3: combination of modifiers and other keys")
-        modifier_keys = KeyModifier.get_all_modifiers(modifier)
-        num_keys = len(modifier_keys)
-        logger.debug ("Modifiers (%s) %s " % (num_keys, ' '.join(modifier_keys)) )
-        logger.debug ("text: %s" % text)
-        if num_keys == 1:
-            pyautogui.hotkey(modifier_keys[0], text)
-        elif num_keys == 2:
-            pyautogui.hotkey(modifier_keys[0], modifier_keys[1], text)
-        else:
-            logger.error("Returned key modifiers out of range")
-
-
-class KeyModifier(object):
-    SHIFT = 1<<0    # 1
-    CTRL = 1<<1     # 2
-    CMD = 1<<2      # 4
-    WIN = 1<<2      # 4
-    ALT = 1<<3      # 8
-
-    @staticmethod
-    def get_all_modifiers(value):
-        all_modifiers = [
-            (KeyModifier.SHIFT, "shift"),
-            (KeyModifier.CTRL, "ctrl")]
-
-        if get_os() == "osx":
-            all_modifiers.append((KeyModifier.CMD, "cmd"))
-        else:
-            # TODO: verify that Linux is same as Windows
-            all_modifiers.append((KeyModifier.WIN, "win"))
-
-        all_modifiers.append((KeyModifier.ALT, "alt"))
-
-        active_modifiers = []
-        for item in all_modifiers:
-            if item[0] & value:
-                active_modifiers.append(item[1])
-        return active_modifiers
-
-
-class Key(object):
-    SPACE = " "
-    TAB = "tab"
-    LEFT = "left"
-    RIGHT = "right"
-    UP = "up"
-    DOWN = "down"
-    ESC = "esc"
-    HOME = "home"
-    END = "end"
-    DELETE = "delete"
-    F5 = "f5"
-    F6 = "f6"
-    F11 = "f11"
-
-
-    @staticmethod
-    def is_reserved_key(key):
-        found = False
-        key_list = [
-            Key.SPACE,
-            Key.TAB,
-            Key.LEFT,
-            Key.RIGHT,
-            Key.UP,
-            Key.DOWN,
-            Key.ESC,
-            Key.HOME,
-            Key.END,
-            Key.DELETE,
-            Key.F5,
-            Key.F6,
-            Key.F11
-        ]
-        for item in key_list:
-            if key is item:
-                found = True
-                break
-        return found

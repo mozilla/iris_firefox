@@ -13,7 +13,6 @@ class test(base_test):
         self.meta = "This is a test of a bunch of tabs"
 
     def run(self):
-
         # helper function
         new_tab()
         new_tab()
@@ -30,9 +29,5 @@ class test(base_test):
         navigate("https://www.google.com/?hl=EN")
 
         # core api function
-        if exists("google_search.png", 15):
-            result = "PASS"
-        else:
-            result = "FAIL"
-
-        print (result)
+        expected = exists("google_search.png", 0.5)
+        assert_true(self, expected, 'google_search image found')

@@ -14,14 +14,15 @@ class test(base_test):
 
     def run(self):
         url = "about:home"
+        top_sites_image = "top_sites.png"
+        youtube_top_site_image = "youtube_top_site.png"
+        youtube_image = "youtube.png"
+
         navigate(url)
 
-        if exists("top_sites.png", 10):
-            click("youtube_top_site.png")
-            # Check that the first default TOP SITE is opened
-            if exists("youtube.png", 10):
-                print ("PASS")
-            else:
-                print ("FAIL")
-        else:
-            print ("FAIL")
+        expected_1 = exists(top_sites_image, 0.5)
+        assert_true(self, expected_1, 'Find top sites image')
+
+        click(youtube_top_site_image)
+        expected_2 = exists(youtube_image, 0.5)
+        assert_true(self, expected_2, 'Find youtube image')
