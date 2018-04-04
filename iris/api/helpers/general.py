@@ -45,9 +45,8 @@ def clean_profiles():
 def confirm_firefox_launch():
     try:
         wait("home.png", 20)
-    except Exception as e:
-        logger.error(e)
-        print ("Can't launch Firefox - aborting test run.")
+    except Exception:
+        logger.error("Can't launch Firefox - aborting test run.")
         exit(1)
 
 
@@ -55,7 +54,7 @@ def confirm_firefox_quit():
     try:
         waitVanish("home.png", 10)
     except:
-        print ("Firefox still around - aborting test run.")
+        logger.error("Firefox still around - aborting test run.")
         exit(1)
 
 
@@ -72,14 +71,14 @@ def get_firefox_region():
 #
 def navigate_slow(url):
     select_location_bar()
-    typewrite(url, 0.1)
-    typewrite(["enter"])
+    type(url, 0.1)
+    type(Key.ENTER)
 
 
 def navigate(url):
     select_location_bar()
-    typewrite(url)
-    typewrite(["enter"])
+    type(url)
+    type(Key.ENTER)
 
 
 def restart_firefox(args):
