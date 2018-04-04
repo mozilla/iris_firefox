@@ -454,7 +454,7 @@ def maximize_window():
     if get_os() == "osx":
 
         # temporarily disabling on Mac due to errors
-        #return
+        return
         # There is no keybpard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
         window_controls = "window_controls.png"
