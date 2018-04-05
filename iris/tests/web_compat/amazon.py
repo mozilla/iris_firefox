@@ -62,13 +62,18 @@ class test(base_test):
             this could be stuck here forever. If we wait more than a period of time, then
             the test should fail.
             """
+            #The result that i'm searching for is returned sometime in the in middle of the page and I have to scroll to get it sometimes 30 scrolls or more
+            #There are times when the result is on the end of the  page
+            #I added an extra check to know when we achieved bottom page
 
             found=False
             while found==False:
-
-                if exists(amazon_search_result,1):
+                if exists(amazon_search_result,0.25):
                     logger.debug("Book result is found")
                     found = True
+                    break
+                elif exists('amazon_next_page.png',0.25):
+                    logger.error("Searching result not found in page")
                     break
 
                 else:
