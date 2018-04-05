@@ -23,7 +23,7 @@ class test(base_test):
 
         # Check that the customize page is opened by searcing for text "overflow menu"
         try:
-            exists("overflow menu", 10)
+            wait("overflow menu", 10)
             print "PASS"
             logger.debug("customize page present")
         except:
