@@ -183,10 +183,10 @@ def click_hamburger_menu_option(option):
     else:
         click("hamburger_menu.png")
         try:
-            exists(option, 10)
-            logger.debug(option + " option found")
+            wait(option, 10)
+            logger.debug("Option found")
         except:
-            logger.error("Can't find the" + option + "in the page, aborting test.")
+            logger.error("Can't find the option in the page, aborting test.")
             return
         else:
             click(option)
