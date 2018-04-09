@@ -608,6 +608,14 @@ def clear_recent_history():
     """
     if get_os() == "osx":
         type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+
+        # Working around a pyautogui bug on Mac.
+        # The key combination above causes the windows to disappear, i.e.:
+        # pyautoguy.hotkey ("shift", "command", "delete")
+        # Press the "fn" key twice to get back into the correct window state
+
+        type(text=Key.FN)
+        type(text=Key.FN)
     else:
         type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
