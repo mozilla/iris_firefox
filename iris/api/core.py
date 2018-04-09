@@ -65,7 +65,12 @@ for root, dirs, files in os.walk(PROJECT_BASE_PATH):
             if CURRENT_PLATFORM in root:
                 IMAGES[file_name] = os.path.join(root, file_name)
 
-screenWidth, screenHeight = pyautogui.size()
+'''
+pyautogui.size() works correctly everywhere except Mac Retina
+This technique works everywhere, so we'll use it instead
+'''
+screenWidth, screenHeight = pyautogui.screenshot().size
+
 
 IMAGE_DEBUG_PATH = get_module_dir() + "/image_debug"
 try:
@@ -118,7 +123,13 @@ def _region_grabber(coordinates):
     width = coordinates[2] - x1
     height = coordinates[3] - y1
     grabbed_area = pyautogui.screenshot(region=(x1, y1, width, height))
-    return grabbed_area
+
+    # Resize grabbed area to what pyautogui thinks is the correct screen size
+    w, h = pyautogui.size()
+    logger.debug("Screen size according to pyautogui.size(): %s,%s" % (w, h))
+    logger.debug("Screen size according to pyautogui.screenshot().size: %s,%s" % (screenWidth, screenHeight))
+    resized_area = grabbed_area.resize([w,h])
+    return resized_area
 
 
 '''
@@ -544,7 +555,8 @@ class Key(object):
     ESC = _key("esc")
     HOME = _key("home")
     END = _key("end")
-    DELETE = _key("delete")
+    DELETE = _key("del")
+    FN = _key("fn")
     F5 = _key("f5")
     F6 = _key("f6")
     F11 = _key("f11")
