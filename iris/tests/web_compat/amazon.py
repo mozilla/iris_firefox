@@ -14,6 +14,9 @@ class test(base_test):
         base_test.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "Web compability test for amazon.com"
+        self.enable = False
+
+
     def login_amazon(self):
         try:
             wait("amazon_sign_in_button.png",3)
@@ -54,17 +57,6 @@ class test(base_test):
             type(Key.ENTER)
 
             amazon_search_result=Pattern('amazon_search_results.png')
-
-
-            """
-            Why do we have a while loop here? This is what the wait() method is supposed
-            to do. Can you replace this logic with wait (pattern, time)? Otherwise
-            this could be stuck here forever. If we wait more than a period of time, then
-            the test should fail.
-            """
-            #The result that i'm searching for is returned sometime in the in middle of the page and I have to scroll to get it sometimes 30 scrolls or more
-            #There are times when the result is on the end of the  page
-            #I added an extra check to know when we achieved bottom page
 
             found=False
             while found==False:

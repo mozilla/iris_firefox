@@ -13,6 +13,7 @@ class test(base_test):
         base_test.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "Web compability test for eBay"
+        self.enable = False
 
 
     def login_ebay(self):
