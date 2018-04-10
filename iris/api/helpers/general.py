@@ -232,5 +232,9 @@ def open_about_firefox():
         keyUp(Key.ALT)
 
     else:
-        # ADD LINUX STUFF HERE
+        # Use Help menu keyboard shortcuts to open About Firefox
         keyDown(Key.ALT)
+        type("h")
+        time.sleep(1)
+        keyUp(Key.ALT)
+        type("a")
