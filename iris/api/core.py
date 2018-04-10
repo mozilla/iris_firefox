@@ -12,7 +12,7 @@ from helpers.image_remove_noise import process_image_for_ocr
 import pytesseract
 import cv2
 import time
-import random
+from datetime import datetime
 import logging
 import os
 
@@ -71,7 +71,6 @@ This technique works everywhere, so we'll use it instead
 '''
 screenWidth, screenHeight = pyautogui.screenshot().size
 
-
 IMAGE_DEBUG_PATH = get_module_dir() + "/image_debug"
 try:
     os.stat(IMAGE_DEBUG_PATH)
@@ -97,14 +96,13 @@ def _save_debug_image(search_for, search_in, res_coordinates):
         if isinstance(res_coordinates, list):
             for match_coordinates in res_coordinates:
                 cv2.rectangle(search_in, (match_coordinates[0], match_coordinates[1]),
-                              (match_coordinates[0] + w, match_coordinates[1] + h), [0, 0, 255], 2)
+                              (match_coordinates[0] + w, match_coordinates[1] + h), (0, 0, 255), 2)
         else:
             cv2.rectangle(search_in, (res_coordinates[0], res_coordinates[1]),
-                          (res_coordinates[0] + w, res_coordinates[1] + h), [0, 0, 255], 2)
+                          (res_coordinates[0] + w, res_coordinates[1] + h), (0, 0, 255), 2)
 
-        current_time = int(time.time())
-        random_nr = random.randint(1, 51)
-        cv2.imwrite(IMAGE_DEBUG_PATH + '/name_' + str(current_time) + '_' + str(random_nr) + '.png', search_in)
+        current_time = datetime.now()
+        cv2.imwrite(IMAGE_DEBUG_PATH + '/name_' + str(current_time) + '.jpg', search_in)
 
 
 '''
@@ -128,7 +126,7 @@ def _region_grabber(coordinates):
     w, h = pyautogui.size()
     logger.debug("Screen size according to pyautogui.size(): %s,%s" % (w, h))
     logger.debug("Screen size according to pyautogui.screenshot().size: %s,%s" % (screenWidth, screenHeight))
-    resized_area = grabbed_area.resize([w,h])
+    resized_area = grabbed_area.resize([w, h])
     return resized_area
 
 
