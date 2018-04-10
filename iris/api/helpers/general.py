@@ -223,14 +223,11 @@ def open_about_firefox():
         type(Key.DOWN)
         type(Key.ENTER)
 
-    elif get_os() == "win":
+    else:
         # Use Help menu keyboard shortcuts to open About Firefox
         keyDown(Key.ALT)
         type("h")
-        time.sleep(0.5)
-        type("a")
+        time.sleep(1)
         keyUp(Key.ALT)
-
-    else:
-        # ADD LINUX STUFF HERE
-        keyDown(Key.ALT)
+        type("a")
+        
