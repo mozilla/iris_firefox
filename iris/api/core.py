@@ -12,9 +12,10 @@ from helpers.image_remove_noise import process_image_for_ocr
 import pytesseract
 import cv2
 import time
-import random
+from datetime import datetime
 import logging
 import os
+import pyperclip
 
 try:
     import Image
@@ -71,7 +72,6 @@ This technique works everywhere, so we'll use it instead
 '''
 screenWidth, screenHeight = pyautogui.screenshot().size
 
-
 IMAGE_DEBUG_PATH = get_module_dir() + "/image_debug"
 try:
     os.stat(IMAGE_DEBUG_PATH)
@@ -97,14 +97,13 @@ def _save_debug_image(search_for, search_in, res_coordinates):
         if isinstance(res_coordinates, list):
             for match_coordinates in res_coordinates:
                 cv2.rectangle(search_in, (match_coordinates[0], match_coordinates[1]),
-                              (match_coordinates[0] + w, match_coordinates[1] + h), [0, 0, 255], 2)
+                              (match_coordinates[0] + w, match_coordinates[1] + h), (0, 0, 255), 2)
         else:
             cv2.rectangle(search_in, (res_coordinates[0], res_coordinates[1]),
-                          (res_coordinates[0] + w, res_coordinates[1] + h), [0, 0, 255], 2)
+                          (res_coordinates[0] + w, res_coordinates[1] + h), (0, 0, 255), 2)
 
-        current_time = int(time.time())
-        random_nr = random.randint(1, 51)
-        cv2.imwrite(IMAGE_DEBUG_PATH + '/name_' + str(current_time) + '_' + str(random_nr) + '.png', search_in)
+        current_time = datetime.now()
+        cv2.imwrite(IMAGE_DEBUG_PATH + '/name_' + str(current_time) + '.jpg', search_in)
 
 
 '''
@@ -128,7 +127,7 @@ def _region_grabber(coordinates):
     w, h = pyautogui.size()
     logger.debug("Screen size according to pyautogui.size(): %s,%s" % (w, h))
     logger.debug("Screen size according to pyautogui.screenshot().size: %s,%s" % (screenWidth, screenHeight))
-    resized_area = grabbed_area.resize([w,h])
+    resized_area = grabbed_area.resize([w, h])
     return resized_area
 
 
@@ -315,6 +314,13 @@ def _click_image(image_path, pos, action, time_stamp):
     pyautogui.click(button=action)
 
 
+def _click_at(position=None):
+    if position is None:
+        position = [0, 0]
+    pyautogui.moveTo(position[0], position[1])
+    pyautogui.click(button='left')
+
+
 def _text_search_all(in_region=None):
     if in_region is None:
         in_region = _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
@@ -397,22 +403,31 @@ def waitVanish(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_
 
 
 # @todo Search in regions for faster results
-def click(image_name):
+def click(image_or_pos=None):
     global logger
-    logger.debug("Try click on: " + image_name)
-    image_path = IMAGES[image_name]
-    pos = _image_search(image_path)
-    if pos[0] != -1:
-        _click_image(image_path, pos, "left", 0)
-        time.sleep(1)
-        return pos
-    else:
-        logger.debug("Image not found:", image_name)
+
+    if image_or_pos is None:
+        return
+
+    if isinstance(image_or_pos, str):
+        logger.debug("Try click on: " + image_or_pos)
+        image_path = IMAGES[image_or_pos]
+        pos = _image_search(image_path)
+
+        if pos[0] != -1:
+            _click_image(image_path, pos, "left", 0)
+            time.sleep(1)
+            return pos
+        else:
+            logger.debug("Image not found:", image_or_pos)
+
+    elif isinstance(image_or_pos, list):
+        _click_at(image_or_pos)
 
 
 def exists(image_name, interval):
     try:
-        wait(image_name, 3, interval)
+        wait(image_name, 3, 0.5)
         return True
     except:
         return False
@@ -446,40 +461,35 @@ def findAll(image_name):
     return _image_search_multiple(image_path)
 
 
-# Obsolete, will be removed
-"""
-def typewrite(text, interval=0.02):
-    logger.debug("Type: " + str(text))
-    pyautogui.typewrite(text, interval)
-
-
-def press(key):
-    logger.debug("Press: " + key)
-    pyautogui.keyDown(str(key))
-    pyautogui.keyUp(str(key))
-
-
-def hotkey_press(*args):
-    pyautogui.hotkey(*args)
-"""
-
-
 def keyDown(key):
-    pyautogui.keyDown(key)
+    if isinstance(key, _key):
+        pyautogui.keyDown(str(key))
 
 
 def keyUp(key):
-    pyautogui.keyUp(key)
+    if isinstance(key, _key):
+        pyautogui.keyUp(str(key))
 
 
 def scroll(clicks):
     pyautogui.scroll(clicks)
 
 
+def paste(text):
+    # load to clipboard
+    pyperclip.copy(text)
+    if get_os() is 'osx':
+        pyautogui.hotkey("command", "v")
+    else:
+        pyautogui.hotkey("ctrl", "v")
+    # clear clipboard
+    pyperclip.copy("")
+
+
 def type(text=None, modifier=None, interval=0.02):
     global logger
     logger.debug("type method: ")
-    if modifier == None:
+    if modifier is None:
         if isinstance(text, _key):
             logger.debug("Scenario 1: reserved key")
             logger.debug("Reserved key: %s" % text)
@@ -547,6 +557,7 @@ class _key(object):
 class Key(object):
     SPACE = _key(" ")
     TAB = _key("tab")
+    ALT = _key("alt")
     ENTER = _key("enter")
     LEFT = _key("left")
     RIGHT = _key("right")
@@ -568,11 +579,12 @@ Stub implementation, just to prevent tests from throwing an error
 
 
 class Pattern(object):
-
     def __init__(self, image_name):
         self.image = image_name
+        self.image_path = IMAGES[self.image]
 
     def targetOffset(self, x, y):
-        self.x_offset = x
-        self.y_offset = y
-        return self.image
+        pos = _image_search(self.image_path)
+        x_offset = pos[0] + x
+        y_offset = pos[1] + y
+        return [x_offset, y_offset]

@@ -447,18 +447,12 @@ def maximize_window():
     This is NOT Full Screen mode
     """
     if get_os() == "osx":
-
-        # temporarily disabling on Mac due to errors
-        return
         # There is no keybpard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
         window_controls = "window_controls.png"
 
         # Set target to the maximize button
-        maximize_button = Pattern(window_controls).targetOffset(21, 0)
-
-        # We must hover the controls so the ALT key can take effect there.
-        hover(image=window_controls)
+        maximize_button = Pattern(window_controls).targetOffset(48, 7)
 
         # Alt key changes maximize button from full screen to maximize window.
         keyDown(Key.ALT)
@@ -697,6 +691,5 @@ def open_page_source():
         type(text="u", modifier=KeyModifier.CMD)
     else:
         type(text="u", modifier=KeyModifier.CTRL)
-
 
 # End Tools keyboard shortcuts
