@@ -15,6 +15,7 @@ import time
 from datetime import datetime
 import logging
 import os
+import pyperclip
 
 try:
     import Image
@@ -472,6 +473,17 @@ def keyUp(key):
 
 def scroll(clicks):
     pyautogui.scroll(clicks)
+
+
+def paste(text):
+    # load to clipboard
+    pyperclip.copy(text)
+    if get_os() is 'osx':
+        pyautogui.hotkey("command", "v")
+    else:
+        pyautogui.hotkey("ctrl", "v")
+    # clear clipboard
+    pyperclip.copy("")
 
 
 def type(text=None, modifier=None, interval=0.02):
