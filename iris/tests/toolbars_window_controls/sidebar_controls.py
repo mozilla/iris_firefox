@@ -17,26 +17,23 @@ class test(base_test):
 
 
     def run(self):
-        if exists("sidebar_button.png", 10):
-            click("sidebar_button.png")
-            if exists("x_button_sidebar.png", 10):
-                print "Sidebar was opened successfully"
-                hover("x_button_sidebar.png")
-                if exists("x_button_sidebar_hovered.png", 10):
-                    print "Hover state displayed properly"
-                    click("x_button_sidebar_hovered.png")
-                    if waitVanish("sidebar_title.png", 10):
-                        print "Sidebar was closed successfully"
-                        result = "PASS"
-                    else:
-                        print "Sidebar is still open"
-                        result = "FAIL"
+        bookmarks_sidebar()
+        if exists("x_button_sidebar.png", 10):
+            print "Sidebar was opened successfully"
+            hover("x_button_sidebar.png")
+            if exists("x_button_sidebar_hovered.png", 10):
+                print "Hover state displayed properly"
+                click("x_button_sidebar_hovered.png")
+                if waitVanish("sidebar_title.png", 10):
+                    print "Sidebar was closed successfully"
+                    result = "PASS"
                 else:
+                    print "Sidebar is still open"
                     result = "FAIL"
             else:
-                print "Sidebar is not open"
                 result = "FAIL"
         else:
+            print "Sidebar is not open"
             result = "FAIL"
 
         print result
