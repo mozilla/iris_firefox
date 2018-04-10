@@ -313,6 +313,13 @@ def _click_image(image_path, pos, action, time_stamp):
     pyautogui.click(button=action)
 
 
+def _click_at(position=None):
+    if position is None:
+        position = [0, 0]
+    pyautogui.moveTo(position[0], position[1])
+    pyautogui.click(button='left')
+
+
 def _text_search_all(in_region=None):
     if in_region is None:
         in_region = _region_grabber(coordinates=(0, 0, screenWidth, screenHeight))
@@ -395,22 +402,31 @@ def waitVanish(image_name, max_attempts=10, interval=0.5, precision=DEFAULT_IMG_
 
 
 # @todo Search in regions for faster results
-def click(image_name):
+def click(image_or_pos=None):
     global logger
-    logger.debug("Try click on: " + image_name)
-    image_path = IMAGES[image_name]
-    pos = _image_search(image_path)
-    if pos[0] != -1:
-        _click_image(image_path, pos, "left", 0)
-        time.sleep(1)
-        return pos
-    else:
-        logger.debug("Image not found:", image_name)
+
+    if image_or_pos is None:
+        return
+
+    if isinstance(image_or_pos, str):
+        logger.debug("Try click on: " + image_or_pos)
+        image_path = IMAGES[image_or_pos]
+        pos = _image_search(image_path)
+
+        if pos[0] != -1:
+            _click_image(image_path, pos, "left", 0)
+            time.sleep(1)
+            return pos
+        else:
+            logger.debug("Image not found:", image_or_pos)
+
+    elif isinstance(image_or_pos, list):
+        _click_at(image_or_pos)
 
 
 def exists(image_name, interval):
     try:
-        wait(image_name, 3, interval)
+        wait(image_name, 3, 0.5)
         return True
     except:
         return False
@@ -444,30 +460,14 @@ def findAll(image_name):
     return _image_search_multiple(image_path)
 
 
-# Obsolete, will be removed
-"""
-def typewrite(text, interval=0.02):
-    logger.debug("Type: " + str(text))
-    pyautogui.typewrite(text, interval)
-
-
-def press(key):
-    logger.debug("Press: " + key)
-    pyautogui.keyDown(str(key))
-    pyautogui.keyUp(str(key))
-
-
-def hotkey_press(*args):
-    pyautogui.hotkey(*args)
-"""
-
-
 def keyDown(key):
-    pyautogui.keyDown(key)
+    if isinstance(key, _key):
+        pyautogui.keyDown(str(key))
 
 
 def keyUp(key):
-    pyautogui.keyUp(key)
+    if isinstance(key, _key):
+        pyautogui.keyUp(str(key))
 
 
 def scroll(clicks):
@@ -477,7 +477,7 @@ def scroll(clicks):
 def type(text=None, modifier=None, interval=0.02):
     global logger
     logger.debug("type method: ")
-    if modifier == None:
+    if modifier is None:
         if isinstance(text, _key):
             logger.debug("Scenario 1: reserved key")
             logger.debug("Reserved key: %s" % text)
@@ -545,6 +545,7 @@ class _key(object):
 class Key(object):
     SPACE = _key(" ")
     TAB = _key("tab")
+    ALT = _key("alt")
     ENTER = _key("enter")
     LEFT = _key("left")
     RIGHT = _key("right")
@@ -566,11 +567,12 @@ Stub implementation, just to prevent tests from throwing an error
 
 
 class Pattern(object):
-
     def __init__(self, image_name):
         self.image = image_name
+        self.image_path = IMAGES[self.image]
 
     def targetOffset(self, x, y):
-        self.x_offset = x
-        self.y_offset = y
-        return self.image
+        pos = _image_search(self.image_path)
+        x_offset = pos[0] + x
+        y_offset = pos[1] + y
+        return [x_offset, y_offset]
