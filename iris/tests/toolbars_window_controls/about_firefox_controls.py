@@ -17,19 +17,19 @@ class test(base_test):
 
 
     def run(self):
-        click_hamburger_menu_option("Help")
-        click("about_firefox.png")
-        if exists("x_button_about_firefox.png", 10):
+        # Helper function in general.py
+        open_about_firefox()
+        if exists("firefox_in_about.png", 10):
             print "'About Firefox' window was opened successfully"
-            click("x_button_about_firefox.png")
-            if waitVanish("about_firefox_window_title.png", 10):
+            close_auxiliary_window()
+            if waitVanish("firefox_in_about.png", 10):
                 print "'About Firefox' window was closed successfully"
                 result = "PASS"
             else:
                 print "'About Firefox' window is still open"
                 result = "FAIL"
         else:
-            print "'About Firefox' window is not open"
+            print "'About Firefox' window was not opened"
             result = "FAIL"
 
         print result

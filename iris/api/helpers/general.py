@@ -192,6 +192,17 @@ def click_hamburger_menu_option(option):
             click(option)
 
 
+def close_auxiliary_window():
+    try:
+        wait("auxiliary_window_close_button", 10)
+        logger.debug("Close auxiliary window button found")
+    except:
+        logger.error("Can't find the close auxiliary window button in the page, aborting.")
+        return
+    else:
+        click("auxiliary_window_close_button.png")
+
+
 def close_customize_page():
     try:
         wait("customize_done_button.png", 10)
@@ -201,3 +212,29 @@ def close_customize_page():
         return
     else:
         click("customize_done_button.png")
+
+
+def open_about_firefox():
+    if get_os() == "osx":
+        # Key stroke into Firefox Menu to get to About Firefox
+        type(Key.F2, modifier=KeyModifier.CTRL)
+        type(Key.RIGHT)
+        type(Key.DOWN)
+        type(Key.DOWN)
+        type(Key.ENTER)
+
+    elif get_os() == "win":
+        # Use Help menu keyboard shortcuts to open About Firefox
+        keyDown(Key.ALT)
+        type("h")
+        time.sleep(0.5)
+        type("a")
+        keyUp(Key.ALT)
+
+    else:
+        # Use Help menu keyboard shortcuts to open About Firefox
+        keyDown(Key.ALT)
+        type("h")
+        time.sleep(1)
+        keyUp(Key.ALT)
+        type("a")
