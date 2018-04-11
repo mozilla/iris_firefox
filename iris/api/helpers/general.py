@@ -9,6 +9,7 @@ from api.core import *
 from keyboard_shortcuts import *
 
 
+
 def launch_firefox(path, profile='empty_profile', url=None, args=[]):
     # launch the app with optional args for profile, windows, URI, etc.
     current_dir = os.path.split(__file__)[0]
@@ -163,3 +164,70 @@ def dont_save_password():
     except:
         logger.error("Failed to find save password dialog")
         return None
+
+
+def click_hamburger_menu_option(option):
+    try:
+        wait("hamburger_menu.png", 10)
+        logger.debug("hamburger menu found")
+    except:
+        logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
+        return
+    else:
+        click("hamburger_menu.png")
+        try:
+            wait(option, 10)
+            logger.debug("Option found")
+        except:
+            logger.error("Can't find the option in the page, aborting test.")
+            return
+        else:
+            click(option)
+
+
+def close_auxiliary_window():
+    try:
+        wait("auxiliary_window_close_button", 10)
+        logger.debug("Close auxiliary window button found")
+    except:
+        logger.error("Can't find the close auxiliary window button in the page, aborting.")
+        return
+    else:
+        click("auxiliary_window_close_button.png")
+
+
+def close_customize_page():
+    try:
+        wait("customize_done_button.png", 10)
+        logger.debug("Done button found")
+    except:
+        logger.error("Can't find the Done button in the page, aborting.")
+        return
+    else:
+        click("customize_done_button.png")
+
+
+def open_about_firefox():
+    if get_os() == "osx":
+        # Key stroke into Firefox Menu to get to About Firefox
+        type(Key.F2, modifier=KeyModifier.CTRL)
+        type(Key.RIGHT)
+        type(Key.DOWN)
+        type(Key.DOWN)
+        type(Key.ENTER)
+
+    elif get_os() == "win":
+        # Use Help menu keyboard shortcuts to open About Firefox
+        keyDown(Key.ALT)
+        type("h")
+        time.sleep(0.5)
+        type("a")
+        keyUp(Key.ALT)
+
+    else:
+        # Use Help menu keyboard shortcuts to open About Firefox
+        keyDown(Key.ALT)
+        type("h")
+        time.sleep(1)
+        keyUp(Key.ALT)
+        type("a")
