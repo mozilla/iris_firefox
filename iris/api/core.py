@@ -103,7 +103,8 @@ def _save_debug_image(search_for, search_in, res_coordinates):
                           (res_coordinates[0] + w, res_coordinates[1] + h), (0, 0, 255), 2)
 
         current_time = datetime.now()
-        cv2.imwrite(IMAGE_DEBUG_PATH + '/name_' + str(current_time) + '.jpg', search_in)
+        temp_f = str(current_time).replace(" ", "_").replace(":", "_").replace(".", "_").replace("-", "_") + '.jpg'
+        cv2.imwrite(IMAGE_DEBUG_PATH + "/" + temp_f, search_in)
 
 
 '''
