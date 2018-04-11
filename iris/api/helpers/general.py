@@ -9,9 +9,9 @@ import subprocess
 from api.core import *
 from api.helpers.keyboard_shortcuts import *
 from configuration.config_parser import *
-from logger.iris_logger import *
+import logging
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def launch_firefox(path, profile='empty_profile', url=None, args=[]):
@@ -151,7 +151,7 @@ def change_preference(pref_name, value):
 
 
 def reset_mouse():
-    hover(Location(0, 0))
+    hover(0, 0)
 
 
 def login_site(site_name):
