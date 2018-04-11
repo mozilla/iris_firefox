@@ -6,8 +6,11 @@ import os
 import shutil
 import subprocess
 from api.core import *
-from keyboard_shortcuts import *
+from api.helpers.keyboard_shortcuts import *
+from configuration.config_parser import *
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 def launch_firefox(path, profile='empty_profile', url=None, args=[]):

@@ -17,8 +17,6 @@ class test(base_test):
     def run(self):
         amazon_image = "amazon.png"
 
-        amazon_image = "amazon.png"
-
         time.sleep(5)
         args = ["-width", "800", "-height", "800", "-new-tab", "http://www.mozilla.org"]
         launch_firefox(path=self.app.fx_path, profile="size_800", args=args)
