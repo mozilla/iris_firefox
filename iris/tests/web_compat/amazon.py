@@ -32,6 +32,7 @@ class test(base_test):
             else:
                 logger.debug("Something went wrong and the user was not logged in")
 
+
     def run(self):
         url = "www.amazon.com"
         navigate(url)
