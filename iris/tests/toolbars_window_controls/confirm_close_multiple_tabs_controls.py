@@ -18,7 +18,9 @@ class test(base_test):
 
     def run(self):
         new_tab()
+        
         close_window()
+        
         if exists("close_multiple_tabs_warning.png", 10):
             print "Close multiple tabs warning was displayed successfully"
             close_auxiliary_window()
@@ -30,7 +32,9 @@ class test(base_test):
         else:
             print "Close multiple tabs warning was not displayed"
             result = "FAIL"
+        
         close_window()
+        
         if exists("close_multiple_tabs_warning.png", 10):
             print "Close multiple tabs warning was displayed successfully"
             click("close_multiple_tabs_warning.png")
