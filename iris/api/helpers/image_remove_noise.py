@@ -1,3 +1,7 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import tempfile
 
 import cv2
@@ -5,13 +9,11 @@ import numpy as np
 from PIL import Image
 
 IMAGE_SIZE = 1800
-BINARY_THREHOLD = 180
-
-size = None
+BINARY_THRESHOLD = 180
 
 
 def get_size_of_scaled_image(im):
-    global size
+    size = None
     if size is None:
         length_x, width_y = im.size
         factor = max(1, int(IMAGE_SIZE / length_x))
@@ -31,7 +33,7 @@ def set_image_dpi(file_path=None, image_array=None):
     elif file_path is None:
         im = image_array
 
-    no_alpha_image = im.convert("RGB")
+    no_alpha_image = im.convert('RGB')
     input_size = get_size_of_scaled_image(no_alpha_image)
     im_resized = no_alpha_image.resize(input_size, Image.ANTIALIAS)
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
@@ -40,8 +42,8 @@ def set_image_dpi(file_path=None, image_array=None):
     return temp_filename
 
 
-def image_smoothening(img):
-    ret1, th1 = cv2.threshold(img, BINARY_THREHOLD, 255, cv2.THRESH_BINARY)
+def image_smoothing(img):
+    ret1, th1 = cv2.threshold(img, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY)
     ret2, th2 = cv2.threshold(th1, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     blur = cv2.GaussianBlur(th2, (1, 1), 0)
     ret3, th3 = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -54,6 +56,6 @@ def remove_noise_and_smooth(file_name):
     kernel = np.ones((1, 1), np.uint8)
     opening = cv2.morphologyEx(filtered, cv2.MORPH_OPEN, kernel)
     closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
-    img = image_smoothening(img)
+    img = image_smoothing(img)
     or_image = cv2.bitwise_or(img, closing)
     return or_image

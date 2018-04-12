@@ -6,10 +6,10 @@
 from test_case import *
 
 
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
+        BaseTest.__init__(self, app)
         self.meta = 'This is an empty test case that does nothing'
 
     def run(self):

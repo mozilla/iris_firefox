@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 def print_report_footer(passed, failed, skipped, total_time):
-    global logger
     total = passed + failed + skipped
     prefix = 'Passed: %s, Failed: %s, Skipped: %s, Total: %s' % (passed, failed, skipped, total)
     suffix = 'Total time: %s second(s)' % total_time
