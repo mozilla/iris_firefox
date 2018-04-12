@@ -13,37 +13,36 @@ class test(base_test):
         base_test.__init__(self, app)
         base_test.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "This is a test of the 'About Firefox' window"
+        self.meta = "This is a test of the 'Confirm close multiple tabs' window controls"
 
 
     def run(self):
         new_tab()
-        new_tab()
-        if exists("x_button_main_window.png", 10):
-            click("x_button_main_window.png")
-            if exists("close_multiple_tabs_warning.png", 10):
-                print "Close multiple tabs warning was displayed successfully"
-                click("x_button_close_multiple_tabs_warning.png")
-                if (waitVanish("close_multiple_tabs_warning.png", 10) and exists("x_button_main_window.png", 10)):
-                    print "Close multiple tabs warning was canceled successfully"
-                else:
-                    print "Close multiple tabs warning was not canceled successfully"
-                    result = "FAIL"
+        
+        close_window()
+        
+        if exists("close_multiple_tabs_warning.png", 10):
+            print "Close multiple tabs warning was displayed successfully"
+            close_auxiliary_window()
+            if (waitVanish("close_multiple_tabs_warning.png", 10) and exists("home_button.png", 10)):
+                print "Close multiple tabs warning was canceled successfully"
             else:
-                print "Close multiple tabs warning was not displayed"
+                print "Close multiple tabs warning was not canceled successfully"
                 result = "FAIL"
-            click("x_button_main_window.png")
-            if exists("close_multiple_tabs_warning.png", 10):
-                print "Close multiple tabs warning was displayed successfully"
-                click("close_multiple_tabs_warning.png")
-                if (waitVanish("close_multiple_tabs_warning.png", 10) and waitVanish("x_button_main_window.png", 10)):
-                    print "The browser was closed successfully"
-                    result = "PASS"
-                else:
-                    print "The browser was not closed successfully"
-                    result = "FAIL"
         else:
-            print "X button for the main browser window is not found"
+            print "Close multiple tabs warning was not displayed"
             result = "FAIL"
+        
+        close_window()
+        
+        if exists("close_multiple_tabs_warning.png", 10):
+            print "Close multiple tabs warning was displayed successfully"
+            click("close_multiple_tabs_warning.png")
+            if (waitVanish("close_multiple_tabs_warning.png", 10) and waitVanish("home_button.png", 10)):
+                print "The browser was closed successfully"
+                result = "PASS"
+            else:
+                print "The browser was not closed successfully"
+                result = "FAIL"
 
         print result
