@@ -18,7 +18,11 @@ class test(base_test):
 
     def run(self):
         new_tab()
+        time.sleep(1)
+
         close_window()
+        time.sleep(1)
+
         if exists("close_multiple_tabs_warning.png", 10):
             print "Close multiple tabs warning was displayed successfully"
             close_auxiliary_window()
@@ -30,7 +34,30 @@ class test(base_test):
         else:
             print "Close multiple tabs warning was not displayed"
             result = "FAIL"
+        
         close_window()
+        time.sleep(1)
+
+        if get_os() == "linux":
+            if exists("maximize_button.png", 10):
+                click("maximize_button.png")
+                time.sleep(1)
+                if exists("restore_button.png", 10):
+                    print "Close multiple tabs warning was maximized successfully"
+                else:
+                    print "Close multiple tabs warning was not maximized"
+            else:
+                print "Maximize button was not found"
+            if exists("restore_button.png", 10):
+                click("restore_button.png")
+                time.sleep(1)
+                if exists("maximize_button.png", 10):
+                    print "Close multiple tabs warning was restored successfully"
+                else:
+                    print "Close multiple tabs warning was not restored"
+            else:
+                print "Restore button was not found"
+
         if exists("close_multiple_tabs_warning.png", 10):
             print "Close multiple tabs warning was displayed successfully"
             click("close_multiple_tabs_warning.png")
