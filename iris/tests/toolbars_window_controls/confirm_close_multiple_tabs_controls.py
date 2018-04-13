@@ -25,7 +25,10 @@ class test(base_test):
 
         if exists("close_multiple_tabs_warning.png", 10):
             print "Close multiple tabs warning was displayed successfully"
-            close_auxiliary_window()
+            if get_os() == "osx":
+                click("cancel_multiple_tabs_warning.png")
+            else:
+                close_auxiliary_window()
             if (waitVanish("close_multiple_tabs_warning.png", 10) and exists("home_button.png", 10)):
                 print "Close multiple tabs warning was canceled successfully"
             else:
