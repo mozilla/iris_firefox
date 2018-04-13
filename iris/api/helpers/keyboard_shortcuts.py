@@ -694,3 +694,16 @@ def open_page_source():
 
 
 # End Tools keyboard shortcuts
+
+#Keyboard shortcuts for Web Console
+
+def open_web_console():
+    """
+    Open the Web Console controls
+    """
+    if get_os() == "osx":
+        type(text="k", modifier=KeyModifier.CMD + KeyModifier.ALT)
+    else:
+        type(text="k", modifier= KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
