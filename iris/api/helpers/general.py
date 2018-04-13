@@ -45,8 +45,8 @@ def confirm_firefox_launch():
     """waits for firefox to exist by waiting for the home button to be present."""
     try:
         wait('home.png', 20)
-    except Exception as e:
-        logger.error(e)
+    except Exception as err:
+        logger.error(err)
         print ('Can\'t launch Firefox - aborting test run.')
         exit(1)
 
@@ -147,7 +147,7 @@ def change_preference(pref_name, value):
 
 
 def reset_mouse():
-    hover(0, 0)
+    hover(Location(0, 0))
 
 
 def login_site(site_name):

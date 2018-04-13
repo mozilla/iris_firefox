@@ -29,6 +29,7 @@ class Test(BaseTest):
 
         # Look for new bookmark via library menu button
         click("library.png")
+        time.sleep(1)
         type(Key.TAB)
         type(Key.ENTER)
         time.sleep(1)
