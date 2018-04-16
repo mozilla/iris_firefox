@@ -238,3 +238,17 @@ def open_about_firefox():
         time.sleep(1)
         keyUp(Key.ALT)
         type("a")
+
+
+def restore_window_from_taskbar():
+    if get_os() == "osx":
+        type(text=Key.TAB, modifier=KeyModifier.CMD)
+        time.sleep(0.1)
+        keyDown(Key.CMD)
+        keyDown(Key.TAB)
+        keyUp(Key.TAB)
+        keyDown(Key.ALT)
+        keyUp(Key.CMD)
+        keyUp(Key.ALT)
+    else:
+        type(text=Key.TAB, modifier=KeyModifier.ALT)
