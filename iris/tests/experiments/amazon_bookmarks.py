@@ -1,9 +1,10 @@
 from test_case import *
 
 
-class test(base_test):
+class Test(BaseTest):
+
     def __init__(self, app):
-        base_test.__init__(self, app)
+        BaseTest.__init__(self, app)
         self.meta = "This is a test for adding a website in the bookmarks section"
 
     def run(self):
@@ -29,6 +30,7 @@ class test(base_test):
 
         # Look for new bookmark via library menu button
         click("library.png")
+        time.sleep(1)
         type(Key.TAB)
         type(Key.ENTER)
         time.sleep(1)

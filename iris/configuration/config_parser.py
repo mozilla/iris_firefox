@@ -1,6 +1,6 @@
-from ConfigParser import ConfigParser
-import os.path
 import logging
+import os.path
+from ConfigParser import ConfigParser
 
 logger = logging.getLogger(__name__)
 
@@ -9,7 +9,7 @@ config = ConfigParser()
 
 
 def get_credential(section, credential):
-    logger.debug("Extracting %s for section %s" % (credential, section))
+    logger.debug('Extracting %s for section %s' % (credential, section))
     if os.path.isfile(config_file):
         try:
             config.read(config_file)
@@ -20,8 +20,8 @@ def get_credential(section, credential):
                 logger.debug('Section not found')
                 return None
         except EOFError:
-            logger.warning("Config file error")
+            logger.warning('Config file error')
             return None
     else:
-        logger.error("Config file not found")
+        logger.error('Config file not found')
         return None

@@ -2,13 +2,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 def print_report_footer(passed, failed, skipped, total_time):
-    global logger
     total = passed + failed + skipped
     prefix = 'Passed: %s, Failed: %s, Skipped: %s, Total: %s' % (passed, failed, skipped, total)
     suffix = 'Total time: %s second(s)' % total_time

@@ -6,10 +6,10 @@
 from test_case import *
 
 
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
+        BaseTest.__init__(self, app)
         self.meta = "Web compability test for amazon.com"
         self.enable = False
 
@@ -31,7 +31,6 @@ class test(base_test):
                 logger.debug("Login was succesfully performed")
             else:
                 logger.debug("Something went wrong and the user was not logged in")
-
 
     def run(self):
         url = "www.amazon.com"

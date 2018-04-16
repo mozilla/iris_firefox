@@ -8,10 +8,11 @@ from test_case import *
 import time
 
 
-class test(base_test):
+
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
+        BaseTest.__init__(self, app)
         self.meta = "This is a test of creating various Firefox instances with arguments"
 
     def run(self):
@@ -29,8 +30,7 @@ class test(base_test):
         args = ["-width", "400", "-height", "400", "-private-window", "http://amazon.com"]
         launch_firefox(path=self.app.fx_path, profile="size_400", args=args)
 
-        expected_1 = exists(amazon_image, 1)
-        assert_true(self, expected_1, 'Find amazon image')
+        expected_1 = exists(amazon_image, 10)
 
         quit_firefox()
         time.sleep(5)
@@ -38,3 +38,5 @@ class test(base_test):
         time.sleep(5)
         quit_firefox()
         time.sleep(5)
+
+        assert_true(self, expected_1, 'Found amazon image')
