@@ -176,6 +176,7 @@ def dont_save_password():
 def click_hamburger_menu_option(option):
     try:
         wait("hamburger_menu.png", 10)
+        region=create_region_from_image("hamburger_menu.png")
         logger.debug("hamburger menu found")
     except:
         logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
@@ -183,13 +184,14 @@ def click_hamburger_menu_option(option):
     else:
         click("hamburger_menu.png")
         try:
-            wait(option, 10)
+            region.wait(option, 10)
             logger.debug("Option found")
         except:
             logger.error("Can't find the option in the page, aborting test.")
             return
         else:
-            click(option)
+            region.click(option)
+            return region
 
 
 def close_auxiliary_window():
@@ -238,3 +240,18 @@ def open_about_firefox():
         time.sleep(1)
         keyUp(Key.ALT)
         type("a")
+
+def create_region_from_image(image):
+
+    try:
+        m= find(image)
+        if m:
+            hamburger_pop_up_menu_weight=285
+            hamburger_pop_up_menu_height=655
+            logger.debug('Creating a region for Hamburger Pop Up Menu')
+            region=Sikuli.Region(m.getX()-hamburger_pop_up_menu_weight,m.getY(),hamburger_pop_up_menu_weight,hamburger_pop_up_menu_height)
+            return region
+        else:
+            logger.error('No Matching found')
+    except:
+        logger.error('Image not present')

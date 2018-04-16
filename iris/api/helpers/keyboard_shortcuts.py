@@ -671,6 +671,16 @@ def open_addons():
         type(text="a", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
+def open_browser_console():
+    """
+    Opens the Browser Console.
+    """
+    if get_os() == "osx":
+        type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
 def open_downloads():
     """
     Open the Downloads dialog.
@@ -692,5 +702,19 @@ def open_page_source():
     else:
         type(text="u", modifier=KeyModifier.CTRL)
 
+def open_web_console():
+    """
+    Opens the Web Console.
+    """
+    if get_os() == "osx":
+        type(text="k", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="k", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+def force_close():
+        """
+        Move to the previous frame (can be in content or in chrome).
+        """
+        type(text=Key.F4, modifier=KeyModifier.ALT)
 
 # End Tools keyboard shortcuts
