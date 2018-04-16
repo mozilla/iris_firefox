@@ -694,7 +694,7 @@ def open_downloads():
 
 
 def open_page_source():
-    """
+    """g
     Open the current page's page source
     """
     if get_os() == "osx":
