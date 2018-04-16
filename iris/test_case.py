@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
 from api.helpers.general import *
 from api.helpers.keyboard_shortcuts import *
 from asserts import *
@@ -18,6 +19,7 @@ class BaseTest(object):
 
     def reset_variables(self):
         self.enable = True
+        self.meta = ''
         self.test_title = ''
         self.results = []
         self.start_time = 0
@@ -78,7 +80,6 @@ class BaseTest(object):
 
     def setup(self):
         """ Test case setup
-
         This might be a good place to declare variables or initialize Fx state.
         Also, by default, a new Firefox instance is created, with a blank profile and URL.
         If you wish to change this, override this method in your test case.
@@ -89,7 +90,6 @@ class BaseTest(object):
     @staticmethod
     def resize_window():
         """ Resize Window
-
         By default, we will maximize the window.
         If this is not desired, override this method in your test case.
         """

@@ -29,8 +29,7 @@ class Test(BaseTest):
         args = ["-width", "400", "-height", "400", "-private-window", "http://amazon.com"]
         launch_firefox(path=self.app.fx_path, profile="size_400", args=args)
 
-        expected_1 = exists(amazon_image, 1)
-        assert_true(self, expected_1, 'Find amazon image')
+        expected_1 = exists(amazon_image, 10)
 
         quit_firefox()
         time.sleep(5)
@@ -38,3 +37,5 @@ class Test(BaseTest):
         time.sleep(5)
         quit_firefox()
         time.sleep(5)
+
+        assert_true(self, expected_1, 'Found amazon image')
