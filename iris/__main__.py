@@ -29,6 +29,12 @@ coloredlogs.DEFAULT_FIELD_STYLES = {'levelname': {'color': 'cyan', 'bold': True}
                                     'name': {'color': 'cyan', 'bold': True}}
 
 
+
+def main(argv=None):
+    """This is the main entry point defined in setup.py"""
+    Iris()
+
+
 class Iris(object):
 
     def __init__(self):
@@ -275,6 +281,3 @@ def initialize_logger(output, level):
     if output:
         logging.basicConfig(filename=LOG_FILENAME, format=LOG_FORMAT)
     initialize_logger_level(level)
-
-
-Iris()

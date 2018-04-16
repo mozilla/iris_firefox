@@ -141,6 +141,7 @@ class Key(object):
     END = _key("end")
     DELETE = _key("del")
     FN = _key("fn")
+    F2 = _key("f2")
     F5 = _key("f5")
     F6 = _key("f6")
     F11 = _key("f11")
@@ -472,6 +473,7 @@ def _image_search_loop(image_path, time_sample, attempts=5, precision=0.8, regio
     pos = _image_search(image_path, precision)
     tries = 0
     while pos.x is -1 and tries < attempts:
+        logger.debug("Searching for image %s" % image_path)
         time.sleep(time_sample)
         pos = _image_search(image_path, precision, region)
         tries += 1

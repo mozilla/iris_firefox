@@ -5,8 +5,8 @@
 import shutil
 import subprocess
 
-from api.helpers.keyboard_shortcuts import *
-from configuration.config_parser import *
+from iris.api.helpers.keyboard_shortcuts import *
+from iris.configuration.config_parser import *
 
 logger = logging.getLogger(__name__)
 
@@ -214,6 +214,10 @@ def open_about_firefox():
     if get_os() == 'osx':
         # Key stroke into Firefox Menu to get to About Firefox
         type(Key.F2, modifier=KeyModifier.CTRL)
+        time.sleep(0.5)
+        type(text=Key.ESC)
+        time.sleep(0.5)
+
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)
