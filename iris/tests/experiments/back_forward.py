@@ -6,56 +6,35 @@
 from test_case import *
 
 
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "This is a test of browser back/forward"
 
-
     def run(self):
-
         url = "about:home"
+        search_the_web_image = "search_the_web.png"
+        google_search_image = "google_search.png"
+        back_button_image = "back.png"
+        forward_button_image = "forward.png"
+
         # helper function from "keyboard_shortcuts"
         navigate(url)
 
-        if exists("search_the_web.png", 10):
-            url = "https://www.google.com/?hl=EN"
+        expected_1 = exists(search_the_web_image, 0.5)
+        assert_true(self, expected_1, 'Find search the web image')
 
-            # helper function from "keyboard_shortcuts"
-            navigate(url)
+        navigate("https://www.google.com/?hl=EN")
 
-            # core api function
-            if exists("google_search.png", 10):
+        expected_2 = exists(google_search_image, 0.5)
+        assert_true(self, expected_2, 'Find google search image')
 
-                try:
-                    wait("back.png", 10)
-                    click("back.png")
+        wait(back_button_image)
+        click(back_button_image)
 
-                    # core api function
-                    if exists("search_the_web.png", 10):
+        assert_true(self, expected_1, 'Find search the web image')
 
-                        try:
-                            wait("forward.png", 10)
-                            click("forward.png")
-
-                            # core api function
-                            if exists("google_search.png", 10):
-                                result = "PASS"
-                            else:
-                                result = "FAIL"
-                        except:
-                            result = "FAIL"
-                    else:
-                        result = "FAIL"
-
-                except:
-                    result = "FAIL"
-            else:
-                result = "FAIL"
-        else:
-            result = "FAIL"
-
-        print result
+        wait(forward_button_image)
+        click(forward_button_image)
+        assert_true(self, expected_2, 'Find google search image')

@@ -3,21 +3,16 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-
 from test_case import *
 
 
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "This is a test of basic URL navigation via awesomebar"
 
-
     def run(self):
-
         url = "https://www.google.com/?hl=EN"
         # helper function from "awesome_bar"
         navigate(url)
@@ -28,9 +23,5 @@ class test(base_test):
         image = "google_search.png"
 
         # core api function
-        if exists(image, 10):
-            result = "PASS"
-        else:
-            result = "FAIL"
-
-        print result
+        expected_1 = exists(image, 0.5)
+        assert_true(self, expected_1, 'Find image')

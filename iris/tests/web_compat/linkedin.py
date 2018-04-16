@@ -4,17 +4,16 @@
 import random
 from test_case import *
 
-class test(base_test):
+
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "Web compability test for linkedin.com"
         self.enable = False
 
     def run(self):
-        url="www.linkedin.com"
+        url = "www.linkedin.com"
         navigate(url)
 
         # Check that the login page is loaded.
@@ -32,7 +31,7 @@ class test(base_test):
                 click("linkedinPostButton")
                 time.sleep(2)
                 # Posting a message with a random character at the end. Same message cannot be posted twice, an error is thrown.
-                paste("This is a test message " +random.choice('abcdefghijklmnopqrstuvwxyz'))
+                paste("This is a test message " + random.choice('abcdefghijklmnopqrstuvwxyz'))
                 click("linkedinPostButton")
 
                 # Check that the message has been posted.
