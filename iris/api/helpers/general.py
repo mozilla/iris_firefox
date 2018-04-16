@@ -241,6 +241,7 @@ def open_about_firefox():
         keyUp(Key.ALT)
         type("a")
 
+
 def create_region_from_image(image):
 
     try:
@@ -255,3 +256,18 @@ def create_region_from_image(image):
             logger.error('No Matching found')
     except:
         logger.error('Image not present')
+
+
+def restore_window_from_taskbar():
+    if get_os() == "osx":
+        type(text=Key.TAB, modifier=KeyModifier.CMD)
+        time.sleep(0.1)
+        keyDown(Key.CMD)
+        keyDown(Key.TAB)
+        keyUp(Key.TAB)
+        keyDown(Key.ALT)
+        keyUp(Key.CMD)
+        keyUp(Key.ALT)
+    else:
+        type(text=Key.TAB, modifier=KeyModifier.ALT)
+
