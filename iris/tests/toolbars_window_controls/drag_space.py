@@ -18,7 +18,7 @@ class test(base_test):
         url = "about:home"
         navigate(url)
 
-        # Open Customize from te Hamburger Menu
+        # Open Customize from the Hamburger Menu
         click_hamburger_menu_option("Customize")
 
         # Check that the customize page is opened by searcing for text "overflow menu"
@@ -33,7 +33,7 @@ class test(base_test):
         else:
             if exists("customize_page_drag_space_disabled.png", 10) and exists("drag_space_disabled.png", 10):
                 click("drag_space_disabled.png")
-                if exists("customize_page_drag_space_enabled.png", 10) and exists("drag_space_enabled.png", 10):
+                if exists(Pattern("customize_page_drag_space_enabled.png").similar(0.98), 10) and exists("drag_space_enabled.png", 10):
                     print "PASS"
                     logger.debug("'drag space' successfully activated in the 'Customize' page")
                 else:
@@ -48,7 +48,7 @@ class test(base_test):
 
             # Check that changes persist in a new tab
             new_tab()
-            if exists("drag_space_enabled_new_tab.png", 10):
+            if exists(Pattern("drag_space_enabled_new_tab.png").similar(0.98), 10):
                 print "PASS"
                 logger.debug("'drag space' successfully activated in a new tab")
             else:
@@ -59,9 +59,10 @@ class test(base_test):
             if exists("hamburger_menu.png", 10):
                 # Minimize window
                 minimize_window()
-                time.sleep(0.5)
-                minimize_window()
-                time.sleep(0.5)
+                if get_os() == "win":
+                    time.sleep(0.5)
+                    minimize_window()
+                    time.sleep(1)
                 if waitVanish("hamburger_menu.png", 10):
                     print "PASS"
                     logger.debug("window successfully minimized")
@@ -75,9 +76,8 @@ class test(base_test):
                 return
 
             # Focus on Firefox and open the browser again
-            type(text=Key.TAB, modifier=KeyModifier.ALT)
+            restore_window_from_taskbar()
             maximize_window()
-            time.sleep(0.5)
             if exists("hamburger_menu.png", 10):
                 print "PASS"
                 logger.debug("window in view again")
@@ -86,38 +86,40 @@ class test(base_test):
                 logger.error("window not in view, aborting test.")
                 return
 
-            # Restore window
-            if exists("window_controls_restore.png", 10):
-                minimize_window()
-                time.sleep(0.5)
-                if exists("window_controls_maximize.png", 10):
-                    print "PASS"
-                    logger.debug("window successfully restored")
-                    # Maximize window
-                    maximize_window()
-                    time.sleep(0.5)
-                    if exists("window_controls_restore.png", 10):
+            # Restore window (applies to Windows and Linux)
+            if get_os() =="osx":
+                print "Window size restore not applicable on OSX"
+            else:
+                if exists("window_controls_restore.png", 10):
+                    minimize_window()
+                    if exists("window_controls_maximize.png", 10):
                         print "PASS"
-                        logger.debug("window successfully maximized")
+                        logger.debug("window successfully restored")
+                        # Maximize window
+                        maximize_window()
+                        if exists("window_controls_restore.png", 10):
+                            print "PASS"
+                            logger.debug("window successfully maximized")
+                        else:
+                            print "FAIL"
+                            logger.error("window not maximized, aborting test")
+                            return
                     else:
                         print "FAIL"
-                        logger.error("window not maximized, aborting test")
+                        logger.error("window not restored, aborting test")
                         return
                 else:
                     print "FAIL"
-                    logger.error("window not restored, aborting test")
+                    logger.error("the window control 'restore' not visible, aborting test.")
                     return
-            else:
-                print "FAIL"
-                logger.error("the window control 'restore' not visible, aborting test.")
-                return
 
             # Close the window
             if exists("hamburger_menu.png", 10):
                 close_window()
-                time.sleep(0.5)
-                type(Key.ENTER)
-                time.sleep(0.5)
+                time.sleep(1)
+                if exists("close_multiple_tabs_warning.png", 10):
+                    print "Close multiple tabs warning"
+                    click("close_multiple_tabs_warning.png")
                 if waitVanish("hamburger_menu.png", 10):
                     print "PASS"
                     logger.debug("window successfully closed")
@@ -129,6 +131,3 @@ class test(base_test):
                 print "FAIL"
                 logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
                 return
-
-
-
