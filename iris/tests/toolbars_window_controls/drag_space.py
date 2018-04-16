@@ -59,9 +59,6 @@ class test(base_test):
             if exists("hamburger_menu.png", 10):
                 # Minimize window
                 minimize_window()
-                time.sleep(0.5)
-                minimize_window()
-                time.sleep(0.5)
                 if waitVanish("hamburger_menu.png", 10):
                     print "PASS"
                     logger.debug("window successfully minimized")
@@ -77,7 +74,6 @@ class test(base_test):
             # Focus on Firefox and open the browser again
             type(text=Key.TAB, modifier=KeyModifier.ALT)
             maximize_window()
-            time.sleep(0.5)
             if exists("hamburger_menu.png", 10):
                 print "PASS"
                 logger.debug("window in view again")
@@ -89,13 +85,11 @@ class test(base_test):
             # Restore window
             if exists("window_controls_restore.png", 10):
                 minimize_window()
-                time.sleep(0.5)
                 if exists("window_controls_maximize.png", 10):
                     print "PASS"
                     logger.debug("window successfully restored")
                     # Maximize window
                     maximize_window()
-                    time.sleep(0.5)
                     if exists("window_controls_restore.png", 10):
                         print "PASS"
                         logger.debug("window successfully maximized")
@@ -117,7 +111,6 @@ class test(base_test):
                 close_window()
                 time.sleep(0.5)
                 type(Key.ENTER)
-                time.sleep(0.5)
                 if waitVanish("hamburger_menu.png", 10):
                     print "PASS"
                     logger.debug("window successfully closed")
