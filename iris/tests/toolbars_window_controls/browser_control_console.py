@@ -40,8 +40,8 @@ class test(base_test):
             #check if one of the Developer console tabs are displayed
             pop_up_message='test'
             found=False
-            center_screen=Sikuli.Region(screen.getH()/2,screen.getY()/2,screen.getW()/2,screen.getH()/2)
-            center_screen.highlight(10)
+            center_screen=Sikuli.Region(screen.getX()+100,screen.getY()+100,screen.getW(),screen.getH()/2)
+            center_screen.highlight(2)
             if pop_up_message in center_screen.text():
                 logger.debug('Item is present: '+pop_up_message)
                 found=True
@@ -59,7 +59,6 @@ class test(base_test):
                 for word in console_items:
                     if word in center_screen.text():
                         logger.debug('Item is present: '+word)
-                        center_screen.highlight(2)
                         web_console_items=True
 
                 if web_console_items:
@@ -79,10 +78,10 @@ class test(base_test):
                                 logger.debug('Web Console is minimized')
                                 open_web_console()
                                 if center_screen.exists('web_console_maximize.png',5):
-                                    center_screen.click('web_console_maximize')
+                                    center_screen.click('web_console_maximize.png')
                                     logger.debug('Web Console is maximized')
                                     print "PASS"
-                                    time.sleep(10)
+                                    time.sleep(3)
                                 else:
                                     logger.error('Web Console was not maximized')
 
