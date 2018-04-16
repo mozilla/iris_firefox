@@ -701,4 +701,10 @@ def open_web_console():
     else:
         type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
+def force_close():
+        """
+        Move to the previous frame (can be in content or in chrome).
+        """
+        type(text=Key.F4, modifier=KeyModifier.ALT)
+
 # End Tools keyboard shortcuts

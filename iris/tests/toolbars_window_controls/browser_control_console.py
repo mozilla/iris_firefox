@@ -80,6 +80,10 @@ class test(base_test):
                                 if center_screen.exists('web_console_maximize.png',5):
                                     center_screen.click('web_console_maximize.png')
                                     logger.debug('Web Console is maximized')
+                                    if get_os() == "osx":
+                                        screen.click('web_console_close_button.png')
+                                    else:
+                                        force_close()
                                     print "PASS"
                                     time.sleep(3)
                                 else:
