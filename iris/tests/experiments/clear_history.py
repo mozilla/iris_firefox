@@ -1,7 +1,6 @@
 from test_case import *
 
 
-
 class Test(BaseTest):
 
     def __init__(self, app):

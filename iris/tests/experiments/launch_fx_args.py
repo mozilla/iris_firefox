@@ -8,7 +8,6 @@ from test_case import *
 import time
 
 
-
 class Test(BaseTest):
 
     def __init__(self, app):

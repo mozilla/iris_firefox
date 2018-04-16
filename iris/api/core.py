@@ -153,10 +153,10 @@ class Pattern(object):
         self.target_offset = Location(0, 0)
 
     def targetOffset(self, dx, dy):
-        """
+        """ Add offset to Pattern from top left
 
-        :param dx: x offset from center
-        :param dy: y offset from center
+        :param int dx: x offset from center
+        :param int dy: y offset from center
         :return: a new pattern object
         """
 
@@ -173,7 +173,7 @@ class Pattern(object):
     def getTargetOffset(self):
         """
 
-        :return: a Location object as the target offset
+        :return: Location object as the target offset
         """
         return self.target_offset
 
@@ -326,8 +326,14 @@ class Region(object):
         return click(where, duration, self)
 
 
-def _save_debug_image(search_for, i_region, locations):
-    """Private function: Saves PIL input image for debug."""
+def _save_debug_image(search_for, on_region, locations):
+    """ Saves input Image for debug.
+
+    :param Image search_for: Input needle image that needs to be highlighted
+    :param Image on_region: Input Region as Image
+    :param List[Location] || Location locations: Location or list of Location as coordinates
+    :return: None
+    """
     if DEBUG:
         w, h = search_for.shape[::-1]
 
@@ -337,26 +343,21 @@ def _save_debug_image(search_for, i_region, locations):
         if isinstance(locations, list):
             for location in locations:
                 if isinstance(location, Location):
-                    _draw_rectangle(i_region, (location.x, location.y), (location.x + w, location.y + h))
+                    _draw_rectangle(on_region, (location.x, location.y), (location.x + w, location.y + h))
 
         elif isinstance(locations, Location):
-            _draw_rectangle(i_region, (locations.x, locations.y), (locations.x + w, locations.y + h))
+            _draw_rectangle(on_region, (locations.x, locations.y), (locations.x + w, locations.y + h))
 
         current_time = datetime.now()
         temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
-        cv2.imwrite(image_debug_path + '/' + temp_f, i_region)
+        cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
 
 
 def _region_grabber(coordinates):
-    """Private function: Returns a screenshot from tuple (top_x, top_y, bottom_x, bottom_y)
+    """ Returns a screenshot based on input coordinates
 
-    Input:
-        Region tuple (top_x, top_y, bottom_x, bottom_y)
-
-    Output:
-        PIL screenshot image
-
-    Example: _region_grabber(region=(0, 0, 500, 500)).
+    :param tuple coordinates: top_left_x, top_left_y, width, height
+    :return: Image object
     """
     grabbed_area = pyautogui.screenshot(region=coordinates)
 
@@ -372,9 +373,15 @@ def _region_grabber(coordinates):
         return grabbed_area
 
 
-def _match_template(search_for, stack_image, precision=DEFAULT_ACCURACY):
-    """Private function: Search for needle in stack."""
-    img_rgb = np.array(stack_image)
+def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
+    """Search for needle in stack ( single match )
+
+    :param str search_for: Image path ( needle )
+    :param Image haystack: Region as Image ( haystack )
+    :param float precision: Min allowed similarity
+    :return: Location
+    """
+    img_rgb = np.array(haystack)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     needle = cv2.imread(search_for, 0)
 
@@ -389,8 +396,16 @@ def _match_template(search_for, stack_image, precision=DEFAULT_ACCURACY):
         return position
 
 
-def _match_template_multiple(search_for, stack_image, precision=DEFAULT_ACCURACY, threshold=0.7):
-    img_rgb = np.array(stack_image)
+def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, threshold=0.7):
+    """Search for needle in stack ( multiple matches )
+
+    :param str search_for:  Image path ( needle )
+    :param Image haystack: Region as Image ( haystack )
+    :param float precision: Min allowed similarity
+    :param float threshold:  Max threshold
+    :return: List of Location
+    """
+    img_rgb = np.array(haystack)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     needle = cv2.imread(search_for, 0)
     res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
@@ -421,18 +436,13 @@ def _match_template_multiple(search_for, stack_image, precision=DEFAULT_ACCURACY
 
 
 def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
-    """Private function: Search for an image on the entire screen.
+    """ Wrapper over _match_template. Search image in a Region or full screen
 
-    For searching in a certain area use _image_search_area
-
-    Input :
-        image_path : Path to the searched for image.
-        precision : OpenCv image search precision.
-
-    Output :
-       Top left coordinates of the element if found as [x,y] or [-1,-1] if not.
+    :param str image_path: Image path ( needle )
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :return: Location
     """
-
     if isinstance(region, Region):
         stack_image = _region_grabber(coordinates=(region.getX(), region.getY(), region.getW(), region.getH()))
     else:
@@ -442,14 +452,12 @@ def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
 
 
 def _image_search_multiple(image_path, precision=DEFAULT_ACCURACY, region=None):
-    """Private function: Search for multiple matches of image on the entire screen.
+    """ Wrapper over _match_template_multiple. Search image ( multiple ) in a Region or full screen
 
-    Input :
-        image_path : Path to the searched for image.
-        precision : OpenCv image search precision.
-
-    Output :
-       Array of coordinates if found as [[x,y],[x,y]] or [] if not.
+    :param str image_path: Image path ( needle )
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :return: List[Location]
     """
     if isinstance(region, Region):
         stack_image = _region_grabber(coordinates=(region.getX(), region.getY(), region.getW(), region.getH()))
@@ -458,21 +466,20 @@ def _image_search_multiple(image_path, precision=DEFAULT_ACCURACY, region=None):
     return _match_template_multiple(image_path, stack_image, precision)
 
 
-def _image_search_loop(image_path, time_sample, attempts=5, precision=0.8, region=None):
-    """Private function: Search for an image on entire screen continuously until it's found.
+def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, precision=DEFAULT_ACCURACY, region=None):
+    """ Search for an image ( in loop ) in a Region or full screen
 
-    Input :
-        image_path : Path to the searched for image.
-        time_sample : Waiting time after failing to find the image .
-        precision :  OpenCv image search precision.
-
-    Output :
-         Top left coordinates of the element if found as [x,y] or [-1,-1] if not.
+    :param str image_path: Image path ( needle )
+    :param float at_interval: Wait time between searches
+    :param int attempts: Number of max attempts
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :return: Location
     """
     pos = _image_search(image_path, precision)
     tries = 0
     while pos.x is -1 and tries < attempts:
-        time.sleep(time_sample)
+        time.sleep(at_interval)
         pos = _image_search(image_path, precision, region)
         tries += 1
     return pos
@@ -527,9 +534,9 @@ def _text_search_all(in_region=None):
 
 
 def _get_needle_path(string_or_pattern):
-    """
-    Helper for getting image path
-    :param string_or_pattern: a file name or Pattern class
+    """ Helper for getting image path
+
+    :param str || Pattern string_or_pattern: Image name or Pattern object
     :return: string of image path
     """
     if isinstance(string_or_pattern, Pattern):
@@ -544,8 +551,8 @@ def _get_needle_path(string_or_pattern):
 
 
 def hover(where=None, duration=0, in_region=None):
-    """
-    Hover over a Location, Pattern or image
+    """Hover over a Location, Pattern or image
+
     :param where: Location, Pattern or image name for hover target
     :param duration: speed of hovering from current location to target
     :param in_region: Region object in order to minimize the area
@@ -572,8 +579,8 @@ def hover(where=None, duration=0, in_region=None):
 
 
 def find(what, precision=DEFAULT_ACCURACY, in_region=None):
-    """
-    Look for a single match of a Pattern or image
+    """Look for a single match of a Pattern or image
+
     :param what: String or Pattern
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
@@ -587,8 +594,8 @@ def find(what, precision=DEFAULT_ACCURACY, in_region=None):
 
 
 def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
-    """
-     Look for multiple matches of a Pattern or image
+    """Look for multiple matches of a Pattern or image
+
     :param what: String or Pattern
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
@@ -602,8 +609,8 @@ def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
 
 
 def wait(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
-    """
-    Wait for a Pattern or image to appear
+    """Wait for a Pattern or image to appear
+
     :param image: String or Pattern
     :param seconds: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
@@ -625,8 +632,8 @@ def wait(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
 
 
 def exists(image, precision=DEFAULT_ACCURACY, in_region=None):
-    """
-    Check if Pattern or image exists
+    """Check if Pattern or image exists
+
     :param image: String or Pattern
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
@@ -635,14 +642,13 @@ def exists(image, precision=DEFAULT_ACCURACY, in_region=None):
     try:
         wait(image, 5, precision, in_region)
         return True
-    except Exception as error:
-        logger.error(error)
+    except Exception:
         return False
 
 
 def waitVanish(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
-    """
-    Wait until a Pattern or image disappears
+    """Wait until a Pattern or image disappears
+
     :param image: Image, Pattern or string
     :param seconds:  Number as maximum waiting time in seconds.
     :param precision: Matching similarity
@@ -657,8 +663,7 @@ def waitVanish(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
         time.sleep(interval)
         try:
             pattern_found = wait(image, 1, precision, in_region)
-        except Exception as error:
-            logger.error(error)
+        except Exception:
             pattern_found = False
         tries += 1
 
@@ -669,11 +674,11 @@ def waitVanish(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
 
 
 def _click_pattern(pattern, duration=DEFAULT_INTERVAL, in_region=None):
-    """
-    Click on center or offset of a Pattern
-    :param pattern: Pattern class
-    :param duration: speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
+    """Click on center or offset of a Pattern
+
+    :param Pattern pattern: Input Pattern
+    :param float duration: Speed of hovering from current location to target
+    :param Region in_region: Region object in order to minimize the area
     :return: None
     """
     needle = cv2.imread(pattern.image_path)
@@ -689,8 +694,8 @@ def _click_pattern(pattern, duration=DEFAULT_INTERVAL, in_region=None):
 
 
 def _click_at(location=None, duration=DEFAULT_INTERVAL):
-    """
-    Click on Location coordinates
+    """Click on Location coordinates
+
     :param location: Location class
     :param duration: speed of hovering from current location to target
     :return: None
@@ -702,9 +707,9 @@ def _click_at(location=None, duration=DEFAULT_INTERVAL):
 
 
 def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):
-    """
+    """General click
 
-    :param where: Location , image or Pattern
+    :param where: Location , image name or Pattern
     :param duration: speed of hovering from current location to target
     :return: None
     """
