@@ -63,6 +63,7 @@ class test(base_test):
                     time.sleep(0.5)
                     minimize_window()
                     time.sleep(1)
+
                 if waitVanish("hamburger_menu.png", 10):
                     print "PASS"
                     logger.debug("window successfully minimized")
