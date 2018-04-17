@@ -20,7 +20,7 @@ class Test(BaseTest):
 
         navigate(url)
 
-        expected_1 = exists(amazon_image, 0.5)
+        expected_1 = exists(amazon_image, 10)
         assert_true(self, expected_1, 'Find amazon image')
 
         bookmark_page()
@@ -40,7 +40,7 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(1)
 
-        expected_2 = exists(amazon_bookmark_image_1, 0.5)
+        expected_2 = exists(amazon_bookmark_image_1, 10)
         assert_true(self, expected_2, 'Find amazon bookmark 1 image')
 
         type(Key.ESC)
@@ -54,5 +54,5 @@ class Test(BaseTest):
         type("amazon")
         time.sleep(1)
 
-        expected_3 = exists(amazon_bookmark_image_2, 0.5)
+        expected_3 = exists(amazon_bookmark_image_2, 10)
         assert_true(self, expected_3, 'Find amazon bookmark 2 image')

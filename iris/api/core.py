@@ -23,7 +23,8 @@ except ImportError:
     from PIL import Image
 
 pyautogui.FAILSAFE = False
-DEFAULT_ACCURACY = 0.8
+DEFAULT_ACCURACY = 0.7
+DEFAULT_TIMEOUT = 3
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 DEBUG = True
 INVALID_INPUT_MSG = 'Invalid input'
@@ -317,11 +318,11 @@ class Region(object):
     def findAll(self, what=None, precision=DEFAULT_ACCURACY):
         return findAll(what, precision, self)
 
-    def wait(self, what=None, seconds=5, precision=DEFAULT_ACCURACY):
+    def wait(self, what=None, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
         return wait(what, seconds, precision, self)
 
-    def exists(self, what=None, precision=DEFAULT_ACCURACY):
-        return exists(what, precision, self)
+    def exists(self, what=None, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
+        return exists(what, seconds, precision, self)
 
     def click(self, where=None, duration=DEFAULT_INTERVAL):
         return click(where, duration, self)
@@ -386,7 +387,11 @@ def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     needle = cv2.imread(search_for, 0)
 
-    res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
+    try:
+        res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
+    except:
+        return Location(-1, -1)
+
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val < precision:
@@ -409,7 +414,12 @@ def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, t
     img_rgb = np.array(haystack)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     needle = cv2.imread(search_for, 0)
-    res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
+
+    try:
+        res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
+    except:
+        return Location(-1, -1)
+
     w, h = needle.shape[::-1]
     points = []
     while True:
@@ -477,7 +487,7 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
     :param Region region: Region object
     :return: Location
     """
-    pos = _image_search(image_path, precision)
+    pos = _image_search(image_path, precision, region)
     tries = 0
     while pos.x is -1 and tries < attempts:
         logger.debug("Searching for image %s" % image_path)
@@ -610,7 +620,7 @@ def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
         raise ValueError(INVALID_INPUT_MSG)
 
 
-def wait(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
+def wait(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Wait for a Pattern or image to appear
 
     :param image: String or Pattern
@@ -633,22 +643,23 @@ def wait(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
         raise ValueError(INVALID_INPUT_MSG)
 
 
-def exists(image, precision=DEFAULT_ACCURACY, in_region=None):
+def exists(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Check if Pattern or image exists
 
     :param image: String or Pattern
+    :param seconds: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
     try:
-        wait(image, 5, precision, in_region)
+        wait(image, seconds, precision, in_region)
         return True
     except Exception:
         return False
 
 
-def waitVanish(image, seconds=5, precision=DEFAULT_ACCURACY, in_region=None):
+def waitVanish(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Wait until a Pattern or image disappears
 
     :param image: Image, Pattern or string

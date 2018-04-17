@@ -22,12 +22,12 @@ class Test(BaseTest):
         # helper function from "keyboard_shortcuts"
         navigate(url)
 
-        expected_1 = exists(search_the_web_image, 0.5)
+        expected_1 = exists(search_the_web_image, 10)
         assert_true(self, expected_1, 'Find search the web image')
 
         navigate("https://www.google.com/?hl=EN")
 
-        expected_2 = exists(google_search_image, 0.5)
+        expected_2 = exists(google_search_image, 10)
         assert_true(self, expected_2, 'Find google search image')
 
         wait(back_button_image)

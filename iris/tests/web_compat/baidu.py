@@ -21,7 +21,7 @@ class Test(BaseTest):
         logger.debug("Accessing " + url + "...")
         navigate(url)
 
-        expected_1 = exists(baidu_logo, 0.5)
+        expected_1 = exists(baidu_logo, 10)
         assert_true(self, expected_1, 'Baidu logo should be visible')
 
         logger.debug(url + " successfully loaded")
@@ -30,5 +30,5 @@ class Test(BaseTest):
         type(Key.ENTER)
         logger.debug("Searching " + search_item)
 
-        search_confirmation = exists(search_page, 0.5)
+        search_confirmation = exists(search_page, 10)
         assert_true(self, search_confirmation, 'Search action should be finished')

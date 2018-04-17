@@ -23,5 +23,5 @@ class Test(BaseTest):
         image = "google_search.png"
 
         # core api function
-        expected_1 = exists(image, 0.5)
+        expected_1 = exists(image, 10)
         assert_true(self, expected_1, 'Find image')
