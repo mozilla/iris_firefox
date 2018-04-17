@@ -343,7 +343,7 @@ class Region(object):
         return click(where, duration, self)
 
     def text(self, search_for=None):
-        return _text_search_all(self)
+        return _text_search_all(self, with_image_processing=True)
 
 
 def _save_debug_image(search_for, on_region, locations):
@@ -374,13 +374,18 @@ def _save_debug_image(search_for, on_region, locations):
         cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
 
 
-def _save_ocr_debug_image(on_region, matches):
+def _save_ocr_debug_image(on_region, matches, with_image_processing):
     if matches is None:
         return
+
+    border_line = 1
+    if with_image_processing:
+        border_line = 6
+
     if isinstance(matches, list):
         for mt in matches:
             cv2.rectangle(on_region,
-                          (mt['x'], mt['y']), (mt['x'] + mt['width'], mt['y'] + mt['height']), (0, 0, 255), 6)
+                          (mt['x'], mt['y']), (mt['x'] + mt['width'], mt['y'] + mt['height']), (0, 0, 255), border_line)
 
     current_time = datetime.now()
     temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
@@ -529,7 +534,7 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
     return pos
 
 
-def _text_search_all(in_region=None):
+def _text_search_all(in_region=None, with_image_processing=True):
     if in_region is None:
         stack_image = _region_grabber(coordinates=(0, 0, screen_width, screen_height))
 
@@ -539,12 +544,18 @@ def _text_search_all(in_region=None):
 
     tesseract_match_min_len = 12
     input_image = np.array(stack_image)
-    optimized_ocr_image = process_image_for_ocr(image_array=Image.fromarray(input_image))
+
+    optimized_ocr_image = input_image
+
+    if with_image_processing:
+        optimized_ocr_image = process_image_for_ocr(image_array=Image.fromarray(input_image))
 
     optimized_ocr_array = np.array(optimized_ocr_image)
     processed_data = pytesseract.image_to_data(Image.fromarray(optimized_ocr_array))
 
-    debug_img = cv2.cvtColor(optimized_ocr_array, cv2.COLOR_GRAY2BGR)
+    debug_img = optimized_ocr_array
+    if with_image_processing:
+        debug_img = cv2.cvtColor(optimized_ocr_array, cv2.COLOR_GRAY2BGR)
 
     length_x, width_y = stack_image.size
     dpi_factor = max(1, int(OCR_IMAGE_SIZE / length_x))
@@ -573,17 +584,19 @@ def _text_search_all(in_region=None):
                     top_offset = in_region.getY()
 
                 # Scale down coordinates since actual screen has different dpi
-                screen_data = copy.deepcopy(virtual_data)
-                screen_data['x'] = screen_data['x'] / dpi_factor + left_offset
-                screen_data['y'] = screen_data['y'] / dpi_factor + top_offset
-                screen_data['width'] = screen_data['width'] / dpi_factor
-                screen_data['height'] = screen_data['height'] / dpi_factor
-
-                final_data.append(screen_data)
+                if with_image_processing:
+                    screen_data = copy.deepcopy(virtual_data)
+                    screen_data['x'] = screen_data['x'] / dpi_factor + left_offset
+                    screen_data['y'] = screen_data['y'] / dpi_factor + top_offset
+                    screen_data['width'] = screen_data['width'] / dpi_factor
+                    screen_data['height'] = screen_data['height'] / dpi_factor
+                    final_data.append(screen_data)
+                else:
+                    final_data.append(virtual_data)
         except:
             continue
 
-    _save_ocr_debug_image(debug_img, debug_data)
+    _save_ocr_debug_image(debug_img, debug_data, with_image_processing)
     return final_data
 
 
