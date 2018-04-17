@@ -671,6 +671,16 @@ def open_addons():
         type(text="a", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
+def open_browser_console():
+    """
+    Opens the Browser Console.
+    """
+    if get_os() == "osx":
+        type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
 def open_downloads():
     """
     Open the Downloads dialog.

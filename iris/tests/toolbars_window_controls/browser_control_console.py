@@ -50,57 +50,53 @@ class test(base_test):
                 logger.debug('Pop up message is displayed ')
                 type(Key.ENTER)
                 logger.debug('Pop up message is closed ')
-
-                open_web_console()
-                logger.debug('Opening web console with keyboard shortcut ')
+                open_browser_console()
+                logger.debug('Opening browser console with keyboard shortcut ')
 
                 console_items=['Net','CSS','JS','Security']
-                web_console_items=False
+                browser_console_items=False
                 for word in console_items:
                     if word in center_screen.text():
                         logger.debug('Item is present: '+word)
-                        web_console_items=True
+                        browser_console_items=True
 
-                if web_console_items:
+                if browser_console_items:
                     logger.debug('Close console')
-                    center_screen.click('web_console_close_button.png')
-                    time.sleep(3)
-                    if center_screen.exists('web_console_close_button.png',2):
-                        logger.error('Web Console was not closed')
+                    center_screen.click('auxiliary_window_close_button.png')
+                    time.sleep(1)
+                    if center_screen.exists('auxiliary_window_close_button.png', 5):
+                        logger.error('Browser Console was not closed')
                         print "FAIL"
                     else:
-                        logger.debug('Web console is closed')
-                        open_web_console()
-                        if exists('web_console_close_button.png',5):
-                            logger.debug('Web Console was reopened successfully')
-                            if center_screen.exists('web_console_minimize.png',5):
-                                center_screen.click('web_console_minimize.png')
-                                logger.debug('Web Console is minimized')
-                                open_web_console()
-                                if center_screen.exists('web_console_maximize.png',5):
-                                    center_screen.click('web_console_maximize.png')
-                                    logger.debug('Web Console is maximized')
+                        logger.debug('Browser console is closed')
+                        open_browser_console()
+                        if exists('auxiliary_window_close_button.png', 5):
+                            logger.debug('Browser Console was reopened successfully')
+                            if center_screen.exists('auxiliary_window_minimize.png', 5):
+                                center_screen.click('auxiliary_window_minimize.png')
+                                logger.debug('Browser Console is minimized')
+                                open_browser_console()
+                                if center_screen.exists('auxiliary_window_maximize.png', 5):
+                                    center_screen.click('auxiliary_window_maximize.png')
+                                    logger.debug('Browser Console is maximized')
                                     if get_os() == "osx":
-                                        screen.click('web_console_close_button.png')
+                                        screen.click('auxiliary_window_close_button.png')
                                     else:
                                         force_close()
                                     print "PASS"
-                                    time.sleep(3)
                                 else:
-                                    logger.error('Web Console was not maximized')
-
+                                    logger.error('Browser Console was not maximized')
                             else:
-                                logger.error('Web Console was not minimized')
-
-
+                                logger.error('Browser Console was not minimized')
                         else:
-                            logger.error('Web Console was not been reopened successfully')
+                            logger.error('Browser Console was not been reopened successfully')
 
             else:
                 logger.error('Developer console is not open')
                 print "Fail"
         else:
-            logger.error('Developer toolbar  is NOT opened ')
+
+            logger.error('Developer toolbar is NOT opened ')
             print "FAIL"
 
 
