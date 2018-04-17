@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 from PIL import Image
 
-IMAGE_SIZE = 1800
+OCR_IMAGE_SIZE = 1800
 BINARY_THRESHOLD = 180
 
 
@@ -16,7 +16,7 @@ def get_size_of_scaled_image(im):
     size = None
     if size is None:
         length_x, width_y = im.size
-        factor = max(1, int(IMAGE_SIZE / length_x))
+        factor = max(1, int(OCR_IMAGE_SIZE / length_x))
         size = factor * length_x, factor * width_y
     return size
 

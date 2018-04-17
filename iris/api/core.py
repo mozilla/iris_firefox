@@ -14,8 +14,9 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
+import copy
 
-from helpers.image_remove_noise import process_image_for_ocr
+from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from errors import *
 
 try:
@@ -28,7 +29,8 @@ DEFAULT_ACCURACY = 0.7
 DEFAULT_TIMEOUT = 3
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 DEBUG = True
-INVALID_INPUT_MSG = 'Invalid input'
+INVALID_GENERIC_INPUT = 'Invalid input'
+INVALID_NUMERIC_INPUT = 'Expected numeric value'
 DEFAULT_INTERVAL = 0.5
 
 _images = {}
@@ -193,7 +195,7 @@ class Location(object):
         if isinstance(new_x, int):
             self._x = new_x
         else:
-            raise ValueError('Expected numeric value')
+            raise ValueError(INVALID_NUMERIC_INPUT)
 
     x = property(getX, setX)
 
@@ -204,7 +206,7 @@ class Location(object):
         if isinstance(new_y, int):
             self._y = new_y
         else:
-            raise ValueError('Expected numeric value')
+            raise ValueError(INVALID_NUMERIC_INPUT)
 
     y = property(getY, setY)
 
@@ -248,7 +250,7 @@ class Region(object):
         if isinstance(new_x, int):
             self._x = new_x
         else:
-            raise ValueError('Expected numeric value')
+            raise ValueError(INVALID_NUMERIC_INPUT)
 
     x = property(getX, setX)
 
@@ -259,7 +261,7 @@ class Region(object):
         if isinstance(new_y, int):
             self._y = new_y
         else:
-            raise ValueError('Expected numeric value')
+            raise ValueError(INVALID_NUMERIC_INPUT)
 
     y = property(getY, setY)
 
@@ -270,7 +272,7 @@ class Region(object):
         if isinstance(new_w, int):
             self._w = new_w
         else:
-            raise ValueError('Expected numeric value')
+            raise ValueError(INVALID_NUMERIC_INPUT)
 
     w = property(getW, setW)
 
@@ -281,7 +283,7 @@ class Region(object):
         if isinstance(new_h, int):
             self._h = new_h
         else:
-            raise ValueError('Expected numeric value')
+            raise ValueError(INVALID_NUMERIC_INPUT)
 
     h = property(getH, setH)
 
@@ -319,14 +321,17 @@ class Region(object):
     def findAll(self, what=None, precision=DEFAULT_ACCURACY):
         return findAll(what, precision, self)
 
-    def wait(self, what=None, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
-        return wait(what, seconds, precision, self)
+    def wait(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
+        return wait(what, timeout, precision, self)
 
-    def exists(self, what=None, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
-        return exists(what, seconds, precision, self)
+    def exists(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
+        return exists(what, timeout, precision, self)
 
     def click(self, where=None, duration=DEFAULT_INTERVAL):
         return click(where, duration, self)
+
+    def text(self, search_for=None):
+        return _text_search_all(self)
 
 
 def _save_debug_image(search_for, on_region, locations):
@@ -338,6 +343,7 @@ def _save_debug_image(search_for, on_region, locations):
     :return: None
     """
     if DEBUG:
+        on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2BGR)
         w, h = search_for.shape[::-1]
 
         def _draw_rectangle(on_what, (top_x, top_y), (btm_x, btm_y)):
@@ -354,6 +360,19 @@ def _save_debug_image(search_for, on_region, locations):
         current_time = datetime.now()
         temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
         cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
+
+
+def _save_ocr_debug_image(on_region, matches):
+    if matches is None:
+        return
+    if isinstance(matches, list):
+        for mt in matches:
+            cv2.rectangle(on_region,
+                          (mt['x'], mt['y']), (mt['x'] + mt['width'], mt['y'] + mt['height']), (0, 0, 255), 6)
+
+    current_time = datetime.now()
+    temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
+    cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
 
 
 def _region_grabber(coordinates):
@@ -399,7 +418,7 @@ def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
         return Location(-1, -1)
     else:
         position = Location(max_loc[0], max_loc[1])
-        _save_debug_image(needle, img_rgb, position)
+        _save_debug_image(needle, img_gray, position)
         return position
 
 
@@ -443,7 +462,7 @@ def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, t
         else:
             break
 
-    _save_debug_image(needle, img_rgb, points)
+    _save_debug_image(needle, img_gray, points)
     return points
 
 
@@ -500,35 +519,59 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
 
 def _text_search_all(in_region=None):
     if in_region is None:
-        in_region = _region_grabber(coordinates=(0, 0, screen_width, screen_height))
+        stack_image = _region_grabber(coordinates=(0, 0, screen_width, screen_height))
+
+    if isinstance(in_region, Region):
+        stack_image = _region_grabber(
+            coordinates=(in_region.getX(), in_region.getY(), in_region.getW(), in_region.getH()))
 
     tesseract_match_min_len = 12
-    input_image = np.array(in_region)
+    input_image = np.array(stack_image)
     optimized_ocr_image = process_image_for_ocr(image_array=Image.fromarray(input_image))
-
-    if DEBUG:
-        cv2.imwrite(image_debug_path + '/debug_ocr_ready.png', optimized_ocr_image)
 
     optimized_ocr_array = np.array(optimized_ocr_image)
     processed_data = pytesseract.image_to_data(Image.fromarray(optimized_ocr_array))
 
+    debug_img = cv2.cvtColor(optimized_ocr_array, cv2.COLOR_GRAY2BGR)
+
+    length_x, width_y = stack_image.size
+    dpi_factor = max(1, int(OCR_IMAGE_SIZE / length_x))
+
     final_data = []
+    debug_data = []
+
     for line in processed_data.split('\n'):
         try:
             data = line.encode('ascii').split()
             if len(data) is tesseract_match_min_len:
                 precision = int(data[10]) / float(100)
-                new_match = {'x': data[6],
-                             'y': data[7],
-                             'width': data[8],
-                             'height': data[9],
-                             'precision': precision,
-                             'value': data[11]
-                             }
-                final_data.append(new_match)
+                virtual_data = {'x': int(data[6]),
+                                'y': int(data[7]),
+                                'width': int(data[8]),
+                                'height': int(data[9]),
+                                'precision': float(precision),
+                                'value': str(data[11])
+                                }
+                debug_data.append(virtual_data)
+
+                left_offset = 0
+                top_offset = 0
+                if isinstance(in_region, Region):
+                    left_offset = in_region.getX()
+                    top_offset = in_region.getY()
+
+                # Scale down coordinates since actual screen has different dpi
+                screen_data = copy.deepcopy(virtual_data)
+                screen_data['x'] = screen_data['x'] / dpi_factor + left_offset
+                screen_data['y'] = screen_data['y'] / dpi_factor + top_offset
+                screen_data['width'] = screen_data['width'] / dpi_factor
+                screen_data['height'] = screen_data['height'] / dpi_factor
+
+                final_data.append(screen_data)
         except:
             continue
 
+    _save_ocr_debug_image(debug_img, debug_data)
     return final_data
 
 
@@ -560,7 +603,7 @@ def _get_needle_path(string_or_pattern):
         else:
             raise ValueError('Unknown image name: %s' % string_or_pattern)
     else:
-        raise ValueError(INVALID_INPUT_MSG)
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def hover(where=None, duration=0, in_region=None):
@@ -588,7 +631,7 @@ def hover(where=None, duration=0, in_region=None):
             raise FindError('Unable to find image %s' % image_path)
 
     else:
-        raise ValueError(INVALID_INPUT_MSG)
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def find(what, precision=DEFAULT_ACCURACY, in_region=None):
@@ -603,7 +646,7 @@ def find(what, precision=DEFAULT_ACCURACY, in_region=None):
         image_path = _get_needle_path(what)
         return _image_search(image_path, precision, in_region)
     else:
-        raise ValueError(INVALID_INPUT_MSG)
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
@@ -618,59 +661,59 @@ def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
         image_path = _get_needle_path(what)
         return _image_search_multiple(image_path, precision, in_region)
     else:
-        raise ValueError(INVALID_INPUT_MSG)
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def wait(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def wait(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Wait for a Pattern or image to appear
 
     :param image: String or Pattern
-    :param seconds: Number as maximum waiting time in seconds.
+    :param timeout: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
     if isinstance(image, str) or isinstance(image, Pattern):
         s_interval = DEFAULT_INTERVAL
-        max_attempts = int(seconds / s_interval)
+        max_attempts = int(timeout / s_interval)
 
         image_path = _get_needle_path(image)
         image_found = _image_search_loop(image_path, s_interval, max_attempts, precision, in_region)
         if (image_found.x != -1) & (image_found.y != -1):
             return True
         else:
-            raise FindError
+            raise FindError('Unable to find image %s' % image_path)
     else:
-        raise ValueError(INVALID_INPUT_MSG)
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def exists(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def exists(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Check if Pattern or image exists
 
     :param image: String or Pattern
-    :param seconds: Number as maximum waiting time in seconds.
+    :param timeout: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
     try:
-        wait(image, seconds, precision, in_region)
+        wait(image, timeout, precision, in_region)
         return True
     except FindError:
         return False
 
 
-def waitVanish(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def waitVanish(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Wait until a Pattern or image disappears
 
     :param image: Image, Pattern or string
-    :param seconds:  Number as maximum waiting time in seconds.
+    :param timeout:  Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if vanished
     """
     interval = DEFAULT_INTERVAL
-    max_attempts = int(seconds / interval)
+    max_attempts = int(timeout / interval)
     pattern_found = True
     tries = 0
     while (pattern_found is True) and (tries < max_attempts):
@@ -682,7 +725,7 @@ def waitVanish(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_re
         tries += 1
 
     if pattern_found is True:
-        raise FindError
+        raise FindError('Unable to find %s' % image)
     else:
         return True
 
@@ -739,7 +782,7 @@ def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):
         _click_pattern(where, duration, in_region)
 
     else:
-        raise ValueError(INVALID_INPUT_MSG)
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def get_screen():
@@ -757,7 +800,7 @@ def keyDown(key):
         else:
             raise ValueError("Unsupported string input")
     else:
-        raise ValueError(INVALID_INPUT_MSG)
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def keyUp(key):
@@ -769,7 +812,7 @@ def keyUp(key):
         else:
             raise ValueError("Unsupported string input")
     else:
-        raise ValueError("Unsupported input")
+        raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def scroll(clicks):
