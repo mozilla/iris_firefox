@@ -20,13 +20,13 @@ class Test(BaseTest):
 
         navigate(url)
 
-        expected_1 = exists(customize_new_tab_page_image, 0.5)
+        expected_1 = exists(customize_new_tab_page_image, 10)
         assert_true(self, expected_1, 'Find customize new tab page image')
 
         click(customize_new_tab_page_image)
-        expected_2 = exists(tab_preference_search_button, 0.5)
+        expected_2 = exists(tab_preference_search_button, 10)
         assert_true(self, expected_2, 'Find tab preferences search button')
 
         click(tab_preference_search_button)
         expected_3 = waitVanish(tab_search_section)
-        assert_false(self, expected_3, 'Wait for tab search section to vanish')
+        assert_true(self, expected_3, 'Wait for tab search section to vanish')

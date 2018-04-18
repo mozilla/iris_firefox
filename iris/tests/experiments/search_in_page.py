@@ -25,5 +25,5 @@ class Test(BaseTest):
         open_find()
         type("Gmail")
 
-        expected_2 = exists(search_in_page_image, 0.5)
+        expected_2 = exists(search_in_page_image, 10)
         assert_true(self, expected_2, 'Find search in page image')

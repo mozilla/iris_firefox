@@ -1,6 +1,7 @@
 import logging
 import os.path
 from ConfigParser import ConfigParser
+from iris.api.errors import *
 
 logger = logging.getLogger(__name__)
 
@@ -17,11 +18,8 @@ def get_credential(section, credential):
                 result = config.get(section, credential)
                 return result
             else:
-                logger.debug('Section not found')
-                return None
+                raise ConfigError('Section %s not found' % section)
         except EOFError:
-            logger.warning('Config file error')
-            return None
+            raise ConfigError('Config file error')
     else:
-        logger.error('Config file not found')
-        return None
+        raise ConfigError('Config file not found')

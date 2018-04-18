@@ -54,7 +54,7 @@ def confirm_firefox_launch():
 def confirm_firefox_quit():
     try:
         waitVanish('home.png', 10)
-    except:
+    except FindError:
         print ('Firefox still around - aborting test run.')
         exit(1)
 
@@ -164,7 +164,7 @@ def dont_save_password():
     try:
         if exists('dont_save_password_button.png', 10):
             click('dont_save_password_button.png')
-    except:
+    except FindError:
         logger.error('Failed to find save password dialog')
         return None
 
@@ -173,7 +173,7 @@ def click_hamburger_menu_option(option):
     try:
         wait('hamburger_menu.png', 10)
         logger.debug('hamburger menu found')
-    except:
+    except FindError:
         logger.error('Can\'t find the "hamburger menu" in the page, aborting test.')
         return
     else:
@@ -181,7 +181,7 @@ def click_hamburger_menu_option(option):
         try:
             wait(option, 10)
             logger.debug('Option found')
-        except:
+        except FindError:
             logger.error('Can\'t find the option in the page, aborting test.')
             return
         else:
@@ -190,9 +190,9 @@ def click_hamburger_menu_option(option):
 
 def close_auxiliary_window():
     try:
-        wait('auxiliary_window_close_button', 10)
+        wait('auxiliary_window_close_button.png', 10)
         logger.debug('Close auxiliary window button found')
-    except:
+    except FindError:
         logger.error('Can\'t find the close auxiliary window button in the page, aborting.')
         return
     else:
@@ -203,7 +203,7 @@ def close_customize_page():
     try:
         wait('customize_done_button.png', 10)
         logger.debug('Done button found')
-    except:
+    except FindError:
         logger.error('Can\'t find the Done button in the page, aborting.')
         return
     else:

@@ -55,11 +55,11 @@ class Test(BaseTest):
 
             found = False
             while found == False:
-                if exists(amazon_search_result, 0.25):
+                if exists(amazon_search_result, 10):
                     logger.debug("Book result is found")
                     found = True
                     break
-                elif exists('amazon_next_page.png', 0.25):
+                elif exists('amazon_next_page.png', 10):
                     logger.error("Searching result not found in page")
                     break
 

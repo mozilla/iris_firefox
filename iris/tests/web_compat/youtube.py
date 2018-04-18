@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = "Web compability test for youtube.com"
+        self.enable = False
 
     def run(self):
         url = "youtube.com"

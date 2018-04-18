@@ -29,5 +29,5 @@ class Test(BaseTest):
         navigate("https://www.google.com/?hl=EN")
 
         # core api function
-        expected = exists("google_search.png", 0.5)
+        expected = exists("google_search.png", 10)
         assert_true(self, expected, 'google_search image found')
