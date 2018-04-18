@@ -50,7 +50,7 @@ class test(base_test):
                     logger.debug("hover over the 'maximize' controler doesn't work correctly")
 
             hover("window_controls_close.png")
-            time.sleep(0.5)
+            time.sleep(1)
             if exists("hover_close_control.png", 10):
                 print "PASS"
                 logger.debug("hover over the 'close' controler works correctly")
@@ -60,54 +60,58 @@ class test(base_test):
             time.sleep(0.5)
 
             if get_os() == "win":
-                 # Restore window
-                 minimize_window()
-                 hover("window_controls_maximize.png")
-                 time.sleep(0.5)
-                 if exists("hover_maximize_control.png", 10):
-                     print "PASS"
-                     logger.debug("hover over the 'maximize' controler works correctly")
-                     logger.debug("window successfully restored")
-                 else:
-                     print "FAIL"
-                     logger.debug("hover over the 'maximize' controler doesn't work correctly")
+                # Restore window
+                minimize_window()
+                hover("window_controls_maximize.png")
+                time.sleep(0.5)
+                if exists("hover_maximize_control.png", 10):
+                    print "PASS"
+                    logger.debug("hover over the 'maximize' controler works correctly")
+                    logger.debug("window successfully restored")
+                else:
+                    print "FAIL"
+                    logger.debug("hover over the 'maximize' controler doesn't work correctly")
+            elif get_os() == "linux":
+                # Maximize window
+                hover("window_controls_maximize.png")
+                time.sleep(0.5)
+                click("window_controls_maximize.png")
+                time.sleep(0.5)
+                keyDown(Key.ALT)
+                hover("window_controls_restore.png")
+                keyUp(Key.ALT)
+                time.sleep(0.5)
+                if exists("hover_restore_control.png", 10):
+                    print "PASS"
+                    logger.debug("hover over the 'restore' controler works correctly")
+                    logger.debug("window successfully maximized")
+                else:
+                    print "FAIL"
+                    logger.debug("hover over the 'restore' controler doesn't work correctly")
             else:
-                 # Maximize window
-                 hover("window_controls_maximize.png")
-                 time.sleep(0.5)
-                 click("window_controls_maximize.png")
-                 time.sleep(0.5)
-                 keyDown(Key.ALT)
-                 hover("window_controls_restore.png")
-                 keyUp(Key.ALT)
-                 time.sleep(0.5)
-                 if exists("hover_restore_control.png", 10):
-                     print "PASS"
-                     logger.debug("hover over the 'restore' controler works correctly")
-                     logger.debug("window successfully maximized")
-                 else:
-                     print "FAIL"
-                     logger.debug("hover over the 'restore' controler doesn't work correctly")
+                # Maximize window
+                maximize_window()
+                time.sleep(0.5)
+                hover("window_controls_restore.png")
+                time.sleep(0.5)
+                if exists("hover_restore_control.png", 10):
+                    print "PASS"
+                    logger.debug("hover over the 'restore' controler works correctly")
+                    logger.debug("window successfully maximized")
+                else:
+                    print "FAIL"
+                    logger.debug("hover over the 'restore' controler doesn't work correctly")
 
-            if get_os() == "win":
-                 if exists("hamburger_menu.png", 10):
-                     #Minimize window
-                     minimize_window()
-                     time.sleep(0.5)
-                     if waitVanish("hamburger_menu.png", 10):
-                         print "PASS"
-                         logger.debug("window successfully minimized")
-                     else:
-                         print "FAIL"
-                         logger.error("window not minimized, aborting test")
-                 else:
-                     print "FAIL"
-                     logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
-            else:
+
+            if get_os() == "linux":
                 # Minimize window
+                click("window_controls_minimize.png")
+                time.sleep(0.5)
+            else:
                 if exists("hamburger_menu.png", 10):
-                    click("window_controls_minimize.png")
-                    time.sleep(3)
+                    #Minimize window
+                    minimize_window()
+                    time.sleep(0.5)
                     if waitVanish("hamburger_menu.png", 10):
                         print "PASS"
                         logger.debug("window successfully minimized")
@@ -118,12 +122,13 @@ class test(base_test):
                     print "FAIL"
                     logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
 
+
             # Focus on Firefox and open the browser again
-            type(text=Key.TAB, modifier=KeyModifier.ALT)
-            if get_os() == "win":
-                maximize_window()
+            restore_window_from_taskbar()
+            if get_os() == "linux":
                 time.sleep(0.5)
-            else:
+            elif get_os() == "win":
+                maximize_window()
                 time.sleep(0.5)
 
             if exists("hamburger_menu.png", 10):
@@ -147,7 +152,3 @@ class test(base_test):
         else:
             print "FAIL"
             logger.error("Can't find the upper corner controls in the page, aborting test.")
-
-
-
-
