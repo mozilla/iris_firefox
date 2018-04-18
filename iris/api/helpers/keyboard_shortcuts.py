@@ -717,4 +717,10 @@ def force_close():
         """
         type(text=Key.F4, modifier=KeyModifier.ALT)
 
+def open_web_developer_menu():
+    """
+    Open tWeb_developer tool.
+    """
+    type(text=Key.F2, modifier=KeyModifier.SHIFT)
+
 # End Tools keyboard shortcuts
