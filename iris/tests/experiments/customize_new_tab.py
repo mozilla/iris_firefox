@@ -29,4 +29,4 @@ class Test(BaseTest):
 
         click(tab_preference_search_button)
         expected_3 = waitVanish(tab_search_section)
-        assert_false(self, expected_3, 'Wait for tab search section to vanish')
+        assert_true(self, expected_3, 'Wait for tab search section to vanish')

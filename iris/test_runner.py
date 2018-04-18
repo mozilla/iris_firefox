@@ -4,18 +4,16 @@
 
 import importlib
 import sys
+import traceback
 
 from api.helpers.general import *
 from api.helpers.results import *
 
 logger = logging.getLogger(__name__)
 
-passed = 0
-failed = 0
-skipped = 0
-
 
 def run(app):
+    passed = failed = skipped = errors = 0
     logger.info('Running tests')
     start_time = time.time()
     # Start with no saved profiles
@@ -25,7 +23,7 @@ def run(app):
     for package in app.test_packages:
         sys.path.append(package)
 
-    for module in app.test_list:
+    for index, module in enumerate(app.test_list, start=1):
 
         current_module = importlib.import_module(module)
         try:
@@ -35,7 +33,7 @@ def run(app):
             return
         logger.info('\n' + '-' * 120)
         if current.enable:
-            logger.info('Executing: %s ' % current.meta)
+            logger.info('Executing: %s - %s ' % (index, current.meta))
             current.set_start_time(time.time())
 
             # Move the mouse to upper left corner of the screen
@@ -54,26 +52,37 @@ def run(app):
             try:
                 current.run()
             except AssertionError:
-                global failed
                 failed += 1
                 current.set_end_time(time.time())
                 current.teardown()
                 confirm_firefox_quit()
                 continue
+            except FindError:
+                failed += 1
+                current.add_results('FAILED', None, None, None, print_error(traceback.format_exc()))
+                current.set_end_time(time.time())
+                current.teardown()
+                confirm_firefox_quit()
+                continue
+            except (ValueError, ConfigError):
+                errors += 1
+                current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
+                current.set_end_time(time.time())
+                current.teardown()
+                confirm_firefox_quit()
+                continue
 
-            global passed
             passed += 1
             current.set_end_time(time.time())
             # Quit Firefox
             current.teardown()
             confirm_firefox_quit()
         else:
-            global skipped
             skipped += 1
-            logger.info('Skipping disabled test case: %s' % current.meta)
+            logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    print_report_footer(passed, failed, skipped, get_duration(start_time, end_time))
+    print_report_footer(passed, failed, skipped, errors, get_duration(start_time, end_time))
 
     # We may remove profiles here, but likely still in use and can't do it yet
     # clean_profiles()

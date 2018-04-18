@@ -50,4 +50,4 @@ class Test(BaseTest):
         type("amazon")
 
         expected_2 = exists(amazon_history_image, 10)
-        assert_false(self, expected_2, 'Find amazon history image')
+        assert_true(self, expected_2, 'Find amazon history image')

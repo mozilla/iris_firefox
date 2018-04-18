@@ -8,7 +8,7 @@ import traceback
 from api.helpers.results import *
 
 
-class Assert(object):
+class Result(object):
 
     def __init__(self, outcome, message, actual, expected, error):
         self.outcome = outcome
@@ -21,9 +21,9 @@ class Assert(object):
 def assert_equal(test_case, actual, expected, message):
     try:
         assert actual == expected
-        test_case.add_assert_result('PASSED', message, actual, expected, None)
+        test_case.add_results('PASSED', message, actual, expected, None)
     except AssertionError:
-        test_case.add_assert_result('FAILED', message, actual, expected, print_error(traceback.format_exc()))
+        test_case.add_results('FAILED', message, actual, expected, print_error(traceback.format_exc()))
         raise AssertionError
 
 

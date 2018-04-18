@@ -7,9 +7,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def print_report_footer(passed, failed, skipped, total_time):
-    total = passed + failed + skipped
-    prefix = 'Passed: %s, Failed: %s, Skipped: %s, Total: %s' % (passed, failed, skipped, total)
+def print_report_footer(passed, failed, skipped, errors, total_time):
+    total = passed + failed + skipped + errors
+    prefix = 'Passed: %s, Failed: %s, Skipped: %s, Errors: %s -- Total: %s' % (passed, failed, skipped, errors, total)
     suffix = 'Total time: %s second(s)' % total_time
     separator = '\n' + '-' * 120 + '\n'
     logger.info('%s%s%s%s%s' % (separator, prefix, ' ' * (120 - (len(prefix) + len(suffix))), suffix, separator))

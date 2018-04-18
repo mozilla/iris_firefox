@@ -48,8 +48,14 @@ class BaseTest(object):
 
     def print_results(self):
         for result in self.results:
-            logger.info('Step: %s, outcome: >>> %s <<< %s' % (
-                result.message, result.outcome, '\n' + result.error if result.error else ''))
+            if 'ERROR' == result.outcome:
+                logger.error('Error encountered in test, outcome: >>> ERROR <<< %s' % '\n' + result.error if
+                             result.error else '')
+            elif 'FAILED' == result.outcome:
+                logger.warning('Step: %s, outcome: >>> %s <<< %s' % (
+                    result.message, result.outcome, '\n' + result.error if result.error else ''))
+            elif 'PASSED' == result.outcome:
+                logger.info('Step: %s, outcome: >>> %s <<<' % (result.message, result.outcome))
         logger.info('%s - >>> %s <<< (Finished in %s second(s))\n' % (
             self.meta, format_outcome(self.is_passed), get_duration(self.start_time, self.end_time)))
 
@@ -68,9 +74,9 @@ class BaseTest(object):
     def get_test_duration(self):
         return round(self.end_time - self.start_time, 2)
 
-    def add_assert_result(self, outcome, message, actual, expected, error):
-        ar = Assert(outcome, message, actual, expected, error)
-        self.add_result(ar)
+    def add_results(self, outcome, message, actual, expected, error):
+        res = Result(outcome, message, actual, expected, error)
+        self.add_result(res)
 
     @staticmethod
     def _create_unique_profile_name():

@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = "Web compability test for wikipedia.org"
+        # ToDo enable test once OCR functionality is in place
+        self.enable = False
 
     def run(self):
         url = "www.wikipedia.org"

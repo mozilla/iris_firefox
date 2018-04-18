@@ -16,6 +16,7 @@ import pyperclip
 import pytesseract
 
 from helpers.image_remove_noise import process_image_for_ocr
+from errors import *
 
 try:
     import Image
@@ -584,7 +585,7 @@ def hover(where=None, duration=0, in_region=None):
             else:
                 pyautogui.moveTo(pos.x, pos.y)
         else:
-            raise Exception('Unable to find image %s' % image_path)
+            raise FindError('Unable to find image %s' % image_path)
 
     else:
         raise ValueError(INVALID_INPUT_MSG)
@@ -638,7 +639,7 @@ def wait(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=N
         if (image_found.x != -1) & (image_found.y != -1):
             return True
         else:
-            raise Exception
+            raise FindError
     else:
         raise ValueError(INVALID_INPUT_MSG)
 
@@ -655,7 +656,7 @@ def exists(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region
     try:
         wait(image, seconds, precision, in_region)
         return True
-    except Exception:
+    except FindError:
         return False
 
 
@@ -676,12 +677,12 @@ def waitVanish(image, seconds=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_re
         time.sleep(interval)
         try:
             pattern_found = wait(image, 1, precision, in_region)
-        except Exception:
+        except FindError:
             pattern_found = False
         tries += 1
 
     if pattern_found is True:
-        raise Exception
+        raise FindError
     else:
         return True
 
@@ -724,6 +725,7 @@ def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):
 
     :param where: Location , image name or Pattern
     :param duration: speed of hovering from current location to target
+    :param Region in_region: Region object in order to minimize the area
     :return: None
     """
     if isinstance(where, Location):
