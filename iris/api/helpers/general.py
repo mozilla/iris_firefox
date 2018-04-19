@@ -113,17 +113,17 @@ def get_main_modifier():
 def copy_to_clipboard():
     edit_select_all()
     edit_copy()
-    value=Env.getClipboard().strip()
+    value = Env.getClipboard().strip()
     return value
 
 
-def change_preference(pref_name,value):
+def change_preference(pref_name, value):
     navigate("about:config")
     time.sleep(1)
 
     type(Key.SPACE)
     time.sleep(1)
-    
+
     type(pref_name)
     time.sleep(2)
     type(Key.TAB)
@@ -144,8 +144,8 @@ def change_preference(pref_name,value):
         type(Key.ENTER)
         # For non-boolean values, a dialog box should appear
         dialog_box = Pattern("preference_dialog_icon.png")
-        if exists(dialog_box,3):
-            type(dialog_box,value)
+        if exists(dialog_box, 3):
+            type(dialog_box, value)
             type(Key.ENTER)
     navigate_back()
 
@@ -176,7 +176,7 @@ def dont_save_password():
 def click_hamburger_menu_option(option):
     try:
         wait("hamburger_menu.png", 10)
-        region=create_region_from_image("hamburger_menu.png")
+        region = create_region_from_image("hamburger_menu.png")
         logger.debug("hamburger menu found")
     except:
         logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
@@ -243,14 +243,14 @@ def open_about_firefox():
 
 
 def create_region_from_image(image):
-
     try:
-        m= find(image)
+        m = find(image)
         if m:
-            hamburger_pop_up_menu_weight=285
-            hamburger_pop_up_menu_height=655
+            hamburger_pop_up_menu_weight = 285
+            hamburger_pop_up_menu_height = 655
             logger.debug('Creating a region for Hamburger Pop Up Menu')
-            region=Sikuli.Region(m.getX()-hamburger_pop_up_menu_weight,m.getY(),hamburger_pop_up_menu_weight,hamburger_pop_up_menu_height)
+            region = Sikuli.Region(m.getX() - hamburger_pop_up_menu_weight, m.getY(), hamburger_pop_up_menu_weight,
+                                   hamburger_pop_up_menu_height)
             return region
         else:
             logger.error('No Matching found')
@@ -270,4 +270,3 @@ def restore_window_from_taskbar():
         keyUp(Key.ALT)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
-
