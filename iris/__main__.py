@@ -27,7 +27,9 @@ logger = logging.getLogger(__name__)
 coloredlogs.DEFAULT_LOG_FORMAT = LOG_FORMAT
 coloredlogs.DEFAULT_FIELD_STYLES = {'levelname': {'color': 'cyan', 'bold': True},
                                     'name': {'color': 'cyan', 'bold': True}}
-
+coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True},
+                                    'success': {'color': 'green', 'bold': True},
+                                    'error': {'color': 'red', 'bold': True}}
 
 
 def main(argv=None):

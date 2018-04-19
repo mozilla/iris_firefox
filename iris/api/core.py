@@ -34,6 +34,18 @@ INVALID_NUMERIC_INPUT = 'Expected numeric value'
 DEFAULT_INTERVAL = 0.5
 
 _images = {}
+
+SUCCESS_LEVEL_NUM = 35
+logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
+
+
+def success(self, message, *args, **kws):
+    # Yes, logger takes its '*args' as 'args'.
+    if self.isEnabledFor(SUCCESS_LEVEL_NUM):
+        self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
+
+
+logging.Logger.success = success
 logger = logging.getLogger(__name__)
 
 
@@ -730,12 +742,14 @@ def waitVanish(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_re
         return True
 
 
-def _click_pattern(pattern, duration=DEFAULT_INTERVAL, in_region=None):
+def _click_pattern(pattern, clicks=None, duration=DEFAULT_INTERVAL, in_region=None, button=None):
     """Click on center or offset of a Pattern
 
-    :param Pattern pattern: Input Pattern
-    :param float duration: Speed of hovering from current location to target
-    :param Region in_region: Region object in order to minimize the area
+    :param pattern: Input Pattern
+    :param clicks: Number of mouse clicks
+    :param duration: Speed of hovering from current location to target
+    :param in_region: Region object in order to minimize the area
+    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
     :return: None
     """
     needle = cv2.imread(pattern.image_path)
@@ -745,49 +759,114 @@ def _click_pattern(pattern, duration=DEFAULT_INTERVAL, in_region=None):
     possible_offset = pattern.getTargetOffset()
 
     if possible_offset.x > 0 or possible_offset.y > 0:
-        _click_at(Location(p_top.x + possible_offset.x, p_top.y + possible_offset.y), duration)
+        _click_at(Location(p_top.x + possible_offset.x, p_top.y + possible_offset.y), clicks, duration, button)
     else:
-        _click_at(Location(p_top.x + width / 2, p_top.y + height / 2), duration)
+        _click_at(Location(p_top.x + width / 2, p_top.y + height / 2), clicks, duration, button)
 
 
-def _click_at(location=None, duration=DEFAULT_INTERVAL):
+def _click_at(location=None, clicks=None, duration=DEFAULT_INTERVAL, button=None):
     """Click on Location coordinates
 
-    :param location: Location class
+    :param location: Location , image name or Pattern
+    :param clicks: Number of mouse clicks
     :param duration: speed of hovering from current location to target
+    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
     :return: None
     """
     if location is None:
         location = Location(0, 0)
     pyautogui.moveTo(location.x, location.y, duration)
-    pyautogui.click(button='left')
+    pyautogui.click(clicks=clicks, interval=0.0, button=button)
 
 
-def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):
-    """General click
+def _general_click(where=None, clicks=None, duration=DEFAULT_INTERVAL, in_region=None, button=None):
+    """General Mouse Click
 
     :param where: Location , image name or Pattern
+    :param clicks: Number of mouse clicks
     :param duration: speed of hovering from current location to target
-    :param Region in_region: Region object in order to minimize the area
+    :param in_region: Region object in order to minimize the area
+    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
     :return: None
     """
     if isinstance(where, Location):
-        _click_at(where)
+        _click_at(where, clicks, duration, button)
 
     elif isinstance(where, str):
         pattern = Pattern(where)
-        _click_pattern(pattern, duration, in_region)
+        _click_pattern(pattern, clicks, duration, in_region, button)
 
     elif isinstance(where, Pattern):
-        _click_pattern(where, duration, in_region)
+        _click_pattern(where, clicks, duration, in_region, button)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
+def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):
+    """Mouse left click
+
+    :param where: Location , image name or Pattern
+    :param duration: speed of hovering from current location to target
+    :param in_region: Region object in order to minimize the area
+    :return: None
+    """
+    _general_click(where, 1, duration, in_region, 'left')
+
+
+def rightClick(where=None, duration=DEFAULT_INTERVAL, in_region=None):
+    """Mouse right click
+
+    :param where: Location , image name or Pattern
+    :param duration: speed of hovering from current location to target
+    :param in_region: Region object in order to minimize the area
+    :return: None
+    """
+    _general_click(where, 1, duration, in_region, 'right')
+
+
+def doubleClick(where=None, duration=DEFAULT_INTERVAL, in_region=None):
+    """Mouse double click
+
+    :param where: Location , image name or Pattern
+    :param duration: speed of hovering from current location to target
+    :param in_region: Region object in order to minimize the area
+    :return: None
+    """
+    _general_click(where, 2, duration, in_region, 'left')
+
+
+def _to_location(pattern_or_string=None, in_region=None):
+    """Transform pattern or string to location
+
+    :param pattern_or_string: Pattern or string input
+    :param in_region: Region object in order to minimize the area
+    :return: Location object
+    """
+    if isinstance(pattern_or_string, Pattern):
+        return _image_search(pattern_or_string.image_path, DEFAULT_ACCURACY, in_region)
+    elif isinstance(pattern_or_string, str):
+        return _image_search(_get_needle_path(pattern_or_string), DEFAULT_ACCURACY, in_region)
+    elif isinstance(pattern_or_string, Location):
+        return pattern_or_string
+
+
+def dragDrop(drag_from, drop_to, duration=DEFAULT_INTERVAL):
+    """Mouse drag and drop
+
+    :param drag_from: Starting point for drag and drop. Can be pattern, string or location
+    :param drop_to: Ending point for drag and drop. Can be pattern, string or location
+    :param duration: speed of drag and drop
+    :return: None
+    """
+    from_location = _to_location(drag_from)
+    to_location = _to_location(drop_to)
+    pyautogui.moveTo(from_location.x, from_location.y, 0)
+    pyautogui.dragTo(to_location.x, to_location.x, duration)
+
+
 def get_screen():
-    if DEBUG is True:
-        pyautogui.displayMousePosition()
+    """Returns full screen Image."""
     return _region_grabber(coordinates=(0, 0, screen_width, screen_height))
 
 
