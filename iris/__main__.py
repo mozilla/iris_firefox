@@ -42,6 +42,7 @@ class Iris(object):
     def __init__(self):
         self.parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
+        self.init_tesseract_path()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = get_os()
@@ -213,6 +214,8 @@ class Iris(object):
 
             log_level_int = getattr(logging, log_level_string, logging.INFO)
             assert isinstance(log_level_int, int)
+            if log_level_int is 10:
+                set_save_debug_images(True)
             return log_level_int
 
         parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
@@ -243,6 +246,16 @@ class Iris(object):
                             action='store',
                             default='en-US')
         self.args = parser.parse_args()
+
+    @staticmethod
+    def init_tesseract_path():
+        current_os = get_os()
+        if current_os == 'win':
+            pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
+        elif current_os == 'linux':
+            pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
+        elif current_os == 'osx':
+            pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
 
 
 class RemoveTempDir(cleanup.CleanUp):

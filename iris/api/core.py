@@ -25,10 +25,11 @@ except ImportError:
     from PIL import Image
 
 pyautogui.FAILSAFE = False
+save_debug_images = False
+
 DEFAULT_ACCURACY = 0.7
 DEFAULT_TIMEOUT = 3
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
-DEBUG = True
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 DEFAULT_INTERVAL = 0.5
@@ -49,18 +50,21 @@ logging.Logger.success = success
 logger = logging.getLogger(__name__)
 
 
+def set_save_debug_images(new_val):
+    global save_debug_images
+    if isinstance(new_val, bool):
+        save_debug_images = new_val
+
+
 def get_os():
     current_system = platform.system()
     current_os = ''
     if current_system == 'Windows':
         current_os = 'win'
-        pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
     elif current_system == 'Linux':
         current_os = 'linux'
-        pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     elif current_system == 'Darwin':
         current_os = 'osx'
-        pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
     else:
         logger.error('Iris does not yet support your current environment: ' + current_system)
 
@@ -342,8 +346,20 @@ class Region(object):
     def click(self, where=None, duration=DEFAULT_INTERVAL):
         return click(where, duration, self)
 
-    def text(self, search_for=None):
-        return _text_search_all(self, with_image_processing=True)
+    def text(self, with_image_processing=True):
+        return text(with_image_processing, self)
+
+    def type(self, text, modifier, interval):
+        return type(text, modifier, interval)
+
+    def dragDrop(self, drag_from, drop_to, duration):
+        return dragDrop(drag_from, drop_to, duration)
+
+    def doubleClick(self, where, duration):
+        return doubleClick(where, duration, self)
+
+    def rightClick(self, where, duration):
+        return rightClick(where, duration, self)
 
 
 def _save_debug_image(search_for, on_region, locations):
@@ -354,7 +370,7 @@ def _save_debug_image(search_for, on_region, locations):
     :param List[Location] || Location locations: Location or list of Location as coordinates
     :return: None
     """
-    if DEBUG:
+    if save_debug_images:
         on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2BGR)
         w, h = search_for.shape[::-1]
 
@@ -375,21 +391,21 @@ def _save_debug_image(search_for, on_region, locations):
 
 
 def _save_ocr_debug_image(on_region, matches, with_image_processing):
-    if matches is None:
-        return
+    if save_debug_images:
+        if matches is None:
+            return
 
-    border_line = 1
-    if with_image_processing:
-        border_line = 6
+        border_line = 2
 
-    if isinstance(matches, list):
-        for mt in matches:
-            cv2.rectangle(on_region,
-                          (mt['x'], mt['y']), (mt['x'] + mt['width'], mt['y'] + mt['height']), (0, 0, 255), border_line)
+        if isinstance(matches, list):
+            for mt in matches:
+                cv2.rectangle(on_region,
+                              (mt['x'], mt['y']), (mt['x'] + mt['width'], mt['y'] + mt['height']), (0, 0, 255),
+                              border_line)
 
-    current_time = datetime.now()
-    temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
-    cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
+        current_time = datetime.now()
+        temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
+        cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
 
 
 def _region_grabber(coordinates):
@@ -534,7 +550,7 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
     return pos
 
 
-def _text_search_all(in_region=None, with_image_processing=True):
+def _text_search_all(with_image_processing=True, in_region=None):
     if in_region is None:
         stack_image = _region_grabber(coordinates=(0, 0, screen_width, screen_height))
 
@@ -600,18 +616,39 @@ def _text_search_all(in_region=None, with_image_processing=True):
     return final_data
 
 
-"""Sikuli wrappers
+def _text_search_by(what, match_case=True, in_region=None, multiple_matches=False):
+    if not isinstance(what, str):
+        return ValueError(INVALID_GENERIC_INPUT)
 
-- wait
-- waitVanish
-- click
-- exists 
-- find
-- findAll
-- type
-- Key
-- KeyModifier
-"""
+    text_dict = _text_search_all(True, in_region)
+
+    if not match_case:
+        what = what.lower()
+
+    all_res = []
+
+    for match_object in text_dict:
+        if what == match_object['value']:
+            if multiple_matches:
+                all_res.append(match_object)
+            else:
+                return match_object
+
+    if multiple_matches:
+        if len(all_res) > 0:
+            return all_res
+        else:
+            return None
+    else:
+        return None
+
+
+def _ocr_matches_to_string(matches):
+    ocr_string = ''
+    for match in matches:
+        if match is not None and match['value']:
+            ocr_string += ' ' + str(match['value'])
+    return ocr_string
 
 
 def _get_needle_path(string_or_pattern):
@@ -631,6 +668,39 @@ def _get_needle_path(string_or_pattern):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
+def _is_ocr_text(input_text):
+    is_ocr_string = True
+    pattern_extensions = ('.png', '.jpg')
+    if input_text.endswith(pattern_extensions):
+        is_ocr_string = False
+    return is_ocr_string
+
+
+"""Sikuli wrappers
+
+- wait
+- waitVanish
+- click
+- exists 
+- find
+- findAll
+- type
+- Key
+- KeyModifier
+"""
+
+
+def text(with_image_processing=True, in_region=None):
+    """Get all text from a Region or full screen
+
+    :param bool with_image_processing: With extra dpi and contrast image processing
+    :param Region in_region: In certain Region or full screen
+    :return: list of matches
+    """
+    all_text = _text_search_all(with_image_processing, in_region)
+    return _ocr_matches_to_string(all_text)
+
+
 def hover(where=None, duration=0, in_region=None):
     """Hover over a Location, Pattern or image
 
@@ -639,7 +709,12 @@ def hover(where=None, duration=0, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return: None
     """
-    if isinstance(where, Location):
+    if isinstance(where, str) and _is_ocr_text(where):
+        a_match = _text_search_by(where, True, in_region)
+        if a_match is not None:
+            pyautogui.moveTo(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
+
+    elif isinstance(where, Location):
         pyautogui.moveTo(where.x, where.y, duration)
 
     elif isinstance(where, str) or isinstance(where, Pattern):
@@ -667,9 +742,17 @@ def find(what, precision=DEFAULT_ACCURACY, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return: Location
     """
-    if isinstance(what, str) or isinstance(what, Pattern):
+    if isinstance(what, str) and _is_ocr_text(what):
+        a_match = _text_search_by(what, True, in_region)
+        if a_match is not None:
+            return Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
+        else:
+            return Location(-1, -1)
+
+    elif isinstance(what, str) or isinstance(what, Pattern):
         image_path = _get_needle_path(what)
         return _image_search(image_path, precision, in_region)
+
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
@@ -682,27 +765,46 @@ def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return:
     """
-    if isinstance(what, str) or isinstance(what, Pattern):
+
+    if isinstance(what, str) and _is_ocr_text(what):
+        all_matches = _text_search_by(what, True, in_region, True)
+        list_of_locations = []
+        for match in all_matches:
+            list_of_locations.append(Location(match['x'] + match['width'] / 2, match['y'] + match['height'] / 2))
+        if len(list_of_locations) > 0:
+            return list_of_locations
+        else:
+            return [Location(-1, -1)]
+
+    elif isinstance(what, str) or isinstance(what, Pattern):
         image_path = _get_needle_path(what)
         return _image_search_multiple(image_path, precision, in_region)
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def wait(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def wait(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Wait for a Pattern or image to appear
 
-    :param image: String or Pattern
+    :param for_what: String or Pattern
     :param timeout: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
-    if isinstance(image, str) or isinstance(image, Pattern):
+
+    if isinstance(for_what, str) and _is_ocr_text(for_what):
+        a_match = _text_search_by(for_what, True, in_region)
+        if a_match is not None:
+            return True
+        else:
+            raise FindError('Unable to find text %s' % for_what)
+
+    elif isinstance(for_what, str) or isinstance(for_what, Pattern):
         s_interval = DEFAULT_INTERVAL
         max_attempts = int(timeout / s_interval)
 
-        image_path = _get_needle_path(image)
+        image_path = _get_needle_path(for_what)
         image_found = _image_search_loop(image_path, s_interval, max_attempts, precision, in_region)
         if (image_found.x != -1) & (image_found.y != -1):
             return True
@@ -712,26 +814,26 @@ def wait(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=N
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def exists(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def exists(what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Check if Pattern or image exists
 
-    :param image: String or Pattern
+    :param what: String or Pattern
     :param timeout: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
     try:
-        wait(image, timeout, precision, in_region)
+        wait(what, timeout, precision, in_region)
         return True
     except FindError:
         return False
 
 
-def waitVanish(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
     """Wait until a Pattern or image disappears
 
-    :param image: Image, Pattern or string
+    :param for_what: Image, Pattern or string
     :param timeout:  Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
@@ -744,13 +846,13 @@ def waitVanish(image, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_re
     while (pattern_found is True) and (tries < max_attempts):
         time.sleep(interval)
         try:
-            pattern_found = wait(image, 1, precision, in_region)
+            pattern_found = wait(for_what, 1, precision, in_region)
         except FindError:
             pattern_found = False
         tries += 1
 
     if pattern_found is True:
-        raise FindError('Unable to find %s' % image)
+        raise FindError('Unable to find %s' % for_what)
     else:
         return True
 
@@ -802,7 +904,14 @@ def _general_click(where=None, clicks=None, duration=DEFAULT_INTERVAL, in_region
     :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
     :return: None
     """
-    if isinstance(where, Location):
+
+    if isinstance(where, str) and _is_ocr_text(where):
+        a_match = _text_search_by(where, True, in_region)
+        if a_match is not None:
+            click_location = Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
+            _click_at(click_location, clicks, duration, button)
+
+    elif isinstance(where, Location):
         _click_at(where, clicks, duration, button)
 
     elif isinstance(where, str):
@@ -880,7 +989,7 @@ def dragDrop(drag_from, drop_to, duration=DEFAULT_INTERVAL):
 
 def get_screen():
     """Returns full screen Image."""
-    return _region_grabber(coordinates=(0, 0, screen_width, screen_height))
+    return Region(0, 0, screen_width, screen_height)
 
 
 def keyDown(key):
