@@ -73,8 +73,9 @@ for root, dirs, files in os.walk(PROJECT_BASE_PATH):
                 _images[file_name] = os.path.join(root, file_name)
 
 """
-pyautogui.size() works correctly everywhere except Mac Retina
-This technique works everywhere, so we'll use it instead
+pyautogui.size() returns screen width and height, and works 
+correctly except on newer high-definition screens, such as the Mac Retina.
+This technique works everywhere, so we'll use it instead.
 """
 
 screen_width, screen_height = pyautogui.screenshot().size
@@ -93,62 +94,169 @@ for debug_image_file in os.listdir(image_debug_path):
         continue
 
 
+class _IrisKey(object):
+    def __init__(self, label, value=None, reserved=True):
+        self.label = label
+        self.value = value
+        self.is_reserved = reserved
+
+    def __str__(self):
+        return self.label
+
+
+class Key(object):
+    # Sikuli-supported keys
+    ADD = _IrisKey('add')
+    ALT = _IrisKey('alt', 1 << 3)
+    BACKSPACE = _IrisKey('backspace')
+    CAPS_LOCK = _IrisKey('capslock')
+    CMD = _IrisKey('command', 1 << 2)
+    CTRL = _IrisKey('ctrl', 1 << 1)
+    DELETE = _IrisKey('del')
+    DIVIDE = _IrisKey('divide')
+    DOWN = _IrisKey('down')
+    ENTER = '\n'
+    END = _IrisKey('end')
+    ESC = _IrisKey('esc')
+    F1 = _IrisKey('f1')
+    F2 = _IrisKey('f2')
+    F3 = _IrisKey('f3')
+    F4 = _IrisKey('f4')
+    F5 = _IrisKey('f5')
+    F6 = _IrisKey('f6')
+    F7 = _IrisKey('f7')
+    F8 = _IrisKey('f8')
+    F9 = _IrisKey('f9')
+    F10 = _IrisKey('f10')
+    F11 = _IrisKey('f11')
+    F12 = _IrisKey('f12')
+    F13 = _IrisKey('f13')
+    F14 = _IrisKey('f14')
+    F15 = _IrisKey('f15')
+    HOME = _IrisKey('home')
+    INSERT = _IrisKey('insert')
+    LEFT = _IrisKey('left')
+    META = _IrisKey('meta')
+    MINUS = _IrisKey('subtract')
+    MULTIPLY = _IrisKey('multiply')
+    NUM0 = _IrisKey('num0')
+    NUM1 = _IrisKey('num1')
+    NUM2 = _IrisKey('num2')
+    NUM3 = _IrisKey('num3')
+    NUM4 = _IrisKey('num4')
+    NUM5 = _IrisKey('num5')
+    NUM6 = _IrisKey('num6')
+    NUM7 = _IrisKey('num7')
+    NUM8 = _IrisKey('num8')
+    NUM9 = _IrisKey('num9')
+    NUM_LOCK = _IrisKey('numlock')
+    PAGE_DOWN = _IrisKey('pagedown')
+    PAGE_UP = _IrisKey('pageup')
+    PAUSE = _IrisKey('pause')
+    PRINT_SCREEN = _IrisKey('printscreen')
+    RIGHT = _IrisKey('right')
+    SCROLL_LOCK = _IrisKey('scrolllock')
+    SEPARATOR = _IrisKey('separator')
+    SHIFT = _IrisKey('shift', 1 << 0)
+    SPACE = ' '
+    TAB = '\t'
+    UP = _IrisKey('up')
+    WIN = _IrisKey('win', 1 << 2)
+
+    # Additional keys
+    ACCEPT = _IrisKey('accept')
+    ALT_LEFT = _IrisKey('altleft')
+    ALT_RIGHT = _IrisKey('altright')
+    APPS = _IrisKey('apps')
+    BROWSER_BACK = _IrisKey('browserback')
+    BROWSER_FAVORITES = _IrisKey('browserfavorites')
+    BROWSER_FORWARD = _IrisKey('browserforward')
+    BROWSER_HOME = _IrisKey('browserhome')
+    BROWSER_REFRESH = _IrisKey('browserrefresh')
+    BROWSER_SEARCH = _IrisKey('browsersearch')
+    BROWSER_STOP = _IrisKey('browserstop')
+    CLEAR = _IrisKey('clear')
+    COMMAND = _IrisKey('command')
+    CONVERT = _IrisKey('convert')
+    CTRL_LEFT = _IrisKey('ctrlleft')
+    CTRL_RIGHT = _IrisKey('ctrlright')
+    DECIMAL = _IrisKey('decimal')
+    EXECUTE = _IrisKey('execute')
+    F16 = _IrisKey('f16')
+    F17 = _IrisKey('f17')
+    F18 = _IrisKey('f18')
+    F19 = _IrisKey('f19')
+    F20 = _IrisKey('f20')
+    F21 = _IrisKey('f21')
+    F22 = _IrisKey('f22')
+    F23 = _IrisKey('f23')
+    F24 = _IrisKey('f24')
+    FINAL = _IrisKey('final')
+    FN = _IrisKey('fn')
+    HANGUEL = _IrisKey('hanguel')
+    HANGUL = _IrisKey('hangul')
+    HANJA = _IrisKey('hanja')
+    HELP = _IrisKey('help')
+    JUNJA = _IrisKey('junja')
+    KANA = _IrisKey('kana')
+    KANJI = _IrisKey('kanji')
+    LAUNCH_APP1 = _IrisKey('launchapp1')
+    LAUNCH_APP2 = _IrisKey('launchapp2')
+    LAUNCH_MAIL = _IrisKey('launchmail')
+    LAUNCH_MEDIA_SELECT = _IrisKey('launchmediaselect')
+    MODE_CHANGE = _IrisKey('modechange')
+    NEXT_TRACK = _IrisKey('nexttrack')
+    NONCONVERT = _IrisKey('nonconvert')
+    OPTION = _IrisKey('option')
+    OPTION_LEFT = _IrisKey('optionleft')
+    OPTION_RIGHT = _IrisKey('optionright')
+    PGDN = _IrisKey('pgdn')
+    PGUP = _IrisKey('pgup')
+    PLAY_PAUSE = _IrisKey('playpause')
+    PREV_TRACK = _IrisKey('prevtrack')
+    PRINT = _IrisKey('print')
+    PRNT_SCRN = _IrisKey('prntscrn')
+    PRTSC = _IrisKey('prtsc')
+    PRTSCR = _IrisKey('prtscr')
+    RETURN = _IrisKey('return')
+    SELECT = _IrisKey('select')
+    SHIFT_LEFT = _IrisKey('shiftleft')
+    SHIFT_RIGHT = _IrisKey('shiftright')
+    SLEEP = _IrisKey('sleep')
+    STOP = _IrisKey('stop')
+    SUBTRACT = _IrisKey('subtract')
+    VOLUME_DOWN = _IrisKey('volumedown')
+    VOLUME_MUTE = _IrisKey('volumemute')
+    VOLUME_UP = _IrisKey('volumeup')
+    WIN_LEFT = _IrisKey('winleft')
+    WIN_RIGHT = _IrisKey('winright')
+    YEN = _IrisKey('yen')
+
+
 class KeyModifier(object):
-    SHIFT = 1 << 0  # 1
-    CTRL = 1 << 1  # 2
-    CMD = 1 << 2  # 4
-    WIN = 1 << 2  # 4
-    ALT = 1 << 3  # 8
+    SHIFT = Key.SHIFT.value
+    CTRL = Key.CTRL.value
+    CMD = Key.CMD.value
+    WIN = Key.WIN.value
+    ALT = Key.ALT.value
 
     @staticmethod
     def get_active_modifiers(value):
         all_modifiers = [
-            (KeyModifier.SHIFT, "shift"),
-            (KeyModifier.CTRL, "ctrl")]
-
-        if get_os() == "osx":
-            all_modifiers.append((KeyModifier.CMD, "command"))
+            Key.SHIFT,
+            Key.CTRL]
+        if get_os() == 'osx':
+            all_modifiers.append(Key.CMD)
         else:
             # TODO: verify that Linux is same as Windows
-            all_modifiers.append((KeyModifier.WIN, "win"))
-
-        all_modifiers.append((KeyModifier.ALT, "alt"))
+            all_modifiers.append(Key.WIN)
+        all_modifiers.append(Key.ALT)
 
         active_modifiers = []
         for item in all_modifiers:
-            if item[0] & value:
-                active_modifiers.append(item[1])
+            if item.value & value:
+                active_modifiers.append(item.label)
         return active_modifiers
-
-
-class _key(object):
-
-    def __init__(self, label, reserved=True):
-        self.value = label
-        self.is_reserved = reserved
-
-    def __str__(self):
-        return self.value
-
-
-class Key(object):
-    SPACE = _key(" ")
-    TAB = _key("tab")
-    ALT = _key("alt")
-    ENTER = _key("enter")
-    LEFT = _key("left")
-    RIGHT = _key("right")
-    UP = _key("up")
-    DOWN = _key("down")
-    ESC = _key("esc")
-    HOME = _key("home")
-    END = _key("end")
-    DELETE = _key("del")
-    FN = _key("fn")
-    F2 = _key("f2")
-    F5 = _key("f5")
-    F6 = _key("f6")
-    F11 = _key("f11")
 
 
 class Pattern(object):
@@ -510,7 +618,7 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
     pos = _image_search(image_path, precision, region)
     tries = 0
     while pos.x is -1 and tries < attempts:
-        logger.debug("Searching for image %s" % image_path)
+        logger.debug('Searching for image %s' % image_path)
         time.sleep(at_interval)
         pos = _image_search(image_path, precision, region)
         tries += 1
@@ -792,25 +900,25 @@ def get_screen():
 
 
 def keyDown(key):
-    if isinstance(key, _key):
+    if isinstance(key, _IrisKey):
         pyautogui.keyDown(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
             pyautogui.keyDown(key)
         else:
-            raise ValueError("Unsupported string input")
+            raise ValueError('Unsupported string input')
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def keyUp(key):
-    if isinstance(key, _key):
+    if isinstance(key, _IrisKey):
         pyautogui.keyUp(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
             pyautogui.keyUp(key)
         else:
-            raise ValueError("Unsupported string input")
+            raise ValueError('Unsupported string input')
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
@@ -833,14 +941,11 @@ def paste(text):
 def type(text=None, modifier=None, interval=0.02):
     logger.debug('type method: ')
     if modifier is None:
-        if isinstance(text, _key):
+        if isinstance(text, _IrisKey):
             logger.debug('Scenario 1: reserved key')
             logger.debug('Reserved key: %s' % text)
-            if str(text) is str(Key.ENTER):
-                pyautogui.typewrite(['enter'])
-            else:
-                pyautogui.keyDown(str(text))
-                pyautogui.keyUp(str(text))
+            pyautogui.keyDown(str(text))
+            pyautogui.keyUp(str(text))
         else:
             logger.debug('Scenario 2: normal key or text block')
             logger.debug('Text: %s' % text)

@@ -75,7 +75,7 @@ def navigate_slow(url):
     select_location_bar()
     # increase the delay between each keystroke while typing strings
     # (sikuli defaults to .02 sec)
-    Settings.TypeDelay = 0.1
+    # Settings.TypeDelay = 0.1
     type(url + Key.ENTER)
 
 
