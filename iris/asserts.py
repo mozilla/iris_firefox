@@ -23,7 +23,7 @@ def assert_equal(test_case, actual, expected, message):
         assert actual == expected
         test_case.add_results('PASSED', message, actual, expected, None)
     except AssertionError:
-        test_case.add_results('FAILED', message, actual, expected, print_error(traceback.format_exc()))
+        test_case.add_results('FAILED', message, actual, expected, print_error(format_stack(traceback.extract_stack())))
         raise AssertionError
 
 

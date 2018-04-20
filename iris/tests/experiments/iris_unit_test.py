@@ -11,7 +11,6 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is an experiment for Pattern,Location and Region with chain operations'
-        self.enable = False
 
     def run(self):
         url = 'https://www.google.com/?hl=EN'

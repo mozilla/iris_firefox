@@ -36,5 +36,13 @@ def print_error(error):
     return result
 
 
+def format_stack(stack):
+    result = 'Traceback (most recent call last):\n'
+    for line in stack:
+        result += '  File "' + str(line[0]) + '", line ' + str(line[1]) + ', in ' + str(line[2]) + '\n    ' + \
+                  str(line[3]) + '\n'
+    return result
+
+
 def get_duration(start_time, end_time):
     return round(end_time - start_time, 2)
