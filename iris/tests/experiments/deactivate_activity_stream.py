@@ -11,7 +11,6 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = "This tests the ability to activate/deactivate the activity stream"
-        self.enable = False
 
     def run(self):
         preference = "browser.newtabpage.activity-stream.enabled"

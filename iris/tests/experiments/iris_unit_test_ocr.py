@@ -13,24 +13,28 @@ class Test(BaseTest):
         self.meta = 'This is an experiment for OCR in region'
 
     def run(self):
-        url = 'https://www.google.com/?hl=EN'
+        url = 'https://en.wikipedia.org/wiki/Main_Page'
         navigate(url)
 
-        pattern = Pattern('google_search.png')
+        search_for_text = 'Contents'
+        time.sleep(4)
 
-        wait(pattern)
+        new_region = Region(0, 0, 200, screen_height)
 
-        for x_margin in range(0, screen_width / 4, 100):
-            new_region = Region(x_margin, 0, 200, screen_height)
+        all_text = new_region.text()
+        logger.info(all_text)
 
-            hover(Location(x_margin, 0))
-            text_data = new_region.text()
+        if search_for_text in all_text:
+            print ('Text Found')
 
-            for match in text_data:
-                logger.info(match)
+        new_region.hover(search_for_text)
+        hover(Location(0, 0))
 
-                # Hover over top left corner of text found
-                hover(Location(match['x'], match['y']))
+        find_location = new_region.find(search_for_text)
+        hover(find_location)
+        hover(Location(0, 0))
 
-                # Hover over bottom right corner of text found
-                hover(Location(match['x'] + match['width'], match['y'] + match['height']))
+        new_region.click(search_for_text)
+        hover(Location(0, 0))
+
+        time.sleep(2)
