@@ -22,8 +22,13 @@ class test(base_test):
         title_bar = "title_bar.png"
         active_title_bar = "active_title_bar.png"
 
+        if get_os() == "osx":
+            screen_region=click_hamburger_menu_option('Cust')
+            screen_region.highlight(2)
+        else:
+            screen_region=click_hamburger_menu_option('Customize')
+            screen_region.highlight(2)
 
-        click_hamburger_menu_option("Customize")
 
         if exists(title_bar, 10):
             logger.info("Title Bar can be activated")

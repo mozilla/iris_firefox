@@ -81,7 +81,7 @@ class test(base_test):
             hover(close_dev_tools_button)
             time.sleep(2)
 
-            close_message = 'Close Developer'
+            close_message = 'Close'
 
             if buttons_region.exists(close_message, 10):
                 logger.debug("'Close Developer Tools' label is displayed")
