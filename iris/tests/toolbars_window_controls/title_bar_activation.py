@@ -19,14 +19,17 @@ class test(base_test):
         url = "about:home"
         navigate(url)
 
+        title_bar = "title_bar.png"
+        active_title_bar = "active_title_bar.png"
+
 
         click_hamburger_menu_option("Customize")
 
-        if exists("title_bar.png", 10):
+        if exists(title_bar, 10):
             logger.info("Title Bar can be activated")
-            click("title_bar.png")
+            click(title_bar)
             time.sleep(2)
-            if exists("active_title_bar.png", 10):
+            if exists(active_title_bar, 10):
                 logger.debug("Title Bar has been activated")
                 result = "PASS"
             else:
@@ -36,8 +39,8 @@ class test(base_test):
 
             #check if the Title Bar can be deactivated
 
-            click("title_bar.png")
-            if waitVanish("active_title_bar.png", 10):
+            click(title_bar)
+            if waitVanish(active_title_bar, 10):
                 logger.debug("Title Bar has been successfully deactivated")
                 result = "PASS"
             else:
