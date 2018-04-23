@@ -50,7 +50,6 @@ class test(base_test):
                 logger.debug('Pop up message is displayed ')
                 type(Key.ENTER)
                 logger.debug('Pop up message is closed ')
-
                 open_browser_console()
                 logger.debug('Opening browser console with keyboard shortcut ')
 
@@ -91,10 +90,12 @@ class test(base_test):
                                 logger.error('Browser Console was not minimized')
                         else:
                             logger.error('Browser Console was not been reopened successfully')
+
             else:
                 logger.error('Developer console is not open')
                 print "Fail"
         else:
+
             logger.error('Developer toolbar is NOT opened ')
             print "FAIL"
 

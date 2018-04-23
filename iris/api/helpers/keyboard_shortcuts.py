@@ -653,9 +653,10 @@ def open_library():
     """
     if get_os() == "osx":
         type(text="b", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-    else:
+    elif get_os() == "win":
         type(text="b", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
+    else:
+        type(text="o", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 # End History & Bookmarks keyboard shortcuts.
 
@@ -694,7 +695,7 @@ def open_downloads():
 
 
 def open_page_source():
-    """g
+    """
     Open the current page's page source
     """
     if get_os() == "osx":
@@ -704,12 +705,12 @@ def open_page_source():
 
 def open_web_console():
     """
-    Opens the Web Console.
+    Open the Add-ons Manager page.
     """
     if get_os() == "osx":
-        type(text="k", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
-        type(text="k", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 def force_close():
         """
@@ -717,4 +718,23 @@ def force_close():
         """
         type(text=Key.F4, modifier=KeyModifier.ALT)
 
+def open_web_developer_menu():
+    """
+    Open tWeb_developer tool.
+    """
+    type(text=Key.F2, modifier=KeyModifier.SHIFT)
+
 # End Tools keyboard shortcuts
+
+#Keyboard shortcuts for Web Console
+
+def open_web_console():
+    """
+    Open the Web Console controls
+    """
+    if get_os() == "osx":
+        type(text="k", modifier=KeyModifier.CMD + KeyModifier.ALT)
+    else:
+        type(text="k", modifier= KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
