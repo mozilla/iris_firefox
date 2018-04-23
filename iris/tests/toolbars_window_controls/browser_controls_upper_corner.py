@@ -3,18 +3,14 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "This is a test case that checks that the upper corner browser controls work as expected"
-
 
     def run(self):
         url = "about:home"
@@ -62,6 +58,7 @@ class test(base_test):
             if get_os() == "win":
                 # Restore window
                 minimize_window()
+                time.sleep(1)
                 hover("window_controls_maximize.png")
                 time.sleep(0.5)
                 if exists("hover_maximize_control.png", 10):
@@ -102,14 +99,13 @@ class test(base_test):
                     print "FAIL"
                     logger.debug("hover over the 'restore' controler doesn't work correctly")
 
-
             if get_os() == "linux":
                 # Minimize window
                 click("window_controls_minimize.png")
                 time.sleep(0.5)
             else:
                 if exists("hamburger_menu.png", 10):
-                    #Minimize window
+                    # Minimize window
                     minimize_window()
                     time.sleep(0.5)
                     if waitVanish("hamburger_menu.png", 10):
@@ -121,7 +117,6 @@ class test(base_test):
                 else:
                     print "FAIL"
                     logger.error("Can't find the 'hamburger menu' in the page, aborting test.")
-
 
             # Focus on Firefox and open the browser again
             restore_window_from_taskbar()

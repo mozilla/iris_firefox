@@ -1,37 +1,30 @@
-from test_case import *
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+from iris.test_case import *
 
-class test(base_test):
+
+class Test(BaseTest):
+
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "This is a test for checking private browsing navigation"
-
 
     def run(self):
         url = "https://www.google.com/?hl=EN"
-        #check if incognito mode works
+        private_browsing_image = "private_browsing.png"
+        google_search_image = "google_search.png"
 
+        # check if incognito mode works
         new_private_window()
 
-        pattern = "private_browsing.png"
-        if exists(pattern, 10):
-            result = "PASS"
-        else:
-            result = "FAIL"
+        expected_1 = exists(private_browsing_image, 10)
+        assert_true(self, expected_1, 'Find private browsing image')
 
-        print result
-
-        #check basic_url in incognito mode
+        # check basic_url in incognito mode
         navigate(url)
 
-        pattern_navigation = "google_search.png"
-
-        if exists(pattern_navigation, 10):
-            result_nav = "PASS"
-        else:
-            result_nav = "FAIL"
-
-        print result_nav
+        expected_2 = exists(google_search_image, 10)
+        assert_true(self, expected_2, 'Find google search image')

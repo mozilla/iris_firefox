@@ -10,7 +10,17 @@ PACKAGE_VERSION = '0.1'
 INSTALL_REQUIRES = [
     'coloredlogs',
     'hashfs',
-    'python-dateutil'
+    'python-dateutil',
+    'opencv-python==3.4.0.12',
+    'pytesseract==0.2.0',
+    'numpy==1.14.2',
+    'pyobjc-core;platform_system=="Darwin"',
+    'pyobjc;platform_system=="Darwin"',
+    'pyobjc-framework-Quartz;platform_system=="Darwin"',
+    'image',
+    'PyAutoGUI==0.9.36',
+    'pyperclip==1.6.0',
+    'xlib==0.21;platform_system=="Linux"'
 ]
 
 TESTS_REQUIRE = [
@@ -55,7 +65,7 @@ setup(
     extras_require={'dev': DEV_REQUIRES},  # For `pip install -e .[dev]`
     entry_points={
         'console_scripts': [
-            'iris = iris.main:main'
+            'iris = iris.__main__:main'
         ]
     }
 )

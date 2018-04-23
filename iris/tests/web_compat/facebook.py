@@ -3,30 +3,24 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "Web compability test for facebook.com--Login"
         self.enable = False
 
-
-
-
     def run(self):
-        url="www.facebook.com"
+        url = "www.facebook.com"
 
         navigate(url)
 
         time.sleep(5)
 
-        #login - please see the login_facebook method in general.py
+        # login - please see the login_facebook method in general.py
 
         self.login_facebook()
         logger.info("Successful login")
@@ -35,9 +29,7 @@ class test(base_test):
         time.sleep(4)
         type(Key.ESC)
 
-
-        #post message
-
+        # post message
 
         if exists("news_feed.png", 10):
             if get_os() == "osx":
@@ -62,7 +54,7 @@ class test(base_test):
         else:
             logger.error("Post Failed...")
 
-        #delete post
+        # delete post
 
         if exists("post.png", 10):
             if get_os() == "osx":
@@ -101,7 +93,7 @@ class test(base_test):
 
         time.sleep(5)
 
-        #scroll down and up
+        # scroll down and up
 
         for i in range(15):
             scroll_down()
@@ -110,10 +102,9 @@ class test(base_test):
             scroll_up()
         time.sleep(2)
 
-
     def login_facebook(self):
-        username = get_credential("Facebook","username")
-        password = get_credential("Facebook","password")
+        username = get_credential("Facebook", "username")
+        password = get_credential("Facebook", "password")
         if exists("login_check.png", 10):
             type(username)
             type(Key.TAB)
@@ -122,8 +113,3 @@ class test(base_test):
             type(Key.ENTER)
         else:
             logger.error("Facebook page was not loaded...")
-
-
-
-
-
