@@ -3,41 +3,32 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "Web compability test for baidu.com"
-
 
     def run(self):
         url = "www.baidu.com"
-        home = "baidu_home.png"
+        baidu_logo = "baidu_home.png"
         search_item = "Barack Obama"
         search_page = "baidu_search_page.png"
 
         logger.debug("Accessing " + url + "...")
         navigate(url)
 
-        if exists(home, 10):
-            logger.debug(url + " successfully loaded")
-            type(search_item)
-            type(Key.ENTER)
-            logger.debug("Searching " + search_item)
+        expected_1 = exists(baidu_logo, 10)
+        assert_true(self, expected_1, 'Baidu logo should be visible')
 
-            if exists(search_page, 10):
-                result = "PASS"
-            else:
-                result = "FAIL"
+        logger.debug(url + " successfully loaded")
 
-            print result
-        else:
-            logger.error(url + " can not be accessed...")
+        type(search_item)
+        type(Key.ENTER)
+        logger.debug("Searching " + search_item)
 
+        search_confirmation = exists(search_page, 10)
+        assert_true(self, search_confirmation, 'Search action should be finished')

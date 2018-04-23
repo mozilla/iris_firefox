@@ -3,16 +3,17 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
+        BaseTest.__init__(self, app)
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test case that checks the hamburger menu > Customize opens the customize page"
+        # ToDo enable test once OCR functionality is in place
+        self.enable = False
 
     def run(self):
         url = "about:home"
