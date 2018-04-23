@@ -18,6 +18,7 @@ class test(base_test):
 
         url = "about:home"
         navigate(url)
+
         pop_up_region = click_hamburger_menu_option("Web Developer")
         pop_up_region.click("Developer Toolbar")
         # time.sleep(5)
@@ -36,6 +37,7 @@ class test(base_test):
                 logger.debug('Closing web developer bar')
 
             else:
+
                 # right_corner_region.highlight(3)
                 right_corner_region.click('web_developer_close_button.png')
                 logger.debug('Closing web developer bar')
@@ -55,6 +57,7 @@ class test(base_test):
                             logger.debug('Item is present: '+word)
                             # left_corner_screen_region.highlight(2)
                             found = True
+
                     if found:
                         logger.debug('Developer console is open and all the tabs are present')
                         print "PASS"
@@ -76,7 +79,7 @@ class test(base_test):
                     paste(open_console)
                     type(Key.ENTER)
                     logger.debug('Opening console from command line')
-                    time.sleep(5)
+                    # time.sleep(5)
                     # check if one of the Developer console tabs are displayed to be sure that the console is opened
                     console_items = ['Inspector', 'Debugger', 'Console']
                     found = False
