@@ -37,7 +37,7 @@ class test(base_test):
 
             else:
                 # right_corner_region.highlight(3)
-                right_corner_screen_region.click('web_developer_close_button.png')
+                right_corner_region.click('web_developer_close_button.png')
                 logger.debug('Closing web developer bar')
             if get_os() == "osx":
                 if left_corner_screen_region.waitVanish('web_developer_close_button.png', 5):
