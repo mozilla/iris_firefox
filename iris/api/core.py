@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-import copy
 import logging
 import os
 import platform
@@ -15,9 +14,10 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
+import copy
 
-from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
+from errors import *
 
 try:
     import Image
@@ -43,11 +43,11 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
 
-    To pass exception information, use the keyword argument exc_info with
-    a true value, e.g.
+      To pass exception information, use the keyword argument exc_info with
+      a true value, e.g.
 
-    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
-    """
+      logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
+      """
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
         self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
 
@@ -102,8 +102,7 @@ for root, dirs, files in os.walk(PROJECT_BASE_PATH):
                 _images[file_name] = os.path.join(root, file_name)
 
 """
-pyautogui.size() works correctly except Mac Retina and
-other high-resolution screens.
+pyautogui.size() works correctly everywhere except Mac Retina
 This technique works everywhere, so we'll use it instead
 """
 
@@ -1149,7 +1148,7 @@ def get_screen():
 
 
 def keyDown(key):
-    if isinstance(key, _IrisKey):
+    if isinstance(key, _key):
         pyautogui.keyDown(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
@@ -1161,7 +1160,7 @@ def keyDown(key):
 
 
 def keyUp(key):
-    if isinstance(key, _IrisKey):
+    if isinstance(key, _key):
         pyautogui.keyUp(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
@@ -1190,11 +1189,14 @@ def paste(text):
 def type(text=None, modifier=None, interval=0.02):
     logger.debug('type method: ')
     if modifier is None:
-        if isinstance(text, _IrisKey):
+        if isinstance(text, _key):
             logger.debug('Scenario 1: reserved key')
             logger.debug('Reserved key: %s' % text)
-            pyautogui.keyDown(str(text))
-            pyautogui.keyUp(str(text))
+            if str(text) is str(Key.ENTER):
+                pyautogui.typewrite(['enter'])
+            else:
+                pyautogui.keyDown(str(text))
+                pyautogui.keyUp(str(text))
         else:
             logger.debug('Scenario 2: normal key or text block')
             logger.debug('Text: %s' % text)
