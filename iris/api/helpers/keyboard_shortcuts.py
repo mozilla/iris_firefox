@@ -653,9 +653,10 @@ def open_library():
     """
     if get_os() == "osx":
         type(text="b", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-    else:
+    elif get_os() == "win":
         type(text="b", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
+    else:
+        type(text="o", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 # End History & Bookmarks keyboard shortcuts.
 
