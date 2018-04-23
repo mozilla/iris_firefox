@@ -21,8 +21,6 @@ class test(base_test):
 
         open_web_console()
 
-        time.sleep(5)
-
         dock_button = "dock_to_side.png"
         dock_button_activated = "dock_to_side_activated.png"
         separate_window_button = "separate_window.png"
@@ -42,16 +40,11 @@ class test(base_test):
                 found = True
 
         if found:
-            #check if the labels are displayed
-            #when the cursor hovers over the buttons
-
+            # Check if the labels are displayed when the cursor hovers over the buttons.
             screen = get_screen()
-            buttons_region = Sikuli.Region(screen.getW()/2,screen.getH()/2,screen.getW()/2,screen.getH()/2)
-
-            buttons_region.highlight(2)
+            buttons_region = Sikuli.Region(screen.getW()/2, screen.getH()/2, screen.getW()/2, screen.getH()/2)
 
             hover(dock_button)
-            time.sleep(2)
 
             dock_message = 'Dock to side'
 
@@ -62,10 +55,7 @@ class test(base_test):
                 logger.error("'Dock to side of browser window' is not displayed")
                 print "FAIL"
 
-            time.sleep(2)
-
             hover(separate_window_button)
-            time.sleep(2)
 
             separate_window_message = 'Show in'
 
@@ -76,10 +66,7 @@ class test(base_test):
                 logger.error("Show in separate window' is not displayed")
                 print "FAIL"
 
-            time.sleep(2)
-
             hover(close_dev_tools_button)
-            time.sleep(2)
 
             close_message = 'Close'
 
@@ -90,15 +77,11 @@ class test(base_test):
                 logger.error("Close Developer Tools' is not displayed")
                 print "FAIL"
 
-
-            #checking the buttons functionality
-
+            # Checking the buttons functionality.
             coord = find(menu)
             right_uper_corner = Sikuli.Region(coord.x - 300, 0, 300, 300)
-            right_uper_corner.highlight(2)
 
             click(dock_button)
-            time.sleep(2)
             if right_uper_corner.exists(dock_button_activated, 5):
                 logger.debug("Dock to side button works !!!")
                 print "PASS"
@@ -106,9 +89,7 @@ class test(base_test):
                 logger.error("Dock to side doesn't work")
                 print "FAIL"
 
-
             click(separate_window_button)
-            time.sleep(2)
             if exists(dev_tools_window, 10):
                 logger.debug("Show in separate window button works !!!")
                 print "PASS"
@@ -116,13 +97,8 @@ class test(base_test):
                 logger.error("Show in separate window button doesn't work")
                 print "FAIL"
 
-            #here is necessary to return back
-            #at the initial state in order to
-            #verify the close button functionality
-
+            # Here is necessary to return back at the initial state in order to verify the close button functionality.
             click(dock_button_activated)
-            time.sleep(2)
-
 
             click(close_dev_tools_button)
             if waitVanish(dock_button_activated, 10):
