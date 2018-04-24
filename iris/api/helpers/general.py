@@ -109,9 +109,7 @@ def get_main_modifier():
 def copy_to_clipboard():
     edit_select_all()
     edit_copy()
-    # TODO: implemewnt Env methods
-    #value = Env.getClipboard().strip()
-    value = pyperclip.paste()
+    value = Env.getClipboard().strip()
     logger.debug('Copied to clipboard: %s' % value)
     return value
 
@@ -245,6 +243,9 @@ def open_about_firefox():
         type('a')
 
 
+# TODO:
+# make this helper function generic so that it works
+# with more than just the hamburger menu
 def create_region_from_image(image):
     try:
         m = find(image)

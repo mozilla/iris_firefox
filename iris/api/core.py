@@ -119,6 +119,13 @@ class _IrisKey(object):
         return self.label
 
 
+class Env(object):
+
+    @staticmethod
+    def getClipboard():
+        return pyperclip.paste()
+
+
 class Key(object):
     # Sikuli-supported keys
     ADD = _IrisKey('add')

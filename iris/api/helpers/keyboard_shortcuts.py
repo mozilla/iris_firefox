@@ -543,6 +543,7 @@ def bookmarks_sidebar():
 
 
 def open_library():
+<<<<<<< HEAD
     """Open the Library window."""
     if get_os() == 'osx':
         type(text='b', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
@@ -580,17 +581,25 @@ def open_page_source():
         type(text='u', modifier=KeyModifier.CTRL)
 
 
+def force_close():
+    """Move to the previous frame (can be in content or in chrome)."""
+    type(text=Key.F4, modifier=KeyModifier.ALT)
+    type(text='u', modifier=KeyModifier.CTRL)
+
+
+def open_web_developer_menu():
+    """
+    Open tWeb_developer tool.
+    """
+    type(text=Key.F2, modifier=KeyModifier.SHIFT)
+
+# End Tools keyboard shortcuts
+
+# Keyboard shortcuts for Web Console
+
 def open_web_console():
     """Opens the Web Console."""
     if get_os() == 'osx':
         type(text='k', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text='k', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
-
-def force_close():
-    """Move to the previous frame (can be in content or in chrome)."""
-    type(text=Key.F4, modifier=KeyModifier.ALT)
-    type(text='u', modifier=KeyModifier.CTRL)
-
-# End Tools keyboard shortcuts
