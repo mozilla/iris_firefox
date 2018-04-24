@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import copy
 import logging
 import os
 import platform
@@ -14,10 +15,9 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
-import copy
 
-from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from errors import *
+from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 
 try:
     import Image
@@ -41,6 +41,13 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
 
 def success(self, message, *args, **kws):
+    """Log 'msg % args' with severity 'SUCCESS' (level = 35).
+
+    To pass exception information, use the keyword argument exc_info with
+    a true value, e.g.
+
+    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
+    """
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
         self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
 
@@ -68,6 +75,13 @@ def get_os():
         logger.error('Iris does not yet support your current environment: ' + current_system)
 
     return current_os
+
+
+class Platform(object):
+    WINDOWS = 'win'
+    LINUX = 'linux'
+    MAC = 'osx'
+    ALL = get_os()
 
 
 def get_platform():

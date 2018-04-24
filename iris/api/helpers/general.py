@@ -91,7 +91,7 @@ def restart_firefox(args):
 
 
 def get_menu_modifier():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         menu_modifier = Key.CTRL
     else:
         menu_modifier = Key.CMD
@@ -99,7 +99,7 @@ def get_menu_modifier():
 
 
 def get_main_modifier():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         main_modifier = Key.CMD
     else:
         main_modifier = Key.CTRL
@@ -213,7 +213,7 @@ def close_customize_page():
 
 
 def open_about_firefox():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         # Key stroke into Firefox Menu to get to About Firefox
         type(Key.F2, modifier=KeyModifier.CTRL)
         time.sleep(0.5)
@@ -225,7 +225,7 @@ def open_about_firefox():
         type(Key.DOWN)
         type(Key.ENTER)
 
-    elif get_os() == 'win':
+    elif get_os() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox
         keyDown(Key.ALT)
         type('h')
@@ -259,7 +259,7 @@ def create_region_from_image(image):
 
 
 def restore_window_from_taskbar():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         type(text=Key.TAB, modifier=KeyModifier.CMD)
         time.sleep(0.1)
         keyDown(Key.CMD)

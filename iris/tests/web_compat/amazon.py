@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = "Web compability test for amazon.com"
-        self.enable = False
+        self.exclude = Platform.ALL
 
     def login_amazon(self):
         try:

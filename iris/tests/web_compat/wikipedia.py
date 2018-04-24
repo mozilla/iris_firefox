@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = "Web compability test for wikipedia.org"
         # ToDo enable test once OCR functionality is in place
-        self.enable = False
+        self.exclude = Platform.ALL
 
     def run(self):
         url = "www.wikipedia.org"
