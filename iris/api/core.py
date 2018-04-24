@@ -158,7 +158,7 @@ class Key(object):
     HOME = _IrisKey('home')
     INSERT = _IrisKey('insert')
     LEFT = _IrisKey('left')
-    META = _IrisKey('meta')
+    META = _IrisKey('super', 1 << 2)
     MINUS = _IrisKey('subtract')
     MULTIPLY = _IrisKey('multiply')
     NUM0 = _IrisKey('num0')
@@ -182,7 +182,6 @@ class Key(object):
     SHIFT = _IrisKey('shift', 1 << 0)
     SPACE = ' '
     TAB = '\t'
-    #TAB = _IrisKey('tab')
     UP = _IrisKey('up')
     WIN = _IrisKey('win', 1 << 2)
 
@@ -261,6 +260,7 @@ class KeyModifier(object):
     CTRL = Key.CTRL.value
     CMD = Key.CMD.value
     WIN = Key.WIN.value
+    META = Key.META.value
     ALT = Key.ALT.value
 
     @staticmethod
@@ -270,9 +270,11 @@ class KeyModifier(object):
             Key.CTRL]
         if get_os() == 'osx':
             all_modifiers.append(Key.CMD)
-        else:
-            # TODO: verify that Linux is same as Windows
+        elif get_os() == 'win':
             all_modifiers.append(Key.WIN)
+        else:
+            all_modifiers.append(Key.META)
+
         all_modifiers.append(Key.ALT)
 
         active_modifiers = []

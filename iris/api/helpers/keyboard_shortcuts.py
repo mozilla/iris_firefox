@@ -543,7 +543,6 @@ def bookmarks_sidebar():
 
 
 def open_library():
-<<<<<<< HEAD
     """Open the Library window."""
     if get_os() == 'osx':
         type(text='b', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
