@@ -41,7 +41,6 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
 
 def success(self, message, *args, **kws):
-    # Yes, logger takes its '*args' as 'args'.
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
         self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
 
@@ -175,7 +174,8 @@ class Key(object):
     SEPARATOR = _IrisKey('separator')
     SHIFT = _IrisKey('shift', 1 << 0)
     SPACE = ' '
-    TAB = '\t'
+    #TAB = '\t'
+    TAB = _IrisKey('tab')
     UP = _IrisKey('up')
     WIN = _IrisKey('win', 1 << 2)
 
@@ -273,6 +273,31 @@ class KeyModifier(object):
             if item.value & value:
                 active_modifiers.append(item.label)
         return active_modifiers
+
+
+# todo Refactor this
+class Screen(object):
+    def __init__(self, screen_id=0):
+        self.id = screen_id
+
+    def capture(self, *args):
+        f_arg = args[0]
+
+        if f_arg is None:
+            return
+
+        elif isinstance(f_arg, Region):
+            return _region_grabber((f_arg.getX(), f_arg.getY(), f_arg.getW(), f_arg.getH()))
+
+        elif len(args) is 4:
+            return _region_grabber((args[0], args[1], args[2], args[3]))
+
+    def getNumberScreens(self):
+        return 1
+
+    def getBounds(self):
+        dimensions = (screen_width, screen_height)
+        return dimensions
 
 
 class Pattern(object):
@@ -651,7 +676,7 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
     pos = _image_search(image_path, precision, region)
     tries = 0
     while pos.x is -1 and tries < attempts:
-        logger.debug('Searching for image %s' % image_path)
+        logger.debug("Searching for image %s" % image_path)
         time.sleep(at_interval)
         pos = _image_search(image_path, precision, region)
         tries += 1
@@ -1107,7 +1132,7 @@ def keyDown(key):
         if pyautogui.isValidKey(key):
             pyautogui.keyDown(key)
         else:
-            raise ValueError('Unsupported string input')
+            raise ValueError("Unsupported string input")
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 

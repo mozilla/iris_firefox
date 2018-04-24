@@ -109,7 +109,10 @@ def get_main_modifier():
 def copy_to_clipboard():
     edit_select_all()
     edit_copy()
-    value = Env.getClipboard().strip()
+    # TODO: implemewnt Env methods
+    #value = Env.getClipboard().strip()
+    value = pyperclip.paste()
+    logger.debug('Copied to clipboard: %s' % value)
     return value
 
 
@@ -175,14 +178,14 @@ def click_hamburger_menu_option(option):
         region = create_region_from_image('hamburger_menu.png')
         logger.debug('hamburger menu found')
     except:
-        logger.error('Can\'t find the \'hamburger menu\' in the page, aborting test.')
+        logger.error('Can\'t find the "hamburger menu" in the page, aborting test.')
         return
     else:
         click('hamburger_menu.png')
         try:
             region.wait(option, 10)
             logger.debug('Option found')
-        except:
+        except FindError:
             logger.error('Can\'t find the option in the page, aborting test.')
             return
         else:
@@ -259,7 +262,7 @@ def create_region_from_image(image):
 
 
 def restore_window_from_taskbar():
-    if get_os() == "osx":
+    if get_os() == 'osx':
         type(text=Key.TAB, modifier=KeyModifier.CMD)
         time.sleep(0.1)
         keyDown(Key.CMD)

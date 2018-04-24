@@ -505,10 +505,12 @@ def clear_recent_history():
     if get_os() == 'osx':
         type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
 
-        # Working around a pyautogui bug on Mac.
-        # The key combination above causes the windows to disappear, i.e.:
-        # pyautoguy.hotkey ("shift', "command', "delete")
-        # Press the "fn" key twice to get back into the correct window state
+        """
+        Working around a pyautogui bug on Mac.
+        The key combination above causes the windows to disappear, i.e.:
+        pyautoguy.hotkey ('shift', 'command', 'delete')
+        Press Key.FN twice to get back into the correct window state.
+        """
 
         type(text=Key.FN)
         type(text=Key.FN)
@@ -560,16 +562,6 @@ def open_addons():
         type(text='a', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
-def open_browser_console():
-    """
-    Opens the Browser Console.
-    """
-    if get_os() == 'osx':
-        type(text='j', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-    else:
-        type(text='j', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
-
 def open_downloads():
     """Open the Downloads dialog."""
     if get_os() == 'osx':
@@ -595,8 +587,10 @@ def open_web_console():
     else:
         type(text='k', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
+
 def force_close():
     """Move to the previous frame (can be in content or in chrome)."""
     type(text=Key.F4, modifier=KeyModifier.ALT)
+    type(text='u', modifier=KeyModifier.CTRL)
 
 # End Tools keyboard shortcuts
