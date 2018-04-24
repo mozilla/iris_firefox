@@ -3,28 +3,26 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
-class test(base_test):
+
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "This is a test for opening the first default topsite from TOP SITES list by clicking on it"
-
 
     def run(self):
         url = "about:home"
+        top_sites_image = "top_sites.png"
+        youtube_top_site_image = "youtube_top_site.png"
+        youtube_image = "youtube.png"
+
         navigate(url)
 
-        if exists("top_sites.png", 10):
-            click("youtube_top_site.png")
-            # Check that the first default TOP SITE is opened
-            if exists("youtube.png", 10):
-                print "PASS"
-            else:
-                print "FAIL"
-        else:
-            print "FAIL"
+        expected_1 = exists(top_sites_image, 10)
+        assert_true(self, expected_1, 'Find top sites image')
 
+        click(youtube_top_site_image)
+        expected_2 = exists(youtube_image, 10)
+        assert_true(self, expected_2, 'Find youtube image')

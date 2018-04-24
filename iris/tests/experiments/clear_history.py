@@ -1,27 +1,27 @@
-from test_case import *
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+from iris.test_case import *
 
-class test(base_test):
+
+class Test(BaseTest):
+
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "This is a test for clearing browser history"
 
-
     def run(self):
-
         url = "https://www.amazon.com"
-        amazon_history = "amazon_history.png"
+        amazon_image = "amazon.png"
+        amazon_history_image = "amazon_history.png"
+        home_image = "home.png"
 
         navigate(url)
 
-        try:
-            wait ("amazon.png", 10)
-        except:
-            logger.error ("Can't find Amazon image in page, aborting test.")
-            return
+        expected_1 = wait(amazon_image)
+        assert_true(self, expected_1, 'Wait for amazon image to appear')
 
         # The various calls to time.sleep are necessary to
         # account for lag times incurred by underlying operations.
@@ -30,15 +30,15 @@ class test(base_test):
         # has its own cost.
 
         clear_recent_history()
-        time.sleep(2)
+        time.sleep(1)
         type(Key.ENTER)
-        time.sleep(2)
+        time.sleep(1)
 
         # The click here is required, because the Firefox window loses
         # focus after invoking the above dialog, and without it,
         # the keyboard shortcuts don't work
 
-        click ("home.png")
+        click(home_image)
 
         # Navigate to new page; otherwise, our bitmap for the history item
         # looks identical to the image in the title bar and we'll get
@@ -47,9 +47,7 @@ class test(base_test):
 
         history_sidebar()
         time.sleep(2)
-        type ("amazon")
+        type("amazon")
 
-        if exists(amazon_history, 5):
-            print "FAIL"
-        else:
-            print "PASS"
+        expected_2 = exists(amazon_history_image, 10)
+        assert_true(self, expected_2, 'Find amazon history image')

@@ -1,31 +1,25 @@
-
-from ConfigParser import ConfigParser
+import logging
 import os.path
-from logger.iris_logger import *
+from ConfigParser import ConfigParser
+from iris.api.errors import *
+
+logger = logging.getLogger(__name__)
+
+config_file = 'config.ini'
+config = ConfigParser()
 
 
-
-logger = getLogger(__name__)
-
-
-config_file=('config.ini')
-
-config=ConfigParser()
-
-def get_credential(section,credential):
-    logger.debug( "Extracting %s for section %s" % (credential, section))
+def get_credential(section, credential):
+    logger.debug('Extracting %s for section %s' % (credential, section))
     if os.path.isfile(config_file):
         try:
             config.read(config_file)
             if config.has_section(section):
-                result=config.get(section,credential)
+                result = config.get(section, credential)
                 return result
             else:
-                logger.debug( 'Section not found')
-                return None
+                raise ConfigError('Section %s not found' % section)
         except EOFError:
-            logger.warning( "Config file error")
-            return None
+            raise ConfigError('Config file error')
     else:
-         logger.error( "Config file not found")
-         return None
+        raise ConfigError('Config file not found')
