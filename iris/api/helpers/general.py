@@ -75,7 +75,7 @@ def navigate_slow(url):
     select_location_bar()
     # increase the delay between each keystroke while typing strings
     # (sikuli defaults to .02 sec)
-    # Settings.TypeDelay = 0.1
+    Settings.TypeDelay = 0.1
     type(url + Key.ENTER)
 
 
@@ -91,7 +91,7 @@ def restart_firefox(args):
 
 
 def get_menu_modifier():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         menu_modifier = Key.CTRL
     else:
         menu_modifier = Key.CMD
@@ -99,7 +99,7 @@ def get_menu_modifier():
 
 
 def get_main_modifier():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         main_modifier = Key.CMD
     else:
         main_modifier = Key.CTRL
@@ -110,7 +110,6 @@ def copy_to_clipboard():
     edit_select_all()
     edit_copy()
     value = Env.getClipboard().strip()
-    logger.debug('Copied to clipboard: %s' % value)
     return value
 
 
@@ -214,7 +213,7 @@ def close_customize_page():
 
 
 def open_about_firefox():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         # Key stroke into Firefox Menu to get to About Firefox
         type(Key.F2, modifier=KeyModifier.CTRL)
         time.sleep(0.5)
@@ -226,7 +225,7 @@ def open_about_firefox():
         type(Key.DOWN)
         type(Key.ENTER)
 
-    elif get_os() == 'win':
+    elif get_os() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox
         keyDown(Key.ALT)
         type('h')
@@ -243,18 +242,15 @@ def open_about_firefox():
         type('a')
 
 
-# TODO:
-# make this helper function generic so that it works
-# with more than just the hamburger menu
 def create_region_from_image(image):
     try:
         m = find(image)
         if m:
-            hamburger_pop_up_menu_width = 285
+            hamburger_pop_up_menu_weight = 285
             hamburger_pop_up_menu_height = 655
             logger.debug('Creating a region for Hamburger Pop Up Menu')
-            region = Region(m.getX() - hamburger_pop_up_menu_width, m.getY(),
-                            hamburger_pop_up_menu_width, hamburger_pop_up_menu_height)
+            region = Region(m.getX() - hamburger_pop_up_menu_weight, m.getY(), hamburger_pop_up_menu_weight,
+                                   hamburger_pop_up_menu_height)
             return region
         else:
             logger.error('No Matching found')
@@ -263,7 +259,7 @@ def create_region_from_image(image):
 
 
 def restore_window_from_taskbar():
-    if get_os() == 'osx':
+    if get_os() == Platform.MAC:
         type(text=Key.TAB, modifier=KeyModifier.CMD)
         time.sleep(0.1)
         keyDown(Key.CMD)

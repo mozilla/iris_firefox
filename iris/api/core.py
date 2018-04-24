@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import copy
 import logging
 import os
 import platform
@@ -14,10 +15,9 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
-import copy
 
-from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from errors import *
+from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 
 try:
     import Image
@@ -41,6 +41,13 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
 
 def success(self, message, *args, **kws):
+    """Log 'msg % args' with severity 'SUCCESS' (level = 35).
+
+    To pass exception information, use the keyword argument exc_info with
+    a true value, e.g.
+
+    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
+    """
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
         self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
 
@@ -70,6 +77,13 @@ def get_os():
     return current_os
 
 
+class Platform(object):
+    WINDOWS = 'win'
+    LINUX = 'linux'
+    MAC = 'osx'
+    ALL = get_os()
+
+
 def get_platform():
     return platform.machine()
 
@@ -88,9 +102,9 @@ for root, dirs, files in os.walk(PROJECT_BASE_PATH):
                 _images[file_name] = os.path.join(root, file_name)
 
 """
-pyautogui.size() returns screen width and height, and works 
-correctly except on newer high-definition screens, such as the Mac Retina.
-This technique works everywhere, so we'll use it instead.
+pyautogui.size() works correctly except Mac Retina and
+other high-resolution screens.
+This technique works everywhere, so we'll use it instead
 """
 
 screen_width, screen_height = pyautogui.screenshot().size
@@ -158,7 +172,7 @@ class Key(object):
     HOME = _IrisKey('home')
     INSERT = _IrisKey('insert')
     LEFT = _IrisKey('left')
-    META = _IrisKey('super', 1 << 2)
+    META = _IrisKey('winleft', 1 << 2)
     MINUS = _IrisKey('subtract')
     MULTIPLY = _IrisKey('multiply')
     NUM0 = _IrisKey('num0')
@@ -1153,7 +1167,7 @@ def keyUp(key):
         if pyautogui.isValidKey(key):
             pyautogui.keyUp(key)
         else:
-            raise ValueError('Unsupported string input')
+            raise ValueError("Unsupported string input")
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 

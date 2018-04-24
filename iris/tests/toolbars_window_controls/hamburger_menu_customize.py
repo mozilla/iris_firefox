@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test case that checks the hamburger menu > Customize opens the customize page"
         # ToDo enable test once OCR functionality is in place
-        self.enable = False
+        self.exclude = Platform.ALL
 
     def run(self):
         url = "about:home"

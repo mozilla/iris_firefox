@@ -18,8 +18,8 @@ class BaseTest(object):
         self.reset_variables()
 
     def reset_variables(self):
-        self.enable = True
         self.meta = ''
+        self.exclude = []
         self.test_title = ''
         self.results = []
         self.start_time = 0

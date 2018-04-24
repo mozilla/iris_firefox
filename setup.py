@@ -19,7 +19,8 @@ INSTALL_REQUIRES = [
     'pyobjc-framework-Quartz;platform_system=="Darwin"',
     'image',
     'PyAutoGUI==0.9.36',
-    'pyperclip==1.6.0'
+    'pyperclip==1.6.0',
+    'xlib==0.21;platform_system=="Linux"'
 ]
 
 TESTS_REQUIRE = [

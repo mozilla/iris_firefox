@@ -32,7 +32,8 @@ def run(app):
             logger.warning('[%s] is not a test file. Skipping...', module)
             return
         logger.info('\n' + '-' * 120)
-        if current.enable:
+
+        if get_os() not in current.exclude:
             logger.info('Executing: %s - %s ' % (index, current.meta))
             current.set_start_time(time.time())
 
