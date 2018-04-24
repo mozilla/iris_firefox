@@ -174,8 +174,8 @@ class Key(object):
     SEPARATOR = _IrisKey('separator')
     SHIFT = _IrisKey('shift', 1 << 0)
     SPACE = ' '
-    #TAB = '\t'
-    TAB = _IrisKey('tab')
+    TAB = '\t'
+    #TAB = _IrisKey('tab')
     UP = _IrisKey('up')
     WIN = _IrisKey('win', 1 << 2)
 
