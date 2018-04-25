@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import copy
 import logging
 import os
 import platform
@@ -14,10 +15,9 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
-import copy
 
-from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from errors import *
+from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 
 try:
     import Image
@@ -43,11 +43,11 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
 
-      To pass exception information, use the keyword argument exc_info with
-      a true value, e.g.
+    To pass exception information, use the keyword argument exc_info with
+    a true value, e.g.
 
-      logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
-      """
+    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
+    """
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
         self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
 
@@ -326,7 +326,7 @@ class Pattern(object):
     def __init__(self, image_name):
         self.image_name = image_name
         self.image_path = _images[self.image_name]
-        self.target_offset = Location(0, 0)
+        self.target_offset = None
 
     def targetOffset(self, dx, dy):
         """ Add offset to Pattern from top left
@@ -1028,7 +1028,7 @@ def _click_pattern(pattern, clicks=None, duration=DEFAULT_INTERVAL, in_region=No
 
     possible_offset = pattern.getTargetOffset()
 
-    if possible_offset.x > 0 or possible_offset.y > 0:
+    if possible_offset is not None:
         _click_at(Location(p_top.x + possible_offset.x, p_top.y + possible_offset.y), clicks, duration, button)
     else:
         _click_at(Location(p_top.x + width / 2, p_top.y + height / 2), clicks, duration, button)
@@ -1148,7 +1148,7 @@ def get_screen():
 
 
 def keyDown(key):
-    if isinstance(key, _key):
+    if isinstance(key, _IrisKey):
         pyautogui.keyDown(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
@@ -1160,7 +1160,7 @@ def keyDown(key):
 
 
 def keyUp(key):
-    if isinstance(key, _key):
+    if isinstance(key, _IrisKey):
         pyautogui.keyUp(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
@@ -1178,7 +1178,7 @@ def scroll(clicks):
 def paste(text):
     # load to clipboard
     pyperclip.copy(text)
-    if get_os() is 'osx':
+    if get_os() is Platform.MAC:
         pyautogui.hotkey('command', 'v')
     else:
         pyautogui.hotkey('ctrl', 'v')
@@ -1189,7 +1189,7 @@ def paste(text):
 def type(text=None, modifier=None, interval=0.02):
     logger.debug('type method: ')
     if modifier is None:
-        if isinstance(text, _key):
+        if isinstance(text, _IrisKey):
             logger.debug('Scenario 1: reserved key')
             logger.debug('Reserved key: %s' % text)
             if str(text) is str(Key.ENTER):
