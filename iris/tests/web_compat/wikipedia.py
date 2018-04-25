@@ -3,18 +3,16 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "Search Wikipedia and change language"
-
+        BaseTest.__init__(self, app)
+        self.meta = "Web compability test for wikipedia.org"
+        # ToDo enable test once OCR functionality is in place
+        self.exclude = Platform.ALL
 
     def run(self):
         url = "www.wikipedia.org"
@@ -24,11 +22,11 @@ class test(base_test):
         navigate(url)
 
         try:
-            wait (page_title, 10)
+            wait(page_title, 10)
             logger.debug("Page is succesfully loaded")
         except:
             # If we can't find the Wikipedia logo, there is no sense going further
-            logger.error ("Can't find Wikipedia image in page, aborting test.")
+            logger.error("Can't find Wikipedia image in page, aborting test.")
             print "FAIL"
             return
 
@@ -45,32 +43,32 @@ class test(base_test):
         except:
             # If we can't find the search text, we will fail the test
             # but we can keep running the rest of the tests
-            logger.error ("Can't find search image in page")
+            logger.error("Can't find search image in page")
             print "FAIL"
 
-        #Scroll down
+        # Scroll down
         logger.debug("Scroll down")
         for x in range(10):
             scroll_down()
             time.sleep(.25)
-        if exists(iris_text,1):
+        if exists(iris_text, 1):
             logger.debug("Scroll down was not performed")
         else:
             logger.debug("Scroll up")
             for x in range(10):
                 scroll_up()
                 time.sleep(.25)
-        if exists(iris_text,1):
+        if exists(iris_text, 1):
             logger.debug("Page was scrolled back up")
             navigate_back()
             logger.debug("Navigate back")
 
         try:
-            wait (page_title, 10)
+            wait(page_title, 10)
             logger.debug("Page is succesfully loaded")
         except:
             # If we can't find the Wikipedia logo, there is no sense going further
-            logger.error ("Can't find Wikipedia image in page, aborting test.")
+            logger.error("Can't find Wikipedia image in page, aborting test.")
             print "FAIL"
             return
         else:
@@ -91,7 +89,6 @@ class test(base_test):
                 type(Key.DOWN)
                 type(Key.TAB)
                 type(Key.ENTER)
-
 
             # We will replace PASS/FAIL with proper assert functions soon
             if exists(iris_text, 10):
