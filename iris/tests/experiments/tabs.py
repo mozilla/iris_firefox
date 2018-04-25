@@ -3,21 +3,16 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "This is a test of a bunch of tabs"
 
-
     def run(self):
-
         # helper function
         new_tab()
         new_tab()
@@ -34,9 +29,5 @@ class test(base_test):
         navigate("https://www.google.com/?hl=EN")
 
         # core api function
-        if exists("google_search.png", 15):
-            result = "PASS"
-        else:
-            result = "FAIL"
-
-        print (result)
+        expected = exists("google_search.png", 10)
+        assert_true(self, expected, 'google_search image found')

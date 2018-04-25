@@ -3,31 +3,28 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
+        BaseTest.__init__(self, app)
         self.meta = "Web compability test for youtube.com"
-
+        self.exclude = Platform.ALL
 
     def run(self):
-        url="youtube.com"
-        youtube_banner="youtube_banner.png"
-        youtube_filter="filter_youtube_results.png"
+        url = "youtube.com"
+        youtube_banner = "youtube_banner.png"
+        youtube_filter = "filter_youtube_results.png"
         navigate(url)
         self.login_youtube()
 
-        if exists(youtube_banner,10):
+        if exists(youtube_banner, 10):
             logger.debug("Youtube Search")
             type("lord of the rings")
             type(Key.ENTER)
-            if exists(youtube_filter,10):
+            if exists(youtube_filter, 10):
                 logger.debug("Results are displayed")
                 time.sleep(3)
 
@@ -45,32 +42,32 @@ class test(base_test):
                     scroll_up()
 
                 # Soon to be replaced with assert statements, but for now, just print
-                if exists(youtube_filter,10):
+                if exists(youtube_filter, 10):
                     print "PASS"
                 else:
                     print "FAIL"
         else:
-            logger.debug( "Test failed")
+            logger.debug("Test failed")
             print "FAIL"
 
     def login_youtube(self):
         try:
-            wait ("youtube_banner.png", 10)
+            wait("youtube_banner.png", 10)
         except:
-            logger.error ("Can't find Youtube image in page, aborting test.")
+            logger.error("Can't find Youtube image in page, aborting test.")
             return
 
         for i in range(5):
             type(Key.TAB)
         type(Key.ENTER)
-        if exists("youtube_sign_in.png",10):
-            type(get_credential("Youtube","username"))
+        if exists("youtube_sign_in.png", 10):
+            type(get_credential("Youtube", "username"))
             time.sleep(3)
             for i in range(2):
                 type(Key.TAB)
             type(Key.ENTER)
             time.sleep(3)
-            type(get_credential("Youtube","password"))
+            type(get_credential("Youtube", "password"))
             time.sleep(3)
             type(Key.TAB)
             type(Key.ENTER)
