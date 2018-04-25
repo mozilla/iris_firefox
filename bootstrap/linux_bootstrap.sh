@@ -36,6 +36,9 @@ sudo apt-get -y install virtualenv \
 
 # sudo python -m pip install --upgrade --force pip
 
+# Installing xlib here to avoid conflicts with other libraries we install via setup.py
+pip install xlib
+
 # Install Leptonica
 cd ~
 wget http://www.leptonica.com/source/leptonica-1.75.3.tar.gz

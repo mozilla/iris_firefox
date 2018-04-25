@@ -8,9 +8,9 @@ PACKAGE_NAME = 'iris'
 PACKAGE_VERSION = '0.1'
 
 INSTALL_REQUIRES = [
-    'xlib==0.21;platform_system=="Linux"',
-    'pyobjc-core;platform_system=="Darwin"',
-    'pyobjc;platform_system=="Darwin"',
+    #'xlib==0.21;platform_system=="Linux"',
+    #'pyobjc-core;platform_system=="Darwin"',
+    #'pyobjc;platform_system=="Darwin"',
     'pyobjc-framework-Quartz;platform_system=="Darwin"',
     'coloredlogs',
     'hashfs',
