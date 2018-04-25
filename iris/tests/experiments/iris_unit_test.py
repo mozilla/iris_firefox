@@ -35,6 +35,16 @@ class Test(BaseTest):
         hover(pattern.targetOffset(50, 0))
         hover(pattern.targetOffset(100, 0))
 
+        logger.info('>>> NEGATIVE HOVER TEST <<<')
+
+        hover(pattern.targetOffset(-100, -100), 2)
+        hover(pattern.targetOffset(-150, -150), 2)
+        hover(pattern.targetOffset(-200, -200), 2)
+        hover(pattern.targetOffset(-250, -250), 2)
+        hover(pattern.targetOffset(-300, -300), 2)
+        hover(pattern.targetOffset(-350, -350), 2)
+        hover(pattern.targetOffset(-400, -400), 2)
+
         hover(Location(0, 0))
 
         # >>> FIND TEST <<<
