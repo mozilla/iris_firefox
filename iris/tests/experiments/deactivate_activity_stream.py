@@ -21,7 +21,7 @@ class Test(BaseTest):
 
         # Verify that activity stream has been disabled
         expected_1 = 'TOP SITES' in get_firefox_region().text()
-        assert_true(self, expected_1, 'Find TOP SITES')
+        assert_false(self, expected_1, 'Find TOP SITES')
 
         change_preference(preference, "true")
         new_tab()
