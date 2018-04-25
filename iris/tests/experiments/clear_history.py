@@ -49,5 +49,5 @@ class Test(BaseTest):
         time.sleep(2)
         type("amazon")
 
-        expected_2 = exists(amazon_history_image, 10)
-        assert_true(self, expected_2, 'Find amazon history image')
+        expected_2 = exists(amazon_history_image, 3)
+        assert_false(self, expected_2, 'Find amazon history image')
