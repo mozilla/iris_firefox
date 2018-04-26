@@ -69,9 +69,9 @@ class Iris(object):
         else:
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
-            if get_os() == 'osx':
+            if get_os() == Platform.MAC:
                 self.fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
-            elif get_os() == 'win':
+            elif get_os() == Platform.WINDOWS:
                 if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
                     self.fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
                 else:
@@ -96,7 +96,7 @@ class Iris(object):
     @staticmethod
     def get_terminal_encoding():
         """Helper function to get current terminal encoding."""
-        if sys.platform.startswith('win'):
+        if sys.platform.startswith(Platform.WINDOWS):
             logger.debug('Running "chcp" shell command')
             chcp_output = os.popen('chcp').read().strip()
             logger.debug('chcp output: "%s"' % chcp_output)

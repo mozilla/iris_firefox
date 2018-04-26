@@ -103,8 +103,7 @@ for root, dirs, files in os.walk(PROJECT_BASE_PATH):
                 _images[file_name] = os.path.join(root, file_name)
 
 """
-pyautogui.size() works correctly except Mac Retina and
-other high-resolution screens.
+pyautogui.size() works correctly everywhere except Mac Retina
 This technique works everywhere, so we'll use it instead
 """
 
@@ -328,7 +327,7 @@ class Pattern(object):
     def __init__(self, image_name):
         self.image_name = image_name
         self.image_path = _images[self.image_name]
-        self.target_offset = Location(0, 0)
+        self.target_offset = None
 
     def targetOffset(self, dx, dy):
         """ Add offset to Pattern from top left
@@ -353,7 +352,10 @@ class Pattern(object):
 
         :return: Location object as the target offset
         """
-        return self.target_offset
+        if self.target_offset is None:
+            return Location(0, 0)
+        else:
+            return self.target_offset
 
 
 class Location(object):
@@ -1030,7 +1032,7 @@ def _click_pattern(pattern, clicks=None, duration=DEFAULT_INTERVAL, in_region=No
 
     possible_offset = pattern.getTargetOffset()
 
-    if possible_offset.x > 0 or possible_offset.y > 0:
+    if possible_offset is not None:
         _click_at(Location(p_top.x + possible_offset.x, p_top.y + possible_offset.y), clicks, duration, button)
     else:
         _click_at(Location(p_top.x + width / 2, p_top.y + height / 2), clicks, duration, button)
@@ -1180,7 +1182,7 @@ def scroll(clicks):
 def paste(text):
     # load to clipboard
     pyperclip.copy(text)
-    if get_os() is 'osx':
+    if get_os() is Platform.MAC:
         pyautogui.hotkey('command', 'v')
     else:
         pyautogui.hotkey('ctrl', 'v')
@@ -1194,8 +1196,11 @@ def type(text=None, modifier=None, interval=0.02):
         if isinstance(text, _IrisKey):
             logger.debug('Scenario 1: reserved key')
             logger.debug('Reserved key: %s' % text)
-            pyautogui.keyDown(str(text))
-            pyautogui.keyUp(str(text))
+            if str(text) is str(Key.ENTER):
+                pyautogui.typewrite(['enter'])
+            else:
+                pyautogui.keyDown(str(text))
+                pyautogui.keyUp(str(text))
         else:
             logger.debug('Scenario 2: normal key or text block')
             logger.debug('Text: %s' % text)
