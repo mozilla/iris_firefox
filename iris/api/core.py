@@ -1196,11 +1196,8 @@ def type(text=None, modifier=None, interval=0.02):
         if isinstance(text, _IrisKey):
             logger.debug('Scenario 1: reserved key')
             logger.debug('Reserved key: %s' % text)
-            if str(text) is str(Key.ENTER):
-                pyautogui.typewrite(['enter'])
-            else:
-                pyautogui.keyDown(str(text))
-                pyautogui.keyUp(str(text))
+            pyautogui.keyDown(str(text))
+            pyautogui.keyUp(str(text))
         else:
             logger.debug('Scenario 2: normal key or text block')
             logger.debug('Text: %s' % text)
