@@ -110,11 +110,19 @@ def copy_to_clipboard():
     edit_select_all()
     edit_copy()
     value = Env.getClipboard().strip()
+    logger.debug("Copied to clipboard: %s" % value)
     return value
 
 
 def change_preference(pref_name, value):
-    navigate('about:config')
+    # Open preferences in new tab
+    new_tab()
+    time.sleep(1)
+
+    # Sometimes we lose focus, therefore
+    # an explicit selection is required here
+    select_location_bar()
+    type('about:config' + Key.ENTER)
     time.sleep(1)
 
     type(Key.SPACE)
@@ -143,7 +151,7 @@ def change_preference(pref_name, value):
         if exists(dialog_box, 3):
             type(dialog_box, value)
             type(Key.ENTER)
-    navigate_back()
+    close_tab()
 
 
 def reset_mouse():
