@@ -82,6 +82,7 @@ class Platform(object):
     LINUX = 'linux'
     MAC = 'osx'
     ALL = get_os()
+    HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
 
 
 def get_platform():
