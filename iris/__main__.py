@@ -248,14 +248,37 @@ class Iris(object):
         self.args = parser.parse_args()
 
     @staticmethod
-    def init_tesseract_path():
+    def check_tesseract_path(dir_path):
+        if not isinstance(dir_path, str):
+            return False
+        if not os.path.exists(dir_path):
+            return False
+        return True
+
+    def init_tesseract_path(self):
+
+        win_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCRs'
+        osx_linux_tesseract_path = '/usr/local/bin/tesseract'
+
+        path_not_found = False
         current_os = get_os()
+
         if current_os == 'win':
-            pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
-        elif current_os == 'linux':
-            pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
-        elif current_os == 'osx':
-            pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
+            if self.check_tesseract_path(win_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = win_tesseract_path + '\\tesseract'
+            else:
+                path_not_found = True
+        elif current_os == 'linux' or current_os == 'osx':
+            if self.check_tesseract_path(osx_linux_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
+            else:
+                path_not_found = True
+        else:
+            path_not_found = True
+
+        if path_not_found:
+            logger.error('Unable to find tesseract')
+            exit(1)
 
 
 class RemoveTempDir(cleanup.CleanUp):
