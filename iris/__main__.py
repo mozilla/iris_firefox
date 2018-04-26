@@ -69,9 +69,9 @@ class Iris(object):
         else:
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
-            if get_os() == 'osx':
+            if get_os() == Platform.MAC:
                 self.fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
-            elif get_os() == 'win':
+            elif get_os() == Platform.WINDOWS:
                 if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
                     self.fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
                 else:
@@ -96,7 +96,7 @@ class Iris(object):
     @staticmethod
     def get_terminal_encoding():
         """Helper function to get current terminal encoding."""
-        if sys.platform.startswith('win'):
+        if sys.platform.startswith(Platform.WINDOWS):
             logger.debug('Running "chcp" shell command')
             chcp_output = os.popen('chcp').read().strip()
             logger.debug('chcp output: "%s"' % chcp_output)
@@ -248,14 +248,37 @@ class Iris(object):
         self.args = parser.parse_args()
 
     @staticmethod
-    def init_tesseract_path():
+    def check_tesseract_path(dir_path):
+        if not isinstance(dir_path, str):
+            return False
+        if not os.path.exists(dir_path):
+            return False
+        return True
+
+    def init_tesseract_path(self):
+
+        win_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCRs'
+        osx_linux_tesseract_path = '/usr/local/bin/tesseract'
+
+        path_not_found = False
         current_os = get_os()
+
         if current_os == 'win':
-            pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract'
-        elif current_os == 'linux':
-            pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
-        elif current_os == 'osx':
-            pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
+            if self.check_tesseract_path(win_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = win_tesseract_path + '\\tesseract'
+            else:
+                path_not_found = True
+        elif current_os == 'linux' or current_os == 'osx':
+            if self.check_tesseract_path(osx_linux_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
+            else:
+                path_not_found = True
+        else:
+            path_not_found = True
+
+        if path_not_found:
+            logger.error('Unable to find tesseract')
+            exit(1)
 
 
 class RemoveTempDir(cleanup.CleanUp):
