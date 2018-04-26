@@ -64,7 +64,6 @@ cd ~
 # Install Tesseract data
 wget https://github.com/tesseract-ocr/tessdata/archive/3.04.00.zip
 unzip 3.04.00.zip
-sudo mkdir /usr/local/share/tessdata/
 cd tessdata-3.04.00
-mv * /usr/local/share/tessdata/
+sudo mv * /usr/local/share/tessdata/
 cd ~
