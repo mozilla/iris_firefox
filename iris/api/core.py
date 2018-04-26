@@ -1008,7 +1008,7 @@ def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in
         tries += 1
 
     if pattern_found is True:
-        raise FindError('Unable to find %s' % for_what)
+        raise FindError('%s did not vanish' % for_what)
     else:
         return True
 
