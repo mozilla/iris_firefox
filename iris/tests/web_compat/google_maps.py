@@ -6,35 +6,27 @@
 from iris.test_case import *
 
 
-
 class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "Web compatibility test for maps.google.com"
-
+        self.meta = 'Web compatibility test for maps.google.com'
 
     def run(self):
-        url = "maps.google.com"
+        url = 'maps.google.com'
+        google_maps_search_bar_magnifier = 'google_maps_search_bar_magnifier.png'
+        google_maps_item_searched = 'google_maps_item_searched.png'
+
         navigate(url)
 
-        # Check that the page is successfully loaded.
-        if exists("googleMapsSearchBar.png", 20):
-            # Type 'Mediterranean Sea' in the search bar.
-            click("googleMapsSearchBar.png")
-            paste("Mediterranean Sea")
-            time.sleep(0.5)
-            type(Key.ENTER)
+        expected_1 = exists(google_maps_search_bar_magnifier, 20)
+        assert_true(self, expected_1, 'The page is successfully loaded.')
 
-            try:
-                wait("googleMapsItemSearched.png", 20)
-                logger.debug("Item searched found")
-                print "PASS"
-            except:
-                logger.error ("Can't find the item searched in the page, aborting test.")
-                print "FAIL"
-                return
-        else:
-            print "FAIL"
-        return
+        # Type 'Mediterranean Sea' in the search bar.
+        click(Pattern(google_maps_search_bar_magnifier).targetOffset(-100, 15))
+        time.sleep(2)
+        paste('Mediterranean Sea')
+        type(Key.ENTER)
+
+        expected_2 = exists(google_maps_item_searched, 20)
+        assert_true(self, expected_2, 'Item searched found.')
