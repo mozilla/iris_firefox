@@ -27,7 +27,7 @@ except ImportError:
 pyautogui.FAILSAFE = False
 save_debug_images = False
 
-DEFAULT_ACCURACY = 0.7
+DEFAULT_ACCURACY = 0.8
 DEFAULT_TIMEOUT = 3
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
