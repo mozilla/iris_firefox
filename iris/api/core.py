@@ -352,10 +352,7 @@ class Pattern(object):
 
         :return: Location object as the target offset
         """
-        if self.target_offset is None:
-            return Location(0, 0)
-        else:
-            return self.target_offset
+        return self.target_offset
 
 
 class Location(object):
@@ -882,6 +879,8 @@ def hover(where=None, duration=0, in_region=None):
         if pos.x is not -1:
             if isinstance(where, Pattern):
                 possible_offset = where.getTargetOffset()
+                if possible_offset is None:
+                    possible_offset = Location(0, 0)
                 move_to = Location(pos.x + possible_offset.getX(), pos.y + possible_offset.getY())
                 pyautogui.moveTo(move_to.x, move_to.y)
             else:

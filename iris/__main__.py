@@ -257,7 +257,7 @@ class Iris(object):
 
     def init_tesseract_path(self):
 
-        win_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCRs'
+        win_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
         osx_linux_tesseract_path = '/usr/local/bin/tesseract'
 
         path_not_found = False
