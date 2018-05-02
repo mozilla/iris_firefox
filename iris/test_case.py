@@ -27,6 +27,9 @@ class BaseTest(object):
         self.is_complete = False
         self.is_passed = True
 
+    def set_asset_path(self, path):
+        return os.path.join(path, 'assets/')
+
     def get_test_title(self):
         return self.test_title
 
