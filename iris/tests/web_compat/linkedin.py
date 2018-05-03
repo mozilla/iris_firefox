@@ -11,7 +11,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "Web compatibility test for linkedin.com"
+        self.meta = 'Web compatibility test for linkedin.com'
         self.exclude = Platform.ALL
 
     def run(self):

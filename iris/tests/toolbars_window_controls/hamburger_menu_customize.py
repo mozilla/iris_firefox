@@ -10,26 +10,20 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "This is a test case that checks the hamburger menu > Customize opens the customize page"
-        # ToDo enable test once OCR functionality is in place
-        self.exclude = Platform.ALL
+        self.meta = 'This is a test case that checks the hamburger menu > Customize opens the customize page'
 
     def run(self):
-        url = "about:home"
+        url = 'about:home'
         navigate(url)
 
         # Open Customize from te Hamburger Menu
-        click_hamburger_menu_option("Customize")
+        click_hamburger_menu_option('Customize...')
+        time.sleep(1)
 
-        # Check that the customize page is opened by searcing for text "overflow menu"
         try:
-            wait("overflow menu", 10)
-            print "PASS"
-            logger.debug("customize page present")
-        except:
-            print "FAIL"
-            logger.error("Can't find overflow menu text, aborting test.")
-            return
+            expected_1 = wait('Drag', 10)
+            assert_true(self, expected_1, 'customize page present.')
+        except Exception as error:
+            raise error
         else:
             close_customize_page()
