@@ -178,16 +178,19 @@ def dont_save_password():
 
 
 def click_hamburger_menu_option(option):
+    hamburger_menu = 'hamburger_menu.png'
     try:
-        wait('hamburger_menu.png', 10)
-        region = create_region_from_image('hamburger_menu.png')
+        wait(hamburger_menu, 10)
+        region = create_region_from_image(hamburger_menu)
         logger.debug('hamburger menu found')
     except:
         logger.error('Can\'t find the "hamburger menu" in the page, aborting test.')
         return
     else:
-        click('hamburger_menu.png')
+        click(hamburger_menu)
+        time.sleep(1)
         try:
+            time.sleep(1)
             region.wait(option, 10)
             logger.debug('Option found')
         except FindError:
@@ -210,14 +213,15 @@ def close_auxiliary_window():
 
 
 def close_customize_page():
+    customize_done_button = 'customize_done_button.png'
     try:
-        wait('customize_done_button.png', 10)
+        wait(customize_done_button, 10)
         logger.debug('Done button found')
     except FindError:
         logger.error('Can\'t find the Done button in the page, aborting.')
         return
     else:
-        click('customize_done_button.png')
+        click(customize_done_button)
 
 
 def open_about_firefox():

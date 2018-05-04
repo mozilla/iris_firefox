@@ -10,13 +10,13 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test for opening the first default topsite from TOP SITES list by clicking on it"
+        self.meta = 'This is a test for opening the first default topsite from TOP SITES list by clicking on it'
 
     def run(self):
-        url = "about:home"
-        top_sites_image = "top_sites.png"
-        youtube_top_site_image = "youtube_top_site.png"
-        youtube_image = "youtube.png"
+        url = 'about:home'
+        top_sites_image = 'top_sites.png'
+        youtube_top_site_image = 'youtube_top_site.png'
+        youtube_image = 'youtube.png'
 
         navigate(url)
 
