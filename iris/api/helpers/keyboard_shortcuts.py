@@ -591,6 +591,7 @@ def force_close():
 
 # End Tools keyboard shortcuts
 
+
 def open_web_developer_menu():
     """
     Open tWeb_developer tool.
