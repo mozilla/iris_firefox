@@ -24,8 +24,7 @@ class BaseTest(object):
         self.results = []
         self.start_time = 0
         self.end_time = 0
-        self.is_complete = False
-        self.is_passed = True
+        self.outcome = 'PASSED'
 
     def get_test_title(self):
         return self.test_title
@@ -39,12 +38,7 @@ class BaseTest(object):
 
     def get_results(self):
         for result in self.results:
-            if 'FAILED' == result.outcome:
-                self.is_complete = True
-                self.is_passed = False
-                return
-        self.is_complete = True
-        self.is_passed = True
+            self.outcome = result.outcome
 
     def print_results(self):
         for result in self.results:
@@ -57,7 +51,7 @@ class BaseTest(object):
             elif 'PASSED' == result.outcome:
                 logger.success('Step: %s, outcome: >>> %s <<<' % (result.message, result.outcome))
         logger.info('%s - >>> %s <<< (Finished in %s second(s))\n' % (
-            self.meta, format_outcome(self.is_passed), get_duration(self.start_time, self.end_time)))
+            self.meta, self.outcome, get_duration(self.start_time, self.end_time)))
 
     def get_start_time(self):
         return self.start_time

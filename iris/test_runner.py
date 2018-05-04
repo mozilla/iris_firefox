@@ -83,7 +83,8 @@ def run(app):
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    print_report_footer(passed, failed, skipped, errors, get_duration(start_time, end_time))
+    print_report_footer(get_os(), app.version, app.build_id, passed, failed, skipped, errors,
+                        get_duration(start_time, end_time))
 
     # We may remove profiles here, but likely still in use and can't do it yet
     # clean_profiles()
