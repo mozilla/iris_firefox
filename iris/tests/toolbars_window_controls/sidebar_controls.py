@@ -10,27 +10,24 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test of the sidebar controls"
 
     def run(self):
-        bookmarks_sidebar()
-        if exists("x_button_sidebar.png", 10):
-            print "Sidebar was opened successfully"
-            hover("x_button_sidebar.png")
-            if exists("x_button_sidebar_hovered.png", 10):
-                print "Hover state displayed properly"
-                click("x_button_sidebar_hovered.png")
-                if waitVanish("sidebar_title.png", 10):
-                    print "Sidebar was closed successfully"
-                    result = "PASS"
-                else:
-                    print "Sidebar is still open"
-                    result = "FAIL"
-            else:
-                result = "FAIL"
-        else:
-            print "Sidebar is not open"
-            result = "FAIL"
+        x_button_sidebar = 'x_button_sidebar.png'
+        x_button_sidebar_hovered = 'x_button_sidebar_hovered.png'
+        sidebar_title = 'sidebar_title.png'
 
-        print result
+        bookmarks_sidebar()
+        expected_1 = exists(x_button_sidebar, 10)
+        assert_true(self, expected_1, 'Sidebar was opened successfully')
+
+        hover(x_button_sidebar)
+        expected_2 = exists(x_button_sidebar_hovered, 10)
+        assert_true(self, expected_2, 'Hover state displayed properly')
+
+        click(x_button_sidebar_hovered)
+        try:
+            expected_3 = waitVanish(sidebar_title, 10)
+            assert_true(self, expected_3, 'Sidebar was closed successfully')
+        except:
+            logger.error('Sidebar is still open')
