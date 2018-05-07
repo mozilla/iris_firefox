@@ -20,10 +20,7 @@ class Test(BaseTest):
         click_hamburger_menu_option('Customize...')
         time.sleep(1)
 
-        try:
-            expected_1 = wait('Drag', 10)
-            assert_true(self, expected_1, 'customize page present.')
-        except Exception as error:
-            raise error
-        else:
-            close_customize_page()
+        # Searching for text 'Drag'
+        expected_1 = exists('Drag', 10, in_region=Region(0, 0, 300, 300))
+        assert_true(self, expected_1, '\'Customize\' page present.')
+        close_customize_page()

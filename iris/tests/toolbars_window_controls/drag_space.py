@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks that the drag space can be activated properly'
+        # Feature not available on LINUX
+        self.exclude = Platform.LINUX
 
     def run(self):
         url = 'about:home'
@@ -29,87 +31,77 @@ class Test(BaseTest):
         click_hamburger_menu_option('Customize...')
         time.sleep(1)
 
-        # Check that the customize page is opened by searcing for text "Drag"
-        try:
-            expected_1 = wait('Drag', 10)
-            assert_true(self, expected_1, 'customize page present.')
-        except Exception as error:
-            logger.error('Can\'t find Drag text.')
-            raise error
-        else:
-            if exists(customize_page_drag_space_disabled, 10) and exists(drag_space_disabled, 10):
-                click(drag_space_disabled)
-                if exists(customize_page_drag_space_enabled) and not exists(drag_space_disabled, 1):
-                    logger.debug('drag space successfully activated in the Customize page')
-                else:
-                    logger.error('drag space not properly activated')
-            else:
-                logger.error('Customize page is not correctly displayed before drag space is enabled')
-            close_customize_page()
+        expected_1 = exists('Drag', 10, in_region=Region(0, 0, 300, 300))
+        logger.debug('Searching for text \'Drag\'')
+        assert_true(self, expected_1, '\'Customize\' page present.')
 
-            # Check that changes persist in a new tab
-            new_tab()
-            if exists(drag_space_enabled_new_tab):
-                logger.debug('drag space successfully activated in a new tab')
-            else:
-                logger.debug('drag space not correctly activated in a new tab')
+        expected_2 = exists(customize_page_drag_space_disabled, 10) and exists(drag_space_disabled, 10)
+        assert_true(self, expected_2, '\'Customize\' page is correctly displayed before \'drag space\' is enabled')
+        click(drag_space_disabled)
 
-            if exists(hamburger_menu, 10):
-                # Minimize window
+        expected_3 = exists(customize_page_drag_space_enabled, 10)
+        assert_true(self, expected_3, '\'Drag space\' successfully activated in the \'Customize\' page.')
+        close_customize_page()
+
+        # Check that changes persist in a new tab
+        new_tab()
+        expected_4 = exists(drag_space_enabled_new_tab, 10)
+        assert_true(self, expected_4, '\'Drag space\' successfully activated in a new tab.')
+
+        if exists(hamburger_menu, 10):
+            # Minimize window
+            minimize_window()
+            time.sleep(1.5)
+            if get_os() == 'win':
                 minimize_window()
-                if get_os() == "win":
-                    time.sleep(0.5)
-                    minimize_window()
-                    time.sleep(1)
-                try:
-                    expected_2 = waitVanish(hamburger_menu, 10)
-                    assert_true(self, expected_2, 'window successfully minimized')
-                except Exception as error:
-                    logger.error('window not minimized.')
-                    raise error
-            else:
-                logger.error('Can\'t find the hamburger menu in the page.')
-
-            # Focus on Firefox and open the browser again
-            restore_window_from_taskbar()
-            maximize_window()
-            if exists(hamburger_menu, 10):
-                logger.debug('window in view again')
-            else:
-                logger.error('window not in view.')
-
-            # Restore window (applies to Windows and Linux)
-            if get_os() =="osx":
-                logger.debug ('Window size restore not applicable on OSX')
-            else:
-                if exists(window_controls_restore, 10):
-                    minimize_window()
-                    if exists(window_controls_maximize, 10):
-                        logger.debug('window successfully restored')
-                        # Maximize window
-                        maximize_window()
-                        if exists(window_controls_restore, 10):
-                            logger.debug('window successfully maximized')
-                        else:
-                            logger.error('window not maximized')
-                    else:
-                        logger.error('window not restored')
-                else:
-                    logger.error('the window control restore not visible')
-
-            # Close the window
-            if exists(hamburger_menu, 10):
-                close_window()
                 time.sleep(1)
-                if exists(close_multiple_tabs_warning, 10):
-                    logger.debug('Close multiple tabs warning')
-                    click(close_multiple_tabs_warning)
-                try:
-                    expected_3 =  waitVanish(hamburger_menu, 10)
-                    assert_true(self, expected_3, 'window successfully closed')
-                except Exception as error:
-                    logger.error('window not closed')
-                    raise error
-            else:
-                logger.error('Can\'t find the hamburger menu in the page')
+            try:
+                expected_5 = waitVanish(hamburger_menu, 10)
+                assert_true(self, expected_5, 'Window successfully minimized')
+            except Exception as error:
+                logger.error('Window not minimized.')
+                raise error
+        else:
+            logger.error('Can\'t find the \'hamburger menu\' in the page.')
 
+        # Focus on Firefox and open the browser again
+        time.sleep(1)
+        restore_window_from_taskbar()
+        time.sleep(1)
+
+        if get_os() == 'win':
+            maximize_window()
+
+        expected_6 = exists(hamburger_menu, 10)
+        assert_true(self, expected_6, 'Window in view again')
+
+        # Restore window (applies to Windows)
+        if get_os() == 'osx':
+            logger.debug('Window size restore not applicable on OSX')
+        else:
+            expected_7 = exists(window_controls_restore, 10)
+            assert_true(self, expected_7, 'The window control \'restore\' is visible')
+            minimize_window()
+
+            expected_8 = exists(window_controls_maximize, 10)
+            assert_true(self, expected_8, 'Window successfully restored')
+
+            # Maximize window
+            maximize_window()
+            expected_9 = exists(window_controls_restore, 10)
+            assert_true(self, expected_9, 'Window successfully maximized')
+
+        # Close the window
+        if exists(hamburger_menu, 10):
+            close_window()
+            expected_10 = exists(window_controls_restore, 2)
+            assert_true(self, expected_10, 'Close multiple tabs warning is present')
+            click(close_multiple_tabs_warning)
+            try:
+                expected_11 = waitVanish(hamburger_menu, 10)
+                assert_true(self, expected_11, 'Window successfully closed')
+            except Exception as error:
+                logger.error('Window not closed')
+                raise error
+        else:
+            raise FindError('Can\'t find the \'hamburger menu\' in the page')
