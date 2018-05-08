@@ -10,23 +10,19 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "This is a test of the 'About Firefox' window controls"
+        self.meta = 'This is a test of the "About Firefox" window controls'
 
     def run(self):
+        firefox_in_about = 'firefox_in_about.png'
+
         # Helper function in general.py
         open_about_firefox()
-        if exists("firefox_in_about.png", 5):
-            print "'About Firefox' window was opened successfully"
-            close_auxiliary_window()
-            if waitVanish("firefox_in_about.png", 10):
-                print "'About Firefox' window was closed successfully"
-                result = "PASS"
-            else:
-                print "'About Firefox' window is still open"
-                result = "FAIL"
-        else:
-            print "'About Firefox' window was not opened"
-            result = "FAIL"
-
-        print result
+        expected_1 = exists(firefox_in_about, 10)
+        assert_true(self, expected_1, '"About Firefox" window was opened successfully.')
+        # Helper function in general.py
+        close_auxiliary_window()
+        try:
+            expected_2 = waitVanish(firefox_in_about, 10)
+            assert_true(self, expected_2, '"About Firefox" window was closed successfully.')
+        except:
+            logger.error('"About Firefox" window is still open')
