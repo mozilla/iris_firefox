@@ -579,7 +579,7 @@ def open_page_source():
 def open_web_console():
     """Opens the Web Console."""
     if get_os() == Platform.MAC:
-        type(text='k', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        type(text='k', modifier=KeyModifier.CMD + KeyModifier.ALT)
     else:
         type(text='k', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 

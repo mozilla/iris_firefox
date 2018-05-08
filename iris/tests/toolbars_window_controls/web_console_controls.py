@@ -33,7 +33,7 @@ class Test(BaseTest):
 
         for button in buttons:
             if not exists(button, 5):
-                logger.error('Button%s has not been found' % button)
+                logger.error('Button %s has not been found' % button)
 
         # Check if the labels are displayed when the cursor hovers over the buttons.
 
