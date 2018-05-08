@@ -3,72 +3,63 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "This is a test of the 'Confirm close multiple tabs' window controls"
+        BaseTest.__init__(self, app)
+        self.meta = 'This is a test of the "Confirm close multiple tabs" window controls'
 
 
     def run(self):
+        close_multiple_tabs_warning = 'close_multiple_tabs_warning.png'
+        cancel_multiple_tabs_warning = 'cancel_multiple_tabs_warning.png'
+        home_button = 'home_button.png'
+        maximize_button = 'maximize_button.png'
+        restore_button = 'restore_button.png'
+
         new_tab()
         time.sleep(1)
 
         close_window()
         time.sleep(1)
 
-        if exists("close_multiple_tabs_warning.png", 10):
-            print "Close multiple tabs warning was displayed successfully"
-            if Settings.getOS() == Platform.MAC:
-                click("cancel_multiple_tabs_warning.png")
-            else:
-                close_auxiliary_window()
-            if (waitVanish("close_multiple_tabs_warning.png", 10) and exists("home_button.png", 10)):
-                print "Close multiple tabs warning was canceled successfully"
-            else:
-                print "Close multiple tabs warning was not canceled successfully"
-                result = "FAIL"
+        expected_1 = exists(close_multiple_tabs_warning, 10)
+        assert_true(self, expected_1, 'Close multiple tabs warning was displayed successfully')
+        if get_os() == 'osx':
+            click(cancel_multiple_tabs_warning)
         else:
-            print "Close multiple tabs warning was not displayed"
-            result = "FAIL"
-        
+            close_auxiliary_window()
+
+        try:
+            expected_2 = waitVanish(close_multiple_tabs_warning, 10)
+            expected_3 = exists(home_button, 10)
+            assert_true(self, expected_2 and expected_3, 'Close multiple tabs warning was canceled successfully')
+        except:
+            logger.error('Close multiple tabs warning was not canceled successfully')
+
         close_window()
         time.sleep(1)
 
-        if Settings.getOS() == Platform.LINUX:
-            if exists("maximize_button.png", 10):
-                click("maximize_button.png")
-                time.sleep(1)
-                if exists("restore_button.png", 10):
-                    print "Close multiple tabs warning was maximized successfully"
-                else:
-                    print "Close multiple tabs warning was not maximized"
-            else:
-                print "Maximize button was not found"
-            if exists("restore_button.png", 10):
-                click("restore_button.png")
-                time.sleep(1)
-                if exists("maximize_button.png", 10):
-                    print "Close multiple tabs warning was restored successfully"
-                else:
-                    print "Close multiple tabs warning was not restored"
-            else:
-                print "Restore button was not found"
+        if get_os() == 'linux':
+            click(maximize_button)
+            time.sleep(1)
+            expected_4 = exists(restore_button, 10)
+            assert_true(self, expected_4, 'Close multiple tabs warning was maximized successfully')
 
-        if exists("close_multiple_tabs_warning.png", 10):
-            print "Close multiple tabs warning was displayed successfully"
-            click("close_multiple_tabs_warning.png")
-            if (waitVanish("close_multiple_tabs_warning.png", 10) and waitVanish("home_button.png", 10)):
-                print "The browser was closed successfully"
-                result = "PASS"
-            else:
-                print "The browser was not closed successfully"
-                result = "FAIL"
+            click(restore_button)
+            time.sleep(1)
+            expected_5 = exists(maximize_button, 10)
+            assert_true(self, expected_5, 'Close multiple tabs warning was restored successfully')
 
-        print result
+        expected_6 = exists(close_multiple_tabs_warning, 10)
+        assert_true(self, expected_6, 'Close multiple tabs warning was displayed successfully')
+        click(close_multiple_tabs_warning)
+        try:
+            expected_7 = waitVanish(close_multiple_tabs_warning, 10)
+            expected_8 = waitVanish(home_button, 10)
+            assert_true(self, expected_7 and expected_8, 'The browser was closed successfully')
+        except:
+            logger.error('The browser was not closed successfully')
