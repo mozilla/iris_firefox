@@ -79,7 +79,7 @@ class BaseTest(object):
         self.add_result(res)
 
     @staticmethod
-    def _create_unique_profile_name():
+    def create_unique_profile_name():
         ts = int(time.time())
         profile_name = 'profile_%s' % ts
         return profile_name
@@ -90,7 +90,8 @@ class BaseTest(object):
         Also, by default, a new Firefox instance is created, with a blank profile and URL.
         If you wish to change this, override this method in your test case.
         """
-        launch_firefox(path=self.app.fx_path, profile=self._create_unique_profile_name(), url='about:blank')
+        self.profile_name = self.create_unique_profile_name()
+        launch_firefox(path=self.app.fx_path, profile=self.profile_name, url='about:blank')
         return
 
     @staticmethod
