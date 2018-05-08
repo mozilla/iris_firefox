@@ -10,12 +10,12 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test for text search in page"
+        self.meta = 'This is a test for text search in page'
 
     def run(self):
-        url = "https://www.google.com/?hl=EN"
-        google_search_image = "google_search.png"
-        search_in_page_image = "search_in_page.png"
+        url = 'https://www.google.com/?hl=EN'
+        google_search_image = 'google_search.png'
+        search_in_page_image = 'search_in_page.png'
 
         navigate(url)
 
@@ -23,7 +23,7 @@ class Test(BaseTest):
         assert_true(self, expected_1, 'Wait for google search image to appear')
 
         open_find()
-        type("Gmail")
+        type('Gmail')
 
         expected_2 = exists(search_in_page_image, 10)
         assert_true(self, expected_2, 'Find search in page image')
