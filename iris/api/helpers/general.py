@@ -46,6 +46,7 @@ def confirm_firefox_launch():
     try:
         wait('home.png', 20)
     except Exception as err:
+        logger.error(err)
         logger.error ('Can\'t launch Firefox - aborting test run.')
         exit(1)
 
