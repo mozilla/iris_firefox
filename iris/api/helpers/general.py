@@ -46,8 +46,7 @@ def confirm_firefox_launch():
     try:
         wait('home.png', 20)
     except Exception as err:
-        logger.error(err)
-        print ('Can\'t launch Firefox - aborting test run.')
+        logger.error ('Can\'t launch Firefox - aborting test run.')
         exit(1)
 
 
@@ -55,7 +54,7 @@ def confirm_firefox_quit():
     try:
         waitVanish('home.png', 10)
     except FindError:
-        print ('Firefox still around - aborting test run.')
+        logger.error ('Firefox still around - aborting test run.')
         exit(1)
 
 
@@ -85,8 +84,17 @@ def navigate(url):
     type(Key.ENTER)
 
 
-def restart_firefox(args):
+def restart_firefox(path, profile_name, url, args=None):
     # just as it says, with options
+    logger.debug ('Restarting Firefox')
+    quit_firefox()
+    logger.debug ('Confirming that Firefox has been quit')
+    confirm_firefox_quit()
+    logger.debug ('Relaunching Firefox with profile name \'%s\'' % profile_name)
+    launch_firefox(path, profile_name, url, args)
+    logger.debug ('Confirming that Firefox has been launched')
+    confirm_firefox_launch()
+    logger.debug ('Successful Firefox restart performed')
     return
 
 
