@@ -3,95 +3,95 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "This is a test of the library window controls"
+        BaseTest.__init__(self, app)
+        self.meta = 'This is a test of the library window controls'
 
 
     def run(self):
+        library_title = 'library_title.png'
+        maximize_button = 'maximize_button.png'
+        restore_button = 'restore_button.png'
+        minimize_button = 'minimize_button.png'
+        library_restore_button = 'library_restore_button.png'
+        library_maximize_button = 'library_maximize_button.png'
+
         open_library()
         time.sleep(1)
 
-        if exists("library_title.png", 10):
-            print "The library was opened successfully"
+        expected_1 = exists(library_title, 10)
+        assert_true(self, expected_1, 'The library was opened successfully')
 
-            if Settings.getOS() == Platform.LINUX:
-                if exists("maximize_button.png", 10):
-                    click("maximize_button.png")
-                    time.sleep(1)
+        if get_os() == 'linux':
+            click(maximize_button)
+            time.sleep(1)
 
-                    if exists("restore_button.png", 10):
-                        print "The library was maximized successfully"
-                    else:
-                        print "The library was not maximized"
-                        result = "FAIL"
-                        return
+            expected_2 = exists(restore_button, 10)
+            assert_true(self, expected_2, 'The library was maximized successfully')
 
-                    click("restore_button.png")
-                    time.sleep(1)
+            click(restore_button)
+            time.sleep(1)
 
-                    if exists("maximize_button.png", 10):
-                        print "The library was restored successfully"
-                    else:
-                        print "The library was not restored"
-                        result = "FAIL"
-                        return
+            expected_3 = exists(maximize_button, 10)
+            assert_true(self, expected_3, 'The library was restored successfully')
 
-                    click("minimize_button.png")
-                    time.sleep(1)
+            click(minimize_button)
+            time.sleep(1)
 
-                else:
-                    print "Maximize button was not found"
-                    result = "FAIL"
-                    return
+        elif get_os() == 'win':
+            maximize_window()
+            time.sleep(1)
 
-            else:
-                maximize_window()
-                time.sleep(1)
-            
-                if exists("library_restore_button.png", 10):
-                    print "The library was maximized successfully"
-                else:
-                    print "The library was not maximized"
-                    result = "FAIL"
-                    return
+            expected_4 = exists(library_restore_button, 10)
+            assert_true(self, expected_4, 'The library was maximized successfully')
 
-                minimize_window()
-                time.sleep(1)
+            minimize_window()
+            time.sleep(1)
 
-                if exists("library_maximize_button.png", 10):
-                    print "The library was restored successfully"
-                else:
-                    print "The library was not restored"
-                    result = "FAIL"
-                    return
+            expected_5 = exists(library_maximize_button, 10)
+            assert_true(self, expected_5, 'The library was restored successfully')
 
-                minimize_window()
-                time.sleep(1)
-
-            if waitVanish("library_title.png", 10):
-                logger.debug("window successfully minimized")
-            else:
-                result = "FAIL"
-                logger.error("window not minimized, aborting test")
-                return
-
-            restore_window_from_taskbar()
+            minimize_window()
+            time.sleep(1)
 
         else:
-            print "The library was not opened"
-            result = "FAIL"
+            maximize_auxiliary_window()
+            time.sleep(1)
+
+            maximize_auxiliary_window()
+            time.sleep(1)
+
+            minimize_window()
+            time.sleep(1)
+
+        try:
+            expected_6 = waitVanish(library_title, 10)
+            assert_true(self, expected_6, 'Window successfully minimized')
+        except:
+            logger.error('window not minimized, aborting test')
+
+        if get_os() == 'osx':
+            type(text=Key.DOWN, modifier=KeyModifier.CTRL)
+            time.sleep(0.5)
+            keyDown(Key.DOWN)
+            keyUp(Key.DOWN)
+            keyDown(Key.ENTER)
+            keyUp(Key.ENTER)
+
+        else:
+            restore_window_from_taskbar()
+
+        expected_7 = exists(library_title, 10)
+        assert_true(self, expected_7, 'The library was restored successfully')
 
         close_auxiliary_window()
-        if waitVanish("library_title.png", 10):
-            result = "PASS"
-
-        print result
+        try:
+            expected_8 = waitVanish(library_title, 10)
+            assert_true(self, expected_8, 'The library was closed successfully')
+        except:
+            logger.error('The library didn\'t close successfully')
