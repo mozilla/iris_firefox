@@ -237,9 +237,6 @@ def open_about_firefox():
         # Key stroke into Firefox Menu to get to About Firefox
         type(Key.F2, modifier=KeyModifier.CTRL)
         time.sleep(0.5)
-        type(text=Key.ESC)
-        time.sleep(0.5)
-
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)
