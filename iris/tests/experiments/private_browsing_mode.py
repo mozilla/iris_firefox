@@ -10,12 +10,12 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test for checking private browsing navigation"
+        self.meta = 'This is a test for checking private browsing navigation'
 
     def run(self):
-        url = "https://www.google.com/?hl=EN"
-        private_browsing_image = "private_browsing.png"
-        google_search_image = "google_search.png"
+        url = 'https://www.google.com/?hl=EN'
+        private_browsing_image = 'private_browsing.png'
+        google_search_image = 'google_search.png'
 
         # check if incognito mode works
         new_private_window()
