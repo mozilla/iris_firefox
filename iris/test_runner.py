@@ -65,7 +65,7 @@ def run(app):
                 current.teardown()
                 confirm_firefox_quit()
                 continue
-            except (ValueError, ConfigError):
+            except (ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError):
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
                 current.set_end_time(time.time())
@@ -83,7 +83,8 @@ def run(app):
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    print_report_footer(passed, failed, skipped, errors, get_duration(start_time, end_time))
+    print_report_footer(get_os(), app.version, app.build_id, passed, failed, skipped, errors,
+                        get_duration(start_time, end_time))
 
     # We may remove profiles here, but likely still in use and can't do it yet
     # clean_profiles()
