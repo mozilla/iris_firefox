@@ -16,7 +16,7 @@ from downloader import FirefoxDownloader
 logger = logging.getLogger(__name__)
 
 
-def extract(archive_file, workdir, cache_timeout=24 * 60 * 60, use_cache=True):
+def extract(archive_file, platform, workdir, cache_timeout=24 * 60 * 60, use_cache=True):
     """Extract a Firefox archive file into a subfolder in the given temp dir."""
     logger.info('Extracting Firefox archive "%s:' % archive_file)
 
@@ -64,7 +64,7 @@ def extract(archive_file, workdir, cache_timeout=24 * 60 * 60, use_cache=True):
             logger.debug('7zip succeeded at second pass: %s' % repr(output))
             os.remove(inner_tar)
 
-    app = FirefoxApp(cache_dir)
+    app = FirefoxApp(cache_dir, platform, True)
 
     # Workaround until 7zip learns to maintain file attributes
     os.chmod(app.exe, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)

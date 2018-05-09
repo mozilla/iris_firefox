@@ -10,78 +10,79 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.assets = os.path.join(os.path.split(__file__)[0], "assets")
-        self.meta = "Web compability test for gmail.com--Login"
-        self.exclude = Platform.ALL
-
+        self.meta = 'Web compability test for gmail.com--Login'
 
     def run(self):
-        url = "mail.google.com"
-        compose = "compose_email.png"
-        receiver = "ionut"
-        subject = "Gmail Test"
-        message = "test"
-        inbox = "gmail_inbox.png"
-        email = "email_present.png"
-        delete_email = "delete_email.png"
+        url = 'mail.google.com'
+        compose = 'compose_email.png'
+        receiver = 'ionut'
+        subject = 'Gmail Test'
+        message = 'test'
+        inbox = 'gmail_inbox.png'
+        email = 'email_present.png'
+        delete_email = 'delete_email.png'
 
         navigate(url)
 
         time.sleep(5)
 
         self.login_gmail()
-        logger.info("Successful Log IN ")
+        logger.info('Successful Log IN ')
         time.sleep(5)
         type(Key.ESC)
 
-        if exists(compose, 10):
-            click(compose)
-            time.sleep(2)
-            type(receiver)
-            time.sleep(2)
-            type(Key.ENTER)
-            time.sleep(1)
-            type(Key.TAB)
-            time.sleep(1)
-            type(subject)
-            time.sleep(2)
-            type(Key.TAB)
-            time.sleep(2)
-            type(message)
-            time.sleep(2)
-            type(Key.TAB)
-            type(Key.ENTER)
-            logger.debug("Email has been sent...")
-            time.sleep(2)
+        expected_1 = exists(compose, 10)
+        assert_true(self, expected_1, 'Compose button is present on the page!')
 
-        if exists(inbox, 10):
-            click(inbox)
-            time.sleep(1)
-            if exists(email, 10):
-                click(email)
-                logger.debug("Email has been accessed..")
-                time.sleep(1)
-                click(delete_email)
-                time.sleep(2)
-                logger.debug("Email has been erased..")
-                type(Key.ENTER)
-            else:
-                print "FAIL"
-        else:
-            logger.error("Page was not loaded")
+        click(compose)
+        time.sleep(2)
+        type(receiver)
+        time.sleep(2)
+        type(Key.ENTER)
+        time.sleep(1)
+        type(Key.TAB)
+        time.sleep(1)
+        type(subject)
+        time.sleep(2)
+        type(Key.TAB)
+        time.sleep(2)
+        type(message)
+        time.sleep(2)
+        type(Key.TAB)
+        type(Key.ENTER)
+        logger.debug('Email has been sent...')
+        time.sleep(2)
 
+        expected_2 = exists(inbox, 10)
+        assert_true(self, expected_2, 'Gmail Inbox has been accessed successfully!')
+
+        click(inbox)
+        time.sleep(1)
+
+        expected_3 = exists(email, 10)
+        assert_true(self, expected_3, 'Email is received successfully!')
+
+        click(email)
+        logger.debug('Email has been accessed..')
+        time.sleep(1)
+        click(delete_email)
+        time.sleep(2)
+        logger.debug('Email has been erased..')
+        type(Key.ENTER)
 
     def login_gmail(self):
-        username = get_credential("Gmail", "username")
-        password = get_credential("Gmail", "password")
-        if exists("login_gmail.png", 10):
-            type(username)
-            for i in range(3):
-                type(Key.TAB)
-            type(Key.ENTER)
-            time.sleep(2)
-            type(password)
+        username = get_credential('Gmail', 'username')
+        password = get_credential('Gmail', 'password')
+        login = 'login_gmail.png'
+
+        expected_login = exists(login, 10)
+        assert_true(self, expected_login, 'LogIn fields are present!')
+
+        type(username)
+        for i in range(3):
             type(Key.TAB)
-            type(Key.ENTER)
-        else:
-            logger.error("Gmail Log In PAge was not loaded..")
+        type(Key.ENTER)
+        time.sleep(2)
+        type(password)
+        type(Key.TAB)
+        type(Key.ENTER)

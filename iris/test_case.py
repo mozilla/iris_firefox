@@ -24,8 +24,7 @@ class BaseTest(object):
         self.results = []
         self.start_time = 0
         self.end_time = 0
-        self.is_complete = False
-        self.is_passed = True
+        self.outcome = 'PASSED'
 
     def get_test_title(self):
         return self.test_title
@@ -39,12 +38,7 @@ class BaseTest(object):
 
     def get_results(self):
         for result in self.results:
-            if 'FAILED' == result.outcome:
-                self.is_complete = True
-                self.is_passed = False
-                return
-        self.is_complete = True
-        self.is_passed = True
+            self.outcome = result.outcome
 
     def print_results(self):
         for result in self.results:
@@ -57,7 +51,7 @@ class BaseTest(object):
             elif 'PASSED' == result.outcome:
                 logger.success('Step: %s, outcome: >>> %s <<<' % (result.message, result.outcome))
         logger.info('%s - >>> %s <<< (Finished in %s second(s))\n' % (
-            self.meta, format_outcome(self.is_passed), get_duration(self.start_time, self.end_time)))
+            self.meta, self.outcome, get_duration(self.start_time, self.end_time)))
 
     def get_start_time(self):
         return self.start_time
@@ -79,7 +73,7 @@ class BaseTest(object):
         self.add_result(res)
 
     @staticmethod
-    def _create_unique_profile_name():
+    def create_unique_profile_name():
         ts = int(time.time())
         profile_name = 'profile_%s' % ts
         return profile_name
@@ -90,7 +84,8 @@ class BaseTest(object):
         Also, by default, a new Firefox instance is created, with a blank profile and URL.
         If you wish to change this, override this method in your test case.
         """
-        launch_firefox(path=self.app.fx_path, profile=self._create_unique_profile_name(), url='about:blank')
+        self.profile_name = self.create_unique_profile_name()
+        launch_firefox(path=self.app.fx_path, profile=self.profile_name, url='about:blank')
         return
 
     @staticmethod
