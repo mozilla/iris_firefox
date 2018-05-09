@@ -65,7 +65,7 @@ def run(app):
                 current.teardown()
                 confirm_firefox_quit()
                 continue
-            except (ValueError, ConfigError):
+            except (ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError):
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
                 current.set_end_time(time.time())

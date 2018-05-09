@@ -518,6 +518,41 @@ class Region(object):
         return rightClick(where, duration, self)
 
 
+class Settings(object):
+    def __init__(self):
+        pass
+
+    @property
+    def ActionLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
+
+    @ActionLogs.setter
+    def ActionLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
+
+    @property
+    def DebugLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
+
+    @DebugLogs.setter
+    def DebugLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
+
+    @property
+    def InfoLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
+
+    @InfoLogs.setter
+    def InfoLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
+
+    def getSikuliVersion(self):
+        raise UnsupportedMethodError('Unsupported method Settings.getSikuliVersion()')
+
+
+Settings = Settings()
+
+
 def _save_debug_image(search_for, on_region, locations):
     """ Saves input Image for debug.
 
