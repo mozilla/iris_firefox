@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test of the "About Firefox" window controls'
+        self.meta = 'This is a test of the \'About Firefox\' window controls'
 
     def run(self):
         firefox_in_about = 'firefox_in_about.png'
@@ -18,11 +18,11 @@ class Test(BaseTest):
         # Helper function in general.py
         open_about_firefox()
         expected_1 = exists(firefox_in_about, 10)
-        assert_true(self, expected_1, '"About Firefox" window was opened successfully.')
+        assert_true(self, expected_1, '\'About Firefox\' window was opened successfully.')
         # Helper function in general.py
         close_auxiliary_window()
         try:
             expected_2 = waitVanish(firefox_in_about, 10)
-            assert_true(self, expected_2, '"About Firefox" window was closed successfully.')
+            assert_true(self, expected_2, '\'About Firefox\' window was closed successfully.')
         except:
-            logger.error('"About Firefox" window is still open')
+            raise FindError('About Firefox\' window is still open')
