@@ -32,8 +32,8 @@ class Test(BaseTest):
         button_messages = [dock_message, separate_window_message, close_message]
 
         for button in buttons:
-            if not exists(button, 5):
-                logger.error('Button %s has not been found' % button)
+            expected_buttons = exists(button, 5)
+            assert_true(self, expected_buttons, 'Button %s has be found' % button)
 
         # Check if the labels are displayed when the cursor hovers over the buttons.
 
