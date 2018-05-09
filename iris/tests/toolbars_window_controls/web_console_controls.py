@@ -33,7 +33,7 @@ class Test(BaseTest):
 
         for button in buttons:
             expected_buttons = exists(button, 5)
-            assert_true(self, expected_buttons, 'Button %s has be found' % button)
+            assert_true(self, expected_buttons, 'Button %s has been found' % button)
 
         # Check if the labels are displayed when the cursor hovers over the buttons.
 
