@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import ConfigParser
+import glob
 import os
 import struct
 
@@ -14,7 +15,7 @@ class FirefoxApp(object):
 
         __locations = {
             'osx': {
-                'base': os.path.join('Firefox', 'Firefox.app'),
+                'base': os.path.join('*', '*.app'),
                 'exe': os.path.join('Contents', 'MacOS', 'firefox') if is_downloaded else os.path.join(directory,
                                                                                                        'MacOS',
                                                                                                        'firefox'),
@@ -45,9 +46,13 @@ class FirefoxApp(object):
         # where a stock Firefox archive was extracted.
         if platform in __locations:
             base = __locations[platform]['base']
-            self.platform = platform
-            self.app_dir = os.path.join(directory, base)
-
+            matches = glob.glob(os.path.join(directory, base))
+            if len(matches) > 0:
+                if os.path.isdir(matches[0]):
+                    self.platform = platform
+                    self.app_dir = matches[0]
+            else:
+                raise Exception('Unsupported application package format (missing or ambiguous base folder)')
         else:
             raise Exception('Unsupported application package platform')
 
@@ -56,6 +61,10 @@ class FirefoxApp(object):
         self.browser = os.path.join(self.app_dir, __locations[self.platform]['browser'])
         self.gredir = os.path.join(self.app_dir, __locations[self.platform]['gredir'])
         self.app_ini = os.path.join(self.app_dir, __locations[self.platform]['ini'])
+        print(self.exe)
+        print(self.browser)
+        print(self.gredir)
+        print(self.app_ini)
 
         # Sanity checks
         if not os.path.isfile(self.exe) or not os.path.isdir(self.browser):
