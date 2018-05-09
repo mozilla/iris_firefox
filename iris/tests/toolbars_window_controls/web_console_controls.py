@@ -45,19 +45,19 @@ class Test(BaseTest):
             expected_messages = button_region.exists(button_messages[m_index], 10)
             assert_true(self, expected_messages, 'Message %s found' % button_messages[m_index])
 
-        # Checking the buttons functionality.
+        # Checking the button functionality.
         coord = find(menu)
         right_upper_corner = Region(coord.x - 300, 0, 300, 300)
 
         click(dock_button)
 
         expected_1 = right_upper_corner.exists(dock_button_activated, 10)
-        assert_true(self, expected_1, 'Dock to side button works !!!')
+        assert_true(self, expected_1, 'Dock to side button works.')
 
         click(separate_window_button)
 
         expected_2 = exists(dev_tools_window, 10)
-        assert_true(self, expected_2, 'Show in separate window button works !!!')
+        assert_true(self, expected_2, 'Show in separate window button works.')
 
         time.sleep(2)
 
@@ -69,7 +69,7 @@ class Test(BaseTest):
         click(close_dev_tools_button)
         try:
             expected_3 = waitVanish(dock_button_activated, 10)
-            assert_true(self, expected_3, 'Close button works !!!')
+            assert_true(self, expected_3, 'Close button works.')
         except Exception as error:
-            logger.error('The Web Console can not be closed!! Aborting..')
+            logger.error('The Web Console can not be closed, aborting test.')
             raise error
