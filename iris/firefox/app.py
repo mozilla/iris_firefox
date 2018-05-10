@@ -61,10 +61,6 @@ class FirefoxApp(object):
         self.browser = os.path.join(self.app_dir, __locations[self.platform]['browser'])
         self.gredir = os.path.join(self.app_dir, __locations[self.platform]['gredir'])
         self.app_ini = os.path.join(self.app_dir, __locations[self.platform]['ini'])
-        print(self.exe)
-        print(self.browser)
-        print(self.gredir)
-        print(self.app_ini)
 
         # Sanity checks
         if not os.path.isfile(self.exe) or not os.path.isdir(self.browser):
