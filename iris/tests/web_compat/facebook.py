@@ -32,7 +32,7 @@ class Test(BaseTest):
         time.sleep(4)
         type(Key.ESC)
 
-        # post message
+        # Post message
 
         expected_1 = exists(news_feed, 10)
         assert_true(self, expected_1, 'News Feed has been accessed')
@@ -57,7 +57,7 @@ class Test(BaseTest):
         expected_2 = exists(post, 10)
         assert_true(self, expected_2, 'Message has been posted successfully')
 
-        # delete post
+        # Delete post
 
         if get_os() == Platform.MAC:
             for i in range(7):
@@ -98,7 +98,7 @@ class Test(BaseTest):
 
         time.sleep(5)
 
-        # scroll down and up
+        # Scroll down and up
 
         for i in range(15):
             scroll_down()
