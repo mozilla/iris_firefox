@@ -10,7 +10,8 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Web compability test for facebook.com--Login'
+        self.meta = 'Web compability test for facebook.com'
+        self.exclude = Platform.ALL
 
     def run(self):
         url = 'www.facebook.com'
