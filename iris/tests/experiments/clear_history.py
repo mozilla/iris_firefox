@@ -7,21 +7,20 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test for clearing browser history"
+        self.meta = 'This is a test for clearing browser history'
 
     def run(self):
-        url = "https://www.amazon.com"
-        amazon_image = "amazon.png"
-        amazon_history_image = "amazon_history.png"
-        home_image = "home.png"
+        url = 'https://www.amazon.com'
+        amazon_image = 'amazon.png'
+        amazon_history_image = 'amazon_history.png'
+        home_image = 'home.png'
 
         navigate(url)
 
-        expected_1 = wait(amazon_image)
-        assert_true(self, expected_1, 'Wait for amazon image to appear')
+        expected_1 = exists(amazon_image, 5)
+        assert_true(self, expected_1, 'Wait for Amazon image to appear')
 
         # The various calls to time.sleep are necessary to
         # account for lag times incurred by underlying operations.
@@ -34,6 +33,12 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(1)
 
+        # Because of a Mac bug with the keyboard shortcut for clear history,
+        # we want to make sure that we are not in the minimized window state,
+        # and that we have returned to a normal Firefox window
+        expected_2 = exists(amazon_image, 5)
+        assert_true(self, expected_2, 'Still viewing the Amazon page')
+
         # The click here is required, because the Firefox window loses
         # focus after invoking the above dialog, and without it,
         # the keyboard shortcuts don't work
@@ -43,11 +48,14 @@ class Test(BaseTest):
         # Navigate to new page; otherwise, our bitmap for the history item
         # looks identical to the image in the title bar and we'll get
         # a false match
-        navigate("about:blank")
+        navigate('about:blank')
+
+        expected_3 = exists(amazon_image, 3)
+        assert_false(self, expected_3, 'Successfully renavigated page')
 
         history_sidebar()
         time.sleep(2)
-        type("amazon")
+        type('amazon')
 
-        expected_2 = exists(amazon_history_image, 10)
-        assert_true(self, expected_2, 'Find amazon history image')
+        expected_4 = exists(amazon_history_image, 5)
+        assert_false(self, expected_4, 'Find amazon history image')
