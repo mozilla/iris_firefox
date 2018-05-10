@@ -19,36 +19,27 @@ class Test(BaseTest):
         youtube_filter = "filter_youtube_results.png"
         navigate(url)
         self.login_youtube()
+        banner=exists(youtube_banner, 10)
+        assert_true(self,banner,'Youtube banner exists')
+        logger.debug("Youtube Search")
+        type("lord of the rings")
+        type(Key.ENTER)
+        filter=exists(youtube_filter, 10)
+        assert_true(self,filter,'Youtube filter exists')
+        logger.debug("Results are displayed")
+        time.sleep(3)
+        type(Key.TAB)
+        logger.debug("Scrolling down")
+        for i in range(3):
+            scroll_down()
+            time.sleep(4)
+        time.sleep(3)
+        logger.debug("Scrolling up")
+        for i in range(4):
+            scroll_up()
+        filter=exists(youtube_filter, 10)
+        assert_true(self,filter,'Youtube filter exists')
 
-        if exists(youtube_banner, 10):
-            logger.debug("Youtube Search")
-            type("lord of the rings")
-            type(Key.ENTER)
-            if exists(youtube_filter, 10):
-                logger.debug("Results are displayed")
-                time.sleep(3)
-
-                # focus needs to be changed from search bar in order to scroll the page
-                type(Key.TAB)
-                logger.debug("Scrolling down")
-                for i in range(3):
-                    scroll_down()
-                time.sleep(4)
-
-                # wait scroll action to perform
-                time.sleep(3)
-                logger.debug("Scrolling up")
-                for i in range(4):
-                    scroll_up()
-
-                # Soon to be replaced with assert statements, but for now, just print
-                if exists(youtube_filter, 10):
-                    print "PASS"
-                else:
-                    print "FAIL"
-        else:
-            logger.debug("Test failed")
-            print "FAIL"
 
     def login_youtube(self):
         try:
@@ -60,14 +51,15 @@ class Test(BaseTest):
         for i in range(5):
             type(Key.TAB)
         type(Key.ENTER)
-        if exists("youtube_sign_in.png", 10):
-            type(get_credential("Youtube", "username"))
-            time.sleep(3)
-            for i in range(2):
-                type(Key.TAB)
-            type(Key.ENTER)
-            time.sleep(3)
-            type(get_credential("Youtube", "password"))
-            time.sleep(3)
+        sign_in=exists("youtube_sign_in.png", 10)
+        assert_true(self,sign_in,'Youtube sign in exists')
+        type(get_credential("Youtube", "username"))
+        time.sleep(3)
+        for i in range(2):
             type(Key.TAB)
-            type(Key.ENTER)
+        type(Key.ENTER)
+        time.sleep(3)
+        type(get_credential("Youtube", "password"))
+        time.sleep(3)
+        type(Key.TAB)
+        type(Key.ENTER)
