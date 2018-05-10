@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = "Web compability test for amazon.com"
-        #self.exclude = Platform.ALL
+        self.exclude = Platform.ALL
 
     def login_amazon(self):
         try:
@@ -41,7 +41,7 @@ class Test(BaseTest):
             logger.debug("Page was not loaded")
 
         else:
-            #self.login_amazon()
+            self.login_amazon()
             time.sleep(4)
             type(Key.ESC)
             search = Pattern("amazon_search_button.png").targetOffset(-100, 0)
@@ -91,4 +91,3 @@ class Test(BaseTest):
             assert_true(self,delete_cart,'Delete cart exists')
             click(amazon_delete_cart)
             logger.debug("Product was successfully deleted from cart")
-            time.sleep(4)
