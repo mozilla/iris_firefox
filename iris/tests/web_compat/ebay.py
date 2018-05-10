@@ -61,8 +61,8 @@ class Test(BaseTest):
             return
 
         else:
-            #if not self.login_ebay():
-                #return
+            if not self.login_ebay():
+                return
             type(keyword)
             logger.debug( "Search product:")
             type(Key.ENTER)
