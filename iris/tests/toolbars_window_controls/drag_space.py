@@ -59,7 +59,7 @@ class test(base_test):
             if exists("hamburger_menu.png", 10):
                 # Minimize window
                 minimize_window()
-                if get_os() == "win":
+                if Settings.getOS() == Platform.WINDOWS:
                     time.sleep(0.5)
                     minimize_window()
                     time.sleep(1)
@@ -88,7 +88,7 @@ class test(base_test):
                 return
 
             # Restore window (applies to Windows and Linux)
-            if get_os() =="osx":
+            if Settings.getOS() == Platform.MAC:
                 print "Window size restore not applicable on OSX"
             else:
                 if exists("window_controls_restore.png", 10):

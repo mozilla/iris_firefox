@@ -74,7 +74,7 @@ class Test(BaseTest):
         else:
             logger.debug("Change language to Spanish")
             type(keyword)
-            if get_os() == "osx":
+            if Settings.getOS() == Platform.MAC:
                 type(Key.TAB)
                 time.sleep(1)
                 type(Key.DOWN)

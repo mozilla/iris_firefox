@@ -32,7 +32,7 @@ class test(base_test):
 
         if left_corner_screen_region.exists('web_developer_insert.png', 5):
             logger.debug('Developer toolbar is opened')
-            if get_os() == "osx":
+            if Settings.getOS() == Platform.MAC:
                 left_corner_screen_region.click('web_developer_close_button.png')
                 logger.debug('Closing web developer bar')
 
@@ -41,7 +41,7 @@ class test(base_test):
                 # right_corner_region.highlight(3)
                 right_corner_region.click('web_developer_close_button.png')
                 logger.debug('Closing web developer bar')
-            if get_os() == "osx":
+            if Settings.getOS() == Platform.MAC:
                 if left_corner_screen_region.waitVanish('web_developer_close_button.png', 5):
                     logger.debug('Web developer bar was closed')
                     open_web_developer_menu()

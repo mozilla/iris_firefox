@@ -43,7 +43,7 @@ class Test(BaseTest):
         # I added the implementation for Mac and I tried to keep
         # the keyboard navigation in place as much as i could
 
-        if get_os() == Platform.MAC:
+        if Settings.getOS() == Platform.MAC:
             click(bing_menu)
             time.sleep(2)
             type(Key.TAB)

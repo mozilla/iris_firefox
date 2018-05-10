@@ -32,7 +32,7 @@ class Test(BaseTest):
         # post message
 
         if exists("news_feed.png", 10):
-            if get_os() == "osx":
+            if Settings.getOS() == Platform.MAC:
                 for i in range(7):
                     type(Key.TAB)
                 time.sleep(2)
@@ -57,7 +57,7 @@ class Test(BaseTest):
         # delete post
 
         if exists("post.png", 10):
-            if get_os() == "osx":
+            if Settings.getOS() == Platform.MAC:
                 for i in range(7):
                     type(Key.TAB)
                 time.sleep(2)

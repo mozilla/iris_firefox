@@ -26,7 +26,7 @@ class Test(BaseTest):
                 print "FAIL"
                 logger.debug("hover over the 'minimize' controler doesn't work correctly")
 
-            if get_os() == "win":
+            if Settings.getOS() == Platform.WINDOWS:
                 hover("window_controls_restore.png")
                 time.sleep(0.5)
                 if exists("hover_restore_control.png", 10):
@@ -55,7 +55,7 @@ class Test(BaseTest):
                 logger.debug("hover over the 'close' controler doesn't work correctly")
             time.sleep(0.5)
 
-            if get_os() == "win":
+            if Settings.getOS() == Platform.WINDOWS:
                 # Restore window
                 minimize_window()
                 time.sleep(1)
@@ -68,7 +68,7 @@ class Test(BaseTest):
                 else:
                     print "FAIL"
                     logger.debug("hover over the 'maximize' controler doesn't work correctly")
-            elif get_os() == "linux":
+            elif Settings.getOS() == Platform.LINUX:
                 # Maximize window
                 hover("window_controls_maximize.png")
                 time.sleep(0.5)
@@ -99,7 +99,7 @@ class Test(BaseTest):
                     print "FAIL"
                     logger.debug("hover over the 'restore' controler doesn't work correctly")
 
-            if get_os() == "linux":
+            if Settings.getOS() == Platform.LINUX:
                 # Minimize window
                 click("window_controls_minimize.png")
                 time.sleep(0.5)
@@ -120,9 +120,9 @@ class Test(BaseTest):
 
             # Focus on Firefox and open the browser again
             restore_window_from_taskbar()
-            if get_os() == "linux":
+            if Settings.getOS() == Platform.LINUX:
                 time.sleep(0.5)
-            elif get_os() == "win":
+            elif Settings.getOS() == Platform.WINDOWS:
                 maximize_window()
                 time.sleep(0.5)
 

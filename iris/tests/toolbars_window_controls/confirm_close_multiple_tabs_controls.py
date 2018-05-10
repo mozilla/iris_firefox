@@ -25,7 +25,7 @@ class test(base_test):
 
         if exists("close_multiple_tabs_warning.png", 10):
             print "Close multiple tabs warning was displayed successfully"
-            if get_os() == "osx":
+            if Settings.getOS() == Platform.MAC:
                 click("cancel_multiple_tabs_warning.png")
             else:
                 close_auxiliary_window()
@@ -41,7 +41,7 @@ class test(base_test):
         close_window()
         time.sleep(1)
 
-        if get_os() == "linux":
+        if Settings.getOS() == Platform.LINUX:
             if exists("maximize_button.png", 10):
                 click("maximize_button.png")
                 time.sleep(1)
