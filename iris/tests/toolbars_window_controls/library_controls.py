@@ -23,7 +23,7 @@ class test(base_test):
         if exists("library_title.png", 10):
             print "The library was opened successfully"
 
-            if get_os() == "linux":
+            if Settings.getOS() == Platform.LINUX:
                 if exists("maximize_button.png", 10):
                     click("maximize_button.png")
                     time.sleep(1)

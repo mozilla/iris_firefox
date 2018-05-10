@@ -52,7 +52,7 @@ class Test(BaseTest):
             # Minimize window
             minimize_window()
             time.sleep(1.5)
-            if get_os() == 'win':
+            if Settings.getOS() == Platform.WIN:
                 minimize_window()
                 time.sleep(1)
             try:
@@ -76,7 +76,7 @@ class Test(BaseTest):
         assert_true(self, expected_6, 'Window in view again')
 
         # Restore window (applies to Windows)
-        if get_os() == 'osx':
+        if Settings.getOS() == Platform.MAC:
             logger.debug('Window size restore not applicable on OSX')
         else:
             expected_7 = exists(window_controls_restore, 10)

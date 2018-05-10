@@ -45,7 +45,7 @@ class Iris(object):
         self.init_tesseract_path()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
-        self.os = get_os()
+        self.os = Settings.getOS()
         self.main()
         test_runner.run(self)
 
@@ -69,9 +69,9 @@ class Iris(object):
         else:
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
-            if get_os() == Platform.MAC:
+            if Settings.getOS() == Platform.MAC:
                 self.fx_app = self.get_test_candidate('/Applications/Firefox.app/Contents')
-            elif get_os() == Platform.WINDOWS:
+            elif Settings.getOS() == Platform.WINDOWS:
                 if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
                     self.fx_app = self.get_test_candidate('C:\\Program Files (x86)\\Mozilla Firefox')
                 else:
@@ -151,7 +151,7 @@ class Iris(object):
             FirefoxApp object for test candidate
         """
         if os.path.isdir(build):
-            candidate_app = fa.FirefoxApp(build, get_os(), False)
+            candidate_app = fa.FirefoxApp(build, Settings.getOS(), False)
             return candidate_app
         else:
             platform = fd.FirefoxDownloader.detect_platform()
@@ -169,12 +169,13 @@ class Iris(object):
                 if build_archive_file is None:
                     sys.exit(-1)
                 # Extract candidate archive
-                candidate_app = fe.extract(build_archive_file, get_os(), self.args.workdir, cache_timeout=1 * 60 * 60)
+                candidate_app = fe.extract(build_archive_file, Settings.getOS(), self.args.workdir,
+                                           cache_timeout=1 * 60 * 60)
                 candidate_app.package_origin = fdl.get_download_url(build, platform)
             elif os.path.isfile(build):
                 # Extract firefox build from archive
                 logger.info('Using file "%s" as Firefox package' % build)
-                candidate_app = fe.extract(build, get_os(), self.args.workdir, cache_timeout=1 * 60 * 60)
+                candidate_app = fe.extract(build, Settings.getOS(), self.args.workdir, cache_timeout=1 * 60 * 60)
                 candidate_app.package_origin = build
                 logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
             elif os.path.isfile(os.path.join(build, 'mach')):
@@ -192,10 +193,10 @@ class Iris(object):
                     # another directory. However, that directory isn't there in build trees,
                     # thus we need to point to the parent for constructing the app.
                     logger.info('Looks like this is an OS X build tree')
-                    candidate_app = fa.FirefoxApp(os.path.abspath(os.path.dirname(dist_dir)), get_os(), True)
+                    candidate_app = fa.FirefoxApp(os.path.abspath(os.path.dirname(dist_dir)), Settings.getOS(), True)
                     candidate_app.package_origin = os.path.abspath(build)
                 else:
-                    candidate_app = fa.FirefoxApp(os.path.abspath(dist_dir), get_os(), True)
+                    candidate_app = fa.FirefoxApp(os.path.abspath(dist_dir), Settings.getOS(), True)
                     candidate_app.package_origin = os.path.abspath(build)
             else:
                 logger.critical('"%s" specifies neither a Firefox release, package file, or build directory' % build)
@@ -269,14 +270,14 @@ class Iris(object):
         osx_linux_tesseract_path = '/usr/local/bin/tesseract'
 
         path_not_found = False
-        current_os = get_os()
+        current_os = Settings.getOS()
 
-        if current_os == 'win':
+        if current_os == Platform.WINDOWS:
             if self.check_tesseract_path(win_tesseract_path):
                 pytesseract.pytesseract.tesseract_cmd = win_tesseract_path + '\\tesseract'
             else:
                 path_not_found = True
-        elif current_os == 'linux' or current_os == 'osx':
+        elif current_os == Platform.LINUX or current_os == Platform.MAC:
             if self.check_tesseract_path(osx_linux_tesseract_path):
                 pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
             else:

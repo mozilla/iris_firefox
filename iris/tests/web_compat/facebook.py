@@ -37,7 +37,7 @@ class Test(BaseTest):
         expected_1 = exists(news_feed, 10)
         assert_true(self, expected_1, 'News Feed has been accessed')
 
-        if get_os() == Platform.MAC:
+        if Settings.getOS() == Platform.MAC:
             for i in range(7):
                 type(Key.TAB)
             time.sleep(2)
@@ -59,7 +59,7 @@ class Test(BaseTest):
 
         # Delete post
 
-        if get_os() == Platform.MAC:
+        if Settings.getOS() == Platform.MAC:
             for i in range(7):
                 type(Key.TAB)
             time.sleep(2)

@@ -63,6 +63,7 @@ def set_save_debug_images(new_val):
 
 
 def get_os():
+    """Get the type of the operating system your script is running on."""
     current_system = platform.system()
     current_os = ''
     if current_system == 'Windows':
@@ -77,16 +78,13 @@ def get_os():
     return current_os
 
 
-class Platform(object):
-    WINDOWS = 'win'
-    LINUX = 'linux'
-    MAC = 'osx'
-    ALL = get_os()
-    HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
-
-
 def get_platform():
     return platform.machine()
+
+
+def get_os_version():
+    """Get the version string of the operating system your script is running on."""
+    return platform.release()
 
 
 def get_module_dir():
@@ -282,9 +280,9 @@ class KeyModifier(object):
         all_modifiers = [
             Key.SHIFT,
             Key.CTRL]
-        if get_os() == 'osx':
+        if Settings.getOS() == Platform.MAC:
             all_modifiers.append(Key.CMD)
-        elif get_os() == 'win':
+        elif Settings.getOS() == Platform.WINDOWS:
             all_modifiers.append(Key.WIN)
         else:
             all_modifiers.append(Key.META)
@@ -549,8 +547,25 @@ class Settings(object):
     def getSikuliVersion(self):
         raise UnsupportedMethodError('Unsupported method Settings.getSikuliVersion()')
 
+    def getOS(self):
+        """Get the type of the operating system your script is running on."""
+        return get_os()
+
+    def getOSVersion(self):
+        """Get the version string of the operating system your script is running on."""
+        return get_os_version()
+
 
 Settings = Settings()
+
+
+class Platform(object):
+    """Class that holds all supported operating systems (HIDEF = High definition displays)."""
+    WINDOWS = 'win'
+    LINUX = 'linux'
+    MAC = 'osx'
+    ALL = Settings.getOS()
+    HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
 
 
 def _save_debug_image(search_for, on_region, locations):
@@ -607,7 +622,7 @@ def _region_grabber(coordinates):
     """
     grabbed_area = pyautogui.screenshot(region=coordinates)
 
-    if get_os() is 'osx':
+    if Settings.getOS() == Platform.MAC:
         # Resize grabbed area to what pyautogui thinks is the correct screen size
         # TODO double check this on mac since resizing for regions deforms images
         w, h = pyautogui.size()
@@ -1216,7 +1231,7 @@ def scroll(clicks):
 def paste(text):
     # load to clipboard
     pyperclip.copy(text)
-    if get_os() is Platform.MAC:
+    if Settings.getOS() == Platform.MAC:
         pyautogui.hotkey('command', 'v')
     else:
         pyautogui.hotkey('ctrl', 'v')
