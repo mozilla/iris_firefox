@@ -177,12 +177,10 @@ def login_site(site_name):
 
 
 def dont_save_password():
-    try:
-        if exists('dont_save_password_button.png', 10):
-            click('dont_save_password_button.png')
-    except FindError:
-        logger.error('Failed to find save password dialog')
-        return None
+    if exists('dont_save_password_button.png', 10):
+        click('dont_save_password_button.png')
+    else:
+        raise FindError('Unable to find dont_save_password_button.png')
 
 
 def click_hamburger_menu_option(option):
@@ -237,9 +235,6 @@ def open_about_firefox():
         # Key stroke into Firefox Menu to get to About Firefox
         type(Key.F2, modifier=KeyModifier.CTRL)
         time.sleep(0.5)
-        type(text=Key.ESC)
-        time.sleep(0.5)
-
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)

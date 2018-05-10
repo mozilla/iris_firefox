@@ -7,12 +7,15 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def print_report_footer(passed, failed, skipped, errors, total_time):
+def print_report_footer(platform, fx_version, fx_build, passed, failed, skipped, errors, total_time):
     total = passed + failed + skipped + errors
-    prefix = 'Passed: %s, Failed: %s, Skipped: %s, Errors: %s -- Total: %s' % (passed, failed, skipped, errors, total)
-    suffix = 'Total time: %s second(s)' % total_time
+    fx_details = 'Platform: %s, Firefox Version: %s, Firefox Build: %s' % (platform, fx_version, fx_build)
+    test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors: %s -- Total: %s' % (passed, failed, skipped,
+                                                                                         errors, total)
+    total_time_str = 'Total time: %s second(s)' % total_time
     separator = '\n' + '-' * 120 + '\n'
-    logger.info('%s%s%s%s%s' % (separator, prefix, ' ' * (120 - (len(prefix) + len(suffix))), suffix, separator))
+    logger.info(separator + fx_details + '\n' + test_results_str + ' ' * (120 - (len(test_results_str) +
+                len(total_time_str))) + total_time_str + separator)
 
 
 def format_outcome(outcome):

@@ -11,56 +11,60 @@ import struct
 class FirefoxApp(object):
     """Class holding information about an extracted Firefox application directory."""
 
-    __locations = {
-        'osx': {
-            'base': os.path.join('*', '*.app'),
-            'exe': os.path.join('Contents', 'MacOS', 'firefox'),
-            'browser': os.path.join('Contents', 'Resources', 'browser'),
-            'gredir': os.path.join('Contents', 'Resources'),
-            'ini': os.path.join('Contents', 'Resources', 'application.ini'),
-        },
-        'linux': {
-            'base': 'firefox',
-            'exe': 'firefox',
-            'browser': 'browser',
-            'gredir': '',
-            'ini': 'application.ini',
-        },
-        'win': {
-            'base': 'core',
-            'exe': 'firefox.exe',
-            'browser': 'browser',
-            'gredir': '',  # FIXME: this may be wrong
-            'ini': 'application.ini',
-        },
-    }
+    def __init__(self, directory, platform, is_downloaded):
 
-    def __init__(self, directory):
+        __locations = {
+            'osx': {
+                'base': os.path.join('*', '*.app'),
+                'exe': os.path.join('Contents', 'MacOS', 'firefox') if is_downloaded else os.path.join(directory,
+                                                                                                       'MacOS',
+                                                                                                       'firefox'),
+                'browser': os.path.join('Contents', 'Resources', 'browser') if is_downloaded else os.path.join(
+                    directory, 'Resources', 'browser'),
+                'gredir': os.path.join('Contents', 'Resources') if is_downloaded else os.path.join(directory,
+                                                                                                   'Resources'),
+                'ini': os.path.join('Contents', 'Resources', 'application.ini') if is_downloaded else os.path.join(
+                    directory, 'Resources', 'application.ini'),
+            },
+            'linux': {
+                'base': 'firefox' if is_downloaded else '',
+                'exe': 'firefox',
+                'browser': 'browser',
+                'gredir': '',
+                'ini': 'application.ini',
+            },
+            'win': {
+                'base': 'core' if is_downloaded else '',
+                'exe': 'firefox.exe',
+                'browser': 'browser',
+                'gredir': '',  # FIXME: this may be wrong
+                'ini': 'application.ini',
+            },
+        }
 
         # Assuming that directory points to a directory
         # where a stock Firefox archive was extracted.
-        self.platform = None
-        self.app_dir = None
-        for platform in self.__locations:
-            base = self.__locations[platform]['base']
+        if platform in __locations:
+            base = __locations[platform]['base']
             matches = glob.glob(os.path.join(directory, base))
-            if len(matches) == 0:
-                continue
-            elif len(matches) >= 1:
+            if len(matches) > 0:
                 if os.path.isdir(matches[0]):
                     self.platform = platform
                     self.app_dir = matches[0]
-                    break
-            raise Exception('Unsupported application package format (missing or ambiguous base folder)')
-
-        if self.platform is None:
+            else:
+                raise Exception('Unsupported application package format (missing or ambiguous base folder)')
+        else:
             raise Exception('Unsupported application package platform')
 
         # Fill in the rest of the package locations
-        self.exe = os.path.join(self.app_dir, self.__locations[self.platform]['exe'])
-        self.browser = os.path.join(self.app_dir, self.__locations[self.platform]['browser'])
-        self.gredir = os.path.join(self.app_dir, self.__locations[self.platform]['gredir'])
-        self.app_ini = os.path.join(self.app_dir, self.__locations[self.platform]['ini'])
+        self.exe = os.path.join(self.app_dir, __locations[self.platform]['exe'])
+        self.browser = os.path.join(self.app_dir, __locations[self.platform]['browser'])
+        self.gredir = os.path.join(self.app_dir, __locations[self.platform]['gredir'])
+        self.app_ini = os.path.join(self.app_dir, __locations[self.platform]['ini'])
+        print(self.exe)
+        print(self.browser)
+        print(self.gredir)
+        print(self.app_ini)
 
         # Sanity checks
         if not os.path.isfile(self.exe) or not os.path.isdir(self.browser):
@@ -99,6 +103,7 @@ class FirefoxApp(object):
         ini_parser.read(self.app_ini)
         self.application_ini = dict(ini_parser.items('App'))
         self.version = ini_parser.get('App', 'Version')
+        self.build_id = ini_parser.get('App', 'BuildID')
         # For versions that have no `CodeName` specified, extract it from the repo name.
         try:
             self.release = ini_parser.get('App', 'CodeName')

@@ -10,13 +10,13 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test for adding a website in the bookmarks section"
+        self.meta = 'This is a test for adding a website in the bookmarks section'
 
     def run(self):
-        url = "www.amazon.com"
-        amazon_image = "amazon.png"
-        amazon_bookmark_image_1 = "amazon_bookmark_1.png"
-        amazon_bookmark_image_2 = "amazon_bookmark_2.png"
+        url = 'www.amazon.com'
+        amazon_image = 'amazon.png'
+        amazon_bookmark_image_1 = 'amazon_bookmark_1.png'
+        amazon_bookmark_image_2 = 'amazon_bookmark_2.png'
 
         navigate(url)
 
@@ -34,14 +34,14 @@ class Test(BaseTest):
         time.sleep(3)
 
         # Look for new bookmark via library menu button
-        click("library.png")
+        click('library.png')
         time.sleep(1)
         type(Key.TAB)
         type(Key.ENTER)
         time.sleep(1)
 
         expected_2 = exists(amazon_bookmark_image_1, 10)
-        assert_true(self, expected_2, 'Find amazon bookmark 1 image')
+        assert_true(self, expected_2, 'Find amazon bookmark 1st image')
 
         type(Key.ESC)
 
@@ -51,8 +51,8 @@ class Test(BaseTest):
         # Look for bookmark in bookmark menu
         bookmarks_sidebar()
         time.sleep(1)
-        type("amazon")
+        type('amazon')
         time.sleep(1)
 
         expected_3 = exists(amazon_bookmark_image_2, 10)
-        assert_true(self, expected_3, 'Find amazon bookmark 2 image')
+        assert_true(self, expected_3, 'Find amazon bookmark 2nd image')
