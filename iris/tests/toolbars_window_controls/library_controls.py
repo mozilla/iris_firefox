@@ -73,7 +73,7 @@ class Test(BaseTest):
             expected_6 = waitVanish(library_title, 10)
             assert_true(self, expected_6, 'Window successfully minimized')
         except:
-            logger.error('window not minimized, aborting test')
+            raise FindError('Window not minimized, aborting test')
 
         if get_os() == 'osx':
             type(text=Key.DOWN, modifier=KeyModifier.CTRL)
@@ -94,4 +94,4 @@ class Test(BaseTest):
             expected_8 = waitVanish(library_title, 10)
             assert_true(self, expected_8, 'The library was closed successfully')
         except:
-            logger.error('The library didn\'t close successfully')
+            raise FindError('The library didn\'t close successfully')

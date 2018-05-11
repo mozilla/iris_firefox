@@ -294,7 +294,7 @@ def maximize_auxiliary_window():
     if get_os() == Platform.MAC:
         library_controls = 'library_controls.png'
         # Set target to the maximize button
-        maximize_button = Pattern(library_controls).targetOffset(21, 0)
+        maximize_button = Pattern(library_controls).targetOffset(48, 7)
         # We must hover the controls so the ALT key can take effect there.
         hover(library_controls)
         # Alt key changes maximize button from full screen to maximize window.
