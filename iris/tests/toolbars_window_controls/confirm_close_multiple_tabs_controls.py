@@ -12,7 +12,6 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of the \'Confirm close multiple tabs\' window controls'
 
-
     def run(self):
         close_multiple_tabs_warning = 'close_multiple_tabs_warning.png'
         cancel_multiple_tabs_warning = 'cancel_multiple_tabs_warning.png'
@@ -44,12 +43,12 @@ class Test(BaseTest):
         time.sleep(1)
 
         if get_os() == 'linux':
-            click(maximize_button)
+            maximize_window()
             time.sleep(1)
             expected_4 = exists(restore_button, 10)
             assert_true(self, expected_4, 'Close multiple tabs warning was maximized successfully')
 
-            click(restore_button)
+            minimize_window()
             time.sleep(1)
             expected_5 = exists(maximize_button, 10)
             assert_true(self, expected_5, 'Close multiple tabs warning was restored successfully')
