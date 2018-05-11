@@ -79,7 +79,7 @@ class test(base_test):
                                 if center_screen.exists('auxiliary_window_maximize.png', 5):
                                     center_screen.click('auxiliary_window_maximize.png')
                                     logger.debug('Browser Console is maximized')
-                                    if get_os() == "osx":
+                                    if Settings.getOS() == Platform.MAC:
                                         screen.click('auxiliary_window_close_button.png')
                                     else:
                                         force_close()

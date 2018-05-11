@@ -33,7 +33,7 @@ def run(app):
             return
         logger.info('\n' + '-' * 120)
 
-        if get_os() not in current.exclude:
+        if Settings.getOS() not in current.exclude:
             logger.info('Executing: %s - %s ' % (index, current.meta))
             current.set_start_time(time.time())
 
@@ -83,7 +83,7 @@ def run(app):
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    print_report_footer(get_os(), app.version, app.build_id, passed, failed, skipped, errors,
+    print_report_footer(Settings.getOS(), app.version, app.build_id, passed, failed, skipped, errors,
                         get_duration(start_time, end_time))
 
     # We may remove profiles here, but likely still in use and can't do it yet

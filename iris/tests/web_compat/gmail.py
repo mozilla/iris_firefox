@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Web compability test for gmail.com--Login'
+        self.meta = 'Web compability test for gmail.com'
 
     def run(self):
         url = 'mail.google.com'
@@ -27,12 +27,12 @@ class Test(BaseTest):
         time.sleep(5)
 
         self.login_gmail()
-        logger.info('Successful Log IN ')
+        logger.info('Successful login')
         time.sleep(5)
         type(Key.ESC)
 
         expected_1 = exists(compose, 10)
-        assert_true(self, expected_1, 'Compose button is present on the page!')
+        assert_true(self, expected_1, 'Compose button is present on the page.')
 
         click(compose)
         time.sleep(2)
@@ -54,20 +54,20 @@ class Test(BaseTest):
         time.sleep(2)
 
         expected_2 = exists(inbox, 10)
-        assert_true(self, expected_2, 'Gmail Inbox has been accessed successfully!')
+        assert_true(self, expected_2, 'Gmail Inbox has been accessed successfully.')
 
         click(inbox)
         time.sleep(1)
 
         expected_3 = exists(email, 10)
-        assert_true(self, expected_3, 'Email is received successfully!')
+        assert_true(self, expected_3, 'Email is received successfully.')
 
         click(email)
-        logger.debug('Email has been accessed..')
+        logger.debug('Email has been accessed.')
         time.sleep(1)
         click(delete_email)
         time.sleep(2)
-        logger.debug('Email has been erased..')
+        logger.debug('Email has been erased.')
         type(Key.ENTER)
 
     def login_gmail(self):
@@ -76,7 +76,7 @@ class Test(BaseTest):
         login = 'login_gmail.png'
 
         expected_login = exists(login, 10)
-        assert_true(self, expected_login, 'LogIn fields are present!')
+        assert_true(self, expected_login, 'Login fields are present.')
 
         type(username)
         for i in range(3):
