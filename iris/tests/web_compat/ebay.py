@@ -57,7 +57,7 @@ class Test(BaseTest):
             wait('ebay_search.png', 15)
             logger.debug('Page load successfully')
         except:
-            logger.error('Can't find eBay image in page, aborting test.')
+            logger.error('Can\'t find eBay image in page, aborting test.')
             return
 
         else:
