@@ -394,8 +394,10 @@ def minimize_window():
     """Minimize the browser window to the application launch bar"""
     if Settings.getOS() == Platform.MAC:
         type(text='m', modifier=KeyModifier.CMD)
-    else:
+    elif Settings.getOS() == Platform.WINDOWS:
         type(text=Key.DOWN, modifier=KeyModifier.WIN)
+    else:
+        type(text=Key.DOWN, modifier=KeyModifier.CTRL + KeyModifier.META)
 
 
 def new_tab():
