@@ -4,6 +4,7 @@
 
 import logging
 import os
+import platform
 import sys
 import urllib2
 
@@ -101,10 +102,10 @@ class FirefoxDownloader(object):
     def detect_platform():
         if FirefoxDownloader.detect_os() == 'osx':
             return 'osx'
-        if sys.maxsize == 2 ** 31:
-            return FirefoxDownloader.detect_os() + '32'
-        else:
+        if platform.machine().endswith('64'):
             return FirefoxDownloader.detect_os()
+        else:
+            return FirefoxDownloader.detect_os() + '32'
 
     @staticmethod
     def get_download_url(build, platform=None):
