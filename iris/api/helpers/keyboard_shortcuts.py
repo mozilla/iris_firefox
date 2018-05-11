@@ -393,7 +393,7 @@ def maximize_window():
 def minimize_window():
     """Minimize the browser window to the application launch bar"""
     if Settings.getOS() == Platform.MAC:
-        type(text='m', modifier=Key.CMD)
+        type(text='m', modifier=KeyModifier.CMD)
     else:
         type(text=Key.DOWN, modifier=KeyModifier.WIN)
 
