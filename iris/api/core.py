@@ -555,8 +555,63 @@ class Settings(object):
         """Get the version string of the operating system your script is running on."""
         return get_os_version()
 
+    def isLinux(self):
+        """Checks if we are running on a Linux system.
+
+        :return: True if we are running on a Linux system, False otherwise
+        """
+        return self.getOS() == Platform.LINUX
+
+    def isMac(self):
+        """Checks if we are running on a Mac system.
+
+        :return: True if we are running on a Mac system, False otherwise
+        """
+        return self.getOS() == Platform.MAC
+
+    def isWindows(self):
+        """Checks if we are running on a Windows system.
+
+        :return: True if we are running on a Windows system, False otherwise
+        """
+        return self.getOS() == Platform.WINDOWS
+
 
 Settings = Settings()
+
+
+class Vision(object):
+    def __init__(self):
+        pass
+
+    def getParameter(self):
+        raise UnsupportedMethodError('Unsupported method Vision.getParameter()')
+
+    def setParameter(self):
+        raise UnsupportedMethodError('Unsupported method Vision.setParameter()')
+
+
+Vision = Vision()
+
+
+class Do(object):
+    def __init__(self):
+        pass
+
+    def input(self):
+        raise UnsupportedMethodError('Unsupported method Do.input()')
+
+    def popAsk(self):
+        raise UnsupportedMethodError('Unsupported method Do.popAsk()')
+
+    def popError(self):
+        raise UnsupportedMethodError('Unsupported method Do.popError()')
+
+    def popup(self):
+        raise UnsupportedMethodError('Unsupported method Do.popup()')
+
+
+Do = Do()
 
 
 class Platform(object):

@@ -77,7 +77,7 @@ class Iris(object):
                 else:
                     self.fx_app = self.get_test_candidate('C:\\Program Files\\Mozilla Firefox')
             else:
-                self.fx_app = self.get_test_candidate('/usr/bin/firefox')
+                self.fx_app = self.get_test_candidate('/usr/lib/firefox')
 
         self.fx_path = self.fx_app.exe
         self.version = self.fx_app.version
