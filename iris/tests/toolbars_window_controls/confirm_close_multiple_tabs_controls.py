@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test of the "Confirm close multiple tabs" window controls'
+        self.meta = 'This is a test of the \'Confirm close multiple tabs\' window controls'
 
 
     def run(self):
@@ -38,7 +38,7 @@ class Test(BaseTest):
             expected_3 = exists(home_button, 10)
             assert_true(self, expected_2 and expected_3, 'Close multiple tabs warning was canceled successfully')
         except:
-            logger.error('Close multiple tabs warning was not canceled successfully')
+            raise FindError('Close multiple tabs warning was not canceled successfully')
 
         close_window()
         time.sleep(1)
@@ -62,4 +62,4 @@ class Test(BaseTest):
             expected_8 = waitVanish(home_button, 10)
             assert_true(self, expected_7 and expected_8, 'The browser was closed successfully')
         except:
-            logger.error('The browser was not closed successfully')
+            raise FindError('The browser was not closed successfully')
