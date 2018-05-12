@@ -52,7 +52,7 @@ class Test(BaseTest):
             # Minimize window
             minimize_window()
             time.sleep(1.5)
-            if Settings.getOS() == Platform.WIN:
+            if Settings.getOS() == Platform.WINDOWS:
                 minimize_window()
                 time.sleep(1)
             try:
@@ -69,7 +69,7 @@ class Test(BaseTest):
         restore_window_from_taskbar()
         time.sleep(1)
 
-        if get_os() == 'win':
+        if Settings.getOS() == Platform.WINDOWS:
             maximize_window()
 
         expected_6 = exists(hamburger_menu, 10)
