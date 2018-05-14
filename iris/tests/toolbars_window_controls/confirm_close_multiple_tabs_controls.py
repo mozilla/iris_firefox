@@ -15,6 +15,7 @@ class Test(BaseTest):
     def run(self):
         close_multiple_tabs_warning = 'close_multiple_tabs_warning.png'
         cancel_multiple_tabs_warning = 'cancel_multiple_tabs_warning.png'
+        close_multiple_tabs_warning_logo = 'close_multiple_tabs_warning_logo.png'
         home_button = 'home_button.png'
         maximize_button = 'maximize_button.png'
         restore_button = 'restore_button.png'
@@ -44,6 +45,8 @@ class Test(BaseTest):
 
         if get_os() == 'linux':
             maximize_window()
+            time.sleep(1)
+            hover(Pattern(close_multiple_tabs_warning_logo).targetOffset(0, -100))
             time.sleep(1)
             expected_4 = exists(restore_button, 10)
             assert_true(self, expected_4, 'Close multiple tabs warning was maximized successfully')
