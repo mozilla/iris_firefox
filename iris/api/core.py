@@ -803,7 +803,7 @@ def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
         return position
 
 
-def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, threshold=0.7):
+def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, threshold=0.99):
     """Search for needle in stack (multiple matches)
 
     :param str search_for:  Image path (needle)
@@ -830,7 +830,7 @@ def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, t
         else:
             top_left = max_loc
 
-        if threshold < max_val < precision:
+        if threshold > max_val > precision:
             sx, sy = top_left
             for x in range(sx - w / 2, sx + w / 2):
                 for y in range(sy - h / 2, sy + h / 2):
@@ -856,7 +856,12 @@ def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
     :return: Location
     """
     stack_image = _region_grabber(region=region)
-    return _match_template(image_path, stack_image, precision)
+    location = _match_template(image_path, stack_image, precision)
+
+    if region is not None:
+        return Location(location.x + region.x, location.y + region.y)
+    else:
+        return location
 
 
 def _image_search_multiple(image_path, precision=DEFAULT_ACCURACY, region=None):
@@ -1012,6 +1017,27 @@ def _is_ocr_text(input_text):
     return is_ocr_string
 
 
+def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
+    try:
+        wait(top_left_marker_img, 10)
+        exists(bottom_right_marker_img, 10)
+    except Exception as err:
+        logger.error('Unable to find page markers')
+        raise err
+
+    top_left_pos = find(top_left_marker_img)
+    hover(top_left_pos, 0)
+    bottom_right_pos = find(bottom_right_marker_img)
+    hover(bottom_right_pos, 0)
+
+    marker_width, marker_height = get_asset_img_size(bottom_right_marker_img)
+
+    return Region(top_left_pos.x,
+                  top_left_pos.y,
+                  (bottom_right_pos.x + marker_width),
+                  bottom_right_pos.y - top_left_pos.y + marker_height)
+
+
 """Sikuli wrappers
 
 - wait
@@ -1057,14 +1083,18 @@ def hover(where=None, duration=0, in_region=None):
         image_path = _get_needle_path(where)
         pos = _image_search(image_path, region=in_region)
         if pos.x is not -1:
+            needle = cv2.imread(image_path)
+            needle_height, needle_width, channels = needle.shape
             if isinstance(where, Pattern):
                 possible_offset = where.getTargetOffset()
-                if possible_offset is None:
-                    possible_offset = Location(0, 0)
-                move_to = Location(pos.x + possible_offset.getX(), pos.y + possible_offset.getY())
-                pyautogui.moveTo(move_to.x, move_to.y)
+                if possible_offset is not None:
+                    move_to = Location(pos.x + possible_offset.getX(), pos.y + possible_offset.getY())
+                    pyautogui.moveTo(move_to.x, move_to.y)
+                else:
+                    move_to = Location(pos.x, pos.y)
+                    pyautogui.moveTo(move_to.x + needle_width / 2, move_to.y + needle_height / 2)
             else:
-                pyautogui.moveTo(pos.x, pos.y)
+                pyautogui.moveTo(pos.x + needle_width / 2, pos.y + needle_height / 2)
         else:
             raise FindError('Unable to find image %s' % image_path)
 

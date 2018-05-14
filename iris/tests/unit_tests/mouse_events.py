@@ -13,77 +13,148 @@ class Test(BaseTest):
         self.meta = 'This is an experiment for Pattern,Location and Region with chain operations'
         # self.exclude = Platform.ALL
 
+    def confirm_hover(self, hover_region, hovered_element):
+        assert_true(self, hover_region.exists(hovered_element), 'Hover confirmed')
+
     def run(self):
-        url = 'https://www.google.com/?hl=EN'
+        # @todo load this via assets
+        url = 'file:///' + get_module_dir() + '/iris/tests/unit_tests/assets/mouse-events.html'
+
+        t_left = 'ut-top-left.png'
+        b_right = 'ut-bottom-right.png'
+
+        hover_t_left = 'ut-hover-top.png'
+        hover_b_right = 'ut-hover-bottom.png'
+        click_t_left = 'ut-click-top.png'
+        click_b_right = 'ut-click-bottom.png'
+
         navigate(url)
+        # Wait page load
+        wait(t_left)
 
-        google = 'google_search.png'
-        google_pattern = Pattern('google_search.png')
-        home_button = 'home.png'
-        back_button = 'back.png'
+        desktop_i = 'ut-desktop.png'
+        keyboard_i = 'ut-keyboard.png'
+        power_i = 'ut-power-off.png'
+        upload_i = 'ut-upload.png'
+        save_i = 'ut-save.png'
 
-        wait(google_pattern)
+        desktop_pattern = Pattern('ut-desktop.png')
+        keyboard_pattern = Pattern('ut-keyboard.png')
+        power_pattern = Pattern('ut-power-off.png')
+        upload_pattern = Pattern('ut-upload.png')
+        save_pattern = Pattern('ut-save.png')
 
-        # >>> HOVER TEST <<<
-        logger.info('>>> HOVER TEST <<<')
+        last_hover_region = generate_region_by_markers(hover_t_left, hover_b_right)
+        last_click_region = generate_region_by_markers(click_t_left, click_b_right)
 
-        hover(google)
-        hover(Location(0, 0))
-        hover(google_pattern)
+        # ---- HOVER TESTS ----
 
-        hover(google_pattern.targetOffset(20, 0))
-        hover(google_pattern.targetOffset(30, 0))
-        hover(google_pattern.targetOffset(40, 0))
-        hover(google_pattern.targetOffset(50, 0))
-        hover(google_pattern.targetOffset(100, 0))
+        last_hover_region.debug()
+        # General hover
+        logger.info('Test hover on page by image names')
+        hover(desktop_i)
+        self.confirm_hover(last_hover_region, desktop_i)
+        hover(keyboard_i)
+        self.confirm_hover(last_hover_region, keyboard_i)
+        hover(power_i)
+        self.confirm_hover(last_hover_region, power_i)
+        hover(upload_i)
+        self.confirm_hover(last_hover_region, upload_i)
+        hover(save_i)
+        self.confirm_hover(last_hover_region, save_i)
 
-        hover(google_pattern.targetOffset(-100, -1), 2)
-        hover(google_pattern.targetOffset(-150, -2), 2)
-        hover(google_pattern.targetOffset(-200, -3), 2)
-        hover(google_pattern.targetOffset(-250, -4), 2)
-        hover(google_pattern.targetOffset(-300, -5), 2)
-        hover(google_pattern.targetOffset(-350, -6), 2)
-        hover(google_pattern.targetOffset(-400, -7), 2)
+        # Pattern hover
+        logger.info('Test hover on page with Pattern inputs')
+        hover(desktop_pattern)
+        self.confirm_hover(last_hover_region, desktop_pattern)
+        hover(keyboard_pattern)
+        self.confirm_hover(last_hover_region, keyboard_pattern)
+        hover(power_pattern)
+        self.confirm_hover(last_hover_region, power_pattern)
+        hover(upload_pattern)
+        self.confirm_hover(last_hover_region, upload_pattern)
+        hover(save_pattern)
+        self.confirm_hover(last_hover_region, save_pattern)
 
-        hover(Location(0, 0))
+        # in Region general hover
+        in_region = generate_region_by_markers(t_left, b_right)
+        in_region.debug()
 
-        # >>> FIND TEST <<<
-        logger.info('>>> FIND TEST <<<')
+        logger.info('Test hover in Region of page  by image names')
+        in_region.hover(desktop_i)
+        self.confirm_hover(last_hover_region, desktop_i)
+        in_region.hover(keyboard_i)
+        self.confirm_hover(last_hover_region, keyboard_i)
+        in_region.hover(power_i)
+        self.confirm_hover(last_hover_region, power_i)
+        in_region.hover(upload_i)
+        self.confirm_hover(last_hover_region, upload_i)
+        in_region.hover(save_i)
+        self.confirm_hover(last_hover_region, save_i)
 
-        google_position = find(google)
-        assert_true(self, isinstance(google_position, Location), 'Find by String should return Location')
+        # in Region Pattern hover
+        logger.info('Test hover in Region with Pattern inputs')
+        in_region.hover(desktop_pattern)
+        self.confirm_hover(last_hover_region, desktop_pattern)
+        in_region.hover(keyboard_pattern)
+        self.confirm_hover(last_hover_region, keyboard_pattern)
+        in_region.hover(power_pattern)
+        self.confirm_hover(last_hover_region, power_pattern)
+        in_region.hover(upload_pattern)
+        self.confirm_hover(last_hover_region, upload_pattern)
+        in_region.hover(save_pattern)
+        self.confirm_hover(last_hover_region, save_pattern)
 
-        pos_by_pattern = find(google_pattern)
-        assert_true(self, isinstance(pos_by_pattern, Location), 'Find by Pattern should return Location')
+        # ---- CLICK TESTS ----
 
-        # >>> WAIT TEST <<<
-        logger.info('>>> WAIT TEST <<<')
+        last_click_region.debug()
+        # General click
+        logger.info('Test click on page by image names')
+        click(desktop_i)
+        self.confirm_hover(last_click_region, desktop_i)
+        click(keyboard_i)
+        self.confirm_hover(last_click_region, keyboard_i)
+        click(power_i)
+        self.confirm_hover(last_click_region, power_i)
+        click(upload_i)
+        self.confirm_hover(last_click_region, upload_i)
+        click(save_i)
+        self.confirm_hover(last_click_region, save_i)
 
-        assert_true(self, wait(google, 10), 'Wait by String should return True')
-        assert_true(self, wait(google_pattern, 10), 'Wait by Pattern should return True')
+        # Pattern click
+        logger.info('Test click on page with Pattern inputs')
+        click(desktop_pattern)
+        self.confirm_hover(last_click_region, desktop_pattern)
+        click(keyboard_pattern)
+        self.confirm_hover(last_click_region, keyboard_pattern)
+        click(power_pattern)
+        self.confirm_hover(last_click_region, power_pattern)
+        click(upload_pattern)
+        self.confirm_hover(last_click_region, upload_pattern)
+        click(save_pattern)
+        self.confirm_hover(last_click_region, save_pattern)
 
-        # >>> EXISTS TEST <<<
-        logger.info('>>> EXISTS TEST <<<')
+        logger.info('Test click in Region of page  by image names')
+        in_region.click(desktop_i)
+        self.confirm_hover(last_click_region, desktop_i)
+        in_region.click(keyboard_i)
+        self.confirm_hover(last_click_region, keyboard_i)
+        in_region.click(power_i)
+        self.confirm_hover(last_click_region, power_i)
+        in_region.click(upload_i)
+        self.confirm_hover(last_click_region, upload_i)
+        in_region.click(save_i)
+        self.confirm_hover(last_click_region, save_i)
 
-        assert_true(self, exists(google), 'Exists by String should return True')
-        assert_true(self, exists(google_pattern), 'Exists by Pattern should return True')
-
-        # >>> CLICK AND VANISH TEST <<<
-        logger.info('>>> CLICK AND VANISH TEST <<<')
-
-        click(Location(0, 0))
-        click(google_position, 0)
-        click(home_button, 0)
-        assert_true(self, waitVanish(google), 'Google button should vanish')
-        click(back_button, 0)
-        click(home_button, 0)
-        assert_true(self, waitVanish(google_pattern), 'Google button should vanish')
-        click(Pattern(back_button), 0)
-
-        click(google_pattern, 0)
-        click(google_pattern.targetOffset(10, 0), 0)
-        click(google_pattern.targetOffset(20, 0), 0)
-        click(google_pattern.targetOffset(30, 5), 0)
-        click(google_pattern.targetOffset(30, 10), 0)
-
-
+        # in Region Pattern click
+        logger.info('Test click in Region with Pattern inputs')
+        in_region.click(desktop_pattern)
+        self.confirm_hover(last_click_region, desktop_pattern)
+        in_region.click(keyboard_pattern)
+        self.confirm_hover(last_click_region, keyboard_pattern)
+        in_region.click(power_pattern)
+        self.confirm_hover(last_click_region, power_pattern)
+        in_region.click(upload_pattern)
+        self.confirm_hover(last_click_region, upload_pattern)
+        in_region.click(save_pattern)
+        self.confirm_hover(last_click_region, save_pattern)
