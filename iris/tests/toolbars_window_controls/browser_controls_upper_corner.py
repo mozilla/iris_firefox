@@ -67,29 +67,29 @@ class Test(BaseTest):
             assert_true(self, expected,
                         'Hover over the \'maximize\' button works correctly; Window successfully restored.')
 
-        if get_os() == 'linux':
+        if Settings.getOS() == Platform.LINUX:
             # Minimize window
             click(window_controls_minimize)
             time.sleep(0.5)
         else:
-            if exists(hamburger_menu, 10):
-                # Minimize window
-                minimize_window()
-                time.sleep(0.5)
-                try:
-                    expected = waitVanish(hamburger_menu, 10)
-                    assert_true(self, expected, 'Window successfully minimized.')
-                except Exception as error:
-                    logger.error('Window not minimized.')
-                    raise error
-            else:
-                logger.error('Can\'t find the \'hamburger menu\' in the page.')
+            expected = exists(hamburger_menu, 10)
+            assert_true(self, expected, 'Found \'hamburger menu\'')
+
+            # Minimize window
+            minimize_window()
+            time.sleep(0.5)
+            expected = False
+            try:
+                expected = waitVanish(hamburger_menu, 10)
+            except Exception as error:
+                logger.error('Window not minimized.')
+            assert_true(self, expected, 'Window successfully minimized.')
 
         # Focus on Firefox and open the browser again
         restore_window_from_taskbar()
-        if get_os() == 'linux':
+        if Settings.getOS() == Platform.LINUX:
             time.sleep(0.5)
-        elif get_os() == 'win':
+        elif Settings.getOS() == Platform.WINDOWS:
             maximize_window()
             time.sleep(0.5)
 
@@ -105,5 +105,4 @@ class Test(BaseTest):
             expected = waitVanish(hamburger_menu, 10)
             assert_true(self, expected, 'Window successfully closed.')
         except Exception as error:
-            logger.error('Window not closed.')
-            raise error
+            assert_true(self, False, 'Window successfully closed.')
