@@ -72,7 +72,7 @@ class BaseTest(object):
         res = Result(outcome, message, actual, expected, error)
         self.add_result(res)
 
-    def set_asset_path(self, path):
+    def get_asset_path(self, path):
         return os.path.join(path, 'assets/')
 
     @staticmethod
