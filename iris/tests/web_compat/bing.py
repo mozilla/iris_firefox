@@ -44,6 +44,10 @@ class Test(BaseTest):
         # the keyboard navigation in place as much as i could
 
         if Settings.getOS() == Platform.MAC:
+
+            expected_button = exists(bing_menu, 10)
+            assert_true(self, expected_button, 'Bing menu can be accessed')
+
             click(bing_menu)
             time.sleep(2)
             type(Key.TAB)
