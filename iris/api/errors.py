@@ -16,3 +16,8 @@ class UnsupportedMethodError(Exception):
 class UnsupportedAttributeError(Exception):
     """Exception raised for unsupported attributes."""
     pass
+
+
+class UnsupportedClassMethodError(Exception):
+    """Exception raised for unsupported classmethods."""
+    pass

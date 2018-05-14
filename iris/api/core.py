@@ -137,9 +137,139 @@ class Env(object):
     def getClipboard():
         return pyperclip.paste()
 
+    @staticmethod
+    def isLockOn():
+        raise UnsupportedMethodError('Unsupported method Env.isLockOn(). Use Key.isLockOn() instead.')
+
+    @staticmethod
+    def getOSVersion():
+        raise UnsupportedMethodError('Unsupported method Env.getOSVersion(). Use Settings.getOSVersion() instead.')
+
+    @staticmethod
+    def getOS():
+        raise UnsupportedMethodError('Unsupported method Env.getOS(). Use Settings.getOS() instead.')
+
+    @staticmethod
+    def getMouseLocation():
+        raise UnsupportedMethodError('Unsupported method Env.getMouseLocation(). Use Mouse.at() instead.')
+
+    @staticmethod
+    def addHotkey():
+        raise UnsupportedMethodError('Unsupported method Env.addHotkey().')
+
+    @staticmethod
+    def removeHotkey():
+        raise UnsupportedMethodError('Unsupported method Env.removeHotkey().')
+
+    @staticmethod
+    def getSikuliVersion():
+        raise UnsupportedMethodError('Unsupported method Env.getSikuliVersion().')
+
+
+class Sikulix(object):
+
+    @staticmethod
+    def prefLoad():
+        raise UnsupportedMethodError('Unsupported method Sikulix.prefLoad().')
+
+    @staticmethod
+    def prefRemove():
+        raise UnsupportedMethodError('Unsupported method Sikulix.prefRemove().')
+
+    @staticmethod
+    def prefStore():
+        raise UnsupportedMethodError('Unsupported method Sikulix.prefStore().')
+
+
+class App(object):
+    def __init__(self):
+        self.open = self._instance_open_app
+        self.focus = self._instance_focus_app
+        self.close = self._instance_close_app
+
+    @staticmethod
+    def open(application):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.open(application).')
+
+    def _instance_open_app(self, waitTime=1):
+        raise UnsupportedMethodError('Unsupported method App.open([waitTime]).')
+
+    @staticmethod
+    def focus(application):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.focus(application).')
+
+    def _instance_focus_app(self):
+        raise UnsupportedMethodError('Unsupported method App.focus().')
+
+    @staticmethod
+    def close(application):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.close(application).')
+
+    def _instance_close_app(self):
+        raise UnsupportedMethodError('Unsupported method App.close().')
+
+    @staticmethod
+    def pause(waitTime):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.pause(waitTime).')
+
+    def isRunning(self):
+        raise UnsupportedMethodError('Unsupported method App.isRunning().')
+
+    def hasWindow(self):
+        raise UnsupportedMethodError('Unsupported method App.hasWindow().')
+
+    def getWindow(self):
+        raise UnsupportedMethodError('Unsupported method App.getWindow().')
+
+    def getPID(self):
+        raise UnsupportedMethodError('Unsupported method App.getPID().')
+
+    def getName(self):
+        raise UnsupportedMethodError('Unsupported method App.getName().')
+
+    def setUsing(self, parametertext):
+        raise UnsupportedMethodError('Unsupported method App.setUsing(parametertext).')
+
+    @staticmethod
+    def focusedWindow():
+        raise UnsupportedClassMethodError('Unsupported classmethod App.focusedWindow().')
+
+    def window(self, n=1):
+        raise UnsupportedMethodError('Unsupported method App.window([n]).')
+
+    @staticmethod
+    def getClipboard():
+        raise UnsupportedMethodError('Unsupported method App.getClipboard().')
+
+
+class Guide(object):
+
+    @staticmethod
+    def rectangle(element):
+        raise UnsupportedMethodError('Unsupported method Guide.rectangle(element).')
+
+    @staticmethod
+    def circle(element):
+        raise UnsupportedMethodError('Unsupported method Guide.circle(element).')
+
+    @staticmethod
+    def text(element, txt):
+        raise UnsupportedMethodError('Unsupported method Guide.text(element, txt).')
+
+    @staticmethod
+    def tooltip(element, txt):
+        raise UnsupportedMethodError('Unsupported method Guide.tooltip(element, txt).')
+
+    @staticmethod
+    def button(element, name):
+        raise UnsupportedMethodError('Unsupported method Guide.button(element, name).')
+
+    @staticmethod
+    def show(seconds=1):
+        raise UnsupportedMethodError('Unsupported method Guide.show([seconds]).')
+
 
 class Key(object):
-    # Sikuli-supported keys
     ADD = _IrisKey('add')
     ALT = _IrisKey('alt', 1 << 3)
     BACKSPACE = _IrisKey('backspace')
@@ -551,37 +681,43 @@ class Settings(object):
     def InfoLogs(self):
         raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
 
-    def getSikuliVersion(self):
+    @staticmethod
+    def getSikuliVersion():
         raise UnsupportedMethodError('Unsupported method Settings.getSikuliVersion()')
 
-    def getOS(self):
+    @staticmethod
+    def getOS():
         """Get the type of the operating system your script is running on."""
         return get_os()
 
-    def getOSVersion(self):
+    @staticmethod
+    def getOSVersion():
         """Get the version string of the operating system your script is running on."""
         return get_os_version()
 
-    def isLinux(self):
+    @staticmethod
+    def isLinux():
         """Checks if we are running on a Linux system.
 
         :return: True if we are running on a Linux system, False otherwise
         """
-        return self.getOS() == Platform.LINUX
+        return get_os() == Platform.LINUX
 
-    def isMac(self):
+    @staticmethod
+    def isMac():
         """Checks if we are running on a Mac system.
 
         :return: True if we are running on a Mac system, False otherwise
         """
-        return self.getOS() == Platform.MAC
+        return get_os() == Platform.MAC
 
-    def isWindows(self):
+    @staticmethod
+    def isWindows():
         """Checks if we are running on a Windows system.
 
         :return: True if we are running on a Windows system, False otherwise
         """
-        return self.getOS() == Platform.WINDOWS
+        return get_os() == Platform.WINDOWS
 
 
 Settings = Settings()
@@ -591,34 +727,34 @@ class Vision(object):
     def __init__(self):
         pass
 
-    def getParameter(self):
+    @staticmethod
+    def getParameter():
         raise UnsupportedMethodError('Unsupported method Vision.getParameter()')
 
-    def setParameter(self):
+    @staticmethod
+    def setParameter():
         raise UnsupportedMethodError('Unsupported method Vision.setParameter()')
-
-
-Vision = Vision()
 
 
 class Do(object):
     def __init__(self):
         pass
 
-    def input(self):
+    @staticmethod
+    def input():
         raise UnsupportedMethodError('Unsupported method Do.input()')
 
-    def popAsk(self):
+    @staticmethod
+    def popAsk():
         raise UnsupportedMethodError('Unsupported method Do.popAsk()')
 
-    def popError(self):
+    @staticmethod
+    def popError():
         raise UnsupportedMethodError('Unsupported method Do.popError()')
 
-    def popup(self):
+    @staticmethod
+    def popup():
         raise UnsupportedMethodError('Unsupported method Do.popup()')
-
-
-Do = Do()
 
 
 class Platform(object):
