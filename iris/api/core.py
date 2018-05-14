@@ -1211,12 +1211,9 @@ def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in
     max_attempts = int(timeout / interval)
     pattern_found = True
     tries = 0
-    while (pattern_found is True) and (tries < max_attempts):
+    while pattern_found is True and tries < max_attempts:
         time.sleep(interval)
-        try:
-            pattern_found = wait(for_what, 1, precision, in_region)
-        except FindError:
-            pattern_found = False
+        pattern_found = exists(for_what, 0, precision, in_region)
         tries += 1
 
     if pattern_found is True:
