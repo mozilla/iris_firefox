@@ -10,20 +10,22 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This tests the ability to activate/deactivate the activity stream"
+        self.meta = 'This tests the ability to activate/deactivate the activity stream'
 
     def run(self):
-        preference = "browser.newtabpage.activity-stream.enabled"
-        change_preference(preference, "false")
+        preference = 'browser.library.activity-stream.enabled'
+        change_preference(preference, 'false')
         new_tab()
         new_tab()
         time.sleep(2)
 
         # Verify that activity stream has been disabled
-        expected_1 = 'TOP SITES' in get_firefox_region().text()
+        screen_text = get_firefox_region().text()
+        logger.debug('Found text: %s' % screen_text)
+        expected_1 = 'TOP SITES' in screen_text
         assert_false(self, expected_1, 'Find TOP SITES')
 
-        change_preference(preference, "true")
+        change_preference(preference, 'true')
         new_tab()
         new_tab()
         time.sleep(2)
@@ -34,5 +36,7 @@ class Test(BaseTest):
         # e.g. "TOP SITES" is seen as "TOP srres" on at least one Linux config
         # TODO: make more robust
 
-        expected_1 = 'TOP SITES' in get_firefox_region().text()
+        screen_text = get_firefox_region().text()
+        expected_1 = 'TOP SITES' in screen_text
+        logger.debug('Found text: %s' % screen_text)
         assert_true(self, expected_1, 'Find TOP SITES')
