@@ -279,10 +279,10 @@ class Iris(object):
             else:
                 path_not_found = True
         elif current_os == Platform.LINUX or current_os == Platform.MAC:
-            if self.check_tesseract_path(osx_linux_tesseract_path1):
-                pytesseract.pytesseract.tesseract_cmd = osx_linux_tesseract_path1
-            elif self.check_tesseract_path(osx_linux_tesseract_path2):
-                pytesseract.pytesseract.tesseract_cmd = osx_linux_tesseract_path2
+            if self.check_tesseract_path(osx_linux_tesseract_path_1):
+                pytesseract.pytesseract.tesseract_cmd = osx_linux_tesseract_path_1
+            elif self.check_tesseract_path(osx_linux_tesseract_path_2):
+                pytesseract.pytesseract.tesseract_cmd = osx_linux_tesseract_path_2
             else:
                 path_not_found = True
         else:
