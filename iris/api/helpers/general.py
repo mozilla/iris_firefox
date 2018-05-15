@@ -219,6 +219,17 @@ def close_auxiliary_window():
         click('auxiliary_window_close_button.png')
 
 
+def click_cancel_button():
+    try:
+        wait('cancel_button.png', 10)
+        logger.debug('Cancel button found')
+    except FindError:
+        logger.error('Can\'t find the cancel button, aborting.')
+        return
+    else:
+        click('cancel_button.png')
+
+
 def close_customize_page():
     customize_done_button = 'customize_done_button.png'
     try:
