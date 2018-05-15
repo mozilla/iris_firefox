@@ -17,7 +17,14 @@ class Test(BaseTest):
         save_as = 'save_as.png'
 
         navigate(url)
-        rightClick(test_image)
+        try:
+            wait(test_image, 5)
+        except:
+            raise FindError('Test Image not loaded')
+        else:
+            rightClick(test_image, 1)
+
+        # wait a moment to ensure the context menu is responisve
         time.sleep(1)
         type(Key.DOWN)
         type(Key.DOWN)
