@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test of the sidebar controls"
+        self.meta = 'This is a test of the sidebar controls'
 
     def run(self):
         x_button_sidebar = 'x_button_sidebar.png'
@@ -18,16 +18,20 @@ class Test(BaseTest):
         sidebar_title = 'sidebar_title.png'
 
         bookmarks_sidebar()
-        expected_1 = exists(x_button_sidebar, 10)
-        assert_true(self, expected_1, 'Sidebar was opened successfully')
+        expected_1 = exists(sidebar_title, 10)
+        assert_true(self, expected_1, 'Sidebar title was displayed properly')
 
-        hover(x_button_sidebar)
-        expected_2 = exists(x_button_sidebar_hovered, 10)
-        assert_true(self, expected_2, 'Hover state displayed properly')
+        in_region = Region(0, find(sidebar_title).getY(), screen_width/4, screen_height/4)
+        expected_2 = in_region.exists(x_button_sidebar, 10)
+        assert_true(self, expected_2, 'Close button was displayed properly')
 
-        click(x_button_sidebar_hovered)
+        in_region.hover(x_button_sidebar)
+        expected_3 = in_region.exists(x_button_sidebar_hovered, 10)
+        assert_true(self, expected_3, 'Hover state displayed properly')
+
+        in_region.click(x_button_sidebar_hovered)
         try:
-            expected_3 = waitVanish(sidebar_title, 10)
-            assert_true(self, expected_3, 'Sidebar was closed successfully')
+            expected_4 = waitVanish(sidebar_title, 10)
+            assert_true(self, expected_4, 'Sidebar was closed successfully')
         except:
-            logger.error('Sidebar is still open')
+            raise FindError('Sidebar is still open')
