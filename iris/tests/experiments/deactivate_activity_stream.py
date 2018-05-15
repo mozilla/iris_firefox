@@ -7,13 +7,16 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This tests the ability to activate/deactivate the activity stream'
 
+        # Currently turning off test because this does not work in Fx60.
+        # It will work correctly in Fx62.
+        self.exclude = Platform.ALL
+
     def run(self):
-        preference = 'browser.library.activity-stream.enabled'
+        preference = 'browser.newtabpage.activity-stream.feeds.topsites'
         change_preference(preference, 'false')
         new_tab()
         new_tab()
