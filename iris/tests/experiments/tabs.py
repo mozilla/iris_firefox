@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test of a bunch of tabs"
+        self.meta = 'This is a test of a bunch of tabs'
 
     def run(self):
         # helper function
@@ -26,8 +26,8 @@ class Test(BaseTest):
         new_tab()
 
         # helper function
-        navigate("https://www.google.com/?hl=EN")
+        navigate('https://www.google.com/?hl=EN')
 
         # core api function
-        expected = exists("google_search.png", 10)
+        expected = exists('google_search.png', 10)
         assert_true(self, expected, 'google_search image found')
