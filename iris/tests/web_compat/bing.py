@@ -24,6 +24,7 @@ class Test(BaseTest):
         page_bottom = 'page_bottom.png'
         bing_menu = 'bing_menu.png'
         access_language = 'access_language.png'
+        save_button = 'save_button.png'
 
         logger.debug('Accessing ' + url + '...')
         navigate(url)
@@ -62,10 +63,11 @@ class Test(BaseTest):
             time.sleep(2)
             type(Key.ENTER)
             time.sleep(2)
-            for i in range(7):
-                type(Key.TAB)
-            time.sleep(2)
-            type(Key.ENTER)
+
+            expected_save_button = exists(save_button, 10)
+            assert_true(self, expected_save_button, 'Changes can be saved')
+
+            click(save_button)
 
             expected_3 = exists(language_changed, 10)
             assert_true(self, expected_3, 'Language has been changed successfully')
@@ -102,14 +104,12 @@ class Test(BaseTest):
             expected_6 = exists(language_changed, 10)
             assert_true(self, expected_6, 'Language has been changed')
 
-        for i in range(30):
-            scroll_down()
+        page_end()
 
         expected_7 = exists(page_bottom, 10)
         assert_true(self, expected_7, 'Page has been scrolled down')
 
-        for i in range(30):
-            scroll_up()
+        page_home()
 
         expected_8 = exists(language_changed, 10)
         assert_true(self, expected_8, 'Page has been scrolled up')
