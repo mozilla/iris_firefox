@@ -1437,9 +1437,14 @@ def _click_pattern(pattern, clicks=None, duration=Settings.MoveMouseDelay, in_re
     """
     needle = cv2.imread(pattern.image_path)
     height, width, channels = needle.shape
-    p_top = _image_search(pattern.image_path, DEFAULT_ACCURACY, in_region)
 
-    if p_top.getX() is -1 and p_top.getY() is -1:
+    wait_scan_rate = float(Settings.WaitScanRate)
+    interval = 1 / wait_scan_rate
+    max_attempts = int(DEFAULT_TIMEOUT * wait_scan_rate)
+
+    p_top = _image_search_loop(pattern.image_path, interval, max_attempts, DEFAULT_ACCURACY, in_region)
+
+    if p_top.getX() == -1 and p_top.getY() == -1:
         raise FindError('Unable to click on: %s' % pattern.image_path)
 
     possible_offset = pattern.getTargetOffset()
