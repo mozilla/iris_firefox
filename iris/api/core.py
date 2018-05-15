@@ -97,7 +97,7 @@ PROJECT_BASE_PATH = get_module_dir()
 for root, dirs, files in os.walk(PROJECT_BASE_PATH):
     for file_name in files:
         if file_name.endswith('.png'):
-            if CURRENT_PLATFORM in root:
+            if CURRENT_PLATFORM in root or 'common' in root:
                 _images[file_name] = os.path.join(root, file_name)
 
 """
@@ -105,7 +105,7 @@ pyautogui.size() works correctly everywhere except Mac Retina
 This technique works everywhere, so we'll use it instead
 """
 
-screen_width, screen_height = pyautogui.screenshot().size
+screen_width, screen_height = pyautogui.size()
 
 image_debug_path = get_module_dir() + '/image_debug'
 try:
@@ -137,9 +137,139 @@ class Env(object):
     def getClipboard():
         return pyperclip.paste()
 
+    @staticmethod
+    def isLockOn():
+        raise UnsupportedMethodError('Unsupported method Env.isLockOn(). Use Key.isLockOn() instead.')
+
+    @staticmethod
+    def getOSVersion():
+        raise UnsupportedMethodError('Unsupported method Env.getOSVersion(). Use Settings.getOSVersion() instead.')
+
+    @staticmethod
+    def getOS():
+        raise UnsupportedMethodError('Unsupported method Env.getOS(). Use Settings.getOS() instead.')
+
+    @staticmethod
+    def getMouseLocation():
+        raise UnsupportedMethodError('Unsupported method Env.getMouseLocation(). Use Mouse.at() instead.')
+
+    @staticmethod
+    def addHotkey():
+        raise UnsupportedMethodError('Unsupported method Env.addHotkey().')
+
+    @staticmethod
+    def removeHotkey():
+        raise UnsupportedMethodError('Unsupported method Env.removeHotkey().')
+
+    @staticmethod
+    def getSikuliVersion():
+        raise UnsupportedMethodError('Unsupported method Env.getSikuliVersion().')
+
+
+class Sikulix(object):
+
+    @staticmethod
+    def prefLoad():
+        raise UnsupportedMethodError('Unsupported method Sikulix.prefLoad().')
+
+    @staticmethod
+    def prefRemove():
+        raise UnsupportedMethodError('Unsupported method Sikulix.prefRemove().')
+
+    @staticmethod
+    def prefStore():
+        raise UnsupportedMethodError('Unsupported method Sikulix.prefStore().')
+
+
+class App(object):
+    def __init__(self):
+        self.open = self._instance_open_app
+        self.focus = self._instance_focus_app
+        self.close = self._instance_close_app
+
+    @staticmethod
+    def open(application):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.open(application).')
+
+    def _instance_open_app(self, waitTime=1):
+        raise UnsupportedMethodError('Unsupported method App.open([waitTime]).')
+
+    @staticmethod
+    def focus(application):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.focus(application).')
+
+    def _instance_focus_app(self):
+        raise UnsupportedMethodError('Unsupported method App.focus().')
+
+    @staticmethod
+    def close(application):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.close(application).')
+
+    def _instance_close_app(self):
+        raise UnsupportedMethodError('Unsupported method App.close().')
+
+    @staticmethod
+    def pause(waitTime):
+        raise UnsupportedClassMethodError('Unsupported classmethod App.pause(waitTime).')
+
+    def isRunning(self):
+        raise UnsupportedMethodError('Unsupported method App.isRunning().')
+
+    def hasWindow(self):
+        raise UnsupportedMethodError('Unsupported method App.hasWindow().')
+
+    def getWindow(self):
+        raise UnsupportedMethodError('Unsupported method App.getWindow().')
+
+    def getPID(self):
+        raise UnsupportedMethodError('Unsupported method App.getPID().')
+
+    def getName(self):
+        raise UnsupportedMethodError('Unsupported method App.getName().')
+
+    def setUsing(self, parametertext):
+        raise UnsupportedMethodError('Unsupported method App.setUsing(parametertext).')
+
+    @staticmethod
+    def focusedWindow():
+        raise UnsupportedClassMethodError('Unsupported classmethod App.focusedWindow().')
+
+    def window(self, n=1):
+        raise UnsupportedMethodError('Unsupported method App.window([n]).')
+
+    @staticmethod
+    def getClipboard():
+        raise UnsupportedMethodError('Unsupported method App.getClipboard().')
+
+
+class Guide(object):
+
+    @staticmethod
+    def rectangle(element):
+        raise UnsupportedMethodError('Unsupported method Guide.rectangle(element).')
+
+    @staticmethod
+    def circle(element):
+        raise UnsupportedMethodError('Unsupported method Guide.circle(element).')
+
+    @staticmethod
+    def text(element, txt):
+        raise UnsupportedMethodError('Unsupported method Guide.text(element, txt).')
+
+    @staticmethod
+    def tooltip(element, txt):
+        raise UnsupportedMethodError('Unsupported method Guide.tooltip(element, txt).')
+
+    @staticmethod
+    def button(element, name):
+        raise UnsupportedMethodError('Unsupported method Guide.button(element, name).')
+
+    @staticmethod
+    def show(seconds=1):
+        raise UnsupportedMethodError('Unsupported method Guide.show([seconds]).')
+
 
 class Key(object):
-    # Sikuli-supported keys
     ADD = _IrisKey('add')
     ALT = _IrisKey('alt', 1 << 3)
     BACKSPACE = _IrisKey('backspace')
@@ -308,7 +438,7 @@ class Screen(object):
             return
 
         elif isinstance(f_arg, Region):
-            return _region_grabber((f_arg.getX(), f_arg.getY(), f_arg.getW(), f_arg.getH()))
+            return _region_grabber(f_arg)
 
         elif len(args) is 4:
             return _region_grabber((args[0], args[1], args[2], args[3]))
@@ -412,6 +542,13 @@ class Region(object):
         self._y = y
         self._w = w
         self._h = h
+
+    def debug(self):
+        _save_debug_image(None, self, None)
+
+    def show(self):
+        region_screen = _region_grabber(self)
+        region_screen.show()
 
     def getX(self):
         return self._x
@@ -544,37 +681,43 @@ class Settings(object):
     def InfoLogs(self):
         raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
 
-    def getSikuliVersion(self):
+    @staticmethod
+    def getSikuliVersion():
         raise UnsupportedMethodError('Unsupported method Settings.getSikuliVersion()')
 
-    def getOS(self):
+    @staticmethod
+    def getOS():
         """Get the type of the operating system your script is running on."""
         return get_os()
 
-    def getOSVersion(self):
+    @staticmethod
+    def getOSVersion():
         """Get the version string of the operating system your script is running on."""
         return get_os_version()
 
-    def isLinux(self):
+    @staticmethod
+    def isLinux():
         """Checks if we are running on a Linux system.
 
         :return: True if we are running on a Linux system, False otherwise
         """
-        return self.getOS() == Platform.LINUX
+        return get_os() == Platform.LINUX
 
-    def isMac(self):
+    @staticmethod
+    def isMac():
         """Checks if we are running on a Mac system.
 
         :return: True if we are running on a Mac system, False otherwise
         """
-        return self.getOS() == Platform.MAC
+        return get_os() == Platform.MAC
 
-    def isWindows(self):
+    @staticmethod
+    def isWindows():
         """Checks if we are running on a Windows system.
 
         :return: True if we are running on a Windows system, False otherwise
         """
-        return self.getOS() == Platform.WINDOWS
+        return get_os() == Platform.WINDOWS
 
 
 Settings = Settings()
@@ -584,34 +727,34 @@ class Vision(object):
     def __init__(self):
         pass
 
-    def getParameter(self):
+    @staticmethod
+    def getParameter():
         raise UnsupportedMethodError('Unsupported method Vision.getParameter()')
 
-    def setParameter(self):
+    @staticmethod
+    def setParameter():
         raise UnsupportedMethodError('Unsupported method Vision.setParameter()')
-
-
-Vision = Vision()
 
 
 class Do(object):
     def __init__(self):
         pass
 
-    def input(self):
+    @staticmethod
+    def input():
         raise UnsupportedMethodError('Unsupported method Do.input()')
 
-    def popAsk(self):
+    @staticmethod
+    def popAsk():
         raise UnsupportedMethodError('Unsupported method Do.popAsk()')
 
-    def popError(self):
+    @staticmethod
+    def popError():
         raise UnsupportedMethodError('Unsupported method Do.popError()')
 
-    def popup(self):
+    @staticmethod
+    def popup():
         raise UnsupportedMethodError('Unsupported method Do.popup()')
-
-
-Do = Do()
 
 
 class Platform(object):
@@ -623,20 +766,86 @@ class Platform(object):
     HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
 
 
-def _save_debug_image(search_for, on_region, locations):
+def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
+    font = cv2.FONT_HERSHEY_COMPLEX_SMALL
+    scale = 1
+    thickness = 1
+
+    text_size = cv2.getTextSize(input_text, font, scale * 2, thickness)
+    start_point = start or (0, 0)
+    cv2.rectangle(on_what,
+                  start_point,
+                  (start_point[0] + text_size[0][0], start_point[1] + text_size[0][1]),
+                  (0, 0, 0),
+                  cv2.FILLED)
+
+    cv2.putText(on_what,
+                input_text,
+                (start_point[0], start_point[1] + text_size[0][1] - text_size[0][1] / 4),
+                font,
+                scale,
+                (255, 255, 255),
+                thickness, 64)
+
+
+def _save_debug_image(search_for, on_region, locations, not_found=False):
     """ Saves input Image for debug.
 
-    :param Image search_for: Input needle image that needs to be highlighted
-    :param Image on_region: Input Region as Image
-    :param List[Location] || Location locations: Location or list of Location as coordinates
+    :param Image || None search_for: Input needle image that needs to be highlighted
+    :param Image || Region on_region: Input Region as Image
+    :param List[Location] || Location || None locations: Location or list of Location as coordinates
     :return: None
     """
     if save_debug_images:
-        on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2BGR)
-        w, h = search_for.shape[::-1]
+        if isinstance(on_region, Region):
+            full_screen = _region_grabber(on_region)
+            img_rgb = np.array(full_screen)
+            on_region = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        else:
+            on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2BGR)
 
-        def _draw_rectangle(on_what, (top_x, top_y), (btm_x, btm_y)):
-            cv2.rectangle(on_what, (top_x, top_y), (btm_x, btm_y), (0, 0, 255), 2)
+        if search_for is None:
+            h, w = on_region.shape
+        else:
+            w, h = search_for.shape[::-1]
+
+        current_time = datetime.now()
+        temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_')
+
+        def _draw_rectangle(on_what, (top_x, top_y), (btm_x, btm_y), width=2):
+            cv2.rectangle(on_what, (top_x, top_y), (btm_x, btm_y), (0, 0, 255), width)
+
+        if locations is None:
+            if not_found:
+                locations = Location(0, 0)
+            else:
+                temp_f = temp_f + '_debug'
+                region_ = Image.fromarray(on_region).size
+                try:
+                    on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2RGB)
+                except:
+                    pass
+                _draw_rectangle(on_region, (0, 0), (region_[0], region_[1]), 5)
+
+        if not_found:
+            temp_f = temp_f + '_not_found'
+
+            on_region_image = Image.fromarray(on_region)
+            search_for_image = Image.fromarray(search_for)
+
+            tuple_paste_location = (0, on_region_image.size[1] / 4)
+
+            d_image = Image.new("RGB", (on_region_image.size[0], on_region_image.size[1]))
+            d_image.paste(on_region_image)
+            d_image.paste(search_for_image, tuple_paste_location)
+
+            d_array = np.array(d_image)
+
+            locations = Location(0, tuple_paste_location[1])
+            _debug_put_text(d_array,
+                            '<<< Pattern not found',
+                            (search_for_image.size[0] + 10, tuple_paste_location[1]))
+            on_region = d_array
 
         if isinstance(locations, list):
             for location in locations:
@@ -646,54 +855,67 @@ def _save_debug_image(search_for, on_region, locations):
         elif isinstance(locations, Location):
             _draw_rectangle(on_region, (locations.x, locations.y), (locations.x + w, locations.y + h))
 
-        current_time = datetime.now()
-        temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
-        cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
+        cv2.imwrite(image_debug_path + '/' + temp_f + '.jpg', on_region)
 
 
-def _save_ocr_debug_image(on_region, matches, with_image_processing):
+def _save_ocr_debug_image(on_region, matches):
     if save_debug_images:
         if matches is None:
             return
 
         border_line = 2
-
         if isinstance(matches, list):
             for mt in matches:
                 cv2.rectangle(on_region,
-                              (mt['x'], mt['y']), (mt['x'] + mt['width'], mt['y'] + mt['height']), (0, 0, 255),
+                              (mt['x'], mt['y']), (mt['x'] + mt['width'], mt['y'] + mt['height']),
+                              (0, 0, 255),
                               border_line)
-
         current_time = datetime.now()
         temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
         cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
 
 
-def _region_grabber(coordinates):
-    """ Returns a screenshot based on input coordinates
+def _region_grabber(region=None):
+    """Grabs image from region or full screen.
 
-    :param tuple coordinates: top_left_x, top_left_y, width, height
-    :return: Image object
+    :param Region || None region: Region param
+    :return: Image
     """
-    grabbed_area = pyautogui.screenshot(region=coordinates)
+    screenshot_w, screenshot_h = pyautogui.screenshot().size
 
-    if Settings.getOS() == Platform.MAC:
-        # Resize grabbed area to what pyautogui thinks is the correct screen size
-        # TODO double check this on mac since resizing for regions deforms images
-        w, h = pyautogui.size()
-        logger.debug('Screen size according to pyautogui.size(): %s,%s' % (w, h))
-        logger.debug('Screen size according to pyautogui.screenshot().size: %s,%s' % (screen_width, screen_height))
-        resized_area = grabbed_area.resize([w, h])
-        return resized_area
-    else:
+    logger.debug('Screen size according to pyautogui.size(): %s,%s' % (screen_width, screen_height))
+    logger.debug('Screen size according to pyautogui.screenshot().size: %s,%s' % (screenshot_w, screenshot_h))
+
+    uhd_factor = screenshot_w / screen_width
+    is_uhd = True if uhd_factor > 0 else False
+
+    if isinstance(region, Region):
+        r_x = uhd_factor * region.getX() if is_uhd else region.getX()
+        r_y = uhd_factor * region.getY() if is_uhd else region.getY()
+        w_y = uhd_factor * region.getW() if is_uhd else region.getW()
+        h_y = uhd_factor * region.getH() if is_uhd else region.getH()
+        r_coordinates = (r_x, r_y, w_y, h_y)
+        grabbed_area = pyautogui.screenshot(region=r_coordinates)
+
+        if is_uhd:
+            grabbed_area = grabbed_area.resize([region.getW(), region.getH()])
         return grabbed_area
+
+    else:
+        r_coordinates = (0, 0, screenshot_w, screenshot_h)
+        grabbed_area = pyautogui.screenshot(region=r_coordinates)
+
+        if is_uhd:
+            return grabbed_area.resize([screen_width, screen_height])
+        else:
+            return grabbed_area
 
 
 def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
-    """Search for needle in stack ( single match )
+    """Search for needle in stack (single match).
 
-    :param str search_for: Image path ( needle )
-    :param Image haystack: Region as Image ( haystack )
+    :param str search_for: Image path (needle)
+    :param Image haystack: Region as Image (haystack)
     :param float precision: Min allowed similarity
     :return: Location
     """
@@ -709,6 +931,7 @@ def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
     if max_val < precision:
+        _save_debug_image(needle, img_gray, None, True)
         return Location(-1, -1)
     else:
         position = Location(max_loc[0], max_loc[1])
@@ -716,11 +939,11 @@ def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
         return position
 
 
-def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, threshold=0.7):
-    """Search for needle in stack ( multiple matches )
+def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, threshold=0.99):
+    """Search for needle in stack (multiple matches)
 
-    :param str search_for:  Image path ( needle )
-    :param Image haystack: Region as Image ( haystack )
+    :param str search_for:  Image path (needle)
+    :param Image haystack: Region as Image (haystack)
     :param float precision: Min allowed similarity
     :param float threshold:  Max threshold
     :return: List of Location
@@ -743,7 +966,7 @@ def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, t
         else:
             top_left = max_loc
 
-        if threshold < max_val < precision:
+        if threshold > max_val > precision:
             sx, sy = top_left
             for x in range(sx - w / 2, sx + w / 2):
                 for y in range(sy - h / 2, sy + h / 2):
@@ -763,38 +986,36 @@ def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, t
 def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
     """ Wrapper over _match_template. Search image in a Region or full screen
 
-    :param str image_path: Image path ( needle )
+    :param str image_path: Image path (needle)
     :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Location
     """
-    if isinstance(region, Region):
-        stack_image = _region_grabber(coordinates=(region.getX(), region.getY(), region.getW(), region.getH()))
-    else:
-        stack_image = _region_grabber(coordinates=(0, 0, screen_width, screen_height))
+    stack_image = _region_grabber(region=region)
+    location = _match_template(image_path, stack_image, precision)
 
-    return _match_template(image_path, stack_image, precision)
+    if region is not None:
+        return Location(location.x + region.x, location.y + region.y)
+    else:
+        return location
 
 
 def _image_search_multiple(image_path, precision=DEFAULT_ACCURACY, region=None):
-    """ Wrapper over _match_template_multiple. Search image ( multiple ) in a Region or full screen
+    """ Wrapper over _match_template_multiple. Search image (multiple) in a Region or full screen
 
-    :param str image_path: Image path ( needle )
+    :param str image_path: Image path (needle)
     :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: List[Location]
     """
-    if isinstance(region, Region):
-        stack_image = _region_grabber(coordinates=(region.getX(), region.getY(), region.getW(), region.getH()))
-    else:
-        stack_image = _region_grabber(coordinates=(0, 0, screen_width, screen_height))
+    stack_image = _region_grabber(region=region)
     return _match_template_multiple(image_path, stack_image, precision)
 
 
 def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, precision=DEFAULT_ACCURACY, region=None):
-    """ Search for an image ( in loop ) in a Region or full screen
+    """ Search for an image (in loop) in a Region or full screen
 
-    :param str image_path: Image path ( needle )
+    :param str image_path: Image path (needle)
     :param float at_interval: Wait time between searches
     :param int attempts: Number of max attempts
     :param float precision: Min allowed similarity
@@ -812,12 +1033,7 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
 
 
 def _text_search_all(with_image_processing=True, in_region=None):
-    if in_region is None:
-        stack_image = _region_grabber(coordinates=(0, 0, screen_width, screen_height))
-
-    if isinstance(in_region, Region):
-        stack_image = _region_grabber(
-            coordinates=(in_region.getX(), in_region.getY(), in_region.getW(), in_region.getH()))
+    stack_image = _region_grabber(in_region)
 
     tesseract_match_min_len = 12
     input_image = np.array(stack_image)
@@ -873,7 +1089,7 @@ def _text_search_all(with_image_processing=True, in_region=None):
         except:
             continue
 
-    _save_ocr_debug_image(debug_img, debug_data, with_image_processing)
+    _save_ocr_debug_image(debug_img, debug_data)
     return final_data
 
 
@@ -937,6 +1153,27 @@ def _is_ocr_text(input_text):
     return is_ocr_string
 
 
+def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
+    try:
+        wait(top_left_marker_img, 10)
+        exists(bottom_right_marker_img, 10)
+    except Exception as err:
+        logger.error('Unable to find page markers')
+        raise err
+
+    top_left_pos = find(top_left_marker_img)
+    hover(top_left_pos, 0)
+    bottom_right_pos = find(bottom_right_marker_img)
+    hover(bottom_right_pos, 0)
+
+    marker_width, marker_height = get_asset_img_size(bottom_right_marker_img)
+
+    return Region(top_left_pos.x,
+                  top_left_pos.y,
+                  (bottom_right_pos.x + marker_width),
+                  bottom_right_pos.y - top_left_pos.y + marker_height)
+
+
 """Sikuli wrappers
 
 - wait
@@ -982,14 +1219,18 @@ def hover(where=None, duration=0, in_region=None):
         image_path = _get_needle_path(where)
         pos = _image_search(image_path, region=in_region)
         if pos.x is not -1:
+            needle = cv2.imread(image_path)
+            needle_height, needle_width, channels = needle.shape
             if isinstance(where, Pattern):
                 possible_offset = where.getTargetOffset()
-                if possible_offset is None:
-                    possible_offset = Location(0, 0)
-                move_to = Location(pos.x + possible_offset.getX(), pos.y + possible_offset.getY())
-                pyautogui.moveTo(move_to.x, move_to.y)
+                if possible_offset is not None:
+                    move_to = Location(pos.x + possible_offset.getX(), pos.y + possible_offset.getY())
+                    pyautogui.moveTo(move_to.x, move_to.y)
+                else:
+                    move_to = Location(pos.x, pos.y)
+                    pyautogui.moveTo(move_to.x + needle_width / 2, move_to.y + needle_height / 2)
             else:
-                pyautogui.moveTo(pos.x, pos.y)
+                pyautogui.moveTo(pos.x + needle_width / 2, pos.y + needle_height / 2)
         else:
             raise FindError('Unable to find image %s' % image_path)
 
@@ -1106,12 +1347,9 @@ def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in
     max_attempts = int(timeout / interval)
     pattern_found = True
     tries = 0
-    while (pattern_found is True) and (tries < max_attempts):
+    while pattern_found is True and tries < max_attempts:
         time.sleep(interval)
-        try:
-            pattern_found = wait(for_what, 1, precision, in_region)
-        except FindError:
-            pattern_found = False
+        pattern_found = exists(for_what, 0, precision, in_region)
         tries += 1
 
     if pattern_found is True:
@@ -1133,6 +1371,9 @@ def _click_pattern(pattern, clicks=None, duration=DEFAULT_INTERVAL, in_region=No
     needle = cv2.imread(pattern.image_path)
     height, width, channels = needle.shape
     p_top = _image_search(pattern.image_path, DEFAULT_ACCURACY, in_region)
+
+    if p_top.getX() is -1 and p_top.getY() is -1:
+        raise FindError('Unable to click on: %s' % pattern.image_path)
 
     possible_offset = pattern.getTargetOffset()
 
@@ -1186,6 +1427,26 @@ def _general_click(where=None, clicks=None, duration=DEFAULT_INTERVAL, in_region
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
+
+
+def get_asset_img_size(of_what):
+    """Get image size of asset image
+
+    :param str || Pattern of_what: Image name or Pattern object
+    :return: width, height as tuple
+    """
+    needle_path = None
+
+    if isinstance(of_what, str):
+        pattern = Pattern(of_what)
+        needle_path = pattern.image_path
+
+    elif isinstance(of_what, Pattern):
+        needle_path = of_what.image_path
+
+    needle = cv2.imread(needle_path)
+    height, width, channels = needle.shape
+    return width, height
 
 
 def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):

@@ -46,7 +46,8 @@ def confirm_firefox_launch():
     try:
         wait('home.png', 20)
     except Exception as err:
-        logger.error ('Can\'t launch Firefox - aborting test run.')
+        logger.error(err)
+        logger.error('Can\'t launch Firefox - aborting test run.')
         exit(1)
 
 
@@ -54,7 +55,7 @@ def confirm_firefox_quit():
     try:
         waitVanish('home.png', 10)
     except FindError:
-        logger.error ('Firefox still around - aborting test run.')
+        logger.error('Firefox still around - aborting test run.')
         exit(1)
 
 
@@ -86,15 +87,15 @@ def navigate(url):
 
 def restart_firefox(path, profile_name, url, args=None):
     # just as it says, with options
-    logger.debug ('Restarting Firefox')
+    logger.debug('Restarting Firefox')
     quit_firefox()
-    logger.debug ('Confirming that Firefox has been quit')
+    logger.debug('Confirming that Firefox has been quit')
     confirm_firefox_quit()
-    logger.debug ('Relaunching Firefox with profile name \'%s\'' % profile_name)
+    logger.debug('Relaunching Firefox with profile name \'%s\'' % profile_name)
     launch_firefox(path, profile_name, url, args)
-    logger.debug ('Confirming that Firefox has been launched')
+    logger.debug('Confirming that Firefox has been launched')
     confirm_firefox_launch()
-    logger.debug ('Successful Firefox restart performed')
+    logger.debug('Successful Firefox restart performed')
     return
 
 
@@ -218,6 +219,17 @@ def close_auxiliary_window():
         click('auxiliary_window_close_button.png')
 
 
+def click_cancel_button():
+    try:
+        wait('cancel_button.png', 10)
+        logger.debug('Cancel button found')
+    except FindError:
+        logger.error('Can\'t find the cancel button, aborting.')
+        return
+    else:
+        click('cancel_button.png')
+
+
 def close_customize_page():
     customize_done_button = 'customize_done_button.png'
     try:
@@ -265,7 +277,7 @@ def create_region_from_image(image):
             hamburger_pop_up_menu_height = 655
             logger.debug('Creating a region for Hamburger Pop Up Menu')
             region = Region(m.getX() - hamburger_pop_up_menu_weight, m.getY(), hamburger_pop_up_menu_weight,
-                                   hamburger_pop_up_menu_height)
+                            hamburger_pop_up_menu_height)
             return region
         else:
             logger.error('No Matching found')

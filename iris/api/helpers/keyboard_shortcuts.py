@@ -61,7 +61,7 @@ def select_location_bar():
     else:
         type(text='l', modifier=KeyModifier.CTRL)
     # wait to allow the location bar to become responsive.
-    time.sleep(1)
+    time.sleep(2)
 
 
 def reload_page():
