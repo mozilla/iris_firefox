@@ -34,6 +34,11 @@ INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 DEFAULT_INTERVAL = 0.5
 
+DEFAULT_WAIT_SCAN_RATE = 3
+DEFAULT_TYPE_DELAY = 0
+DEFAULT_MOVE_MOUSE_DELAY = 0.5
+DEFAULT_CLICK_DELAY = 0
+
 _images = {}
 
 SUCCESS_LEVEL_NUM = 35
@@ -631,6 +636,9 @@ class Region(object):
     def wait(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
         return wait(what, timeout, precision, self)
 
+    def waitVanish(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
+        return waitVanish(what, timeout, precision, self)
+
     def exists(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
         return exists(what, timeout, precision, self)
 
@@ -653,9 +661,55 @@ class Region(object):
         return rightClick(where, duration, self)
 
 
-class Settings(object):
+class _IrisSettings(object):
+    _wait_scan_rate = DEFAULT_WAIT_SCAN_RATE
+    _type_delay = DEFAULT_TYPE_DELAY
+    _move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
+    _click_delay = DEFAULT_CLICK_DELAY
+
     def __init__(self):
-        pass
+        self._wait_scan_rate = self.WaitScanRate
+        self._type_delay = self.TypeDelay
+        self._move_mouse_delay = self.MoveMouseDelay
+        self._click_delay = self.ClickDelay
+
+    @property
+    def WaitScanRate(self):
+        return self._wait_scan_rate
+
+    @WaitScanRate.setter
+    def WaitScanRate(self, value):
+        self._wait_scan_rate = value
+
+    @property
+    def TypeDelay(self):
+        return self._type_delay
+
+    @TypeDelay.setter
+    def TypeDelay(self, value):
+        if value > 1:
+            self._type_delay = 1
+        else:
+            self._type_delay = value
+
+    @property
+    def MoveMouseDelay(self):
+        return self._move_mouse_delay
+
+    @MoveMouseDelay.setter
+    def MoveMouseDelay(self, value):
+        self._move_mouse_delay = value
+
+    @property
+    def ClickDelay(self):
+        return self._click_delay
+
+    @ClickDelay.setter
+    def ClickDelay(self, value):
+        if value > 1:
+            self._click_delay = 1
+        else:
+            self._click_delay = value
 
     @property
     def ActionLogs(self):
@@ -720,7 +774,7 @@ class Settings(object):
         return get_os() == Platform.WINDOWS
 
 
-Settings = Settings()
+Settings = _IrisSettings()
 
 
 class Vision(object):
@@ -994,7 +1048,9 @@ def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
     stack_image = _region_grabber(region=region)
     location = _match_template(image_path, stack_image, precision)
 
-    if region is not None:
+    if location.x == -1 or location.y == -1:
+        return location
+    elif region is not None:
         return Location(location.x + region.x, location.y + region.y)
     else:
         return location
@@ -1305,8 +1361,10 @@ def wait(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_regio
             raise FindError('Unable to find text %s' % for_what)
 
     elif isinstance(for_what, str) or isinstance(for_what, Pattern):
-        s_interval = DEFAULT_INTERVAL
-        max_attempts = int(timeout / s_interval)
+
+        wait_scan_rate = float(Settings.WaitScanRate)
+        s_interval = 1 / wait_scan_rate
+        max_attempts = int(timeout * wait_scan_rate)
 
         image_path = _get_needle_path(for_what)
         image_found = _image_search_loop(image_path, s_interval, max_attempts, precision, in_region)
@@ -1343,14 +1401,23 @@ def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in
     :param in_region: Region object in order to minimize the area
     :return: True if vanished
     """
-    interval = DEFAULT_INTERVAL
-    max_attempts = int(timeout / interval)
+
+    wait_scan_rate = float(Settings.WaitScanRate)
+    interval = 1 / wait_scan_rate
+    max_attempts = int(timeout * wait_scan_rate)
+
     pattern_found = True
     tries = 0
+
     while pattern_found is True and tries < max_attempts:
-        time.sleep(interval)
-        pattern_found = exists(for_what, 0, precision, in_region)
+        img_path = _get_needle_path(for_what)
+        image_found = _image_search(img_path, precision, in_region)
+        if (image_found.x != -1) & (image_found.y != -1):
+            pattern_found = True
+        else:
+            pattern_found = False
         tries += 1
+        time.sleep(interval)
 
     if pattern_found is True:
         raise FindError('%s did not vanish' % for_what)
@@ -1358,7 +1425,7 @@ def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in
         return True
 
 
-def _click_pattern(pattern, clicks=None, duration=DEFAULT_INTERVAL, in_region=None, button=None):
+def _click_pattern(pattern, clicks=None, duration=Settings.MoveMouseDelay, in_region=None, button=None):
     """Click on center or offset of a Pattern
 
     :param pattern: Input Pattern
@@ -1383,7 +1450,7 @@ def _click_pattern(pattern, clicks=None, duration=DEFAULT_INTERVAL, in_region=No
         _click_at(Location(p_top.x + width / 2, p_top.y + height / 2), clicks, duration, button)
 
 
-def _click_at(location=None, clicks=None, duration=DEFAULT_INTERVAL, button=None):
+def _click_at(location=None, clicks=None, duration=Settings.MoveMouseDelay, button=None):
     """Click on Location coordinates
 
     :param location: Location , image name or Pattern
@@ -1395,10 +1462,13 @@ def _click_at(location=None, clicks=None, duration=DEFAULT_INTERVAL, button=None
     if location is None:
         location = Location(0, 0)
     pyautogui.moveTo(location.x, location.y, duration)
-    pyautogui.click(clicks=clicks, interval=0.0, button=button)
+    pyautogui.click(clicks=clicks, interval=Settings.ClickDelay, button=button)
+
+    if Settings.ClickDelay != DEFAULT_CLICK_DELAY:
+        Settings.ClickDelay = DEFAULT_CLICK_DELAY
 
 
-def _general_click(where=None, clicks=None, duration=DEFAULT_INTERVAL, in_region=None, button=None):
+def _general_click(where=None, clicks=None, duration=Settings.MoveMouseDelay, in_region=None, button=None):
     """General Mouse Click
 
     :param where: Location , image name or Pattern
@@ -1449,7 +1519,7 @@ def get_asset_img_size(of_what):
     return width, height
 
 
-def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):
+def click(where=None, duration=Settings.MoveMouseDelay, in_region=None):
     """Mouse left click
 
     :param where: Location , image name or Pattern
@@ -1460,7 +1530,7 @@ def click(where=None, duration=DEFAULT_INTERVAL, in_region=None):
     _general_click(where, 1, duration, in_region, 'left')
 
 
-def rightClick(where=None, duration=DEFAULT_INTERVAL, in_region=None):
+def rightClick(where=None, duration=Settings.MoveMouseDelay, in_region=None):
     """Mouse right click
 
     :param where: Location , image name or Pattern
@@ -1471,7 +1541,7 @@ def rightClick(where=None, duration=DEFAULT_INTERVAL, in_region=None):
     _general_click(where, 1, duration, in_region, 'right')
 
 
-def doubleClick(where=None, duration=DEFAULT_INTERVAL, in_region=None):
+def doubleClick(where=None, duration=Settings.MoveMouseDelay, in_region=None):
     """Mouse double click
 
     :param where: Location , image name or Pattern
@@ -1555,7 +1625,7 @@ def paste(text):
     pyperclip.copy('')
 
 
-def type(text=None, modifier=None, interval=0.02):
+def type(text=None, modifier=None, interval=Settings.TypeDelay):
     logger.debug('type method: ')
     if modifier is None:
         if isinstance(text, _IrisKey):
@@ -1579,3 +1649,6 @@ def type(text=None, modifier=None, interval=0.02):
             pyautogui.hotkey(modifier_keys[0], modifier_keys[1], str(text))
         else:
             logger.error('Returned key modifiers out of range')
+
+    if Settings.TypeDelay != DEFAULT_TYPE_DELAY:
+        Settings.TypeDelay = DEFAULT_TYPE_DELAY
