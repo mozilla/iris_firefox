@@ -76,3 +76,61 @@ class Test(BaseTest):
                                                                      '%s' % str(updated_click_delay))
 
         Settings.ClickDelay = DEFAULT_CLICK_DELAY
+
+        # Settings.MinSimilarity
+
+        default_min_similarity = Settings.MinSimilarity
+        assert_equal(self, DEFAULT_MIN_SIMILARITY, default_min_similarity, 'Default MinSimilarity should be equal '
+                                                                           'to %s' % str(DEFAULT_MIN_SIMILARITY))
+        updated_min_similarity = 0.5
+        Settings.MinSimilarity = updated_min_similarity
+        assert_equal(self, Settings.MinSimilarity, updated_min_similarity, 'Updated value for MinSimilarity should'
+                                                                           'be %s' % updated_min_similarity)
+
+        Settings.MinSimilarity = 2
+        assert_equal(self, 1, Settings.MinSimilarity, 'MinSimilarity greater than 1 is defaulted to 1')
+
+        Settings.MinSimilarity = DEFAULT_MIN_SIMILARITY
+
+        # Settings.AutoWaitTimeout
+
+        default_auto_wait_timeout = DEFAULT_AUTO_WAIT_TIMEOUT
+        assert_equal(self, DEFAULT_AUTO_WAIT_TIMEOUT, default_auto_wait_timeout,
+                     'Default AutoWaitTimeout should be equal to %s' % str(DEFAULT_AUTO_WAIT_TIMEOUT))
+
+        updated_auto_wait_timeout = 3
+        Settings.AutoWaitTimeout = updated_auto_wait_timeout
+        assert_equal(self, Settings.AutoWaitTimeout, updated_auto_wait_timeout,
+                     'Updated value for AutoWaitTimeout should be %s' % updated_auto_wait_timeout)
+
+        Settings.AutoWaitTimeout = DEFAULT_AUTO_WAIT_TIMEOUT
+
+        # Settings.DelayBeforeMouseDown
+        # Settings.DelayBeforeDrag
+        # Settings.DelayBeforeDrop
+
+        start_location = Location(100, 100)
+        end_location = Location(200, 200)
+
+        Settings.DelayBeforeMouseDown = 1
+        Settings.DelayBeforeDrag = 1
+        Settings.DelayBeforeDrop = 1
+        Settings.MoveMouseDelay = 3
+
+        region = Region(100, 100, 100, 100)
+
+        start_time = time.time()
+        region.dragDrop(start_location, end_location)
+        end_time = time.time()
+
+        total_duration = (Settings.DelayBeforeMouseDown + Settings.DelayBeforeDrag + Settings.DelayBeforeDrop +
+                          Settings.MoveMouseDelay)
+
+        expected_duration = end_time - start_time >= total_duration
+        assert_true(self, expected_duration, 'Total duration for dragDrop should be equal or greater than %s seconds'
+                    % total_duration)
+
+        Settings.DelayBeforeMouseDown = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
+        Settings.DelayBeforeDrag = DEFAULT_DELAY_BEFORE_DRAG
+        Settings.DelayBeforeDrop = DEFAULT_DELAY_BEFORE_DROP
+        Settings.MoveMouseDelay = DEFAULT_MOVE_MOUSE_DELAY

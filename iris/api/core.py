@@ -27,17 +27,17 @@ except ImportError:
 pyautogui.FAILSAFE = False
 save_debug_images = False
 
-DEFAULT_ACCURACY = 0.8
-DEFAULT_TIMEOUT = 3
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
-DEFAULT_INTERVAL = 0.5
 
 DEFAULT_WAIT_SCAN_RATE = 3
 DEFAULT_TYPE_DELAY = 0
 DEFAULT_MOVE_MOUSE_DELAY = 0.5
 DEFAULT_CLICK_DELAY = 0
+DEFAULT_MIN_SIMILARITY = 0.8
+DEFAULT_AUTO_WAIT_TIMEOUT = 3
+DEFAULT_DELAY_BEFORE_MOUSE_DOWN = DEFAULT_DELAY_BEFORE_DRAG = DEFAULT_DELAY_BEFORE_DROP = 0.3
 
 _images = {}
 
@@ -134,6 +134,175 @@ class _IrisKey(object):
 
     def __str__(self):
         return self.label
+
+
+class _IrisSettings(object):
+    _wait_scan_rate = DEFAULT_WAIT_SCAN_RATE
+    _type_delay = DEFAULT_TYPE_DELAY
+    _move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
+    _click_delay = DEFAULT_CLICK_DELAY
+    _min_similarity = DEFAULT_MIN_SIMILARITY
+    _auto_wait_timeout = DEFAULT_AUTO_WAIT_TIMEOUT
+    _delay_before_mouse_down = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
+    _delay_before_drag = DEFAULT_DELAY_BEFORE_DRAG
+    _delay_before_drop = DEFAULT_DELAY_BEFORE_DROP
+
+    def __init__(self):
+        self._wait_scan_rate = self.WaitScanRate
+        self._type_delay = self.TypeDelay
+        self._move_mouse_delay = self.MoveMouseDelay
+        self._click_delay = self.ClickDelay
+        self._min_similarity = self.MinSimilarity
+        self._auto_wait_timeout = self.AutoWaitTimeout
+        self._delay_before_mouse_down = self.DelayBeforeMouseDown
+        self._delay_before_drag = self.DelayBeforeDrag
+        self._delay_before_drop = self.DelayBeforeDrop
+
+    @property
+    def WaitScanRate(self):
+        return self._wait_scan_rate
+
+    @WaitScanRate.setter
+    def WaitScanRate(self, value):
+        self._wait_scan_rate = value
+
+    @property
+    def TypeDelay(self):
+        return self._type_delay
+
+    @TypeDelay.setter
+    def TypeDelay(self, value):
+        if value > 1:
+            self._type_delay = 1
+        else:
+            self._type_delay = value
+
+    @property
+    def MoveMouseDelay(self):
+        return self._move_mouse_delay
+
+    @MoveMouseDelay.setter
+    def MoveMouseDelay(self, value):
+        self._move_mouse_delay = value
+
+    @property
+    def ClickDelay(self):
+        return self._click_delay
+
+    @ClickDelay.setter
+    def ClickDelay(self, value):
+        if value > 1:
+            self._click_delay = 1
+        else:
+            self._click_delay = value
+
+    @property
+    def MinSimilarity(self):
+        return self._min_similarity
+
+    @MinSimilarity.setter
+    def MinSimilarity(self, value):
+        if value > 1:
+            self._min_similarity = 1
+        else:
+            self._min_similarity = value
+
+    @property
+    def AutoWaitTimeout(self):
+        return self._auto_wait_timeout
+
+    @AutoWaitTimeout.setter
+    def AutoWaitTimeout(self, value):
+        self._auto_wait_timeout = value
+
+    @property
+    def DelayBeforeMouseDown(self):
+        return self._delay_before_mouse_down
+
+    @DelayBeforeMouseDown.setter
+    def DelayBeforeMouseDown(self, value):
+        self._delay_before_mouse_down = value
+
+    @property
+    def DelayBeforeDrag(self):
+        return self._delay_before_drag
+
+    @DelayBeforeDrag.setter
+    def DelayBeforeDrag(self, value):
+        self._delay_before_drag = value
+
+    @property
+    def DelayBeforeDrop(self):
+        return self._delay_before_drop
+
+    @DelayBeforeDrop.setter
+    def DelayBeforeDrop(self, value):
+        self._delay_before_drop = value
+
+    @property
+    def ActionLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
+
+    @ActionLogs.setter
+    def ActionLogs(self, value):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
+
+    @property
+    def DebugLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
+
+    @DebugLogs.setter
+    def DebugLogs(self, value):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
+
+    @property
+    def InfoLogs(self):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
+
+    @InfoLogs.setter
+    def InfoLogs(self, value):
+        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
+
+    @staticmethod
+    def getSikuliVersion():
+        raise UnsupportedMethodError('Unsupported method Settings.getSikuliVersion()')
+
+    @staticmethod
+    def getOS():
+        """Get the type of the operating system your script is running on."""
+        return get_os()
+
+    @staticmethod
+    def getOSVersion():
+        """Get the version string of the operating system your script is running on."""
+        return get_os_version()
+
+    @staticmethod
+    def isLinux():
+        """Checks if we are running on a Linux system.
+
+        :return: True if we are running on a Linux system, False otherwise
+        """
+        return get_os() == Platform.LINUX
+
+    @staticmethod
+    def isMac():
+        """Checks if we are running on a Mac system.
+
+        :return: True if we are running on a Mac system, False otherwise
+        """
+        return get_os() == Platform.MAC
+
+    @staticmethod
+    def isWindows():
+        """Checks if we are running on a Windows system.
+
+        :return: True if we are running on a Windows system, False otherwise
+        """
+        return get_os() == Platform.WINDOWS
+
+
+Settings = _IrisSettings()
 
 
 class Env(object):
@@ -627,22 +796,22 @@ class Region(object):
     def hover(self, where=None, duration=0):
         return hover(where, duration, self)
 
-    def find(self, what=None, precision=DEFAULT_ACCURACY):
+    def find(self, what=None, precision=None):
         return find(what, precision, self)
 
-    def findAll(self, what=None, precision=DEFAULT_ACCURACY):
+    def findAll(self, what=None, precision=None):
         return findAll(what, precision, self)
 
-    def wait(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
-        return wait(what, timeout, precision, self)
+    def wait(self, what=None, timeout=None, precision=None):
+        wait(what, timeout, precision, self)
 
-    def waitVanish(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
+    def waitVanish(self, what=None, timeout=None, precision=None):
         return waitVanish(what, timeout, precision, self)
 
-    def exists(self, what=None, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY):
+    def exists(self, what=None, timeout=None, precision=None):
         return exists(what, timeout, precision, self)
 
-    def click(self, where=None, duration=DEFAULT_INTERVAL):
+    def click(self, where=None, duration=None):
         return click(where, duration, self)
 
     def text(self, with_image_processing=True):
@@ -651,7 +820,7 @@ class Region(object):
     def type(self, text, modifier, interval):
         return type(text, modifier, interval)
 
-    def dragDrop(self, drag_from, drop_to, duration):
+    def dragDrop(self, drag_from, drop_to, duration=None):
         return dragDrop(drag_from, drop_to, duration)
 
     def doubleClick(self, where, duration):
@@ -659,122 +828,6 @@ class Region(object):
 
     def rightClick(self, where, duration):
         return rightClick(where, duration, self)
-
-
-class _IrisSettings(object):
-    _wait_scan_rate = DEFAULT_WAIT_SCAN_RATE
-    _type_delay = DEFAULT_TYPE_DELAY
-    _move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
-    _click_delay = DEFAULT_CLICK_DELAY
-
-    def __init__(self):
-        self._wait_scan_rate = self.WaitScanRate
-        self._type_delay = self.TypeDelay
-        self._move_mouse_delay = self.MoveMouseDelay
-        self._click_delay = self.ClickDelay
-
-    @property
-    def WaitScanRate(self):
-        return self._wait_scan_rate
-
-    @WaitScanRate.setter
-    def WaitScanRate(self, value):
-        self._wait_scan_rate = value
-
-    @property
-    def TypeDelay(self):
-        return self._type_delay
-
-    @TypeDelay.setter
-    def TypeDelay(self, value):
-        if value > 1:
-            self._type_delay = 1
-        else:
-            self._type_delay = value
-
-    @property
-    def MoveMouseDelay(self):
-        return self._move_mouse_delay
-
-    @MoveMouseDelay.setter
-    def MoveMouseDelay(self, value):
-        self._move_mouse_delay = value
-
-    @property
-    def ClickDelay(self):
-        return self._click_delay
-
-    @ClickDelay.setter
-    def ClickDelay(self, value):
-        if value > 1:
-            self._click_delay = 1
-        else:
-            self._click_delay = value
-
-    @property
-    def ActionLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
-
-    @ActionLogs.setter
-    def ActionLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
-
-    @property
-    def DebugLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
-
-    @DebugLogs.setter
-    def DebugLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
-
-    @property
-    def InfoLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
-
-    @InfoLogs.setter
-    def InfoLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
-
-    @staticmethod
-    def getSikuliVersion():
-        raise UnsupportedMethodError('Unsupported method Settings.getSikuliVersion()')
-
-    @staticmethod
-    def getOS():
-        """Get the type of the operating system your script is running on."""
-        return get_os()
-
-    @staticmethod
-    def getOSVersion():
-        """Get the version string of the operating system your script is running on."""
-        return get_os_version()
-
-    @staticmethod
-    def isLinux():
-        """Checks if we are running on a Linux system.
-
-        :return: True if we are running on a Linux system, False otherwise
-        """
-        return get_os() == Platform.LINUX
-
-    @staticmethod
-    def isMac():
-        """Checks if we are running on a Mac system.
-
-        :return: True if we are running on a Mac system, False otherwise
-        """
-        return get_os() == Platform.MAC
-
-    @staticmethod
-    def isWindows():
-        """Checks if we are running on a Windows system.
-
-        :return: True if we are running on a Windows system, False otherwise
-        """
-        return get_os() == Platform.WINDOWS
-
-
-Settings = _IrisSettings()
 
 
 class Vision(object):
@@ -965,7 +1018,7 @@ def _region_grabber(region=None):
             return grabbed_area
 
 
-def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
+def _match_template(search_for, haystack, precision=None):
     """Search for needle in stack (single match).
 
     :param str search_for: Image path (needle)
@@ -973,6 +1026,10 @@ def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
     :param float precision: Min allowed similarity
     :return: Location
     """
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
     img_rgb = np.array(haystack)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     needle = cv2.imread(search_for, 0)
@@ -993,7 +1050,7 @@ def _match_template(search_for, haystack, precision=DEFAULT_ACCURACY):
         return position
 
 
-def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, threshold=0.99):
+def _match_template_multiple(search_for, haystack, precision=None, threshold=0.99):
     """Search for needle in stack (multiple matches)
 
     :param str search_for:  Image path (needle)
@@ -1002,6 +1059,10 @@ def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, t
     :param float threshold:  Max threshold
     :return: List of Location
     """
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
     img_rgb = np.array(haystack)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     needle = cv2.imread(search_for, 0)
@@ -1037,7 +1098,7 @@ def _match_template_multiple(search_for, haystack, precision=DEFAULT_ACCURACY, t
     return points
 
 
-def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
+def _image_search(image_path, precision=None, region=None):
     """ Wrapper over _match_template. Search image in a Region or full screen
 
     :param str image_path: Image path (needle)
@@ -1045,6 +1106,10 @@ def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
     :param Region region: Region object
     :return: Location
     """
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
     stack_image = _region_grabber(region=region)
     location = _match_template(image_path, stack_image, precision)
 
@@ -1056,7 +1121,7 @@ def _image_search(image_path, precision=DEFAULT_ACCURACY, region=None):
         return location
 
 
-def _image_search_multiple(image_path, precision=DEFAULT_ACCURACY, region=None):
+def _image_search_multiple(image_path, precision=None, region=None):
     """ Wrapper over _match_template_multiple. Search image (multiple) in a Region or full screen
 
     :param str image_path: Image path (needle)
@@ -1064,11 +1129,15 @@ def _image_search_multiple(image_path, precision=DEFAULT_ACCURACY, region=None):
     :param Region region: Region object
     :return: List[Location]
     """
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
     stack_image = _region_grabber(region=region)
     return _match_template_multiple(image_path, stack_image, precision)
 
 
-def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, precision=DEFAULT_ACCURACY, region=None):
+def _image_search_loop(image_path, at_interval=None, attempts=None, precision=None, region=None):
     """ Search for an image (in loop) in a Region or full screen
 
     :param str image_path: Image path (needle)
@@ -1078,6 +1147,16 @@ def _image_search_loop(image_path, at_interval=DEFAULT_INTERVAL, attempts=5, pre
     :param Region region: Region object
     :return: Location
     """
+
+    if at_interval is None:
+        at_interval = 1 / Settings.WaitScanRate
+
+    if attempts is None:
+        attempts = int(Settings.AutoWaitTimeout * Settings.WaitScanRate)
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
     pos = _image_search(image_path, precision, region)
     tries = 0
     while pos.x is -1 and tries < attempts:
@@ -1294,7 +1373,7 @@ def hover(where=None, duration=0, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def find(what, precision=DEFAULT_ACCURACY, in_region=None):
+def find(what, precision=None, in_region=None):
     """Look for a single match of a Pattern or image
 
     :param what: String or Pattern
@@ -1310,6 +1389,10 @@ def find(what, precision=DEFAULT_ACCURACY, in_region=None):
             return Location(-1, -1)
 
     elif isinstance(what, str) or isinstance(what, Pattern):
+
+        if precision is None:
+            precision = Settings.MinSimilarity
+
         image_path = _get_needle_path(what)
         return _image_search(image_path, precision, in_region)
 
@@ -1317,7 +1400,7 @@ def find(what, precision=DEFAULT_ACCURACY, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
+def findAll(what, precision=None, in_region=None):
     """Look for multiple matches of a Pattern or image
 
     :param what: String or Pattern
@@ -1337,13 +1420,17 @@ def findAll(what, precision=DEFAULT_ACCURACY, in_region=None):
             return [Location(-1, -1)]
 
     elif isinstance(what, str) or isinstance(what, Pattern):
+
+        if precision is None:
+            precision = Settings.MinSimilarity
+
         image_path = _get_needle_path(what)
         return _image_search_multiple(image_path, precision, in_region)
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def wait(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def wait(for_what, timeout=None, precision=None, in_region=None):
     """Wait for a Pattern or image to appear
 
     :param for_what: String or Pattern
@@ -1362,6 +1449,12 @@ def wait(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_regio
 
     elif isinstance(for_what, str) or isinstance(for_what, Pattern):
 
+        if timeout is None:
+            timeout = Settings.AutoWaitTimeout
+
+        if precision is None:
+            precision = Settings.MinSimilarity
+
         wait_scan_rate = float(Settings.WaitScanRate)
         s_interval = 1 / wait_scan_rate
         max_attempts = int(timeout * wait_scan_rate)
@@ -1376,7 +1469,7 @@ def wait(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_regio
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def exists(what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def exists(what, timeout=None, precision=None, in_region=None):
     """Check if Pattern or image exists
 
     :param what: String or Pattern
@@ -1385,6 +1478,13 @@ def exists(what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
+
+    if timeout is None:
+        timeout = Settings.AutoWaitTimeout
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
     try:
         wait(what, timeout, precision, in_region)
         return True
@@ -1392,7 +1492,7 @@ def exists(what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=
         return False
 
 
-def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in_region=None):
+def waitVanish(for_what, timeout=None, precision=None, in_region=None):
     """Wait until a Pattern or image disappears
 
     :param for_what: Image, Pattern or string
@@ -1401,6 +1501,12 @@ def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in
     :param in_region: Region object in order to minimize the area
     :return: True if vanished
     """
+
+    if timeout is None:
+        timeout = Settings.AutoWaitTimeout
+
+    if precision is None:
+        precision = Settings.MinSimilarity
 
     wait_scan_rate = float(Settings.WaitScanRate)
     interval = 1 / wait_scan_rate
@@ -1425,7 +1531,7 @@ def waitVanish(for_what, timeout=DEFAULT_TIMEOUT, precision=DEFAULT_ACCURACY, in
         return True
 
 
-def _click_pattern(pattern, clicks=None, duration=Settings.MoveMouseDelay, in_region=None, button=None):
+def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=None):
     """Click on center or offset of a Pattern
 
     :param pattern: Input Pattern
@@ -1435,14 +1541,18 @@ def _click_pattern(pattern, clicks=None, duration=Settings.MoveMouseDelay, in_re
     :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
     :return: None
     """
+
+    if duration is None:
+        duration = Settings.MoveMouseDelay
+
     needle = cv2.imread(pattern.image_path)
     height, width, channels = needle.shape
 
     wait_scan_rate = float(Settings.WaitScanRate)
     interval = 1 / wait_scan_rate
-    max_attempts = int(DEFAULT_TIMEOUT * wait_scan_rate)
+    max_attempts = int(Settings.AutoWaitTimeout * wait_scan_rate)
 
-    p_top = _image_search_loop(pattern.image_path, interval, max_attempts, DEFAULT_ACCURACY, in_region)
+    p_top = _image_search_loop(pattern.image_path, interval, max_attempts, DEFAULT_MIN_SIMILARITY, in_region)
 
     if p_top.getX() == -1 and p_top.getY() == -1:
         raise FindError('Unable to click on: %s' % pattern.image_path)
@@ -1455,7 +1565,7 @@ def _click_pattern(pattern, clicks=None, duration=Settings.MoveMouseDelay, in_re
         _click_at(Location(p_top.x + width / 2, p_top.y + height / 2), clicks, duration, button)
 
 
-def _click_at(location=None, clicks=None, duration=Settings.MoveMouseDelay, button=None):
+def _click_at(location=None, clicks=None, duration=None, button=None):
     """Click on Location coordinates
 
     :param location: Location , image name or Pattern
@@ -1464,8 +1574,13 @@ def _click_at(location=None, clicks=None, duration=Settings.MoveMouseDelay, butt
     :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
     :return: None
     """
+
+    if duration is None:
+        duration = Settings.MoveMouseDelay
+
     if location is None:
         location = Location(0, 0)
+
     pyautogui.moveTo(location.x, location.y, duration)
     pyautogui.click(clicks=clicks, interval=Settings.ClickDelay, button=button)
 
@@ -1473,7 +1588,7 @@ def _click_at(location=None, clicks=None, duration=Settings.MoveMouseDelay, butt
         Settings.ClickDelay = DEFAULT_CLICK_DELAY
 
 
-def _general_click(where=None, clicks=None, duration=Settings.MoveMouseDelay, in_region=None, button=None):
+def _general_click(where=None, clicks=None, duration=None, in_region=None, button=None):
     """General Mouse Click
 
     :param where: Location , image name or Pattern
@@ -1483,6 +1598,9 @@ def _general_click(where=None, clicks=None, duration=Settings.MoveMouseDelay, in
     :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
     :return: None
     """
+
+    if duration is None:
+        duration = Settings.MoveMouseDelay
 
     if isinstance(where, str) and _is_ocr_text(where):
         a_match = _text_search_by(where, True, in_region)
@@ -1524,7 +1642,7 @@ def get_asset_img_size(of_what):
     return width, height
 
 
-def click(where=None, duration=Settings.MoveMouseDelay, in_region=None):
+def click(where=None, duration=None, in_region=None):
     """Mouse left click
 
     :param where: Location , image name or Pattern
@@ -1532,10 +1650,14 @@ def click(where=None, duration=Settings.MoveMouseDelay, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return: None
     """
+
+    if duration is None:
+        duration = Settings.MoveMouseDelay
+
     _general_click(where, 1, duration, in_region, 'left')
 
 
-def rightClick(where=None, duration=Settings.MoveMouseDelay, in_region=None):
+def rightClick(where=None, duration=None, in_region=None):
     """Mouse right click
 
     :param where: Location , image name or Pattern
@@ -1543,10 +1665,14 @@ def rightClick(where=None, duration=Settings.MoveMouseDelay, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return: None
     """
+
+    if duration is None:
+        duration = Settings.MoveMouseDelay
+
     _general_click(where, 1, duration, in_region, 'right')
 
 
-def doubleClick(where=None, duration=Settings.MoveMouseDelay, in_region=None):
+def doubleClick(where=None, duration=None, in_region=None):
     """Mouse double click
 
     :param where: Location , image name or Pattern
@@ -1554,6 +1680,10 @@ def doubleClick(where=None, duration=Settings.MoveMouseDelay, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return: None
     """
+
+    if duration is None:
+        duration = Settings.MoveMouseDelay
+
     _general_click(where, 2, duration, in_region, 'left')
 
 
@@ -1565,14 +1695,14 @@ def _to_location(pattern_or_string=None, in_region=None):
     :return: Location object
     """
     if isinstance(pattern_or_string, Pattern):
-        return _image_search(pattern_or_string.image_path, DEFAULT_ACCURACY, in_region)
+        return _image_search(pattern_or_string.image_path, Settings.MinSimilarity, in_region)
     elif isinstance(pattern_or_string, str):
-        return _image_search(_get_needle_path(pattern_or_string), DEFAULT_ACCURACY, in_region)
+        return _image_search(_get_needle_path(pattern_or_string), Settings.MinSimilarity, in_region)
     elif isinstance(pattern_or_string, Location):
         return pattern_or_string
 
 
-def dragDrop(drag_from, drop_to, duration=DEFAULT_INTERVAL):
+def dragDrop(drag_from, drop_to, duration=None):
     """Mouse drag and drop
 
     :param drag_from: Starting point for drag and drop. Can be pattern, string or location
@@ -1580,10 +1710,22 @@ def dragDrop(drag_from, drop_to, duration=DEFAULT_INTERVAL):
     :param duration: speed of drag and drop
     :return: None
     """
+
+    if duration is None:
+        duration = Settings.MoveMouseDelay
+
     from_location = _to_location(drag_from)
     to_location = _to_location(drop_to)
     pyautogui.moveTo(from_location.x, from_location.y, 0)
-    pyautogui.dragTo(to_location.x, to_location.x, duration)
+
+    time.sleep(Settings.DelayBeforeMouseDown)
+    pyautogui.mouseDown(button='left', _pause=False)
+
+    time.sleep(Settings.DelayBeforeDrag)
+    pyautogui._mouseMoveDrag('drag', to_location.x, to_location.y, 0, 0, duration, pyautogui.linear, 'left')
+
+    time.sleep(Settings.DelayBeforeDrop)
+    pyautogui.mouseUp(button='left', _pause=False)
 
 
 def get_screen():
@@ -1630,7 +1772,7 @@ def paste(text):
     pyperclip.copy('')
 
 
-def type(text=None, modifier=None, interval=Settings.TypeDelay):
+def type(text=None, modifier=None, interval=None):
     logger.debug('type method: ')
     if modifier is None:
         if isinstance(text, _IrisKey):
@@ -1639,6 +1781,9 @@ def type(text=None, modifier=None, interval=Settings.TypeDelay):
             pyautogui.keyDown(str(text))
             pyautogui.keyUp(str(text))
         else:
+            if interval is None:
+                interval = Settings.TypeDelay
+
             logger.debug('Scenario 2: normal key or text block')
             logger.debug('Text: %s' % text)
             pyautogui.typewrite(text, interval)
