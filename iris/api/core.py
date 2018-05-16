@@ -1552,7 +1552,7 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
     interval = 1 / wait_scan_rate
     max_attempts = int(Settings.AutoWaitTimeout * wait_scan_rate)
 
-    p_top = _image_search_loop(pattern.image_path, interval, max_attempts, DEFAULT_MIN_SIMILARITY, in_region)
+    p_top = _image_search_loop(pattern.image_path, interval, max_attempts, Settings.MinSimilarity, in_region)
 
     if p_top.getX() == -1 and p_top.getY() == -1:
         raise FindError('Unable to click on: %s' % pattern.image_path)
