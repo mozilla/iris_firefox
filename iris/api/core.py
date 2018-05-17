@@ -31,12 +31,13 @@ FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
-DEFAULT_WAIT_SCAN_RATE = 3
-DEFAULT_TYPE_DELAY = 0
-DEFAULT_MOVE_MOUSE_DELAY = 0.5
-DEFAULT_CLICK_DELAY = 0
+
 DEFAULT_MIN_SIMILARITY = 0.8
-DEFAULT_AUTO_WAIT_TIMEOUT = 3
+DEFAULT_SLOW_MOTION_DELAY = 2
+DEFAULT_MOVE_MOUSE_DELAY = 0.5
+DEFAULT_OBSERVE_MIN_CHANGED_PIXELS = 50
+DEFAULT_TYPE_DELAY = DEFAULT_CLICK_DELAY = 0
+DEFAULT_WAIT_SCAN_RATE = DEFAULT_OBSERVE_SCAN_RATE = DEFAULT_AUTO_WAIT_TIMEOUT = 3
 DEFAULT_DELAY_BEFORE_MOUSE_DOWN = DEFAULT_DELAY_BEFORE_DRAG = DEFAULT_DELAY_BEFORE_DROP = 0.3
 
 _images = {}
@@ -146,6 +147,9 @@ class _IrisSettings(object):
     _delay_before_mouse_down = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
     _delay_before_drag = DEFAULT_DELAY_BEFORE_DRAG
     _delay_before_drop = DEFAULT_DELAY_BEFORE_DROP
+    _slow_motion_delay = DEFAULT_SLOW_MOTION_DELAY
+    _observe_scan_rate = DEFAULT_OBSERVE_SCAN_RATE
+    _observe_min_changed_pixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
 
     def __init__(self):
         self._wait_scan_rate = self.WaitScanRate
@@ -157,6 +161,9 @@ class _IrisSettings(object):
         self._delay_before_mouse_down = self.DelayBeforeMouseDown
         self._delay_before_drag = self.DelayBeforeDrag
         self._delay_before_drop = self.DelayBeforeDrop
+        self._slow_motion_delay = self.SlowMotionDelay
+        self._observe_scan_rate = self.ObserveScanRate
+        self._observe_min_changed_pixels = self.ObserveMinChangedPixels
 
     @property
     def WaitScanRate(self):
@@ -238,6 +245,30 @@ class _IrisSettings(object):
     @DelayBeforeDrop.setter
     def DelayBeforeDrop(self, value):
         self._delay_before_drop = value
+
+    @property
+    def SlowMotionDelay(self):
+        return self._slow_motion_delay
+
+    @SlowMotionDelay.setter
+    def SlowMotionDelay(self, value):
+        self._slow_motion_delay = value
+
+    @property
+    def ObserveScanRate(self):
+        return self._observe_scan_rate
+
+    @ObserveScanRate.setter
+    def ObserveScanRate(self, value):
+        self._observe_scan_rate = value
+
+    @property
+    def ObserveMinChangedPixels(self):
+        return self._observe_min_changed_pixels
+
+    @ObserveMinChangedPixels.setter
+    def ObserveMinChangedPixels(self, value):
+        self._observe_min_changed_pixels = value
 
     @property
     def ActionLogs(self):

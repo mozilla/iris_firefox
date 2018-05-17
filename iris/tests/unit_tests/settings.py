@@ -134,3 +134,39 @@ class Test(BaseTest):
         Settings.DelayBeforeDrag = DEFAULT_DELAY_BEFORE_DRAG
         Settings.DelayBeforeDrop = DEFAULT_DELAY_BEFORE_DROP
         Settings.MoveMouseDelay = DEFAULT_MOVE_MOUSE_DELAY
+
+        # Settings.SlowMotionDelay
+
+        default_slow_motion_delay = Settings.SlowMotionDelay
+        assert_equal(self, DEFAULT_SLOW_MOTION_DELAY, default_slow_motion_delay,
+                     'Default SlowMotionDelay should be equal to %s' % str(DEFAULT_SLOW_MOTION_DELAY))
+        updated_slow_motion_delay = 3
+        Settings.SlowMotionDelay = updated_slow_motion_delay
+        assert_equal(self, Settings.SlowMotionDelay, updated_slow_motion_delay,
+                     'Updated value for SlowMotionDelay should be %s' % updated_slow_motion_delay)
+
+        Settings.SlowMotionDelay = DEFAULT_SLOW_MOTION_DELAY
+
+        # Settings.ObserveScanRate
+
+        default_observe_scan_rate = Settings.ObserveScanRate
+        assert_equal(self, DEFAULT_OBSERVE_SCAN_RATE, default_observe_scan_rate,
+                     'Default ObserveScanRate should be equal to %s' % str(DEFAULT_OBSERVE_SCAN_RATE))
+        updated_observe_scan_rate = 5
+        Settings.ObserveScanRate = updated_observe_scan_rate
+        assert_equal(self, Settings.ObserveScanRate, updated_observe_scan_rate,
+                     'Updated value for ObserveScanRate should be %s' % updated_observe_scan_rate)
+
+        Settings.ObserveScanRate = DEFAULT_OBSERVE_SCAN_RATE
+
+        # Settings.ObserveMinChangedPixels
+
+        default_observe_min_changed_pixels = Settings.ObserveMinChangedPixels
+        assert_equal(self, DEFAULT_OBSERVE_MIN_CHANGED_PIXELS, default_observe_min_changed_pixels,
+                     'Default ObserveMinChangedPixels should be equal to %s' % str(DEFAULT_OBSERVE_MIN_CHANGED_PIXELS))
+        updated_observe_min_changed_pixels = 60
+        Settings.ObserveMinChangedPixels = updated_observe_min_changed_pixels
+        assert_equal(self, Settings.ObserveMinChangedPixels, updated_observe_min_changed_pixels,
+                     'Updated value for ObserveMinChangedPixels should be %s' % updated_observe_min_changed_pixels)
+
+        Settings.ObserveMinChangedPixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
