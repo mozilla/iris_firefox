@@ -267,7 +267,8 @@ class Iris(object):
     def init_tesseract_path(self):
 
         win_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
-        osx_linux_tesseract_path = '/usr/local/bin/tesseract'
+        osx_linux_tesseract_path_1 = '/usr/local/bin/tesseract'
+        osx_linux_tesseract_path_2 = '/usr/bin/tesseract'
 
         path_not_found = False
         current_os = Settings.getOS()
@@ -278,8 +279,10 @@ class Iris(object):
             else:
                 path_not_found = True
         elif current_os == Platform.LINUX or current_os == Platform.MAC:
-            if self.check_tesseract_path(osx_linux_tesseract_path):
-                pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
+            if self.check_tesseract_path(osx_linux_tesseract_path_1):
+                pytesseract.pytesseract.tesseract_cmd = osx_linux_tesseract_path_1
+            elif self.check_tesseract_path(osx_linux_tesseract_path_2):
+                pytesseract.pytesseract.tesseract_cmd = osx_linux_tesseract_path_2
             else:
                 path_not_found = True
         else:

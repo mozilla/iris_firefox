@@ -5,29 +5,27 @@
 
 from iris.test_case import *
 
-import time
-
 
 class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test of creating various Firefox instances with arguments"
+        self.meta = 'This is a test of creating various Firefox instances with arguments'
 
     def run(self):
-        amazon_image = "amazon.png"
+        amazon_image = 'amazon.png'
 
         time.sleep(5)
-        args = ["-width", "800", "-height", "800", "-new-tab", "http://www.mozilla.org"]
-        launch_firefox(path=self.app.fx_path, profile="size_800", args=args)
+        args = ['-width', '800', '-height', '800', '-new-tab', 'http://www.mozilla.org']
+        launch_firefox(path=self.app.fx_path, profile='size_800', args=args)
 
         time.sleep(5)
-        args = ["-width", "600", "-height", "600", "-search", "firefox"]
-        launch_firefox(path=self.app.fx_path, profile="size_600", args=args)
+        args = ['-width', '600', '-height', '600', '-search', 'firefox']
+        launch_firefox(path=self.app.fx_path, profile='size_600', args=args)
 
         time.sleep(5)
-        args = ["-width", "400", "-height", "400", "-private-window", "http://amazon.com"]
-        launch_firefox(path=self.app.fx_path, profile="size_400", args=args)
+        args = ['-width', '400', '-height', '400', '-private-window', 'http://amazon.com']
+        launch_firefox(path=self.app.fx_path, profile='size_400', args=args)
 
         expected_1 = exists(amazon_image, 10)
 

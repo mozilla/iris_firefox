@@ -72,6 +72,9 @@ class BaseTest(object):
         res = Result(outcome, message, actual, expected, error)
         self.add_result(res)
 
+    def get_asset_path(self, path):
+        return os.path.join(path, 'assets/')
+
     @staticmethod
     def create_unique_profile_name():
         ts = int(time.time())
