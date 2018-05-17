@@ -72,17 +72,25 @@ def navigate_slow(url):
 
     The function handles typing 'Enter' to complete the action.
     """
-    select_location_bar()
-    # increase the delay between each keystroke while typing strings
-    # (sikuli defaults to .02 sec)
-    Settings.TypeDelay = 0.1
-    type(url + Key.ENTER)
+    try:
+        wait('home.png', 5)
+        select_location_bar()
+        # increase the delay between each keystroke while typing strings
+        # (sikuli defaults to .02 sec)
+        Settings.TypeDelay = 0.1
+        type(url + Key.ENTER)
+    except:
+        logger.error('No active window found, cannot navigate to page')
 
 
 def navigate(url):
-    select_location_bar()
-    paste(url)
-    type(Key.ENTER)
+    try:
+        wait('home.png', 5)
+        select_location_bar()
+        paste(url)
+        type(Key.ENTER)
+    except:
+        logger.error('No active window found, cannot navigate to page')
 
 
 def restart_firefox(path, profile_name, url, args=None):

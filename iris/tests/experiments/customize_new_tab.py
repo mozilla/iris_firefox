@@ -10,13 +10,13 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test of new tab preferences search"
+        self.meta = 'This is a test of new tab preferences search'
 
     def run(self):
-        url = "about:home"
-        customize_new_tab_page_image = "customize_new_tab_icon.png"
-        tab_preference_search_button = "tab_preference_search_button.png"
-        tab_search_section = "search_the_web.png"
+        url = 'about:home'
+        customize_new_tab_page_image = 'customize_new_tab_icon.png'
+        tab_preference_search_button = 'tab_preference_search_button.png'
+        tab_search_section = 'search_the_web.png'
 
         navigate(url)
 
