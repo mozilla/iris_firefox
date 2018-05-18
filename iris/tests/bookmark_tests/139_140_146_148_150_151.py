@@ -50,7 +50,7 @@ class Test(BaseTest):
         # Star button bookmark
 
         expected_3 = exists(star_button, 10)
-        assert_true(self, expected_3, 'Start button exists on the page')
+        assert_true(self, expected_3, 'Star button exists on the page')
 
         click(star_button)
 
