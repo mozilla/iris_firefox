@@ -294,3 +294,28 @@ def restore_window_from_taskbar():
         keyUp(Key.ALT)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
+
+
+def open_library_menu(option):
+    library_menu = 'library_menu.png'
+    try:
+        wait(library_menu, 10)
+        region = Region(find(library_menu).getX() - screen_width/4, find(library_menu).getY(), screen_width/4,
+                        screen_height/4)
+        logger.debug('Library menu found')
+    except:
+        logger.error('Can\'t find the library menu in the page, aborting test.')
+        return
+    else:
+        click(library_menu)
+        time.sleep(1)
+        try:
+            time.sleep(1)
+            region.wait(option, 10)
+            logger.debug('Option found')
+        except FindError:
+            logger.error('Can\'t find the option in the page, aborting test.')
+            return
+        else:
+            region.click(option)
+            return region
