@@ -59,6 +59,7 @@ class Test(BaseTest):
         # Check if the bookmarks exists
 
         bookmarks_sidebar()
+        time.sleep(1)
 
         paste(search_bookmark_1)
 
