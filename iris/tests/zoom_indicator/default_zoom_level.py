@@ -37,7 +37,7 @@ class Test(BaseTest):
 
         time.sleep(1)
 
-        new_region = Region(x_reg, y_reg, coord.getX() - x_reg + 50, screen_height / 3)
+        new_region = Region(x_reg, y_reg, coord.getX() - x_reg + 50, screen_height / 2)
 
         expected = new_region.exists(hamburger_menu_zoom_indicator, 10)
         assert_true(self, expected, 'Zoom level is 100% by default.')
