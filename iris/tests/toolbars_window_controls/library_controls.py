@@ -36,7 +36,7 @@ class Test(BaseTest):
         else:
             maximize_window()
             time.sleep(1)
-            if Settings.getOS() == Platform.WIN:
+            if Settings.getOS() == Platform.WINDOWS:
                 expected_2 = exists(library_restore_button, 10)
             else:
                 expected_2 = exists(restore_button, 10)
@@ -44,7 +44,7 @@ class Test(BaseTest):
 
             minimize_window()
             time.sleep(1)
-            if Settings.getOS() == Platform.WIN:
+            if Settings.getOS() == Platform.WINDOWS:
                 expected_3 = exists(library_maximize_button, 10)
             else:
                 expected_3 = exists(maximize_button, 10)
