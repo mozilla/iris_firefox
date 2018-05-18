@@ -305,3 +305,24 @@ def restore_window_from_taskbar():
         keyUp(Key.ALT)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
+
+
+def maximize_auxiliary_window():
+    # This is different from maximize_window() since on OSX the auxiliary window controls are on grey background vs
+    # black background for the main browser window
+
+    if get_os() == Platform.MAC:
+        library_controls = 'library_controls.png'
+        # Set target to the maximize button
+        maximize_button = Pattern(library_controls).targetOffset(48, 7)
+        # We must hover the controls so the ALT key can take effect there.
+        hover(library_controls)
+        # Alt key changes maximize button from full screen to maximize window.
+        keyDown(Key.ALT)
+        click(maximize_button)
+        keyUp(Key.ALT)
+
+    elif get_os() == Platform.WINDOWS:
+        type(text=Key.UP, modifier=KeyModifier.WIN)
+    else:
+        type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)

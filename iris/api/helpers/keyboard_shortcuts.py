@@ -544,8 +544,10 @@ def open_library():
     """Open the Library window."""
     if Settings.getOS() == Platform.MAC:
         type(text='b', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-    else:
+    elif Settings.getOS() == Platform.WINDOWS:
         type(text='b', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    else:
+        type(text='o', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
 # End History & Bookmarks keyboard shortcuts.
