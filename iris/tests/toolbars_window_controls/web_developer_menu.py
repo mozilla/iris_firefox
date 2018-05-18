@@ -3,16 +3,20 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from test_case import *
+from iris.test_case import *
 
 
-class test(base_test):
+class Test(BaseTest):
 
     def __init__(self, app):
-        base_test.__init__(self, app)
-        base_test.set_image_path(self, os.path.split(__file__)[0])
+        BaseTest.__init__(self, app)
+        BaseTest.set_image_path(self, os.path.split(__file__)[0])
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test case that checks that Developer Toolbar controls work as expected"
+
+        # Disabling until test has been updated
+        self.exclude = Platform.ALL
+        
 
     def run(self):
 
