@@ -747,6 +747,9 @@ class Region(object):
     def debug(self):
         _save_debug_image(None, self, None)
 
+    def debug_ocr(self, with_image_processing=True):
+        return self.text(with_image_processing, True)
+
     def show(self):
         region_screen = _region_grabber(self)
         region_screen.show()
@@ -841,8 +844,8 @@ class Region(object):
     def click(self, where=None, duration=None):
         return click(where, duration, self)
 
-    def text(self, with_image_processing=True):
-        return text(with_image_processing, self)
+    def text(self, with_image_processing=True, with_debug=False):
+        return text(with_image_processing, self, with_debug)
 
     def type(self, text, modifier, interval):
         return type(text, modifier, interval)
@@ -1253,27 +1256,67 @@ def _text_search_all(with_image_processing=True, in_region=None):
         except:
             continue
 
-    _save_ocr_debug_image(debug_img, debug_data)
-    return final_data
+    # _save_ocr_debug_image(debug_img, debug_data)
+    return final_data, debug_img, debug_data
+
+
+def _combine_text_matches(matches, value):
+    new_match = {'x': 0, 'y': 0, 'width': 0, 'height': 0, 'precision': 0.0, 'value': value}
+
+    total_elem = len(matches)
+
+    if total_elem > 0:
+        new_match['x'] = matches[0]['x']
+        new_match['y'] = matches[0]['y']
+        for match in matches:
+            new_match['width'] = new_match['width'] + match['width']
+            new_match['height'] = new_match['height'] + match['height']
+            new_match['precision'] = new_match['precision'] + match['precision']
+
+        new_match['height'] = int(new_match['height'] / total_elem * 1.5)
+        new_match['precision'] = new_match['precision'] / total_elem
+        return new_match
+    else:
+        return None
 
 
 def _text_search_by(what, match_case=True, in_region=None, multiple_matches=False):
     if not isinstance(what, str):
         return ValueError(INVALID_GENERIC_INPUT)
 
-    text_dict = _text_search_all(True, in_region)
+    text_dict, debug_img, debug_data = _text_search_all(True, in_region)
 
     if not match_case:
         what = what.lower()
 
     all_res = []
 
-    for match_object in text_dict:
+    for match_index, match_object in enumerate(text_dict):
         if what == match_object['value']:
             if multiple_matches:
                 all_res.append(match_object)
             else:
+                _save_ocr_debug_image(debug_img, [debug_data[match_index]])
                 return match_object
+
+    if len(all_res) == 0 and what in _ocr_matches_to_string(text_dict):
+        what_words = what.split()
+        words_len = len(what_words)
+        temp_matches = []
+        temp_debug = []
+
+        if words_len > 0:
+            for match_index, match_object in enumerate(text_dict):
+                for word_index, searched_word in enumerate(what_words):
+                    if searched_word == match_object['value']:
+                        temp_matches.append(match_object)
+                        temp_debug.append(debug_data[match_index])
+
+            final_match = _combine_text_matches(temp_matches, what)
+            _save_ocr_debug_image(debug_img, temp_debug)
+            return final_match
+        else:
+            return None
 
     if multiple_matches:
         if len(all_res) > 0:
@@ -1352,14 +1395,16 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
 """
 
 
-def text(with_image_processing=True, in_region=None):
+def text(with_image_processing=True, in_region=None, debug=False):
     """Get all text from a Region or full screen
 
     :param bool with_image_processing: With extra dpi and contrast image processing
     :param Region in_region: In certain Region or full screen
     :return: list of matches
     """
-    all_text = _text_search_all(with_image_processing, in_region)
+    all_text, debug_img, debug_data = _text_search_all(with_image_processing, in_region)
+    if debug:
+        _save_ocr_debug_image(debug_img, debug_data)
     return _ocr_matches_to_string(all_text)
 
 
