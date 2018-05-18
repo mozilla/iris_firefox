@@ -34,11 +34,11 @@ class Test(BaseTest):
         expected_1 = exists(save_as, 10)
         assert_true(self, expected_1, 'Save Image dialog is present')
 
-        if Settings.getOS() == Platform.MAC:
-            click_cancel_button()
-        else:
+        if Settings.getOS() == Platform.WINDOWS:
             close_auxiliary_window()
-
+        else:
+            click_cancel_button()
+            
         try:
             expected_2 = waitVanish(save_as, 5)
             assert_true(self, expected_2, 'Save Image dialog was closed')
