@@ -12,6 +12,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of sending messages on Yahoo web messenger'
+        self.exclude = Platform.ALL
 
     def run(self):
         yahoo_login = 'yahoo_login.png'
