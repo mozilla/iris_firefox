@@ -31,7 +31,6 @@ FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
-
 DEFAULT_MIN_SIMILARITY = 0.8
 DEFAULT_SLOW_MOTION_DELAY = 2
 DEFAULT_MOVE_MOUSE_DELAY = 0.5
@@ -95,6 +94,16 @@ def get_os_version():
 
 def get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../..')
+
+
+def is_scaled_desktop():
+    screen_default_weight = 1280
+    screen_default_height = 800
+    screen_weight, screen_height = pyautogui.size()
+    if (screen_weight > screen_default_weight and screen_height > screen_default_height):
+        return True
+    else:
+        return False
 
 
 CURRENT_PLATFORM = get_os()
