@@ -20,22 +20,19 @@ class Test(BaseTest):
         navigate(url)
 
         # Check to make sure the test PDF is loaded, Then click the download button.
-        try:
-            wait(test_pdf, 20)
-        except:
-            raise FindError('Test PDF page not loaded')
-        else:
-            click(download_button)
+        expected = exists(test_pdf, 20)
+        assert_true(self, expected, 'The test PDF is present')
+        click(download_button)
 
         # Ensure the dialog appears
-        expected_1 = exists(dialog, 20)
-        assert_true(self, expected_1, 'Download dialog is present')
+        expected = exists(dialog, 20)
+        assert_true(self, expected, 'Download dialog is present')
 
         # Close the dialog
         close_auxiliary_window()
 
         try:
-            expected_2 = waitVanish(dialog, 5)
-            assert_true(self, expected_2, 'Download dialog was closed')
+            expected = waitVanish(dialog, 5)
+            assert_true(self, expected, 'Download dialog was closed')
         except:
             raise FindError('Download dialog is still present')
