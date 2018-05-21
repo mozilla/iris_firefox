@@ -295,14 +295,10 @@ def create_region_from_image(image):
 
 def restore_window_from_taskbar():
     if Settings.getOS() == Platform.MAC:
-        type(text=Key.TAB, modifier=KeyModifier.CMD)
-        time.sleep(0.1)
-        keyDown(Key.CMD)
-        keyDown(Key.TAB)
-        keyUp(Key.TAB)
-        keyDown(Key.ALT)
-        keyUp(Key.CMD)
-        keyUp(Key.ALT)
+        click('main_menu_window.png')
+        type(Key.DOWN)
+        time.sleep(.5)
+        type(Key.ENTER)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
 
