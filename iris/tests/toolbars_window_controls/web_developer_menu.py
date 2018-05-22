@@ -57,7 +57,7 @@ class Test(BaseTest):
             type(Key.ENTER)
             logger.debug('Opening console from command line')
             # check if one of the Developer console tabs are displayed to be sure that the console is opened
-            console_items = ['Inspector', 'Debugger', 'Console', 'Performance', 'Memory']
+            console_items = ['Inspector', 'Debugger', 'Console', 'Performance', 'Memory','Network','Storage']
             found = False
             for word in console_items:
                 if word in left_corner_screen_region.text():
