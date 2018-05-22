@@ -99,6 +99,9 @@ def restart_firefox(path, profile_name, url, args=None):
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit')
     confirm_firefox_quit()
+    # Give Firefox a chance to cleanly shutdown all of its processes
+    # TODO: This should be made into a robust function instead of a hard coded sleep
+    time.sleep(3)
     logger.debug('Relaunching Firefox with profile name \'%s\'' % profile_name)
     launch_firefox(path, profile_name, url, args)
     logger.debug('Confirming that Firefox has been launched')
