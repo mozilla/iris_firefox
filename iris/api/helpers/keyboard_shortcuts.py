@@ -375,9 +375,8 @@ def maximize_window():
         # There is no keyboard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
         window_controls = 'window_controls.png'
-        # we need to check the screen resolution if it's larger than 1280*1024
-        # if screen resolution >1280 we need to maximize firefox because firefox wil start minimized
-        if is_scaled_desktop():
+        # Only maximize Firefox if we have a screen bigger than 1280 x 800.
+        if not Platform.LOWRES:
             # Set target to the maximize button
             maximize_button = Pattern(window_controls).targetOffset(48, 7)
 
