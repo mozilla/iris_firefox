@@ -96,16 +96,6 @@ def get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../..')
 
 
-def is_low_resulution():
-    min_screen_width = 1280
-    min_screen_height = 800
-    screen_width, screen_height = pyautogui.size()
-    if (screen_width > 1280 && screen_height > 800):
-        return False
-    else:
-        return True
-
-
 CURRENT_PLATFORM = get_os()
 PROJECT_BASE_PATH = get_module_dir()
 
