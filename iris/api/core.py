@@ -96,14 +96,14 @@ def get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../..')
 
 
-def is_scaled_desktop():
-    screen_default_weight = 1280
-    screen_default_height = 800
-    screen_weight, screen_height = pyautogui.size()
-    if (screen_weight > screen_default_weight and screen_height > screen_default_height):
-        return True
-    else:
+def is_low_resulution():
+    min_screen_width = 1280
+    min_screen_height = 800
+    screen_width, screen_height = pyautogui.size()
+    if (screen_width > 1280 && screen_height > 800):
         return False
+    else:
+        return True
 
 
 CURRENT_PLATFORM = get_os()
@@ -911,6 +911,8 @@ class Platform(object):
     MAC = 'osx'
     ALL = Settings.getOS()
     HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
+    screen_width, screen_height = pyautogui.size()
+    LOWRES = (screen_width < 1280 or screen_height < 800)
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
