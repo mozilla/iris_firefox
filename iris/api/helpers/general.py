@@ -407,7 +407,7 @@ class _IrisProfile(object):
         sz_bin = find_executable('7z')
         if sz_bin is None:
             logger.critical('Cannot find 7zip')
-            sys.exit(5)
+            exit(5)
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
         zipped_profile = os.path.join(Profile.STAGED_PROFILES, '%s.zip' % profile_name)
