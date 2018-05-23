@@ -6,7 +6,6 @@ import logging
 import os
 import stat
 import subprocess
-import sys
 from distutils.spawn import find_executable
 
 import cache
@@ -24,7 +23,7 @@ def extract(archive_file, platform, workdir, cache_timeout=24 * 60 * 60, use_cac
     sz_bin = find_executable('7z')
     if sz_bin is None:
         logger.critical('Cannot find 7zip')
-        sys.exit(5)
+        exit(5)
     logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
     # Name in cache is file name without extensions
