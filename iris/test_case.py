@@ -40,19 +40,6 @@ class BaseTest(object):
         for result in self.results:
             self.outcome = result.outcome
 
-    def print_results(self):
-        for result in self.results:
-            if 'ERROR' == result.outcome:
-                logger.error('Error encountered in test, outcome: >>> ERROR <<< %s' % '\n' + result.error if
-                             result.error else '')
-            elif 'FAILED' == result.outcome:
-                logger.warning('Step: %s, outcome: >>> %s <<< %s' % (
-                    result.message, result.outcome, '\n' + result.error if result.error else ''))
-            elif 'PASSED' == result.outcome:
-                logger.success('Step: %s, outcome: >>> %s <<<' % (result.message, result.outcome))
-        logger.info('%s - >>> %s <<< (Finished in %s second(s))\n' % (
-            self.meta, self.outcome, get_duration(self.start_time, self.end_time)))
-
     def get_start_time(self):
         return self.start_time
 
@@ -105,7 +92,6 @@ class BaseTest(object):
 
     def teardown(self):
         """This might be a good place to clean up what was done."""
-        self.print_results()
         self.reset_variables()
         quit_firefox()
         return

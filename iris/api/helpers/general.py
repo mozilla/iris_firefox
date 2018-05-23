@@ -99,6 +99,9 @@ def restart_firefox(path, profile_name, url, args=None):
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit')
     confirm_firefox_quit()
+    # Give Firefox a chance to cleanly shutdown all of its processes
+    # TODO: This should be made into a robust function instead of a hard coded sleep
+    time.sleep(3)
     logger.debug('Relaunching Firefox with profile name \'%s\'' % profile_name)
     launch_firefox(path, profile_name, url, args)
     logger.debug('Confirming that Firefox has been launched')
@@ -295,14 +298,10 @@ def create_region_from_image(image):
 
 def restore_window_from_taskbar():
     if Settings.getOS() == Platform.MAC:
-        type(text=Key.TAB, modifier=KeyModifier.CMD)
-        time.sleep(0.1)
-        keyDown(Key.CMD)
-        keyDown(Key.TAB)
-        keyUp(Key.TAB)
-        keyDown(Key.ALT)
-        keyUp(Key.CMD)
-        keyUp(Key.ALT)
+        click('main_menu_window.png')
+        type(Key.DOWN)
+        time.sleep(.5)
+        type(Key.ENTER)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
 
@@ -311,8 +310,8 @@ def open_library_menu(option):
     library_menu = 'library_menu.png'
     try:
         wait(library_menu, 10)
-        region = Region(find(library_menu).getX() - screen_width/4, find(library_menu).getY(), screen_width/4,
-                        screen_height/4)
+        region = Region(find(library_menu).getX() - screen_width / 4, find(library_menu).getY(), screen_width / 4,
+                        screen_height / 4)
         logger.debug('Library menu found')
     except:
         logger.error('Can\'t find the library menu in the page, aborting test.')
@@ -330,6 +329,7 @@ def open_library_menu(option):
         else:
             region.click(option)
             return region
+
 
 def maximize_auxiliary_window():
     # This is different from maximize_window() since on OSX the auxiliary window controls are on grey background vs
@@ -351,3 +351,29 @@ def maximize_auxiliary_window():
     else:
         type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)
 
+
+def remove_zoom_indicator_from_toolbar():
+    zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
+    remove_from_toolbar = 'remove_from_toolbar.png'
+
+    try:
+        wait(zoom_control_toolbar_decrease, 10)
+        logger.debug('\'Decrease\' zoom control found.')
+    except FindError:
+        logger.error('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
+        return
+    else:
+        rightClick(zoom_control_toolbar_decrease)
+
+    time.sleep(1)
+
+    if exists(remove_from_toolbar, 10):
+        click(remove_from_toolbar)
+    else:
+        raise FindError('Unable to find the remove_from_toolbar.png.')
+
+    try:
+        waitVanish(zoom_control_toolbar_decrease, 10)
+    except FindError:
+        logger.error('Zoom indicator not removed from toolbar - aborting test run.')
+        exit(1)

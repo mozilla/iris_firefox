@@ -18,23 +18,25 @@ import pytesseract
 
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
+from helpers.parse_args import parse_args
 
 try:
     import Image
 except ImportError:
     from PIL import Image
 
+args = parse_args()
+
 pyautogui.FAILSAFE = False
-save_debug_images = False
+save_debug_images = args.level == 10
 
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
-
 DEFAULT_MIN_SIMILARITY = 0.8
 DEFAULT_SLOW_MOTION_DELAY = 2
-DEFAULT_MOVE_MOUSE_DELAY = 0.5
+DEFAULT_MOVE_MOUSE_DELAY = args.mouse
 DEFAULT_OBSERVE_MIN_CHANGED_PIXELS = 50
 DEFAULT_TYPE_DELAY = DEFAULT_CLICK_DELAY = 0
 DEFAULT_WAIT_SCAN_RATE = DEFAULT_OBSERVE_SCAN_RATE = DEFAULT_AUTO_WAIT_TIMEOUT = 3
@@ -60,12 +62,6 @@ def success(self, message, *args, **kws):
 
 logging.Logger.success = success
 logger = logging.getLogger(__name__)
-
-
-def set_save_debug_images(new_val):
-    global save_debug_images
-    if isinstance(new_val, bool):
-        save_debug_images = new_val
 
 
 def get_os():
@@ -902,6 +898,8 @@ class Platform(object):
     MAC = 'osx'
     ALL = Settings.getOS()
     HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
+    screen_width, screen_height = pyautogui.size()
+    LOWRES = (screen_width < 1280 or screen_height < 800)
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):

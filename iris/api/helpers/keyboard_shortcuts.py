@@ -375,14 +375,15 @@ def maximize_window():
         # There is no keyboard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
         window_controls = 'window_controls.png'
+        # Only maximize Firefox if we have a screen bigger than 1280 x 800.
+        if not Platform.LOWRES:
+            # Set target to the maximize button
+            maximize_button = Pattern(window_controls).targetOffset(48, 7)
 
-        # Set target to the maximize button
-        maximize_button = Pattern(window_controls).targetOffset(48, 7)
-
-        # Alt key changes maximize button from full screen to maximize window.
-        keyDown(Key.ALT)
-        click(maximize_button)
-        keyUp(Key.ALT)
+            # Alt key changes maximize button from full screen to maximize window.
+            keyDown(Key.ALT)
+            click(maximize_button)
+            keyUp(Key.ALT)
 
     elif Settings.getOS() == Platform.WINDOWS:
         type(text=Key.UP, modifier=KeyModifier.WIN)
@@ -593,6 +594,7 @@ def force_close():
     type(text=Key.F4, modifier=KeyModifier.ALT)
     type(text='u', modifier=KeyModifier.CTRL)
 
+
 # End Tools keyboard shortcuts
 
 
@@ -601,4 +603,3 @@ def open_web_developer_menu():
     Open tWeb_developer tool.
     """
     type(text=Key.F2, modifier=KeyModifier.SHIFT)
-
