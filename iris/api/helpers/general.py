@@ -2,6 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from distutils import dir_util
+from distutils.spawn import find_executable
+
 import shutil
 import subprocess
 
@@ -11,16 +14,16 @@ from iris.configuration.config_parser import *
 logger = logging.getLogger(__name__)
 
 
-def launch_firefox(path, profile='empty_profile', url=None, args=None):
+def launch_firefox(path, profile=None, url=None, args=None):
     """Launch the app with optional args for profile, windows, URI, etc."""
     if args is None:
         args = []
-    current_dir = os.path.split(__file__)[0]
-    active_profile = os.path.join(current_dir, 'test_profiles', profile)
-    if not os.path.exists(active_profile):
-        os.mkdir(active_profile)
 
-    cmd = [path, '-foreground', '-no-remote', '-profile', active_profile]
+    if profile is None:
+        logger.warning('No profile name present, using last default profile on disk.')
+        profile = os.path.join(os.path.expanduser('~'), '.iris', 'profiles', 'default')
+
+    cmd = [path, '-foreground', '-no-remote', '-profile', profile]
 
     # Add other Firefox flags
     for arg in args:
@@ -30,15 +33,16 @@ def launch_firefox(path, profile='empty_profile', url=None, args=None):
         cmd.append('-new-tab')
         cmd.append(url)
 
+    logger.debug('Launching Firefox with arguments: %s' % ' '.join(cmd))
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return
 
 
 def clean_profiles():
-    path = os.path.join(os.path.split(__file__)[0], 'test_profiles')
-    if os.path.exists(path):
-        shutil.rmtree(path)
-    os.mkdir(path)
+    profile_cache = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
+    if os.path.exists(profile_cache):
+        shutil.rmtree(profile_cache)
+    os.mkdir(profile_cache)
 
 
 def confirm_firefox_launch():
@@ -93,7 +97,7 @@ def navigate(url):
         logger.error('No active window found, cannot navigate to page')
 
 
-def restart_firefox(path, profile_name, url, args=None):
+def restart_firefox(path, profile, url, args=None):
     # just as it says, with options
     logger.debug('Restarting Firefox')
     quit_firefox()
@@ -102,8 +106,8 @@ def restart_firefox(path, profile_name, url, args=None):
     # Give Firefox a chance to cleanly shutdown all of its processes
     # TODO: This should be made into a robust function instead of a hard coded sleep
     time.sleep(3)
-    logger.debug('Relaunching Firefox with profile name \'%s\'' % profile_name)
-    launch_firefox(path, profile_name, url, args)
+    logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
+    launch_firefox(path, profile, url, args)
     logger.debug('Confirming that Firefox has been launched')
     confirm_firefox_launch()
     logger.debug('Successful Firefox restart performed')
@@ -377,3 +381,73 @@ def remove_zoom_indicator_from_toolbar():
     except FindError:
         logger.error('Zoom indicator not removed from toolbar - aborting test run.')
         exit(1)
+
+
+class _IrisProfile(object):
+
+    # Disk locations for both profile cache and staged profiles.
+    PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
+    STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
+
+    @property
+    def DEFAULT(self):
+        """Make unique profile name using time stamp."""
+        return os.path.join(Profile.PROFILE_CACHE, Profile._create_unique_profile_name())
+
+    @property
+    def TEN_BOOKMARKS(self):
+        """Open a staged profile that already has ten bookmarks."""
+        logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
+        return self._get_staged_profile('ten_bookmarks')
+
+    def _get_staged_profile(self, profile_name):
+        # Find 7zip binary
+        sz_bin = find_executable('7z')
+        if sz_bin is None:
+            logger.critical('Cannot find 7zip')
+            sys.exit(5)
+        logger.debug('Using 7zip executable at "%s"' % sz_bin)
+
+        zipped_profile = os.path.join(Profile.STAGED_PROFILES, '%s.zip' % profile_name)
+
+        cmd = [sz_bin, 'x', '-y', '-bd', '-o%s' % Profile.STAGED_PROFILES, zipped_profile]
+        logger.debug('Unzipping profile with command "%s"' % ' '.join(cmd))
+        try:
+            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            logger.error('7zip failed: %s' % repr(e.output))
+            raise Exception('Unable to unzip profile')
+        logger.debug('7zip succeeded: %s' % repr(output))
+
+        # Find the desired profile
+        from_directory = os.path.join(Profile.STAGED_PROFILES, profile_name)
+
+        # Create a unique name for the profile.
+        temp_name = '%s_%s' % (profile_name, Profile._create_unique_profile_name())
+
+        # Create a folder to hold that profile's contents.
+        to_directory = os.path.join(Profile.PROFILE_CACHE, temp_name)
+        os.mkdir(to_directory)
+
+        # Duplicate profile.
+        dir_util.copy_tree(from_directory, to_directory)
+
+        # Remove unzipped directory first.
+        shutil.rmtree(from_directory)
+
+        # Remove Mac resource fork folders left over from ZIP, if present.
+        resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')
+        if os.path.exists(resource_fork_folder):
+            shutil.rmtree(resource_fork_folder)
+
+        # Return path to profile in cache.
+        return to_directory
+
+    @staticmethod
+    def _create_unique_profile_name():
+        ts = int(time.time())
+        profile_name = 'profile_%s' % ts
+        return profile_name
+
+
+Profile = _IrisProfile()
