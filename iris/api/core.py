@@ -1793,6 +1793,8 @@ def scroll(clicks):
 def paste(text):
     # load to clipboard
     pyperclip.copy(text)
+    # We must introduce a slight delay, as the copy operation is not instant.
+    time.sleep(.5)
     if Settings.getOS() == Platform.MAC:
         pyautogui.hotkey('command', 'v')
     else:
