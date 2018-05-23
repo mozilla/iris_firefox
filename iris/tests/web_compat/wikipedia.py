@@ -10,7 +10,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = "Web compability test for wikipedia.org"
-        self.exclude = Platform.ALL
+        #self.exclude = Platform.ALL
 
     def run(self):
         url = "www.wikipedia.org"
@@ -83,6 +83,7 @@ class Test(BaseTest):
             # We will replace PASS/FAIL with proper assert functions soon
             iris_text_assert = exists(iris_text, 10)
             assert_true(self, iris_text_assert, 'Text found in page')
+            
             # Using text recognition, we can verify if the results are in Spanish
             results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
             page_text = get_firefox_region().text()
@@ -91,7 +92,7 @@ class Test(BaseTest):
             # at least one Spanish word appears in the page
             found = False
             for word in results_spanish:
-                if word in page_text:
+                if exists(word, 5, page_text):
                     found = True
                     break
             assert_true(self, found, 'Found Spanish search results')
