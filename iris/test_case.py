@@ -75,20 +75,14 @@ class BaseTest(object):
     def get_asset_path(self, path):
         return os.path.join(path, 'assets/')
 
-    @staticmethod
-    def create_unique_profile_name():
-        ts = int(time.time())
-        profile_name = 'profile_%s' % ts
-        return profile_name
-
     def setup(self):
         """ Test case setup
         This might be a good place to declare variables or initialize Fx state.
         Also, by default, a new Firefox instance is created, with a blank profile and URL.
         If you wish to change this, override this method in your test case.
         """
-        self.profile_name = self.create_unique_profile_name()
-        launch_firefox(path=self.app.fx_path, profile=self.profile_name, url='about:blank')
+        self.profile = Profile.DEFAULT
+        launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
         return
 
     @staticmethod
