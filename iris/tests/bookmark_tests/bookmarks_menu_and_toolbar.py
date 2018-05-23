@@ -42,7 +42,7 @@ class Test(BaseTest):
 
         navigate(url2)
 
-        time.sleep(1)
+        time.sleep(2)
 
         # Test case 141 - The Bookmarks Toolbar can be enabled from the Bookmarks Menu
 
@@ -124,7 +124,7 @@ class Test(BaseTest):
         expected_9 = right_upper_corner.exists(menu_bookmark, 10)
         assert_true(self, expected_9, 'Amazon bookmark can be accessed from the Bookmarks Menu')
 
-        click(menu_bookmark)
+        right_upper_corner.click(menu_bookmark)
 
         expected_10 = exists(amazon_home, 10)
         assert_true(self, expected_10, 'Amazon bookmark has been successfully accessed from the Bookmarks Menu')
