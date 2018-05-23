@@ -392,7 +392,9 @@ class _IrisProfile(object):
     @property
     def DEFAULT(self):
         """Make unique profile name using time stamp."""
-        return os.path.join(Profile.PROFILE_CACHE, Profile._create_unique_profile_name())
+        new_profile = os.path.join(Profile.PROFILE_CACHE, Profile._create_unique_profile_name())
+        os.mkdir(new_profile)
+        return new_profile
 
     @property
     def TEN_BOOKMARKS(self):
