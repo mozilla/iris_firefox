@@ -33,8 +33,8 @@ def run(app):
             return
         logger.info('\n' + '-' * 120)
 
-        if Settings.getOS() not in current.exclude:
-            logger.info('Executing: %s - %s ' % (index, current.meta))
+        if Settings.getOS() not in current.exclude or app.args.override:
+            logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.set_start_time(time.time())
 
             # Move the mouse to upper left corner of the screen
@@ -55,6 +55,7 @@ def run(app):
             except AssertionError:
                 failed += 1
                 current.set_end_time(time.time())
+                print_results(module, current)
                 current.teardown()
                 confirm_firefox_quit()
                 continue
@@ -62,6 +63,7 @@ def run(app):
                 failed += 1
                 current.add_results('FAILED', None, None, None, print_error(traceback.format_exc()))
                 current.set_end_time(time.time())
+                print_results(module, current)
                 current.teardown()
                 confirm_firefox_quit()
                 continue
@@ -70,6 +72,7 @@ def run(app):
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
                 current.set_end_time(time.time())
+                print_results(module, current)
                 current.teardown()
                 confirm_firefox_quit()
                 continue
@@ -77,6 +80,7 @@ def run(app):
             passed += 1
             current.set_end_time(time.time())
             # Quit Firefox
+            print_results(module, current)
             current.teardown()
             confirm_firefox_quit()
         else:
