@@ -15,7 +15,8 @@ def print_report_footer(platform, fx_version, fx_build, passed, failed, skipped,
     total_time_str = 'Total time: %s second(s)' % total_time
     separator = '\n' + '-' * 120 + '\n'
     logger.info(separator + fx_details + '\n' + test_results_str + ' ' * (120 - (len(test_results_str) +
-                len(total_time_str))) + total_time_str + separator)
+                                                                                 len(
+                                                                                     total_time_str))) + total_time_str + separator)
 
 
 def format_outcome(outcome):
@@ -49,3 +50,17 @@ def format_stack(stack):
 
 def get_duration(start_time, end_time):
     return round(end_time - start_time, 2)
+
+
+def print_results(current_test, test_case):
+    for result in test_case.results:
+        if 'ERROR' == result.outcome:
+            logger.error('Error encountered in test, outcome: >>> ERROR <<< %s' % '\n' + result.error if
+                         result.error else '')
+        elif 'FAILED' == result.outcome:
+            logger.warning('Step: %s, outcome: >>> %s <<< %s' % (
+                result.message, result.outcome, '\n' + result.error if result.error else ''))
+        elif 'PASSED' == result.outcome:
+            logger.success('Step: %s, outcome: >>> %s <<<' % (result.message, result.outcome))
+    logger.info('[%s] - >>> %s <<< (Finished in %s second(s))\n' % (
+        current_test, test_case.outcome, get_duration(test_case.start_time, test_case.end_time)))
