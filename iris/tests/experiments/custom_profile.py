@@ -40,8 +40,8 @@ class Test(BaseTest):
         # Look for bookmark in bookmark menu
         bookmarks_sidebar()
         time.sleep(1)
-        type('amazon')
+        paste('amazon')
         time.sleep(1)
 
-        expected_2 = exists(amazon_bookmark_image_2, 10)
+        expected_2 = exists(amazon_bookmark_image_2, 10, .7)
         assert_true(self, expected_2, 'Find Amazon bookmark 2nd image')
