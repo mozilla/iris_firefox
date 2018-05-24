@@ -7,27 +7,43 @@
             document.removeEventListener("DOMContentLoaded", arguments.callee, false);
             icons = document.getElementsByTagName('i');
 
-            var ctrl = document.getElementsByClassName('ctrl')
-            var alt = document.getElementsByClassName('alt')
-            var shift = document.getElementsByClassName('shift')
-            var text = document.getElementsByClassName('text')
-
             if (icons.length > 0) {
+                var ctrl = document.getElementsByClassName('ctrl')
+                var alt = document.getElementsByClassName('alt')
+                var shift = document.getElementsByClassName('shift')
+                var text = document.getElementsByClassName('text')
+
                 document.onkeypress = function (event) {
-                    ctrl[0].checked = event.ctrlKey
-                    alt[0].checked = event.altKey
-                    shift[0].checked = event.shiftKey
+                    if (event.ctrlKey) {
+                        ctrl[0].className = 'to-right ctrl fas fa-toggle-on'
+                    }
+                    else {
+                        ctrl[0].className = 'to-right ctrl fas fa-toggle-off'
+                    }
+                    if (event.altKey) {
+                        alt[0].className = 'to-right alt fas fa-toggle-on'
+                    }
+                    else {
+                        alt[0].className = 'to-right alt fas fa-toggle-off'
+                    }
+                    if (event.shiftKey) {
+                        shift[0].className = 'to-right shift fas fa-toggle-on'
+                    }
+                    else {
+                        shift[0].className = 'to-right shift fas fa-toggle-off'
+                    }
                     text[0].value = event.key
                 }
-            }
 
-            var resetButton = document.getElementById('reset')
-            resetButton.addEventListener("click", function () {
-                ctrl[0].checked = false
-                alt[0].checked = false
-                shift[0].checked = false
-                text[0].value = ''
-            });
+                var resetButton = document.getElementById('reset')
+
+                resetButton.addEventListener("click", function () {
+                    ctrl[0].className = 'to-right ctrl fas fa-toggle-off'
+                    alt[0].className = 'to-right alt fas fa-toggle-off'
+                    shift[0].className = 'to-right shift fas fa-toggle-off'
+                    text[0].value = ''
+                });
+            }
         });
 
     </script>
@@ -89,27 +105,27 @@
         <div id="commands-wrapper">
             <label>
                 Control/Command:
-                <input class="to-right ctrl" type="checkbox" name="ctrl" value="value">
+                <i class="to-right ctrl fas fa-toggle-off"></i>
             </label>
             <br>
             <label>
                 Alt:
-                <input class="to-right alt" type="checkbox" name="alt" value="value">
+                <i class="to-right alt fas fa-toggle-off"></i>
             </label>
             <br>
             <label>
                 Shift:
-                <input class="to-right shift" type="checkbox" name="shift" value="value">
+                <i class="to-right shift fas fa-toggle-off"></i>
             </label>
             <br>
             <label>
                 Text:
-                <input class="to-right text" type="text" name="Text" value="">
+                <i class="to-right text"></i>
             </label>
 
             <br>
             <br>
-            <label id="reset">Reset All</label>
+            <i id="reset" class="fas fa-trash-alt"></i>
         </div>
     </div>
 </body>
