@@ -33,7 +33,7 @@ def parse_args():
                         type=str, metavar='test_directory',
                         default=os.path.join('tests'))
     parser.add_argument('-t', '--test',
-                        help='Test name',
+                        help='Test name, directory or path to a file containing a custom list of tests',
                         type=str, metavar='test_name.py')
     parser.add_argument('-i', '--level',
                         help='Set the logging output level',
@@ -59,7 +59,7 @@ def parse_args():
                         type=float,
                         action='store',
                         default=0.5)
-    parser.add_argument("-o", "--override",
-                        help="Override disabled tests",
-                        action="store_true")
+    parser.add_argument('-o', '--override',
+                        help='Override disabled tests',
+                        action='store_true')
     return parser.parse_args()
