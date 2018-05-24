@@ -40,7 +40,7 @@ class Test(BaseTest):
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
-        restart_firefox(self.app.fx_path, self.profile_name, url='en.wikipedia.org')
+        restart_firefox(self.app.fx_path, self.profile, url='en.wikipedia.org')
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom controls still displayed in the url bar after browser restart.')
@@ -50,7 +50,7 @@ class Test(BaseTest):
         expected = exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100% zoom level.')
 
-        restart_firefox(self.app.fx_path, self.profile_name, url='en.wikipedia.org')
+        restart_firefox(self.app.fx_path, self.profile, url='en.wikipedia.org')
 
         expected = exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom controls not found in the url bar after browser restart for 100% zoom level.')
