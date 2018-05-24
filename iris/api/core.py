@@ -1567,7 +1567,11 @@ def find(what, precision=None, in_region=None):
             precision = Settings.MinSimilarity
 
         image_path = _get_needle_path(what)
-        return _image_search(image_path, precision, in_region)
+        image_found = _image_search(image_path, precision, in_region)
+        if (image_found.x != -1) & (image_found.y != -1):
+            return image_found
+        else:
+            raise FindError('Unable to find image %s' % image_path)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
