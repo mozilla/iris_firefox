@@ -20,7 +20,8 @@ INSTALL_REQUIRES = [
     'numpy==1.14.2',
     'image',
     'PyAutoGUI==0.9.36',
-    'pyperclip==1.6.0'
+    'pyperclip==1.6.0',
+    'packaging'
 ]
 
 TESTS_REQUIRE = [
