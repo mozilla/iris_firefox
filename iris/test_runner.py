@@ -23,12 +23,14 @@ def run(app):
     for package in app.test_packages:
         sys.path.append(package)
 
+    test_failures = []
     for index, module in enumerate(app.test_list, start=1):
 
         current_module = importlib.import_module(module)
         try:
             current = current_module.Test(app)
         except AttributeError:
+            test_failures.append(module)
             logger.warning('[%s] is not a test file. Skipping...', module)
             return
         logger.info('\n' + '-' * 120)
@@ -53,6 +55,7 @@ def run(app):
             try:
                 current.run()
             except AssertionError:
+                test_failures.append(module)
                 failed += 1
                 current.set_end_time(time.time())
                 print_results(module, current)
@@ -60,6 +63,7 @@ def run(app):
                 confirm_firefox_quit()
                 continue
             except FindError:
+                test_failures.append(module)
                 failed += 1
                 current.add_results('FAILED', None, None, None, print_error(traceback.format_exc()))
                 current.set_end_time(time.time())
@@ -69,6 +73,7 @@ def run(app):
                 continue
             except (ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError,
                     UnsupportedClassMethodError, TypeError):
+                test_failures.append(module)
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
                 current.set_end_time(time.time())
@@ -89,7 +94,7 @@ def run(app):
 
     end_time = time.time()
     print_report_footer(Settings.getOS(), app.version, app.build_id, passed, failed, skipped, errors,
-                        get_duration(start_time, end_time))
+                        get_duration(start_time, end_time), failures=test_failures)
 
     # We may remove profiles here, but likely still in use and can't do it yet
     # clean_profiles()
