@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is an experiment for OCR in region'
+        self.meta = 'This is a unit test for ocr.'
         # self.exclude = Platform.ALL
 
     def run(self):
