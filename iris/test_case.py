@@ -19,6 +19,7 @@ class BaseTest(object):
 
     def reset_variables(self):
         self.meta = ''
+        self.fx_version = ''
         self.exclude = []
         self.test_title = ''
         self.results = []
