@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-from pykeyboard import PyKeyboard
 
 
 class Test(BaseTest):
@@ -46,10 +45,6 @@ class Test(BaseTest):
         self.reset_all_pos = page_region.find(ut_reset_all).offset(25, 10)
 
         # Test modifiers
-        navigate_back()
-        assert_true(self, page_region.exists(ut_ctrl, 0.99), 'Key trigger confirmed')
-        self.reset_all_modifiers()
-
         type('y', KeyModifier.CTRL)
         assert_true(self, page_region.exists(ut_ctrl, 0.99), 'Key trigger confirmed')
         self.reset_all_modifiers()
