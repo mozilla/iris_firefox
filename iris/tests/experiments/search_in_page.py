@@ -19,7 +19,7 @@ class Test(BaseTest):
 
         navigate(url)
 
-        expected_1 = wait(google_search_image)
+        expected_1 = exists(google_search_image, 10)
         assert_true(self, expected_1, 'Wait for google search image to appear')
 
         open_find()
