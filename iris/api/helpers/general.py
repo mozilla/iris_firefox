@@ -464,7 +464,11 @@ class _IrisProfile(object):
         # Remove Mac resource fork folders left over from ZIP, if present.
         resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')
         if os.path.exists(resource_fork_folder):
-            shutil.rmtree(resource_fork_folder)
+            try:
+                shutil.rmtree(resource_fork_folder)
+            except WindowsError:
+                # This error can happen, but does not affect Iris.
+                logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
         # Return path to profile in cache.
         return to_directory
