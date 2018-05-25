@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of the \'About Firefox\' window controls'
+        # Temporarily disabled due to issue #509
+        self.exclude = Platform.MAC
 
     def run(self):
         firefox_in_about = 'firefox_in_about.png'
