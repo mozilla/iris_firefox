@@ -31,7 +31,6 @@ FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
-
 DEFAULT_MIN_SIMILARITY = 0.8
 DEFAULT_SLOW_MOTION_DELAY = 2
 DEFAULT_MOVE_MOUSE_DELAY = 0.5
@@ -902,6 +901,8 @@ class Platform(object):
     MAC = 'osx'
     ALL = Settings.getOS()
     HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
+    screen_width, screen_height = pyautogui.size()
+    LOWRES = (screen_width < 1280 or screen_height < 800)
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
