@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 def parse_args():
     home = os.path.expanduser('~')
     release_choice, _, test_default = fd.FirefoxDownloader.list()
+    release_choice.append('local')
 
     log_level_strings = ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG']
 
@@ -48,7 +49,8 @@ def parse_args():
     parser.add_argument('-f', '--firefox',
                         help=('Firefox version to test. It can be one of {%s}, a package file, '
                               'or a build directory (default: "%s")') % (','.join(release_choice), test_default),
-                        action='store')
+                        action='store',
+                        default=test_default)
     parser.add_argument('-l', '--locale',
                         help='Locale to use for Firefox',
                         type=str,

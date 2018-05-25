@@ -64,9 +64,7 @@ class Iris(object):
             logger.debug('Creating working directory %s' % self.args.workdir)
             os.makedirs(self.args.workdir)
 
-        if self.args.firefox:
-            self.fx_app = self.get_test_candidate(self.args.firefox)
-        else:
+        if self.args.firefox == 'local':
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
             if Settings.getOS() == Platform.MAC:
@@ -78,6 +76,8 @@ class Iris(object):
                     self.fx_app = self.get_test_candidate('C:\\Program Files\\Mozilla Firefox')
             else:
                 self.fx_app = self.get_test_candidate('/usr/lib/firefox')
+        else:
+            self.fx_app = self.get_test_candidate(self.args.firefox)
 
         self.fx_path = self.fx_app.exe
         self.version = self.fx_app.version
