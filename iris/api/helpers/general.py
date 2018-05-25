@@ -259,13 +259,24 @@ def close_customize_page():
 
 def open_about_firefox():
     if Settings.getOS() == Platform.MAC:
-        # Key stroke into Firefox Menu to get to About Firefox
+        # Key stroke into Firefox Menu to get to About Firefox.
         type(Key.F2, modifier=KeyModifier.CTRL)
+
+        # Workaround for Mac OS 10.13.4 - tap FN key twice
+        # to get out of minimized window state.
+        type(text=Key.FN)
+        type(text=Key.FN)
+
         time.sleep(0.5)
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.ENTER)
+
+        # Workaround for Mac OS 10.13.4 - tap FN key twice
+        # to get out of minimized window state.
+        type(text=Key.FN)
+        type(text=Key.FN)
 
     elif Settings.getOS() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox
@@ -391,10 +402,22 @@ class _IrisProfile(object):
 
     @property
     def DEFAULT(self):
+        """Default profile that test cases will use, specified in BaseTest."""
+        return Profile.LIKE_NEW
+
+    @property
+    def BRAND_NEW(self):
         """Make unique profile name using time stamp."""
-        new_profile = os.path.join(Profile.PROFILE_CACHE, Profile._create_unique_profile_name())
+        new_profile = os.path.join(Profile.PROFILE_CACHE, 'brand_new_' + Profile._create_unique_profile_name())
+        logger.debug('Creating brand new profile: %s' % new_profile)
         os.mkdir(new_profile)
         return new_profile
+
+    @property
+    def LIKE_NEW(self):
+        """Open a staged profile that already has ten bookmarks."""
+        logger.debug('Creating new profile from LIKE_NEW staged profile')
+        return self._get_staged_profile('like_new')
 
     @property
     def TEN_BOOKMARKS(self):
@@ -429,6 +452,7 @@ class _IrisProfile(object):
 
         # Create a folder to hold that profile's contents.
         to_directory = os.path.join(Profile.PROFILE_CACHE, temp_name)
+        logger.debug('Creating new profile: %s' % to_directory)
         os.mkdir(to_directory)
 
         # Duplicate profile.
