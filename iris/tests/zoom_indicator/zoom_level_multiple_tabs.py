@@ -18,8 +18,8 @@ class Test(BaseTest):
         url_2 = 'www.amazon.com'
         search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
         hamburger_menu = 'hamburger_menu.png'
-        search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110%_zoom_level.png'
-        search_bar_wikipedia_300_zoom_level = 'search_bar_wikipedia_300%_zoom_level.png'
+        search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110_zoom_level.png'
+        search_bar_wikipedia_300_zoom_level = 'search_bar_wikipedia_300_zoom_level.png'
 
         navigate(url_1)
 

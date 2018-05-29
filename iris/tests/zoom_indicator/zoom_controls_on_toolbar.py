@@ -22,8 +22,8 @@ class Test(BaseTest):
         default_zoom_level_toolbar = 'default_zoom_level_toolbar.png'
         zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
         zoom_control_toolbar_increase = 'zoom_control_toolbar_increase.png'
-        zoom_control_90 = 'zoom_control_90%.png'
-        zoom_control_110 = 'zoom_control_110%.png'
+        zoom_control_90 = 'zoom_control_90.png'
+        zoom_control_110 = 'zoom_control_110.png'
         hamburger_menu_zoom_indicator = 'hamburger_menu_zoom_indicator.png'
 
         navigate(url)
