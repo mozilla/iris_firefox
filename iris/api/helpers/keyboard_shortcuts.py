@@ -29,6 +29,7 @@ def navigate_back():
     """Navigate back in browsing history one page visit."""
     if Settings.getOS() == Platform.MAC:
         type(text='[', modifier=KeyModifier.CMD)
+        reset_mac_windows()
     else:
         type(text=Key.LEFT, modifier=KeyModifier.ALT)
 
@@ -505,14 +506,7 @@ def clear_recent_history():
     """Open the Clear Recent History dialog."""
     if Settings.getOS() == Platform.MAC:
         type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-
-        # Working around a pyautogui bug on Mac.
-        # The key combination above causes the windows to disappear, i.e.:
-        # pyautoguy.hotkey ("shift', "command', "delete")
-        # Press the "fn" key twice to get back into the correct window state
-
-        type(text=Key.FN)
-        type(text=Key.FN)
+        reset_mac_windows()
     else:
         type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 

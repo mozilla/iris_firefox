@@ -1477,6 +1477,15 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
                   bottom_right_pos.y - top_left_pos.y + marker_height)
 
 
+def reset_mac_windows():
+    """
+    Work around issue #521 - unwanted Mission Control on MacBook Pro with touch bar.
+    If there is a better way to solve this, we'll remove this hack.
+    """
+    type(Key.FN)
+    type(Key.FN)
+
+
 """Sikuli wrappers
 
 - wait
