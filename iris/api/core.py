@@ -1495,23 +1495,42 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
     if len(patterns) == 0:
         logger.error('One or more patterns required.')
 
-    p1 = Location(pyautogui.screenshot().size)
+    #p1 = Location(pyautogui.screenshot().size)
+    a, b = pyautogui.size()
+    p1 = Location(a, b)
     p2 = Location(0, 0)
+
+    print 'Screen: %s x %s' % (p1.x, p1.y)
 
     for pattern in patterns:
         if exists(pattern, 5):
             current_pattern = find(pattern)
+
+            #current_pattern.x = current_pattern.x * 2
+            #current_pattern.y = current_pattern.y * 2
+
             if current_pattern.x < p1.x:
                 p1.x = current_pattern.x
             if current_pattern.y < p1.y:
                 p1.y = current_pattern.y
+
             w, h = get_asset_img_size(pattern)
+            #w = w * 2
+            #h = h * 2
             if current_pattern.x + w > p2.x:
                 p2.x = current_pattern.x + w
             if current_pattern.y + h > p2.y:
                 p2.y = current_pattern.y + h
+
+            print pattern
+            print 'x: %s' % current_pattern.x
+            print 'y: %s' % current_pattern.y
+            print 'w: %s' % w
+            print 'h: %s' % h
+
+
         else:
-            logger.error('Pattern not found: %s ' % pattern.image_name)
+            logger.error('Pattern not found: %s ' % pattern)
             raise FindError
 
     return Region (p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
