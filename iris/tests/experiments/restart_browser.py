@@ -11,15 +11,6 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.app = app
         self.meta = 'This is a test case that restarts the browser'
-        
-   def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a profile that already has been launched.
-        """
-        self.profile = Profile.TEN_BOOKMARKS
-        launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
-        return        
 
     def setup(self):
         """ Test case setup
