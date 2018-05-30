@@ -95,7 +95,7 @@ def navigate(url):
         type(Key.ENTER)
     except:
         logger.error('No active window found, cannot navigate to page')
-        raise ApiHelperError
+        raise APIHelperError
 
 
 def restart_firefox(path, profile, url, args=None):
