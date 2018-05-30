@@ -23,6 +23,6 @@ class UnsupportedClassMethodError(Exception):
     pass
 
 
-class ApiHelperError(Exception):
+class APIHelperError(Exception):
     """Exception raised when an API helper returns an error."""
     pass
