@@ -24,15 +24,24 @@ class Test(BaseTest):
 
         click_hamburger_menu_option('Customize...')
 
-        expected_1 = exists(activate_title_bar, 10)
-        assert_true(self, expected_1, 'Title Bar can be activated')
+        if Settings.getOS() == Platform.LINUX:
 
-        click(activate_title_bar)
+            expected_2 = exists(active_title_bar, 10)
+            assert_true(self, expected_2, 'Title Bar can be deactivated')
 
-        expected_2 = exists(active_title_bar, 10)
-        assert_true(self, expected_2, 'Title Bar can be deactivated')
+            click(deactivate_title_bar)
 
-        click(deactivate_title_bar)
+        else:
+
+            expected_1 = exists(activate_title_bar, 10)
+            assert_true(self, expected_1, 'Title Bar can be activated')
+
+            click(activate_title_bar)
+
+            expected_2 = exists(active_title_bar, 10)
+            assert_true(self, expected_2, 'Title Bar can be deactivated')
+
+            click(deactivate_title_bar)
 
         try:
             expected_3 = waitVanish(active_title_bar, 10)
