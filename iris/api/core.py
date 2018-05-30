@@ -1203,7 +1203,7 @@ def _image_search_loop(image_path, at_interval=None, attempts=None, precision=No
 
     pos = _image_search(image_path, precision, region)
     tries = 0
-    while pos.x is -1 and tries < attempts:
+    while pos.x == -1 and tries < attempts:
         logger.debug("Searching for image %s" % image_path)
         time.sleep(at_interval)
         pos = _image_search(image_path, precision, region)
@@ -1974,12 +1974,40 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
 def paste(text):
     # load to clipboard
     pyperclip.copy(text)
-    # We must introduce a delay, as the copy operation is not instant.
-    time.sleep(2)
+
+    text_copied = False
+    wait_scan_rate = float(Settings.WaitScanRate)
+    interval = 1 / wait_scan_rate
+    max_attempts = int(Settings.AutoWaitTimeout * wait_scan_rate)
+    attempt = 0
+
+    while not text_copied and attempt < max_attempts:
+        if pyperclip.paste() == text:
+            text_copied = True
+        else:
+            time.sleep(interval)
+            attempt += 1
+
+    if not text_copied:
+        logger.error('Paste method failed')
+        raise FindError
+
     if Settings.getOS() == Platform.MAC:
-        pyautogui.hotkey('command', 'v')
+        pyautogui.keyDown('command')
+        time.sleep(0.1)
+        pyautogui.keyDown('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('command')
     else:
-        pyautogui.hotkey('ctrl', 'v')
+        pyautogui.keyDown('ctrl')
+        time.sleep(0.1)
+        pyautogui.keyDown('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('ctrl')
     # clear clipboard
     pyperclip.copy('')
 
