@@ -19,7 +19,6 @@ class Test(BaseTest):
         back_button_image = 'back.png'
         forward_button_image = 'forward.png'
 
-        # helper function from "keyboard_shortcuts"
         navigate(url)
 
         expected_1 = exists(search_the_web_image, 10)
