@@ -14,21 +14,29 @@ class Test(BaseTest):
                     'Customize menu'
 
     def run(self):
+
         url = 'about:home'
         navigate(url)
 
-        title_bar = 'title_bar.png'
+        activate_title_bar = 'title_bar.png'
         active_title_bar = 'active_title_bar.png'
+        deactivate_title_bar = 'deactivate_title_bar.png'
 
         click_hamburger_menu_option('Customize...')
 
-        expected_1 = exists(title_bar, 10)
+        expected_1 = exists(activate_title_bar, 10)
         assert_true(self, expected_1, 'Title Bar can be activated')
 
-        click(title_bar)
+        click(activate_title_bar)
 
         expected_2 = exists(active_title_bar, 10)
         assert_true(self, expected_2, 'Title Bar can be deactivated')
 
-        click(title_bar)
-        waitVanish(active_title_bar, 10)
+        click(deactivate_title_bar)
+
+        try:
+            expected_3 = waitVanish(active_title_bar, 10)
+            assert_true(self, expected_3, 'Title Bar has been successfully deactivated')
+        except Exception as error:
+            logger.error('Title Bar can not be closed')
+            raise error
