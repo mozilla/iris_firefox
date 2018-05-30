@@ -1,5 +1,5 @@
 class FindError(Exception):
-    """Exception reised when a Location, Pattern, image or text is not found."""
+    """Exception raised when a Location, Pattern, image or text is not found."""
     pass
 
 
@@ -20,4 +20,9 @@ class UnsupportedAttributeError(Exception):
 
 class UnsupportedClassMethodError(Exception):
     """Exception raised for unsupported classmethods."""
+    pass
+
+
+class ApiHelperError(Exception):
+    """Exception raised when an API helper returns an error."""
     pass
