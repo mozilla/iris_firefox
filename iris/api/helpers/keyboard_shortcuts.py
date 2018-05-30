@@ -389,6 +389,7 @@ def maximize_window():
         type(text=Key.UP, modifier=KeyModifier.WIN)
     else:
         type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)
+    time.sleep(1)
 
 
 def minimize_window():
