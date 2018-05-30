@@ -31,6 +31,13 @@ class Test(BaseTest):
 
             click(deactivate_title_bar)
 
+            try:
+                expected_3 = waitVanish(deactivate_title_bar, 10)
+                assert_true(self, expected_3, 'Title Bar has been successfully deactivated')
+            except Exception as error:
+                logger.error('Title Bar can not be closed')
+                raise error
+
         else:
 
             expected_1 = exists(activate_title_bar, 10)
