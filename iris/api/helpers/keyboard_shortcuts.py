@@ -518,6 +518,7 @@ def bookmark_all_tabs():
         type(text='d', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text='d', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    time.sleep(2)
 
 
 def bookmark_page():
@@ -526,6 +527,7 @@ def bookmark_page():
         type(text='d', modifier=KeyModifier.CMD)
     else:
         type(text='d', modifier=KeyModifier.CTRL)
+    time.sleep(2)
 
 
 def bookmarks_sidebar():
