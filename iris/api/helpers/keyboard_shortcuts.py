@@ -113,11 +113,13 @@ def page_up():
 def page_end():
     """Jump to the bottom of the page."""
     type(text=Key.END)
+    reset_mac_windows()
 
 
 def page_home():
     """Jump to the top of the page."""
     type(text=Key.HOME)
+    reset_mac_windows()
 
 
 def focus_next_item():
