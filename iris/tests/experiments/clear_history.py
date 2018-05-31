@@ -28,7 +28,16 @@ class Test(BaseTest):
         # confirm presence of UI before interaction, but that
         # has its own cost.
 
-        clear_recent_history()
+        click('library_menu.png')
+        library_menu_assert = exists('library_history.png', 5)
+        assert_true(self, library_menu_assert, 'Library menu opened and history button is present')
+
+        click('library_history.png')
+        clear_history_assert = exists('library_clear_history.png', 5)
+        assert_true(self, clear_history_assert, 'Clear history button is present')
+
+        click('library_clear_history.png')
+
         time.sleep(1)
         type(Key.ENTER)
         time.sleep(1)
