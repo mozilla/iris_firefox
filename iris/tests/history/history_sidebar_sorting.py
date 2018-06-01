@@ -45,25 +45,21 @@ class Test(BaseTest):
         assert_true(self, expected_1, 'Page loaded successfully.')
 
         new_tab()
-        time.sleep(0.5)
         navigate('https://www.youtube.com/')
         expected_2 = exists(youtube_logo, 5)
         assert_true(self, expected_2, 'Page loaded successfully.')
 
         new_tab()
-        time.sleep(0.5)
         navigate('https://www.google.com/?hl=EN')
         expected_3 = exists(google_search, 5)
         assert_true(self, expected_3, 'Page loaded successfully.')
 
         new_tab()
-        time.sleep(0.5)
         navigate('https://www.amazon.com/')
         expected_4 = exists(amazon_logo, 5)
         assert_true(self, expected_4, 'Page loaded successfully.')
 
         new_tab()
-        time.sleep(0.5)
         navigate('https://www.wikipedia.org/')
         expected_5 = exists(wikipedia_logo, 5)
         assert_true(self, expected_5, 'Page loaded successfully.')
