@@ -411,6 +411,7 @@ def new_tab():
         type(text='t', modifier=KeyModifier.CMD)
     else:
         type(text='t', modifier=KeyModifier.CTRL)
+    time.sleep(0.5)
 
 
 def new_window():
