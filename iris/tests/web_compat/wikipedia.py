@@ -7,72 +7,61 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "Web compability test for wikipedia.org"
-        # ToDo enable test once OCR functionality is in place
-        self.exclude = Platform.ALL
+        self.meta = 'Web compability test for wikipedia.org'
 
     def run(self):
-        url = "www.wikipedia.org"
-        page_title = "wikipedia.png"
-        iris_text = "wikipedia_iris.png"
-        keyword = "iris"
+        url = 'www.wikipedia.org'
+        page_title = 'wikipedia.png'
+        iris_text = 'wikipedia_iris.png'
+        keyword = 'iris'
         navigate(url)
 
         try:
             wait(page_title, 10)
-            logger.debug("Page is succesfully loaded")
+            logger.debug('Page is succesfully loaded')
         except:
             # If we can't find the Wikipedia logo, there is no sense going further
-            logger.error("Can't find Wikipedia image in page, aborting test.")
-            print "FAIL"
+            logger.error('Can\'t find Wikipedia image in page, aborting test.')
             return
 
         # Access Wikipedia on English version
-        logger.debug("Search in Wikipedia with default English language")
+        logger.debug('Search in Wikipedia with default English language')
         type(keyword)
         type(Key.ENTER)
 
         # Test if we get a search result
         try:
             wait(iris_text, 10)
-            logger.debug("Search is succesfully loaded")
-            print "PASS"
+            logger.debug('Search is succesfully loaded')
         except:
-            # If we can't find the search text, we will fail the test
-            # but we can keep running the rest of the tests
-            logger.error("Can't find search image in page")
-            print "FAIL"
-
+            logger.error('Can\'t find search image in page')
         # Scroll down
-        logger.debug("Scroll down")
+        logger.debug('Scroll down')
         for x in range(10):
             scroll_down()
             time.sleep(.25)
-        if exists(iris_text, 1):
-            logger.debug("Scroll down was not performed")
-        else:
-            logger.debug("Scroll up")
-            for x in range(10):
-                scroll_up()
-                time.sleep(.25)
-        if exists(iris_text, 1):
-            logger.debug("Page was scrolled back up")
-            navigate_back()
-            logger.debug("Navigate back")
+        scroll_down_assert = exists(iris_text, 1)
+        assert_false(self, scroll_down_assert, 'Iris text was found and scroll down was performed')
+        logger.debug('Scroll up')
+        for x in range(10):
+            scroll_up()
+            time.sleep(.25)
+        scroll_up_assert = exists(iris_text, 1)
+        assert_true(self, scroll_up_assert, 'Scroll was succesfully performed')
+        logger.debug('Page was scrolled back up')
+        navigate_back()
+        logger.debug('Navigate back')
 
         try:
             wait(page_title, 10)
-            logger.debug("Page is succesfully loaded")
+            logger.debug('Page is succesfully loaded')
         except:
-            # If we can't find the Wikipedia logo, there is no sense going further
-            logger.error("Can't find Wikipedia image in page, aborting test.")
-            print "FAIL"
+            logger.error('Can\'t find Wikipedia image in page, aborting test.')
             return
         else:
-            logger.debug("Change language to Spanish")
+            logger.debug('Change language to Spanish')
             type(keyword)
             if Settings.getOS() == Platform.MAC:
                 type(Key.TAB)
@@ -84,31 +73,27 @@ class Test(BaseTest):
                 time.sleep(1)
                 type(Key.TAB)
                 type(Key.ENTER)
+                # Workaround for Mac issue - see core.py
+                reset_mac_windows()
             else:
                 type(Key.TAB)
                 type(Key.DOWN)
                 type(Key.TAB)
                 type(Key.ENTER)
 
-            # We will replace PASS/FAIL with proper assert functions soon
-            if exists(iris_text, 10):
-                # Using text recognition, we can verify if the results are in Spanish
-                results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
-                page_text = get_firefox_region().text()
+            iris_text_assert = exists(iris_text, 10)
+            assert_true(self, iris_text_assert, 'Text found in page')
+            
+            # Using text recognition, we can verify if the results are in Spanish
+            results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
+            page_text = get_firefox_region().text()
 
-                # Text recognition sometimes mistranslates words, so let's check that
-                # at least one Spanish word appears in the page
-                found = False
-                for word in results_spanish:
-                    if word in page_text:
-                        found = True
-                        break
-                if found:
-                    logger.debug("Found Spanish search results")
-                    print "PASS"
-                else:
-                    logger.debug("Can not find Spanish search results")
-                    print "FAIL"
-            else:
-                logger.debug("Can't find search image in page")
-                print "FAIL"
+            # Text recognition sometimes mistranslates words, so let's check that
+            # at least one Spanish word appears in the page
+            found = False
+            for word in results_spanish:
+                if word in page_text:
+                    logger.debug('Found word: %s' % word)
+                    found = True
+                    break
+            assert_true(self, found, 'Found Spanish search results')

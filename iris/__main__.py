@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-import argparse
 import glob
 import shutil
 import sys
@@ -16,6 +15,7 @@ import firefox.downloader as fd
 import firefox.extractor as fe
 import test_runner
 from api.core import *
+from api.helpers.parse_args import parse_args
 from firefox import cleanup
 
 tmp_dir = None
@@ -40,7 +40,7 @@ def main(argv=None):
 class Iris(object):
 
     def __init__(self):
-        self.parse_args()
+        self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
         self.init_tesseract_path()
         self.module_dir = get_module_dir()
@@ -64,9 +64,7 @@ class Iris(object):
             logger.debug('Creating working directory %s' % self.args.workdir)
             os.makedirs(self.args.workdir)
 
-        if self.args.firefox:
-            self.fx_app = self.get_test_candidate(self.args.firefox)
-        else:
+        if self.args.firefox == 'local':
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
             if Settings.getOS() == Platform.MAC:
@@ -78,6 +76,8 @@ class Iris(object):
                     self.fx_app = self.get_test_candidate('C:\\Program Files\\Mozilla Firefox')
             else:
                 self.fx_app = self.get_test_candidate('/usr/lib/firefox')
+        else:
+            self.fx_app = self.get_test_candidate(self.args.firefox)
 
         self.fx_path = self.fx_app.exe
         self.version = self.fx_app.version
@@ -209,52 +209,6 @@ class Iris(object):
                 logger.critical('Running a Firefox binary for "%s" on a "%s" platform will probably fail' %
                                 (candidate_app.platform, platform))
             return candidate_app
-
-    def parse_args(self):
-        home = os.path.expanduser('~')
-        release_choice, _, test_default = fd.FirefoxDownloader.list()
-
-        log_level_strings = ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG']
-
-        def log_level_string_to_int(log_level_string):
-            if log_level_string not in log_level_strings:
-                logger.error('Invalid choice: %s (choose from %s)', log_level_string, log_level_strings)
-                exit(1)
-
-            log_level_int = getattr(logging, log_level_string, logging.INFO)
-            assert isinstance(log_level_int, int)
-            if log_level_int is 10:
-                set_save_debug_images(True)
-            return log_level_int
-
-        parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
-        parser.add_argument('-d', '--directory',
-                            help='Directory where tests are located',
-                            type=str, metavar='test_directory',
-                            default=os.path.join('tests'))
-        parser.add_argument('-t', '--test',
-                            help='Test name',
-                            type=str, metavar='test_name.py')
-        parser.add_argument('-i', '--level',
-                            help='Set the logging output level',
-                            type=log_level_string_to_int,
-                            dest='level',
-                            default='INFO')
-        parser.add_argument('-w', '--workdir',
-                            help='Path to working directory',
-                            type=os.path.abspath,
-                            action='store',
-                            default='%s/.iris' % home)
-        parser.add_argument('-f', '--firefox',
-                            help=('Firefox version to test. It can be one of {%s}, a package file, '
-                                  'or a build directory (default: "%s")') % (','.join(release_choice), test_default),
-                            action='store')
-        parser.add_argument('-l', '--locale',
-                            help='Locale to use for Firefox',
-                            type=str,
-                            action='store',
-                            default='en-US')
-        self.args = parser.parse_args()
 
     @staticmethod
     def check_tesseract_path(dir_path):

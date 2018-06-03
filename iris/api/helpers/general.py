@@ -2,6 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from distutils import dir_util
+from distutils.spawn import find_executable
+
 import shutil
 import subprocess
 
@@ -11,16 +14,16 @@ from iris.configuration.config_parser import *
 logger = logging.getLogger(__name__)
 
 
-def launch_firefox(path, profile='empty_profile', url=None, args=None):
+def launch_firefox(path, profile=None, url=None, args=None):
     """Launch the app with optional args for profile, windows, URI, etc."""
     if args is None:
         args = []
-    current_dir = os.path.split(__file__)[0]
-    active_profile = os.path.join(current_dir, 'test_profiles', profile)
-    if not os.path.exists(active_profile):
-        os.mkdir(active_profile)
 
-    cmd = [path, '-foreground', '-no-remote', '-profile', active_profile]
+    if profile is None:
+        logger.warning('No profile name present, using last default profile on disk.')
+        profile = os.path.join(os.path.expanduser('~'), '.iris', 'profiles', 'default')
+
+    cmd = [path, '-foreground', '-no-remote', '-profile', profile]
 
     # Add other Firefox flags
     for arg in args:
@@ -30,15 +33,16 @@ def launch_firefox(path, profile='empty_profile', url=None, args=None):
         cmd.append('-new-tab')
         cmd.append(url)
 
+    logger.debug('Launching Firefox with arguments: %s' % ' '.join(cmd))
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return
 
 
 def clean_profiles():
-    path = os.path.join(os.path.split(__file__)[0], 'test_profiles')
-    if os.path.exists(path):
-        shutil.rmtree(path)
-    os.mkdir(path)
+    profile_cache = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
+    if os.path.exists(profile_cache):
+        shutil.rmtree(profile_cache)
+    os.mkdir(profile_cache)
 
 
 def confirm_firefox_launch():
@@ -91,16 +95,20 @@ def navigate(url):
         type(Key.ENTER)
     except:
         logger.error('No active window found, cannot navigate to page')
+        raise APIHelperError
 
 
-def restart_firefox(path, profile_name, url, args=None):
+def restart_firefox(path, profile, url, args=None):
     # just as it says, with options
     logger.debug('Restarting Firefox')
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit')
     confirm_firefox_quit()
-    logger.debug('Relaunching Firefox with profile name \'%s\'' % profile_name)
-    launch_firefox(path, profile_name, url, args)
+    # Give Firefox a chance to cleanly shutdown all of its processes
+    # TODO: This should be made into a robust function instead of a hard coded sleep
+    time.sleep(3)
+    logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
+    launch_firefox(path, profile, url, args)
     logger.debug('Confirming that Firefox has been launched')
     confirm_firefox_launch()
     logger.debug('Successful Firefox restart performed')
@@ -252,13 +260,23 @@ def close_customize_page():
 
 def open_about_firefox():
     if Settings.getOS() == Platform.MAC:
-        # Key stroke into Firefox Menu to get to About Firefox
+        # Key stroke into Firefox Menu to get to About Firefox.
         type(Key.F2, modifier=KeyModifier.CTRL)
+
+        # Workaround for Mac OS 10.13.4 - tap FN key twice
+        # to get out of minimized window state.
+        reset_mac_windows()
+
         time.sleep(0.5)
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.ENTER)
+
+        # Workaround for Mac OS 10.13.4 - tap FN key twice
+        # to get out of minimized window state.
+        reset_mac_windows()
+
 
     elif Settings.getOS() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox
@@ -295,14 +313,10 @@ def create_region_from_image(image):
 
 def restore_window_from_taskbar():
     if Settings.getOS() == Platform.MAC:
-        type(text=Key.TAB, modifier=KeyModifier.CMD)
-        time.sleep(0.1)
-        keyDown(Key.CMD)
-        keyDown(Key.TAB)
-        keyUp(Key.TAB)
-        keyDown(Key.ALT)
-        keyUp(Key.CMD)
-        keyUp(Key.ALT)
+        click('main_menu_window.png')
+        type(Key.DOWN)
+        time.sleep(.5)
+        type(Key.ENTER)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
 
@@ -311,8 +325,8 @@ def open_library_menu(option):
     library_menu = 'library_menu.png'
     try:
         wait(library_menu, 10)
-        region = Region(find(library_menu).getX() - screen_width/4, find(library_menu).getY(), screen_width/4,
-                        screen_height/4)
+        region = Region(find(library_menu).getX() - screen_width / 4, find(library_menu).getY(), screen_width / 4,
+                        screen_height / 4)
         logger.debug('Library menu found')
     except:
         logger.error('Can\'t find the library menu in the page, aborting test.')
@@ -330,6 +344,7 @@ def open_library_menu(option):
         else:
             region.click(option)
             return region
+
 
 def maximize_auxiliary_window():
     # This is different from maximize_window() since on OSX the auxiliary window controls are on grey background vs
@@ -351,3 +366,118 @@ def maximize_auxiliary_window():
     else:
         type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)
 
+
+def remove_zoom_indicator_from_toolbar():
+    zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
+    remove_from_toolbar = 'remove_from_toolbar.png'
+
+    try:
+        wait(zoom_control_toolbar_decrease, 10)
+        logger.debug('\'Decrease\' zoom control found.')
+    except FindError:
+        logger.error('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
+        return
+    else:
+        rightClick(zoom_control_toolbar_decrease)
+
+    time.sleep(1)
+
+    if exists(remove_from_toolbar, 10):
+        click(remove_from_toolbar)
+    else:
+        raise FindError('Unable to find the remove_from_toolbar.png.')
+
+    try:
+        waitVanish(zoom_control_toolbar_decrease, 10)
+    except FindError:
+        logger.error('Zoom indicator not removed from toolbar - aborting test run.')
+        exit(1)
+
+
+class _IrisProfile(object):
+
+    # Disk locations for both profile cache and staged profiles.
+    PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
+    STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
+
+    @property
+    def DEFAULT(self):
+        """Default profile that test cases will use, specified in BaseTest."""
+        return Profile.LIKE_NEW
+
+    @property
+    def BRAND_NEW(self):
+        """Make unique profile name using time stamp."""
+        new_profile = os.path.join(Profile.PROFILE_CACHE, 'brand_new_' + Profile._create_unique_profile_name())
+        logger.debug('Creating brand new profile: %s' % new_profile)
+        os.mkdir(new_profile)
+        return new_profile
+
+    @property
+    def LIKE_NEW(self):
+        """Open a staged profile that already has ten bookmarks."""
+        logger.debug('Creating new profile from LIKE_NEW staged profile')
+        return self._get_staged_profile('like_new')
+
+    @property
+    def TEN_BOOKMARKS(self):
+        """Open a staged profile that already has ten bookmarks."""
+        logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
+        return self._get_staged_profile('ten_bookmarks')
+
+    def _get_staged_profile(self, profile_name):
+        # Find 7zip binary
+        sz_bin = find_executable('7z')
+        if sz_bin is None:
+            logger.critical('Cannot find 7zip')
+            exit(5)
+        logger.debug('Using 7zip executable at "%s"' % sz_bin)
+
+        zipped_profile = os.path.join(Profile.STAGED_PROFILES, '%s.zip' % profile_name)
+
+        cmd = [sz_bin, 'x', '-y', '-bd', '-o%s' % Profile.STAGED_PROFILES, zipped_profile]
+        logger.debug('Unzipping profile with command "%s"' % ' '.join(cmd))
+        try:
+            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            logger.error('7zip failed: %s' % repr(e.output))
+            raise Exception('Unable to unzip profile')
+        logger.debug('7zip succeeded: %s' % repr(output))
+
+        # Find the desired profile
+        from_directory = os.path.join(Profile.STAGED_PROFILES, profile_name)
+
+        # Create a unique name for the profile.
+        temp_name = '%s_%s' % (profile_name, Profile._create_unique_profile_name())
+
+        # Create a folder to hold that profile's contents.
+        to_directory = os.path.join(Profile.PROFILE_CACHE, temp_name)
+        logger.debug('Creating new profile: %s' % to_directory)
+        os.mkdir(to_directory)
+
+        # Duplicate profile.
+        dir_util.copy_tree(from_directory, to_directory)
+
+        # Remove unzipped directory first.
+        shutil.rmtree(from_directory)
+
+        # Remove Mac resource fork folders left over from ZIP, if present.
+        resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')
+        if os.path.exists(resource_fork_folder):
+            try:
+                shutil.rmtree(resource_fork_folder)
+            except WindowsError:
+                # This error can happen, but does not affect Iris.
+                logger.debug('Error, can\'t remove orphaned directory, leaving in place')
+
+        # Return path to profile in cache.
+        return to_directory
+
+    @staticmethod
+    def _create_unique_profile_name():
+        ts = int(time.time())
+        profile_name = 'profile_%s' % ts
+        return profile_name
+
+
+Profile = _IrisProfile()

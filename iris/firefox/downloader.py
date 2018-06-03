@@ -86,7 +86,7 @@ class FirefoxDownloader(object):
     def list():
         build_list = FirefoxDownloader.build_urls.keys()
         platform_list = FirefoxDownloader.__platforms.keys()
-        test_default = 'nightly'
+        test_default = 'release'
         return build_list, platform_list, test_default
 
     @staticmethod

@@ -18,23 +18,25 @@ import pytesseract
 
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
+from helpers.parse_args import parse_args
 
 try:
     import Image
 except ImportError:
     from PIL import Image
 
+args = parse_args()
+
 pyautogui.FAILSAFE = False
-save_debug_images = False
+save_debug_images = args.level == 10
 
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
-
 DEFAULT_MIN_SIMILARITY = 0.8
 DEFAULT_SLOW_MOTION_DELAY = 2
-DEFAULT_MOVE_MOUSE_DELAY = 0.5
+DEFAULT_MOVE_MOUSE_DELAY = args.mouse
 DEFAULT_OBSERVE_MIN_CHANGED_PIXELS = 50
 DEFAULT_TYPE_DELAY = DEFAULT_CLICK_DELAY = 0
 DEFAULT_WAIT_SCAN_RATE = DEFAULT_OBSERVE_SCAN_RATE = DEFAULT_AUTO_WAIT_TIMEOUT = 3
@@ -60,12 +62,6 @@ def success(self, message, *args, **kws):
 
 logging.Logger.success = success
 logger = logging.getLogger(__name__)
-
-
-def set_save_debug_images(new_val):
-    global save_debug_images
-    if isinstance(new_val, bool):
-        save_debug_images = new_val
 
 
 def get_os():
@@ -751,6 +747,9 @@ class Region(object):
     def debug(self):
         _save_debug_image(None, self, None)
 
+    def debug_ocr(self, with_image_processing=True):
+        return self.text(with_image_processing, True)
+
     def show(self):
         region_screen = _region_grabber(self)
         region_screen.show()
@@ -845,8 +844,8 @@ class Region(object):
     def click(self, where=None, duration=None):
         return click(where, duration, self)
 
-    def text(self, with_image_processing=True):
-        return text(with_image_processing, self)
+    def text(self, with_image_processing=True, with_debug=False):
+        return text(with_image_processing, self, with_debug)
 
     def type(self, text, modifier, interval):
         return type(text, modifier, interval)
@@ -902,6 +901,8 @@ class Platform(object):
     MAC = 'osx'
     ALL = Settings.getOS()
     HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
+    screen_width, screen_height = pyautogui.size()
+    LOWRES = (screen_width < 1280 or screen_height < 800)
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
@@ -935,16 +936,22 @@ def _save_debug_image(search_for, on_region, locations, not_found=False):
     :return: None
     """
     if save_debug_images:
+        is_image = False if isinstance(search_for, str) and _is_ocr_text(search_for) else True
+        w, h = 0, 0
+
         if isinstance(on_region, Region):
             full_screen = _region_grabber(on_region)
             img_rgb = np.array(full_screen)
             on_region = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
         else:
-            on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2BGR)
+            try:
+                on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2BGR)
+            except:
+                on_region = _region_grabber(None)
 
         if search_for is None:
             h, w = on_region.shape
-        else:
+        elif is_image:
             w, h = search_for.shape[::-1]
 
         current_time = datetime.now()
@@ -963,26 +970,32 @@ def _save_debug_image(search_for, on_region, locations, not_found=False):
                     on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2RGB)
                 except:
                     pass
-                _draw_rectangle(on_region, (0, 0), (region_[0], region_[1]), 5)
+                if is_image:
+                    _draw_rectangle(on_region, (0, 0), (region_[0], region_[1]), 5)
 
         if not_found:
             temp_f = temp_f + '_not_found'
 
             on_region_image = Image.fromarray(on_region)
-            search_for_image = Image.fromarray(search_for)
+            if is_image:
+                search_for_image = Image.fromarray(search_for)
 
             tuple_paste_location = (0, on_region_image.size[1] / 4)
 
             d_image = Image.new("RGB", (on_region_image.size[0], on_region_image.size[1]))
             d_image.paste(on_region_image)
-            d_image.paste(search_for_image, tuple_paste_location)
+            if is_image:
+                d_image.paste(search_for_image, tuple_paste_location)
 
             d_array = np.array(d_image)
 
             locations = Location(0, tuple_paste_location[1])
-            _debug_put_text(d_array,
-                            '<<< Pattern not found',
-                            (search_for_image.size[0] + 10, tuple_paste_location[1]))
+
+            if is_image:
+                _debug_put_text(d_array, '<<< Pattern not found',
+                                (search_for_image.size[0] + 10, tuple_paste_location[1]))
+            else:
+                _debug_put_text(d_array, '<<< Text not found: ' + search_for, tuple_paste_location)
             on_region = d_array
 
         if isinstance(locations, list):
@@ -1021,8 +1034,8 @@ def _region_grabber(region=None):
     """
     screenshot_w, screenshot_h = pyautogui.screenshot().size
 
-    logger.debug('Screen size according to pyautogui.size(): %s,%s' % (screen_width, screen_height))
-    logger.debug('Screen size according to pyautogui.screenshot().size: %s,%s' % (screenshot_w, screenshot_h))
+    # logger.debug('Screen size according to pyautogui.size(): %s,%s' % (screen_width, screen_height))
+    # logger.debug('Screen size according to pyautogui.screenshot().size: %s,%s' % (screenshot_w, screenshot_h))
 
     uhd_factor = screenshot_w / screen_width
     is_uhd = True if uhd_factor > 0 else False
@@ -1190,7 +1203,7 @@ def _image_search_loop(image_path, at_interval=None, attempts=None, precision=No
 
     pos = _image_search(image_path, precision, region)
     tries = 0
-    while pos.x is -1 and tries < attempts:
+    while pos.x == -1 and tries < attempts:
         logger.debug("Searching for image %s" % image_path)
         time.sleep(at_interval)
         pos = _image_search(image_path, precision, region)
@@ -1198,8 +1211,11 @@ def _image_search_loop(image_path, at_interval=None, attempts=None, precision=No
     return pos
 
 
-def _text_search_all(with_image_processing=True, in_region=None):
-    stack_image = _region_grabber(in_region)
+def _text_search_all(with_image_processing=True, in_region=None, in_image=None):
+    if in_image is None:
+        stack_image = _region_grabber(in_region)
+    else:
+        stack_image = in_image
 
     tesseract_match_min_len = 12
     input_image = np.array(stack_image)
@@ -1255,35 +1271,156 @@ def _text_search_all(with_image_processing=True, in_region=None):
         except:
             continue
 
-    _save_ocr_debug_image(debug_img, debug_data)
-    return final_data
+    # _save_ocr_debug_image(debug_img, debug_data)
+    return final_data, debug_img, debug_data
+
+
+def _combine_text_matches(matches, value):
+    new_match = {'x': 0, 'y': 0, 'width': 0, 'height': 0, 'precision': 0.0, 'value': value}
+
+    total_elem = len(matches)
+
+    if total_elem > 0:
+        new_match['x'] = matches[0]['x']
+        new_match['y'] = matches[0]['y']
+        for match in matches:
+            new_match['width'] = new_match['width'] + match['width']
+            new_match['height'] = new_match['height'] + match['height']
+            new_match['precision'] = new_match['precision'] + match['precision']
+
+        new_match['height'] = int(new_match['height'] / total_elem * 1.5)
+        new_match['precision'] = new_match['precision'] / total_elem
+        return new_match
+    else:
+        return None
 
 
 def _text_search_by(what, match_case=True, in_region=None, multiple_matches=False):
+    def _search_for_word(local_what, local_text_dict, local_multiple_matches):
+        return_multiple = []
+        return_single = None
+
+        for local_match_index, local_match_object in enumerate(local_text_dict):
+            if local_what == local_match_object['value']:
+                if local_multiple_matches:
+                    return_multiple.append(local_match_object)
+                else:
+                    _save_ocr_debug_image(debug_img, [debug_data[local_match_index]])
+                    return_single = local_match_object
+
+        return return_multiple, return_single
+
+    def _search_for_phrase(local_what, local_text_dict, local_multiple_matches):
+        return_single = None
+
+        matches_string = _ocr_matches_to_string(local_text_dict)
+        if local_what not in matches_string:
+            return None
+
+        l_what_words = local_what.split()
+        l_words_len = len(l_what_words)
+        temp_matches = []
+        temp_debug = []
+
+        phrase_start_index = matches_string.find(local_what)
+        phrase_first_match_index = len(matches_string[0:phrase_start_index].split())
+
+        if l_words_len > 0:
+            for local_match_index, local_match_object in enumerate(local_text_dict):
+                if local_match_index >= phrase_first_match_index:
+                    for word_index, searched_word in enumerate(l_what_words):
+                        if searched_word == local_match_object['value']:
+                            temp_matches.append(local_match_object)
+                            temp_debug.append(debug_data[local_match_index])
+            return_single = _combine_text_matches(temp_matches, local_what)
+            _save_ocr_debug_image(debug_img, temp_debug)
+        return return_single
+
     if not isinstance(what, str):
         return ValueError(INVALID_GENERIC_INPUT)
 
-    text_dict = _text_search_all(True, in_region)
+    text_dict, debug_img, debug_data = _text_search_all(True, in_region)
+
+    if len(text_dict) <= 0:
+        return None
 
     if not match_case:
         what = what.lower()
 
-    all_res = []
+    final_m_matches = []
+    final_s_match = None
 
-    for match_object in text_dict:
-        if what == match_object['value']:
-            if multiple_matches:
-                all_res.append(match_object)
-            else:
-                return match_object
+    words_n = len(what.split())
+    should_search_phrase = True if words_n > 1 else False
+
+    logger.debug('> All words on region/screen: ' + _ocr_matches_to_string(text_dict))
+
+    if should_search_phrase:
+        logger.debug('> Search for phrase: %s' % what)
+        final_s_match = _search_for_phrase(what, text_dict, multiple_matches)
+    else:
+        logger.debug('> Search for word: %s' % what)
+        final_m_matches, final_s_match = _search_for_word(what, text_dict, multiple_matches)
 
     if multiple_matches:
-        if len(all_res) > 0:
-            return all_res
+        if len(final_m_matches) > 0:
+            return final_m_matches
+    else:
+        if final_s_match is not None:
+            return final_s_match
+
+    # At this point no match was found.
+    # Retry matching with auto zoom search over each word
+
+    logger.debug('> No match, try zoom search')
+
+    for match_index, match_object in enumerate(text_dict):
+        # Word region
+        temp_reg = Region(match_object['x'] - 3, match_object['y'] - 2, match_object['width'] + 6,
+                          match_object['height'] + 4)
+        zoomed_word_image = _region_grabber(temp_reg)
+        w_img_w, w_img_h = zoomed_word_image.size
+        # New white image background for zoom in search
+        word_background = Image.new('RGBA', (match_object['width'] * 10, match_object['height'] * 5),
+                                    (255, 255, 255, 255))
+
+        b_img_w, b_img_h = word_background.size
+        # Offset to paste image on center
+        offset = ((b_img_w - w_img_w) // 2, (b_img_h - w_img_h) // 2)
+
+        word_background.paste(zoomed_word_image, offset)
+
+        found, debug_img_a, debug_data_a = _text_search_all(True, None, word_background)
+        if len(found) > 0:
+            text_dict[match_index]['value'] = found[0]['value']
+            # _save_ocr_debug_image(debug_img_a, debug_data_a)
+            logger.debug('> (Zoom search) new match: %s' % found[0]['value'])
+            if what == found[0]['value']:
+                break
+            if what in _ocr_matches_to_string(text_dict):
+                break
+
+    logger.debug('> (Zoom search) All words on region/screen: ' + _ocr_matches_to_string(text_dict))
+
+    if should_search_phrase:
+        logger.debug('> Search with zoom for phrase: %s' % what)
+        final_s_match = _search_for_phrase(what, text_dict, multiple_matches)
+    else:
+        logger.debug('> Search with zoom for word: %s' % what)
+        final_m_matches, final_s_match = _search_for_word(what, text_dict, multiple_matches)
+
+    if multiple_matches:
+        if len(final_m_matches) > 0:
+            return final_m_matches
         else:
+            _save_debug_image(what, in_region, None, True)
             return None
     else:
-        return None
+        if final_s_match is not None:
+            return final_s_match
+        else:
+            _save_debug_image(what, in_region, None, True)
+            return None
 
 
 def _ocr_matches_to_string(matches):
@@ -1340,6 +1477,16 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
                   bottom_right_pos.y - top_left_pos.y + marker_height)
 
 
+def reset_mac_windows():
+    """
+    Work around issue #521 - unwanted Mission Control on MacBook Pro with touch bar.
+    If there is a better way to solve this, we'll remove this hack.
+    """
+    if Settings.getOS() == Platform.MAC:
+        type(Key.FN)
+        type(Key.FN)
+
+
 """Sikuli wrappers
 
 - wait
@@ -1354,14 +1501,17 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
 """
 
 
-def text(with_image_processing=True, in_region=None):
+def text(with_image_processing=True, in_region=None, debug=False):
     """Get all text from a Region or full screen
 
     :param bool with_image_processing: With extra dpi and contrast image processing
     :param Region in_region: In certain Region or full screen
     :return: list of matches
     """
-    all_text = _text_search_all(with_image_processing, in_region)
+    all_text, debug_img, debug_data = _text_search_all(with_image_processing, in_region)
+    if debug:
+        _save_ocr_debug_image(debug_img, debug_data)
+        logger.debug('> Found message: %s' % _ocr_matches_to_string(all_text))
     return _ocr_matches_to_string(all_text)
 
 
@@ -1377,6 +1527,8 @@ def hover(where=None, duration=0, in_region=None):
         a_match = _text_search_by(where, True, in_region)
         if a_match is not None:
             pyautogui.moveTo(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
+        else:
+            raise FindError('Unable to find text %s' % where)
 
     elif isinstance(where, Location):
         pyautogui.moveTo(where.x, where.y, duration)
@@ -1417,7 +1569,7 @@ def find(what, precision=None, in_region=None):
         if a_match is not None:
             return Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
         else:
-            return Location(-1, -1)
+            raise FindError('Unable to find text %s' % what)
 
     elif isinstance(what, str) or isinstance(what, Pattern):
 
@@ -1425,7 +1577,11 @@ def find(what, precision=None, in_region=None):
             precision = Settings.MinSimilarity
 
         image_path = _get_needle_path(what)
-        return _image_search(image_path, precision, in_region)
+        image_found = _image_search(image_path, precision, in_region)
+        if (image_found.x != -1) & (image_found.y != -1):
+            return image_found
+        else:
+            raise FindError('Unable to find image %s' % image_path)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -1448,7 +1604,7 @@ def findAll(what, precision=None, in_region=None):
         if len(list_of_locations) > 0:
             return list_of_locations
         else:
-            return [Location(-1, -1)]
+            raise FindError('Unable to find text %s' % what)
 
     elif isinstance(what, str) or isinstance(what, Pattern):
 
@@ -1792,13 +1948,76 @@ def scroll(clicks):
     pyautogui.scroll(clicks)
 
 
+class ZoomType:
+    if Settings.getOS() == Platform.WINDOWS:
+        up = 300
+        down = -300
+    else:
+        up = 1
+        down = -1
+
+
+def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
+    """Zoom in/Zoom out using the mouse wheel
+
+    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should take place
+    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to perform
+    :return: None
+    """
+
+    # move focus in the middle of the page to be able to use the scroll
+    pyautogui.moveTo(screen_width / 4, screen_height / 2)
+    for i in range(nr_of_times):
+        if Settings.getOS() == Platform.MAC:
+            pyautogui.keyDown('command')
+        else:
+            pyautogui.keyDown('ctrl')
+        pyautogui.scroll(zoom_type)
+        if Settings.getOS() == Platform.MAC:
+            pyautogui.keyUp('command')
+        else:
+            pyautogui.keyUp('ctrl')
+        time.sleep(0.5)
+    pyautogui.moveTo(0, 0)
+
+
 def paste(text):
     # load to clipboard
     pyperclip.copy(text)
+
+    text_copied = False
+    wait_scan_rate = float(Settings.WaitScanRate)
+    interval = 1 / wait_scan_rate
+    max_attempts = int(Settings.AutoWaitTimeout * wait_scan_rate)
+    attempt = 0
+
+    while not text_copied and attempt < max_attempts:
+        if pyperclip.paste() == text:
+            text_copied = True
+        else:
+            time.sleep(interval)
+            attempt += 1
+
+    if not text_copied:
+        logger.error('Paste method failed')
+        raise FindError
+
     if Settings.getOS() == Platform.MAC:
-        pyautogui.hotkey('command', 'v')
+        pyautogui.keyDown('command')
+        time.sleep(0.1)
+        pyautogui.keyDown('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('command')
     else:
-        pyautogui.hotkey('ctrl', 'v')
+        pyautogui.keyDown('ctrl')
+        time.sleep(0.1)
+        pyautogui.keyDown('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('v')
+        time.sleep(0.1)
+        pyautogui.keyUp('ctrl')
     # clear clipboard
     pyperclip.copy('')
 

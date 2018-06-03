@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (event) {
+            document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+            icons = document.getElementsByTagName('i');
+
+            if (icons.length > 0) {
+                var ctrl = document.getElementsByClassName('ctrl')
+                var alt = document.getElementsByClassName('alt')
+                var shift = document.getElementsByClassName('shift')
+                var text = document.getElementsByClassName('text')
+
+                document.onkeypress = function (event) {
+                    if (event.ctrlKey) {
+                        ctrl[0].className = 'to-right ctrl fas fa-toggle-on'
+                    }
+                    else {
+                        ctrl[0].className = 'to-right ctrl fas fa-toggle-off'
+                    }
+                    if (event.altKey) {
+                        alt[0].className = 'to-right alt fas fa-toggle-on'
+                    }
+                    else {
+                        alt[0].className = 'to-right alt fas fa-toggle-off'
+                    }
+                    if (event.shiftKey) {
+                        shift[0].className = 'to-right shift fas fa-toggle-on'
+                    }
+                    else {
+                        shift[0].className = 'to-right shift fas fa-toggle-off'
+                    }
+                    text[0].value = event.key
+                }
+
+                var resetButton = document.getElementById('reset')
+
+                resetButton.addEventListener("click", function () {
+                    ctrl[0].className = 'to-right ctrl fas fa-toggle-off'
+                    alt[0].className = 'to-right alt fas fa-toggle-off'
+                    shift[0].className = 'to-right shift fas fa-toggle-off'
+                    text[0].value = ''
+                });
+            }
+        });
+
+    </script>
+    <style>
+        body {
+            padding: 5px 20px 20px 20px;
+        }
+
+        #page-corners .fas {
+            position: absolute;
+            font-size: 20px;
+        }
+
+        .fas.top-left {
+            top: 1px;
+            left: 1px;
+        }
+
+        .fas.top-right {
+            top: 1px;
+            right: 1px;
+        }
+
+        .fas.bottom-left {
+            bottom: 1px;
+            left: 1px;
+        }
+
+        .fas.bottom-right {
+            bottom: 1px;
+            right: 1px;
+        }
+
+        .to-right {
+            float: right;
+        }
+
+        #commands-wrapper {
+            margin-top: 50px;
+            width: 200px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9"
+        crossorigin="anonymous">
+    <title>Keyboard events template</title>
+</head>
+
+<body>
+    <div id="page-corners">
+        <i class="fas top-left fa-arrow-circle-right"></i>
+        <i class="fas top-right fa-arrow-circle-down"></i>
+        <i class="fas bottom-right fa-arrow-circle-left"></i>
+        <i class="fas bottom-left fa-arrow-circle-up"></i>
+    </div>
+
+    <div id="main-content">
+
+        <div id="commands-wrapper">
+            <label>
+                Control/Command:
+                <i class="to-right ctrl fas fa-toggle-off"></i>
+            </label>
+            <br>
+            <label>
+                Alt:
+                <i class="to-right alt fas fa-toggle-off"></i>
+            </label>
+            <br>
+            <label>
+                Shift:
+                <i class="to-right shift fas fa-toggle-off"></i>
+            </label>
+            <br>
+            <label>
+                Text:
+                <i class="to-right text"></i>
+            </label>
+
+            <br>
+            <br>
+            <i id="reset" class="fas fa-trash-alt"></i>
+        </div>
+    </div>
+</body>
+
+</html>
