@@ -41,40 +41,40 @@ class Test(BaseTest):
 
         # Open some pages to create some history.
         navigate('https://www.youtube.com/')
-        expected_1 = exists(youtube_logo, 5)
+        expected_1 = exists(youtube_logo, 10)
         assert_true(self, expected_1, 'Page loaded successfully.')
 
         new_tab()
         navigate('https://www.youtube.com/')
-        expected_2 = exists(youtube_logo, 5)
+        expected_2 = exists(youtube_logo, 10)
         assert_true(self, expected_2, 'Page loaded successfully.')
 
         new_tab()
         navigate('https://www.google.com/?hl=EN')
-        expected_3 = exists(google_search, 5)
+        expected_3 = exists(google_search, 10)
         assert_true(self, expected_3, 'Page loaded successfully.')
 
         new_tab()
         navigate('https://www.amazon.com/')
-        expected_4 = exists(amazon_logo, 5)
+        expected_4 = exists(amazon_logo, 10)
         assert_true(self, expected_4, 'Page loaded successfully.')
 
         new_tab()
         navigate('https://www.wikipedia.org/')
-        expected_5 = exists(wikipedia_logo, 5)
+        expected_5 = exists(wikipedia_logo, 10)
         assert_true(self, expected_5, 'Page loaded successfully.')
 
         # Open the History sidebar.
         history_sidebar()
-        expected_6 = exists(expand_button_history_sidebar, 5)
+        expected_6 = exists(expand_button_history_sidebar, 10)
         assert_true(self, expected_6, 'Expand history sidebar button displayed properly.')
         click(expand_button_history_sidebar)
 
         # Sort by date.
-        expected_7 = exists(history_sidebar_view_button, 5)
+        expected_7 = exists(history_sidebar_view_button, 10)
         assert_true(self, expected_7, 'View button displayed properly.')
         click(history_sidebar_view_button)
-        expected_8 = exists(history_sidebar_sort_by_date, 5)
+        expected_8 = exists(history_sidebar_sort_by_date, 10)
         assert_true(self, expected_8, 'Default sorting option - sort by date - is selected properly.')
         click(history_sidebar_sort_by_date)
         expected_9 = exists(history_sidebar_items_sort_by_date)
@@ -82,10 +82,10 @@ class Test(BaseTest):
 
         # Sort by date and site.
         click(history_sidebar_view_button)
-        expected_10 = exists(history_sidebar_sort_by_date_and_site, 5)
+        expected_10 = exists(history_sidebar_sort_by_date_and_site, 10)
         assert_true(self, expected_10, 'Sort by date and site option is displayed properly.')
         click(history_sidebar_sort_by_date_and_site)
-        expected_11 = exists(expand_button_history_sidebar, 5)
+        expected_11 = exists(expand_button_history_sidebar, 10)
         assert_true(self, expected_11, 'Expand history sidebar button displayed properly.')
         click(expand_button_history_sidebar)
         expected_12 = exists(history_sidebar_items_sort_by_date_and_site)
@@ -93,7 +93,7 @@ class Test(BaseTest):
 
         # Sort by site.
         click(history_sidebar_view_button)
-        expected_13 = exists(history_sidebar_sort_by_site, 5)
+        expected_13 = exists(history_sidebar_sort_by_site, 10)
         assert_true(self, expected_13, 'Sort by site option is displayed properly.')
         click(history_sidebar_sort_by_site)
         expected_14 = exists(history_sidebar_items_sort_by_site)
@@ -101,7 +101,7 @@ class Test(BaseTest):
 
         # Sort by most visited.
         click(history_sidebar_view_button)
-        expected_15 = exists(history_sidebar_sort_by_most_visited, 5)
+        expected_15 = exists(history_sidebar_sort_by_most_visited, 10)
         assert_true(self, expected_15, 'Sort by most visited option is displayed properly.')
         click(history_sidebar_sort_by_most_visited)
         expected_16 = exists(history_sidebar_items_sort_by_most_visited)
@@ -109,7 +109,7 @@ class Test(BaseTest):
 
         # Sort by last visited.
         click(history_sidebar_view_button)
-        expected_17 = exists(history_sidebar_sort_by_last_visited, 5)
+        expected_17 = exists(history_sidebar_sort_by_last_visited, 10)
         assert_true(self, expected_17, 'Sort by last visited option is displayed properly.')
         click(history_sidebar_sort_by_last_visited)
         expected_18 = exists(history_sidebar_items_sort_by_last_visited)
