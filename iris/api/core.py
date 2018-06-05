@@ -1482,8 +1482,10 @@ def reset_mac_windows():
     Work around issue #521 - unwanted Mission Control on MacBook Pro with touch bar.
     If there is a better way to solve this, we'll remove this hack.
     """
-    type(Key.FN)
-    type(Key.FN)
+
+    if Settings.getOS() == Platform.MAC:
+        type(Key.FN)
+        type(Key.FN)
 
 
 """Sikuli wrappers

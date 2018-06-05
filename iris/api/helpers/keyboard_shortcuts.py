@@ -113,11 +113,13 @@ def page_up():
 def page_end():
     """Jump to the bottom of the page."""
     type(text=Key.END)
+    reset_mac_windows()
 
 
 def page_home():
     """Jump to the top of the page."""
     type(text=Key.HOME)
+    reset_mac_windows()
 
 
 def focus_next_item():
@@ -409,6 +411,7 @@ def new_tab():
         type(text='t', modifier=KeyModifier.CMD)
     else:
         type(text='t', modifier=KeyModifier.CTRL)
+    time.sleep(0.5)
 
 
 def new_window():
@@ -518,6 +521,7 @@ def bookmark_all_tabs():
         type(text='d', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text='d', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    time.sleep(2)
 
 
 def bookmark_page():
@@ -526,6 +530,7 @@ def bookmark_page():
         type(text='d', modifier=KeyModifier.CMD)
     else:
         type(text='d', modifier=KeyModifier.CTRL)
+    time.sleep(2)
 
 
 def bookmarks_sidebar():

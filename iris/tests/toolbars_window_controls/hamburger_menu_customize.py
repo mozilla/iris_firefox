@@ -22,6 +22,6 @@ class Test(BaseTest):
         time.sleep(1)
 
         # Searching for text 'Drag'
-        expected_1 = exists('Drag', 10, in_region=Region(0, 0, 300, 300))
+        expected_1 = exists('Drag', 10, in_region=Region(0, 0, screen_width/3, screen_height/4))
         assert_true(self, expected_1, '\'Customize\' page present.')
         close_customize_page()
