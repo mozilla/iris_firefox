@@ -12,7 +12,6 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This test creates dynamic regions from patterns.'
 
-
     def run(self):
 
         cat1 = 'cat1.png'
@@ -35,7 +34,7 @@ class Test(BaseTest):
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r1.x, r1.y, r1.w, r1.h))
         logger.debug('Text in region: %s' % text)
         assert_true(self, test_string_cat in text, 'Can find cat text')
-        assert_false(self, 'Dog' in text, 'Should not find Dog in cat text' )
+        assert_false(self, 'Dog' in text, 'Should not find Dog in cat text')
 
         test_string_dog = 'This is a dog'
         r2 = create_region_from_patterns(left=dog1, right=dog2)
@@ -43,7 +42,7 @@ class Test(BaseTest):
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r2.x, r2.y, r2.w, r2.h))
         logger.debug('Text in region: %s' % text)
         assert_true(self, test_string_dog in text, 'Can find dog text')
-        assert_false(self, 'Cat' in text, 'Should not find Cat in dog text' )
+        assert_false(self, 'Cat' in text, 'Should not find Cat in dog text')
 
         navigate('google.com')
         logger.debug('Navigate to URL: google.com')
