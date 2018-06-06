@@ -61,7 +61,7 @@ class BaseTest(object):
         self.add_result(res)
 
     def get_asset_path(self, path):
-        return os.path.join(path, 'assets/')
+        return os.path.join(path, 'assets')
 
     def setup(self):
         """ Test case setup
