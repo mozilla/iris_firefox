@@ -60,12 +60,7 @@ class Test(BaseTest):
             raise FindError('Window not minimized, aborting test')
 
         if Settings.getOS() == Platform.MAC:
-            type(text=Key.DOWN, modifier=KeyModifier.CTRL)
-            time.sleep(0.5)
-            keyDown(Key.DOWN)
-            keyUp(Key.DOWN)
-            keyDown(Key.ENTER)
-            keyUp(Key.ENTER)
+            open_library()
 
         else:
             restore_window_from_taskbar()
