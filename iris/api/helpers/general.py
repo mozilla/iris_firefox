@@ -277,10 +277,10 @@ def address_crash_reporter():
                 logger.debug('Crash report sent')
             except FindError:
                 logger.error('Crash reporter did not close')
-                return
-            else:
                 # Close the reporter if it hasn't gone away in time
                 close_auxiliary_window()
+            else:
+                return
         else:
             # If no crash reporter, silently move on to the next test case
             return
