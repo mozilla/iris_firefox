@@ -1483,6 +1483,65 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
                   bottom_right_pos.y - top_left_pos.y + marker_height)
 
 
+def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
+    """
+    Returns a region created from combined area of one or more patterns.
+    Argument names are just for convenience and don't influence outcome.
+    """
+    patterns = []
+    if top != None:
+        patterns.append(top)
+    if bottom != None:
+        patterns.append(bottom)
+    if left != None:
+        patterns.append(left)
+    if right != None:
+        patterns.append(right)
+
+    if len(patterns) == 0:
+        logger.error('One or more patterns required.')
+        # raise Exception
+
+    logger.debug('Creating region from %s pattern(s)' % len(patterns))
+
+    a, b = pyautogui.size()
+    p1 = Location(a, b)
+    p2 = Location(0, 0)
+
+    for pattern in patterns:
+        if exists(pattern, 5):
+            current_pattern = find(pattern)
+
+            #current_pattern.x = current_pattern.x * 2
+            #current_pattern.y = current_pattern.y * 2
+
+            if current_pattern.x < p1.x:
+                p1.x = current_pattern.x
+            if current_pattern.y < p1.y:
+                p1.y = current_pattern.y
+
+            w, h = get_asset_img_size(pattern)
+            #w = w * 2
+            #h = h * 2
+            if current_pattern.x + w > p2.x:
+                p2.x = current_pattern.x + w
+            if current_pattern.y + h > p2.y:
+                p2.y = current_pattern.y + h
+            """
+            print pattern
+            print 'x: %s' % current_pattern.x
+            print 'y: %s' % current_pattern.y
+            print 'w: %s' % w
+            print 'h: %s' % h
+            """
+
+        else:
+            logger.error('Pattern not found: %s ' % pattern)
+            raise FindError
+
+    return Region (p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
+
+
 def reset_mac_windows():
     """
     Work around issue #521 - unwanted Mission Control on MacBook Pro with touch bar.
