@@ -38,9 +38,15 @@ DEFAULT_MIN_SIMILARITY = 0.8
 DEFAULT_SLOW_MOTION_DELAY = 2
 DEFAULT_MOVE_MOUSE_DELAY = args.mouse
 DEFAULT_OBSERVE_MIN_CHANGED_PIXELS = 50
-DEFAULT_TYPE_DELAY = DEFAULT_CLICK_DELAY = 0
-DEFAULT_WAIT_SCAN_RATE = DEFAULT_OBSERVE_SCAN_RATE = DEFAULT_AUTO_WAIT_TIMEOUT = 3
-DEFAULT_DELAY_BEFORE_MOUSE_DOWN = DEFAULT_DELAY_BEFORE_DRAG = DEFAULT_DELAY_BEFORE_DROP = 0.3
+DEFAULT_TYPE_DELAY = 0
+DEFAULT_CLICK_DELAY = 0
+DEFAULT_WAIT_SCAN_RATE = 3
+DEFAULT_OBSERVE_SCAN_RATE = 3
+DEFAULT_AUTO_WAIT_TIMEOUT = 3
+DEFAULT_DELAY_BEFORE_MOUSE_DOWN = 0.3
+DEFAULT_DELAY_BEFORE_DRAG = 0.3
+DEFAULT_DELAY_BEFORE_DROP = 0.3
+DEFAULT_KEY_SHORTCUT_DELAY = 0.1
 
 _images = {}
 
@@ -2003,21 +2009,9 @@ def paste(text):
         raise FindError
 
     if Settings.getOS() == Platform.MAC:
-        pyautogui.keyDown('command')
-        time.sleep(0.1)
-        pyautogui.keyDown('v')
-        time.sleep(0.1)
-        pyautogui.keyUp('v')
-        time.sleep(0.1)
-        pyautogui.keyUp('command')
+        type(text='v', modifier=KeyModifier.CMD)
     else:
-        pyautogui.keyDown('ctrl')
-        time.sleep(0.1)
-        pyautogui.keyDown('v')
-        time.sleep(0.1)
-        pyautogui.keyUp('v')
-        time.sleep(0.1)
-        pyautogui.keyUp('ctrl')
+        type(text='v', modifier=KeyModifier.CTRL)
     # clear clipboard
     pyperclip.copy('')
 
@@ -2044,9 +2038,25 @@ def type(text=None, modifier=None, interval=None):
         logger.debug('Modifiers (%s): %s ' % (num_keys, ' '.join(modifier_keys)))
         logger.debug('text: %s' % text)
         if num_keys == 1:
-            pyautogui.hotkey(modifier_keys[0], str(text))
+            pyautogui.keyDown(modifier_keys[0])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyDown(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(modifier_keys[0])
         elif num_keys == 2:
-            pyautogui.hotkey(modifier_keys[0], modifier_keys[1], str(text))
+            pyautogui.keyDown(modifier_keys[0])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyDown(modifier_keys[1])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyDown(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(modifier_keys[1])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(modifier_keys[0])
         else:
             logger.error('Returned key modifiers out of range')
 
