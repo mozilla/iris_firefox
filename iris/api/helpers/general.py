@@ -267,7 +267,7 @@ def address_crash_reporter():
         if exists(reporter, 3):
             ogger.debug('Crash Reporter found!')
             # Let crash stats know this is an Iris automation crash.
-            # click(reporter)
+            click(reporter)
             type('Iris automation test crash')
             # Then dismiss the dialog by choosing to quit Firefox
             click('quit_firefox_button.png')
