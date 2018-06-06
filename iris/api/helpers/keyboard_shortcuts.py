@@ -29,6 +29,7 @@ def navigate_back():
     """Navigate back in browsing history one page visit."""
     if Settings.getOS() == Platform.MAC:
         type(text='[', modifier=KeyModifier.CMD)
+        reset_mac_windows()
     else:
         type(text=Key.LEFT, modifier=KeyModifier.ALT)
 
@@ -112,11 +113,13 @@ def page_up():
 def page_end():
     """Jump to the bottom of the page."""
     type(text=Key.END)
+    reset_mac_windows()
 
 
 def page_home():
     """Jump to the top of the page."""
     type(text=Key.HOME)
+    reset_mac_windows()
 
 
 def focus_next_item():
@@ -389,6 +392,7 @@ def maximize_window():
         type(text=Key.UP, modifier=KeyModifier.WIN)
     else:
         type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)
+    time.sleep(1)
 
 
 def minimize_window():
@@ -407,6 +411,7 @@ def new_tab():
         type(text='t', modifier=KeyModifier.CMD)
     else:
         type(text='t', modifier=KeyModifier.CTRL)
+    time.sleep(0.5)
 
 
 def new_window():
@@ -505,14 +510,7 @@ def clear_recent_history():
     """Open the Clear Recent History dialog."""
     if Settings.getOS() == Platform.MAC:
         type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-
-        # Working around a pyautogui bug on Mac.
-        # The key combination above causes the windows to disappear, i.e.:
-        # pyautoguy.hotkey ("shift', "command', "delete")
-        # Press the "fn" key twice to get back into the correct window state
-
-        type(text=Key.FN)
-        type(text=Key.FN)
+        reset_mac_windows()
     else:
         type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
@@ -523,6 +521,7 @@ def bookmark_all_tabs():
         type(text='d', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text='d', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    time.sleep(2)
 
 
 def bookmark_page():
@@ -531,6 +530,7 @@ def bookmark_page():
         type(text='d', modifier=KeyModifier.CMD)
     else:
         type(text='d', modifier=KeyModifier.CTRL)
+    time.sleep(2)
 
 
 def bookmarks_sidebar():

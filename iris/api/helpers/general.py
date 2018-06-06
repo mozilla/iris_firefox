@@ -95,6 +95,7 @@ def navigate(url):
         type(Key.ENTER)
     except:
         logger.error('No active window found, cannot navigate to page')
+        raise APIHelperError
 
 
 def restart_firefox(path, profile, url, args=None):
@@ -264,8 +265,7 @@ def open_about_firefox():
 
         # Workaround for Mac OS 10.13.4 - tap FN key twice
         # to get out of minimized window state.
-        type(text=Key.FN)
-        type(text=Key.FN)
+        reset_mac_windows()
 
         time.sleep(0.5)
         type(Key.RIGHT)
@@ -275,8 +275,8 @@ def open_about_firefox():
 
         # Workaround for Mac OS 10.13.4 - tap FN key twice
         # to get out of minimized window state.
-        type(text=Key.FN)
-        type(text=Key.FN)
+        reset_mac_windows()
+
 
     elif Settings.getOS() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox

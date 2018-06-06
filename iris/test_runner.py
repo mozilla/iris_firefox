@@ -74,7 +74,7 @@ def run(app):
                 current.teardown()
                 confirm_firefox_quit()
                 continue
-            except (ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError,
+            except (APIHelperError, ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError,
                     UnsupportedClassMethodError, TypeError):
                 test_failures.append(module)
                 errors += 1

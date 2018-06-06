@@ -12,8 +12,8 @@ class Test(BaseTest):
         self.meta = 'This is a test of the Download dialog controls'
 
     def run(self):
-        url = 'www.yoanaj.co.il/uploadimages/The_Little_Prince.pdf'
-        test_pdf = 'little_prince_sidebar.png'
+        url = 'https://food.unl.edu/documents/reducingrecipesize.pdf'
+        test_pdf = 'neb_uni.png'
         download_button = 'pdf_download_button.png'
         dialog = 'download_dialog.png'
 
