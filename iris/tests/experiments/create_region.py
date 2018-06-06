@@ -11,9 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test creates dynamic regions from patterns.'
-        self.module_path = os.path.split(__file__)[0]
-        self.assets = BaseTest.get_asset_path(self, self.module_path)
-        self.module_name = os.path.split(__file__)[1].split('.py')[0]
+
 
     def run(self):
 
@@ -26,7 +24,7 @@ class Test(BaseTest):
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r.x, r.y, r.w, r.h))
         logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
 
-        test_url = os.path.join(self.assets, self.module_name, 'test.htm')
+        test_url = self.get_asset_path(__file__, 'test.htm')
         navigate(test_url)
         logger.debug('Navigate to URL: %s' % test_url)
         logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))

@@ -60,8 +60,10 @@ class BaseTest(object):
         res = Result(outcome, message, actual, expected, error)
         self.add_result(res)
 
-    def get_asset_path(self, path):
-        return os.path.join(path, 'assets')
+    def get_asset_path(self, test_path, asset_file_name):
+        module_path = os.path.split(test_path)[0]
+        module_name = os.path.split(test_path)[1].split('.py')[0]
+        return os.path.join(module_path, 'assets', module_name, asset_file_name)
 
     def setup(self):
         """ Test case setup
