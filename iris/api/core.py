@@ -19,6 +19,7 @@ import pytesseract
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
+import traceback
 
 try:
     import Image
@@ -933,6 +934,28 @@ def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
                 thickness, 64)
 
 
+def get_test_name():
+    try:
+        raise ValueError('GetTestName')
+    except ValueError:
+        try:
+            ignored_files = ['iris-script.py', '__main__.py', 'test_runner.py', 'core.py', 'general.py']
+            all_stack = traceback.extract_stack()
+            filename = None
+            for stack in all_stack:
+                if Settings.getOS() is Platform.WINDOWS:
+                    filename = stack[0].split('\\')[-1:][0]
+                if Settings.getOS() is not Platform.WINDOWS:
+                    filename = stack[0].split('/')[-1:][0]
+
+                if filename is not None and filename not in ignored_files:
+                    return filename
+        except Exception:
+            return None
+
+        return None
+
+
 def _save_debug_image(search_for, on_region, locations, not_found=False):
     """ Saves input Image for debug.
 
@@ -941,7 +964,8 @@ def _save_debug_image(search_for, on_region, locations, not_found=False):
     :param List[Location] || Location || None locations: Location or list of Location as coordinates
     :return: None
     """
-    if save_debug_images:
+    test_name = get_test_name()
+    if save_debug_images and test_name is not None:
         is_image = False if isinstance(search_for, str) and _is_ocr_text(search_for) else True
         w, h = 0, 0
 
@@ -962,6 +986,7 @@ def _save_debug_image(search_for, on_region, locations, not_found=False):
 
         current_time = datetime.now()
         temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_')
+        temp_f = temp_f + '_' + test_name.replace('.py', '')
 
         def _draw_rectangle(on_what, (top_x, top_y), (btm_x, btm_y), width=2):
             cv2.rectangle(on_what, (top_x, top_y), (btm_x, btm_y), (0, 0, 255), width)
