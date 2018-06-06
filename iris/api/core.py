@@ -1499,8 +1499,7 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
         patterns.append(right)
 
     if len(patterns) == 0:
-        logger.error('One or more patterns required.')
-        raise ValueError
+        raise ValueError('One or more patterns required.')
 
     logger.debug('Creating region from %s pattern(s).' % len(patterns))
 
