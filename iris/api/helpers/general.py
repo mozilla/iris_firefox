@@ -258,6 +258,34 @@ def close_customize_page():
         click(customize_done_button)
 
 
+def address_crash_reporter():
+    # TODO: Only works on Mac and Windows until we can get Linux images
+    if Settings.getOS() == Platform.LINUX:
+        return
+    else:
+        reporter = 'crash_reporter_icon.png'
+        if exists(reporter, 3):
+            ogger.debug('Crash Reporter found!')
+            # Let crash stats know this is an Iris automation crash.
+            # click(reporter)
+            type('Iris automation test crash')
+            # Then dismiss the dialog by choosing to quit Firefox
+            click('quit_firefox_button.png')
+            # Ensure the reporter closes before moving on
+            try:
+                waitVanish(reporter, 30)
+                logger.debug('Crash report sent')
+            except FindError:
+                logger.error('Crash reporter did not close')
+                return
+            else:
+                # Close the reporter if it hasn't gone away in time
+                close_auxiliary_window()
+        else:
+            # If no crash reporter, silently move on to the next test case
+            return
+
+
 def open_about_firefox():
     if Settings.getOS() == Platform.MAC:
         # Key stroke into Firefox Menu to get to About Firefox.

@@ -91,6 +91,7 @@ def run(app):
             print_results(module, current)
             current.teardown()
             confirm_firefox_quit()
+            address_crash_reporter()
         else:
             skipped += 1
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
