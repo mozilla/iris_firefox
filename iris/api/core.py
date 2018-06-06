@@ -1479,7 +1479,7 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
 
 def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
     """
-    Return region created from combined area of one or more patterns.
+    Returns a region created from combined area of one or more patterns.
     Argument names are just for convenience and don't influence outcome.
     """
     patterns = []
@@ -1494,13 +1494,13 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
 
     if len(patterns) == 0:
         logger.error('One or more patterns required.')
+        # raise Exception
 
-    #p1 = Location(pyautogui.screenshot().size)
+    logger.debug('Creating region from %s pattern(s)' % len(patterns))
+
     a, b = pyautogui.size()
     p1 = Location(a, b)
     p2 = Location(0, 0)
-
-    print 'Screen: %s x %s' % (p1.x, p1.y)
 
     for pattern in patterns:
         if exists(pattern, 5):
@@ -1521,13 +1521,13 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
                 p2.x = current_pattern.x + w
             if current_pattern.y + h > p2.y:
                 p2.y = current_pattern.y + h
-
+            """
             print pattern
             print 'x: %s' % current_pattern.x
             print 'y: %s' % current_pattern.y
             print 'w: %s' % w
             print 'h: %s' % h
-
+            """
 
         else:
             logger.error('Pattern not found: %s ' % pattern)

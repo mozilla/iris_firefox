@@ -16,49 +16,47 @@ class Test(BaseTest):
         self.module_name = os.path.split(__file__)[1].split('.py')[0]
 
     def run(self):
-        """
-        This is where your test logic goes.
-        """
-
-        r = create_region_from_patterns(left='home.png', right='library.png')
-        print r.text()
-        print r.x
-        print r.y
-        print r.w
-        print r.h
-
-        navigate(self.assets + '/' + self.module_name + '/test.htm')
 
         cat1 = 'cat1.png'
         cat2 = 'cat2.png'
         dog1 = 'dog1.png'
         dog2 = 'dog2.png'
 
+        r = create_region_from_patterns(left='home.png', right='library.png')
+        logger.debug('Region x, y, w, h: %s %s %s %s' % (r.x, r.y, r.w, r.h))
+        logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
 
+        test_url = self.assets + self.module_name + '/test.htm'
+        navigate(test_url)
+        logger.debug('Navigate to URL: %s' % test_url)
+        logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
 
+        test_string_cat = 'This is a cat'
         r1 = create_region_from_patterns(left=cat1, right=cat2)
-        print r1.text()
-        print r1.x
-        print r1.y
-        print r1.w
-        print r1.h
+        text = r1.text()
+        logger.debug('Region x, y, w, h: %s %s %s %s' % (r1.x, r1.y, r1.w, r1.h))
+        logger.debug('Text in region: %s' % text)
+        assert_true(self, test_string_cat in text, 'Can find cat text')
+        assert_false(self, 'Dog' in text, 'Should not find Dog in cat text' )
 
-
-
+        test_string_dog = 'This is a dog'
         r2 = create_region_from_patterns(left=dog1, right=dog2)
-        print r2.text()
-        print r2.x
-        print r2.y
-        print r2.w
-        print r2.h
+        text = r2.text()
+        logger.debug('Region x, y, w, h: %s %s %s %s' % (r2.x, r2.y, r2.w, r2.h))
+        logger.debug('Text in region: %s' % text)
+        assert_true(self, test_string_dog in text, 'Can find dog text')
+        assert_false(self, 'Cat' in text, 'Should not find Cat in dog text' )
 
-        r3 = create_region_from_patterns(left='home.png', right='library.png')
-        print r3.text()
-        print r3.x
-        print r3.y
-        print r3.w
-        print r3.h
+        navigate('google.com')
+        logger.debug('Navigate to URL: google.com')
+        logger.debug('Text in URL bar: %s' % r.text())
 
+        navigate(test_url)
+        logger.debug('Navigate to URL: %s' % test_url)
+        logger.debug('Text in URL bar: %s' % r.text())
 
-        assert_true(self, True, 'test')
+        navigate('12345')
+        logger.debug('Navigate to URL: 12345')
+        logger.debug('Text in URL bar: %s' % r.text())
+
         return
