@@ -26,7 +26,7 @@ class Test(BaseTest):
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r.x, r.y, r.w, r.h))
         logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
 
-        test_url = self.assets + self.module_name + '/test.htm'
+        test_url = os.path.join(self.assets, self.module_name, 'test.htm')
         navigate(test_url)
         logger.debug('Navigate to URL: %s' % test_url)
         logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
