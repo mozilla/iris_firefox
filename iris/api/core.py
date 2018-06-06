@@ -1521,8 +1521,7 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
             if current_pattern.y + h > p2.y:
                 p2.y = current_pattern.y + h
         else:
-            logger.error('Pattern not found: %s ' % pattern)
-            raise FindError
+            raise FindError('Pattern not found: %s ' % pattern)
 
     return Region (p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
 
