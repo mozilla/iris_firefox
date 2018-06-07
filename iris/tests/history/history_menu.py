@@ -12,6 +12,15 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of the History menu.'
 
+    def setup(self):
+        """ Test case setup
+        This overrides the setup method in the BaseTest class,
+        so that it can use a brand new profile.
+        """
+        self.profile = Profile.BRAND_NEW
+        launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
+        return
+
     def run(self):
         history_items = 'history_items.png'
         youtube_logo = 'youtube_banner.png'
