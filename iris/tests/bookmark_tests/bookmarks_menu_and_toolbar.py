@@ -15,7 +15,7 @@ class Test(BaseTest):
 
     def run(self):
         url = 'amazon.com'
-        url2 = 'about:home'
+        url2 = 'about:blank'
         library = 'library.png'
         bookmarks_menu = 'bookmarks_menu.png'
         bookmarking_tools = 'bookmarking_tools.png'
@@ -42,7 +42,7 @@ class Test(BaseTest):
 
         navigate(url2)
 
-        time.sleep(2)
+        time.sleep(5)
 
         # Test case 141 - The Bookmarks Toolbar can be enabled from the Bookmarks Menu
 
