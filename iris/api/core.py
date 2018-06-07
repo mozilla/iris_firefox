@@ -19,7 +19,7 @@ import pytesseract
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
-import traceback
+import inspect
 
 try:
     import Image
@@ -935,25 +935,16 @@ def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
 
 
 def get_test_name():
-    try:
-        raise ValueError('GetTestName')
-    except ValueError:
-        try:
-            ignored_files = ['iris-script.py', '__main__.py', 'test_runner.py', 'core.py', 'general.py']
-            all_stack = traceback.extract_stack()
-            filename = None
-            for stack in all_stack:
-                if Settings.getOS() is Platform.WINDOWS:
-                    filename = stack[0].split('\\')[-1:][0]
-                if Settings.getOS() is not Platform.WINDOWS:
-                    filename = stack[0].split('/')[-1:][0]
-
-                if filename is not None and filename not in ignored_files:
-                    return filename
-        except Exception:
-            return None
-
-        return None
+    white_list = ['general.py']
+    all_stack = inspect.stack()
+    for stack in all_stack:
+        filename = os.path.basename(stack[1])
+        method_name = stack[3]
+        if filename is not '' and 'tests' in os.path.dirname(stack[1]):
+            return filename
+        elif filename in white_list:
+            return method_name
+    return
 
 
 def _save_debug_image(search_for, on_region, locations, not_found=False):
