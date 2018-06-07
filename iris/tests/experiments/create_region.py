@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test creates dynamic regions from patterns.'
+        # Disable until issue #586 is fixed
+        self.exclude = Platform.ALL
 
     def run(self):
 
@@ -22,6 +24,8 @@ class Test(BaseTest):
         r = create_region_from_patterns(left='home.png', right='library.png')
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r.x, r.y, r.w, r.h))
         logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
+
+        return
 
         test_url = self.get_asset_path(__file__, 'test.htm')
         navigate(test_url)
