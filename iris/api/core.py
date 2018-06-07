@@ -2071,7 +2071,7 @@ def is_button_pressed(lock_key):
             return True
         else:
             return False
-    elif Settings.getOS() == Platform.LINUX:
+    elif Settings.getOS() == Platform.LINUX or Settings.getOS() ==Platform.MAC:
         try:
             cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
         except subprocess.CalledProcessError as e:
@@ -2109,9 +2109,5 @@ def is_button_pressed(lock_key):
                         return False
                     else:
                         return True
-    elif Settings.getOS() == Platform.LINUX:
-        #defaulting to False until an implementation is found for Osx
-        return False
-
 
 
