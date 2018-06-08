@@ -29,7 +29,6 @@ def navigate_back():
     """Navigate back in browsing history one page visit."""
     if Settings.getOS() == Platform.MAC:
         type(text='[', modifier=KeyModifier.CMD)
-        reset_mac_windows()
     else:
         type(text=Key.LEFT, modifier=KeyModifier.ALT)
 
@@ -113,13 +112,11 @@ def page_up():
 def page_end():
     """Jump to the bottom of the page."""
     type(text=Key.END)
-    reset_mac_windows()
 
 
 def page_home():
     """Jump to the top of the page."""
     type(text=Key.HOME)
-    reset_mac_windows()
 
 
 def focus_next_item():
@@ -510,7 +507,6 @@ def clear_recent_history():
     """Open the Clear Recent History dialog."""
     if Settings.getOS() == Platform.MAC:
         type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-        reset_mac_windows()
     else:
         type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 

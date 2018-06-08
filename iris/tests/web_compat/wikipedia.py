@@ -73,8 +73,6 @@ class Test(BaseTest):
                 time.sleep(1)
                 type(Key.TAB)
                 type(Key.ENTER)
-                # Workaround for Mac issue - see core.py
-                reset_mac_windows()
             else:
                 type(Key.TAB)
                 type(Key.DOWN)

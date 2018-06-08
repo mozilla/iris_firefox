@@ -1613,17 +1613,6 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
     return Region (p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
 
 
-def reset_mac_windows():
-    """
-    Work around issue #521 - unwanted Mission Control on MacBook Pro with touch bar.
-    If there is a better way to solve this, we'll remove this hack.
-    """
-
-    if Settings.getOS() == Platform.MAC:
-        type(Key.FN)
-        type(Key.FN)
-
-
 """Sikuli wrappers
 
 - wait
