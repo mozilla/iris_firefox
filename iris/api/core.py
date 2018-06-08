@@ -2081,35 +2081,54 @@ def is_button_pressed(lock_key):
         except subprocess.CalledProcessError as e:
             logger.error('Command  failed: %s' % repr(e.cmd))
             raise Exception('Unable to run Command')
-        processed_lock_key = lock_key.label
-        if 'caps' in processed_lock_key:
-            processed_lock_key = 'Caps'
-        elif 'num' in processed_lock_key:
-            processed_lock_key = 'Num'
-        elif 'scroll' in processed_lock_key:
-            processed_lock_key = 'Scroll'
+        else:
+            processed_lock_key = lock_key.label
+            if 'caps' in processed_lock_key:
+                processed_lock_key = 'Caps'
+            elif 'num' in processed_lock_key:
+                processed_lock_key = 'Num'
+            elif 'scroll' in processed_lock_key:
+                processed_lock_key = 'Scroll'
 
-        for line in cmd.stdout:
-            if processed_lock_key in line:
-                value = ' '.join(line.split())
-                print value
-                if processed_lock_key in value[0:len(value) / 3]:
-                    button = value[0:len(value) / 3]
-                    if "off" in button:
-                        return False
-                    else:
-                        return True
+            for line in cmd.stdout:
+                if processed_lock_key in line:
+                    value = ' '.join(line.split())
+                    print value
+                    if processed_lock_key in value[0:len(value) / 3]:
+                        button = value[0:len(value) / 3]
+                        if "off" in button:
+                            return False
+                        else:
+                            return True
 
-                elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
-                    button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
-                    if "off" in button:
-                        return False
-                    else:
-                        return True
+                    elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
+                        button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
+                        if "off" in button:
+                            return False
+                        else:
+                            return True
 
-                else:
-                    button = value[len(value) / 3 * 2:len(value)]
-                    if "off" in button:
-                        return False
                     else:
-                        return True
+                        button = value[len(value) / 3 * 2:len(value)]
+                        if "off" in button:
+                            return False
+                        else:
+                            return True
+        finally:
+            if Settings.getOS() == Platform.MAC:
+                shutdown_process('Xquartz')
+
+
+def shutdown_process(process_name):
+    if Settings.getOS() == Platform.WINDOWS:
+        try:
+            command = subprocess.Popen('taskkill /IM ' + process_name + '.exe', shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError as e:
+            logger.error('Command  failed: %s' % repr(e.command))
+            raise Exception('Unable to run Command')
+    elif Settings.getOS() == Platform.MAC or Settings.getOS() == Platform.LINUX:
+        try:
+            command = subprocess.Popen('pkill ' + process_name, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError as e:
+            logger.error('Command  failed: %s' % repr(e.command))
+            raise Exception('Unable to run Command')
