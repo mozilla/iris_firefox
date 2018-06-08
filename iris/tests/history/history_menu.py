@@ -22,44 +22,44 @@ class Test(BaseTest):
 
         # Open a website in the current tab.
         navigate('https://www.youtube.com/')
-        expected_1 = exists(youtube_logo, 5)
+        expected_1 = exists(youtube_logo, 10)
         assert_true(self, expected_1, 'Page loaded successfully.')
 
         # Open a website in a new tab.
         new_tab()
         time.sleep(1)
         navigate('https://www.google.com/?hl=EN')
-        expected_2 = exists(google_search, 5)
+        expected_2 = exists(google_search, 10)
         assert_true(self, expected_2, 'Page loaded successfully.')
 
         # Open a website in a new window.
         new_window()
         time.sleep(1)
         navigate('https://www.amazon.com/')
-        expected_3 = exists(amazon_logo, 5)
+        expected_3 = exists(amazon_logo, 10)
         assert_true(self, expected_3, 'Page loaded successfully.')
 
         # Open a website from the History list.
         open_library_menu('History')
-        expected_4 = exists(history_youtube, 5)
+        expected_4 = exists(history_youtube, 10)
         assert_true(self, expected_4, 'Youtube displayed in the History list successfully.')
         click(history_youtube)
-        expected_5 = exists(youtube_logo, 5)
+        expected_5 = exists(youtube_logo, 10)
         assert_true(self, expected_5, 'Page loaded successfully.')
 
         # Open a website in a private window.
         new_private_window()
         time.sleep(1)
         navigate('https://www.wikipedia.org/')
-        expected_6 = exists(wikipedia_logo, 5)
+        expected_6 = exists(wikipedia_logo, 10)
         assert_true(self, expected_6, 'Page loaded successfully.')
 
         # Check the expected items are displayed in the History list.
         open_library_menu('History')
-        expected_7 = exists(history_items, 5, 0.9)
+        expected_7 = exists(history_items, 10, 0.9)
         assert_true(self, expected_7, 'The expected items are displayed in the History list.')
 
         # Open a website from the History list in the private window.
         click(history_youtube)
-        expected_8 = exists(youtube_logo, 5)
+        expected_8 = exists(youtube_logo, 10)
         assert_true(self, expected_8, 'Page loaded successfully.')
