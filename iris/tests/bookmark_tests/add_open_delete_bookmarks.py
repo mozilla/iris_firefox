@@ -23,7 +23,7 @@ class Test(BaseTest):
         amazon_bookmark = 'amazon_bookmark.png'
         amazon_library = 'amazon_library.png'
         bing_bookmark = 'bing_bookmark.png'
-        linux_bing_bookmark = 'linux_bing_bookmark.png'
+        highlighted_bing_bookmark = 'highlighted_bing_bookmark.png'
         library_bookmarks = 'library_bookmarks.png'
         delete_bookmark = 'delete_bookmark.png'
         most_visited = 'most_visited_bookmarks.png'
@@ -108,7 +108,7 @@ class Test(BaseTest):
         # Test case 150 - Bookmarks can be removed from the Bookmarks Sidebar
 
         if Settings.getOS() == Platform.LINUX:
-            rightClick(linux_bing_bookmark)
+            rightClick(highlighted_bing_bookmark)
         else:
             rightClick(bing_bookmark)
 
