@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a unit test for ocr.'
-        # self.exclude = Platform.ALL
+        self.exclude = Platform.ALL
 
     def run(self):
         url = 'file:///' + get_module_dir() + '/iris/tests/unit_tests/assets/ocr.html'
