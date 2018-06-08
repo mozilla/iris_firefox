@@ -449,8 +449,12 @@ class _IrisProfile(object):
         # Duplicate profile.
         dir_util.copy_tree(from_directory, to_directory)
 
-        # Remove unzipped directory first.
-        shutil.rmtree(from_directory)
+        # Remove old unzipped directory.
+        try:
+            shutil.rmtree(from_directory)
+        except WindowsError:
+            # This error can happen, but does not affect Iris.
+            logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
         # Remove Mac resource fork folders left over from ZIP, if present.
         resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')
