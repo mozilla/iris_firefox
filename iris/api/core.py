@@ -4,9 +4,11 @@
 
 
 import copy
+import ctypes
 import logging
 import os
 import platform
+import subprocess
 import time
 from datetime import datetime
 
@@ -15,7 +17,6 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
-
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
@@ -340,7 +341,6 @@ Settings = _IrisSettings()
 
 
 class Env(object):
-
     @staticmethod
     def getClipboard():
         return pyperclip.paste()
@@ -375,7 +375,6 @@ class Env(object):
 
 
 class Sikulix(object):
-
     @staticmethod
     def prefLoad():
         raise UnsupportedMethodError('Unsupported method Sikulix.prefLoad().')
@@ -451,7 +450,6 @@ class App(object):
 
 
 class Guide(object):
-
     @staticmethod
     def rectangle(element):
         raise UnsupportedMethodError('Unsupported method Guide.rectangle(element).')
@@ -603,6 +601,67 @@ class Key(object):
     WIN_LEFT = _IrisKey('winleft')
     WIN_RIGHT = _IrisKey('winright')
     YEN = _IrisKey('yen')
+
+    @staticmethod
+    def isLockOn(keyboard_key):
+        if Settings.getOS() == Platform.WINDOWS:
+            hllDll = ctypes.WinDLL("User32.dll")
+            if keyboard_key == Key.CAPS_LOCK:
+                keyboard_code = 0x14
+            elif keyboard_key == Key.NUM_LOCK:
+                keyboard_code = 0x90
+            elif keyboard_key == Key.SCROLL_LOCK:
+                keyboard_code = 0x91
+            try:
+                keystate = hllDll.GetKeyState(keyboard_code)
+            except:
+                raise Exception('Unable to run Command')
+            if (keystate == 1):
+                return True
+            else:
+                return False
+        elif Settings.getOS() == Platform.LINUX or Settings.getOS() == Platform.MAC:
+            try:
+                cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
+            except subprocess.CalledProcessError as e:
+                logger.error('Command  failed: %s' % repr(e.cmd))
+                raise Exception('Unable to run Command')
+            else:
+                processed_lock_key = keyboard_key.label
+                if 'caps' in processed_lock_key:
+                    processed_lock_key = 'Caps'
+                elif 'num' in processed_lock_key:
+                    processed_lock_key = 'Num'
+                elif 'scroll' in processed_lock_key:
+                    processed_lock_key = 'Scroll'
+
+                for line in cmd.stdout:
+                    if processed_lock_key in line:
+                        value = ' '.join(line.split())
+                        print value
+                        if processed_lock_key in value[0:len(value) / 3]:
+                            button = value[0:len(value) / 3]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
+
+                        elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
+                            button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
+
+                        else:
+                            button = value[len(value) / 3 * 2:len(value)]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
+            finally:
+                if Settings.getOS() == Platform.MAC:
+                    shutdown_process('Xquartz')
 
 
 class KeyModifier(object):
@@ -1559,6 +1618,7 @@ def reset_mac_windows():
     Work around issue #521 - unwanted Mission Control on MacBook Pro with touch bar.
     If there is a better way to solve this, we'll remove this hack.
     """
+
     if Settings.getOS() == Platform.MAC:
         type(Key.FN)
         type(Key.FN)
@@ -2133,3 +2193,18 @@ def type(text=None, modifier=None, interval=None):
 
     if Settings.TypeDelay != DEFAULT_TYPE_DELAY:
         Settings.TypeDelay = DEFAULT_TYPE_DELAY
+
+
+def shutdown_process(process_name):
+    if Settings.getOS() == Platform.WINDOWS:
+        try:
+            command = subprocess.Popen('taskkill /IM ' + process_name + '.exe', shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError as e:
+            logger.error('Command  failed: %s' % repr(e.command))
+            raise Exception('Unable to run Command')
+    elif Settings.getOS() == Platform.MAC or Settings.getOS() == Platform.LINUX:
+        try:
+            command = subprocess.Popen('pkill ' + process_name, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError as e:
+            logger.error('Command  failed: %s' % repr(e.command))
+            raise Exception('Unable to run Command')
