@@ -1592,17 +1592,6 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
 
             w, h = get_asset_img_size(pattern)
 
-            # Investigating issue #586
-            logger.debug('Debugging create_region for pattern %s:' % pattern)
-            logger.debug('w: %s' % w)
-            logger.debug('h: %s' % h)
-            logger.debug('current_pattern.x: %s' % current_pattern.x)
-            logger.debug('current_pattern.y: %s' % current_pattern.y)
-            logger.debug('p1.x: %s' % p1.x)
-            logger.debug('p1.y: %s' % p1.y)
-            logger.debug('p2.x: %s' % p2.x)
-            logger.debug('p2.y: %s' % p2.y)
-
             if current_pattern.x + w > p2.x:
                 p2.x = current_pattern.x + w
             if current_pattern.y + h > p2.y:
@@ -1952,7 +1941,7 @@ def get_asset_img_size(of_what):
 
     needle = cv2.imread(needle_path)
     height, width, channels = needle.shape
-    return width, height
+    return int(width), int(height)
 
 
 def click(where=None, duration=None, in_region=None):
