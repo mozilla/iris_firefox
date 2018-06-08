@@ -263,20 +263,11 @@ def open_about_firefox():
         # Key stroke into Firefox Menu to get to About Firefox.
         type(Key.F2, modifier=KeyModifier.CTRL)
 
-        # Workaround for Mac OS 10.13.4 - tap FN key twice
-        # to get out of minimized window state.
-        reset_mac_windows()
-
         time.sleep(0.5)
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.ENTER)
-
-        # Workaround for Mac OS 10.13.4 - tap FN key twice
-        # to get out of minimized window state.
-        reset_mac_windows()
-
 
     elif Settings.getOS() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox
