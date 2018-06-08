@@ -25,6 +25,7 @@ class Test(BaseTest):
         hamburger_menu = 'hamburger_menu.png'
 
         navigate(url)
+        time.sleep(5)
 
         hover(window_controls_minimize)
         time.sleep(0.5)
@@ -95,6 +96,10 @@ class Test(BaseTest):
 
         expected = exists(hamburger_menu, 10)
         assert_true(self, expected, 'Window successfully opened again.')
+
+        # Make sure that focus is on the browser
+        hover(hamburger_menu)
+        time.sleep(0.5)
 
         # Close the window
         close_window()
