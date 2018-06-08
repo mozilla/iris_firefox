@@ -595,66 +595,66 @@ class Key(object):
     WIN_RIGHT = _IrisKey('winright')
     YEN = _IrisKey('yen')
 
+    @staticmethod
+    def isLockOn(keyboard_key):
+        if Settings.getOS() == Platform.WINDOWS:
+            hllDll = ctypes.WinDLL("User32.dll")
+            if keyboard_key == Key.CAPS_LOCK:
+                keyboard_code = 0x14
+            elif keyboard_key == Key.NUM_LOCK:
+                keyboard_code = 0x90
+            elif keyboard_key == Key.SCROLL_LOCK:
+                keyboard_code = 0x91
+            try:
+                keystate = hllDll.GetKeyState(keyboard_code)
+            except:
+                raise Exception('Unable to run Command')
+            if (keystate == 1):
+                return True
+            else:
+                return False
+        elif Settings.getOS() == Platform.LINUX or Settings.getOS() == Platform.MAC:
+            try:
+                cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
+            except subprocess.CalledProcessError as e:
+                logger.error('Command  failed: %s' % repr(e.cmd))
+                raise Exception('Unable to run Command')
+            else:
+                processed_lock_key = keyboard_key.label
+                if 'caps' in processed_lock_key:
+                    processed_lock_key = 'Caps'
+                elif 'num' in processed_lock_key:
+                    processed_lock_key = 'Num'
+                elif 'scroll' in processed_lock_key:
+                    processed_lock_key = 'Scroll'
 
-def isLockOn(keyboard_key):
-    if Settings.getOS() == Platform.WINDOWS:
-        hllDll = ctypes.WinDLL("User32.dll")
-        if keyboard_key == Key.CAPS_LOCK:
-            keyboard_code = 0x14
-        elif keyboard_key == Key.NUM_LOCK:
-            keyboard_code = 0x90
-        elif keyboard_key == Key.SCROLL_LOCK:
-            keyboard_code = 0x91
-        try:
-            keystate = hllDll.GetKeyState(keyboard_code)
-        except:
-            raise Exception('Unable to run Command')
-        if (keystate == 1):
-            return True
-        else:
-            return False
-    elif Settings.getOS() == Platform.LINUX or Settings.getOS() == Platform.MAC:
-        try:
-            cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError as e:
-            logger.error('Command  failed: %s' % repr(e.cmd))
-            raise Exception('Unable to run Command')
-        else:
-            processed_lock_key = keyboard_key.label
-            if 'caps' in processed_lock_key:
-                processed_lock_key = 'Caps'
-            elif 'num' in processed_lock_key:
-                processed_lock_key = 'Num'
-            elif 'scroll' in processed_lock_key:
-                processed_lock_key = 'Scroll'
+                for line in cmd.stdout:
+                    if processed_lock_key in line:
+                        value = ' '.join(line.split())
+                        print value
+                        if processed_lock_key in value[0:len(value) / 3]:
+                            button = value[0:len(value) / 3]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
 
-            for line in cmd.stdout:
-                if processed_lock_key in line:
-                    value = ' '.join(line.split())
-                    print value
-                    if processed_lock_key in value[0:len(value) / 3]:
-                        button = value[0:len(value) / 3]
-                        if "off" in button:
-                            return False
+                        elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
+                            button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
+
                         else:
-                            return True
-
-                    elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
-                        button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
-                        if "off" in button:
-                            return False
-                        else:
-                            return True
-
-                    else:
-                        button = value[len(value) / 3 * 2:len(value)]
-                        if "off" in button:
-                            return False
-                        else:
-                            return True
-        finally:
-            if Settings.getOS() == Platform.MAC:
-                shutdown_process('Xquartz')
+                            button = value[len(value) / 3 * 2:len(value)]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
+            finally:
+                if Settings.getOS() == Platform.MAC:
+                    shutdown_process('Xquartz')
 
 
 class KeyModifier(object):
