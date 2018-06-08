@@ -4,9 +4,11 @@
 
 
 import copy
+import ctypes
 import logging
 import os
 import platform
+import subprocess
 import time
 from datetime import datetime
 
@@ -15,12 +17,9 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
-
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
-import ctypes
-import subprocess
 
 try:
     import Image
@@ -340,8 +339,8 @@ class Env(object):
         return pyperclip.paste()
 
     @staticmethod
-    def isLockOn(key_state):
-        return is_button_pressed(key_state)
+    def isLockOn():
+        raise UnsupportedMethodError('Unsupported method Env.isLockOn(). Use Key.isLockOn() instead.')
 
     @staticmethod
     def getOSVersion():
@@ -595,6 +594,11 @@ class Key(object):
     WIN_LEFT = _IrisKey('winleft')
     WIN_RIGHT = _IrisKey('winright')
     YEN = _IrisKey('yen')
+
+
+@staticmethod
+def isLockOn(key):
+    return is_button_pressed(key)
 
 
 class KeyModifier(object):
@@ -2057,21 +2061,21 @@ def type(text=None, modifier=None, interval=None):
 def is_button_pressed(lock_key):
     if Settings.getOS() == Platform.WINDOWS:
         hllDll = ctypes.WinDLL("User32.dll")
-        if lock_key==Key.CAPS_LOCK:
-            keyboard_code=0x14
-        elif lock_key==Key.NUM_LOCK:
-            keyboard_code =0x90
-        elif lock_key==Key.SCROLL_LOCK:
-            keyboard_code =0x91
+        if lock_key == Key.CAPS_LOCK:
+            keyboard_code = 0x14
+        elif lock_key == Key.NUM_LOCK:
+            keyboard_code = 0x90
+        elif lock_key == Key.SCROLL_LOCK:
+            keyboard_code = 0x91
         try:
             keystate = hllDll.GetKeyState(keyboard_code)
         except:
             raise Exception('Unable to run Command')
-        if  (keystate == 1):
+        if (keystate == 1):
             return True
         else:
             return False
-    elif Settings.getOS() == Platform.LINUX or Settings.getOS() ==Platform.MAC:
+    elif Settings.getOS() == Platform.LINUX or Settings.getOS() == Platform.MAC:
         try:
             cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
         except subprocess.CalledProcessError as e:
@@ -2109,5 +2113,3 @@ def is_button_pressed(lock_key):
                         return False
                     else:
                         return True
-
-

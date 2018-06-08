@@ -507,20 +507,12 @@ def history_sidebar():
 
 
 def clear_recent_history():
-
-    if Env.isLockOn(Key.NUM_LOCK):
-        raise 'Num Lock is ON,shutting down test'
+    """Open the Clear Recent History dialog."""
+    if Settings.getOS() == Platform.MAC:
+        type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        reset_mac_windows()
     else:
-        """Open the Clear Recent History dialog."""
-        if Settings.getOS() == Platform.MAC:
-            type(text=Key.DELETE, modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-            reset_mac_windows()
-        else:
-            type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
-
-
-
+        type(text=Key.DELETE, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
 def bookmark_all_tabs():
