@@ -86,7 +86,8 @@ class Iris(object):
 
         return 0
 
-    def check_keyboard_state(self):
+    @staticmethod
+    def check_keyboard_state():
         is_lock_on = False
 
         if Key.isLockOn(Key.CAPS_LOCK):
