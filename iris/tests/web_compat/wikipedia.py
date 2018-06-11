@@ -79,19 +79,8 @@ class Test(BaseTest):
                 type(Key.TAB)
                 type(Key.ENTER)
 
-            iris_text_assert = exists(iris_text, 10)
-            assert_true(self, iris_text_assert, 'Text found in page')
-            
-            # Using text recognition, we can verify if the results are in Spanish
-            results_spanish = ['membrana', 'coloreada', 'abertura', 'ojo']
-            page_text = get_firefox_region().text()
+            spanish_text_assert = exists('wikipedia_spanish_page.png', 10)
+            assert_true(self, spanish_text_assert, 'Wikipedia spanish page is loaded')
 
-            # Text recognition sometimes mistranslates words, so let's check that
-            # at least one Spanish word appears in the page
-            found = False
-            for word in results_spanish:
-                if word in page_text:
-                    logger.debug('Found word: %s' % word)
-                    found = True
-                    break
-            assert_true(self, found, 'Found Spanish search results')
+            iris_spanish_search_bar_assert = exists('wikipedia_spanish_search.png', 10)
+            assert_true(self, iris_spanish_search_bar_assert, 'Spanish search bar is displayed in page')
