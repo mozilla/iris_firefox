@@ -18,13 +18,16 @@ class Test(BaseTest):
         search_item = 'Barack Obama'
         home = 'bing_home.png'
         search_page = 'bing_search.png'
-        search_field = 'search_field.png'
-        language = 'language.png'
         language_changed = 'language_changed.png'
         page_bottom = 'page_bottom.png'
-        bing_menu = 'bing_menu.png'
-        access_language = 'access_language.png'
+        change_language = 'change_language.png'
+        changed_language = 'changed_language.png'
+        coordinates = 'coordinates.png'
+        languages_list = 'languages_list.png'
+        menu = 'menu.png'
         save_button = 'save_button.png'
+        settings = 'settings.png'
+        switch_language = 'switch_language.png'
 
         logger.debug('Accessing ' + url + '...')
         navigate(url)
@@ -33,7 +36,7 @@ class Test(BaseTest):
         assert_true(self, expected_1, 'The page is successfully loaded')
 
         logger.info(url + ' successfully loaded')
-        type(search_item)
+        paste(search_item)
         type(Key.ENTER)
 
         logger.debug('Searching ' + search_item)
@@ -41,68 +44,44 @@ class Test(BaseTest):
         expected_2 = exists(search_page, 10)
         assert_true(self, expected_2, 'Search results are being displayed')
 
-        # I added the implementation for Mac and I tried to keep
-        # the keyboard navigation in place as much as i could
+        coord = find(coordinates)
+        bing_menu_region = Region(coord.x, coord.y, 200, 200)
 
-        if Settings.getOS() == Platform.MAC:
+        expected_3 = bing_menu_region.exists(menu, 10)
+        assert_true(self, expected_3, 'Menu can be accessed')
 
-            expected_button = exists(bing_menu, 10)
-            assert_true(self, expected_button, 'Bing menu can be accessed')
+        bing_menu_region.click(menu)
 
-            click(bing_menu)
-            time.sleep(2)
-            type(Key.TAB)
-            time.sleep(1)
-            type(Key.ENTER)
-            time.sleep(2)
-            click(access_language)
-            time.sleep(3)
-            type(Key.TAB)
-            for i in range(2):
-                type(Key.DOWN)
-            time.sleep(2)
-            type(Key.ENTER)
-            time.sleep(2)
+        expected_4 = exists(settings, 10)
+        assert_true(self, expected_4, 'Menu Settings can be accessed')
 
-            expected_save_button = exists(save_button, 10)
-            assert_true(self, expected_save_button, 'Changes can be saved')
+        click(settings)
 
-            click(save_button)
+        expected_5 = exists(change_language, 10)
+        assert_true(self, expected_5, 'Language menu can be accessed')
 
-            expected_3 = exists(language_changed, 10)
-            assert_true(self, expected_3, 'Language has been changed successfully')
+        click(change_language)
 
-        else:
+        expected_6 = exists(languages_list, 10)
+        assert_true(self, expected_6, 'Language can be changed')
 
-            expected_4 = exists(search_field, 10)
-            assert_true(self, expected_4, 'Search field exists')
+        click(languages_list)
 
-            click(search_field)
-            time.sleep(2)
-            for i in range(2):
-                type(Key.TAB)
-            time.sleep(2)
-            type(Key.ENTER)
-            time.sleep(2)
-            type(Key.TAB)
-            time.sleep(2)
-            type(Key.ENTER)
+        expected_7 = exists(switch_language, 10)
+        assert_true(self, expected_7, 'Changing language')
 
-            expected_5 = exists(language, 10)
-            assert_true(self, expected_5, 'Language can be changed')
+        click(switch_language)
 
-            click(language)
-            time.sleep(3)
-            type(Key.TAB)
-            type(Key.DOWN)
-            for i in range(7):
-                type(Key.TAB)
-            time.sleep(2)
-            type(Key.ENTER)
-            time.sleep(1)
+        expected_8 = exists(changed_language, 10)
+        assert_true(self, expected_8, 'Language has been changed')
 
-            expected_6 = exists(language_changed, 10)
-            assert_true(self, expected_6, 'Language has been changed')
+        expected_9 = exists(save_button, 10)
+        assert_true(self, expected_9, 'Changes can be saved')
+
+        click(save_button)
+
+        expected_10 = exists(language_changed, 10)
+        assert_true(self, expected_10, 'Language has been changed successfully changed')
 
         page_end()
 
