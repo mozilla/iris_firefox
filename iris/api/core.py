@@ -2133,6 +2133,7 @@ def type(text=None, modifier=None, interval=None):
             logger.debug('Reserved key: %s' % text)
             pyautogui.keyDown(str(text))
             pyautogui.keyUp(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
         else:
             if interval is None:
                 interval = Settings.TypeDelay
