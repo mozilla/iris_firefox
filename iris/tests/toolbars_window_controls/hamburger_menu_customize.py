@@ -18,7 +18,6 @@ class Test(BaseTest):
 
         # Open Customize from the Hamburger Menu
         click_hamburger_menu_option('Customize...')
-        time.sleep(1)
 
         # Searching for 'zoom_controls_customize_page.png'
         expected_1 = exists('zoom_controls_customize_page.png', 10)
