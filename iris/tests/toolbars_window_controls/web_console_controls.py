@@ -21,9 +21,9 @@ class Test(BaseTest):
         menu = 'hamburger_menu.png'
         close_dev_tools_button = 'close_dev_tools.png'
         dev_tools_window = 'dev_tools_window.png'
-        dock_message = 'Dock'
-        separate_window_message = 'Show'
-        close_message = 'Close'
+        dock_message = 'dock_message.png'
+        separate_window_message = 'separate_window_message.png'
+        close_message = 'close_message.png'
 
         navigate(url)
         open_web_console()
