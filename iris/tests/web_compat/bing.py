@@ -13,6 +13,9 @@ class Test(BaseTest):
         self.assets = os.path.join(os.path.split(__file__)[0], 'assets')
         self.meta = 'Web compatibility test for bing.com'
 
+        # Test disabled until issue #559 is fixed
+        self.exclude = Platform.ALL
+
     def run(self):
         url = 'www.bing.com'
         search_item = 'Barack Obama'
@@ -35,7 +38,7 @@ class Test(BaseTest):
         expected_1 = exists(home, 10)
         assert_true(self, expected_1, 'The page is successfully loaded')
 
-        logger.info(url + ' successfully loaded')
+        logger.debug(url + ' successfully loaded')
         paste(search_item)
         type(Key.ENTER)
 
@@ -43,6 +46,11 @@ class Test(BaseTest):
 
         expected_2 = exists(search_page, 10)
         assert_true(self, expected_2, 'Search results are being displayed')
+
+        try:
+            wait(coordinates, 10)
+        except (FindError, ValueError):
+            assert_true(self, False, 'Unable to find region marker')
 
         coord = find(coordinates)
         bing_menu_region = Region(coord.x, coord.y, 200, 200)
@@ -81,14 +89,18 @@ class Test(BaseTest):
         click(save_button)
 
         expected_10 = exists(language_changed, 10)
-        assert_true(self, expected_10, 'Language has been changed successfully changed')
+        assert_true(self, expected_10, 'Language has been successfully changed')
 
         page_end()
 
-        expected_7 = exists(page_bottom, 10)
-        assert_true(self, expected_7, 'Page has been scrolled down')
+        if exists(page_bottom, 10):
+            assert_true(self, True, 'Page has been scrolled down')
+        else:
+            logger.debug('Pop-up appeared on page. Executing another scroll down to reach the bottom of the page.')
+            page_end()
+            assert_true(self, exists(page_bottom, 10), 'Page has been scrolled down')
 
         page_home()
 
-        expected_8 = exists(language_changed, 10)
-        assert_true(self, expected_8, 'Page has been scrolled up')
+        expected_12 = exists(language_changed, 10)
+        assert_true(self, expected_12, 'Page has been scrolled up')
