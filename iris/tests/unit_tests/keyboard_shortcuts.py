@@ -11,19 +11,19 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a unit test for keyboard events.'
-        self.reset_all_pos = None
-        # self.exclude = Platform.ALL
 
-    def reset_all_modifiers(self):
+    @staticmethod
+    def reset_all_modifiers(position):
         logger.debug('Reset all modifiers')
-        if self.reset_all_pos:
-            click(self.reset_all_pos)
+        ut_reset_all = 'ut-reset-all.png'
+
+        if position:
+            click(position)
         else:
-            click('ut-reset-all.png')
+            click(ut_reset_all)
 
     def run(self):
-        # @todo load this via assets
-        url = 'file:///' + get_module_dir() + '/iris/tests/unit_tests/assets/keyboard-events.html'
+        url = self.get_asset_path(__file__, 'keyboard-events.html')
 
         t_left = 'ut-top-left.png'
         b_right = 'ut-bottom-right.png'
@@ -39,20 +39,22 @@ class Test(BaseTest):
 
         navigate(url)
         wait(t_left)
-        page_region = generate_region_by_markers(t_left, b_right)
-        # time.sleep(2)
 
-        self.reset_all_pos = page_region.find(ut_reset_all).offset(25, 10)
+        page_region = generate_region_by_markers(t_left, b_right)
+
+        temp_pos = page_region.find(ut_reset_all)
+        width, height = get_asset_img_size(ut_reset_all)
+        reset_btn = Location(temp_pos.getX() + width / 2, temp_pos.getY() + height / 2)
 
         # Test modifiers
         type('y', KeyModifier.CTRL)
-        assert_true(self, page_region.exists(ut_ctrl, 0.99), 'Key trigger confirmed')
-        self.reset_all_modifiers()
+        assert_true(self, page_region.exists(ut_ctrl, 0.99), 'Ctrl key trigger confirmed')
+        self.reset_all_modifiers(reset_btn)
 
         type('y', KeyModifier.ALT)
-        assert_true(self, page_region.exists(ut_alt, 0.99), 'Key trigger confirmed')
-        self.reset_all_modifiers()
+        assert_true(self, page_region.exists(ut_alt, 0.99), 'Alt key trigger confirmed')
+        self.reset_all_modifiers(reset_btn)
 
         type('y', KeyModifier.SHIFT)
-        assert_true(self, page_region.exists(ut_shift, 0.99), 'Key trigger confirmed')
-        self.reset_all_modifiers()
+        assert_true(self, page_region.exists(ut_shift, 0.99), 'Shift key trigger confirmed')
+        self.reset_all_modifiers(reset_btn)

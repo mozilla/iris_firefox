@@ -61,6 +61,7 @@ def confirm_firefox_quit():
     except FindError:
         logger.error('Firefox still around - aborting test run.')
         exit(1)
+    address_crash_reporter()
 
 
 def get_firefox_region():
@@ -258,6 +259,33 @@ def close_customize_page():
         click(customize_done_button)
 
 
+def address_crash_reporter():
+    # TODO: Only works on Mac and Windows until we can get Linux images
+    reporter = 'crash_sorry.png'
+    if exists(reporter, 2):
+        logger.debug('Crash Reporter found!')
+        # Let crash stats know this is an Iris automation crash.
+        click(reporter)
+        # TODO: Add additional info in this message to crash stats
+        type('Iris automation test crash')
+        # Then dismiss the dialog by choosing to quit Firefox
+        click('quit_firefox_button.png')
+
+        # Ensure the reporter closes before moving on
+        try:
+            waitVanish(reporter, 20)
+            logger.debug('Crash report sent')
+        except FindError:
+            logger.error('Crash reporter did not close')
+            # Close the reporter if it hasn't gone away in time
+            close_auxiliary_window()
+        else:
+            return
+    else:
+        # If no crash reporter, silently move on to the next test case
+        return
+
+
 def open_about_firefox():
     if Settings.getOS() == Platform.MAC:
         # Key stroke into Firefox Menu to get to About Firefox.
@@ -449,8 +477,12 @@ class _IrisProfile(object):
         # Duplicate profile.
         dir_util.copy_tree(from_directory, to_directory)
 
-        # Remove unzipped directory first.
-        shutil.rmtree(from_directory)
+        # Remove old unzipped directory.
+        try:
+            shutil.rmtree(from_directory)
+        except WindowsError:
+            # This error can happen, but does not affect Iris.
+            logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
         # Remove Mac resource fork folders left over from ZIP, if present.
         resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')

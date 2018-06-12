@@ -17,11 +17,9 @@ class Test(BaseTest):
         navigate(url)
 
         # Open Customize from the Hamburger Menu
-
         click_hamburger_menu_option('Customize...')
-        time.sleep(1)
 
-        # Searching for text 'Drag'
-        expected_1 = exists('Drag', 10, in_region=Region(0, 0, screen_width/3, screen_height/4))
+        # Searching for 'zoom_controls_customize_page.png'
+        expected_1 = exists('zoom_controls_customize_page.png', 10)
         assert_true(self, expected_1, '\'Customize\' page present.')
         close_customize_page()
