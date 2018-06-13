@@ -125,9 +125,9 @@ class Test(BaseTest):
         try:
             bookmark_sidebar_assert = waitVanish('bookmark_sidebar.png', 10)
             assert_true(self, bookmark_sidebar_assert, 'Bookmark sidebar menu disappeared')
-        except Exception as error:
+        except FindError:
             logger.error('Bookmark sidebar menu still present')
-            raise error
+            raise FindError
 
         click(library)
 
@@ -153,9 +153,9 @@ class Test(BaseTest):
             delete_bookmark_toolbar_assert = waitVanish(dragged_bookmark, 10)
             assert_true(self, delete_bookmark_toolbar_assert,
                         'Amazon bookmark has been successfully deleted from the Bookmarks Toolbar.')
-        except Exception as error:
+        except FindError:
             logger.error('Amazon bookmark can not be deleted from the Bookmarks Toolbar.')
-            raise error
+            raise FindError
 
         # Test case 152 - Bookmarks can be removed from the Bookmarks Menu
 
@@ -171,6 +171,6 @@ class Test(BaseTest):
             delete_bookmark_menu_assert = right_upper_corner.waitVanish(menu_bookmark, 10)
             assert_true(self, delete_bookmark_menu_assert,
                         'Amazon bookmark has been successfully deleted from the Bookmarks Menu.')
-        except Exception as error:
+        except FindError:
             logger.error('Amazon bookmark can not be deleted from the Bookmarks Menu.')
-            raise error
+            raise FindError
