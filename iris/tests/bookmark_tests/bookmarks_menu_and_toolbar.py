@@ -29,11 +29,11 @@ class Test(BaseTest):
 
         navigate('www.amazon.com')
 
-        amazon_logo_assert = exists(amazon_home, 10)
-        assert_true(self, amazon_logo_assert, 'Amazon page has been successfully loaded')
+        amazon_banner_assert = exists(amazon_home, 10)
+        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded')
 
-        navbar_favicon_assert = exists('amazon_favicon.png', 15)
-        assert_true(self, navbar_favicon_assert, 'Page is fully loaded and favicon displayed')
+        nav_bar_favicon_assert = exists('amazon_favicon.png', 15)
+        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed')
 
         bookmark_page()
 
@@ -41,23 +41,23 @@ class Test(BaseTest):
         assert_true(self, page_bookmarked_assert, 'Page was bookmarked')
 
         navigate('about:blank')
+        time.sleep(2)
 
         # Test case 141 - The Bookmarks Toolbar can be enabled from the Bookmarks Menu
+        screen = get_screen()
+        right_upper_corner = Region(screen.getW() / 2, screen.getY(), screen.getW() / 2, screen.getH() / 2)
 
-        coord = find(library)
-        right_upper_corner = Region(coord.x - 500, 0, 500, 500)
-
-        click(library)
+        right_upper_corner.click(library)
 
         bookmark_assert = right_upper_corner.exists(bookmarks_menu, 10)
         assert_true(self, bookmark_assert, 'Bookmarks menu can be accessed')
 
-        click(bookmarks_menu)
+        right_upper_corner.click(bookmarks_menu)
 
         bookmark_tool_assert = right_upper_corner.exists(bookmarking_tools, 10)
         assert_true(self, bookmark_tool_assert, 'Bookmarking Tools menu can be accessed')
 
-        click(bookmarking_tools)
+        right_upper_corner.click(bookmarking_tools)
 
         bookmark_toolbar_assert = right_upper_corner.exists(view_bookmarks_toolbar, 10)
         assert_true(self, bookmark_toolbar_assert, 'Bookmarks Toolbar can be activated')
@@ -93,8 +93,8 @@ class Test(BaseTest):
 
         click(dragged_bookmark)
 
-        navbar_favicon_assert = exists('amazon_favicon.png', 15)
-        assert_true(self, navbar_favicon_assert, 'Page is fully loaded and favicon displayed')
+        nav_bar_favicon_assert = exists('amazon_favicon.png', 15)
+        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed')
 
         amazon_bookmark_toolbar = exists(amazon_home, 10)
         assert_true(self, amazon_bookmark_toolbar,
@@ -139,8 +139,9 @@ class Test(BaseTest):
 
         right_upper_corner.click(menu_bookmark)
 
-        amazon_logo_assert = exists(amazon_home, 10)
-        assert_true(self, amazon_logo_assert, 'Amazon bookmark has been successfully accessed from the Bookmarks Menu')
+        amazon_banner_assert = exists(amazon_home, 10)
+        assert_true(self, amazon_banner_assert,
+                    'Amazon bookmark has been successfully accessed from the Bookmarks Menu')
 
         navigate('about:blank')
 
