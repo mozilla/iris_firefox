@@ -638,7 +638,6 @@ class Key(object):
                 for line in cmd.stdout:
                     if processed_lock_key in line:
                         value = ' '.join(line.split())
-                        print value
                         if processed_lock_key in value[0:len(value) / 3]:
                             button = value[0:len(value) / 3]
                             if "off" in button:
