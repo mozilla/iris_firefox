@@ -27,10 +27,8 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
         coord = find(hamburger_menu)
-        x_reg = coord.getX() - 350
-        y_reg = coord.getY() - 30
 
-        region = Region(x_reg, y_reg, coord.getX() - x_reg, screen_height / 4)
+        region = create_region_for_url_bar(coord)
 
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
