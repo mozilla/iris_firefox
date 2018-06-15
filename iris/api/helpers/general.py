@@ -330,6 +330,12 @@ def create_region_from_image(image):
         logger.error('Image not present')
 
 
+def create_region_for_url_bar(coord):
+    x_reg = coord.getX() - 350
+    y_reg = coord.getY() - 30
+    return Region(x_reg, y_reg, coord.getX() - x_reg, screen_height / 4)
+
+
 def restore_window_from_taskbar():
     if Settings.getOS() == Platform.MAC:
         click('main_menu_window.png')
@@ -414,7 +420,6 @@ def remove_zoom_indicator_from_toolbar():
 
 
 class _IrisProfile(object):
-
     # Disk locations for both profile cache and staged profiles.
     PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
