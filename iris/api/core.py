@@ -5,6 +5,7 @@
 
 import copy
 import ctypes
+import inspect
 import logging
 import os
 import platform
@@ -17,10 +18,11 @@ import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
+
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
-import inspect
+from iris.api.helpers.iris_image import IrisImage
 
 try:
     import Image
@@ -101,14 +103,21 @@ def get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../..')
 
 
-CURRENT_PLATFORM = get_os()
+current_platform_pattern = os.path.join('images', get_os())
 PROJECT_BASE_PATH = get_module_dir()
 
-for root, dirs, files in os.walk(PROJECT_BASE_PATH):
-    for file_name in files:
-        if file_name.endswith('.png'):
-            if CURRENT_PLATFORM in root or 'common' in root:
-                _images[file_name] = os.path.join(root, file_name)
+
+def load_all_patterns():
+    for root, dirs, files in os.walk(PROJECT_BASE_PATH):
+        for file_name in files:
+            if file_name.endswith('.png'):
+                if current_platform_pattern in root or 'common' in root:
+                    if file_name in _images:
+                        new_file = os.path.join(root, file_name)
+                        logger.warning("Duplicated images found: %s %s" % (_images[file_name], new_file))
+                    else:
+                        _images[file_name] = IrisImage(file_name, root)
+
 
 """
 pyautogui.size() works correctly everywhere except Mac Retina
@@ -720,7 +729,7 @@ class Screen(object):
 class Pattern(object):
     def __init__(self, image_name):
         self.image_name = image_name
-        self.image_path = _images[self.image_name]
+        self.image_path = _images[self.image_name].path
         self.target_offset = None
 
     def targetOffset(self, dx, dy):
@@ -1521,7 +1530,7 @@ def _get_needle_path(string_or_pattern):
         return string_or_pattern.image_path
     elif isinstance(string_or_pattern, str):
         if string_or_pattern in _images:
-            return _images[string_or_pattern]
+            return _images[string_or_pattern].path
         else:
             raise ValueError('Unknown image name: %s' % string_or_pattern)
     else:
@@ -1598,7 +1607,7 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
         else:
             raise FindError('Pattern not found: %s ' % pattern)
 
-    return Region (p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
+    return Region(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
 
 
 """Sikuli wrappers
