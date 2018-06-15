@@ -48,7 +48,8 @@ class Test(BaseTest):
         zoom_out()
 
         expected = exists(search_bar_wikipedia_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100% zoom level.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
+                                    ' zoom level.')
 
         restart_firefox(self.app.fx_path, self.profile, url='en.wikipedia.org')
 
@@ -72,7 +73,8 @@ class Test(BaseTest):
             time.sleep(0.5)
 
         expected = exists(search_bar_wikipedia_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100% zoom level.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
+                                    ' zoom level.')
 
         for i in range(5):
             zoom_out()

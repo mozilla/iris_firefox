@@ -2063,12 +2063,8 @@ def scroll(clicks):
 
 
 class ZoomType:
-    if Settings.getOS() == Platform.WINDOWS:
-        up = 300
-        down = -300
-    else:
-        up = 1
-        down = -1
+    IN = 300 if Settings.isWindows() else 1
+    OUT = -300 if Settings.isWindows() else -1
 
 
 def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
