@@ -371,21 +371,29 @@ def maximize_window():
 
     This is NOT Full Screen mode.
     """
-    if Settings.getOS() == Platform.MAC:
+    if Settings.isMac():
         # There is no keyboard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
-        window_controls = 'window_controls.png'
-        # Only maximize Firefox if we have a screen bigger than 1280 x 800.
-        if not Platform.LOWRES:
-            # Set target to the maximize button
-            maximize_button = Pattern(window_controls).targetOffset(48, 7)
+        maximized_browser_image = 'maximized_browser.png'
+        maximized_browser_pattern = Pattern(maximized_browser_image)
+        maximized_browser_width, maximized_browser_height = get_asset_img_size(maximized_browser_pattern)
+        region = Region(0, 0, maximized_browser_width + 50, maximized_browser_height + 50)
+
+        try:
+            region.find(maximized_browser_image, 0.95)
+            logger.debug('Window is already maximized.')
+        except (FindError, ValueError):
+            logger.debug('Window is not maximized.')
+            window_controls_pattern = Pattern('window_controls.png')
+            width, height = get_asset_img_size(window_controls_pattern)
+            maximize_button = window_controls_pattern.targetOffset(width - 10, height / 2)
 
             # Alt key changes maximize button from full screen to maximize window.
             keyDown(Key.ALT)
             click(maximize_button)
             keyUp(Key.ALT)
 
-    elif Settings.getOS() == Platform.WINDOWS:
+    elif Settings.isWindows():
         type(text=Key.UP, modifier=KeyModifier.WIN)
     else:
         type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)
