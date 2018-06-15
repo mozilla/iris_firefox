@@ -607,3 +607,13 @@ def open_web_developer_menu():
     Open tWeb_developer tool.
     """
     type(text=Key.F2, modifier=KeyModifier.SHIFT)
+
+
+def open_browser_console():
+    """
+    Opens the Browser Console.
+    """
+    if get_os() == "osx":
+        type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+    else:
+        type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)

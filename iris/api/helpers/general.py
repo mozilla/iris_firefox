@@ -183,6 +183,10 @@ def change_preference(pref_name, value):
 def reset_mouse():
     hover(Location(0, 0))
 
+def move_mouse_center_screen():
+    screen=get_screen()
+    hover(Location(screen.getX() + screen.getW() / 2, screen.getY() + screen.getH() / 2))
+
 
 def login_site(site_name):
     username = get_credential(site_name, 'username')
@@ -225,8 +229,15 @@ def click_hamburger_menu_option(option):
             return region
 
 
-def close_auxiliary_window():
+def close_auxiliary_window(is_full_screen=None):
+    if is_full_screen:
+        reset_mouse()
+        auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
+    else:
+        auxiliary_window_control = Pattern('auxiliary_window_controls.png')
+
     try:
+        hover(auxiliary_window_control)
         wait('auxiliary_window_close_button.png', 10)
         logger.debug('Close auxiliary window button found')
     except FindError:
@@ -235,6 +246,33 @@ def close_auxiliary_window():
     else:
         click('auxiliary_window_close_button.png')
 
+def full_screen_auxiliary_window():
+    try:
+        hover('auxiliary_window_controls.png')
+        wait('auxiliary_window_maximize.png', 10)
+        logger.debug('Maximize auxiliary window button found')
+    except FindError:
+        logger.error('Can\'t find the maximize auxiliary window button in the page, aborting.')
+        return
+    else:
+        click('auxiliary_window_maximize.png')
+
+def minimize_auxiliary_window(is_full_screen=None):
+    if is_full_screen:
+        reset_mouse()
+        auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
+        auxiliary_window_minimize=Pattern('minimize_full_screen_auxiliary_window.png')
+    else:
+        auxiliary_window_control=Pattern('auxiliary_window_controls.png')
+        auxiliary_window_minimize=Pattern('auxiliary_window_minimize.png')
+    try:
+        hover(auxiliary_window_control)
+        wait(auxiliary_window_minimize, 5)
+    except FindError:
+        logger.error('Can\'t find the minimize auxiliary window button in the page, aborting.')
+        return
+    else:
+        click(auxiliary_window_minimize)
 
 def click_cancel_button():
     try:
