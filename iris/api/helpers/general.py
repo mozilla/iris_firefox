@@ -183,10 +183,6 @@ def change_preference(pref_name, value):
 def reset_mouse():
     hover(Location(0, 0))
 
-def move_mouse_center_screen():
-    screen=get_screen()
-    hover(Location(screen.getX() + screen.getW() / 2, screen.getY() + screen.getH() / 2))
-
 
 def login_site(site_name):
     username = get_credential(site_name, 'username')
@@ -230,15 +226,15 @@ def click_hamburger_menu_option(option):
 
 
 def close_auxiliary_window(is_full_screen=None):
-    if Settings.getOS()==Platform.MAC:
+    if Settings.getOS() == Platform.MAC:
         if is_full_screen:
             reset_mouse()
-            auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
+            auxiliary_window_control = Pattern('auxiliary_window_controls_full_screen.png')
         else:
             auxiliary_window_control = Pattern('auxiliary_window_controls.png')
         hover(auxiliary_window_control)
 
-    else:
+    elif Settings.getOS() == Platform.LINUX:
         if is_full_screen:
             reset_mouse();
     try:
@@ -249,6 +245,7 @@ def close_auxiliary_window(is_full_screen=None):
         return
     else:
         click('auxiliary_window_close_button.png')
+
 
 def full_screen_auxiliary_window():
     try:
@@ -261,20 +258,23 @@ def full_screen_auxiliary_window():
     else:
         click('auxiliary_window_maximize.png')
 
+
 def minimize_auxiliary_window(is_full_screen=None):
     if Settings.getOS() == Platform.MAC:
         if is_full_screen:
             reset_mouse()
-            auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
-            auxiliary_window_minimize=Pattern('minimize_full_screen_auxiliary_window.png')
+            auxiliary_window_control = Pattern('auxiliary_window_controls_full_screen.png')
+            auxiliary_window_minimize = Pattern('minimize_full_screen_auxiliary_window.png')
         else:
-            auxiliary_window_control=Pattern('auxiliary_window_controls.png')
-            auxiliary_window_minimize=Pattern('auxiliary_window_minimize.png')
+            auxiliary_window_control = Pattern('auxiliary_window_controls.png')
+            auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
         hover(auxiliary_window_control)
-    else:
+    elif Settings.getOS() == Platform.LINUX:
         if is_full_screen:
             reset_mouse()
-            auxiliary_window_minimize=Pattern('auxiliary_window_minimize.png')
+            auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
+    elif Settings.getOS() == Platform.WINDOWS:
+        auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
 
     try:
         wait(auxiliary_window_minimize, 5)
@@ -283,6 +283,7 @@ def minimize_auxiliary_window(is_full_screen=None):
         return
     else:
         click(auxiliary_window_minimize)
+
 
 def click_cancel_button():
     try:
