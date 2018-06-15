@@ -36,7 +36,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         # zoom in ONE time.
-        zoom_with_mouse_wheel(1, ZoomType.up)
+        zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
@@ -47,8 +47,8 @@ class Test(BaseTest):
         time.sleep(1)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
-        assert_true(self, expected,
-                    'Zoom level still displays 110% in the new tab opened for the site for which the zoom level was set.')
+        assert_true(self, expected, 'Zoom level still displays 110% in the new tab opened for the site for which the '
+                                    'zoom level was set.')
 
         new_tab()
 
@@ -61,13 +61,13 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level not displayed in the url bar.')
 
         # zoom in 20 times to reach the maximum zoom level.
-        zoom_with_mouse_wheel(20, ZoomType.up)
+        zoom_with_mouse_wheel(20, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
-        zoom_with_mouse_wheel(1, ZoomType.down)
-        zoom_with_mouse_wheel(1, ZoomType.up)
+        zoom_with_mouse_wheel(1, ZoomType.OUT)
+        zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')

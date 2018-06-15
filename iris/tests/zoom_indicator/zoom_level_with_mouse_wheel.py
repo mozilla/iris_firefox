@@ -24,31 +24,31 @@ class Test(BaseTest):
         time.sleep(2)
 
         # zoom in ONE time.
-        zoom_with_mouse_wheel(1, ZoomType.up)
+        zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
         # zoom out ONE time.
-        zoom_with_mouse_wheel(1, ZoomType.down)
+        zoom_with_mouse_wheel(1, ZoomType.OUT)
 
         expected = exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom controls not found in the url bar after browser restore its zoom level.')
 
         # zoom out ONE time.
-        zoom_with_mouse_wheel(1, ZoomType.down)
+        zoom_with_mouse_wheel(1, ZoomType.OUT)
 
         expected = exists(search_bar_wikipedia_90_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully decreased to 90%.')
 
         # zoom in ONE time.
-        zoom_with_mouse_wheel(1, ZoomType.up)
+        zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom controls not found in the url bar after browser restore its zoom level.')
 
         # zoom in until the maximum zoom level(300%) is reached.
-        zoom_with_mouse_wheel(20, ZoomType.up)
+        zoom_with_mouse_wheel(20, ZoomType.IN)
 
         if Settings.getOS() == Platform.WINDOWS:
             expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.99)
@@ -58,7 +58,7 @@ class Test(BaseTest):
             assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
         # zoom in ONE more time.
-        zoom_with_mouse_wheel(1, ZoomType.up)
+        zoom_with_mouse_wheel(1, ZoomType.IN)
 
         if Settings.getOS() == Platform.WINDOWS:
             expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.99)
@@ -74,13 +74,13 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom controls not found in the url bar after browser restore its zoom level.')
 
         # zoom out until de minimum zoom level(30%) is reached.
-        zoom_with_mouse_wheel(7, ZoomType.down)
+        zoom_with_mouse_wheel(7, ZoomType.OUT)
 
         expected = exists(search_bar_wikipedia_30_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, minimum zoom level(30%) reached.')
 
         # zoom out ONE more time.
-        zoom_with_mouse_wheel(1, ZoomType.down)
+        zoom_with_mouse_wheel(1, ZoomType.OUT)
 
         if Settings.getOS() == Platform.WINDOWS:
             expected = exists(search_bar_wikipedia_30_zoom_level, 10, 0.99)
