@@ -230,14 +230,18 @@ def click_hamburger_menu_option(option):
 
 
 def close_auxiliary_window(is_full_screen=None):
-    if is_full_screen:
-        reset_mouse()
-        auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
-    else:
-        auxiliary_window_control = Pattern('auxiliary_window_controls.png')
-
-    try:
+    if Settings.getOS()==Platform.MAC:
+        if is_full_screen:
+            reset_mouse()
+            auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
+        else:
+            auxiliary_window_control = Pattern('auxiliary_window_controls.png')
         hover(auxiliary_window_control)
+
+    else:
+        if is_full_screen:
+            reset_mouse();
+    try:
         wait('auxiliary_window_close_button.png', 10)
         logger.debug('Close auxiliary window button found')
     except FindError:
@@ -258,15 +262,21 @@ def full_screen_auxiliary_window():
         click('auxiliary_window_maximize.png')
 
 def minimize_auxiliary_window(is_full_screen=None):
-    if is_full_screen:
-        reset_mouse()
-        auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
-        auxiliary_window_minimize=Pattern('minimize_full_screen_auxiliary_window.png')
-    else:
-        auxiliary_window_control=Pattern('auxiliary_window_controls.png')
-        auxiliary_window_minimize=Pattern('auxiliary_window_minimize.png')
-    try:
+    if Settings.getOS() == Platform.MAC:
+        if is_full_screen:
+            reset_mouse()
+            auxiliary_window_control=Pattern('auxiliary_window_controls_full_screen.png')
+            auxiliary_window_minimize=Pattern('minimize_full_screen_auxiliary_window.png')
+        else:
+            auxiliary_window_control=Pattern('auxiliary_window_controls.png')
+            auxiliary_window_minimize=Pattern('auxiliary_window_minimize.png')
         hover(auxiliary_window_control)
+    else:
+        if is_full_screen:
+            reset_mouse()
+            auxiliary_window_minimize=Pattern('auxiliary_window_minimize.png')
+
+    try:
         wait(auxiliary_window_minimize, 5)
     except FindError:
         logger.error('Can\'t find the minimize auxiliary window button in the page, aborting.')
