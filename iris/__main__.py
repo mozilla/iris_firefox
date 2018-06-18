@@ -42,12 +42,12 @@ class Iris(object):
     def __init__(self):
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
+        load_all_patterns()
         self.check_keyboard_state()
         self.init_tesseract_path()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = Settings.getOS()
-        self.load_all_patterns()
         self.main()
         test_runner.run(self)
 
@@ -266,10 +266,6 @@ class Iris(object):
         if path_not_found:
             logger.error('Unable to find tesseract')
             exit(1)
-
-    @staticmethod
-    def load_all_patterns():
-        return load_all_patterns()
 
 
 class RemoveTempDir(cleanup.CleanUp):
