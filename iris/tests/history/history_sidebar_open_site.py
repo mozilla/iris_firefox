@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test that opens a page from the History sidebar.'
 
     def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a brand new profile.
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         self.profile = Profile.BRAND_NEW
         launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
@@ -43,7 +43,7 @@ class Test(BaseTest):
         expected_3 = exists(search_history_box, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
         expected_4 = exists(expand_button_history_sidebar, 10)
-        assert_true(self, expected_4, 'Expand history button displayed properly')
+        assert_true(self, expected_4, 'Expand history button displayed properly.')
         click(expand_button_history_sidebar)
 
         # Open a page from the history sidebar
