@@ -18,7 +18,7 @@ def _parse_name(full_name):
             return image_name, scale_factor
 
         except ValueError:
-            logger.warning('Invalid file name format:%s' % full_name)
+            logger.warning('Invalid file name format: %s' % full_name)
             return full_name, 1
 
 
