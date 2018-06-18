@@ -5,6 +5,13 @@ logger = logging.getLogger(__name__)
 
 
 def _parse_name(full_name):
+    """ Detects scale factor in image name
+
+    :param str full_name: Image full name. Valid format name@[scale_factor]x.png.
+    Examples: google_search@2x.png, amazon_logo@2.5x.png
+
+    :return: Pair of image name and scale factor.
+    """
     start_symbol = '@'
     end_symbol = 'x.'
     if start_symbol not in full_name:
@@ -18,7 +25,7 @@ def _parse_name(full_name):
             return image_name, scale_factor
 
         except ValueError:
-            logger.warning('Invalid file name format: %s' % full_name)
+            logger.warning('Invalid file name format: "%s".' % full_name)
             return full_name, 1
 
 

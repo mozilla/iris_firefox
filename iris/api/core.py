@@ -108,6 +108,7 @@ PROJECT_BASE_PATH = get_module_dir()
 
 
 def load_all_patterns():
+    duplicate_images = ''
     for root, dirs, files in os.walk(PROJECT_BASE_PATH):
         for file_name in files:
             if file_name.endswith('.png'):
@@ -115,9 +116,11 @@ def load_all_patterns():
                     new_image = IrisImage(file_name, root)
                     if new_image.name in _images:
                         new_file = os.path.join(root, file_name)
-                        logger.warning("Duplicated images found: %s %s" % (_images[new_image.name].path, new_file))
+                        duplicate_images += '\n"%s" - "%s"' % (_images[new_image.name].path, new_file)
                     else:
                         _images[new_image.name] = new_image
+    if len(duplicate_images) > 0:
+        logger.warning('Found multiple images with the same name:\n%s' % str(duplicate_images))
 
 
 """
