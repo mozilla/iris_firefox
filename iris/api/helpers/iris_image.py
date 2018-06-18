@@ -1,4 +1,7 @@
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def _parse_name(full_name):
@@ -7,12 +10,16 @@ def _parse_name(full_name):
     if start_symbol not in full_name:
         return full_name, 1
     else:
-        start_index = full_name.index(start_symbol)
-        end_index = full_name.index(end_symbol, start_index)
-        scale_factor = float(full_name[start_index + 1:end_index])
+        try:
+            start_index = full_name.index(start_symbol)
+            end_index = full_name.index(end_symbol, start_index)
+            scale_factor = float(full_name[start_index + 1:end_index])
+            image_name = full_name[0:start_index] + full_name[end_index + 1:len(full_name)]
+            return image_name, scale_factor
 
-        image_name = full_name[0:start_index] + full_name[end_index + 1:len(full_name)]
-        return image_name, scale_factor
+        except ValueError:
+            logger.warning('Invalid file name format:%s' % full_name)
+            return full_name, 1
 
 
 class IrisImage:
