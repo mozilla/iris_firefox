@@ -112,11 +112,11 @@ def load_all_patterns():
         for file_name in files:
             if file_name.endswith('.png'):
                 if current_platform_pattern in root or 'common' in root:
-                    if file_name in _images:
+                    new_image = IrisImage(file_name, root)
+                    if new_image.name in _images:
                         new_file = os.path.join(root, file_name)
-                        logger.warning("Duplicated images found: %s %s" % (_images[file_name], new_file))
+                        logger.warning("Duplicated images found: %s %s" % (_images[new_image.name].path, new_file))
                     else:
-                        new_image = IrisImage(file_name, root)
                         _images[new_image.name] = new_image
 
 
