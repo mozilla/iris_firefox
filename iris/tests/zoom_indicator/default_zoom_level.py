@@ -24,18 +24,12 @@ class Test(BaseTest):
         expected = exists(hamburger_menu, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
-        coord = find(hamburger_menu)
-
-        region = create_region_for_url_bar(coord)
+        region = create_region_for_url_bar()
 
         expected = region.exists(search_bar, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
-        click(hamburger_menu)
-
-        time.sleep(1)
-
-        new_region = Region(region.x, region.y, coord.getX() - region.x + 50, screen_height / 2)
+        new_region = create_region_for_hamburger_menu()
 
         expected = new_region.exists(hamburger_menu_zoom_indicator, 10)
         assert_true(self, expected, 'Zoom level is 100% by default.')

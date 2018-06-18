@@ -1590,19 +1590,20 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
                   bottom_right_pos.y - top_left_pos.y + marker_height)
 
 
-def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
+def create_region_from_patterns(top=None, bottom=None, left=None, right=None, padding_top=None, padding_bottom=None,
+                                padding_left=None, padding_right=None):
     """
     Returns a region created from combined area of one or more patterns.
     Argument names are just for convenience and don't influence outcome.
     """
     patterns = []
-    if top != None:
+    if top:
         patterns.append(top)
-    if bottom != None:
+    if bottom:
         patterns.append(bottom)
-    if left != None:
+    if left:
         patterns.append(left)
-    if right != None:
+    if right:
         patterns.append(right)
 
     if len(patterns) == 0:
@@ -1631,7 +1632,26 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None):
         else:
             raise FindError('Pattern not found: %s ' % pattern)
 
-    return Region(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
+    found_region = Region(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y)
+
+    if padding_top or padding_bottom or padding_left or padding_right:
+        logger.debug('Adding padding to region.')
+
+    if padding_top:
+        found_region.y -= padding_top
+        found_region.h += padding_top
+
+    if padding_bottom:
+        found_region.h += padding_bottom
+
+    if padding_left:
+        found_region.x -= padding_left
+        found_region.w += padding_left
+
+    if padding_right:
+        found_region.w += padding_right
+
+    return found_region
 
 
 """Sikuli wrappers

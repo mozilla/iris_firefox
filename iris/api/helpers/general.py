@@ -330,10 +330,32 @@ def create_region_from_image(image):
         logger.error('Image not present')
 
 
-def create_region_for_url_bar(coord):
-    x_reg = coord.getX() - 350
-    y_reg = coord.getY() - 30
-    return Region(x_reg, y_reg, coord.getX() - x_reg, screen_height / 4)
+def create_region_for_url_bar():
+    hamburger_menu = 'hamburger_menu.png'
+    home_button = 'home.png'
+    region = create_region_from_patterns(home_button, hamburger_menu, padding_top=10, padding_bottom=15)
+    return region
+
+
+def create_region_for_hamburger_menu():
+    hamburger_menu = 'hamburger_menu.png'
+    exit_menu = 'exit.png'
+    help_menu = 'help.png'
+    quit_menu = 'quit.png'
+    try:
+        wait(hamburger_menu, 10)
+        click(hamburger_menu)
+        time.sleep(1)
+        if Settings.getOS() == Platform.LINUX:
+            region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
+        elif  Settings.getOS() == Platform.MAC:
+            region = create_region_from_patterns(None, hamburger_menu, help_menu, None)
+        else:
+            region = create_region_from_patterns(None, hamburger_menu, exit_menu, None)
+    except (FindError, ValueError):
+        logger.error('Can\'t find the hamburger menu in the page, aborting test.')
+        return
+    return region
 
 
 def restore_window_from_taskbar():
