@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test of the History sidebar.'
 
     def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a brand new profile.
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         self.profile = Profile.BRAND_NEW
         launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
@@ -51,7 +51,7 @@ class Test(BaseTest):
 
         # Clear the History search box.
         expected_5 = exists(x_button_search_history_box, 10)
-        assert_true(self, expected_5, 'Clear field button was displayed properly')
+        assert_true(self, expected_5, 'Clear field button was displayed properly.')
         click(x_button_search_history_box)
         time.sleep(0.5)
         expected_6 = exists(history_sidebar_items, 10)
