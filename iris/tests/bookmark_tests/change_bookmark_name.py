@@ -81,6 +81,8 @@ class Test(BaseTest):
         bookmark_name_sidebar = exists(modified_bookmark_2, 10)
         assert_true(self, bookmark_name_sidebar, 'The name of the bookmark is successfully modified.')
 
+        # Change the bookmark name from the Bookmarks Toolbar
+
         access_bookmarking_tools(view_bookmarks_toolbar)
 
         try:
