@@ -10,7 +10,8 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test for the \'Open All in Tabs\' option from the History sidebar.'
+        self.meta = 'This is a test that opens a page from the History sidebar using the \'Open\' button from the' \
+                    ' context menu.'
 
     def setup(self):
         """Test case setup
@@ -24,7 +25,7 @@ class Test(BaseTest):
     def run(self):
         wikipedia_logo = 'wikipedia.png'
         google_search = 'google_search.png'
-        firefox_privacy_logo = 'firefox_privacy_logo.png'
+        history_sidebar_wikipedia = 'history_sidebar_wikipedia.png'
         search_history_box = 'search_history_box.png'
         expand_button_history_sidebar = 'expand_button_history_sidebar.png'
 
@@ -44,18 +45,13 @@ class Test(BaseTest):
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
         expected_4 = exists(expand_button_history_sidebar, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
+        click(expand_button_history_sidebar)
 
-        # 'Open All in Tabs' from the context menu.
-        rightClick(expand_button_history_sidebar)
+        # Open a page from the History sidebar using the 'Open' button from the context menu.
+        expected_5 = exists(history_sidebar_wikipedia, 10)
+        assert_true(self, expected_5, 'Wikipedia displayed in the History list successfully.')
+        rightClick(history_sidebar_wikipedia)
         time.sleep(0.5)
         type(text='o')
-
-        # Check that all the pages loaded successfully.
-        expected_5 = exists(firefox_privacy_logo, 10)
-        assert_true(self, expected_5, 'Firefox Privacy Notice loaded successfully.')
-        next_tab()
-        expected_6 = exists(google_search, 10)
-        assert_true(self, expected_6, 'Google loaded successfully.')
-        next_tab()
-        expected_7 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_7, 'Wikipedia loaded successfully.')
+        expected_6 = exists(wikipedia_logo, 10)
+        assert_true(self, expected_6, 'Wikipedia loaded successfully.')

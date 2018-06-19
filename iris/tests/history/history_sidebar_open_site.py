@@ -31,12 +31,12 @@ class Test(BaseTest):
         # Open some pages to create some history.
         navigate('https://www.wikipedia.org/')
         expected_1 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_1, 'Page loaded successfully.')
+        assert_true(self, expected_1, 'Wikipedia loaded successfully.')
 
         new_tab()
         navigate('https://www.google.com/?hl=EN')
         expected_2 = exists(google_search, 10)
-        assert_true(self, expected_2, 'Page loaded successfully.')
+        assert_true(self, expected_2, 'Google loaded successfully.')
 
         # Open the History sidebar.
         history_sidebar()
@@ -46,9 +46,9 @@ class Test(BaseTest):
         assert_true(self, expected_4, 'Expand history button displayed properly.')
         click(expand_button_history_sidebar)
 
-        # Open a page from the history sidebar
+        # Open a page from the History sidebar.
         expected_5 = exists(history_sidebar_wikipedia, 10)
-        assert_true(self, expected_5, 'Page displayed in the History list successfully.')
+        assert_true(self, expected_5, 'Wikipedia displayed in the History list successfully.')
         click(history_sidebar_wikipedia)
         expected_6 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_6, 'Page loaded successfully.')
+        assert_true(self, expected_6, 'Wikipedia loaded successfully.')
