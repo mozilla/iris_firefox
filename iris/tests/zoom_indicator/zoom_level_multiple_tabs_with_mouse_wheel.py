@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks the zoom level on multiple tabs for multiple sites and also that' \
-                    ' decrease/increase of zoom level around the maximum level works correctly.'
+                    'decrease/increase of zoom level around the maximum level works correctly.'
 
     def run(self):
         url_1 = 'en.wikipedia.org'
@@ -31,7 +31,8 @@ class Test(BaseTest):
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
-        zoom_in()
+        # zoom in ONE time.
+        zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
@@ -55,15 +56,14 @@ class Test(BaseTest):
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed in the url bar.')
 
-        for i in range(8):
-            zoom_in()
-            time.sleep(0.5)
+        # zoom in 20 times to reach the maximum zoom level.
+        zoom_with_mouse_wheel(20, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
-        zoom_out()
-        zoom_in()
+        zoom_with_mouse_wheel(1, ZoomType.OUT)
+        zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')

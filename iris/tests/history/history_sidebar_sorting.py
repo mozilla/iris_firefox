@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test of the History sidebar.'
 
     def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a brand new profile.
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         self.profile = Profile.BRAND_NEW
         launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
@@ -42,27 +42,27 @@ class Test(BaseTest):
         # Open some pages to create some history.
         navigate('https://www.youtube.com/')
         expected_1 = exists(youtube_logo, 10)
-        assert_true(self, expected_1, 'Page loaded successfully.')
+        assert_true(self, expected_1, 'Youtube loaded successfully.')
 
         new_tab()
         navigate('https://www.youtube.com/')
         expected_2 = exists(youtube_logo, 10)
-        assert_true(self, expected_2, 'Page loaded successfully.')
+        assert_true(self, expected_2, 'Youtube loaded successfully in new tab.')
 
         new_tab()
         navigate('https://www.google.com/?hl=EN')
         expected_3 = exists(google_search, 10)
-        assert_true(self, expected_3, 'Page loaded successfully.')
+        assert_true(self, expected_3, 'Google loaded successfully in new tab.')
 
         new_tab()
         navigate('https://www.amazon.com/')
         expected_4 = exists(amazon_logo, 10)
-        assert_true(self, expected_4, 'Page loaded successfully.')
+        assert_true(self, expected_4, 'Amazon loaded successfully in new tab.')
 
         new_tab()
         navigate('https://www.wikipedia.org/')
         expected_5 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_5, 'Page loaded successfully.')
+        assert_true(self, expected_5, 'Wikipedia loaded successfully in new tab.')
 
         # Open the History sidebar.
         history_sidebar()

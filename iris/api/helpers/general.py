@@ -330,6 +330,34 @@ def create_region_from_image(image):
         logger.error('Image not present')
 
 
+def create_region_for_url_bar():
+    hamburger_menu = 'hamburger_menu.png'
+    home_button = 'home.png'
+    region = create_region_from_patterns(home_button, hamburger_menu, padding_top=10, padding_bottom=15)
+    return region
+
+
+def create_region_for_hamburger_menu():
+    hamburger_menu = 'hamburger_menu.png'
+    exit_menu = 'exit.png'
+    help_menu = 'help.png'
+    quit_menu = 'quit.png'
+    try:
+        wait(hamburger_menu, 10)
+        click(hamburger_menu)
+        time.sleep(1)
+        if Settings.getOS() == Platform.LINUX:
+            region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
+        elif  Settings.getOS() == Platform.MAC:
+            region = create_region_from_patterns(None, hamburger_menu, help_menu, None)
+        else:
+            region = create_region_from_patterns(None, hamburger_menu, exit_menu, None)
+    except (FindError, ValueError):
+        logger.error('Can\'t find the hamburger menu in the page, aborting test.')
+        return
+    return region
+
+
 def restore_window_from_taskbar():
     if Settings.getOS() == Platform.MAC:
         click('main_menu_window.png')
@@ -414,7 +442,6 @@ def remove_zoom_indicator_from_toolbar():
 
 
 class _IrisProfile(object):
-
     # Disk locations for both profile cache and staged profiles.
     PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
