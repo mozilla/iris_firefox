@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test for the \'Open All in Tabs\' option from the History sidebar.'
 
     def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a brand new profile.
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         self.profile = Profile.BRAND_NEW
         launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
@@ -31,19 +31,19 @@ class Test(BaseTest):
         # Open some pages to create some history.
         navigate('https://www.wikipedia.org/')
         expected_1 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_1, 'Page loaded successfully.')
+        assert_true(self, expected_1, 'Wikipedia loaded successfully.')
 
         new_tab()
         navigate('https://www.google.com/?hl=EN')
         expected_2 = exists(google_search, 10)
-        assert_true(self, expected_2, 'Page loaded successfully.')
+        assert_true(self, expected_2, 'Google loaded successfully.')
 
         # Open the History sidebar.
         history_sidebar()
         expected_3 = exists(search_history_box, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
         expected_4 = exists(expand_button_history_sidebar, 10)
-        assert_true(self, expected_4, 'Expand history button displayed properly')
+        assert_true(self, expected_4, 'Expand history button displayed properly.')
 
         # 'Open All in Tabs' from the context menu
         rightClick(expand_button_history_sidebar)
@@ -52,10 +52,10 @@ class Test(BaseTest):
 
         # Check that all the pages loaded successfully
         expected_5 = exists(firefox_privacy_logo, 10)
-        assert_true(self, expected_5, 'Page loaded successfully.')
+        assert_true(self, expected_5, 'Firefox Privacy Notice loaded successfully.')
         next_tab()
         expected_6 = exists(google_search, 10)
-        assert_true(self, expected_6, 'Page loaded successfully.')
+        assert_true(self, expected_6, 'Google loaded successfully.')
         next_tab()
         expected_7 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_7, 'Page loaded successfully.')
+        assert_true(self, expected_7, 'Wikipedia loaded successfully.')
