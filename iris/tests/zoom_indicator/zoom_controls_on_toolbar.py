@@ -49,28 +49,28 @@ class Test(BaseTest):
         dragDrop(zoom_controls_customize_page, toolbar)
         time.sleep(1)
 
-        expected = exists(default_zoom_level_toolbar_customize_page, 10, in_region=Region(0, 0, screen_width, 300))
+        expected = exists(default_zoom_level_toolbar_customize_page, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls successfully dragged and dropped in the toolbar.')
 
         close_customize_page()
         time.sleep(1)
 
-        expected = exists(default_zoom_level_toolbar, 10, in_region=Region(0, 0, screen_width, 300))
+        expected = exists(default_zoom_level_toolbar, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls still displayed in the toolbar after the Customize page is closed.')
 
         click(zoom_control_toolbar_decrease)
 
-        expected = exists(zoom_control_90, 10, in_region=Region(0, 0, screen_width, 300))
+        expected = exists(zoom_control_90, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls are correctly displayed in the toolbar after decrease.')
 
         click(zoom_control_toolbar_increase)
 
-        expected = exists(default_zoom_level_toolbar, 10, in_region=Region(0, 0, screen_width, 300))
+        expected = exists(default_zoom_level_toolbar, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls are correctly displayed in the toolbar after increase.')
 
         click(zoom_control_toolbar_increase)
 
-        expected = exists(zoom_control_110, 10, in_region=Region(0, 0, screen_width, 300))
+        expected = exists(zoom_control_110, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls are correctly displayed in the toolbar after the second increase.')
 
         expected = exists(search_bar, 10)
@@ -80,7 +80,7 @@ class Test(BaseTest):
         # Decrease the zoom level to 100% so that it won't be displayed in the url bar after deactivation.
         click(zoom_control_toolbar_decrease)
 
-        expected = exists(default_zoom_level_toolbar, 10, in_region=Region(0, 0, screen_width, 300))
+        expected = exists(default_zoom_level_toolbar, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected,
                     'Zoom controls are correctly displayed in the toolbar after several zoom level increase/decrease.')
 
