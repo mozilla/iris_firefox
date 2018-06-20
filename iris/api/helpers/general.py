@@ -441,6 +441,18 @@ def remove_zoom_indicator_from_toolbar():
         exit(1)
 
 
+def bookmark_options(option):
+
+    try:
+        wait(option, 10)
+        logger.debug('Option %s is present on the page' % option)
+    except FindError:
+        logger.error('Can\'t find option %s, aborting' % option)
+        return
+    else:
+        click(option)
+
+
 class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
     PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
