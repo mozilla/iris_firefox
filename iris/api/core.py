@@ -23,6 +23,8 @@ from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
 from iris.api.helpers.iris_image import IrisImage
+from iris.local_web import LocalWeb
+
 
 try:
     import Image
@@ -1652,6 +1654,15 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
         found_region.w += padding_right
 
     return found_region
+
+
+
+
+# WIP
+class IrisWeb(object):
+    MOZ_TEST_SITE = 'http://127.0.0.1:%s/mozilla/' % args.port
+    FIREFOX_TEST_SITE = 'http://127.0.0.1:%s/firefox/' % args.port
+
 
 
 """Sikuli wrappers

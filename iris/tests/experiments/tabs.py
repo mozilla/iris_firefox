@@ -26,7 +26,8 @@ class Test(BaseTest):
         new_tab()
 
         # helper function
-        navigate('https://www.google.com/?hl=EN')
+        #navigate('https://www.google.com/?hl=EN')
+        navigate(IrisWeb.FIREFOX_TEST_SITE)
 
         # core api function
         expected = exists('google_search.png', 10)

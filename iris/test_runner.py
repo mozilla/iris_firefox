@@ -101,6 +101,7 @@ def run(app):
 
     # We may remove profiles here, but likely still in use and can't do it yet
     # clean_profiles()
+    app.stop_local_web_server()
 
 
 def load_tests(app):

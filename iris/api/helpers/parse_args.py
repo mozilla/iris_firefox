@@ -64,4 +64,9 @@ def parse_args():
     parser.add_argument('-o', '--override',
                         help='Override disabled tests',
                         action='store_true')
+    parser.add_argument('-p', '--port',
+                        help='Port to use for local web server',
+                        type=int,
+                        action='store',
+                        default=2000)
     return parser.parse_args()

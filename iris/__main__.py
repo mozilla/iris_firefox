@@ -2,13 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+import coloredlogs
 import glob
 import shutil
 import sys
 import tempfile
+from multiprocessing import Process
 
-import coloredlogs
 
 import firefox.app as fa
 import firefox.downloader as fd
@@ -48,6 +48,7 @@ class Iris(object):
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = Settings.getOS()
+        self.start_local_web_server()
         self.main()
         test_runner.run(self)
 
@@ -86,6 +87,13 @@ class Iris(object):
         self.build_id = self.fx_app.build_id
 
         return 0
+
+    def start_local_web_server(self):
+        self.web_server_process = Process(target=LocalWeb, args=(self.args.port,))
+        self.web_server_process.start()
+
+    def stop_local_web_server(self):
+        self.web_server_process.terminate()
 
     @staticmethod
     def check_keyboard_state():
