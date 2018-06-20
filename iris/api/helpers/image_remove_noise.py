@@ -58,4 +58,5 @@ def remove_noise_and_smooth(file_name):
     closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
     img = image_smoothing(img)
     or_image = cv2.bitwise_or(img, closing)
-    return or_image
+    median_blur = cv2.medianBlur(or_image, 3)
+    return median_blur
