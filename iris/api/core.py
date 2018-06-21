@@ -1122,7 +1122,7 @@ def _save_ocr_debug_image(on_region, matches):
 
 def get_uhd_details():
     uhd_factor = SCREENSHOT_WIDTH / SCREEN_WIDTH
-    is_uhd = True if uhd_factor > 0 else False
+    is_uhd = True if uhd_factor > 1 else False
     return is_uhd, uhd_factor
 
 
