@@ -445,12 +445,11 @@ def bookmark_options(option):
 
     try:
         wait(option, 10)
-        logger.debug('Option %s is present on the page' % option)
-    except FindError:
-        logger.error('Can\'t find option %s, aborting' % option)
-        return
-    else:
+        logger.debug('Option %s is present on the page.' % option)
         click(option)
+    except FindError:
+        logger.error('Can\'t find option %s, aborting.' % option)
+        return
 
 
 class _IrisProfile(object):
