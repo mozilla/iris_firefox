@@ -445,6 +445,16 @@ def remove_zoom_indicator_from_toolbar():
         exit(1)
 
 
+def bookmark_options(option):
+
+    try:
+        wait(option, 10)
+        logger.debug('Option %s is present on the page.' % option)
+        click(option)
+    except FindError:
+        logger.error('Can\'t find option %s, aborting.' % option)
+
+
 def access_bookmarking_tools(option):
     bookmarking_tools = 'bookmarking_tools.png'
     open_library_menu('bookmarks_menu.png')
