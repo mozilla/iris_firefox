@@ -22,7 +22,6 @@ class Test(BaseTest):
         zoom_control_toolbar_increase = 'zoom_control_toolbar_increase.png'
         zoom_control_110_hamburger_menu = 'zoom_control_110_hamburger_menu.png'
         search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110_zoom_level.png'
-        reset_zoom_level = 'reset_zoom_level.png'
 
         # Check that zoom level is not displayed in the url bar for the default page that opens when the browser starts.
         navigate(url1)
