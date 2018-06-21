@@ -446,26 +446,24 @@ def remove_zoom_indicator_from_toolbar():
 
 
 def access_bookmarking_tools(option):
-
     bookmarking_tools = 'bookmarking_tools.png'
-
     open_library_menu('bookmarks_menu.png')
 
     try:
         wait(bookmarking_tools, 10)
         logger.debug('Bookmarking Tools option has been found.')
+        click(bookmarking_tools)
     except FindError:
         logger.error('Can\'t find the Bookmarking Tools option, aborting.')
-    else:
-        click(bookmarking_tools)
+        return
 
     try:
         wait(option, 10)
         logger.debug('%s option has been found.' % option)
+        click(option)
     except FindError:
         logger.error('Can\'t find the %s option, aborting.' % option)
-    else:
-        click(option)
+        return
 
 
 class _IrisProfile(object):

@@ -28,34 +28,31 @@ class Test(BaseTest):
         navigate('www.amazon.com')
 
         amazon_banner_assert = exists(amazon_home, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded')
+        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
 
         nav_bar_favicon_assert = exists(amazon_favicon, 15)
-        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed')
+        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
 
         bookmark_page()
 
         try:
             wait(star_button, 10)
-            logger.debug('Star button is present on the page')
+            logger.debug('Star button is present on the page.')
         except FindError:
-            logger.error('Can\'t find the Star button, aborting')
+            logger.error('Can\'t find the Star button, aborting.')
 
         # Change the bookmark name fromm the "Edit This Bookmark panel"
-
         click(star_button)
-
         paste('iris')
 
         button_assert = exists(done, 10)
-        assert_true(self, button_assert, 'Changes can be saved')
+        assert_true(self, button_assert, 'Changes can be saved.')
 
         click(done)
-
         bookmarks_sidebar()
 
         bookmark_sidebar_assert = exists('bookmark_sidebar.png', 10)
-        assert_true(self, bookmark_sidebar_assert, 'Sidebar is opened')
+        assert_true(self, bookmark_sidebar_assert, 'Sidebar is opened.')
 
         paste('iris')
 
@@ -63,64 +60,50 @@ class Test(BaseTest):
         assert_true(self, bookmark_name_assert, 'The name of the bookmark is successfully modified.')
 
         # Change the bookmark name from the Bookmarks Sidebar
-
         rightClick(modified_bookmark)
 
         option_assert = exists(properties, 10)
-        assert_true(self, option_assert, 'Properties option is present on the page')
+        assert_true(self, option_assert, 'Properties option is present on the page.')
 
         click(properties)
 
         properties_window_assert = exists(save, 10)
-        assert_true(self, properties_window_assert, 'Properties window is present on the page')
+        assert_true(self, properties_window_assert, 'Properties window is present on the page.')
 
         paste('iris_sidebar')
-
         click(save)
 
         bookmark_name_sidebar = exists(modified_bookmark_2, 10)
         assert_true(self, bookmark_name_sidebar, 'The name of the bookmark is successfully modified.')
 
         # Change the bookmark name from the Bookmarks Toolbar
-
         access_bookmarking_tools(view_bookmarks_toolbar)
 
         try:
             wait(active_toolbar, 10)
-            logger.debug('Toolbar has been activated')
+            logger.debug('Toolbar has been activated.')
         except FindError:
             logger.error('Toolbar can not be activated, aborting.')
 
-        dragDrop(modified_bookmark_2, 'drag_area.png', 2)
-
+        dragDrop(modified_bookmark_2, 'drag_area.png', 0.5)
         navigate('about:blank')
-
         bookmarks_sidebar()
 
         toolbar_bookmark_assert = exists(toolbar_bookmark, 10)
-        assert_true(self, toolbar_bookmark_assert, 'Name of the bookmark can be changed from the toolbar')
+        assert_true(self, toolbar_bookmark_assert, 'Name of the bookmark can be changed from the toolbar.')
 
         rightClick(toolbar_bookmark)
 
         option_assert = exists(properties, 10)
-        assert_true(self, option_assert, 'Properties option is present on the page')
+        assert_true(self, option_assert, 'Properties option is present on the page.')
 
         click(properties)
 
         properties_window_assert = exists(save, 10)
-        assert_true(self, properties_window_assert, 'Properties window is present on the page')
+        assert_true(self, properties_window_assert, 'Properties window is present on the page.')
 
         paste('iris_toolbar')
-
         click(save)
 
         bookmark_name_toolbar = exists(modified_toolbar_bookmark, 10)
         assert_true(self, bookmark_name_toolbar, 'The name of the bookmark is successfully modified.')
-
-
-
-
-
-
-
-
