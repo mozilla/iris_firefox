@@ -61,6 +61,7 @@ def confirm_firefox_quit():
     except FindError:
         logger.error('Firefox still around - aborting test run.')
         exit(1)
+    address_crash_reporter()
 
 
 def get_firefox_region():
@@ -258,25 +259,43 @@ def close_customize_page():
         click(customize_done_button)
 
 
+def address_crash_reporter():
+    # TODO: Only works on Mac and Windows until we can get Linux images
+    reporter = 'crash_sorry.png'
+    if exists(reporter, 2):
+        logger.debug('Crash Reporter found!')
+        # Let crash stats know this is an Iris automation crash.
+        click(reporter)
+        # TODO: Add additional info in this message to crash stats
+        type('Iris automation test crash')
+        # Then dismiss the dialog by choosing to quit Firefox
+        click('quit_firefox_button.png')
+
+        # Ensure the reporter closes before moving on
+        try:
+            waitVanish(reporter, 20)
+            logger.debug('Crash report sent')
+        except FindError:
+            logger.error('Crash reporter did not close')
+            # Close the reporter if it hasn't gone away in time
+            close_auxiliary_window()
+        else:
+            return
+    else:
+        # If no crash reporter, silently move on to the next test case
+        return
+
+
 def open_about_firefox():
     if Settings.getOS() == Platform.MAC:
         # Key stroke into Firefox Menu to get to About Firefox.
         type(Key.F2, modifier=KeyModifier.CTRL)
-
-        # Workaround for Mac OS 10.13.4 - tap FN key twice
-        # to get out of minimized window state.
-        reset_mac_windows()
 
         time.sleep(0.5)
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.ENTER)
-
-        # Workaround for Mac OS 10.13.4 - tap FN key twice
-        # to get out of minimized window state.
-        reset_mac_windows()
-
 
     elif Settings.getOS() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox
@@ -309,6 +328,34 @@ def create_region_from_image(image):
             logger.error('No Matching found')
     except:
         logger.error('Image not present')
+
+
+def create_region_for_url_bar():
+    hamburger_menu = 'hamburger_menu.png'
+    home_button = 'home.png'
+    region = create_region_from_patterns(home_button, hamburger_menu, padding_top=10, padding_bottom=15)
+    return region
+
+
+def create_region_for_hamburger_menu():
+    hamburger_menu = 'hamburger_menu.png'
+    exit_menu = 'exit.png'
+    help_menu = 'help.png'
+    quit_menu = 'quit.png'
+    try:
+        wait(hamburger_menu, 10)
+        click(hamburger_menu)
+        time.sleep(1)
+        if Settings.getOS() == Platform.LINUX:
+            region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
+        elif  Settings.getOS() == Platform.MAC:
+            region = create_region_from_patterns(None, hamburger_menu, help_menu, None)
+        else:
+            region = create_region_from_patterns(None, hamburger_menu, exit_menu, None)
+    except (FindError, ValueError):
+        logger.error('Can\'t find the hamburger menu in the page, aborting test.')
+        return
+    return region
 
 
 def restore_window_from_taskbar():
@@ -394,8 +441,38 @@ def remove_zoom_indicator_from_toolbar():
         exit(1)
 
 
-class _IrisProfile(object):
+def bookmark_options(option):
 
+    try:
+        wait(option, 10)
+        logger.debug('Option %s is present on the page.' % option)
+        click(option)
+    except FindError:
+        logger.error('Can\'t find option %s, aborting.' % option)
+
+
+def access_bookmarking_tools(option):
+    bookmarking_tools = 'bookmarking_tools.png'
+    open_library_menu('bookmarks_menu.png')
+
+    try:
+        wait(bookmarking_tools, 10)
+        logger.debug('Bookmarking Tools option has been found.')
+        click(bookmarking_tools)
+    except FindError:
+        logger.error('Can\'t find the Bookmarking Tools option, aborting.')
+        return
+
+    try:
+        wait(option, 10)
+        logger.debug('%s option has been found.' % option)
+        click(option)
+    except FindError:
+        logger.error('Can\'t find the %s option, aborting.' % option)
+        return
+
+
+class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
     PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
@@ -458,8 +535,12 @@ class _IrisProfile(object):
         # Duplicate profile.
         dir_util.copy_tree(from_directory, to_directory)
 
-        # Remove unzipped directory first.
-        shutil.rmtree(from_directory)
+        # Remove old unzipped directory.
+        try:
+            shutil.rmtree(from_directory)
+        except WindowsError:
+            # This error can happen, but does not affect Iris.
+            logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
         # Remove Mac resource fork folders left over from ZIP, if present.
         resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')

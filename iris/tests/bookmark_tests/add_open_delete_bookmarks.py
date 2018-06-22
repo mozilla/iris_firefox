@@ -23,6 +23,7 @@ class Test(BaseTest):
         amazon_bookmark = 'amazon_bookmark.png'
         amazon_library = 'amazon_library.png'
         bing_bookmark = 'bing_bookmark.png'
+        highlighted_bing_bookmark = 'highlighted_bing_bookmark.png'
         library_bookmarks = 'library_bookmarks.png'
         delete_bookmark = 'delete_bookmark.png'
         most_visited = 'most_visited_bookmarks.png'
@@ -106,7 +107,10 @@ class Test(BaseTest):
 
         # Test case 150 - Bookmarks can be removed from the Bookmarks Sidebar
 
-        rightClick(bing_bookmark)
+        if Settings.getOS() == Platform.LINUX:
+            rightClick(highlighted_bing_bookmark)
+        else:
+            rightClick(bing_bookmark)
 
         expected_10 = exists(delete_bookmark, 10)
         assert_true(self, expected_10, 'Bookmark can be deleted')

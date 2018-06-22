@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test of the History sidebar.'
 
     def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a brand new profile.
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         self.profile = Profile.BRAND_NEW
         launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
@@ -32,33 +32,33 @@ class Test(BaseTest):
 
         # Open a page to create some history.
         navigate('https://www.youtube.com/')
-        expected_1 = exists(youtube_logo, 5)
+        expected_1 = exists(youtube_logo, 10)
         assert_true(self, expected_1, 'Page loaded successfully.')
 
         # Open the History sidebar.
         history_sidebar()
-        expected_2 = exists(search_history_box, 5)
+        expected_2 = exists(search_history_box, 10)
         assert_true(self, expected_2, 'Sidebar was opened successfully.')
-        expected_3 = exists(expand_button_history_sidebar, 5)
+        expected_3 = exists(expand_button_history_sidebar, 10)
         assert_true(self, expected_3, 'Expand history button displayed properly')
         click(expand_button_history_sidebar)
         click(search_history_box)
 
         # Check that Youtube is displayed in the History list.
         paste('youtube')
-        expected_4 = exists(history_sidebar_youtube, 5)
+        expected_4 = exists(history_sidebar_youtube, 10)
         assert_true(self, expected_4, 'Youtube displayed in the History list successfully.')
 
         # Clear the History search box.
-        expected_5 = exists(x_button_search_history_box, 5)
-        assert_true(self, expected_5, 'Clear field button was displayed properly')
+        expected_5 = exists(x_button_search_history_box, 10)
+        assert_true(self, expected_5, 'Clear field button was displayed properly.')
         click(x_button_search_history_box)
         time.sleep(0.5)
-        expected_6 = exists(history_sidebar_items, 5)
-        expected_7 = exists(search_history_box, 5)
+        expected_6 = exists(history_sidebar_items, 10)
+        expected_7 = exists(search_history_box, 10)
         assert_true(self, expected_6 and expected_7, 'The expected items are displayed in the History list.')
 
         # Check that an unavailable page is not found in the History list.
         paste('test')
-        expected_8 = exists(history_empty, 5)
+        expected_8 = exists(history_empty, 10)
         assert_true(self, expected_8, 'The page wasn\'t found in the History list.')

@@ -10,15 +10,13 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a unit test for hover, anc click.'
-        # self.exclude = Platform.ALL
+        self.meta = 'This is a unit test for hover, and click.'
 
     def confirm_hover(self, hover_region, hovered_element):
         assert_true(self, hover_region.exists(hovered_element), 'Hover confirmed')
 
     def run(self):
-        # @todo load this via assets
-        url = 'file:///' + get_module_dir() + '/iris/tests/unit_tests/assets/mouse-events.html'
+        url = self.get_asset_path(__file__, 'mouse-events.html')
 
         t_left = 'ut-top-left.png'
         b_right = 'ut-bottom-right.png'
@@ -51,7 +49,7 @@ class Test(BaseTest):
 
         last_hover_region.debug()
         # General hover
-        logger.info('Test hover on page by image names')
+        logger.debug('Test hover on page by image names')
         hover(desktop_i)
         self.confirm_hover(last_hover_region, desktop_i)
         hover(keyboard_i)
@@ -64,7 +62,7 @@ class Test(BaseTest):
         self.confirm_hover(last_hover_region, save_i)
 
         # Pattern hover
-        logger.info('Test hover on page with Pattern inputs')
+        logger.debug('Test hover on page with Pattern inputs')
         hover(desktop_pattern)
         self.confirm_hover(last_hover_region, desktop_pattern)
         hover(keyboard_pattern)
@@ -80,7 +78,7 @@ class Test(BaseTest):
         in_region = generate_region_by_markers(t_left, b_right)
         in_region.debug()
 
-        logger.info('Test hover in Region of page  by image names')
+        logger.debug('Test hover in Region of page  by image names')
         in_region.hover(desktop_i)
         self.confirm_hover(last_hover_region, desktop_i)
         in_region.hover(keyboard_i)
@@ -93,7 +91,7 @@ class Test(BaseTest):
         self.confirm_hover(last_hover_region, save_i)
 
         # in Region Pattern hover
-        logger.info('Test hover in Region with Pattern inputs')
+        logger.debug('Test hover in Region with Pattern inputs')
         in_region.hover(desktop_pattern)
         self.confirm_hover(last_hover_region, desktop_pattern)
         in_region.hover(keyboard_pattern)
@@ -109,7 +107,7 @@ class Test(BaseTest):
 
         last_click_region.debug()
         # General click
-        logger.info('Test click on page by image names')
+        logger.debug('Test click on page by image names')
         click(desktop_i)
         self.confirm_hover(last_click_region, desktop_i)
         click(keyboard_i)
@@ -122,7 +120,7 @@ class Test(BaseTest):
         self.confirm_hover(last_click_region, save_i)
 
         # Pattern click
-        logger.info('Test click on page with Pattern inputs')
+        logger.debug('Test click on page with Pattern inputs')
         click(desktop_pattern)
         self.confirm_hover(last_click_region, desktop_pattern)
         click(keyboard_pattern)
@@ -134,7 +132,7 @@ class Test(BaseTest):
         click(save_pattern)
         self.confirm_hover(last_click_region, save_pattern)
 
-        logger.info('Test click in Region of page  by image names')
+        logger.debug('Test click in Region of page  by image names')
         in_region.click(desktop_i)
         self.confirm_hover(last_click_region, desktop_i)
         in_region.click(keyboard_i)
@@ -147,7 +145,7 @@ class Test(BaseTest):
         self.confirm_hover(last_click_region, save_i)
 
         # in Region Pattern click
-        logger.info('Test click in Region with Pattern inputs')
+        logger.debug('Test click in Region with Pattern inputs')
         in_region.click(desktop_pattern)
         self.confirm_hover(last_click_region, desktop_pattern)
         in_region.click(keyboard_pattern)
