@@ -314,6 +314,32 @@ def open_about_firefox():
         type('a')
 
 
+class Option:
+    ZOOM_IN = 0
+    ZOOM_OUT = 1
+    RESET = 2
+    ZOOM_TEXT_ONLY = 3
+
+def open_zoom_menu(option_number):
+    """Opens the Zoom menu options from the View Menu."""
+
+    view_menu = 'view_menu.png'
+    if Settings.getOS() == Platform.MAC:
+        click(view_menu)
+        for i in range (3):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+    else:
+        type(text='v', modifier=KeyModifier.ALT)
+        for i in range (2):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+
+    for i in range (option_number):
+        type(text=Key.DOWN)
+    type(text=Key.ENTER)
+
+
 def create_region_from_image(image):
     try:
         m = find(image)
