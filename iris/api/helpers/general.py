@@ -233,10 +233,9 @@ def close_auxiliary_window(is_full_screen=None):
         else:
             auxiliary_window_control = Pattern('auxiliary_window_controls.png')
         hover(auxiliary_window_control)
-
     elif Settings.getOS() == Platform.LINUX:
         if is_full_screen:
-            reset_mouse();
+            reset_mouse()
     try:
         wait('auxiliary_window_close_button.png', 10)
         logger.debug('Close auxiliary window button found')
