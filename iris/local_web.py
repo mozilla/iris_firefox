@@ -26,6 +26,29 @@ class CustomHandler(SimpleHTTPRequestHandler):
             output += str(arg) + '\t'
         logger.debug(output)
 
+    def finish(self):
+        """
+        This comes from StreamRequestHandler, except the part where we call close().
+        We wish to capture a specific exception that happens primarily on
+        Windows, and essentially ignore it.
+        """
+        if not self.wfile.closed:
+            try:
+                self.wfile.flush()
+            except socket.error:
+                # An final socket error may have occurred here, such as
+                # the local error ECONNABORTED.
+                pass
+        try:
+            self.wfile.close()
+            self.rfile.close()
+        except Exception, e:
+            # Errno 10053 is to be ignored, as the browser connection closes before
+            # the server's response is sent, causing an error
+            logger.info(e)
+            if '10053' in e:
+                logger.info('Browser closed connection before response completed.')
+
     def handle_one_request(self):
         """
         This comes from BaseHTTPRequest, except the part where we call flush().
