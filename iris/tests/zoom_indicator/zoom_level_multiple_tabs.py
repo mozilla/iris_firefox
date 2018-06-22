@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks the zoom level on multiple tabs for multiple sites and also that' \
-                ' decrease/increase of zoom level around the maximum level works correctly.'
+                    ' decrease/increase of zoom level around the maximum level works correctly.'
 
     def run(self):
         url_1 = 'en.wikipedia.org'
@@ -26,11 +26,7 @@ class Test(BaseTest):
         expected = exists(hamburger_menu, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
-        coord = find(hamburger_menu)
-        x_reg = coord.getX() - 350
-        y_reg = coord.getY() - 30
-
-        region = Region(x_reg, y_reg, coord.getX() - x_reg, screen_height / 4)
+        region = create_region_for_url_bar()
 
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
@@ -46,8 +42,8 @@ class Test(BaseTest):
         time.sleep(1)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
-        assert_true(self, expected,
-                    'Zoom level still displays 110% in the new tab opened for the site for which the zoom level was set.')
+        assert_true(self, expected, 'Zoom level still displays 110% in the new tab opened for the site for which the '
+                                    'zoom level was set.')
 
         new_tab()
 

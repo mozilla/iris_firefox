@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test of the History menu.'
 
     def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a brand new profile.
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         self.profile = Profile.BRAND_NEW
         launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')

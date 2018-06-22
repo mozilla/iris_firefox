@@ -10,10 +10,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This tests the ability to activate/deactivate the activity stream'
-
-        # Currently turning off test because this does not work in Fx60.
-        # It will work correctly in Fx62.
-        self.exclude = Platform.ALL
+        self.fx_version = '>=62'
 
     def run(self):
         preference = 'browser.newtabpage.activity-stream.feeds.topsites'

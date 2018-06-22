@@ -225,7 +225,17 @@ def click_hamburger_menu_option(option):
             return region
 
 
-def close_auxiliary_window():
+def close_auxiliary_window(is_full_screen=None):
+    if Settings.getOS() == Platform.MAC:
+        if is_full_screen:
+            reset_mouse()
+            auxiliary_window_control = Pattern('auxiliary_window_controls_full_screen.png')
+        else:
+            auxiliary_window_control = Pattern('auxiliary_window_controls.png')
+        hover(auxiliary_window_control)
+    elif Settings.getOS() == Platform.LINUX:
+        if is_full_screen:
+            reset_mouse()
     try:
         wait('auxiliary_window_close_button.png', 10)
         logger.debug('Close auxiliary window button found')
@@ -234,6 +244,44 @@ def close_auxiliary_window():
         return
     else:
         click('auxiliary_window_close_button.png')
+
+
+def full_screen_auxiliary_window():
+    try:
+        hover('auxiliary_window_controls.png')
+        wait('auxiliary_window_maximize.png', 10)
+        logger.debug('Maximize auxiliary window button found')
+    except FindError:
+        logger.error('Can\'t find the maximize auxiliary window button in the page, aborting.')
+        return
+    else:
+        click('auxiliary_window_maximize.png')
+
+
+def minimize_auxiliary_window(is_full_screen=None):
+    if Settings.getOS() == Platform.MAC:
+        if is_full_screen:
+            reset_mouse()
+            auxiliary_window_control = Pattern('auxiliary_window_controls_full_screen.png')
+            auxiliary_window_minimize = Pattern('minimize_full_screen_auxiliary_window.png')
+        else:
+            auxiliary_window_control = Pattern('auxiliary_window_controls.png')
+            auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
+        hover(auxiliary_window_control)
+    elif Settings.getOS() == Platform.LINUX:
+        if is_full_screen:
+            reset_mouse()
+            auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
+    elif Settings.getOS() == Platform.WINDOWS:
+        auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
+
+    try:
+        wait(auxiliary_window_minimize, 5)
+    except FindError:
+        logger.error('Can\'t find the minimize auxiliary window button in the page, aborting.')
+        return
+    else:
+        click(auxiliary_window_minimize)
 
 
 def click_cancel_button():
@@ -314,6 +362,32 @@ def open_about_firefox():
         type('a')
 
 
+class Option:
+    ZOOM_IN = 0
+    ZOOM_OUT = 1
+    RESET = 2
+    ZOOM_TEXT_ONLY = 3
+
+def open_zoom_menu(option_number):
+    """Opens the Zoom menu options from the View Menu."""
+
+    view_menu = 'view_menu.png'
+    if Settings.getOS() == Platform.MAC:
+        click(view_menu)
+        for i in range (3):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+    else:
+        type(text='v', modifier=KeyModifier.ALT)
+        for i in range (2):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+
+    for i in range (option_number):
+        type(text=Key.DOWN)
+    type(text=Key.ENTER)
+
+
 def create_region_from_image(image):
     try:
         m = find(image)
@@ -330,6 +404,34 @@ def create_region_from_image(image):
         logger.error('Image not present')
 
 
+def create_region_for_url_bar():
+    hamburger_menu = 'hamburger_menu.png'
+    home_button = 'home.png'
+    region = create_region_from_patterns(home_button, hamburger_menu, padding_top=10, padding_bottom=15)
+    return region
+
+
+def create_region_for_hamburger_menu():
+    hamburger_menu = 'hamburger_menu.png'
+    exit_menu = 'exit.png'
+    help_menu = 'help.png'
+    quit_menu = 'quit.png'
+    try:
+        wait(hamburger_menu, 10)
+        click(hamburger_menu)
+        time.sleep(1)
+        if Settings.getOS() == Platform.LINUX:
+            region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
+        elif Settings.getOS() == Platform.MAC:
+            region = create_region_from_patterns(None, hamburger_menu, help_menu, None)
+        else:
+            region = create_region_from_patterns(None, hamburger_menu, exit_menu, None)
+    except (FindError, ValueError):
+        logger.error('Can\'t find the hamburger menu in the page, aborting test.')
+        return
+    return region
+
+
 def restore_window_from_taskbar():
     if Settings.getOS() == Platform.MAC:
         click('main_menu_window.png')
@@ -344,8 +446,8 @@ def open_library_menu(option):
     library_menu = 'library_menu.png'
     try:
         wait(library_menu, 10)
-        region = Region(find(library_menu).getX() - screen_width / 4, find(library_menu).getY(), screen_width / 4,
-                        screen_height / 4)
+        region = Region(find(library_menu).getX() - SCREEN_WIDTH / 4, find(library_menu).getY(), SCREEN_WIDTH / 4,
+                        SCREEN_HEIGHT / 4)
         logger.debug('Library menu found')
     except:
         logger.error('Can\'t find the library menu in the page, aborting test.')
@@ -413,8 +515,38 @@ def remove_zoom_indicator_from_toolbar():
         exit(1)
 
 
-class _IrisProfile(object):
+def bookmark_options(option):
 
+    try:
+        wait(option, 10)
+        logger.debug('Option %s is present on the page.' % option)
+        click(option)
+    except FindError:
+        logger.error('Can\'t find option %s, aborting.' % option)
+
+
+def access_bookmarking_tools(option):
+    bookmarking_tools = 'bookmarking_tools.png'
+    open_library_menu('bookmarks_menu.png')
+
+    try:
+        wait(bookmarking_tools, 10)
+        logger.debug('Bookmarking Tools option has been found.')
+        click(bookmarking_tools)
+    except FindError:
+        logger.error('Can\'t find the Bookmarking Tools option, aborting.')
+        return
+
+    try:
+        wait(option, 10)
+        logger.debug('%s option has been found.' % option)
+        click(option)
+    except FindError:
+        logger.error('Can\'t find the %s option, aborting.' % option)
+        return
+
+
+class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
     PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')

@@ -42,6 +42,8 @@ class Iris(object):
     def __init__(self):
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
+        load_all_patterns()
+        self.check_keyboard_state()
         self.init_tesseract_path()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
@@ -84,6 +86,25 @@ class Iris(object):
         self.build_id = self.fx_app.build_id
 
         return 0
+
+    @staticmethod
+    def check_keyboard_state():
+        is_lock_on = False
+
+        if Key.isLockOn(Key.CAPS_LOCK):
+            logger.error('Cannot run Iris because Key.CAPS_LOCK is on. Please turn it off to continue.')
+            is_lock_on = True
+
+        if Key.isLockOn(Key.NUM_LOCK):
+            logger.error('Cannot run Iris because Key.NUM_LOCK is on. Please turn it off to continue.')
+            is_lock_on = True
+
+        if Key.isLockOn(Key.SCROLL_LOCK):
+            logger.error('Cannot run Iris because Key.SCROLL_LOCK is on. Please turn it off to continue.')
+            is_lock_on = True
+
+        if is_lock_on:
+            exit(1)
 
     @staticmethod
     def __create_tempdir():
