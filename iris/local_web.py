@@ -26,6 +26,24 @@ class CustomHandler(SimpleHTTPRequestHandler):
             output += str(arg) + '\t'
         logger.debug(output)
 
+    def send_header(self, keyword, value):
+        """Send a MIME header."""
+        try:
+            if self.request_version != 'HTTP/0.9':
+                self.wfile.write("%s: %s\r\n" % (keyword, value))
+
+            if keyword.lower() == 'connection':
+                if value.lower() == 'close':
+                    self.close_connection = 1
+                elif value.lower() == 'keep-alive':
+                    self.close_connection = 0
+        except Exception, e:
+            # Errno 10053 is to be ignored, as the browser connection closes before
+            # the server's response is sent, causing an error
+            logger.info(e)
+            if '10053' in e:
+                logger.info('Browser closed connection before response completed.')
+
     def finish(self):
         """
         This comes from StreamRequestHandler, except the part where we call close().
@@ -87,6 +105,7 @@ class CustomHandler(SimpleHTTPRequestHandler):
             self.log_error("Request timed out: %r", e)
             self.close_connection = 1
             return
+
 
 class LocalWebServer(object):
 
