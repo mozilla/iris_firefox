@@ -94,11 +94,12 @@ class Iris(object):
         return 0
 
     def start_local_web_server(self, path, port):
-        logger.debug('Starting local web server on port %s for directory %s' % (port, path))
-
-        # Web servers are spawned in new Process instances, which
-        # must be saved in a list in order to be terminated later.
+        """
+        Web servers are spawned in new Process instances, which
+        must be saved in a list in order to be terminated later.
+        """
         try:
+            logger.debug('Starting local web server on port %s for directory %s' % (port, path))
             web_server_process = Process(target=LocalWebServer, args=(path, port,))
             self.process_list.append(web_server_process)
             web_server_process.start()
@@ -106,8 +107,10 @@ class Iris(object):
             logger.critical('Unable to launch local web server, aborting Iris.')
             self.finish(code=13)
 
-    # All exit points of Iris need to call this function in order to exit properly.
     def finish(self, code=0):
+        """
+        All exit points of Iris need to call this function in order to exit properly.
+        """
         logger.debug('There are %s queued process(es) to terminate.' % len(self.process_list))
         for process in self.process_list:
             logger.debug('Terminating process.')
