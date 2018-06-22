@@ -22,26 +22,26 @@ class Test(BaseTest):
         return
 
     def run(self):
-        amazon_bookmark_image_1 = 'amazon_bookmark_1.png'
-        amazon_bookmark_image_2 = 'amazon_bookmark_2.png'
+        bookmark_image_1 = LocalWeb.FIREFOX_BOOKMARK
+        bookmark_image_2 = LocalWeb.POCKET_BOOKMARK_SMALL
 
-        # Look for new bookmark via library menu button
+        # Look for bookmarks via library menu button
         click('library.png')
         time.sleep(1)
         type(Key.TAB)
         type(Key.ENTER)
         time.sleep(1)
 
-        expected_1 = exists(amazon_bookmark_image_1, 10)
-        assert_true(self, expected_1, 'Find Amazon bookmark 1st image')
+        expected_1 = exists(bookmark_image_1, 5)
+        assert_true(self, expected_1, 'Find Firefox bookmark 1st image')
 
         type(Key.ESC)
 
         # Look for bookmark in bookmark menu
         bookmarks_sidebar()
         time.sleep(1)
-        paste('amazon')
-        time.sleep(1)
+        paste('pocket')
+        #time.sleep(1)
 
-        expected_2 = exists(amazon_bookmark_image_2, 10, .7)
-        assert_true(self, expected_2, 'Find Amazon bookmark 2nd image')
+        expected_2 = exists(bookmark_image_2, 5)
+        assert_true(self, expected_2, 'Find Pocket bookmark 2nd image')
