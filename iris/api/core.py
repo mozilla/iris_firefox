@@ -128,7 +128,8 @@ pyautogui.size() works correctly everywhere except Mac Retina
 This technique works everywhere, so we'll use it instead
 """
 
-screen_width, screen_height = pyautogui.size()
+SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
+SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
 
 image_debug_path = get_module_dir() + '/image_debug'
 try:
@@ -726,7 +727,7 @@ class Screen(object):
         return 1
 
     def getBounds(self):
-        dimensions = (screen_width, screen_height)
+        dimensions = (SCREEN_WIDTH, SCREEN_HEIGHT)
         return dimensions
 
 
@@ -737,7 +738,7 @@ class Pattern(object):
         self.target_offset = None
 
     def targetOffset(self, dx, dy):
-        """ Add offset to Pattern from top left
+        """Add offset to Pattern from top left
 
         :param int dx: x offset from center
         :param int dy: y offset from center
@@ -979,8 +980,8 @@ class Platform(object):
     MAC = 'osx'
     ALL = Settings.getOS()
     HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
-    screen_width, screen_height = pyautogui.size()
-    LOWRES = (screen_width < 1280 or screen_height < 800)
+    SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
+    LOWRES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
@@ -1019,7 +1020,7 @@ def get_test_name():
 
 
 def _save_debug_image(search_for, on_region, locations, not_found=False):
-    """ Saves input Image for debug.
+    """Saves input Image for debug.
 
     :param Image || None search_for: Input needle image that needs to be highlighted
     :param Image || Region on_region: Input Region as Image
@@ -1119,38 +1120,36 @@ def _save_ocr_debug_image(on_region, matches):
         cv2.imwrite(image_debug_path + '/' + temp_f, on_region)
 
 
-def _region_grabber(region=None):
+def get_uhd_details():
+    uhd_factor = SCREENSHOT_WIDTH / SCREEN_WIDTH
+    is_uhd = True if uhd_factor > 1 else False
+    return is_uhd, uhd_factor
+
+
+def _region_grabber(region=None, for_ocr=False):
     """Grabs image from region or full screen.
 
     :param Region || None region: Region param
     :return: Image
     """
-    screenshot_w, screenshot_h = pyautogui.screenshot().size
-
-    # logger.debug('Screen size according to pyautogui.size(): %s,%s' % (screen_width, screen_height))
-    # logger.debug('Screen size according to pyautogui.screenshot().size: %s,%s' % (screenshot_w, screenshot_h))
-
-    uhd_factor = screenshot_w / screen_width
-    is_uhd = True if uhd_factor > 0 else False
+    is_uhd, uhd_factor = get_uhd_details()
 
     if isinstance(region, Region):
         r_x = uhd_factor * region.getX() if is_uhd else region.getX()
         r_y = uhd_factor * region.getY() if is_uhd else region.getY()
         w_y = uhd_factor * region.getW() if is_uhd else region.getW()
         h_y = uhd_factor * region.getH() if is_uhd else region.getH()
-        r_coordinates = (r_x, r_y, w_y, h_y)
-        grabbed_area = pyautogui.screenshot(region=r_coordinates)
+        grabbed_area = pyautogui.screenshot(region=(r_x, r_y, w_y, h_y))
 
-        if is_uhd:
+        if is_uhd and not for_ocr:
             grabbed_area = grabbed_area.resize([region.getW(), region.getH()])
         return grabbed_area
 
     else:
-        r_coordinates = (0, 0, screenshot_w, screenshot_h)
-        grabbed_area = pyautogui.screenshot(region=r_coordinates)
+        grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
 
-        if is_uhd:
-            return grabbed_area.resize([screen_width, screen_height])
+        if is_uhd and not for_ocr:
+            return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
         else:
             return grabbed_area
 
@@ -1326,35 +1325,32 @@ def _image_search_loop(image_name, at_interval=None, attempts=None, precision=No
 
 def _text_search_all(with_image_processing=True, in_region=None, in_image=None):
     if in_image is None:
-        stack_image = _region_grabber(in_region)
+        stack_image = _region_grabber(in_region, True)
     else:
         stack_image = in_image
 
-    tesseract_match_min_len = 12
-    input_image = np.array(stack_image)
-
-    optimized_ocr_image = input_image
+    match_min_len = 12
+    input_image = stack_image
+    input_image_array = np.array(input_image)
+    debug_img = input_image_array
 
     if with_image_processing:
-        optimized_ocr_image = process_image_for_ocr(image_array=Image.fromarray(input_image))
+        input_image = process_image_for_ocr(image_array=input_image)
+        input_image_array = np.array(input_image)
+        debug_img = cv2.cvtColor(input_image_array, cv2.COLOR_GRAY2BGR)
 
-    optimized_ocr_array = np.array(optimized_ocr_image)
-    processed_data = pytesseract.image_to_data(Image.fromarray(optimized_ocr_array))
-
-    debug_img = optimized_ocr_array
-    if with_image_processing:
-        debug_img = cv2.cvtColor(optimized_ocr_array, cv2.COLOR_GRAY2BGR)
+    processed_data = pytesseract.image_to_data(input_image)
 
     length_x, width_y = stack_image.size
     dpi_factor = max(1, int(OCR_IMAGE_SIZE / length_x))
 
-    final_data = []
-    debug_data = []
+    final_data, debug_data = [], []
+    is_uhd, uhd_factor = get_uhd_details()
 
     for line in processed_data.split('\n'):
         try:
             data = line.encode('ascii').split()
-            if len(data) is tesseract_match_min_len:
+            if len(data) is match_min_len:
                 precision = int(data[10]) / float(100)
                 virtual_data = {'x': int(data[6]),
                                 'y': int(data[7]),
@@ -1365,8 +1361,9 @@ def _text_search_all(with_image_processing=True, in_region=None, in_image=None):
                                 }
                 debug_data.append(virtual_data)
 
-                left_offset = 0
-                top_offset = 0
+                left_offset, top_offset = 0, 0
+                scale_divider = uhd_factor if is_uhd else 1
+
                 if isinstance(in_region, Region):
                     left_offset = in_region.getX()
                     top_offset = in_region.getY()
@@ -1374,13 +1371,19 @@ def _text_search_all(with_image_processing=True, in_region=None, in_image=None):
                 # Scale down coordinates since actual screen has different dpi
                 if with_image_processing:
                     screen_data = copy.deepcopy(virtual_data)
-                    screen_data['x'] = screen_data['x'] / dpi_factor + left_offset
-                    screen_data['y'] = screen_data['y'] / dpi_factor + top_offset
-                    screen_data['width'] = screen_data['width'] / dpi_factor
-                    screen_data['height'] = screen_data['height'] / dpi_factor
+                    screen_data['x'] = screen_data['x'] / dpi_factor / scale_divider + left_offset
+                    screen_data['y'] = screen_data['y'] / dpi_factor / scale_divider + top_offset
+                    screen_data['width'] = screen_data['width'] / dpi_factor / scale_divider
+                    screen_data['height'] = screen_data['height'] / dpi_factor / scale_divider
                     final_data.append(screen_data)
                 else:
-                    final_data.append(virtual_data)
+                    if scale_divider > 1:
+                        screen_data = copy.deepcopy(virtual_data)
+                        screen_data['x'] = screen_data['x'] / scale_divider
+                        screen_data['y'] = screen_data['y'] / scale_divider
+                        screen_data['width'] = screen_data['width'] / scale_divider
+                        screen_data['height'] = screen_data['height'] / scale_divider
+                        final_data.append(screen_data)
         except:
             continue
 
@@ -1676,7 +1679,7 @@ def text(with_image_processing=True, in_region=None, debug=False):
     :return: list of matches
     """
     all_text, debug_img, debug_data = _text_search_all(with_image_processing, in_region)
-    if debug:
+    if debug and debug_img is not None:
         _save_ocr_debug_image(debug_img, debug_data)
         logger.debug('> Found message: %s' % _ocr_matches_to_string(all_text))
     return _ocr_matches_to_string(all_text)
@@ -2083,7 +2086,7 @@ def dragDrop(drag_from, drop_to, duration=None):
 
 def get_screen():
     """Returns full screen Image."""
-    return Region(0, 0, screen_width, screen_height)
+    return Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 
 def keyDown(key):
@@ -2128,7 +2131,7 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     """
 
     # move focus in the middle of the page to be able to use the scroll
-    pyautogui.moveTo(screen_width / 4, screen_height / 2)
+    pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
     for i in range(nr_of_times):
         if Settings.getOS() == Platform.MAC:
             pyautogui.keyDown('command')

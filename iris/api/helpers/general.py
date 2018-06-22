@@ -348,7 +348,7 @@ def create_region_for_hamburger_menu():
         time.sleep(1)
         if Settings.getOS() == Platform.LINUX:
             region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
-        elif  Settings.getOS() == Platform.MAC:
+        elif Settings.getOS() == Platform.MAC:
             region = create_region_from_patterns(None, hamburger_menu, help_menu, None)
         else:
             region = create_region_from_patterns(None, hamburger_menu, exit_menu, None)
@@ -372,8 +372,8 @@ def open_library_menu(option):
     library_menu = 'library_menu.png'
     try:
         wait(library_menu, 10)
-        region = Region(find(library_menu).getX() - screen_width / 4, find(library_menu).getY(), screen_width / 4,
-                        screen_height / 4)
+        region = Region(find(library_menu).getX() - SCREEN_WIDTH / 4, find(library_menu).getY(), SCREEN_WIDTH / 4,
+                        SCREEN_HEIGHT / 4)
         logger.debug('Library menu found')
     except:
         logger.error('Can\'t find the library menu in the page, aborting test.')
