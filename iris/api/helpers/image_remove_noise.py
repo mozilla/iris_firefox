@@ -7,6 +7,7 @@ import tempfile
 import cv2
 import numpy as np
 from PIL import Image
+import platform
 
 OCR_IMAGE_SIZE = 1800
 BINARY_THRESHOLD = 180
@@ -58,4 +59,9 @@ def remove_noise_and_smooth(file_name):
     closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
     img = image_smoothing(img)
     or_image = cv2.bitwise_or(img, closing)
-    return or_image
+
+    if platform.system() == 'Darwin':
+        median_blur = cv2.medianBlur(or_image, 3)
+        return median_blur
+    else:
+        return or_image
