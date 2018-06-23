@@ -8,6 +8,7 @@ import os
 import socket
 from BaseHTTPServer import HTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
+from SocketServer import BaseServer
 
 logger = logging.getLogger(__name__)
 
@@ -110,7 +111,7 @@ class ModifiedHTTPServer(HTTPServer):
 
     def __init__(self, address, handler):
         HTTPServer.__init__(self, address, handler)
-
+    """
     def _handle_request_noblock(self):
         try:
             HTTPServer._handle_request_noblock(self)
@@ -119,7 +120,32 @@ class ModifiedHTTPServer(HTTPServer):
             # the server's response is sent, causing an error
             if '10053' in e:
                 logger.info('Browser closed connection before response completed.')
+    """
 
+    def handle_request(self):
+        """Handle one request, possibly blocking.
+
+        Respects self.timeout.
+        """
+        # Support people who used socket.settimeout() to escape
+        # handle_request before self.timeout was available.
+        try:
+            BaseServer.handle_request(self)
+        except:
+            logger.info('Uh oh')
+
+        """
+        timeout = self.socket.gettimeout()
+        if timeout is None:
+            timeout = self.timeout
+        elif self.timeout is not None:
+            timeout = min(timeout, self.timeout)
+        fd_sets = _eintr_retry(select.select, [self], [], [], timeout)
+        if not fd_sets[0]:
+            self.handle_timeout()
+            return
+        self._handle_request_noblock()
+        """
 
 
 class LocalWebServer(object):
