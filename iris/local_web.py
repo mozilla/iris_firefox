@@ -106,6 +106,21 @@ class CustomHandler(SimpleHTTPRequestHandler):
             self.close_connection = 1
             return
 
+class ModifiedHTTPServer(HTTPServer):
+
+    def __init__(self, address, handler):
+        HTTPServer.__init__(self, address, handler)
+
+    def _handle_request_noblock(self):
+        try:
+            HTTPServer._handle_request_noblock(self)
+        except Exception, e:
+            # Errno 10053 is to be ignored, as the browser connection closes before
+            # the server's response is sent, causing an error
+            if '10053' in e:
+                logger.info('Browser closed connection before response completed.')
+
+
 
 class LocalWebServer(object):
 
@@ -118,7 +133,7 @@ class LocalWebServer(object):
     def start(self):
         os.chdir(self.web_root)
         handler = SimpleHTTPRequestHandler
-        server = HTTPServer
+        server = ModifiedHTTPServer
 
         try:
             server_address = (self.host, self.port)
