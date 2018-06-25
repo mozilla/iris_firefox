@@ -13,39 +13,50 @@ logger = logging.getLogger(__name__)
 
 class CustomHandler(SimpleHTTPRequestHandler):
 
+    # The main purpose of this class is to override several superclass methods, in order to
+    # prevent undesired error messages from appearing in the console. The HTTPServer used here
+    # raises an exception if the client closes the connection while the server is still
+    # sending data. For our purposes, this behavior is not important, so we just want to ignore
+    # the dropped connection and suppress the error message.
+
     def do_GET(self):
         try:
             SimpleHTTPRequestHandler.do_GET(self)
-        except Exception, e:
-            logger.info('Exception in do_GET')
-            if '10053' in e:
-                logger.info('Browser closed connection before response completed.')
+        except Exception as e:
+            logger.debug('Exception in do_GET')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
 
     def do_HEAD(self):
-        SimpleHTTPRequestHandler.do_HEAD(self)
-
-    def log_message(self, format_arg, *args):
-        output = ''
-        for arg in args:
-            output += str(arg) + '\t'
-        logger.debug(output)
+        try:
+            SimpleHTTPRequestHandler.do_HEAD(self)
+        except Exception as e:
+            logger.debug('Exception in do_HEAD')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
 
     def finish(self):
         try:
             SimpleHTTPRequestHandler.finish(self)
-        except Exception, e:
-            logger.info('Exception in finish')
-            if '10053' in e:
-                logger.info('Browser closed connection before response completed.')
+        except Exception as e:
+            logger.debug('Exception in finish')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
 
     def handle_one_request(self):
         try:
             SimpleHTTPRequestHandler.handle_one_request(self)
-        except Exception, e:
-            logger.info('Exception in handle_one_request')
-            if '10053' in e:
-                logger.info('Browser closed connection before response completed.')
+        except Exception as e:
+            logger.debug('Exception in handle_one_request')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
 
+    def log_message(self, format_arg, *args):
+        # Eliminate the default output from the HTTP server unless we are in debug mode.
+        output = ''
+        for arg in args:
+            output += str(arg) + '\t'
+        logger.debug(output)
 
 
 class LocalWebServer(object):
