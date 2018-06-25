@@ -30,6 +30,8 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
+        time.sleep(2)
+
         open_library_menu('bookmarks_menu.png')
 
         try:
