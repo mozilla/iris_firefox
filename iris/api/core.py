@@ -1655,7 +1655,6 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
     return found_region
 
 
-# WIP
 class LocalWeb(object):
     """
     Constants that represent URLs and images for local content.
