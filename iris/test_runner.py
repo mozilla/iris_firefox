@@ -49,7 +49,7 @@ def run(app):
             current.setup()
 
             # Verify that Firefox has launched
-            confirm_firefox_launch()
+            confirm_firefox_launch(app)
 
             # Adjust Firefox window size
             current.resize_window()
@@ -63,7 +63,7 @@ def run(app):
                 current.set_end_time(time.time())
                 print_results(module, current)
                 current.teardown()
-                confirm_firefox_quit()
+                confirm_firefox_quit(app)
                 continue
             except FindError:
                 test_failures.append(module)
@@ -72,7 +72,7 @@ def run(app):
                 current.set_end_time(time.time())
                 print_results(module, current)
                 current.teardown()
-                confirm_firefox_quit()
+                confirm_firefox_quit(app)
                 continue
             except (APIHelperError, ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError,
                     UnsupportedClassMethodError, TypeError):
@@ -82,7 +82,7 @@ def run(app):
                 current.set_end_time(time.time())
                 print_results(module, current)
                 current.teardown()
-                confirm_firefox_quit()
+                confirm_firefox_quit(app)
                 continue
 
             passed += 1
@@ -90,7 +90,7 @@ def run(app):
             # Quit Firefox
             print_results(module, current)
             current.teardown()
-            confirm_firefox_quit()
+            confirm_firefox_quit(app)
         else:
             skipped += 1
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
@@ -101,6 +101,7 @@ def run(app):
 
     # We may remove profiles here, but likely still in use and can't do it yet
     # clean_profiles()
+    app.finish()
 
 
 def load_tests(app):
@@ -124,7 +125,7 @@ def load_tests(app):
                     test_paths_list = [line.strip() for line in f]
                 if len(test_paths_list) == 0:
                     logger.error('"%s" does not contain any valid test paths. Exiting program ...' % str(suite_path))
-                    exit(1)
+                    app.finish(code=1)
                 logger.debug('Tests found in the test suite file:\n\n%s\n' % '\n'.join(map(str, test_paths_list)))
                 logger.debug('Validating test paths ...')
                 for test_path in test_paths_list:
@@ -137,10 +138,10 @@ def load_tests(app):
 
                 if len(app.test_list) == 0:
                     logger.error('"%s" does not contain any valid test paths. Exiting program ...' % str(suite_path))
-                    exit(1)
+                    app.finish(code=1)
             else:
                 logger.error('Could not locate "%s" . Exiting program ...', str(suite_path))
-                exit(1)
+                app.finish(code=1)
             logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, app.test_list)))
             return
 
@@ -152,7 +153,7 @@ def load_tests(app):
                 app.test_packages.append(os.path.join(os.path.split(__file__)[0], dir_path.strip()))
         if len(app.test_list) == 0:
             logger.error('Could not locate %s . Exiting program ...' % str(test_name))
-            exit(1)
+            app.finish(code=1)
         else:
             logger.debug('%s found. Proceeding ...' % test_name)
         return
@@ -171,10 +172,10 @@ def load_tests(app):
                         app.test_packages.append(dir_path)
         if len(app.test_list) == 0:
             logger.error('Directory %s does not contain test files. Exiting program ...' % tests_directory)
-            exit(1)
+            app.finish(code=1)
         else:
             logger.debug('Test packages: %s', app.test_packages)
             logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, app.test_list)))
     else:
         logger.error('Path: %s does not exist. Exiting program ...' % tests_directory)
-        exit(1)
+        app.finish(code=1)

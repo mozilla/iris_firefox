@@ -2,13 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+import coloredlogs
 import glob
 import shutil
 import sys
 import tempfile
+from distutils.spawn import find_executable
+from multiprocessing import Process
 
-import coloredlogs
 
 import firefox.app as fa
 import firefox.downloader as fd
@@ -17,6 +18,7 @@ import test_runner
 from api.core import *
 from api.helpers.parse_args import parse_args
 from firefox import cleanup
+from local_web import LocalWebServer
 
 tmp_dir = None
 restore_terminal_encoding = None
@@ -42,12 +44,16 @@ class Iris(object):
     def __init__(self):
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
+        self.process_list = []
         load_all_patterns()
         self.check_keyboard_state()
         self.init_tesseract_path()
+        self.check_7zip()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = Settings.getOS()
+        self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
+        self.start_local_web_server(self.local_web_root, self.args.port)
         self.main()
         test_runner.run(self)
 
@@ -61,7 +67,7 @@ class Iris(object):
         tmp_dir = self.__create_tempdir()
 
         # Create workdir (usually ~/.iris, used for caching etc.)
-        # Assumes that no previous code must write to it.
+        # Assumes that no previous code will write to it.
         if not os.path.exists(self.args.workdir):
             logger.debug('Creating working directory %s' % self.args.workdir)
             os.makedirs(self.args.workdir)
@@ -87,8 +93,31 @@ class Iris(object):
 
         return 0
 
-    @staticmethod
-    def check_keyboard_state():
+    def start_local_web_server(self, path, port):
+        """
+        Web servers are spawned in new Process instances, which
+        must be saved in a list in order to be terminated later.
+        """
+        try:
+            logger.debug('Starting local web server on port %s for directory %s' % (port, path))
+            web_server_process = Process(target=LocalWebServer, args=(path, port,))
+            self.process_list.append(web_server_process)
+            web_server_process.start()
+        except IOError:
+            logger.critical('Unable to launch local web server, aborting Iris.')
+            self.finish(code=13)
+
+    def finish(self, code=0):
+        """
+        All exit points of Iris need to call this function in order to exit properly.
+        """
+        logger.debug('There are %s queued process(es) to terminate.' % len(self.process_list))
+        for process in self.process_list:
+            logger.debug('Terminating process.')
+            process.terminate()
+        sys.exit(code)
+
+    def check_keyboard_state(self):
         is_lock_on = False
 
         if Key.isLockOn(Key.CAPS_LOCK):
@@ -104,7 +133,7 @@ class Iris(object):
             is_lock_on = True
 
         if is_lock_on:
-            exit(1)
+            self.finish(code=1)
 
     @staticmethod
     def __create_tempdir():
@@ -188,7 +217,7 @@ class Iris(object):
                 fdl = fd.FirefoxDownloader(self.args.workdir, cache_timeout=1 * 60 * 60)
                 build_archive_file = fdl.download(build, self.args.locale, platform)
                 if build_archive_file is None:
-                    sys.exit(-1)
+                    self.finish(code=-1)
                 # Extract candidate archive
                 candidate_app = fe.extract(build_archive_file, Settings.getOS(), self.args.workdir,
                                            cache_timeout=1 * 60 * 60)
@@ -204,7 +233,7 @@ class Iris(object):
                 dist_globs = sorted(glob.glob(os.path.join(build, 'obj-*', 'dist')))
                 if len(dist_globs) == 0:
                     logger.critical('"%s" looks like a Firefox build directory, but can\'t find a build in it' % build)
-                    sys.exit(5)
+                    self.finish(code=5)
                 logger.debug('Potential globs for dist directory: %s' % dist_globs)
                 dist_dir = dist_globs[-1]
                 logger.info('Using "%s" as build distribution directory' % dist_dir)
@@ -222,7 +251,7 @@ class Iris(object):
             else:
                 logger.critical('"%s" specifies neither a Firefox release, package file, or build directory' % build)
                 logger.critical('Valid Firefox release identifiers are: %s' % ', '.join(fd.FirefoxDownloader.list()[0]))
-                sys.exit(5)
+                self.finish(5)
 
             logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
             if candidate_app.platform != platform:
@@ -264,9 +293,17 @@ class Iris(object):
             path_not_found = True
 
         if path_not_found:
-            logger.error('Unable to find tesseract')
-            exit(1)
+            logger.critical('Unable to find Tesseract.')
+            logger.critical('Please consult wiki for complete setup instructions.')
+            self.finish(1)
 
+    def check_7zip(self):
+        # Find 7zip binary
+        sz_bin = find_executable('7z')
+        if sz_bin is None:
+            logger.critical('Cannot find required library 7zip, aborting Iris.')
+            logger.critical('Please consult wiki for complete setup instructions.')
+            self.finish(code=5)
 
 class RemoveTempDir(cleanup.CleanUp):
     """Class definition for cleanup helper responsible for deleting the temporary directory prior to exit."""

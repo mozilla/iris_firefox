@@ -24,6 +24,7 @@ from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
 from iris.api.helpers.iris_image import IrisImage
 
+
 try:
     import Image
 except ImportError:
@@ -112,7 +113,7 @@ def load_all_patterns():
     for root, dirs, files in os.walk(PROJECT_BASE_PATH):
         for file_name in files:
             if file_name.endswith('.png'):
-                if current_platform_pattern in root or 'common' in root:
+                if current_platform_pattern in root or 'common' in root or 'local_web' in root:
                     new_image = IrisImage(file_name, root)
                     if new_image.name in _images:
                         new_file = os.path.join(root, file_name)
@@ -1655,6 +1656,43 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
         found_region.w += padding_right
 
     return found_region
+
+
+class LocalWeb(object):
+    """
+    Constants that represent URLs and images for local content.
+    """
+
+    # Simple blank HTML page
+    BLANK_PAGE = 'http://127.0.0.1:%s/blank.htm' % args.port
+
+    # Local Firefox site
+    FIREFOX_TEST_SITE = 'http://127.0.0.1:%s/firefox/' % args.port
+    FIREFOX_LOGO = 'firefox_logo.png'
+    FIREFOX_IMAGE = 'firefox_full.png'
+    FIREFOX_BOOKMARK = 'firefox_bookmark.png'
+    FIREFOX_BOOKMARK_SMALL = 'firefox_bookmark_small.png'
+
+    # Local Firefox Focus site
+    FOCUS_TEST_SITE = 'http://127.0.0.1:%s/focus/' % args.port
+    FOCUS_LOGO = 'focus_logo.png'
+    FOCUS_IMAGE = 'focus_full.png'
+    FOCUS_BOOKMARK = 'focus_bookmark.png'
+    FOCUS_BOOKMARK_SMALL = 'focus_bookmark_small.png'
+
+    # Local Mozilla site
+    MOZILLA_TEST_SITE = 'http://127.0.0.1:%s/mozilla/' % args.port
+    MOZILLA_LOGO = 'mozilla_logo.png'
+    MOZILLA_IMAGE = 'mozilla_full.png'
+    MOZILLA_BOOKMARK = 'mozilla_bookmark.png'
+    MOZILLA_BOOKMARK_SMALL = 'mozilla_bookmark_small.png'
+
+    # Local Pocket site
+    POCKET_TEST_SITE = 'http://127.0.0.1:%s/pocket/' % args.port
+    POCKET_LOGO = 'pocket_logo.png'
+    POCKET_IMAGE = 'pocket_full.png'
+    POCKET_BOOKMARK = 'pocket_bookmark.png'
+    POCKET_BOOKMARK_SMALL = 'pocket_bookmark_small.png'
 
 
 """Sikuli wrappers

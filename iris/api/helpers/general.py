@@ -45,24 +45,23 @@ def clean_profiles():
     os.mkdir(profile_cache)
 
 
-def confirm_firefox_launch():
+def confirm_firefox_launch(app):
     """waits for firefox to exist by waiting for the home button to be present."""
     try:
         wait('home.png', 20)
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
-        exit(1)
+        app.finish(code=1)
 
 
-def confirm_firefox_quit():
+def confirm_firefox_quit(app):
     try:
         waitVanish('home.png', 10)
+        address_crash_reporter()
     except FindError:
         logger.error('Firefox still around - aborting test run.')
-        exit(1)
-    address_crash_reporter()
-
+        app.finish(code=1)
 
 def get_firefox_region():
     # TODO: needs better logic to determine bounds
@@ -100,19 +99,24 @@ def navigate(url):
 
 
 def restart_firefox(path, profile, url, args=None):
-    # just as it says, with options
-    logger.debug('Restarting Firefox')
+    # Just as it says, with options.
+    logger.debug('Restarting Firefox.')
     quit_firefox()
-    logger.debug('Confirming that Firefox has been quit')
-    confirm_firefox_quit()
-    # Give Firefox a chance to cleanly shutdown all of its processes
-    # TODO: This should be made into a robust function instead of a hard coded sleep
-    time.sleep(3)
-    logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
-    launch_firefox(path, profile, url, args)
-    logger.debug('Confirming that Firefox has been launched')
-    confirm_firefox_launch()
-    logger.debug('Successful Firefox restart performed')
+    logger.debug('Confirming that Firefox has been quit.')
+    try:
+        waitVanish('home.png', 10)
+        # TODO: This should be made into a robust function instead of a hard coded sleep
+        # Give Firefox a chance to cleanly shutdown all of its processes
+        time.sleep(3)
+        logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
+        launch_firefox(path, profile, url, args)
+        logger.debug('Confirming that Firefox has been relaunched')
+        if exists('home.png', 10):
+            logger.debug('Successful Firefox restart performed')
+        else:
+            raise FindError('Firefox not relaunched.')
+    except FindError:
+        raise FindError('Firefox still around - cannot restart.')
     return
 
 
@@ -577,11 +581,7 @@ class _IrisProfile(object):
         return self._get_staged_profile('ten_bookmarks')
 
     def _get_staged_profile(self, profile_name):
-        # Find 7zip binary
         sz_bin = find_executable('7z')
-        if sz_bin is None:
-            logger.critical('Cannot find 7zip')
-            exit(5)
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
         zipped_profile = os.path.join(Profile.STAGED_PROFILES, '%s.zip' % profile_name)
