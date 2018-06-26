@@ -20,12 +20,12 @@ class Test(BaseTest):
         navigate(url)
 
         # Check to make sure the test PDF is loaded, Then click the download button.
-        expected = exists(test_pdf, 5)
+        expected = exists(test_pdf, 10)
         assert_true(self, expected, 'The test PDF is present')
         click(download_button)
 
         # Ensure the dialog appears
-        expected = exists(dialog, 5)
+        expected = exists(dialog, 10)
         assert_true(self, expected, 'Download dialog is present')
 
         # Close the dialog

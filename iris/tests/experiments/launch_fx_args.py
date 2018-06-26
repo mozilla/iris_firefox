@@ -27,7 +27,7 @@ class Test(BaseTest):
         args = ['-width', '400', '-height', '400', '-private-window', 'http://amazon.com']
         launch_firefox(path=self.app.fx_path, profile=Profile.DEFAULT, args=args)
 
-        expected_1 = exists(amazon_image, 10)
+        expected_1 = exists(amazon_image, 20)
 
         quit_firefox()
         time.sleep(5)

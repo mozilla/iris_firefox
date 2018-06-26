@@ -3,12 +3,15 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import Queue
 import copy
 import ctypes
 import inspect
 import logging
+import multiprocessing
 import os
 import platform
+import re
 import subprocess
 import time
 from datetime import datetime
@@ -22,8 +25,7 @@ import pytesseract
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
-from iris.api.helpers.iris_image import IrisImage
-
+from iris.api.helpers.iris_image import IrisImage, iris_image_match_template
 
 try:
     import Image
@@ -35,7 +37,6 @@ args = parse_args()
 pyautogui.FAILSAFE = False
 save_debug_images = args.level == 10
 
-FIND_METHOD = cv2.TM_CCOEFF_NORMED
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
@@ -52,6 +53,8 @@ DEFAULT_DELAY_BEFORE_MOUSE_DOWN = 0.3
 DEFAULT_DELAY_BEFORE_DRAG = 0.3
 DEFAULT_DELAY_BEFORE_DROP = 0.3
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
+
+MIN_CPU_FOR_MULTIPROCESSING = 4
 
 _images = {}
 
@@ -144,6 +147,10 @@ for debug_image_file in os.listdir(image_debug_path):
             os.unlink(file_path)
     except Exception as e:
         continue
+
+
+def use_multiprocessing():
+    return multiprocessing.cpu_count() >= MIN_CPU_FOR_MULTIPROCESSING
 
 
 class _IrisKey(object):
@@ -736,6 +743,7 @@ class Pattern(object):
     def __init__(self, image_name):
         self.image_name = image_name
         self.image_path = _images[self.image_name].path
+        self.scale_factor = _images[self.image_name].scale_factor
         self.target_offset = None
 
     def targetOffset(self, dx, dy):
@@ -1020,37 +1028,35 @@ def get_test_name():
     return
 
 
-def _save_debug_image(search_for, on_region, locations, not_found=False):
+def _save_debug_image(needle, haystack, locations, not_found=False):
     """Saves input Image for debug.
 
-    :param Image || None search_for: Input needle image that needs to be highlighted
-    :param Image || Region on_region: Input Region as Image
+    :param Image || None needle: Input needle image that needs to be highlighted
+    :param Image || Region haystack: Input Region as Image
     :param List[Location] || Location || None locations: Location or list of Location as coordinates
     :return: None
     """
     test_name = get_test_name()
-    if save_debug_images and test_name is not None:
-        is_image = False if isinstance(search_for, str) and _is_ocr_text(search_for) else True
+
+    if test_name is not None:
+        is_image = False if isinstance(needle, str) and _is_ocr_text(needle) else True
         w, h = 0, 0
 
-        if isinstance(on_region, Region):
-            full_screen = _region_grabber(on_region)
-            img_rgb = np.array(full_screen)
-            on_region = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+        if isinstance(haystack, Region):
+            full_screen = _region_grabber(haystack)
+            haystack = np.array(Image.fromarray(np.array(full_screen)).convert('L'))
         else:
-            try:
-                on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2BGR)
-            except:
-                on_region = _region_grabber(None)
+            if haystack is not None:
+                haystack = np.array(Image.fromarray(np.array(haystack)).convert('RGB'))
+            else:
+                haystack = _region_grabber(None)
 
-        if search_for is None:
-            h, w = on_region.shape
+        if needle is None:
+            h, w = haystack.shape
         elif is_image:
-            w, h = search_for.shape[::-1]
+            w, h = np.array(needle).shape[::-1]
 
-        current_time = datetime.now()
-        temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_')
-        temp_f = temp_f + '_' + test_name.replace('.py', '')
+        temp_f = re.sub('[ :.-]', '_', str(datetime.now())) + '_' + test_name.replace('.py', '')
 
         def _draw_rectangle(on_what, (top_x, top_y), (btm_x, btm_y), width=2):
             cv2.rectangle(on_what, (top_x, top_y), (btm_x, btm_y), (0, 0, 255), width)
@@ -1060,20 +1066,20 @@ def _save_debug_image(search_for, on_region, locations, not_found=False):
                 locations = Location(0, 0)
             else:
                 temp_f = temp_f + '_debug'
-                region_ = Image.fromarray(on_region).size
+                region_ = Image.fromarray(haystack).size
                 try:
-                    on_region = cv2.cvtColor(on_region, cv2.COLOR_GRAY2RGB)
+                    haystack = cv2.cvtColor(haystack, cv2.COLOR_GRAY2RGB)
                 except:
                     pass
                 if is_image:
-                    _draw_rectangle(on_region, (0, 0), (region_[0], region_[1]), 5)
+                    _draw_rectangle(haystack, (0, 0), (region_[0], region_[1]), 5)
 
         if not_found:
             temp_f = temp_f + '_not_found'
 
-            on_region_image = Image.fromarray(on_region)
+            on_region_image = Image.fromarray(haystack)
             if is_image:
-                search_for_image = Image.fromarray(search_for)
+                search_for_image = Image.fromarray(np.array(needle))
 
             tuple_paste_location = (0, on_region_image.size[1] / 4)
 
@@ -1090,18 +1096,18 @@ def _save_debug_image(search_for, on_region, locations, not_found=False):
                 _debug_put_text(d_array, '<<< Pattern not found',
                                 (search_for_image.size[0] + 10, tuple_paste_location[1]))
             else:
-                _debug_put_text(d_array, '<<< Text not found: ' + search_for, tuple_paste_location)
-            on_region = d_array
+                _debug_put_text(d_array, '<<< Text not found: ' + needle, tuple_paste_location)
+            haystack = d_array
 
         if isinstance(locations, list):
             for location in locations:
                 if isinstance(location, Location):
-                    _draw_rectangle(on_region, (location.x, location.y), (location.x + w, location.y + h))
+                    _draw_rectangle(haystack, (location.x, location.y), (location.x + w, location.y + h))
 
         elif isinstance(locations, Location):
-            _draw_rectangle(on_region, (locations.x, locations.y), (locations.x + w, locations.y + h))
+            _draw_rectangle(haystack, (locations.x, locations.y), (locations.x + w, locations.y + h))
 
-        cv2.imwrite(image_debug_path + '/' + temp_f + '.jpg', on_region)
+        cv2.imwrite(image_debug_path + '/' + temp_f + '.jpg', haystack)
 
 
 def _save_ocr_debug_image(on_region, matches):
@@ -1155,110 +1161,101 @@ def _region_grabber(region=None, for_ocr=False):
             return grabbed_area
 
 
-def _match_template(image_name, haystack, precision=None):
+def _match_template(needle, haystack, precision=None):
     """Search for needle in stack (single match).
 
-    :param str image_name: Image name (needle)
-    :param Image haystack: Region as Image (haystack)
+    :param IrisImage needle: Image details (needle)
+    :param Image.Image haystack: Region as Image (haystack)
     :param float precision: Min allowed similarity
     :return: Location
     """
 
-    if image_name not in _images:
-        return ValueError("Unable to locate %s image in project" % image_name)
-
-    image_details = _images[image_name]
-
     if precision is None:
         precision = Settings.MinSimilarity
 
-    img_rgb = np.array(haystack)
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    needle = cv2.imread(image_details.path, 0)
+    haystack_img_gray = haystack.convert('L')
+    needle_img_gray = needle.gray_image
 
-    if image_details.scale_factor > 1:
-        temp_w, temp_h = get_asset_img_size(image_details.name)
-        new_w, new_h = int(temp_w / image_details.scale_factor), int(temp_h / image_details.scale_factor)
-        needle = cv2.resize(needle, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    position = iris_image_match_template(needle_img_gray, haystack_img_gray, precision, None)
 
-    try:
-        res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
-    except:
-        return Location(-1, -1)
+    if save_debug_images:
+        if position.getX() == -1:
+            _save_debug_image(needle_img_gray, np.array(haystack_img_gray), None, True)
+        else:
+            _save_debug_image(needle_img_gray, haystack_img_gray, position)
 
-    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-    if max_val < precision:
-        _save_debug_image(needle, img_gray, None, True)
-        return Location(-1, -1)
-    else:
-        position = Location(max_loc[0], max_loc[1])
-        _save_debug_image(needle, img_gray, position)
-        return position
+    return position
 
 
-def _match_template_multiple(image_name, haystack, precision=None, threshold=0.99):
+def _match_template_multiple(needle, haystack, precision=None, threshold=0.99):
     """Search for needle in stack (multiple matches)
 
-    :param str image_name:  Image name (needle)
-    :param Image haystack: Region as Image (haystack)
+    :param IrisImage needle:  Image details (needle)
+    :param Image.Image haystack: Region as Image (haystack)
     :param float precision: Min allowed similarity
     :param float threshold:  Max threshold
     :return: List of Location
     """
 
-    if image_name not in _images:
-        return ValueError("Unable to locate %s image in project" % image_name)
-
-    image_details = _images[image_name]
+    if precision is None:
+        precision = Settings.MinSimilarity
 
     if precision is None:
         precision = Settings.MinSimilarity
 
-    img_rgb = np.array(haystack)
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    needle = cv2.imread(image_details.path, 0)
+    haystack_img_gray = haystack.convert('L')
+    needle_img_gray = needle.gray_image
 
-    if image_details.scale_factor > 1:
-        temp_w, temp_h = get_asset_img_size(image_details.name)
-        new_w, new_h = int(temp_w / image_details.scale_factor), int(temp_h / image_details.scale_factor)
-        needle = cv2.resize(needle, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    found_list = iris_image_match_template(needle_img_gray, haystack_img_gray, precision, threshold)
 
-    try:
-        res = cv2.matchTemplate(img_gray, needle, FIND_METHOD)
-    except:
-        return Location(-1, -1)
+    if save_debug_images:
+        _save_debug_image(needle, haystack, found_list)
 
-    w, h = needle.shape[::-1]
-    points = []
-    while True:
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-        if FIND_METHOD in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
-            top_left = min_loc
-        else:
-            top_left = max_loc
-
-        if threshold > max_val > precision:
-            sx, sy = top_left
-            for x in range(sx - w / 2, sx + w / 2):
-                for y in range(sy - h / 2, sy + h / 2):
-                    try:
-                        res[y][x] = np.float32(-10000)
-                    except IndexError:
-                        pass
-            new_match_point = Location(top_left[0], top_left[1])
-            points.append(new_match_point)
-        else:
-            break
-
-    _save_debug_image(needle, img_gray, points)
-    return points
+    return found_list
 
 
-def _image_search(image_name, precision=None, region=None):
+def _add_positive_image_search_result_in_queue(queue, image_name, precision=None, region=None, all_images=None):
+    """Puts result in a queue if image is found
+
+    :param Queue.Queue queue: Queue where the result of the search is added
+    :param str image_name: name of the searched image
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :param dict all_images: hold the list of all images that are loaded into the tests
+    :return:
+    """
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
+    result = _image_search(all_images[image_name], precision, region)
+    if result.getX() != -1:
+        queue.put(result)
+
+
+def _add_negative_image_search_result_in_queue(queue, image_name, precision=None, region=None, all_images=None):
+    """Puts result in a queue if image is NOT found
+
+    :param Queue.Queue queue: Queue where the result of the search is added
+    :param str image_name: name of the searched image
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :param dict all_images: hold the list of all images that are loaded into the tests
+    :return:
+    """
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
+    result = _image_search(all_images[image_name], precision, region)
+    if result.getX() == -1:
+        queue.put(result)
+
+
+def _image_search(image_details, precision=None, region=None):
     """ Wrapper over _match_template. Search image in a Region or full screen
 
-    :param str image_name: Image name (needle)
+    :param IrisImage image_details: Image details (needle)
     :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Location
@@ -1268,7 +1265,7 @@ def _image_search(image_name, precision=None, region=None):
         precision = Settings.MinSimilarity
 
     stack_image = _region_grabber(region=region)
-    location = _match_template(image_name, stack_image, precision)
+    location = _match_template(image_details, stack_image, precision)
 
     if location.x == -1 or location.y == -1:
         return location
@@ -1278,10 +1275,10 @@ def _image_search(image_name, precision=None, region=None):
         return location
 
 
-def _image_search_multiple(image_name, precision=None, region=None):
+def _image_search_multiple(image_details, precision=None, region=None):
     """ Wrapper over _match_template_multiple. Search image (multiple) in a Region or full screen
 
-    :param str image_name: Image name (needle)
+    :param IrisImage image_details: Image details (needle)
     :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: List[Location]
@@ -1291,37 +1288,151 @@ def _image_search_multiple(image_name, precision=None, region=None):
         precision = Settings.MinSimilarity
 
     stack_image = _region_grabber(region=region)
-    return _match_template_multiple(image_name, stack_image, precision)
+    return _match_template_multiple(image_details, stack_image, precision)
 
 
-def _image_search_loop(image_name, at_interval=None, attempts=None, precision=None, region=None):
+def _calculate_interval_max_attempts(timeout=None):
+    if timeout is None:
+        timeout = Settings.AutoWaitTimeout
+
+    wait_scan_rate = float(Settings.WaitScanRate)
+    interval = 1 / wait_scan_rate
+    max_attempts = int(timeout * wait_scan_rate)
+    return interval, max_attempts
+
+
+def _positive_image_search_loop(image_name, timeout=None, precision=None, region=None):
     """ Search for an image (in loop) in a Region or full screen
 
-    :param str image_name: Image name (needle)
-    :param float at_interval: Wait time between searches
-    :param int attempts: Number of max attempts
+    :param str image_name: name of the searched image
+    :param timeout: Number as maximum waiting time in seconds.
     :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Location
     """
 
-    if at_interval is None:
-        at_interval = 1 / Settings.WaitScanRate
-
-    if attempts is None:
-        attempts = int(Settings.AutoWaitTimeout * Settings.WaitScanRate)
+    interval, max_attempts = _calculate_interval_max_attempts(timeout)
 
     if precision is None:
         precision = Settings.MinSimilarity
 
-    pos = _image_search(image_name, precision, region)
+    image_details = _images[image_name]
+    pos = _image_search(image_details, precision, region)
     tries = 0
-    while pos.getX() == -1 and tries < attempts:
+    while pos.getX() == -1 and tries < max_attempts:
         logger.debug("Searching for image %s" % image_name)
-        time.sleep(at_interval)
-        pos = _image_search(image_name, precision, region)
+        time.sleep(interval)
+        pos = _image_search(image_details, precision, region)
         tries += 1
-    return pos
+
+    return None if pos.getX() == -1 else pos
+
+
+def _positive_image_search_multiprocess(image_name, timeout=None, precision=None, region=None):
+    """Checks if image is found using multiprocessing
+
+    :param str image_name: name of the searched image
+    :param timeout: Number as maximum waiting time in seconds.
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :return: Found image from queue
+    """
+
+    out_q = multiprocessing.Queue()
+
+    interval, max_attempts = _calculate_interval_max_attempts(timeout)
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
+    process_list = []
+    for i in range(max_attempts):
+        p = multiprocessing.Process(target=_add_positive_image_search_result_in_queue,
+                                    args=(out_q, image_name, precision, region, _images))
+        process_list.append(p)
+        p.start()
+        try:
+            return out_q.get(False)
+        except Queue.Empty:
+            pass
+        time.sleep(interval)
+        p.join()
+
+        try:
+            for process in process_list:
+                process.terminate()
+        except Exception:
+            pass
+    return None
+
+
+def _negative_image_search_loop(image_name, timeout=None, precision=None, region=None):
+    """ Search if an image (in loop) is NOT in a Region or full screen
+
+    :param str image_name: name of the searched image
+    :param timeout: Number as maximum waiting time in seconds.
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :return: Location
+    """
+
+    interval, max_attempts = _calculate_interval_max_attempts(timeout)
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
+    pattern_found = True
+    tries = 0
+    image_name = _get_pattern_name(image_name)
+    image_details = _images[image_name]
+
+    while pattern_found is True and tries < max_attempts:
+        image_found = _image_search(image_details, precision, region)
+        if (image_found.x != -1) & (image_found.y != -1):
+            pattern_found = True
+        else:
+            pattern_found = False
+        tries += 1
+        time.sleep(interval)
+
+    return None if pattern_found else True
+
+
+def _negative_image_search_multiprocess(image_name, timeout=None, precision=None, region=None):
+    """Checks if image is NOT found or it vanished using multiprocessing
+
+    :param str image_name: name of the searched image
+    :param timeout: Number as maximum waiting time in seconds.
+    :param float precision: Min allowed similarity
+    :param Region region: Region object
+    :return: Found image from queue
+    """
+    out_q = multiprocessing.Queue()
+
+    interval, max_attempts = _calculate_interval_max_attempts(timeout)
+
+    if precision is None:
+        precision = Settings.MinSimilarity
+
+    process_list = []
+    for i in range(max_attempts):
+        p = multiprocessing.Process(target=_add_negative_image_search_result_in_queue,
+                                    args=(out_q, image_name, precision, region, _images))
+        process_list.append(p)
+        p.start()
+        try:
+            return out_q.get(False)
+        except Queue.Empty:
+            pass
+        time.sleep(interval)
+        p.join()
+
+        try:
+            for process in process_list:
+                process.terminate()
+        except Exception:
+            pass
+    return None
 
 
 def _text_search_all(with_image_processing=True, in_region=None, in_image=None):
@@ -1530,13 +1641,15 @@ def _text_search_by(what, match_case=True, in_region=None, multiple_matches=Fals
         if len(final_m_matches) > 0:
             return final_m_matches
         else:
-            _save_debug_image(what, in_region, None, True)
+            if save_debug_images:
+                _save_debug_image(what, in_region, None, True)
             return None
     else:
         if final_s_match is not None:
             return final_s_match
         else:
-            _save_debug_image(what, in_region, None, True)
+            if save_debug_images:
+                _save_debug_image(what, in_region, None, True)
             return None
 
 
@@ -1743,7 +1856,7 @@ def hover(where=None, duration=0, in_region=None):
 
     elif isinstance(where, str) or isinstance(where, Pattern):
         image_name = _get_pattern_name(where)
-        pos = _image_search(image_name, region=in_region)
+        pos = _image_search(_images[image_name], region=in_region)
         if pos.x is not -1:
             needle_width, needle_height = get_asset_img_size(image_name)
             if isinstance(where, Pattern):
@@ -1780,11 +1893,14 @@ def find(what, precision=None, in_region=None):
 
     elif isinstance(what, str) or isinstance(what, Pattern):
 
+        if what not in _images:
+            return ValueError("Unable to locate %s image in project" % what)
+
         if precision is None:
             precision = Settings.MinSimilarity
 
         image_name = _get_pattern_name(what)
-        image_found = _image_search(image_name, precision, in_region)
+        image_found = _image_search(_images[image_name], precision, in_region)
         if (image_found.x != -1) & (image_found.y != -1):
             return image_found
         else:
@@ -1849,13 +1965,14 @@ def wait(for_what, timeout=None, precision=None, in_region=None):
         if precision is None:
             precision = Settings.MinSimilarity
 
-        wait_scan_rate = float(Settings.WaitScanRate)
-        s_interval = 1 / wait_scan_rate
-        max_attempts = int(timeout * wait_scan_rate)
-
         image_name = _get_pattern_name(for_what)
-        image_found = _image_search_loop(image_name, s_interval, max_attempts, precision, in_region)
-        if (image_found.x != -1) & (image_found.y != -1):
+
+        if use_multiprocessing():
+            image_found = _positive_image_search_multiprocess(image_name, timeout, precision, in_region)
+        else:
+            image_found = _positive_image_search_loop(image_name, timeout, precision, in_region)
+
+        if image_found is not None:
             return True
         else:
             raise FindError('Unable to find image %s' % image_name)
@@ -1902,27 +2019,17 @@ def waitVanish(for_what, timeout=None, precision=None, in_region=None):
     if precision is None:
         precision = Settings.MinSimilarity
 
-    wait_scan_rate = float(Settings.WaitScanRate)
-    interval = 1 / wait_scan_rate
-    max_attempts = int(timeout * wait_scan_rate)
-
-    pattern_found = True
-    tries = 0
     image_name = _get_pattern_name(for_what)
 
-    while pattern_found is True and tries < max_attempts:
-        image_found = _image_search(image_name, precision, in_region)
-        if (image_found.x != -1) & (image_found.y != -1):
-            pattern_found = True
-        else:
-            pattern_found = False
-        tries += 1
-        time.sleep(interval)
-
-    if pattern_found is True:
-        raise FindError('%s did not vanish' % image_name)
+    if use_multiprocessing():
+        image_found = _negative_image_search_multiprocess(image_name, timeout, precision, in_region)
     else:
+        image_found = _negative_image_search_loop(image_name, timeout, precision, in_region)
+
+    if image_found is not None:
         return True
+    else:
+        raise FindError('%s did not vanish' % image_name)
 
 
 def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=None):
@@ -1942,13 +2049,14 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
     needle = cv2.imread(pattern.image_path)
     height, width, channels = needle.shape
 
-    wait_scan_rate = float(Settings.WaitScanRate)
-    interval = 1 / wait_scan_rate
-    max_attempts = int(Settings.AutoWaitTimeout * wait_scan_rate)
+    if use_multiprocessing():
+        p_top = _positive_image_search_multiprocess(image_name=pattern.image_name, precision=Settings.MinSimilarity,
+                                                    region=in_region)
+    else:
+        p_top = _positive_image_search_loop(image_name=pattern.image_name, precision=Settings.MinSimilarity,
+                                            region=in_region)
 
-    p_top = _image_search_loop(pattern.image_name, interval, max_attempts, Settings.MinSimilarity, in_region)
-
-    if p_top.getX() == -1 and p_top.getY() == -1:
+    if p_top is None:
         raise FindError('Unable to click on: %s' % pattern.image_path)
 
     possible_offset = pattern.getTargetOffset()
@@ -2023,17 +2131,20 @@ def get_asset_img_size(of_what):
     :return: width, height as tuple
     """
     needle_path = None
+    scale_factor = 1
 
     if isinstance(of_what, str):
         pattern = Pattern(of_what)
         needle_path = pattern.image_path
+        scale_factor = pattern.scale_factor
 
     elif isinstance(of_what, Pattern):
         needle_path = of_what.image_path
+        scale_factor = of_what.scale_factor
 
     needle = cv2.imread(needle_path)
     height, width, channels = needle.shape
-    return int(width), int(height)
+    return int(width/scale_factor), int(height/scale_factor)
 
 
 def click(where=None, duration=None, in_region=None):
@@ -2089,9 +2200,9 @@ def _to_location(pattern_or_string=None, in_region=None):
     :return: Location object
     """
     if isinstance(pattern_or_string, Pattern):
-        return _image_search(pattern_or_string.image_name, Settings.MinSimilarity, in_region)
+        return _image_search(_images[pattern_or_string.image_name], Settings.MinSimilarity, in_region)
     elif isinstance(pattern_or_string, str):
-        return _image_search(pattern_or_string, Settings.MinSimilarity, in_region)
+        return _image_search(_images[pattern_or_string], Settings.MinSimilarity, in_region)
     elif isinstance(pattern_or_string, Location):
         return pattern_or_string
 
