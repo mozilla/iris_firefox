@@ -28,7 +28,7 @@ class Test(BaseTest):
 
         navigate(url)
         # Wait page load
-        wait(t_left)
+        wait(t_left, 10)
 
         desktop_i = 'ut-desktop.png'
         keyboard_i = 'ut-keyboard.png'

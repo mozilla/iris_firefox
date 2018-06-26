@@ -38,7 +38,7 @@ class Test(BaseTest):
         ut_shift = 'ut-shift.png'
 
         navigate(url)
-        wait(t_left)
+        wait(t_left, 10)
 
         page_region = generate_region_by_markers(t_left, b_right)
 
