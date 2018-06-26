@@ -16,7 +16,7 @@ class Test(BaseTest):
         assert_true(self, hover_region.exists(hovered_element), 'Hover confirmed')
 
     def run(self):
-        url = self.get_asset_path(__file__, 'mouse-events.html')
+        url = self.get_asset_path('mouse-events.html')
 
         t_left = 'ut-top-left.png'
         b_right = 'ut-bottom-right.png'

@@ -23,7 +23,7 @@ class Test(BaseTest):
             click(ut_reset_all)
 
     def run(self):
-        url = self.get_asset_path(__file__, 'keyboard-events.html')
+        url = self.get_asset_path('keyboard-events.html')
 
         t_left = 'ut-top-left.png'
         b_right = 'ut-bottom-right.png'
