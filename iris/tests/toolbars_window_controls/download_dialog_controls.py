@@ -12,20 +12,20 @@ class Test(BaseTest):
         self.meta = 'This is a test of the Download dialog controls'
 
     def run(self):
-        url = 'https://food.unl.edu/documents/reducingrecipesize.pdf'
-        test_pdf = 'neb_uni.png'
+        url = self.get_web_asset_path('moz.pdf')
+        test_pdf = 'moz_fast.png'
         download_button = 'pdf_download_button.png'
         dialog = 'download_dialog.png'
 
         navigate(url)
 
         # Check to make sure the test PDF is loaded, Then click the download button.
-        expected = exists(test_pdf, 20)
+        expected = exists(test_pdf, 5)
         assert_true(self, expected, 'The test PDF is present')
         click(download_button)
 
         # Ensure the dialog appears
-        expected = exists(dialog, 20)
+        expected = exists(dialog, 5)
         assert_true(self, expected, 'Download dialog is present')
 
         # Close the dialog
