@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import inspect
 
 from api.helpers.general import *
 from api.helpers.keyboard_shortcuts import *
@@ -60,10 +61,24 @@ class BaseTest(object):
         res = Result(outcome, message, actual, expected, error)
         self.add_result(res)
 
-    def get_asset_path(self, test_path, asset_file_name):
+    def get_asset_path(self, asset_file_name):
+        """
+        Returns a fully-resolved local file path to the test asset.
+        """
+        test_path = inspect.stack()[1][1]
         module_path = os.path.split(test_path)[0]
         module_name = os.path.split(test_path)[1].split('.py')[0]
         return os.path.join(module_path, 'assets', module_name, asset_file_name)
+
+    def get_web_asset_path(self, asset_file_name):
+        """
+        Returns a fully-resolved URL to the test asset.
+        """
+        test_path = inspect.stack()[1][1]
+        test_directory = os.path.split(test_path)[0].split('tests/')[1]
+        module_name = os.path.split(test_path)[1].split('.py')[0]
+        resource = '/tests/%s/%s/%s' % (test_directory, module_name, asset_file_name)
+        return self.app.base_local_web_url + resource
 
     def setup(self):
         """ Test case setup
