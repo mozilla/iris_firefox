@@ -53,6 +53,7 @@ class Iris(object):
         self.platform = get_platform()
         self.os = Settings.getOS()
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
+        self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.start_local_web_server(self.local_web_root, self.args.port)
         self.main()
         test_runner.run(self)
