@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-        url = self.get_asset_path(__file__, 'ocr.html')
+        url = self.get_asset_path('ocr.html')
         navigate(url)
 
         top_left_marker = 'ut-top-left.png'
