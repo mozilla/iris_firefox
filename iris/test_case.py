@@ -75,9 +75,9 @@ class BaseTest(object):
         Returns a fully-resolved URL to the test asset.
         """
         test_path = inspect.stack()[1][1]
-        test_directory = os.path.split(test_path)[0].split('tests/')[1]
+        test_directory = os.path.split(test_path)[0].split('tests')[1]
         module_name = os.path.split(test_path)[1].split('.py')[0]
-        resource = '/tests/%s/%s/%s' % (test_directory, module_name, asset_file_name)
+        resource = '/tests%s/%s/%s' % (test_directory, module_name, asset_file_name)
         return self.app.base_local_web_url + resource
 
     def setup(self):
