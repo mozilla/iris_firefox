@@ -46,7 +46,7 @@ class Test(BaseTest):
         expected = exists(zoom_controls_customize_page, 10, in_region=Region(0, 0, 900, 300))
         assert_true(self, expected, 'Zoom controls found in the \'Customize\' page.')
 
-        dragDrop(zoom_controls_customize_page, toolbar)
+        dragDrop(zoom_controls_customize_page, toolbar, 0.5)
         time.sleep(1)
 
         expected = exists(default_zoom_level_toolbar_customize_page, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))

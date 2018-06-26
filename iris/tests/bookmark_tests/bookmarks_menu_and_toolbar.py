@@ -80,7 +80,7 @@ class Test(BaseTest):
 
         time.sleep(1)
 
-        dragDrop(amazon_draggable, drag_area)
+        dragDrop(amazon_draggable, drag_area, 0.5)
 
         bookmark_drag_assert = exists('bookmark_dragged.png', 10)
         assert_true(self, bookmark_drag_assert, 'Bookmark was dragged successfully')

@@ -48,7 +48,7 @@ def clean_profiles():
 def confirm_firefox_launch(app):
     """waits for firefox to exist by waiting for the home button to be present."""
     try:
-        wait('home.png', 20)
+        wait('home.png', 20, in_region=Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
@@ -57,11 +57,13 @@ def confirm_firefox_launch(app):
 
 def confirm_firefox_quit(app):
     try:
+
         waitVanish('home.png', 10)
         address_crash_reporter()
     except FindError:
         logger.error('Firefox still around - aborting test run.')
         app.finish(code=1)
+
 
 def get_firefox_region():
     # TODO: needs better logic to determine bounds
@@ -77,7 +79,6 @@ def navigate_slow(url):
     The function handles typing 'Enter' to complete the action.
     """
     try:
-        wait('home.png', 5)
         select_location_bar()
         # increase the delay between each keystroke while typing strings
         # (sikuli defaults to .02 sec)
@@ -89,7 +90,6 @@ def navigate_slow(url):
 
 def navigate(url):
     try:
-        wait('home.png', 5)
         select_location_bar()
         paste(url)
         type(Key.ENTER)
@@ -230,19 +230,14 @@ def click_hamburger_menu_option(option):
 
 
 def click_auxiliary_window_control(button):
-    '''
-    :param button: close, minimize, maximize, full_screen, restore
-    '''
+    """Click auxiliary window with options: close, minimize, maximize, full_screen, zoom_restore."""
     close_button = 'auxiliary_window_close_button.png'
-    minimize_button = 'auxiliary_window_minimize.png'
-    zoom_button = 'auxiliary_window_zoom.png'
     zoom_full_button = 'auxiliary_window_maximize.png'
     zoom_restore_button = 'minimize_full_screen_auxiliary_window.png'
     red_button = 'unhovered_red_control.png'
+    minimize_button = 'auxiliary_window_minimize.png'
+    auxiliary_window_controls = 'auxiliary_window_controls.png'
 
-    # Ensure the controls are present in the auxiliary window.
-    # Mac controls need to be put in hovered state so the
-    # hidden UI in each button appears.
     if Settings.getOS() == Platform.MAC:
         try:
             wait(red_button, 5)
@@ -250,29 +245,40 @@ def click_auxiliary_window_control(button):
         except FindError:
             logger.error('Can\'t find the auxiliary window controls, aborting.')
             return
-        else:
-            hover(red_button)
     else:
         if Settings.getOS() == Platform.LINUX:
-            hover(Location(80,0))
+            hover(Location(80, 0))
         try:
             wait(close_button, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
             logger.error('Can\'t find the auxiliary window controls, aborting.')
             return
+
     if button == 'close':
-        click(close_button)
+        if Settings.getOS() == Platform.MAC:
+            click(red_button)
+        else:
+            click(close_button)
     elif button == 'minimize':
-        click(minimize_button)
+        if Settings.getOS() == Platform.MAC:
+            window_controls_pattern = Pattern(auxiliary_window_controls)
+            width, height = get_asset_img_size(window_controls_pattern)
+            click(window_controls_pattern.targetOffset(width / 2, height / 2))
+        else:
+            click(minimize_button)
     elif button == 'full_screen':
-        click(zoom_full_button)
+        window_controls_pattern = Pattern(auxiliary_window_controls)
+        width, height = get_asset_img_size(window_controls_pattern)
+        click(window_controls_pattern.targetOffset(width - 10, height / 2))
         if Settings.getOS() == Platform.LINUX:
             hover(Location(80, 0))
     elif button == 'maximize':
         if Settings.getOS() == Platform.MAC:
             keyDown(Key.ALT)
-            click(zoom_button)
+            window_controls_pattern = Pattern(auxiliary_window_controls)
+            width, height = get_asset_img_size(window_controls_pattern)
+            click(window_controls_pattern.targetOffset(width - 10, height / 2))
             keyUp(Key.ALT)
         else:
             click(zoom_full_button)
@@ -327,7 +333,7 @@ def address_crash_reporter():
         except FindError:
             logger.error('Crash reporter did not close')
             # Close the reporter if it hasn't gone away in time
-            close_auxiliary_window()
+            click_auxiliary_window_control('close')
         else:
             return
     else:
@@ -369,22 +375,23 @@ class Option:
     RESET = 2
     ZOOM_TEXT_ONLY = 3
 
+
 def open_zoom_menu(option_number):
     """Opens the Zoom menu options from the View Menu."""
 
     view_menu = 'view_menu.png'
     if Settings.getOS() == Platform.MAC:
         click(view_menu)
-        for i in range (3):
+        for i in range(3):
             type(text=Key.DOWN)
         type(text=Key.ENTER)
     else:
         type(text='v', modifier=KeyModifier.ALT)
-        for i in range (2):
+        for i in range(2):
             type(text=Key.DOWN)
         type(text=Key.ENTER)
 
-    for i in range (option_number):
+    for i in range(option_number):
         type(text=Key.DOWN)
     type(text=Key.ENTER)
 
@@ -435,10 +442,15 @@ def create_region_for_hamburger_menu():
 
 def restore_window_from_taskbar():
     if Settings.getOS() == Platform.MAC:
-        click('main_menu_window.png')
-        type(Key.DOWN)
-        time.sleep(.5)
-        type(Key.ENTER)
+        try:
+            main_menu_window = 'main_menu_window.png'
+            wait(main_menu_window, 5)
+            click(main_menu_window)
+            type(Key.DOWN)
+            time.sleep(.5)
+            type(Key.ENTER)
+        except FindError:
+            logger.error('Restore window from taskbar unsuccessful.')
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
         if Settings.getOS() == Platform.LINUX:
@@ -498,7 +510,6 @@ def remove_zoom_indicator_from_toolbar():
 
 
 def bookmark_options(option):
-
     try:
         wait(option, 10)
         logger.debug('Option %s is present on the page.' % option)
