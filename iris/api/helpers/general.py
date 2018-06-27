@@ -562,7 +562,7 @@ class _IrisProfile(object):
 
     @property
     def BRAND_NEW(self):
-        """Make unique profile name using time stamp."""
+        """Make new, unique profile name using time stamp."""
         new_profile = os.path.join(Profile.PROFILE_CACHE, 'brand_new_' + Profile._create_unique_profile_name())
         logger.debug('Creating brand new profile: %s' % new_profile)
         os.mkdir(new_profile)
@@ -570,7 +570,7 @@ class _IrisProfile(object):
 
     @property
     def LIKE_NEW(self):
-        """Open a staged profile that already has ten bookmarks."""
+        """Open a staged profile that is nearly new, but with some first-run preferences altered.."""
         logger.debug('Creating new profile from LIKE_NEW staged profile')
         return self._get_staged_profile('like_new')
 
