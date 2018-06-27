@@ -10,6 +10,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that check if a bookmark can be loaded inside the Bookmarks Sidebar.'
+        self.fx_version = '<=62'
 
     def run(self):
 
