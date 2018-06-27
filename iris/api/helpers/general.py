@@ -229,6 +229,41 @@ def click_hamburger_menu_option(option):
             return region
 
 
+def click_auxiliary_window_control(button, is_full_screen=None):
+    '''
+    :param button: close, minimize, maximize, full_screen, restore
+    :param is_full_screen: true, false
+    '''
+    close_button = 'auxiliary_window_close_button.png'
+    minimize_button = 'auxiliary_window_minimize.png'
+    zoom_button = 'auxiliary_window_zoom.png'
+    zoom_full_button = 'auxiliary_window_maximize.png'
+    zoom_restore_button = 'minimize_full_screen_auxiliary_window.png'
+    red_button = 'unhovered_red_control.png'
+
+    if Settings.getOS() == Platform.MAC:
+        if button == 'close':
+            hover(red_button)
+            click(close_button)
+        elif button == 'minimize':
+            hover(red_button)
+            click(minimize_button)
+        elif button == 'full_screen':
+            hover(red_button)
+            click(zoom_full_button)
+        elif button == 'maximize':
+            hover(red_button)
+            keyDown(Key.ALT)
+            click(zoom_button)
+            keyUp(Key.ALT)
+        elif button == 'zoom_restore':
+            if is_full_screen:
+                reset_mouse()
+            else:
+                hover(red_button)
+            click(zoom_restore_button)
+
+
 def close_auxiliary_window(is_full_screen=None):
     if Settings.getOS() == Platform.MAC:
         if is_full_screen:
@@ -236,7 +271,7 @@ def close_auxiliary_window(is_full_screen=None):
             auxiliary_window_control = Pattern('auxiliary_window_controls_full_screen.png')
         else:
             auxiliary_window_control = Pattern('auxiliary_window_controls.png')
-        hover(auxiliary_window_control)
+        wait(auxiliary_window_control, 5, .8)
     elif Settings.getOS() == Platform.LINUX:
         if is_full_screen:
             reset_mouse()
