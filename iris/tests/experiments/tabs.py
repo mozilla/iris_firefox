@@ -12,6 +12,10 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of a bunch of tabs'
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.window_size = '500x500'
+
     def run(self):
 
         new_tab()

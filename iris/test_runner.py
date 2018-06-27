@@ -48,11 +48,16 @@ def run(app):
             # Initialize and launch Firefox
             current.setup()
 
+            # Process test case setup values and launch Firefox
+            args = create_firefox_args(current)
+            launch_firefox(path=app.fx_path, profile=current.profile, url=current.url, args=args)
+
             # Verify that Firefox has launched
             confirm_firefox_launch(app)
 
             # Adjust Firefox window size
-            current.resize_window()
+            if current.maximize_window:
+                maximize_window()
 
             # Run the test logic
             try:
@@ -102,6 +107,56 @@ def run(app):
     # We may remove profiles here, but likely still in use and can't do it yet
     # clean_profiles()
     app.finish()
+
+
+def create_firefox_args(test_case):
+    args = []
+    if test_case.private_browsing:
+        args.append('-private')
+
+    if test_case.private_window:
+        args.append('-private-window')
+
+    try:
+        if test_case.window_size:
+            w, h = test_case.window_size.split('x')
+            args.append('-width')
+            args.append('%s' % w)
+            args.append('-height')
+            args.append('%s' % h)
+            test_case.maximize_window = False
+    except ValueError:
+            logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
+
+    if test_case.profile_manager:
+        args.append('-ProfileManager')
+
+    if test_case.set_default_browser:
+        args.append('-setDefaultBrowser')
+
+    if test_case.import_wizard:
+        args.append('-migration')
+
+    if test_case.search:
+        args.append('-search')
+        args.append(test_case.search)
+
+    if test_case.preferences:
+        args.append('-preferences')
+
+    if test_case.devtools:
+        args.append('-devtools')
+
+    if test_case.js_debugger:
+        args.append('-jsdebugger')
+
+    if test_case.js_console:
+        args.append('-jsconsole')
+
+    if test_case.safe_mode:
+        args.append('-safe-mode')
+
+    return args
 
 
 def load_tests(app):

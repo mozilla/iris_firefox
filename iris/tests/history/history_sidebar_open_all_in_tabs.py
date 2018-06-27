@@ -17,8 +17,8 @@ class Test(BaseTest):
 
         This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
+        BaseTest.setup(self)
         self.profile = Profile.BRAND_NEW
-        launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
         return
 
     def run(self):
