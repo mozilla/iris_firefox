@@ -27,10 +27,12 @@ class Test(BaseTest):
         assert_true(self, expected_1, 'The library was opened successfully')
 
         if Settings.getOS() == Platform.MAC:
-            maximize_auxiliary_window()
+            #maximize_auxiliary_window()
+            click_auxiliary_window_control('maximize')
             time.sleep(1)
 
-            maximize_auxiliary_window()
+            #minimize_auxiliary_window()
+            click_auxiliary_window_control('minimize')
             time.sleep(1)
 
         else:
@@ -68,7 +70,8 @@ class Test(BaseTest):
         expected_5 = exists(library_title, 10)
         assert_true(self, expected_5, 'The library was restored successfully')
 
-        close_auxiliary_window()
+        #close_auxiliary_window()
+        click_auxiliary_window_control('close')
         try:
             expected_6 = waitVanish(library_title, 10)
             assert_true(self, expected_6, 'The library was closed successfully')
