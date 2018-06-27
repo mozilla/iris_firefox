@@ -83,20 +83,62 @@ class BaseTest(object):
     def setup(self):
         """ Test case setup
         This might be a good place to declare variables or initialize Fx state.
-        Also, by default, a new Firefox instance is created, with a blank profile and URL.
-        If you wish to change this, override this method in your test case.
-        """
-        self.profile = Profile.DEFAULT
-        launch_firefox(path=self.app.fx_path, profile=self.profile, url='about:blank')
-        return
+        Also, by default, a new Firefox instance is created, with a new profile and
+        blank URL. If you wish to change this, override this method in your test case.
 
-    @staticmethod
-    def resize_window():
-        """ Resize Window
-        By default, we will maximize the window.
-        If this is not desired, override this method in your test case.
+        If you do override this method in your test case, you *must* call
+        BaseTest.setup(self) as the first line in your setup method.
         """
-        maximize_window()
+
+        """Launch with devtools opened by default."""
+        self.devtools = False
+
+        """Launch with bookmark import dialog open by default."""
+        self.import_wizard = False
+
+        """Launch with JS debugger open by default."""
+        self.js_debugger = False
+
+        """Launch with JS console open by default."""
+        self.js_console = False
+
+        """Use window controls to force maximum window size."""
+        self.maximize_window = True
+
+        """Launch with preference panel open by default."""
+        self.preferences = False
+
+        """Launch in permanent private browser mode by default."""
+        self.private_browsing = False
+
+        """Launch default window in private browsing mode."""
+        self.private_window = False
+
+        """Use default profile template specified by Iris."""
+        self.profile = Profile.DEFAULT
+
+        """Launch with Profile Manager open by default."""
+        self.profile_manager = False
+
+        """Launch with Firefox safe mode by default."""
+        self.safe_mode = False
+
+        """Launch with the results of a provided search term using default search engine."""
+        self.search = None
+
+        """Set Firefox as the default browser on the system."""
+        self.set_default_browser = False
+
+        """Launch default window with the URl specified."""
+        self.url = 'about:blank'
+
+        """Launch window with dimensions of width and height, separated by the lowercase letter x.
+        e.g. 600x800
+        Will automatically set self.maximize_window to False
+        """
+        self.window_size = None
+
+        return
 
     def run(self):
         """This is your test logic."""
