@@ -16,8 +16,6 @@ class Test(BaseTest):
         """
         This is where your test logic goes.
         """
-        print self.get_web_asset_path('foo.jpg')
-        print self.get_asset_path('foo.jpg')
         assert_equal(self, 1, 1, 'test')
         assert_true(self, False, 'test')
         return
