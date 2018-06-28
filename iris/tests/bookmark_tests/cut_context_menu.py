@@ -36,6 +36,8 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
+        time.sleep(2)
+
         access_bookmarking_tools('view_bookmarks_toolbar.png')
 
         try:
