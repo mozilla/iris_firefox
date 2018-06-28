@@ -45,10 +45,11 @@ def run(app):
             # Move the mouse to upper left corner of the screen
             reset_mouse()
 
-            # Initialize and launch Firefox
+            # Set up test case conditions
             current.setup()
 
             # Process test case setup values and launch Firefox
+            write_profile_prefs(current)
             args = create_firefox_args(current)
             launch_firefox(path=app.fx_path, profile=current.profile, url=current.url, args=args)
 
@@ -95,6 +96,7 @@ def run(app):
             # Quit Firefox
             print_results(module, current)
             current.teardown()
+            logger.info('Quit')
             confirm_firefox_quit(app)
         else:
             skipped += 1
@@ -108,6 +110,14 @@ def run(app):
     # clean_profiles()
     app.finish()
 
+def write_profile_prefs(test_case):
+    if len(test_case.prefs):
+        pref_file = os.path.join(test_case.profile, 'user.js')
+        file = open(pref_file, 'w')
+        for pref in test_case.prefs:
+            name, value = pref.split(';')
+            file.write('user_pref("%s", %s);\n' % (name, value))
+        file.close()
 
 def create_firefox_args(test_case):
     args = []
@@ -125,6 +135,8 @@ def create_firefox_args(test_case):
             args.append('-height')
             args.append('%s' % h)
             test_case.maximize_window = False
+            if int(w) < 600:
+                logger.warning('Windows of less than 600 pixels wide may cause Iris to fail.')
     except ValueError:
             logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
 
