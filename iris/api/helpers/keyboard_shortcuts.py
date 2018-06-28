@@ -534,7 +534,11 @@ def bookmark_page():
         type(text='d', modifier=KeyModifier.CMD)
     else:
         type(text='d', modifier=KeyModifier.CTRL)
-    time.sleep(2)
+    try:
+        wait('page_bookmarked.png', 10)
+        logger.debug('Page was successfully bookmarked')
+    except FindError:
+        logger.error('Page can not be bookmarked')
 
 
 def bookmarks_sidebar():
@@ -543,6 +547,12 @@ def bookmarks_sidebar():
         type(text='b', modifier=KeyModifier.CMD)
     else:
         type(text='b', modifier=KeyModifier.CTRL)
+    try:
+        wait('bookmark_sidebar.png', 10)
+        logger.debug('Sidebar is opened.')
+    except FindError:
+        logger.error('Sidebar is NOT present on the page, aborting.')
+        raise FindError
 
 
 def open_library():
