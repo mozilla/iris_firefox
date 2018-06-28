@@ -69,6 +69,7 @@ def run(app):
                 current.set_end_time(time.time())
                 print_results(module, current)
                 current.teardown()
+                quit_firefox()
                 confirm_firefox_quit(app)
                 continue
             except FindError:
@@ -78,6 +79,7 @@ def run(app):
                 current.set_end_time(time.time())
                 print_results(module, current)
                 current.teardown()
+                quit_firefox()
                 confirm_firefox_quit(app)
                 continue
             except (APIHelperError, ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError,
@@ -88,6 +90,7 @@ def run(app):
                 current.set_end_time(time.time())
                 print_results(module, current)
                 current.teardown()
+                quit_firefox()
                 confirm_firefox_quit(app)
                 continue
 
@@ -96,7 +99,7 @@ def run(app):
             # Quit Firefox
             print_results(module, current)
             current.teardown()
-            logger.info('Quit')
+            quit_firefox()
             confirm_firefox_quit(app)
         else:
             skipped += 1
