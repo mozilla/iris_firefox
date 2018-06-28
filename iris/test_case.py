@@ -17,6 +17,7 @@ class BaseTest(object):
     def __init__(self, app):
         self.app = app
         self.reset_variables()
+        self.prefs = []
 
     def reset_variables(self):
         self.meta = ''
@@ -80,6 +81,9 @@ class BaseTest(object):
         resource = '/tests%s/%s/%s' % (test_directory, module_name, asset_file_name)
         return self.app.base_local_web_url + resource
 
+    def set_profile_pref(self, pref):
+        self.prefs.append(pref)
+
     def setup(self):
         """ Test case setup
         This might be a good place to declare variables or initialize Fx state.
@@ -129,14 +133,18 @@ class BaseTest(object):
         """Set Firefox as the default browser on the system."""
         self.set_default_browser = False
 
-        """Launch default window with the URl specified."""
+        """Launch default window with the URL specified."""
         self.url = 'about:blank'
 
-        """Launch window with dimensions of width and height, separated by the lowercase letter x.
+        """Launch window with dimensions of width and height, separated by the 
+        lowercase letter x.
         e.g. 600x800
         Will automatically set self.maximize_window to False
         """
         self.window_size = None
+
+        """Temporary code used to write a pref file, not used otherwise."""
+        self.set_profile_pref('iris.enabled;true')
 
         return
 
