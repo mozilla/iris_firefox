@@ -20,7 +20,7 @@ class Test(BaseTest):
         expected_1 = exists(firefox_in_about, 10)
         assert_true(self, expected_1, '\'About Firefox\' window was opened successfully.')
         # Helper function in general.py
-        close_auxiliary_window()
+        click_auxiliary_window_control('close')
         try:
             expected_2 = waitVanish(firefox_in_about, 10)
             assert_true(self, expected_2, '\'About Firefox\' window was closed successfully.')
