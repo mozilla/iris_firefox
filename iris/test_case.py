@@ -155,5 +155,4 @@ class BaseTest(object):
     def teardown(self):
         """This might be a good place to clean up what was done."""
         self.reset_variables()
-        quit_firefox()
         return
