@@ -232,7 +232,7 @@ def click_hamburger_menu_option(option):
 def click_auxiliary_window_control(button, is_full_screen=None):
     '''
     :param button: close, minimize, maximize, full_screen, restore
-    :param is_full_screen: true, false
+    :param is_full_screen: true, false (must pass in 'true' when in full screen mode)
     '''
     close_button = 'auxiliary_window_close_button.png'
     minimize_button = 'auxiliary_window_minimize.png'
@@ -241,86 +241,49 @@ def click_auxiliary_window_control(button, is_full_screen=None):
     zoom_restore_button = 'minimize_full_screen_auxiliary_window.png'
     red_button = 'unhovered_red_control.png'
 
+    # Ensure the controls are present in the auxiliary window.
+    # Mac controls need to be put in hovered state so the
+    # hidden UI in each button appears.
     if Settings.getOS() == Platform.MAC:
-        if button == 'close':
+        try:
+            wait(red_button, 5)
+            logger.debug('Auxiliary window control found.')
+        except FindError:
+            logger.error('Can\'t find the auxiliary window controls, aborting.')
+            return
+        else:
             hover(red_button)
-            click(close_button)
-        elif button == 'minimize':
-            hover(red_button)
-            click(minimize_button)
-        elif button == 'full_screen':
-            hover(red_button)
-            click(zoom_full_button)
-        elif button == 'maximize':
-            hover(red_button)
+    else:
+        try:
+            wait(close_button, 5)
+            ogger.debug('Auxiliary window control found.')
+        except FindError:
+            logger.error('Can\'t find the auxiliary window controls, aborting.')
+            return
+        else:
+            if Settings.getOS() == Platform.LINUX:
+                if is_full_screen:
+                    reset_mouse()
+
+    if button == 'close':
+        click(close_button)
+    elif button == 'minimize':
+        click(minimize_button)
+    elif button == 'full_screen':
+        click(zoom_full_button)
+    elif button == 'maximize':
+        if Settings.getOS() == Platform.MAC:
             keyDown(Key.ALT)
             click(zoom_button)
             keyUp(Key.ALT)
-        elif button == 'zoom_restore':
+        else:
+            click(zoom_button)
+    elif button == 'zoom_restore':
+        if Settings.getOS() == Platform.MAC:
             if is_full_screen:
                 reset_mouse()
-            else:
-                hover(red_button)
-            click(zoom_restore_button)
-
-
-def close_auxiliary_window(is_full_screen=None):
-    if Settings.getOS() == Platform.MAC:
-        if is_full_screen:
-            reset_mouse()
-            auxiliary_window_control = Pattern('auxiliary_window_controls_full_screen.png')
-        else:
-            auxiliary_window_control = Pattern('auxiliary_window_controls.png')
-        wait(auxiliary_window_control, 5, .8)
-    elif Settings.getOS() == Platform.LINUX:
-        if is_full_screen:
-            reset_mouse()
-    try:
-        wait('auxiliary_window_close_button.png', 10)
-        logger.debug('Close auxiliary window button found')
-    except FindError:
-        logger.error('Can\'t find the close auxiliary window button in the page, aborting.')
-        return
-    else:
-        click('auxiliary_window_close_button.png')
-
-
-def full_screen_auxiliary_window():
-    try:
-        hover('auxiliary_window_controls.png')
-        wait('auxiliary_window_maximize.png', 10)
-        logger.debug('Maximize auxiliary window button found')
-    except FindError:
-        logger.error('Can\'t find the maximize auxiliary window button in the page, aborting.')
-        return
-    else:
-        click('auxiliary_window_maximize.png')
-
-
-def minimize_auxiliary_window(is_full_screen=None):
-    if Settings.getOS() == Platform.MAC:
-        if is_full_screen:
-            reset_mouse()
-            auxiliary_window_control = Pattern('auxiliary_window_controls_full_screen.png')
-            auxiliary_window_minimize = Pattern('minimize_full_screen_auxiliary_window.png')
-        else:
-            auxiliary_window_control = Pattern('auxiliary_window_controls.png')
-            auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
-        hover(auxiliary_window_control)
-    elif Settings.getOS() == Platform.LINUX:
-        if is_full_screen:
-            reset_mouse()
-            auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
-    elif Settings.getOS() == Platform.WINDOWS:
-        auxiliary_window_minimize = Pattern('auxiliary_window_minimize.png')
-
-    try:
-        wait(auxiliary_window_minimize, 5)
-    except FindError:
-        logger.error('Can\'t find the minimize auxiliary window button in the page, aborting.')
-        return
-    else:
-        click(auxiliary_window_minimize)
+            hover(red_button)
+        click(zoom_restore_button)
 
 
 def click_cancel_button():

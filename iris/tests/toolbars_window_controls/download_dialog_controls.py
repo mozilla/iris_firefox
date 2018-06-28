@@ -29,7 +29,6 @@ class Test(BaseTest):
         assert_true(self, expected, 'Download dialog is present')
 
         # Close the dialog
-        #close_auxiliary_window()
         click_auxiliary_window_control('close')
 
         try:
