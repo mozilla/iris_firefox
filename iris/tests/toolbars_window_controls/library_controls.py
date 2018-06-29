@@ -14,27 +14,19 @@ class Test(BaseTest):
 
     def run(self):
         library_title = 'library_title.png'
-        maximize_button = 'maximize_button.png'
         restore_button = 'restore_button.png'
         library_restore_button = 'library_restore_button.png'
-        library_maximize_button = 'library_maximize_button.png'
 
-        time.sleep(1)
         open_library()
-        time.sleep(1)
 
         expected_1 = exists(library_title, 10)
         assert_true(self, expected_1, 'The library was opened successfully')
 
         if Settings.getOS() == Platform.MAC:
             click_auxiliary_window_control('maximize')
-            time.sleep(1)
             click_auxiliary_window_control('minimize')
-            time.sleep(1)
-
         else:
             click_auxiliary_window_control('maximize')
-            time.sleep(1)
             if Settings.getOS() == Platform.WINDOWS:
                 expected_2 = exists(library_restore_button, 10)
             else:
