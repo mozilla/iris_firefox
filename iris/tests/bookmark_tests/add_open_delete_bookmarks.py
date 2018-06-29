@@ -140,4 +140,4 @@ class Test(BaseTest):
             logger.error('Amazon bookmark can not be deleted.')
             raise error
         # Cleanup by closing the Library window
-        close_auxiliary_window()
+        click_auxiliary_window_control('close')

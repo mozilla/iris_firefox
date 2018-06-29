@@ -30,7 +30,7 @@ class Test(BaseTest):
         if get_os() == 'osx':
             click(cancel_multiple_tabs_warning)
         else:
-            close_auxiliary_window()
+            click_auxiliary_window_control('close')
 
         try:
             expected_2 = waitVanish(close_multiple_tabs_warning, 10)
