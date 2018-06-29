@@ -254,23 +254,22 @@ def click_auxiliary_window_control(button, is_full_screen=None):
         else:
             hover(red_button)
     else:
+        if Settings.getOS() == Platform.LINUX:
+            hover(Location(80,0))
         try:
             wait(close_button, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
             logger.error('Can\'t find the auxiliary window controls, aborting.')
             return
-        else:
-            if Settings.getOS() == Platform.LINUX:
-                if is_full_screen:
-                    reset_mouse()
-
     if button == 'close':
         click(close_button)
     elif button == 'minimize':
         click(minimize_button)
     elif button == 'full_screen':
         click(zoom_full_button)
+        if Settings.getOS() == Platform.LINUX:
+            hover(Location(80, 0))
     elif button == 'maximize':
         if Settings.getOS() == Platform.MAC:
             keyDown(Key.ALT)
@@ -278,10 +277,11 @@ def click_auxiliary_window_control(button, is_full_screen=None):
             keyUp(Key.ALT)
         else:
             click(zoom_full_button)
+            if Settings.getOS() == Platform.LINUX:
+                hover(Location(80, 0))
     elif button == 'zoom_restore':
         if Settings.getOS() == Platform.MAC:
-            if is_full_screen:
-                reset_mouse()
+            reset_mouse()
             hover(red_button)
         click(zoom_restore_button)
 
@@ -442,6 +442,8 @@ def restore_window_from_taskbar():
         type(Key.ENTER)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
+        if Settings.getOS() == Platform.LINUX:
+            hover(Location(0, 50))
 
 
 def open_library_menu(option):
@@ -467,27 +469,6 @@ def open_library_menu(option):
         else:
             region.click(option)
             return region
-
-
-def maximize_auxiliary_window():
-    # This is different from maximize_window() since on OSX the auxiliary window controls are on grey background vs
-    # black background for the main browser window
-
-    if get_os() == Platform.MAC:
-        library_controls = 'library_controls.png'
-        # Set target to the maximize button
-        maximize_button = Pattern(library_controls).targetOffset(48, 7)
-        # We must hover the controls so the ALT key can take effect there.
-        hover(library_controls)
-        # Alt key changes maximize button from full screen to maximize window.
-        keyDown(Key.ALT)
-        click(maximize_button)
-        keyUp(Key.ALT)
-
-    elif get_os() == Platform.WINDOWS:
-        type(text=Key.UP, modifier=KeyModifier.WIN)
-    else:
-        type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)
 
 
 def remove_zoom_indicator_from_toolbar():
