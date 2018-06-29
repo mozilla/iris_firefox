@@ -229,10 +229,9 @@ def click_hamburger_menu_option(option):
             return region
 
 
-def click_auxiliary_window_control(button, is_full_screen=None):
+def click_auxiliary_window_control(button):
     '''
     :param button: close, minimize, maximize, full_screen, restore
-    :param is_full_screen: true, false (must pass in 'true' when in full screen mode)
     '''
     close_button = 'auxiliary_window_close_button.png'
     minimize_button = 'auxiliary_window_minimize.png'
