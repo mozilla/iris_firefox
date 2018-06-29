@@ -33,7 +33,7 @@ class Test(BaseTest):
                 expected_2 = exists(restore_button, 10)
             assert_true(self, expected_2, 'The library was maximized successfully')
 
-            click_auxiliary_window_control('minimize', true)
+            click_auxiliary_window_control('minimize')
         try:
             expected_4 = waitVanish(library_title, 10)
             assert_true(self, expected_4, 'Window successfully minimized')
