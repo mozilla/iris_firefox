@@ -33,7 +33,8 @@ class Test(BaseTest):
             time.sleep(1)
 
         else:
-            maximize_window()
+            #maximize_window()
+            click_auxiliary_window_control('maximize')
             time.sleep(1)
             if Settings.getOS() == Platform.WINDOWS:
                 expected_2 = exists(library_restore_button, 10)
@@ -41,15 +42,16 @@ class Test(BaseTest):
                 expected_2 = exists(restore_button, 10)
             assert_true(self, expected_2, 'The library was maximized successfully')
 
-            minimize_window()
-            time.sleep(1)
+            #minimize_window()
+            click_auxiliary_window_control('minimize')
+            '''time.sleep(1)
             if Settings.getOS() == Platform.WINDOWS:
                 expected_3 = exists(library_maximize_button, 10)
             else:
                 expected_3 = exists(maximize_button, 10)
             assert_true(self, expected_3, 'The library was restored successfully')
 
-        time.sleep(1)
+        time.sleep(1)'''
 
         try:
             expected_4 = waitVanish(library_title, 10)

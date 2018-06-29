@@ -256,7 +256,7 @@ def click_auxiliary_window_control(button, is_full_screen=None):
     else:
         try:
             wait(close_button, 5)
-            ogger.debug('Auxiliary window control found.')
+            logger.debug('Auxiliary window control found.')
         except FindError:
             logger.error('Can\'t find the auxiliary window controls, aborting.')
             return
@@ -277,7 +277,7 @@ def click_auxiliary_window_control(button, is_full_screen=None):
             click(zoom_button)
             keyUp(Key.ALT)
         else:
-            click(zoom_button)
+            click(zoom_full_button)
     elif button == 'zoom_restore':
         if Settings.getOS() == Platform.MAC:
             if is_full_screen:
