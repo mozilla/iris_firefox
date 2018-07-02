@@ -134,7 +134,7 @@ class BaseTest(object):
         self.set_default_browser = False
 
         """Launch default window with the URL specified."""
-        self.url = self.app.base_local_web_url
+        self.url = 'about:blank'
 
         """Launch window with dimensions of width and height, separated by the 
         lowercase letter x.
