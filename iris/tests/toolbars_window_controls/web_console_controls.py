@@ -15,61 +15,91 @@ class Test(BaseTest):
     def run(self):
 
         url = 'about:home'
-        dock_button = 'dock_to_side.png'
-        dock_button_activated = 'dock_to_side_activated.png'
-        separate_window_button = 'separate_window.png'
-        menu = 'hamburger_menu.png'
         close_dev_tools_button = 'close_dev_tools.png'
         dev_tools_window = 'dev_tools_window.png'
-        dock_message = 'dock_message.png'
-        separate_window_message = 'separate_window_message.png'
         close_message = 'close_message.png'
+        responsive_design_button = 'responsive_design.png'
+        customize_dev_tools = 'customize_developer_tools.png'
+        customize_dev_tools_message = 'customize_dev_tools_message.png'
+        responsive_design_message = 'responsive_design_message.png'
+        responsive_design_active = 'responsive_design_active.png'
+        dock_to_side = 'dock_to_side_option.png'
+        separate_window = 'separate_window_option.png'
+        dock_to_bottom = 'dock_to_bottom_option.png'
 
         navigate(url)
         open_web_console()
 
-        buttons = [dock_button, separate_window_button, close_dev_tools_button]
-        button_messages = [dock_message, separate_window_message, close_message]
+        buttons = [responsive_design_button, customize_dev_tools, close_dev_tools_button]
+        button_messages = [responsive_design_message, customize_dev_tools_message, close_message]
 
         for button in buttons:
             expected_buttons = exists(button, 5)
-            assert_true(self, expected_buttons, 'Button %s has been found' % button)
+            assert_true(self, expected_buttons, 'option %s has been found' % button)
 
-        # Check if the labels are displayed when the cursor hovers over the buttons.
+        # Check if the labels are displayed when the cursor hovers over the options.
 
         for m_index, button in enumerate(buttons):
             hover(button)
-            time.sleep(5)
+            time.sleep(2)
             coord = find(button)
             button_region = Region(coord.x - 300, coord.y, 400, 100)
             expected_messages = button_region.exists(button_messages[m_index], 10)
             assert_true(self, expected_messages, 'Message %s found' % button_messages[m_index])
 
-        # Checking the button functionality.
-        coord = find(menu)
-        right_upper_corner = Region(coord.x - 300, 0, 300, 300)
+        # Checking the option functionality.
+        screen = get_screen()
+        right_upper_corner = Region(screen.getW() / 2, screen.getY(), screen.getW() / 2, screen.getH() / 2)
 
-        click(dock_button)
+        click(responsive_design_button)
 
-        expected_1 = right_upper_corner.exists(dock_button_activated, 10)
-        assert_true(self, expected_1, 'Dock to side button works.')
+        responsive_design_assert = exists(responsive_design_active, 10)
+        assert_true(self, responsive_design_assert, 'Responsive Design Mode is enabled.')
 
-        click(separate_window_button)
+        click(customize_dev_tools)
 
-        expected_2 = exists(dev_tools_window, 10)
-        assert_true(self, expected_2, 'Show in separate window button works.')
+        try:
+            wait(dock_to_side, 10)
+            logger.debug('Dock to side option found.')
+            click(dock_to_side)
+        except FindError:
+            logger.error('Dock to side option not found, aborting.')
+            raise FindError
 
-        time.sleep(2)
+        dock_to_side_assert = right_upper_corner.exists(customize_dev_tools, 10)
+        assert_true(self, dock_to_side_assert, 'Dock to side option works as expected.')
 
-        # Here is necessary to return back at the initial state in order to verify the close button functionality.
-        click(dock_button_activated)
+        right_upper_corner.click(customize_dev_tools)
 
-        time.sleep(1)
+        try:
+            wait(separate_window, 10)
+            logger.debug('Separate Window option found.')
+            click(separate_window)
+        except FindError:
+            logger.error('Separate Window option not found, aborting.')
+            raise FindError
+
+        separate_window_assert = exists(dev_tools_window, 10)
+        assert_true(self, separate_window_assert, 'Separate Window option works as expected.')
+
+        click(customize_dev_tools)
+
+        try:
+            wait(dock_to_bottom, 10)
+            logger.debug('Dock To Bottom option found.')
+            click(dock_to_bottom)
+        except FindError:
+            logger.error('Dock To Bottom option not found, aborting.')
+            raise FindError
+
+        dock_to_bottom_assert = exists(close_dev_tools_button, 10)
+        assert_true(self, dock_to_bottom_assert, 'Dock To Bottom option works as expected')
 
         click(close_dev_tools_button)
+
         try:
-            expected_3 = waitVanish(dock_button_activated, 10)
-            assert_true(self, expected_3, 'Close button works.')
-        except Exception as error:
+            close_button_assert = button_region.waitVanish(customize_dev_tools, 10)
+            assert_true(self, close_button_assert, 'Close button works.')
+        except FindError:
             logger.error('The Web Console can not be closed, aborting test.')
-            raise error
+            raise FindError
