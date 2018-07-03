@@ -119,7 +119,10 @@ def write_profile_prefs(test_case):
         file = open(pref_file, 'w')
         for pref in test_case.prefs:
             name, value = pref.split(';')
-            file.write('user_pref("%s", %s);\n' % (name, value))
+            if value == 'true' or value == 'false' or value.isdigit():
+                file.write('user_pref("%s", %s);\n' % (name, value))
+            else:
+                file.write('user_pref("%s", "%s");\n' % (name, value))
         file.close()
 
 def create_firefox_args(test_case):
