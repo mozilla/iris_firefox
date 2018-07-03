@@ -38,14 +38,7 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
-        bookmarks_sidebar()
-
-        try:
-            wait('bookmark_sidebar.png', 10)
-            logger.debug('Sidebar is opened.')
-        except FindError:
-            logger.error('Sidebar is not opened, aborting.')
-            raise FindError
+        bookmarks_sidebar('open')
 
         paste('amazon')
 

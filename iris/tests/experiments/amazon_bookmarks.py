@@ -49,8 +49,7 @@ class Test(BaseTest):
         time.sleep(3)
 
         # Look for bookmark in bookmark menu
-        bookmarks_sidebar()
-        time.sleep(1)
+        bookmarks_sidebar('open')
         paste('amazon')
         time.sleep(1)
 

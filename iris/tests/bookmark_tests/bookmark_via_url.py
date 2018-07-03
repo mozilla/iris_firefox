@@ -85,7 +85,7 @@ class Test(BaseTest):
         expected_5 = exists(bing_home, 10)
         assert_true(self, expected_5, 'Bing has been successfully accessed')
 
-        bookmarks_sidebar()
+        bookmarks_sidebar('open')
 
         expected_7 = exists(sidebar_enabled, 10)
         assert_true(self, expected_7, 'Bookmarks Sidebar has been activated')
