@@ -145,43 +145,42 @@ def copy_to_clipboard():
 
 
 def change_preference(pref_name, value):
-    # Open preferences in new tab
-    new_tab()
-    time.sleep(1)
-
-    # Sometimes we lose focus, therefore
-    # an explicit selection is required here
-    select_location_bar()
-    type('about:config' + Key.ENTER)
-    time.sleep(1)
-
-    type(Key.SPACE)
-    time.sleep(1)
-
-    type(pref_name)
-    time.sleep(2)
-    type(Key.TAB)
-    time.sleep(2)
-
-    retrieved_value = None
     try:
-        retrieved_value = copy_to_clipboard().split(';'[0])[1]
-    except:
-        logger.error('Failed to retrieve preference value')
-        return None
-
-    if retrieved_value == value:
-        logger.debug('Flag is already set to value:' + value)
-        return None
-    else:
-        # Typing enter here will toggle a boolean value
+        new_tab()
+        select_location_bar()
+        paste('about:config')
         type(Key.ENTER)
-        # For non-boolean values, a dialog box should appear
-        dialog_box = Pattern('preference_dialog_icon.png')
-        if exists(dialog_box, 3):
-            type(dialog_box, value)
+        time.sleep(1)
+
+        type(Key.SPACE)
+        time.sleep(1)
+
+        paste(pref_name)
+        time.sleep(2)
+        type(Key.TAB)
+        time.sleep(2)
+
+        try:
+            retrieved_value = copy_to_clipboard().split(';'[0])[1]
+        except Exception as e:
+            raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+
+        if retrieved_value == value:
+            logger.debug('Flag is already set to value:' + value)
+            return None
+        else:
             type(Key.ENTER)
-    close_tab()
+            dialog_box = Pattern('preference_dialog_icon.png')
+            try:
+                wait(dialog_box, 3)
+                paste(value)
+                type(Key.ENTER)
+            except FindError:
+                pass
+
+        close_tab()
+    except Exception as e:
+        raise APIHelperError('Could not set value: %s to preference: %s' % (value, pref_name))
 
 
 def reset_mouse():
