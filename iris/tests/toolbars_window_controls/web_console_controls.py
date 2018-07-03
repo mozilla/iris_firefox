@@ -43,7 +43,7 @@ class Test(BaseTest):
             hover(button)
             time.sleep(2)
             coord = find(button)
-            button_region = Region(coord.x - 300, coord.y, 400, 100)
+            button_region = Region(coord.x - 300, coord.y - 100, 400, 300)
             expected_messages = button_region.exists(button_messages[m_index], 10)
             assert_true(self, expected_messages, 'Message %s found' % button_messages[m_index])
 
@@ -56,7 +56,7 @@ class Test(BaseTest):
         responsive_design_assert = exists(responsive_design_active, 10)
         assert_true(self, responsive_design_assert, 'Responsive Design Mode is enabled.')
 
-        click(customize_dev_tools)
+        button_region.click(customize_dev_tools)
 
         try:
             wait(dock_to_side, 10)
@@ -95,7 +95,7 @@ class Test(BaseTest):
         dock_to_bottom_assert = exists(close_dev_tools_button, 10)
         assert_true(self, dock_to_bottom_assert, 'Dock To Bottom option works as expected')
 
-        click(close_dev_tools_button)
+        button_region.click(close_dev_tools_button)
 
         try:
             close_button_assert = button_region.waitVanish(customize_dev_tools, 10)
