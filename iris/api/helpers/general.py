@@ -48,7 +48,7 @@ def clean_profiles():
 def confirm_firefox_launch(app):
     """waits for firefox to exist by waiting for the home button to be present."""
     try:
-        wait('home.png', 20, in_region=Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
+        wait('home.png', 20)
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
