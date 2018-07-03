@@ -69,7 +69,7 @@ class Test(BaseTest):
 
         # Test case 145 - Bookmarks can be opened from the Bookmarks Toolbar
 
-        bookmarks_sidebar()
+        bookmarks_sidebar('open')
 
         bookmark_sidebar_assert = exists('bookmark_sidebar.png', 10)
         assert_true(self, bookmark_sidebar_assert, 'Sidebar is opened')
@@ -85,7 +85,7 @@ class Test(BaseTest):
         bookmark_drag_assert = exists('bookmark_dragged.png', 10)
         assert_true(self, bookmark_drag_assert, 'Bookmark was dragged successfully')
 
-        bookmarks_sidebar()
+        bookmarks_sidebar('close')
 
         amazon_bookmark_sidebar_left_corner_assert = exists(dragged_bookmark, 10)
         assert_true(self, amazon_bookmark_sidebar_left_corner_assert,
@@ -120,14 +120,7 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
-        bookmarks_sidebar()
-
-        try:
-            bookmark_sidebar_assert = waitVanish('bookmark_sidebar.png', 10)
-            assert_true(self, bookmark_sidebar_assert, 'Bookmark sidebar menu disappeared')
-        except FindError:
-            logger.error('Bookmark sidebar menu still present')
-            raise FindError
+        bookmarks_sidebar('close')
 
         click(library)
 

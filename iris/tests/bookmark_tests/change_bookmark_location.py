@@ -40,14 +40,7 @@ class Test(BaseTest):
         page_bookmarked_assert = exists('page_bookmarked.png', 10)
         assert_true(self, page_bookmarked_assert, 'Page was bookmarked.')
 
-        bookmarks_sidebar()
-
-        try:
-            wait('bookmark_sidebar.png', 10)
-            logger.debug('Sidebar is opened.')
-        except FindError:
-            logger.error('Sidebar is not opened, aborting.')
-            raise FindError
+        bookmarks_sidebar('open')
 
         paste('amazon')
 

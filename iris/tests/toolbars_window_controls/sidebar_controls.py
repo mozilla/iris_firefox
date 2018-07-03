@@ -17,7 +17,7 @@ class Test(BaseTest):
         x_button_sidebar_hovered = 'x_button_sidebar_hovered.png'
         sidebar_title = 'sidebar_title.png'
 
-        bookmarks_sidebar()
+        bookmarks_sidebar('open')
         expected_1 = exists(sidebar_title, 10)
         assert_true(self, expected_1, 'Sidebar title was displayed properly')
 

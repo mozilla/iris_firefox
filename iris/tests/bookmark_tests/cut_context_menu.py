@@ -46,7 +46,7 @@ class Test(BaseTest):
         except FindError:
             logger.error('Toolbar can not be activated, aborting.')
 
-        bookmarks_sidebar()
+        bookmarks_sidebar('open')
 
         paste('amazon')
 
