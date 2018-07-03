@@ -7,17 +7,13 @@ import Queue
 import copy
 import ctypes
 import inspect
-import logging
 import multiprocessing
-import os
 import platform
 import re
 import subprocess
 import time
 from datetime import datetime
 
-import cv2
-import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
@@ -25,7 +21,7 @@ import pytesseract
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
-from iris.api.helpers.iris_image import IrisImage, iris_image_match_template
+from iris.api.helpers.iris_image import *
 
 try:
     import Image
@@ -1366,6 +1362,13 @@ def _positive_image_search_multiprocess(image_name, timeout=None, precision=None
     return None
 
 
+def _positive_image_search(image_name, timeout=None, precision=None, region=None):
+    if use_multiprocessing():
+        return _positive_image_search_multiprocess(image_name, timeout, precision, region)
+    else:
+        return _positive_image_search_loop(image_name, timeout, precision, region)
+
+
 def _negative_image_search_loop(image_name, timeout=None, precision=None, region=None):
     """ Search if an image (in loop) is NOT in a Region or full screen
 
@@ -1433,6 +1436,13 @@ def _negative_image_search_multiprocess(image_name, timeout=None, precision=None
         except Exception:
             pass
     return None
+
+
+def _negative_image_search(image_name, timeout=None, precision=None, region=None):
+    if use_multiprocessing():
+        return _negative_image_search_multiprocess(image_name, timeout, precision, region)
+    else:
+        return _negative_image_search_loop(image_name, timeout, precision, region)
 
 
 def _text_search_all(with_image_processing=True, in_region=None, in_image=None):
@@ -1966,11 +1976,7 @@ def wait(for_what, timeout=None, precision=None, in_region=None):
             precision = Settings.MinSimilarity
 
         image_name = _get_pattern_name(for_what)
-
-        if use_multiprocessing():
-            image_found = _positive_image_search_multiprocess(image_name, timeout, precision, in_region)
-        else:
-            image_found = _positive_image_search_loop(image_name, timeout, precision, in_region)
+        image_found = _positive_image_search(image_name, timeout, precision, in_region)
 
         if image_found is not None:
             return True
@@ -2020,11 +2026,7 @@ def waitVanish(for_what, timeout=None, precision=None, in_region=None):
         precision = Settings.MinSimilarity
 
     image_name = _get_pattern_name(for_what)
-
-    if use_multiprocessing():
-        image_found = _negative_image_search_multiprocess(image_name, timeout, precision, in_region)
-    else:
-        image_found = _negative_image_search_loop(image_name, timeout, precision, in_region)
+    image_found = _negative_image_search(image_name, timeout, precision, in_region)
 
     if image_found is not None:
         return True
@@ -2049,12 +2051,7 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
     needle = cv2.imread(pattern.image_path)
     height, width, channels = needle.shape
 
-    if use_multiprocessing():
-        p_top = _positive_image_search_multiprocess(image_name=pattern.image_name, precision=Settings.MinSimilarity,
-                                                    region=in_region)
-    else:
-        p_top = _positive_image_search_loop(image_name=pattern.image_name, precision=Settings.MinSimilarity,
-                                            region=in_region)
+    p_top = _positive_image_search(image_name=pattern.image_name, precision=Settings.MinSimilarity, region=in_region)
 
     if p_top is None:
         raise FindError('Unable to click on: %s' % pattern.image_path)
@@ -2144,7 +2141,7 @@ def get_asset_img_size(of_what):
 
     needle = cv2.imread(needle_path)
     height, width, channels = needle.shape
-    return int(width/scale_factor), int(height/scale_factor)
+    return int(width / scale_factor), int(height / scale_factor)
 
 
 def click(where=None, duration=None, in_region=None):
