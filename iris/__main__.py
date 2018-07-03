@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import coloredlogs
+import datetime
 import glob
 import shutil
 import sys
@@ -42,6 +43,7 @@ def main(argv=None):
 class Iris(object):
 
     def __init__(self):
+        self.run_id = datetime.utcnow().strftime('%Y%m%d%H%M%S')
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
         self.process_list = []
