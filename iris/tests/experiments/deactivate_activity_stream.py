@@ -17,7 +17,6 @@ class Test(BaseTest):
         change_preference(preference, 'false')
         new_tab()
         new_tab()
-        time.sleep(2)
 
         # Verify that activity stream has been disabled
         screen_text = get_firefox_region().text()
@@ -28,7 +27,6 @@ class Test(BaseTest):
         change_preference(preference, 'true')
         new_tab()
         new_tab()
-        time.sleep(2)
 
         # Verify that activity stream has been enabled
 
