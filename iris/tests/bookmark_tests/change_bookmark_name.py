@@ -49,7 +49,7 @@ class Test(BaseTest):
         assert_true(self, button_assert, 'Changes can be saved.')
 
         click(done)
-        bookmarks_sidebar()
+        bookmarks_sidebar('open')
 
         bookmark_sidebar_assert = exists('bookmark_sidebar.png', 10)
         assert_true(self, bookmark_sidebar_assert, 'Sidebar is opened.')
@@ -87,7 +87,7 @@ class Test(BaseTest):
 
         dragDrop(modified_bookmark_2, 'drag_area.png', 0.5)
         navigate('about:blank')
-        bookmarks_sidebar()
+        bookmarks_sidebar('close')
 
         toolbar_bookmark_assert = exists(toolbar_bookmark, 10)
         assert_true(self, toolbar_bookmark_assert, 'Name of the bookmark can be changed from the toolbar.')

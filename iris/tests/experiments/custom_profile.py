@@ -38,10 +38,8 @@ class Test(BaseTest):
         type(Key.ESC)
 
         # Look for bookmark in bookmark menu
-        bookmarks_sidebar()
-        time.sleep(1)
+        bookmarks_sidebar('open')
         paste('pocket')
-        #time.sleep(1)
 
         expected_2 = exists(bookmark_image_2, 5)
         assert_true(self, expected_2, 'Find Pocket bookmark 2nd image')

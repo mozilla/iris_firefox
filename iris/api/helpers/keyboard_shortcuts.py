@@ -541,18 +541,28 @@ def bookmark_page():
         logger.error('Page can not be bookmarked')
 
 
-def bookmarks_sidebar():
+def bookmarks_sidebar(option):
     """Toggle open/close the bookmarks sidebar."""
     if Settings.getOS() == Platform.MAC:
         type(text='b', modifier=KeyModifier.CMD)
     else:
         type(text='b', modifier=KeyModifier.CTRL)
-    try:
-        wait('bookmark_sidebar.png', 10)
-        logger.debug('Sidebar is opened.')
-    except FindError:
-        logger.error('Sidebar is NOT present on the page, aborting.')
-        raise FindError
+
+    bookmark_sidebar_img = 'bookmark_sidebar.png'
+    if option == 'open':
+        try:
+            wait(bookmark_sidebar_img, 10)
+            logger.debug('Sidebar is opened.')
+        except FindError:
+            raise APIHelperError('Sidebar is NOT present on the page, aborting.')
+    elif option == 'close':
+        try:
+            waitVanish(bookmark_sidebar_img, 10)
+            logger.debug('Sidebar is closed.')
+        except FindError:
+            raise APIHelperError('Sidebar is NOT closed, aborting.')
+    else:
+        raise APIHelperError('Option is not supported, aborting')
 
 
 def open_library():
