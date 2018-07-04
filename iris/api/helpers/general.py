@@ -490,22 +490,19 @@ def remove_zoom_indicator_from_toolbar():
         logger.debug('\'Decrease\' zoom control found.')
         rightClick(zoom_control_toolbar_decrease)
     except FindError:
-        logger.error('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
-        raise FindError
+        raise APIHelperError('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
 
     try:
         wait(remove_from_toolbar, 10)
         logger.debug('\'Remove from Toolbar\' option found.')
         click(remove_from_toolbar)
     except FindError:
-        logger.error('Can\'t find the \'Remove from Toolbar\' option in the page, aborting.')
-        raise FindError
+        raise APIHelperError('Can\'t find the \'Remove from Toolbar\' option in the page, aborting.')
 
     try:
         waitVanish(zoom_control_toolbar_decrease, 10)
     except FindError:
-        logger.error('Zoom indicator not removed from toolbar, aborting.')
-        raise FindError
+        raise APIHelperError('Zoom indicator not removed from toolbar, aborting.')
 
 
 def bookmark_options(option):
