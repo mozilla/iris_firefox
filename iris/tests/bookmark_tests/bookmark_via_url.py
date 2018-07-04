@@ -68,7 +68,7 @@ class Test(BaseTest):
 
         time.sleep(1)
 
-        dragDrop(draggable_url, drag_area, 2)
+        dragDrop(draggable_url, drag_area, 0.5)
 
         expected_4 = exists(bookmarked_star, 10)
         assert_true(self, expected_4, 'Star-shaped button has changed its color to blue')
@@ -96,7 +96,7 @@ class Test(BaseTest):
 
         time.sleep(1)
 
-        dragDrop(draggable_url_2, drag_area_2, 2)
+        dragDrop(draggable_url_2, drag_area_2, 0.5)
 
         expected_8 = exists(bookmarked_star, 10)
         assert_true(self, expected_8, 'Star-shaped button has changed its color to blue')
