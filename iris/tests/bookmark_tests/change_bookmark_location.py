@@ -81,7 +81,7 @@ class Test(BaseTest):
             logger.error('Toolbar can not be activated, aborting.')
             raise FindError
 
-        dragDrop(bookmark_changed_location, drag_area, 2)
+        dragDrop(bookmark_changed_location, drag_area, 0.5)
 
         try:
             wait(changed_toolbar_bookmark, 10)
