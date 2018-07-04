@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This test case checks that no zoom indicator is diaplsyed in the location bar for the default zoom ' \
-                    'level.'
+        self.meta = 'This test case checks that no zoom indicator is displayed in the location bar for the default ' \
+                    'zoom level.'
 
     def run(self):
         url = 'en.wikipedia.org'
