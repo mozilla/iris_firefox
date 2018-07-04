@@ -32,9 +32,9 @@ def parse_args():
     parser.add_argument('-d', '--directory',
                         help='Directory where tests are located',
                         type=str, metavar='test_directory',
-                        default=os.path.join('tests'))
+                        default=os.path.curdir)
     parser.add_argument('-t', '--test',
-                        help='Test name, directory or path to a file containing a custom list of tests',
+                        help='list of test names or path to a file containing a custom list of tests',
                         type=str, metavar='test_name.py')
     parser.add_argument('-i', '--level',
                         help='Set the logging output level',

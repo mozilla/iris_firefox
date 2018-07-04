@@ -113,6 +113,7 @@ def run(app):
     # clean_profiles()
     app.finish()
 
+
 def write_profile_prefs(test_case):
     if len(test_case.prefs):
         pref_file = os.path.join(test_case.profile, 'user.js')
@@ -124,6 +125,7 @@ def write_profile_prefs(test_case):
             else:
                 file.write('user_pref("%s", "%s");\n' % (name, value))
         file.close()
+
 
 def create_firefox_args(test_case):
     args = []
@@ -144,7 +146,7 @@ def create_firefox_args(test_case):
             if int(w) < 600:
                 logger.warning('Windows of less than 600 pixels wide may cause Iris to fail.')
     except ValueError:
-            logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
+        logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
 
     if test_case.profile_manager:
         args.append('-ProfileManager')
@@ -177,11 +179,87 @@ def create_firefox_args(test_case):
     return args
 
 
+def get_tests_from_text_file(arg):
+    test_list = []
+    test_packages = []
+
+    if os.path.isfile(arg):
+        logger.debug('"%s" found. Proceeding ...' % arg)
+        with open(arg, 'r') as f:
+            test_paths_list = [line.strip() for line in f]
+        if len(test_paths_list) == 0:
+            logger.error('"%s" does not contain any valid test paths. Exiting program ...' % str(arg))
+            return test_list, test_packages
+        logger.debug('Tests found in the test suite file:\n\n%s\n' % '\n'.join(map(str, test_paths_list)))
+        logger.debug('Validating test paths ...')
+        for test_path in test_paths_list:
+            if os.path.isfile(test_path):
+                logger.debug('"%s" is a valid test path. Proceeding ...' % test_path)
+                test_list.append(os.path.splitext(os.path.basename(test_path))[0])
+                test_packages.append(os.path.dirname(test_path))
+            else:
+                logger.warning('"%s" is not a valid test path. Skipping ...' % test_path)
+
+        if len(test_list) == 0:
+            logger.error('"%s" does not contain any valid test paths. Exiting program ...' % str(arg))
+            return test_list, test_packages
+    else:
+        logger.error('Could not locate "%s" . Exiting program ...', str(arg))
+        return test_list, test_packages
+    logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, test_list)))
+    return test_list, test_packages
+
+
+def get_tests_from_list(arg):
+    test_list = []
+    test_packages = []
+    tests = [str(item + ('.py' if not item.endswith('.py') else '')).strip() for item in arg.split(',')]
+    tests_directory = os.path.join(os.path.split(__file__)[0], 'tests')
+
+    for test in tests:
+        for dir_path, sub_dirs, all_files in os.walk(tests_directory):
+            if test in all_files:
+                test_list.append(os.path.splitext(test)[0])
+                test_packages.append(os.path.join(os.path.split(__file__)[0], dir_path.strip()))
+        if os.path.splitext(test)[0] not in test_list:
+            logger.warning('Could not locate %s' % test)
+    if len(test_list) == 0:
+        logger.error('No tests to run. Exiting program ...')
+    return test_list, test_packages
+
+
+def get_tests_from_directory(arg):
+    test_list = []
+    test_packages = []
+    tests_root_folder = os.path.join(os.path.split(__file__)[0], 'tests')
+    tests_directory = os.path.join(tests_root_folder, arg.strip())
+
+    if os.path.isdir(tests_directory):
+        logger.debug('Path %s found. Checking content ...', tests_directory)
+        for dir_path, sub_dirs, all_files in os.walk(tests_directory):
+            for current_file in all_files:
+                if current_file.endswith('.py') and not current_file.startswith('__'):
+                    test_list.append(os.path.splitext(current_file)[0])
+                    if dir_path not in test_packages:
+                        test_packages.append(dir_path)
+        if len(test_list) == 0:
+            logger.error('Directory %s does not contain test files. Exiting program ...' % tests_directory)
+            return test_list, test_packages
+        else:
+            logger.debug('Test packages: %s', test_packages)
+            logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, test_list)))
+            return test_list, test_packages
+    else:
+        logger.error('Path: %s does not exist. Exiting program ...' % tests_directory)
+        return test_list, test_packages
+
+
 def load_tests(app):
     """Test loading
 
-    Test loading is done by providing a test name, a path to a file containing a custom list of tests or a directory.
-    The provided test name can be with or without .py extension
+    Test loading is done by providing a list of test names separated by comma, a path to a file containing a custom list
+    of tests or a directory. The provided list of test names can be with or without .py extension.
+
     The path to the file that contains the list of tests should have .txt extension. The full path is needed. For
     example: '/Users/user_name/full_path/test_suite.txt'. The content of the file should be a simple line-delimited list
     of test paths (full path required including file extensions).
@@ -191,64 +269,11 @@ def load_tests(app):
 
     if app.args.test:
         if app.args.test.endswith('.txt'):
-            suite_path = app.args.test
-            if os.path.isfile(suite_path):
-                logger.debug('"%s" found. Proceeding ...' % suite_path)
-                with open(suite_path, 'r') as f:
-                    test_paths_list = [line.strip() for line in f]
-                if len(test_paths_list) == 0:
-                    logger.error('"%s" does not contain any valid test paths. Exiting program ...' % str(suite_path))
-                    app.finish(code=1)
-                logger.debug('Tests found in the test suite file:\n\n%s\n' % '\n'.join(map(str, test_paths_list)))
-                logger.debug('Validating test paths ...')
-                for test_path in test_paths_list:
-                    if os.path.isfile(test_path):
-                        logger.debug('"%s" is a valid test path. Proceeding ...' % test_path)
-                        app.test_list.append(os.path.splitext(os.path.basename(test_path))[0])
-                        app.test_packages.append(os.path.dirname(test_path))
-                    else:
-                        logger.warning('"%s" is not a valid test path. Skipping ...' % test_path)
-
-                if len(app.test_list) == 0:
-                    logger.error('"%s" does not contain any valid test paths. Exiting program ...' % str(suite_path))
-                    app.finish(code=1)
-            else:
-                logger.error('Could not locate "%s" . Exiting program ...', str(suite_path))
-                app.finish(code=1)
-            logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, app.test_list)))
-            return
-
-        test_name = str(app.args.test + ('.py' if not app.args.test.endswith('.py') else '')).strip()
-        tests_directory = os.path.join(os.path.split(__file__)[0], 'tests')
-        for dir_path, sub_dirs, all_files in os.walk(tests_directory):
-            if test_name in all_files:
-                app.test_list.append(os.path.splitext(test_name)[0])
-                app.test_packages.append(os.path.join(os.path.split(__file__)[0], dir_path.strip()))
-        if len(app.test_list) == 0:
-            logger.error('Could not locate %s . Exiting program ...' % str(test_name))
-            app.finish(code=1)
+            app.test_list, app.test_packages = get_tests_from_text_file(app.args.test)
         else:
-            logger.debug('%s found. Proceeding ...' % test_name)
-        return
+            app.test_list, app.test_packages = get_tests_from_list(app.args.test)
+    elif app.args.directory:
+        app.test_list, app.test_packages = get_tests_from_directory(app.args.directory)
 
-    # There is always a default test directory,
-    # but this can be overridden via command line
-    tests_directory = os.path.join(os.path.split(__file__)[0], app.args.directory.strip())
-
-    if os.path.isdir(tests_directory):
-        logger.debug('Path %s found. Checking content ...', tests_directory)
-        for dir_path, sub_dirs, all_files in os.walk(tests_directory):
-            for current_file in all_files:
-                if current_file.endswith('.py') and not current_file.startswith('__'):
-                    app.test_list.append(os.path.splitext(current_file)[0])
-                    if dir_path not in app.test_packages:
-                        app.test_packages.append(dir_path)
-        if len(app.test_list) == 0:
-            logger.error('Directory %s does not contain test files. Exiting program ...' % tests_directory)
-            app.finish(code=1)
-        else:
-            logger.debug('Test packages: %s', app.test_packages)
-            logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, app.test_list)))
-    else:
-        logger.error('Path: %s does not exist. Exiting program ...' % tests_directory)
+    if len(app.test_list) == 0:
         app.finish(code=1)
