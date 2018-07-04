@@ -33,25 +33,25 @@ class Test(BaseTest):
         buttons = [responsive_design_button, customize_dev_tools, close_dev_tools_button]
         button_messages = [responsive_design_message, customize_dev_tools_message, close_message]
 
+        screen = get_screen()
+        right_upper_corner = Region(screen.getW() / 2, screen.getY(), screen.getW() / 2, screen.getH() / 2)
+        button_region = Region(right_upper_corner.getBottomLeft().getX(), right_upper_corner.getBottomLeft().getY(),
+                               screen.getW() / 2, screen.getH() / 2)
+
         for button in buttons:
-            expected_buttons = exists(button, 5)
+            expected_buttons = button_region.exists(button, 5)
             assert_true(self, expected_buttons, 'option %s has been found' % button)
 
         # Check if the labels are displayed when the cursor hovers over the options.
 
         for m_index, button in enumerate(buttons):
-            hover(button)
-            time.sleep(2)
-            coord = find(button)
-            button_region = Region(coord.x - 300, coord.y - 100, 400, 300)
+            button_region.hover(button)
             expected_messages = button_region.exists(button_messages[m_index], 10)
             assert_true(self, expected_messages, 'Message %s found' % button_messages[m_index])
 
-        # Checking the option functionality.
-        screen = get_screen()
-        right_upper_corner = Region(screen.getW() / 2, screen.getY(), screen.getW() / 2, screen.getH() / 2)
+        # Checking the button functionality.
 
-        click(responsive_design_button)
+        button_region.click(responsive_design_button)
 
         responsive_design_assert = exists(responsive_design_active, 10)
         assert_true(self, responsive_design_assert, 'Responsive Design Mode is enabled.')
