@@ -53,7 +53,7 @@ class Test(BaseTest):
         sidebar_bookmark_assert = exists('sidebar_bookmark.png', 10)
         assert_true(self, sidebar_bookmark_assert, 'Bookmark is present inside the sidebar.')
 
-        dragDrop('amazon_draggable.png', 'drag_area.png', 2)
+        dragDrop('amazon_draggable.png', 'drag_area.png', 0.5)
 
         toolbar_bookmark_assert = exists(toolbar_bookmark, 10)
         assert_true(self, toolbar_bookmark_assert, 'Amazon bookmark is present in the Bookmarks Toolbar.')

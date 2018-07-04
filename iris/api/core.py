@@ -2189,19 +2189,35 @@ def doubleClick(where=None, duration=None, in_region=None):
     _general_click(where, 2, duration, in_region, 'left')
 
 
-def _to_location(pattern_or_string=None, in_region=None):
+def _to_location(ps=None, in_region=None, align='top_left'):
     """Transform pattern or string to location
 
-    :param pattern_or_string: Pattern or string input
+    :param ps: Pattern or string input
     :param in_region: Region object in order to minimize the area
+    :param align: Alignment could be top_left, center
     :return: Location object
     """
-    if isinstance(pattern_or_string, Pattern):
-        return _image_search(_images[pattern_or_string.image_name], Settings.MinSimilarity, in_region)
-    elif isinstance(pattern_or_string, str):
-        return _image_search(_images[pattern_or_string], Settings.MinSimilarity, in_region)
-    elif isinstance(pattern_or_string, Location):
-        return pattern_or_string
+
+    # TODO: Add multiple alignments if needed
+
+    if isinstance(ps, Pattern):
+        location = _image_search(_images[ps.image_name], Settings.MinSimilarity, in_region)
+        if align == 'center':
+            width, height = get_asset_img_size(_images[ps.image_name])
+            return Location(location.getX() + width / 2, location.getY() + height / 2)
+        else:
+            return location
+
+    elif isinstance(ps, str):
+        location = _image_search(_images[ps], Settings.MinSimilarity, in_region)
+        if align == 'center':
+            width, height = get_asset_img_size(ps)
+            return Location(location.getX() + width / 2, location.getY() + height / 2)
+        else:
+            return location
+
+    elif isinstance(ps, Location):
+        return ps
 
 
 def dragDrop(drag_from, drop_to, duration=None):
@@ -2216,8 +2232,8 @@ def dragDrop(drag_from, drop_to, duration=None):
     if duration is None:
         duration = Settings.MoveMouseDelay
 
-    from_location = _to_location(drag_from)
-    to_location = _to_location(drop_to)
+    from_location = _to_location(ps=drag_from, align='center')
+    to_location = _to_location(ps=drop_to, align='center')
     pyautogui.moveTo(from_location.x, from_location.y, 0)
 
     time.sleep(Settings.DelayBeforeMouseDown)
