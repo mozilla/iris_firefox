@@ -33,10 +33,8 @@ class Test(BaseTest):
         buttons = [responsive_design_button, customize_dev_tools, close_dev_tools_button]
         button_messages = [responsive_design_message, customize_dev_tools_message, close_message]
 
-        screen = get_screen()
-        right_upper_corner = Region(screen.getW() / 2, screen.getY(), screen.getW() / 2, screen.getH() / 2)
-        button_region = Region(right_upper_corner.getBottomLeft().getX(), right_upper_corner.getBottomLeft().getY(),
-                               screen.getW() / 2, screen.getH() / 2)
+        right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        button_region = Region(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
         for button in buttons:
             expected_buttons = button_region.exists(button, 5)
