@@ -49,7 +49,10 @@ DEFAULT_DELAY_BEFORE_MOUSE_DOWN = 0.3
 DEFAULT_DELAY_BEFORE_DRAG = 0.3
 DEFAULT_DELAY_BEFORE_DROP = 0.3
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
-
+DEFAULT_FX_DELAY = 0.5
+DEFAULT_UI_DELAY = 1
+DEFAULT_UI_DELAY_LONG = 2.5
+DEFAULT_SYSTEM_DELAY = 5
 MIN_CPU_FOR_MULTIPROCESSING = 4
 
 _images = {}
@@ -172,6 +175,10 @@ class _IrisSettings(object):
     _slow_motion_delay = DEFAULT_SLOW_MOTION_DELAY
     _observe_scan_rate = DEFAULT_OBSERVE_SCAN_RATE
     _observe_min_changed_pixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
+    _fx_delay = DEFAULT_FX_DELAY
+    _ui_delay = DEFAULT_UI_DELAY
+    _ui_delay_long = DEFAULT_UI_DELAY_LONG
+    _system_delay = DEFAULT_SYSTEM_DELAY
 
     def __init__(self):
         self._wait_scan_rate = self.WaitScanRate
@@ -186,6 +193,42 @@ class _IrisSettings(object):
         self._slow_motion_delay = self.SlowMotionDelay
         self._observe_scan_rate = self.ObserveScanRate
         self._observe_min_changed_pixels = self.ObserveMinChangedPixels
+        self._fx_delay = self.FX_DELAY
+        self._ui_delay = self.UI_DELAY
+        self._ui_delay_long = self.UI_DELAY_LONG
+        self._system_delay = self.SYSTEM_DELAY
+
+    @property
+    def FX_DELAY(self):
+        return self._fx_delay
+
+    @FX_DELAY.setter
+    def FX_DELAY(self, value):
+        self._fx_delay = value
+
+    @property
+    def UI_DELAY(self):
+        return self._ui_delay
+
+    @UI_DELAY.setter
+    def UI_DELAY(self, value):
+        self._ui_delay = value
+
+    @property
+    def UI_DELAY_LONG(self):
+        return self._ui_delay_long
+
+    @UI_DELAY_LONG.setter
+    def UI_DELAY_LONG(self, value):
+        self._ui_delay_long = value
+
+    @property
+    def SYSTEM_DELAY(self):
+        return self._system_delay
+
+    @SYSTEM_DELAY.setter
+    def SYSTEM_DELAY(self, value):
+        self._system_delay = value
 
     @property
     def WaitScanRate(self):
