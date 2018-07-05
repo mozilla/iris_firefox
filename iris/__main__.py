@@ -98,10 +98,14 @@ class Iris(object):
         return 0
 
     def create_run_directory(self):
+        # Disable until rest of #707 lands
+        """
         master_run_directory = os.path.join(self.args.workdir, 'runs')
         if not os.path.exists(master_run_directory):
             os.mkdir(master_run_directory)
         os.mkdir(os.path.join(master_run_directory, self.run_id))
+        """
+        return
 
     def start_local_web_server(self, path, port):
         """
