@@ -57,6 +57,7 @@ class Iris(object):
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.start_local_web_server(self.local_web_root, self.args.port)
+        self.create_run_directory()
         self.main()
         test_runner.run(self)
 
@@ -95,6 +96,12 @@ class Iris(object):
         self.build_id = self.fx_app.build_id
 
         return 0
+
+    def create_run_directory(self):
+        master_run_directory = os.path.join(self.args.workdir, 'runs')
+        if not os.path.exists(master_run_directory):
+            os.mkdir(master_run_directory)
+        os.mkdir(os.path.join(master_run_directory, self.run_id))
 
     def start_local_web_server(self, path, port):
         """
