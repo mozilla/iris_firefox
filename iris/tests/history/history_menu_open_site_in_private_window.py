@@ -32,8 +32,7 @@ class Test(BaseTest):
         # Click on a page from the History list in a private window.
         new_private_window()
         open_library_menu('History')
-        screen = get_screen()
-        right_upper_corner = Region(screen.getW() / 2, screen.getY(), screen.getW() / 2, screen.getH() / 2)
+        right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         expected_2 = right_upper_corner.exists(recent_history_mozilla, 10)
         assert_true(self, expected_2, 'Mozilla page displayed in the History list successfully.')
         right_upper_corner.click(recent_history_mozilla)
