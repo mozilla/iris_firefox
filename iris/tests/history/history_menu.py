@@ -26,5 +26,5 @@ class Test(BaseTest):
 
         # Open the History Menu and check the Recent History list.
         open_library_menu('History')
-        expected_2 = exists(recent_history_default, 10)
-        assert_true(self, expected_2, 'Mozilla page is not displayed in the History list.')
+        expected_1 = exists(recent_history_default, 10)
+        assert_true(self, expected_1, 'Mozilla page is not displayed in the History list.')
