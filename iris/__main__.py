@@ -43,7 +43,6 @@ def main(argv=None):
 class Iris(object):
 
     def __init__(self):
-        self.run_id = datetime.utcnow().strftime('%Y%m%d%H%M%S')
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
         self.process_list = []
@@ -101,7 +100,9 @@ class Iris(object):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
         if not os.path.exists(master_run_directory):
             os.mkdir(master_run_directory)
-        os.mkdir(os.path.join(master_run_directory, self.run_id))
+        run_directory = os.path.join(master_run_directory, get_run_id())
+        os.mkdir(run_directory)
+        os.mkdir(os.path.join(run_directory, 'profiles'))
 
     def start_local_web_server(self, path, port):
         """
