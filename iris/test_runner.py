@@ -17,8 +17,6 @@ def run(app):
     passed = failed = skipped = errors = 0
     logger.info('Running tests')
     start_time = time.time()
-    # Start with no saved profiles
-    clean_profiles()
 
     load_tests(app)
     for package in app.test_packages:
