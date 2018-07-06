@@ -33,24 +33,16 @@ def parse_args():
                         help='Directory where tests are located',
                         type=str, metavar='test_directory',
                         default=os.path.curdir)
-    parser.add_argument('-t', '--test',
-                        help='list of test names or path to a file containing a custom list of tests',
-                        type=str, metavar='test_name.py')
-    parser.add_argument('-i', '--level',
-                        help='Set the logging output level',
-                        type=log_level_string_to_int,
-                        dest='level',
-                        default='INFO')
-    parser.add_argument('-w', '--workdir',
-                        help='Path to working directory',
-                        type=os.path.abspath,
-                        action='store',
-                        default='%s/.iris' % home)
     parser.add_argument('-f', '--firefox',
                         help=('Firefox version to test. It can be one of {%s}, a package file, '
                               'or a build directory (default: "%s")') % (','.join(release_choice), test_default),
                         action='store',
                         default=test_default)
+    parser.add_argument('-i', '--level',
+                        help='Set the logging output level',
+                        type=log_level_string_to_int,
+                        dest='level',
+                        default='INFO')
     parser.add_argument('-l', '--locale',
                         help='Locale to use for Firefox',
                         type=str,
@@ -69,4 +61,15 @@ def parse_args():
                         type=int,
                         action='store',
                         default=2000)
+    parser.add_argument('-r', '--rerun',
+                        help='Rerun last failed tests',
+                        action='store_true')
+    parser.add_argument('-t', '--test',
+                        help='list of test names or path to a file containing a custom list of tests',
+                        type=str, metavar='test_name.py')
+    parser.add_argument('-w', '--workdir',
+                        help='Path to working directory',
+                        type=os.path.abspath,
+                        action='store',
+                        default='%s/.iris' % home)
     return parser.parse_args()
