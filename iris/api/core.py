@@ -29,6 +29,7 @@ except ImportError:
     from PIL import Image
 
 args = parse_args()
+run_id = datetime.utcnow().strftime('%Y%m%d%H%M%S')
 
 pyautogui.FAILSAFE = False
 save_debug_images = args.level == 10
@@ -75,6 +76,10 @@ def success(self, message, *args, **kws):
 
 logging.Logger.success = success
 logger = logging.getLogger(__name__)
+
+
+def get_run_id():
+    return run_id
 
 
 def get_os():

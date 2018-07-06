@@ -38,13 +38,6 @@ def launch_firefox(path, profile=None, url=None, args=None):
     return
 
 
-def clean_profiles():
-    profile_cache = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
-    if os.path.exists(profile_cache):
-        shutil.rmtree(profile_cache)
-    os.mkdir(profile_cache)
-
-
 def confirm_firefox_launch(app):
     """waits for firefox to exist by waiting for the home button to be present."""
     try:
@@ -537,7 +530,7 @@ def access_bookmarking_tools(option):
 
 class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
-    PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'profiles')
+    PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'runs', get_run_id(), 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
 
     @property
