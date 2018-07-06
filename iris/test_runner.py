@@ -107,8 +107,7 @@ def run(app):
     print_report_footer(Settings.getOS(), app.version, app.build_id, passed, failed, skipped, errors,
                         get_duration(start_time, end_time), failures=test_failures)
 
-    # We may remove profiles here, but likely still in use and can't do it yet
-    # clean_profiles()
+    app.write_test_failures(test_failures)
     app.finish()
 
 
@@ -264,6 +263,11 @@ def load_tests(app):
     """
     app.test_list = []
     app.test_packages = []
+
+    if app.args.rerun:
+        path = os.path.join(app.args.workdir, 'runs', 'last_fail.txt')
+        app.args.test = path
+        logger.info('Re-running failed tests from previous run.')
 
     if app.args.test:
         if app.args.test.endswith('.txt'):

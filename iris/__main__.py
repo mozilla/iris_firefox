@@ -118,6 +118,15 @@ class Iris(object):
             logger.critical('Unable to launch local web server, aborting Iris.')
             self.finish(code=13)
 
+    def write_test_failures(self, failures):
+        master_run_directory = os.path.join(self.args.workdir, 'runs')
+        path = os.path.join(master_run_directory, 'last_fail.txt')
+        if len(failures):
+            last_fail = open(path, 'w')
+            for test in failures:
+                last_fail.write(test + '\n')
+            last_fail.close()
+
     def finish(self, code=0):
         """
         All exit points of Iris need to call this function in order to exit properly.
