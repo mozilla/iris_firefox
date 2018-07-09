@@ -657,7 +657,11 @@ class _IrisProfile(object):
         return to_directory
 
     def make_profile(self, template, module):
-        temp = module.__file__.split('/tests/')[1].split('/')
+        if Settings.isWindows():
+            delimiter = '\\'
+        else:
+            delimiter = '/'
+        temp = module.__file__.split('%stests%s' % (delimiter, delimiter))[1].split(delimiter)
         parent = temp[0]
         test = temp[1].split('.pyc')[0]
         parent_directory = os.path.join(Profile.PROFILE_CACHE, parent)
