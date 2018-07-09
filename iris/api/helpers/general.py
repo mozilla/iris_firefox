@@ -530,7 +530,7 @@ def access_bookmarking_tools(option):
 
 class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
-    PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'runs', get_run_id(), 'profiles')
+    PROFILE_CACHE = os.path.join(args.workdir, 'runs', get_run_id(), 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
 
     @property
