@@ -18,6 +18,7 @@ class BaseTest(object):
         self.app = app
         self.reset_variables()
         self.prefs = []
+        self.profile_path = None
 
     def reset_variables(self):
         self.meta = ''

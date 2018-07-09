@@ -46,10 +46,16 @@ def run(app):
             # Set up test case conditions
             current.setup()
 
+            # Generate profile
+            try:
+                current.profile_path = Profile.make_profile(current.profile, current_module)
+            except ValueError:
+                app.finish(code=1)
+
             # Process test case setup values and launch Firefox
             write_profile_prefs(current)
             args = create_firefox_args(current)
-            launch_firefox(path=app.fx_path, profile=current.profile, url=current.url, args=args)
+            launch_firefox(path=app.fx_path, profile=current.profile_path, url=current.url, args=args)
 
             # Verify that Firefox has launched
             confirm_firefox_launch(app)
@@ -109,71 +115,6 @@ def run(app):
 
     app.write_test_failures(test_failures)
     app.finish()
-
-
-def write_profile_prefs(test_case):
-    if len(test_case.prefs):
-        pref_file = os.path.join(test_case.profile, 'user.js')
-        file = open(pref_file, 'w')
-        for pref in test_case.prefs:
-            name, value = pref.split(';')
-            if value == 'true' or value == 'false' or value.isdigit():
-                file.write('user_pref("%s", %s);\n' % (name, value))
-            else:
-                file.write('user_pref("%s", "%s");\n' % (name, value))
-        file.close()
-
-
-def create_firefox_args(test_case):
-    args = []
-    if test_case.private_browsing:
-        args.append('-private')
-
-    if test_case.private_window:
-        args.append('-private-window')
-
-    try:
-        if test_case.window_size:
-            w, h = test_case.window_size.split('x')
-            args.append('-width')
-            args.append('%s' % w)
-            args.append('-height')
-            args.append('%s' % h)
-            test_case.maximize_window = False
-            if int(w) < 600:
-                logger.warning('Windows of less than 600 pixels wide may cause Iris to fail.')
-    except ValueError:
-        logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
-
-    if test_case.profile_manager:
-        args.append('-ProfileManager')
-
-    if test_case.set_default_browser:
-        args.append('-setDefaultBrowser')
-
-    if test_case.import_wizard:
-        args.append('-migration')
-
-    if test_case.search:
-        args.append('-search')
-        args.append(test_case.search)
-
-    if test_case.preferences:
-        args.append('-preferences')
-
-    if test_case.devtools:
-        args.append('-devtools')
-
-    if test_case.js_debugger:
-        args.append('-jsdebugger')
-
-    if test_case.js_console:
-        args.append('-jsconsole')
-
-    if test_case.safe_mode:
-        args.append('-safe-mode')
-
-    return args
 
 
 def get_tests_from_text_file(arg):
