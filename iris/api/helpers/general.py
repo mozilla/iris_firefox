@@ -20,8 +20,8 @@ def launch_firefox(path, profile=None, url=None, args=None):
         args = []
 
     if profile is None:
-        logger.warning('No profile name present, using last default profile on disk.')
-        profile = os.path.join(os.path.expanduser('~'), '.iris', 'profiles', 'default')
+        logger.error('No profile name present, aborting run.')
+        raise ValueError
 
     cmd = [path, '-foreground', '-no-remote', '-profile', profile]
 
@@ -528,37 +528,90 @@ def access_bookmarking_tools(option):
         return
 
 
+def write_profile_prefs(test_case):
+    if len(test_case.prefs):
+        pref_file = os.path.join(test_case.profile_path, 'user.js')
+        file = open(pref_file, 'w')
+        for pref in test_case.prefs:
+            name, value = pref.split(';')
+            if value == 'true' or value == 'false' or value.isdigit():
+                file.write('user_pref("%s", %s);\n' % (name, value))
+            else:
+                file.write('user_pref("%s", "%s");\n' % (name, value))
+        file.close()
+
+
+def create_firefox_args(test_case):
+    args = []
+    if test_case.private_browsing:
+        args.append('-private')
+
+    if test_case.private_window:
+        args.append('-private-window')
+
+    try:
+        if test_case.window_size:
+            w, h = test_case.window_size.split('x')
+            args.append('-width')
+            args.append('%s' % w)
+            args.append('-height')
+            args.append('%s' % h)
+            test_case.maximize_window = False
+            if int(w) < 600:
+                logger.warning('Windows of less than 600 pixels wide may cause Iris to fail.')
+    except ValueError:
+        logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
+
+    if test_case.profile_manager:
+        args.append('-ProfileManager')
+
+    if test_case.set_default_browser:
+        args.append('-setDefaultBrowser')
+
+    if test_case.import_wizard:
+        args.append('-migration')
+
+    if test_case.search:
+        args.append('-search')
+        args.append(test_case.search)
+
+    if test_case.preferences:
+        args.append('-preferences')
+
+    if test_case.devtools:
+        args.append('-devtools')
+
+    if test_case.js_debugger:
+        args.append('-jsdebugger')
+
+    if test_case.js_console:
+        args.append('-jsconsole')
+
+    if test_case.safe_mode:
+        args.append('-safe-mode')
+
+    return args
+
+
 class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
-    PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'runs', get_run_id(), 'profiles')
+    PROFILE_CACHE = os.path.join(args.workdir, 'runs', get_run_id(), 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
 
-    @property
-    def DEFAULT(self):
-        """Default profile that test cases will use, specified in BaseTest."""
-        return Profile.LIKE_NEW
+    """These are profile options available to tests. With the exception of BRAND_NEW, 
+    they are pre-configured, zipped profiles that are part of the source tree, unzipped 
+    and uniquely created for each test. Profiles are saved to the current working directory, 
+    and each is named after the test it was created for. 
+    """
 
-    @property
-    def BRAND_NEW(self):
-        """Make new, unique profile name using time stamp."""
-        new_profile = os.path.join(Profile.PROFILE_CACHE, 'brand_new_' + Profile._create_unique_profile_name())
-        logger.debug('Creating brand new profile: %s' % new_profile)
-        os.mkdir(new_profile)
-        return new_profile
+    BRAND_NEW = 'brand_new'
+    LIKE_NEW = 'like_new'
+    TEN_BOOKMARKS = 'ten_bookmarks'
 
-    @property
-    def LIKE_NEW(self):
-        """Open a staged profile that is nearly new, but with some first-run preferences altered.."""
-        logger.debug('Creating new profile from LIKE_NEW staged profile')
-        return self._get_staged_profile('like_new')
+    # We will make LIKE_NEW the default.
+    DEFAULT = 'like_new'
 
-    @property
-    def TEN_BOOKMARKS(self):
-        """Open a staged profile that already has ten bookmarks."""
-        logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
-        return self._get_staged_profile('ten_bookmarks')
-
-    def _get_staged_profile(self, profile_name):
+    def _get_staged_profile(self, profile_name, parent, test):
         sz_bin = find_executable('7z')
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
@@ -576,11 +629,8 @@ class _IrisProfile(object):
         # Find the desired profile
         from_directory = os.path.join(Profile.STAGED_PROFILES, profile_name)
 
-        # Create a unique name for the profile.
-        temp_name = '%s_%s' % (profile_name, Profile._create_unique_profile_name())
-
         # Create a folder to hold that profile's contents.
-        to_directory = os.path.join(Profile.PROFILE_CACHE, temp_name)
+        to_directory = os.path.join(Profile.PROFILE_CACHE, parent, test)
         logger.debug('Creating new profile: %s' % to_directory)
         os.mkdir(to_directory)
 
@@ -606,11 +656,34 @@ class _IrisProfile(object):
         # Return path to profile in cache.
         return to_directory
 
-    @staticmethod
-    def _create_unique_profile_name():
-        ts = int(time.time())
-        profile_name = 'profile_%s' % ts
-        return profile_name
+    def make_profile(self, template, module):
+        temp = module.__file__.split('/tests/')[1].split('/')
+        parent = temp[0]
+        test = temp[1].split('.pyc')[0]
+        parent_directory = os.path.join(Profile.PROFILE_CACHE, parent)
+        profile_path = None
+
+        if not os.path.exists(parent_directory):
+            os.mkdir(parent_directory)
+
+        if template is _IrisProfile.BRAND_NEW:
+            """Make new, unique profile."""
+            new_profile = os.path.join(parent_directory, test)
+            logger.debug('Creating brand new profile: %s' % new_profile)
+            os.mkdir(new_profile)
+            profile_path = new_profile
+        elif template is _IrisProfile.LIKE_NEW:
+            """Open a staged profile that is nearly new, but with some first-run preferences altered."""
+            logger.debug('Creating new profile from LIKE_NEW staged profile')
+            profile_path = self._get_staged_profile(template, parent, test)
+        elif template is _IrisProfile.TEN_BOOKMARKS:
+            """Open a staged profile that already has ten bookmarks."""
+            logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
+            profile_path = self._get_staged_profile(template, parent, test)
+        else:
+            raise ValueError('No profile found: %s' % template)
+
+        return profile_path
 
 
 Profile = _IrisProfile()
