@@ -12,6 +12,10 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of creating various Firefox instances with arguments'
 
+        # Disabling test. Due to our new profile handling, it will be hard to support the
+        # use case of multiple Fx instances, such as this test.
+        self.exclude = Platform.ALL
+
     def run(self):
         amazon_image = 'amazon.png'
 

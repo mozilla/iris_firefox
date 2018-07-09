@@ -661,9 +661,9 @@ class _IrisProfile(object):
             delimiter = '\\'
         else:
             delimiter = '/'
-        temp = module.__file__.split('%stests%s' % (delimiter, delimiter))[1].split(delimiter)
-        parent = temp[0]
-        test = temp[1].split('.pyc')[0]
+        temp = module.__file__.split(delimiter)
+        parent = temp[len(temp)-2]
+        test = temp[len(temp)-1].split('.py')[0]
         parent_directory = os.path.join(Profile.PROFILE_CACHE, parent)
         profile_path = None
 
