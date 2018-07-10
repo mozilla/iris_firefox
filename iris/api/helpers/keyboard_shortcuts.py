@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from iris.api.core import *
+from iris.api.keys import Key, KeyModifier, keyDown, keyUp
 
 """Helper details
 
