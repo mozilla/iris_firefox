@@ -46,8 +46,7 @@ class Iris(object):
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
         self.process_list = []
-        load_all_patterns()
-        self.check_keyboard_state()
+        # self.check_keyboard_state()
         self.init_tesseract_path()
         self.check_7zip()
         self.module_dir = get_module_dir()
