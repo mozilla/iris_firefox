@@ -2,8 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from iris.api.core import *
-from iris.api.keys import Key, KeyModifier, keyDown, keyUp
+import logging
+import time
+
+from iris.api.errors import FindError, APIHelperError
+from iris.api.image_search import get_image_size
+from iris.api.keys import Key, KeyModifier, keyDown, keyUp, type
+from iris.api.pattern import Pattern
+from iris.api.region import Region, click, wait, waitVanish
+from iris.api.settings import *
+
+logger = logging.getLogger(__name__)
 
 """Helper details
 
@@ -377,7 +386,7 @@ def maximize_window():
         # This image is of the three window control buttons at top left of the window.
         maximized_browser_image = 'maximized_browser.png'
         maximized_browser_pattern = Pattern(maximized_browser_image)
-        maximized_browser_width, maximized_browser_height = get_asset_img_size(maximized_browser_pattern)
+        maximized_browser_width, maximized_browser_height = get_image_size(maximized_browser_pattern)
         region = Region(0, 0, maximized_browser_width + 50, maximized_browser_height + 50)
 
         try:
@@ -386,7 +395,7 @@ def maximize_window():
         except (FindError, ValueError):
             logger.debug('Window is not maximized.')
             window_controls_pattern = Pattern('window_controls.png')
-            width, height = get_asset_img_size(window_controls_pattern)
+            width, height = get_image_size(window_controls_pattern)
             maximize_button = window_controls_pattern.targetOffset(width - 10, height / 2)
 
             # Alt key changes maximize button from full screen to maximize window.
@@ -634,7 +643,7 @@ def open_browser_console():
     """
     Opens the Browser Console.
     """
-    if get_os() == "osx":
+    if Settings.getOS() == "osx":
         type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)

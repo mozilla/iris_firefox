@@ -9,6 +9,7 @@ import traceback
 from api.helpers.general import *
 from api.helpers.results import *
 from api.helpers.version_parser import check_version
+from api.settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -86,8 +87,7 @@ def run(app):
                 quit_firefox()
                 confirm_firefox_quit(app)
                 continue
-            except (APIHelperError, ValueError, ConfigError, UnsupportedAttributeError, UnsupportedMethodError,
-                    UnsupportedClassMethodError, TypeError):
+            except (APIHelperError, ValueError, ConfigError, TypeError):
                 test_failures.append(module)
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))

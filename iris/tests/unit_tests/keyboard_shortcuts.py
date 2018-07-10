@@ -43,7 +43,7 @@ class Test(BaseTest):
         page_region = generate_region_by_markers(t_left, b_right)
 
         temp_pos = page_region.find(ut_reset_all)
-        width, height = get_asset_img_size(ut_reset_all)
+        width, height = get_image_size(ut_reset_all)
         reset_btn = Location(temp_pos.getX() + width / 2, temp_pos.getY() + height / 2)
 
         # Test modifiers
