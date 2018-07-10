@@ -10,6 +10,7 @@ import subprocess
 
 from iris.api.helpers.keyboard_shortcuts import *
 from iris.configuration.config_parser import *
+from iris.api.keys import KeyModifier, Key, keyUp, keyDown
 
 logger = logging.getLogger(__name__)
 

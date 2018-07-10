@@ -5,14 +5,12 @@
 
 import Queue
 import copy
-import ctypes
 import inspect
 import logging
 import multiprocessing
 import os
 import platform
 import re
-import subprocess
 import time
 from datetime import datetime
 
@@ -28,7 +26,8 @@ from helpers.parse_args import parse_args
 from location import Location
 from core_helper import get_os
 from platform_iris import Platform
-from settings import Settings, DEFAULT_CLICK_DELAY, DEFAULT_KEY_SHORTCUT_DELAY, DEFAULT_TYPE_DELAY
+from settings import *
+from keys import KeyModifier, IrisKey
 
 try:
     import Image
@@ -162,237 +161,10 @@ def use_multiprocessing():
     return multiprocessing.cpu_count() >= MIN_CPU_FOR_MULTIPROCESSING
 
 
-class _IrisKey(object):
-    def __init__(self, label, value=None, reserved=True):
-        self.label = label
-        self.value = value
-        self.is_reserved = reserved
-
-    def __str__(self):
-        return self.label
-
-
 class Env(object):
     @staticmethod
     def getClipboard():
         return pyperclip.paste()
-
-
-class Key(object):
-    ADD = _IrisKey('add')
-    ALT = _IrisKey('alt', 1 << 3)
-    BACKSPACE = _IrisKey('backspace')
-    CAPS_LOCK = _IrisKey('capslock')
-    CMD = _IrisKey('command', 1 << 2)
-    CTRL = _IrisKey('ctrl', 1 << 1)
-    DELETE = _IrisKey('del')
-    DIVIDE = _IrisKey('divide')
-    DOWN = _IrisKey('down')
-    ENTER = '\n'
-    END = _IrisKey('end')
-    ESC = _IrisKey('esc')
-    F1 = _IrisKey('f1')
-    F2 = _IrisKey('f2')
-    F3 = _IrisKey('f3')
-    F4 = _IrisKey('f4')
-    F5 = _IrisKey('f5')
-    F6 = _IrisKey('f6')
-    F7 = _IrisKey('f7')
-    F8 = _IrisKey('f8')
-    F9 = _IrisKey('f9')
-    F10 = _IrisKey('f10')
-    F11 = _IrisKey('f11')
-    F12 = _IrisKey('f12')
-    F13 = _IrisKey('f13')
-    F14 = _IrisKey('f14')
-    F15 = _IrisKey('f15')
-    HOME = _IrisKey('home')
-    INSERT = _IrisKey('insert')
-    LEFT = _IrisKey('left')
-    META = _IrisKey('winleft', 1 << 2)
-    MINUS = _IrisKey('subtract')
-    MULTIPLY = _IrisKey('multiply')
-    NUM0 = _IrisKey('num0')
-    NUM1 = _IrisKey('num1')
-    NUM2 = _IrisKey('num2')
-    NUM3 = _IrisKey('num3')
-    NUM4 = _IrisKey('num4')
-    NUM5 = _IrisKey('num5')
-    NUM6 = _IrisKey('num6')
-    NUM7 = _IrisKey('num7')
-    NUM8 = _IrisKey('num8')
-    NUM9 = _IrisKey('num9')
-    NUM_LOCK = _IrisKey('numlock')
-    PAGE_DOWN = _IrisKey('pagedown')
-    PAGE_UP = _IrisKey('pageup')
-    PAUSE = _IrisKey('pause')
-    PRINT_SCREEN = _IrisKey('printscreen')
-    RIGHT = _IrisKey('right')
-    SCROLL_LOCK = _IrisKey('scrolllock')
-    SEPARATOR = _IrisKey('separator')
-    SHIFT = _IrisKey('shift', 1 << 0)
-    SPACE = ' '
-    TAB = '\t'
-    UP = _IrisKey('up')
-    WIN = _IrisKey('win', 1 << 2)
-
-    # Additional keys
-    ACCEPT = _IrisKey('accept')
-    ALT_LEFT = _IrisKey('altleft')
-    ALT_RIGHT = _IrisKey('altright')
-    APPS = _IrisKey('apps')
-    BROWSER_BACK = _IrisKey('browserback')
-    BROWSER_FAVORITES = _IrisKey('browserfavorites')
-    BROWSER_FORWARD = _IrisKey('browserforward')
-    BROWSER_HOME = _IrisKey('browserhome')
-    BROWSER_REFRESH = _IrisKey('browserrefresh')
-    BROWSER_SEARCH = _IrisKey('browsersearch')
-    BROWSER_STOP = _IrisKey('browserstop')
-    CLEAR = _IrisKey('clear')
-    COMMAND = _IrisKey('command')
-    CONVERT = _IrisKey('convert')
-    CTRL_LEFT = _IrisKey('ctrlleft')
-    CTRL_RIGHT = _IrisKey('ctrlright')
-    DECIMAL = _IrisKey('decimal')
-    EXECUTE = _IrisKey('execute')
-    F16 = _IrisKey('f16')
-    F17 = _IrisKey('f17')
-    F18 = _IrisKey('f18')
-    F19 = _IrisKey('f19')
-    F20 = _IrisKey('f20')
-    F21 = _IrisKey('f21')
-    F22 = _IrisKey('f22')
-    F23 = _IrisKey('f23')
-    F24 = _IrisKey('f24')
-    FINAL = _IrisKey('final')
-    FN = _IrisKey('fn')
-    HANGUEL = _IrisKey('hanguel')
-    HANGUL = _IrisKey('hangul')
-    HANJA = _IrisKey('hanja')
-    HELP = _IrisKey('help')
-    JUNJA = _IrisKey('junja')
-    KANA = _IrisKey('kana')
-    KANJI = _IrisKey('kanji')
-    LAUNCH_APP1 = _IrisKey('launchapp1')
-    LAUNCH_APP2 = _IrisKey('launchapp2')
-    LAUNCH_MAIL = _IrisKey('launchmail')
-    LAUNCH_MEDIA_SELECT = _IrisKey('launchmediaselect')
-    MODE_CHANGE = _IrisKey('modechange')
-    NEXT_TRACK = _IrisKey('nexttrack')
-    NONCONVERT = _IrisKey('nonconvert')
-    OPTION = _IrisKey('option')
-    OPTION_LEFT = _IrisKey('optionleft')
-    OPTION_RIGHT = _IrisKey('optionright')
-    PGDN = _IrisKey('pgdn')
-    PGUP = _IrisKey('pgup')
-    PLAY_PAUSE = _IrisKey('playpause')
-    PREV_TRACK = _IrisKey('prevtrack')
-    PRINT = _IrisKey('print')
-    PRNT_SCRN = _IrisKey('prntscrn')
-    PRTSC = _IrisKey('prtsc')
-    PRTSCR = _IrisKey('prtscr')
-    RETURN = _IrisKey('return')
-    SELECT = _IrisKey('select')
-    SHIFT_LEFT = _IrisKey('shiftleft')
-    SHIFT_RIGHT = _IrisKey('shiftright')
-    SLEEP = _IrisKey('sleep')
-    STOP = _IrisKey('stop')
-    SUBTRACT = _IrisKey('subtract')
-    VOLUME_DOWN = _IrisKey('volumedown')
-    VOLUME_MUTE = _IrisKey('volumemute')
-    VOLUME_UP = _IrisKey('volumeup')
-    WIN_LEFT = _IrisKey('winleft')
-    WIN_RIGHT = _IrisKey('winright')
-    YEN = _IrisKey('yen')
-
-    @staticmethod
-    def isLockOn(keyboard_key):
-        if Settings.getOS() == Platform.WINDOWS:
-            hllDll = ctypes.WinDLL("User32.dll")
-            if keyboard_key == Key.CAPS_LOCK:
-                keyboard_code = 0x14
-            elif keyboard_key == Key.NUM_LOCK:
-                keyboard_code = 0x90
-            elif keyboard_key == Key.SCROLL_LOCK:
-                keyboard_code = 0x91
-            try:
-                keystate = hllDll.GetKeyState(keyboard_code)
-            except:
-                raise Exception('Unable to run Command')
-            if (keystate == 1):
-                return True
-            else:
-                return False
-        elif Settings.getOS() == Platform.LINUX or Settings.getOS() == Platform.MAC:
-            try:
-                cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
-            except subprocess.CalledProcessError as e:
-                logger.error('Command  failed: %s' % repr(e.cmd))
-                raise Exception('Unable to run Command')
-            else:
-                processed_lock_key = keyboard_key.label
-                if 'caps' in processed_lock_key:
-                    processed_lock_key = 'Caps'
-                elif 'num' in processed_lock_key:
-                    processed_lock_key = 'Num'
-                elif 'scroll' in processed_lock_key:
-                    processed_lock_key = 'Scroll'
-
-                for line in cmd.stdout:
-                    if processed_lock_key in line:
-                        value = ' '.join(line.split())
-                        if processed_lock_key in value[0:len(value) / 3]:
-                            button = value[0:len(value) / 3]
-                            if "off" in button:
-                                return False
-                            else:
-                                return True
-
-                        elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
-                            button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
-                            if "off" in button:
-                                return False
-                            else:
-                                return True
-
-                        else:
-                            button = value[len(value) / 3 * 2:len(value)]
-                            if "off" in button:
-                                return False
-                            else:
-                                return True
-            finally:
-                if Settings.getOS() == Platform.MAC:
-                    shutdown_process('Xquartz')
-
-
-class KeyModifier(object):
-    SHIFT = Key.SHIFT.value
-    CTRL = Key.CTRL.value
-    CMD = Key.CMD.value
-    WIN = Key.WIN.value
-    META = Key.META.value
-    ALT = Key.ALT.value
-
-    @staticmethod
-    def get_active_modifiers(value):
-        all_modifiers = [
-            Key.SHIFT,
-            Key.CTRL]
-        if Settings.getOS() == Platform.MAC:
-            all_modifiers.append(Key.CMD)
-        elif Settings.getOS() == Platform.WINDOWS:
-            all_modifiers.append(Key.WIN)
-        else:
-            all_modifiers.append(Key.META)
-
-        all_modifiers.append(Key.ALT)
-
-        active_modifiers = []
-        for item in all_modifiers:
-            if item.value & value:
-                active_modifiers.append(item.label)
-        return active_modifiers
 
 
 # todo Refactor this
@@ -1883,30 +1655,6 @@ def get_screen():
     return Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 
-def keyDown(key):
-    if isinstance(key, _IrisKey):
-        pyautogui.keyDown(str(key))
-    elif isinstance(key, str):
-        if pyautogui.isValidKey(key):
-            pyautogui.keyDown(key)
-        else:
-            raise ValueError("Unsupported string input")
-    else:
-        raise ValueError(INVALID_GENERIC_INPUT)
-
-
-def keyUp(key):
-    if isinstance(key, _IrisKey):
-        pyautogui.keyUp(str(key))
-    elif isinstance(key, str):
-        if pyautogui.isValidKey(key):
-            pyautogui.keyUp(key)
-        else:
-            raise ValueError("Unsupported string input")
-    else:
-        raise ValueError(INVALID_GENERIC_INPUT)
-
-
 def scroll(clicks):
     pyautogui.scroll(clicks)
 
@@ -1972,7 +1720,7 @@ def paste(text):
 def type(text=None, modifier=None, interval=None):
     logger.debug('type method: ')
     if modifier is None:
-        if isinstance(text, _IrisKey):
+        if isinstance(text, IrisKey):
             logger.debug('Scenario 1: reserved key')
             logger.debug('Reserved key: %s' % text)
             pyautogui.keyDown(str(text))
@@ -2017,17 +1765,3 @@ def type(text=None, modifier=None, interval=None):
     if Settings.TypeDelay != DEFAULT_TYPE_DELAY:
         Settings.TypeDelay = DEFAULT_TYPE_DELAY
 
-
-def shutdown_process(process_name):
-    if Settings.getOS() == Platform.WINDOWS:
-        try:
-            command = subprocess.Popen('taskkill /IM ' + process_name + '.exe', shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError as e:
-            logger.error('Command  failed: %s' % repr(e.command))
-            raise Exception('Unable to run Command')
-    elif Settings.getOS() == Platform.MAC or Settings.getOS() == Platform.LINUX:
-        try:
-            command = subprocess.Popen('pkill ' + process_name, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError as e:
-            logger.error('Command  failed: %s' % repr(e.command))
-            raise Exception('Unable to run Command')
