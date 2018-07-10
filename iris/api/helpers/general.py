@@ -10,9 +10,9 @@ from iris.api.environment import Env
 from iris.api.helpers.keyboard_shortcuts import *
 from iris.api.keys import *
 from iris.api.region import *
-from iris.api.region_helpers import *
 from iris.api.screen import get_screen
 from iris.configuration.config_parser import *
+
 
 logger = logging.getLogger(__name__)
 
