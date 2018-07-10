@@ -26,6 +26,8 @@ from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
 from location import Location
+from core_helper import get_os
+from platform_iris import Platform
 
 try:
     import Image
@@ -86,22 +88,6 @@ logger = logging.getLogger(__name__)
 
 def get_run_id():
     return run_id
-
-
-def get_os():
-    """Get the type of the operating system your script is running on."""
-    current_system = platform.system()
-    current_os = ''
-    if current_system == 'Windows':
-        current_os = 'win'
-    elif current_system == 'Linux':
-        current_os = 'linux'
-    elif current_system == 'Darwin':
-        current_os = 'osx'
-    else:
-        logger.error('Iris does not yet support your current environment: ' + current_system)
-
-    return current_os
 
 
 def get_platform():
@@ -893,17 +879,6 @@ class Region(object):
 
     def rightClick(self, where, duration):
         return rightClick(where, duration, self)
-
-
-class Platform(object):
-    """Class that holds all supported operating systems (HIGH_DEF = High definition displays)."""
-    WINDOWS = 'win'
-    LINUX = 'linux'
-    MAC = 'osx'
-    ALL = Settings.getOS()
-    HIGH_DEF = not (pyautogui.screenshot().size == pyautogui.size())
-    SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
-    LOW_RES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
