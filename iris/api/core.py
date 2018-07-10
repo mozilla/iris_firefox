@@ -7,13 +7,17 @@ import Queue
 import copy
 import ctypes
 import inspect
+import logging
 import multiprocessing
+import os
 import platform
 import re
 import subprocess
 import time
 from datetime import datetime
 
+import cv2
+import numpy as np
 import pyautogui
 import pyperclip
 import pytesseract
@@ -21,12 +25,15 @@ import pytesseract
 from errors import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from helpers.parse_args import parse_args
-from iris.api.helpers.iris_image import *
 
 try:
     import Image
 except ImportError:
     from PIL import Image
+
+FIND_METHOD = cv2.TM_CCOEFF_NORMED
+
+logger = logging.getLogger(__name__)
 
 args = parse_args()
 run_id = datetime.utcnow().strftime('%Y%m%d%H%M%S')
@@ -55,8 +62,6 @@ DEFAULT_UI_DELAY = 1
 DEFAULT_UI_DELAY_LONG = 2.5
 DEFAULT_SYSTEM_DELAY = 5
 MIN_CPU_FOR_MULTIPROCESSING = 4
-
-_images = {}
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
@@ -115,26 +120,60 @@ current_platform_pattern = os.path.join('images', get_os())
 PROJECT_BASE_PATH = get_module_dir()
 
 
+def _parse_name(full_name):
+    """Detects scale factor in image name
+
+    :param str full_name: Image full name. Valid format name@[scale_factor]x.png.
+    Examples: google_search@2x.png, amazon_logo@2.5x.png
+
+    :return: Pair of image name and scale factor.
+    """
+    start_symbol = '@'
+    end_symbol = 'x.'
+    if start_symbol not in full_name:
+        return full_name, 1
+    else:
+        try:
+            start_index = full_name.index(start_symbol)
+            end_index = full_name.index(end_symbol, start_index)
+            scale_factor = float(full_name[start_index + 1:end_index])
+            image_name = full_name[0:start_index] + full_name[end_index + 1:len(full_name)]
+            return image_name, scale_factor
+
+        except ValueError:
+            logger.warning('Invalid file name format: "%s".' % full_name)
+            return full_name, 1
+
+
+def _apply_scale(scale, rgb_array):
+    """Resize the image for HD images
+
+    :param scale: scale of image
+    :param rgb_array: rgb array of image
+    :return: Scaled image
+    """
+    if scale > 1:
+        temp_h, temp_w, not_needed = rgb_array.shape
+        new_w, new_h = int(temp_w / scale), int(temp_h / scale)
+        return cv2.resize(rgb_array, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    else:
+        return rgb_array
+
+
 def load_all_patterns():
-    duplicate_images = ''
+    result_list = []
     for root, dirs, files in os.walk(PROJECT_BASE_PATH):
         for file_name in files:
             if file_name.endswith('.png'):
                 if current_platform_pattern in root or 'common' in root or 'local_web' in root:
-                    new_image = IrisImage(file_name, root)
-                    if new_image.name in _images:
-                        new_file = os.path.join(root, file_name)
-                        duplicate_images += '\n"%s" - "%s"' % (_images[new_image.name].path, new_file)
-                    else:
-                        _images[new_image.name] = new_image
-    if len(duplicate_images) > 0:
-        logger.warning('Found multiple images with the same name:\n%s' % str(duplicate_images))
+                    pattern_name, pattern_scale = _parse_name(file_name)
+                    pattern_path = os.path.join(root, file_name)
+                    pattern = {'name': pattern_name, 'path': pattern_path, 'scale': pattern_scale}
+                    result_list.append(pattern)
+    return result_list
 
 
-"""
-pyautogui.size() works correctly everywhere except Mac Retina
-This technique works everywhere, so we'll use it instead
-"""
+_images = load_all_patterns()
 
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
 SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
@@ -340,34 +379,6 @@ class _IrisSettings(object):
     def ObserveMinChangedPixels(self, value):
         self._observe_min_changed_pixels = value
 
-    @property
-    def ActionLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
-
-    @ActionLogs.setter
-    def ActionLogs(self, value):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.ActionLogs')
-
-    @property
-    def DebugLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
-
-    @DebugLogs.setter
-    def DebugLogs(self, value):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.DebugLogs')
-
-    @property
-    def InfoLogs(self):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
-
-    @InfoLogs.setter
-    def InfoLogs(self, value):
-        raise UnsupportedAttributeError('Unsupported attribute Settings.InfoLogs')
-
-    @staticmethod
-    def getSikuliVersion():
-        raise UnsupportedMethodError('Unsupported method Settings.getSikuliVersion()')
-
     @staticmethod
     def getOS():
         """Get the type of the operating system your script is running on."""
@@ -410,135 +421,6 @@ class Env(object):
     @staticmethod
     def getClipboard():
         return pyperclip.paste()
-
-    @staticmethod
-    def isLockOn():
-        raise UnsupportedMethodError('Unsupported method Env.isLockOn(). Use Key.isLockOn() instead.')
-
-    @staticmethod
-    def getOSVersion():
-        raise UnsupportedMethodError('Unsupported method Env.getOSVersion(). Use Settings.getOSVersion() instead.')
-
-    @staticmethod
-    def getOS():
-        raise UnsupportedMethodError('Unsupported method Env.getOS(). Use Settings.getOS() instead.')
-
-    @staticmethod
-    def getMouseLocation():
-        raise UnsupportedMethodError('Unsupported method Env.getMouseLocation(). Use Mouse.at() instead.')
-
-    @staticmethod
-    def addHotkey():
-        raise UnsupportedMethodError('Unsupported method Env.addHotkey().')
-
-    @staticmethod
-    def removeHotkey():
-        raise UnsupportedMethodError('Unsupported method Env.removeHotkey().')
-
-    @staticmethod
-    def getSikuliVersion():
-        raise UnsupportedMethodError('Unsupported method Env.getSikuliVersion().')
-
-
-class Sikulix(object):
-    @staticmethod
-    def prefLoad():
-        raise UnsupportedMethodError('Unsupported method Sikulix.prefLoad().')
-
-    @staticmethod
-    def prefRemove():
-        raise UnsupportedMethodError('Unsupported method Sikulix.prefRemove().')
-
-    @staticmethod
-    def prefStore():
-        raise UnsupportedMethodError('Unsupported method Sikulix.prefStore().')
-
-
-class App(object):
-    def __init__(self):
-        self.open = self._instance_open_app
-        self.focus = self._instance_focus_app
-        self.close = self._instance_close_app
-
-    @staticmethod
-    def open(application):
-        raise UnsupportedClassMethodError('Unsupported classmethod App.open(application).')
-
-    def _instance_open_app(self, waitTime=1):
-        raise UnsupportedMethodError('Unsupported method App.open([waitTime]).')
-
-    @staticmethod
-    def focus(application):
-        raise UnsupportedClassMethodError('Unsupported classmethod App.focus(application).')
-
-    def _instance_focus_app(self):
-        raise UnsupportedMethodError('Unsupported method App.focus().')
-
-    @staticmethod
-    def close(application):
-        raise UnsupportedClassMethodError('Unsupported classmethod App.close(application).')
-
-    def _instance_close_app(self):
-        raise UnsupportedMethodError('Unsupported method App.close().')
-
-    @staticmethod
-    def pause(waitTime):
-        raise UnsupportedClassMethodError('Unsupported classmethod App.pause(waitTime).')
-
-    def isRunning(self):
-        raise UnsupportedMethodError('Unsupported method App.isRunning().')
-
-    def hasWindow(self):
-        raise UnsupportedMethodError('Unsupported method App.hasWindow().')
-
-    def getWindow(self):
-        raise UnsupportedMethodError('Unsupported method App.getWindow().')
-
-    def getPID(self):
-        raise UnsupportedMethodError('Unsupported method App.getPID().')
-
-    def getName(self):
-        raise UnsupportedMethodError('Unsupported method App.getName().')
-
-    def setUsing(self, parametertext):
-        raise UnsupportedMethodError('Unsupported method App.setUsing(parametertext).')
-
-    @staticmethod
-    def focusedWindow():
-        raise UnsupportedClassMethodError('Unsupported classmethod App.focusedWindow().')
-
-    def window(self, n=1):
-        raise UnsupportedMethodError('Unsupported method App.window([n]).')
-
-    @staticmethod
-    def getClipboard():
-        raise UnsupportedMethodError('Unsupported method App.getClipboard().')
-
-
-class Guide(object):
-    @staticmethod
-    def rectangle(element):
-        raise UnsupportedMethodError('Unsupported method Guide.rectangle(element).')
-
-    @staticmethod
-    def circle(element):
-        raise UnsupportedMethodError('Unsupported method Guide.circle(element).')
-
-    @staticmethod
-    def text(element, txt):
-        raise UnsupportedMethodError('Unsupported method Guide.text(element, txt).')
-
-    @staticmethod
-    def tooltip(element, txt):
-        raise UnsupportedMethodError('Unsupported method Guide.tooltip(element, txt).')
-
-    @staticmethod
-    def button(element, name):
-        raise UnsupportedMethodError('Unsupported method Guide.button(element, name).')
-
-    @staticmethod
-    def show(seconds=1):
-        raise UnsupportedMethodError('Unsupported method Guide.show([seconds]).')
 
 
 class Key(object):
@@ -783,12 +665,74 @@ class Screen(object):
         return dimensions
 
 
+def get_pattern_details(pattern_name):
+    result_list = filter(lambda x: x['name'] == pattern_name, _images)
+    if len(result_list) > 0:
+        res = result_list[0]
+        return res['name'], res['path'], res['scale']
+
+
+def iris_image_match_template(needle, haystack, precision, threshold=None):
+    """Finds a match or a list of matches
+
+    :param needle:  Image details (needle)
+    :param haystack: Region as Image (haystack)
+    :param float precision: Min allowed similarity
+    :param float || None threshold:  Max threshold
+    :return: A location or a list of locations
+    """
+    is_multiple = threshold is not None
+
+    from iris.api.core import Location
+    try:
+        res = cv2.matchTemplate(np.array(needle), np.array(haystack), FIND_METHOD)
+    except:
+        res = Location(-1, -1)
+
+    if not is_multiple:
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+        if max_val < precision:
+            return Location(-1, -1)
+        else:
+            position = Location(max_loc[0], max_loc[1])
+            return position
+    else:
+        if precision > threshold:
+            precision = threshold
+
+        w, h = needle.shape[::-1]
+        points = []
+        while True:
+            min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+            if FIND_METHOD in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+                top_left = min_loc
+            else:
+                top_left = max_loc
+
+            if threshold > max_val > precision:
+                sx, sy = top_left
+                for x in range(sx - w / 2, sx + w / 2):
+                    for y in range(sy - h / 2, sy + h / 2):
+                        try:
+                            res[y][x] = np.float32(-10000)
+                        except IndexError:
+                            pass
+                new_match_point = Location(top_left[0], top_left[1])
+                points.append(new_match_point)
+            else:
+                break
+
+
 class Pattern(object):
     def __init__(self, image_name):
-        self.image_name = image_name
-        self.image_path = _images[self.image_name].path
-        self.scale_factor = _images[self.image_name].scale_factor
+        name, path, scale = get_pattern_details(image_name)
+        self.image_name = name
+        self.image_path = path
+        self.scale_factor = scale
         self.target_offset = None
+        self.rgb_array = np.array(cv2.imread(path))
+        self.color_image = Image.fromarray(_apply_scale(scale, self.rgb_array))
+        self.gray_image = self.color_image.convert('L')
 
     def targetOffset(self, dx, dy):
         """Add offset to Pattern from top left
@@ -814,6 +758,18 @@ class Pattern(object):
         :return: Location object as the target offset
         """
         return self.target_offset
+
+    def scale_factor(self):
+        return self.scale_factor
+
+    def rgb_array(self):
+        return self.rgb_array
+
+    def color_image(self):
+        return self.color_image
+
+    def gray_image(self):
+        return self.gray_image
 
 
 class Location(object):
@@ -992,49 +948,15 @@ class Region(object):
         return rightClick(where, duration, self)
 
 
-class Vision(object):
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def getParameter():
-        raise UnsupportedMethodError('Unsupported method Vision.getParameter()')
-
-    @staticmethod
-    def setParameter():
-        raise UnsupportedMethodError('Unsupported method Vision.setParameter()')
-
-
-class Do(object):
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def input():
-        raise UnsupportedMethodError('Unsupported method Do.input()')
-
-    @staticmethod
-    def popAsk():
-        raise UnsupportedMethodError('Unsupported method Do.popAsk()')
-
-    @staticmethod
-    def popError():
-        raise UnsupportedMethodError('Unsupported method Do.popError()')
-
-    @staticmethod
-    def popup():
-        raise UnsupportedMethodError('Unsupported method Do.popup()')
-
-
 class Platform(object):
-    """Class that holds all supported operating systems (HIDEF = High definition displays)."""
+    """Class that holds all supported operating systems (HIGH_DEF = High definition displays)."""
     WINDOWS = 'win'
     LINUX = 'linux'
     MAC = 'osx'
     ALL = Settings.getOS()
-    HIDEF = not (pyautogui.screenshot().size == pyautogui.size())
+    HIGH_DEF = not (pyautogui.screenshot().size == pyautogui.size())
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
-    LOWRES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
+    LOW_RES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
@@ -1208,7 +1130,7 @@ def _region_grabber(region=None, for_ocr=False):
 def _match_template(needle, haystack, precision=None):
     """Search for needle in stack (single match).
 
-    :param IrisImage needle: Image details (needle)
+    :param Pattern needle: Image details (needle)
     :param Image.Image haystack: Region as Image (haystack)
     :param float precision: Min allowed similarity
     :return: Location
@@ -1234,7 +1156,7 @@ def _match_template(needle, haystack, precision=None):
 def _match_template_multiple(needle, haystack, precision=None, threshold=0.99):
     """Search for needle in stack (multiple matches)
 
-    :param IrisImage needle:  Image details (needle)
+    :param Pattern needle:  Image details (needle)
     :param Image.Image haystack: Region as Image (haystack)
     :param float precision: Min allowed similarity
     :param float threshold:  Max threshold
@@ -1258,48 +1180,46 @@ def _match_template_multiple(needle, haystack, precision=None, threshold=0.99):
     return found_list
 
 
-def _add_positive_image_search_result_in_queue(queue, image_name, precision=None, region=None, all_images=None):
+def _add_positive_image_search_result_in_queue(queue, pattern, precision=None, region=None):
     """Puts result in a queue if image is found
 
     :param Queue.Queue queue: Queue where the result of the search is added
-    :param str image_name: name of the searched image
+    :param Pattern pattern: name of the searched image
     :param float precision: Min allowed similarity
     :param Region region: Region object
-    :param dict all_images: hold the list of all images that are loaded into the tests
     :return:
     """
 
     if precision is None:
         precision = Settings.MinSimilarity
 
-    result = _image_search(all_images[image_name], precision, region)
+    result = _image_search(pattern, precision, region)
     if result.getX() != -1:
         queue.put(result)
 
 
-def _add_negative_image_search_result_in_queue(queue, image_name, precision=None, region=None, all_images=None):
+def _add_negative_image_search_result_in_queue(queue, pattern, precision=None, region=None):
     """Puts result in a queue if image is NOT found
 
     :param Queue.Queue queue: Queue where the result of the search is added
-    :param str image_name: name of the searched image
+    :param Pattern pattern: name of the searched image
     :param float precision: Min allowed similarity
     :param Region region: Region object
-    :param dict all_images: hold the list of all images that are loaded into the tests
     :return:
     """
 
     if precision is None:
         precision = Settings.MinSimilarity
 
-    result = _image_search(all_images[image_name], precision, region)
+    result = _image_search(pattern, precision, region)
     if result.getX() == -1:
         queue.put(result)
 
 
-def _image_search(image_details, precision=None, region=None):
+def _image_search(pattern, precision=None, region=None):
     """ Wrapper over _match_template. Search image in a Region or full screen
 
-    :param IrisImage image_details: Image details (needle)
+    :param Pattern pattern: Image details (needle)
     :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Location
@@ -1309,7 +1229,7 @@ def _image_search(image_details, precision=None, region=None):
         precision = Settings.MinSimilarity
 
     stack_image = _region_grabber(region=region)
-    location = _match_template(image_details, stack_image, precision)
+    location = _match_template(pattern, stack_image, precision)
 
     if location.x == -1 or location.y == -1:
         return location
@@ -1319,10 +1239,10 @@ def _image_search(image_details, precision=None, region=None):
         return location
 
 
-def _image_search_multiple(image_details, precision=None, region=None):
+def _image_search_multiple(pattern, precision=None, region=None):
     """ Wrapper over _match_template_multiple. Search image (multiple) in a Region or full screen
 
-    :param IrisImage image_details: Image details (needle)
+    :param Pattern pattern: Image details (needle)
     :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: List[Location]
@@ -1332,7 +1252,7 @@ def _image_search_multiple(image_details, precision=None, region=None):
         precision = Settings.MinSimilarity
 
     stack_image = _region_grabber(region=region)
-    return _match_template_multiple(image_details, stack_image, precision)
+    return _match_template_multiple(pattern, stack_image, precision)
 
 
 def _calculate_interval_max_attempts(timeout=None):
@@ -1345,10 +1265,10 @@ def _calculate_interval_max_attempts(timeout=None):
     return interval, max_attempts
 
 
-def _positive_image_search_loop(image_name, timeout=None, precision=None, region=None):
+def _positive_image_search_loop(pattern, timeout=None, precision=None, region=None):
     """ Search for an image (in loop) in a Region or full screen
 
-    :param str image_name: name of the searched image
+    :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
     :param float precision: Min allowed similarity
     :param Region region: Region object
@@ -1360,22 +1280,21 @@ def _positive_image_search_loop(image_name, timeout=None, precision=None, region
     if precision is None:
         precision = Settings.MinSimilarity
 
-    image_details = _images[image_name]
-    pos = _image_search(image_details, precision, region)
+    pos = _image_search(pattern, precision, region)
     tries = 0
     while pos.getX() == -1 and tries < max_attempts:
-        logger.debug("Searching for image %s" % image_name)
+        logger.debug("Searching for image %s" % pattern)
         time.sleep(interval)
-        pos = _image_search(image_details, precision, region)
+        pos = _image_search(pattern, precision, region)
         tries += 1
 
     return None if pos.getX() == -1 else pos
 
 
-def _positive_image_search_multiprocess(image_name, timeout=None, precision=None, region=None):
+def _positive_image_search_multiprocess(pattern, timeout=None, precision=None, region=None):
     """Checks if image is found using multiprocessing
 
-    :param str image_name: name of the searched image
+    :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
     :param float precision: Min allowed similarity
     :param Region region: Region object
@@ -1392,7 +1311,7 @@ def _positive_image_search_multiprocess(image_name, timeout=None, precision=None
     process_list = []
     for i in range(max_attempts):
         p = multiprocessing.Process(target=_add_positive_image_search_result_in_queue,
-                                    args=(out_q, image_name, precision, region, _images))
+                                    args=(out_q, pattern, precision, region))
         process_list.append(p)
         p.start()
         try:
@@ -1410,17 +1329,17 @@ def _positive_image_search_multiprocess(image_name, timeout=None, precision=None
     return None
 
 
-def _positive_image_search(image_name, timeout=None, precision=None, region=None):
+def _positive_image_search(pattern, timeout=None, precision=None, region=None):
     if use_multiprocessing():
-        return _positive_image_search_multiprocess(image_name, timeout, precision, region)
+        return _positive_image_search_multiprocess(pattern, timeout, precision, region)
     else:
-        return _positive_image_search_loop(image_name, timeout, precision, region)
+        return _positive_image_search_loop(pattern, timeout, precision, region)
 
 
-def _negative_image_search_loop(image_name, timeout=None, precision=None, region=None):
+def _negative_image_search_loop(pattern, timeout=None, precision=None, region=None):
     """ Search if an image (in loop) is NOT in a Region or full screen
 
-    :param str image_name: name of the searched image
+    :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
     :param float precision: Min allowed similarity
     :param Region region: Region object
@@ -1434,11 +1353,9 @@ def _negative_image_search_loop(image_name, timeout=None, precision=None, region
 
     pattern_found = True
     tries = 0
-    image_name = _get_pattern_name(image_name)
-    image_details = _images[image_name]
 
     while pattern_found is True and tries < max_attempts:
-        image_found = _image_search(image_details, precision, region)
+        image_found = _image_search(pattern, precision, region)
         if (image_found.x != -1) & (image_found.y != -1):
             pattern_found = True
         else:
@@ -1449,10 +1366,10 @@ def _negative_image_search_loop(image_name, timeout=None, precision=None, region
     return None if pattern_found else True
 
 
-def _negative_image_search_multiprocess(image_name, timeout=None, precision=None, region=None):
+def _negative_image_search_multiprocess(pattern, timeout=None, precision=None, region=None):
     """Checks if image is NOT found or it vanished using multiprocessing
 
-    :param str image_name: name of the searched image
+    :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
     :param float precision: Min allowed similarity
     :param Region region: Region object
@@ -1468,7 +1385,7 @@ def _negative_image_search_multiprocess(image_name, timeout=None, precision=None
     process_list = []
     for i in range(max_attempts):
         p = multiprocessing.Process(target=_add_negative_image_search_result_in_queue,
-                                    args=(out_q, image_name, precision, region, _images))
+                                    args=(out_q, pattern, precision, region))
         process_list.append(p)
         p.start()
         try:
@@ -1486,11 +1403,11 @@ def _negative_image_search_multiprocess(image_name, timeout=None, precision=None
     return None
 
 
-def _negative_image_search(image_name, timeout=None, precision=None, region=None):
+def _negative_image_search(pattern, timeout=None, precision=None, region=None):
     if use_multiprocessing():
-        return _negative_image_search_multiprocess(image_name, timeout, precision, region)
+        return _negative_image_search_multiprocess(pattern, timeout, precision, region)
     else:
-        return _negative_image_search_loop(image_name, timeout, precision, region)
+        return _negative_image_search_loop(pattern, timeout, precision, region)
 
 
 def _text_search_all(with_image_processing=True, in_region=None, in_image=None):
@@ -1719,23 +1636,6 @@ def _ocr_matches_to_string(matches):
     return ocr_string
 
 
-def _get_pattern_name(string_or_pattern):
-    """ Helper for getting image path
-
-    :param str || Pattern string_or_pattern: Image name or Pattern object
-    :return: string of image path
-    """
-    if isinstance(string_or_pattern, Pattern):
-        return string_or_pattern.image_name
-    elif isinstance(string_or_pattern, str):
-        if string_or_pattern in _images:
-            return _images[string_or_pattern].name
-        else:
-            raise ValueError('Unknown image name: %s' % string_or_pattern)
-    else:
-        raise ValueError(INVALID_GENERIC_INPUT)
-
-
 def _is_ocr_text(input_text):
     is_ocr_string = True
     pattern_extensions = ('.png', '.jpg')
@@ -1866,20 +1766,6 @@ class LocalWeb(object):
     POCKET_BOOKMARK_SMALL = 'pocket_bookmark_small.png'
 
 
-"""Sikuli wrappers
-
-- wait
-- waitVanish
-- click
-- exists 
-- find
-- findAll
-- type
-- Key
-- KeyModifier
-"""
-
-
 def text(with_image_processing=True, in_region=None, debug=False):
     """Get all text from a Region or full screen
 
@@ -1913,10 +1799,15 @@ def hover(where=None, duration=0, in_region=None):
         pyautogui.moveTo(where.x, where.y, duration)
 
     elif isinstance(where, str) or isinstance(where, Pattern):
-        image_name = _get_pattern_name(where)
-        pos = _image_search(_images[image_name], region=in_region)
+
+        try:
+            pattern = Pattern(where)
+        except Exception:
+            pattern = where
+
+        pos = _image_search(pattern, region=in_region)
         if pos.x is not -1:
-            needle_width, needle_height = get_asset_img_size(image_name)
+            needle_width, needle_height = get_asset_img_size(pattern.getFilename())
             if isinstance(where, Pattern):
                 possible_offset = where.getTargetOffset()
                 if possible_offset is not None:
@@ -1928,37 +1819,39 @@ def hover(where=None, duration=0, in_region=None):
             else:
                 pyautogui.moveTo(pos.x + needle_width / 2, pos.y + needle_height / 2)
         else:
-            raise FindError('Unable to find image %s' % image_name)
+            raise FindError('Unable to find image %s' % pattern.getFilename())
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def find(what, precision=None, in_region=None):
+def find(image_name, precision=None, in_region=None):
     """Look for a single match of a Pattern or image
 
-    :param what: String or Pattern
+    :param image_name: String or Pattern
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: Location
     """
-    if isinstance(what, str) and _is_ocr_text(what):
-        a_match = _text_search_by(what, True, in_region)
+
+    if isinstance(image_name, str) and _is_ocr_text(image_name):
+        a_match = _text_search_by(image_name, True, in_region)
         if a_match is not None:
             return Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
         else:
-            raise FindError('Unable to find text %s' % what)
+            raise FindError('Unable to find text %s' % image_name)
 
-    elif isinstance(what, str) or isinstance(what, Pattern):
-
-        if what not in _images:
-            return ValueError("Unable to locate %s image in project" % what)
+    elif isinstance(image_name, str) or isinstance(image_name, Pattern):
 
         if precision is None:
             precision = Settings.MinSimilarity
 
-        image_name = _get_pattern_name(what)
-        image_found = _image_search(_images[image_name], precision, in_region)
+        try:
+            pattern = Pattern(image_name)
+        except Exception:
+            pattern = image_name
+
+        image_found = _image_search(pattern, precision, in_region)
         if (image_found.x != -1) & (image_found.y != -1):
             return image_found
         else:
@@ -1988,56 +1881,62 @@ def findAll(what, precision=None, in_region=None):
             raise FindError('Unable to find text %s' % what)
 
     elif isinstance(what, str) or isinstance(what, Pattern):
+        try:
+            pattern = Pattern(what)
+        except Exception:
+            pattern = what
 
         if precision is None:
             precision = Settings.MinSimilarity
 
-        image_name = _get_pattern_name(what)
-        return _image_search_multiple(image_name, precision, in_region)
+        return _image_search_multiple(pattern, precision, in_region)
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def wait(for_what, timeout=None, precision=None, in_region=None):
+def wait(image_name, timeout=None, precision=None, in_region=None):
     """Wait for a Pattern or image to appear
 
-    :param for_what: String or Pattern
+    :param image_name: String or Pattern
     :param timeout: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
-
-    if isinstance(for_what, str) and _is_ocr_text(for_what):
-        a_match = _text_search_by(for_what, True, in_region)
+    if isinstance(image_name, str) and _is_ocr_text(image_name):
+        a_match = _text_search_by(image_name, True, in_region)
         if a_match is not None:
             return True
         else:
-            raise FindError('Unable to find text %s' % for_what)
+            raise FindError('Unable to find text %s' % image_name)
 
-    elif isinstance(for_what, str) or isinstance(for_what, Pattern):
-
+    elif isinstance(image_name, str) or isinstance(image_name, Pattern):
         if timeout is None:
             timeout = Settings.AutoWaitTimeout
 
         if precision is None:
             precision = Settings.MinSimilarity
 
-        image_name = _get_pattern_name(for_what)
-        image_found = _positive_image_search(image_name, timeout, precision, in_region)
+        try:
+            pattern = Pattern(image_name)
+        except Exception:
+            pattern = image_name
+
+        image_found = _positive_image_search(pattern, timeout, precision, in_region)
 
         if image_found is not None:
             return True
         else:
             raise FindError('Unable to find image %s' % image_name)
+
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def exists(what, timeout=None, precision=None, in_region=None):
+def exists(pattern, timeout=None, precision=None, in_region=None):
     """Check if Pattern or image exists
 
-    :param what: String or Pattern
+    :param pattern: String or Pattern
     :param timeout: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
@@ -2051,16 +1950,16 @@ def exists(what, timeout=None, precision=None, in_region=None):
         precision = Settings.MinSimilarity
 
     try:
-        wait(what, timeout, precision, in_region)
+        wait(pattern, timeout, precision, in_region)
         return True
     except FindError:
         return False
 
 
-def waitVanish(for_what, timeout=None, precision=None, in_region=None):
+def waitVanish(image_name, timeout=None, precision=None, in_region=None):
     """Wait until a Pattern or image disappears
 
-    :param for_what: Image, Pattern or string
+    :param image_name: Image, Pattern or string
     :param timeout:  Number as maximum waiting time in seconds.
     :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
@@ -2073,8 +1972,8 @@ def waitVanish(for_what, timeout=None, precision=None, in_region=None):
     if precision is None:
         precision = Settings.MinSimilarity
 
-    image_name = _get_pattern_name(for_what)
-    image_found = _negative_image_search(image_name, timeout, precision, in_region)
+    pattern = Pattern(image_name)
+    image_found = _negative_image_search(pattern, timeout, precision, in_region)
 
     if image_found is not None:
         return True
@@ -2099,7 +1998,7 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
     needle = cv2.imread(pattern.image_path)
     height, width, channels = needle.shape
 
-    p_top = _positive_image_search(image_name=pattern.image_name, precision=Settings.MinSimilarity, region=in_region)
+    p_top = _positive_image_search(pattern=pattern, precision=Settings.MinSimilarity, region=in_region)
 
     if p_top is None:
         raise FindError('Unable to click on: %s' % pattern.image_path)
@@ -2158,12 +2057,13 @@ def _general_click(where=None, clicks=None, duration=None, in_region=None, butto
     elif isinstance(where, Location):
         _click_at(where, clicks, duration, button)
 
-    elif isinstance(where, str):
-        pattern = Pattern(where)
-        _click_pattern(pattern, clicks, duration, in_region, button)
+    elif isinstance(where, str) or isinstance(where, Pattern):
+        try:
+            pattern = Pattern(where)
+        except Exception:
+            pattern = where
 
-    elif isinstance(where, Pattern):
-        _click_pattern(where, clicks, duration, in_region, button)
+        _click_pattern(pattern, clicks, duration, in_region, button)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -2248,24 +2148,18 @@ def _to_location(ps=None, in_region=None, align='top_left'):
 
     # TODO: Add multiple alignments if needed
 
-    if isinstance(ps, Pattern):
-        location = _image_search(_images[ps.image_name], Settings.MinSimilarity, in_region)
-        if align == 'center':
-            width, height = get_asset_img_size(_images[ps.image_name])
-            return Location(location.getX() + width / 2, location.getY() + height / 2)
-        else:
-            return location
+    # TODO fix this (isinstance str or Pattern)
 
-    elif isinstance(ps, str):
-        location = _image_search(_images[ps], Settings.MinSimilarity, in_region)
-        if align == 'center':
-            width, height = get_asset_img_size(ps)
-            return Location(location.getX() + width / 2, location.getY() + height / 2)
-        else:
-            return location
-
-    elif isinstance(ps, Location):
+    if isinstance(ps, Location):
         return ps
+
+    elif isinstance(Pattern(ps), Pattern):
+        location = _image_search(Pattern(ps), Settings.MinSimilarity, in_region)
+        if align == 'center':
+            width, height = get_asset_img_size(Pattern(ps))
+            return Location(location.getX() + width / 2, location.getY() + height / 2)
+        else:
+            return location
 
 
 def dragDrop(drag_from, drop_to, duration=None):
@@ -2327,7 +2221,7 @@ def scroll(clicks):
     pyautogui.scroll(clicks)
 
 
-class ZoomType:
+class ZoomType(object):
     IN = 300 if Settings.isWindows() else 1
     OUT = -300 if Settings.isWindows() else -1
 
