@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import coloredlogs
-import datetime
 import glob
 import shutil
 import sys

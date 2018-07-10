@@ -21,3 +21,8 @@ def get_os():
         logger.error('Iris does not yet support your current environment: ' + current_system)
 
     return current_os
+
+
+def get_os_version():
+    """Get the version string of the operating system your script is running on."""
+    return platform.release()
