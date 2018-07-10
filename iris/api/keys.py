@@ -1,11 +1,19 @@
-import subprocess
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import ctypes
 import logging
+import subprocess
+import time
+
 import pyautogui
+import pyperclip
 
 from core_helper import INVALID_GENERIC_INPUT
+from errors import FindError
 from platform_iris import Platform
-from settings import Settings
+from settings import Settings, DEFAULT_KEY_SHORTCUT_DELAY, DEFAULT_TYPE_DELAY
 
 logger = logging.getLogger(__name__)
 
@@ -275,3 +283,80 @@ def keyUp(key):
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
+
+def type(text=None, modifier=None, interval=None):
+    logger.debug('type method: ')
+    if modifier is None:
+        if isinstance(text, IrisKey):
+            logger.debug('Scenario 1: reserved key')
+            logger.debug('Reserved key: %s' % text)
+            pyautogui.keyDown(str(text))
+            pyautogui.keyUp(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+        else:
+            if interval is None:
+                interval = Settings.TypeDelay
+
+            logger.debug('Scenario 2: normal key or text block')
+            logger.debug('Text: %s' % text)
+            pyautogui.typewrite(text, interval)
+    else:
+        logger.debug('Scenario 3: combination of modifiers and other keys')
+        modifier_keys = KeyModifier.get_active_modifiers(modifier)
+        num_keys = len(modifier_keys)
+        logger.debug('Modifiers (%s): %s ' % (num_keys, ' '.join(modifier_keys)))
+        logger.debug('text: %s' % text)
+        if num_keys == 1:
+            pyautogui.keyDown(modifier_keys[0])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyDown(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(modifier_keys[0])
+        elif num_keys == 2:
+            pyautogui.keyDown(modifier_keys[0])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyDown(modifier_keys[1])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyDown(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(str(text))
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(modifier_keys[1])
+            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+            pyautogui.keyUp(modifier_keys[0])
+        else:
+            logger.error('Returned key modifiers out of range')
+
+    if Settings.TypeDelay != DEFAULT_TYPE_DELAY:
+        Settings.TypeDelay = DEFAULT_TYPE_DELAY
+
+
+def paste(text):
+    # load to clipboard
+    pyperclip.copy(text)
+
+    text_copied = False
+    wait_scan_rate = float(Settings.WaitScanRate)
+    interval = 1 / wait_scan_rate
+    max_attempts = int(Settings.AutoWaitTimeout * wait_scan_rate)
+    attempt = 0
+
+    while not text_copied and attempt < max_attempts:
+        if pyperclip.paste() == text:
+            text_copied = True
+        else:
+            time.sleep(interval)
+            attempt += 1
+
+    if not text_copied:
+        logger.error('Paste method failed')
+        raise FindError
+
+    if Settings.getOS() == Platform.MAC:
+        type(text='v', modifier=KeyModifier.CMD)
+    else:
+        type(text='v', modifier=KeyModifier.CTRL)
+    # clear clipboard
+    pyperclip.copy('')

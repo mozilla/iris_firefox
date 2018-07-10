@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 class FindError(Exception):
     """Exception raised when a Location, Pattern, image or text is not found."""
     pass
@@ -5,21 +10,6 @@ class FindError(Exception):
 
 class ConfigError(Exception):
     """Exception raised if there is unexpected behavior when manipulating config files."""
-    pass
-
-
-class UnsupportedMethodError(Exception):
-    """Exception raised for unsupported methods."""
-    pass
-
-
-class UnsupportedAttributeError(Exception):
-    """Exception raised for unsupported attributes."""
-    pass
-
-
-class UnsupportedClassMethodError(Exception):
-    """Exception raised for unsupported classmethods."""
     pass
 
 
