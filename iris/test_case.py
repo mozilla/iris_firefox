@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from api.helpers.general import *
-from api.helpers.keyboard_shortcuts import *
 from asserts import *
 from configuration.config_parser import *
 

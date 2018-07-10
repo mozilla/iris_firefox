@@ -2,12 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import platform
 import tempfile
 
 import cv2
 import numpy as np
 from PIL import Image
-import platform
 
 OCR_IMAGE_SIZE = 1800
 BINARY_THRESHOLD = 180

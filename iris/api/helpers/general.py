@@ -2,15 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import shutil
 from distutils import dir_util
 from distutils.spawn import find_executable
 
-import shutil
-import subprocess
-
+from iris.api.environment import Env
 from iris.api.helpers.keyboard_shortcuts import *
+from iris.api.keys import *
+from iris.api.region import *
+from iris.api.region_helpers import *
+from iris.api.screen import get_screen
 from iris.configuration.config_parser import *
-from iris.api.keys import KeyModifier, Key, keyUp, keyDown
 
 logger = logging.getLogger(__name__)
 
@@ -256,13 +258,13 @@ def click_auxiliary_window_control(button):
     elif button == 'minimize':
         if Settings.getOS() == Platform.MAC:
             window_controls_pattern = Pattern(auxiliary_window_controls)
-            width, height = get_asset_img_size(window_controls_pattern)
+            width, height = get_image_size(window_controls_pattern)
             click(window_controls_pattern.targetOffset(width / 2, height / 2))
         else:
             click(minimize_button)
     elif button == 'full_screen':
         window_controls_pattern = Pattern(auxiliary_window_controls)
-        width, height = get_asset_img_size(window_controls_pattern)
+        width, height = get_image_size(window_controls_pattern)
         click(window_controls_pattern.targetOffset(width - 10, height / 2))
         if Settings.getOS() == Platform.LINUX:
             hover(Location(80, 0))
@@ -270,7 +272,7 @@ def click_auxiliary_window_control(button):
         if Settings.getOS() == Platform.MAC:
             keyDown(Key.ALT)
             window_controls_pattern = Pattern(auxiliary_window_controls)
-            width, height = get_asset_img_size(window_controls_pattern)
+            width, height = get_image_size(window_controls_pattern)
             click(window_controls_pattern.targetOffset(width - 10, height / 2))
             keyUp(Key.ALT)
         else:
@@ -596,7 +598,7 @@ def create_firefox_args(test_case):
 
 class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
-    PROFILE_CACHE = os.path.join(args.workdir, 'runs', get_run_id(), 'profiles')
+    PROFILE_CACHE = os.path.join(parse_args().workdir, 'runs', get_run_id(), 'profiles')
     STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
 
     """These are profile options available to tests. With the exception of BRAND_NEW, 
@@ -663,13 +665,13 @@ class _IrisProfile(object):
         else:
             delimiter = '/'
         temp = module.__file__.split(delimiter)
-        parent = temp[len(temp)-2]
-        test = temp[len(temp)-1].split('.py')[0]
+        parent = temp[len(temp) - 2]
+        test = temp[len(temp) - 1].split('.py')[0]
         parent_directory = os.path.join(Profile.PROFILE_CACHE, parent)
         profile_path = None
 
         if not os.path.exists(parent_directory):
-            os.mkdir(parent_directory)
+            os.makedirs(parent_directory)
 
         if template is _IrisProfile.BRAND_NEW:
             """Make new, unique profile."""
@@ -692,3 +694,40 @@ class _IrisProfile(object):
 
 
 Profile = _IrisProfile()
+
+
+class LocalWeb(object):
+    """
+    Constants that represent URLs and images for local content.
+    """
+
+    # Simple blank HTML page
+    BLANK_PAGE = 'http://127.0.0.1:%s/blank.htm' % parse_args().port
+
+    # Local Firefox site
+    FIREFOX_TEST_SITE = 'http://127.0.0.1:%s/firefox/' % parse_args().port
+    FIREFOX_LOGO = 'firefox_logo.png'
+    FIREFOX_IMAGE = 'firefox_full.png'
+    FIREFOX_BOOKMARK = 'firefox_bookmark.png'
+    FIREFOX_BOOKMARK_SMALL = 'firefox_bookmark_small.png'
+
+    # Local Firefox Focus site
+    FOCUS_TEST_SITE = 'http://127.0.0.1:%s/focus/' % parse_args().port
+    FOCUS_LOGO = 'focus_logo.png'
+    FOCUS_IMAGE = 'focus_full.png'
+    FOCUS_BOOKMARK = 'focus_bookmark.png'
+    FOCUS_BOOKMARK_SMALL = 'focus_bookmark_small.png'
+
+    # Local Mozilla site
+    MOZILLA_TEST_SITE = 'http://127.0.0.1:%s/mozilla/' % parse_args().port
+    MOZILLA_LOGO = 'mozilla_logo.png'
+    MOZILLA_IMAGE = 'mozilla_full.png'
+    MOZILLA_BOOKMARK = 'mozilla_bookmark.png'
+    MOZILLA_BOOKMARK_SMALL = 'mozilla_bookmark_small.png'
+
+    # Local Pocket site
+    POCKET_TEST_SITE = 'http://127.0.0.1:%s/pocket/' % parse_args().port
+    POCKET_LOGO = 'pocket_logo.png'
+    POCKET_IMAGE = 'pocket_full.png'
+    POCKET_BOOKMARK = 'pocket_bookmark.png'
+    POCKET_BOOKMARK_SMALL = 'pocket_bookmark_small.png'
