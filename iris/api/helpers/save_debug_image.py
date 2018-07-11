@@ -14,7 +14,7 @@ except ImportError:
     from PIL import Image
 
 from core_helper import get_image_debug_path, get_test_name, is_ocr_text, get_region
-from location import Location
+from iris.api.location import Location
 
 
 def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
