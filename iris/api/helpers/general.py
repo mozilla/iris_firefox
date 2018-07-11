@@ -7,11 +7,11 @@ from distutils import dir_util
 from distutils.spawn import find_executable
 
 from iris.api.environment import Env
-from iris.api.helpers.keyboard_shortcuts import *
 from iris.api.keys import *
 from iris.api.region import *
 from iris.api.screen import get_screen
 from iris.configuration.config_parser import *
+from keyboard_shortcuts import *
 
 logger = logging.getLogger(__name__)
 

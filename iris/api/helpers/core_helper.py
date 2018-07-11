@@ -11,7 +11,7 @@ import platform
 
 import pyautogui
 
-from helpers.parse_args import parse_args
+from parse_args import parse_args
 
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
 SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
@@ -63,7 +63,7 @@ def get_os_version():
 
 
 def get_module_dir():
-    return os.path.realpath(os.path.split(__file__)[0] + '/../..')
+    return os.path.realpath(os.path.split(__file__)[0] + '/../../..')
 
 
 def get_image_debug_path():

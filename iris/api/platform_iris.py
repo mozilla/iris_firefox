@@ -4,7 +4,7 @@
 
 import pyautogui
 
-from core_helper import get_os
+from helpers.core_helper import get_os
 
 
 class Platform(object):
