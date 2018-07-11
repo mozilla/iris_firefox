@@ -731,3 +731,32 @@ class LocalWeb(object):
     POCKET_IMAGE = 'pocket_full.png'
     POCKET_BOOKMARK = 'pocket_bookmark.png'
     POCKET_BOOKMARK_SMALL = 'pocket_bookmark_small.png'
+
+
+class ZoomType(object):
+    IN = 300 if Settings.isWindows() else 1
+    OUT = -300 if Settings.isWindows() else -1
+
+
+def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
+    """Zoom in/Zoom out using the mouse wheel
+
+    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should take place
+    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to perform
+    :return: None
+    """
+
+    # move focus in the middle of the page to be able to use the scroll
+    pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
+    for i in range(nr_of_times):
+        if Settings.getOS() == Platform.MAC:
+            pyautogui.keyDown('command')
+        else:
+            pyautogui.keyDown('ctrl')
+        pyautogui.scroll(zoom_type)
+        if Settings.getOS() == Platform.MAC:
+            pyautogui.keyUp('command')
+        else:
+            pyautogui.keyUp('ctrl')
+        time.sleep(0.5)
+    pyautogui.moveTo(0, 0)
