@@ -1,7 +1,7 @@
 import logging
 import os.path
 from ConfigParser import ConfigParser
-from iris.api.errors import *
+from iris.api.helpers.errors import *
 
 logger = logging.getLogger(__name__)
 

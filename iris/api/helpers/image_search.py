@@ -14,9 +14,9 @@ except ImportError:
     from PIL import Image
 
 from core_helper import *
-from pattern import Pattern
-from settings import Settings
-from location import Location
+from iris.api.pattern import Pattern
+from iris.api.settings import Settings
+from iris.api.location import Location
 from save_debug_image import save_debug_image
 
 logger = logging.getLogger(__name__)

@@ -8,7 +8,7 @@ import os
 import cv2
 import numpy as np
 
-from core_helper import get_module_dir, get_images_path
+from helpers.core_helper import get_module_dir, get_images_path
 from location import Location
 
 try:

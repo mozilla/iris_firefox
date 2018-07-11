@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from core_helper import get_os, get_os_version
+from helpers.core_helper import get_os, get_os_version
 from helpers.parse_args import parse_args
 from platform_iris import Platform
 

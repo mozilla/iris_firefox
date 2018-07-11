@@ -15,7 +15,7 @@ except ImportError:
 
 from pyautogui import screenshot
 from core_helper import *
-from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
+from image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from save_debug_image import save_debug_image
 
 logger = logging.getLogger(__name__)
