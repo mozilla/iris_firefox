@@ -4,7 +4,7 @@
 
 import pyautogui
 
-from helpers.core_helper import get_os
+from iris.api.helpers.core_helper import get_os
 
 
 class Platform(object):

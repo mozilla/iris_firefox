@@ -10,8 +10,8 @@ import time
 import pyautogui
 import pyperclip
 
-from helpers.core_helper import INVALID_GENERIC_INPUT
-from helpers.errors import FindError
+from iris.api.helpers.core_helper import INVALID_GENERIC_INPUT
+from iris.api.helpers.errors import FindError
 from platform_iris import Platform
 from settings import Settings, DEFAULT_TYPE_DELAY
 
