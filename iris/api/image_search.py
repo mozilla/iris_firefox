@@ -56,13 +56,25 @@ def _calculate_interval_max_attempts(timeout=None):
     return interval, max_attempts
 
 
-def get_region(for_ocr=False):
+def get_region(region=None, for_ocr=False):
     """Grabs image from region or full screen.
 
     :param Region || None region: Region param
     :return: Image
     """
     is_uhd, uhd_factor = get_uhd_details()
+
+    if region is not None:
+        r_x = uhd_factor * region.getX() if is_uhd else region.getX()
+        r_y = uhd_factor * region.getY() if is_uhd else region.getY()
+        r_w = uhd_factor * region.getW() if is_uhd else region.getW()
+        r_h = uhd_factor * region.getH() if is_uhd else region.getH()
+
+        grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
+
+        if is_uhd and not for_ocr:
+            grabbed_area = grabbed_area.resize([region.getW(), region.getH()])
+        return grabbed_area
 
     grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
 
@@ -317,7 +329,7 @@ def image_search(pattern, precision=None, region=None):
     if precision is None:
         precision = Settings.MinSimilarity
 
-    stack_image = get_region()
+    stack_image = get_region(region=region)
     location = _match_template(pattern, stack_image, precision)
 
     if location.x == -1 or location.y == -1:

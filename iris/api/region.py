@@ -470,12 +470,12 @@ def hover(where=None, duration=0, in_region=None):
             pattern = where
 
         pos = image_search(pattern, region=in_region)
-        if pos.x is not -1:
+        if pos.x != -1:
             needle_width, needle_height = get_image_size(pattern.getFilename())
             if isinstance(where, Pattern):
                 possible_offset = where.getTargetOffset()
                 if possible_offset is not None:
-                    move_to = Location(pos.x + possible_offset.getX(), pos.getY() + possible_offset.getY())
+                    move_to = Location(pos.getX() + possible_offset.getX(), pos.getY() + possible_offset.getY())
                     pyautogui.moveTo(move_to.getX(), move_to.y)
                 else:
                     move_to = Location(pos.x, pos.y)
