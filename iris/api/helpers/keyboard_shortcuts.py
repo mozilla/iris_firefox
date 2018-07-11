@@ -7,10 +7,10 @@ import time
 
 from errors import FindError, APIHelperError
 from image_search import get_image_size
-from iris.api.keys import Key, KeyModifier, keyDown, keyUp, type
-from iris.api.pattern import Pattern
-from iris.api.region import Region, click, wait, waitVanish
-from iris.api.settings import *
+from iris.api.core.keys import Key, KeyModifier, keyDown, keyUp, type
+from iris.api.core.pattern import Pattern
+from iris.api.core.region import Region, click, wait, waitVanish
+from iris.api.core.settings import *
 
 logger = logging.getLogger(__name__)
 
