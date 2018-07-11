@@ -7,6 +7,7 @@ from image_search import *
 from location import Location
 from ocr_search import *
 from pattern import Pattern
+from save_debug_image import save_debug_image
 from settings import Settings, DEFAULT_CLICK_DELAY
 
 try:
@@ -27,7 +28,7 @@ class Region(object):
 
     def debug(self):
         pass
-        # save_debug_image(None, self, None)
+        save_debug_image(None, self, None)
 
     def debug_ocr(self, with_image_processing=True):
         return self.text(with_image_processing, True)
@@ -140,25 +141,6 @@ class Region(object):
 
     def rightClick(self, where, duration):
         return rightClick(where, duration, self)
-
-
-def get_region(region=None, for_ocr=False):
-    """Grabs image from region or full screen.
-
-    :param Region || None region: Region param
-    :return: Image
-    """
-    is_uhd, uhd_factor = get_uhd_details()
-
-    r_x = uhd_factor * region.getX() if is_uhd else region.getX()
-    r_y = uhd_factor * region.getY() if is_uhd else region.getY()
-    w_y = uhd_factor * region.getW() if is_uhd else region.getW()
-    h_y = uhd_factor * region.getH() if is_uhd else region.getH()
-    grabbed_area = pyautogui.screenshot(region=(r_x, r_y, w_y, h_y))
-
-    if is_uhd and not for_ocr:
-        grabbed_area = grabbed_area.resize([region.getW(), region.getH()])
-    return grabbed_area
 
 
 def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
