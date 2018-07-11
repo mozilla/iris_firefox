@@ -18,7 +18,6 @@ SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
-args = parse_args()
 
 
 def success(self, message, *args, **kws):
@@ -72,7 +71,7 @@ def get_image_debug_path():
 
 
 def is_image_save_enabled():
-    return args.level == 10
+    return parse_args().level == 10
 
 
 def get_run_id():
@@ -91,6 +90,53 @@ def is_multiprocessing_enabled():
     return multiprocessing.cpu_count() >= MIN_CPU_FOR_MULTIPROCESSING
 
 
+def scroll(clicks):
+    pyautogui.scroll(clicks)
+
+
+def get_uhd_details():
+    uhd_factor = SCREENSHOT_WIDTH / SCREEN_WIDTH
+    is_uhd = True if uhd_factor > 1 else False
+    return is_uhd, uhd_factor
+
+
+def is_ocr_text(input_text):
+    is_ocr_string = True
+    pattern_extensions = ('.png', '.jpg')
+    if input_text.endswith(pattern_extensions):
+        is_ocr_string = False
+    return is_ocr_string
+
+
+def get_region(region=None, for_ocr=False):
+    """Grabs image from region or full screen.
+
+    :param Region || None region: Region param
+    :param for_ocr: boolean param for ocr processing
+    :return: Image
+    """
+    is_uhd, uhd_factor = get_uhd_details()
+
+    if region is not None:
+        r_x = uhd_factor * region.getX() if is_uhd else region.getX()
+        r_y = uhd_factor * region.getY() if is_uhd else region.getY()
+        r_w = uhd_factor * region.getW() if is_uhd else region.getW()
+        r_h = uhd_factor * region.getH() if is_uhd else region.getH()
+
+        grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
+
+        if is_uhd and not for_ocr:
+            grabbed_area = grabbed_area.resize([region.getW(), region.getH()])
+        return grabbed_area
+
+    grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+
+    if is_uhd and not for_ocr:
+        return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
+    else:
+        return grabbed_area
+
+
 def get_test_name():
     white_list = ['general.py']
     all_stack = inspect.stack()
@@ -102,13 +148,3 @@ def get_test_name():
         elif filename in white_list:
             return method_name
     return
-
-
-def scroll(clicks):
-    pyautogui.scroll(clicks)
-
-
-def get_uhd_details():
-    uhd_factor = SCREENSHOT_WIDTH / SCREEN_WIDTH
-    is_uhd = True if uhd_factor > 1 else False
-    return is_uhd, uhd_factor

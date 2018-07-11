@@ -13,7 +13,9 @@ import pyperclip
 from core_helper import INVALID_GENERIC_INPUT
 from errors import FindError
 from platform_iris import Platform
-from settings import Settings, DEFAULT_KEY_SHORTCUT_DELAY, DEFAULT_TYPE_DELAY
+from settings import Settings, DEFAULT_TYPE_DELAY
+
+DEFAULT_KEY_SHORTCUT_DELAY = 0.1
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +160,8 @@ class Key(object):
     @staticmethod
     def isLockOn(keyboard_key):
         if Settings.getOS() == Platform.WINDOWS:
-            hllDll = ctypes.WinDLL("User32.dll")
+            keyboard_code = 0
+            hll_dll = ctypes.WinDLL("User32.dll")
             if keyboard_key == Key.CAPS_LOCK:
                 keyboard_code = 0x14
             elif keyboard_key == Key.NUM_LOCK:
@@ -166,10 +169,10 @@ class Key(object):
             elif keyboard_key == Key.SCROLL_LOCK:
                 keyboard_code = 0x91
             try:
-                keystate = hllDll.GetKeyState(keyboard_code)
-            except:
+                key_state = hll_dll.GetKeyState(keyboard_code)
+            except Exception:
                 raise Exception('Unable to run Command')
-            if (keystate == 1):
+            if key_state == 1:
                 return True
             else:
                 return False
@@ -247,16 +250,19 @@ class KeyModifier(object):
 
 def shutdown_process(process_name):
     if Settings.getOS() == Platform.WINDOWS:
+        command_str = 'taskkill /IM ' + process_name + '.exe'
         try:
-            command = subprocess.Popen('taskkill /IM ' + process_name + '.exe', shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError as e:
-            logger.error('Command  failed: %s' % repr(e.command))
+
+            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            logger.error('Command  failed: "%s"' % command_str)
             raise Exception('Unable to run Command')
     elif Settings.getOS() == Platform.MAC or Settings.getOS() == Platform.LINUX:
+        command_str = 'pkill ' + process_name
         try:
-            command = subprocess.Popen('pkill ' + process_name, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError as e:
-            logger.error('Command  failed: %s' % repr(e.command))
+            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            logger.error('Command  failed: "%s"' % command_str)
             raise Exception('Unable to run Command')
 
 

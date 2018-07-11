@@ -3,8 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import copy
-import datetime
-import logging
 
 import cv2
 import numpy as np
@@ -16,9 +14,9 @@ except ImportError:
     from PIL import Image
 
 from pyautogui import screenshot
-from core_helper import get_image_debug_path, INVALID_GENERIC_INPUT, is_image_save_enabled
-from image_search import get_region, get_uhd_details
+from core_helper import *
 from helpers.image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
+from save_debug_image import save_debug_image
 
 logger = logging.getLogger(__name__)
 
