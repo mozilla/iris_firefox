@@ -13,7 +13,6 @@ from iris.api.region import *
 from iris.api.screen import get_screen
 from iris.configuration.config_parser import *
 
-
 logger = logging.getLogger(__name__)
 
 
