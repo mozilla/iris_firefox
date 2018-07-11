@@ -6,10 +6,10 @@ import shutil
 from distutils import dir_util
 from distutils.spawn import find_executable
 
-from iris.api.environment import Env
-from iris.api.keys import *
-from iris.api.region import *
-from iris.api.screen import get_screen
+from iris.api.core.environment import Env
+from iris.api.core.keys import *
+from iris.api.core.region import *
+from iris.api.core.screen import get_screen
 from iris.configuration.config_parser import *
 from keyboard_shortcuts import *
 

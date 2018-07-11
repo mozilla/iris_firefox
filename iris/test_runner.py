@@ -9,7 +9,7 @@ import traceback
 from api.helpers.general import *
 from api.helpers.results import *
 from api.helpers.version_parser import check_version
-from api.settings import Settings
+from iris.api.core.settings import Settings
 
 logger = logging.getLogger(__name__)
 

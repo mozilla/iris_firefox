@@ -2,12 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from helpers.errors import FindError
-from helpers.image_search import *
+from iris.api.helpers.errors import FindError
+from iris.api.helpers.image_search import *
+from iris.api.helpers.ocr_search import *
+from iris.api.helpers.save_debug_image import save_debug_image
 from location import Location
-from helpers.ocr_search import *
 from pattern import Pattern
-from helpers.save_debug_image import save_debug_image
 from settings import Settings, DEFAULT_CLICK_DELAY
 
 try:

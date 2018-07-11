@@ -17,11 +17,11 @@ import pytesseract
 import firefox.app as fa
 import firefox.downloader as fd
 import firefox.extractor as fe
+from api.core.keys import Key
+from api.core.platform_iris import Platform
+from api.core.settings import Settings
 from api.helpers.core_helper import get_module_dir, get_platform, get_run_id, get_image_debug_path
 from api.helpers.parse_args import parse_args
-from api.keys import Key
-from api.platform_iris import Platform
-from api.settings import Settings
 from firefox import cleanup
 from local_web import LocalWebServer
 from test_runner import run
