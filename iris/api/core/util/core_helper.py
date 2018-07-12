@@ -19,6 +19,7 @@ SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
+_run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
 
 def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
@@ -75,7 +76,8 @@ def is_image_save_enabled():
 
 
 def get_run_id():
-    return datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
+    global _run_id
+    return _run_id
 
 
 def get_images_path():
