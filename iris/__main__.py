@@ -2,24 +2,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import coloredlogs
-import datetime
 import glob
+import logging
+import os
 import shutil
 import sys
 import tempfile
 from distutils.spawn import find_executable
 from multiprocessing import Process
 
+import coloredlogs
+import pytesseract
 
 import firefox.app as fa
 import firefox.downloader as fd
 import firefox.extractor as fe
-import test_runner
-from api.core import *
-from api.helpers.parse_args import parse_args
+from api.core.key import Key
+from api.core.platform import Platform
+from api.core.settings import Settings
+from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_image_debug_path
+from api.core.util.parse_args import parse_args
 from firefox import cleanup
-from local_web import LocalWebServer
+from local_web_server import LocalWebServer
+from test_runner import run
 
 tmp_dir = None
 restore_terminal_encoding = None
@@ -34,6 +39,18 @@ coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True}
                                     'success': {'color': 'green', 'bold': True},
                                     'error': {'color': 'red', 'bold': True}}
 
+try:
+    os.stat(get_image_debug_path())
+except:
+    os.mkdir(get_image_debug_path())
+for debug_image_file in os.listdir(get_image_debug_path()):
+    file_path = os.path.join(get_image_debug_path(), debug_image_file)
+    try:
+        if os.path.isfile(file_path):
+            os.unlink(file_path)
+    except Exception as e:
+        continue
+
 
 def main(argv=None):
     """This is the main entry point defined in setup.py"""
@@ -46,7 +63,6 @@ class Iris(object):
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
         self.process_list = []
-        load_all_patterns()
         self.check_keyboard_state()
         self.init_tesseract_path()
         self.check_7zip()
@@ -56,9 +72,9 @@ class Iris(object):
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.start_local_web_server(self.local_web_root, self.args.port)
-        self.create_run_directory()
         self.main()
-        test_runner.run(self)
+        self.create_run_directory()
+        run(self)
 
     def main(self, argv=None):
         global tmp_dir
@@ -324,6 +340,7 @@ class Iris(object):
             logger.critical('Cannot find required library 7zip, aborting Iris.')
             logger.critical('Please consult wiki for complete setup instructions.')
             self.finish(code=5)
+
 
 class RemoveTempDir(cleanup.CleanUp):
     """Class definition for cleanup helper responsible for deleting the temporary directory prior to exit."""

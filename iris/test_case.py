@@ -2,10 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import inspect
-
+from api.core.local_web import *
+from api.core.profile import *
 from api.helpers.general import *
-from api.helpers.keyboard_shortcuts import *
 from asserts import *
 from configuration.config_parser import *
 
@@ -18,6 +17,7 @@ class BaseTest(object):
         self.app = app
         self.reset_variables()
         self.prefs = []
+        self.profile_path = None
 
     def reset_variables(self):
         self.meta = ''

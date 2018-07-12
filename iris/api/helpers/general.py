@@ -2,14 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from distutils import dir_util
-from distutils.spawn import find_executable
 
-import shutil
-import subprocess
-
-from iris.api.helpers.keyboard_shortcuts import *
+from iris.api.core.environment import Env
+from iris.api.core.key import *
+from iris.api.core.region import *
+from iris.api.core.screen import get_screen
 from iris.configuration.config_parser import *
+from keyboard_shortcuts import *
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +19,8 @@ def launch_firefox(path, profile=None, url=None, args=None):
         args = []
 
     if profile is None:
-        logger.warning('No profile name present, using last default profile on disk.')
-        profile = os.path.join(os.path.expanduser('~'), '.iris', 'profiles', 'default')
+        logger.error('No profile name present, aborting run.')
+        raise ValueError
 
     cmd = [path, '-foreground', '-no-remote', '-profile', profile]
 
@@ -255,13 +254,13 @@ def click_auxiliary_window_control(button):
     elif button == 'minimize':
         if Settings.getOS() == Platform.MAC:
             window_controls_pattern = Pattern(auxiliary_window_controls)
-            width, height = get_asset_img_size(window_controls_pattern)
+            width, height = get_image_size(window_controls_pattern)
             click(window_controls_pattern.targetOffset(width / 2, height / 2))
         else:
             click(minimize_button)
     elif button == 'full_screen':
         window_controls_pattern = Pattern(auxiliary_window_controls)
-        width, height = get_asset_img_size(window_controls_pattern)
+        width, height = get_image_size(window_controls_pattern)
         click(window_controls_pattern.targetOffset(width - 10, height / 2))
         if Settings.getOS() == Platform.LINUX:
             hover(Location(80, 0))
@@ -269,7 +268,7 @@ def click_auxiliary_window_control(button):
         if Settings.getOS() == Platform.MAC:
             keyDown(Key.ALT)
             window_controls_pattern = Pattern(auxiliary_window_controls)
-            width, height = get_asset_img_size(window_controls_pattern)
+            width, height = get_image_size(window_controls_pattern)
             click(window_controls_pattern.targetOffset(width - 10, height / 2))
             keyUp(Key.ALT)
         else:
@@ -528,89 +527,95 @@ def access_bookmarking_tools(option):
         return
 
 
-class _IrisProfile(object):
-    # Disk locations for both profile cache and staged profiles.
-    PROFILE_CACHE = os.path.join(os.path.expanduser('~'), '.iris', 'runs', get_run_id(), 'profiles')
-    STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
-
-    @property
-    def DEFAULT(self):
-        """Default profile that test cases will use, specified in BaseTest."""
-        return Profile.LIKE_NEW
-
-    @property
-    def BRAND_NEW(self):
-        """Make new, unique profile name using time stamp."""
-        new_profile = os.path.join(Profile.PROFILE_CACHE, 'brand_new_' + Profile._create_unique_profile_name())
-        logger.debug('Creating brand new profile: %s' % new_profile)
-        os.mkdir(new_profile)
-        return new_profile
-
-    @property
-    def LIKE_NEW(self):
-        """Open a staged profile that is nearly new, but with some first-run preferences altered.."""
-        logger.debug('Creating new profile from LIKE_NEW staged profile')
-        return self._get_staged_profile('like_new')
-
-    @property
-    def TEN_BOOKMARKS(self):
-        """Open a staged profile that already has ten bookmarks."""
-        logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
-        return self._get_staged_profile('ten_bookmarks')
-
-    def _get_staged_profile(self, profile_name):
-        sz_bin = find_executable('7z')
-        logger.debug('Using 7zip executable at "%s"' % sz_bin)
-
-        zipped_profile = os.path.join(Profile.STAGED_PROFILES, '%s.zip' % profile_name)
-
-        cmd = [sz_bin, 'x', '-y', '-bd', '-o%s' % Profile.STAGED_PROFILES, zipped_profile]
-        logger.debug('Unzipping profile with command "%s"' % ' '.join(cmd))
-        try:
-            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            logger.error('7zip failed: %s' % repr(e.output))
-            raise Exception('Unable to unzip profile')
-        logger.debug('7zip succeeded: %s' % repr(output))
-
-        # Find the desired profile
-        from_directory = os.path.join(Profile.STAGED_PROFILES, profile_name)
-
-        # Create a unique name for the profile.
-        temp_name = '%s_%s' % (profile_name, Profile._create_unique_profile_name())
-
-        # Create a folder to hold that profile's contents.
-        to_directory = os.path.join(Profile.PROFILE_CACHE, temp_name)
-        logger.debug('Creating new profile: %s' % to_directory)
-        os.mkdir(to_directory)
-
-        # Duplicate profile.
-        dir_util.copy_tree(from_directory, to_directory)
-
-        # Remove old unzipped directory.
-        try:
-            shutil.rmtree(from_directory)
-        except WindowsError:
-            # This error can happen, but does not affect Iris.
-            logger.debug('Error, can\'t remove orphaned directory, leaving in place')
-
-        # Remove Mac resource fork folders left over from ZIP, if present.
-        resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')
-        if os.path.exists(resource_fork_folder):
-            try:
-                shutil.rmtree(resource_fork_folder)
-            except WindowsError:
-                # This error can happen, but does not affect Iris.
-                logger.debug('Error, can\'t remove orphaned directory, leaving in place')
-
-        # Return path to profile in cache.
-        return to_directory
-
-    @staticmethod
-    def _create_unique_profile_name():
-        ts = int(time.time())
-        profile_name = 'profile_%s' % ts
-        return profile_name
+def write_profile_prefs(test_case):
+    if len(test_case.prefs):
+        pref_file = os.path.join(test_case.profile_path, 'user.js')
+        file = open(pref_file, 'w')
+        for pref in test_case.prefs:
+            name, value = pref.split(';')
+            if value == 'true' or value == 'false' or value.isdigit():
+                file.write('user_pref("%s", %s);\n' % (name, value))
+            else:
+                file.write('user_pref("%s", "%s");\n' % (name, value))
+        file.close()
 
 
-Profile = _IrisProfile()
+def create_firefox_args(test_case):
+    args = []
+    if test_case.private_browsing:
+        args.append('-private')
+
+    if test_case.private_window:
+        args.append('-private-window')
+
+    try:
+        if test_case.window_size:
+            w, h = test_case.window_size.split('x')
+            args.append('-width')
+            args.append('%s' % w)
+            args.append('-height')
+            args.append('%s' % h)
+            test_case.maximize_window = False
+            if int(w) < 600:
+                logger.warning('Windows of less than 600 pixels wide may cause Iris to fail.')
+    except ValueError:
+        logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
+
+    if test_case.profile_manager:
+        args.append('-ProfileManager')
+
+    if test_case.set_default_browser:
+        args.append('-setDefaultBrowser')
+
+    if test_case.import_wizard:
+        args.append('-migration')
+
+    if test_case.search:
+        args.append('-search')
+        args.append(test_case.search)
+
+    if test_case.preferences:
+        args.append('-preferences')
+
+    if test_case.devtools:
+        args.append('-devtools')
+
+    if test_case.js_debugger:
+        args.append('-jsdebugger')
+
+    if test_case.js_console:
+        args.append('-jsconsole')
+
+    if test_case.safe_mode:
+        args.append('-safe-mode')
+
+    return args
+
+
+class ZoomType(object):
+    IN = 300 if Settings.isWindows() else 1
+    OUT = -300 if Settings.isWindows() else -1
+
+
+def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
+    """Zoom in/Zoom out using the mouse wheel
+
+    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should take place
+    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to perform
+    :return: None
+    """
+
+    # move focus in the middle of the page to be able to use the scroll
+    pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
+    for i in range(nr_of_times):
+        if Settings.getOS() == Platform.MAC:
+            pyautogui.keyDown('command')
+        else:
+            pyautogui.keyDown('ctrl')
+        pyautogui.scroll(zoom_type)
+        if Settings.getOS() == Platform.MAC:
+            pyautogui.keyUp('command')
+        else:
+            pyautogui.keyUp('ctrl')
+        time.sleep(0.5)
+    pyautogui.moveTo(0, 0)
