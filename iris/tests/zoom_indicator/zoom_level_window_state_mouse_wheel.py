@@ -46,5 +46,5 @@ class Test(BaseTest):
         zoom_with_mouse_wheel(1, ZoomType.OUT)
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
-        expected = exists(url_bar_300_zoom_level, 10)
+        expected = new_region.exists(url_bar_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
