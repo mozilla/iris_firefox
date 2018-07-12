@@ -8,8 +8,8 @@ import os
 import cv2
 import numpy as np
 
-from util.core_helper import get_module_dir, get_images_path
 from location import Location
+from util.core_helper import get_module_dir, get_images_path
 
 try:
     import Image
