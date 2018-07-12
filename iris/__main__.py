@@ -114,6 +114,9 @@ class Iris(object):
 
     def create_run_directory(self):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
+        if self.args.clear:
+            if os.path.exists(master_run_directory):
+                shutil.rmtree(master_run_directory, ignore_errors=True)
         if not os.path.exists(master_run_directory):
             os.mkdir(master_run_directory)
         run_directory = os.path.join(master_run_directory, get_run_id())

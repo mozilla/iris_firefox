@@ -28,6 +28,10 @@ def parse_args():
         return log_level_int
 
     parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
+    parser.add_argument('-c', '--clear',
+                        help='Clear run data',
+                        default=True,
+                        action='store_true')
     parser.add_argument('-d', '--directory',
                         help='Directory where tests are located',
                         type=str, metavar='test_directory',
