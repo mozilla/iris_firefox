@@ -20,4 +20,4 @@ class Test(BaseTest):
         access_bookmarking_tools(view_bookmarks_sidebar)
 
         enabled_sidebar_assert = exists(sidebar_enabled, 10)
-        assert_true(self, enabled_sidebar_assert, 'Bookmarks Sidebar has been enabled from thr Bookmarks Menu.')
+        assert_true(self, enabled_sidebar_assert, 'Bookmarks Sidebar has been enabled from the Bookmarks Menu.')
