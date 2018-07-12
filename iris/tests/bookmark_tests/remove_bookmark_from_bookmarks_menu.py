@@ -38,7 +38,7 @@ class Test(BaseTest):
             logger.debug('Amazon bookmark is present in the Bookmarks Menu section.')
             rightClick(menu_bookmark)
         except FindError:
-            raise APIHelperError('Amazon bookmark is not present in the Bookmarks Menu, aborting.')
+            raise FindError('Amazon bookmark is not present in the Bookmarks Menu, aborting.')
 
         bookmark_options(delete)
 
@@ -47,4 +47,4 @@ class Test(BaseTest):
             assert_true(self, delete_bookmark_menu_assert,
                         'Amazon bookmark has been successfully deleted from the Bookmarks Menu.')
         except FindError:
-            raise APIHelperError('Amazon bookmark can not be deleted from the Bookmarks Menu.')
+            raise FindError('Amazon bookmark can not be deleted from the Bookmarks Menu.')
