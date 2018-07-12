@@ -23,7 +23,7 @@ from api.core.settings import Settings
 from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_image_debug_path
 from api.core.util.parse_args import parse_args
 from firefox import cleanup
-from local_web import LocalWebServer
+from local_web_server import LocalWebServer
 from test_runner import run
 
 tmp_dir = None
@@ -63,7 +63,7 @@ class Iris(object):
         self.args = parse_args()
         initialize_logger(LOG_FILENAME, self.args.level)
         self.process_list = []
-        # self.check_keyboard_state()
+        self.check_keyboard_state()
         self.init_tesseract_path()
         self.check_7zip()
         self.module_dir = get_module_dir()

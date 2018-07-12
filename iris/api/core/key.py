@@ -10,10 +10,10 @@ import time
 import pyautogui
 import pyperclip
 
-from util.core_helper import INVALID_GENERIC_INPUT
 from errors import FindError
-from platform_iris import Platform
+from platform import Platform
 from settings import Settings, DEFAULT_TYPE_DELAY
+from util.core_helper import INVALID_GENERIC_INPUT
 
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
 
