@@ -40,4 +40,3 @@ class LocalWeb(object):
     POCKET_IMAGE = 'pocket_full.png'
     POCKET_BOOKMARK = 'pocket_bookmark.png'
     POCKET_BOOKMARK_SMALL = 'pocket_bookmark_small.png'
-

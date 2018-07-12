@@ -2,15 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import os
 import subprocess
 
-import shutil
 from distutils import dir_util
 from distutils.spawn import find_executable
+import shutil
 
-from util.core_helper import *
 from settings import Settings
+from util.core_helper import *
 
 
 class _IrisProfile(object):
@@ -111,4 +110,3 @@ class _IrisProfile(object):
 
 
 Profile = _IrisProfile()
-
