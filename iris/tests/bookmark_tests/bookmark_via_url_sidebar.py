@@ -38,9 +38,7 @@ class Test(BaseTest):
 
         select_location_bar()
 
-        time.sleep(1)
-
-        dragDrop(draggable_url_2, drag_area_2, 2)
+        dragDrop(draggable_url_2, drag_area_2, 0.5)
 
         star_shaped_button_assert = exists(bookmarked_star, 10)
         assert_true(self, star_shaped_button_assert, 'Star-shaped button has changed its color to blue.')
