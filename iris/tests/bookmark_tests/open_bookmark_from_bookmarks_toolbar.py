@@ -36,7 +36,7 @@ class Test(BaseTest):
 
         paste('amazon')
 
-        dragDrop(amazon_draggable, drag_area, 2)
+        dragDrop(amazon_draggable, drag_area, 0.5)
 
         bookmark_drag_assert = exists(dragged_bookmark, 10)
         assert_true(self, bookmark_drag_assert, 'Bookmark was dragged successfully.')
