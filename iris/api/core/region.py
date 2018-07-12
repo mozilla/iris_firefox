@@ -2,10 +2,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from iris.api.helpers.errors import FindError
-from iris.api.helpers.image_search import *
-from iris.api.helpers.ocr_search import *
-from iris.api.helpers.save_debug_image import save_debug_image
+from errors import FindError
+from util.image_search import *
+from util.ocr_search import *
+from util.save_debug_image import save_debug_image
 from location import Location
 from pattern import Pattern
 from settings import Settings, DEFAULT_CLICK_DELAY

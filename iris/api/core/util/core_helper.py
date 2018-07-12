@@ -63,7 +63,7 @@ def get_os_version():
 
 
 def get_module_dir():
-    return os.path.realpath(os.path.split(__file__)[0] + '/../../..')
+    return os.path.realpath(os.path.split(__file__)[0] + '/../../../..')
 
 
 def get_image_debug_path():

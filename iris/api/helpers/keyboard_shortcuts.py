@@ -5,9 +5,9 @@
 import logging
 import time
 
-from errors import FindError, APIHelperError
-from image_search import get_image_size
-from iris.api.core.keys import Key, KeyModifier, keyDown, keyUp, type
+from iris.api.core.errors import FindError, APIHelperError
+from iris.api.core.util.image_search import get_image_size
+from iris.api.core.key import Key, KeyModifier, keyDown, keyUp, type
 from iris.api.core.pattern import Pattern
 from iris.api.core.region import Region, click, wait, waitVanish
 from iris.api.core.settings import *
