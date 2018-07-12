@@ -404,8 +404,9 @@ def create_region_from_image(image):
 
 def create_region_for_url_bar():
     hamburger_menu = 'hamburger_menu.png'
-    home_button = 'home.png'
-    region = create_region_from_patterns(home_button, hamburger_menu, padding_top=10, padding_bottom=15)
+    show_history = 'show_history.png'
+    select_location_bar()
+    region = create_region_from_patterns(show_history, hamburger_menu, padding_top=10, padding_bottom=15)
     return region
 
 

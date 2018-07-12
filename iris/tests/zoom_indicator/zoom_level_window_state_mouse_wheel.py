@@ -14,70 +14,37 @@ class Test(BaseTest):
                     'mouse wheel.'
 
     def run(self):
-        url_1 = 'en.wikipedia.org'
-        search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
-        search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110_zoom_level.png'
-        search_bar_wikipedia_300_zoom_level = 'search_bar_wikipedia_300_zoom_level.png'
+        url = LocalWeb.FIREFOX_TEST_SITE
+        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
+        url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
+        url_bar_300_zoom_level = 'url_bar_300_zoom_level.png'
 
-        navigate(url_1)
+        navigate(url)
 
-        expected = exists(hamburger_menu, 10)
-        assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
+        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         region = create_region_for_url_bar()
 
-        is_retina, uhd_factor = get_uhd_details()
-
-        if Settings.getOS() == Platform.MAC:
-            if is_retina is False:
-                expected = region.exists(search_bar_wikipedia_default_zoom_level, 10, 0.94)
-                assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
-            else:
-                expected = region.exists(search_bar_wikipedia_default_zoom_level, 10, 0.94)
-                assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
-        else:
-            expected = region.exists(search_bar_wikipedia_default_zoom_level, 10, 0.94)
-            assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        expected = region.exists(url_bar_default_zoom_level, 10)
+        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         # zoom in ONE time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
-        if Settings.getOS() == Platform.MAC:
-            if is_retina is False:
-                expected = exists(search_bar_wikipedia_110_zoom_level, 10, 0.91)
-                assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
-            else:
-                expected = exists(search_bar_wikipedia_110_zoom_level, 10, 0.94)
-                assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
-        else:
-            expected = exists(search_bar_wikipedia_110_zoom_level, 10, 0.98)
-            assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        new_region = create_region_for_url_bar()
+
+        expected = new_region.exists(url_bar_110_zoom_level, 10)
+        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
         # zoom in 19 times to reach the maximum zoom level.
         zoom_with_mouse_wheel(19, ZoomType.IN)
 
-        if Settings.getOS() == Platform.MAC:
-            if is_retina is False:
-                expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.91)
-                assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
-            else:
-                expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.94)
-                assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
-        else:
-            expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.98)
-            assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
+        expected = new_region.exists(url_bar_300_zoom_level, 10)
+        assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
         zoom_with_mouse_wheel(1, ZoomType.OUT)
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
-        if Settings.getOS() == Platform.MAC:
-            if is_retina is False:
-                expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.91)
-                assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
-            else:
-                expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.94)
-                assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
-        else:
-            expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.98)
-            assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
+        expected = exists(url_bar_300_zoom_level, 10)
+        assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
