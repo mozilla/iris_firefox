@@ -28,6 +28,8 @@ def run(app):
     for index, module in enumerate(app.test_list, start=1):
 
         current_module = importlib.import_module(module)
+        set_current_module(current_module.__file__)
+
         try:
             current = current_module.Test(app)
         except AttributeError:

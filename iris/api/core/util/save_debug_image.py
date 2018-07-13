@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import datetime
+import os
 import re
 
 import cv2
@@ -118,4 +119,7 @@ def save_debug_image(needle, haystack, locations, not_found=False):
         elif isinstance(locations, Location):
             _draw_rectangle(haystack, (locations.x, locations.y), (locations.x + w, locations.y + h))
 
-        cv2.imwrite(get_image_debug_path() + '/' + temp_f + '.jpg', haystack)
+        if not os.path.exists(get_image_debug_path()):
+            os.mkdir(get_image_debug_path())
+        file_name = os.path.join(get_image_debug_path(), '%s.jpg' % temp_f)
+        cv2.imwrite(file_name, haystack)
