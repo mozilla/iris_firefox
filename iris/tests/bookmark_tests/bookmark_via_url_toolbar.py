@@ -45,4 +45,4 @@ class Test(BaseTest):
 
         bookmarked_url_assert = exists(toolbar_dragged_bookmark, 10)
         assert_true(self, bookmarked_url_assert, 'Amazon page has been successfully bookmarked via URL onto '
-                                                 'the Bookmarks Tool.')
+                                                 'the Bookmarks Toolbar.')
