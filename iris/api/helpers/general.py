@@ -606,8 +606,14 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     :return: None
     """
 
+    url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
+
     # move focus in the middle of the page to be able to use the scroll
     pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
+
+    if Settings.getOS() == Platform.LINUX and nr_of_times == 1:
+        nr_of_times = 2
+
     for i in range(nr_of_times):
         if Settings.getOS() == Platform.MAC:
             pyautogui.keyDown('command')
