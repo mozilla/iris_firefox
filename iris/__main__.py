@@ -39,18 +39,6 @@ coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True}
                                     'success': {'color': 'green', 'bold': True},
                                     'error': {'color': 'red', 'bold': True}}
 
-try:
-    os.stat(get_image_debug_path())
-except:
-    os.mkdir(get_image_debug_path())
-for debug_image_file in os.listdir(get_image_debug_path()):
-    file_path = os.path.join(get_image_debug_path(), debug_image_file)
-    try:
-        if os.path.isfile(file_path):
-            os.unlink(file_path)
-    except Exception as e:
-        continue
-
 
 def main(argv=None):
     """This is the main entry point defined in setup.py"""
@@ -121,7 +109,6 @@ class Iris(object):
             os.mkdir(master_run_directory)
         run_directory = os.path.join(master_run_directory, get_run_id())
         os.mkdir(run_directory)
-        os.mkdir(os.path.join(run_directory, 'profiles'))
 
     def start_local_web_server(self, path, port):
         """
