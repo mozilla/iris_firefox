@@ -36,8 +36,6 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
-        time.sleep(2)
-
         access_bookmarking_tools('view_bookmarks_toolbar.png')
 
         try:
@@ -45,6 +43,7 @@ class Test(BaseTest):
             logger.debug('Toolbar has been activated.')
         except FindError:
             logger.error('Toolbar can not be activated, aborting.')
+            raise FindError
 
         bookmarks_sidebar('open')
 
@@ -85,9 +84,3 @@ class Test(BaseTest):
         pasted_bookmark_assertion = exists('sidebar_bookmark_location_changed.png', 10)
         assert_true(self, pasted_bookmark_assertion, 'Bookmark is present into a different directory, copy option works'
                                                      ' as expected.')
-
-
-
-
-
-
