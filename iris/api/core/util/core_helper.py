@@ -20,6 +20,7 @@ SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
 _run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
+_current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
 
 def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
@@ -63,12 +64,38 @@ def get_os_version():
     return platform.release()
 
 
+def get_current_module():
+    return _current_module
+
+
+def parse_module_path():
+    if '\\' in get_current_module():
+        delimiter = '\\'
+    else:
+        delimiter = '/'
+    temp = get_current_module().split(delimiter)
+    parent = temp[len(temp) - 2]
+    test = temp[len(temp) - 1].split('.py')[0]
+    return parent, test
+
+
+def set_current_module(module):
+    global _current_module
+    _current_module = module
+
+
 def get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../../../..')
 
 
+def get_current_run_dir():
+    return os.path.join(parse_args().workdir, 'runs', get_run_id())
+
+
 def get_image_debug_path():
-    return get_module_dir() + '/image_debug'
+    parent, test = parse_module_path()
+    path = os.path.join(parse_args().workdir, 'runs', get_run_id(), parent, test, 'debug_images')
+    return path
 
 
 def is_image_save_enabled():
