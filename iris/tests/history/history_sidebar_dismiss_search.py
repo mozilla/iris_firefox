@@ -44,7 +44,6 @@ class Test(BaseTest):
 
         # Check that Focus page is found in the History list.
         paste('focus')
-        time.sleep(0.5)
         type(Key.TAB)
         expected_4 = exists(history_sidebar_focus, 10)
         assert_true(self, expected_4, 'Focus page was found in the History list successfully.')
@@ -53,7 +52,6 @@ class Test(BaseTest):
         expected_5 = exists(x_button_search_history_box, 10)
         assert_true(self, expected_5, 'Clear field button was displayed properly.')
         click(x_button_search_history_box)
-        time.sleep(0.5)
         expected_6 = exists(history_sidebar_items, 10)
         expected_7 = exists(search_history_box, 10)
         assert_true(self, expected_6 and expected_7, 'The expected items are displayed in the History list.')
