@@ -26,19 +26,18 @@ class Test(BaseTest):
         bookmark_page()
 
         # Sometimes we need to wait a bit for favicon to be loaded
-        time.sleep(3)
         type(Key.ENTER)
 
         # Sometimes we need to wait because UI is animating after
         # bookmark was created and library icon image isn't found
-        time.sleep(3)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         # Look for new bookmark via library menu button
         click('library.png')
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
         type(Key.TAB)
         type(Key.ENTER)
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
 
         expected_2 = exists(amazon_bookmark_image_1, 10)
         assert_true(self, expected_2, 'Find amazon bookmark 1st image')
@@ -46,12 +45,11 @@ class Test(BaseTest):
         type(Key.ESC)
 
         # Sometimes we need to wait a bit for favicon to be loaded
-        time.sleep(3)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         # Look for bookmark in bookmark menu
         bookmarks_sidebar('open')
         paste('amazon')
-        time.sleep(1)
 
         expected_3 = exists(amazon_bookmark_image_2, 10, .7)
         assert_true(self, expected_3, 'Find amazon bookmark 2nd image')
