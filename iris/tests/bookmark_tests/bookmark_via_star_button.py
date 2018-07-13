@@ -30,7 +30,7 @@ class Test(BaseTest):
             logger.debug('Bookmark star is present on the page.')
             click(star_button)
         except FindError:
-            raise APIHelperError('Bookmark star is not present on the page, aborting.')
+            raise FindError('Bookmark star is not present on the page, aborting.')
 
         page_bookmarked_assert = exists('page_bookmarked.png', 10)
         assert_true(self, page_bookmarked_assert, 'The page was successfully bookmarked via star button.')
