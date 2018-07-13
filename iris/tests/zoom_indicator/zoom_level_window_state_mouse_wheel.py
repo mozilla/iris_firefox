@@ -18,6 +18,7 @@ class Test(BaseTest):
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
         url_bar_300_zoom_level = 'url_bar_300_zoom_level.png'
+        hamburger_menu = 'hamburger_menu.png'
 
         navigate(url)
 
@@ -43,8 +44,20 @@ class Test(BaseTest):
         expected = new_region.exists(url_bar_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
-        zoom_with_mouse_wheel(1, ZoomType.OUT)
-        zoom_with_mouse_wheel(1, ZoomType.IN)
+        minimize_window()
+        time.sleep(0.5)
+
+        try:
+            expected = waitVanish(LocalWeb.FIREFOX_LOGO, 10)
+            assert_true(self, expected, 'Window successfully minimized.')
+        except FindError:
+            logger.error('Window not minimized.')
+
+        restore_window_from_taskbar()
+        time.sleep(0.5)
+
+        expected = exists(hamburger_menu, 10)
+        assert_true(self, expected, 'Window successfully opened again.')
 
         expected = new_region.exists(url_bar_300_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
+        assert_true(self, expected, 'Zoom level still display 300%.')
