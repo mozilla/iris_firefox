@@ -32,14 +32,14 @@ class Test(BaseTest):
             logger.debug('History dropdown list can be accessed.')
             click(history_dropdown)
         except FindError:
-            raise APIHelperError('History dropdown list can NOT be accessed, aborting.')
+            raise FindError('History dropdown list can NOT be accessed, aborting.')
 
         try:
             wait(never_remember_history, 10)
             logger.debug('Never Remember History option is present in the dropdown list.')
             click(never_remember_history)
         except FindError:
-            raise APIHelperError('Never Remember History option is NOT present in the dropdown list, aborting')
+            raise FindError('Never Remember History option is NOT present in the dropdown list, aborting')
 
         restart_browser_popup_assert = exists(restart_browser, 10)
         assert_true(self, restart_browser_popup_assert, 'History option can be changed.')
@@ -50,7 +50,7 @@ class Test(BaseTest):
             wait('home.png')
             logger.debug('Successful Firefox restart performed.')
         except FindError:
-            raise APIHelperError('Firefox restart has not been performed, aborting.')
+            raise FindError('Firefox restart has not been performed, aborting.')
 
         navigate(url)
 
@@ -65,7 +65,7 @@ class Test(BaseTest):
             logger.debug('Bookmark star is present on the page.')
             click(star_button)
         except FindError:
-            raise APIHelperError('Bookmark star is not present on the page, aborting.')
+            raise FindError('Bookmark star is not present on the page, aborting.')
 
         page_bookmarked_assert = exists('page_bookmarked.png', 10)
         assert_true(self, page_bookmarked_assert, 'The page was successfully bookmarked via star button.')
