@@ -33,7 +33,7 @@ class Test(BaseTest):
             close_button_assert = left_corner_screen_region.waitVanish('web_developer_close_button.png', 5)
             assert_true(self, close_button_assert, 'Bar was closed')
             open_web_developer_menu()
-            time.sleep(3)
+            time.sleep(Settings.UI_DELAY_LONG)
             open_console = 'console open'
             paste(open_console)
             type(Key.ENTER)
@@ -52,7 +52,7 @@ class Test(BaseTest):
             open_web_developer_menu()
             # open a console from developer tool command line to check the functionality
             open_console = 'console open'
-            time.sleep(5)
+            time.sleep(Settings.UI_DELAY_LONG)
             paste(open_console)
             type(Key.ENTER)
             logger.debug('Opening console from command line')

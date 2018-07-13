@@ -437,7 +437,7 @@ def restore_window_from_taskbar():
             wait(main_menu_window, 5)
             click(main_menu_window)
             type(Key.DOWN)
-            time.sleep(.5)
+            time.sleep(Settings.FX_DELAY)
             type(Key.ENTER)
         except FindError:
             logger.error('Restore window from taskbar unsuccessful.')
@@ -445,6 +445,7 @@ def restore_window_from_taskbar():
         type(text=Key.TAB, modifier=KeyModifier.ALT)
         if Settings.getOS() == Platform.LINUX:
             hover(Location(0, 50))
+    time.sleep(Settings.UI_DELAY)
 
 
 def open_library_menu(option):

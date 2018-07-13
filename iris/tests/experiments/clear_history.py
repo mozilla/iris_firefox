@@ -38,9 +38,8 @@ class Test(BaseTest):
 
         click('library_clear_history.png')
 
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
         type(Key.ENTER)
-        time.sleep(1)
 
         # Because of a Mac bug with the keyboard shortcut for clear history,
         # we want to make sure that we are not in the minimized window state,
@@ -63,7 +62,7 @@ class Test(BaseTest):
         assert_false(self, expected_3, 'Successfully renavigated page')
 
         history_sidebar()
-        time.sleep(2)
+        time.sleep(Settings.UI_DELAY_LONG)
         type('amazon')
 
         expected_4 = exists(amazon_history_image, 5)

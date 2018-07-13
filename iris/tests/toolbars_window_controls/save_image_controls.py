@@ -24,8 +24,8 @@ class Test(BaseTest):
         else:
             rightClick(test_image, 1)
 
-        # wait a moment to ensure the context menu is responisve
-        time.sleep(1)
+        # wait a moment to ensure the context menu is responsive
+        time.sleep(Settings.UI_DELAY)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.DOWN)

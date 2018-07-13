@@ -27,10 +27,9 @@ class Test(BaseTest):
 
         # Look for bookmarks via library menu button
         click('library.png')
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
         type(Key.TAB)
         type(Key.ENTER)
-        time.sleep(1)
 
         expected_1 = exists(bookmark_image_1, 5)
         assert_true(self, expected_1, 'Find Firefox bookmark 1st image')
