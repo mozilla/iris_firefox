@@ -39,7 +39,7 @@ class Test(BaseTest):
             logger.debug('Amazon bookmark is present in the Bookmark sidebar.')
             rightClick(amazon_bookmark)
         except FindError:
-            raise APIHelperError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
+            raise FindError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
 
         bookmark_options(delete)
 
@@ -48,4 +48,4 @@ class Test(BaseTest):
             assert_true(self, deleted_bookmark_assert, 'Amazon bookmark is successfully deleted from the '
                                                        'Bookmark sidebar.')
         except FindError:
-            raise APIHelperError('Amazon bookmark can NOT be deleted from the Bookmark sidebar, aborting.')
+            raise FindError('Amazon bookmark can NOT be deleted from the Bookmark sidebar, aborting.')
