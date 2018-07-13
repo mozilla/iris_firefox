@@ -38,7 +38,7 @@ class Test(BaseTest):
             logger.debug('Amazon bookmark is present in the Bookmark sidebar.')
             click(amazon_bookmark)
         except FindError:
-            raise APIHelperError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
+            raise FindError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
 
         amazon_banner_assert = exists(amazon_home, 10)
         assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
