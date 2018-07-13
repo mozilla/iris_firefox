@@ -99,7 +99,7 @@ def restart_firefox(path, profile, url, args=None):
         waitVanish('home.png', 10)
         # TODO: This should be made into a robust function instead of a hard coded sleep
         # Give Firefox a chance to cleanly shutdown all of its processes
-        time.sleep(3)
+        time.sleep(Settings.SYSTEM_DELAY)
         logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
         launch_firefox(path, profile, url, args)
         logger.debug('Confirming that Firefox has been relaunched')
@@ -142,15 +142,15 @@ def change_preference(pref_name, value):
         select_location_bar()
         paste('about:config')
         type(Key.ENTER)
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
 
         type(Key.SPACE)
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
 
         paste(pref_name)
-        time.sleep(2)
+        time.sleep(Settings.UI_DELAY_LONG)
         type(Key.TAB)
-        time.sleep(2)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         try:
             retrieved_value = copy_to_clipboard().split(';'[0])[1]
@@ -207,9 +207,8 @@ def click_hamburger_menu_option(option):
         return
     else:
         click(hamburger_menu)
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
         try:
-            time.sleep(1)
             region.wait(option, 10)
             logger.debug('Option found')
         except FindError:
