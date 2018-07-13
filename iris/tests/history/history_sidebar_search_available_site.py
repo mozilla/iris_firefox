@@ -42,7 +42,6 @@ class Test(BaseTest):
 
         # Check that Focus page is found in the History list.
         paste('focus')
-        time.sleep(0.5)
         type(Key.TAB)
         expected_4 = exists(history_sidebar_focus, 10)
         assert_true(self, expected_4, 'Focus page was found in the History list successfully.')
