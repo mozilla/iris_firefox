@@ -265,18 +265,18 @@ def _positive_image_search_loop(pattern, timeout=None, precision=None, region=No
     :return: Location
     """
 
-    interval, max_attempts = _calculate_interval_max_attempts(timeout)
-
     if precision is None:
         precision = Settings.MinSimilarity
 
     pos = image_search(pattern, precision, region)
-    tries = 0
-    while pos.getX() == -1 and tries < max_attempts:
+
+    start_time = datetime.datetime.now()
+    end_time = start_time + datetime.timedelta(seconds=timeout)
+
+    while pos.getX() == -1 and start_time < end_time:
         logger.debug("Searching for image %s" % pattern)
-        time.sleep(interval)
         pos = image_search(pattern, precision, region)
-        tries += 1
+        start_time = datetime.datetime.now()
 
     return None if pos.getX() == -1 else pos
 
@@ -353,22 +353,21 @@ def _negative_image_search_loop(pattern, timeout=None, precision=None, region=No
     :return: Location
     """
 
-    interval, max_attempts = _calculate_interval_max_attempts(timeout)
-
     if precision is None:
         precision = Settings.MinSimilarity
 
     pattern_found = True
-    tries = 0
 
-    while pattern_found is True and tries < max_attempts:
+    start_time = datetime.datetime.now()
+    end_time = start_time + datetime.timedelta(seconds=timeout)
+
+    while pattern_found is True and start_time < end_time:
         image_found = image_search(pattern, precision, region)
         if (image_found.x != -1) & (image_found.y != -1):
             pattern_found = True
         else:
             pattern_found = False
-        tries += 1
-        time.sleep(interval)
+        start_time = datetime.datetime.now()
 
     return None if pattern_found else True
 
