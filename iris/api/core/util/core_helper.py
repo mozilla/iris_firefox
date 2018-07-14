@@ -116,7 +116,7 @@ def get_platform():
 
 
 def is_multiprocessing_enabled():
-    return multiprocessing.cpu_count() >= MIN_CPU_FOR_MULTIPROCESSING
+    return multiprocessing.cpu_count() >= MIN_CPU_FOR_MULTIPROCESSING and get_os() != 'win'
 
 
 def scroll(clicks):
