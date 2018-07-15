@@ -80,4 +80,7 @@ def parse_args():
     parser.add_argument('-b', '--highlight',
                         help='Highlight patterns and click actions',
                         action='store_true')
+    parser.add_argument('-R', '--report',
+                        help='Report tests to TestRail',
+                        action='store_true')
     return parser.parse_args()
