@@ -30,12 +30,24 @@ class BaseTest(object):
         self.prefs = []
         self.profile_path = None
         self.channel = self.app.fx_channel
+        self.test_case_id = ''
+        self.test_suite_id = ''
+
+
+    def get_test_meta(self):
+        return self.meta
+
+    def get_run_results(self):
+        return self.test_result
+
+    def get_test_case_id(self):
+        return self.test_case_id
 
     def get_test_title(self):
         return self.test_title
 
-    def set_test_title(self, test_title):
-        self.test_title = test_title
+    def get_test_results(self):
+        return self.results
 
     def add_result(self, result):
         self.results.append(result)
@@ -44,6 +56,17 @@ class BaseTest(object):
     def get_results(self):
         for result in self.results:
             self.outcome = result.outcome
+
+    def create_collection_test_rail_result(self):
+        from iris.testrail.test_case_results import TestRailTests
+        test_rail_object=TestRailTests(self.get_test_meta,self.test_suite_id,self.get_test_case_id(),self.get_test_results())
+        return test_rail_object
+
+    def get_test_title(self):
+        return self.test_title
+
+    def set_test_title(self, test_title):
+        self.test_title = test_title
 
     def get_start_time(self):
         return self.start_time
