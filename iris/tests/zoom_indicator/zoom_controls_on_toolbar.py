@@ -37,7 +37,6 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         click_hamburger_menu_option('Customize...')
-        time.sleep(1)
 
         # Searching for text 'Drag'
         expected = exists('Drag', 10, in_region=Region(0, 0, 800, 300))
@@ -47,14 +46,13 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom controls found in the \'Customize\' page.')
 
         dragDrop(zoom_controls_customize_page, toolbar, 0.5)
-        time.sleep(1)
+        time.sleep(Settings.FX_DELAY)
         reset_mouse()
 
         expected = exists(default_zoom_level_toolbar_customize_page, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls successfully dragged and dropped in the toolbar.')
 
         close_customize_page()
-        time.sleep(1)
 
         expected = exists(default_zoom_level_toolbar, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls still displayed in the toolbar after the Customize page is closed.')
@@ -86,7 +84,6 @@ class Test(BaseTest):
                     'Zoom controls are correctly displayed in the toolbar after several zoom level increase/decrease.')
 
         remove_zoom_indicator_from_toolbar()
-        time.sleep(1)
 
         expected = exists(search_bar, 10)
         assert_true(self, expected,

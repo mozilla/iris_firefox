@@ -30,8 +30,6 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
-        time.sleep(2)
-
         open_library_menu('bookmarks_menu.png')
 
         try:
@@ -52,8 +50,3 @@ class Test(BaseTest):
 
         amazon_banner_assert = exists(amazon_home, 10)
         assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded')
-
-
-
-
-
