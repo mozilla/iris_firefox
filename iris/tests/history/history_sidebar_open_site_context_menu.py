@@ -51,7 +51,7 @@ class Test(BaseTest):
         expected_5 = exists(history_sidebar_wikipedia, 10)
         assert_true(self, expected_5, 'Wikipedia displayed in the History list successfully.')
         rightClick(history_sidebar_wikipedia)
-        time.sleep(0.5)
+        time.sleep(Settings.FX_DELAY)
         type(text='o')
         expected_6 = exists(wikipedia_logo, 10)
         assert_true(self, expected_6, 'Wikipedia loaded successfully.')

@@ -47,7 +47,7 @@ class Test(BaseTest):
 
         # 'Open All in Tabs' from the context menu.
         rightClick(expand_button_history_sidebar)
-        time.sleep(0.5)
+        time.sleep(Settings.FX_DELAY)
         type(text='o')
 
         # Check that all the pages loaded successfully.

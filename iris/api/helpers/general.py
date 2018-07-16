@@ -336,7 +336,7 @@ def open_about_firefox():
         # Key stroke into Firefox Menu to get to About Firefox.
         type(Key.F2, modifier=KeyModifier.CTRL)
 
-        time.sleep(0.5)
+        time.sleep(Settings.FX_DELAY)
         type(Key.RIGHT)
         type(Key.DOWN)
         type(Key.DOWN)
@@ -346,7 +346,7 @@ def open_about_firefox():
         # Use Help menu keyboard shortcuts to open About Firefox
         keyDown(Key.ALT)
         type('h')
-        time.sleep(0.5)
+        time.sleep(Settings.FX_DELAY)
         type('a')
         keyUp(Key.ALT)
 
@@ -354,7 +354,7 @@ def open_about_firefox():
         # Use Help menu keyboard shortcuts to open About Firefox
         keyDown(Key.ALT)
         type('h')
-        time.sleep(1)
+        time.sleep(Settings.FX_DELAY)
         keyUp(Key.ALT)
         type('a')
 
@@ -418,7 +418,7 @@ def create_region_for_hamburger_menu():
     try:
         wait(hamburger_menu, 10)
         click(hamburger_menu)
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY)
         if Settings.getOS() == Platform.LINUX:
             region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
         elif Settings.getOS() == Platform.MAC:
@@ -461,9 +461,8 @@ def open_library_menu(option):
         return
     else:
         click(library_menu)
-        time.sleep(1)
+        time.sleep(Settings.UI_DELAY_LONG)
         try:
-            time.sleep(1)
             region.wait(option, 10)
             logger.debug('Option found')
         except FindError:
@@ -624,5 +623,5 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
             pyautogui.keyUp('command')
         else:
             pyautogui.keyUp('ctrl')
-        time.sleep(0.5)
+        time.sleep(Settings.FX_DELAY)
     pyautogui.moveTo(0, 0)

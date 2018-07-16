@@ -45,12 +45,9 @@ class Test(BaseTest):
 
         if Settings.getOS() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
             minimize_window()
-            time.sleep(DEFAULT_FX_DELAY)
             minimize_window()
-            time.sleep(DEFAULT_FX_DELAY)
         else:
             minimize_window()
-            time.sleep(DEFAULT_FX_DELAY)
 
         try:
             expected = waitVanish(LocalWeb.FIREFOX_LOGO, 10)
@@ -59,11 +56,9 @@ class Test(BaseTest):
             logger.error('Window not minimized.')
 
         restore_window_from_taskbar()
-        time.sleep(DEFAULT_FX_DELAY)
 
         if Settings.getOS() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
             maximize_window()
-            time.sleep(DEFAULT_FX_DELAY)
 
         expected = exists(hamburger_menu, 10)
         assert_true(self, expected, 'Window successfully opened again.')
