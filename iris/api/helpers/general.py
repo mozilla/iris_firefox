@@ -611,7 +611,7 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     # move focus in the middle of the page to be able to use the scroll
     pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
 
-    if Settings.getOS() == Platform.LINUX and nr_of_times == 1:
+    if Settings.getOS() == Platform.LINUX and nr_of_times == 1 and exists(url_bar_default_zoom_level, 10):
         nr_of_times = 2
 
     for i in range(nr_of_times):
