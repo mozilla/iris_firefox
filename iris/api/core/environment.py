@@ -7,5 +7,5 @@ import pyperclip
 
 class Env(object):
     @staticmethod
-    def getClipboard():
+    def get_clipboard():
         return pyperclip.paste()

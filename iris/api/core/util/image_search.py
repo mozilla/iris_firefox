@@ -35,12 +35,12 @@ def get_image_size(of_what):
 
     if isinstance(of_what, str):
         pattern = Pattern(of_what)
-        needle_path = pattern.image_path
-        scale_factor = pattern.scale_factor
+        needle_path = pattern.get_file_path()
+        scale_factor = pattern.get_scale_factor()
 
     elif isinstance(of_what, Pattern):
-        needle_path = of_what.image_path
-        scale_factor = of_what.scale_factor
+        needle_path = of_what.get_file_path()
+        scale_factor = of_what.get_scale_factor()
 
     needle = cv2.imread(needle_path)
     height, width, channels = needle.shape
@@ -49,9 +49,9 @@ def get_image_size(of_what):
 
 def _calculate_interval_max_attempts(timeout=None):
     if timeout is None:
-        timeout = Settings.AutoWaitTimeout
+        timeout = Settings.auto_wait_timeout
 
-    wait_scan_rate = float(Settings.WaitScanRate)
+    wait_scan_rate = float(Settings.wait_scan_rate)
     interval = 1 / wait_scan_rate
     max_attempts = int(timeout * wait_scan_rate)
     return interval, max_attempts
@@ -118,13 +118,13 @@ def _match_template_multiple(needle, haystack, precision=None, threshold=0.99):
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     haystack_img_gray = haystack.convert('L')
-    needle_img_gray = needle.gray_image
+    needle_img_gray = needle.get_gray_image()
 
     found_list = iris_image_match_template(needle_img_gray, haystack_img_gray, precision, threshold)
 
@@ -144,7 +144,7 @@ def image_search_multiple(pattern, precision=None, region=None):
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     stack_image = get_region(region=region)
     return _match_template_multiple(pattern, stack_image, precision)
@@ -160,15 +160,15 @@ def _match_template(needle, haystack, precision=None):
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     haystack_img_gray = haystack.convert('L')
-    needle_img_gray = needle.gray_image
+    needle_img_gray = needle.get_gray_image()
 
     position = iris_image_match_template(needle_img_gray, haystack_img_gray, precision, None)
 
     if is_image_save_enabled():
-        if position.getX() == -1:
+        if position.x == -1:
             save_debug_image(needle_img_gray, np.array(haystack_img_gray), None, True)
         else:
             save_debug_image(needle_img_gray, haystack_img_gray, position)
@@ -186,7 +186,7 @@ def image_search(pattern, precision=None, region=None):
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     stack_image = get_region(region=region)
     location = _match_template(pattern, stack_image, precision)
@@ -210,10 +210,10 @@ def _add_positive_image_search_result_in_queue(queue, pattern, precision=None, r
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     result = image_search(pattern, precision, region)
-    if result.getX() != -1:
+    if result.x != -1:
         queue.put(result)
 
 
@@ -232,7 +232,7 @@ def _positive_image_search_multiprocess(pattern, timeout=None, precision=None, r
     interval, max_attempts = _calculate_interval_max_attempts(timeout)
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     process_list = []
     for i in range(max_attempts):
@@ -266,19 +266,19 @@ def _positive_image_search_loop(pattern, timeout=None, precision=None, region=No
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     pos = image_search(pattern, precision, region)
 
     start_time = datetime.datetime.now()
     end_time = start_time + datetime.timedelta(seconds=timeout)
 
-    while pos.getX() == -1 and start_time < end_time:
+    while pos.x == -1 and start_time < end_time:
         logger.debug("Searching for image %s" % pattern)
         pos = image_search(pattern, precision, region)
         start_time = datetime.datetime.now()
 
-    return None if pos.getX() == -1 else pos
+    return None if pos.x == -1 else pos
 
 
 def positive_image_search(pattern, timeout=None, precision=None, region=None):
@@ -299,10 +299,10 @@ def _add_negative_image_search_result_in_queue(queue, pattern, precision=None, r
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     result = image_search(pattern, precision, region)
-    if result.getX() == -1:
+    if result.x == -1:
         queue.put(result)
 
 
@@ -320,7 +320,7 @@ def _negative_image_search_multiprocess(pattern, timeout=None, precision=None, r
     interval, max_attempts = _calculate_interval_max_attempts(timeout)
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     process_list = []
     for i in range(max_attempts):
@@ -354,7 +354,7 @@ def _negative_image_search_loop(pattern, timeout=None, precision=None, region=No
     """
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     pattern_found = True
 

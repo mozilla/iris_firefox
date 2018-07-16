@@ -158,8 +158,8 @@ class Key(object):
     YEN = IrisKey('yen')
 
     @staticmethod
-    def isLockOn(keyboard_key):
-        if Settings.getOS() == Platform.WINDOWS:
+    def is_lock_on(keyboard_key):
+        if Settings.get_os() == Platform.WINDOWS:
             keyboard_code = 0
             hll_dll = ctypes.WinDLL("User32.dll")
             if keyboard_key == Key.CAPS_LOCK:
@@ -176,7 +176,7 @@ class Key(object):
                 return True
             else:
                 return False
-        elif Settings.getOS() == Platform.LINUX or Settings.getOS() == Platform.MAC:
+        elif Settings.get_os() == Platform.LINUX or Settings.get_os() == Platform.MAC:
             try:
                 cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
             except subprocess.CalledProcessError as e:
@@ -215,7 +215,7 @@ class Key(object):
                             else:
                                 return True
             finally:
-                if Settings.getOS() == Platform.MAC:
+                if Settings.get_os() == Platform.MAC:
                     shutdown_process('Xquartz')
 
 
@@ -232,9 +232,9 @@ class KeyModifier(object):
         all_modifiers = [
             Key.SHIFT,
             Key.CTRL]
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             all_modifiers.append(Key.CMD)
-        elif Settings.getOS() == Platform.WINDOWS:
+        elif Settings.get_os() == Platform.WINDOWS:
             all_modifiers.append(Key.WIN)
         else:
             all_modifiers.append(Key.META)
@@ -249,7 +249,7 @@ class KeyModifier(object):
 
 
 def shutdown_process(process_name):
-    if Settings.getOS() == Platform.WINDOWS:
+    if Settings.get_os() == Platform.WINDOWS:
         command_str = 'taskkill /IM ' + process_name + '.exe'
         try:
 
@@ -257,7 +257,7 @@ def shutdown_process(process_name):
         except subprocess.CalledProcessError:
             logger.error('Command  failed: "%s"' % command_str)
             raise Exception('Unable to run Command')
-    elif Settings.getOS() == Platform.MAC or Settings.getOS() == Platform.LINUX:
+    elif Settings.get_os() == Platform.MAC or Settings.get_os() == Platform.LINUX:
         command_str = 'pkill ' + process_name
         try:
             subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
@@ -266,7 +266,7 @@ def shutdown_process(process_name):
             raise Exception('Unable to run Command')
 
 
-def keyDown(key):
+def key_down(key):
     if isinstance(key, IrisKey):
         pyautogui.keyDown(str(key))
     elif isinstance(key, str):
@@ -278,7 +278,7 @@ def keyDown(key):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def keyUp(key):
+def key_up(key):
     if isinstance(key, IrisKey):
         pyautogui.keyUp(str(key))
     elif isinstance(key, str):
@@ -301,7 +301,7 @@ def type(text=None, modifier=None, interval=None):
             time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
         else:
             if interval is None:
-                interval = Settings.TypeDelay
+                interval = Settings.type_delay
 
             logger.debug('Scenario 2: normal key or text block')
             logger.debug('Text: %s' % text)
@@ -335,8 +335,8 @@ def type(text=None, modifier=None, interval=None):
         else:
             logger.error('Returned key modifiers out of range')
 
-    if Settings.TypeDelay != DEFAULT_TYPE_DELAY:
-        Settings.TypeDelay = DEFAULT_TYPE_DELAY
+    if Settings.type_delay != DEFAULT_TYPE_DELAY:
+        Settings.type_delay = DEFAULT_TYPE_DELAY
 
 
 def paste(text):
@@ -344,9 +344,9 @@ def paste(text):
     pyperclip.copy(text)
 
     text_copied = False
-    wait_scan_rate = float(Settings.WaitScanRate)
+    wait_scan_rate = float(Settings.wait_scan_rate)
     interval = 1 / wait_scan_rate
-    max_attempts = int(Settings.AutoWaitTimeout * wait_scan_rate)
+    max_attempts = int(Settings.auto_wait_timeout * wait_scan_rate)
     attempt = 0
 
     while not text_copied and attempt < max_attempts:
@@ -360,7 +360,7 @@ def paste(text):
         logger.error('Paste method failed')
         raise FindError
 
-    if Settings.getOS() == Platform.MAC:
+    if Settings.get_os() == Platform.MAC:
         type(text='v', modifier=KeyModifier.CMD)
     else:
         type(text='v', modifier=KeyModifier.CTRL)

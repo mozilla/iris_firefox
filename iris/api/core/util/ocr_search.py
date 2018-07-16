@@ -68,6 +68,7 @@ def _combine_text_matches(matches, value):
 def text_search_all(with_image_processing=True, in_region=None, in_image=None):
     if in_image is None:
         stack_image = get_region(in_region, True)
+        print(in_region.x, in_region.y, in_region.width, in_region.height)
     else:
         stack_image = in_image
 
@@ -77,6 +78,7 @@ def text_search_all(with_image_processing=True, in_region=None, in_image=None):
     debug_img = input_image_array
 
     if with_image_processing:
+        print('WIDTH, HEIGHT: ', input_image.width, input_image.height)
         input_image = process_image_for_ocr(image_array=input_image)
         input_image_array = np.array(input_image)
         debug_img = cv2.cvtColor(input_image_array, cv2.COLOR_GRAY2BGR)
@@ -107,8 +109,8 @@ def text_search_all(with_image_processing=True, in_region=None, in_image=None):
                 scale_divider = uhd_factor if is_uhd else 1
 
                 if in_region is not None:
-                    left_offset = in_region.getX()
-                    top_offset = in_region.getY()
+                    left_offset = in_region.x
+                    top_offset = in_region.y
 
                 # Scale down coordinates since actual screen has different dpi
                 if with_image_processing:
@@ -126,7 +128,7 @@ def text_search_all(with_image_processing=True, in_region=None, in_image=None):
                         screen_data['width'] = screen_data['width'] / scale_divider
                         screen_data['height'] = screen_data['height'] / scale_divider
                         final_data.append(screen_data)
-        except:
+        except Exception:
             continue
 
     # save_ocr_debug_image(debug_img, debug_data)
@@ -148,7 +150,7 @@ def text_search_by(what, match_case=True, in_region=None, multiple_matches=False
 
         return return_multiple, return_single
 
-    def _search_for_phrase(local_what, local_text_dict, local_multiple_matches):
+    def _search_for_phrase(local_what, local_text_dict):
         return_single = None
 
         matches_string = ocr_matches_to_string(local_text_dict)
@@ -186,7 +188,6 @@ def text_search_by(what, match_case=True, in_region=None, multiple_matches=False
         what = what.lower()
 
     final_m_matches = []
-    final_s_match = None
 
     words_n = len(what.split())
     should_search_phrase = True if words_n > 1 else False
@@ -195,7 +196,7 @@ def text_search_by(what, match_case=True, in_region=None, multiple_matches=False
 
     if should_search_phrase:
         logger.debug('> Search for phrase: %s' % what)
-        final_s_match = _search_for_phrase(what, text_dict, multiple_matches)
+        final_s_match = _search_for_phrase(what, text_dict)
     else:
         logger.debug('> Search for word: %s' % what)
         final_m_matches, final_s_match = _search_for_word(what, text_dict, multiple_matches)
@@ -214,35 +215,36 @@ def text_search_by(what, match_case=True, in_region=None, multiple_matches=False
 
     for match_index, match_object in enumerate(text_dict):
         # Word region
-        zoomed_word_image = screenshot(region=(match_object['x'] - 3, match_object['y'] - 2,
-                                               match_object['width'] + 6, match_object['height'] + 4))
+        if match_object['width'] > 0 and match_object['height'] > 0:
+            zoomed_word_image = screenshot(region=(match_object['x'] - 3, match_object['y'] - 2,
+                                                   match_object['width'] + 6, match_object['height'] + 4))
 
-        w_img_w, w_img_h = zoomed_word_image.size
-        # New white image background for zoom in search
-        word_background = Image.new('RGBA', (match_object['width'] * 10, match_object['height'] * 5),
-                                    (255, 255, 255, 255))
+            w_img_w, w_img_h = zoomed_word_image.size
+            # New white image background for zoom in search
+            word_background = Image.new('RGBA', (match_object['width'] * 10, match_object['height'] * 5),
+                                        (255, 255, 255, 255))
 
-        b_img_w, b_img_h = word_background.size
-        # Offset to paste image on center
-        offset = ((b_img_w - w_img_w) // 2, (b_img_h - w_img_h) // 2)
+            b_img_w, b_img_h = word_background.size
+            # Offset to paste image on center
+            offset = ((b_img_w - w_img_w) // 2, (b_img_h - w_img_h) // 2)
 
-        word_background.paste(zoomed_word_image, offset)
+            word_background.paste(zoomed_word_image, offset)
 
-        found, debug_img_a, debug_data_a = text_search_all(True, None, word_background)
-        if len(found) > 0:
-            text_dict[match_index]['value'] = found[0]['value']
-            # save_ocr_debug_image(debug_img_a, debug_data_a)
-            logger.debug('> (Zoom search) new match: %s' % found[0]['value'])
-            if what == found[0]['value']:
-                break
-            if what in ocr_matches_to_string(text_dict):
-                break
+            found, debug_img_a, debug_data_a = text_search_all(True, None, word_background)
+            if len(found) > 0:
+                text_dict[match_index]['value'] = found[0]['value']
+                # save_ocr_debug_image(debug_img_a, debug_data_a)
+                logger.debug('> (Zoom search) new match: %s' % found[0]['value'])
+                if what == found[0]['value']:
+                    break
+                if what in ocr_matches_to_string(text_dict):
+                    break
 
     logger.debug('> (Zoom search) All words on region/screen: ' + ocr_matches_to_string(text_dict))
 
     if should_search_phrase:
         logger.debug('> Search with zoom for phrase: %s' % what)
-        final_s_match = _search_for_phrase(what, text_dict, multiple_matches)
+        final_s_match = _search_for_phrase(what, text_dict)
     else:
         logger.debug('> Search with zoom for word: %s' % what)
         final_m_matches, final_s_match = _search_for_word(what, text_dict, multiple_matches)

@@ -24,7 +24,7 @@ class Test(BaseTest):
 
         click_hamburger_menu_option('Customize...')
 
-        if Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.LINUX:
 
             expected_2 = exists(active_title_bar, 10)
             assert_true(self, expected_2, 'Title Bar can be deactivated')
@@ -32,7 +32,7 @@ class Test(BaseTest):
             click(deactivate_title_bar)
 
             try:
-                expected_3 = waitVanish(deactivate_title_bar, 10)
+                expected_3 = wait_vanish(deactivate_title_bar, 10)
                 assert_true(self, expected_3, 'Title Bar has been successfully deactivated')
             except Exception as error:
                 logger.error('Title Bar can not be closed')
@@ -51,7 +51,7 @@ class Test(BaseTest):
             click(deactivate_title_bar)
 
             try:
-                expected_3 = waitVanish(active_title_bar, 10)
+                expected_3 = wait_vanish(active_title_bar, 10)
                 assert_true(self, expected_3, 'Title Bar has been successfully deactivated')
             except Exception as error:
                 logger.error('Title Bar can not be closed')

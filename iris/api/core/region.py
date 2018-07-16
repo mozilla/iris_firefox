@@ -9,6 +9,7 @@ from util.save_debug_image import save_debug_image
 from location import Location
 from pattern import Pattern
 from settings import Settings, DEFAULT_CLICK_DELAY
+from key import type
 
 try:
     import Image
@@ -20,14 +21,13 @@ logger = logging.getLogger(__name__)
 
 
 class Region(object):
-    def __init__(self, x=0, y=0, w=0, h=0):
+    def __init__(self, x=0, y=0, width=0, height=0):
         self._x = x
         self._y = y
-        self._w = w
-        self._h = h
+        self._width = width
+        self._height = height
 
     def debug(self):
-        pass
         save_debug_image(None, self, None)
 
     def debug_ocr(self, with_image_processing=True):
@@ -37,73 +37,73 @@ class Region(object):
         region_screen = get_region(self)
         region_screen.show()
 
-    def getX(self):
+    @property
+    def x(self):
         return self._x
 
-    def setX(self, new_x):
-        if isinstance(new_x, int):
-            self._x = new_x
+    @x.setter
+    def x(self, x):
+        if isinstance(x, int):
+            self._x = x
         else:
             raise ValueError(INVALID_NUMERIC_INPUT)
 
-    x = property(getX, setX)
-
-    def getY(self):
+    @property
+    def y(self):
         return self._y
 
-    def setY(self, new_y):
-        if isinstance(new_y, int):
-            self._y = new_y
+    @y.setter
+    def y(self, y):
+        if isinstance(y, int):
+            self._y = y
         else:
             raise ValueError(INVALID_NUMERIC_INPUT)
 
-    y = property(getY, setY)
+    @property
+    def width(self):
+        return self._width
 
-    def getW(self):
-        return self._w
-
-    def setW(self, new_w):
-        if isinstance(new_w, int):
-            self._w = new_w
+    @width.setter
+    def width(self, width):
+        if isinstance(width, int):
+            self._width = width
         else:
             raise ValueError(INVALID_NUMERIC_INPUT)
 
-    w = property(getW, setW)
+    @property
+    def height(self):
+        return self._height
 
-    def getH(self):
-        return self._h
-
-    def setH(self, new_h):
-        if isinstance(new_h, int):
-            self._h = new_h
+    @height.setter
+    def height(self, height):
+        if isinstance(height, int):
+            self._height = height
         else:
             raise ValueError(INVALID_NUMERIC_INPUT)
 
-    h = property(getH, setH)
-
-    def getCenter(self):
-        center_x = int(self.x + self.w) / 2
-        center_y = int(self.y + self.h) / 2
+    def get_center(self):
+        center_x = int(self._x + self._width) / 2
+        center_y = int(self._y + self._height) / 2
         return Location(center_x, center_y)
 
-    def moveTo(self, new_location):
-        self.x = new_location.getX()
-        self.y = new_location.getY()
+    def move_to(self, location):
+        self._x = location.x
+        self._y = location.y
 
-    def getTopLeft(self):
-        return Location(self.x, self.y)
+    def get_top_left(self):
+        return Location(self._x, self._y)
 
-    def getTopRight(self):
-        top_right_x = self.x + self.w
-        return Location(top_right_x, self.y)
+    def get_top_right(self):
+        top_right_x = self._x + self._width
+        return Location(top_right_x, self._y)
 
-    def getBottomLeft(self):
-        bottom_left_y = self.y + self.h
-        return Location(self.x, bottom_left_y)
+    def get_bottom_left(self):
+        bottom_left_y = self._y + self._height
+        return Location(self._x, bottom_left_y)
 
-    def getBottomRight(self):
-        bottom_right_x = self.x + self.w
-        bottom_right_y = self.y + self.h
+    def get_bottom_right(self):
+        bottom_right_x = self._x + self._width
+        bottom_right_y = self._y + self._height
         return Location(bottom_right_x, bottom_right_y)
 
     def hover(self, where=None, duration=0):
@@ -112,14 +112,14 @@ class Region(object):
     def find(self, what=None, precision=None):
         return find(what, precision, self)
 
-    def findAll(self, what=None, precision=None):
-        return findAll(what, precision, self)
+    def find_all(self, what=None, precision=None):
+        return find_all(what, precision, self)
 
     def wait(self, what=None, timeout=None, precision=None):
         wait(what, timeout, precision, self)
 
-    def waitVanish(self, what=None, timeout=None, precision=None):
-        return waitVanish(what, timeout, precision, self)
+    def wait_vanish(self, what=None, timeout=None, precision=None):
+        return wait_vanish(what, timeout, precision, self)
 
     def exists(self, what=None, timeout=None, precision=None):
         return exists(what, timeout, precision, self)
@@ -130,17 +130,19 @@ class Region(object):
     def text(self, with_image_processing=True, with_debug=False):
         return text(with_image_processing, self, with_debug)
 
-    def type(self, text, modifier, interval):
-        return type(text, modifier, interval)
+    @staticmethod
+    def type(txt, modifier, interval):
+        return type(txt, modifier, interval)
 
-    def dragDrop(self, drag_from, drop_to, duration=None):
-        return dragDrop(drag_from, drop_to, duration)
+    @staticmethod
+    def drag_drop(drag_from, drop_to, duration=None):
+        return drag_drop(drag_from, drop_to, duration)
 
-    def doubleClick(self, where, duration):
-        return doubleClick(where, duration, self)
+    def double_click(self, where, duration):
+        return double_click(where, duration, self)
 
-    def rightClick(self, where, duration):
-        return rightClick(where, duration, self)
+    def right_click(self, where, duration):
+        return right_click(where, duration, self)
 
 
 def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
@@ -213,17 +215,17 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
 
     if padding_top:
         found_region.y -= padding_top
-        found_region.h += padding_top
+        found_region.height += padding_top
 
     if padding_bottom:
-        found_region.h += padding_bottom
+        found_region.height += padding_bottom
 
     if padding_left:
         found_region.x -= padding_left
-        found_region.w += padding_left
+        found_region.width += padding_left
 
     if padding_right:
-        found_region.w += padding_right
+        found_region.width += padding_right
 
     return found_region
 
@@ -239,16 +241,16 @@ def _click_at(location=None, clicks=None, duration=None, button=None):
     """
 
     if duration is None:
-        duration = Settings.MoveMouseDelay
+        duration = Settings.move_mouse_delay
 
     if location is None:
         location = Location(0, 0)
 
     pyautogui.moveTo(location.x, location.y, duration)
-    pyautogui.click(clicks=clicks, interval=Settings.ClickDelay, button=button)
+    pyautogui.click(clicks=clicks, interval=Settings.click_delay, button=button)
 
-    if Settings.ClickDelay != DEFAULT_CLICK_DELAY:
-        Settings.ClickDelay = DEFAULT_CLICK_DELAY
+    if Settings.click_delay != DEFAULT_CLICK_DELAY:
+        Settings.click_delay = DEFAULT_CLICK_DELAY
 
 
 def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=None):
@@ -263,17 +265,17 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
     """
 
     if duration is None:
-        duration = Settings.MoveMouseDelay
+        duration = Settings.move_mouse_delay
 
-    needle = cv2.imread(pattern.image_path)
+    needle = cv2.imread(pattern.get_file_path())
     height, width, channels = needle.shape
 
-    p_top = positive_image_search(pattern=pattern, precision=Settings.MinSimilarity, region=in_region)
+    p_top = positive_image_search(pattern=pattern, precision=Settings.min_similarity, region=in_region)
 
     if p_top is None:
-        raise FindError('Unable to click on: %s' % pattern.image_path)
+        raise FindError('Unable to click on: %s' % pattern.get_file_path())
 
-    possible_offset = pattern.getTargetOffset()
+    possible_offset = pattern.get_target_offset()
 
     if possible_offset is not None:
         _click_at(Location(p_top.x + possible_offset.x, p_top.y + possible_offset.y), clicks, duration, button)
@@ -293,7 +295,7 @@ def _general_click(where=None, clicks=None, duration=None, in_region=None, butto
     """
 
     if duration is None:
-        duration = Settings.MoveMouseDelay
+        duration = Settings.move_mouse_delay
 
     if isinstance(where, str) and is_ocr_text(where):
         a_match = text_search_by(where, True, in_region)
@@ -326,12 +328,12 @@ def click(where=None, duration=None, in_region=None):
     """
 
     if duration is None:
-        duration = Settings.MoveMouseDelay
+        duration = Settings.move_mouse_delay
 
     _general_click(where, 1, duration, in_region, 'left')
 
 
-def rightClick(where=None, duration=None, in_region=None):
+def right_click(where=None, duration=None, in_region=None):
     """Mouse right click
 
     :param where: Location , image name or Pattern
@@ -341,12 +343,12 @@ def rightClick(where=None, duration=None, in_region=None):
     """
 
     if duration is None:
-        duration = Settings.MoveMouseDelay
+        duration = Settings.move_mouse_delay
 
     _general_click(where, 1, duration, in_region, 'right')
 
 
-def doubleClick(where=None, duration=None, in_region=None):
+def double_click(where=None, duration=None, in_region=None):
     """Mouse double click
 
     :param where: Location , image name or Pattern
@@ -356,7 +358,7 @@ def doubleClick(where=None, duration=None, in_region=None):
     """
 
     if duration is None:
-        duration = Settings.MoveMouseDelay
+        duration = Settings.move_mouse_delay
 
     _general_click(where, 2, duration, in_region, 'left')
 
@@ -378,15 +380,15 @@ def _to_location(ps=None, in_region=None, align='top_left'):
         return ps
 
     elif isinstance(Pattern(ps), Pattern):
-        location = image_search(Pattern(ps), Settings.MinSimilarity, in_region)
+        location = image_search(Pattern(ps), Settings.min_similarity, in_region)
         if align == 'center':
             width, height = get_image_size(Pattern(ps))
-            return Location(location.getX() + width / 2, location.getY() + height / 2)
+            return Location(location.x + width / 2, location.y + height / 2)
         else:
             return location
 
 
-def dragDrop(drag_from, drop_to, duration=None):
+def drag_drop(drag_from, drop_to, duration=None):
     """Mouse drag and drop
 
     :param drag_from: Starting point for drag and drop. Can be pattern, string or location
@@ -396,19 +398,19 @@ def dragDrop(drag_from, drop_to, duration=None):
     """
 
     if duration is None:
-        duration = Settings.MoveMouseDelay
+        duration = Settings.move_mouse_delay
 
     from_location = _to_location(ps=drag_from, align='center')
     to_location = _to_location(ps=drop_to, align='center')
     pyautogui.moveTo(from_location.x, from_location.y, 0)
 
-    time.sleep(Settings.DelayBeforeMouseDown)
+    time.sleep(Settings.delay_before_mouse_down)
     pyautogui.mouseDown(button='left', _pause=False)
 
-    time.sleep(Settings.DelayBeforeDrag)
+    time.sleep(Settings.delay_before_drag)
     pyautogui._mouseMoveDrag('drag', to_location.x, to_location.y, 0, 0, duration, pyautogui.linear, 'left')
 
-    time.sleep(Settings.DelayBeforeDrop)
+    time.sleep(Settings.delay_before_drop)
     pyautogui.mouseUp(button='left', _pause=False)
 
 
@@ -417,6 +419,7 @@ def text(with_image_processing=True, in_region=None, debug=False):
 
     :param bool with_image_processing: With extra dpi and contrast image processing
     :param Region in_region: In certain Region or full screen
+    :param debug: boolean for saving ocr images
     :return: list of matches
     """
     all_text, debug_img, debug_data = text_search_all(with_image_processing, in_region)
@@ -453,19 +456,19 @@ def hover(where=None, duration=0, in_region=None):
 
         pos = image_search(pattern, region=in_region)
         if pos.x != -1:
-            needle_width, needle_height = get_image_size(pattern.getFilename())
+            needle_width, needle_height = get_image_size(pattern.get_filename())
             if isinstance(where, Pattern):
-                possible_offset = where.getTargetOffset()
+                possible_offset = where.get_target_offset()
                 if possible_offset is not None:
-                    move_to = Location(pos.getX() + possible_offset.getX(), pos.getY() + possible_offset.getY())
-                    pyautogui.moveTo(move_to.getX(), move_to.y)
+                    move_to = Location(pos.x + possible_offset.x, pos.y + possible_offset.y)
+                    pyautogui.moveTo(move_to.x, move_to.y)
                 else:
                     move_to = Location(pos.x, pos.y)
-                    pyautogui.moveTo(move_to.getX() + needle_width / 2, move_to.getY() + needle_height / 2)
+                    pyautogui.moveTo(move_to.x + needle_width / 2, move_to.y + needle_height / 2)
             else:
                 pyautogui.moveTo(pos.x + needle_width / 2, pos.y + needle_height / 2)
         else:
-            raise FindError('Unable to find image %s' % pattern.getFilename())
+            raise FindError('Unable to find image %s' % pattern.get_filename())
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -490,7 +493,7 @@ def find(image_name, precision=None, in_region=None):
     elif isinstance(image_name, str) or isinstance(image_name, Pattern):
 
         if precision is None:
-            precision = Settings.MinSimilarity
+            precision = Settings.min_similarity
 
         try:
             pattern = Pattern(image_name)
@@ -507,7 +510,7 @@ def find(image_name, precision=None, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def findAll(what, precision=None, in_region=None):
+def find_all(what, precision=None, in_region=None):
     """Look for multiple matches of a Pattern or image
 
     :param what: String or Pattern
@@ -533,7 +536,7 @@ def findAll(what, precision=None, in_region=None):
             pattern = what
 
         if precision is None:
-            precision = Settings.MinSimilarity
+            precision = Settings.min_similarity
 
         return image_search_multiple(pattern, precision, in_region)
     else:
@@ -558,10 +561,10 @@ def wait(image_name, timeout=None, precision=None, in_region=None):
 
     elif isinstance(image_name, str) or isinstance(image_name, Pattern):
         if timeout is None:
-            timeout = Settings.AutoWaitTimeout
+            timeout = Settings.auto_wait_timeout
 
         if precision is None:
-            precision = Settings.MinSimilarity
+            precision = Settings.min_similarity
 
         try:
             pattern = Pattern(image_name)
@@ -590,10 +593,10 @@ def exists(pattern, timeout=None, precision=None, in_region=None):
     """
 
     if timeout is None:
-        timeout = Settings.AutoWaitTimeout
+        timeout = Settings.auto_wait_timeout
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     try:
         wait(pattern, timeout, precision, in_region)
@@ -602,7 +605,7 @@ def exists(pattern, timeout=None, precision=None, in_region=None):
         return False
 
 
-def waitVanish(image_name, timeout=None, precision=None, in_region=None):
+def wait_vanish(image_name, timeout=None, precision=None, in_region=None):
     """Wait until a Pattern or image disappears
 
     :param image_name: Image, Pattern or string
@@ -613,10 +616,10 @@ def waitVanish(image_name, timeout=None, precision=None, in_region=None):
     """
 
     if timeout is None:
-        timeout = Settings.AutoWaitTimeout
+        timeout = Settings.auto_wait_timeout
 
     if precision is None:
-        precision = Settings.MinSimilarity
+        precision = Settings.min_similarity
 
     pattern = Pattern(image_name)
     image_found = negative_image_search(pattern, timeout, precision, in_region)

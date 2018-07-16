@@ -46,7 +46,7 @@ class Test(BaseTest):
         assert_true(self, expected_4, 'Expand history button displayed properly.')
 
         # 'Open All in Tabs' from the context menu.
-        rightClick(expand_button_history_sidebar)
+        right_click(expand_button_history_sidebar)
         time.sleep(0.5)
         type(text='o')
 

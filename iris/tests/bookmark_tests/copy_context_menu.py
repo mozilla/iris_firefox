@@ -52,12 +52,12 @@ class Test(BaseTest):
         sidebar_bookmark_assert = exists('sidebar_bookmark.png', 10)
         assert_true(self, sidebar_bookmark_assert, 'Bookmark is present inside the sidebar.')
 
-        dragDrop('amazon_draggable.png', 'drag_area.png', 0.5)
+        drag_drop('amazon_draggable.png', 'drag_area.png', 0.5)
 
         toolbar_bookmark_assert = exists(toolbar_bookmark, 10)
         assert_true(self, toolbar_bookmark_assert, 'Amazon bookmark is present in the Bookmarks Toolbar.')
 
-        rightClick(toolbar_bookmark)
+        right_click(toolbar_bookmark)
 
         bookmark_options('copy_option.png')
 
@@ -77,7 +77,7 @@ class Test(BaseTest):
             logger.error('Can\'t find the Bookmarks sidebar menu')
             raise FindError
 
-        rightClick(bookmarks_sidebar_menu_selected)
+        right_click(bookmarks_sidebar_menu_selected)
 
         bookmark_options('paste_option.png')
 

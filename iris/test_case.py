@@ -63,18 +63,14 @@ class BaseTest(object):
         self.add_result(res)
 
     def get_asset_path(self, asset_file_name):
-        """
-        Returns a fully-resolved local file path to the test asset.
-        """
+        """Returns a fully-resolved local file path to the test asset."""
         test_path = inspect.stack()[1][1]
         module_path = os.path.split(test_path)[0]
         module_name = os.path.split(test_path)[1].split('.py')[0]
         return os.path.join(module_path, 'assets', module_name, asset_file_name)
 
     def get_web_asset_path(self, asset_file_name):
-        """
-        Returns a fully-resolved URL to the test asset.
-        """
+        """Returns a fully-resolved URL to the test asset."""
         test_path = inspect.stack()[1][1]
         test_directory = os.path.split(test_path)[0].split('tests')[1]
         module_name = os.path.split(test_path)[1].split('.py')[0]
@@ -86,6 +82,7 @@ class BaseTest(object):
 
     def setup(self):
         """ Test case setup
+
         This might be a good place to declare variables or initialize Fx state.
         Also, by default, a new Firefox instance is created, with a new profile and
         blank URL. If you wish to change this, override this method in your test case.

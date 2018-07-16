@@ -11,7 +11,8 @@ class Screen(object):
     def __init__(self, screen_id=0):
         self.id = screen_id
 
-    def capture(self, *args):
+    @staticmethod
+    def capture(*args):
         f_arg = args[0]
 
         if f_arg is None:
@@ -23,10 +24,12 @@ class Screen(object):
         elif len(args) is 4:
             return get_region((args[0], args[1], args[2], args[3]))
 
-    def getNumberScreens(self):
+    @staticmethod
+    def get_number_screens():
         return 1
 
-    def getBounds(self):
+    @staticmethod
+    def get_bounds():
         dimensions = (SCREEN_WIDTH, SCREEN_HEIGHT)
         return dimensions
 

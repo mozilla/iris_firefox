@@ -17,156 +17,156 @@ class Test(BaseTest):
         youtube_top_site_image = 'youtube_top_site.png'
         navigate(url)
 
-        # Settings.WaitScanRate
+        # Settings.wait_scan_rate
 
-        default_wait_scan_rate = Settings.WaitScanRate
-        assert_equal(self, DEFAULT_WAIT_SCAN_RATE, default_wait_scan_rate, 'Default WaitScanRate should be equal to %s'
+        default_wait_scan_rate = Settings.wait_scan_rate
+        assert_equal(self, DEFAULT_WAIT_SCAN_RATE, default_wait_scan_rate, 'Default wait_scan_rate should be equal to %s'
                      % str(DEFAULT_WAIT_SCAN_RATE))
 
         updated_wait_scan_rate = 5
-        Settings.WaitScanRate = updated_wait_scan_rate
-        assert_equal(self, Settings.WaitScanRate, updated_wait_scan_rate, 'Updated value for WaitScanRate should be '
+        Settings.wait_scan_rate = updated_wait_scan_rate
+        assert_equal(self, Settings.wait_scan_rate, updated_wait_scan_rate, 'Updated value for wait_scan_rate should be '
                                                                           'equal to %s' % str(updated_wait_scan_rate))
 
-        Settings.WaitScanRate = DEFAULT_WAIT_SCAN_RATE
+        Settings.wait_scan_rate = DEFAULT_WAIT_SCAN_RATE
 
-        # Settings.TypeDelay
+        # Settings.type_delay
 
-        default_type_delay = Settings.TypeDelay
-        assert_equal(self, DEFAULT_TYPE_DELAY, default_type_delay, 'Default TypeDelay should be 0')
+        default_type_delay = Settings.type_delay
+        assert_equal(self, DEFAULT_TYPE_DELAY, default_type_delay, 'Default type_delay should be 0')
 
-        Settings.TypeDelay = 2
-        assert_equal(self, 1, Settings.TypeDelay, 'TypeDelay greater than 1 is defaulted to 1')
+        Settings.type_delay = 2
+        assert_equal(self, 1, Settings.type_delay, 'type_delay greater than 1 is defaulted to 1')
         type('Test')
-        assert_equal(self, 0, Settings.TypeDelay, 'TypeDelay should be defaulted to 0 after type action')
+        assert_equal(self, 0, Settings.type_delay, 'type_delay should be defaulted to 0 after type action')
 
         updated_type_delay = 0.125
-        Settings.TypeDelay = updated_type_delay
-        assert_equal(self, updated_type_delay, Settings.TypeDelay, 'Updated value for TypeDelay should be equal to %s'
+        Settings.type_delay = updated_type_delay
+        assert_equal(self, updated_type_delay, Settings.type_delay, 'Updated value for type_delay should be equal to %s'
                      % str(updated_type_delay))
 
-        Settings.TypeDelay = DEFAULT_TYPE_DELAY
+        Settings.type_delay = DEFAULT_TYPE_DELAY
 
-        # Settings.MoveMouseDelay
+        # Settings.move_mouse_delay
 
-        default_move_mouse_delay = Settings.MoveMouseDelay
-        assert_equal(self, DEFAULT_MOVE_MOUSE_DELAY, default_move_mouse_delay, 'Default MoveMouseDelay should be equal '
+        default_move_mouse_delay = Settings.move_mouse_delay
+        assert_equal(self, DEFAULT_MOVE_MOUSE_DELAY, default_move_mouse_delay, 'Default move_mouse_delay should be equal '
                                                                                'to %s' % str(DEFAULT_MOVE_MOUSE_DELAY))
         updated_move_mouse_delay = 1
-        Settings.MoveMouseDelay = updated_move_mouse_delay
-        assert_equal(self, Settings.MoveMouseDelay, updated_move_mouse_delay, 'Updated value for MoveMouseDelay should'
+        Settings.move_mouse_delay = updated_move_mouse_delay
+        assert_equal(self, Settings.move_mouse_delay, updated_move_mouse_delay, 'Updated value for move_mouse_delay should'
                                                                               'be %s' % updated_move_mouse_delay)
 
-        Settings.MoveMouseDelay = DEFAULT_MOVE_MOUSE_DELAY
+        Settings.move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
 
-        # Settings.ClickDelay
+        # Settings.click_delay
 
-        default_click_delay = Settings.ClickDelay
-        assert_equal(self, DEFAULT_CLICK_DELAY, default_click_delay, 'Default ClickDelay should be equal to %s'
+        default_click_delay = Settings.click_delay
+        assert_equal(self, DEFAULT_CLICK_DELAY, default_click_delay, 'Default click_delay should be equal to %s'
                      % str(DEFAULT_CLICK_DELAY))
 
-        Settings.ClickDelay = 2
-        assert_equal(self, 1, Settings.ClickDelay, 'ClickDelay greater than 1 is defaulted to 1')
+        Settings.click_delay = 2
+        assert_equal(self, 1, Settings.click_delay, 'click_delay greater than 1 is defaulted to 1')
         click(youtube_top_site_image)
-        assert_equal(self, 0, Settings.ClickDelay, 'ClickDelay should be defaulted to 0 after click action')
+        assert_equal(self, 0, Settings.click_delay, 'click_delay should be defaulted to 0 after click action')
 
         updated_click_delay = 0.5
-        Settings.ClickDelay = updated_click_delay
-        assert_equal(self, updated_click_delay, Settings.ClickDelay, 'Updated value for ClickDelay should be equal to '
+        Settings.click_delay = updated_click_delay
+        assert_equal(self, updated_click_delay, Settings.click_delay, 'Updated value for click_delay should be equal to '
                                                                      '%s' % str(updated_click_delay))
 
-        Settings.ClickDelay = DEFAULT_CLICK_DELAY
+        Settings.click_delay = DEFAULT_CLICK_DELAY
 
-        # Settings.MinSimilarity
+        # Settings.min_similarity
 
-        default_min_similarity = Settings.MinSimilarity
-        assert_equal(self, DEFAULT_MIN_SIMILARITY, default_min_similarity, 'Default MinSimilarity should be equal '
+        default_min_similarity = Settings.min_similarity
+        assert_equal(self, DEFAULT_MIN_SIMILARITY, default_min_similarity, 'Default min_similarity should be equal '
                                                                            'to %s' % str(DEFAULT_MIN_SIMILARITY))
         updated_min_similarity = 0.5
-        Settings.MinSimilarity = updated_min_similarity
-        assert_equal(self, Settings.MinSimilarity, updated_min_similarity, 'Updated value for MinSimilarity should'
+        Settings.min_similarity = updated_min_similarity
+        assert_equal(self, Settings.min_similarity, updated_min_similarity, 'Updated value for min_similarity should'
                                                                            'be %s' % updated_min_similarity)
 
-        Settings.MinSimilarity = 2
-        assert_equal(self, 1, Settings.MinSimilarity, 'MinSimilarity greater than 1 is defaulted to 1')
+        Settings.min_similarity = 2
+        assert_equal(self, 1, Settings.min_similarity, 'min_similarity greater than 1 is defaulted to 1')
 
-        Settings.MinSimilarity = DEFAULT_MIN_SIMILARITY
+        Settings.min_similarity = DEFAULT_MIN_SIMILARITY
 
-        # Settings.AutoWaitTimeout
+        # Settings.auto_wait_timeout
 
         default_auto_wait_timeout = DEFAULT_AUTO_WAIT_TIMEOUT
         assert_equal(self, DEFAULT_AUTO_WAIT_TIMEOUT, default_auto_wait_timeout,
-                     'Default AutoWaitTimeout should be equal to %s' % str(DEFAULT_AUTO_WAIT_TIMEOUT))
+                     'Default auto_wait_timeout should be equal to %s' % str(DEFAULT_AUTO_WAIT_TIMEOUT))
 
         updated_auto_wait_timeout = 3
-        Settings.AutoWaitTimeout = updated_auto_wait_timeout
-        assert_equal(self, Settings.AutoWaitTimeout, updated_auto_wait_timeout,
-                     'Updated value for AutoWaitTimeout should be %s' % updated_auto_wait_timeout)
+        Settings.auto_wait_timeout = updated_auto_wait_timeout
+        assert_equal(self, Settings.auto_wait_timeout, updated_auto_wait_timeout,
+                     'Updated value for auto_wait_timeout should be %s' % updated_auto_wait_timeout)
 
-        Settings.AutoWaitTimeout = DEFAULT_AUTO_WAIT_TIMEOUT
+        Settings.auto_wait_timeout = DEFAULT_AUTO_WAIT_TIMEOUT
 
-        # Settings.DelayBeforeMouseDown
-        # Settings.DelayBeforeDrag
-        # Settings.DelayBeforeDrop
+        # Settings.delay_before_mouse_down
+        # Settings.delay_before_drag
+        # Settings.delay_before_drop
 
         start_location = Location(100, 100)
         end_location = Location(200, 200)
 
-        Settings.DelayBeforeMouseDown = 1
-        Settings.DelayBeforeDrag = 1
-        Settings.DelayBeforeDrop = 1
-        Settings.MoveMouseDelay = 3
+        Settings.delay_before_mouse_down = 1
+        Settings.delay_before_drag = 1
+        Settings.delay_before_drop = 1
+        Settings.move_mouse_delay = 3
 
         region = Region(100, 100, 100, 100)
 
         start_time = time.time()
-        region.dragDrop(start_location, end_location)
+        region.drag_drop(start_location, end_location)
         end_time = time.time()
 
-        total_duration = (Settings.DelayBeforeMouseDown + Settings.DelayBeforeDrag + Settings.DelayBeforeDrop +
-                          Settings.MoveMouseDelay)
+        total_duration = (Settings.delay_before_mouse_down + Settings.delay_before_drag + Settings.delay_before_drop +
+                          Settings.move_mouse_delay)
 
         expected_duration = end_time - start_time >= total_duration
         assert_true(self, expected_duration, 'Total duration for dragDrop should be equal or greater than %s seconds'
                     % total_duration)
 
-        Settings.DelayBeforeMouseDown = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
-        Settings.DelayBeforeDrag = DEFAULT_DELAY_BEFORE_DRAG
-        Settings.DelayBeforeDrop = DEFAULT_DELAY_BEFORE_DROP
-        Settings.MoveMouseDelay = DEFAULT_MOVE_MOUSE_DELAY
+        Settings.delay_before_mouse_down = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
+        Settings.delay_before_drag = DEFAULT_DELAY_BEFORE_DRAG
+        Settings.delay_before_drop = DEFAULT_DELAY_BEFORE_DROP
+        Settings.move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
 
-        # Settings.SlowMotionDelay
+        # Settings.slow_motion_delay
 
-        default_slow_motion_delay = Settings.SlowMotionDelay
+        default_slow_motion_delay = Settings.slow_motion_delay
         assert_equal(self, DEFAULT_SLOW_MOTION_DELAY, default_slow_motion_delay,
-                     'Default SlowMotionDelay should be equal to %s' % str(DEFAULT_SLOW_MOTION_DELAY))
+                     'Default slow_motion_delay should be equal to %s' % str(DEFAULT_SLOW_MOTION_DELAY))
         updated_slow_motion_delay = 3
-        Settings.SlowMotionDelay = updated_slow_motion_delay
-        assert_equal(self, Settings.SlowMotionDelay, updated_slow_motion_delay,
-                     'Updated value for SlowMotionDelay should be %s' % updated_slow_motion_delay)
+        Settings.slow_motion_delay = updated_slow_motion_delay
+        assert_equal(self, Settings.slow_motion_delay, updated_slow_motion_delay,
+                     'Updated value for slow_motion_delay should be %s' % updated_slow_motion_delay)
 
-        Settings.SlowMotionDelay = DEFAULT_SLOW_MOTION_DELAY
+        Settings.slow_motion_delay = DEFAULT_SLOW_MOTION_DELAY
 
-        # Settings.ObserveScanRate
+        # Settings.observe_scan_rate
 
-        default_observe_scan_rate = Settings.ObserveScanRate
+        default_observe_scan_rate = Settings.observe_scan_rate
         assert_equal(self, DEFAULT_OBSERVE_SCAN_RATE, default_observe_scan_rate,
-                     'Default ObserveScanRate should be equal to %s' % str(DEFAULT_OBSERVE_SCAN_RATE))
+                     'Default observe_scan_rate should be equal to %s' % str(DEFAULT_OBSERVE_SCAN_RATE))
         updated_observe_scan_rate = 5
-        Settings.ObserveScanRate = updated_observe_scan_rate
-        assert_equal(self, Settings.ObserveScanRate, updated_observe_scan_rate,
-                     'Updated value for ObserveScanRate should be %s' % updated_observe_scan_rate)
+        Settings.observe_scan_rate = updated_observe_scan_rate
+        assert_equal(self, Settings.observe_scan_rate, updated_observe_scan_rate,
+                     'Updated value for observe_scan_rate should be %s' % updated_observe_scan_rate)
 
-        Settings.ObserveScanRate = DEFAULT_OBSERVE_SCAN_RATE
+        Settings.observe_scan_rate = DEFAULT_OBSERVE_SCAN_RATE
 
-        # Settings.ObserveMinChangedPixels
+        # Settings.observe_min_changed_pixels
 
-        default_observe_min_changed_pixels = Settings.ObserveMinChangedPixels
+        default_observe_min_changed_pixels = Settings.observe_min_changed_pixels
         assert_equal(self, DEFAULT_OBSERVE_MIN_CHANGED_PIXELS, default_observe_min_changed_pixels,
-                     'Default ObserveMinChangedPixels should be equal to %s' % str(DEFAULT_OBSERVE_MIN_CHANGED_PIXELS))
+                     'Default observe_min_changed_pixels should be equal to %s' % str(DEFAULT_OBSERVE_MIN_CHANGED_PIXELS))
         updated_observe_min_changed_pixels = 60
-        Settings.ObserveMinChangedPixels = updated_observe_min_changed_pixels
-        assert_equal(self, Settings.ObserveMinChangedPixels, updated_observe_min_changed_pixels,
-                     'Updated value for ObserveMinChangedPixels should be %s' % updated_observe_min_changed_pixels)
+        Settings.observe_min_changed_pixels = updated_observe_min_changed_pixels
+        assert_equal(self, Settings.observe_min_changed_pixels, updated_observe_min_changed_pixels,
+                     'Updated value for observe_min_changed_pixels should be %s' % updated_observe_min_changed_pixels)
 
-        Settings.ObserveMinChangedPixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
+        Settings.observe_min_changed_pixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS

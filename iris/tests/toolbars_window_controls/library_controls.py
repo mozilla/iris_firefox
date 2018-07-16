@@ -22,12 +22,12 @@ class Test(BaseTest):
         expected_1 = exists(library_title, 10)
         assert_true(self, expected_1, 'The library was opened successfully')
 
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             click_auxiliary_window_control('maximize')
             click_auxiliary_window_control('minimize')
         else:
             click_auxiliary_window_control('maximize')
-            if Settings.getOS() == Platform.WINDOWS:
+            if Settings.get_os() == Platform.WINDOWS:
                 expected_2 = exists(library_restore_button, 10)
             else:
                 expected_2 = exists(restore_button, 10)
@@ -35,12 +35,12 @@ class Test(BaseTest):
 
             click_auxiliary_window_control('minimize')
         try:
-            expected_4 = waitVanish(library_title, 10)
+            expected_4 = wait_vanish(library_title, 10)
             assert_true(self, expected_4, 'Window successfully minimized')
         except:
             raise FindError('Window not minimized, aborting test')
 
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             open_library()
 
         else:
@@ -51,7 +51,7 @@ class Test(BaseTest):
 
         click_auxiliary_window_control('close')
         try:
-            expected_6 = waitVanish(library_title, 10)
+            expected_6 = wait_vanish(library_title, 10)
             assert_true(self, expected_6, 'The library was closed successfully')
         except:
             raise FindError('The library didn\'t close successfully')

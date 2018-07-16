@@ -33,7 +33,7 @@ def launch_firefox(path, profile=None, url=None, args=None):
         cmd.append(url)
 
     logger.debug('Launching Firefox with arguments: %s' % ' '.join(cmd))
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return
 
 
@@ -50,7 +50,7 @@ def confirm_firefox_launch(app):
 def confirm_firefox_quit(app):
     try:
 
-        waitVanish('home.png', 10)
+        wait_vanish('home.png', 10)
         address_crash_reporter()
     except FindError:
         logger.error('Firefox still around - aborting test run.')
@@ -65,19 +65,20 @@ def get_firefox_region():
 
 def navigate_slow(url):
     """Navigates, via the location bar, to a given URL
-    :param:
-        url - the string to type into the location bar.
+
+    :param url: the string to type into the location bar.
 
     The function handles typing 'Enter' to complete the action.
     """
+
     try:
         select_location_bar()
         # increase the delay between each keystroke while typing strings
         # (sikuli defaults to .02 sec)
-        Settings.TypeDelay = 0.1
+        Settings.type_delay = 0.1
         type(url + Key.ENTER)
-    except:
-        logger.error('No active window found, cannot navigate to page')
+    except Exception:
+        raise APIHelperError('No active window found, cannot navigate to page')
 
 
 def navigate(url):
@@ -85,9 +86,8 @@ def navigate(url):
         select_location_bar()
         paste(url)
         type(Key.ENTER)
-    except:
-        logger.error('No active window found, cannot navigate to page')
-        raise APIHelperError
+    except Exception:
+        raise APIHelperError('No active window found, cannot navigate to page')
 
 
 def restart_firefox(path, profile, url, args=None):
@@ -96,7 +96,7 @@ def restart_firefox(path, profile, url, args=None):
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit.')
     try:
-        waitVanish('home.png', 10)
+        wait_vanish('home.png', 10)
         # TODO: This should be made into a robust function instead of a hard coded sleep
         # Give Firefox a chance to cleanly shutdown all of its processes
         time.sleep(Settings.SYSTEM_DELAY)
@@ -106,14 +106,13 @@ def restart_firefox(path, profile, url, args=None):
         if exists('home.png', 10):
             logger.debug('Successful Firefox restart performed')
         else:
-            raise FindError('Firefox not relaunched.')
+            raise APIHelperError('Firefox not relaunched.')
     except FindError:
-        raise FindError('Firefox still around - cannot restart.')
-    return
+        raise APIHelperError('Firefox still around - cannot restart.')
 
 
 def get_menu_modifier():
-    if Settings.getOS() == Platform.MAC:
+    if Settings.get_os() == Platform.MAC:
         menu_modifier = Key.CTRL
     else:
         menu_modifier = Key.CMD
@@ -121,7 +120,7 @@ def get_menu_modifier():
 
 
 def get_main_modifier():
-    if Settings.getOS() == Platform.MAC:
+    if Settings.get_os() == Platform.MAC:
         main_modifier = Key.CMD
     else:
         main_modifier = Key.CTRL
@@ -131,7 +130,7 @@ def get_main_modifier():
 def copy_to_clipboard():
     edit_select_all()
     edit_copy()
-    value = Env.getClipboard().strip()
+    value = Env.get_clipboard().strip()
     logger.debug("Copied to clipboard: %s" % value)
     return value
 
@@ -171,7 +170,7 @@ def change_preference(pref_name, value):
                 pass
 
         close_tab()
-    except Exception as e:
+    except Exception:
         raise APIHelperError('Could not set value: %s to preference: %s' % (value, pref_name))
 
 
@@ -193,7 +192,7 @@ def dont_save_password():
     if exists('dont_save_password_button.png', 10):
         click('dont_save_password_button.png')
     else:
-        raise FindError('Unable to find dont_save_password_button.png')
+        raise APIHelperError('Unable to find dont_save_password_button.png')
 
 
 def click_hamburger_menu_option(option):
@@ -202,9 +201,8 @@ def click_hamburger_menu_option(option):
         wait(hamburger_menu, 10)
         region = create_region_from_image(hamburger_menu)
         logger.debug('hamburger menu found')
-    except:
-        logger.error('Can\'t find the "hamburger menu" in the page, aborting test.')
-        return
+    except FindError:
+        raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
         click(hamburger_menu)
         time.sleep(Settings.UI_DELAY)
@@ -212,8 +210,7 @@ def click_hamburger_menu_option(option):
             region.wait(option, 10)
             logger.debug('Option found')
         except FindError:
-            logger.error('Can\'t find the option in the page, aborting test.')
-            return
+            raise APIHelperError('Can\'t find the option in the page, aborting test.')
         else:
             region.click(option)
             return region
@@ -228,54 +225,52 @@ def click_auxiliary_window_control(button):
     minimize_button = 'auxiliary_window_minimize.png'
     auxiliary_window_controls = 'auxiliary_window_controls.png'
 
-    if Settings.getOS() == Platform.MAC:
+    if Settings.get_os() == Platform.MAC:
         try:
             wait(red_button, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
-            logger.error('Can\'t find the auxiliary window controls, aborting.')
-            return
+            raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
     else:
-        if Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.LINUX:
             hover(Location(80, 0))
         try:
             wait(close_button, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
-            logger.error('Can\'t find the auxiliary window controls, aborting.')
-            return
+            raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
 
     if button == 'close':
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             click(red_button)
         else:
             click(close_button)
     elif button == 'minimize':
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             window_controls_pattern = Pattern(auxiliary_window_controls)
             width, height = get_image_size(window_controls_pattern)
-            click(window_controls_pattern.targetOffset(width / 2, height / 2))
+            click(window_controls_pattern.target_offset(width / 2, height / 2))
         else:
             click(minimize_button)
     elif button == 'full_screen':
         window_controls_pattern = Pattern(auxiliary_window_controls)
         width, height = get_image_size(window_controls_pattern)
-        click(window_controls_pattern.targetOffset(width - 10, height / 2))
-        if Settings.getOS() == Platform.LINUX:
+        click(window_controls_pattern.target_offset(width - 10, height / 2))
+        if Settings.get_os() == Platform.LINUX:
             hover(Location(80, 0))
     elif button == 'maximize':
-        if Settings.getOS() == Platform.MAC:
-            keyDown(Key.ALT)
+        if Settings.get_os() == Platform.MAC:
+            key_down(Key.ALT)
             window_controls_pattern = Pattern(auxiliary_window_controls)
             width, height = get_image_size(window_controls_pattern)
-            click(window_controls_pattern.targetOffset(width - 10, height / 2))
-            keyUp(Key.ALT)
+            click(window_controls_pattern.target_offset(width - 10, height / 2))
+            key_up(Key.ALT)
         else:
             click(zoom_full_button)
-            if Settings.getOS() == Platform.LINUX:
+            if Settings.get_os() == Platform.LINUX:
                 hover(Location(80, 0))
     elif button == 'zoom_restore':
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             reset_mouse()
             hover(red_button)
         click(zoom_restore_button)
@@ -286,8 +281,7 @@ def click_cancel_button():
         wait('cancel_button.png', 10)
         logger.debug('Cancel button found')
     except FindError:
-        logger.error('Can\'t find the cancel button, aborting.')
-        return
+        raise APIHelperError('Can\'t find the cancel button, aborting.')
     else:
         click('cancel_button.png')
 
@@ -298,8 +292,7 @@ def close_customize_page():
         wait(customize_done_button, 10)
         logger.debug('Done button found')
     except FindError:
-        logger.error('Can\'t find the Done button in the page, aborting.')
-        return
+        raise APIHelperError('Can\'t find the Done button in the page, aborting.')
     else:
         click(customize_done_button)
 
@@ -318,7 +311,7 @@ def address_crash_reporter():
 
         # Ensure the reporter closes before moving on
         try:
-            waitVanish(reporter, 20)
+            wait_vanish(reporter, 20)
             logger.debug('Crash report sent')
         except FindError:
             logger.error('Crash reporter did not close')
@@ -332,7 +325,7 @@ def address_crash_reporter():
 
 
 def open_about_firefox():
-    if Settings.getOS() == Platform.MAC:
+    if Settings.get_os() == Platform.MAC:
         # Key stroke into Firefox Menu to get to About Firefox.
         type(Key.F2, modifier=KeyModifier.CTRL)
 
@@ -342,24 +335,24 @@ def open_about_firefox():
         type(Key.DOWN)
         type(Key.ENTER)
 
-    elif Settings.getOS() == Platform.WINDOWS:
+    elif Settings.get_os() == Platform.WINDOWS:
         # Use Help menu keyboard shortcuts to open About Firefox
-        keyDown(Key.ALT)
+        key_down(Key.ALT)
         type('h')
         time.sleep(0.5)
         type('a')
-        keyUp(Key.ALT)
+        key_up(Key.ALT)
 
     else:
         # Use Help menu keyboard shortcuts to open About Firefox
-        keyDown(Key.ALT)
+        key_down(Key.ALT)
         type('h')
         time.sleep(1)
-        keyUp(Key.ALT)
+        key_up(Key.ALT)
         type('a')
 
 
-class Option:
+class Option(object):
     ZOOM_IN = 0
     ZOOM_OUT = 1
     RESET = 2
@@ -370,7 +363,7 @@ def open_zoom_menu(option_number):
     """Opens the Zoom menu options from the View Menu."""
 
     view_menu = 'view_menu.png'
-    if Settings.getOS() == Platform.MAC:
+    if Settings.get_os() == Platform.MAC:
         click(view_menu)
         for i in range(3):
             type(text=Key.DOWN)
@@ -393,13 +386,13 @@ def create_region_from_image(image):
             hamburger_pop_up_menu_weight = 285
             hamburger_pop_up_menu_height = 655
             logger.debug('Creating a region for Hamburger Pop Up Menu')
-            region = Region(m.getX() - hamburger_pop_up_menu_weight, m.getY(), hamburger_pop_up_menu_weight,
+            region = Region(m.x - hamburger_pop_up_menu_weight, m.y, hamburger_pop_up_menu_weight,
                             hamburger_pop_up_menu_height)
             return region
         else:
-            logger.error('No Matching found')
-    except:
-        logger.error('Image not present')
+            raise APIHelperError('No Matching found')
+    except FindError:
+        raise APIHelperError('Image not present')
 
 
 def create_region_for_url_bar():
@@ -418,20 +411,19 @@ def create_region_for_hamburger_menu():
         wait(hamburger_menu, 10)
         click(hamburger_menu)
         time.sleep(1)
-        if Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.LINUX:
             region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
-        elif Settings.getOS() == Platform.MAC:
+        elif Settings.get_os() == Platform.MAC:
             region = create_region_from_patterns(None, hamburger_menu, help_menu, None)
         else:
             region = create_region_from_patterns(None, hamburger_menu, exit_menu, None)
     except (FindError, ValueError):
-        logger.error('Can\'t find the hamburger menu in the page, aborting test.')
-        return
+        raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
     return region
 
 
 def restore_window_from_taskbar():
-    if Settings.getOS() == Platform.MAC:
+    if Settings.get_os() == Platform.MAC:
         try:
             main_menu_window = 'main_menu_window.png'
             wait(main_menu_window, 5)
@@ -440,10 +432,10 @@ def restore_window_from_taskbar():
             time.sleep(Settings.FX_DELAY)
             type(Key.ENTER)
         except FindError:
-            logger.error('Restore window from taskbar unsuccessful.')
+            raise APIHelperError('Restore window from taskbar unsuccessful.')
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
-        if Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.LINUX:
             hover(Location(0, 50))
     time.sleep(Settings.UI_DELAY)
 
@@ -452,12 +444,11 @@ def open_library_menu(option):
     library_menu = 'library_menu.png'
     try:
         wait(library_menu, 10)
-        region = Region(find(library_menu).getX() - SCREEN_WIDTH / 4, find(library_menu).getY(), SCREEN_WIDTH / 4,
+        region = Region(find(library_menu).x - SCREEN_WIDTH / 4, find(library_menu).y, SCREEN_WIDTH / 4,
                         SCREEN_HEIGHT / 4)
         logger.debug('Library menu found')
-    except:
-        logger.error('Can\'t find the library menu in the page, aborting test.')
-        return
+    except FindError:
+        raise APIHelperError('Can\'t find the library menu in the page, aborting test.')
     else:
         click(library_menu)
         time.sleep(1)
@@ -466,8 +457,7 @@ def open_library_menu(option):
             region.wait(option, 10)
             logger.debug('Option found')
         except FindError:
-            logger.error('Can\'t find the option in the page, aborting test.')
-            return
+            raise APIHelperError('Can\'t find the option in the page, aborting test.')
         else:
             region.click(option)
             return region
@@ -480,7 +470,7 @@ def remove_zoom_indicator_from_toolbar():
     try:
         wait(zoom_control_toolbar_decrease, 10)
         logger.debug('\'Decrease\' zoom control found.')
-        rightClick(zoom_control_toolbar_decrease)
+        right_click(zoom_control_toolbar_decrease)
     except FindError:
         raise APIHelperError('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
 
@@ -492,7 +482,7 @@ def remove_zoom_indicator_from_toolbar():
         raise APIHelperError('Can\'t find the \'Remove from Toolbar\' option in the page, aborting.')
 
     try:
-        waitVanish(zoom_control_toolbar_decrease, 10)
+        wait_vanish(zoom_control_toolbar_decrease, 10)
     except FindError:
         raise APIHelperError('Zoom indicator not removed from toolbar, aborting.')
 
@@ -503,7 +493,7 @@ def bookmark_options(option):
         logger.debug('Option %s is present on the page.' % option)
         click(option)
     except FindError:
-        logger.error('Can\'t find option %s, aborting.' % option)
+        raise APIHelperError('Can\'t find option %s, aborting.' % option)
 
 
 def access_bookmarking_tools(option):
@@ -515,16 +505,13 @@ def access_bookmarking_tools(option):
         logger.debug('Bookmarking Tools option has been found.')
         click(bookmarking_tools)
     except FindError:
-        logger.error('Can\'t find the Bookmarking Tools option, aborting.')
-        return
-
+        raise APIHelperError('Can\'t find the Bookmarking Tools option, aborting.')
     try:
         wait(option, 10)
         logger.debug('%s option has been found.' % option)
         click(option)
     except FindError:
-        logger.error('Can\'t find the %s option, aborting.' % option)
-        return
+        raise APIHelperError('Can\'t find the %s option, aborting.' % option)
 
 
 def write_profile_prefs(test_case):
@@ -559,7 +546,7 @@ def create_firefox_args(test_case):
             if int(w) < 600:
                 logger.warning('Windows of less than 600 pixels wide may cause Iris to fail.')
     except ValueError:
-        logger.error('Incorrect window size specified. Must specify width and height separated by lowercase x.')
+        raise APIHelperError('Incorrect window size specified. Must specify width and height separated by lowercase x.')
 
     if test_case.profile_manager:
         args.append('-ProfileManager')
@@ -593,8 +580,8 @@ def create_firefox_args(test_case):
 
 
 class ZoomType(object):
-    IN = 300 if Settings.isWindows() else 1
-    OUT = -300 if Settings.isWindows() else -1
+    IN = 300 if Settings.is_windows() else 1
+    OUT = -300 if Settings.is_windows() else -1
 
 
 def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
@@ -608,12 +595,12 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     # move focus in the middle of the page to be able to use the scroll
     pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
     for i in range(nr_of_times):
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             pyautogui.keyDown('command')
         else:
             pyautogui.keyDown('ctrl')
         pyautogui.scroll(zoom_type)
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             pyautogui.keyUp('command')
         else:
             pyautogui.keyUp('ctrl')
