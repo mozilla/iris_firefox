@@ -442,6 +442,7 @@ def restore_window_from_taskbar():
 
 def open_library_menu(option):
     library_menu = 'library_menu.png'
+
     try:
         wait(library_menu, 10)
         region = Region(find(library_menu).x - SCREEN_WIDTH / 4, find(library_menu).y, SCREEN_WIDTH / 4,
@@ -450,10 +451,11 @@ def open_library_menu(option):
     except FindError:
         raise APIHelperError('Can\'t find the library menu in the page, aborting test.')
     else:
+        time.sleep(Settings.FX_DELAY)
         click(library_menu)
-        time.sleep(1)
+        time.sleep(Settings.FX_DELAY)
         try:
-            time.sleep(1)
+            time.sleep(Settings.FX_DELAY)
             region.wait(option, 10)
             logger.debug('Option found')
         except FindError:

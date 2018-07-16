@@ -120,9 +120,6 @@ def _match_template_multiple(needle, haystack, precision=None, threshold=0.99):
     if precision is None:
         precision = Settings.min_similarity
 
-    if precision is None:
-        precision = Settings.min_similarity
-
     haystack_img_gray = haystack.convert('L')
     needle_img_gray = needle.get_gray_image()
 
@@ -267,6 +264,9 @@ def _positive_image_search_loop(pattern, timeout=None, precision=None, region=No
 
     if precision is None:
         precision = Settings.min_similarity
+
+    if timeout is None:
+        timeout = Settings.auto_wait_timeout
 
     pos = image_search(pattern, precision, region)
 
