@@ -60,7 +60,6 @@ def parse_versions(input_str):
                 v_list = [Version(versions_list[0]), Version(versions_list[1])]
                 result[version_key] = v_list
                 result[operator_key] = '-'
-                print(result)
                 return result
 
             except InvalidVersion:

@@ -68,7 +68,6 @@ def _combine_text_matches(matches, value):
 def text_search_all(with_image_processing=True, in_region=None, in_image=None):
     if in_image is None:
         stack_image = get_region(in_region, True)
-        print(in_region.x, in_region.y, in_region.width, in_region.height)
     else:
         stack_image = in_image
 
@@ -78,7 +77,6 @@ def text_search_all(with_image_processing=True, in_region=None, in_image=None):
     debug_img = input_image_array
 
     if with_image_processing:
-        print('WIDTH, HEIGHT: ', input_image.width, input_image.height)
         input_image = process_image_for_ocr(image_array=input_image)
         input_image_array = np.array(input_image)
         debug_img = cv2.cvtColor(input_image_array, cv2.COLOR_GRAY2BGR)
