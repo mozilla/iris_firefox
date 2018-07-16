@@ -13,7 +13,6 @@ class Test(BaseTest):
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test case that checks that Browser Control Console work as expected"
 
-        
         # Disabling until test has been updated
         self.exclude = Platform.ALL
 
@@ -21,33 +20,31 @@ class Test(BaseTest):
 
         url = "about:home"
         navigate(url)
-        pop_up_region=click_hamburger_menu_option("Web Developer")
+        pop_up_region = click_hamburger_menu_option("Web Developer")
         pop_up_region.click("Web Console")
-        time.sleep(5)
+        time.sleep(Settings.UI_DELAY_LONG)
 
-        developer_menu_message='Console '
-        screen=get_screen()
-        left_corner_screen_region=Sikuli.Region(screen.getX(),screen.getH()/2,screen.getW()/2,screen.getH())
+        developer_menu_message = 'Console '
+        screen = get_screen()
+        left_corner_screen_region = Sikuli.Region(screen.getX(), screen.getH()/2, screen.getW()/2, screen.getH())
 
-
-        if left_corner_screen_region.exists(developer_menu_message,5):
+        if left_corner_screen_region.exists(developer_menu_message, 5):
             logger.debug('Developer Console is displayed')
 
-            #open a console from developer tool command line
-
-            console_command='window.alert("test alert")'
+            # Open a console from developer tool command line.
+            console_command = 'window.alert("test alert")'
 
             type(console_command)
             type(Key.ENTER)
 
-            #check if one of the Developer console tabs are displayed
-            pop_up_message='test'
-            found=False
-            center_screen=Sikuli.Region(screen.getX()+100,screen.getY()+100,screen.getW(),screen.getH()/2)
+            # Check if one of the Developer console tabs are displayed.
+            pop_up_message = 'test'
+            found = False
+            center_screen = Sikuli.Region(screen.getX()+100, screen.getY()+100, screen.getW(), screen.getH()/2)
             center_screen.highlight(2)
             if pop_up_message in center_screen.text():
-                logger.debug('Item is present: '+pop_up_message)
-                found=True
+                logger.debug('Item is present: ' + pop_up_message)
+                found = True
 
             if found:
                 logger.debug('Pop up message is displayed ')
@@ -56,12 +53,12 @@ class Test(BaseTest):
                 open_browser_console()
                 logger.debug('Opening browser console with keyboard shortcut ')
 
-                console_items=['Net','CSS','JS','Security']
-                browser_console_items=False
+                console_items = ['Net', 'CSS', 'JS', 'Security']
+                browser_console_items = False
                 for word in console_items:
                     if word in center_screen.text():
-                        logger.debug('Item is present: '+word)
-                        browser_console_items=True
+                        logger.debug('Item is present: ' + word)
+                        browser_console_items = True
 
                 if browser_console_items:
                     logger.debug('Close console')
@@ -101,11 +98,3 @@ class Test(BaseTest):
 
             logger.error('Developer toolbar is NOT opened ')
             print "FAIL"
-
-
-
-
-
-
-
-

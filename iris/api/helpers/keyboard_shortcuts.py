@@ -418,6 +418,7 @@ def minimize_window():
         type(text=Key.DOWN, modifier=KeyModifier.WIN)
     else:
         type(text=Key.DOWN, modifier=KeyModifier.CTRL + KeyModifier.META)
+    time.sleep(Settings.UI_DELAY)
 
 
 def new_tab():

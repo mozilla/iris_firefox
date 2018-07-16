@@ -29,7 +29,6 @@ class Test(BaseTest):
 
         # Open Customize from the Hamburger Menu
         click_hamburger_menu_option('Customize...')
-        time.sleep(1)
 
         expected_1 = exists('Drag', 10, in_region=Region(0, 0, 300, 300))
         logger.debug('Searching for text \'Drag\'')
@@ -51,10 +50,8 @@ class Test(BaseTest):
         if exists(hamburger_menu, 10):
             # Minimize window
             minimize_window()
-            time.sleep(1.5)
             if Settings.getOS() == Platform.WINDOWS:
                 minimize_window()
-                time.sleep(1)
             try:
                 expected_5 = waitVanish(hamburger_menu, 10)
                 assert_true(self, expected_5, 'Window successfully minimized')
@@ -65,9 +62,7 @@ class Test(BaseTest):
             logger.error('Can\'t find the \'hamburger menu\' in the page.')
 
         # Focus on Firefox and open the browser again
-        time.sleep(1)
         restore_window_from_taskbar()
-        time.sleep(1)
 
         if Settings.getOS() == Platform.WINDOWS:
             maximize_window()
