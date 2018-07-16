@@ -404,8 +404,9 @@ def create_region_from_image(image):
 
 def create_region_for_url_bar():
     hamburger_menu = 'hamburger_menu.png'
-    home_button = 'home.png'
-    region = create_region_from_patterns(home_button, hamburger_menu, padding_top=10, padding_bottom=15)
+    show_history = 'show_history.png'
+    select_location_bar()
+    region = create_region_from_patterns(show_history, hamburger_menu, padding_top=10, padding_bottom=15)
     return region
 
 
@@ -605,8 +606,14 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     :return: None
     """
 
+    url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
+
     # move focus in the middle of the page to be able to use the scroll
     pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
+
+    if Settings.getOS() == Platform.LINUX and nr_of_times == 1 and exists(url_bar_default_zoom_level, 10):
+        nr_of_times = 2
+
     for i in range(nr_of_times):
         if Settings.getOS() == Platform.MAC:
             pyautogui.keyDown('command')
