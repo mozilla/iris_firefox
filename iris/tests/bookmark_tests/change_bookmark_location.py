@@ -47,7 +47,7 @@ class Test(BaseTest):
         sidebar_bookmark_assert = exists(amazon_bookmark, 10)
         assert_true(self, sidebar_bookmark_assert, 'Amazon bookmark is present in the sidebar.')
 
-        rightClick(amazon_bookmark)
+        right_click(amazon_bookmark)
 
         bookmark_options('properties_option.png')
 
@@ -81,12 +81,12 @@ class Test(BaseTest):
             logger.error('Toolbar can not be activated, aborting.')
             raise FindError
 
-        dragDrop(bookmark_changed_location, drag_area, 0.5)
+        drag_drop(bookmark_changed_location, drag_area, 0.5)
 
         try:
             wait(changed_toolbar_bookmark, 10)
             logger.debug('Bookmark is present in Bookmark Toolbar section.')
-            rightClick(changed_toolbar_bookmark)
+            right_click(changed_toolbar_bookmark)
         except FindError:
             logger.error('Can\'t find the bookmark in Bookmark Toolbar section, aborting.')
             raise FindError

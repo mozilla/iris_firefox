@@ -21,7 +21,7 @@ class Test(BaseTest):
         expected_1 = exists(sidebar_title, 10)
         assert_true(self, expected_1, 'Sidebar title was displayed properly')
 
-        in_region = Region(0, find(sidebar_title).getY(), SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4)
+        in_region = Region(0, find(sidebar_title).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4)
         expected_2 = in_region.exists(x_button_sidebar, 10)
         assert_true(self, expected_2, 'Close button was displayed properly')
 
@@ -31,7 +31,7 @@ class Test(BaseTest):
 
         in_region.click(x_button_sidebar_hovered)
         try:
-            expected_4 = waitVanish(sidebar_title, 10)
+            expected_4 = wait_vanish(sidebar_title, 10)
             assert_true(self, expected_4, 'Sidebar was closed successfully')
         except:
             raise FindError('Sidebar is still open')

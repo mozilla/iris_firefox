@@ -23,7 +23,7 @@ class Test(BaseTest):
         assert_true(self, expected_1, 'The page is successfully loaded.')
 
         # Type 'Mediterranean Sea' in the search bar.
-        click(Pattern(google_maps_search_bar_magnifier).targetOffset(-100, 15))
+        click(Pattern(google_maps_search_bar_magnifier).target_offset(-100, 15))
         time.sleep(2)
         paste('Mediterranean Sea')
         type(Key.ENTER)

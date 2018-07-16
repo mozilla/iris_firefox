@@ -44,14 +44,14 @@ class Test(BaseTest):
         try:
             wait(amazon_library, 10)
             logger.debug('Amazon bookmark can be accessed in Library section.')
-            rightClick(amazon_library)
+            right_click(amazon_library)
         except FindError:
             raise FindError('Amazon bookmark is not present in Library section, aborting.')
 
         bookmark_options(delete)
 
         try:
-            deleted_bookmark_assert = waitVanish(amazon_library, 10)
+            deleted_bookmark_assert = wait_vanish(amazon_library, 10)
             assert_true(self, deleted_bookmark_assert, 'Amazon bookmark has been removed from the Library.')
         except FindError:
             raise FindError('Amazon bookmark can NOT be removed from the Library, aborting.')

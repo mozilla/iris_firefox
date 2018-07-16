@@ -62,7 +62,7 @@ class Test(BaseTest):
 
         # Open hamburger menu and reset the zoom level.
         click(hamburger_menu)
-        click(Pattern(zoom_control_toolbar_increase).targetOffset(-40, 15))
+        click(Pattern(zoom_control_toolbar_increase).target_offset(-40, 15))
 
         expected = new_region.exists(hamburger_menu_zoom_indicator, 10)
         assert_true(self, expected, 'Zoom level is successfully reset to default in hamburger menu.')

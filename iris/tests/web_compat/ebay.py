@@ -83,7 +83,7 @@ class Test(BaseTest):
             assert_true(self, ebay_search, 'eBay search bar exists')
             logger.debug('Page was scrolled back up')
             screen = get_firefox_region()
-            product_region = Region(screen.getX(), screen.getY(), screen.getW() / 4, screen.getH())
+            product_region = Region(screen.x(), screen.y(), screen.width() / 4, screen.height())
             related_results = ['Categories', 'Brand']
             found = False
             for word in related_results:
@@ -93,7 +93,7 @@ class Test(BaseTest):
                     break
             assert_true(self, found, 'Text found in page')
             logger.debug('Results are displayed')
-            search = Pattern('ebay_filter_results.png').targetOffset(0, 100)
+            search = Pattern('ebay_filter_results.png').target_offset(0, 100)
             ebay_filter = exists('ebay_filter_results.png', 5)
             assert_true(self, ebay_filter, 'Filter button found in page')
             logger.debug('Select product')

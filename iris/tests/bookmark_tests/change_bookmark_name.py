@@ -60,7 +60,7 @@ class Test(BaseTest):
         assert_true(self, bookmark_name_assert, 'The name of the bookmark is successfully modified.')
 
         # Change the bookmark name from the Bookmarks Sidebar
-        rightClick(modified_bookmark)
+        right_click(modified_bookmark)
 
         option_assert = exists(properties, 10)
         assert_true(self, option_assert, 'Properties option is present on the page.')
@@ -85,14 +85,14 @@ class Test(BaseTest):
         except FindError:
             logger.error('Toolbar can not be activated, aborting.')
 
-        dragDrop(modified_bookmark_2, 'drag_area.png', 0.5)
+        drag_drop(modified_bookmark_2, 'drag_area.png', 0.5)
         navigate('about:blank')
         bookmarks_sidebar('close')
 
         toolbar_bookmark_assert = exists(toolbar_bookmark, 10)
         assert_true(self, toolbar_bookmark_assert, 'Name of the bookmark can be changed from the toolbar.')
 
-        rightClick(toolbar_bookmark)
+        right_click(toolbar_bookmark)
 
         option_assert = exists(properties, 10)
         assert_true(self, option_assert, 'Properties option is present on the page.')

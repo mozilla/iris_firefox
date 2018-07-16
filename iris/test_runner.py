@@ -40,7 +40,7 @@ def run(app):
 
         is_correct_version = True if current.fx_version == '' else check_version(app.version, current.fx_version)
 
-        if (Settings.getOS() not in current.exclude and is_correct_version) or app.args.override:
+        if (Settings.get_os() not in current.exclude and is_correct_version) or app.args.override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.set_start_time(time.time())
 
@@ -113,7 +113,7 @@ def run(app):
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    print_report_footer(Settings.getOS(), app.version, app.build_id, passed, failed, skipped, errors,
+    print_report_footer(Settings.get_os(), app.version, app.build_id, passed, failed, skipped, errors,
                         get_duration(start_time, end_time), failures=test_failures)
 
     app.write_test_failures(test_failures)

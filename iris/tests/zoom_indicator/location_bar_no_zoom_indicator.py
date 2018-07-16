@@ -26,7 +26,7 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         # Move focus away from the location bar.
-        click(Pattern(hamburger_menu).targetOffset(-120, 150))
+        click(Pattern(hamburger_menu).target_offset(-120, 150))
 
         expected = region.exists(search_bar, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')

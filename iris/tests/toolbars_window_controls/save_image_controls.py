@@ -22,7 +22,7 @@ class Test(BaseTest):
         except:
             raise FindError('Test Image not loaded')
         else:
-            rightClick(test_image, 1)
+            right_click(test_image, 1)
 
         # wait a moment to ensure the context menu is responsive
         time.sleep(Settings.UI_DELAY)
@@ -34,13 +34,13 @@ class Test(BaseTest):
         expected_1 = exists(save_as, 10)
         assert_true(self, expected_1, 'Save Image dialog is present')
 
-        if Settings.getOS() == Platform.WINDOWS:
+        if Settings.get_os() == Platform.WINDOWS:
             click_auxiliary_window_control('close')
         else:
             click_cancel_button()
             
         try:
-            expected_2 = waitVanish(save_as, 5)
+            expected_2 = wait_vanish(save_as, 5)
             assert_true(self, expected_2, 'Save Image dialog was closed')
         except:
             raise FindError('Save Image dialog is still present')

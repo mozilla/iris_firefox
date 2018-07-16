@@ -63,15 +63,15 @@ _images = load_all_patterns()
 class Pattern(object):
     def __init__(self, image_name):
         name, path, scale = get_pattern_details(image_name)
-        self.image_name = name
-        self.image_path = path
-        self.scale_factor = scale
-        self.target_offset = None
-        self.rgb_array = np.array(cv2.imread(path))
-        self.color_image = Image.fromarray(_apply_scale(scale, self.rgb_array))
-        self.gray_image = self.color_image.convert('L')
+        self._image_name = name
+        self._image_path = path
+        self._scale_factor = scale
+        self._target_offset = None
+        self._rgb_array = np.array(cv2.imread(path))
+        self._color_image = Image.fromarray(_apply_scale(scale, self._rgb_array))
+        self._gray_image = self._color_image.convert('L')
 
-    def targetOffset(self, dx, dy):
+    def target_offset(self, dx, dy):
         """Add offset to Pattern from top left
 
         :param int dx: x offset from center
@@ -79,34 +79,30 @@ class Pattern(object):
         :return: a new pattern object
         """
 
-        new_pattern = Pattern(self.image_name)
-        new_pattern.target_offset = Location(dx, dy)
+        new_pattern = Pattern(self._image_name)
+        new_pattern._target_offset = Location(dx, dy)
         return new_pattern
 
-    def getFilename(self):
-        return self.image_name
+    def get_filename(self):
+        return self._image_name
 
-    def getFilepath(self):
-        return self.image_path
+    def get_file_path(self):
+        return self._image_path
 
-    def getTargetOffset(self):
-        """
+    def get_target_offset(self):
+        return self._target_offset
 
-        :return: Location object as the target offset
-        """
-        return self.target_offset
+    def get_scale_factor(self):
+        return self._scale_factor
 
-    def scale_factor(self):
-        return self.scale_factor
+    def get_rgb_array(self):
+        return self._rgb_array
 
-    def rgb_array(self):
-        return self.rgb_array
+    def get_color_image(self):
+        return self._color_image
 
-    def color_image(self):
-        return self.color_image
-
-    def gray_image(self):
-        return self.gray_image
+    def get_gray_image(self):
+        return self._gray_image
 
 
 def get_pattern_details(pattern_name):

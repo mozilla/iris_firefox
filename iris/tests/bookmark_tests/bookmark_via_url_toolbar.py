@@ -36,7 +36,7 @@ class Test(BaseTest):
 
         type(Key.ESC)
 
-        dragDrop(draggable_url, drag_area, 0.5)
+        drag_drop(draggable_url, drag_area, 0.5)
 
         star_shaped_button_assert = exists(bookmarked_star, 10)
         assert_true(self, star_shaped_button_assert, 'Star-shaped button has changed its color to blue.')
