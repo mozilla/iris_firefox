@@ -79,5 +79,5 @@ class LocalWebServer(object):
             sock_name = httpd.socket.getsockname()
             logger.info('Serving HTTP on %s port %s.' % (sock_name[0], sock_name[1]))
             httpd.serve_forever()
-        except:
+        except Exception:
             raise IOError('Unable to open port %s on %s' % (self.port, self.host))

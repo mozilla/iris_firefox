@@ -26,7 +26,7 @@ class Test(BaseTest):
 
         developer_menu_message = 'Console '
         screen = get_screen()
-        left_corner_screen_region = Sikuli.Region(screen.getX(), screen.getH()/2, screen.getW()/2, screen.getH())
+        left_corner_screen_region = Sikuli.Region(screen.x(), screen.height() / 2, screen.width() / 2, screen.height())
 
         if left_corner_screen_region.exists(developer_menu_message, 5):
             logger.debug('Developer Console is displayed')
@@ -40,7 +40,7 @@ class Test(BaseTest):
             # Check if one of the Developer console tabs are displayed.
             pop_up_message = 'test'
             found = False
-            center_screen = Sikuli.Region(screen.getX()+100, screen.getY()+100, screen.getW(), screen.getH()/2)
+            center_screen = Sikuli.Region(screen.x() + 100, screen.y() + 100, screen.width(), screen.height() / 2)
             center_screen.highlight(2)
             if pop_up_message in center_screen.text():
                 logger.debug('Item is present: ' + pop_up_message)
@@ -79,7 +79,7 @@ class Test(BaseTest):
                                 if center_screen.exists('auxiliary_window_maximize.png', 5):
                                     center_screen.click('auxiliary_window_maximize.png')
                                     logger.debug('Browser Console is maximized')
-                                    if Settings.getOS() == Platform.MAC:
+                                    if Settings.get_os() == Platform.MAC:
                                         screen.click('auxiliary_window_close_button.png')
                                     else:
                                         force_close()

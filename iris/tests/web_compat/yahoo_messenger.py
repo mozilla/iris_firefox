@@ -65,7 +65,7 @@ class Test(BaseTest):
         time.sleep(1)
         click(unsend_button)
         try:
-            expected_4 = waitVanish(yahoo_messenger_test_message, 10)
+            expected_4 = wait_vanish(yahoo_messenger_test_message, 10)
             assert_true(self, expected_4, 'Sent message is deleted successfully')
         except:
             raise FindError('Sent message is not deleted')

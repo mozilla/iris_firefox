@@ -36,14 +36,14 @@ class Test(BaseTest):
         try:
             right_upper_corner.wait(menu_bookmark, 10)
             logger.debug('Amazon bookmark is present in the Bookmarks Menu section.')
-            rightClick(menu_bookmark)
+            right_click(menu_bookmark)
         except FindError:
             raise FindError('Amazon bookmark is not present in the Bookmarks Menu, aborting.')
 
         bookmark_options(delete)
 
         try:
-            delete_bookmark_menu_assert = right_upper_corner.waitVanish(menu_bookmark, 10)
+            delete_bookmark_menu_assert = right_upper_corner.wait_vanish(menu_bookmark, 10)
             assert_true(self, delete_bookmark_menu_assert,
                         'Amazon bookmark has been successfully deleted from the Bookmarks Menu.')
         except FindError:

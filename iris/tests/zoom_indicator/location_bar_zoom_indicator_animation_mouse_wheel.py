@@ -55,7 +55,7 @@ class Test(BaseTest):
         # zoom in until the maximum zoom level(300%) is reached.
         zoom_with_mouse_wheel(20, ZoomType.IN)
 
-        if Settings.getOS() == Platform.WINDOWS:
+        if Settings.get_os() == Platform.WINDOWS:
             expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.99)
             assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
         else:
@@ -65,7 +65,7 @@ class Test(BaseTest):
         # zoom in ONE more time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
-        if Settings.getOS() == Platform.WINDOWS:
+        if Settings.get_os() == Platform.WINDOWS:
             expected = exists(search_bar_wikipedia_300_zoom_level, 10, 0.99)
             assert_true(self, expected, 'Zoom level still displays 300%.')
         else:
@@ -87,7 +87,7 @@ class Test(BaseTest):
         # zoom out ONE more time.
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
-        if Settings.getOS() == Platform.WINDOWS:
+        if Settings.get_os() == Platform.WINDOWS:
             expected = exists(search_bar_wikipedia_30_zoom_level, 10, 0.99)
             assert_true(self, expected, 'Zoom level still displays 30%.')
         else:

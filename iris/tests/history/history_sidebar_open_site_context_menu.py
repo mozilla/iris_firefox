@@ -50,7 +50,7 @@ class Test(BaseTest):
         # Open a page from the History sidebar using the 'Open' button from the context menu.
         expected_5 = exists(history_sidebar_wikipedia, 10)
         assert_true(self, expected_5, 'Wikipedia displayed in the History list successfully.')
-        rightClick(history_sidebar_wikipedia)
+        right_click(history_sidebar_wikipedia)
         time.sleep(0.5)
         type(text='o')
         expected_6 = exists(wikipedia_logo, 10)

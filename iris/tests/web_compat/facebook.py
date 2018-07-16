@@ -37,7 +37,7 @@ class Test(BaseTest):
         expected_1 = exists(news_feed, 10)
         assert_true(self, expected_1, 'News Feed has been accessed')
 
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             for i in range(7):
                 type(Key.TAB)
             time.sleep(2)
@@ -59,7 +59,7 @@ class Test(BaseTest):
 
         # Delete post
 
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             for i in range(7):
                 type(Key.TAB)
             time.sleep(2)
@@ -90,7 +90,7 @@ class Test(BaseTest):
             time.sleep(2)
 
         try:
-            expected_3 = waitVanish(post, 10)
+            expected_3 = wait_vanish(post, 10)
             assert_true(self, expected_3, 'The message has been deleted')
         except Exception as error:
             logger.error('The message can not be deleted')

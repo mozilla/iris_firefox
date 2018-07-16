@@ -8,7 +8,6 @@ from distutils import dir_util
 from distutils.spawn import find_executable
 import shutil
 
-from settings import Settings
 from util.core_helper import *
 
 
@@ -30,7 +29,8 @@ class _IrisProfile(object):
     # We will make LIKE_NEW the default.
     DEFAULT = 'like_new'
 
-    def _get_staged_profile(self, profile_name, path):
+    @staticmethod
+    def _get_staged_profile(profile_name, path):
         sz_bin = find_executable('7z')
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
 

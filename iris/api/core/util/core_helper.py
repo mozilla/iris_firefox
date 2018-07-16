@@ -22,6 +22,7 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 _run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
 _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
 
+
 def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
 
@@ -147,15 +148,15 @@ def get_region(region=None, for_ocr=False):
     is_uhd, uhd_factor = get_uhd_details()
 
     if region is not None:
-        r_x = uhd_factor * region.getX() if is_uhd else region.getX()
-        r_y = uhd_factor * region.getY() if is_uhd else region.getY()
-        r_w = uhd_factor * region.getW() if is_uhd else region.getW()
-        r_h = uhd_factor * region.getH() if is_uhd else region.getH()
+        r_x = uhd_factor * region.x if is_uhd else region.x
+        r_y = uhd_factor * region.y if is_uhd else region.y
+        r_w = uhd_factor * region.width if is_uhd else region.width
+        r_h = uhd_factor * region.height if is_uhd else region.height
 
         grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
 
         if is_uhd and not for_ocr:
-            grabbed_area = grabbed_area.resize([region.getW(), region.getH()])
+            grabbed_area = grabbed_area.resize([region.width, region.height])
         return grabbed_area
 
     grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))

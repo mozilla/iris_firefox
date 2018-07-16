@@ -45,7 +45,7 @@ class Test(BaseTest):
         sidebar_bookmark_assert = exists(amazon_bookmark, 10)
         assert_true(self, sidebar_bookmark_assert, 'Amazon bookmark is present in the sidebar.')
 
-        rightClick(amazon_bookmark)
+        right_click(amazon_bookmark)
 
         bookmark_options('properties_option.png')
 
