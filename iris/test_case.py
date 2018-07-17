@@ -7,8 +7,9 @@ from api.core.profile import *
 from api.helpers.general import *
 from asserts import *
 from configuration.config_parser import *
-from firefox.app import FirefoxApp
 
+from firefox.app import FirefoxApp
+from iris.test_rail.test_case_results import TestRailTests
 logger = logging.getLogger(__name__)
 
 
@@ -37,9 +38,6 @@ class BaseTest(object):
     def get_test_meta(self):
         return self.meta
 
-    def get_run_results(self):
-        return self.test_result
-
     def get_test_case_id(self):
         return self.test_case_id
 
@@ -58,7 +56,6 @@ class BaseTest(object):
             self.outcome = result.outcome
 
     def create_collection_test_rail_result(self):
-        from iris.testrail.test_case_results import TestRailTests
         test_rail_object=TestRailTests(self.get_test_meta,self.test_suite_id,self.get_test_case_id(),self.get_test_results())
         return test_rail_object
 
