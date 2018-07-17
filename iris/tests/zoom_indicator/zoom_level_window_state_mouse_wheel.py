@@ -43,21 +43,21 @@ class Test(BaseTest):
         expected = new_region.exists(url_bar_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
-        if Settings.get_os() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             minimize_window()
             minimize_window()
         else:
             minimize_window()
 
         try:
-            expected = waitVanish(LocalWeb.FIREFOX_LOGO, 10)
+            expected = wait_vanish(LocalWeb.FIREFOX_LOGO, 10)
             assert_true(self, expected, 'Window successfully minimized.')
         except FindError:
             logger.error('Window not minimized.')
 
         restore_window_from_taskbar()
 
-        if Settings.get_os() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             maximize_window()
 
         expected = exists(hamburger_menu, 10)
