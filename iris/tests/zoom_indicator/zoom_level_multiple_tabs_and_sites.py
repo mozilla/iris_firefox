@@ -37,7 +37,6 @@ class Test(BaseTest):
         new_tab()
 
         navigate(url_1)
-        time.sleep(1)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level still displays 110% in the new tab opened for the site for which the '
@@ -46,7 +45,6 @@ class Test(BaseTest):
         new_tab()
 
         navigate(url_2)
-        time.sleep(1)
 
         # Location bar looks the same for both wikipedia and amazon sites.
         # Zoom level set for one site does not propagate to other sites.

@@ -36,7 +36,7 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
-        time.sleep(2)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         access_bookmarking_tools('view_bookmarks_toolbar.png')
 
@@ -85,9 +85,3 @@ class Test(BaseTest):
         pasted_bookmark_assertion = exists('sidebar_bookmark_location_changed.png', 10)
         assert_true(self, pasted_bookmark_assertion, 'Bookmark is present into a different directory, cut option works '
                                                      'as expected.')
-
-
-
-
-
-
