@@ -1,8 +1,13 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from datetime import date
 import api_client
 from iris.api.core.settings import *
 from iris.asserts import *
-from iris.testrail.test_case_results import *
+from iris.test_rail.test_case_results import *
 import ast
 from iris.api.core.errors import *
 
@@ -17,16 +22,16 @@ class TestRail:
 
         logger.info('----STARTING TEST_RAIL REPORTING-------')
 
-        # Set the TestRail URL
-        # TestRail UserName and Password
+        # Set the Test_Rail URL.
+        # TestRail UserName and Password.
         self.test_rail_url = get_credential('Test_rail', 'test_rail_url')
         self.client = api_client.APIClient(self.test_rail_url)
         self.client.user = get_credential('Test_rail', 'username')
         self.client.password = get_credential('Test_rail', 'password')
 
-    def get_all_projects(self):
+    # Retrieve all projects from Test_Rail.
 
-        # retrieve all projects from testRail
+    def get_all_projects(self):
 
         try:
             projects = self.client.send_get('get_projects')
@@ -34,9 +39,14 @@ class TestRail:
             raise TestRailError("No projects found")
         return projects
 
+    # Retrieve project from Test_Rail based on projectName.
+
     def get_project_id(self, project_name):
 
-        # retrieve project from testRail based on projectName
+        """
+        :param project_name:  name of TestRail Project (Ex. Firefox Desktop)
+        :return: Id of the Project
+        """
 
         project_id = None
         projects = self.get_all_projects()
@@ -48,9 +58,14 @@ class TestRail:
                 continue
         return project_id
 
+    # Retrieve all runs from a specific projects.
+
     def get_all_runs(self, project_name):
 
-        # retrieve all runs from a specific projects
+        """
+        :param project_name: name of TestRail Project (Ex. Firefox Desktop)
+        :return: a list of test Runs from a project
+        """
 
         project_id = self.get_project_id(project_name)
         try:
@@ -60,9 +75,15 @@ class TestRail:
         else:
             return test_runs
 
-    # return a specific run id based on project name
+    # Return a specific run id based on project name.
 
     def get_specific_run_id(self, project_name, test_run_name):
+
+        """
+        :param project_name:  name of TestRail Project (Ex. Firefox Desktop)
+        :param test_run_name:  name of TestRail test run(Bx. Bookmarks,History)
+        :return: Id of the Test Run (Ex 17,34)
+        """
         test_runs = self.get_all_runs(project_name)
         for test_run in test_runs:
             if test_run['name'] == test_run_name:
@@ -71,9 +92,16 @@ class TestRail:
             else:
                 logger.error('Test run not found with name %s', test_run_name)
 
-    # get all tests from a specific run
+    # Get all tests from a specific run.
 
     def get_tests_from_run(self, project_name, test_run_name):
+
+        """
+        :param project_name: name of TestRail Project (Ex. Firefox Desktop)
+        :param test_run_name: name of TestRail test run(Bx. Bookmarks,History)
+        :return: a list of test cases from a specific Test Run
+        """
+
         run_id = self.get_specific_run_id(project_name, test_run_name)
         try:
             tests = self.client.send_get('get_tests/' + str(run_id))
@@ -82,6 +110,15 @@ class TestRail:
         return tests
 
     def create_test_plan(self, build_id, firefox_version, test_case_object_list):
+
+        """
+        Creates a Test Plan and and Test Runs for all suites that are mapped in project.
+
+        :param build_id:  firefox_build (Ex 20180704003137)
+        :param firefox_version: actual version of Firefox (Ex 61.03)
+        :param test_case_object_list: a list of TestRailTest objects
+        :return: None
+        """
 
         self.run_name = self.generate_test_plan_name(firefox_version)
         data_array = []
@@ -126,6 +163,10 @@ class TestRail:
                             for run_object in run_object_list:
                                 test_run = run_object
                                 test_run_list.append(test_run)
+                        else:
+                            raise TestRailError('Invalid object format')
+                    else:
+                        raise TestRailError('Invalid object format')
             else:
                 raise TestRailError('Invalid Api Response format')
 
@@ -133,32 +174,43 @@ class TestRail:
 
     def add_test_results(self, test_run_list, suite_runs):
 
-        # status_id = 1 for Passed,
-        # status_id  = 5 for Failed
-        # status_id  = 2 for Blocked--need to add logic for blocked
+        """
+        :param test_run_list-a list of runs that were generated in the test plan creation
+        :param suite_runs:a list of suite objects
+        :return: None
+
+        status_id = 1 for Passed,
+        status_id  = 5 for Failed
+        status_id  = 2 for Blocked--need to add logic for blocked
+        """
 
         for run in test_run_list:
             if isinstance(run, dict):
                 run_id = run.get('id')
+            else:
+                logger.error('Invalid api response')
+                break
             for suite in suite_runs:
                 object_list = []
                 results = {}
                 if isinstance(suite, TestSuiteMap):
                     if suite.suite_name in run.get('name'):
                         suite_id_tests = suite.test_results_list
+                        complete_test_assert = ''
                         for test in suite_id_tests:
                             if isinstance(test, TestRailTests):
                                 payload = {}
-                                complete_test_assert = ''
                                 test_results = test.get_test_status()
                                 test_results_steps = test.test_case_steps
-                            for iterator in range(len(test_results_steps)):
-                                test_steps = ' *Test assertion:* \n  ' + str(
-                                    test_results_steps[
-                                        iterator].message) + ' \n - Expected: ' + str(
-                                    test_results_steps[iterator].expected) + ' \n - Actual: ' + str(
-                                    test_results_steps[iterator].actual)
-                                complete_test_assert = test_steps + '\n\n\n' + complete_test_assert
+                                for iterator in range(len(test_results_steps)):
+                                    test_steps = ' *Test assertion:* \n  ' + str(
+                                        test_results_steps[
+                                            iterator].message) + ' \n - Expected: ' + str(
+                                        test_results_steps[iterator].expected) + ' \n - Actual: ' + str(
+                                        test_results_steps[iterator].actual)
+                                    complete_test_assert = test_steps + '\n\n\n' + complete_test_assert
+                            else:
+                                logger.error('Object %s is not an instance of TesRailTest' % test)
 
                             if test_results.__contains__('FAILED') or test_results.__contains__('ERROR'):
                                 payload['status_id'] = 5
@@ -172,28 +224,41 @@ class TestRail:
                             try:
                                 self.client.send_post('add_results_for_cases/%s' % run_id, results)
                             except Exception:
-                                raise TestRailError('Failed to Update TestRail run  %s ', run.get('name'))
+                                raise TestRailError('Failed to Update Test_Rail run  %s ', run.get('name'))
 
                             else:
-                                logger.info('Successfully added test results in test run name: %s\n ' % run.get('name'))
+                                logger.info(
+                                    'Successfully added test results in test run name: %s\n ' % run.get('name'))
+                        else:
+                            raise TestRailError('Invalid run_id')
+                    else:
+                        raise TestRailError('No run found with name %s ', suite.suite_name)
 
     @staticmethod
     def generate_test_plan_name(firefox_version):
 
-        # name of the test run is generated based on the OS , date and build number
-        # this method can be be improved to add more details
+        """
+        :param firefox_version: actual version of Firefox
+        :return: name of the test plan
+
+        name of the test run is generated based on the OS , date and build number
+        this method can be be improved to add more details
+        """
 
         # noinspection PyPep8
-        run_name = (
+        test_plan_name = (
             '[' + 'Firefox ' + firefox_version + ']' + '[' + Settings.getOS().capitalize() + ']'
             + 'Iris Test Run ' + str(date.today()))
-        return run_name
+        return test_plan_name
 
     @staticmethod
     def generate_run_description(firefox_build_id, firefox_version):
 
-        # the result of this method will populate the 'description' of the test run
-        # current implementation will display only build information but can be enhanced to
+        """
+        :param firefox_build_id: firefox_build (Ex 20180704003137)
+        :param firefox_version: actual version of Firefox (Ex 61.03)
+        :return: a string that contain basic firefox build info's
+        """
 
         return '**BUILD INFORMATION**' + '\n' + '*Firefox Build ID*:' + str(
             firefox_build_id) + '\n' + '*Firefox Version:*' + firefox_version
@@ -201,7 +266,10 @@ class TestRail:
     @staticmethod
     def generate_test_suite_collection_objects(test_rail_tests):
 
-        # the test results collected at run are mapped in a new object TestSuiteMap and grouped on suite Id's
+        """
+        :param test_rail_tests: a list of TestRailTest
+        :return: a list of TestSuiteMap
+        """
 
         test_suite_array = []
         suite_dictionary = ast.literal_eval(get_credential('Test_Rail_Suites', 'suite_dictionary'))
