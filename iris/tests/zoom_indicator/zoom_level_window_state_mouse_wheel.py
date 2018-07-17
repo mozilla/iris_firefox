@@ -53,7 +53,7 @@ class Test(BaseTest):
             time.sleep(DEFAULT_FX_DELAY)
 
         try:
-            expected = waitVanish(LocalWeb.FIREFOX_LOGO, 10)
+            expected = wait_vanish(LocalWeb.FIREFOX_LOGO, 10)
             assert_true(self, expected, 'Window successfully minimized.')
         except FindError:
             logger.error('Window not minimized.')
