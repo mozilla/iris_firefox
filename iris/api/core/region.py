@@ -621,7 +621,11 @@ def wait_vanish(image_name, timeout=None, precision=None, in_region=None):
     if precision is None:
         precision = Settings.min_similarity
 
-    pattern = Pattern(image_name)
+    try:
+        pattern = Pattern(image_name)
+    except Exception:
+        pattern = image_name
+
     image_found = negative_image_search(pattern, timeout, precision, in_region)
 
     if image_found is not None:
