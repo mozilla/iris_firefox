@@ -10,9 +10,16 @@ class TestRailTests(object):
     test_status = ''
     test_steps = []
 
-    def __init__(self, test_case_name, section_id, test_case_id, test_steps_assertion):
+    def __init__(self, test_case_name, suite_id, test_case_id, test_steps_assertion):
+
+        """
+        :param test_case_name: name of the test case
+        :param suite_id: TestRail suite id
+        :param test_case_id: TestRail test case id
+        :param test_steps_assertion:  collection of test assertions
+        """
         self.test_case_name = test_case_name
-        self.section_id = section_id
+        self.section_id = suite_id
         self.test_case_id = test_case_id
         self.test_case_steps = test_steps_assertion
 
@@ -41,10 +48,15 @@ class TestRailTests(object):
 class TestSuiteMap:
     suite_dictionary = ast.literal_eval(get_credential("Test_Rail_Suites", "suite_dictionary"))
 
-    # test result list will contain a list of tests under the same section
     suite_name = ''
 
     def __init__(self, suite_id, test_results_list):
+
+        """
+
+        :param suite_id: TestRail suite id
+        :param test_results_list: a list of TestRailTests objects
+        """
         self.suite_id = suite_id
         self.test_results_list = test_results_list
         self.get_suite_name()

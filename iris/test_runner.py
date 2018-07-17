@@ -11,7 +11,7 @@ from api.helpers.results import *
 from api.core.profile import *
 from api.core.util.version_parser import check_version, check_channel
 from iris.api.core.settings import Settings
-from iris.testrail.testrail_client import *
+from iris.test_rail.test_rail_client import *
 
 logger = logging.getLogger(__name__)
 
