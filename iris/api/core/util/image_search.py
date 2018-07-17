@@ -268,17 +268,17 @@ def _positive_image_search_loop(pattern, timeout=None, precision=None, region=No
     if timeout is None:
         timeout = Settings.auto_wait_timeout
 
-    pos = image_search(pattern, precision, region)
-
     start_time = datetime.datetime.now()
     end_time = start_time + datetime.timedelta(seconds=timeout)
 
-    while pos.x == -1 and start_time < end_time:
-        logger.debug("Searching for image %s" % pattern)
+    while start_time < end_time:
+        time_remaining = end_time - start_time
+        logger.debug("Searching for image %s - %s seconds remaining" % (pattern.get_filename(), time_remaining))
         pos = image_search(pattern, precision, region)
         start_time = datetime.datetime.now()
-
-    return None if pos.x == -1 else pos
+        if pos.x != -1:
+            return pos
+    return None
 
 
 def positive_image_search(pattern, timeout=None, precision=None, region=None):
