@@ -151,7 +151,7 @@ class TestRail:
             raise TestRailError('Failed to create Test Rail Test Plan ')
 
         else:
-            logger.info('TEST plan %s was successfully created and ' % self.run_name)
+            logger.info('TEST plan %s was successfully created ' % self.run_name)
             entries_list = test_plan_api_response.get('entries')
             test_run_list = []
             if isinstance(entries_list, list):
@@ -247,7 +247,7 @@ class TestRail:
 
         # noinspection PyPep8
         test_plan_name = (
-            '[' + 'Firefox ' + firefox_version + ']' + '[' + Settings.getOS().capitalize() + ']'
+            '[' + 'Firefox ' + firefox_version + ']' + '[' + Settings.get_os().capitalize() + ']'
             + 'Iris Test Run ' + str(date.today()))
         return test_plan_name
 
