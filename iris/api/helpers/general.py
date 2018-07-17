@@ -613,5 +613,5 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
             pyautogui.keyUp('command')
         else:
             pyautogui.keyUp('ctrl')
-        time.sleep(0.5)
+        time.sleep(Settings.UI_DELAY)
     pyautogui.moveTo(0, 0)
