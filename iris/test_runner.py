@@ -71,40 +71,23 @@ def run(app):
             # Run the test logic
             try:
                 current.run()
+                passed += 1
             except AssertionError:
                 test_failures.append(module)
                 failed += 1
-                current.set_end_time(time.time())
-                print_results(module, current)
-                current.teardown()
-                quit_firefox()
-                confirm_firefox_quit(app)
-                continue
             except FindError:
                 test_failures.append(module)
                 failed += 1
                 current.add_results('FAILED', None, None, None, print_error(traceback.format_exc()))
-                current.set_end_time(time.time())
-                print_results(module, current)
-                current.teardown()
-                quit_firefox()
-                confirm_firefox_quit(app)
-                continue
             except (APIHelperError, ValueError, ConfigError, TypeError):
                 test_failures.append(module)
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
-                current.set_end_time(time.time())
-                print_results(module, current)
-                current.teardown()
-                quit_firefox()
-                confirm_firefox_quit(app)
-                continue
 
-            passed += 1
             current.set_end_time(time.time())
-            # Quit Firefox
             print_results(module, current)
+
+            # Clean up and quit Firefox.
             current.teardown()
             quit_firefox()
             confirm_firefox_quit(app)
