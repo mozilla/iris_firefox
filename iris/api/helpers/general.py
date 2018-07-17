@@ -452,7 +452,7 @@ def open_library_menu(option):
     except FindError:
         raise APIHelperError('Can\'t find the library menu in the page, aborting test.')
     else:
-        time.sleep(Settings.FX_DELAY)
+        time.sleep(Settings.UI_DELAY_LONG)
         click(library_menu)
         time.sleep(Settings.FX_DELAY)
         try:
@@ -520,14 +520,14 @@ def access_bookmarking_tools(option):
 def write_profile_prefs(test_case):
     if len(test_case.prefs):
         pref_file = os.path.join(test_case.profile_path, 'user.js')
-        file = open(pref_file, 'w')
+        f = open(pref_file, 'w')
         for pref in test_case.prefs:
             name, value = pref.split(';')
             if value == 'true' or value == 'false' or value.isdigit():
-                file.write('user_pref("%s", %s);\n' % (name, value))
+                f.write('user_pref("%s", %s);\n' % (name, value))
             else:
-                file.write('user_pref("%s", "%s");\n' % (name, value))
-        file.close()
+                f.write('user_pref("%s", "%s");\n' % (name, value))
+        f.close()
 
 
 def create_firefox_args(test_case):
@@ -615,3 +615,13 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
             pyautogui.keyUp('ctrl')
         time.sleep(Settings.UI_DELAY)
     pyautogui.moveTo(0, 0)
+
+
+def wait_for_firefox_restart():
+    try:
+        wait_vanish('home.png', 10)
+        logger.debug('Firefox successfully closed.')
+        wait('home.png', 20)
+        logger.debug('Successful Firefox restart performed.')
+    except FindError:
+        raise APIHelperError('Firefox restart has not been performed, aborting.')
