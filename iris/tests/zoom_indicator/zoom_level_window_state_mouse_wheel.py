@@ -43,7 +43,7 @@ class Test(BaseTest):
         expected = new_region.exists(url_bar_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
-        if Settings.get_os() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             minimize_window()
             minimize_window()
         else:
@@ -57,7 +57,7 @@ class Test(BaseTest):
 
         restore_window_from_taskbar()
 
-        if Settings.get_os() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             maximize_window()
 
         expected = exists(hamburger_menu, 10)
