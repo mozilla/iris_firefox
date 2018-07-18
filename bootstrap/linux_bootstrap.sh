@@ -27,7 +27,8 @@ sudo apt-get -y install \
     libcairo2-dev \
     firefox \
     wmctrl \
-    xdotool
+    xdotool \
+    python-tk
 
 
 # The virtualenv package is not consistently named across distros
