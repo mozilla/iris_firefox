@@ -100,7 +100,15 @@ def run(app):
                         get_duration(start_time, end_time), failures=test_failures)
 
     app.write_test_failures(test_failures)
+    append_run_index(app, test_failures)
     app.finish()
+
+
+def append_run_index(app, failed):
+    data = {}
+    data['total'] = len(app.test_list)
+    data['failed'] = len(failed)
+    app.update_run_index(data)
 
 
 def get_tests_from_text_file(arg):
