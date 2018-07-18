@@ -106,5 +106,9 @@ class FirefoxApp(object):
         except ConfigParser.NoOptionError:
             self.release = ini_parser.get('App', 'sourcerepository').split('-')[-1]
 
+        # Make the Nightly channel name conform to the naming of the other channels.
+        if 'Firefox Nightly' in self.release:
+            self.release = 'nightly'
+
         # Field for optional package origin metadata (must be provided externally)
         self.package_origin = None
