@@ -93,6 +93,15 @@ def get_current_run_dir():
     return os.path.join(parse_args().workdir, 'runs', get_run_id())
 
 
+def make_test_output_dir():
+    parent, test = parse_module_path()
+    parent_directory = os.path.join(get_current_run_dir(), parent)
+    if not os.path.exists(parent_directory):
+        os.makedirs(parent_directory)
+    test_directory = os.path.join(parent_directory, test)
+    os.mkdir(test_directory)
+    return test_directory
+
 def get_image_debug_path():
     parent, test = parse_module_path()
     path = os.path.join(parse_args().workdir, 'runs', get_run_id(), parent, test, 'debug_images')
