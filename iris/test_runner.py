@@ -52,7 +52,7 @@ def run(app):
 
             # Generate profile
             try:
-                current.profile_path = Profile.make_profile(current.profile, current_module)
+                current.profile_path = Profile.make_profile(current.profile)
             except ValueError:
                 app.finish(code=1)
 

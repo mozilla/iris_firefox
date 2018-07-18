@@ -62,6 +62,7 @@ class Iris(object):
         self.start_local_web_server(self.local_web_root, self.args.port)
         self.main()
         self.create_run_directory()
+        self.clear_profile_cache()
         run(self)
 
     def main(self):
@@ -109,6 +110,11 @@ class Iris(object):
             os.mkdir(master_run_directory)
         run_directory = os.path.join(master_run_directory, get_run_id())
         os.mkdir(run_directory)
+
+    def clear_profile_cache(self):
+        profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
+        if os.path.exists(profile_temp):
+            shutil.rmtree(profile_temp, ignore_errors=True)
 
     def start_local_web_server(self, path, port):
         """
