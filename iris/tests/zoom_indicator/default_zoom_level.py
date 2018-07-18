@@ -15,7 +15,6 @@ class Test(BaseTest):
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-        default_zoom_level_hamburger_menu = 'default_zoom_level_hamburger_menu.png'
         edit_buttons_below_zoom_buttons = 'edit_buttons_below_zoom_buttons.png'
 
         navigate(url)
@@ -30,7 +29,7 @@ class Test(BaseTest):
 
         new_region = create_region_for_hamburger_menu()
 
-        expected = new_region.exists(default_zoom_level_hamburger_menu, 10)
+        expected = new_region.exists('100%', 10)
         assert_true(self, expected, 'Zoom level is 100% by default.')
 
         expected = new_region.exists(edit_buttons_below_zoom_buttons, 10)
