@@ -10,7 +10,9 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the default zoom level.'
+        self.meta = 'This is a test case that checks the default zoom level'
+        self.test_case_id = '7442'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

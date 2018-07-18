@@ -10,7 +10,7 @@ class TestRailTests(object):
     test_status = ''
     test_steps = []
 
-    def __init__(self, test_case_name, suite_id, test_case_id, test_steps_assertion):
+    def __init__(self, test_case_name, suite_id, blocked_by,test_case_id, test_steps_assertion):
 
         """
         :param test_case_name: name of the test case
@@ -20,6 +20,7 @@ class TestRailTests(object):
         """
         self.test_case_name = test_case_name
         self.section_id = suite_id
+        self.blocked_by=blocked_by
         self.test_case_id = test_case_id
         self.test_case_steps = test_steps_assertion
 

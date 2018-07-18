@@ -212,14 +212,18 @@ class TestRail:
                             else:
                                 logger.error('Object %s is not an instance of TesRailTest' % test)
 
-                            if test_results.__contains__('FAILED') or test_results.__contains__('ERROR'):
-                                payload['status_id'] = 5
-                            else:
-                                payload['status_id'] = 1
                             payload['comment'] = complete_test_assert
                             payload['case_id'] = test.test_case_id
                             object_list.append(payload)
                             results['results'] = object_list
+                            if len(test.blocked_by) > 1:
+                                payload['status_id'] = 2
+                                payload['defects'] = test.blocked_by
+                            elif test_results.__contains__('FAILED') or test_results.__contains__('ERROR'):
+                                payload['status_id'] = 5
+                            else:
+                                payload['status_id'] = 1
+
                         if run_id is not None:
                             try:
                                 self.client.send_post('add_results_for_cases/%s' % run_id, results)

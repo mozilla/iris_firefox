@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Bookmarks can be removed from the Bookmarks Library.'
+        self.test_case_id = '4100'
+        self.test_suite_id = '75'
 
     def run(self):
         url = 'www.amazon.com'
