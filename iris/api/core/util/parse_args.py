@@ -66,6 +66,9 @@ def parse_args():
     parser.add_argument('-r', '--rerun',
                         help='Rerun last failed tests',
                         action='store_true')
+    parser.add_argument('-s', '--save',
+                        help='Save profiles on disk',
+                        action='store_true')
     parser.add_argument('-t', '--test',
                         help='list of test names or path to a file containing a custom list of tests',
                         metavar='test_name.py')
