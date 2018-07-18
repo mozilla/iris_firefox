@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Websites can be bookmarked from private browsing.'
+        self.test_case_id = '4155'
+        self.test_suite_id = '75'
 
     def run(self):
 
