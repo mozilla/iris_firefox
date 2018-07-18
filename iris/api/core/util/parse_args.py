@@ -30,7 +30,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
     parser.add_argument('-c', '--clear',
                         help='Clear run data',
-                        default=True,
+                        default=False,
                         action='store_true')
     parser.add_argument('-d', '--directory',
                         help='Directory where tests are located',

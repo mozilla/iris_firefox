@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import glob
+import json
 import logging
 import os
 import shutil
@@ -63,6 +64,7 @@ class Iris(object):
         self.main()
         self.create_run_directory()
         self.clear_profile_cache()
+        self.update_run_index()
         run(self)
 
     def main(self):
@@ -115,6 +117,34 @@ class Iris(object):
         profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
         if os.path.exists(profile_temp):
             shutil.rmtree(profile_temp, ignore_errors=True)
+
+    def update_run_index(self, new_data=None):
+        # Prepare the current entry.
+        current_run = {}
+        current_run['version'] = self.version
+        current_run['build'] = self.build_id
+
+        # If this run is just starting, initialize with blank values
+        # to indicate incomplete run.
+        if new_data is None:
+            current_run['total'] = '*'
+            current_run['failed'] = '*'
+        else:
+            current_run['total'] = new_data['total']
+            current_run['failed'] = new_data['failed']
+
+        run_file = os.path.join(parse_args().workdir, 'runs', 'runs.json')
+        key = str(get_run_id())
+
+        if os.path.exists(run_file):
+            with open(run_file, 'r') as f:
+                run_file_data = json.load(f)
+        else:
+            run_file_data = {}
+
+        run_file_data[key] = current_run
+        with open(run_file, 'w') as f:
+            json.dump(run_file_data, f, sort_keys=True, indent=True)
 
     def start_local_web_server(self, path, port):
         """
