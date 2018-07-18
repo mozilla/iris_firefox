@@ -3,9 +3,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from platform import Platform
+from util.color import Color
 from util.core_helper import get_os, get_os_version
 from util.parse_args import parse_args
-
 
 DEFAULT_MIN_SIMILARITY = 0.8
 DEFAULT_SLOW_MOTION_DELAY = 2
@@ -19,6 +19,9 @@ DEFAULT_AUTO_WAIT_TIMEOUT = 3
 DEFAULT_DELAY_BEFORE_MOUSE_DOWN = 0.3
 DEFAULT_DELAY_BEFORE_DRAG = 0.3
 DEFAULT_DELAY_BEFORE_DROP = 0.3
+DEFAULT_HIGHLIGHT_DURATION = 2
+DEFAULT_HIGHLIGHT_COLOR = Color.RED
+DEFAULT_HIGHLIGHT_THICKNESS = 2
 DEFAULT_FX_DELAY = 0.5
 DEFAULT_UI_DELAY = 1
 DEFAULT_UI_DELAY_LONG = 2.5
@@ -40,6 +43,9 @@ class _IrisSettings(object):
         self._slow_motion_delay = DEFAULT_SLOW_MOTION_DELAY
         self._observe_scan_rate = DEFAULT_OBSERVE_SCAN_RATE
         self._observe_min_changed_pixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
+        self._highlight_duration = DEFAULT_HIGHLIGHT_DURATION
+        self._highlight_color = DEFAULT_HIGHLIGHT_COLOR
+        self._highlight_thickness = DEFAULT_HIGHLIGHT_THICKNESS
         self._fx_delay = DEFAULT_FX_DELAY
         self._ui_delay = DEFAULT_UI_DELAY
         self._ui_delay_long = DEFAULT_UI_DELAY_LONG
@@ -181,6 +187,30 @@ class _IrisSettings(object):
     @observe_min_changed_pixels.setter
     def observe_min_changed_pixels(self, value):
         self._observe_min_changed_pixels = value
+
+    @property
+    def highlight_duration(self):
+        return self._highlight_duration
+
+    @highlight_duration.setter
+    def highlight_duration(self, value):
+        self._highlight_duration = value
+
+    @property
+    def highlight_color(self):
+        return self._highlight_color
+
+    @highlight_color.setter
+    def highlight_color(self, value):
+        self._highlight_color = value
+
+    @property
+    def highlight_thickness(self):
+        return self._highlight_thickness
+
+    @highlight_thickness.setter
+    def highlight_thickness(self, value):
+        self._highlight_thickness = value
 
     @staticmethod
     def get_os():

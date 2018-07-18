@@ -3,13 +3,15 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from errors import FindError
+from key import type
+from settings import DEFAULT_CLICK_DELAY
+from util.color import Color
+from util.highlight_circle import HighlightCircle
+from util.highlight_rectangle import HighlightRectangle
 from util.image_search import *
 from util.ocr_search import *
 from util.save_debug_image import save_debug_image
-from location import Location
-from pattern import Pattern
-from settings import Settings, DEFAULT_CLICK_DELAY
-from key import type
+from util.screen_highlight import ScreenHighlight
 
 try:
     import Image
@@ -130,6 +132,9 @@ class Region(object):
     def text(self, with_image_processing=True, with_debug=False):
         return text(with_image_processing, self, with_debug)
 
+    def highlight(self, seconds=None, color=None):
+        highlight(self, seconds, color)
+
     @staticmethod
     def type(txt, modifier, interval):
         return type(txt, modifier, interval)
@@ -143,6 +148,29 @@ class Region(object):
 
     def right_click(self, where, duration):
         return right_click(where, duration, self)
+
+
+def highlight(region=None, seconds=None, color=None, pattern=None, location=None):
+
+    if color is None:
+        color = Settings.highlight_color
+
+    if seconds is None:
+        seconds = Settings.highlight_duration
+
+    hl = ScreenHighlight()
+    if region is not None:
+        hl.draw_rectangle(HighlightRectangle(region.x, region.y, region.width, region.height, color))
+        i = hl.canvas.create_text(region.x, region.y, anchor='nw', text='Region', font=("Arial", 12), fill=Color.WHITE)
+        r = hl.canvas.create_rectangle(hl.canvas.bbox(i), fill=color, outline=color)
+        hl.canvas.tag_lower(r, i)
+
+    if pattern is not None:
+        width, height = get_image_size(pattern)
+        hl.draw_rectangle(HighlightRectangle(location.x, location.y, width, height, color))
+
+    hl.render(seconds)
+    time.sleep(seconds)
 
 
 def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
@@ -247,6 +275,10 @@ def _click_at(location=None, clicks=None, duration=None, button=None):
         location = Location(0, 0)
 
     pyautogui.moveTo(location.x, location.y, duration)
+    if parse_args().highlight:
+        hl = ScreenHighlight()
+        hl.draw_circle(HighlightCircle(location.x, location.y, 15))
+        hl.render()
     pyautogui.click(clicks=clicks, interval=Settings.click_delay, button=button)
 
     if Settings.click_delay != DEFAULT_CLICK_DELAY:
@@ -474,17 +506,17 @@ def hover(where=None, duration=0, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def find(image_name, precision=None, in_region=None):
+def find(image_name, precision=None, region=None):
     """Look for a single match of a Pattern or image
 
     :param image_name: String or Pattern
     :param precision: Matching similarity
-    :param in_region: Region object in order to minimize the area
+    :param region: Region object in order to minimize the area
     :return: Location
     """
 
     if isinstance(image_name, str) and is_ocr_text(image_name):
-        a_match = text_search_by(image_name, True, in_region)
+        a_match = text_search_by(image_name, True, region)
         if a_match is not None:
             return Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
         else:
@@ -500,8 +532,10 @@ def find(image_name, precision=None, in_region=None):
         except Exception:
             pattern = image_name
 
-        image_found = image_search(pattern, precision, in_region)
+        image_found = image_search(pattern, precision, region)
         if (image_found.x != -1) & (image_found.y != -1):
+            if parse_args().highlight:
+                highlight(region=region, pattern=pattern, location=image_found)
             return image_found
         else:
             raise FindError('Unable to find image %s' % image_name)
@@ -543,17 +577,17 @@ def find_all(what, precision=None, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def wait(image_name, timeout=None, precision=None, in_region=None):
+def wait(image_name, timeout=None, precision=None, region=None):
     """Wait for a Pattern or image to appear
 
     :param image_name: String or Pattern
     :param timeout: Number as maximum waiting time in seconds.
     :param precision: Matching similarity
-    :param in_region: Region object in order to minimize the area
+    :param region: Region object in order to minimize the area
     :return: True if found
     """
     if isinstance(image_name, str) and is_ocr_text(image_name):
-        a_match = text_search_by(image_name, True, in_region)
+        a_match = text_search_by(image_name, True, region)
         if a_match is not None:
             return True
         else:
@@ -571,9 +605,12 @@ def wait(image_name, timeout=None, precision=None, in_region=None):
         except Exception:
             pattern = image_name
 
-        image_found = positive_image_search(pattern, timeout, precision, in_region)
+        image_found = positive_image_search(pattern, timeout, precision, region)
 
         if image_found is not None:
+            if parse_args().highlight:
+                highlight(region=region, pattern=pattern, location=image_found)
+
             return True
         else:
             raise FindError('Unable to find image %s' % image_name)
