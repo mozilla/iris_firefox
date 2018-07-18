@@ -23,21 +23,20 @@ class Test(BaseTest):
         return
 
     def run(self):
-        wikipedia_logo = 'wikipedia.png'
-        google_search = 'google_search.png'
-        history_sidebar_wikipedia = 'history_sidebar_wikipedia.png'
+        history_sidebar_mozilla = LocalWeb.MOZILLA_BOOKMARK_SMALL
         search_history_box = 'search_history_box.png'
         expand_button_history_sidebar = 'expand_button_history_sidebar.png'
+        home_icon = 'home.png'
 
         # Open some pages to create some history.
-        navigate('https://www.wikipedia.org/')
-        expected_1 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_1, 'Wikipedia loaded successfully.')
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
+        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected_1, 'Mozilla page loaded successfully.')
 
         new_tab()
-        navigate('https://www.google.com/?hl=EN')
-        expected_2 = exists(google_search, 10)
-        assert_true(self, expected_2, 'Google loaded successfully.')
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
+        expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected_2, 'Firefox page loaded successfully.')
 
         # Open the History sidebar.
         history_sidebar()
@@ -48,10 +47,11 @@ class Test(BaseTest):
         click(expand_button_history_sidebar)
 
         # Open a page from the History sidebar using the 'Open in a New Window' button from the context menu.
-        expected_5 = exists(history_sidebar_wikipedia, 10)
-        assert_true(self, expected_5, 'Wikipedia displayed in the History list successfully.')
-        right_click(history_sidebar_wikipedia)
+        history_sidebar_region = Region(0, find(home_icon).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
+        expected_5 = history_sidebar_region.exists(history_sidebar_mozilla, 10)
+        assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
+        history_sidebar_region.right_click(history_sidebar_mozilla, 1)
         time.sleep(Settings.FX_DELAY)
         type(text='n')
-        expected_6 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_6, 'Wikipedia loaded successfully.')
+        expected_6 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected_6, 'Mozilla page loaded successfully.')

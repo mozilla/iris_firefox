@@ -22,21 +22,20 @@ class Test(BaseTest):
         return
 
     def run(self):
-        wikipedia_logo = 'wikipedia.png'
-        google_search = 'google_search.png'
         firefox_privacy_logo = 'firefox_privacy_logo.png'
         search_history_box = 'search_history_box.png'
         expand_button_history_sidebar = 'expand_button_history_sidebar.png'
+        iris_logo = 'iris_logo.png'
 
         # Open some pages to create some history.
-        navigate('https://www.wikipedia.org/')
-        expected_1 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_1, 'Wikipedia loaded successfully.')
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
+        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected_1, 'Mozilla page loaded successfully.')
 
         new_tab()
-        navigate('https://www.google.com/?hl=EN')
-        expected_2 = exists(google_search, 10)
-        assert_true(self, expected_2, 'Google loaded successfully.')
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
+        expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected_2, 'Firefox page loaded successfully.')
 
         # Open the History sidebar.
         history_sidebar()
@@ -51,11 +50,14 @@ class Test(BaseTest):
         type(text='o')
 
         # Check that all the pages loaded successfully.
-        expected_5 = exists(firefox_privacy_logo, 10)
-        assert_true(self, expected_5, 'Firefox Privacy Notice loaded successfully.')
+        expected_5 = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected_5, 'Firefox page loaded successfully.')
         next_tab()
-        expected_6 = exists(google_search, 10)
-        assert_true(self, expected_6, 'Google loaded successfully.')
+        expected_6 = exists(firefox_privacy_logo, 10)
+        assert_true(self, expected_6, 'Firefox Privacy Notice loaded successfully.')
         next_tab()
-        expected_7 = exists(wikipedia_logo, 10)
-        assert_true(self, expected_7, 'Wikipedia loaded successfully.')
+        expected_7 = exists(iris_logo, 10)
+        assert_true(self, expected_7, 'Iris local page loaded successfully.')
+        next_tab()
+        expected_8 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected_8, 'Mozilla page loaded successfully.')
