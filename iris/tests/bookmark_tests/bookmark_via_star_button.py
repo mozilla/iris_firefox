@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Websites can be bookmarked via star-shaped button.'
+        self.test_case_id = '4087'
+        self.test_suite_id = '75'
 
     def run(self):
         url = 'www.amazon.com'

@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Open the History Menu and check the Recent History list.'
+        self.test_case_id = '118799'
+        self.test_suite_id = '2000'
 
     def setup(self):
         """Test case setup
