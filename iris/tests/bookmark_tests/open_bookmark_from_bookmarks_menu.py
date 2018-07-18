@@ -10,6 +10,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks if the bookmarks can be opened from Bookmarks menu.'
+        self.test_case_id='4095'
+        self.test_suite_id='75'
 
     def run(self):
         amazon_home = 'amazon.png'

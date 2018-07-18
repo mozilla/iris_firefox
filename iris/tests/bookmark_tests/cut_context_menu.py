@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks if the Cut context menu option works properly.'
         self.test_case_id = '4152'
         self.test_suite_id = '75'
+        self.blocked_by = 'https://netbeans.org/bugzilla/show_bug.cgi?id=256674'
 
     def run(self):
 
