@@ -127,9 +127,11 @@ class Iris(object):
         # If this run is just starting, initialize with blank values
         # to indicate incomplete run.
         if new_data is None:
+            logger.debug('Updating runs.json with initial run data.')
             current_run['total'] = '*'
             current_run['failed'] = '*'
         else:
+            logger.debug('Updating runs.json with completed run data.')
             current_run['total'] = new_data['total']
             current_run['failed'] = new_data['failed']
 
@@ -137,9 +139,11 @@ class Iris(object):
         key = str(get_run_id())
 
         if os.path.exists(run_file):
+            logger.debug('Updating run file: %s' % run_file)
             with open(run_file, 'r') as f:
                 run_file_data = json.load(f)
         else:
+            logger.debug('Creating run file: %s' % run_file)
             run_file_data = {}
 
         run_file_data[key] = current_run
