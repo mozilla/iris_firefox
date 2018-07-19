@@ -32,5 +32,5 @@ class Test(BaseTest):
         expected = new_region.exists('100%', 10)
         assert_true(self, expected, 'Zoom level is 100% by default.')
 
-        expected = new_region.exists(edit_buttons_below_zoom_buttons, 10)
+        expected = new_region.exists(edit_buttons_below_zoom_buttons, 10, 0.25)
         assert_true(self, expected, 'Control buttons for zooming appear above the Cut/Copy/Paste buttons.')
