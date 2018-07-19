@@ -11,7 +11,6 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is an empty test case that does nothing'
-        self.channel = [FirefoxApp.ESR, FirefoxApp.RELEASE]
 
     def run(self):
         """
