@@ -97,6 +97,7 @@ class Iris(object):
         else:
             self.fx_app = self.get_test_candidate(self.args.firefox)
 
+        self.fx_channel = self.fx_app.release
         self.fx_path = self.fx_app.exe
         self.version = self.fx_app.version
         self.build_id = self.fx_app.build_id
@@ -123,6 +124,7 @@ class Iris(object):
         current_run = {}
         current_run['version'] = self.version
         current_run['build'] = self.build_id
+        current_run['channel'] = self.fx_channel
 
         # If this run is just starting, initialize with blank values
         # to indicate incomplete run.

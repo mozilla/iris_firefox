@@ -108,3 +108,12 @@ def check_version(version, running_condition):
             return version_dict[version_key][0] <= current_version <= version_dict[version_key][1]
 
     return False
+
+
+def check_channel(channel_list, channel):
+    found = False
+    for item in channel_list:
+        if item in channel:
+            found = True
+            break
+    return found

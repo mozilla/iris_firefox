@@ -11,6 +11,11 @@ import struct
 class FirefoxApp(object):
     """Class holding information about an extracted Firefox application directory."""
 
+    BETA = 'beta'
+    RELEASE = 'release'
+    NIGHTLY = 'nightly'
+    ESR = 'esr'
+
     def __init__(self, directory, platform, is_downloaded):
 
         __locations = {
@@ -105,6 +110,10 @@ class FirefoxApp(object):
             self.release = ini_parser.get('App', 'CodeName')
         except ConfigParser.NoOptionError:
             self.release = ini_parser.get('App', 'sourcerepository').split('-')[-1]
+
+        # Make the Nightly channel name conform to the naming of the other channels.
+        if 'Firefox Nightly' in self.release:
+            self.release = 'nightly'
 
         # Field for optional package origin metadata (must be provided externally)
         self.package_origin = None

@@ -7,6 +7,7 @@ from api.core.profile import *
 from api.helpers.general import *
 from asserts import *
 from configuration.config_parser import *
+from firefox.app import FirefoxApp
 
 logger = logging.getLogger(__name__)
 
@@ -16,8 +17,6 @@ class BaseTest(object):
     def __init__(self, app):
         self.app = app
         self.reset_variables()
-        self.prefs = []
-        self.profile_path = None
 
     def reset_variables(self):
         self.meta = ''
@@ -28,6 +27,9 @@ class BaseTest(object):
         self.start_time = 0
         self.end_time = 0
         self.outcome = 'PASSED'
+        self.prefs = []
+        self.profile_path = None
+        self.channel = self.app.fx_channel
 
     def get_test_title(self):
         return self.test_title
