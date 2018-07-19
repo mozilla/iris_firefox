@@ -11,6 +11,11 @@ import struct
 class FirefoxApp(object):
     """Class holding information about an extracted Firefox application directory."""
 
+    BETA = 'beta'
+    RELEASE = 'release'
+    NIGHTLY = 'nightly'
+    ESR = 'esr'
+
     def __init__(self, directory, platform, is_downloaded):
 
         __locations = {
