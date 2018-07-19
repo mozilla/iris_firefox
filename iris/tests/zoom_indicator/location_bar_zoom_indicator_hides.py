@@ -25,7 +25,7 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.94)
+        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         zoom_in()
@@ -37,7 +37,7 @@ class Test(BaseTest):
 
         zoom_out()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.94)
+        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
                                     ' zoom level.')
 
@@ -48,5 +48,5 @@ class Test(BaseTest):
 
         zoom_in()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.94)
+        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls not found in the url bar.')
