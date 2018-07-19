@@ -181,7 +181,7 @@ class TestRail:
 
         status_id = 1 for Passed,
         status_id  = 5 for Failed
-        status_id  = 2 for Blocked--need to add logic for blocked
+        status_id  = 2 for Blocked
         """
 
         for run in test_run_list:
@@ -196,26 +196,19 @@ class TestRail:
                 if isinstance(suite, TestSuiteMap):
                     if suite.suite_name in run.get('name'):
                         suite_id_tests = suite.test_results_list
-                        complete_test_assert = ''
                         for test in suite_id_tests:
-                            if isinstance(test, TestRailTests):
-                                payload = {}
-                                test_results = test.get_test_status()
-                                test_results_steps = test.test_case_steps
-                                for iterator in range(len(test_results_steps)):
-                                    test_steps = ' *Test assertion:* \n  ' + str(
-                                        test_results_steps[
-                                            iterator].message) + ' \n - Expected: ' + str(
-                                        test_results_steps[iterator].expected) + ' \n - Actual: ' + str(
-                                        test_results_steps[iterator].actual)
-                                    complete_test_assert = test_steps + '\n\n\n' + complete_test_assert
-                            else:
-                                logger.error('Object %s is not an instance of TesRailTest' % test)
+                            payload = {}
+                            complete_test_assert = ''
+                            test_results = test.get_test_status()
+                            test_results_steps = test.test_case_steps
+                            for iterator in range(len(test_results_steps)):
+                                test_steps = ' *Test assertion:* \n  ' + str(
+                                test_results_steps[
+                                    iterator].message) + ' \n - Expected: ' + str(
+                                test_results_steps[iterator].expected) + ' \n - Actual: ' + str(
+                                test_results_steps[iterator].actual)
+                                complete_test_assert = test_steps + '\n\n\n' + complete_test_assert
 
-                            payload['comment'] = complete_test_assert
-                            payload['case_id'] = test.test_case_id
-                            object_list.append(payload)
-                            results['results'] = object_list
                             if len(test.blocked_by) > 1:
                                 payload['status_id'] = 2
                                 payload['defects'] = test.blocked_by
@@ -223,6 +216,10 @@ class TestRail:
                                 payload['status_id'] = 5
                             else:
                                 payload['status_id'] = 1
+                            payload['comment'] = complete_test_assert
+                            payload['case_id'] = test.test_case_id
+                            object_list.append(payload)
+                            results['results'] = object_list
 
                         if run_id is not None:
                             try:
@@ -232,11 +229,13 @@ class TestRail:
 
                             else:
                                 logger.info(
-                                    'Successfully added test results in test run name: %s\n ' % run.get('name'))
+                                    'Successfully added test results in test run name: %s ' % run.get('name'))
                         else:
                             raise TestRailError('Invalid run_id')
                     else:
-                        raise TestRailError('No run found with name %s ', suite.suite_name)
+                        continue
+                else:
+                    raise TestRailError('Invalid Api Response')
 
     @staticmethod
     def generate_test_plan_name(firefox_version):

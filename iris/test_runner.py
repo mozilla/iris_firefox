@@ -74,7 +74,6 @@ def run(app):
             # Run the test logic
             try:
                 current.run()
-                passed += 1
             except AssertionError:
                 test_failures.append(module)
                 failed += 1
