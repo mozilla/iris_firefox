@@ -13,74 +13,75 @@ class Test(BaseTest):
         self.meta = 'This test case checks the zoom indicator animation.'
 
     def run(self):
-        url = 'en.wikipedia.org'
-        search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
-        search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110_zoom_level.png'
-        search_bar_wikipedia_300_zoom_level = 'search_bar_wikipedia_300_zoom_level.png'
-        search_bar_wikipedia_30_zoom_level = 'search_bar_wikipedia_30_zoom_level.png'
+        url = LocalWeb.FIREFOX_TEST_SITE
+        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
+        url_bar_30_zoom_level = 'url_bar_30_zoom_level.png'
+        url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
+        url_bar_300_zoom_level = 'url_bar_300_zoom_level.png'
 
         navigate(url)
 
-        expected = exists(hamburger_menu, 10)
-        assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
+        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url='en.wikipedia.org')
+        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar even after browser restart.')
 
         zoom_in()
 
-        expected = exists(search_bar_wikipedia_110_zoom_level, 10)
+        new_region = create_region_for_url_bar()
+
+        expected = new_region.exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url='en.wikipedia.org')
+        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = exists(search_bar_wikipedia_110_zoom_level, 10)
+        expected = new_region.exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom controls still displayed in the url bar after browser restart.')
 
         zoom_out()
 
-        expected = exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
                                     ' zoom level.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url='en.wikipedia.org')
+        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom controls not found in the url bar after browser restart for 100% zoom level.')
 
         for i in range(8):
             zoom_in()
 
-        expected = exists(search_bar_wikipedia_300_zoom_level, 10)
+        expected = new_region.exists(url_bar_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
         zoom_in()
 
-        expected = exists(search_bar_wikipedia_300_zoom_level, 10)
+        expected = new_region.exists(url_bar_300_zoom_level, 10)
         assert_true(self, expected, 'Zoom level still displays 300%.')
 
         for i in range(8):
             zoom_out()
 
-        expected = exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
                                     ' zoom level.')
 
         for i in range(5):
             zoom_out()
-            
-        expected = exists(search_bar_wikipedia_30_zoom_level, 10)
+
+        expected = new_region.exists(url_bar_30_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, minimum zoom level(30%) reached.')
 
         zoom_out()
 
-        expected = exists(search_bar_wikipedia_30_zoom_level, 10)
+        expected = new_region.exists(url_bar_30_zoom_level, 10)
         assert_true(self, expected, 'Zoom level still displays 30%.')
