@@ -18,7 +18,6 @@ class BaseTest(object):
         self.app = app
         self.reset_variables()
 
-
     def reset_variables(self):
         self.meta = ''
         self.fx_version = ''
