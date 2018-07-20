@@ -29,11 +29,6 @@ class Test(BaseTest):
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
-
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
-
         # zoom in ONE time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
