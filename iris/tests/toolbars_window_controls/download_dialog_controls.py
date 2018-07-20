@@ -32,7 +32,7 @@ class Test(BaseTest):
         click_auxiliary_window_control('close')
 
         try:
-            expected = waitVanish(dialog, 5)
+            expected = wait_vanish(dialog, 5)
             assert_true(self, expected, 'Download dialog was closed')
         except:
             raise FindError('Download dialog is still present')

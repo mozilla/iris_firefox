@@ -45,12 +45,7 @@ class Test(BaseTest):
         assert_true(self, restart_browser_popup_assert, 'History option can be changed.')
 
         click(restart_browser)
-
-        try:
-            wait('home.png')
-            logger.debug('Successful Firefox restart performed.')
-        except FindError:
-            raise FindError('Firefox restart has not been performed, aborting.')
+        wait_for_firefox_restart()
 
         navigate(url)
 

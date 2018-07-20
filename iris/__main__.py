@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import glob
+import json
 import logging
 import os
 import shutil
@@ -40,7 +41,7 @@ coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True}
                                     'error': {'color': 'red', 'bold': True}}
 
 
-def main(argv=None):
+def main():
     """This is the main entry point defined in setup.py"""
     Iris()
 
@@ -56,15 +57,17 @@ class Iris(object):
         self.check_7zip()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
-        self.os = Settings.getOS()
+        self.os = Settings.get_os()
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.start_local_web_server(self.local_web_root, self.args.port)
         self.main()
         self.create_run_directory()
+        self.clear_profile_cache()
+        self.update_run_index()
         run(self)
 
-    def main(self, argv=None):
+    def main(self):
         global tmp_dir
 
         logger.debug('Command arguments: %s' % self.args)
@@ -82,9 +85,9 @@ class Iris(object):
         if self.args.firefox == 'local':
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
-            if Settings.getOS() == Platform.MAC:
+            if Settings.get_os() == Platform.MAC:
                 self.fx_app = self.get_test_candidate('/Applications/Firefox.app/Contents')
-            elif Settings.getOS() == Platform.WINDOWS:
+            elif Settings.get_os() == Platform.WINDOWS:
                 if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
                     self.fx_app = self.get_test_candidate('C:\\Program Files (x86)\\Mozilla Firefox')
                 else:
@@ -94,6 +97,7 @@ class Iris(object):
         else:
             self.fx_app = self.get_test_candidate(self.args.firefox)
 
+        self.fx_channel = self.fx_app.release
         self.fx_path = self.fx_app.exe
         self.version = self.fx_app.version
         self.build_id = self.fx_app.build_id
@@ -109,6 +113,44 @@ class Iris(object):
             os.mkdir(master_run_directory)
         run_directory = os.path.join(master_run_directory, get_run_id())
         os.mkdir(run_directory)
+
+    def clear_profile_cache(self):
+        profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
+        if os.path.exists(profile_temp):
+            shutil.rmtree(profile_temp, ignore_errors=True)
+
+    def update_run_index(self, new_data=None):
+        # Prepare the current entry.
+        current_run = {}
+        current_run['version'] = self.version
+        current_run['build'] = self.build_id
+        current_run['channel'] = self.fx_channel
+
+        # If this run is just starting, initialize with blank values
+        # to indicate incomplete run.
+        if new_data is None:
+            logger.debug('Updating runs.json with initial run data.')
+            current_run['total'] = '*'
+            current_run['failed'] = '*'
+        else:
+            logger.debug('Updating runs.json with completed run data.')
+            current_run['total'] = new_data['total']
+            current_run['failed'] = new_data['failed']
+
+        run_file = os.path.join(parse_args().workdir, 'runs', 'runs.json')
+        key = str(get_run_id())
+
+        if os.path.exists(run_file):
+            logger.debug('Updating run file: %s' % run_file)
+            with open(run_file, 'r') as f:
+                run_file_data = json.load(f)
+        else:
+            logger.debug('Creating run file: %s' % run_file)
+            run_file_data = {}
+
+        run_file_data[key] = current_run
+        with open(run_file, 'w') as f:
+            json.dump(run_file_data, f, sort_keys=True, indent=True)
 
     def start_local_web_server(self, path, port):
         """
@@ -146,15 +188,15 @@ class Iris(object):
     def check_keyboard_state(self):
         is_lock_on = False
 
-        if Key.isLockOn(Key.CAPS_LOCK):
+        if Key.is_lock_on(Key.CAPS_LOCK):
             logger.error('Cannot run Iris because Key.CAPS_LOCK is on. Please turn it off to continue.')
             is_lock_on = True
 
-        if Key.isLockOn(Key.NUM_LOCK):
+        if Key.is_lock_on(Key.NUM_LOCK):
             logger.error('Cannot run Iris because Key.NUM_LOCK is on. Please turn it off to continue.')
             is_lock_on = True
 
-        if Key.isLockOn(Key.SCROLL_LOCK):
+        if Key.is_lock_on(Key.SCROLL_LOCK):
             logger.error('Cannot run Iris because Key.SCROLL_LOCK is on. Please turn it off to continue.')
             is_lock_on = True
 
@@ -227,7 +269,7 @@ class Iris(object):
             FirefoxApp object for test candidate
         """
         if os.path.isdir(build):
-            candidate_app = fa.FirefoxApp(build, Settings.getOS(), False)
+            candidate_app = fa.FirefoxApp(build, Settings.get_os(), False)
             return candidate_app
         else:
             platform = fd.FirefoxDownloader.detect_platform()
@@ -245,13 +287,13 @@ class Iris(object):
                 if build_archive_file is None:
                     self.finish(code=-1)
                 # Extract candidate archive
-                candidate_app = fe.extract(build_archive_file, Settings.getOS(), self.args.workdir,
+                candidate_app = fe.extract(build_archive_file, Settings.get_os(), self.args.workdir,
                                            cache_timeout=1 * 60 * 60)
                 candidate_app.package_origin = fdl.get_download_url(build, platform)
             elif os.path.isfile(build):
                 # Extract firefox build from archive
                 logger.info('Using file "%s" as Firefox package' % build)
-                candidate_app = fe.extract(build, Settings.getOS(), self.args.workdir, cache_timeout=1 * 60 * 60)
+                candidate_app = fe.extract(build, Settings.get_os(), self.args.workdir, cache_timeout=1 * 60 * 60)
                 candidate_app.package_origin = build
                 logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
             elif os.path.isfile(os.path.join(build, 'mach')):
@@ -269,10 +311,10 @@ class Iris(object):
                     # another directory. However, that directory isn't there in build trees,
                     # thus we need to point to the parent for constructing the app.
                     logger.info('Looks like this is an OS X build tree')
-                    candidate_app = fa.FirefoxApp(os.path.abspath(os.path.dirname(dist_dir)), Settings.getOS(), True)
+                    candidate_app = fa.FirefoxApp(os.path.abspath(os.path.dirname(dist_dir)), Settings.get_os(), True)
                     candidate_app.package_origin = os.path.abspath(build)
                 else:
-                    candidate_app = fa.FirefoxApp(os.path.abspath(dist_dir), Settings.getOS(), True)
+                    candidate_app = fa.FirefoxApp(os.path.abspath(dist_dir), Settings.get_os(), True)
                     candidate_app.package_origin = os.path.abspath(build)
             else:
                 logger.critical('"%s" specifies neither a Firefox release, package file, or build directory' % build)
@@ -301,7 +343,7 @@ class Iris(object):
         osx_linux_tesseract_path_2 = '/usr/bin/tesseract'
 
         path_not_found = False
-        current_os = Settings.getOS()
+        current_os = Settings.get_os()
 
         if current_os == Platform.WINDOWS:
             if self.check_tesseract_path(win_tesseract_path):

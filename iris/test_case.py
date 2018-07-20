@@ -7,6 +7,7 @@ from api.core.profile import *
 from api.helpers.general import *
 from asserts import *
 from configuration.config_parser import *
+from firefox.app import FirefoxApp
 
 logger = logging.getLogger(__name__)
 
@@ -16,8 +17,6 @@ class BaseTest(object):
     def __init__(self, app):
         self.app = app
         self.reset_variables()
-        self.prefs = []
-        self.profile_path = None
 
     def reset_variables(self):
         self.meta = ''
@@ -28,6 +27,9 @@ class BaseTest(object):
         self.start_time = 0
         self.end_time = 0
         self.outcome = 'PASSED'
+        self.prefs = []
+        self.profile_path = None
+        self.channel = self.app.fx_channel
 
     def get_test_title(self):
         return self.test_title
@@ -63,18 +65,14 @@ class BaseTest(object):
         self.add_result(res)
 
     def get_asset_path(self, asset_file_name):
-        """
-        Returns a fully-resolved local file path to the test asset.
-        """
+        """Returns a fully-resolved local file path to the test asset."""
         test_path = inspect.stack()[1][1]
         module_path = os.path.split(test_path)[0]
         module_name = os.path.split(test_path)[1].split('.py')[0]
         return os.path.join(module_path, 'assets', module_name, asset_file_name)
 
     def get_web_asset_path(self, asset_file_name):
-        """
-        Returns a fully-resolved URL to the test asset.
-        """
+        """Returns a fully-resolved URL to the test asset."""
         test_path = inspect.stack()[1][1]
         test_directory = os.path.split(test_path)[0].split('tests')[1]
         module_name = os.path.split(test_path)[1].split('.py')[0]
@@ -86,6 +84,7 @@ class BaseTest(object):
 
     def setup(self):
         """ Test case setup
+
         This might be a good place to declare variables or initialize Fx state.
         Also, by default, a new Firefox instance is created, with a new profile and
         blank URL. If you wish to change this, override this method in your test case.

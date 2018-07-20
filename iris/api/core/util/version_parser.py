@@ -60,7 +60,6 @@ def parse_versions(input_str):
                 v_list = [Version(versions_list[0]), Version(versions_list[1])]
                 result[version_key] = v_list
                 result[operator_key] = '-'
-                print(result)
                 return result
 
             except InvalidVersion:
@@ -109,3 +108,12 @@ def check_version(version, running_condition):
             return version_dict[version_key][0] <= current_version <= version_dict[version_key][1]
 
     return False
+
+
+def check_channel(channel_list, channel):
+    found = False
+    for item in channel_list:
+        if item in channel:
+            found = True
+            break
+    return found

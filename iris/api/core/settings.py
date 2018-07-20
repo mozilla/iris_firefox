@@ -26,40 +26,24 @@ DEFAULT_SYSTEM_DELAY = 5
 
 
 class _IrisSettings(object):
-    _wait_scan_rate = DEFAULT_WAIT_SCAN_RATE
-    _type_delay = DEFAULT_TYPE_DELAY
-    _move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
-    _click_delay = DEFAULT_CLICK_DELAY
-    _min_similarity = DEFAULT_MIN_SIMILARITY
-    _auto_wait_timeout = DEFAULT_AUTO_WAIT_TIMEOUT
-    _delay_before_mouse_down = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
-    _delay_before_drag = DEFAULT_DELAY_BEFORE_DRAG
-    _delay_before_drop = DEFAULT_DELAY_BEFORE_DROP
-    _slow_motion_delay = DEFAULT_SLOW_MOTION_DELAY
-    _observe_scan_rate = DEFAULT_OBSERVE_SCAN_RATE
-    _observe_min_changed_pixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
-    _fx_delay = DEFAULT_FX_DELAY
-    _ui_delay = DEFAULT_UI_DELAY
-    _ui_delay_long = DEFAULT_UI_DELAY_LONG
-    _system_delay = DEFAULT_SYSTEM_DELAY
 
     def __init__(self):
-        self._wait_scan_rate = self.WaitScanRate
-        self._type_delay = self.TypeDelay
-        self._move_mouse_delay = self.MoveMouseDelay
-        self._click_delay = self.ClickDelay
-        self._min_similarity = self.MinSimilarity
-        self._auto_wait_timeout = self.AutoWaitTimeout
-        self._delay_before_mouse_down = self.DelayBeforeMouseDown
-        self._delay_before_drag = self.DelayBeforeDrag
-        self._delay_before_drop = self.DelayBeforeDrop
-        self._slow_motion_delay = self.SlowMotionDelay
-        self._observe_scan_rate = self.ObserveScanRate
-        self._observe_min_changed_pixels = self.ObserveMinChangedPixels
-        self._fx_delay = self.FX_DELAY
-        self._ui_delay = self.UI_DELAY
-        self._ui_delay_long = self.UI_DELAY_LONG
-        self._system_delay = self.SYSTEM_DELAY
+        self._wait_scan_rate = DEFAULT_WAIT_SCAN_RATE
+        self._type_delay = DEFAULT_TYPE_DELAY
+        self._move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
+        self._click_delay = DEFAULT_CLICK_DELAY
+        self._min_similarity = DEFAULT_MIN_SIMILARITY
+        self._auto_wait_timeout = DEFAULT_AUTO_WAIT_TIMEOUT
+        self._delay_before_mouse_down = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
+        self._delay_before_drag = DEFAULT_DELAY_BEFORE_DRAG
+        self._delay_before_drop = DEFAULT_DELAY_BEFORE_DROP
+        self._slow_motion_delay = DEFAULT_SLOW_MOTION_DELAY
+        self._observe_scan_rate = DEFAULT_OBSERVE_SCAN_RATE
+        self._observe_min_changed_pixels = DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
+        self._fx_delay = DEFAULT_FX_DELAY
+        self._ui_delay = DEFAULT_UI_DELAY
+        self._ui_delay_long = DEFAULT_UI_DELAY_LONG
+        self._system_delay = DEFAULT_SYSTEM_DELAY
 
     @property
     def FX_DELAY(self):
@@ -94,122 +78,122 @@ class _IrisSettings(object):
         self._system_delay = value
 
     @property
-    def WaitScanRate(self):
+    def wait_scan_rate(self):
         return self._wait_scan_rate
 
-    @WaitScanRate.setter
-    def WaitScanRate(self, value):
+    @wait_scan_rate.setter
+    def wait_scan_rate(self, value):
         self._wait_scan_rate = value
 
     @property
-    def TypeDelay(self):
+    def type_delay(self):
         return self._type_delay
 
-    @TypeDelay.setter
-    def TypeDelay(self, value):
+    @type_delay.setter
+    def type_delay(self, value):
         if value > 1:
             self._type_delay = 1
         else:
             self._type_delay = value
 
     @property
-    def MoveMouseDelay(self):
+    def move_mouse_delay(self):
         return self._move_mouse_delay
 
-    @MoveMouseDelay.setter
-    def MoveMouseDelay(self, value):
+    @move_mouse_delay.setter
+    def move_mouse_delay(self, value):
         self._move_mouse_delay = value
 
     @property
-    def ClickDelay(self):
+    def click_delay(self):
         return self._click_delay
 
-    @ClickDelay.setter
-    def ClickDelay(self, value):
+    @click_delay.setter
+    def click_delay(self, value):
         if value > 1:
             self._click_delay = 1
         else:
             self._click_delay = value
 
     @property
-    def MinSimilarity(self):
+    def min_similarity(self):
         return self._min_similarity
 
-    @MinSimilarity.setter
-    def MinSimilarity(self, value):
+    @min_similarity.setter
+    def min_similarity(self, value):
         if value > 1:
             self._min_similarity = 1
         else:
             self._min_similarity = value
 
     @property
-    def AutoWaitTimeout(self):
+    def auto_wait_timeout(self):
         return self._auto_wait_timeout
 
-    @AutoWaitTimeout.setter
-    def AutoWaitTimeout(self, value):
+    @auto_wait_timeout.setter
+    def auto_wait_timeout(self, value):
         self._auto_wait_timeout = value
 
     @property
-    def DelayBeforeMouseDown(self):
+    def delay_before_mouse_down(self):
         return self._delay_before_mouse_down
 
-    @DelayBeforeMouseDown.setter
-    def DelayBeforeMouseDown(self, value):
+    @delay_before_mouse_down.setter
+    def delay_before_mouse_down(self, value):
         self._delay_before_mouse_down = value
 
     @property
-    def DelayBeforeDrag(self):
+    def delay_before_drag(self):
         return self._delay_before_drag
 
-    @DelayBeforeDrag.setter
-    def DelayBeforeDrag(self, value):
+    @delay_before_drag.setter
+    def delay_before_drag(self, value):
         self._delay_before_drag = value
 
     @property
-    def DelayBeforeDrop(self):
+    def delay_before_drop(self):
         return self._delay_before_drop
 
-    @DelayBeforeDrop.setter
-    def DelayBeforeDrop(self, value):
+    @delay_before_drop.setter
+    def delay_before_drop(self, value):
         self._delay_before_drop = value
 
     @property
-    def SlowMotionDelay(self):
+    def slow_motion_delay(self):
         return self._slow_motion_delay
 
-    @SlowMotionDelay.setter
-    def SlowMotionDelay(self, value):
+    @slow_motion_delay.setter
+    def slow_motion_delay(self, value):
         self._slow_motion_delay = value
 
     @property
-    def ObserveScanRate(self):
+    def observe_scan_rate(self):
         return self._observe_scan_rate
 
-    @ObserveScanRate.setter
-    def ObserveScanRate(self, value):
+    @observe_scan_rate.setter
+    def observe_scan_rate(self, value):
         self._observe_scan_rate = value
 
     @property
-    def ObserveMinChangedPixels(self):
+    def observe_min_changed_pixels(self):
         return self._observe_min_changed_pixels
 
-    @ObserveMinChangedPixels.setter
-    def ObserveMinChangedPixels(self, value):
+    @observe_min_changed_pixels.setter
+    def observe_min_changed_pixels(self, value):
         self._observe_min_changed_pixels = value
 
     @staticmethod
-    def getOS():
+    def get_os():
         """Get the type of the operating system your script is running on."""
         return get_os()
 
     @staticmethod
-    def getOSVersion():
+    def get_os_version():
         """Get the version string of the operating system your script is running on."""
         return get_os_version()
 
     @staticmethod
-    def isLinux():
+    def is_linux():
         """Checks if we are running on a Linux system.
 
         :return: True if we are running on a Linux system, False otherwise
@@ -217,7 +201,7 @@ class _IrisSettings(object):
         return get_os() == Platform.LINUX
 
     @staticmethod
-    def isMac():
+    def is_mac():
         """Checks if we are running on a Mac system.
 
         :return: True if we are running on a Mac system, False otherwise
@@ -225,7 +209,7 @@ class _IrisSettings(object):
         return get_os() == Platform.MAC
 
     @staticmethod
-    def isWindows():
+    def is_windows():
         """Checks if we are running on a Windows system.
 
         :return: True if we are running on a Windows system, False otherwise

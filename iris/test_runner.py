@@ -9,7 +9,7 @@ import traceback
 from api.helpers.general import *
 from api.helpers.results import *
 from api.core.profile import *
-from api.core.util.version_parser import check_version
+from api.core.util.version_parser import check_version, check_channel
 from iris.api.core.settings import Settings
 
 logger = logging.getLogger(__name__)
@@ -39,8 +39,9 @@ def run(app):
         logger.info('\n' + '-' * 120)
 
         is_correct_version = True if current.fx_version == '' else check_version(app.version, current.fx_version)
+        is_correct_channel = check_channel(current.channel, app.fx_channel)
 
-        if (Settings.getOS() not in current.exclude and is_correct_version) or app.args.override:
+        if (Settings.get_os() not in current.exclude and is_correct_version and is_correct_channel) or app.args.override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.set_start_time(time.time())
 
@@ -52,7 +53,7 @@ def run(app):
 
             # Generate profile
             try:
-                current.profile_path = Profile.make_profile(current.profile, current_module)
+                current.profile_path = Profile.make_profile(current.profile)
             except ValueError:
                 app.finish(code=1)
 
@@ -71,40 +72,23 @@ def run(app):
             # Run the test logic
             try:
                 current.run()
+                passed += 1
             except AssertionError:
                 test_failures.append(module)
                 failed += 1
-                current.set_end_time(time.time())
-                print_results(module, current)
-                current.teardown()
-                quit_firefox()
-                confirm_firefox_quit(app)
-                continue
             except FindError:
                 test_failures.append(module)
                 failed += 1
                 current.add_results('FAILED', None, None, None, print_error(traceback.format_exc()))
-                current.set_end_time(time.time())
-                print_results(module, current)
-                current.teardown()
-                quit_firefox()
-                confirm_firefox_quit(app)
-                continue
             except (APIHelperError, ValueError, ConfigError, TypeError):
                 test_failures.append(module)
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
-                current.set_end_time(time.time())
-                print_results(module, current)
-                current.teardown()
-                quit_firefox()
-                confirm_firefox_quit(app)
-                continue
 
-            passed += 1
             current.set_end_time(time.time())
-            # Quit Firefox
             print_results(module, current)
+
+            # Clean up and quit Firefox.
             current.teardown()
             quit_firefox()
             confirm_firefox_quit(app)
@@ -113,11 +97,19 @@ def run(app):
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    print_report_footer(Settings.getOS(), app.version, app.build_id, passed, failed, skipped, errors,
+    print_report_footer(Settings.get_os(), app.version, app.build_id, passed, failed, skipped, errors,
                         get_duration(start_time, end_time), failures=test_failures)
 
     app.write_test_failures(test_failures)
+    append_run_index(app, test_failures)
     app.finish()
+
+
+def append_run_index(app, failed):
+    data = {}
+    data['total'] = len(app.test_list)
+    data['failed'] = len(failed)
+    app.update_run_index(data)
 
 
 def get_tests_from_text_file(arg):

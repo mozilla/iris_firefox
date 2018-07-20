@@ -96,7 +96,7 @@ class Test(BaseTest):
         button_region.click(close_dev_tools_button)
 
         try:
-            close_button_assert = button_region.waitVanish(customize_dev_tools, 10)
+            close_button_assert = button_region.wait_vanish(customize_dev_tools, 10)
             assert_true(self, close_button_assert, 'Close button works.')
         except FindError:
             logger.error('The Web Console can not be closed, aborting test.')

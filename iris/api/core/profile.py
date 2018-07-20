@@ -8,7 +8,6 @@ from distutils import dir_util
 from distutils.spawn import find_executable
 import shutil
 
-from settings import Settings
 from util.core_helper import *
 
 
@@ -30,7 +29,11 @@ class _IrisProfile(object):
     # We will make LIKE_NEW the default.
     DEFAULT = 'like_new'
 
-    def _get_staged_profile(self, profile_name, path):
+    # Save profile locations in case we wish to delete them later.
+    _profiles = []
+
+    @staticmethod
+    def _get_staged_profile(profile_name, path):
         sz_bin = find_executable('7z')
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
@@ -71,16 +74,19 @@ class _IrisProfile(object):
                 # This error can happen, but does not affect Iris.
                 logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
-    def make_profile(self, template, module):
-        parent, test = parse_module_path()
-        parent_directory = os.path.join(Profile.RUN_DIRECTORY, parent)
+    def make_profile(self, template):
+        test_directory = make_test_output_dir()
 
-        if not os.path.exists(parent_directory):
-            os.makedirs(parent_directory)
-        test_directory = os.path.join(parent_directory, test)
-        os.mkdir(test_directory)
-        profile_path = os.path.join(test_directory, 'profile')
-        os.mkdir(profile_path)
+        if parse_args().save:
+            profile_path = os.path.join(test_directory, 'profile')
+            os.mkdir(profile_path)
+        else:
+            profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
+            if not os.path.exists(profile_temp):
+                os.makedirs(profile_temp)
+            parent, test = parse_module_path()
+            profile_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
+            os.mkdir(profile_path)
 
         if template is _IrisProfile.BRAND_NEW:
             """Make new, unique profile."""
@@ -96,7 +102,15 @@ class _IrisProfile(object):
         else:
             raise ValueError('No profile found: %s' % template)
 
+        if not parse_args().save:
+            self.manage_profile_cache(profile_path)
         return profile_path
+
+    @staticmethod
+    def manage_profile_cache(path):
+        Profile._profiles.append(path)
+        if len(Profile._profiles) > 1:
+            shutil.rmtree(Profile._profiles.pop(0), ignore_errors=True)
 
 
 Profile = _IrisProfile()

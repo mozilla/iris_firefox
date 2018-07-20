@@ -37,14 +37,14 @@ class Test(BaseTest):
         try:
             wait(amazon_bookmark, 10)
             logger.debug('Amazon bookmark is present in the Bookmark sidebar.')
-            rightClick(amazon_bookmark)
+            right_click(amazon_bookmark)
         except FindError:
             raise FindError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
 
         bookmark_options(delete)
 
         try:
-            deleted_bookmark_assert = waitVanish(amazon_bookmark, 10)
+            deleted_bookmark_assert = wait_vanish(amazon_bookmark, 10)
             assert_true(self, deleted_bookmark_assert, 'Amazon bookmark is successfully deleted from the '
                                                        'Bookmark sidebar.')
         except FindError:

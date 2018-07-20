@@ -30,11 +30,11 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
     parser.add_argument('-c', '--clear',
                         help='Clear run data',
-                        default=True,
+                        default=False,
                         action='store_true')
     parser.add_argument('-d', '--directory',
                         help='Directory where tests are located',
-                        type=str, metavar='test_directory',
+                        metavar='test_directory',
                         default=os.path.curdir)
     parser.add_argument('-f', '--firefox',
                         help=('Firefox version to test. It can be one of {%s}, a package file, '
@@ -48,7 +48,6 @@ def parse_args():
                         default='INFO')
     parser.add_argument('-l', '--locale',
                         help='Locale to use for Firefox',
-                        type=str,
                         action='store',
                         default='en-US')
     parser.add_argument('-m', '--mouse',
@@ -67,9 +66,12 @@ def parse_args():
     parser.add_argument('-r', '--rerun',
                         help='Rerun last failed tests',
                         action='store_true')
+    parser.add_argument('-s', '--save',
+                        help='Save profiles on disk',
+                        action='store_true')
     parser.add_argument('-t', '--test',
                         help='list of test names or path to a file containing a custom list of tests',
-                        type=str, metavar='test_name.py')
+                        metavar='test_name.py')
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,

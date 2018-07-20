@@ -44,7 +44,7 @@ class Test(BaseTest):
             self.login_amazon()
             time.sleep(4)
             type(Key.ESC)
-            search = Pattern('amazon_search_button.png').targetOffset(-100, 0)
+            search = Pattern('amazon_search_button.png').target_offset(-100, 0)
             click(search)
             logger.debug('Amazon search')
             paste(keyword)

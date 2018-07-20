@@ -30,7 +30,7 @@ class Test(BaseTest):
 
         navigate('about:blank')
 
-        time.sleep(2)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         open_library_menu('bookmarks_menu.png')
 

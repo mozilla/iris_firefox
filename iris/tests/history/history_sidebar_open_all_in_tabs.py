@@ -46,8 +46,8 @@ class Test(BaseTest):
         assert_true(self, expected_4, 'Expand history button displayed properly.')
 
         # 'Open All in Tabs' from the context menu.
-        rightClick(expand_button_history_sidebar)
-        time.sleep(0.5)
+        right_click(expand_button_history_sidebar)
+        time.sleep(Settings.FX_DELAY)
         type(text='o')
 
         # Check that all the pages loaded successfully.

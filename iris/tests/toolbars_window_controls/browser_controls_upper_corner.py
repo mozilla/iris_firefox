@@ -31,12 +31,12 @@ class Test(BaseTest):
         expected = exists(hover_minimize_control, 10)
         assert_true(self, expected, 'Hover over the \'minimize\' button works correctly.')
 
-        if Settings.getOS() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             hover(window_controls_restore)
             expected = exists(hover_restore_control, 10)
             assert_true(self, expected, 'Hover over the \'restore\' button works correctly.')
 
-        if Settings.getOS() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC:
             middle = find(hover_maximize_control)
             hover(Location(middle.x + 10, middle.y + 5))
             expected = exists(hover_maximize_control, 10)
@@ -50,7 +50,7 @@ class Test(BaseTest):
             expected = exists(hover_close_control, 10)
             assert_true(self, expected, 'Hover over the \'close\' button works correctly.')
 
-        if Settings.getOS() == Platform.WINDOWS or Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             # Restore window
             minimize_window()
             time.sleep(Settings.UI_DELAY)
@@ -59,7 +59,7 @@ class Test(BaseTest):
             assert_true(self, expected,
                         'Hover over the \'maximize\' button works correctly; Window successfully restored.')
 
-        if Settings.getOS() == Platform.LINUX:
+        if Settings.get_os() == Platform.LINUX:
             # Minimize window
             click(window_controls_minimize)
         else:
@@ -70,14 +70,14 @@ class Test(BaseTest):
             minimize_window()
             expected = False
             try:
-                expected = waitVanish(hamburger_menu, 10)
+                expected = wait_vanish(hamburger_menu, 10)
             except Exception as error:
                 logger.error('Window not minimized.')
             assert_true(self, expected, 'Window successfully minimized.')
 
         # Focus on Firefox and open the browser again
         restore_window_from_taskbar()
-        if Settings.getOS() == Platform.WINDOWS:
+        if Settings.get_os() == Platform.WINDOWS:
             maximize_window()
 
         expected = exists(hamburger_menu, 10)
@@ -92,7 +92,7 @@ class Test(BaseTest):
         time.sleep(Settings.FX_DELAY)
         type(Key.ENTER)
         try:
-            expected = waitVanish(hamburger_menu, 10)
+            expected = wait_vanish(hamburger_menu, 10)
             assert_true(self, expected, 'Window successfully closed.')
         except Exception as error:
             assert_true(self, False, 'Window successfully closed.')

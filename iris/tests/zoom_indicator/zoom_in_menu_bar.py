@@ -34,7 +34,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
         # Reset the zoom level.
-        click(Pattern(hamburger_menu).targetOffset(-320, 15))
+        click(Pattern(hamburger_menu).target_offset(-320, 15))
 
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed in the url bar after zoom level reset.')

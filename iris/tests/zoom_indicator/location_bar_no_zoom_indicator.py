@@ -14,25 +14,15 @@ class Test(BaseTest):
                     'zoom level.'
 
     def run(self):
-        url = 'en.wikipedia.org'
-        search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
-        search_bar = 'search_bar.png'
+        url = LocalWeb.FIREFOX_TEST_SITE
+        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
 
-        # Check that no zoom level is displayed in the url bar for the default page opened.
-        expected = exists(hamburger_menu, 10)
-        assert_true(self, expected, 'Browser successfully opened, hamburger menu found.')
+        navigate(url)
+
+        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected, 'Browser successfully opened, firefox logo found.')
 
         region = create_region_for_url_bar()
 
-        # Move focus away from the location bar.
-        click(Pattern(hamburger_menu).targetOffset(-120, 150))
-
-        expected = region.exists(search_bar, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
-
-        # Check that no zoom level is displayed in the url bar for a new page opened if the zoom level is not changed.
-        navigate(url)
-
-        expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
