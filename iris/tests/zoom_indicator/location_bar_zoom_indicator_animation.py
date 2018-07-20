@@ -29,11 +29,6 @@ class Test(BaseTest):
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
-
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar even after browser restart.')
-
         zoom_in()
 
         new_region = create_region_for_url_bar()
@@ -48,14 +43,12 @@ class Test(BaseTest):
 
         zoom_out()
 
+        if Settings.get_os() == Platform.MAC:
+            select_location_bar()
+
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
                                     ' zoom level.')
-
-        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
-
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom controls not found in the url bar after browser restart for 100% zoom level.')
 
         for i in range(8):
             zoom_in()
@@ -71,7 +64,7 @@ class Test(BaseTest):
         for i in range(8):
             zoom_out()
 
-        expected = exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
                                     ' zoom level.')
 
