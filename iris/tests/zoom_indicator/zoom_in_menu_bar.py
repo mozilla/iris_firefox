@@ -13,28 +13,30 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks the zoom in functionality from the menu menu.'
 
     def run(self):
-        url = 'en.wikipedia.org'
-        search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
+        url = LocalWeb.FIREFOX_TEST_SITE
+        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
+        url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
         hamburger_menu = 'hamburger_menu.png'
-        search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110_zoom_level.png'
 
         navigate(url)
 
-        expected = exists(hamburger_menu, 10)
-        assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
+        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         open_zoom_menu(Option.ZOOM_IN)
 
-        expected = exists(search_bar_wikipedia_110_zoom_level, 10)
+        new_region = create_region_for_url_bar()
+
+        expected = new_region.exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
         # Reset the zoom level.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
-        expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed in the url bar after zoom level reset.')
