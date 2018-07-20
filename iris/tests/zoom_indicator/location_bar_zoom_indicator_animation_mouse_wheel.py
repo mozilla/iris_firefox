@@ -45,6 +45,9 @@ class Test(BaseTest):
         # zoom out ONE time.
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
+        if Settings.get_os() == Platform.MAC:
+            select_location_bar()
+
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom controls not found in the url bar after browser restore its zoom level.')
 
