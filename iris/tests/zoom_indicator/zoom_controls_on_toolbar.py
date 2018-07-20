@@ -16,13 +16,13 @@ class Test(BaseTest):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         zoom_controls_customize_page = 'zoom_controls_customize_page.png'
-        toolbar = 'toolbar.png'
         default_zoom_level_toolbar_customize_page = 'default_zoom_level_toolbar_customize_page.png'
         default_zoom_level_toolbar = 'default_zoom_level_toolbar.png'
         zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
         zoom_control_toolbar_increase = 'zoom_control_toolbar_increase.png'
         zoom_control_90 = 'zoom_control_90.png'
         zoom_control_110 = 'zoom_control_110.png'
+        toolbar = 'toolbar.png'
 
         navigate(url)
 
