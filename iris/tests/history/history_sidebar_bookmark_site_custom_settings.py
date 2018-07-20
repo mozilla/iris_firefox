@@ -37,20 +37,24 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
-        assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
-        assert_true(self, expected_4, 'Expand history button displayed properly.')
+        expected_2 = exists(search_history_box, 10)
+        assert_true(self, expected_2, 'Sidebar was opened successfully.')
+
+        expected_3 = exists(expand_button_history_sidebar, 10)
+        assert_true(self, expected_3, 'Expand history button displayed properly.')
         click(expand_button_history_sidebar)
 
         # Bookmark a page from the History sidebar with custom settings.
         history_sidebar_region = Region(0, find(home_icon).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
-        expected_5 = history_sidebar_region.exists(history_sidebar_mozilla, 10)
-        assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
+        expected_4 = history_sidebar_region.exists(history_sidebar_mozilla, 10)
+        assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
+
         history_sidebar_region.right_click(history_sidebar_mozilla, 1)
         type(text='b')
-        expected_6 = exists(save_bookmark_button, 10)
-        assert_true(self, expected_6, 'New Bookmark popup displayed properly.')
+
+        expected_5 = exists(save_bookmark_button, 10)
+        assert_true(self, expected_5, 'New Bookmark popup displayed properly.')
+
         paste('Test name')
         if Settings.is_mac():
             click(new_bookmark_folder_bookmarks_menu)
@@ -64,14 +68,15 @@ class Test(BaseTest):
             type(Key.TAB)
         paste('Test_tag')
         click(save_bookmark_button)
+
         try:
-            expected_7 = wait_vanish(save_bookmark_button, 10)
-            assert_true(self, expected_7, 'New Bookmark popup was closed successfully.')
-        except:
+            expected_6 = wait_vanish(save_bookmark_button, 10)
+            assert_true(self, expected_6, 'New Bookmark popup was closed successfully.')
+        except FindError:
             raise FindError('New Bookmark popup is still open')
 
         # Open the library and check that the page was bookmarked with custom settings
         open_library()
-        expected_8 = exists(library_bookmarks_mozilla_custom_settings, 10)
-        assert_true(self, expected_8, 'Mozilla page is bookmarked with custom name and tags in a different folder.')
+        expected_7 = exists(library_bookmarks_mozilla_custom_settings, 10)
+        assert_true(self, expected_7, 'Mozilla page is bookmarked with custom name and tags in a different folder.')
         click_auxiliary_window_control('close')
