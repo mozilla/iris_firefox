@@ -33,8 +33,7 @@ class BaseTest(object):
         self.channel = self.app.fx_channel
         self.test_case_id = ''
         self.test_suite_id = ''
-        self.blocked_by=''
-
+        self.blocked_by = ''
 
     def get_test_meta(self):
         return self.meta
@@ -57,11 +56,8 @@ class BaseTest(object):
             self.outcome = result.outcome
 
     def create_collection_test_rail_result(self):
-        test_rail_object=TestRailTests(self.get_test_meta,self.test_suite_id,self.blocked_by,self.get_test_case_id(),self.get_test_results())
+        test_rail_object = TestRailTests(self.meta, self.test_suite_id, self.blocked_by, self.test_case_id, self.get_test_results())
         return test_rail_object
-
-    def get_test_title(self):
-        return self.test_title
 
     def set_test_title(self, test_title):
         self.test_title = test_title
