@@ -370,3 +370,7 @@ def initialize_logger(output, level):
     if output:
         logging.basicConfig(filename=LOG_FILENAME, format=LOG_FORMAT)
     initialize_logger_level(level)
+
+
+if __name__ == "__main__":
+    main()
