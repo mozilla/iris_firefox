@@ -87,4 +87,7 @@ def parse_args():
                         help='Submit email report',
                         action='store_true')
 
+    parser.add_argument('-z', '--convert',
+                        help='Convert hi-res images to normal',
+                        action='store_true')
     return parser.parse_args()
