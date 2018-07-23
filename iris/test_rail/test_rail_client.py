@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import ast
 import api_client
 from datetime import date
 
@@ -198,11 +197,11 @@ class TestRail:
                             test_results = test.get_test_status()
                             test_results_steps = test.test_case_steps
                             for iterator in range(len(test_results_steps)):
-                                test_steps = ' *Test assertion:* \n  ' + str(
-                                test_results_steps[
-                                    iterator].message) + ' \n - Expected: ' + str(
-                                test_results_steps[iterator].expected) + ' \n - Actual: ' + str(
-                                test_results_steps[iterator].actual)
+                                message = test_results_steps[iterator].message
+                                expected = test_results_steps[iterator].expected
+                                actual = test_results_steps[iterator].actual
+                                test_steps = ' *Test assertion:* \n  %s \n - Expected: %s \n - Actual: %s' % (
+                                    message, expected, actual)
                                 complete_test_assert = test_steps + '\n\n\n' + complete_test_assert
 
                             if len(test.blocked_by) > 1:
@@ -245,9 +244,8 @@ class TestRail:
         """
 
         # noinspection PyPep8
-        test_plan_name = (
-            '[' + 'Firefox ' + firefox_version + ']' + '[' + Settings.get_os().capitalize() + ']'
-            + 'Iris Test Run ' + str(date.today()))
+        test_plan_name = '[Firefox %s][%s]Iris Test Run %s' % (
+            firefox_version, Settings.get_os().capitalize(), date.today())
         return test_plan_name
 
     @staticmethod
@@ -259,8 +257,9 @@ class TestRail:
         :return: a string that contain basic firefox build info's
         """
 
-        return '**BUILD INFORMATION**' + '\n' + '*Firefox Build ID*:' + str(
-            firefox_build_id) + '\n' + '*Firefox Version:*' + firefox_version
+        run_desc = '**BUILD INFORMATION**\n*Firefox Build ID*:%s\n*Firefox Version:*%s' % (
+            firefox_build_id, firefox_version)
+        return run_desc
 
     @staticmethod
     def generate_test_suite_collection_objects(test_rail_tests):
