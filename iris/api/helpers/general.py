@@ -359,8 +359,8 @@ class Option(object):
     ZOOM_TEXT_ONLY = 3
 
 
-def open_zoom_menu(option_number):
-    """Opens the Zoom menu options from the View Menu."""
+def open_zoom_menu_without_selecting_option():
+    """Opens the Zoom menu from the View Menu."""
 
     view_menu = 'view_menu.png'
     if Settings.get_os() == Platform.MAC:
@@ -373,6 +373,12 @@ def open_zoom_menu(option_number):
         for i in range(2):
             type(text=Key.DOWN)
         type(text=Key.ENTER)
+
+
+def open_zoom_menu(option_number):
+    """Opens the Zoom menu from the View Menu and select option."""
+
+    open_zoom_menu_without_selecting_option()
 
     for i in range(option_number):
         type(text=Key.DOWN)
