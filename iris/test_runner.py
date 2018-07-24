@@ -10,6 +10,7 @@ from api.helpers.general import *
 from api.helpers.results import *
 from api.core.profile import *
 from api.core.util.version_parser import check_version, check_channel
+from email.email_client import EmailClient
 from iris.api.core.settings import Settings
 from iris.test_rail.test_rail_client import *
 
@@ -43,7 +44,8 @@ def run(app):
         is_correct_version = True if current.fx_version == '' else check_version(app.version, current.fx_version)
         is_correct_channel = check_channel(current.channel, app.fx_channel)
 
-        if (Settings.get_os() not in current.exclude and is_correct_version and is_correct_channel) or app.args.override:
+        if (
+                Settings.get_os() not in current.exclude and is_correct_version and is_correct_channel) or app.args.override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.set_start_time(time.time())
 
@@ -125,6 +127,10 @@ def run(app):
     if app.args.report:
         test_rail_report = TestRail()
         test_rail_report.create_test_plan(app.build_id, app.version, test_case_results)
+
+    if app.args.email:
+        email_report = EmailClient()
+        email_report.send_email_report(app.version)
 
     app.write_test_failures(test_failures)
     append_run_index(app, test_failures)
