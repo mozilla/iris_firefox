@@ -25,9 +25,7 @@ class Test(BaseTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
-        region = create_region_for_url_bar()
-
-        expected = region.exists(url_bar_default_zoom_level, 10)
+        expected = exists(url_bar_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         open_zoom_menu(Option.ZOOM_TEXT_ONLY)
@@ -49,24 +47,31 @@ class Test(BaseTest):
         close_find()
         close_find()
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        select_location_bar()
+
+        expected = exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
                     'Zoom level not displayed in the url bar after \'zoom text only\' functionality is set.')
 
         zoom_in()
 
-        new_region = create_region_for_url_bar()
+        region = create_region_for_url_bar()
 
-        expected = new_region.exists(url_bar_110_zoom_level, 10)
+        expected = region.exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
         zoom_out()
         zoom_out()
 
-        expected = new_region.exists(url_bar_90_zoom_level, 10)
+        expected = region.exists(url_bar_90_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom controls found in the url bar.')
 
+        if Settings.get_os() == Platform.MAC:
+            click(view_menu)
+
         open_zoom_menu(Option.RESET)
+
+        new_region = create_region_for_url_bar()
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
