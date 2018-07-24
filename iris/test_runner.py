@@ -41,11 +41,11 @@ def run(app):
             return
         logger.info('\n' + '-' * 120)
 
+        is_correct_platform = Settings.get_os() not in current.exclude
         is_correct_version = True if current.fx_version == '' else check_version(app.version, current.fx_version)
         is_correct_channel = check_channel(current.channel, app.fx_channel)
 
-        if (
-                Settings.get_os() not in current.exclude and is_correct_version and is_correct_channel) or app.args.override:
+        if (is_correct_platform and is_correct_version and is_correct_channel) or app.args.override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.set_start_time(time.time())
 
