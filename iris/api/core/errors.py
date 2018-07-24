@@ -17,6 +17,12 @@ class APIHelperError(Exception):
     """Exception raised when an API helper returns an error."""
     pass
 
+
 class TestRailError(Exception):
     """Exception raised when TestRail Api returns an error."""
+    pass
+
+
+class EmailError(Exception):
+    """Exception raised when an email error occurs."""
     pass
