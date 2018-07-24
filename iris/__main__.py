@@ -21,7 +21,7 @@ import firefox.extractor as fe
 from api.core.key import Key
 from api.core.platform import Platform
 from api.core.settings import Settings
-from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_image_debug_path
+from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir
 from api.core.util.parse_args import parse_args
 from firefox import cleanup
 from local_web_server import LocalWebServer
@@ -50,6 +50,7 @@ class Iris(object):
 
     def __init__(self):
         self.args = parse_args()
+        self.create_run_directory()
         initialize_logger(LOG_FILENAME, self.args.level)
         self.process_list = []
         self.check_keyboard_state()
@@ -62,7 +63,6 @@ class Iris(object):
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.start_local_web_server(self.local_web_root, self.args.port)
         self.main()
-        self.create_run_directory()
         self.clear_profile_cache()
         self.update_run_index()
         run(self)
@@ -410,5 +410,5 @@ def initialize_logger_level(level):
 
 def initialize_logger(output, level):
     if output:
-        logging.basicConfig(filename=LOG_FILENAME, format=LOG_FORMAT)
+        logging.basicConfig(filename=os.path.join(get_current_run_dir(), LOG_FILENAME), format=LOG_FORMAT)
     initialize_logger_level(level)

@@ -10,7 +10,9 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the zoom in functionality from the menu menu.'
+        self.meta = 'This is a test case that checks the zoom in functionality from the menu bar.'
+        self.test_case_id = '7455'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -33,7 +35,7 @@ class Test(BaseTest):
         expected = region.exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
-        # Reset the zoom level.
+        # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)

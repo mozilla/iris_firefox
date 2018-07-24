@@ -11,6 +11,7 @@ from api.helpers.results import *
 from api.core.profile import *
 from api.core.util.version_parser import check_version, check_channel
 from iris.api.core.settings import Settings
+from iris.test_rail.test_rail_client import *
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ def run(app):
         sys.path.append(package)
 
     test_failures = []
+    test_case_results = []
     for index, module in enumerate(app.test_list, start=1):
 
         current_module = importlib.import_module(module)
@@ -72,23 +74,43 @@ def run(app):
             # Run the test logic
             try:
                 current.run()
-                passed += 1
             except AssertionError:
                 test_failures.append(module)
                 failed += 1
+                current.set_end_time(time.time())
+                print_results(module, current)
+                test_case_results.append(current.create_collection_test_rail_result())
+                current.teardown()
+                quit_firefox()
+                confirm_firefox_quit(app)
+                continue
             except FindError:
                 test_failures.append(module)
                 failed += 1
                 current.add_results('FAILED', None, None, None, print_error(traceback.format_exc()))
+                current.set_end_time(time.time())
+                print_results(module, current)
+                test_case_results.append(current.create_collection_test_rail_result())
+                current.teardown()
+                quit_firefox()
+                confirm_firefox_quit(app)
+                continue
             except (APIHelperError, ValueError, ConfigError, TypeError):
                 test_failures.append(module)
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
+                current.set_end_time(time.time())
+                print_results(module, current)
+                test_case_results.append(current.create_collection_test_rail_result())
+                current.teardown()
+                quit_firefox()
+                confirm_firefox_quit(app)
+                continue
 
+            passed += 1
             current.set_end_time(time.time())
             print_results(module, current)
-
-            # Clean up and quit Firefox.
+            test_case_results.append(current.create_collection_test_rail_result())
             current.teardown()
             quit_firefox()
             confirm_firefox_quit(app)
@@ -99,6 +121,10 @@ def run(app):
     end_time = time.time()
     print_report_footer(Settings.get_os(), app.version, app.build_id, passed, failed, skipped, errors,
                         get_duration(start_time, end_time), failures=test_failures)
+
+    if app.args.report:
+        test_rail_report = TestRail()
+        test_rail_report.create_test_plan(app.build_id, app.version, test_case_results)
 
     app.write_test_failures(test_failures)
     append_run_index(app, test_failures)

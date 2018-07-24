@@ -12,6 +12,9 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This test case checks that no zoom indicator is displayed in the location bar for the default ' \
                     'zoom level.'
+        self.test_case_id = '7444'
+        self.test_suite_id = '242'
+
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

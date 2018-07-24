@@ -28,6 +28,9 @@ def parse_args():
         return log_level_int
 
     parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
+    parser.add_argument('-a', '--rerun',
+                        help='Rerun last failed tests',
+                        action='store_true')
     parser.add_argument('-c', '--clear',
                         help='Clear run data',
                         default=False,
@@ -63,9 +66,6 @@ def parse_args():
                         type=int,
                         action='store',
                         default=2000)
-    parser.add_argument('-r', '--rerun',
-                        help='Rerun last failed tests',
-                        action='store_true')
     parser.add_argument('-s', '--save',
                         help='Save profiles on disk',
                         action='store_true')
@@ -77,4 +77,10 @@ def parse_args():
                         type=os.path.abspath,
                         action='store',
                         default='%s/.iris' % home)
+    parser.add_argument('-b', '--highlight',
+                        help='Highlight patterns and click actions',
+                        action='store_true')
+    parser.add_argument('-r', '--report',
+                        help='Report tests to TestRail',
+                        action='store_true')
     return parser.parse_args()
