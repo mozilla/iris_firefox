@@ -30,16 +30,7 @@ class Test(BaseTest):
 
         open_zoom_menu(Option.ZOOM_TEXT_ONLY)
 
-        if Settings.get_os() == Platform.MAC:
-            click(view_menu)
-            for i in range(3):
-                type(text=Key.DOWN)
-            type(text=Key.ENTER)
-        else:
-            type(text='v', modifier=KeyModifier.ALT)
-            for i in range(2):
-                type(text=Key.DOWN)
-            type(text=Key.ENTER)
+        open_zoom_menu_without_selecting_option()
 
         expected = exists(zoom_text_only_check, 10)
         assert_true(self, expected, '\'Zoom text only\' functionality successfully checked.')
@@ -77,16 +68,7 @@ class Test(BaseTest):
         assert_true(self, expected,
                     'Zoom level not displayed in the url bar after zoom level reset.')
 
-        if Settings.get_os() == Platform.MAC:
-            click(view_menu)
-            for i in range(3):
-                type(text=Key.DOWN)
-            type(text=Key.ENTER)
-        else:
-            type(text='v', modifier=KeyModifier.ALT)
-            for i in range(2):
-                type(text=Key.DOWN)
-            type(text=Key.ENTER)
+        open_zoom_menu_without_selecting_option()
 
         expected = exists(zoom_text_only_check, 10)
         assert_true(self, expected, '\'Zoom text only\' functionality is still checked.')
