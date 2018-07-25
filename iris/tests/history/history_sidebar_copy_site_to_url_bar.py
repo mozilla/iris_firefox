@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Copy a website from the History sidebar and paste it in to the URL bar.'
+        self.meta = 'Copy a website from the History sidebar and paste it into the URL bar.'
 
     def setup(self):
         """Test case setup
@@ -40,7 +40,7 @@ class Test(BaseTest):
         assert_true(self, expected_3, 'Expand history button displayed properly.')
         click(expand_button_history_sidebar)
 
-        # Copy a website from the History sidebar and paste it in to the URL bar.
+        # Copy a website from the History sidebar and paste it into the URL bar.
         expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
         assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
 
