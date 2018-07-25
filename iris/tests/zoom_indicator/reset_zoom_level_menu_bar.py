@@ -25,13 +25,13 @@ class Test(BaseTest):
         expected = exists(url_bar_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
-        open_zoom_menu(Option.ZOOM_IN)
+        select_zoom_menu_option(Option.ZOOM_IN)
 
         expected = exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
 
         # Reset the zoom level from the menu bar.
-        open_zoom_menu(Option.RESET)
+        select_zoom_menu_option(Option.RESET)
 
         region = create_region_for_url_bar()
 
