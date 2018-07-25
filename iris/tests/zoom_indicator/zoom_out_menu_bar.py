@@ -25,7 +25,7 @@ class Test(BaseTest):
         expected = exists(url_bar_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
-        open_zoom_menu(Option.ZOOM_OUT)
+        select_zoom_menu_option(Option.ZOOM_OUT)
 
         region = create_region_for_url_bar()
 
