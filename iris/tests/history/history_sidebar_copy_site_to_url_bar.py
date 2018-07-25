@@ -34,15 +34,15 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
-        assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
-        assert_true(self, expected_4, 'Expand history button displayed properly.')
+        expected_2 = exists(search_history_box, 10)
+        assert_true(self, expected_2, 'Sidebar was opened successfully.')
+        expected_3 = exists(expand_button_history_sidebar, 10)
+        assert_true(self, expected_3, 'Expand history button displayed properly.')
         click(expand_button_history_sidebar)
 
         # Copy a website from the History sidebar and paste it in to the URL bar.
-        expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
-        assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
+        expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+        assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
 
         right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
         type(text='c')
@@ -51,5 +51,5 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         # Check that the page was opened successfully.
-        expected_6 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, expected_6, 'Mozilla page loaded successfully.')
+        expected_5 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected_5, 'Mozilla page loaded successfully.')
