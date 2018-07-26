@@ -60,7 +60,7 @@ class Test(BaseTest):
         open_zoom_menu()
 
         expected = exists(zoom_text_only_check, 10)
-        assert_true(self, expected, '\'Zoom text only\' functionality successfully checked.')
+        assert_true(self, expected, '\'Zoom text only\' option successfully checked.')
 
         close_find()
         close_find()
@@ -69,7 +69,7 @@ class Test(BaseTest):
 
         expected = exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
-                    'Zoom level not displayed in the url bar after \'zoom text only\' functionality is set.')
+                    'Zoom level not displayed in the url bar after \'zoom text only\' option is set.')
 
         zoom_in()
 
@@ -96,7 +96,7 @@ class Test(BaseTest):
         open_zoom_menu()
 
         expected = exists(zoom_text_only_check, 10)
-        assert_true(self, expected, '\'Zoom text only\' functionality is still checked.')
+        assert_true(self, expected, '\'Zoom text only\' option is still checked.')
 
         close_find()
         close_find()
