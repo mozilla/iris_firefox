@@ -50,7 +50,7 @@ class Test(BaseTest):
 
         click(zoom_control_toolbar_increase)
 
-        expected = new_region.exists(zoom_control_110, 10)
+        expected = new_region.exists('110%', 10)
         assert_true(self, expected, 'Zoom level is correctly displayed in the hamburger menu after zoom increase.')
 
         # Click the hamburger menu in order to close it.

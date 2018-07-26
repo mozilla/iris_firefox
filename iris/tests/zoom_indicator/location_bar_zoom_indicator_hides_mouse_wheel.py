@@ -25,10 +25,11 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         region = create_region_for_url_bar()
-        click(LocalWeb.FIREFOX_LOGO)
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+
+        click(LocalWeb.FIREFOX_LOGO)
 
         # zoom in ONE time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
