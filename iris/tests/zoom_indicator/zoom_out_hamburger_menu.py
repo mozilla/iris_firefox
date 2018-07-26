@@ -16,14 +16,14 @@ class Test(BaseTest):
 
     def run(self):
         url1 = 'about:home'
-        url2 = 'en.wikipedia.org'
+        url2 = LocalWeb.FIREFOX_TEST_SITE
         search_bar = 'search_bar.png'
-        search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
+        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         hamburger_menu = 'hamburger_menu.png'
         hamburger_menu_zoom_indicator = 'hamburger_menu_zoom_indicator.png'
         zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
-        zoom_control_90_hamburger_menu = 'zoom_control_90_hamburger_menu.png'
-        search_bar_wikipedia_90_zoom_level = 'search_bar_wikipedia_90_zoom_level.png'
+        zoom_control_90 = 'zoom_control_90.png'
+        url_bar_90_zoom_level = 'url_bar_90_zoom_level.png'
 
         # Check that zoom level is not displayed in the url bar for the default page that opens when the browser starts.
         navigate(url1)
@@ -31,9 +31,7 @@ class Test(BaseTest):
         expected = exists(hamburger_menu, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
-        region = create_region_for_url_bar()
-
-        expected = region.exists(search_bar, 10)
+        expected = exists(search_bar, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         # Check that zoom level is not displayed in the url bar for a new opened page.
@@ -42,7 +40,9 @@ class Test(BaseTest):
         expected = exists(hamburger_menu, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
-        expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
+        region = create_region_for_url_bar()
+
+        expected = region.exists(url_bar_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
 
         new_region = create_region_for_hamburger_menu()
@@ -52,12 +52,13 @@ class Test(BaseTest):
 
         click(zoom_control_toolbar_decrease)
 
-        expected = new_region.exists(zoom_control_90_hamburger_menu, 10)
-        assert_true(self, expected, 'Zoom controls are correctly displayed in the hamburger menu after decrease.')
+        expected = new_region.exists(zoom_control_90, 10)
+        assert_true(self, expected, 'Zoom level is correctly displayed in the hamburger menu after zoom decrease.')
 
         # Click the hamburger menu in order to close it.
-        # Verify that the zoom level is still decreased by checking the page's zoom level from the url bar.
         click(hamburger_menu)
 
-        expected = region.exists(search_bar_wikipedia_90_zoom_level, 10)
+        new_reg = create_region_for_url_bar()
+
+        expected = new_reg.exists(url_bar_90_zoom_level, 10)
         assert_true(self, expected, 'Zoom controls are correctly displayed in the url bar after the decrease.')
