@@ -17,6 +17,7 @@ class Test(BaseTest):
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
         url_bar_90_zoom_level = 'url_bar_90_zoom_level.png'
+        hamburger_menu = 'hamburger_menu.png'
 
         navigate(url)
 
@@ -24,6 +25,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         region = create_region_for_url_bar()
+        click(LocalWeb.FIREFOX_LOGO)
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
@@ -32,6 +34,9 @@ class Test(BaseTest):
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
         new_region = create_region_for_url_bar()
+
+        # move focus away from the location bar.
+        click(Pattern(hamburger_menu).target_offset(-170, 15))
 
         expected = new_region.exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
