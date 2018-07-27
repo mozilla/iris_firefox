@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the default zoom level'
+        self.meta = 'This is a test case that checks the default zoom level from the url bar.'
         self.test_case_id = '7442'
         self.test_suite_id = '242'
 
@@ -27,12 +27,12 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         new_region = create_region_for_hamburger_menu()
 
         expected = new_region.exists('100%', 10)
-        assert_true(self, expected, 'Zoom level is 100% by default.')
+        assert_true(self, expected, 'By default zoom indicator is 100% in hamburger menu.')
 
         expected = new_region.exists(edit_buttons_below_zoom_buttons, 10, 0.25)
         assert_true(self, expected, 'Control buttons for zooming appear above the Cut/Copy/Paste buttons.')

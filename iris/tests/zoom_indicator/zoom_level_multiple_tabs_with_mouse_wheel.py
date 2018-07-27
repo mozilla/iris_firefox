@@ -32,21 +32,22 @@ class Test(BaseTest):
         click(Pattern(hamburger_menu).target_offset(-170, 15))
 
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         # zoom in ONE time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         new_tab()
 
         navigate(url_1)
 
         expected = exists(search_bar_wikipedia_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level still displays 110% in the new tab opened for the site for which the '
-                                    'zoom level was set.')
+        assert_true(self, expected,
+                    'Zoom indicator still displays 110% in the new tab opened for the site for which the '
+                    'zoom level was set.')
 
         new_tab()
 
@@ -55,7 +56,7 @@ class Test(BaseTest):
         # Location bar looks the same for both wikipedia and amazon sites.
         # Zoom level set for one site does not propagate to other sites.
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed in the url bar by default.')
 
         # zoom in 20 times to reach the maximum zoom level.
         zoom_with_mouse_wheel(20, ZoomType.IN)

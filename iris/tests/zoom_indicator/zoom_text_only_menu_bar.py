@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the \'zoom text only\' functionality.'
+        self.meta = 'This test case checks that \'zoom text only\' option works correctly.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -26,14 +26,14 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         expected = exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         select_zoom_menu_option(Option.ZOOM_TEXT_ONLY)
 
         open_zoom_menu()
 
         expected = exists(zoom_text_only_check, 10)
-        assert_true(self, expected, '\'Zoom text only\' functionality successfully checked.')
+        assert_true(self, expected, '\'Zoom text only\' option successfully checked.')
 
         close_find()
         close_find()
@@ -42,20 +42,20 @@ class Test(BaseTest):
 
         expected = exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
-                    'Zoom level not displayed in the url bar after \'zoom text only\' functionality is set.')
+                    'Zoom indicator not displayed in the url bar after \'zoom text only\' option is set.')
 
         zoom_in()
 
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         zoom_out()
         zoom_out()
 
         expected = region.exists(url_bar_90_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         if Settings.get_os() == Platform.MAC:
             click(view_menu)
@@ -66,12 +66,12 @@ class Test(BaseTest):
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
-                    'Zoom level not displayed in the url bar after zoom level reset.')
+                    'Zoom indicator not displayed in the url bar after zoom level is reset.')
 
         open_zoom_menu()
 
         expected = exists(zoom_text_only_check, 10)
-        assert_true(self, expected, '\'Zoom text only\' functionality is still checked.')
+        assert_true(self, expected, '\'Zoom text only\' option is still checked.')
 
         close_find()
         close_find()

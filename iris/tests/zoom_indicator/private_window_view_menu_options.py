@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the zoom level in a private window when applying the View Menu ' \
+        self.meta = 'This is a test case that checks the zoom indicator in a private window when applying the View Menu ' \
                     'Options.'
 
     def run(self):
@@ -29,31 +29,31 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         expected = exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         select_zoom_menu_option(Option.ZOOM_IN)
 
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed in the url bar after zoom level reset.')
+        assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         select_zoom_menu_option(Option.ZOOM_OUT)
 
         expected = region.exists(url_bar_90_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed in the url bar after zoom level reset.')
+        assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         select_zoom_menu_option(Option.ZOOM_TEXT_ONLY)
 
@@ -69,29 +69,29 @@ class Test(BaseTest):
 
         expected = exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
-                    'Zoom level not displayed in the url bar after \'zoom text only\' option is set.')
+                    'Zoom indicator not displayed in the url bar after \'zoom text only\' option is set.')
 
         zoom_in()
 
         expected = region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed in the url bar after zoom level reset.')
+        assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         zoom_out()
 
         expected = region.exists(url_bar_90_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         select_zoom_menu_option(Option.RESET)
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
-                    'Zoom level not displayed in the url bar after zoom level reset.')
+                    'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         open_zoom_menu()
 
