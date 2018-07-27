@@ -25,16 +25,17 @@ class Test(BaseTest):
         zoom_control_90 = 'zoom_control_90.png'
         url_bar_90_zoom_level = 'url_bar_90_zoom_level.png'
 
-        # Check that zoom level is not displayed in the url bar for the default page that opens when the browser starts.
+        # Check that zoom indicator is not displayed in the url bar for the default page that opens when the browser
+        # starts.
         navigate(url1)
 
         expected = exists(hamburger_menu, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
         expected = exists(search_bar, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
-        # Check that zoom level is not displayed in the url bar for a new opened page.
+        # Check that zoom indicator is not displayed in the url bar for a new opened page.
         navigate(url2)
 
         expected = exists(hamburger_menu, 10)
@@ -43,17 +44,18 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         new_region = create_region_for_hamburger_menu()
 
         expected = new_region.exists(hamburger_menu_zoom_indicator, 10)
-        assert_true(self, expected, 'Zoom level is 100% by default.')
+        assert_true(self, expected, 'By default zoom indicator is 100% in hamburger menu.')
 
         click(zoom_control_toolbar_decrease)
 
         expected = new_region.exists(zoom_control_90, 10)
-        assert_true(self, expected, 'Zoom level is correctly displayed in the hamburger menu after zoom decrease.')
+        assert_true(self, expected,
+                    'Zoom indicator is correctly displayed in hamburger menu after zoom level decrease.')
 
         # Click the hamburger menu in order to close it.
         click(hamburger_menu)
@@ -61,4 +63,4 @@ class Test(BaseTest):
         new_reg = create_region_for_url_bar()
 
         expected = new_reg.exists(url_bar_90_zoom_level, 10)
-        assert_true(self, expected, 'Zoom controls are correctly displayed in the url bar after the decrease.')
+        assert_true(self, expected, 'Zoom indicator is correctly displayed in the url bar after zoom level decrease.')

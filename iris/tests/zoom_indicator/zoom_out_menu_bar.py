@@ -23,11 +23,11 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         expected = exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         select_zoom_menu_option(Option.ZOOM_OUT)
 
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_90_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')

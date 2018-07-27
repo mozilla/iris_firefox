@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This test case checks that zoom indicator hides.'
+        self.meta = 'This test case checks that zoom indicator hides in the url bar.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -26,27 +26,27 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         zoom_in()
 
         new_region = create_region_for_url_bar()
 
         expected = new_region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         zoom_out()
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for 100%'
                                     ' zoom level.')
 
         zoom_out()
 
         expected = new_region.exists(url_bar_90_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         zoom_in()
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls not found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator not found in the url bar.')
