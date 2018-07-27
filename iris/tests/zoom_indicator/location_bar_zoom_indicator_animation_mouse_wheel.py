@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This test case checks the zoom indicator animation using the mousewheel.'
+        self.meta = 'This test case checks the zoom indicator animation from the url bar using the mousewheel.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -27,7 +27,7 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         click(LocalWeb.FIREFOX_LOGO)
 
@@ -37,12 +37,12 @@ class Test(BaseTest):
         new_region = create_region_for_url_bar()
 
         expected = new_region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
 
         expected = new_region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # zoom out ONE time.
         zoom_with_mouse_wheel(1, ZoomType.OUT)
@@ -63,13 +63,13 @@ class Test(BaseTest):
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
         expected = new_region.exists(url_bar_300_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level still displays 300%.')
+        assert_true(self, expected, 'Zoom indicator still displays 300%.')
 
         # zoom out until the default zoom level(100%) is reached.
         restore_zoom()
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom controls not found in the url bar after browser restore its zoom level.')
+        assert_true(self, expected, 'Zoom indicator not found in the url bar after browser restore its zoom level.')
 
         # zoom out until de minimum zoom level(30%) is reached.
         zoom_with_mouse_wheel(7, ZoomType.OUT)
@@ -81,4 +81,4 @@ class Test(BaseTest):
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
         expected = new_region.exists(url_bar_30_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level still displays 30%.')
+        assert_true(self, expected, 'Zoom indicator still displays 30%.')

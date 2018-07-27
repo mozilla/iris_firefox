@@ -28,7 +28,7 @@ class Test(BaseTest):
         click(LocalWeb.FIREFOX_LOGO)
 
         expected = region.exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         # zoom in ONE time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
@@ -39,7 +39,7 @@ class Test(BaseTest):
         click(Pattern(hamburger_menu).target_offset(-170, 15))
 
         expected = new_region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # zoom in 19 times to reach the maximum zoom level.
         zoom_with_mouse_wheel(19, ZoomType.IN)
@@ -68,4 +68,4 @@ class Test(BaseTest):
         assert_true(self, expected, 'Window successfully opened again.')
 
         expected = new_region.exists(url_bar_300_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level still display 300%.')
+        assert_true(self, expected, 'Zoom indicator still display 300%.')

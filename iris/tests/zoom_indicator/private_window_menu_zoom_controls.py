@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the zoom level in private window when applying the Firefox Menu ' \
-                    'Zoom Controls.'
+        self.meta = 'This is a test case that checks the zoom indicator in a private window when applying the Firefox ' \
+                    'Menu Zoom Controls.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -32,12 +32,12 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         new_region = create_region_for_hamburger_menu()
 
         expected = new_region.exists('100%', 10)
-        assert_true(self, expected, 'Zoom level is 100% by default in hamburger menu.')
+        assert_true(self, expected, 'By default zoom indicator is 100% in hamburger menu.')
 
         click(zoom_control_toolbar_increase)
 
@@ -50,7 +50,7 @@ class Test(BaseTest):
         click(hamburger_menu)
 
         expected = new_reg.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level increased and correctly displayed in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator displayed in the url bar.')
 
         # Click the hamburger menu to open it.
         click(hamburger_menu)
@@ -59,10 +59,10 @@ class Test(BaseTest):
         click(zoom_control_toolbar_decrease)
 
         expected = new_region.exists('90%', 10)
-        assert_true(self, expected, 'Zoom level successfully increased in hamburger menu.')
+        assert_true(self, expected, 'Zoom level successfully decreased in hamburger menu.')
 
         # Click the hamburger menu to close it.
         click(hamburger_menu)
 
         expected = new_reg.exists(url_bar_90_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level decreased and correctly displayed in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator displayed in the url bar.')

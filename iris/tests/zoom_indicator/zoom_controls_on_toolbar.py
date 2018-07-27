@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the zoom controls functionality on toolbar.'
+        self.meta = 'This is a test case that checks the zoom controls on toolbar.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -32,7 +32,7 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         click_hamburger_menu_option('Customize...')
 
@@ -44,51 +44,53 @@ class Test(BaseTest):
         reset_mouse()
 
         expected = exists(default_zoom_level_toolbar_customize_page, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
-        assert_true(self, expected, 'Zoom controls successfully dragged and dropped in the toolbar.')
+        assert_true(self, expected, 'Zoom controls successfully dragged and dropped in toolbar.')
 
         close_customize_page()
 
         new_region = create_region_for_url_bar()
 
         expected = new_region.exists(default_zoom_level_toolbar, 10)
-        assert_true(self, expected, 'Zoom controls still displayed in the toolbar after the Customize page is closed.')
+        assert_true(self, expected, 'Zoom controls still displayed in toolbar after the Customize page is closed.')
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed in the url bar for default zoom level.')
+        assert_true(self, expected, 'Zoom indicator not displayed in the url bar for default zoom level.')
 
         click(zoom_control_toolbar_decrease)
 
         expected = new_region.exists(zoom_control_90, 10)
-        assert_true(self, expected, 'Zoom controls are correctly displayed in the toolbar after decrease.')
+        assert_true(self, expected, 'Zoom controls are correctly displayed in toolbar after zoom level is decreased.')
 
         click(zoom_control_toolbar_increase)
 
         expected = new_region.exists(default_zoom_level_toolbar, 10)
-        assert_true(self, expected, 'Zoom controls are correctly displayed in the toolbar after increase.')
+        assert_true(self, expected, 'Zoom controls are correctly displayed in toolbar after zoom level is increased.')
 
         click(zoom_control_toolbar_increase)
 
         expected = new_region.exists(zoom_control_110, 10)
-        assert_true(self, expected, 'Zoom controls are correctly displayed in the toolbar after the second increase.')
+        assert_true(self, expected,
+                    'Zoom controls are correctly displayed in toolbar after the second zoom level increase.')
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
-                    'Zoom level not displayed in the url bar after zoom control is activated in the toolbar.')
+                    'Zoom indicator not displayed in the url bar after zoom control is activated in toolbar.')
 
-        # Decrease the zoom level to 100% so that it won't be displayed in the url bar after deactivation.
+        # Decrease the zoom indicator to 100% so that it won't be displayed in the url bar after zoom controls
+        # deactivation.
         click(zoom_control_toolbar_decrease)
 
         expected = new_region.exists(default_zoom_level_toolbar, 10)
         assert_true(self, expected,
-                    'Zoom controls are correctly displayed in the toolbar after several zoom level increase/decrease.')
+                    'Zoom controls are correctly displayed in toolbar after several zoom level increases/decreases.')
 
         remove_zoom_indicator_from_toolbar()
 
         expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
         assert_true(self, expected,
-                    'Zoom level not displayed in the url bar after zoom control is removed from the toolbar.')
+                    'Zoom indicator not displayed in the url bar after zoom control is removed from toolbar.')
 
         new_reg = create_region_for_hamburger_menu()
 
         expected = new_reg.exists('100%', 10)
-        assert_true(self, expected, 'Zoom level is 100% by default.')
+        assert_true(self, expected, 'By default zoom level is 100% in hamburger menu.')

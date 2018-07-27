@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the reset zoom level from menu bar functionality.'
+        self.meta = 'This is a test case that resets the zoom level from the menu bar.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -23,12 +23,12 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         expected = exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         select_zoom_menu_option(Option.ZOOM_IN)
 
         expected = exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the menu bar.
         select_zoom_menu_option(Option.RESET)
@@ -36,4 +36,4 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed in the url bar after zoom level reset.')
+        assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
