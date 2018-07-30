@@ -47,7 +47,6 @@ class Test(BaseTest):
 
         # ---- HOVER TESTS ----
 
-        last_hover_region.debug()
         # General hover
         logger.debug('Test hover on page by image names')
         hover(desktop_i)
@@ -76,7 +75,6 @@ class Test(BaseTest):
 
         # in Region general hover
         in_region = generate_region_by_markers(t_left, b_right)
-        in_region.debug()
 
         logger.debug('Test hover in Region of page  by image names')
         in_region.hover(desktop_i)
@@ -105,7 +103,6 @@ class Test(BaseTest):
 
         # ---- CLICK TESTS ----
 
-        last_click_region.debug()
         # General click
         logger.debug('Test click on page by image names')
         click(desktop_i)
