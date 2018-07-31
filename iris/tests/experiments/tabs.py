@@ -20,7 +20,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Mozilla logo image found.')
 
         new_tab()
-        navigate(LocalWeb.FIREFOX_TEST_SITE)
+        navigate(LocalWeb.FIREFOX_TEST_SITE_2)
         expected = exists(LocalWeb.FIREFOX_LOGO, 5)
         assert_true(self, expected, 'Firefox logo image found.')
 
