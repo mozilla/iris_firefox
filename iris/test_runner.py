@@ -161,8 +161,8 @@ def append_logs(app, passed, failed, skipped, errors, start_time, end_time, test
 
     # Second, update the run.json log for this particular run.
     data = {'total': len(app.test_list), 'passed': passed, 'failed': failed,
-            'skipped': skipped, 'errors': errors, 'start_time': start_time,
-            'end_time': end_time, 'total_time': get_duration(start_time, end_time),
+            'skipped': skipped, 'errors': errors, 'start_time': int(start_time),
+            'end_time': int(end_time), 'total_time': int(get_duration(start_time, end_time)),
             'tests': tests}
     app.update_run_log(data)
 
