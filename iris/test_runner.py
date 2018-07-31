@@ -28,6 +28,8 @@ def run(app):
 
     test_failures = []
     test_case_results = []
+    test_log = []
+
     for index, module in enumerate(app.test_list, start=1):
 
         current_module = importlib.import_module(module)
@@ -64,7 +66,7 @@ def run(app):
             # Process test case setup values and launch Firefox
             write_profile_prefs(current)
             args = create_firefox_args(current)
-            launch_firefox(path=app.fx_path, profile=current.profile_path, url=current.url, args=args)
+            fx_args = launch_firefox(path=app.fx_path, profile=current.profile_path, url=current.url, args=args)
 
             # Verify that Firefox has launched
             confirm_firefox_launch(app)
@@ -93,10 +95,16 @@ def run(app):
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())
 
+            # Initialize test log object
+            test_log_object = create_log_object(current_module, current, fx_args)
+
             # Clean up and quit Firefox.
             current.teardown()
             quit_firefox()
             confirm_firefox_quit(app)
+
+            # Save current test log
+            test_log.append(update_log_object(test_log_object))
         else:
             skipped += 1
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
@@ -114,15 +122,49 @@ def run(app):
         email_report.send_email_report(app.version)
 
     app.write_test_failures(test_failures)
-    append_run_index(app, test_failures)
+    append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests=test_log)
     app.finish()
 
 
-def append_run_index(app, failed):
-    data = {}
-    data['total'] = len(app.test_list)
-    data['failed'] = len(failed)
-    app.update_run_index(data)
+def create_log_object(module, current, fx_args):
+    run_obj = {'name': module.__name__, 'meta': current.meta, 'profile': current.profile,
+               'module': module.__file__, 'profile_path': current.profile_path,
+               'fx_args': fx_args, 'prefs': current.prefs,
+               'time': int(current.get_end_time() - current.get_start_time())}
+    run_obj['asserts'] = []
+    outcome = 'PASSED'
+    for result in current.results:
+        if result.outcome is 'FAILED':
+            outcome = result.outcome
+        run_obj['asserts'].append({'outcome': result.outcome, 'message': result.message,
+                                   'expected': result.expected, 'actual': result.actual,
+                                   'error': result.error})
+        run_obj['result'] = outcome
+    return run_obj
+
+
+def update_log_object(run_obj):
+    # If debug images were created for this test, add their names to the log file.
+    if os.path.exists(get_image_debug_path()):
+        debug_images = []
+        for root, dirs, files in os.walk(get_image_debug_path()):
+            for file_name in files:
+                debug_images.append(file_name)
+        run_obj['debug_images'] = sorted(debug_images)
+        run_obj['debug_image_directory'] = get_image_debug_path()
+    return run_obj
+
+
+def append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests):
+    # First, update the runs.json log.
+    app.update_run_index({'total': len(app.test_list), 'failed': failed})
+
+    # Second, update the run.json log for this particular run.
+    data = {'total': len(app.test_list), 'passed': passed, 'failed': failed,
+            'skipped': skipped, 'errors': errors, 'start_time': start_time,
+            'end_time': end_time, 'total_time': get_duration(start_time, end_time),
+            'tests': tests}
+    app.update_run_log(data)
 
 
 def get_tests_from_text_file(arg):
