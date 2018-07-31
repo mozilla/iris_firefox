@@ -23,7 +23,7 @@ class Test(BaseTest):
         google_logo = 'google_logo.png'
         wikipedia_search_results = 'wikipedia_search_results.png'
 
-        region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2)
+        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate(url)
 
