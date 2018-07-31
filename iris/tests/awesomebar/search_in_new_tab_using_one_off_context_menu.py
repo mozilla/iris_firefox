@@ -22,7 +22,7 @@ class Test(BaseTest):
         search_in_new_tab = 'search_in_new_tab.png'
         new_tab_twitter_search_results = 'new_tab_twitter_search_results.png'
 
-        region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2)
+        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate(url)
 
