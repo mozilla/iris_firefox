@@ -18,7 +18,7 @@ class Test(BaseTest):
         search_settings = 'search_settings.png'
         moz = 'moz.png'
 
-        region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2)
+        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate(url)
 
