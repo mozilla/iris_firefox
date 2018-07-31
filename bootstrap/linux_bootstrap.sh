@@ -30,15 +30,8 @@ sudo apt-get -y install \
     xdotool \
     python-tk
 
-
-# The virtualenv package is not consistently named across distros
-sudo apt-get -y install virtualenv \
-	|| sudo apt-get -y install python-virtualenv
-
-# sudo python -m pip install --upgrade --force pip
-
-# Installing xlib here to avoid conflicts with other libraries we install via setup.py
-pip install xlib
+# install pipenv
+pip install --user pipenv
 
 # Install Leptonica
 cd ~

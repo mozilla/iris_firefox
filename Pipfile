@@ -7,6 +7,7 @@ name = "pypi"
 coloredlogs = "*"
 hashfs = "*"
 image = "*"
+iris = {editable = true, path = "."}
 numpy = "*"
 opencv-python = "*"
 packaging = "*"
@@ -24,6 +25,3 @@ pep8 = "*"
 
 [requires]
 python_version = "2.7"
-
-[scripts]
-iris = "python -m iris"
