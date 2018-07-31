@@ -13,6 +13,7 @@ from distutils.spawn import find_executable
 from multiprocessing import Process
 
 import coloredlogs
+import git
 import pytesseract
 
 import firefox.app as fa
@@ -65,6 +66,7 @@ class Iris(object):
         self.main()
         self.clear_profile_cache()
         self.update_run_index()
+        self.update_run_log()
         run(self)
 
     def main(self):
@@ -149,6 +151,57 @@ class Iris(object):
             run_file_data = {}
 
         run_file_data[key] = current_run
+        with open(run_file, 'w') as f:
+            json.dump(run_file_data, f, sort_keys=True, indent=True)
+
+    def update_run_log(self, new_data=None):
+        # Prepare the current entry.
+        meta = {}
+        meta['run_id'] = get_run_id()
+        meta['fx_version'] = self.version
+        meta['fx_build_id'] = self.build_id
+        meta['platform'] = self.os
+        meta['channel'] = self.fx_channel
+        meta['args'] = ' '.join(sys.argv)
+        meta['params'] = vars(self.args)
+        meta['log'] = os.path.join(get_current_run_dir(), 'iris_log.log')
+
+        repo = git.Repo(self.module_dir)
+        meta['iris_version'] = 0.1
+        meta['iris_repo'] = repo.working_tree_dir
+        meta['iris_branch'] = repo.active_branch.name
+        meta['iris_branch_head'] = repo.head.object.hexsha
+
+        # If this run is just starting, initialize with blank values
+        # to indicate incomplete run.
+        if new_data is None:
+            logger.debug('Updating run.json with initial run data.')
+            meta['total'] = 0
+            meta['passed'] = 0
+            meta['failed'] = 0
+            meta['skipped'] = 0
+            meta['errors'] = 0
+            meta['start_time'] = 0
+            meta['end_time'] = 0
+            meta['total_time'] = 0
+            tests = []
+        else:
+            logger.debug('Updating runs.json with completed run data.')
+            meta['total'] = new_data['total']
+            meta['passed'] = new_data['passed']
+            meta['failed'] = new_data['failed']
+            meta['skipped'] = new_data['skipped']
+            meta['errors'] = new_data['errors']
+            meta['start_time'] = new_data['start_time']
+            meta['end_time'] = new_data['end_time']
+            meta['total_time'] = new_data['total_time']
+            tests = new_data['tests']
+
+        run_file = os.path.join(get_current_run_dir(), 'run.json')
+        run_file_data = {}
+        run_file_data['meta'] = meta
+        run_file_data['tests'] = tests
+
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 
