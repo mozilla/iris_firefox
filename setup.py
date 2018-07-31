@@ -21,7 +21,8 @@ INSTALL_REQUIRES = [
     'image',
     'PyAutoGUI==0.9.36',
     'pyperclip==1.6.0',
-    'packaging'
+    'packaging',
+    'GitPython'
 ]
 
 TESTS_REQUIRE = [

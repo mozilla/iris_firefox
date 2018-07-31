@@ -86,4 +86,5 @@ def parse_args():
     parser.add_argument('-e', '--email',
                         help='Submit email report',
                         action='store_true')
+
     return parser.parse_args()
