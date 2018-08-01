@@ -20,7 +20,7 @@ class Test(BaseTest):
         wikipedia_one_off_button = 'wikipedia_one_off_button.png'
         set_as_default_search_engine = 'set_as_default_search_engine.png'
         search_in_new_tab = 'search_in_new_tab.png'
-        google_logo = 'google_logo.png'
+        magnifying_glass = 'magnifying_glass.png'
         wikipedia_search_results = 'wikipedia_search_results.png'
         test = 'test.png'
 
@@ -34,9 +34,10 @@ class Test(BaseTest):
         select_location_bar()
         paste('test')
         type(Key.ENTER)
+        time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(google_logo, 10)
-        assert_true(self, expected, 'The default search engine is \'Google\'.')
+        expected = region.exists(magnifying_glass, 10)
+        assert_true(self, expected, 'The default search engine is \'Google\', page successfully loaded.')
 
         expected = region.exists(test, 10)
         assert_true(self, expected, 'Searched item is successfully found in the page opened by the default search '
