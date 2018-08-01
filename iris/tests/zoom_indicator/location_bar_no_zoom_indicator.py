@@ -15,7 +15,6 @@ class Test(BaseTest):
         self.test_case_id = '7444'
         self.test_suite_id = '242'
 
-
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'

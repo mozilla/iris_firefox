@@ -51,5 +51,5 @@ class Test(BaseTest):
         bookmarks_sidebar('open')
         paste('amazon')
 
-        expected_3 = exists(amazon_bookmark_image_2, 10, .7)
+        expected_3 = exists(Pattern(amazon_bookmark_image_2).similar(0.7), 10)
         assert_true(self, expected_3, 'Find amazon bookmark 2nd image')

@@ -38,5 +38,5 @@ class Test(BaseTest):
         # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level is reset.')

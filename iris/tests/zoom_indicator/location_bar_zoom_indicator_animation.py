@@ -26,7 +26,7 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         zoom_in()
@@ -46,9 +46,9 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.MAC:
             select_location_bar()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for 100%'
-                                    ' zoom level.')
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for '
+                                    '100% zoom level.')
 
         for i in range(8):
             zoom_in()
@@ -64,9 +64,9 @@ class Test(BaseTest):
         for i in range(8):
             zoom_out()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for 100%'
-                                    ' zoom level.')
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for '
+                                    '100% zoom level.')
 
         for i in range(5):
             zoom_out()
