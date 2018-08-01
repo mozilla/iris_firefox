@@ -26,7 +26,7 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         click(LocalWeb.FIREFOX_LOGO)
@@ -50,7 +50,7 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.MAC:
             select_location_bar()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom controls not found in the url bar after browser restore its zoom level.')
 
         # zoom in until the maximum zoom level(300%) is reached.
@@ -68,7 +68,7 @@ class Test(BaseTest):
         # zoom out until the default zoom level(100%) is reached.
         restore_zoom()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not found in the url bar after browser restore its zoom level.')
 
         # zoom out until de minimum zoom level(30%) is reached.

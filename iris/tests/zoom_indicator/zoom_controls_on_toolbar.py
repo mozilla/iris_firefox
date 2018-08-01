@@ -31,7 +31,7 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         click_hamburger_menu_option('Customize...')
@@ -53,7 +53,7 @@ class Test(BaseTest):
         expected = new_region.exists(default_zoom_level_toolbar, 10)
         assert_true(self, expected, 'Zoom controls still displayed in toolbar after the Customize page is closed.')
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar for default zoom level.')
 
         click(zoom_control_toolbar_decrease)
@@ -72,7 +72,7 @@ class Test(BaseTest):
         assert_true(self, expected,
                     'Zoom controls are correctly displayed in toolbar after the second zoom level increase.')
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected,
                     'Zoom indicator not displayed in the url bar after zoom control is activated in toolbar.')
 
@@ -86,7 +86,7 @@ class Test(BaseTest):
 
         remove_zoom_indicator_from_toolbar()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected,
                     'Zoom indicator not displayed in the url bar after zoom control is removed from toolbar.')
 

@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This test case checks that zoom indicator hides in the location bar; zoom is performed using the ' \
-                    'mouse wheel.'
+        self.meta = 'This test case checks that zoom indicator hides in the location bar; zoom is performed using the' \
+                    ' mouse wheel.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -27,7 +27,7 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         click(LocalWeb.FIREFOX_LOGO)
@@ -46,7 +46,7 @@ class Test(BaseTest):
         # zoom out ONE time.
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected,
                     'Zoom level successfully decreased, zoom indicator not found in the url bar for 100%'
                     ' zoom level.')
@@ -60,5 +60,5 @@ class Test(BaseTest):
         # zoom in ONE time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator not found in the url bar.')

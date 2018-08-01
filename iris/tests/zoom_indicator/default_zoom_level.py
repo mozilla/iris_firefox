@@ -34,5 +34,5 @@ class Test(BaseTest):
         expected = new_region.exists('100%', 10)
         assert_true(self, expected, 'By default zoom indicator is 100% in hamburger menu.')
 
-        expected = new_region.exists(edit_buttons_below_zoom_buttons, 10, 0.25)
+        expected = new_region.exists(Pattern(edit_buttons_below_zoom_buttons).similar(0.25), 10)
         assert_true(self, expected, 'Control buttons for zooming appear above the Cut/Copy/Paste buttons.')
