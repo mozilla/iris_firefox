@@ -22,6 +22,7 @@ class Test(BaseTest):
         search_in_new_tab = 'search_in_new_tab.png'
         google_logo = 'google_logo.png'
         wikipedia_search_results = 'wikipedia_search_results.png'
+        test = 'test.png'
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -37,7 +38,7 @@ class Test(BaseTest):
         expected = region.exists(google_logo, 10)
         assert_true(self, expected, 'The default search engine is \'Google\'.')
 
-        expected = region.exists('Test', 10)
+        expected = region.exists(test, 10)
         assert_true(self, expected, 'Searched item is successfully found in the page opened by the default search '
                                     'engine.')
 
