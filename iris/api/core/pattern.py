@@ -10,6 +10,7 @@ import numpy as np
 
 from location import Location
 from util.core_helper import get_module_dir, get_images_path
+from settings import Settings
 
 try:
     import Image
@@ -66,6 +67,7 @@ class Pattern(object):
         self._image_name = name
         self._image_path = path
         self._scale_factor = scale
+        self._similarity = Settings.min_similarity
         self._target_offset = None
         self._rgb_array = np.array(cv2.imread(path))
         self._color_image = Image.fromarray(_apply_scale(scale, self._rgb_array))
@@ -103,6 +105,31 @@ class Pattern(object):
 
     def get_gray_image(self):
         return self._gray_image
+
+    @property
+    def similarity(self):
+        """Getter for the Pattern similarity property."""
+        return self._similarity
+
+    @similarity.setter
+    def similarity(self, value):
+        """Setter for the Pattern similarity property."""
+        self._similarity = value
+
+    def similar(self, value):
+        """Set the minimum similarity of the given Pattern object to the specified value."""
+        if value > 0.99:
+            self._similarity = 0.99
+        elif 0 <= value <= 0.99:
+            self._similarity = value
+        else:
+            self._similarity = Settings.min_similarity
+        return self
+
+    def exact(self):
+        """Set the minimum similarity of the given Pattern object to 0.99, which means exact match is required."""
+        self._similarity = 0.99
+        return self
 
 
 def get_pattern_details(pattern_name):

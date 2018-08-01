@@ -390,7 +390,7 @@ def maximize_window():
         region = Region(0, 0, maximized_browser_width + 50, maximized_browser_height + 50)
 
         try:
-            region.find(maximized_browser_image, 0.95)
+            region.find(Pattern(maximized_browser_image).similar(0.95))
             logger.debug('Window is already maximized.')
         except (FindError, ValueError):
             logger.debug('Window is not maximized.')
