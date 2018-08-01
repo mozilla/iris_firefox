@@ -107,23 +107,24 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
                 break
 
 
-def _match_template_multiple(needle, haystack, precision=None, threshold=0.99):
+def _match_template_multiple(needle, haystack, threshold=0.99):
     """Search for needle in stack (multiple matches)
 
     :param Pattern needle:  Image details (needle)
     :param Image.Image haystack: Region as Image (haystack)
-    :param float precision: Min allowed similarity
     :param float threshold:  Max threshold
     :return: List of Location
     """
 
-    if precision is None:
-        precision = Settings.min_similarity
+    precision = needle.similarity
 
-    haystack_img_gray = haystack.convert('L')
-    needle_img_gray = needle.get_gray_image()
+    if precision < 0.99:
+        needle = needle.get_gray_image()
+        haystack = haystack.convert('L')
+    elif precision == 0.99:
+        needle = needle.get_color_image()
 
-    found_list = iris_image_match_template(needle_img_gray, haystack_img_gray, precision, threshold)
+    found_list = iris_image_match_template(needle, haystack, precision, threshold)
 
     if is_image_save_enabled():
         save_debug_image(needle, haystack, found_list)
@@ -131,62 +132,55 @@ def _match_template_multiple(needle, haystack, precision=None, threshold=0.99):
     return found_list
 
 
-def image_search_multiple(pattern, precision=None, region=None):
+def image_search_multiple(pattern, region=None):
     """ Wrapper over _match_template_multiple. Search image (multiple) in a Region or full screen
 
     :param Pattern pattern: Image details (needle)
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: List[Location]
     """
 
-    if precision is None:
-        precision = Settings.min_similarity
-
     stack_image = get_region(region=region)
-    return _match_template_multiple(pattern, stack_image, precision)
+    return _match_template_multiple(pattern, stack_image)
 
 
-def _match_template(needle, haystack, precision=None):
+def _match_template(needle, haystack):
     """Search for needle in stack (single match).
 
     :param Pattern needle: Image details (needle)
     :param Image.Image haystack: Region as Image (haystack)
-    :param float precision: Min allowed similarity
     :return: Location
     """
 
-    if precision is None:
-        precision = Settings.min_similarity
+    precision = needle.similarity
 
-    haystack_img_gray = haystack.convert('L')
-    needle_img_gray = needle.get_gray_image()
+    if precision < 0.99:
+        needle = needle.get_gray_image()
+        haystack = haystack.convert('L')
+    elif precision == 0.99:
+        needle = needle.get_color_image()
 
-    position = iris_image_match_template(needle_img_gray, haystack_img_gray, precision, None)
+    position = iris_image_match_template(needle, haystack, precision, None)
 
     if is_image_save_enabled():
         if position.x == -1:
-            save_debug_image(needle_img_gray, np.array(haystack_img_gray), None, True)
+            save_debug_image(needle, np.array(haystack), None, True)
         else:
-            save_debug_image(needle_img_gray, haystack_img_gray, position)
+            save_debug_image(needle, haystack, position)
 
     return position
 
 
-def image_search(pattern, precision=None, region=None):
+def image_search(pattern, region=None):
     """ Wrapper over _match_template. Search image in a Region or full screen
 
     :param Pattern pattern: Image details (needle)
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Location
     """
 
-    if precision is None:
-        precision = Settings.min_similarity
-
     stack_image = get_region(region=region)
-    location = _match_template(pattern, stack_image, precision)
+    location = _match_template(pattern, stack_image)
 
     if location.x == -1 or location.y == -1:
         return location
@@ -196,30 +190,25 @@ def image_search(pattern, precision=None, region=None):
         return location
 
 
-def _add_positive_image_search_result_in_queue(queue, pattern, precision=None, region=None):
+def _add_positive_image_search_result_in_queue(queue, pattern, region=None):
     """Puts result in a queue if image is found
 
     :param Queue.Queue queue: Queue where the result of the search is added
     :param Pattern pattern: name of the searched image
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return:
     """
 
-    if precision is None:
-        precision = Settings.min_similarity
-
-    result = image_search(pattern, precision, region)
+    result = image_search(pattern, region)
     if result.x != -1:
         queue.put(result)
 
 
-def _positive_image_search_multiprocess(pattern, timeout=None, precision=None, region=None):
+def _positive_image_search_multiprocess(pattern, timeout=None, region=None):
     """Checks if image is found using multiprocessing
 
     :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Found image from queue
     """
@@ -228,13 +217,10 @@ def _positive_image_search_multiprocess(pattern, timeout=None, precision=None, r
 
     interval, max_attempts = _calculate_interval_max_attempts(timeout)
 
-    if precision is None:
-        precision = Settings.min_similarity
-
     process_list = []
     for i in range(max_attempts):
         p = multiprocessing.Process(target=_add_positive_image_search_result_in_queue,
-                                    args=(out_q, pattern, precision, region))
+                                    args=(out_q, pattern, region))
         process_list.append(p)
         p.start()
         try:
@@ -252,18 +238,14 @@ def _positive_image_search_multiprocess(pattern, timeout=None, precision=None, r
     return None
 
 
-def _positive_image_search_loop(pattern, timeout=None, precision=None, region=None):
+def _positive_image_search_loop(pattern, timeout=None, region=None):
     """ Search for an image (in loop) in a Region or full screen
 
     :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Location
     """
-
-    if precision is None:
-        precision = Settings.min_similarity
 
     if timeout is None:
         timeout = Settings.auto_wait_timeout
@@ -274,44 +256,39 @@ def _positive_image_search_loop(pattern, timeout=None, precision=None, region=No
     while start_time < end_time:
         time_remaining = end_time - start_time
         logger.debug("Searching for image %s - %s seconds remaining" % (pattern.get_filename(), time_remaining))
-        pos = image_search(pattern, precision, region)
+        pos = image_search(pattern, region)
         start_time = datetime.datetime.now()
         if pos.x != -1:
             return pos
     return None
 
 
-def positive_image_search(pattern, timeout=None, precision=None, region=None):
+def positive_image_search(pattern, timeout=None, region=None):
     if is_multiprocessing_enabled():
-        return _positive_image_search_multiprocess(pattern, timeout, precision, region)
+        return _positive_image_search_multiprocess(pattern, timeout, region)
     else:
-        return _positive_image_search_loop(pattern, timeout, precision, region)
+        return _positive_image_search_loop(pattern, timeout, region)
 
 
-def _add_negative_image_search_result_in_queue(queue, pattern, precision=None, region=None):
+def _add_negative_image_search_result_in_queue(queue, pattern, region=None):
     """Puts result in a queue if image is NOT found
 
     :param Queue.Queue queue: Queue where the result of the search is added
     :param Pattern pattern: name of the searched image
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return:
     """
 
-    if precision is None:
-        precision = Settings.min_similarity
-
-    result = image_search(pattern, precision, region)
+    result = image_search(pattern, region)
     if result.x == -1:
         queue.put(result)
 
 
-def _negative_image_search_multiprocess(pattern, timeout=None, precision=None, region=None):
+def _negative_image_search_multiprocess(pattern, timeout=None, region=None):
     """Checks if image is NOT found or it vanished using multiprocessing
 
     :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Found image from queue
     """
@@ -319,13 +296,10 @@ def _negative_image_search_multiprocess(pattern, timeout=None, precision=None, r
 
     interval, max_attempts = _calculate_interval_max_attempts(timeout)
 
-    if precision is None:
-        precision = Settings.min_similarity
-
     process_list = []
     for i in range(max_attempts):
         p = multiprocessing.Process(target=_add_negative_image_search_result_in_queue,
-                                    args=(out_q, pattern, precision, region))
+                                    args=(out_q, pattern, region))
         process_list.append(p)
         p.start()
         try:
@@ -343,18 +317,14 @@ def _negative_image_search_multiprocess(pattern, timeout=None, precision=None, r
     return None
 
 
-def _negative_image_search_loop(pattern, timeout=None, precision=None, region=None):
+def _negative_image_search_loop(pattern, timeout=None, region=None):
     """ Search if an image (in loop) is NOT in a Region or full screen
 
     :param Pattern pattern: name of the searched image
     :param timeout: Number as maximum waiting time in seconds.
-    :param float precision: Min allowed similarity
     :param Region region: Region object
     :return: Location
     """
-
-    if precision is None:
-        precision = Settings.min_similarity
 
     pattern_found = True
 
@@ -362,7 +332,7 @@ def _negative_image_search_loop(pattern, timeout=None, precision=None, region=No
     end_time = start_time + datetime.timedelta(seconds=timeout)
 
     while pattern_found is True and start_time < end_time:
-        image_found = image_search(pattern, precision, region)
+        image_found = image_search(pattern, region)
         if (image_found.x != -1) & (image_found.y != -1):
             pattern_found = True
         else:
@@ -372,8 +342,8 @@ def _negative_image_search_loop(pattern, timeout=None, precision=None, region=No
     return None if pattern_found else True
 
 
-def negative_image_search(pattern, timeout=None, precision=None, region=None):
+def negative_image_search(pattern, timeout=None, region=None):
     if is_multiprocessing_enabled():
-        return _negative_image_search_multiprocess(pattern, timeout, precision, region)
+        return _negative_image_search_multiprocess(pattern, timeout, region)
     else:
-        return _negative_image_search_loop(pattern, timeout, precision, region)
+        return _negative_image_search_loop(pattern, timeout, region)

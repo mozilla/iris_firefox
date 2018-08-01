@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks the zoom indicator in a private window when applying the View Menu ' \
-                    'Options.'
+        self.meta = 'This is a test case that checks the zoom indicator in a private window when applying the View ' \
+                    'Menu Options.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -41,7 +41,7 @@ class Test(BaseTest):
         # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         select_zoom_menu_option(Option.ZOOM_OUT)
@@ -52,7 +52,7 @@ class Test(BaseTest):
         # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         select_zoom_menu_option(Option.ZOOM_TEXT_ONLY)
@@ -67,7 +67,7 @@ class Test(BaseTest):
 
         select_location_bar()
 
-        expected = exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected,
                     'Zoom indicator not displayed in the url bar after \'zoom text only\' option is set.')
 
@@ -79,7 +79,7 @@ class Test(BaseTest):
         # Reset the zoom level from the location bar.
         click(Pattern(hamburger_menu).target_offset(-320, 15))
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         zoom_out()
@@ -89,7 +89,7 @@ class Test(BaseTest):
 
         select_zoom_menu_option(Option.RESET)
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected,
                     'Zoom indicator not displayed in the url bar after zoom level reset.')
 
