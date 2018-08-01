@@ -34,26 +34,26 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
-        assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
-        assert_true(self, expected_4, 'Expand history button displayed properly.')
+        expected_2 = exists(search_history_box, 10)
+        assert_true(self, expected_2, 'Sidebar was opened successfully.')
+        expected_3 = exists(expand_button_history_sidebar, 10)
+        assert_true(self, expected_3, 'Expand history button displayed properly.')
         click(expand_button_history_sidebar)
 
         # Forget a page from the History sidebar.
-        expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
-        assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
+        expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+        assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
 
         right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
         type(text='f')
 
         try:
-            expected_6 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
-            assert_true(self, expected_6, 'Mozilla page was deleted successfully from the history.')
+            expected_5 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+            assert_true(self, expected_5, 'Mozilla page was deleted successfully from the history.')
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
 
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
-        expected_7 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 5, 0.9)
-        assert_false(self, expected_7, 'Mozilla page is not displayed in the Recent History list.')
+        expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 5, 0.9)
+        assert_false(self, expected_6, 'Mozilla page is not displayed in the Recent History list.')
