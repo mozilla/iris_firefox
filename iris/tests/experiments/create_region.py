@@ -19,7 +19,7 @@ class Test(BaseTest):
         dog1 = 'dog1.png'
         dog2 = 'dog2.png'
 
-        r = create_region_from_patterns(left='home.png', right='library.png')
+        r = create_region_from_patterns(left=NavBar.HOME_BUTTON, right=NavBar.LIBRARY_MENU)
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r.x, r.y, r.width, r.height))
         logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
 

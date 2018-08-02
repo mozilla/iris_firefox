@@ -17,7 +17,6 @@ class Test(BaseTest):
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
         url_bar_300_zoom_level = 'url_bar_300_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
 
         navigate(url)
 
@@ -59,7 +58,7 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             maximize_window()
 
-        expected = exists(hamburger_menu, 10)
+        expected = exists(NavBar.HAMBURGER_MENU, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
         expected = new_region.exists(url_bar_300_zoom_level, 10)

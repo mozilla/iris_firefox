@@ -17,6 +17,7 @@ class Test(BaseTest):
         amazon_image = 'amazon.png'
         amazon_bookmark_image_1 = 'amazon_bookmark_1.png'
         amazon_bookmark_image_2 = 'amazon_bookmark_2.png'
+        library_menu_pattern = NavBar.LIBRARY_MENU
 
         navigate(url)
 
@@ -33,7 +34,7 @@ class Test(BaseTest):
         time.sleep(Settings.UI_DELAY_LONG)
 
         # Look for new bookmark via library menu button
-        click('library.png')
+        click(library_menu_pattern)
         time.sleep(Settings.UI_DELAY)
         type(Key.TAB)
         type(Key.ENTER)
