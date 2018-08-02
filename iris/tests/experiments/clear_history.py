@@ -15,7 +15,7 @@ class Test(BaseTest):
         url = 'https://www.amazon.com'
         amazon_image = 'amazon.png'
         amazon_history_image = 'amazon_history.png'
-        home_image = 'home.png'
+        library_menu_pattern = NavBar.LIBRARY_MENU
 
         navigate(url)
 
@@ -28,7 +28,7 @@ class Test(BaseTest):
         # confirm presence of UI before interaction, but that
         # has its own cost.
 
-        click('library_menu.png')
+        click(library_menu_pattern)
         library_menu_assert = exists('library_history.png', 5)
         assert_true(self, library_menu_assert, 'Library menu opened and history button is present')
 
@@ -51,7 +51,7 @@ class Test(BaseTest):
         # focus after invoking the above dialog, and without it,
         # the keyboard shortcuts don't work
 
-        click(home_image)
+        click(NavBar.HOME_BUTTON)
 
         # Navigate to new page; otherwise, our bitmap for the history item
         # looks identical to the image in the title bar and we'll get
@@ -59,7 +59,7 @@ class Test(BaseTest):
         navigate('about:blank')
 
         expected_3 = exists(amazon_image, 3)
-        assert_false(self, expected_3, 'Successfully renavigated page')
+        assert_false(self, expected_3, 'Successfully re-navigated page')
 
         history_sidebar()
         time.sleep(Settings.UI_DELAY_LONG)
