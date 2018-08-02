@@ -20,10 +20,10 @@ class Test(BaseTest):
         drag_space_disabled = 'drag_space_disabled.png'
         customize_page_drag_space_enabled = 'customize_page_drag_space_enabled.png'
         drag_space_enabled_new_tab = 'drag_space_enabled_new_tab.png'
-        hamburger_menu = 'hamburger_menu.png'
         window_controls_restore = 'window_controls_restore.png'
         window_controls_maximize = 'window_controls_maximize.png'
         close_multiple_tabs_warning = 'close_multiple_tabs_warning.png'
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url)
 
@@ -49,13 +49,13 @@ class Test(BaseTest):
         expected_4 = exists(drag_space_enabled_new_tab, 10)
         assert_true(self, expected_4, '\'Drag space\' successfully activated in a new tab.')
 
-        if exists(hamburger_menu, 10):
+        if exists(hamburger_menu_pattern, 10):
             # Minimize window
             minimize_window()
             if Settings.get_os() == Platform.WINDOWS:
                 minimize_window()
             try:
-                expected_5 = wait_vanish(hamburger_menu, 10)
+                expected_5 = wait_vanish(hamburger_menu_pattern, 10)
                 assert_true(self, expected_5, 'Window successfully minimized')
             except Exception as error:
                 logger.error('Window not minimized.')
@@ -69,7 +69,7 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS:
             maximize_window()
 
-        expected_6 = exists(hamburger_menu, 10)
+        expected_6 = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected_6, 'Window in view again')
 
         # Restore window (applies to Windows)
@@ -89,13 +89,13 @@ class Test(BaseTest):
             assert_true(self, expected_9, 'Window successfully maximized')
 
         # Close the window
-        if exists(hamburger_menu, 10):
+        if exists(hamburger_menu_pattern, 10):
             close_window()
             expected_10 = exists(window_controls_restore, 2)
             assert_true(self, expected_10, 'Close multiple tabs warning is present')
             click(close_multiple_tabs_warning)
             try:
-                expected_11 = wait_vanish(hamburger_menu, 10)
+                expected_11 = wait_vanish(hamburger_menu_pattern, 10)
                 assert_true(self, expected_11, 'Window successfully closed')
             except Exception as error:
                 logger.error('Window not closed')

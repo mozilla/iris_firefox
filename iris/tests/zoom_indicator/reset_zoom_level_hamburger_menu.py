@@ -17,16 +17,16 @@ class Test(BaseTest):
         url2 = LocalWeb.FIREFOX_TEST_SITE
         search_bar = 'search_bar.png'
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
         hamburger_menu_zoom_indicator = 'hamburger_menu_zoom_indicator.png'
         zoom_control_toolbar_increase = 'zoom_control_toolbar_increase.png'
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         # Check that zoom indicator is not displayed in the url bar for the default page that opens when the browser
         # starts.
         navigate(url1)
 
-        expected = exists(hamburger_menu, 10)
+        expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
         expected = exists(search_bar, 10)
@@ -35,7 +35,7 @@ class Test(BaseTest):
         # Check that zoom indicator is not displayed in the url bar for a new opened page.
         navigate(url2)
 
-        expected = exists(hamburger_menu, 10)
+        expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
         region = create_region_for_url_bar()
@@ -55,7 +55,7 @@ class Test(BaseTest):
                                     'increased.')
 
         # Click the hamburger menu in order to close it.
-        click(hamburger_menu)
+        click(hamburger_menu_pattern)
 
         new_reg = create_region_for_url_bar()
 
@@ -64,8 +64,8 @@ class Test(BaseTest):
                     'Zoom indicator is correctly displayed in the url bar after zoom level is increased.')
 
         # Open hamburger menu and reset the zoom level.
-        click(hamburger_menu)
-        click(Pattern(zoom_control_toolbar_increase).target_offset(-40, 15))
+        click(hamburger_menu_pattern)
+        click(Pattern(zoom_control_toolbar_increase).target_offset(-40, 0))
 
         expected = new_region.exists(hamburger_menu_zoom_indicator, 10)
         assert_true(self, expected, 'Zoom indicator is successfully reset to default in hamburger menu.')

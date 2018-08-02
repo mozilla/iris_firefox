@@ -17,7 +17,7 @@ class Test(BaseTest):
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         url_bar_90_zoom_level = 'url_bar_90_zoom_level.png'
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         new_private_window()
 
@@ -50,7 +50,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'By default zoom indicator is 100% in hamburger menu.')
 
         # Click the hamburger menu to close it.
-        click(hamburger_menu)
+        click(hamburger_menu_pattern)
 
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
@@ -63,7 +63,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom reset.')
 
         # Click the hamburger menu to open it.
-        click(hamburger_menu)
+        click(hamburger_menu_pattern)
         time.sleep(DEFAULT_UI_DELAY)
 
         expected = new_reg.exists('100%', 10)
