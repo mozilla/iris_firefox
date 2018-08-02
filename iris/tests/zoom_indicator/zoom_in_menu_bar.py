@@ -18,7 +18,6 @@ class Test(BaseTest):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
 
         navigate(url)
 
@@ -36,7 +35,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the location bar.
-        click(Pattern(hamburger_menu).target_offset(-320, 15))
+        click(NavBar.HAMBURGER_MENU.target_offset(-320, 0))
 
         expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level is reset.')

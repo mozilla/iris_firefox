@@ -16,7 +16,7 @@ class Test(BaseTest):
         close_multiple_tabs_warning = 'close_multiple_tabs_warning.png'
         cancel_multiple_tabs_warning = 'cancel_multiple_tabs_warning.png'
         close_multiple_tabs_warning_logo = 'close_multiple_tabs_warning_logo.png'
-        home_button = 'home_button.png'
+        home_button_pattern = NavBar.HOME_BUTTON
         maximize_button = 'maximize_button.png'
         restore_button = 'restore_button.png'
 
@@ -33,7 +33,7 @@ class Test(BaseTest):
 
         try:
             expected_2 = wait_vanish(close_multiple_tabs_warning, 10)
-            expected_3 = exists(home_button, 10)
+            expected_3 = exists(home_button_pattern, 10)
             assert_true(self, expected_2 and expected_3, 'Close multiple tabs warning was canceled successfully')
         except:
             raise FindError('Close multiple tabs warning was not canceled successfully')
@@ -55,7 +55,7 @@ class Test(BaseTest):
         click(close_multiple_tabs_warning)
         try:
             expected_7 = wait_vanish(close_multiple_tabs_warning, 10)
-            expected_8 = wait_vanish(home_button, 10)
+            expected_8 = wait_vanish(home_button_pattern, 10)
             assert_true(self, expected_7 and expected_8, 'The browser was closed successfully')
         except:
             raise FindError('The browser was not closed successfully')

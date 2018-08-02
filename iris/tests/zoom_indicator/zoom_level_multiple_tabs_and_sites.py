@@ -16,8 +16,8 @@ class Test(BaseTest):
         url_1 = 'en.wikipedia.org'
         url_2 = 'www.amazon.com'
         search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
         search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110_zoom_level.png'
+        hamburger_menu = NavBar.HAMBURGER_MENU
 
         navigate(url_1)
 

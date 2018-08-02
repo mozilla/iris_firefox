@@ -16,8 +16,8 @@ class Test(BaseTest):
         url = 'about:home'
         search_the_web_image = 'search_the_web.png'
         google_search_image = 'google_search.png'
-        back_button_image = 'back.png'
-        forward_button_image = 'forward.png'
+        back_pattern = NavBar.BACK_BUTTON
+        forward_pattern = NavBar.FORWARD_BUTTON
 
         navigate(url)
 
@@ -29,11 +29,11 @@ class Test(BaseTest):
         expected_2 = exists(google_search_image, 10)
         assert_true(self, expected_2, 'Find google search image')
 
-        wait(back_button_image)
-        click(back_button_image)
+        wait(back_pattern)
+        click(back_pattern)
 
         assert_true(self, expected_1, 'Find search the web image')
 
-        wait(forward_button_image)
-        click(forward_button_image)
+        wait(forward_pattern)
+        click(forward_pattern)
         assert_true(self, expected_2, 'Find google search image')

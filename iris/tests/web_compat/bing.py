@@ -27,7 +27,7 @@ class Test(BaseTest):
         changed_language = 'changed_language.png'
         coordinates = 'coordinates.png'
         languages_list = 'languages_list.png'
-        menu = 'menu.png'
+        menu = NavBar.HAMBURGER_MENU
         save_button = 'save_button.png'
         settings = 'settings.png'
         switch_language = 'switch_language.png'

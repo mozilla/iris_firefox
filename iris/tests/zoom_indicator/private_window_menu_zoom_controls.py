@@ -20,7 +20,7 @@ class Test(BaseTest):
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
         zoom_control_toolbar_increase = 'zoom_control_toolbar_increase.png'
         zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
-        hamburger_menu = 'hamburger_menu.png'
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         new_private_window()
 
@@ -47,13 +47,13 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully increased in hamburger menu.')
 
         # Click the hamburger menu to close it.
-        click(hamburger_menu)
+        click(hamburger_menu_pattern)
 
         expected = new_reg.exists(url_bar_110_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator displayed in the url bar.')
 
         # Click the hamburger menu to open it.
-        click(hamburger_menu)
+        click(hamburger_menu_pattern)
 
         click(zoom_control_toolbar_decrease)
         click(zoom_control_toolbar_decrease)
@@ -62,7 +62,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully decreased in hamburger menu.')
 
         # Click the hamburger menu to close it.
-        click(hamburger_menu)
+        click(hamburger_menu_pattern)
 
         expected = new_reg.exists(url_bar_90_zoom_level, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator displayed in the url bar.')

@@ -24,9 +24,10 @@ class Test(BaseTest):
     def run(self):
         bookmark_image_1 = LocalWeb.FIREFOX_BOOKMARK
         bookmark_image_2 = LocalWeb.POCKET_BOOKMARK_SMALL
+        library_menu_pattern = NavBar.LIBRARY_MENU
 
         # Look for bookmarks via library menu button
-        click('library.png')
+        click(library_menu_pattern)
         time.sleep(Settings.UI_DELAY)
         type(Key.TAB)
         type(Key.ENTER)

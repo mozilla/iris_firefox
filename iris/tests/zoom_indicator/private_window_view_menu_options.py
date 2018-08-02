@@ -19,7 +19,7 @@ class Test(BaseTest):
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
         url_bar_90_zoom_level = 'url_bar_90_zoom_level.png'
         zoom_text_only_check = 'zoom_text_only_check.png'
-        hamburger_menu = 'hamburger_menu.png'
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         new_private_window()
 
@@ -39,7 +39,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the location bar.
-        click(Pattern(hamburger_menu).target_offset(-320, 15))
+        click(hamburger_menu_pattern.target_offset(-320, 0))
 
         expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
@@ -50,7 +50,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the location bar.
-        click(Pattern(hamburger_menu).target_offset(-320, 15))
+        click(hamburger_menu_pattern.target_offset(-320, 0))
 
         expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
@@ -77,7 +77,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         # Reset the zoom level from the location bar.
-        click(Pattern(hamburger_menu).target_offset(-320, 15))
+        click(hamburger_menu_pattern.target_offset(-320, 0))
 
         expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')

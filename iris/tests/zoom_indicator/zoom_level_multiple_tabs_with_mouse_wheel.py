@@ -17,19 +17,19 @@ class Test(BaseTest):
         url_1 = 'en.wikipedia.org'
         url_2 = 'www.amazon.com'
         search_bar_wikipedia_default_zoom_level = 'search_bar_wikipedia_default_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
         search_bar_wikipedia_110_zoom_level = 'search_bar_wikipedia_110_zoom_level.png'
         search_bar_wikipedia_300_zoom_level = 'search_bar_wikipedia_300_zoom_level.png'
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url_1)
 
-        expected = exists(hamburger_menu, 10)
+        expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Page successfully loaded, hamburger menu found.')
 
         region = create_region_for_url_bar()
 
         # move focus away from the location bar.
-        click(Pattern(hamburger_menu).target_offset(-170, 15))
+        click(hamburger_menu_pattern.target_offset(-170, 15))
 
         expected = region.exists(search_bar_wikipedia_default_zoom_level, 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
