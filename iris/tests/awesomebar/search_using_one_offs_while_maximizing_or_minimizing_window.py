@@ -62,6 +62,9 @@ class Test(BaseTest):
                                     'engine.')
         maximize_window()
 
+        if Settings.get_os() == Platform.LINUX:
+            reset_mouse()
+
         expected = exists(window_controls_restore, 10)
         assert_true(self, expected, 'Window successfully maximized.')
 
