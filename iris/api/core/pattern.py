@@ -47,9 +47,8 @@ def _parse_name(full_name):
 
 
 def load_all_patterns():
-    if parse_args().convert:
+    if parse_args().resize:
         convert_hi_res_images()
-
     result_list = []
     for root, dirs, files in os.walk(get_module_dir()):
         for file_name in files:
@@ -67,11 +66,15 @@ def convert_hi_res_images():
         for file_name in files:
             if file_name.endswith('.png'):
                 if get_images_path() in root or 'common' in root or 'local_web' in root:
-                    if '@2x' in file_name:
+                    if '@' in file_name:
                         logger.debug('Found hi-resolution image at: %s' % os.path.join(root, file_name))
-                        new_name = '%s.png' % file_name.split('@2x')[0]
+                        temp = file_name.split('@')
+                        name = temp[0]
+                        scale = int(temp[1].split('x')[0])
+                        new_name = '%s.png' % name
                         img = Image.open(os.path.join(root, file_name))
-                        new_img = img.resize((img.width/2, img.height/2), Image.ANTIALIAS)
+                        logger.debug('Resizing image from %sx scale' % scale)
+                        new_img = img.resize((img.width/scale, img.height/scale), Image.ANTIALIAS)
                         logger.debug('Creating newly converted image file at: %s' % os.path.join(root, new_name))
                         new_img.save(os.path.join(root, new_name))
                         logger.debug('Removing unused image at: %s' % os.path.join(root, file_name))
