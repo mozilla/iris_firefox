@@ -12,6 +12,8 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This test case checks that no zoom indicator is displayed in the location bar for the default ' \
                     'zoom level.'
+        self.test_case_id = '7444'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -20,9 +22,9 @@ class Test(BaseTest):
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, expected, 'Browser successfully opened, firefox logo found.')
+        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')

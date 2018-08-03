@@ -17,7 +17,6 @@ class Test(BaseTest):
         url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
         url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
         url_bar_300_zoom_level = 'url_bar_300_zoom_level.png'
-        hamburger_menu = 'hamburger_menu.png'
 
         navigate(url)
 
@@ -27,14 +26,14 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
 
         expected = region.exists(url_bar_default_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         zoom_in()
 
         new_region = create_region_for_url_bar()
 
         expected = new_region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         for i in range(7):
             zoom_in()
@@ -59,8 +58,8 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             maximize_window()
 
-        expected = exists(hamburger_menu, 10)
+        expected = exists(NavBar.HAMBURGER_MENU, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
         expected = new_region.exists(url_bar_300_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level still display 300%.')
+        assert_true(self, expected, 'Zoom indicator still display 300%.')

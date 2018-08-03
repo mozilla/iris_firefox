@@ -28,7 +28,6 @@ class Test(BaseTest):
         save_bookmark_button = 'save_bookmark_name.png'
         library_bookmarks_mozilla_custom_settings = 'library_bookmarks_mozilla_custom_settings.png'
         new_bookmark_folder_bookmarks_menu = 'new_bookmark_folder_bookmarks_menu.png'
-        home_icon = 'home.png'
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -45,7 +44,7 @@ class Test(BaseTest):
         click(expand_button_history_sidebar)
 
         # Bookmark a page from the History sidebar with custom settings.
-        history_sidebar_region = Region(0, find(home_icon).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
+        history_sidebar_region = Region(0, find(NavBar.HOME_BUTTON).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
         expected_4 = history_sidebar_region.exists(history_sidebar_mozilla, 10)
         assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
 

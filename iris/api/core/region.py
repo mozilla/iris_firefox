@@ -3,13 +3,15 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from errors import FindError
+from key import type
+from settings import DEFAULT_CLICK_DELAY
+from util.color import Color
+from util.highlight_circle import HighlightCircle
+from util.highlight_rectangle import HighlightRectangle
 from util.image_search import *
 from util.ocr_search import *
 from util.save_debug_image import save_debug_image
-from location import Location
-from pattern import Pattern
-from settings import Settings, DEFAULT_CLICK_DELAY
-from key import type
+from util.screen_highlight import ScreenHighlight
 
 try:
     import Image
@@ -109,26 +111,29 @@ class Region(object):
     def hover(self, where=None, duration=0):
         return hover(where, duration, self)
 
-    def find(self, what=None, precision=None):
-        return find(what, precision, self)
+    def find(self, what=None):
+        return find(what, self)
 
-    def find_all(self, what=None, precision=None):
-        return find_all(what, precision, self)
+    def find_all(self, what=None):
+        return find_all(what, self)
 
-    def wait(self, what=None, timeout=None, precision=None):
-        wait(what, timeout, precision, self)
+    def wait(self, what=None, timeout=None):
+        wait(what, timeout, self)
 
-    def wait_vanish(self, what=None, timeout=None, precision=None):
-        return wait_vanish(what, timeout, precision, self)
+    def wait_vanish(self, what=None, timeout=None):
+        return wait_vanish(what, timeout, self)
 
-    def exists(self, what=None, timeout=None, precision=None):
-        return exists(what, timeout, precision, self)
+    def exists(self, what=None, timeout=None):
+        return exists(what, timeout, self)
 
     def click(self, where=None, duration=None):
         return click(where, duration, self)
 
     def text(self, with_image_processing=True, with_debug=False):
         return text(with_image_processing, self, with_debug)
+
+    def highlight(self, seconds=None, color=None):
+        highlight(self, seconds, color)
 
     @staticmethod
     def type(txt, modifier, interval):
@@ -143,6 +148,29 @@ class Region(object):
 
     def right_click(self, where, duration):
         return right_click(where, duration, self)
+
+
+def highlight(region=None, seconds=None, color=None, pattern=None, location=None):
+
+    if color is None:
+        color = Settings.highlight_color
+
+    if seconds is None:
+        seconds = Settings.highlight_duration
+
+    hl = ScreenHighlight()
+    if region is not None:
+        hl.draw_rectangle(HighlightRectangle(region.x, region.y, region.width, region.height, color))
+        i = hl.canvas.create_text(region.x, region.y, anchor='nw', text='Region', font=("Arial", 12), fill=Color.WHITE)
+        r = hl.canvas.create_rectangle(hl.canvas.bbox(i), fill=color, outline=color)
+        hl.canvas.tag_lower(r, i)
+
+    if pattern is not None:
+        width, height = get_image_size(pattern)
+        hl.draw_rectangle(HighlightRectangle(location.x, location.y, width, height, color))
+
+    hl.render(seconds)
+    time.sleep(seconds)
 
 
 def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
@@ -247,6 +275,10 @@ def _click_at(location=None, clicks=None, duration=None, button=None):
         location = Location(0, 0)
 
     pyautogui.moveTo(location.x, location.y, duration)
+    if parse_args().highlight:
+        hl = ScreenHighlight()
+        hl.draw_circle(HighlightCircle(location.x, location.y, 15))
+        hl.render()
     pyautogui.click(clicks=clicks, interval=Settings.click_delay, button=button)
 
     if Settings.click_delay != DEFAULT_CLICK_DELAY:
@@ -270,7 +302,7 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
     needle = cv2.imread(pattern.get_file_path())
     height, width, channels = needle.shape
 
-    p_top = positive_image_search(pattern=pattern, precision=Settings.min_similarity, region=in_region)
+    p_top = positive_image_search(pattern=pattern, region=in_region)
 
     if p_top is None:
         raise FindError('Unable to click on: %s' % pattern.get_file_path())
@@ -380,7 +412,7 @@ def _to_location(ps=None, in_region=None, align='top_left'):
         return ps
 
     elif isinstance(Pattern(ps), Pattern):
-        location = image_search(Pattern(ps), Settings.min_similarity, in_region)
+        location = image_search(Pattern(ps), in_region)
         if align == 'center':
             width, height = get_image_size(Pattern(ps))
             return Location(location.x + width / 2, location.y + height / 2)
@@ -474,17 +506,16 @@ def hover(where=None, duration=0, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def find(image_name, precision=None, in_region=None):
+def find(image_name, region=None):
     """Look for a single match of a Pattern or image
 
     :param image_name: String or Pattern
-    :param precision: Matching similarity
-    :param in_region: Region object in order to minimize the area
+    :param region: Region object in order to minimize the area
     :return: Location
     """
 
     if isinstance(image_name, str) and is_ocr_text(image_name):
-        a_match = text_search_by(image_name, True, in_region)
+        a_match = text_search_by(image_name, True, region)
         if a_match is not None:
             return Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
         else:
@@ -492,16 +523,15 @@ def find(image_name, precision=None, in_region=None):
 
     elif isinstance(image_name, str) or isinstance(image_name, Pattern):
 
-        if precision is None:
-            precision = Settings.min_similarity
-
         try:
             pattern = Pattern(image_name)
         except Exception:
             pattern = image_name
 
-        image_found = image_search(pattern, precision, in_region)
+        image_found = image_search(pattern, region)
         if (image_found.x != -1) & (image_found.y != -1):
+            if parse_args().highlight:
+                highlight(region=region, pattern=pattern, location=image_found)
             return image_found
         else:
             raise FindError('Unable to find image %s' % image_name)
@@ -510,11 +540,10 @@ def find(image_name, precision=None, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def find_all(what, precision=None, in_region=None):
+def find_all(what, in_region=None):
     """Look for multiple matches of a Pattern or image
 
     :param what: String or Pattern
-    :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return:
     """
@@ -535,25 +564,21 @@ def find_all(what, precision=None, in_region=None):
         except Exception:
             pattern = what
 
-        if precision is None:
-            precision = Settings.min_similarity
-
-        return image_search_multiple(pattern, precision, in_region)
+        return image_search_multiple(pattern, in_region)
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def wait(image_name, timeout=None, precision=None, in_region=None):
+def wait(image_name, timeout=None, region=None):
     """Wait for a Pattern or image to appear
 
     :param image_name: String or Pattern
     :param timeout: Number as maximum waiting time in seconds.
-    :param precision: Matching similarity
-    :param in_region: Region object in order to minimize the area
+    :param region: Region object in order to minimize the area
     :return: True if found
     """
     if isinstance(image_name, str) and is_ocr_text(image_name):
-        a_match = text_search_by(image_name, True, in_region)
+        a_match = text_search_by(image_name, True, region)
         if a_match is not None:
             return True
         else:
@@ -563,17 +588,17 @@ def wait(image_name, timeout=None, precision=None, in_region=None):
         if timeout is None:
             timeout = Settings.auto_wait_timeout
 
-        if precision is None:
-            precision = Settings.min_similarity
-
         try:
             pattern = Pattern(image_name)
         except Exception:
             pattern = image_name
 
-        image_found = positive_image_search(pattern, timeout, precision, in_region)
+        image_found = positive_image_search(pattern, timeout, region)
 
         if image_found is not None:
+            if parse_args().highlight:
+                highlight(region=region, pattern=pattern, location=image_found)
+
             return True
         else:
             raise FindError('Unable to find image %s' % image_name)
@@ -582,12 +607,11 @@ def wait(image_name, timeout=None, precision=None, in_region=None):
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
-def exists(pattern, timeout=None, precision=None, in_region=None):
+def exists(pattern, timeout=None, in_region=None):
     """Check if Pattern or image exists
 
     :param pattern: String or Pattern
     :param timeout: Number as maximum waiting time in seconds.
-    :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if found
     """
@@ -595,22 +619,18 @@ def exists(pattern, timeout=None, precision=None, in_region=None):
     if timeout is None:
         timeout = Settings.auto_wait_timeout
 
-    if precision is None:
-        precision = Settings.min_similarity
-
     try:
-        wait(pattern, timeout, precision, in_region)
+        wait(pattern, timeout, in_region)
         return True
     except FindError:
         return False
 
 
-def wait_vanish(image_name, timeout=None, precision=None, in_region=None):
+def wait_vanish(image_name, timeout=None, in_region=None):
     """Wait until a Pattern or image disappears
 
     :param image_name: Image, Pattern or string
     :param timeout:  Number as maximum waiting time in seconds.
-    :param precision: Matching similarity
     :param in_region: Region object in order to minimize the area
     :return: True if vanished
     """
@@ -618,15 +638,12 @@ def wait_vanish(image_name, timeout=None, precision=None, in_region=None):
     if timeout is None:
         timeout = Settings.auto_wait_timeout
 
-    if precision is None:
-        precision = Settings.min_similarity
-
     try:
         pattern = Pattern(image_name)
     except Exception:
         pattern = image_name
 
-    image_found = negative_image_search(pattern, timeout, precision, in_region)
+    image_found = negative_image_search(pattern, timeout, in_region)
 
     if image_found is not None:
         return True

@@ -22,7 +22,7 @@ class Test(BaseTest):
         hover_maximize_control = 'hover_maximize_control.png'
         window_controls_close = 'window_controls_close.png'
         hover_close_control = 'hover_close_control.png'
-        hamburger_menu = 'hamburger_menu.png'
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url)
         time.sleep(Settings.UI_DELAY_LONG)
@@ -63,14 +63,14 @@ class Test(BaseTest):
             # Minimize window
             click(window_controls_minimize)
         else:
-            expected = exists(hamburger_menu, 10)
+            expected = exists(hamburger_menu_pattern, 10)
             assert_true(self, expected, 'Found \'hamburger menu\'')
 
             # Minimize window
             minimize_window()
             expected = False
             try:
-                expected = wait_vanish(hamburger_menu, 10)
+                expected = wait_vanish(hamburger_menu_pattern, 10)
             except Exception as error:
                 logger.error('Window not minimized.')
             assert_true(self, expected, 'Window successfully minimized.')
@@ -80,11 +80,11 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS:
             maximize_window()
 
-        expected = exists(hamburger_menu, 10)
+        expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
         # Make sure that focus is on the browser
-        hover(hamburger_menu)
+        hover(hamburger_menu_pattern)
         time.sleep(Settings.FX_DELAY)
 
         # Close the window
@@ -92,7 +92,7 @@ class Test(BaseTest):
         time.sleep(Settings.FX_DELAY)
         type(Key.ENTER)
         try:
-            expected = wait_vanish(hamburger_menu, 10)
+            expected = wait_vanish(hamburger_menu_pattern, 10)
             assert_true(self, expected, 'Window successfully closed.')
         except Exception as error:
             assert_true(self, False, 'Window successfully closed.')

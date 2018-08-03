@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This test case checks the zoom indicator animation.'
+        self.meta = 'This test case checks the zoom indicator animation from the url bar.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -26,15 +26,15 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level not displayed by default in the url bar.')
+        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         zoom_in()
 
         new_region = create_region_for_url_bar()
 
         expected = new_region.exists(url_bar_110_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level successfully increased, zoom controls found in the url bar.')
+        assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
 
@@ -46,9 +46,9 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.MAC:
             select_location_bar()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
-                                    ' zoom level.')
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for '
+                                    '100% zoom level.')
 
         for i in range(8):
             zoom_in()
@@ -59,14 +59,14 @@ class Test(BaseTest):
         zoom_in()
 
         expected = new_region.exists(url_bar_300_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level still displays 300%.')
+        assert_true(self, expected, 'Zoom indicator still displays 300%.')
 
         for i in range(8):
             zoom_out()
 
-        expected = new_region.exists(url_bar_default_zoom_level, 10, 0.92)
-        assert_true(self, expected, 'Zoom level successfully decreased, zoom controls not found in the url bar for 100%'
-                                    ' zoom level.')
+        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for '
+                                    '100% zoom level.')
 
         for i in range(5):
             zoom_out()
@@ -77,4 +77,4 @@ class Test(BaseTest):
         zoom_out()
 
         expected = new_region.exists(url_bar_30_zoom_level, 10)
-        assert_true(self, expected, 'Zoom level still displays 30%.')
+        assert_true(self, expected, 'Zoom indicator still displays 30%.')

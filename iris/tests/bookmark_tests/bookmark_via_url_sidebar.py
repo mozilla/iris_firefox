@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Websites can be bookmarked via URL drag & drop onto the Bookmarks Sidebar.'
+        self.test_case_id = '4092'
+        self.test_suite_id = '75'
 
     def run(self):
 
@@ -20,7 +22,7 @@ class Test(BaseTest):
         drag_area = 'drag_area_bing.png'
         bing_home = 'bing_home.png'
         bing_bookmark = 'bing_bookmark.png'
-        bookmarked_star = 'blue_star.png'
+        bookmark_selected_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         navigate(url)
 
@@ -40,7 +42,7 @@ class Test(BaseTest):
 
         drag_drop(draggable_url, drag_area, 0.5)
 
-        star_shaped_button_assert = exists(bookmarked_star, 10)
+        star_shaped_button_assert = exists(bookmark_selected_pattern, 10)
         assert_true(self, star_shaped_button_assert, 'Star-shaped button has changed its color to blue.')
 
         bookmarked_url_assert = exists(bing_bookmark, 10)

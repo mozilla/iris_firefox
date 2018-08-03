@@ -12,6 +12,8 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test that opens a page from the History sidebar using the \'Open in a New Private ' \
                     'Window\' button from the context menu.'
+        self.test_case_id = '120122'
+        self.test_suite_id = '2000'
 
     def setup(self):
         """Test case setup
@@ -26,7 +28,6 @@ class Test(BaseTest):
         history_sidebar_mozilla = LocalWeb.MOZILLA_BOOKMARK_SMALL
         search_history_box = 'search_history_box.png'
         expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        home_icon = 'home.png'
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -47,7 +48,7 @@ class Test(BaseTest):
         click(expand_button_history_sidebar)
 
         # Open a page from the History sidebar using the 'Open in a New Private Window' button from the context menu.
-        history_sidebar_region = Region(0, find(home_icon).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
+        history_sidebar_region = Region(0, find(NavBar.HOME_BUTTON).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
         expected_5 = history_sidebar_region.exists(history_sidebar_mozilla, 10)
         assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
         history_sidebar_region.right_click(history_sidebar_mozilla, 1)

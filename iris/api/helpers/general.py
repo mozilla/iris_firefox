@@ -9,6 +9,7 @@ from iris.api.core.region import *
 from iris.api.core.screen import get_screen
 from iris.configuration.config_parser import *
 from keyboard_shortcuts import *
+from iris.api.core.firefox_ui.toolbars import NavBar, LocationBar
 
 logger = logging.getLogger(__name__)
 
@@ -34,13 +35,13 @@ def launch_firefox(path, profile=None, url=None, args=None):
 
     logger.debug('Launching Firefox with arguments: %s' % ' '.join(cmd))
     subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return
+    return cmd
 
 
 def confirm_firefox_launch(app):
     """waits for firefox to exist by waiting for the home button to be present."""
     try:
-        wait('home.png', 20)
+        wait(NavBar.HOME_BUTTON, 20)
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
@@ -50,7 +51,7 @@ def confirm_firefox_launch(app):
 def confirm_firefox_quit(app):
     try:
 
-        wait_vanish('home.png', 10)
+        wait_vanish(NavBar.HOME_BUTTON, 10)
         address_crash_reporter()
     except FindError:
         logger.error('Firefox still around - aborting test run.')
@@ -95,15 +96,16 @@ def restart_firefox(path, profile, url, args=None):
     logger.debug('Restarting Firefox.')
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit.')
+    home_pattern = NavBar.HOME_BUTTON
     try:
-        wait_vanish('home.png', 10)
+        wait_vanish(home_pattern, 10)
         # TODO: This should be made into a robust function instead of a hard coded sleep
         # Give Firefox a chance to cleanly shutdown all of its processes
         time.sleep(Settings.SYSTEM_DELAY)
         logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
         launch_firefox(path, profile, url, args)
         logger.debug('Confirming that Firefox has been relaunched')
-        if exists('home.png', 10):
+        if exists(home_pattern, 10):
             logger.debug('Successful Firefox restart performed')
         else:
             raise APIHelperError('Firefox not relaunched.')
@@ -196,15 +198,15 @@ def dont_save_password():
 
 
 def click_hamburger_menu_option(option):
-    hamburger_menu = 'hamburger_menu.png'
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
-        wait(hamburger_menu, 10)
-        region = create_region_from_image(hamburger_menu)
+        wait(hamburger_menu_pattern, 10)
+        region = create_region_from_image(hamburger_menu_pattern)
         logger.debug('hamburger menu found')
     except FindError:
         raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
-        click(hamburger_menu)
+        click(hamburger_menu_pattern)
         time.sleep(Settings.UI_DELAY)
         try:
             region.wait(option, 10)
@@ -359,8 +361,8 @@ class Option(object):
     ZOOM_TEXT_ONLY = 3
 
 
-def open_zoom_menu(option_number):
-    """Opens the Zoom menu options from the View Menu."""
+def open_zoom_menu():
+    """Open the Zoom menu from the View Menu."""
 
     view_menu = 'view_menu.png'
     if Settings.get_os() == Platform.MAC:
@@ -373,6 +375,12 @@ def open_zoom_menu(option_number):
         for i in range(2):
             type(text=Key.DOWN)
         type(text=Key.ENTER)
+
+
+def select_zoom_menu_option(option_number):
+    """Open the Zoom menu from the View Menu and select option."""
+
+    open_zoom_menu()
 
     for i in range(option_number):
         type(text=Key.DOWN)
@@ -396,28 +404,29 @@ def create_region_from_image(image):
 
 
 def create_region_for_url_bar():
-    hamburger_menu = 'hamburger_menu.png'
-    show_history = 'show_history.png'
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    show_history_pattern = LocationBar.SHOW_HISTORY_BUTTON
     select_location_bar()
-    region = create_region_from_patterns(show_history, hamburger_menu, padding_top=10, padding_bottom=15)
+    region = create_region_from_patterns(show_history_pattern, hamburger_menu_pattern,
+                                         padding_top=20, padding_bottom=20)
     return region
 
 
 def create_region_for_hamburger_menu():
-    hamburger_menu = 'hamburger_menu.png'
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     exit_menu = 'exit.png'
     help_menu = 'help.png'
     quit_menu = 'quit.png'
     try:
-        wait(hamburger_menu, 10)
-        click(hamburger_menu)
+        wait(hamburger_menu_pattern, 10)
+        click(hamburger_menu_pattern)
         time.sleep(1)
         if Settings.get_os() == Platform.LINUX:
-            region = create_region_from_patterns(None, hamburger_menu, quit_menu, None)
+            region = create_region_from_patterns(None, hamburger_menu_pattern, quit_menu, None, padding_right=20)
         elif Settings.get_os() == Platform.MAC:
-            region = create_region_from_patterns(None, hamburger_menu, help_menu, None)
+            region = create_region_from_patterns(None, hamburger_menu_pattern, help_menu, None, padding_right=20)
         else:
-            region = create_region_from_patterns(None, hamburger_menu, exit_menu, None)
+            region = create_region_from_patterns(None, hamburger_menu_pattern, exit_menu, None, padding_right=20)
     except (FindError, ValueError):
         raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
     return region
@@ -442,18 +451,18 @@ def restore_window_from_taskbar():
 
 
 def open_library_menu(option):
-    library_menu = 'library_menu.png'
+    library_menu_pattern = NavBar.LIBRARY_MENU
 
     try:
-        wait(library_menu, 10)
-        region = Region(find(library_menu).x - SCREEN_WIDTH / 4, find(library_menu).y, SCREEN_WIDTH / 4,
+        wait(library_menu_pattern, 10)
+        region = Region(find(library_menu_pattern).x - SCREEN_WIDTH / 4, find(library_menu_pattern).y, SCREEN_WIDTH / 4,
                         SCREEN_HEIGHT / 4)
         logger.debug('Library menu found')
     except FindError:
         raise APIHelperError('Can\'t find the library menu in the page, aborting test.')
     else:
         time.sleep(Settings.UI_DELAY_LONG)
-        click(library_menu)
+        click(library_menu_pattern)
         time.sleep(Settings.FX_DELAY)
         try:
             time.sleep(Settings.FX_DELAY)
@@ -595,14 +604,8 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     :return: None
     """
 
-    url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-
     # move focus in the middle of the page to be able to use the scroll
     pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
-
-    if Settings.get_os() == Platform.LINUX and nr_of_times == 1 and exists(url_bar_default_zoom_level, 10, 0.92) \
-            and zoom_type == ZoomType.IN:
-        nr_of_times = 2
 
     for i in range(nr_of_times):
         if Settings.get_os() == Platform.MAC:
@@ -619,10 +622,11 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
 
 
 def wait_for_firefox_restart():
+    home_pattern = NavBar.HOME_BUTTON
     try:
-        wait_vanish('home.png', 10)
+        wait_vanish(home_pattern, 10)
         logger.debug('Firefox successfully closed.')
-        wait('home.png', 20)
+        wait(home_pattern, 20)
         logger.debug('Successful Firefox restart performed.')
     except FindError:
         raise APIHelperError('Firefox restart has not been performed, aborting.')

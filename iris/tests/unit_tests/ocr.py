@@ -64,7 +64,7 @@ class Test(BaseTest):
         assert_true(self, left_half_page_region.exists('Find in This Page'), 'Phrase found')
         assert_true(self, left_half_page_region.exists('New Private Window'), 'Phrase found')
 
-        click('hamburger_menu.png')
+        click(NavBar.HAMBURGER_MENU)
         time.sleep(1)
 
         assert_true(self, right_half_page_region.exists('Zoom'), 'Word found')
