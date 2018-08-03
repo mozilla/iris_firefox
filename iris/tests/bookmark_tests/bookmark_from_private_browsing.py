@@ -22,7 +22,7 @@ class Test(BaseTest):
         never_remember_history = 'never_remember_history.png'
         url = 'www.amazon.com'
         amazon_home = 'amazon.png'
-        star_button = 'bookmark_star.png'
+        bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
 
         navigate('about:preferences#privacy')
 
@@ -58,9 +58,9 @@ class Test(BaseTest):
         assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
 
         try:
-            wait(star_button, 10)
+            wait(bookmark_button_pattern, 10)
             logger.debug('Bookmark star is present on the page.')
-            click(star_button)
+            click(bookmark_button_pattern)
         except FindError:
             raise FindError('Bookmark star is not present on the page, aborting.')
 
