@@ -65,9 +65,17 @@ class Test(BaseTest):
         expected = region.exists(google_on_off_button_private_window, 10)
         assert_true(self, expected, 'The\'Google\' one-off button found.')
 
-        key_down(Key.CTRL)
+        if Settings.get_os() == Platform.MAC:
+            key_down(Key.CMD)
+        else:
+            key_down(Key.CTRL)
+
         click(google_on_off_button_private_window)
-        key_up(Key.CTRL)
+
+        if Settings.get_os() == Platform.MAC:
+            key_up(Key.CMD)
+        else:
+            key_up(Key.CTRL)
 
         # move focus to the new tab opened.
         next_tab()
