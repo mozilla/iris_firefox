@@ -9,7 +9,7 @@ from iris.api.core.region import *
 from iris.api.core.screen import get_screen
 from iris.configuration.config_parser import *
 from keyboard_shortcuts import *
-from iris.api.core.firefox_ui.toolbars import NavBar
+from iris.api.core.firefox_ui.toolbars import NavBar, LocationBar
 
 logger = logging.getLogger(__name__)
 
@@ -405,9 +405,10 @@ def create_region_from_image(image):
 
 def create_region_for_url_bar():
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    show_history = 'show_history.png'
+    show_history_pattern = LocationBar.SHOW_HISTORY_BUTTON
     select_location_bar()
-    region = create_region_from_patterns(show_history, hamburger_menu_pattern, padding_top=20, padding_bottom=20)
+    region = create_region_from_patterns(show_history_pattern, hamburger_menu_pattern,
+                                         padding_top=20, padding_bottom=20)
     return region
 
 

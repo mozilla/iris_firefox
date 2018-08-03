@@ -18,7 +18,6 @@ class Test(BaseTest):
         amazon_favicon = 'amazon_favicon.png'
         view_bookmarks_toolbar = 'view_bookmarks_toolbar.png'
         active_toolbar = 'toolbar_is_active.png'
-        star_button = 'bookmark_star.png'
         done = 'done_button.png'
         modified_bookmark = 'modified_bookmark.png'
         modified_bookmark_2 = 'modified_bookmark_2.png'
@@ -26,6 +25,7 @@ class Test(BaseTest):
         save = 'save_bookmark_name.png'
         toolbar_bookmark = 'toolbar_bookmark.png'
         modified_toolbar_bookmark = 'modified_toolbar_bookmark.png'
+        bookmark_button_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         navigate('www.amazon.com')
 
@@ -38,13 +38,13 @@ class Test(BaseTest):
         bookmark_page()
 
         try:
-            wait(star_button, 10)
+            wait(bookmark_button_pattern, 10)
             logger.debug('Star button is present on the page.')
         except FindError:
             logger.error('Can\'t find the Star button, aborting.')
 
         # Change the bookmark name fromm the "Edit This Bookmark panel"
-        click(star_button)
+        click(bookmark_button_pattern)
         paste('iris')
 
         button_assert = exists(done, 10)
