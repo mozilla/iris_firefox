@@ -25,43 +25,49 @@ class Test(BaseTest):
         moz = 'moz.png'
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
-
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
-        # The minimize_window() method would minimize the browser window to the application launch bar for MAC OSes.
-        # Pressing the \'minimize'\ control button would do the same thing making the following functionality unabled
-        # to be tested on MAC.
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             minimize_window()
+        else:
+            reset_mouse()
+            window_controls_pattern = Pattern('window_controls.png')
+            width, height = get_image_size(window_controls_pattern)
+            maximize_button = window_controls_pattern.target_offset(width - 10, height / 2)
 
-            expected = exists(window_controls_maximize, 10)
-            assert_true(self, expected, 'Window successfully minimized.')
+            key_down(Key.ALT)
+            click(maximize_button)
+            key_up(Key.ALT)
 
-            select_location_bar()
-            paste('moz')
+        expected = exists(window_controls_maximize, 10)
+        assert_true(self, expected, 'Window successfully minimized.')
 
-            expected = region.exists(moz, 10)
-            assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
+        select_location_bar()
+        paste('moz')
 
-            expected = region.exists(search_settings, 10)
-            assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
+        expected = region.exists(moz, 10)
+        assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
 
-            expected = region.exists(one_off_searches_minimized_browser, 10)
-            assert_true(self, expected, 'The one-off searches are displayed in the awesome bar.')
+        expected = region.exists(search_settings, 10)
+        assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
 
-            type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+        expected = region.exists(one_off_searches_minimized_browser, 10)
+        assert_true(self, expected, 'The one-off searches are displayed in the awesome bar.')
 
-            expected = region.exists(magnifying_glass, 10)
-            assert_true(self, expected, 'The default search engine is \'Google\', page successfully loaded.')
+        type(Key.ENTER)
+        time.sleep(DEFAULT_UI_DELAY_LONG)
 
-            expected = region.exists('Moz', 10)
-            assert_true(self, expected, 'Searched item is successfully found in the page opened by the default search '
-                                        'engine.')
-            maximize_window()
+        expected = region.exists(magnifying_glass, 10)
+        assert_true(self, expected, 'The default search engine is \'Google\', page successfully loaded.')
+
+        expected = region.exists('Moz', 10)
+        assert_true(self, expected, 'Searched item is successfully found in the page opened by the default search '
+                                    'engine.')
+        reset_mouse()
+        maximize_window()
 
         if Settings.get_os() == Platform.LINUX:
             reset_mouse()
