@@ -65,7 +65,7 @@ def convert_hi_res_images():
     for root, dirs, files in os.walk(get_module_dir()):
         for file_name in files:
             if file_name.endswith('.png'):
-                if get_images_path() in root or 'common' in root or 'local_web' in root:
+                if 'images' in root or 'local_web' in root:
                     if '@' in file_name:
                         logger.debug('Found hi-resolution image at: %s' % os.path.join(root, file_name))
                         temp = file_name.split('@')
