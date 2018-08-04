@@ -10,6 +10,7 @@ import numpy as np
 
 from location import Location
 from util.core_helper import get_module_dir, get_images_path
+from util.parse_args import parse_args
 from settings import Settings
 
 try:
@@ -46,6 +47,8 @@ def _parse_name(full_name):
 
 
 def load_all_patterns():
+    if parse_args().resize:
+        convert_hi_res_images()
     result_list = []
     for root, dirs, files in os.walk(get_module_dir()):
         for file_name in files:
@@ -56,6 +59,26 @@ def load_all_patterns():
                     pattern = {'name': pattern_name, 'path': pattern_path, 'scale': pattern_scale}
                     result_list.append(pattern)
     return result_list
+
+
+def convert_hi_res_images():
+    for root, dirs, files in os.walk(get_module_dir()):
+        for file_name in files:
+            if file_name.endswith('.png'):
+                if 'images' in root or 'local_web' in root:
+                    if '@' in file_name:
+                        logger.debug('Found hi-resolution image at: %s' % os.path.join(root, file_name))
+                        temp = file_name.split('@')
+                        name = temp[0]
+                        scale = int(temp[1].split('x')[0])
+                        new_name = '%s.png' % name
+                        img = Image.open(os.path.join(root, file_name))
+                        logger.debug('Resizing image from %sx scale' % scale)
+                        new_img = img.resize((img.width/scale, img.height/scale), Image.ANTIALIAS)
+                        logger.debug('Creating newly converted image file at: %s' % os.path.join(root, new_name))
+                        new_img.save(os.path.join(root, new_name))
+                        logger.debug('Removing unused image at: %s' % os.path.join(root, file_name))
+                        os.remove(os.path.join(root, file_name))
 
 
 _images = load_all_patterns()
