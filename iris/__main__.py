@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import glob
+import importlib
 import json
 import logging
 import os
@@ -24,6 +25,7 @@ from api.core.platform import Platform
 from api.core.settings import Settings
 from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir
 from api.core.util.parse_args import parse_args
+from api.core.util.test_loader import get_tests_from_directory, load_tests
 from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
@@ -51,15 +53,15 @@ class Iris(object):
 
     def __init__(self):
         self.args = parse_args()
-        self.create_run_directory()
-        initialize_logger(LOG_FILENAME, self.args.level)
-        self.process_list = []
-        self.check_keyboard_state()
-        self.init_tesseract_path()
-        self.check_7zip()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = Settings.get_os()
+        self.create_run_directory()
+        initialize_logger(LOG_FILENAME, self.args.level)
+        self.check_keyboard_state()
+        self.init_tesseract_path()
+        self.check_7zip()
+        self.process_list = []
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.start_local_web_server(self.local_web_root, self.args.port)
@@ -67,6 +69,8 @@ class Iris(object):
         self.clear_profile_cache()
         self.update_run_index()
         self.update_run_log()
+        load_tests(self)
+        self.create_test_json()
         run(self)
 
     def main(self):
@@ -204,6 +208,53 @@ class Iris(object):
 
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
+
+    def create_test_json(self):
+        self.all_tests = []
+        self.all_packages = []
+        self.all_tests, self.all_packages = get_tests_from_directory('')
+
+        json_file = {}
+        for package in self.all_packages:
+            sys.path.append(package)
+            json_file[os.path.basename(package)] = []
+
+        for index, module in enumerate(self.all_tests, start=1):
+            try:
+                current_module = importlib.import_module(module)
+                current_test = current_module.Test(self)
+                current_package = os.path.basename(os.path.dirname(current_module.__file__))
+
+                test_object = {}
+                test_object['name'] = module
+                test_object['module'] = current_module.__file__
+                test_object['meta'] = current_test.meta
+                test_object['package'] = current_package
+
+                if current_test.fx_version is '':
+                    test_object['fx_version'] = 'all'
+                else:
+                    test_object['fx_version'] = current_test.fx_version
+
+                result_list = []
+                for platform in Platform.LIST:
+                    if platform not in current_test.exclude:
+                        result_list.append(platform)
+
+                test_object['platform'] = result_list
+                test_object['channel'] = current_test.channel
+                test_object['enabled'] = not self.os in current_test.exclude
+                test_object['test_case_id'] = current_test.test_case_id
+                test_object['test_suite_id'] = current_test.test_suite_id
+                test_object['blocked_by'] = current_test.blocked_by
+                json_file[current_package].append(test_object)
+            except AttributeError:
+                logger.warning('[%s] is not a test file. Skipping...', module)
+
+        test_log_file = os.path.join(self.args.workdir, 'tests.json')
+        with open(test_log_file, 'w') as f:
+            json.dump(json_file, f, sort_keys=True, indent=True)
+
 
     def start_local_web_server(self, path, port):
         """
