@@ -16,7 +16,6 @@ class Test(BaseTest):
     def run(self):
         moz = 'moz.png'
         url = LocalWeb.FIREFOX_TEST_SITE
-        one_off_searches = 'one_off_searches.png'
         wikipedia_one_off_button = 'wikipedia_one_off_button.png'
         set_as_default_search_engine = 'set_as_default_search_engine.png'
         search_in_new_tab = 'search_in_new_tab.png'
@@ -48,9 +47,6 @@ class Test(BaseTest):
 
         expected = region.exists(moz, 10)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
-
-        expected = region.exists(one_off_searches, 10)
-        assert_true(self, expected, 'The one-off searches are displayed in the awesome bar.')
 
         hover(wikipedia_one_off_button)
 
