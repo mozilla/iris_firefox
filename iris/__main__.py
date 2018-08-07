@@ -91,6 +91,8 @@ class Iris(object):
         self.update_run_index()
         self.update_run_log()
         load_tests(self)
+        self.current_test = 0;
+        self.total_tests = len(self.test_list)
 
     def get_firefox(self):
         global tmp_dir
