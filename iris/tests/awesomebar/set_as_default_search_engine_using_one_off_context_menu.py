@@ -74,6 +74,6 @@ class Test(BaseTest):
         expected = exists(wikipedia_search_results, 10)
         assert_true(self, expected, 'Wikipedia results are opened.')
 
-        expected = exists('Test', 10)
+        expected = exists('test', 10)
         assert_true(self, expected, 'Searched item is successfully found in the page opened by the wikipedia search '
                                     'engine.')
