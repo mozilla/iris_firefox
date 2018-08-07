@@ -33,6 +33,7 @@ def run(app):
 
         try:
             current = current_module.Test(app)
+            app.current_test += 1
         except AttributeError:
             test_failures.append(module)
             logger.warning('[%s] is not a test file. Skipping...', module)
