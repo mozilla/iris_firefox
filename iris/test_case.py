@@ -149,8 +149,12 @@ class BaseTest(object):
         """Set Firefox as the default browser on the system."""
         self.set_default_browser = False
 
-        """Launch default window with the URL specified."""
-        self.url = self.app.base_local_web_url
+        """Launch default window with the URL specified.
+        Currently this is used by Iris, so it should not be overridden.
+        """
+        test_name = os.path.splitext(os.path.split(get_current_module())[1])[0]
+        parameters = '?current=%s&total=%s&title=%s' % (self.app.current_test, self.app.total_tests, test_name)
+        self.url = self.app.base_local_web_url + parameters
 
         """Launch window with dimensions of width and height, separated by the 
         lowercase letter x.
