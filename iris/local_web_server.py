@@ -65,7 +65,11 @@ class LocalWebServer(object):
         self.port = port
         self.web_root = path
         self.host = '127.0.0.1'
+        self.enabled = True
         self.start()
+
+    def stop(self):
+        self.enabled = False
 
     def start(self):
         os.chdir(self.web_root)
@@ -78,6 +82,14 @@ class LocalWebServer(object):
             httpd = server(server_address, CustomHandler)
             sock_name = httpd.socket.getsockname()
             logger.info('Serving HTTP on %s port %s.' % (sock_name[0], sock_name[1]))
-            httpd.serve_forever()
-        except Exception:
+            while self.enabled:
+                httpd.handle_request()
+        except IOError:
             raise IOError('Unable to open port %s on %s' % (self.port, self.host))
+        except TypeError as e:
+            # Ignore intermittent error message during process shutdown.
+            error_string = 'cleanup_handler() takes no arguments (2 given)'
+            if error_string in e.args:
+                logger.debug('Unable to call server cleanup handler')
+            else:
+                raise TypeError(e.args)

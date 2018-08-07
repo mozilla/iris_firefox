@@ -8,6 +8,7 @@ import os
 
 import iris.firefox.downloader as fd
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -41,7 +42,7 @@ def parse_args():
     parser.add_argument('-d', '--directory',
                         help='Directory where tests are located',
                         metavar='test_directory',
-                        default=os.path.curdir)
+                        default=os.path.join(_get_module_dir(), 'iris', 'tests'))
     parser.add_argument('-e', '--email',
                         help='Submit email report',
                         action='store_true')
@@ -90,3 +91,7 @@ def parse_args():
                         help='Convert hi-res images to normal',
                         action='store_true')
     return parser.parse_args()
+
+
+def _get_module_dir():
+    return os.path.realpath(os.path.split(__file__)[0] + '/../../../..')
