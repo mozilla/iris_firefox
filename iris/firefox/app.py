@@ -15,6 +15,7 @@ class FirefoxApp(object):
     RELEASE = 'release'
     NIGHTLY = 'nightly'
     ESR = 'esr'
+    CHANNELS = [BETA, ESR, NIGHTLY, RELEASE]
 
     def __init__(self, directory, platform, is_downloaded):
 

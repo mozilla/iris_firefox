@@ -52,41 +52,49 @@ def main():
 class Iris(object):
 
     def __init__(self):
+        cleanup.init()
+        Iris.fix_terminal_encoding()
+        self.verify_config()
+        self.initialize_platform()
+        self.control_center()
+        self.start_local_web_server(self.local_web_root, self.args.port)
+        self.initialize_run()
+        run(self)
+
+    def verify_config(self):
+        self.check_keyboard_state()
+        self.init_tesseract_path()
+        self.check_7zip()
+
+    def initialize_platform(self):
         self.args = parse_args()
         self.module_dir = get_module_dir()
         self.platform = get_platform()
         self.os = Settings.get_os()
+        self.create_working_directory()
         self.create_run_directory()
         initialize_logger(LOG_FILENAME, self.args.level)
-        self.check_keyboard_state()
-        self.init_tesseract_path()
-        self.check_7zip()
+        self.clear_profile_cache()
         self.process_list = []
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
-        self.start_local_web_server(self.local_web_root, self.args.port)
-        self.main()
-        self.clear_profile_cache()
+        self.create_test_json()
+
+    def control_center(self):
+        """
+        Placeholder for future work.
+        """
+        return
+
+    def initialize_run(self):
+        self.get_firefox()
         self.update_run_index()
         self.update_run_log()
         load_tests(self)
-        self.create_test_json()
-        run(self)
 
-    def main(self):
+    def get_firefox(self):
         global tmp_dir
-
-        logger.debug('Command arguments: %s' % self.args)
-
-        cleanup.init()
-        Iris.fix_terminal_encoding()
         tmp_dir = self.__create_tempdir()
-
-        # Create workdir (usually ~/.iris, used for caching etc.)
-        # Assumes that no previous code will write to it.
-        if not os.path.exists(self.args.workdir):
-            logger.debug('Creating working directory %s' % self.args.workdir)
-            os.makedirs(self.args.workdir)
 
         if self.args.firefox == 'local':
             # Use default Firefox installation
@@ -108,7 +116,12 @@ class Iris(object):
         self.version = self.fx_app.version
         self.build_id = self.fx_app.build_id
 
-        return 0
+    def create_working_directory(self):
+        # Create workdir (usually ~/.iris, used for caching etc.)
+        # Assumes that no previous code will write to it.
+        if not os.path.exists(self.args.workdir):
+            logger.debug('Creating working directory %s' % self.args.workdir)
+            os.makedirs(self.args.workdir)
 
     def create_run_directory(self):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
@@ -213,6 +226,7 @@ class Iris(object):
         self.all_tests = []
         self.all_packages = []
         self.all_tests, self.all_packages = get_tests_from_directory('')
+        self.fx_channel = ''
 
         json_file = {}
         for package in self.all_packages:
@@ -243,18 +257,18 @@ class Iris(object):
 
                 test_object['platform'] = result_list
                 test_object['channel'] = current_test.channel
-                test_object['enabled'] = not self.os in current_test.exclude
+                test_object['enabled'] = self.os not in current_test.exclude
                 test_object['test_case_id'] = current_test.test_case_id
                 test_object['test_suite_id'] = current_test.test_suite_id
                 test_object['blocked_by'] = current_test.blocked_by
                 json_file[current_package].append(test_object)
-            except AttributeError:
+            except AttributeError as e:
+                print e.args
                 logger.warning('[%s] is not a test file. Skipping...', module)
 
-        test_log_file = os.path.join(self.args.workdir, 'tests.json')
+        test_log_file = os.path.join(self.args.workdir, 'all_tests.json')
         with open(test_log_file, 'w') as f:
             json.dump(json_file, f, sort_keys=True, indent=True)
-
 
     def start_local_web_server(self, path, port):
         """
@@ -287,6 +301,7 @@ class Iris(object):
         for process in self.process_list:
             logger.debug('Terminating process.')
             process.terminate()
+            process.join()
         sys.exit(code)
 
     def check_keyboard_state(self):
