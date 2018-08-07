@@ -15,7 +15,6 @@ class Test(BaseTest):
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
         one_off_searches_minimized_browser = 'one_off_searches_minimized_browser.png'
-        one_off_searches = 'one_off_searches.png'
         search_settings = 'search_settings.png'
         window_controls_restore = 'window_controls_restore.png'
         magnifying_glass = 'magnifying_glass.png'
@@ -83,9 +82,6 @@ class Test(BaseTest):
 
         expected = region.exists(search_settings, 10)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
-
-        expected = region.exists(one_off_searches, 10)
-        assert_true(self, expected, 'The one-off searches are displayed in the awesome bar.')
 
         hover(wikipedia_one_off_button)
 
