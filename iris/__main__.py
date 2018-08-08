@@ -25,7 +25,7 @@ from api.core.platform import Platform
 from api.core.settings import Settings
 from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir
 from api.core.util.parse_args import parse_args
-from api.core.util.test_loader import scan_all_tests, load_tests, get_tests_from_object
+from api.core.util.test_loader import load_tests, scan_all_tests
 from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
