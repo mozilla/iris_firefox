@@ -25,7 +25,7 @@ from api.core.platform import Platform
 from api.core.settings import Settings
 from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir
 from api.core.util.parse_args import parse_args
-from api.core.util.test_loader import get_tests_from_directory, load_tests
+from api.core.util.test_loader import load_tests, scan_all_tests
 from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
@@ -57,7 +57,6 @@ class Iris(object):
         self.verify_config()
         self.initialize_platform()
         self.control_center()
-        self.start_local_web_server(self.local_web_root, self.args.port)
         self.initialize_run()
         run(self)
 
@@ -87,11 +86,12 @@ class Iris(object):
         return
 
     def initialize_run(self):
+        self.start_local_web_server(self.local_web_root, self.args.port)
         self.get_firefox()
         self.update_run_index()
         self.update_run_log()
         load_tests(self)
-        self.current_test = 0;
+        self.current_test = 0
         self.total_tests = len(self.test_list)
 
     def get_firefox(self):
@@ -227,14 +227,12 @@ class Iris(object):
     def create_test_json(self):
         self.all_tests = []
         self.all_packages = []
-        self.all_tests, self.all_packages = get_tests_from_directory('')
-        self.fx_channel = ''
-
-        json_file = {}
+        self.all_tests, self.all_packages = scan_all_tests(self.args.directory)
+        self.master_test_list = {}
         for package in self.all_packages:
-            sys.path.append(package)
-            json_file[os.path.basename(package)] = []
+            self.master_test_list[os.path.basename(package)] = []
 
+        self.fx_channel = ''
         for index, module in enumerate(self.all_tests, start=1):
             try:
                 current_module = importlib.import_module(module)
@@ -263,14 +261,14 @@ class Iris(object):
                 test_object['test_case_id'] = current_test.test_case_id
                 test_object['test_suite_id'] = current_test.test_suite_id
                 test_object['blocked_by'] = current_test.blocked_by
-                json_file[current_package].append(test_object)
+                self.master_test_list[current_package].append(test_object)
             except AttributeError as e:
                 print e.args
                 logger.warning('[%s] is not a test file. Skipping...', module)
 
         test_log_file = os.path.join(self.args.workdir, 'all_tests.json')
         with open(test_log_file, 'w') as f:
-            json.dump(json_file, f, sort_keys=True, indent=True)
+            json.dump(self.master_test_list, f, sort_keys=True, indent=True)
 
     def start_local_web_server(self, path, port):
         """
@@ -289,10 +287,14 @@ class Iris(object):
     def write_test_failures(self, failures):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
         path = os.path.join(master_run_directory, 'last_fail.txt')
+
         if len(failures):
             last_fail = open(path, 'w')
-            for test in failures:
-                last_fail.write(test + '\n')
+            for item in failures:
+                    for package in self.master_test_list:
+                        for test in self.master_test_list[package]:
+                            if test["name"] in item:
+                                last_fail.write(test["module"] + '\n')
             last_fail.close()
 
     def finish(self, code=0):
