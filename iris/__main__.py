@@ -54,7 +54,7 @@ class Iris(object):
     def __init__(self):
         cleanup.init()
         Iris.fix_terminal_encoding()
-        #self.verify_config()
+        self.verify_config()
         self.initialize_platform()
         self.control_center()
         self.start_local_web_server(self.local_web_root, self.args.port)
