@@ -71,10 +71,11 @@ def get_tests_from_package(app):
     test_list = []
     test_packages = [str(item).strip() for item in app.args.directory.split(',')]
     for package in test_packages:
-        if app.master_test_list[package]:
-            for test in app.master_test_list[package]:
-                test_list.append(test["name"])
-        else:
+        try:
+            if app.master_test_list[package]:
+                for test in app.master_test_list[package]:
+                    test_list.append(test["name"])
+        except KeyError:
             logger.warning('Could not locate %s' % package)
     if len(test_list) == 0:
         logger.error('No tests to run. Exiting program ...')
