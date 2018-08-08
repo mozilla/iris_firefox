@@ -49,10 +49,13 @@ class Test(BaseTest):
         new_tab()
 
         select_location_bar()
-        paste('o')
+        paste('m')
 
         expected = region.exists(search_suggestion_bookmarked_tab, 10)
         assert_true(self, expected, 'Bookmarked page found between search suggestions.')
+
+        select_location_bar()
+        paste('o')
 
         expected = region.exists(search_suggestion_opened_tab, 10)
         assert_true(self, expected, 'Opened tab found between search suggestions.')
