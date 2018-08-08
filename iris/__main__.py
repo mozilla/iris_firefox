@@ -57,7 +57,6 @@ class Iris(object):
         self.verify_config()
         self.initialize_platform()
         self.control_center()
-        self.start_local_web_server(self.local_web_root, self.args.port)
         self.initialize_run()
         run(self)
 
@@ -87,11 +86,12 @@ class Iris(object):
         return
 
     def initialize_run(self):
+        self.start_local_web_server(self.local_web_root, self.args.port)
         self.get_firefox()
         self.update_run_index()
         self.update_run_log()
         load_tests(self)
-        self.current_test = 0;
+        self.current_test = 0
         self.total_tests = len(self.test_list)
 
     def get_firefox(self):
@@ -230,7 +230,6 @@ class Iris(object):
         self.all_tests, self.all_packages = scan_all_tests(self.args.directory)
         self.master_test_list = {}
         for package in self.all_packages:
-            #sys.path.append(package)
             self.master_test_list[os.path.basename(package)] = []
 
         self.fx_channel = ''
