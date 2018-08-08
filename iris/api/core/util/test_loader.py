@@ -44,50 +44,81 @@ def get_tests_from_text_file(arg):
     return test_list, test_packages
 
 
-def get_tests_from_list(arg):
+def get_tests_from_list(app):
     test_list = []
     test_packages = []
-    tests = [str(item + ('.py' if not item.endswith('.py') else '')).strip() for item in arg.split(',')]
-    tests_directory = parse_args().directory
+    tests = [str(item + ('.py' if not item.endswith('.py') else '')).strip() for item in app.args.test.split(',')]
+    for name in tests:
+        for package in app.master_test_list:
+            for test in app.master_test_list[package]:
+                if test["name"] in name:
+                    test_list.append(test["name"])
+                    if package not in test_packages:
+                        test_packages.append(package)
+        if os.path.splitext(name)[0] not in test_list:
+            logger.warning('Could not locate %s' % name)
 
-    for test in tests:
-        for dir_path, sub_dirs, all_files in os.walk(tests_directory):
-            if test in all_files:
-                test_list.append(os.path.splitext(test)[0])
-                test_packages.append(os.path.join(os.path.split(__file__)[0], dir_path.strip()))
-        if os.path.splitext(test)[0] not in test_list:
-            logger.warning('Could not locate %s' % test)
     if len(test_list) == 0:
         logger.error('No tests to run. Exiting program ...')
     return test_list, test_packages
 
 
-def get_tests_from_directory(arg):
+def get_tests_from_directory(app):
+    return app.all_tests, app.all_packages
+
+
+def get_tests_from_package(app):
+    test_list = []
+    test_packages = [str(item).strip() for item in app.args.directory.split(',')]
+    for package in test_packages:
+        try:
+            if app.master_test_list[package]:
+                for test in app.master_test_list[package]:
+                    test_list.append(test["name"])
+        except KeyError:
+            logger.warning('Could not locate %s' % package)
+    if len(test_list) == 0:
+        logger.error('No tests to run. Exiting program ...')
+    return test_list, test_packages
+
+
+def get_tests_from_object(obj):
     test_list = []
     test_packages = []
+    for package in obj:
+        for test in obj[package]:
+            test_list.append(test['name'])
+            module = os.path.dirname(test['module'])
+        if module not in test_packages:
+            test_packages.append(module)
+    return test_list, test_packages
+
+
+def scan_all_tests(arg):
+    test_list = []
+    test_packages = []
+
     if os.path.isdir(arg):
         tests_directory = arg
     else:
-        tests_root_folder = os.path.join(get_module_dir(), 'iris', 'tests')
-        tests_directory = os.path.join(tests_root_folder, arg.strip())
+        tests_directory = os.path.join(get_module_dir(), 'iris', 'tests')
 
-    if os.path.isdir(tests_directory):
-        logger.debug('Path %s found. Checking content ...', tests_directory)
-        for dir_path, sub_dirs, all_files in os.walk(tests_directory):
-            for current_file in all_files:
-                if current_file.endswith('.py') and not current_file.startswith('__'):
-                    test_list.append(os.path.splitext(current_file)[0])
-                    if dir_path not in test_packages:
-                        test_packages.append(dir_path)
-        if len(test_list) == 0:
-            logger.error('Directory %s does not contain test files. Exiting program ...' % tests_directory)
-            return test_list, test_packages
-        else:
-            logger.debug('Test packages: %s', test_packages)
-            logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, test_list)))
-            return test_list, test_packages
+    logger.debug('Path %s found. Checking content ...', tests_directory)
+    for dir_path, sub_dirs, all_files in os.walk(tests_directory):
+        for current_file in all_files:
+            if current_file.endswith('.py') and not current_file.startswith('__'):
+                test_list.append(os.path.splitext(current_file)[0])
+                if dir_path not in test_packages:
+                    test_packages.append(dir_path)
+
+    if len(test_list) == 0:
+        logger.error('Directory %s does not contain test files. Exiting program ...' % tests_directory)
+        return test_list, test_packages
     else:
-        logger.error('Path: %s does not exist. Exiting program ...' % tests_directory)
+        logger.debug('Test packages: %s', test_packages)
+        logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, test_list)))
+        for package in test_packages:
+            sys.path.append(package)
         return test_list, test_packages
 
 
@@ -114,12 +145,12 @@ def load_tests(app):
         if app.args.test.endswith('.txt'):
             app.test_list, app.test_packages = get_tests_from_text_file(app.args.test)
         else:
-            app.test_list, app.test_packages = get_tests_from_list(app.args.test)
+            app.test_list, app.test_packages = get_tests_from_list(app)
     elif app.args.directory:
-        app.test_list, app.test_packages = get_tests_from_directory(app.args.directory)
-
-    for package in app.test_packages:
-        sys.path.append(package)
+        if os.path.exists(app.args.directory):
+            app.test_list, app.test_packages = get_tests_from_directory(app)
+        else:
+            app.test_list, app.test_packages = get_tests_from_package(app)
 
     if len(app.test_list) == 0:
         app.finish(code=1)
