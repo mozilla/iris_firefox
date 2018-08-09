@@ -15,17 +15,10 @@ class Test(BaseTest):
         self.test_suite_id = '75'
 
     def run(self):
-        url = 'www.amazon.com'
-        amazon_home = 'amazon.png'
+
         bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
 
-        navigate(url)
-
-        amazon_banner_assert = exists(amazon_home, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
-
-        nav_bar_favicon_assert = exists('amazon_favicon.png', 15)
-        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         try:
             wait(bookmark_button_pattern, 10)
