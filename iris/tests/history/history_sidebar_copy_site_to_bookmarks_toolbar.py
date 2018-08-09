@@ -22,11 +22,11 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box = 'search_history_box.png'
-        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        view_bookmarks_toolbar = 'view_bookmarks_toolbar.png'
-        toolbar_enabled = 'toolbar_is_active.png'
-        bookmarks_toolbar_mozilla = 'bookmarks_toolbar_mozilla.png'
+        search_history_box_pattern = Pattern('search_history_box.png')
+        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
+        bookmarks_toolbar_mozilla_pattern = Pattern('bookmarks_toolbar_mozilla.png')
 
         # Open a page to create some history.
         new_tab()
@@ -37,16 +37,16 @@ class Test(BaseTest):
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
-        expected_2 = exists(toolbar_enabled, 10)
+        expected_2 = exists(bookmarks_toolbar_most_visited_pattern, 10)
         assert_true(self, expected_2, 'Bookmarks Toolbar has been activated.')
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
+        expected_3 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
+        expected_4 = exists(expand_button_history_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
-        click(expand_button_history_sidebar)
+        click(expand_button_history_sidebar_pattern)
 
         # Copy a website from the History sidebar and paste it to the Bookmarks toolbar.
         expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
@@ -55,10 +55,10 @@ class Test(BaseTest):
         right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
         type(text='c')
         history_sidebar()
-        right_click(toolbar_enabled)
+        right_click(bookmarks_toolbar_most_visited_pattern)
         type(text='p')
         if Settings.is_mac():
-            expected_6 = exists(bookmarks_toolbar_mozilla)
+            expected_6 = exists(bookmarks_toolbar_mozilla_pattern)
         else:
             expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL)
         assert_true(self, expected_6, 'Mozilla page was copied successfully to the Bookmarks toolbar.')

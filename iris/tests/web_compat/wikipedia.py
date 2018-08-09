@@ -13,40 +13,39 @@ class Test(BaseTest):
 
     def run(self):
         url = 'www.wikipedia.org'
-        page_title = 'wikipedia.png'
-        iris_text = 'wikipedia_iris.png'
+        page_title_pattern = Pattern('wikipedia.png')
+        iris_text_pattern = Pattern('wikipedia_iris.png')
         keyword = 'iris'
         navigate(url)
 
         try:
-            wait(page_title, 10)
+            wait(page_title_pattern, 10)
             logger.debug('Page is successfully loaded')
         except (FindError, ValueError):
-            logger.error('Can\'t find Wikipedia image in page, aborting test.')
-            return
+            raise FindError('Can\'t find Wikipedia image in page, aborting test.')
 
         logger.debug('Search in Wikipedia with default English language')
         paste(keyword)
         type(Key.ENTER)
 
         try:
-            wait(iris_text, 10)
+            wait(iris_text_pattern, 10)
             logger.debug('Search is successfully loaded')
         except (FindError, ValueError):
-            logger.error('Can\'t find search image in page')
+            raise FindError('Can\'t find search image in page')
 
         logger.debug('Scroll down')
         for x in range(10):
             scroll_down()
 
-        scroll_down_assert = exists(iris_text, 1)
+        scroll_down_assert = exists(iris_text_pattern, 1)
         assert_false(self, scroll_down_assert, 'Iris text was found and scroll down was performed')
 
         logger.debug('Scroll up')
         for x in range(10):
             scroll_up()
 
-        scroll_up_assert = exists(iris_text, 1)
+        scroll_up_assert = exists(iris_text_pattern, 1)
         assert_true(self, scroll_up_assert, 'Scroll was successfully performed')
 
         logger.debug('Page was scrolled back up')
@@ -54,11 +53,10 @@ class Test(BaseTest):
         logger.debug('Navigate back')
 
         try:
-            wait(page_title, 10)
+            wait(page_title_pattern, 10)
             logger.debug('Page is successfully loaded')
         except (FindError, ValueError):
-            logger.error('Can\'t find Wikipedia image in page, aborting test.')
-            return
+            raise FindError('Can\'t find Wikipedia image in page, aborting test.')
         else:
             logger.debug('Change language to Spanish')
             paste(keyword)
@@ -78,8 +76,8 @@ class Test(BaseTest):
                 type(Key.TAB)
                 type(Key.ENTER)
 
-            spanish_text_assert = exists('wikipedia_spanish_page.png', 10)
+            spanish_text_assert = exists(Pattern('wikipedia_spanish_page.png'), 10)
             assert_true(self, spanish_text_assert, 'Wikipedia Spanish page is loaded')
 
-            iris_spanish_search_bar_assert = exists('wikipedia_spanish_search.png', 10)
+            iris_spanish_search_bar_assert = exists(Pattern('wikipedia_spanish_search.png'), 10)
             assert_true(self, iris_spanish_search_bar_assert, 'Spanish search bar is displayed in page')

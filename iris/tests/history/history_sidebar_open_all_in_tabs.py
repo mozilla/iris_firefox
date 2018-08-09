@@ -22,10 +22,10 @@ class Test(BaseTest):
         return
 
     def run(self):
-        firefox_privacy_logo = 'firefox_privacy_logo.png'
-        search_history_box = 'search_history_box.png'
-        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        iris_logo = 'iris_logo.png'
+        firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo.png')
+        search_history_box_pattern = Pattern('search_history_box.png')
+        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        iris_logo_pattern = Pattern('iris_logo.png')
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -39,13 +39,13 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
+        expected_3 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
+        expected_4 = exists(expand_button_history_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
 
         # 'Open All in Tabs' from the context menu.
-        right_click(expand_button_history_sidebar)
+        right_click(expand_button_history_sidebar_pattern)
         time.sleep(Settings.FX_DELAY)
         type(text='o')
 
@@ -53,10 +53,10 @@ class Test(BaseTest):
         expected_5 = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected_5, 'Firefox page loaded successfully.')
         next_tab()
-        expected_6 = exists(firefox_privacy_logo, 10)
+        expected_6 = exists(firefox_privacy_logo_pattern, 10)
         assert_true(self, expected_6, 'Firefox Privacy Notice loaded successfully.')
         next_tab()
-        expected_7 = exists(iris_logo, 10)
+        expected_7 = exists(iris_logo_pattern, 10)
         assert_true(self, expected_7, 'Iris local page loaded successfully.')
         next_tab()
         expected_8 = exists(LocalWeb.MOZILLA_LOGO, 10)

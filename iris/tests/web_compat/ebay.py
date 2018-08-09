@@ -11,25 +11,24 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.assets = os.path.join(os.path.split(__file__)[0], 'assets')
-        self.meta = 'Web compability test for eBay'
+        self.meta = 'Web compatibility test for eBay'
         self.exclude = Platform.ALL
-
 
     def login_ebay(self):
         login_success = False
         try:
-            wait('ebay_sign_in.png', 10)
-        except:
+            wait(Pattern('ebay_sign_in.png'), 10)
+        except FindError:
             logger.debug('Exit login')
             return login_success
         else:
-            click('ebay_sign_in.png')
+            click(Pattern('ebay_sign_in.png'))
             try:
-                wait('ebay_table_login.png', 10)
-            except:
+                wait(Pattern('ebay_table_login.png'), 10)
+            except FindError:
                 logger.debug('Something went wrong with login')
                 return login_success
-            click('ebay_table_login.png')
+            click(Pattern('ebay_table_login.png'))
             time.sleep(2)
             type(Key.TAB)
             type(Key.TAB)
@@ -40,12 +39,11 @@ class Test(BaseTest):
             type(Key.ENTER)
             time.sleep(5)
             type(Key.ESC)
-            ebay_search = exists('ebay_search.png', 10)
+            ebay_search = exists(Pattern('ebay_search.png'), 10)
             assert_true(self, ebay_search, 'User successfully logged in')
             login_success = True
 
         return login_success
-
 
     def run(self):
         url = 'www.ebay.com'
@@ -54,12 +52,10 @@ class Test(BaseTest):
         navigate(url)
 
         try:
-            wait('ebay_search.png', 15)
+            wait(Pattern('ebay_search.png'), 15)
             logger.debug('Page load successfully')
-        except:
-            logger.error('Can\'t find eBay image in page, aborting test.')
-            return
-
+        except FindError:
+            raise FindError('Can\'t find eBay image in page, aborting test.')
         else:
             if not self.login_ebay():
                 return
@@ -69,17 +65,17 @@ class Test(BaseTest):
             time.sleep(5)
 
             for x in range(5):
-               logger.debug('Scrolling down')
-               scroll_down()
-               time.sleep(0.25)
+                logger.debug('Scrolling down')
+                scroll_down()
+                time.sleep(0.25)
 
-            ebay_search = exists('ebay_search.png', 5)
+            ebay_search = exists(Pattern('ebay_search.png'), 5)
             assert_false(self, ebay_search, 'eBay search bar exists')
             for x in range(5):
                 logger.debug('Scrolling up')
                 scroll_up()
                 time.sleep(0.25)
-            ebay_search = exists('ebay_search.png', 5)
+            ebay_search = exists(Pattern('ebay_search.png'), 5)
             assert_true(self, ebay_search, 'eBay search bar exists')
             logger.debug('Page was scrolled back up')
             screen = get_firefox_region()
@@ -94,9 +90,9 @@ class Test(BaseTest):
             assert_true(self, found, 'Text found in page')
             logger.debug('Results are displayed')
             search = Pattern('ebay_filter_results.png').target_offset(0, 100)
-            ebay_filter = exists('ebay_filter_results.png', 5)
+            ebay_filter = exists(Pattern('ebay_filter_results.png'), 5)
             assert_true(self, ebay_filter, 'Filter button found in page')
             logger.debug('Select product')
             click(search)
-            back_to_search_results = exists('ebay_back_to_search.png', 5)
+            back_to_search_results = exists(Pattern('ebay_back_to_search.png'), 5)
             assert_true(self, back_to_search_results, 'Product successfully selected')

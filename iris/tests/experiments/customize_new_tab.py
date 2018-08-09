@@ -14,22 +14,22 @@ class Test(BaseTest):
 
     def run(self):
         url = 'about:home'
-        customize_new_tab_page_image = 'customize_new_tab_icon.png'
-        tab_preference_search_button = 'tab_preference_search_button.png'
-        tab_search_section = 'search_the_web.png'
+        customize_new_tab_page_pattern = Pattern('customize_new_tab_icon.png')
+        tab_preference_search_button_pattern = Pattern('tab_preference_search_button.png')
+        tab_search_section_pattern = Pattern('search_the_web.png')
 
         navigate(url)
 
-        expected_1 = exists(customize_new_tab_page_image, 10)
+        expected_1 = exists(customize_new_tab_page_pattern, 10)
         assert_true(self, expected_1, 'Find customize new tab page image')
 
-        click(customize_new_tab_page_image)
-        expected_2 = exists(tab_preference_search_button, 10)
+        click(customize_new_tab_page_pattern)
+        expected_2 = exists(tab_preference_search_button_pattern, 10)
         assert_true(self, expected_2, 'Find tab preferences search button')
 
-        click(tab_preference_search_button)
+        click(tab_preference_search_button_pattern)
         new_tab()
         navigate(url)
 
-        expected_3 = wait_vanish(tab_search_section)
+        expected_3 = wait_vanish(tab_search_section_pattern)
         assert_true(self, expected_3, 'Wait for tab search section to vanish')

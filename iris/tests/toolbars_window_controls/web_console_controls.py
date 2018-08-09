@@ -15,23 +15,25 @@ class Test(BaseTest):
     def run(self):
 
         url = 'about:home'
-        close_dev_tools_button = 'close_dev_tools.png'
-        dev_tools_window = 'dev_tools_window.png'
-        close_message = 'close_message.png'
-        responsive_design_button = 'responsive_design.png'
-        customize_dev_tools = 'customize_developer_tools.png'
-        customize_dev_tools_message = 'customize_dev_tools_message.png'
-        responsive_design_message = 'responsive_design_message.png'
-        responsive_design_active = 'responsive_design_active.png'
-        dock_to_side = 'dock_to_side_option.png'
-        separate_window = 'separate_window_option.png'
-        dock_to_bottom = 'dock_to_bottom_option.png'
+        close_dev_tools_button_pattern = Pattern('close_dev_tools.png')
+        dev_tools_window_pattern = Pattern('dev_tools_window.png')
+        close_message_pattern = Pattern('close_message.png')
+        responsive_design_button_pattern = Pattern('responsive_design.png')
+        customize_dev_tools_pattern = Pattern('customize_developer_tools.png')
+        customize_dev_tools_message_pattern = Pattern('customize_dev_tools_message.png')
+        responsive_design_message_pattern = Pattern('responsive_design_message.png')
+        responsive_design_active_pattern = Pattern('responsive_design_active.png')
+        dock_to_side_pattern = Pattern('dock_to_side_option.png')
+        separate_window_pattern = Pattern('separate_window_option.png')
+        dock_to_bottom_pattern = Pattern('dock_to_bottom_option.png')
 
         navigate(url)
         open_web_console()
 
-        buttons = [responsive_design_button, customize_dev_tools, close_dev_tools_button]
-        button_messages = [responsive_design_message, customize_dev_tools_message, close_message]
+        buttons = [responsive_design_button_pattern, customize_dev_tools_pattern, close_dev_tools_button_pattern]
+        button_messages = [responsive_design_message_pattern,
+                           customize_dev_tools_message_pattern,
+                           close_message_pattern]
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         button_region = Region(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -49,55 +51,51 @@ class Test(BaseTest):
 
         # Checking the button functionality.
 
-        button_region.click(responsive_design_button)
+        button_region.click(responsive_design_button_pattern)
 
-        responsive_design_assert = exists(responsive_design_active, 10)
+        responsive_design_assert = exists(responsive_design_active_pattern, 10)
         assert_true(self, responsive_design_assert, 'Responsive Design Mode is enabled.')
 
-        button_region.click(customize_dev_tools)
+        button_region.click(customize_dev_tools_pattern)
 
         try:
-            wait(dock_to_side, 10)
+            wait(dock_to_side_pattern, 10)
             logger.debug('Dock to side option found.')
-            click(dock_to_side)
+            click(dock_to_side_pattern)
         except FindError:
-            logger.error('Dock to side option not found, aborting.')
-            raise FindError
+            raise FindError('Dock to side option not found, aborting.')
 
-        dock_to_side_assert = right_upper_corner.exists(customize_dev_tools, 10)
+        dock_to_side_assert = right_upper_corner.exists(customize_dev_tools_pattern, 10)
         assert_true(self, dock_to_side_assert, 'Dock to side option works as expected.')
 
-        right_upper_corner.click(customize_dev_tools)
+        right_upper_corner.click(customize_dev_tools_pattern)
 
         try:
-            wait(separate_window, 10)
+            wait(separate_window_pattern, 10)
             logger.debug('Separate Window option found.')
-            click(separate_window)
+            click(separate_window_pattern)
         except FindError:
-            logger.error('Separate Window option not found, aborting.')
-            raise FindError
+            raise FindError('Separate Window option not found, aborting.')
 
-        separate_window_assert = exists(dev_tools_window, 10)
+        separate_window_assert = exists(dev_tools_window_pattern, 10)
         assert_true(self, separate_window_assert, 'Separate Window option works as expected.')
 
-        click(customize_dev_tools)
+        click(customize_dev_tools_pattern)
 
         try:
-            wait(dock_to_bottom, 10)
+            wait(dock_to_bottom_pattern, 10)
             logger.debug('Dock To Bottom option found.')
-            click(dock_to_bottom)
+            click(dock_to_bottom_pattern)
         except FindError:
-            logger.error('Dock To Bottom option not found, aborting.')
-            raise FindError
+            raise FindError('Dock To Bottom option not found, aborting.')
 
-        dock_to_bottom_assert = exists(close_dev_tools_button, 10)
+        dock_to_bottom_assert = exists(close_dev_tools_button_pattern, 10)
         assert_true(self, dock_to_bottom_assert, 'Dock To Bottom option works as expected')
 
-        button_region.click(close_dev_tools_button)
+        button_region.click(close_dev_tools_button_pattern)
 
         try:
-            close_button_assert = button_region.wait_vanish(customize_dev_tools, 10)
+            close_button_assert = button_region.wait_vanish(customize_dev_tools_pattern, 10)
             assert_true(self, close_button_assert, 'Close button works.')
         except FindError:
-            logger.error('The Web Console can not be closed, aborting test.')
-            raise FindError
+            raise FindError('The Web Console can not be closed, aborting test.')

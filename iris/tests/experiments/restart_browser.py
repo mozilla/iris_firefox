@@ -22,15 +22,15 @@ class Test(BaseTest):
         return
 
     def run(self):
-        google_search_image = 'google_search.png'
-        amazon_image = 'amazon.png'
+        google_search_pattern = Pattern('google_search.png')
+        amazon_pattern = Pattern('amazon.png')
 
         navigate('https://www.google.com/?hl=EN')
-        expected_1 = exists(google_search_image, 10)
+        expected_1 = exists(google_search_pattern, 10)
         assert_true(self, expected_1, 'Find Google search image')
 
         restart_firefox(self.app.fx_path, self.profile_path, url='https://www.amazon.com')
-        expected_2 = exists(amazon_image, 10)
+        expected_2 = exists(amazon_pattern, 10)
         assert_true(self, expected_2, 'Find Amazon image')
 
         return

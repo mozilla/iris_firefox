@@ -15,12 +15,12 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-        yahoo_login = 'yahoo_login.png'
-        yahoo_messenger_conversation_button = 'yahoo_messenger_conversation_button.png'
-        write_message_field = 'write_message_field.png'
-        yahoo_messenger_test_message = 'yahoo_messenger_test_message.png'
-        delete_button = 'delete_button.png'
-        unsend_button = 'unsend_button.png'
+        yahoo_login_pattern = Pattern('yahoo_login.png')
+        yahoo_messenger_conversation_button_pattern = Pattern('yahoo_messenger_conversation_button.png')
+        write_message_field_pattern = Pattern('write_message_field.png')
+        yahoo_messenger_test_message_pattern = Pattern('yahoo_messenger_test_message.png')
+        delete_button_pattern = Pattern('delete_button.png')
+        unsend_button_pattern = Pattern('unsend_button.png')
 
 
         url = 'https://login.yahoo.com/?.done=https%3A%2F%2Fmessenger.yahoo.com%2F&.pd=c%3DU4ZyUvq72e4_yB0G1IX7c9q7dSw-&.src=messenger&.lang=en'
@@ -29,7 +29,7 @@ class Test(BaseTest):
         # Open the login page.
         navigate(url)
         time.sleep(3)
-        expected_1 = exists(yahoo_login, 10)
+        expected_1 = exists(yahoo_login_pattern, 10)
         assert_true(self, expected_1, 'Login page loaded successfully')
         time.sleep(3)
 
@@ -46,26 +46,26 @@ class Test(BaseTest):
         # Don't save the credentials in Firefox.
         dont_save_password()
 
-        expected_2 = exists(yahoo_messenger_conversation_button, 10)
+        expected_2 = exists(yahoo_messenger_conversation_button_pattern, 10)
         assert_true(self, expected_2, 'The conversation button is displayed successfully')
         # Start a new conversation.
-        click(yahoo_messenger_conversation_button)
+        click(yahoo_messenger_conversation_button_pattern)
         # Add the recipient.
         type('test1')
         # Add the message.
-        click(write_message_field)
+        click(write_message_field_pattern)
         type('test2 ' + str(today))
         # Send the message.
         type(Key.ENTER)
         # Delete the previously sent message.
-        expected_3 = exists(yahoo_messenger_test_message, 10)
+        expected_3 = exists(yahoo_messenger_test_message_pattern, 10)
         assert_true(self, expected_3, 'Sent message is displayed properly')
-        hover(yahoo_messenger_test_message)
-        click(delete_button)
+        hover(yahoo_messenger_test_message_pattern)
+        click(delete_button_pattern)
         time.sleep(1)
-        click(unsend_button)
+        click(unsend_button_pattern)
         try:
-            expected_4 = wait_vanish(yahoo_messenger_test_message, 10)
+            expected_4 = wait_vanish(yahoo_messenger_test_message_pattern, 10)
             assert_true(self, expected_4, 'Sent message is deleted successfully')
-        except:
+        except FindError:
             raise FindError('Sent message is not deleted')

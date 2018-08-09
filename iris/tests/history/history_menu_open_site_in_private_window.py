@@ -22,7 +22,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        recent_history_mozilla = LocalWeb.MOZILLA_BOOKMARK
+        recent_history_mozilla_pattern = LocalWeb.MOZILLA_BOOKMARK
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -33,9 +33,9 @@ class Test(BaseTest):
         new_private_window()
         open_library_menu('History')
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        expected_2 = right_upper_corner.exists(recent_history_mozilla, 10)
+        expected_2 = right_upper_corner.exists(recent_history_mozilla_pattern, 10)
         assert_true(self, expected_2, 'Mozilla page displayed in the History list successfully.')
-        right_upper_corner.click(recent_history_mozilla)
+        right_upper_corner.click(recent_history_mozilla_pattern)
 
         # Check that the page was opened successfully.
         expected_3 = exists(LocalWeb.MOZILLA_LOGO, 10)

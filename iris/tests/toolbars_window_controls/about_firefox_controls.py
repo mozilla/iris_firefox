@@ -13,16 +13,15 @@ class Test(BaseTest):
         self.meta = 'This is a test of the \'About Firefox\' window controls'
 
     def run(self):
-        firefox_in_about = 'firefox_in_about.png'
+        firefox_in_about_pattern = Pattern('firefox_in_about.png')
 
-        # Helper function in general.py
         open_about_firefox()
-        expected_1 = exists(firefox_in_about, 10)
+        expected_1 = exists(firefox_in_about_pattern, 10)
         assert_true(self, expected_1, '\'About Firefox\' window was opened successfully.')
-        # Helper function in general.py
+
         click_auxiliary_window_control('close')
         try:
-            expected_2 = wait_vanish(firefox_in_about, 10)
+            expected_2 = wait_vanish(firefox_in_about_pattern, 10)
             assert_true(self, expected_2, '\'About Firefox\' window was closed successfully.')
-        except:
+        except FindError:
             raise FindError('About Firefox\' window is still open')

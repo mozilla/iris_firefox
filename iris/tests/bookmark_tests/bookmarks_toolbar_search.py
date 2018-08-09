@@ -14,45 +14,45 @@ class Test(BaseTest):
         self.test_suite_id = '75'
 
     def run(self):
-        amazon_favicon = 'amazon_favicon.png'
-        search_bookmarks = 'search_bookmarks.png'
-        search_star = 'search_star.png'
-        searched_bookmark = 'searched_bookmark.png'
-        amazon_home = 'amazon.png'
+        amazon_favicon_pattern = Pattern('amazon_favicon.png')
+        search_bookmarks_pattern = LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS
+        search_star_pattern = Pattern('search_star.png')
+        searched_bookmark_pattern = Pattern('searched_bookmark.png')
+        amazon_home_pattern = Pattern('amazon.png')
 
         navigate('www.amazon.com')
 
-        nav_bar_favicon_assert = exists(amazon_favicon, 15)
+        nav_bar_favicon_assert = exists(amazon_favicon_pattern, 15)
         assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
 
         bookmark_page()
 
-        page_bookmarked_assert = exists('page_bookmarked.png', 10)
+        page_bookmarked_assert = exists(Pattern('page_bookmarked.png'), 10)
         assert_true(self, page_bookmarked_assert, 'Page was bookmarked')
 
         navigate('about:blank')
 
         time.sleep(Settings.UI_DELAY_LONG)
 
-        open_library_menu('bookmarks_menu.png')
+        open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
 
         try:
-            wait(search_bookmarks, 10)
+            wait(search_bookmarks_pattern, 10)
             logger.debug('Search Bookmarks option is present on the page')
-            click(search_bookmarks)
+            click(search_bookmarks_pattern)
         except FindError:
             logger.error('Can\'t find Search Bookmarks option, aborting.')
             raise FindError
 
-        star_search_assert = exists(search_star, 10)
+        star_search_assert = exists(search_star_pattern, 10)
         assert_true(self, star_search_assert, 'Star search is present on the page')
 
-        searched_bookmark_assert = exists(searched_bookmark, 10)
+        searched_bookmark_assert = exists(searched_bookmark_pattern, 10)
         assert_true(self, searched_bookmark_assert, 'Searched bookmark is present in the Search List')
 
-        click(searched_bookmark)
+        click(searched_bookmark_pattern)
 
-        amazon_banner_assert = exists(amazon_home, 10)
+        amazon_banner_assert = exists(amazon_home_pattern, 10)
         assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded')
 
 

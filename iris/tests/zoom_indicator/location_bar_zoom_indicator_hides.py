@@ -14,9 +14,9 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-        url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
-        url_bar_90_zoom_level = 'url_bar_90_zoom_level.png'
+        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
+        url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
+        url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png')
 
         navigate(url)
 
@@ -25,28 +25,28 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         zoom_in()
 
         new_region = create_region_for_url_bar()
 
-        expected = new_region.exists(url_bar_110_zoom_level, 10)
+        expected = new_region.exists(url_bar_110_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         zoom_out()
 
-        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        expected = new_region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for '
                                     '100% zoom level.')
 
         zoom_out()
 
-        expected = new_region.exists(url_bar_90_zoom_level, 10)
+        expected = new_region.exists(url_bar_90_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         zoom_in()
 
-        expected = new_region.exists(Pattern(url_bar_default_zoom_level).similar(0.92), 10)
+        expected = new_region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator not found in the url bar.')

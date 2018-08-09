@@ -177,9 +177,8 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
     try:
         wait(top_left_marker_img, 10)
         exists(bottom_right_marker_img, 10)
-    except Exception as err:
-        logger.error('Unable to find page markers')
-        raise err
+    except FindError:
+        raise FindError('Unable to find page markers')
 
     top_left_pos = find(top_left_marker_img)
     hover(top_left_pos, 0)
@@ -329,7 +328,10 @@ def _general_click(where=None, clicks=None, duration=None, in_region=None, butto
     if duration is None:
         duration = Settings.move_mouse_delay
 
-    if isinstance(where, str) and is_ocr_text(where):
+    if isinstance(where, Pattern):
+        _click_pattern(where, clicks, duration, in_region, button)
+
+    elif isinstance(where, str):
         a_match = text_search_by(where, True, in_region)
         if a_match is not None:
             click_location = Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
@@ -337,14 +339,6 @@ def _general_click(where=None, clicks=None, duration=None, in_region=None, butto
 
     elif isinstance(where, Location):
         _click_at(where, clicks, duration, button)
-
-    elif isinstance(where, str) or isinstance(where, Pattern):
-        try:
-            pattern = Pattern(where)
-        except Exception:
-            pattern = where
-
-        _click_pattern(pattern, clicks, duration, in_region, button)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -405,16 +399,13 @@ def _to_location(ps=None, in_region=None, align='top_left'):
     """
 
     # TODO: Add multiple alignments if needed
-
-    # TODO fix this (isinstance str or Pattern)
-
     if isinstance(ps, Location):
         return ps
 
-    elif isinstance(Pattern(ps), Pattern):
-        location = image_search(Pattern(ps), in_region)
+    elif isinstance(ps, Pattern):
+        location = image_search(ps, in_region)
         if align == 'center':
-            width, height = get_image_size(Pattern(ps))
+            width, height = get_image_size(ps)
             return Location(location.x + width / 2, location.y + height / 2)
         else:
             return location
@@ -469,26 +460,10 @@ def hover(where=None, duration=0, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return: None
     """
-    if isinstance(where, str) and is_ocr_text(where):
-        a_match = text_search_by(where, True, in_region)
-        if a_match is not None:
-            pyautogui.moveTo(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
-        else:
-            raise FindError('Unable to find text %s' % where)
-
-    elif isinstance(where, Location):
-        pyautogui.moveTo(where.x, where.y, duration)
-
-    elif isinstance(where, str) or isinstance(where, Pattern):
-
-        try:
-            pattern = Pattern(where)
-        except Exception:
-            pattern = where
-
-        pos = image_search(pattern, region=in_region)
+    if isinstance(where, Pattern):
+        pos = image_search(where, region=in_region)
         if pos.x != -1:
-            needle_width, needle_height = get_image_size(pattern.get_filename())
+            needle_width, needle_height = get_image_size(where.get_filename())
             if isinstance(where, Pattern):
                 possible_offset = where.get_target_offset()
                 if possible_offset is not None:
@@ -500,7 +475,17 @@ def hover(where=None, duration=0, in_region=None):
             else:
                 pyautogui.moveTo(pos.x + needle_width / 2, pos.y + needle_height / 2)
         else:
-            raise FindError('Unable to find image %s' % pattern.get_filename())
+            raise FindError('Unable to find image %s' % where.get_filename())
+
+    elif isinstance(where, str):
+        a_match = text_search_by(where, True, in_region)
+        if a_match is not None:
+            pyautogui.moveTo(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
+        else:
+            raise FindError('Unable to find text %s' % where)
+
+    elif isinstance(where, Location):
+        pyautogui.moveTo(where.x, where.y, duration)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -513,28 +498,22 @@ def find(image_name, region=None):
     :param region: Region object in order to minimize the area
     :return: Location
     """
+    if isinstance(image_name, Pattern):
 
-    if isinstance(image_name, str) and is_ocr_text(image_name):
+        image_found = image_search(image_name, region)
+        if (image_found.x != -1) & (image_found.y != -1):
+            if parse_args().highlight:
+                highlight(region=region, pattern=image_name, location=image_found)
+            return image_found
+        else:
+            raise FindError('Unable to find image %s' % image_name.get_filename())
+
+    elif isinstance(image_name, str):
         a_match = text_search_by(image_name, True, region)
         if a_match is not None:
             return Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
         else:
             raise FindError('Unable to find text %s' % image_name)
-
-    elif isinstance(image_name, str) or isinstance(image_name, Pattern):
-
-        try:
-            pattern = Pattern(image_name)
-        except Exception:
-            pattern = image_name
-
-        image_found = image_search(pattern, region)
-        if (image_found.x != -1) & (image_found.y != -1):
-            if parse_args().highlight:
-                highlight(region=region, pattern=pattern, location=image_found)
-            return image_found
-        else:
-            raise FindError('Unable to find image %s' % image_name)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -547,8 +526,10 @@ def find_all(what, in_region=None):
     :param in_region: Region object in order to minimize the area
     :return:
     """
+    if isinstance(what, Pattern):
+        return image_search_multiple(what, in_region)
 
-    if isinstance(what, str) and is_ocr_text(what):
+    elif isinstance(what, str):
         all_matches = text_search_by(what, True, in_region, True)
         list_of_locations = []
         for match in all_matches:
@@ -558,13 +539,6 @@ def find_all(what, in_region=None):
         else:
             raise FindError('Unable to find text %s' % what)
 
-    elif isinstance(what, str) or isinstance(what, Pattern):
-        try:
-            pattern = Pattern(what)
-        except Exception:
-            pattern = what
-
-        return image_search_multiple(pattern, in_region)
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
@@ -577,31 +551,25 @@ def wait(image_name, timeout=None, region=None):
     :param region: Region object in order to minimize the area
     :return: True if found
     """
-    if isinstance(image_name, str) and is_ocr_text(image_name):
+    if isinstance(image_name, Pattern):
+        if timeout is None:
+            timeout = Settings.auto_wait_timeout
+
+        image_found = positive_image_search(image_name, timeout, region)
+
+        if image_found is not None:
+            if parse_args().highlight:
+                highlight(region=region, pattern=image_name, location=image_found)
+            return True
+        else:
+            raise FindError('Unable to find image %s' % image_name.get_filename())
+
+    elif isinstance(image_name, str):
         a_match = text_search_by(image_name, True, region)
         if a_match is not None:
             return True
         else:
             raise FindError('Unable to find text %s' % image_name)
-
-    elif isinstance(image_name, str) or isinstance(image_name, Pattern):
-        if timeout is None:
-            timeout = Settings.auto_wait_timeout
-
-        try:
-            pattern = Pattern(image_name)
-        except Exception:
-            pattern = image_name
-
-        image_found = positive_image_search(pattern, timeout, region)
-
-        if image_found is not None:
-            if parse_args().highlight:
-                highlight(region=region, pattern=pattern, location=image_found)
-
-            return True
-        else:
-            raise FindError('Unable to find image %s' % image_name)
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -626,10 +594,10 @@ def exists(pattern, timeout=None, in_region=None):
         return False
 
 
-def wait_vanish(image_name, timeout=None, in_region=None):
-    """Wait until a Pattern or image disappears
+def wait_vanish(pattern, timeout=None, in_region=None):
+    """Wait until a Pattern disappears
 
-    :param image_name: Image, Pattern or string
+    :param pattern: Pattern
     :param timeout:  Number as maximum waiting time in seconds.
     :param in_region: Region object in order to minimize the area
     :return: True if vanished
@@ -638,14 +606,9 @@ def wait_vanish(image_name, timeout=None, in_region=None):
     if timeout is None:
         timeout = Settings.auto_wait_timeout
 
-    try:
-        pattern = Pattern(image_name)
-    except Exception:
-        pattern = image_name
-
     image_found = negative_image_search(pattern, timeout, in_region)
 
     if image_found is not None:
         return True
     else:
-        raise FindError('%s did not vanish' % image_name)
+        raise FindError('%s did not vanish' % pattern.get_filename())

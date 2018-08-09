@@ -24,9 +24,9 @@ class Test(BaseTest):
         return
 
     def run(self):
-        recent_history_default = 'recent_history_default.png'
+        recent_history_default_pattern = Pattern('recent_history_default.png')
 
         # Open the History Menu and check the Recent History list.
         open_library_menu('History')
-        expected_1 = exists(recent_history_default, 10)
+        expected_1 = exists(recent_history_default_pattern, 10)
         assert_true(self, expected_1, 'The expected items are displayed in the History list.')

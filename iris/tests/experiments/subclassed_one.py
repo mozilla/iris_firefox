@@ -36,5 +36,5 @@ class Test(BasicUrl):
 
     def test_vars(self):
         self.new_test_url = 'https://www.amazon.com'
-        self.amazon_image = 'amazon.png'
-        self.amazon_history_image = 'amazon_history.png'
+        self.amazon_image = Pattern('amazon.png')
+        self.amazon_history_image = Pattern('amazon_history.png')
