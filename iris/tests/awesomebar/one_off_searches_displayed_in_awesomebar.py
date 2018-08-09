@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This test case checks that one-off searches are displayed in the awesome bar.'
+        self.meta = 'This test case checks that one-off searches are displayed in the awesomebar.'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -38,7 +38,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
 
         expected = region.exists(search_settings, 10)
-        assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
+        assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesomebar.')
 
         expected = region.exists(amazon_one_off_button, 10)
         assert_true(self, expected, 'The \'Amazon\' one-off button found.')
