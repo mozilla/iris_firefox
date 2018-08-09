@@ -16,12 +16,10 @@ class Test(BaseTest):
 
     def run(self):
 
-        history_dropdown = 'history_dropdown_button.png'
-        privacy_page = 'privacy_page.png'
-        restart_browser = 'restart_browser.png'
-        never_remember_history = 'never_remember_history.png'
-        url = 'www.amazon.com'
-        amazon_home = 'amazon.png'
+        history_dropdown = Pattern('history_dropdown_button.png')
+        privacy_page = Pattern('privacy_page.png')
+        restart_browser = Pattern('restart_browser.png')
+        never_remember_history = Pattern('never_remember_history.png')
         bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
 
         navigate('about:preferences#privacy')
@@ -49,13 +47,10 @@ class Test(BaseTest):
         click(restart_browser)
         wait_for_firefox_restart()
 
-        navigate(url)
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        amazon_banner_assert = exists(amazon_home, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
-
-        nav_bar_favicon_assert = exists('amazon_favicon.png', 15)
-        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
 
         try:
             wait(bookmark_button_pattern, 10)
