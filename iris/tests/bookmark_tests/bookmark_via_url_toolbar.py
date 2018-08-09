@@ -16,23 +16,20 @@ class Test(BaseTest):
 
     def run(self):
         url = 'about:blank'
-        url2 = 'amazon.com'
-
-        draggable_url = 'draggable_url.png'
-        toolbar_dragged_bookmark = 'toolbar_dragged_bookmark.png'
-        drag_area = 'drag_area.png'
-        amazon_home = 'amazon.png'
-        view_bookmarks_toolbar = 'view_bookmarks_toolbar.png'
+        draggable_url = Pattern('moz_draggable_url.png')
+        toolbar_dragged_bookmark = Pattern('moz_toolbar_dragged_bookmark.png')
+        drag_area = Pattern('drag_area.png')
+        view_bookmarks_toolbar = Pattern('view_bookmarks_toolbar.png')
         bookmark_selected_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         navigate(url)
 
         access_bookmarking_tools(view_bookmarks_toolbar)
 
-        navigate(url2)
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        amazon_banner_assert = exists(amazon_home, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
 
         select_location_bar()
 
@@ -46,5 +43,5 @@ class Test(BaseTest):
         navigate(url)
 
         bookmarked_url_assert = exists(toolbar_dragged_bookmark, 10)
-        assert_true(self, bookmarked_url_assert, 'Amazon page has been successfully bookmarked via URL onto '
+        assert_true(self, bookmarked_url_assert, 'Moz page has been successfully bookmarked via URL onto '
                                                  'the Bookmarks Toolbar.')

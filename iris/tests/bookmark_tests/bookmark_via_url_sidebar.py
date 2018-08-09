@@ -16,18 +16,16 @@ class Test(BaseTest):
 
     def run(self):
 
-        url = 'bing.com'
-        draggable_url = 'draggable_url_bing.png'
-        sidebar_bookmarks = 'library_bookmarks.png'
-        drag_area = 'drag_area_bing.png'
-        bing_home = 'bing_home.png'
-        bing_bookmark = 'bing_bookmark.png'
+        draggable_url = Pattern('moz_draggable_url.png')
+        sidebar_bookmarks = Pattern('library_bookmarks.png')
+        drag_area = Pattern('drag_area_moz.png')
+        moz_bookmark = Pattern('moz_sidebar_bookmark.png')
         bookmark_selected_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
-        navigate(url)
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected = exists(bing_home, 10)
-        assert_true(self, expected, 'Bing has been successfully accessed.')
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
 
         bookmarks_sidebar('open')
 
@@ -45,6 +43,6 @@ class Test(BaseTest):
         star_shaped_button_assert = exists(bookmark_selected_pattern, 10)
         assert_true(self, star_shaped_button_assert, 'Star-shaped button has changed its color to blue.')
 
-        bookmarked_url_assert = exists(bing_bookmark, 10)
-        assert_true(self, bookmarked_url_assert, 'Bing page has been successfully bookmarked via URL onto the '
+        bookmarked_url_assert = exists(moz_bookmark, 10)
+        assert_true(self, bookmarked_url_assert, 'Moz page has been successfully bookmarked via URL onto the '
                                                  'Bookmarks Sidebar')
