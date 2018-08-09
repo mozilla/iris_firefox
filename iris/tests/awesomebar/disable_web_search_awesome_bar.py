@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case disables the web search in the awesome bar.'
+        # Disabled test for running on MAC until issue #950 is fixed.
+        self.exclude = Platform.MAC
 
     def run(self):
         google_one_off_button = Pattern('google_one_off_button.png')
@@ -21,6 +23,7 @@ class Test(BaseTest):
         true_value = Pattern('true_value.png')
         false_value = Pattern('false_value.png')
         amazon_logo = Pattern('amazon_logo.png')
+        accept_risk = Pattern('accept_risk.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -44,8 +47,11 @@ class Test(BaseTest):
         navigate('about:config')
 
         # Change focus from the url bar.
-        click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
-        type(Key.ENTER)
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
+            click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
+            type(Key.ENTER)
+        else:
+            click(accept_risk)
 
         expected = region.exists(default_status, 10)
         assert_true(self, expected, 'The \'about:config\' page successfully loaded and default status is correct.')
