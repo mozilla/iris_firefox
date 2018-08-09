@@ -14,19 +14,19 @@ class Test(BaseTest):
 
     def run(self):
         url = 'maps.google.com'
-        google_maps_search_bar_magnifier = 'google_maps_search_bar_magnifier.png'
-        google_maps_item_searched = 'google_maps_item_searched.png'
+        google_maps_search_bar_magnifier_pattern = Pattern('google_maps_search_bar_magnifier.png')
+        google_maps_item_searched_pattern = Pattern('google_maps_item_searched.png')
 
         navigate(url)
 
-        expected_1 = exists(google_maps_search_bar_magnifier, 20)
+        expected_1 = exists(google_maps_search_bar_magnifier_pattern, 20)
         assert_true(self, expected_1, 'The page is successfully loaded.')
 
         # Type 'Mediterranean Sea' in the search bar.
-        click(Pattern(google_maps_search_bar_magnifier).target_offset(-100, 15))
+        click(google_maps_search_bar_magnifier_pattern.target_offset(-100, 15))
         time.sleep(2)
         paste('Mediterranean Sea')
         type(Key.ENTER)
 
-        expected_2 = exists(google_maps_item_searched, 20)
+        expected_2 = exists(google_maps_item_searched_pattern, 20)
         assert_true(self, expected_2, 'Item searched found.')

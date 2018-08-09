@@ -10,16 +10,16 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Web compability test for facebook.com'
+        self.meta = 'Web compatibility test for facebook.com'
         self.exclude = Platform.ALL
 
     def run(self):
         url = 'www.facebook.com'
-        news_feed = 'news_feed.png'
-        message_area = 'type_message.png'
-        post_message = 'post_message.png'
-        post = 'post.png'
-        delete_post = 'delete_post.png'
+        news_feed_pattern = Pattern('news_feed.png')
+        message_area_pattern = Pattern('type_message.png')
+        post_message_pattern = Pattern('post_message.png')
+        post_pattern = Pattern('post.png')
+        delete_post_pattern = Pattern('delete_post.png')
 
         navigate(url)
 
@@ -34,7 +34,7 @@ class Test(BaseTest):
 
         # Post message
 
-        expected_1 = exists(news_feed, 10)
+        expected_1 = exists(news_feed_pattern, 10)
         assert_true(self, expected_1, 'News Feed has been accessed')
 
         if Settings.get_os() == Platform.MAC:
@@ -48,13 +48,13 @@ class Test(BaseTest):
             type(Key.ENTER)
             time.sleep(3)
         else:
-            click(message_area)
+            click(message_area_pattern)
             time.sleep(2)
             type('test')
-            click(post_message)
+            click(post_message_pattern)
             time.sleep(3)
 
-        expected_2 = exists(post, 10)
+        expected_2 = exists(post_pattern, 10)
         assert_true(self, expected_2, 'Message has been posted successfully')
 
         # Delete post
@@ -67,7 +67,7 @@ class Test(BaseTest):
             time.sleep(2)
             type(Key.ENTER)
             time.sleep(2)
-            click(delete_post)
+            click(delete_post_pattern)
             time.sleep(3)
             for i in range(2):
                 type(Key.TAB)
@@ -75,13 +75,13 @@ class Test(BaseTest):
             type(Key.ENTER)
             time.sleep(3)
         else:
-            click(message_area)
+            click(message_area_pattern)
             time.sleep(1)
             type(Key.ESC)
             time.sleep(1)
             type(Key.ENTER)
             time.sleep(2)
-            click(delete_post)
+            click(delete_post_pattern)
             time.sleep(2)
             for i in range(5):
                 type(Key.TAB)
@@ -90,7 +90,7 @@ class Test(BaseTest):
             time.sleep(2)
 
         try:
-            expected_3 = wait_vanish(post, 10)
+            expected_3 = wait_vanish(post_pattern, 10)
             assert_true(self, expected_3, 'The message has been deleted')
         except Exception as error:
             logger.error('The message can not be deleted')
@@ -113,7 +113,7 @@ class Test(BaseTest):
     def login_facebook(self):
         username = get_credential('Facebook', 'username')
         password = get_credential('Facebook', 'password')
-        login = 'login_check.png'
+        login = Pattern('login_check.png')
 
         expected_login = exists(login, 10)
         assert_true(self, expected_login, 'LogIn fields are present')

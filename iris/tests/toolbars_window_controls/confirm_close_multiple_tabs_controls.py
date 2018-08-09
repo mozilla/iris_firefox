@@ -13,49 +13,49 @@ class Test(BaseTest):
         self.meta = 'This is a test of the \'Confirm close multiple tabs\' window controls'
 
     def run(self):
-        close_multiple_tabs_warning = 'close_multiple_tabs_warning.png'
-        cancel_multiple_tabs_warning = 'cancel_multiple_tabs_warning.png'
-        close_multiple_tabs_warning_logo = 'close_multiple_tabs_warning_logo.png'
+        close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
+        cancel_multiple_tabs_warning_pattern = Pattern('cancel_multiple_tabs_warning.png')
+        close_multiple_tabs_warning_logo_pattern = Pattern('close_multiple_tabs_warning_logo.png')
         home_button_pattern = NavBar.HOME_BUTTON
-        maximize_button = 'maximize_button.png'
-        restore_button = 'restore_button.png'
+        maximize_button_pattern = Pattern('maximize_button.png')
+        restore_button_pattern = Pattern('restore_button.png')
 
         new_tab()
 
         close_window()
 
-        expected_1 = exists(close_multiple_tabs_warning, 10)
+        expected_1 = exists(close_multiple_tabs_warning_pattern, 10)
         assert_true(self, expected_1, 'Close multiple tabs warning was displayed successfully')
-        if get_os() == 'osx':
-            click(cancel_multiple_tabs_warning)
+        if Settings.is_mac():
+            click(cancel_multiple_tabs_warning_pattern)
         else:
             click_auxiliary_window_control('close')
 
         try:
-            expected_2 = wait_vanish(close_multiple_tabs_warning, 10)
+            expected_2 = wait_vanish(close_multiple_tabs_warning_pattern, 10)
             expected_3 = exists(home_button_pattern, 10)
             assert_true(self, expected_2 and expected_3, 'Close multiple tabs warning was canceled successfully')
-        except:
+        except FindError:
             raise FindError('Close multiple tabs warning was not canceled successfully')
 
         close_window()
 
-        if get_os() == 'linux':
+        if Settings.is_linux():
             maximize_window()
-            hover(Pattern(close_multiple_tabs_warning_logo).target_offset(0, -100))
-            expected_4 = exists(restore_button, 10)
+            hover(close_multiple_tabs_warning_logo_pattern.target_offset(0, -100))
+            expected_4 = exists(restore_button_pattern, 10)
             assert_true(self, expected_4, 'Close multiple tabs warning was maximized successfully')
 
             minimize_window()
-            expected_5 = exists(maximize_button, 10)
+            expected_5 = exists(maximize_button_pattern, 10)
             assert_true(self, expected_5, 'Close multiple tabs warning was restored successfully')
 
-        expected_6 = exists(close_multiple_tabs_warning, 10)
+        expected_6 = exists(close_multiple_tabs_warning_pattern, 10)
         assert_true(self, expected_6, 'Close multiple tabs warning was displayed successfully')
-        click(close_multiple_tabs_warning)
+        click(close_multiple_tabs_warning_pattern)
         try:
-            expected_7 = wait_vanish(close_multiple_tabs_warning, 10)
+            expected_7 = wait_vanish(close_multiple_tabs_warning_pattern, 10)
             expected_8 = wait_vanish(home_button_pattern, 10)
             assert_true(self, expected_7 and expected_8, 'The browser was closed successfully')
-        except:
+        except FindError:
             raise FindError('The browser was not closed successfully')

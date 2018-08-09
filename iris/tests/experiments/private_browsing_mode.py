@@ -13,18 +13,15 @@ class Test(BaseTest):
         self.meta = 'This is a test for checking private browsing navigation'
 
     def run(self):
-        url = 'https://www.google.com/?hl=EN'
-        private_browsing_image = 'private_browsing.png'
-        google_search_image = 'google_search.png'
+        private_browsing_pattern = Pattern('private_browsing.png')
+        google_search_pattern = Pattern('google_search.png')
 
-        # check if incognito mode works
         new_private_window()
 
-        expected_1 = exists(private_browsing_image, 10)
+        expected_1 = exists(private_browsing_pattern, 10)
         assert_true(self, expected_1, 'Find private browsing image')
 
-        # check basic_url in incognito mode
-        navigate(url)
+        navigate('https://www.google.com/?hl=EN')
 
-        expected_2 = exists(google_search_image, 10)
+        expected_2 = exists(google_search_pattern, 10)
         assert_true(self, expected_2, 'Find google search image')

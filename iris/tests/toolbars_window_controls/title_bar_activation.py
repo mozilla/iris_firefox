@@ -15,44 +15,40 @@ class Test(BaseTest):
 
     def run(self):
 
-        url = 'about:home'
-        navigate(url)
+        navigate('about:home')
 
-        activate_title_bar = 'title_bar.png'
-        active_title_bar = 'active_title_bar.png'
-        deactivate_title_bar = 'deactivate_title_bar.png'
+        activate_title_bar_pattern = Pattern('title_bar.png')
+        active_title_bar_pattern = Pattern('active_title_bar.png')
+        deactivate_title_bar_pattern = Pattern('deactivate_title_bar.png')
 
         click_hamburger_menu_option('Customize...')
 
         if Settings.get_os() == Platform.LINUX:
 
-            expected_2 = exists(active_title_bar, 10)
+            expected_2 = exists(active_title_bar_pattern, 10)
             assert_true(self, expected_2, 'Title Bar can be deactivated')
 
-            click(deactivate_title_bar)
+            click(deactivate_title_bar_pattern)
 
             try:
-                expected_3 = wait_vanish(deactivate_title_bar, 10)
+                expected_3 = wait_vanish(deactivate_title_bar_pattern, 10)
                 assert_true(self, expected_3, 'Title Bar has been successfully deactivated')
-            except Exception as error:
-                logger.error('Title Bar can not be closed')
-                raise error
-
+            except FindError:
+                raise FindError('Title Bar can not be closed')
         else:
 
-            expected_1 = exists(activate_title_bar, 10)
+            expected_1 = exists(activate_title_bar_pattern, 10)
             assert_true(self, expected_1, 'Title Bar can be activated')
 
-            click(activate_title_bar)
+            click(activate_title_bar_pattern)
 
-            expected_2 = exists(active_title_bar, 10)
+            expected_2 = exists(active_title_bar_pattern, 10)
             assert_true(self, expected_2, 'Title Bar can be deactivated')
 
-            click(deactivate_title_bar)
+            click(deactivate_title_bar_pattern)
 
             try:
-                expected_3 = wait_vanish(active_title_bar, 10)
+                expected_3 = wait_vanish(active_title_bar_pattern, 10)
                 assert_true(self, expected_3, 'Title Bar has been successfully deactivated')
-            except Exception as error:
-                logger.error('Title Bar can not be closed')
-                raise error
+            except FindError:
+                raise FindError('Title Bar can not be closed')

@@ -16,8 +16,8 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-        edit_buttons_below_zoom_buttons = 'edit_buttons_below_zoom_buttons.png'
+        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
+        edit_buttons_below_zoom_buttons_pattern = Pattern('edit_buttons_below_zoom_buttons.png')
 
         navigate(url)
 
@@ -26,7 +26,7 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         new_region = create_region_for_hamburger_menu()
@@ -34,5 +34,5 @@ class Test(BaseTest):
         expected = new_region.exists('100%', 10)
         assert_true(self, expected, 'By default zoom indicator is 100% in hamburger menu.')
 
-        expected = new_region.exists(Pattern(edit_buttons_below_zoom_buttons).similar(0.25), 10)
+        expected = new_region.exists(edit_buttons_below_zoom_buttons_pattern.similar(0.25), 10)
         assert_true(self, expected, 'Control buttons for zooming appear above the Cut/Copy/Paste buttons.')

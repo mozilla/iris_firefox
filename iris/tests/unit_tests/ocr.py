@@ -17,8 +17,8 @@ class Test(BaseTest):
         url = self.get_asset_path('ocr.html')
         navigate(url)
 
-        top_left_marker = 'ut-top-left.png'
-        bottom_right_marker = 'ut-bottom-right.png'
+        top_left_marker = Pattern('ut-top-left.png')
+        bottom_right_marker = Pattern('ut-bottom-right.png')
 
         page_region = generate_region_by_markers(top_left_marker, bottom_right_marker)
         page_region.debug()

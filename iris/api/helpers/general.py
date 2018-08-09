@@ -10,6 +10,7 @@ from iris.api.core.screen import get_screen
 from iris.configuration.config_parser import *
 from keyboard_shortcuts import *
 from iris.api.core.firefox_ui.toolbars import NavBar, LocationBar
+from iris.api.core.firefox_ui.menus import LibraryMenu
 
 logger = logging.getLogger(__name__)
 
@@ -163,9 +164,9 @@ def change_preference(pref_name, value):
             return None
         else:
             type(Key.ENTER)
-            dialog_box = Pattern('preference_dialog_icon.png')
+            dialog_box_pattern = Pattern('preference_dialog_icon.png')
             try:
-                wait(dialog_box, 3)
+                wait(dialog_box_pattern, 3)
                 paste(value)
                 type(Key.ENTER)
             except FindError:
@@ -191,8 +192,8 @@ def login_site(site_name):
 
 
 def dont_save_password():
-    if exists('dont_save_password_button.png', 10):
-        click('dont_save_password_button.png')
+    if exists(Pattern('dont_save_password_button.png'), 10):
+        click(Pattern('dont_save_password_button.png'))
     else:
         raise APIHelperError('Unable to find dont_save_password_button.png')
 
@@ -220,16 +221,16 @@ def click_hamburger_menu_option(option):
 
 def click_auxiliary_window_control(button):
     """Click auxiliary window with options: close, minimize, maximize, full_screen, zoom_restore."""
-    close_button = 'auxiliary_window_close_button.png'
-    zoom_full_button = 'auxiliary_window_maximize.png'
-    zoom_restore_button = 'minimize_full_screen_auxiliary_window.png'
-    red_button = 'unhovered_red_control.png'
-    minimize_button = 'auxiliary_window_minimize.png'
-    auxiliary_window_controls = 'auxiliary_window_controls.png'
+    close_button_pattern = Pattern('auxiliary_window_close_button.png')
+    zoom_full_button_pattern = Pattern('auxiliary_window_maximize.png')
+    zoom_restore_button_pattern = Pattern('minimize_full_screen_auxiliary_window.png')
+    red_button_pattern = Pattern('unhovered_red_control.png')
+    minimize_button_pattern = Pattern('auxiliary_window_minimize.png')
+    auxiliary_window_controls_pattern = Pattern('auxiliary_window_controls.png')
 
     if Settings.get_os() == Platform.MAC:
         try:
-            wait(red_button, 5)
+            wait(red_button_pattern, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
             raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
@@ -237,25 +238,25 @@ def click_auxiliary_window_control(button):
         if Settings.get_os() == Platform.LINUX:
             hover(Location(80, 0))
         try:
-            wait(close_button, 5)
+            wait(close_button_pattern, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
             raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
 
     if button == 'close':
         if Settings.get_os() == Platform.MAC:
-            click(red_button)
+            click(red_button_pattern)
         else:
-            click(close_button)
+            click(close_button_pattern)
     elif button == 'minimize':
         if Settings.get_os() == Platform.MAC:
-            window_controls_pattern = Pattern(auxiliary_window_controls)
+            window_controls_pattern = auxiliary_window_controls_pattern
             width, height = get_image_size(window_controls_pattern)
             click(window_controls_pattern.target_offset(width / 2, height / 2))
         else:
-            click(minimize_button)
+            click(minimize_button_pattern)
     elif button == 'full_screen':
-        window_controls_pattern = Pattern(auxiliary_window_controls)
+        window_controls_pattern = auxiliary_window_controls_pattern
         width, height = get_image_size(window_controls_pattern)
         click(window_controls_pattern.target_offset(width - 10, height / 2))
         if Settings.get_os() == Platform.LINUX:
@@ -263,57 +264,58 @@ def click_auxiliary_window_control(button):
     elif button == 'maximize':
         if Settings.get_os() == Platform.MAC:
             key_down(Key.ALT)
-            window_controls_pattern = Pattern(auxiliary_window_controls)
+            window_controls_pattern = auxiliary_window_controls_pattern
             width, height = get_image_size(window_controls_pattern)
             click(window_controls_pattern.target_offset(width - 10, height / 2))
             key_up(Key.ALT)
         else:
-            click(zoom_full_button)
+            click(zoom_full_button_pattern)
             if Settings.get_os() == Platform.LINUX:
                 hover(Location(80, 0))
     elif button == 'zoom_restore':
         if Settings.get_os() == Platform.MAC:
             reset_mouse()
-            hover(red_button)
-        click(zoom_restore_button)
+            hover(red_button_pattern)
+        click(zoom_restore_button_pattern)
 
 
 def click_cancel_button():
+    cancel_button_pattern = Pattern('cancel_button.png')
     try:
-        wait('cancel_button.png', 10)
+        wait(cancel_button_pattern, 10)
         logger.debug('Cancel button found')
     except FindError:
         raise APIHelperError('Can\'t find the cancel button, aborting.')
     else:
-        click('cancel_button.png')
+        click(cancel_button_pattern)
 
 
 def close_customize_page():
-    customize_done_button = 'customize_done_button.png'
+    customize_done_button_pattern = Pattern('customize_done_button.png')
     try:
-        wait(customize_done_button, 10)
+        wait(customize_done_button_pattern, 10)
         logger.debug('Done button found')
     except FindError:
         raise APIHelperError('Can\'t find the Done button in the page, aborting.')
     else:
-        click(customize_done_button)
+        click(customize_done_button_pattern)
 
 
 def address_crash_reporter():
     # TODO: Only works on Mac and Windows until we can get Linux images
-    reporter = 'crash_sorry.png'
-    if exists(reporter, 2):
+    reporter_pattern = Pattern('crash_sorry.png')
+    if exists(reporter_pattern, 2):
         logger.debug('Crash Reporter found!')
         # Let crash stats know this is an Iris automation crash.
-        click(reporter)
+        click(reporter_pattern)
         # TODO: Add additional info in this message to crash stats
         type('Iris automation test crash')
         # Then dismiss the dialog by choosing to quit Firefox
-        click('quit_firefox_button.png')
+        click(Pattern('quit_firefox_button.png'))
 
         # Ensure the reporter closes before moving on
         try:
-            wait_vanish(reporter, 20)
+            wait_vanish(reporter_pattern, 20)
             logger.debug('Crash report sent')
         except FindError:
             logger.error('Crash reporter did not close')
@@ -364,9 +366,9 @@ class Option(object):
 def open_zoom_menu():
     """Open the Zoom menu from the View Menu."""
 
-    view_menu = 'view_menu.png'
+    view_menu_pattern = Pattern('view_menu.png')
     if Settings.get_os() == Platform.MAC:
-        click(view_menu)
+        click(view_menu_pattern)
         for i in range(3):
             type(text=Key.DOWN)
         type(text=Key.ENTER)
@@ -414,30 +416,30 @@ def create_region_for_url_bar():
 
 def create_region_for_hamburger_menu():
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    exit_menu = 'exit.png'
-    help_menu = 'help.png'
-    quit_menu = 'quit.png'
+    exit_menu_pattern = Pattern('exit.png')
+    help_menu_pattern = Pattern('help.png')
+    quit_menu_pattern = Pattern('quit.png')
     try:
         wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
         time.sleep(1)
         if Settings.get_os() == Platform.LINUX:
-            region = create_region_from_patterns(None, hamburger_menu_pattern, quit_menu, None, padding_right=20)
+            reg = create_region_from_patterns(None, hamburger_menu_pattern, quit_menu_pattern, None, padding_right=20)
         elif Settings.get_os() == Platform.MAC:
-            region = create_region_from_patterns(None, hamburger_menu_pattern, help_menu, None, padding_right=20)
+            reg = create_region_from_patterns(None, hamburger_menu_pattern, help_menu_pattern, None, padding_right=20)
         else:
-            region = create_region_from_patterns(None, hamburger_menu_pattern, exit_menu, None, padding_right=20)
+            reg = create_region_from_patterns(None, hamburger_menu_pattern, exit_menu_pattern, None, padding_right=20)
     except (FindError, ValueError):
         raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
-    return region
+    return reg
 
 
 def restore_window_from_taskbar():
     if Settings.get_os() == Platform.MAC:
         try:
-            main_menu_window = 'main_menu_window.png'
-            wait(main_menu_window, 5)
-            click(main_menu_window)
+            main_menu_window_pattern = Pattern('main_menu_window.png')
+            wait(main_menu_window_pattern, 5)
+            click(main_menu_window_pattern)
             type(Key.DOWN)
             time.sleep(Settings.FX_DELAY)
             type(Key.ENTER)
@@ -476,25 +478,25 @@ def open_library_menu(option):
 
 
 def remove_zoom_indicator_from_toolbar():
-    zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
-    remove_from_toolbar = 'remove_from_toolbar.png'
+    zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
+    remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
     try:
-        wait(zoom_control_toolbar_decrease, 10)
+        wait(zoom_control_toolbar_decrease_pattern, 10)
         logger.debug('\'Decrease\' zoom control found.')
-        right_click(zoom_control_toolbar_decrease)
+        right_click(zoom_control_toolbar_decrease_pattern)
     except FindError:
         raise APIHelperError('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
 
     try:
-        wait(remove_from_toolbar, 10)
+        wait(remove_from_toolbar_pattern, 10)
         logger.debug('\'Remove from Toolbar\' option found.')
-        click(remove_from_toolbar)
+        click(remove_from_toolbar_pattern)
     except FindError:
         raise APIHelperError('Can\'t find the \'Remove from Toolbar\' option in the page, aborting.')
 
     try:
-        wait_vanish(zoom_control_toolbar_decrease, 10)
+        wait_vanish(zoom_control_toolbar_decrease_pattern, 10)
     except FindError:
         raise APIHelperError('Zoom indicator not removed from toolbar, aborting.')
 
@@ -509,13 +511,13 @@ def bookmark_options(option):
 
 
 def access_bookmarking_tools(option):
-    bookmarking_tools = 'bookmarking_tools.png'
-    open_library_menu('bookmarks_menu.png')
+    bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
+    open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
 
     try:
-        wait(bookmarking_tools, 10)
+        wait(bookmarking_tools_pattern, 10)
         logger.debug('Bookmarking Tools option has been found.')
-        click(bookmarking_tools)
+        click(bookmarking_tools_pattern)
     except FindError:
         raise APIHelperError('Can\'t find the Bookmarking Tools option, aborting.')
     try:

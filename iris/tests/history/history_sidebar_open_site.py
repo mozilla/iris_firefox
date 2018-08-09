@@ -23,8 +23,8 @@ class Test(BaseTest):
 
     def run(self):
         history_sidebar_mozilla = LocalWeb.MOZILLA_BOOKMARK_SMALL
-        search_history_box = 'search_history_box.png'
-        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
+        search_history_box_pattern = Pattern('search_history_box.png')
+        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -38,11 +38,11 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
+        expected_3 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
+        expected_4 = exists(expand_button_history_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
-        click(expand_button_history_sidebar)
+        click(expand_button_history_sidebar_pattern)
 
         # Open a page from the History sidebar.
         history_sidebar_region = Region(0, find(NavBar.HOME_BUTTON).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)

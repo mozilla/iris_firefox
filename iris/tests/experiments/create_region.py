@@ -14,10 +14,10 @@ class Test(BaseTest):
 
     def run(self):
 
-        cat1 = 'cat1.png'
-        cat2 = 'cat2.png'
-        dog1 = 'dog1.png'
-        dog2 = 'dog2.png'
+        cat1_pattern = Pattern('cat1.png')
+        cat2_pattern = Pattern('cat2.png')
+        dog1_pattern = Pattern('dog1.png')
+        dog2_pattern = Pattern('dog2.png')
 
         r = create_region_from_patterns(left=NavBar.HOME_BUTTON, right=NavBar.LIBRARY_MENU)
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r.x, r.y, r.width, r.height))
@@ -29,7 +29,7 @@ class Test(BaseTest):
         logger.debug('Text in URL bar: %s' % r.text(with_image_processing=True))
 
         test_string_cat = 'This is a cat'
-        r1 = create_region_from_patterns(left=cat1, right=cat2)
+        r1 = create_region_from_patterns(left=cat1_pattern, right=cat2_pattern)
         region_text = r1.text()
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r1.x, r1.y, r1.width, r1.height))
         logger.debug('Text in region: %s' % region_text)
@@ -37,7 +37,7 @@ class Test(BaseTest):
         assert_false(self, 'Dog' in region_text, 'Should not find Dog in cat text')
 
         test_string_dog = 'This is a dog'
-        r2 = create_region_from_patterns(left=dog1, right=dog2)
+        r2 = create_region_from_patterns(left=dog1_pattern, right=dog2_pattern)
         region_text = r2.text()
         logger.debug('Region x, y, w, h: %s %s %s %s' % (r2.x, r2.y, r2.width, r2.height))
         logger.debug('Text in region: %s' % region_text)

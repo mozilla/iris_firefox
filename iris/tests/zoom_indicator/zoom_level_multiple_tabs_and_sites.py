@@ -15,8 +15,8 @@ class Test(BaseTest):
     def run(self):
         url_1 = LocalWeb.FIREFOX_TEST_SITE
         url_2 = LocalWeb.FIREFOX_TEST_SITE_2
-        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-        url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
+        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
+        url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
 
         navigate(url_1)
 
@@ -25,12 +25,12 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         zoom_in()
 
-        expected = exists(url_bar_110_zoom_level, 10)
+        expected = exists(url_bar_110_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         new_tab()
@@ -40,18 +40,16 @@ class Test(BaseTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
-        expected = exists(url_bar_110_zoom_level, 10)
+        expected = exists(url_bar_110_zoom_level_pattern, 10)
         assert_true(self, expected,
                     'Zoom indicator still displays 110% in the new tab opened for the site for which the '
                     'zoom level was set.')
 
         new_tab()
-
         navigate(url_2)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
-        # Zoom level set for one site does not propagate to other sites.
-        expected = region.exists(url_bar_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar.')

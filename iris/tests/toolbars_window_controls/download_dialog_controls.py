@@ -13,26 +13,26 @@ class Test(BaseTest):
 
     def run(self):
         url = self.get_web_asset_path('moz.pdf')
-        test_pdf = 'moz_fast.png'
-        download_button = 'pdf_download_button.png'
-        dialog = 'download_dialog.png'
+        test_pdf_pattern = Pattern('moz_fast.png')
+        download_button_pattern = Pattern('pdf_download_button.png')
+        dialog_pattern = Pattern('download_dialog.png')
 
         navigate(url)
 
         # Check to make sure the test PDF is loaded, Then click the download button.
-        expected = exists(test_pdf, 10)
+        expected = exists(test_pdf_pattern, 10)
         assert_true(self, expected, 'The test PDF is present')
-        click(download_button)
+        click(download_button_pattern)
 
         # Ensure the dialog appears
-        expected = exists(dialog, 10)
+        expected = exists(dialog_pattern, 10)
         assert_true(self, expected, 'Download dialog is present')
 
         # Close the dialog
         click_auxiliary_window_control('close')
 
         try:
-            expected = wait_vanish(dialog, 5)
+            expected = wait_vanish(dialog_pattern, 5)
             assert_true(self, expected, 'Download dialog was closed')
-        except:
+        except FindError:
             raise FindError('Download dialog is still present')

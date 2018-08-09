@@ -18,23 +18,22 @@ class Test(BaseTest):
     def run(self):
         url = self.get_asset_path('mouse-events.html')
 
-        t_left = 'ut-top-left.png'
-        b_right = 'ut-bottom-right.png'
+        t_left = Pattern('ut-top-left.png')
+        b_right = Pattern('ut-bottom-right.png')
 
-        hover_t_left = 'ut-hover-top.png'
-        hover_b_right = 'ut-hover-bottom.png'
-        click_t_left = 'ut-click-top.png'
-        click_b_right = 'ut-click-bottom.png'
+        hover_t_left = Pattern('ut-hover-top.png')
+        hover_b_right = Pattern('ut-hover-bottom.png')
+        click_t_left = Pattern('ut-click-top.png')
+        click_b_right = Pattern('ut-click-bottom.png')
 
         navigate(url)
-        # Wait page load
         wait(t_left, 10)
 
-        desktop_i = 'ut-desktop.png'
-        keyboard_i = 'ut-keyboard.png'
-        power_i = 'ut-power-off.png'
-        upload_i = 'ut-upload.png'
-        save_i = 'ut-save.png'
+        desktop_i = Pattern('ut-desktop.png')
+        keyboard_i = Pattern('ut-keyboard.png')
+        power_i = Pattern('ut-power-off.png')
+        upload_i = Pattern('ut-upload.png')
+        save_i = Pattern('ut-save.png')
 
         desktop_pattern = Pattern('ut-desktop.png')
         keyboard_pattern = Pattern('ut-keyboard.png')
