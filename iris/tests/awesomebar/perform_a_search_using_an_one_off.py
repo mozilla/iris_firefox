@@ -14,12 +14,12 @@ class Test(BaseTest):
 
     def run(self):
         page_bookmarked = 'page_bookmarked.png'
-        search_suggestion_bookmarked_tab = 'search_suggestion_bookmarked_tab.png'
-        search_suggestion_opened_tab = 'search_suggestion_opened_tab.png'
-        search_suggestion_history = 'search_suggestion_history.png'
-        popular_search_suggestion = 'popular_search_suggestion.png'
-        google_one_off_button = 'google_one_off_button.png'
-        google_search_results = 'google_search_results.png'
+        search_suggestion_bookmarked_tab = Pattern('search_suggestion_bookmarked_tab.png')
+        search_suggestion_opened_tab = Pattern('search_suggestion_opened_tab.png')
+        search_suggestion_history = Pattern('search_suggestion_history.png')
+        popular_search_suggestion = Pattern('popular_search_suggestion.png')
+        google_one_off_button = Pattern('google_one_off_button.png')
+        google_search_results = Pattern('google_search_results.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
