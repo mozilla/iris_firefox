@@ -24,7 +24,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        recent_history_mozilla = 'recent_history_mozilla.png'
+        recent_history_mozilla_pattern = Pattern('recent_history_mozilla.png')
 
         # Open a website in the current tab.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -33,5 +33,5 @@ class Test(BaseTest):
 
         # Check that the previously opened page is displayed on the top of the Recent History list.
         open_library_menu('History')
-        expected_2 = exists(recent_history_mozilla, 10)
+        expected_2 = exists(recent_history_mozilla_pattern, 10)
         assert_true(self, expected_2, 'Mozilla page displayed in the History list successfully.')

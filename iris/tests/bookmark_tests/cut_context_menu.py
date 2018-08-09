@@ -16,19 +16,20 @@ class Test(BaseTest):
 
     def run(self):
 
-        amazon_home = 'amazon.png'
-        toolbar_bookmark = 'toolbar_dragged_bookmark.png'
-        close_sidebar_search = 'close_sidebar_search.png'
-        bookmarks_sidebar_menu = 'bookmarks_sidebar_menu.png'
-        bookmarks_sidebar_menu_selected = 'bookmarks_sidebar_menu_selected_state.png'
+        amazon_home_pattern = Pattern('amazon.png')
+        toolbar_bookmark_pattern = Pattern('toolbar_dragged_bookmark.png')
+        close_sidebar_search_pattern = Pattern('close_sidebar_search.png')
+        bookmarks_sidebar_menu_pattern = SidebarBookmarks.BOOKMARKS_MENU
+        bookmarks_sidebar_menu_selected_pattern = SidebarBookmarks.BOOKMARKS_MENU_SELECTED
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
 
         navigate('www.amazon.com')
 
-        amazon_banner_assert = exists(amazon_home, 10)
+        amazon_banner_assert = exists(amazon_home_pattern, 10)
         assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
 
         try:
-            wait('amazon_favicon.png', 15)
+            wait(Pattern('amazon_favicon.png'), 15)
             logger.debug('Page is fully loaded and favicon displayed.')
         except FindError:
             logger.error('Page is not fully loaded, aborting.')
@@ -40,10 +41,10 @@ class Test(BaseTest):
 
         time.sleep(Settings.UI_DELAY_LONG)
 
-        access_bookmarking_tools('view_bookmarks_toolbar.png')
+        access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
         try:
-            wait('toolbar_is_active.png', 10)
+            wait(SidebarBookmarks.BookmarksToolbar.MOST_VISITED, 10)
             logger.debug('Toolbar has been activated.')
         except FindError:
             logger.error('Toolbar can not be activated, aborting.')
@@ -52,38 +53,38 @@ class Test(BaseTest):
 
         paste('amazon')
 
-        sidebar_bookmark_assert = exists('sidebar_bookmark.png', 10)
+        sidebar_bookmark_assert = exists(Pattern('sidebar_bookmark.png'), 10)
         assert_true(self, sidebar_bookmark_assert, 'Bookmark is present inside the sidebar.')
 
-        drag_drop('amazon_draggable.png', 'drag_area.png', 0.5)
+        drag_drop(Pattern('amazon_draggable.png'), Pattern('drag_area.png'), 0.5)
 
-        toolbar_bookmark_assert = exists(toolbar_bookmark, 10)
+        toolbar_bookmark_assert = exists(toolbar_bookmark_pattern, 10)
         assert_true(self, toolbar_bookmark_assert, 'Amazon bookmark is present in the Bookmarks Toolbar.')
 
-        right_click(toolbar_bookmark)
+        right_click(toolbar_bookmark_pattern)
 
-        bookmark_options('cut_option.png')
+        bookmark_options(Pattern('cut_option.png'))
 
         try:
-            wait(close_sidebar_search, 10)
+            wait(close_sidebar_search_pattern, 10)
             logger.debug('Close button is present.')
-            click(close_sidebar_search)
+            click(close_sidebar_search_pattern)
         except FindError:
             logger.error('Can\'t find the close button')
             raise FindError
 
         try:
-            wait(bookmarks_sidebar_menu, 10)
+            wait(bookmarks_sidebar_menu_pattern, 10)
             logger.debug('Bookmarks sidebar menu is present.')
-            click(bookmarks_sidebar_menu)
+            click(bookmarks_sidebar_menu_pattern)
         except FindError:
             logger.error('Can\'t find the Bookmarks sidebar menu')
             raise FindError
 
-        right_click(bookmarks_sidebar_menu_selected)
+        right_click(bookmarks_sidebar_menu_selected_pattern)
 
-        bookmark_options('paste_option.png')
+        bookmark_options(Pattern('paste_option.png'))
 
-        pasted_bookmark_assertion = exists('sidebar_bookmark_location_changed.png', 10)
-        assert_true(self, pasted_bookmark_assertion, 'Bookmark is present into a different directory, cut option works '
-                                                     'as expected.')
+        pasted_bookmark_assertion = exists(Pattern('sidebar_bookmark_location_changed.png'), 10)
+        assert_true(self, pasted_bookmark_assertion,
+                    'Bookmark is present into a different directory, cut option works as expected.')

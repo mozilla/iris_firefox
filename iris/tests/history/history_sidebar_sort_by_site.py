@@ -22,11 +22,11 @@ class Test(BaseTest):
         return
 
     def run(self):
-        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        history_sidebar_view_button = 'history_sidebar_view_button.png'
-        history_sidebar_sort_by_date = 'history_sidebar_sort_by_date.png'
-        history_sidebar_sort_by_site = 'history_sidebar_sort_by_site.png'
-        history_sidebar_items_sort_by_site = 'history_sidebar_items_sort_by_site.png'
+        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        history_sidebar_view_button_pattern = Pattern('history_sidebar_view_button.png')
+        history_sidebar_sort_by_date_pattern = Pattern('history_sidebar_sort_by_date.png')
+        history_sidebar_sort_by_site_pattern = Pattern('history_sidebar_sort_by_site.png')
+        history_sidebar_items_sort_by_site_pattern = Pattern('history_sidebar_items_sort_by_site.png')
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -55,20 +55,22 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_6 = exists(expand_button_history_sidebar, 10)
+        expected_6 = exists(expand_button_history_sidebar_pattern, 10)
         assert_true(self, expected_6, 'Expand history sidebar button displayed properly.')
-        click(expand_button_history_sidebar)
+        click(expand_button_history_sidebar_pattern)
 
         # Sort by date by default.
-        expected_7 = exists(history_sidebar_view_button, 10)
+        expected_7 = exists(history_sidebar_view_button_pattern, 10)
         assert_true(self, expected_7, 'View button displayed properly.')
-        click(history_sidebar_view_button)
-        expected_8 = exists(history_sidebar_sort_by_date, 10)
+
+        click(history_sidebar_view_button_pattern)
+        expected_8 = exists(history_sidebar_sort_by_date_pattern, 10)
         assert_true(self, expected_8, 'Default sorting option - sort by date - is selected properly.')
 
         # Sort by site.
-        expected_9 = exists(history_sidebar_sort_by_site, 10)
+        expected_9 = exists(history_sidebar_sort_by_site_pattern, 10)
         assert_true(self, expected_9, 'Sort by site option is displayed properly.')
-        click(history_sidebar_sort_by_site)
-        expected_10 = exists(history_sidebar_items_sort_by_site)
+
+        click(history_sidebar_sort_by_site_pattern)
+        expected_10 = exists(history_sidebar_items_sort_by_site_pattern)
         assert_true(self, expected_10, 'History list is sorted properly by site.')

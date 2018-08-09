@@ -10,18 +10,10 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test of basic URL navigation via awesomebar"
+        self.meta = 'This is a test of basic URL navigation via awesomebar.'
 
     def run(self):
-        url = "https://www.google.com/?hl=EN"
-        # helper function from "awesome_bar"
-        navigate(url)
-
-        # image: "Google Search" button
-        # details: below the search field in page content
-        # location: www.google.com
-        image = "google_search.png"
-
-        # core api function
-        expected_1 = exists(image, 10)
+        navigate('https://www.google.com/?hl=EN')
+        google_search_pattern = Pattern('google_search.png')
+        expected_1 = exists(google_search_pattern, 10)
         assert_true(self, expected_1, 'Find image')

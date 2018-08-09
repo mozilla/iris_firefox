@@ -16,10 +16,10 @@ class Test(BaseTest):
 
     def run(self):
 
-        draggable_url = Pattern('moz_draggable_url.png')
-        sidebar_bookmarks = Pattern('library_bookmarks.png')
-        drag_area = Pattern('drag_area_moz.png')
-        moz_bookmark = Pattern('moz_sidebar_bookmark.png')
+        draggable_url_pattern = Pattern('moz_draggable_url.png')
+        sidebar_bookmarks_pattern = Pattern('library_bookmarks.png')
+        drag_area_pattern = Pattern('drag_area_moz.png')
+        moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         bookmark_selected_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -30,19 +30,19 @@ class Test(BaseTest):
         bookmarks_sidebar('open')
 
         try:
-            wait(sidebar_bookmarks, 10)
+            wait(sidebar_bookmarks_pattern, 10)
             logger.debug('Bookmarks section can be accessed.')
-            click(sidebar_bookmarks)
+            click(sidebar_bookmarks_pattern)
         except FindError:
             raise FindError('Bookmarks section is not present on the page, aborting.')
 
         select_location_bar()
 
-        drag_drop(draggable_url, drag_area, 0.5)
+        drag_drop(draggable_url_pattern, drag_area_pattern, 0.5)
 
         star_shaped_button_assert = exists(bookmark_selected_pattern, 10)
         assert_true(self, star_shaped_button_assert, 'Star-shaped button has changed its color to blue.')
 
-        bookmarked_url_assert = exists(moz_bookmark, 10)
-        assert_true(self, bookmarked_url_assert, 'Moz page has been successfully bookmarked via URL onto the '
-                                                 'Bookmarks Sidebar')
+        bookmarked_url_assert = exists(moz_bookmark_pattern, 10)
+        assert_true(self, bookmarked_url_assert,
+                    'Moz page has been successfully bookmarked via URL onto the Bookmarks Sidebar')

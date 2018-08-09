@@ -13,25 +13,24 @@ class Test(BaseTest):
 
     def run(self):
         url = 'cdn2.collective-evolution.com/assets/uploads/2009/09/url.jpeg'
-        test_image = 'sleepy_head_nose.png'
-        save_as = 'save_as.png'
+        test_pattern = Pattern('sleepy_head_nose.png')
+        save_as_pattern = Pattern('save_as.png')
 
         navigate(url)
         try:
-            wait(test_image, 5)
-        except:
+            wait(test_pattern, 5)
+        except FindError:
             raise FindError('Test Image not loaded')
         else:
-            right_click(test_image, 1)
+            right_click(test_pattern, 1)
 
-        # wait a moment to ensure the context menu is responsive
         time.sleep(Settings.UI_DELAY)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.ENTER)
 
-        expected_1 = exists(save_as, 10)
+        expected_1 = exists(save_as_pattern, 10)
         assert_true(self, expected_1, 'Save Image dialog is present')
 
         if Settings.get_os() == Platform.WINDOWS:
@@ -40,7 +39,7 @@ class Test(BaseTest):
             click_cancel_button()
             
         try:
-            expected_2 = wait_vanish(save_as, 5)
+            expected_2 = wait_vanish(save_as_pattern, 5)
             assert_true(self, expected_2, 'Save Image dialog was closed')
-        except:
+        except FindError:
             raise FindError('Save Image dialog is still present')

@@ -13,13 +13,13 @@ class Test(BaseTest):
         self.meta = 'This test case verifies that \'Search in New Tab\' option works correctly using an one-off.'
 
     def run(self):
-        moz = 'moz.png'
+        moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
-        google_one_off_button = 'google_one_off_button.png'
-        twitter_one_off_button_highlight = 'twitter_one_off_button_highlight.png'
-        set_as_default_search_engine = 'set_as_default_search_engine.png'
-        search_in_new_tab = 'search_in_new_tab.png'
-        new_tab_twitter_search_results = 'new_tab_twitter_search_results.png'
+        google_one_off_button_pattern = Pattern('google_one_off_button.png')
+        twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
+        set_as_default_search_engine_pattern = Pattern('set_as_default_search_engine.png')
+        search_in_new_tab_pattern = Pattern('search_in_new_tab.png')
+        new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -31,13 +31,13 @@ class Test(BaseTest):
         select_location_bar()
         paste('moz')
 
-        expected = region.exists(moz, 10)
+        expected = region.exists(moz_pattern, 10)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
 
-        hover(google_one_off_button)
+        hover(google_one_off_button_pattern)
 
         try:
-            expected = region.wait_vanish(moz, 10)
+            expected = region.wait_vanish(moz_pattern, 10)
             assert_true(self, expected, 'The \'Google\' one-off button is highlighted.')
         except FindError:
             raise FindError('The \'Google\' one-off button is not highlighted.')
@@ -45,22 +45,21 @@ class Test(BaseTest):
         for i in range(15):
             scroll_down()
 
-        expected = region.exists(twitter_one_off_button_highlight, 10)
+        expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
         assert_true(self, expected, 'The \'Twitter\' one-off button is highlighted.')
 
-        right_click(twitter_one_off_button_highlight)
+        right_click(twitter_one_off_button_highlight_pattern)
 
-        expected = exists(search_in_new_tab, 10)
+        expected = exists(search_in_new_tab_pattern, 10)
         assert_true(self, expected, 'The \'Search in New Tab\' option found.')
 
-        expected = exists(set_as_default_search_engine, 10)
+        expected = exists(set_as_default_search_engine_pattern, 10)
         assert_true(self, expected, 'The \'Set As Default Search Engine\' option found.')
 
-        click(search_in_new_tab)
+        click(search_in_new_tab_pattern)
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        # move focus to the new tab opened.
         next_tab()
 
-        expected = exists(new_tab_twitter_search_results, 10)
+        expected = exists(new_tab_twitter_search_results_pattern, 10)
         assert_true(self, expected, 'A new tab with the Twitter search results is opened.')

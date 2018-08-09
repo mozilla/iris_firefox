@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
+        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
 
         navigate(url)
 
@@ -26,5 +26,5 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')

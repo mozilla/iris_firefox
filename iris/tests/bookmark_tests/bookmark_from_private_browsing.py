@@ -16,35 +16,35 @@ class Test(BaseTest):
 
     def run(self):
 
-        history_dropdown = Pattern('history_dropdown_button.png')
-        privacy_page = Pattern('privacy_page.png')
-        restart_browser = Pattern('restart_browser.png')
-        never_remember_history = Pattern('never_remember_history.png')
+        history_dropdown_pattern = Pattern('history_dropdown_button.png')
+        privacy_page_pattern = Pattern('privacy_page.png')
+        restart_browser_pattern = Pattern('restart_browser.png')
+        never_remember_history_pattern = Pattern('never_remember_history.png')
         bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
 
         navigate('about:preferences#privacy')
 
-        privacy_page_assert = exists(privacy_page, 10)
+        privacy_page_assert = exists(privacy_page_pattern, 10)
         assert_true(self, privacy_page_assert, 'Privacy page has been accessed.')
 
         try:
-            wait(history_dropdown, 10)
+            wait(history_dropdown_pattern, 10)
             logger.debug('History dropdown list can be accessed.')
-            click(history_dropdown)
+            click(history_dropdown_pattern)
         except FindError:
             raise FindError('History dropdown list can NOT be accessed, aborting.')
 
         try:
-            wait(never_remember_history, 10)
+            wait(never_remember_history_pattern, 10)
             logger.debug('Never Remember History option is present in the dropdown list.')
-            click(never_remember_history)
+            click(never_remember_history_pattern)
         except FindError:
             raise FindError('Never Remember History option is NOT present in the dropdown list, aborting')
 
-        restart_browser_popup_assert = exists(restart_browser, 10)
+        restart_browser_popup_assert = exists(restart_browser_pattern, 10)
         assert_true(self, restart_browser_popup_assert, 'History option can be changed.')
 
-        click(restart_browser)
+        click(restart_browser_pattern)
         wait_for_firefox_restart()
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -59,5 +59,5 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Bookmark star is not present on the page, aborting.')
 
-        page_bookmarked_assert = exists('page_bookmarked.png', 10)
+        page_bookmarked_assert = exists(Pattern('page_bookmarked.png'), 10)
         assert_true(self, page_bookmarked_assert, 'The page was successfully bookmarked via star button.')

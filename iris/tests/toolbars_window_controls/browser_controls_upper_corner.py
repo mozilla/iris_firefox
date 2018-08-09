@@ -14,68 +14,64 @@ class Test(BaseTest):
 
     def run(self):
         url = 'about:home'
-        window_controls_minimize = 'window_controls_minimize.png'
-        hover_minimize_control = 'hover_minimize_control.png'
-        window_controls_restore = 'window_controls_restore.png'
-        hover_restore_control = 'hover_restore_control.png'
-        window_controls_maximize = 'window_controls_maximize.png'
-        hover_maximize_control = 'hover_maximize_control.png'
-        window_controls_close = 'window_controls_close.png'
-        hover_close_control = 'hover_close_control.png'
+        window_controls_minimize_pattern = Pattern('window_controls_minimize.png')
+        hover_minimize_control_pattern = Pattern('hover_minimize_control.png')
+        window_controls_restore_pattern = Pattern('window_controls_restore.png')
+        hover_restore_control_pattern = Pattern('hover_restore_control.png')
+        window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
+        hover_maximize_control_pattern = Pattern('hover_maximize_control.png')
+        window_controls_close_pattern = Pattern('window_controls_close.png')
+        hover_close_control_pattern = Pattern('hover_close_control.png')
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url)
         time.sleep(Settings.UI_DELAY_LONG)
 
-        hover(window_controls_minimize)
-        expected = exists(hover_minimize_control, 10)
+        hover(window_controls_minimize_pattern)
+        expected = exists(hover_minimize_control_pattern, 10)
         assert_true(self, expected, 'Hover over the \'minimize\' button works correctly.')
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            hover(window_controls_restore)
-            expected = exists(hover_restore_control, 10)
+            hover(window_controls_restore_pattern)
+            expected = exists(hover_restore_control_pattern, 10)
             assert_true(self, expected, 'Hover over the \'restore\' button works correctly.')
 
         if Settings.get_os() == Platform.MAC:
-            middle = find(hover_maximize_control)
+            middle = find(hover_maximize_control_pattern)
             hover(Location(middle.x + 10, middle.y + 5))
-            expected = exists(hover_maximize_control, 10)
+            expected = exists(hover_maximize_control_pattern, 10)
             assert_true(self, expected, 'Hover over the \'maximize\' button works correctly.')
 
             hover(Location(middle.x - 10, middle.y + 5))
-            expected = exists(hover_close_control, 10)
+            expected = exists(hover_close_control_pattern, 10)
             assert_true(self, expected, 'Hover over the \'close\' button works correctly.')
         else:
-            hover(window_controls_close)
-            expected = exists(hover_close_control, 10)
+            hover(window_controls_close_pattern)
+            expected = exists(hover_close_control_pattern, 10)
             assert_true(self, expected, 'Hover over the \'close\' button works correctly.')
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            # Restore window
             minimize_window()
             time.sleep(Settings.UI_DELAY)
-            hover(window_controls_maximize)
-            expected = exists(hover_maximize_control, 10)
+            hover(window_controls_maximize_pattern)
+            expected = exists(hover_maximize_control_pattern, 10)
             assert_true(self, expected,
                         'Hover over the \'maximize\' button works correctly; Window successfully restored.')
 
         if Settings.get_os() == Platform.LINUX:
-            # Minimize window
-            click(window_controls_minimize)
+            click(window_controls_minimize_pattern)
         else:
             expected = exists(hamburger_menu_pattern, 10)
             assert_true(self, expected, 'Found \'hamburger menu\'')
 
-            # Minimize window
             minimize_window()
             expected = False
             try:
                 expected = wait_vanish(hamburger_menu_pattern, 10)
-            except Exception as error:
+            except FindError:
                 logger.error('Window not minimized.')
             assert_true(self, expected, 'Window successfully minimized.')
 
-        # Focus on Firefox and open the browser again
         restore_window_from_taskbar()
         if Settings.get_os() == Platform.WINDOWS:
             maximize_window()
@@ -83,16 +79,14 @@ class Test(BaseTest):
         expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
-        # Make sure that focus is on the browser
         hover(hamburger_menu_pattern)
         time.sleep(Settings.FX_DELAY)
 
-        # Close the window
         close_window()
         time.sleep(Settings.FX_DELAY)
         type(Key.ENTER)
         try:
             expected = wait_vanish(hamburger_menu_pattern, 10)
             assert_true(self, expected, 'Window successfully closed.')
-        except Exception as error:
+        except FindError:
             assert_true(self, False, 'Window successfully closed.')

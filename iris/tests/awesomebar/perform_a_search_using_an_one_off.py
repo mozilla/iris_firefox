@@ -13,13 +13,13 @@ class Test(BaseTest):
         self.meta = 'This test case perform a search using an one-off focusing on the autocomplete drop-down.'
 
     def run(self):
-        page_bookmarked = 'page_bookmarked.png'
-        search_suggestion_bookmarked_tab = Pattern('search_suggestion_bookmarked_tab.png')
-        search_suggestion_opened_tab = Pattern('search_suggestion_opened_tab.png')
-        search_suggestion_history = Pattern('search_suggestion_history.png')
-        popular_search_suggestion = Pattern('popular_search_suggestion.png')
-        google_one_off_button = Pattern('google_one_off_button.png')
-        google_search_results = Pattern('google_search_results.png')
+        page_bookmarked_pattern = Pattern('page_bookmarked.png')
+        search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png')
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')
+        search_suggestion_history_pattern = Pattern('search_suggestion_history.png')
+        popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
+        google_one_off_button_pattern = Pattern('google_one_off_button.png')
+        google_search_results_pattern = Pattern('google_search_results.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -30,7 +30,7 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        expected = region.exists(page_bookmarked, 10)
+        expected = region.exists(page_bookmarked_pattern, 10)
         assert_true(self, expected, 'Page was bookmarked.')
 
         new_tab()
@@ -43,7 +43,6 @@ class Test(BaseTest):
         expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
         assert_true(self, expected, 'Focus page loaded successfully.')
 
-        # Close all the tabs opened above by restarting the browser and then reopen one of the sites.
         restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
 
         new_tab()
@@ -51,30 +50,30 @@ class Test(BaseTest):
         select_location_bar()
         paste('m')
 
-        expected = region.exists(search_suggestion_bookmarked_tab, 10)
+        expected = region.exists(search_suggestion_bookmarked_tab_pattern, 10)
         assert_true(self, expected, 'Bookmarked page found between search suggestions.')
 
         select_location_bar()
         paste('o')
 
-        expected = region.exists(search_suggestion_opened_tab, 10)
+        expected = region.exists(search_suggestion_opened_tab_pattern, 10)
         assert_true(self, expected, 'Opened tab found between search suggestions.')
 
         select_location_bar()
         paste('f')
 
-        expected = region.exists(search_suggestion_history, 10)
+        expected = region.exists(search_suggestion_history_pattern, 10)
         assert_true(self, expected, 'Web pages from personal browsing history found between search suggestions.')
 
-        expected = region.exists(popular_search_suggestion, 10)
+        expected = region.exists(popular_search_suggestion_pattern, 10)
         assert_true(self, expected,
                     'Popular search suggestions from the default search engine found between search suggestions.')
 
-        expected = region.exists(google_one_off_button, 10)
+        expected = region.exists(google_one_off_button_pattern, 10)
         assert_true(self, expected, 'The \'Google\' one-off button found.')
 
-        click(google_one_off_button)
+        click(google_one_off_button_pattern)
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = exists(google_search_results, 10)
+        expected = exists(google_search_results_pattern, 10)
         assert_true(self, expected, 'Google search results are displayed.')

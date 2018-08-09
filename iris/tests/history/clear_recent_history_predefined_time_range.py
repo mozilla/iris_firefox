@@ -22,12 +22,11 @@ class Test(BaseTest):
         return
 
     def run(self):
-        clear_recent_history_window = 'clear_recent_history_window.png'
-        history_items_old = 'history_items_old.png'
-        history_items_today = 'expand_button_history_sidebar.png'
-        clear_recent_history_last_hour = 'clear_recent_history_last_hour.png'
+        clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
+        history_items_old_pattern = Pattern('history_items_old.png')
+        history_items_today_pattern = Pattern('expand_button_history_sidebar.png')
+        clear_recent_history_last_hour_pattern = Pattern('clear_recent_history_last_hour.png')
 
-        # Open some pages to create some history.
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
@@ -38,16 +37,14 @@ class Test(BaseTest):
         expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected_2, 'Firefox page loaded successfully.')
 
-        # Open the History sidebar.
         history_sidebar()
 
-        # Open the Clear Recent History window and select 'Today'.
         clear_recent_history()
-        expected_3 = exists(clear_recent_history_window, 10)
+        expected_3 = exists(clear_recent_history_window_pattern, 10)
         assert_true(self, expected_3, 'Clear Recent History window was displayed properly.')
 
         if Settings.is_mac():
-            click(clear_recent_history_last_hour)
+            click(clear_recent_history_last_hour_pattern)
             type(Key.DOWN)
             type(Key.DOWN)
             type(Key.DOWN)
@@ -60,12 +57,11 @@ class Test(BaseTest):
             type(Key.DOWN)
             type(Key.ENTER)
 
-        # Check that 'Today' was removed from the History sidebar.
         try:
-            expected_4 = wait_vanish(history_items_today, 10)
+            expected_4 = wait_vanish(history_items_today_pattern, 10)
             assert_true(self, expected_4, 'Today\'s history was removed successfully.')
         except FindError:
             raise FindError('Today\'s history is still present.')
 
-        expected_5 = exists(Pattern(history_items_old).similar(0.9), 10)
+        expected_5 = exists(history_items_old_pattern.similar(0.9), 10)
         assert_true(self, expected_5, 'Old history is still displayed properly.')

@@ -24,7 +24,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        recent_history_default = 'recent_history_default.png'
+        recent_history_default_pattern = Pattern('recent_history_default.png')
 
         # Open a website in a new private window.
         new_private_window()
@@ -34,5 +34,5 @@ class Test(BaseTest):
 
         # Check that the previously opened page is not displayed in the Recent History list.
         open_library_menu('History')
-        expected_2 = exists(recent_history_default, 10)
+        expected_2 = exists(recent_history_default_pattern, 10)
         assert_true(self, expected_2, 'Mozilla page is not displayed in the History list.')

@@ -6,11 +6,13 @@ import logging
 import time
 
 from iris.api.core.errors import FindError, APIHelperError
-from iris.api.core.util.image_search import get_image_size
+from iris.api.core.firefox_ui.menus import SidebarBookmarks
+from iris.api.core.firefox_ui.toolbars import LocationBar
 from iris.api.core.key import Key, KeyModifier, key_down, key_up, type
 from iris.api.core.pattern import Pattern
 from iris.api.core.region import Region, click, wait, wait_vanish
 from iris.api.core.settings import *
+from iris.api.core.util.image_search import get_image_size
 
 logger = logging.getLogger(__name__)
 
@@ -384,13 +386,12 @@ def maximize_window():
     if Settings.is_mac():
         # There is no keyboard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
-        maximized_browser_image = 'maximized_browser.png'
-        maximized_browser_pattern = Pattern(maximized_browser_image)
+        maximized_browser_pattern = Pattern('maximized_browser.png')
         maximized_browser_width, maximized_browser_height = get_image_size(maximized_browser_pattern)
         region = Region(0, 0, maximized_browser_width + 50, maximized_browser_height + 50)
 
         try:
-            region.find(Pattern(maximized_browser_image).similar(0.95))
+            region.find(maximized_browser_pattern.similar(0.95))
             logger.debug('Window is already maximized.')
         except (FindError, ValueError):
             logger.debug('Window is not maximized.')
@@ -546,10 +547,10 @@ def bookmark_page():
     else:
         type(text='d', modifier=KeyModifier.CTRL)
     try:
-        wait('page_bookmarked.png', 10)
+        wait(LocationBar.BOOKMARK_SELECTED_BUTTON, 10)
         logger.debug('Page was successfully bookmarked')
     except FindError:
-        logger.error('Page can not be bookmarked')
+        raise APIHelperError('Page can not be bookmarked')
 
 
 def bookmarks_sidebar(option):
@@ -559,16 +560,16 @@ def bookmarks_sidebar(option):
     else:
         type(text='b', modifier=KeyModifier.CTRL)
 
-    bookmark_sidebar_img = 'bookmark_sidebar.png'
+    bookmark_sidebar_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
     if option == 'open':
         try:
-            wait(bookmark_sidebar_img, 10)
+            wait(bookmark_sidebar_header_pattern, 10)
             logger.debug('Sidebar is opened.')
         except FindError:
             raise APIHelperError('Sidebar is NOT present on the page, aborting.')
     elif option == 'close':
         try:
-            wait_vanish(bookmark_sidebar_img, 10)
+            wait_vanish(bookmark_sidebar_header_pattern, 10)
             logger.debug('Sidebar is closed.')
         except FindError:
             raise APIHelperError('Sidebar is NOT closed, aborting.')

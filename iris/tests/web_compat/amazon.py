@@ -10,16 +10,16 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Web compability test for amazon.com'
+        self.meta = 'Web compatibility test for amazon.com'
         self.exclude = Platform.ALL
 
     def login_amazon(self):
         try:
-            wait('amazon_sign_in_button.png', 3)
-        except:
+            wait(Pattern('amazon_sign_in_button.png'), 3)
+        except FindError:
             logger.debug('Exit login')
         else:
-            click('amazon_sign_in_button.png')
+            click(Pattern('amazon_sign_in_button.png'))
             time.sleep(3)
             paste(get_credential('Amazon', 'username'))
             type(Key.ENTER)
@@ -27,17 +27,15 @@ class Test(BaseTest):
             paste(get_credential('Amazon', 'password'))
             type(Key.ENTER)
             time.sleep(3)
-            amazon_logo=exists('amazon_logo.png', 5)
-            assert_true(self,amazon_logo,'Amazon logo exists')
+            amazon_logo = exists(Pattern('amazon_logo.png'), 5)
+            assert_true(self, amazon_logo, 'Amazon logo exists')
 
-            
     def run(self):
-        url = 'www.amazon.com'
-        navigate(url)
+        navigate('www.amazon.com')
         keyword = 'Lord of the rings'
         try:
-            wait('amazon_logo.png', 10)
-        except:
+            wait(Pattern('amazon_logo.png'), 10)
+        except FindError:
             logger.debug('Page was not loaded')
 
         else:
@@ -51,43 +49,42 @@ class Test(BaseTest):
             type(Key.ENTER)
 
             amazon_search_result = Pattern('amazon_search_results.png')
-            category=False
+            category = False
             found = False
-            while category == False:
-                if exists('amazon_books_result.png',0.25):
-                    category=True
-                    click('amazon_books_result.png')
+            while not category:
+                if exists(Pattern('amazon_books_result.png'), 0.25):
+                    category = True
+                    click(Pattern('amazon_books_result.png'))
                 else:
                     scroll_down()
-            assert_true(self,category,'Book category was found')
-            while found==False:
+            assert_true(self, category, 'Book category was found')
+            while not found:
                 if exists(amazon_search_result, 0.25):
                     logger.debug('Book result is found')
                     found = True
                     break
-                elif exists('amazon_next_page.png', 0.25):
+                elif exists(Pattern('amazon_next_page.png'), 0.25):
                     logger.error('Searching result not found in page')
                     break
-
                 else:
                     logger.debug('Scrolling down in page')
                     scroll_down()
 
-            assert_true(self,found,'Book result was found')
+            assert_true(self, found, 'Book result was found')
             amazon_cart = Pattern('amazon_cart.png')
             amazon_add_to_cart = Pattern('amazon_add_to_cart.png')
             amazon_delete_cart = Pattern('amazon_delete_cart.png')
             click(amazon_search_result)
-            amazon_add_cart=exists(amazon_add_to_cart, 5)
-            assert_true(self,amazon_add_cart,'Cart image exists')
+            amazon_add_cart = exists(amazon_add_to_cart, 5)
+            assert_true(self, amazon_add_cart, 'Cart image exists')
             logger.debug('Add product to cart')
             click(amazon_add_to_cart)
-            amazon_car_image=exists(amazon_cart, 10)
-            assert_true(self,amazon_car_image,'Cart exists')
+            amazon_car_image = exists(amazon_cart, 10)
+            assert_true(self, amazon_car_image, 'Cart exists')
             logger.debug('Product was added to cart successfully')
             click(amazon_cart)
             time.sleep(4)
-            delete_cart=exists(amazon_delete_cart, 10)
-            assert_true(self,delete_cart,'Delete cart exists')
+            delete_cart = exists(amazon_delete_cart, 10)
+            assert_true(self, delete_cart, 'Delete cart exists')
             click(amazon_delete_cart)
             logger.debug('Product was successfully deleted from cart')

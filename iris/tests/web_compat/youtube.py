@@ -10,22 +10,22 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Web compability test for youtube.com'
+        self.meta = 'Web compatibility test for youtube.com'
         self.exclude = Platform.ALL
 
     def run(self):
         url = 'youtube.com'
-        youtube_banner = 'youtube_banner.png'
-        youtube_filter = 'filter_youtube_results.png'
+        youtube_banner_pattern = Pattern('youtube_banner.png')
+        youtube_filter_pattern = Pattern('filter_youtube_results.png')
         navigate(url)
         self.login_youtube()
-        banner = exists(youtube_banner, 10)
+        banner = exists(youtube_banner_pattern, 10)
         assert_true(self, banner, 'Youtube banner exists')
         logger.debug('Youtube Search')
         type('lord of the rings')
         type(Key.ENTER)
-        filter = exists(youtube_filter, 10)
-        assert_true(self, filter, 'Youtube filter exists')
+        filter_pattern = exists(youtube_filter_pattern, 10)
+        assert_true(self, filter_pattern, 'Youtube filter exists')
         logger.debug('Results are displayed')
         time.sleep(3)
         type(Key.TAB)
@@ -37,20 +37,19 @@ class Test(BaseTest):
         logger.debug('Scrolling up')
         for i in range(4):
             scroll_up()
-        filter = exists(youtube_filter, 10)
-        assert_true(self, filter, 'Youtube filter exists')
+        filter_pattern = exists(youtube_filter_pattern, 10)
+        assert_true(self, filter_pattern, 'Youtube filter exists')
 
     def login_youtube(self):
         try:
-            wait('youtube_banner.png', 10)
-        except:
-            logger.error('Can\'t find Youtube image in page, aborting test.')
-            return
+            wait(Pattern('youtube_banner.png'), 10)
+        except FindError:
+            raise FindError('Can\'t find Youtube image in page, aborting test.')
 
         for i in range(5):
             type(Key.TAB)
         type(Key.ENTER)
-        sign_in = exists('youtube_sign_in.png', 10)
+        sign_in = exists(Pattern('youtube_sign_in.png'), 10)
         assert_true(self, sign_in, 'Youtube sign in exists')
         type(get_credential('Youtube', 'username'))
         time.sleep(3)

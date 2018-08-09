@@ -22,18 +22,18 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box = 'search_history_box.png'
-        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        history_sidebar_default = 'history_sidebar_default.png'
+        search_history_box_pattern = Pattern('search_history_box.png')
+        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        history_sidebar_default_pattern = Pattern('history_sidebar_default.png')
 
         # Open the History sidebar.
         history_sidebar()
-        expected_1 = exists(search_history_box, 10)
+        expected_1 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_1, 'Sidebar was opened successfully.')
-        expected_2 = exists(expand_button_history_sidebar, 10)
+        expected_2 = exists(expand_button_history_sidebar_pattern, 10)
         assert_true(self, expected_2, 'Expand history button displayed properly.')
-        click(expand_button_history_sidebar)
+        click(expand_button_history_sidebar_pattern)
 
         # Check the default items are displayed.
-        expected_3 = exists(history_sidebar_default, 10)
+        expected_3 = exists(history_sidebar_default_pattern, 10)
         assert_true(self, expected_3, 'The expected items are displayed in the History list.')

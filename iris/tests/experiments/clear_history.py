@@ -13,30 +13,27 @@ class Test(BaseTest):
 
     def run(self):
         url = 'https://www.amazon.com'
-        amazon_image = 'amazon.png'
-        amazon_history_image = 'amazon_history.png'
+        amazon_pattern = Pattern('amazon.png')
+        amazon_history_pattern = Pattern('amazon_history.png')
+        library_history_pattern = Pattern('library_history.png')
+        library_clear_history_pattern = Pattern('library_clear_history.png')
         library_menu_pattern = NavBar.LIBRARY_MENU
 
         navigate(url)
 
-        expected_1 = exists(amazon_image, 5)
+        expected_1 = exists(amazon_pattern, 5)
         assert_true(self, expected_1, 'Wait for Amazon image to appear')
 
-        # The various calls to time.sleep are necessary to
-        # account for lag times incurred by underlying operations.
-        # We can always switch to image detection as a mechanism to
-        # confirm presence of UI before interaction, but that
-        # has its own cost.
-
         click(library_menu_pattern)
-        library_menu_assert = exists('library_history.png', 5)
+
+        library_menu_assert = exists(library_history_pattern, 5)
         assert_true(self, library_menu_assert, 'Library menu opened and history button is present')
 
-        click('library_history.png')
-        clear_history_assert = exists('library_clear_history.png', 5)
+        click(library_history_pattern)
+        clear_history_assert = exists(library_clear_history_pattern, 5)
         assert_true(self, clear_history_assert, 'Clear history button is present')
 
-        click('library_clear_history.png')
+        click(library_clear_history_pattern)
 
         time.sleep(Settings.UI_DELAY)
         type(Key.ENTER)
@@ -44,7 +41,7 @@ class Test(BaseTest):
         # Because of a Mac bug with the keyboard shortcut for clear history,
         # we want to make sure that we are not in the minimized window state,
         # and that we have returned to a normal Firefox window
-        expected_2 = exists(amazon_image, 5)
+        expected_2 = exists(amazon_pattern, 5)
         assert_true(self, expected_2, 'Still viewing the Amazon page')
 
         # The click here is required, because the Firefox window loses
@@ -58,12 +55,12 @@ class Test(BaseTest):
         # a false match
         navigate('about:blank')
 
-        expected_3 = exists(amazon_image, 3)
+        expected_3 = exists(amazon_pattern, 3)
         assert_false(self, expected_3, 'Successfully re-navigated page')
 
         history_sidebar()
         time.sleep(Settings.UI_DELAY_LONG)
         type('amazon')
 
-        expected_4 = exists(amazon_history_image, 5)
+        expected_4 = exists(amazon_history_pattern, 5)
         assert_false(self, expected_4, 'Find amazon history image')

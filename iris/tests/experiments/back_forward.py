@@ -14,19 +14,19 @@ class Test(BaseTest):
 
     def run(self):
         url = 'about:home'
-        search_the_web_image = 'search_the_web.png'
-        google_search_image = 'google_search.png'
+        search_the_web_pattern = Pattern('search_the_web.png')
+        google_search_pattern = Pattern('google_search.png')
         back_pattern = NavBar.BACK_BUTTON
         forward_pattern = NavBar.FORWARD_BUTTON
 
         navigate(url)
 
-        expected_1 = exists(search_the_web_image, 10)
+        expected_1 = exists(search_the_web_pattern, 10)
         assert_true(self, expected_1, 'Find search the web image')
 
         navigate('https://www.google.com/?hl=EN')
 
-        expected_2 = exists(google_search_image, 10)
+        expected_2 = exists(google_search_pattern, 10)
         assert_true(self, expected_2, 'Find google search image')
 
         wait(back_pattern)

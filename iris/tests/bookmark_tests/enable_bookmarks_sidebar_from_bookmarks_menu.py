@@ -14,12 +14,12 @@ class Test(BaseTest):
         self.test_suite_id = '75'
 
     def run(self):
-        view_bookmarks_sidebar = 'view_bookmarks_sidebar.png'
-        sidebar_enabled = 'sidebar_is_active.png'
+        view_bookmarks_sidebar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_SIDEBAR
+        sidebar_other_bookmarks_pattern = SidebarBookmarks.OTHER_BOOKMARKS
 
         navigate('about:blank')
 
-        access_bookmarking_tools(view_bookmarks_sidebar)
+        access_bookmarking_tools(view_bookmarks_sidebar_pattern)
 
-        enabled_sidebar_assert = exists(sidebar_enabled, 10)
+        enabled_sidebar_assert = exists(sidebar_other_bookmarks_pattern, 10)
         assert_true(self, enabled_sidebar_assert, 'Bookmarks Sidebar has been enabled from the Bookmarks Menu.')
