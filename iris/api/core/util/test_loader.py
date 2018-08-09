@@ -49,7 +49,7 @@ def get_tests_from_list(app):
     test_packages = []
 
     for name in app.args.test.split(','):
-        if name.endswith('.py'):
+        if '.py' in name:
             name = name.split('.py')[0]
         name = name.strip()
         for package in app.master_test_list:
