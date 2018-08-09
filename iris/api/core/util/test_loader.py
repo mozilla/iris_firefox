@@ -47,12 +47,15 @@ def get_tests_from_text_file(arg):
 def get_tests_from_list(app):
     test_list = []
     test_packages = []
-    tests = [str(item + ('.py' if not item.endswith('.py') else '')).strip() for item in app.args.test.split(',')]
-    for name in tests:
+
+    for name in app.args.test.split(','):
+        if name.endswith('.py'):
+            name = name.split('.py')[0]
+        name = name.strip()
         for package in app.master_test_list:
             for test in app.master_test_list[package]:
-                if test["name"] in name:
-                    test_list.append(test["name"])
+                if name == test['name']:
+                    test_list.append(test['name'])
                     if package not in test_packages:
                         test_packages.append(package)
         if os.path.splitext(name)[0] not in test_list:
