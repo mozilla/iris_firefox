@@ -55,11 +55,11 @@ def get_tests_from_list(app):
         for package in app.master_test_list:
             for test in app.master_test_list[package]:
                 if name == test['name']:
-                    test_list.append(test['name'])
+                    test_list.append(name)
                     if package not in test_packages:
                         test_packages.append(package)
-        if os.path.splitext(name)[0] not in test_list:
-            logger.warning('Could not locate %s' % name)
+        if name not in test_list:
+            logger.warning('Could not locate test: %s' % name)
 
     if len(test_list) == 0:
         logger.error('No tests to run. Exiting program ...')
