@@ -26,7 +26,7 @@ class Test(BaseTest):
     def run(self):
         search_history_box = 'search_history_box.png'
         expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        history_empty = 'history_empty.png'
+        history_search_no_results = 'history_search_no_results.png'
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -45,5 +45,5 @@ class Test(BaseTest):
         # Check that an unavailable page is not found in the History list.
         paste('test')
         type(Key.TAB)
-        expected_4 = exists(history_empty, 10)
+        expected_4 = exists(history_search_no_results, 10)
         assert_true(self, expected_4, 'The page wasn\'t found in the History list.')
