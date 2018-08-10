@@ -22,9 +22,9 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box = Pattern('search_history_box.png')
-        expand_button_history_sidebar = Pattern('expand_button_history_sidebar.png')
-        local_server_autocomplete = Pattern('local_server_autocomplete.png')
+        search_history_box = 'search_history_box.png'
+        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
+        local_server_autocomplete = 'local_server_autocomplete.png'
 
         # Open some pages to create some history.
         close_tab()
