@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'No sections selected in Clear Recent History window.'
 
     def run(self):
-        clear_recent_history_window = 'clear_recent_history_window.png'
-        clear_now_button_disabled = 'clear_now_button_disabled.png'
-        clear_recent_history_expand_button = 'clear_recent_history_expand_button.png'
+        clear_recent_history_window = Pattern('clear_recent_history_window.png')
+        clear_now_button_disabled = Pattern('clear_now_button_disabled.png')
+        clear_recent_history_expand_button = Pattern('clear_recent_history_expand_button.png')
 
         # Open some pages to create some history.
         new_tab()
@@ -49,7 +49,7 @@ class Test(BaseTest):
             type(Key.DOWN)
 
         # Check that the 'Clear Now' button is disabled.
-        expected_4 = exists(Pattern(clear_now_button_disabled).similar(0.9), 10)
+        expected_4 = exists(clear_now_button_disabled.similar(0.9), 10)
         assert_true(self, expected_4, 'Clear Now button is disabled.')
 
         # Close the 'Clear Recent History' window.
