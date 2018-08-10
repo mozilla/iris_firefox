@@ -13,9 +13,9 @@ class Test(BaseTest):
         self.meta = 'Clear all the History.'
 
     def run(self):
-        clear_recent_history_window = 'clear_recent_history_window.png'
-        clear_recent_history_last_hour = 'clear_recent_history_last_hour.png'
-        history_empty = 'history_empty.png'
+        clear_recent_history_window = Pattern('clear_recent_history_window.png')
+        clear_recent_history_last_hour = Pattern('clear_recent_history_last_hour.png')
+        history_empty = Pattern('history_empty.png')
 
         # Open some pages to create some history.
         new_tab()
@@ -56,5 +56,5 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         # Check that all the history was cleared.
-        expected_4 = exists(Pattern(history_empty).similar(0.9), 10)
+        expected_4 = exists(history_empty.similar(0.9), 10)
         assert_true(self, expected_4, 'All the history was cleared successfully.')
