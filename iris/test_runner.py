@@ -9,7 +9,7 @@ import traceback
 from api.helpers.general import *
 from api.helpers.results import *
 from api.core.profile import *
-from api.core.util.version_parser import check_version, check_channel
+from api.core.util.version_parser import check_version, check_channel, check_locale
 from email.email_client import EmailClient
 from iris.api.core.settings import Settings
 from iris.test_rail.test_rail_client import *
@@ -40,11 +40,7 @@ def run(app):
             return
         logger.info('\n' + '-' * 120)
 
-        is_correct_platform = Settings.get_os() not in current.exclude
-        is_correct_version = True if current.fx_version == '' else check_version(app.version, current.fx_version)
-        is_correct_channel = check_channel(current.channel, app.fx_channel)
-
-        if (is_correct_platform and is_correct_version and is_correct_channel) or app.args.override:
+        if verify_test_compat(current, app) or app.args.override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.set_start_time(time.time())
 
@@ -121,6 +117,15 @@ def run(app):
     app.write_test_failures(test_failures)
     append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests=test_log)
     app.finish()
+
+
+def verify_test_compat(test, app):
+    is_correct_platform = Settings.get_os() not in test.exclude
+    is_correct_version = True if test.fx_version == '' else check_version(app.version, test.fx_version)
+    is_correct_channel = check_channel(test.channel, app.fx_channel)
+    is_correct_locale = check_locale(test.locale, app.args.locale)
+    result = True == is_correct_platform == is_correct_version == is_correct_channel == is_correct_locale
+    return result
 
 
 def create_log_object(module, current, fx_args):
