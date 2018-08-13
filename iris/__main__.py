@@ -301,11 +301,12 @@ class Iris(object):
         """
         All exit points of Iris need to call this function in order to exit properly.
         """
-        logger.debug('There are %s queued process(es) to terminate.' % len(self.process_list))
-        for process in self.process_list:
-            logger.debug('Terminating process.')
-            process.terminate()
-            process.join()
+        if hasattr(self, 'process_list'):
+            logger.debug('There are %s queued process(es) to terminate.' % len(self.process_list))
+            for process in self.process_list:
+                logger.debug('Terminating process.')
+                process.terminate()
+                process.join()
         sys.exit(code)
 
     def check_keyboard_state(self):
