@@ -78,6 +78,7 @@ class Iris(object):
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.create_test_json()
+        self.create_arg_json()
 
     def control_center(self):
         """
@@ -124,6 +125,8 @@ class Iris(object):
         if not os.path.exists(self.args.workdir):
             logger.debug('Creating working directory %s' % self.args.workdir)
             os.makedirs(self.args.workdir)
+        if not os.path.exists(os.path.join(self.args.workdir, 'js')):
+            os.makedirs(os.path.join(self.args.workdir, 'js'))
 
     def create_run_directory(self):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
@@ -266,9 +269,29 @@ class Iris(object):
                 print e.args
                 logger.warning('[%s] is not a test file. Skipping...', module)
 
-        test_log_file = os.path.join(self.args.workdir, 'all_tests.json')
+        test_log_file = os.path.join(self.args.workdir, 'js', 'all_tests.json')
         with open(test_log_file, 'w') as f:
             json.dump(self.master_test_list, f, sort_keys=True, indent=True)
+
+    def create_arg_json(self):
+        arg_data = {}
+        arg_data['email'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+        arg_data['firefox'] = {'type': 'str', 'value': ['local', 'release', 'esr', 'beta', 'nightly'],
+                               'default': 'release'}
+        arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+        arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
+                             'default': 'INFO'}
+        arg_data['locale'] = {'type': 'str', 'value': ['en-us'], 'default': 'en-us'}
+        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5'}
+        arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+        arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000'}
+        arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+        arg_data['rerun'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+        arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+
+        arg_log_file = os.path.join(self.args.workdir, 'js', 'all_args.json')
+        with open(arg_log_file, 'w') as f:
+            json.dump(arg_data, f, sort_keys=True, indent=True)
 
     def start_local_web_server(self, path, port):
         """
