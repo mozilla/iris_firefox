@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case perform one-offs searches in private browsing.'
+        self.test_case_id = '108253'
+        self.test_suite_id = '1902'
 
     def run(self):
         moz = 'moz.png'
