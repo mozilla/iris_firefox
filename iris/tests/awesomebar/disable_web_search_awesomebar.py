@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case disables the web search in the awesomebar.'
+        self.test_case_id = '108254'
+        self.test_suite_id = '1902'
         # Disabled test for running on MAC until issue #950 is fixed.
         self.exclude = Platform.MAC
 

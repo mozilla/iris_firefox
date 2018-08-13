@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case verifies that \'Search in New Tab\' option works correctly using an one-off.'
+        self.test_case_id = '108250'
+        self.test_suite_id = '1902'
 
     def run(self):
         moz = 'moz.png'
