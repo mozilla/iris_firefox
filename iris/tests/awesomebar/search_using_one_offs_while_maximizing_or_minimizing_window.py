@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case performs a search using one-offs while maximizing/minimizing the browser\'s window.'
+        self.test_case_id = '108252'
+        self.test_suite_id = '1902'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
