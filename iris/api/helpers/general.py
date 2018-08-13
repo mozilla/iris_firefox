@@ -630,3 +630,10 @@ def wait_for_firefox_restart():
         logger.debug('Successful Firefox restart performed.')
     except FindError:
         raise APIHelperError('Firefox restart has not been performed, aborting.')
+
+
+def restore_firefox_focus():
+    w, h = get_image_size(NavBar.HOME_BUTTON)
+    horizontal_offset = w * 2
+    click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
+    click(click_area)

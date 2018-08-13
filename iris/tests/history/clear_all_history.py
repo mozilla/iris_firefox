@@ -55,6 +55,10 @@ class Test(BaseTest):
         type(Key.SPACE)
         type(Key.ENTER)
 
+        # Sometimes Firefox is in a state where it can't receive keyboard input
+        # and we need to restore the focus manually.
+        restore_firefox_focus()
+
         # Check that all the history was cleared.
         expected_4 = exists(Pattern(history_empty).similar(0.9), 10)
         assert_true(self, expected_4, 'All the history was cleared successfully.')
