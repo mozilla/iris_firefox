@@ -16,6 +16,7 @@ class FirefoxApp(object):
     NIGHTLY = 'nightly'
     ESR = 'esr'
     CHANNELS = [BETA, ESR, NIGHTLY, RELEASE]
+    LOCALES = ['en-US']
 
     def __init__(self, directory, platform, is_downloaded):
 
