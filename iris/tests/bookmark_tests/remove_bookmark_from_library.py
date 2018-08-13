@@ -16,17 +16,17 @@ class Test(BaseTest):
 
     def run(self):
         url = 'www.amazon.com'
-        amazon_home = 'amazon.png'
-        library_bookmarks = 'library_bookmarks.png'
-        amazon_library = 'amazon_library.png'
-        delete = 'delete_bookmark.png'
+        amazon_home_pattern = Pattern('amazon.png')
+        library_bookmarks_pattern = Pattern('library_bookmarks.png')
+        amazon_library_pattern = Pattern('amazon_library.png')
+        delete_pattern = Pattern('delete_bookmark.png')
 
         navigate(url)
 
-        amazon_banner_assert = exists(amazon_home, 10)
+        amazon_banner_assert = exists(amazon_home_pattern, 10)
         assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
 
-        nav_bar_favicon_assert = exists('amazon_favicon.png', 15)
+        nav_bar_favicon_assert = exists(Pattern('amazon_favicon.png'), 15)
         assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
 
         bookmark_page()
@@ -35,25 +35,25 @@ class Test(BaseTest):
 
         open_library()
 
-        bookmarks_menu_library_assert = exists(library_bookmarks, 10)
+        bookmarks_menu_library_assert = exists(library_bookmarks_pattern, 10)
         assert_true(self, bookmarks_menu_library_assert, 'Bookmarks menu has been found.')
 
-        click(library_bookmarks)
+        click(library_bookmarks_pattern)
 
         type(Key.ENTER)
         type(Key.DOWN)
 
         try:
-            wait(amazon_library, 10)
+            wait(amazon_library_pattern, 10)
             logger.debug('Amazon bookmark can be accessed in Library section.')
-            right_click(amazon_library)
+            right_click(amazon_library_pattern)
         except FindError:
             raise FindError('Amazon bookmark is not present in Library section, aborting.')
 
-        bookmark_options(delete)
+        bookmark_options(delete_pattern)
 
         try:
-            deleted_bookmark_assert = wait_vanish(amazon_library, 10)
+            deleted_bookmark_assert = wait_vanish(amazon_library_pattern, 10)
             assert_true(self, deleted_bookmark_assert, 'Amazon bookmark has been removed from the Library.')
         except FindError:
             raise FindError('Amazon bookmark can NOT be removed from the Library, aborting.')

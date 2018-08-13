@@ -16,16 +16,16 @@ class Test(BaseTest):
 
     def run(self):
         url = 'www.amazon.com'
-        amazon_home = 'amazon.png'
-        library_bookmarks = 'library_bookmarks.png'
-        amazon_library = 'amazon_library.png'
+        amazon_home_pattern = Pattern('amazon.png')
+        library_bookmarks_pattern = Pattern('library_bookmarks.png')
+        amazon_library_pattern = Pattern('amazon_library.png')
 
         navigate(url)
 
-        amazon_banner_assert = exists(amazon_home, 10)
+        amazon_banner_assert = exists(amazon_home_pattern, 10)
         assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
 
-        nav_bar_favicon_assert = exists('amazon_favicon.png', 15)
+        nav_bar_favicon_assert = exists(Pattern('amazon_favicon.png'), 15)
         assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
 
         bookmark_page()
@@ -34,19 +34,19 @@ class Test(BaseTest):
 
         open_library()
 
-        bookmarks_menu_library_assert = exists(library_bookmarks, 10)
+        bookmarks_menu_library_assert = exists(library_bookmarks_pattern, 10)
         assert_true(self, bookmarks_menu_library_assert, 'Bookmarks menu has been found.')
 
-        click(library_bookmarks)
+        click(library_bookmarks_pattern)
 
         type(Key.ENTER)
         type(Key.DOWN)
 
-        library_bookmark_assert = exists(amazon_library, 10)
+        library_bookmark_assert = exists(amazon_library_pattern, 10)
         assert_true(self, library_bookmark_assert, 'Amazon bookmark can be accessed in Library section.')
 
-        click(amazon_library)
+        click(amazon_library_pattern)
         type(Key.ENTER)
 
-        amazon_banner_assert = exists(amazon_home, 10)
+        amazon_banner_assert = exists(amazon_home_pattern, 10)
         assert_true(self, amazon_banner_assert, 'Amazon bookmark has been successfully accessed from Library section.')

@@ -10,18 +10,18 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Web compability test for gmail.com'
+        self.meta = 'Web compatibility test for gmail.com'
         self.exclude = Platform.ALL
 
     def run(self):
         url = 'mail.google.com'
-        compose = 'compose_email.png'
+        compose_pattern = Pattern('compose_email.png')
         receiver = 'ionut'
         subject = 'Gmail Test'
         message = 'test'
-        inbox = 'gmail_inbox.png'
-        email = 'email_present.png'
-        delete_email = 'delete_email.png'
+        inbox_pattern = Pattern('gmail_inbox.png')
+        email_pattern = Pattern('email_present.png')
+        delete_email_pattern = Pattern('delete_email.png')
 
         navigate(url)
 
@@ -32,10 +32,10 @@ class Test(BaseTest):
         time.sleep(5)
         type(Key.ESC)
 
-        expected_1 = exists(compose, 10)
+        expected_1 = exists(compose_pattern, 10)
         assert_true(self, expected_1, 'Compose button is present on the page.')
 
-        click(compose)
+        click(compose_pattern)
         time.sleep(2)
         type(receiver)
         time.sleep(2)
@@ -54,19 +54,19 @@ class Test(BaseTest):
         logger.debug('Email has been sent...')
         time.sleep(2)
 
-        expected_2 = exists(inbox, 10)
+        expected_2 = exists(inbox_pattern, 10)
         assert_true(self, expected_2, 'Gmail Inbox has been accessed successfully.')
 
-        click(inbox)
+        click(inbox_pattern)
         time.sleep(1)
 
-        expected_3 = exists(email, 10)
+        expected_3 = exists(email_pattern, 10)
         assert_true(self, expected_3, 'Email is received successfully.')
 
-        click(email)
+        click(email_pattern)
         logger.debug('Email has been accessed.')
         time.sleep(1)
-        click(delete_email)
+        click(delete_email_pattern)
         time.sleep(2)
         logger.debug('Email has been erased.')
         type(Key.ENTER)
@@ -74,7 +74,7 @@ class Test(BaseTest):
     def login_gmail(self):
         username = get_credential('Gmail', 'username')
         password = get_credential('Gmail', 'password')
-        login = 'login_gmail.png'
+        login = Pattern('login_gmail.png')
 
         expected_login = exists(login, 10)
         assert_true(self, expected_login, 'Login fields are present.')

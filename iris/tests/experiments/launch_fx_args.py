@@ -17,7 +17,7 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-        amazon_image = 'amazon.png'
+        amazon_pattern = Pattern('amazon.png')
 
         time.sleep(5)
         args = ['-width', '800', '-height', '800', '-new-tab', 'http://www.mozilla.org']
@@ -31,7 +31,7 @@ class Test(BaseTest):
         args = ['-width', '400', '-height', '400', '-private-window', 'http://amazon.com']
         launch_firefox(path=self.app.fx_path, profile=Profile.DEFAULT, args=args)
 
-        expected_1 = exists(amazon_image, 20)
+        expected_1 = exists(amazon_pattern, 20)
 
         quit_firefox()
         time.sleep(5)

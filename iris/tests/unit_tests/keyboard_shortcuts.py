@@ -15,7 +15,7 @@ class Test(BaseTest):
     @staticmethod
     def reset_all_modifiers(position):
         logger.debug('Reset all modifiers')
-        ut_reset_all = 'ut-reset-all.png'
+        ut_reset_all = Pattern('ut-reset-all.png')
 
         if position:
             click(position)
@@ -25,13 +25,13 @@ class Test(BaseTest):
     def run(self):
         url = self.get_asset_path('keyboard-events.html')
 
-        t_left = 'ut-top-left.png'
-        b_right = 'ut-bottom-right.png'
+        t_left = Pattern('ut-top-left.png')
+        b_right = Pattern('ut-bottom-right.png')
 
-        ut_alt = 'ut-alt.png'
-        ut_ctrl = 'ut-cmd-ctrl.png'
-        ut_reset_all = 'ut-reset-all.png'
-        ut_shift = 'ut-shift.png'
+        ut_alt = Pattern('ut-alt.png')
+        ut_ctrl = Pattern('ut-cmd-ctrl.png')
+        ut_reset_all = Pattern('ut-reset-all.png')
+        ut_shift = Pattern('ut-shift.png')
 
         navigate(url)
         wait(t_left, 10)

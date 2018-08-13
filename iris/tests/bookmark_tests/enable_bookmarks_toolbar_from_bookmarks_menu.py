@@ -14,12 +14,12 @@ class Test(BaseTest):
         self.test_suite_id = '75'
 
     def run(self):
-        view_bookmarks_toolbar = 'view_bookmarks_toolbar.png'
-        toolbar_enabled = 'toolbar_is_active.png'
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
 
         navigate('about:blank')
 
-        access_bookmarking_tools(view_bookmarks_toolbar)
+        access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
-        enabled_toolbar_assert = exists(toolbar_enabled, 10)
+        enabled_toolbar_assert = exists(bookmarks_toolbar_most_visited_pattern, 10)
         assert_true(self, enabled_toolbar_assert, 'Bookmarks Toolbar has been activated.')

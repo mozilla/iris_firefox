@@ -22,10 +22,10 @@ class Test(BaseTest):
         return
 
     def run(self):
-        clear_recent_history_window = 'clear_recent_history_window.png'
+        clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
 
         # Check that the Clear Recent History window is displayed properly.
         clear_recent_history()
-        expected = exists(clear_recent_history_window, 10)
+        expected = exists(clear_recent_history_window_pattern, 10)
         assert_true(self, expected, 'Clear Recent History window was displayed properly.')
         type(Key.ESC)

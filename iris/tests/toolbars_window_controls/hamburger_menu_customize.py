@@ -13,13 +13,10 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks the Hamburger menu > Customize opens the customize page'
   
     def run(self):
-        url = 'about:home'
-        navigate(url)
+        navigate('about:home')
 
-        # Open Customize from the Hamburger Menu
         click_hamburger_menu_option('Customize...')
 
-        # Searching for 'zoom_controls_customize_page.png'
-        expected_1 = exists('zoom_controls_customize_page.png', 10)
+        expected_1 = exists(Pattern('zoom_controls_customize_page.png'), 10)
         assert_true(self, expected_1, '\'Customize\' page present.')
         close_customize_page()

@@ -22,11 +22,11 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box = 'search_history_box.png'
-        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        view_bookmarks_toolbar = 'view_bookmarks_toolbar.png'
-        toolbar_enabled = 'toolbar_is_active.png'
-        today_bookmarks_toolbar = 'today_bookmarks_toolbar.png'
+        search_history_box_pattern = Pattern('search_history_box.png')
+        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
+        today_bookmarks_toolbar_pattern = Pattern('today_bookmarks_toolbar.png')
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -35,20 +35,20 @@ class Test(BaseTest):
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
-        expected_2 = exists(toolbar_enabled, 10)
+        expected_2 = exists(bookmarks_toolbar_most_visited_pattern, 10)
         assert_true(self, expected_2, 'Bookmarks Toolbar has been activated.')
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
+        expected_3 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
+        expected_4 = exists(expand_button_history_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
 
         # Copy the History time range from the History sidebar and paste it to the Bookmarks toolbar.
-        right_click(expand_button_history_sidebar)
+        right_click(expand_button_history_sidebar_pattern)
         type(text='c')
-        right_click(toolbar_enabled)
+        right_click(bookmarks_toolbar_most_visited_pattern)
         type(text='p')
-        expected_5 = exists(today_bookmarks_toolbar)
+        expected_5 = exists(today_bookmarks_toolbar_pattern)
         assert_true(self, expected_5, 'History time range was copied successfully to the Bookmarks toolbar.')

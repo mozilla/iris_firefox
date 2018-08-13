@@ -14,19 +14,19 @@ class Test(BaseTest):
 
     def run(self):
         url = 'about:home'
-        youtube_top_site_image = 'youtube_top_site.png'
+        youtube_top_site_image = Pattern('youtube_top_site.png')
         navigate(url)
 
         # Settings.wait_scan_rate
 
         default_wait_scan_rate = Settings.wait_scan_rate
-        assert_equal(self, DEFAULT_WAIT_SCAN_RATE, default_wait_scan_rate, 'Default wait_scan_rate should be equal to %s'
-                     % str(DEFAULT_WAIT_SCAN_RATE))
+        assert_equal(self, DEFAULT_WAIT_SCAN_RATE, default_wait_scan_rate,
+                     'Default wait_scan_rate should be equal to %s' % str(DEFAULT_WAIT_SCAN_RATE))
 
         updated_wait_scan_rate = 5
         Settings.wait_scan_rate = updated_wait_scan_rate
-        assert_equal(self, Settings.wait_scan_rate, updated_wait_scan_rate, 'Updated value for wait_scan_rate should be '
-                                                                          'equal to %s' % str(updated_wait_scan_rate))
+        assert_equal(self, Settings.wait_scan_rate, updated_wait_scan_rate,
+                     'Updated value for wait_scan_rate should be equal to %s' % str(updated_wait_scan_rate))
 
         Settings.wait_scan_rate = DEFAULT_WAIT_SCAN_RATE
 
@@ -42,20 +42,20 @@ class Test(BaseTest):
 
         updated_type_delay = 0.125
         Settings.type_delay = updated_type_delay
-        assert_equal(self, updated_type_delay, Settings.type_delay, 'Updated value for type_delay should be equal to %s'
-                     % str(updated_type_delay))
+        assert_equal(self, updated_type_delay, Settings.type_delay,
+                     'Updated value for type_delay should be equal to %s' % str(updated_type_delay))
 
         Settings.type_delay = DEFAULT_TYPE_DELAY
 
         # Settings.move_mouse_delay
 
         default_move_mouse_delay = Settings.move_mouse_delay
-        assert_equal(self, DEFAULT_MOVE_MOUSE_DELAY, default_move_mouse_delay, 'Default move_mouse_delay should be equal '
-                                                                               'to %s' % str(DEFAULT_MOVE_MOUSE_DELAY))
+        assert_equal(self, DEFAULT_MOVE_MOUSE_DELAY, default_move_mouse_delay,
+                     'Default move_mouse_delay should be equal to %s' % str(DEFAULT_MOVE_MOUSE_DELAY))
         updated_move_mouse_delay = 1
         Settings.move_mouse_delay = updated_move_mouse_delay
-        assert_equal(self, Settings.move_mouse_delay, updated_move_mouse_delay, 'Updated value for move_mouse_delay should'
-                                                                              'be %s' % updated_move_mouse_delay)
+        assert_equal(self, Settings.move_mouse_delay, updated_move_mouse_delay,
+                     'Updated value for move_mouse_delay should be %s' % updated_move_mouse_delay)
 
         Settings.move_mouse_delay = DEFAULT_MOVE_MOUSE_DELAY
 
@@ -72,20 +72,20 @@ class Test(BaseTest):
 
         updated_click_delay = 0.5
         Settings.click_delay = updated_click_delay
-        assert_equal(self, updated_click_delay, Settings.click_delay, 'Updated value for click_delay should be equal to '
-                                                                     '%s' % str(updated_click_delay))
+        assert_equal(self, updated_click_delay, Settings.click_delay,
+                     'Updated value for click_delay should be equal to %s' % str(updated_click_delay))
 
         Settings.click_delay = DEFAULT_CLICK_DELAY
 
         # Settings.min_similarity
 
         default_min_similarity = Settings.min_similarity
-        assert_equal(self, DEFAULT_MIN_SIMILARITY, default_min_similarity, 'Default min_similarity should be equal '
-                                                                           'to %s' % str(DEFAULT_MIN_SIMILARITY))
+        assert_equal(self, DEFAULT_MIN_SIMILARITY, default_min_similarity,
+                     'Default min_similarity should be equal to %s' % str(DEFAULT_MIN_SIMILARITY))
         updated_min_similarity = 0.5
         Settings.min_similarity = updated_min_similarity
-        assert_equal(self, Settings.min_similarity, updated_min_similarity, 'Updated value for min_similarity should'
-                                                                           'be %s' % updated_min_similarity)
+        assert_equal(self, Settings.min_similarity, updated_min_similarity,
+                     'Updated value for min_similarity should be %s' % updated_min_similarity)
 
         Settings.min_similarity = 2
         assert_equal(self, 1, Settings.min_similarity, 'min_similarity greater than 1 is defaulted to 1')
@@ -127,8 +127,8 @@ class Test(BaseTest):
                           Settings.move_mouse_delay)
 
         expected_duration = end_time - start_time >= total_duration
-        assert_true(self, expected_duration, 'Total duration for dragDrop should be equal or greater than %s seconds'
-                    % total_duration)
+        assert_true(self, expected_duration,
+                    'Total duration for dragDrop should be equal or greater than %s seconds' % total_duration)
 
         Settings.delay_before_mouse_down = DEFAULT_DELAY_BEFORE_MOUSE_DOWN
         Settings.delay_before_drag = DEFAULT_DELAY_BEFORE_DRAG
@@ -163,7 +163,9 @@ class Test(BaseTest):
 
         default_observe_min_changed_pixels = Settings.observe_min_changed_pixels
         assert_equal(self, DEFAULT_OBSERVE_MIN_CHANGED_PIXELS, default_observe_min_changed_pixels,
-                     'Default observe_min_changed_pixels should be equal to %s' % str(DEFAULT_OBSERVE_MIN_CHANGED_PIXELS))
+                     'Default observe_min_changed_pixels should be equal to %s'
+                     % str(DEFAULT_OBSERVE_MIN_CHANGED_PIXELS))
+
         updated_observe_min_changed_pixels = 60
         Settings.observe_min_changed_pixels = updated_observe_min_changed_pixels
         assert_equal(self, Settings.observe_min_changed_pixels, updated_observe_min_changed_pixels,

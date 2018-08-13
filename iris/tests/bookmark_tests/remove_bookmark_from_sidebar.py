@@ -16,16 +16,16 @@ class Test(BaseTest):
 
     def run(self):
         url = 'www.amazon.com'
-        amazon_home = 'amazon.png'
-        amazon_bookmark = 'amazon_bookmark.png'
-        delete = 'delete_bookmark.png'
+        amazon_home_pattern = Pattern('amazon.png')
+        amazon_bookmark_pattern = Pattern('amazon_bookmark.png')
+        delete_pattern = Pattern('delete_bookmark.png')
 
         navigate(url)
 
-        amazon_banner_assert = exists(amazon_home, 10)
+        amazon_banner_assert = exists(amazon_home_pattern, 10)
         assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
 
-        nav_bar_favicon_assert = exists('amazon_favicon.png', 15)
+        nav_bar_favicon_assert = exists(Pattern('amazon_favicon.png'), 15)
         assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
 
         bookmark_page()
@@ -37,17 +37,17 @@ class Test(BaseTest):
         paste('amazon')
 
         try:
-            wait(amazon_bookmark, 10)
+            wait(amazon_bookmark_pattern, 10)
             logger.debug('Amazon bookmark is present in the Bookmark sidebar.')
-            right_click(amazon_bookmark)
+            right_click(amazon_bookmark_pattern)
         except FindError:
             raise FindError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
 
-        bookmark_options(delete)
+        bookmark_options(delete_pattern)
 
         try:
-            deleted_bookmark_assert = wait_vanish(amazon_bookmark, 10)
-            assert_true(self, deleted_bookmark_assert, 'Amazon bookmark is successfully deleted from the '
-                                                       'Bookmark sidebar.')
+            deleted_bookmark_assert = wait_vanish(amazon_bookmark_pattern, 10)
+            assert_true(self, deleted_bookmark_assert,
+                        'Amazon bookmark is successfully deleted from the Bookmark sidebar.')
         except FindError:
             raise FindError('Amazon bookmark can NOT be deleted from the Bookmark sidebar, aborting.')

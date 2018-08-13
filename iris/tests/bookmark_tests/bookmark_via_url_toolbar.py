@@ -16,15 +16,15 @@ class Test(BaseTest):
 
     def run(self):
         url = 'about:blank'
-        draggable_url = Pattern('moz_draggable_url.png')
-        toolbar_dragged_bookmark = Pattern('moz_toolbar_dragged_bookmark.png')
-        drag_area = Pattern('drag_area.png')
-        view_bookmarks_toolbar = Pattern('view_bookmarks_toolbar.png')
+        draggable_url_pattern = Pattern('moz_draggable_url.png')
+        toolbar_dragged_bookmark_pattern = Pattern('moz_toolbar_dragged_bookmark.png')
+        drag_area_pattern = Pattern('drag_area.png')
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmark_selected_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         navigate(url)
 
-        access_bookmarking_tools(view_bookmarks_toolbar)
+        access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -35,13 +35,13 @@ class Test(BaseTest):
 
         type(Key.ESC)
 
-        drag_drop(draggable_url, drag_area, 0.5)
+        drag_drop(draggable_url_pattern, drag_area_pattern, 0.5)
 
         star_shaped_button_assert = exists(bookmark_selected_pattern, 10)
         assert_true(self, star_shaped_button_assert, 'Star-shaped button has changed its color to blue.')
 
         navigate(url)
 
-        bookmarked_url_assert = exists(toolbar_dragged_bookmark, 10)
-        assert_true(self, bookmarked_url_assert, 'Moz page has been successfully bookmarked via URL onto '
-                                                 'the Bookmarks Toolbar.')
+        bookmarked_url_assert = exists(toolbar_dragged_bookmark_pattern, 10)
+        assert_true(self, bookmarked_url_assert,
+                    'Moz page has been successfully bookmarked via URL onto the Bookmarks Toolbar.')

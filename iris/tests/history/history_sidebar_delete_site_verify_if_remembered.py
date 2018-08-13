@@ -25,6 +25,7 @@ class Test(BaseTest):
         search_history_box = Pattern('search_history_box.png')
         expand_button_history_sidebar = Pattern('expand_button_history_sidebar.png')
         local_server_autocomplete = Pattern('local_server_autocomplete.png')
+        mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
 
         # Open some pages to create some history.
         close_tab()
@@ -50,21 +51,21 @@ class Test(BaseTest):
         click(expand_button_history_sidebar)
 
         # Delete a page from the History sidebar.
-        expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+        expected_5 = exists(mozilla_bookmark_small_pattern, 10)
         assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
 
-        right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
+        right_click(mozilla_bookmark_small_pattern)
         type(text='d')
 
         try:
-            expected_6 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+            expected_6 = wait_vanish(mozilla_bookmark_small_pattern, 10)
             assert_true(self, expected_6, 'Mozilla page was deleted successfully from the history.')
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
 
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
-        expected_7 = exists(Pattern(LocalWeb.MOZILLA_BOOKMARK_SMALL).similar(0.9), 5)
+        expected_7 = exists(mozilla_bookmark_small_pattern.similar(0.9), 5)
         assert_false(self, expected_7, 'Mozilla page is not displayed in the Recent History list.')
         type(Key.ESC)
 

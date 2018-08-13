@@ -22,9 +22,10 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box = 'search_history_box.png'
-        expand_button_history_sidebar = 'expand_button_history_sidebar.png'
-        local_server_autocomplete = 'local_server_autocomplete.png'
+        search_history_box_pattern = Pattern('search_history_box.png')
+        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        local_server_autocomplete_pattern = Pattern('local_server_autocomplete.png')
+        mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
 
         # Open some pages to create some history.
         close_tab()
@@ -43,28 +44,28 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_3 = exists(search_history_box, 10)
+        expected_3 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
+        expected_4 = exists(expand_button_history_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
-        click(expand_button_history_sidebar)
+        click(expand_button_history_sidebar_pattern)
 
         # Forget a page from the History sidebar.
-        expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+        expected_5 = exists(mozilla_bookmark_small_pattern, 10)
         assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
 
-        right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
+        right_click(mozilla_bookmark_small_pattern)
         type(text='f')
 
         try:
-            expected_6 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+            expected_6 = wait_vanish(mozilla_bookmark_small_pattern, 10)
             assert_true(self, expected_6, 'Mozilla page was deleted successfully from the history.')
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
 
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
-        expected_7 = exists(Pattern(LocalWeb.MOZILLA_BOOKMARK_SMALL).similar(0.9), 5)
+        expected_7 = exists(mozilla_bookmark_small_pattern.similar(0.9), 5)
         assert_false(self, expected_7, 'Mozilla page is not displayed in the Recent History list.')
         type(Key.ESC)
 
@@ -72,5 +73,5 @@ class Test(BaseTest):
         select_location_bar()
         paste('127')
 
-        expected_8 = exists(Pattern(local_server_autocomplete).similar(0.9), 5)
+        expected_8 = exists(local_server_autocomplete_pattern.similar(0.9), 5)
         assert_false(self, expected_8, 'Local server is not auto-completed in the URL bar.')

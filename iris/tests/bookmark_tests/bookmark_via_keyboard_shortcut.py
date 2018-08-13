@@ -22,5 +22,5 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        page_bookmarked_assert = exists('page_bookmarked.png', 10)
+        page_bookmarked_assert = exists(Pattern('page_bookmarked.png'), 10)
         assert_true(self, page_bookmarked_assert, 'The page was successfully bookmarked via keyboard shortcut.')

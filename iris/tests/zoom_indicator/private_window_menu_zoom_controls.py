@@ -15,15 +15,14 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-        url_bar_90_zoom_level = 'url_bar_90_zoom_level.png'
-        url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
-        zoom_control_toolbar_increase = 'zoom_control_toolbar_increase.png'
-        zoom_control_toolbar_decrease = 'zoom_control_toolbar_decrease.png'
+        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
+        url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png')
+        url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
+        zoom_control_toolbar_increase_pattern = Pattern('zoom_control_toolbar_increase.png')
+        zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         new_private_window()
-
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
@@ -31,7 +30,7 @@ class Test(BaseTest):
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(url_bar_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         new_region = create_region_for_hamburger_menu()
@@ -39,30 +38,27 @@ class Test(BaseTest):
         expected = new_region.exists('100%', 10)
         assert_true(self, expected, 'By default zoom indicator is 100% in hamburger menu.')
 
-        click(zoom_control_toolbar_increase)
+        click(zoom_control_toolbar_increase_pattern)
 
         new_reg = create_region_for_url_bar()
 
         expected = new_region.exists('110%', 10)
         assert_true(self, expected, 'Zoom level successfully increased in hamburger menu.')
 
-        # Click the hamburger menu to close it.
         click(hamburger_menu_pattern)
 
-        expected = new_reg.exists(url_bar_110_zoom_level, 10)
+        expected = new_reg.exists(url_bar_110_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator displayed in the url bar.')
 
-        # Click the hamburger menu to open it.
         click(hamburger_menu_pattern)
 
-        click(zoom_control_toolbar_decrease)
-        click(zoom_control_toolbar_decrease)
+        click(zoom_control_toolbar_decrease_pattern)
+        click(zoom_control_toolbar_decrease_pattern)
 
         expected = new_region.exists('90%', 10)
         assert_true(self, expected, 'Zoom level successfully decreased in hamburger menu.')
 
-        # Click the hamburger menu to close it.
         click(hamburger_menu_pattern)
 
-        expected = new_reg.exists(url_bar_90_zoom_level, 10)
+        expected = new_reg.exists(url_bar_90_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator displayed in the url bar.')

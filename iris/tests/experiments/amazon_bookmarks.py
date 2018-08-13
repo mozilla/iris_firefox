@@ -14,14 +14,14 @@ class Test(BaseTest):
 
     def run(self):
         url = 'www.amazon.com'
-        amazon_image = 'amazon.png'
-        amazon_bookmark_image_1 = 'amazon_bookmark_1.png'
-        amazon_bookmark_image_2 = 'amazon_bookmark_2.png'
+        amazon_image_pattern = Pattern('amazon.png')
+        amazon_bookmark_image_1_pattern = Pattern('amazon_bookmark_1.png')
+        amazon_bookmark_image_2_pattern = Pattern('amazon_bookmark_2.png')
         library_menu_pattern = NavBar.LIBRARY_MENU
 
         navigate(url)
 
-        expected_1 = exists(amazon_image, 10)
+        expected_1 = exists(amazon_image_pattern, 10)
         assert_true(self, expected_1, 'Find amazon image')
 
         bookmark_page()
@@ -40,7 +40,7 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(Settings.UI_DELAY)
 
-        expected_2 = exists(amazon_bookmark_image_1, 10)
+        expected_2 = exists(amazon_bookmark_image_1_pattern, 10)
         assert_true(self, expected_2, 'Find amazon bookmark 1st image')
 
         type(Key.ESC)
@@ -52,5 +52,5 @@ class Test(BaseTest):
         bookmarks_sidebar('open')
         paste('amazon')
 
-        expected_3 = exists(Pattern(amazon_bookmark_image_2).similar(0.7), 10)
+        expected_3 = exists(amazon_bookmark_image_2_pattern.similar(0.7), 10)
         assert_true(self, expected_3, 'Find amazon bookmark 2nd image')

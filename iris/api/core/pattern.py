@@ -92,9 +92,9 @@ class Pattern(object):
         self._scale_factor = scale
         self._similarity = Settings.min_similarity
         self._target_offset = None
-        self._rgb_array = np.array(cv2.imread(path))
-        self._color_image = Image.fromarray(_apply_scale(scale, self._rgb_array))
-        self._gray_image = self._color_image.convert('L')
+        self._rgb_array = np.array(cv2.imread(path)) if path is not None else None
+        self._color_image = Image.fromarray(_apply_scale(scale, self._rgb_array)) if scale is not None else None
+        self._gray_image = self._color_image.convert('L') if scale is not None else None
 
     def target_offset(self, dx, dy):
         """Add offset to Pattern from top left
@@ -157,7 +157,9 @@ class Pattern(object):
 
 def get_pattern_details(pattern_name):
     result_list = filter(lambda x: x['name'] == pattern_name, _images)
-    if len(result_list) > 0:
+    if len(result_list) == 0:
+        return pattern_name, None, None
+    elif len(result_list) > 0:
         res = result_list[0]
         return res['name'], res['path'], res['scale']
 

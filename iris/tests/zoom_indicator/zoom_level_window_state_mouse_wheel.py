@@ -14,9 +14,9 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level = 'url_bar_default_zoom_level.png'
-        url_bar_110_zoom_level = 'url_bar_110_zoom_level.png'
-        url_bar_300_zoom_level = 'url_bar_300_zoom_level.png'
+        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
+        url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
+        url_bar_300_zoom_level_pattern = Pattern('url_bar_300_zoom_level.png')
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url)
@@ -27,24 +27,21 @@ class Test(BaseTest):
         region = create_region_for_url_bar()
         click(LocalWeb.FIREFOX_LOGO)
 
-        expected = region.exists(url_bar_default_zoom_level, 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
-        # zoom in ONE time.
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
         new_region = create_region_for_url_bar()
 
-        # move focus away from the location bar.
         click(hamburger_menu_pattern.target_offset(-170, 15))
 
-        expected = new_region.exists(url_bar_110_zoom_level, 10)
+        expected = new_region.exists(url_bar_110_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
-        # zoom in 19 times to reach the maximum zoom level.
         zoom_with_mouse_wheel(19, ZoomType.IN)
 
-        expected = new_region.exists(url_bar_300_zoom_level, 10)
+        expected = new_region.exists(url_bar_300_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
@@ -57,7 +54,7 @@ class Test(BaseTest):
             expected = wait_vanish(LocalWeb.FIREFOX_LOGO, 10)
             assert_true(self, expected, 'Window successfully minimized.')
         except FindError:
-            logger.error('Window not minimized.')
+            raise FindError('Window not minimized.')
 
         restore_window_from_taskbar()
 
@@ -67,5 +64,5 @@ class Test(BaseTest):
         expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
-        expected = new_region.exists(url_bar_300_zoom_level, 10)
+        expected = new_region.exists(url_bar_300_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator still display 300%.')
