@@ -38,7 +38,7 @@ class Test(BaseTest):
         coord = find(duck_duck_go_one_off_button)
 
         # In a new tab place the mouse cursor at a position that will later match position of a search
-        # engine(e.g '\DuckDuckGo'\) icon in the awesomebar autocomplete area.
+        # engine(e.g 'DuckDuckGo') icon in the awesomebar autocomplete area.
         new_tab()
         select_location_bar()
         hover(coord)
