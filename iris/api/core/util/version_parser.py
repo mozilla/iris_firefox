@@ -117,3 +117,12 @@ def check_channel(channel_list, channel):
             found = True
             break
     return found
+
+
+def check_locale(locale_list, locale):
+    found = False
+    for item in locale_list:
+        if item in locale:
+            found = True
+            break
+    return found

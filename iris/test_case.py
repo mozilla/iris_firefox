@@ -31,6 +31,7 @@ class BaseTest(object):
         self.prefs = []
         self.profile_path = None
         self.channel = FirefoxApp.CHANNELS
+        self.locale = FirefoxApp.LOCALES
         self.test_case_id = ''
         self.test_suite_id = ''
         self.blocked_by = ''
