@@ -54,8 +54,8 @@ class Iris(object):
     def __init__(self):
         cleanup.init()
         Iris.fix_terminal_encoding()
-        self.verify_config()
         self.initialize_platform()
+        self.verify_config()
         self.control_center()
         self.initialize_run()
         run(self)
