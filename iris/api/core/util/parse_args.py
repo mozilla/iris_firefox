@@ -51,6 +51,9 @@ def parse_args():
                               'or a build directory (default: "%s")') % (','.join(release_choice), test_default),
                         action='store',
                         default=test_default)
+    parser.add_argument('-g', '--image_debug',
+                        help='Temporary flag to hunt down misplaced pattern images.',
+                        action='store_true')
     parser.add_argument('-i', '--level',
                         help='Set the logging output level',
                         type=log_level_string_to_int,
