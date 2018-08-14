@@ -22,7 +22,7 @@ class Test(BaseTest):
         hamburger_menu_zoom_indicator_pattern = Pattern('hamburger_menu_zoom_indicator.png')
         zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
         zoom_control_90_pattern = Pattern('zoom_control_90.png')
-        url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png')
+        url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png').similar(0.7)
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url1)
