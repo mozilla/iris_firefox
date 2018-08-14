@@ -81,7 +81,7 @@ class Test(BaseTest):
         paste('amaz')
 
         expected = region.exists(search_with_url_autocomplete_pattern, 10)
-        assert_true(self, expected, 'Search is performed with url autocomplete for pages where you\'\ve been before.')
+        assert_true(self, expected, 'Search is performed with url autocomplete for pages where you have been before.')
 
         type(Key.ENTER)
 
