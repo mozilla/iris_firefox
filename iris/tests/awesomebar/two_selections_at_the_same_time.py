@@ -15,66 +15,71 @@ class Test(BaseTest):
         self.test_suite_id = '1902'
 
     def run(self):
-        hover_duck_duck_go_one_off_button = Pattern('hover_duck_duck_go_one_off_button.png')
-        duck_duck_go_one_off_button = Pattern('duck_duck_go_one_off_button.png')
-        search_with_url_autocomplete = Pattern('search_with_url_autocomplete.png')
-        twitter_one_off_button_highlight = Pattern('twitter_one_off_button_highlight.png')
-        default_status = Pattern('default_status.png')
-        modified_status = Pattern('modified_status.png')
-        true_value = Pattern('true_value.png')
-        false_value = Pattern('false_value.png')
-        amazon_logo = Pattern('amazon_logo.png')
-        accept_risk = Pattern('accept_risk.png')
+        hover_duck_duck_go_one_off_button_pattern = Pattern('hover_duck_duck_go_one_off_button.png')
+        duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
+        search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
+        twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
+        default_status_pattern = Pattern('default_status.png')
+        modified_status_pattern = Pattern('modified_status.png')
+        true_value_pattern = Pattern('true_value.png')
+        false_value_pattern = Pattern('false_value.png')
+        amazon_logo_pattern = Pattern('amazon_logo.png')
+        accept_risk_pattern = Pattern('accept_risk.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate('www.amazon.com')
 
-        expected = exists(amazon_logo, 10)
+        expected = exists(amazon_logo_pattern, 10)
         assert_true(self, expected, 'Page successfully loaded, amazon logo found.')
 
         navigate('about:config')
 
-        click(accept_risk)
+        # Change focus from the url bar.
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
+            click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
+            type(Key.ENTER)
+        else:
+            click(accept_risk_pattern)
 
-        expected = region.exists(default_status, 10)
+        expected = region.exists(default_status_pattern, 10)
         assert_true(self, expected, 'The \'about:config\' page successfully loaded and default status is correct.')
 
         paste('keyword.enabled')
         type(Key.ENTER)
 
-        expected = region.exists(default_status, 10)
+        expected = region.exists(default_status_pattern, 10)
         assert_true(self, expected, 'The \'keyword.enabled\' preference has status \'default\' by default.')
 
-        expected = region.exists(true_value, 10)
+        expected = region.exists(true_value_pattern, 10)
         assert_true(self, expected, 'The \'keyword.enabled\' preference has value \'true\' by default.')
 
-        double_click(default_status)
+        double_click(default_status_pattern)
 
-        expected = region.exists(modified_status, 10)
+        expected = region.exists(modified_status_pattern, 10)
         assert_true(self, expected,
                     'The \'keyword.enabled\' preference has status \'modified\' after the preference has changed.')
 
-        expected = region.exists(false_value, 10)
+        expected = region.exists(false_value_pattern, 10)
         assert_true(self, expected,
                     'The \'keyword.enabled\' preference has value \'false\' after the preference has changed.')
 
         select_location_bar()
         paste('amaz')
 
-        expected = region.exists(search_with_url_autocomplete, 10)
+        expected = region.exists(search_with_url_autocomplete_pattern, 10)
         assert_true(self, expected, 'Search is performed with url autocomplete for pages where you have been before.')
 
-        hover(duck_duck_go_one_off_button)
+        hover(duck_duck_go_one_off_button_pattern)
 
-        expected = exists(hover_duck_duck_go_one_off_button, 10)
+        expected = exists(hover_duck_duck_go_one_off_button_pattern, 10)
         assert_true(self, expected, 'Mouse is over the \'DuckDuckGo\' search engine.')
 
-        expected = region.exists(search_with_url_autocomplete, 10)
+        expected = region.exists(search_with_url_autocomplete_pattern, 10)
         assert_true(self, expected, 'The autocomplete is still displayed after user hovers an one-off button.')
 
         for i in range(15):
             scroll_down()
 
-        expected = region.exists(twitter_one_off_button_highlight, 10)
+        expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
         assert_true(self, expected, 'The \'Twitter\' one-off button is highlighted.')
