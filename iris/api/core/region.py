@@ -389,7 +389,7 @@ def double_click(where=None, duration=None, in_region=None):
     _general_click(where, 2, duration, in_region, 'left')
 
 
-def _to_location(ps=None, in_region=None, align='top_left'):
+def to_location(ps=None, in_region=None, align='top_left'):
     """Transform pattern or string to location
 
     :param ps: Pattern or string input
@@ -423,15 +423,15 @@ def drag_drop(drag_from, drop_to, duration=None):
     if duration is None:
         duration = Settings.move_mouse_delay
 
-    from_location = _to_location(ps=drag_from, align='center')
-    to_location = _to_location(ps=drop_to, align='center')
+    from_location = to_location(ps=drag_from, align='center')
+    _to_location = to_location(ps=drop_to, align='center')
     pyautogui.moveTo(from_location.x, from_location.y, 0)
 
     time.sleep(Settings.delay_before_mouse_down)
     pyautogui.mouseDown(button='left', _pause=False)
 
     time.sleep(Settings.delay_before_drag)
-    pyautogui._mouseMoveDrag('drag', to_location.x, to_location.y, 0, 0, duration, pyautogui.linear, 'left')
+    pyautogui._mouseMoveDrag('drag', _to_location.x, _to_location.y, 0, 0, duration, pyautogui.linear, 'left')
 
     time.sleep(Settings.delay_before_drop)
     pyautogui.mouseUp(button='left', _pause=False)
