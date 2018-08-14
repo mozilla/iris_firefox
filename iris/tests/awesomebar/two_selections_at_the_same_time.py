@@ -13,6 +13,8 @@ class Test(BaseTest):
         self.meta = 'This test case perform 2 selections at the same time.'
         self.test_case_id = '108257'
         self.test_suite_id = '1902'
+        # Disabled test for running on MAC until issue #950 is fixed.
+        self.exclude = Platform.MAC
 
     def run(self):
         hover_duck_duck_go_one_off_button_pattern = Pattern('hover_duck_duck_go_one_off_button.png')
