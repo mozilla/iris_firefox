@@ -9,7 +9,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test of the Download dialog controls'
+        self.meta = 'This is a test of the Download dialog controls.'
 
     def run(self):
         url = self.get_web_asset_path('moz.pdf')
@@ -19,20 +19,20 @@ class Test(BaseTest):
 
         navigate(url)
 
-        # Check to make sure the test PDF is loaded, Then click the download button.
+        # Check to make sure the test PDF is loaded, then click the download button.
         expected = exists(test_pdf_pattern, 10)
-        assert_true(self, expected, 'The test PDF is present')
+        assert_true(self, expected, 'The test PDF is present.')
         click(download_button_pattern)
 
-        # Ensure the dialog appears
+        # Ensure the dialog appears.
         expected = exists(dialog_pattern, 10)
-        assert_true(self, expected, 'Download dialog is present')
+        assert_true(self, expected, 'Download dialog is present.')
 
-        # Close the dialog
+        # Close the dialog.
         click_auxiliary_window_control('close')
 
         try:
             expected = wait_vanish(dialog_pattern, 5)
-            assert_true(self, expected, 'Download dialog was closed')
+            assert_true(self, expected, 'Download dialog was closed.')
         except FindError:
-            raise FindError('Download dialog is still present')
+            raise FindError('Download dialog is still present.')
