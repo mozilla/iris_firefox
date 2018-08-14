@@ -1,1 +1,1 @@
-# TODO: enable test "disable_web_search_awesomebar.py" once issue #950 is fixed.
+# TODO: enable test "disable_web_search_awesomebar.py" and "two_selections_at_the_same_time.py" once issue #950 is fixed.
