@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import inspect
 import logging
 import os
 
@@ -86,6 +87,7 @@ _images = load_all_patterns()
 
 class Pattern(object):
     def __init__(self, image_name):
+        check_image_path(inspect.stack()[1][1], image_name)
         name, path, scale = get_pattern_details(image_name)
         self._image_name = name
         self._image_path = path
@@ -177,3 +179,27 @@ def _apply_scale(scale, rgb_array):
         return cv2.resize(rgb_array, (new_w, new_h), interpolation=cv2.INTER_AREA)
     else:
         return rgb_array
+
+
+def check_image_path(caller, image):
+    module = os.path.split(caller)[1]
+    module_directory = os.path.split(caller)[0]
+    file_name = image.split('.')[0]
+
+    # In the future, we can also search subdirectories named for locales.
+    path_1 = os.path.join(module_directory, 'images', 'common', image)
+    path_2 = os.path.join(module_directory, 'images', 'common', '%s@2x.png' % file_name)
+    path_3 = os.path.join(module_directory, 'images', Settings.get_os(), image)
+    path_4 = os.path.join(module_directory, 'images', Settings.get_os(), '%s@2x.png' % file_name)
+
+    if not os.path.exists(path_1) and not os.path.exists(path_2) \
+        and not os.path.exists(path_3) and not os.path.exists(path_4):
+        # Using print statements here instead of logging, as the logger might not be available
+        # when this code is called and we want to catch those errors.
+        if parse_args().image_debug:
+            print ('[IMAGE DEBUG] Image not found: module %s requests image %s') % (module, image)
+            print ('[IMAGE DEBUG] Paths searched:')
+            print ('[IMAGE DEBUG] Path 1: %s' % path_1)
+            print ('[IMAGE DEBUG] Path 2: %s' % path_2)
+            print ('[IMAGE DEBUG] Path 3: %s' % path_3)
+            print ('[IMAGE DEBUG] Path 4: %s\n' % path_4)
