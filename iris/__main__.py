@@ -23,7 +23,7 @@ import firefox.extractor as fe
 from api.core.key import Key
 from api.core.platform import Platform
 from api.core.settings import Settings
-from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir
+from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir, filter_list
 from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
 from firefox import cleanup
@@ -235,7 +235,6 @@ class Iris(object):
         for package in self.all_packages:
             self.master_test_list[os.path.basename(package)] = []
 
-        self.fx_channel = ''
         for index, module in enumerate(self.all_tests, start=1):
             try:
                 current_module = importlib.import_module(module)
@@ -253,14 +252,10 @@ class Iris(object):
                 else:
                     test_object['fx_version'] = current_test.fx_version
 
-                result_list = []
-                for platform in Platform.LIST:
-                    if platform not in current_test.exclude:
-                        result_list.append(platform)
-
-                test_object['platform'] = result_list
-                test_object['channel'] = current_test.channel
-                test_object['enabled'] = self.os not in current_test.exclude
+                test_object['platform'] = filter_list(current_test.platform, current_test.exclude)
+                test_object['channel'] = filter_list(current_test.channel, current_test.exclude)
+                test_object['locale'] = filter_list(current_test.locale, current_test.exclude)
+                test_object['enabled'] = self.os in filter_list(current_test.platform, current_test.exclude)
                 test_object['test_case_id'] = current_test.test_case_id
                 test_object['test_suite_id'] = current_test.test_suite_id
                 test_object['blocked_by'] = current_test.blocked_by
