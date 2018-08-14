@@ -16,7 +16,7 @@ class Test(BaseTest):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
         url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
-        url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png')
+        url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png').similar(0.7)
         view_menu_pattern = Pattern('view_menu.png')
         zoom_text_only_check_pattern = Pattern('zoom_text_only_check.png')
 
