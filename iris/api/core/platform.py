@@ -12,8 +12,7 @@ class Platform(object):
     WINDOWS = 'win'
     LINUX = 'linux'
     MAC = 'osx'
-    ALL = get_os()
-    LIST = [LINUX, MAC, WINDOWS]
+    ALL = [LINUX, MAC, WINDOWS]
     HIGH_DEF = not (pyautogui.screenshot().size == pyautogui.size())
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
     LOW_RES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
