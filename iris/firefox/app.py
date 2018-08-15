@@ -7,8 +7,8 @@ import glob
 import os
 import struct
 
-from iris.api.core.settings import get_os
 from iris.api.core.platform import Platform
+from iris.api.core.settings import get_os
 
 
 class FirefoxApp(object):
