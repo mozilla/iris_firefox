@@ -192,7 +192,11 @@ def get_test_name():
 
 def verify_test_compat(test, app):
     not_excluded = True
-    for item in test.exclude:
+    if isinstance(test.exclude, str):
+        exclude = [test.exclude]
+    else:
+        exclude = [i for i in test.exclude]
+    for item in exclude:
         if item in app.fx_channel or item in app.os or item in app.args.locale:
             not_excluded = False
     correct_version = True if test.fx_version == '' else check_version(app.version, test.fx_version)
