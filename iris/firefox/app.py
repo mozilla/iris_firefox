@@ -7,6 +7,9 @@ import glob
 import os
 import struct
 
+from iris.api.core.settings import get_os
+from iris.api.core.platform import Platform
+
 
 class FirefoxApp(object):
     """Class holding information about an extracted Firefox application directory."""
@@ -16,7 +19,8 @@ class FirefoxApp(object):
     NIGHTLY = 'nightly'
     ESR = 'esr'
     CHANNELS = [BETA, ESR, NIGHTLY, RELEASE]
-    LOCALES = ['en-US']
+    LOCALES = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr',
+               'ja-JP-mac' if get_os() == Platform.MAC else 'ja']
 
     def __init__(self, directory, platform, is_downloaded):
 
