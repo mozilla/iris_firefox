@@ -150,6 +150,7 @@ class Iris(object):
         current_run['version'] = self.version
         current_run['build'] = self.build_id
         current_run['channel'] = self.fx_channel
+        current_run['locale'] = self.args.locale
 
         # If this run is just starting, initialize with blank values
         # to indicate incomplete run.
@@ -162,7 +163,7 @@ class Iris(object):
             current_run['total'] = new_data['total']
             current_run['failed'] = new_data['failed']
 
-        run_file = os.path.join(parse_args().workdir, 'runs', 'runs.json')
+        run_file = os.path.join(parse_args().workdir, 'js', 'runs.json')
         key = str(get_run_id())
 
         if os.path.exists(run_file):
