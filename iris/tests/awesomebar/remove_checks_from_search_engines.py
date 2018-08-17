@@ -64,13 +64,12 @@ class Test(BaseTest):
         expected = exists(search_engine_pattern, 10)
         assert_true(self, expected, 'One-Click Search Engines section found.')
 
-        click(search_engine_pattern.target_offset(0, 30))
+        click(search_engine_pattern.target_offset(50, 110))
         type(Key.SPACE)
 
         # Uncheck all the search engines from the list.
-        for i in range(pattern_list.__len__() - 1):
-            type(Key.DOWN)
-            type(Key.SPACE)
+        for i in range(pattern_list.__len__() - 2):
+            click(check_engine_pattern)
 
         try:
             expected = region.wait_vanish(check_engine_pattern.similar(0.9), 10)
