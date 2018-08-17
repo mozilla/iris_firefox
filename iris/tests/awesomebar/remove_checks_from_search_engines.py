@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This test case checks the one-off search bar and the Settings gear after removing checks for each ' \
-                    'search engine from the Search Settings.'
+        self.meta = 'This test case checks the one-off search bar and the Settings gear after removing checks for ' \
+                    'each search engine from the Search Settings.'
         self.test_case_id = '108259'
         self.test_suite_id = '1902'
         # Disabled test for running on MAC until issue #950 is fixed.
