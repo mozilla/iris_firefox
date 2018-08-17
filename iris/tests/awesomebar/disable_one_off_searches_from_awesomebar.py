@@ -64,11 +64,11 @@ class Test(BaseTest):
         select_location_bar()
         paste('moz')
 
-        pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern, bing_one_off_button_pattern,
-                duck_duck_go_one_off_button_pattern, ebay_one_off_button_pattern, google_one_off_button_pattern,
-                twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
+        pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
+                        bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, ebay_one_off_button_pattern,
+                        google_one_off_button_pattern, twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 
-        # Check that the one-off list is not displayed in the awesome bar after the 'browser.urlbar.oneOffSearches'
+        # Check that the one-off list is not displayed in the awesomebar after the 'browser.urlbar.oneOffSearches'
         # preference is set to 'false'.
         for i in range(pattern_list.__len__()):
             try:
