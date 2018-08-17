@@ -14,12 +14,11 @@ class Test(BaseTest):
                     'each search engine from the Search Settings.'
         self.test_case_id = '108259'
         self.test_suite_id = '1902'
-        # Disabled test for running on MAC until issue #950 is fixed.
-        self.exclude = Platform.MAC
 
     def run(self):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
+        search_engine_pattern = Pattern('search_engine.png')
         check_engine_pattern = Pattern('check_engine.png')
         search_settings_pattern = Pattern('search_settings.png')
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
@@ -47,8 +46,12 @@ class Test(BaseTest):
         # Check that the one-off list is displayed in the awesomebar by default.
         for i in range(pattern_list.__len__()):
             try:
-                expected = region.exists(pattern_list[i].similar(0.9), 10)
-                assert_true(self, expected, 'Element found at position ' + i.__str__() + ' in the list found.')
+                if Settings.get_os() == Platform.MAC:
+                    expected = region.exists(pattern_list[i].similar(0.7), 10)
+                    assert_true(self, expected, 'Element found at position ' + i.__str__() + ' in the list found.')
+                else:
+                    expected = region.exists(pattern_list[i].similar(0.9), 10)
+                    assert_true(self, expected, 'Element found at position ' + i.__str__() + ' in the list found.')
             except FindError:
                 raise FindError('Element found at position ' + i.__str__() + ' in the list not found.')
 
@@ -58,12 +61,16 @@ class Test(BaseTest):
         expected = exists(about_preferences_search_page_pattern, 10)
         assert_true(self, expected, 'The \'about:preferences#search\' page successfully loaded.')
 
-        expected = exists(check_engine_pattern.similar(0.9), 10)
-        assert_true(self, expected, 'At least one blue check found.')
+        expected = exists(search_engine_pattern, 10)
+        assert_true(self, expected, 'One-Click Search Engines section found.')
 
-        # Double click on the checks for each search engine from the list.
-        for i in range(pattern_list.__len__() - 2):
-            double_click(check_engine_pattern.similar(0.9))
+        click(search_engine_pattern.target_offset(0, 30))
+        type(Key.SPACE)
+
+        # Uncheck all the search engines from the list.
+        for i in range(pattern_list.__len__() - 1):
+            type(Key.DOWN)
+            type(Key.SPACE)
 
         try:
             expected = region.wait_vanish(check_engine_pattern.similar(0.9), 10)
