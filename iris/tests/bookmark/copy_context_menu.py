@@ -9,10 +9,9 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks if the Cut context menu option works properly.'
-        self.test_case_id = '4152'
+        self.meta = 'The Copy context menu option works properly.'
+        self.test_case_id = '4102'
         self.test_suite_id = '75'
-        self.blocked_by = 'https://netbeans.org/bugzilla/show_bug.cgi?id=256674'
 
     def setup(self):
         """Test case setup
@@ -43,6 +42,7 @@ class Test(BaseTest):
             logger.debug('Toolbar has been activated.')
         except FindError:
             logger.error('Toolbar can not be activated, aborting.')
+            raise FindError
 
         bookmarks_sidebar('open')
 
@@ -58,14 +58,14 @@ class Test(BaseTest):
 
         right_click(toolbar_bookmark_pattern)
 
-        bookmark_options(Pattern('cut_option.png'))
+        bookmark_options(Pattern('copy_option.png'))
 
         try:
             wait(close_sidebar_search_pattern, 10)
             logger.debug('Close button is present.')
             click(close_sidebar_search_pattern)
         except FindError:
-            logger.error('Can\'t find the close button')
+            logger.error('Can\'t find the close button.')
             raise FindError
 
         try:
@@ -73,7 +73,7 @@ class Test(BaseTest):
             logger.debug('Bookmarks sidebar menu is present.')
             click(bookmarks_sidebar_menu_pattern)
         except FindError:
-            logger.error('Can\'t find the Bookmarks sidebar menu')
+            logger.error('Can\'t find the Bookmarks sidebar menu.')
             raise FindError
 
         right_click(bookmarks_sidebar_menu_selected_pattern)
@@ -82,4 +82,4 @@ class Test(BaseTest):
 
         pasted_bookmark_assertion = exists(moz_location_changed, 10)
         assert_true(self, pasted_bookmark_assertion,
-                    'Moz Bookmark is present into a different directory, cut option works as expected.')
+                    'Moz Bookmark is present into a different directory, copy option works as expected.')
