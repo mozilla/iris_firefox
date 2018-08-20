@@ -7,7 +7,6 @@ import os
 import sys
 
 from iris.api.core.util.core_helper import get_module_dir
-from parse_args import parse_args
 
 
 logger = logging.getLogger(__name__)
@@ -81,7 +80,7 @@ def get_tests_from_package(app):
         except KeyError:
             logger.warning('Could not locate %s' % package)
     if len(test_list) == 0:
-        logger.error('No tests to run. Exiting program ...')
+        logger.debug('No tests associated with package(s): %s' % test_packages)
     return test_list, test_packages
 
 
@@ -125,6 +124,27 @@ def scan_all_tests(arg):
         return test_list, test_packages
 
 
+def remove_excluded_tests(app):
+    if app.args.exclude:
+        exclude_list = [str(item).strip() for item in app.args.exclude.split(',')]
+        logger.debug('Processing exclude list: %s' % ''.join(exclude_list))
+
+        test_list = []
+        for item in exclude_list:
+            try:
+                for test in app.master_test_list[item]:
+                    test_list.append(test["name"])
+            except KeyError:
+                logger.debug('Could not find package: %s' % item)
+
+        exclude_list += test_list
+        for item in exclude_list:
+            try:
+                app.test_list.remove(item)
+            except ValueError:
+                logger.debug('Excluded item not found in test list: %s' % item)
+
+
 def load_tests(app):
     """Test loading
 
@@ -136,8 +156,10 @@ def load_tests(app):
     of test paths (full path required including file extensions).
     """
 
-    app.test_list = []
-    app.test_packages = []
+    temp_test_list_1 = []
+    temp_test_packages_1 = []
+    temp_test_list_2 = []
+    temp_test_packages_2 = []
 
     if app.args.rerun:
         path = os.path.join(app.args.workdir, 'runs', 'last_fail.txt')
@@ -146,14 +168,28 @@ def load_tests(app):
 
     if app.args.test:
         if app.args.test.endswith('.txt'):
-            app.test_list, app.test_packages = get_tests_from_text_file(app.args.test)
+            logger.debug('Loading tests from text file: %s' % app.args.test)
+            temp_test_list_1, temp_test_packages_1 = get_tests_from_text_file(app.args.test)
         else:
-            app.test_list, app.test_packages = get_tests_from_list(app)
-    elif app.args.directory:
-        if os.path.exists(app.args.directory):
-            app.test_list, app.test_packages = get_tests_from_directory(app)
-        else:
-            app.test_list, app.test_packages = get_tests_from_package(app)
+            logger.debug('Loading tests from list.')
+            temp_test_list_1, temp_test_packages_1 = get_tests_from_list(app)
+
+    if app.args.directory:
+        if not os.path.exists(app.args.directory):
+            logger.debug('Loading tests from packages.')
+            temp_test_list_2, temp_test_packages_2 = get_tests_from_package(app)
+        elif not app.args.test:
+            logger.debug('Loading tests from directory: %s' % app.args.directory)
+            temp_test_list_2, temp_test_packages_2 = get_tests_from_directory(app)
+
+    app.test_list = temp_test_list_1 + temp_test_list_2
+    app.test_packages = temp_test_packages_1 + temp_test_packages_2
+
+    remove_excluded_tests(app)
+
+    logger.debug('Found tests: %s' % ''.join(app.test_list))
+    logger.debug('Found packages: %s' % ''.join(app.test_packages))
 
     if len(app.test_list) == 0:
+        logger.error('Specified tests not found, aborting run.')
         app.finish(code=1)
