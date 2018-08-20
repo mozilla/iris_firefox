@@ -83,13 +83,16 @@ def parse_args():
                         help='Save profiles on disk',
                         action='store_true')
     parser.add_argument('-t', '--test',
-                        help='list of test names or path to a file containing a custom list of tests',
+                        help='List of test names or path to a file containing a custom list of tests',
                         metavar='test_name.py')
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,
                         action='store',
                         default='%s/.iris' % home)
+    parser.add_argument('-x', '--exclude',
+                        help='List of test names or directories to exclude',
+                        metavar='empty')
     parser.add_argument('-z', '--resize',
                         help='Convert hi-res images to normal',
                         action='store_true')
