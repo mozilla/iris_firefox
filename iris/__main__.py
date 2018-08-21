@@ -182,7 +182,7 @@ class Iris(object):
             run_file_data['runs'].append(current_run)
         else:
             logger.debug('Creating run file: %s' % run_file)
-            run_file_data = { 'runs': [] }
+            run_file_data = {'runs': []}
             run_file_data['runs'].append(current_run)
 
         with open(run_file, 'w') as f:
