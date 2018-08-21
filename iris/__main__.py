@@ -147,6 +147,7 @@ class Iris(object):
     def update_run_index(self, new_data=None):
         # Prepare the current entry.
         current_run = {}
+        current_run['id'] = get_run_id()
         current_run['version'] = self.version
         current_run['build'] = self.build_id
         current_run['channel'] = self.fx_channel
@@ -163,18 +164,27 @@ class Iris(object):
             current_run['total'] = new_data['total']
             current_run['failed'] = new_data['failed']
 
-        run_file = os.path.join(parse_args().workdir, 'js', 'runs.json')
-        key = str(get_run_id())
+        # Temporary code to deal with legacy runs.json file.
+        # It will be removed before launch.
+        old_run_file = os.path.join(parse_args().workdir, 'js', 'runs.json')
+        if os.path.exists(old_run_file):
+            os.remove(old_run_file)
+
+        run_file = os.path.join(parse_args().workdir, 'js', 'all_runs.json')
 
         if os.path.exists(run_file):
             logger.debug('Updating run file: %s' % run_file)
             with open(run_file, 'r') as f:
                 run_file_data = json.load(f)
+            for run in run_file_data['runs']:
+                if run['id'] == get_run_id():
+                    run_file_data['runs'].remove(run)
+            run_file_data['runs'].append(current_run)
         else:
             logger.debug('Creating run file: %s' % run_file)
-            run_file_data = {}
+            run_file_data = { 'runs': [] }
+            run_file_data['runs'].append(current_run)
 
-        run_file_data[key] = current_run
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 
