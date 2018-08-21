@@ -9,7 +9,7 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks if the Bookmarks Toolbar can be enabled from the Bookmarks Menu.'
+        self.meta = 'Bookmarks Toolbar can be enabled from the Bookmarks Menu.'
         self.test_case_id = '4089'
         self.test_suite_id = '75'
 
