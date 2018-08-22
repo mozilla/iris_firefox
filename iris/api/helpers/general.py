@@ -389,6 +389,24 @@ def select_zoom_menu_option(option_number):
     type(text=Key.ENTER)
 
 
+class RightClickLocationBar(object):
+    UNDO = 0
+    CUT = 1
+    COPY = 2
+    PASTE = 3
+    PASTE_GO = 4
+    DELETE = 5
+    SELECT_ALL = 6
+
+
+def select_location_bar_option(option_number):
+    """Select option from the location bar menu."""
+
+    for i in range(option_number + 1):
+        type(text=Key.DOWN)
+    type(text=Key.ENTER)
+
+
 def create_region_from_image(image):
     try:
         m = find(image)
