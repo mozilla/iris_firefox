@@ -401,10 +401,14 @@ class RightClickLocationBar(object):
 
 def select_location_bar_option(option_number):
     """Select option from the location bar menu."""
-
-    for i in range(option_number + 1):
-        type(text=Key.DOWN)
-    type(text=Key.ENTER)
+    if Settings.get_os() == Platform.WINDOWS:
+        for i in range(option_number + 1):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+    else:
+        for i in range(option_number - 1):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
 
 
 def create_region_from_image(image):
