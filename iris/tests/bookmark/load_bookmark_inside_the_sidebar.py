@@ -10,6 +10,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Bookmarks can be loaded inside the Bookmarks Sidebar.'
+        # This feature was removed from Firefox 63 and beyond in bug 1452645.
         self.fx_version = '<=62'
         self.test_case_id = '4162'
         self.test_suite_id = '75'
