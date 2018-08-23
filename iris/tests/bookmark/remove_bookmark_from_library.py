@@ -14,22 +14,20 @@ class Test(BaseTest):
         self.test_case_id = '4100'
         self.test_suite_id = '75'
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        url = 'www.amazon.com'
-        amazon_home_pattern = Pattern('amazon.png')
+
         library_bookmarks_pattern = Pattern('library_bookmarks.png')
-        amazon_library_pattern = Pattern('amazon_library.png')
+        moz_library_pattern = Pattern('moz_library_bookmark.png')
         delete_pattern = Pattern('delete_bookmark.png')
-
-        navigate(url)
-
-        amazon_banner_assert = exists(amazon_home_pattern, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
-
-        nav_bar_favicon_assert = exists(Pattern('amazon_favicon.png'), 15)
-        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
-
-        bookmark_page()
 
         navigate('about:blank')
 
@@ -44,18 +42,18 @@ class Test(BaseTest):
         type(Key.DOWN)
 
         try:
-            wait(amazon_library_pattern, 10)
-            logger.debug('Amazon bookmark can be accessed in Library section.')
-            right_click(amazon_library_pattern)
+            wait(moz_library_pattern, 10)
+            logger.debug('Moz bookmark can be accessed in Library section.')
+            right_click(moz_library_pattern)
         except FindError:
-            raise FindError('Amazon bookmark is not present in Library section, aborting.')
+            raise FindError('Moz bookmark is not present in Library section, aborting.')
 
         bookmark_options(delete_pattern)
 
         try:
-            deleted_bookmark_assert = wait_vanish(amazon_library_pattern, 10)
-            assert_true(self, deleted_bookmark_assert, 'Amazon bookmark has been removed from the Library.')
+            deleted_bookmark_assert = wait_vanish(moz_library_pattern, 10)
+            assert_true(self, deleted_bookmark_assert, 'Moz bookmark has been removed from the Library.')
         except FindError:
-            raise FindError('Amazon bookmark can NOT be removed from the Library, aborting.')
+            raise FindError('MOz bookmark can NOT be removed from the Library, aborting.')
 
         click_auxiliary_window_control('close')
