@@ -1,3 +1,4 @@
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -68,6 +69,7 @@ def get_to_file(url, filename):
 class FirefoxDownloader(object):
     __base_url = 'https://download.mozilla.org/?product=firefox' \
                  '-{release}&os={platform}'
+
     build_urls = {
         'esr': __base_url.format(release='esr-latest', platform='{platform}'),
         'release': __base_url.format(release='latest', platform='{platform}'),
@@ -136,6 +138,65 @@ class FirefoxDownloader(object):
         extension = self.__platforms[platform]['extension']
         url = self.get_download_url(release, platform) + '&lang=' + locale
         cache_id = 'firefox-%s_%s.%s' % (release, platform, extension)
+
+        # Always delete cached file when cache function is overridden
+        if cache_id in self.__cache and not use_cache:
+            self.__cache.delete(cache_id)
+
+        # __get_to_file will not re-download if same-size file is already there.
+        return get_to_file(url, self.__cache[cache_id])
+
+class SpecificFirefoxDownloader(object):
+    __base_url = 'https://archive.mozilla.org/pub/firefox/{build}/{version}/{platform}'
+
+    build_urls = {
+        'release': __base_url.format(build='releases', version='{version}', platform='{platform}'),
+        'canditate': __base_url.format(build='canditates', version='{version}', platform='{platform}'),
+        'nightly': __base_url.format(build='nightly', version='{version}', platform='{platform}')
+    }
+
+    __platforms = {
+        'osx': {'platform': 'mac', 'extension': 'dmg'},
+        'linux': {'platform': 'linux-x86_64', 'extension': 'tar.bz2'},
+        'linux32': {'platform': 'linux-i686', 'extension': 'tar.bz2'},
+        'win': {'platform': 'win64', 'extension': 'exe'},
+        'win32': {'platform': 'win32', 'extension': 'exe'}
+    }
+
+    def get_download_url(self, build, locale, version, platform):
+        # Internally we use slightly different platform naming, so translate
+        # internal platform name to the platform name used in download URL.
+        download_extension = self.__platforms[platform]['extension']
+        download_platform = SpecificFirefoxDownloader.__platforms[platform]['platform']
+        if platform is 'mac':
+            installer = 'Firefox%20' + '%s.%s' % (version, download_extension)
+        elif platform is 'win' or 'win32':
+            installer = 'Firefox%20Setup%20' + '%s.%s' % (version, download_extension)
+        elif platform is 'linux' or 'linux32':
+            installer = 'firefox-' + '%s.%s' % (version, download_extension)
+
+        if build in SpecificFirefoxDownloader.build_urls:
+            url = SpecificFirefoxDownloader.build_urls[build].format(version=version, platform=download_platform)
+            return url + '/' + locale + '/' + installer
+        else:
+            return None
+
+    def __init__(self, workdir, cache_timeout=24 * 60 * 60):
+        self.__workdir = workdir
+        self.__cache = cache.DiskCache(os.path.join(workdir, 'cache'), cache_timeout, purge=True)
+
+    def download(self, build, locale, version, platform=None, use_cache=True):
+        if platform is None:
+            platform = FirefoxDownloader.detect_platform()
+
+        if build not in self.build_urls:
+            raise Exception('Failed to download unknown release "%s"' % build)
+        if platform not in self.__platforms:
+            raise Exception('Failed to download for unknown platform "%s"' % platform)
+
+        extension = self.__platforms[platform]['extension']
+        url = self.get_download_url(build, locale, version, platform)
+        cache_id = 'Firefox_Setup_%s.%s' % (version, extension)
 
         # Always delete cached file when cache function is overridden
         if cache_id in self.__cache and not use_cache:

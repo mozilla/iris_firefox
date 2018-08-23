@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import glob
 import importlib
 import json
 import logging
@@ -18,9 +17,6 @@ import coloredlogs
 import git
 import pytesseract
 
-import firefox.app as fa
-import firefox.downloader as fd
-import firefox.extractor as fe
 from api.core.key import Key, shutdown_process
 from api.core.platform import Platform
 from api.core.settings import Settings
@@ -29,6 +25,7 @@ from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
 from firefox import cleanup
 from local_web_server import LocalWebServer
+from test_case import BaseTest
 from test_runner import run
 
 tmp_dir = None
@@ -98,22 +95,23 @@ class Iris(object):
 
     def get_firefox(self):
         global tmp_dir
+        base_test = BaseTest(self)
         tmp_dir = self.__create_tempdir()
 
         if self.args.firefox == 'local':
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
             if Settings.get_os() == Platform.MAC:
-                self.fx_app = self.get_test_candidate('/Applications/Firefox.app/Contents')
+                self.fx_app = base_test.get_test_candidate('/Applications/Firefox.app/Contents')
             elif Settings.get_os() == Platform.WINDOWS:
                 if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
-                    self.fx_app = self.get_test_candidate('C:\\Program Files (x86)\\Mozilla Firefox')
+                    self.fx_app = base_test.get_test_candidate('C:\\Program Files (x86)\\Mozilla Firefox')
                 else:
-                    self.fx_app = self.get_test_candidate('C:\\Program Files\\Mozilla Firefox')
+                    self.fx_app = base_test.get_test_candidate('C:\\Program Files\\Mozilla Firefox')
             else:
-                self.fx_app = self.get_test_candidate('/usr/lib/firefox')
+                self.fx_app = base_test.get_test_candidate('/usr/lib/firefox')
         else:
-            self.fx_app = self.get_test_candidate(self.args.firefox)
+            self.fx_app = base_test.get_test_candidate(self.args.firefox)
 
         self.fx_channel = self.fx_app.release
         self.fx_path = self.fx_app.exe
@@ -399,7 +397,6 @@ class Iris(object):
     @staticmethod
     def __create_tempdir():
         """Helper function for creating the temporary directory.
-
         Writes to the global variable tmp_dir
         :return:
              Path of temporary directory.
@@ -451,75 +448,6 @@ class Iris(object):
             platform_utf_encoding = None
         if restore_terminal_encoding != platform_utf_encoding:
             Iris.set_terminal_encoding(platform_utf_encoding)
-
-    def get_test_candidate(self, build):
-        """Download and extract a build candidate.
-
-        Build may either refer to a Firefox release identifier, package, or build directory.
-        :param:
-            build: str with firefox build
-        :return:
-            FirefoxApp object for test candidate
-        """
-        if os.path.isdir(build):
-            candidate_app = fa.FirefoxApp(build, Settings.get_os(), False)
-            return candidate_app
-        else:
-            platform = fd.FirefoxDownloader.detect_platform()
-            if platform is None:
-                logger.error('Unsupported platform: "%s"' % sys.platform)
-                sys.exit(5)
-
-            # `build` may refer to a build reference as defined in FirefoxDownloader,
-            # a local Firefox package as produced by `mach build`, or a local build tree.
-            if build in fd.FirefoxDownloader.build_urls:
-                # Download test candidate by Firefox release ID
-                logger.info('Downloading Firefox "%s" build for platform "%s"' % (build, platform))
-                fdl = fd.FirefoxDownloader(self.args.workdir, cache_timeout=1 * 60 * 60)
-                build_archive_file = fdl.download(build, self.args.locale, platform)
-                if build_archive_file is None:
-                    self.finish(code=-1)
-                # Extract candidate archive
-                candidate_app = fe.extract(build_archive_file, Settings.get_os(), self.args.workdir,
-                                           cache_timeout=1 * 60 * 60)
-                candidate_app.package_origin = fdl.get_download_url(build, platform)
-            elif os.path.isfile(build):
-                # Extract firefox build from archive
-                logger.info('Using file "%s" as Firefox package' % build)
-                candidate_app = fe.extract(build, Settings.get_os(), self.args.workdir, cache_timeout=1 * 60 * 60)
-                candidate_app.package_origin = build
-                logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
-            elif os.path.isfile(os.path.join(build, 'mach')):
-                logger.info('Using Firefox build tree at `%s`' % build)
-                dist_globs = sorted(glob.glob(os.path.join(build, 'obj-*', 'dist')))
-                if len(dist_globs) == 0:
-                    logger.critical('"%s" looks like a Firefox build directory, but can\'t find a build in it' % build)
-                    self.finish(code=5)
-                logger.debug('Potential globs for dist directory: %s' % dist_globs)
-                dist_dir = dist_globs[-1]
-                logger.info('Using "%s" as build distribution directory' % dist_dir)
-                if 'apple-darwin' in dist_dir.split('/')[-2]:
-                    # There is a special case for OS X dist directories:
-                    # FirefoxApp expects OS X .dmg packages to contain the .app folder inside
-                    # another directory. However, that directory isn't there in build trees,
-                    # thus we need to point to the parent for constructing the app.
-                    logger.info('Looks like this is an OS X build tree')
-                    candidate_app = fa.FirefoxApp(os.path.abspath(os.path.dirname(dist_dir)), Settings.get_os(), True)
-                    candidate_app.package_origin = os.path.abspath(build)
-                else:
-                    candidate_app = fa.FirefoxApp(os.path.abspath(dist_dir), Settings.get_os(), True)
-                    candidate_app.package_origin = os.path.abspath(build)
-            else:
-                logger.critical('"%s" specifies neither a Firefox release, package file, or build directory' % build)
-                logger.critical('Valid Firefox release identifiers are: %s' % ', '.join(fd.FirefoxDownloader.list()[0]))
-                self.finish(5)
-
-            logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
-            if candidate_app.platform != platform:
-                logger.warning('Platform mismatch detected')
-                logger.critical('Running a Firefox binary for "%s" on a "%s" platform will probably fail' %
-                                (candidate_app.platform, platform))
-            return candidate_app
 
     @staticmethod
     def check_tesseract_path(dir_path):

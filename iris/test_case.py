@@ -2,7 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from api.core.local_web import *
+import sys
+
+import firefox.app as fa
+import firefox.downloader as fd
+import firefox.extractor as fe
+
 from api.core.profile import *
 from api.helpers.general import *
 from asserts import *
@@ -18,6 +23,9 @@ class BaseTest(object):
     def __init__(self, app):
         self.app = app
         self.reset_variables()
+        self.args = parse_args()
+        self.os = Settings.get_os()
+        self.module_dir = get_module_dir()
 
     def reset_variables(self):
         self.meta = ''
@@ -101,13 +109,92 @@ class BaseTest(object):
     def set_profile_pref(self, pref):
         self.prefs.append(pref)
 
+    def get_test_candidate(self, build):
+        """Download and extract a build candidate.
+        Build may either refer to a Firefox release identifier, package, or build directory.
+        :param:
+            build: str with firefox build
+        :return:
+            FirefoxApp object for test candidate
+        """
+        version = '50.0'
+        if os.path.isdir(build):
+            candidate_app = fa.FirefoxApp(build, Settings.get_os(), False)
+            return candidate_app
+        else:
+            platform = fd.FirefoxDownloader.detect_platform()
+            if platform is None:
+                logger.error('Unsupported platform: "%s"' % sys.platform)
+                sys.exit(5)
+
+            # `build` may refer to a build reference as defined in FirefoxDownloader,
+            # a local Firefox package as produced by `mach build`, or a local build tree.
+            if build in fd.SpecificFirefoxDownloader.build_urls:
+                # Download test candidate by Firefox release ID
+                logger.info('Downloading Firefox "%s" build for platform "%s"' % (build, platform))
+                fdl = fd.SpecificFirefoxDownloader(self.args.workdir, cache_timeout=1 * 60 * 60)
+                build_archive_file = fdl.download(build, self.args.locale, version, platform)
+                if build_archive_file is None:
+                    self.finish(code=-1)
+                # Extract candidate archive
+                candidate_app = fe.extract(build_archive_file, Settings.get_os(), self.args.workdir,
+                                           cache_timeout=1 * 60 * 60)
+                candidate_app.package_origin = fdl.get_download_url(build, self.args.locale, version, platform)
+            elif os.path.isfile(build):
+                # Extract firefox build from archive
+                logger.info('Using file "%s" as Firefox package' % build)
+                candidate_app = fe.extract(build, Settings.get_os(), self.args.workdir, cache_timeout=1 * 60 * 60)
+                candidate_app.package_origin = build
+                logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
+            elif os.path.isfile(os.path.join(build, 'mach')):
+                logger.info('Using Firefox build tree at `%s`' % build)
+                dist_globs = sorted(glob.glob(os.path.join(build, 'obj-*', 'dist')))
+                if len(dist_globs) == 0:
+                    logger.critical('"%s" looks like a Firefox build directory, but can\'t find a build in it' % build)
+                    self.finish(code=5)
+                logger.debug('Potential globs for dist directory: %s' % dist_globs)
+                dist_dir = dist_globs[-1]
+                logger.info('Using "%s" as build distribution directory' % dist_dir)
+                if 'apple-darwin' in dist_dir.split('/')[-2]:
+                    # There is a special case for OS X dist directories:
+                    # FirefoxApp expects OS X .dmg packages to contain the .app folder inside
+                    # another directory. However, that directory isn't there in build trees,
+                    # thus we need to point to the parent for constructing the app.
+                    logger.info('Looks like this is an OS X build tree')
+                    candidate_app = fa.FirefoxApp(os.path.abspath(os.path.dirname(dist_dir)), Settings.get_os(), True)
+                    candidate_app.package_origin = os.path.abspath(build)
+                else:
+                    candidate_app = fa.FirefoxApp(os.path.abspath(dist_dir), Settings.get_os(), True)
+                    candidate_app.package_origin = os.path.abspath(build)
+            else:
+                logger.critical('"%s" specifies neither a Firefox release, package file, or build directory' % build)
+                logger.critical('Valid Firefox release identifiers are: %s' % ', '.join(fd.FirefoxDownloader.list()[0]))
+                self.finish(5)
+
+            logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
+            if candidate_app.platform != platform:
+                logger.warning('Platform mismatch detected')
+                logger.critical('Running a Firefox binary for "%s" on a "%s" platform will probably fail' %
+                                (candidate_app.platform, platform))
+            return candidate_app
+
+    def finish(self, code=0):
+        """
+        All exit points of Iris need to call this function in order to exit properly.
+        """
+        if hasattr(self, 'process_list'):
+            logger.debug('There are %s queued process(es) to terminate.' % len(self.process_list))
+            for process in self.process_list:
+                logger.debug('Terminating process.')
+                process.terminate()
+                process.join()
+        sys.exit(code)
+
     def setup(self):
         """ Test case setup
-
         This might be a good place to declare variables or initialize Fx state.
         Also, by default, a new Firefox instance is created, with a new profile and
         blank URL. If you wish to change this, override this method in your test case.
-
         If you do override this method in your test case, you *must* call
         BaseTest.setup(self) as the first line in your setup method.
         """
