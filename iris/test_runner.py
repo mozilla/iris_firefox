@@ -10,7 +10,7 @@ from api.helpers.general import *
 from api.helpers.results import *
 from api.core.profile import *
 from api.core.util.core_helper import verify_test_compat
-from email.email_client import EmailClient
+from email_report.email_client import EmailClient
 from iris.api.core.settings import Settings
 from iris.test_rail.test_rail_client import *
 
@@ -103,7 +103,7 @@ def run(app):
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    print_report_footer(Settings.get_os(), app.version, app.build_id, passed, failed, skipped, errors,
+    test_results = print_report_footer(Settings.get_os(), app.version, app.build_id, passed, failed, skipped, errors,
                         get_duration(start_time, end_time), failures=test_failures)
 
     if app.args.report:
@@ -112,7 +112,7 @@ def run(app):
 
     if app.args.email:
         email_report = EmailClient()
-        email_report.send_email_report(app.version)
+        email_report.send_email_report(app.version, test_results, app.get_git_details())
 
     app.write_test_failures(test_failures)
     append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests=test_log)
