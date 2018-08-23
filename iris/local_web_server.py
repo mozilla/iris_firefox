@@ -8,7 +8,12 @@ import os
 from BaseHTTPServer import HTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 
+from control_center import ControlCenter as cc
+
+
 logger = logging.getLogger(__name__)
+
+final_result = None
 
 
 class CustomHandler(SimpleHTTPRequestHandler):
@@ -19,9 +24,22 @@ class CustomHandler(SimpleHTTPRequestHandler):
     # sending data. For our purposes, this behavior is not important, so we just want to ignore
     # the dropped connection and suppress the error message.
 
+    def stop_server(self):
+        LocalWebServer.ACTIVE = False
+
+    def set_result(self, arg):
+        global final_result
+        final_result = arg
+
     def do_GET(self):
+        global final_result
+
         try:
-            SimpleHTTPRequestHandler.do_GET(self)
+            if cc.is_command(self):
+                cc.do_command(self)
+                self.send_response(200)
+            else:
+                SimpleHTTPRequestHandler.do_GET(self)
         except Exception as e:
             logger.debug('Exception in do_GET')
             if '10053' in e.args:
@@ -61,17 +79,22 @@ class CustomHandler(SimpleHTTPRequestHandler):
 
 class LocalWebServer(object):
 
+    ACTIVE = True
+
     def __init__(self, path, port):
+        LocalWebServer.ACTIVE = True
         self.port = port
         self.web_root = path
         self.host = '127.0.0.1'
-        self.enabled = True
+        self.result = None
         self.start()
 
     def stop(self):
-        self.enabled = False
+        LocalWebServer.ACTIVE = False
 
     def start(self):
+        global final_result
+
         os.chdir(self.web_root)
         handler = SimpleHTTPRequestHandler
         server = HTTPServer
@@ -82,8 +105,10 @@ class LocalWebServer(object):
             httpd = server(server_address, CustomHandler)
             sock_name = httpd.socket.getsockname()
             logger.info('Serving HTTP on %s port %s.' % (sock_name[0], sock_name[1]))
-            while self.enabled:
+            while LocalWebServer.ACTIVE:
                 httpd.handle_request()
+            self.result = final_result
+            return
         except IOError:
             raise IOError('Unable to open port %s on %s' % (self.port, self.host))
         except TypeError as e:

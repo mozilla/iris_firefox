@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from distutils import dir_util
 from distutils.spawn import find_executable
 from multiprocessing import Process
 
@@ -23,10 +24,12 @@ import firefox.downloader as fd
 import firefox.extractor as fe
 from api.core.key import Key, shutdown_process
 from api.core.platform import Platform
+from api.core.profile import Profile
 from api.core.settings import Settings
 from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir, filter_list
 from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
+from api.helpers.general import launch_firefox, quit_firefox, confirm_firefox_quit
 from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
@@ -82,9 +85,37 @@ class Iris(object):
         self.create_arg_json()
 
     def control_center(self):
-        """
-        Placeholder for future work.
-        """
+        if self.args.control:
+            # copy assets
+            dir_util.copy_tree(os.path.join(self.module_dir, 'iris', 'cc_files'), self.args.workdir)
+            # copy profile
+            profile_path = os.path.join(self.args.workdir, 'cc_profile')
+            if not os.path.exists(profile_path):
+                Profile.get_staged_profile(Profile.LIKE_NEW, profile_path)
+
+            # open Firefox
+            if Settings.get_os() == Platform.MAC:
+                fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
+            elif Settings.get_os() == Platform.WINDOWS:
+                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
+                    fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox'
+                else:
+                    fx_path = 'C:\\Program Files\\Mozilla Firefox'
+            else:
+                fx_path = '/usr/lib/firefox'
+
+            launch_firefox(fx_path, profile=profile_path, url=self.base_local_web_url)
+            server = LocalWebServer(self.args.workdir, self.args.port)
+
+            # quit firefox
+            quit_firefox()
+            #confirm_firefox_quit(self)
+
+            if server.result is not None:
+                print server.result
+            else:
+                print "Nothing"
+
         return
 
     def initialize_run(self):

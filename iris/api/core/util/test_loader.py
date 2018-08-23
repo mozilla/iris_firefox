@@ -118,7 +118,7 @@ def scan_all_tests(arg):
         return test_list, test_packages
     else:
         logger.debug('Test packages: %s', test_packages)
-        logger.debug('List of tests to execute: [%s]' % ', '.join(map(str, test_list)))
+        logger.debug('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
         for package in test_packages:
             sys.path.append(package)
         return test_list, test_packages

@@ -59,6 +59,9 @@ def parse_args():
                         type=log_level_string_to_int,
                         dest='level',
                         default='INFO')
+    parser.add_argument('-k', '--control',
+                        help='Display control center',
+                        action='store_true')
     parser.add_argument('-l', '--locale',
                         help='Locale to use for Firefox',
                         action='store',

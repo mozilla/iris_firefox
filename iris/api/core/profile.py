@@ -33,7 +33,7 @@ class _IrisProfile(object):
     _profiles = []
 
     @staticmethod
-    def _get_staged_profile(profile_name, path):
+    def get_staged_profile(profile_name, path):
         sz_bin = find_executable('7z')
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
@@ -94,11 +94,11 @@ class _IrisProfile(object):
         elif template is _IrisProfile.LIKE_NEW:
             """Open a staged profile that is nearly new, but with some first-run preferences altered."""
             logger.debug('Creating new profile from LIKE_NEW staged profile')
-            self._get_staged_profile(template, profile_path)
+            self.get_staged_profile(template, profile_path)
         elif template is _IrisProfile.TEN_BOOKMARKS:
             """Open a staged profile that already has ten bookmarks."""
             logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
-            self._get_staged_profile(template, profile_path)
+            self.get_staged_profile(template, profile_path)
         else:
             raise ValueError('No profile found: %s' % template)
 
