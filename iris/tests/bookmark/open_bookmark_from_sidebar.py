@@ -14,33 +14,30 @@ class Test(BaseTest):
         self.test_case_id = '4094'
         self.test_suite_id = '75'
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        url = 'www.amazon.com'
-        amazon_home_pattern = Pattern('amazon.png')
-        amazon_bookmark_pattern = Pattern('amazon_bookmark.png')
-
-        navigate(url)
-
-        amazon_banner_assert = exists(amazon_home_pattern, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
-
-        nav_bar_favicon_assert = exists(Pattern('amazon_favicon.png'), 15)
-        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
-
-        bookmark_page()
+        moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
 
         navigate('about:blank')
 
         bookmarks_sidebar('open')
 
-        paste('amazon')
+        paste('Mozilla')
 
         try:
-            wait(amazon_bookmark_pattern, 10)
-            logger.debug('Amazon bookmark is present in the Bookmark sidebar.')
-            click(amazon_bookmark_pattern)
+            wait(moz_bookmark_pattern, 10)
+            logger.debug('Moz bookmark is present in the Bookmark sidebar.')
+            click(moz_bookmark_pattern)
         except FindError:
-            raise FindError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
+            raise FindError('Moz bookmark is NOT present in the Bookmark sidebar, aborting.')
 
-        amazon_banner_assert = exists(amazon_home_pattern, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
