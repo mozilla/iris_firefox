@@ -167,7 +167,7 @@ class SpecificFirefoxDownloader(object):
         # internal platform name to the platform name used in download URL.
         download_extension = self.__platforms[platform]['extension']
         download_platform = SpecificFirefoxDownloader.__platforms[platform]['platform']
-        if platform is 'mac':
+        if platform is 'osx':
             installer = 'Firefox%20' + '%s.%s' % (version, download_extension)
         elif platform is 'win' or 'win32':
             installer = 'Firefox%20Setup%20' + '%s.%s' % (version, download_extension)
