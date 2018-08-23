@@ -14,40 +14,38 @@ class Test(BaseTest):
         self.test_case_id = '4099'
         self.test_suite_id = '75'
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        url = 'www.amazon.com'
-        amazon_home_pattern = Pattern('amazon.png')
-        amazon_bookmark_pattern = Pattern('amazon_bookmark.png')
+
+        moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         delete_pattern = Pattern('delete_bookmark.png')
-
-        navigate(url)
-
-        amazon_banner_assert = exists(amazon_home_pattern, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
-
-        nav_bar_favicon_assert = exists(Pattern('amazon_favicon.png'), 15)
-        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
-
-        bookmark_page()
 
         navigate('about:blank')
 
         bookmarks_sidebar('open')
 
-        paste('amazon')
+        paste('Mozilla')
 
         try:
-            wait(amazon_bookmark_pattern, 10)
-            logger.debug('Amazon bookmark is present in the Bookmark sidebar.')
-            right_click(amazon_bookmark_pattern)
+            wait(moz_bookmark_pattern, 10)
+            logger.debug('Moz bookmark is present in the Bookmark sidebar.')
+            right_click(moz_bookmark_pattern)
         except FindError:
-            raise FindError('Amazon bookmark is NOT present in the Bookmark sidebar, aborting.')
+            raise FindError('Moz bookmark is NOT present in the Bookmark sidebar, aborting.')
 
         bookmark_options(delete_pattern)
 
         try:
-            deleted_bookmark_assert = wait_vanish(amazon_bookmark_pattern, 10)
+            deleted_bookmark_assert = wait_vanish(moz_bookmark_pattern, 10)
             assert_true(self, deleted_bookmark_assert,
-                        'Amazon bookmark is successfully deleted from the Bookmark sidebar.')
+                        'Moz bookmark is succQessfully deleted from the Bookmark sidebar.')
         except FindError:
-            raise FindError('Amazon bookmark can NOT be deleted from the Bookmark sidebar, aborting.')
+            raise FindError('Moz bookmark can NOT be deleted from the Bookmark sidebar, aborting.')

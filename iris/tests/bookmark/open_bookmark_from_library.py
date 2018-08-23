@@ -14,21 +14,18 @@ class Test(BaseTest):
         self.test_case_id = '4097'
         self.test_suite_id = '75'
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        url = 'www.amazon.com'
-        amazon_home_pattern = Pattern('amazon.png')
         library_bookmarks_pattern = Pattern('library_bookmarks.png')
-        amazon_library_pattern = Pattern('amazon_library.png')
-
-        navigate(url)
-
-        amazon_banner_assert = exists(amazon_home_pattern, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon page has been successfully loaded.')
-
-        nav_bar_favicon_assert = exists(Pattern('amazon_favicon.png'), 15)
-        assert_true(self, nav_bar_favicon_assert, 'Page is fully loaded and favicon displayed.')
-
-        bookmark_page()
+        moz_library_pattern = Pattern('moz_library_bookmark.png')
 
         navigate('about:blank')
 
@@ -42,11 +39,11 @@ class Test(BaseTest):
         type(Key.ENTER)
         type(Key.DOWN)
 
-        library_bookmark_assert = exists(amazon_library_pattern, 10)
-        assert_true(self, library_bookmark_assert, 'Amazon bookmark can be accessed in Library section.')
+        library_bookmark_assert = exists(moz_library_pattern, 10)
+        assert_true(self, library_bookmark_assert, 'Moz bookmark can be accessed from Library section.')
 
-        click(amazon_library_pattern)
+        click(moz_library_pattern)
         type(Key.ENTER)
 
-        amazon_banner_assert = exists(amazon_home_pattern, 10)
-        assert_true(self, amazon_banner_assert, 'Amazon bookmark has been successfully accessed from Library section.')
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
