@@ -36,7 +36,7 @@ class EmailClient:
     @staticmethod
     def get_file_attachment():
         test_report_file = os.path.join(get_current_run_dir(), 'iris_log.log')
-        if test_report_file.exists():
+        if os.path.exists(test_report_file):
             file_log = open(test_report_file)
             attachment = MIMEText(file_log.read(), 1)
             file_log.close()
@@ -46,10 +46,19 @@ class EmailClient:
         else:
             raise Exception('File %s is not present in path' % test_report_file)
 
-    def send_email_report(self, firefox_version):
+    def send_email_report(self, firefox_version, test_status, repo_details):
         email = MIMEMultipart()
-        body_message = MIMEText(''' Iris Email Report.
-                                       \nNote: To see the complete run output, please check the attachment.''')
+        body_message = ""
+        if isinstance(repo_details, dict):
+            body_message = MIMEText(
+                ''' Repo_details:\n ''' + """Branch_name:""" + repo_details.get(
+                    'iris_branch')
+                + " \n " + '''Branch_head: ''' + repo_details.get(
+                    'iris_branch_head') + "\n\n" + '''Test_Run_Details: ''' + test_status +
+                ''' \nNote: To see the complete run output, please check the attachment.''')
+        else:
+            raise EmailError("Invalid Body Message")
+
         email.attach(body_message)
         attachment = self.get_file_attachment()
         email.attach(attachment)

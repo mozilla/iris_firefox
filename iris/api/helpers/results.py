@@ -24,9 +24,11 @@ def print_report_footer(platform, fx_version, fx_build, passed, failed,
         failure_str += '\n'
 
     separator = '\n' + '-' * 120 + '\n'
-    logger.info(separator + fx_details + '\n' + test_results_str + ' ' *
-                (120 - (len(test_results_str) + len(total_time_str))) +
-                total_time_str + failure_str + separator)
+    test_results = (separator + fx_details + '\n' + test_results_str + ' ' *
+                    (120 - (len(test_results_str) + len(total_time_str))) +
+                    total_time_str + failure_str + separator)
+    logger.info(test_results)
+    return test_results
 
 
 def format_outcome(outcome):
