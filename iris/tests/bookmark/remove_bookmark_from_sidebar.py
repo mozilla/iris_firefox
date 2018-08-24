@@ -46,6 +46,6 @@ class Test(BaseTest):
         try:
             deleted_bookmark_assert = wait_vanish(moz_bookmark_pattern, 10)
             assert_true(self, deleted_bookmark_assert,
-                        'Moz bookmark is succQessfully deleted from the Bookmark sidebar.')
+                        'Moz bookmark is successfully deleted from the Bookmark sidebar.')
         except FindError:
             raise FindError('Moz bookmark can NOT be deleted from the Bookmark sidebar, aborting.')
