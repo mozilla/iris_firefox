@@ -16,6 +16,7 @@ class Test(BaseTest):
 
     def run(self):
         cnn_tab_pattern = Pattern('cnn_tab.png')
+        cnn_icon_pattern = Pattern('cnn_icon.png')
         facebook_tab_pattern = Pattern('facebook_tab.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
@@ -33,8 +34,8 @@ class Test(BaseTest):
             type(Key.ENTER)
             key_up(Key.CMD)
 
-        expected = region.exists(cnn_tab_pattern, 10)
-        assert_true(self, expected, 'CNN page successfully loaded.')
+        expected = region.exists(cnn_tab_pattern, 10) and region.exists(cnn_icon_pattern, 10)
+        assert_true(self, expected, 'CNN page successfully loaded .')
 
         # In a new tab, navigate to the 'Facebook' page using the 'CTRL'/'CMD' + 'ENTER' keys starting from the name of
         # the page.
