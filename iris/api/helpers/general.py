@@ -661,3 +661,45 @@ def restore_firefox_focus():
     horizontal_offset = w * 2
     click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
     click(click_area)
+
+
+def get_firefox_version():
+    return get_pref_value('extensions.lastAppVersion')
+
+
+def get_firefox_build_id():
+    # There are several prefs that may contain this data, but we are not guaranteed
+    # to have them, depending on what type of profile we start with.
+    pref_1 = 'browser.startup.homepage_override.buildID'
+    pref_2 = 'extensions.lastAppBuildId'
+
+    try:
+        id = get_pref_value(pref_1)
+    except APIHelperError:
+        id = get_pref_value(pref_2)
+
+    return id
+
+
+def get_pref_value(pref_name):
+    new_tab()
+    select_location_bar()
+    paste('about:config')
+    type(Key.ENTER)
+    time.sleep(Settings.UI_DELAY)
+
+    type(Key.SPACE)
+    time.sleep(Settings.UI_DELAY)
+
+    paste(pref_name)
+    time.sleep(Settings.UI_DELAY_LONG)
+    type(Key.TAB)
+    time.sleep(Settings.UI_DELAY_LONG)
+
+    try:
+        value = copy_to_clipboard().split(';'[0])[1]
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+
+    close_tab()
+    return value
