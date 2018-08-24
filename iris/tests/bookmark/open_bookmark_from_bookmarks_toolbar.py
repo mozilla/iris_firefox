@@ -34,7 +34,7 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        paste('Mozilla')
+        paste('mozilla')
 
         drag_drop(moz_draggable_pattern, drag_area_pattern, 0.5)
 

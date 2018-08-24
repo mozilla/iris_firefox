@@ -30,7 +30,7 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        paste('Mozilla')
+        paste('mozilla')
 
         try:
             wait(moz_bookmark_pattern, 10)
