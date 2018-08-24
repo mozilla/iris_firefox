@@ -38,7 +38,7 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        paste('Mozilla')
+        paste('mozilla')
 
         sidebar_bookmark_assert = exists(moz_bookmark_pattern, 10)
         assert_true(self, sidebar_bookmark_assert, 'Moz bookmark is present in the sidebar.')
