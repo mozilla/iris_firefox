@@ -116,6 +116,7 @@ class Iris(object):
             self.fx_app = self.get_test_candidate(self.args.firefox)
 
         self.fx_channel = self.fx_app.release
+        self.fx_locale = self.args.locale
         self.fx_path = self.fx_app.exe
         self.version = self.fx_app.version
         self.build_id = self.fx_app.build_id
@@ -151,7 +152,7 @@ class Iris(object):
         current_run['version'] = self.version
         current_run['build'] = self.build_id
         current_run['channel'] = self.fx_channel
-        current_run['locale'] = self.args.locale
+        current_run['locale'] = self.fx_locale
 
         # If this run is just starting, initialize with blank values
         # to indicate incomplete run.
@@ -196,6 +197,7 @@ class Iris(object):
         meta['fx_build_id'] = self.build_id
         meta['platform'] = self.os
         meta['channel'] = self.fx_channel
+        meta['locale'] = self.fx_locale
         meta['args'] = ' '.join(sys.argv)
         meta['params'] = vars(self.args)
         meta['log'] = os.path.join(get_current_run_dir(), 'iris_log.log')

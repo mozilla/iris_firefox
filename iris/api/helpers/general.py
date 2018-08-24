@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import json
 
 from iris.api.core.environment import Env
 from iris.api.core.key import *
@@ -679,6 +680,21 @@ def get_firefox_build_id():
         id = get_pref_value(pref_2)
 
     return id
+
+
+def get_firefox_channel():
+    return get_pref_value('app.update.channel')
+
+
+def get_firefox_locale():
+    value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
+    logger.info(value_str)
+    try:
+        temp = json.loads(value_str)
+        value = str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
+    except KeyError:
+        raise APIHelperError('Pref format to determine locale has changed')
+    return value
 
 
 def get_pref_value(pref_name):
