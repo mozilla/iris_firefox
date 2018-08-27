@@ -21,6 +21,7 @@ class Test(BaseTest):
         search_suggestion_history_pattern = Pattern('search_suggestion_history.png')
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
         focus_history_menu_pattern = Pattern('focus_history_menu.png')
+        library_menu_pattern = NavBar.LIBRARY_MENU
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -62,6 +63,9 @@ class Test(BaseTest):
 
         expected = region.exists(focus_history_menu_pattern, 10)
         assert_true(self, expected, 'Focus page displayed in history menu.')
+
+        # Close the library menu.
+        click(library_menu_pattern)
 
         select_location_bar()
         paste('o')
