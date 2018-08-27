@@ -33,8 +33,6 @@ class Test(BaseTest):
         navigate(LocalWeb.BLANK_PAGE)
 
         new_tab()
-        navigate("http://127.0.0.1:2000/delete?123456")
-
         new_tab()
         new_tab()
         new_tab()
