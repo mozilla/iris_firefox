@@ -35,7 +35,7 @@ class ControlCenter(object):
 
     @staticmethod
     def do_command(request):
-        print 'do_command: %s ' % request.path
+        logger.debug('Parsing command from path: %s ' % request.path)
         if 'delete?' in request.path:
             try:
                 ControlCenter.delete(request.path.split('?')[1])
@@ -47,13 +47,10 @@ class ControlCenter(object):
 
     @staticmethod
     def delete(args):
-        """
-        Take args, construct path to run directory and delete it
-        Import libraries as needed
-        """
-        # load JSON from get_working_dir / js / all_runs.json
-        # find entry with args, delte
-        # write new JSON
+        # Load run log JSON, find entry that matches the argument and delete it.
+        # Then, write new run log file.
+        logger.debug('Received delete command with arguments: %s ' % args)
+
         run_file = os.path.join(get_working_dir(), 'js', 'all_runs.json')
         if os.path.exists(run_file):
             logger.debug('Deleting entry %s from run file: %s' % (args, run_file))
@@ -72,22 +69,19 @@ class ControlCenter(object):
         else:
             logger.error('Run file not found.')
 
-        # remove get_working_dir / runs / args
+        # Remove run directory on disk.
         target_run = os.path.join(get_working_dir(), 'runs', args)
         if os.path.exists(target_run):
             shutil.rmtree(target_run, ignore_errors=True)
         else:
             logger.error('Run directory does not exist: %s' % target_run)
 
-        print 'delete: %s ' % args
-        pass
-
     @staticmethod
     def finish(request):
         """
         Find POST body, handle JSON in body
         """
-        print 'finish: %s' % request.path
+        logger.debug('Finish command received: %s' % request.path)
         request.set_result('a new beginning')
         request.stop_server()
         return

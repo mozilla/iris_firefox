@@ -100,7 +100,7 @@ class Iris(object):
                 if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox\\firefox'):
                     fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox'
                 else:
-                    fx_path = 'C:\\Program Files\\Mozilla Firefox'
+                    fx_path = 'C:\\Program Files\\Mozilla Firefox\\firefox'
             else:
                 fx_path = '/usr/lib/firefox/firefox'
 
@@ -115,11 +115,10 @@ class Iris(object):
             # we will continue. Otherwise, abort the current run.
             if server.result is not None:
                 # Temporary - we will parse this returned value and turn it into runtime data.
-                print server.result
+                logger.info('Received data from control center: %s' % server.result)
             else:
                 # Temporary - we will quit Iris gracefully and clean up.
-                print "Nothing"
-
+                logger.info('Nothing received from control center.')
         return
 
     def initialize_run(self):
