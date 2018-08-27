@@ -5,6 +5,10 @@
 
 import json
 import logging
+import os
+import shutil
+
+from iris.api.core.util.core_helper import get_working_dir
 
 
 logger = logging.getLogger(__name__)
@@ -32,7 +36,7 @@ class ControlCenter(object):
     @staticmethod
     def do_command(request):
         print 'do_command: %s ' % request.path
-        if 'delete' in request.path:
+        if 'delete?' in request.path:
             try:
                 ControlCenter.delete(request.path.split('?')[1])
             except KeyError:
@@ -47,6 +51,34 @@ class ControlCenter(object):
         Take args, construct path to run directory and delete it
         Import libraries as needed
         """
+        # load JSON from get_working_dir / js / all_runs.json
+        # find entry with args, delte
+        # write new JSON
+        run_file = os.path.join(get_working_dir(), 'js', 'all_runs.json')
+        if os.path.exists(run_file):
+            logger.debug('Deleting entry %s from run file: %s' % (args, run_file))
+            with open(run_file, 'r') as data:
+                run_file_data = json.load(data)
+            found = False
+            for run in run_file_data['runs']:
+                if run['id'] == args:
+                    run_file_data['runs'].remove(run)
+                    found = True
+            if found:
+                with open(run_file, 'w') as data:
+                    json.dump(run_file_data, data, sort_keys=True, indent=True)
+            else:
+                logger.error('Entry for run %s not found in run log file.' % args)
+        else:
+            logger.error('Run file not found.')
+
+        # remove get_working_dir / runs / args
+        target_run = os.path.join(get_working_dir(), 'runs', args)
+        if os.path.exists(target_run):
+            shutil.rmtree(target_run, ignore_errors=True)
+        else:
+            logger.error('Run directory does not exist: %s' % target_run)
+
         print 'delete: %s ' % args
         pass
 

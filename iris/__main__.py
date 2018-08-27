@@ -86,14 +86,14 @@ class Iris(object):
 
     def control_center(self):
         if self.args.control:
-            # copy assets
+            # Copy web assets to working directory.
             dir_util.copy_tree(os.path.join(self.module_dir, 'iris', 'cc_files'), self.args.workdir)
-            # copy profile
+            # Copy profile for Firefox.
             profile_path = os.path.join(self.args.workdir, 'cc_profile')
             if not os.path.exists(profile_path):
                 Profile.get_staged_profile(Profile.LIKE_NEW, profile_path)
 
-            # open Firefox
+            # Open local installation of Firefox.
             if Settings.get_os() == Platform.MAC:
                 fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
             elif Settings.get_os() == Platform.WINDOWS:
@@ -107,13 +107,17 @@ class Iris(object):
             launch_firefox(fx_path, profile=profile_path, url=self.base_local_web_url)
             server = LocalWebServer(self.args.workdir, self.args.port)
 
-            # quit firefox
+            # Iris waits for the user to make a choice in the control center. Once they
+            # make a decision, Firefox will quit.
             quit_firefox()
-            #confirm_firefox_quit(self)
 
+            # Check the result of the user's decision. If they have chosen to run tests,
+            # we will continue. Otherwise, abort the current run.
             if server.result is not None:
+                # Temporary - we will parse this returned value and turn it into runtime data.
                 print server.result
             else:
+                # Temporary - we will quit Iris gracefully and clean up.
                 print "Nothing"
 
         return

@@ -90,6 +90,10 @@ def get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../../../..')
 
 
+def get_working_dir():
+    return parse_args().workdir
+
+
 def get_current_run_dir():
     return os.path.join(parse_args().workdir, 'runs', get_run_id())
 
@@ -102,6 +106,7 @@ def make_test_output_dir():
     test_directory = os.path.join(parent_directory, test)
     os.mkdir(test_directory)
     return test_directory
+
 
 def get_image_debug_path():
     parent, test = parse_module_path()
