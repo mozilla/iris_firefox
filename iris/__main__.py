@@ -97,12 +97,12 @@ class Iris(object):
             if Settings.get_os() == Platform.MAC:
                 fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
             elif Settings.get_os() == Platform.WINDOWS:
-                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
-                    fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox'
+                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox\\firefox'):
+                    fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox'
                 else:
                     fx_path = 'C:\\Program Files\\Mozilla Firefox'
             else:
-                fx_path = '/usr/lib/firefox'
+                fx_path = '/usr/lib/firefox/firefox'
 
             launch_firefox(fx_path, profile=profile_path, url=self.base_local_web_url)
             server = LocalWebServer(self.args.workdir, self.args.port)
