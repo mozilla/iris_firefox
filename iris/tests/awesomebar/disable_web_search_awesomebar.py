@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '108254'
         self.test_suite_id = '1902'
 
-
     def run(self):
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         google_search_results_pattern = Pattern('google_search_results.png')

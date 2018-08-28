@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '108258'
         self.test_suite_id = '1902'
 
-
     def run(self):
         default_status_pattern = Pattern('default_status.png')
         modified_status_pattern = Pattern('modified_status.png')
