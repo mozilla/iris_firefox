@@ -56,6 +56,8 @@ class Test(BaseTest):
 
         paste('mozilla')
 
+        time.sleep(Settings.UI_DELAY_LONG)
+
         drag_drop(moz_draggable_pattern, moz_bookmark, 0.5)
 
         bookmark_drag_assert = exists(dragged_bookmark_pattern, 10)
