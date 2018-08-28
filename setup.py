@@ -24,7 +24,8 @@ INSTALL_REQUIRES = [
     'packaging',
     'GitPython',
     'pynput',
-    'mozinfo'
+    'mozinfo',
+    'mozversion'
 ]
 
 TESTS_REQUIRE = [

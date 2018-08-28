@@ -26,6 +26,15 @@ def assert_equal(test_case, actual, expected, message):
         raise AssertionError
 
 
+def assert_contains(test_case, actual, expected, message):
+    try:
+        assert actual in expected
+        test_case.add_results('PASSED', message, actual, expected, None)
+    except AssertionError:
+        test_case.add_results('FAILED', message, actual, expected, print_error(format_stack(traceback.extract_stack())))
+        raise AssertionError
+
+
 def assert_true(test_case, actual, message):
     assert_equal(test_case, actual, True, message)
 
