@@ -4,14 +4,16 @@
 
 import json
 
+import mozversion
+
 from iris.api.core.environment import Env
+from iris.api.core.firefox_ui.menus import LibraryMenu
+from iris.api.core.firefox_ui.toolbars import NavBar
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import get_screen
 from iris.configuration.config_parser import *
 from keyboard_shortcuts import *
-from iris.api.core.firefox_ui.toolbars import NavBar, LocationBar
-from iris.api.core.firefox_ui.menus import LibraryMenu
 
 logger = logging.getLogger(__name__)
 
@@ -719,3 +721,37 @@ def get_pref_value(pref_name):
 
     close_tab()
     return value
+
+
+def get_support_info():
+    copy_raw_data_to_clipboard = Pattern('about_support_copy_raw_data_button.png')
+
+    new_tab()
+    select_location_bar()
+    paste('about:support')
+    type(Key.ENTER)
+    time.sleep(Settings.UI_DELAY)
+
+    try:
+        click(copy_raw_data_to_clipboard)
+        time.sleep(Settings.UI_DELAY)
+        json_text = Env.get_clipboard()
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve support information value. %s' % e.message)
+
+    close_tab()
+    return json.loads(json_text)
+
+
+def get_build_info():
+    '''This method returns the application version information as a dict with the help of mozversion module.'''
+    if Settings.get_os() == Platform.MAC:
+        build_path = os.path.join(get_working_dir(), 'cache', 'firefox-release_%s' % Settings.get_os(), 'Firefox',
+                                  'Firefox.app', 'Contents', 'MacOS', 'firefox')
+    elif Settings.get_os() == Platform.LINUX:
+        build_path = os.path.join(get_working_dir(), 'cache', 'firefox-release_%s' % Settings.get_os(), 'firefox',
+                                  'firefox')
+    elif Settings.get_os() == Platform.WINDOWS:
+        build_path = os.path.join(get_working_dir(), 'cache', 'firefox-release_%s' % Settings.get_os(), 'core')
+
+    return mozversion.get_version(binary=build_path)
