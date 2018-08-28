@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '108257'
         self.test_suite_id = '1902'
 
-
     def run(self):
         hover_duck_duck_go_one_off_button_pattern = Pattern('hover_duck_duck_go_one_off_button.png')
         duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
