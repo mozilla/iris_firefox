@@ -88,3 +88,6 @@ class Test(BaseTest):
         pasted_bookmark_folder_assertion = exists(pasted_bookmark_folder, 10)
         assert_true(self, pasted_bookmark_folder_assertion, 'Moz Bookmark Folder is present into a different directory,'
                                                             ' cut option works as expected.')
+
+        moz_bookmark_vanish_assert = wait_vanish(moz_bookmark, 10)
+        assert_true(self, moz_bookmark_vanish_assert, 'Moz bookmark folder has been successfully cut.')
