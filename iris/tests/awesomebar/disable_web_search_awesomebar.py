@@ -13,8 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case disables the web search in the awesomebar.'
         self.test_case_id = '108254'
         self.test_suite_id = '1902'
-        # Disabled test for running on MAC until issue #950 is fixed.
-        self.exclude = Platform.MAC
+
 
     def run(self):
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
