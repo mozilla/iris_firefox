@@ -423,6 +423,8 @@ def drag_drop(drag_from, drop_to, duration=None):
     if duration is None:
         duration = Settings.move_mouse_delay
 
+    # Ensure Iris has time to get correct target coordinates before initiating DnD.
+    time.sleep(Settings.UI_DELAY)
     from_location = to_location(ps=drag_from, align='center')
     _to_location = to_location(ps=drop_to, align='center')
     pyautogui.moveTo(from_location.x, from_location.y, 0)
