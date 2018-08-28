@@ -3,15 +3,10 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import importlib
-import sys
-import traceback
 
-from api.helpers.general import *
-from api.helpers.results import *
 from api.core.profile import *
-from api.core.util.core_helper import verify_test_compat
+from api.helpers.general import *
 from email_report.email_client import EmailClient
-from iris.api.core.settings import Settings
 from iris.test_rail.test_rail_client import *
 
 logger = logging.getLogger(__name__)
@@ -104,7 +99,7 @@ def run(app):
 
     end_time = time.time()
     test_results = print_report_footer(Settings.get_os(), app.version, app.build_id, passed, failed, skipped, errors,
-                        get_duration(start_time, end_time), failures=test_failures)
+                                       get_duration(start_time, end_time), failures=test_failures)
 
     if app.args.report:
         test_rail_report = TestRail()
