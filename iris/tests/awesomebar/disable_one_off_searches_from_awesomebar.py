@@ -13,8 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case disables one-off searches from the awesomebar.'
         self.test_case_id = '108258'
         self.test_suite_id = '1902'
-        # Disabled test for running on MAC until issue #950 is fixed.
-        self.exclude = Platform.MAC
+
 
     def run(self):
         default_status_pattern = Pattern('default_status.png')

@@ -22,7 +22,8 @@ INSTALL_REQUIRES = [
     'PyAutoGUI==0.9.36',
     'pyperclip==1.6.0',
     'packaging',
-    'GitPython'
+    'GitPython',
+    'pynput'
 ]
 
 TESTS_REQUIRE = [

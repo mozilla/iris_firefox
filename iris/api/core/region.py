@@ -12,6 +12,7 @@ from util.image_search import *
 from util.ocr_search import *
 from util.save_debug_image import save_debug_image
 from util.screen_highlight import ScreenHighlight
+from pynput.mouse import Button,Controller
 
 try:
     import Image
@@ -278,7 +279,12 @@ def _click_at(location=None, clicks=None, duration=None, button=None):
         hl = ScreenHighlight()
         hl.draw_circle(HighlightCircle(location.x, location.y, 15))
         hl.render()
-    pyautogui.click(clicks=clicks, interval=Settings.click_delay, button=button)
+    if clicks > 1:
+        mouse = Controller()
+        mouse.position = (location.x, location.y)
+        mouse.click(Button.left, 2)
+    else:
+        pyautogui.click(clicks=clicks, interval=Settings.click_delay, button=button)
 
     if Settings.click_delay != DEFAULT_CLICK_DELAY:
         Settings.click_delay = DEFAULT_CLICK_DELAY
