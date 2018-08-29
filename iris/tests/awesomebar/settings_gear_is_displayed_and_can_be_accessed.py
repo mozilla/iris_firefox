@@ -41,8 +41,11 @@ class Test(BaseTest):
         assert_false(self, expected,
                      'The \'Search in new tab\' and \'Set as default search engine\' options not found.')
 
-        # Click the Settings gear button to close the mnu opened.
-        click(search_settings_pattern)
+        # Click the Settings gear button to close the menu opened.
+        if Settings.get_os() == Platform.LINUX:
+            click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
+        else:
+            click(search_settings_pattern)
 
         # Click the Settings gear button to navigate to the 'about:preferences#search' page.
         click(search_settings_pattern)
