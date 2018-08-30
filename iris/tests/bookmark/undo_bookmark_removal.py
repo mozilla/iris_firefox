@@ -12,6 +12,8 @@ class Test(BaseTest):
         self.meta = 'The removal of a bookmark can be undone.'
         self.test_case_id = '4156'
         self.test_suite_id = '75'
+        self.blocked_by = '1385754'
+        self.exclude = Platform.ALL
 
     def setup(self):
         """Test case setup
