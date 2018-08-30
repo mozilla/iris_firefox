@@ -64,6 +64,8 @@ class Test(BaseTest):
         expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
         assert_true(self, expected, 'The searched string is highlighted.')
 
+        # Wait a moment for the suggests list to fully populate before stepping down through it.
+        time.sleep(Settings.UI_DELAY)
         for i in range(16):
             scroll_down()
 
