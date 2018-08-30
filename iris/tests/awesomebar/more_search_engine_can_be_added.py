@@ -149,7 +149,10 @@ class Test(BaseTest):
         assert_true(self, expected, 'The search engine added found in the \'One-Click Search Engines\' section.')
 
         # Perform a new search in the url bar and make sure that everything looks ok after all the above changes.
+        previous_tab()
+
         select_location_bar()
+        type(Key.DELETE)
         paste('moz')
 
         expected = exists(moz_search_amazon_search_engine_pattern, 10)
