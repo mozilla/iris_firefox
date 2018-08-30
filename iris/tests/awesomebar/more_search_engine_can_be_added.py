@@ -51,7 +51,7 @@ class Test(BaseTest):
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, ebay_one_off_button_pattern,
                         google_one_off_button_pattern, twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 
-        # Check that the one-off list is displayed in the awesomebar.
+        # Check that the default one-off list is displayed in the awesomebar.
         for i in range(pattern_list.__len__()):
             try:
                 if Settings.get_os() == Platform.MAC:
@@ -96,7 +96,10 @@ class Test(BaseTest):
         for i in range(4):
             type(Key.TAB)
 
-        type(Key.SPACE)
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
+            type(Key.SPACE)
+        else:
+            click(search_engine_pattern.target_offset(20, 150))
 
         expected = exists(search_engine_pattern, 10)
         assert_true(self, expected, 'One-Click Search Engines section found.')
@@ -108,11 +111,16 @@ class Test(BaseTest):
         type(Key.DELETE)
         paste('moz')
 
-        try:
-            expected = wait_vanish(google_one_off_button_pattern, 10)
-            assert_true(self, expected, 'Unchecked search engine successfully removed from the one-off searches bar.')
-        except FindError:
-            raise FindError('Unchecked search engine not removed from the one-off searches bar.')
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
+            try:
+                expected = wait_vanish(google_one_off_button_pattern, 10)
+                assert_true(self, expected, 'Unchecked search engine successfully removed from the one-off searches'
+                                            ' bar.')
+            except FindError:
+                raise FindError('Unchecked search engine not removed from the one-off searches bar.')
+        else:
+            expected = exists(google_one_off_button_pattern.similar(0.9), 10)
+            assert_false(self, expected, 'Unchecked search engine successfully removed from the one-off searches bar.')
 
         # Add a new search engine.
         next_tab()
@@ -161,5 +169,9 @@ class Test(BaseTest):
         expected = exists(startpage_one_off_button_pattern, 10)
         assert_true(self, expected, 'Newly added search engine successfully found in the one-off searches bar.')
 
-        expected = exists(google_one_off_button_pattern, 10)
-        assert_false(self, expected, 'Unchecked search engine is still removed from the one-off searches bar.')
+        if Settings.get_os() == Platform.MAC:
+            expected = exists(google_one_off_button_pattern.similar(0.9), 10)
+            assert_false(self, expected, 'Unchecked search engine is still removed from the one-off searches bar.')
+        else:
+            expected = exists(google_one_off_button_pattern, 10)
+            assert_false(self, expected, 'Unchecked search engine is still removed from the one-off searches bar.')
