@@ -7,10 +7,10 @@ import inspect
 import logging
 import multiprocessing
 import os
-import platform
 
 import pyautogui
 
+from iris.api.core.platform import Platform
 from parse_args import parse_args
 from version_parser import check_version
 
@@ -47,13 +47,12 @@ MIN_CPU_FOR_MULTIPROCESSING = 4
 
 def get_os():
     """Get the type of the operating system your script is running on."""
-    current_system = platform.system()
-    current_os = ''
-    if current_system == 'Windows':
+    current_system = Platform.OS_NAME
+    if current_system == 'win':
         current_os = 'win'
-    elif current_system == 'Linux':
+    elif current_system == 'linux':
         current_os = 'linux'
-    elif current_system == 'Darwin':
+    elif current_system == 'mac':
         current_os = 'osx'
     else:
         logger.error('Iris does not yet support your current environment: ' + current_system)
@@ -63,7 +62,11 @@ def get_os():
 
 def get_os_version():
     """Get the version string of the operating system your script is running on."""
-    return platform.release()
+    return Platform.OS_VERSION
+
+def get_platform():
+    """Get the version string of the operating system your script is running on."""
+    return Platform.PROCESSOR
 
 
 def get_current_module():
@@ -125,10 +128,6 @@ def get_run_id():
 
 def get_images_path():
     return os.path.join('images', get_os())
-
-
-def get_platform():
-    return platform.machine()
 
 
 def is_multiprocessing_enabled():
