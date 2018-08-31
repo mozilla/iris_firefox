@@ -22,6 +22,7 @@ class SidebarBookmarks(object):
     BOOKMARKS_MENU = Pattern('sidebar_bookmarks_menu.png')
     BOOKMARKS_MENU_SELECTED = Pattern('sidebar_bookmarks_menu_selected.png')
     OTHER_BOOKMARKS = Pattern('sidebar_other_bookmarks.png')
+    BOOKMARKS_TOOLBAR_MENU = Pattern('bookmarks_toolbar_menu.png')
 
     class BookmarksToolbar(object):
         MOST_VISITED = Pattern('bookmarks_toolbar_most_visited.png')
