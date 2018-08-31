@@ -15,7 +15,6 @@ class Test(BaseTest):
         self.test_suite_id = '1902'
 
     def run(self):
-        url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         page_bookmarked_pattern = Pattern('page_bookmarked.png')
         settings_gear_highlighted = Pattern('settings_gear_highlighted.png')
