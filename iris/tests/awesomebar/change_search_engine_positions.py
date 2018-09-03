@@ -83,10 +83,8 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             type(Key.SPACE)
 
-            expected = exists(search_engine_pattern, 10)
-            assert_true(self, expected, 'One-Click Search Engines section found.')
-
-        # click(search_engine_pattern)
+        expected = exists(search_engine_pattern, 10)
+        assert_true(self, expected, 'One-Click Search Engines section found.')
 
         drag_drop(duckduckgo_search_engine_pattern, google_search_engine_pattern, 0.5)
 
