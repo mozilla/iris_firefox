@@ -79,10 +79,14 @@ class Test(BaseTest):
 
         for i in range(4):
             type(Key.TAB)
-        type(Key.SPACE)
 
-        expected = exists(search_engine_pattern, 10)
-        assert_true(self, expected, 'One-Click Search Engines section found.')
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
+            type(Key.SPACE)
+
+            expected = exists(search_engine_pattern, 10)
+            assert_true(self, expected, 'One-Click Search Engines section found.')
+
+        # click(search_engine_pattern)
 
         drag_drop(duckduckgo_search_engine_pattern, google_search_engine_pattern, 0.5)
 
@@ -96,7 +100,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        while region.exists(moz_pattern, 10):
+        while not exists(search_with_Google_one_off_string_pattern, 0.8):
             scroll_down()
             if region.exists(search_with_Google_one_off_string_pattern, 0.2):
                 break
