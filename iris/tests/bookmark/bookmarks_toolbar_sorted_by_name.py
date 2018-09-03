@@ -27,7 +27,7 @@ class Test(BaseTest):
         drag_area_pattern = Pattern('drag_area.png')
         dragged_bookmark_pattern = Pattern('moz_toolbar_dragged_bookmark.png')
         firefox_bookmark = Pattern('firefox_bookmark.png')
-        pocket_bookmark = Pattern('pocket_bookmark.png')
+        pocket_bookmark = Pattern('pocket_sidebar_bookmark.png')
         firefox_toolbar_bookmark = Pattern('firefox_toolbar_bookmark.png')
         pocket_toolbar_bookmark = Pattern('pocket_toolbar_bookmark.png')
         sort_by_name = Pattern('sort_by_name_option.png')
