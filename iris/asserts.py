@@ -18,10 +18,6 @@ class Result(object):
 
 
 def assert_equal(test_case, actual, expected, message):
-    """
-
-    :rtype:
-    """
     try:
         assert actual == expected
         test_case.add_results('PASSED', message, actual, expected, None)
