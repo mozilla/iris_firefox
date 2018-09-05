@@ -240,6 +240,7 @@ class Iris(object):
         meta['fx_version'] = self.version
         meta['fx_build_id'] = self.build_id
         meta['platform'] = self.os
+        meta['config'] = '%s, %s-bit, %s' % (Platform.OS_VERSION, Platform.OS_BITS, Platform.PROCESSOR)
         meta['channel'] = self.fx_channel
         meta['locale'] = self.fx_locale
         meta['args'] = ' '.join(sys.argv)
