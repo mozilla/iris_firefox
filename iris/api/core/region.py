@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+from key import *
 from errors import FindError
 from key import type
 from settings import DEFAULT_CLICK_DELAY
@@ -150,6 +150,24 @@ class Region(object):
     def right_click(self, where, duration):
         return right_click(where, duration, self)
 
+    def key_up(self, key):
+        return key_up(key)
+
+    def key_down(self, key):
+        return key_down(key)
+
+    def paste(self, text):
+        return paste(text)
+
+    def mouse_move(self, where=None, duration=None):
+        return mouse_move(where, duration, self)
+
+    def mouse_press(self, where, button=None):
+        return mouse_press(where, button, self)
+
+    def mouse_release(self, where, button=None):
+        return mouse_release(where, button, self)
+
 
 def highlight(region=None, seconds=None, color=None, pattern=None, location=None):
 
@@ -256,6 +274,78 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
         found_region.width += padding_right
 
     return found_region
+
+def mouse_move(where=None, duration=None, in_region=None):
+    """Mouse move
+
+    :param where: Location , image name or Pattern
+    :param duration: speed of hovering from current location to target
+    :param in_region: Region object in order to minimize the area
+    :return: None
+    """
+
+    if duration is None:
+        duration = Settings.move_mouse_delay
+
+    _general_click(where, 0, duration, in_region, 'left')
+
+def mouse_press(where=None, button=None, in_region=None):
+    return _mouse_press_release(where, 'press', button, in_region)
+
+
+def mouse_release(where=None, button=None, in_region=None):
+    return _mouse_press_release(where, 'release', button, in_region)
+
+
+def _mouse_press_release(where=None, action=None, button=None, in_region=None):
+    """Mouse press/release
+
+        :param where: Location , image name or Pattern
+        :param action 'press' or 'release'
+        :param button 'left','right' or 'middle'
+        :param in_region: Region object in order to minimize the area
+        :return: None
+        """
+
+    if isinstance(where, Pattern):
+
+        needle = cv2.imread(where.get_file_path())
+        height, width, channels = needle.shape
+
+        p_top = positive_image_search(pattern=where, region=in_region)
+
+        if p_top is None:
+            raise FindError('Unable to click on: %s' % where.get_file_path())
+
+        possible_offset = where.get_target_offset()
+
+        if possible_offset is not None:
+            location = Location(p_top.x + possible_offset.x, p_top.y + possible_offset.y)
+            pyautogui.moveTo(location.x, location.y)
+            if action == 'press':
+                pyautogui.mouseDown(location.x,location.y,button)
+
+            elif action == 'release':
+                pyautogui.mouseUp(location.x, location.y,button)
+
+        else:
+            location = Location(p_top.x + width / 2, p_top.y + height / 2)
+            pyautogui.moveTo(location.x, location.y)
+            if action == 'press':
+                pyautogui.mouseDown(location.x, location.y,button)
+            elif action == 'release':
+                pyautogui.mouseUp(location.x, location.y,button)
+
+    elif isinstance(where, str):
+        mouse = Controller()
+        a_match = text_search_by(where, True, in_region)
+        if a_match is not None:
+            location = Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
+            mouse.move(location.x, location.y)
+            if action == 'press':
+                mouse.press(button)
+            elif mouse == 'release':
+                mouse.release(button)
 
 
 def _click_at(location=None, clicks=None, duration=None, button=None):
