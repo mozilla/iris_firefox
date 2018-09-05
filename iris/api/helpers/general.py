@@ -688,7 +688,7 @@ def get_firefox_channel():
 
 def get_firefox_locale():
     value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
-    logger.info(value_str)
+    logger.debug(value_str)
     try:
         temp = json.loads(value_str)
         value = str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
