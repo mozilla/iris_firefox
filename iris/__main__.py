@@ -334,7 +334,7 @@ class Iris(object):
         arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
         arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
                              'default': 'INFO'}
-        arg_data['locale'] = {'type': 'str', 'value': ['en-us'], 'default': 'en-us'}
+        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us'}
         arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5'}
         arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
         arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000'}
