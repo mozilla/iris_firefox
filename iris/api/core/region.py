@@ -2,10 +2,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from key import key_up,key_down,paste
-from mouse import *
 from errors import FindError
+from key import key_up, key_down, paste
 from key import type
+from mouse import click, double_click, right_click, drag_drop, mouse_move, mouse_press, mouse_release
 from util.color import Color
 from util.highlight_rectangle import HighlightRectangle
 from util.image_search import *
@@ -172,7 +172,6 @@ class Region(object):
 
 
 def highlight(region=None, seconds=None, color=None, pattern=None, location=None):
-
     if color is None:
         color = Settings.highlight_color
 
@@ -276,6 +275,7 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
         found_region.width += padding_right
 
     return found_region
+
 
 def text(with_image_processing=True, in_region=None, debug=False):
     """Get all text from a Region or full screen
