@@ -240,6 +240,7 @@ class Iris(object):
         meta['fx_version'] = self.version
         meta['fx_build_id'] = self.build_id
         meta['platform'] = self.os
+        meta['config'] = '%s, %s-bit, %s' % (Platform.OS_VERSION, Platform.OS_BITS, Platform.PROCESSOR)
         meta['channel'] = self.fx_channel
         meta['locale'] = self.fx_locale
         meta['args'] = ' '.join(sys.argv)
@@ -334,7 +335,7 @@ class Iris(object):
         arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
         arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
                              'default': 'INFO'}
-        arg_data['locale'] = {'type': 'str', 'value': ['en-us'], 'default': 'en-us'}
+        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us'}
         arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5'}
         arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
         arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000'}
