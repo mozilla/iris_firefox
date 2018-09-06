@@ -135,7 +135,7 @@ class FirefoxDownloader(object):
 
         extension = self.__platforms[platform]['extension']
         url = self.get_download_url(release, platform) + '&lang=' + locale
-        cache_id = 'firefox-%s_%s.%s' % (release, platform, extension)
+        cache_id = 'firefox-%s_%s_%s.%s' % (release, locale, platform, extension)
 
         # Always delete cached file when cache function is overridden
         if cache_id in self.__cache and not use_cache:
