@@ -746,12 +746,16 @@ def get_support_info():
 def get_build_info():
     '''This method returns the application version information as a dict with the help of mozversion module.'''
     if Settings.get_os() == Platform.MAC:
-        build_path = os.path.join(get_working_dir(), 'cache', 'firefox-release_%s' % Settings.get_os(), 'Firefox',
+        build_path = os.path.join(get_working_dir(), 'cache',
+                                  'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()),
+                                  'Firefox',
                                   'Firefox.app', 'Contents', 'MacOS', 'firefox')
     elif Settings.get_os() == Platform.LINUX:
-        build_path = os.path.join(get_working_dir(), 'cache', 'firefox-release_%s' % Settings.get_os(), 'firefox',
+        build_path = os.path.join(get_working_dir(), 'cache',
+                                  'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()), 'firefox',
                                   'firefox')
     elif Settings.get_os() == Platform.WINDOWS:
-        build_path = os.path.join(get_working_dir(), 'cache', 'firefox-release_%s' % Settings.get_os(), 'core')
+        build_path = os.path.join(get_working_dir(), 'cache',
+                                  'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()), 'core', 'firefox')
 
     return mozversion.get_version(binary=build_path)

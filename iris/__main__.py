@@ -29,7 +29,7 @@ from api.core.settings import Settings
 from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir, filter_list
 from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
-from api.helpers.general import launch_firefox, quit_firefox, confirm_firefox_quit
+from api.helpers.general import launch_firefox, quit_firefox
 from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
@@ -223,7 +223,6 @@ class Iris(object):
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 
-
     def get_git_details(self):
         repo_details = {}
         repo = git.Repo(self.module_dir)
@@ -368,10 +367,10 @@ class Iris(object):
         if len(failures):
             last_fail = open(path, 'w')
             for item in failures:
-                    for package in self.master_test_list:
-                        for test in self.master_test_list[package]:
-                            if test["name"] in item:
-                                last_fail.write(test["module"] + '\n')
+                for package in self.master_test_list:
+                    for test in self.master_test_list[package]:
+                        if test["name"] in item:
+                            last_fail.write(test["module"] + '\n')
             last_fail.close()
 
     def finish(self, code=0):
@@ -521,7 +520,8 @@ class Iris(object):
             # a local Firefox package as produced by `mach build`, or a local build tree.
             if build in fd.FirefoxDownloader.build_urls:
                 # Download test candidate by Firefox release ID
-                logger.info('Downloading Firefox "%s" build for platform "%s"' % (build, platform))
+                logger.info(
+                    'Downloading Firefox "%s_%s" build for platform "%s"' % (build, self.args.locale, platform))
                 fdl = fd.FirefoxDownloader(self.args.workdir, cache_timeout=1 * 60 * 60)
                 build_archive_file = fdl.download(build, self.args.locale, platform)
                 if build_archive_file is None:
