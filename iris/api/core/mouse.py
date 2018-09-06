@@ -4,20 +4,19 @@
 import time
 
 import cv2
-
 import pyautogui
+from pynput.mouse import Controller, Button
 
-from errors import *
+from errors import FindError
+from location import Location
 from pattern import Pattern
-from settings import *
+from settings import Settings, DEFAULT_CLICK_DELAY
 from util.core_helper import INVALID_GENERIC_INPUT
 from util.highlight_circle import HighlightCircle
 from util.image_search import positive_image_search, image_search, get_image_size
 from util.ocr_search import text_search_by
 from util.parse_args import parse_args
 from util.screen_highlight import ScreenHighlight
-from location import Location
-from pynput.mouse import *
 
 
 class Mouse(object):
