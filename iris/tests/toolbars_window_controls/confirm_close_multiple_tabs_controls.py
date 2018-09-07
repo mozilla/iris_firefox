@@ -12,6 +12,10 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of the \'Confirm close multiple tabs\' window controls'
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref('browser.tabs.warnOnClose;true')
+
     def run(self):
         close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
         cancel_multiple_tabs_warning_pattern = Pattern('cancel_multiple_tabs_warning.png')
