@@ -7,7 +7,9 @@ import inspect
 import logging
 import multiprocessing
 import os
+import subprocess
 
+import git
 import pyautogui
 
 from iris.api.core.platform import Platform
@@ -63,6 +65,7 @@ def get_os():
 def get_os_version():
     """Get the version string of the operating system your script is running on."""
     return Platform.OS_VERSION
+
 
 def get_platform():
     """Get the version string of the operating system your script is running on."""
@@ -214,3 +217,32 @@ def filter_list(original_list, exclude_list):
         if item not in exclude_list:
             new_list.append(item)
     return new_list
+
+
+def get_git_details():
+    repo_details = {}
+    repo = git.Repo()
+    repo_details['iris_version'] = 0.1
+    repo_details['iris_repo'] = repo.working_tree_dir
+    repo_details['iris_branch'] = repo.active_branch.name
+    repo_details['iris_branch_head'] = repo.head.object.hexsha
+    return repo_details
+
+
+def shutdown_process(process_name):
+    if get_os() == Platform.WINDOWS:
+        command_str = 'taskkill /IM ' + process_name + '.exe'
+        try:
+
+            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            logger.error('Command  failed: "%s"' % command_str)
+            raise Exception('Unable to run Command')
+    elif get_os() == Platform.MAC or get_os() == Platform.LINUX:
+        command_str = 'pkill ' + process_name
+        try:
+            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            logger.error('Command  failed: "%s"' % command_str)
+            raise Exception('Unable to run Command')
+

@@ -107,7 +107,7 @@ def run(app):
 
     if app.args.email:
         email_report = EmailClient()
-        email_report.send_email_report(app.version, test_results, app.get_git_details())
+        email_report.send_email_report(app.version, test_results, get_git_details())
 
     app.write_test_failures(test_failures)
     append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests=test_log)
