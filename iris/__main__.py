@@ -328,19 +328,18 @@ class Iris(object):
 
     def create_arg_json(self):
         arg_data = {}
-        arg_data['email'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+        arg_data['email'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'}
         arg_data['firefox'] = {'type': 'str', 'value': ['local', 'release', 'esr', 'beta', 'nightly'],
-                               'default': 'release'}
-        arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+                               'default': 'release', 'label': ''}
+        arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Debug using highlighting'}
         arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
-                             'default': 'INFO'}
-        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us'}
-        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5'}
-        arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
-        arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000'}
-        arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
-        arg_data['rerun'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
-        arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false'}
+                             'default': 'INFO', 'label': ''}
+        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us', 'label': ''}
+        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5', 'label': ''}
+        arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Run disabled tests'}
+        arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000', 'label': ''}
+        arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Create TestRail report'}
+        arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Save profiles to disk'}
 
         arg_log_file = os.path.join(self.args.workdir, 'js', 'all_args.json')
         with open(arg_log_file, 'w') as f:
