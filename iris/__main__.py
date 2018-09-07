@@ -225,14 +225,7 @@ class Iris(object):
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 
-    def get_git_details(self):
-        repo_details = {}
-        repo = git.Repo(self.module_dir)
-        repo_details['iris_version'] = 0.1
-        repo_details['iris_repo'] = repo.working_tree_dir
-        repo_details['iris_branch'] = repo.active_branch.name
-        repo_details['iris_branch_head'] = repo.head.object.hexsha
-        return repo_details
+
 
     def update_run_log(self, new_data=None):
         # Prepare the current entry.
