@@ -51,7 +51,7 @@ class ControlCenter(object):
         # Then, write new run log file.
         logger.debug('Received delete command with arguments: %s ' % args)
 
-        run_file = os.path.join(get_working_dir(), 'js', 'all_runs.json')
+        run_file = os.path.join(get_working_dir(), 'data', 'all_runs.json')
         if os.path.exists(run_file):
             logger.debug('Deleting entry %s from run file: %s' % (args, run_file))
             with open(run_file, 'r') as data:

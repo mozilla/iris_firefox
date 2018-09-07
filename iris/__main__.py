@@ -90,8 +90,9 @@ class Iris(object):
             dir_util.copy_tree(os.path.join(self.module_dir, 'iris', 'cc_files'), self.args.workdir)
             # Copy profile for Firefox.
             profile_path = os.path.join(self.args.workdir, 'cc_profile')
-            if not os.path.exists(profile_path):
-                Profile.get_staged_profile(Profile.LIKE_NEW, profile_path)
+            if os.path.exists(profile_path):
+                shutil.rmtree(profile_path)
+            Profile.get_staged_profile(Profile.LIKE_NEW, profile_path)
 
             # Open local installation of Firefox.
             if Settings.get_os() == Platform.MAC:
@@ -161,8 +162,8 @@ class Iris(object):
         if not os.path.exists(self.args.workdir):
             logger.debug('Creating working directory %s' % self.args.workdir)
             os.makedirs(self.args.workdir)
-        if not os.path.exists(os.path.join(self.args.workdir, 'js')):
-            os.makedirs(os.path.join(self.args.workdir, 'js'))
+        if not os.path.exists(os.path.join(self.args.workdir, 'data')):
+            os.makedirs(os.path.join(self.args.workdir, 'data'))
 
     def create_run_directory(self):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
@@ -201,11 +202,12 @@ class Iris(object):
 
         # Temporary code to deal with legacy runs.json file.
         # It will be removed before launch.
-        old_run_file = os.path.join(parse_args().workdir, 'js', 'runs.json')
-        if os.path.exists(old_run_file):
-            os.remove(old_run_file)
+        old_js_folder = os.path.join(parse_args().workdir, 'js')
+        if os.path.exists(old_js_folder):
+            shutil.rmtree(old_js_folder, ignore_errors=True)
+            os.remove(old_js_folder)
 
-        run_file = os.path.join(parse_args().workdir, 'js', 'all_runs.json')
+        run_file = os.path.join(parse_args().workdir, 'data', 'all_runs.json')
 
         if os.path.exists(run_file):
             logger.debug('Updating run file: %s' % run_file)
@@ -322,7 +324,7 @@ class Iris(object):
                 print e.args
                 logger.warning('[%s] is not a test file. Skipping...', module)
 
-        test_log_file = os.path.join(self.args.workdir, 'js', 'all_tests.json')
+        test_log_file = os.path.join(self.args.workdir, 'data', 'all_tests.json')
         with open(test_log_file, 'w') as f:
             json.dump(self.master_test_list, f, sort_keys=True, indent=True)
 
@@ -341,7 +343,7 @@ class Iris(object):
         arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Create TestRail report'}
         arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Save profiles to disk'}
 
-        arg_log_file = os.path.join(self.args.workdir, 'js', 'all_args.json')
+        arg_log_file = os.path.join(self.args.workdir, 'data', 'all_args.json')
         with open(arg_log_file, 'w') as f:
             json.dump(arg_data, f, sort_keys=True, indent=True)
 
