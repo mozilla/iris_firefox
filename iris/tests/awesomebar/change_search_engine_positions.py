@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.test_suite_id = '1902'
 
     def run(self):
-        moz_pattern = Pattern('moz.png')
         search_engine_pattern = Pattern('search_engine.png')
         search_settings_pattern = Pattern('search_settings.png')
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
@@ -29,9 +28,9 @@ class Test(BaseTest):
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
         google_search_engine_pattern = Pattern('google_search_engine.png')
         duckduckgo_search_engine_pattern = Pattern('duckduckgo_search_engine.png')
-        search_with_Google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
-        search_with_DuckDuckGo_one_off_string_pattern = Pattern('search_with_DuckDuckGo_one_off_string.png')
-        search_with_Bing_one_off_string_pattern = Pattern('search_with_Bing_one_off_string.png')
+        search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
+        search_with_duckduckgo_one_off_string_pattern = Pattern('search_with_DuckDuckGo_one_off_string.png')
+        search_with_bing_one_off_string_pattern = Pattern('search_with_Bing_one_off_string.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -60,13 +59,13 @@ class Test(BaseTest):
         for i in range(10):
             type(Key.DOWN)
 
-        expected = region.exists(search_with_Google_one_off_string_pattern, 10)
+        expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert_true(self, expected, 'The \'Google\' one-off search engine holds the first position in the one-offs '
                                     'list by default.')
 
         type(Key.DOWN)
 
-        expected = region.exists(search_with_Bing_one_off_string_pattern, 10)
+        expected = region.exists(search_with_bing_one_off_string_pattern, 10)
         assert_true(self, expected, 'The \'Bing\' one-off search engine holds the second position in the one-offs '
                                     'list by default.')
 
@@ -98,17 +97,17 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        while not exists(search_with_Google_one_off_string_pattern, 0.8):
+        while not exists(search_with_google_one_off_string_pattern, 0.8):
             scroll_down()
-            if region.exists(search_with_Google_one_off_string_pattern, 0.2):
+            if region.exists(search_with_google_one_off_string_pattern, 0.2):
                 break
 
-        expected = region.exists(search_with_Google_one_off_string_pattern, 10)
+        expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert_true(self, expected, 'The \'Google\' one-off search engine still holds the first position in the '
                                     'one-offs list after reorder.')
 
         scroll_down()
 
-        expected = region.exists(search_with_DuckDuckGo_one_off_string_pattern, 10)
+        expected = region.exists(search_with_duckduckgo_one_off_string_pattern, 10)
         assert_true(self, expected, 'The \'DuckDuckGo\' one-off search engine holds the the second position in the'
                                     ' one-offs list after reorder.')
