@@ -13,7 +13,7 @@ import pyperclip
 from errors import FindError
 from platform import Platform
 from settings import Settings, DEFAULT_TYPE_DELAY
-from util.core_helper import INVALID_GENERIC_INPUT
+from util.core_helper import INVALID_GENERIC_INPUT, shutdown_process
 
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
 
@@ -246,24 +246,6 @@ class KeyModifier(object):
             if item.value & value:
                 active_modifiers.append(item.label)
         return active_modifiers
-
-
-def shutdown_process(process_name):
-    if Settings.get_os() == Platform.WINDOWS:
-        command_str = 'taskkill /IM ' + process_name + '.exe'
-        try:
-
-            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            logger.error('Command  failed: "%s"' % command_str)
-            raise Exception('Unable to run Command')
-    elif Settings.get_os() == Platform.MAC or Settings.get_os() == Platform.LINUX:
-        command_str = 'pkill ' + process_name
-        try:
-            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            logger.error('Command  failed: "%s"' % command_str)
-            raise Exception('Unable to run Command')
 
 
 def key_down(key):
