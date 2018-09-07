@@ -109,5 +109,5 @@ class Test(BaseTest):
         scroll_down()
 
         expected = region.exists(search_with_duckduckgo_one_off_string_pattern, 10)
-        assert_true(self, expected, 'The \'DuckDuckGo\' one-off search engine holds the the second position in the'
+        assert_true(self, expected, 'The \'DuckDuckGo\' one-off search engine holds the second position in the'
                                     ' one-offs list after reorder.')
