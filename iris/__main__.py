@@ -205,7 +205,6 @@ class Iris(object):
         old_js_folder = os.path.join(parse_args().workdir, 'js')
         if os.path.exists(old_js_folder):
             shutil.rmtree(old_js_folder, ignore_errors=True)
-            os.remove(old_js_folder)
 
         run_file = os.path.join(parse_args().workdir, 'data', 'all_runs.json')
 
