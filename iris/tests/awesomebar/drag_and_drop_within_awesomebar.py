@@ -51,4 +51,4 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Selected text could not be dragged and dropped, aborting.')
 
-        assert_true(self, exists(google_text_search, 10), 'Google search successfully done.')
+        assert_true(self, exists(google_text_search.similar(0.6), 10), 'Google search successfully done.')
