@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Check that the \'Clear Recent History\' window is displayed properly.'
+        self.test_case_id = '172043'
+        self.test_suite_id = '2000'
 
     def setup(self):
         """Test case setup

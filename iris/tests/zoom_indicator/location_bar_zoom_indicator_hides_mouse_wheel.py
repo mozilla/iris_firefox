@@ -12,6 +12,8 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This test case checks that zoom indicator hides in the location bar; zoom is performed using the' \
                     ' mouse wheel.'
+        self.test_case_id = '7452'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
