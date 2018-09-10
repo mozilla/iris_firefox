@@ -26,7 +26,7 @@ from api.core.key import Key, shutdown_process
 from api.core.platform import Platform
 from api.core.profile import Profile
 from api.core.settings import Settings
-from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir, filter_list
+from api.core.util.core_helper import create_profile_cache, get_module_dir, get_platform, get_run_id, get_current_run_dir, filter_list
 from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
 from api.helpers.general import launch_firefox, quit_firefox
@@ -77,7 +77,7 @@ class Iris(object):
         self.create_working_directory()
         self.create_run_directory()
         initialize_logger(LOG_FILENAME, self.args.level)
-        self.clear_profile_cache()
+        create_profile_cache()
         self.process_list = []
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
@@ -132,9 +132,6 @@ class Iris(object):
         self.total_tests = len(self.test_list)
 
     def get_firefox(self):
-        global tmp_dir
-        tmp_dir = self.__create_tempdir()
-
         if self.args.firefox == 'local':
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
@@ -175,10 +172,17 @@ class Iris(object):
         run_directory = os.path.join(master_run_directory, get_run_id())
         os.mkdir(run_directory)
 
-    def clear_profile_cache(self):
-        profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
-        if os.path.exists(profile_temp):
-            shutil.rmtree(profile_temp, ignore_errors=True)
+    def create_profile_cache(self):
+        global tmp_dir
+        tmp_dir = self.create_tempdir()
+        #profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
+        #if os.path.exists(profile_temp):
+        #    shutil.rmtree(profile_temp, ignore_errors=True)
+
+    @staticmethod
+    def get_tempdir():
+        global tmp_dir
+        return tmp_dir
 
     def update_run_index(self, new_data=None):
         # Prepare the current entry.
@@ -436,7 +440,7 @@ class Iris(object):
             self.finish(code=1)
 
     @staticmethod
-    def __create_tempdir():
+    def create_tempdir():
         """Helper function for creating the temporary directory.
 
         Writes to the global variable tmp_dir
@@ -445,6 +449,11 @@ class Iris(object):
         """
         temp_dir = tempfile.mkdtemp(prefix='iris_')
         logger.debug('Created temp dir "%s"' % temp_dir)
+        return temp_dir
+
+    @staticmethod
+    def get_tempdir():
+        global temp_dir
         return temp_dir
 
     @staticmethod

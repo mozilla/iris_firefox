@@ -8,6 +8,7 @@ import logging
 import multiprocessing
 import os
 import subprocess
+import tempfile
 
 import git
 import pyautogui
@@ -45,6 +46,8 @@ INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
 MIN_CPU_FOR_MULTIPROCESSING = 4
+
+tmp_dir = None
 
 
 def get_os():
@@ -118,6 +121,28 @@ def get_image_debug_path():
     parent, test = parse_module_path()
     path = os.path.join(parse_args().workdir, 'runs', get_run_id(), parent, test, 'debug_images')
     return path
+
+
+def __create_tempdir():
+    """Helper function for creating the temporary directory.
+    Writes to the global variable tmp_dir
+    :return:
+         Path of temporary directory.
+    """
+    global tmp_dir
+    tmp_dir = tempfile.mkdtemp(prefix='iris_')
+    logger.debug('Created temp dir "%s"' % tmp_dir)
+    return tmp_dir
+
+
+def create_profile_cache():
+    global tmp_dir
+    tmp_dir = __create_tempdir()
+
+
+def get_tempdir():
+    global tmp_dir
+    return tmp_dir
 
 
 def is_image_save_enabled():
