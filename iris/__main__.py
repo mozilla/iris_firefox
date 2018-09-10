@@ -26,7 +26,7 @@ from api.core.key import Key, shutdown_process
 from api.core.platform import Platform
 from api.core.profile import Profile
 from api.core.settings import Settings
-from api.core.util.core_helper import create_profile_cache, get_module_dir, get_platform, get_run_id, get_current_run_dir, filter_list
+from api.core.util.core_helper import *
 from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
 from api.helpers.general import launch_firefox, quit_firefox
@@ -34,7 +34,6 @@ from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
 
-tmp_dir = None
 restore_terminal_encoding = None
 LOG_FILENAME = 'iris_log.log'
 LOG_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
@@ -172,18 +171,6 @@ class Iris(object):
         run_directory = os.path.join(master_run_directory, get_run_id())
         os.mkdir(run_directory)
 
-    def create_profile_cache(self):
-        global tmp_dir
-        tmp_dir = self.create_tempdir()
-        #profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
-        #if os.path.exists(profile_temp):
-        #    shutil.rmtree(profile_temp, ignore_errors=True)
-
-    @staticmethod
-    def get_tempdir():
-        global tmp_dir
-        return tmp_dir
-
     def update_run_index(self, new_data=None):
         # Prepare the current entry.
         current_run = {}
@@ -227,8 +214,6 @@ class Iris(object):
 
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
-
-
 
     def update_run_log(self, new_data=None):
         # Prepare the current entry.
@@ -440,23 +425,6 @@ class Iris(object):
             self.finish(code=1)
 
     @staticmethod
-    def create_tempdir():
-        """Helper function for creating the temporary directory.
-
-        Writes to the global variable tmp_dir
-        :return:
-             Path of temporary directory.
-        """
-        temp_dir = tempfile.mkdtemp(prefix='iris_')
-        logger.debug('Created temp dir "%s"' % temp_dir)
-        return temp_dir
-
-    @staticmethod
-    def get_tempdir():
-        global temp_dir
-        return temp_dir
-
-    @staticmethod
     def get_terminal_encoding():
         """Helper function to get current terminal encoding."""
         if sys.platform.startswith(Platform.WINDOWS):
@@ -621,7 +589,7 @@ class RemoveTempDir(cleanup.CleanUp):
 
     @staticmethod
     def at_exit():
-        global tmp_dir
+        tmp_dir = get_tempdir()
         if tmp_dir is not None:
             logger.debug('Removing temp dir "%s"' % tmp_dir)
             shutil.rmtree(tmp_dir, ignore_errors=True)
