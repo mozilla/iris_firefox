@@ -54,6 +54,8 @@ def main():
 
 class Iris(object):
 
+    process_list = None
+
     def __init__(self):
         cleanup.init()
         Iris.fix_terminal_encoding()
@@ -77,7 +79,7 @@ class Iris(object):
         self.create_run_directory()
         initialize_logger(LOG_FILENAME, self.args.level)
         create_profile_cache()
-        self.process_list = []
+        Iris.process_list = []
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.create_test_json()
@@ -603,6 +605,23 @@ class ResetTerminalEncoding(cleanup.CleanUp):
         global restore_terminal_encoding
         if restore_terminal_encoding is not None:
             Iris.set_terminal_encoding(restore_terminal_encoding)
+
+
+class TerminateSubprocesses(cleanup.CleanUp):
+    """Class for terminiting subprocesses, such as local web server instances."""
+    @staticmethod
+    def at_exit():
+        if hasattr(Iris, 'process_list'):
+            logger.debug('There are %s queued process(es) to terminate.' % len(Iris.process_list))
+            for process in Iris.process_list:
+                logger.debug('Terminating process.')
+                process.terminate()
+                process.join()
+        if Settings.is_mac():
+            # Extra call to shutdown the program we use to check keyboard lock,
+            # in case Iris was terminated abruptly.
+            shutdown_process('Xquartz')
+        sys.exit(0)
 
 
 def initialize_logger_level(level):
