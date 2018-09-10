@@ -81,9 +81,10 @@ class _IrisProfile(object):
             profile_path = os.path.join(test_directory, 'profile')
             os.mkdir(profile_path)
         else:
-            profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
-            if not os.path.exists(profile_temp):
-                os.makedirs(profile_temp)
+            #profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
+            profile_temp = get_tempdir()
+            #if not os.path.exists(profile_temp):
+            #    os.makedirs(profile_temp)
             parent, test = parse_module_path()
             profile_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
             os.mkdir(profile_path)
