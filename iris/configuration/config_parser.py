@@ -5,7 +5,7 @@ from iris.api.core.errors import *
 
 logger = logging.getLogger(__name__)
 
-config_file = 'config.ini'
+config_file = '../config.ini'
 config = ConfigParser()
 
 
