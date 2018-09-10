@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Clear all the History.'
+        self.test_case_id = '172045'
+        self.test_suite_id = '2000'
 
     def run(self):
         clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')

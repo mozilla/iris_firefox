@@ -12,6 +12,8 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks the zoom indicator in a private window when applying the Firefox' \
                     ' Menu Zoom Controls.'
+        self.test_case_id = '7463'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

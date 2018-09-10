@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of the sorting options from the sidebar - By Most Visited.'
+        self.test_case_id = '119447'
+        self.test_suite_id = '2000'
 
     def setup(self):
         """Test case setup

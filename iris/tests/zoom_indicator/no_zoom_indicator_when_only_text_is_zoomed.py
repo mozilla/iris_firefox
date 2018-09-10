@@ -12,6 +12,8 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This test case checks that no zoom indicator is displayed in the url bar when the \'zoom text ' \
                     'only\' option is selected.'
+        self.test_case_id = '124881'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

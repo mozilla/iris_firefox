@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case verifies the zoom level on multiple tabs using multiple sites and mouse wheel.'
+        self.test_case_id = '7453'
+        self.test_suite_id = '242'
 
     def run(self):
         url_1 = LocalWeb.FIREFOX_TEST_SITE

@@ -12,6 +12,9 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test that opens a page from the History sidebar using the \'Open in a New Window\' ' \
                     'button from the context menu.'
+        self.test_case_id = '120121'
+        self.test_suite_id = '2000'
+
 
     def setup(self):
         """Test case setup
