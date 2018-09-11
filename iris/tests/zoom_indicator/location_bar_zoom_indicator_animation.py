@@ -45,8 +45,7 @@ class Test(BaseTest):
 
         zoom_out()
 
-        if Settings.get_os() == Platform.MAC:
-            select_location_bar()
+        select_location_bar()
 
         expected = new_region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for '
