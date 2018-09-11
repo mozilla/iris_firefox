@@ -89,6 +89,8 @@ def run(app):
             # Clean up and quit Firefox.
             current.teardown()
             quit_firefox()
+            if current.profile == Profile.BRAND_NEW:
+                confirm_close_multiple_tabs()
             confirm_firefox_quit(app)
 
             # Save current test log

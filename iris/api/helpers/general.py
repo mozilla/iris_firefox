@@ -54,7 +54,6 @@ def confirm_firefox_launch(app):
 
 def confirm_firefox_quit(app):
     try:
-
         wait_vanish(NavBar.HOME_BUTTON, 10)
         address_crash_reporter()
     except FindError:
@@ -220,6 +219,19 @@ def click_hamburger_menu_option(option):
         else:
             region.click(option)
             return region
+
+
+def confirm_close_multiple_tabs():
+    """Click confirm 'Close all tabs' for warning popup when multiple tabs are opened"""
+    close_all_tabs_dialog_pattern = Pattern('close_all_tabs_dialog.png')
+
+    try:
+        wait(close_all_tabs_dialog_pattern, 5)
+        logger.debug('"Close all tabs" warning popup found.')
+        type(Key.ENTER)
+    except FindError:
+        logger.debug('Couldn\'t find the "Close all tabs" warning popup.')
+        pass
 
 
 def click_auxiliary_window_control(button):
