@@ -19,7 +19,6 @@ class Test(BaseTest):
         url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
         url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
         url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png').similar(0.7)
-        view_menu_pattern = Pattern('view_menu.png')
         zoom_text_only_check_pattern = Pattern('zoom_text_only_check.png')
 
         navigate(url)
@@ -57,9 +56,6 @@ class Test(BaseTest):
 
         expected = region.exists(url_bar_90_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
-
-        if Settings.get_os() == Platform.MAC:
-            click(view_menu_pattern)
 
         select_zoom_menu_option(Option.RESET)
 

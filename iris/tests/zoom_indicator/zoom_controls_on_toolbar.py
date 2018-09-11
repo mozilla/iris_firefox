@@ -60,7 +60,7 @@ class Test(BaseTest):
 
         click(zoom_control_toolbar_decrease_pattern)
 
-        expected = new_region.exists(zoom_control_90_pattern, 10)
+        expected = new_region.exists(zoom_control_90_pattern.similar(0.4), 10)
         assert_true(self, expected, 'Zoom controls are correctly displayed in toolbar after zoom level is decreased.')
 
         click(zoom_control_toolbar_increase_pattern)
