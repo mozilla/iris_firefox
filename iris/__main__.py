@@ -621,7 +621,6 @@ class TerminateSubprocesses(cleanup.CleanUp):
             # Extra call to shutdown the program we use to check keyboard lock,
             # in case Iris was terminated abruptly.
             shutdown_process('Xquartz')
-        sys.exit(0)
 
 
 def initialize_logger_level(level):
