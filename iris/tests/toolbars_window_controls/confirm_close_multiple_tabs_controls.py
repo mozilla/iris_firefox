@@ -14,7 +14,7 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
-        self.set_profile_pref('browser.tabs.warnOnClose;true')
+        self.profile = Profile.BRAND_NEW
 
     def run(self):
         close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
