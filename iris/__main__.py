@@ -315,7 +315,7 @@ class Iris(object):
         arg_data = {}
         arg_data['email'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'}
         arg_data['firefox'] = {'type': 'str', 'value': ['local', 'release', 'esr', 'beta', 'nightly'],
-                               'default': 'release', 'label': 'Firefox'}
+                               'default': 'beta', 'label': 'Firefox'}
         arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Debug using highlighting'}
         arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
                              'default': 'INFO', 'label': 'Debug level'}
