@@ -9,6 +9,7 @@ import os
 import cv2
 import numpy as np
 
+from iris.firefox.app import FirefoxApp
 from location import Location
 from util.core_helper import get_module_dir, get_images_path
 from util.parse_args import parse_args
@@ -181,6 +182,7 @@ def _apply_scale(scale, rgb_array):
         return rgb_array
 
 
+"""
 def check_image_path(caller, image):
     module = os.path.split(caller)[1]
     module_directory = os.path.split(caller)[0]
@@ -203,3 +205,61 @@ def check_image_path(caller, image):
             print ('[IMAGE DEBUG] Path 2: %s' % path_2)
             print ('[IMAGE DEBUG] Path 3: %s' % path_3)
             print ('[IMAGE DEBUG] Path 4: %s\n' % path_4)
+"""
+
+
+def check_image_path(caller, image):
+    module = os.path.split(caller)[1]
+    module_directory = os.path.split(caller)[0]
+    file_name = image.split('.')[0]
+    locales = FirefoxApp.LOCALES
+    locales.append('ja')
+    names = [image, '%s@2x.png' % file_name, '%s@3x.png' % file_name, '%s@4x.png' % file_name]
+
+    # We will look at all possible paths relative to the calling file, starting with
+    # common and then platform. Within each of those directories, we search all locale directories,
+    # looking for both regular and hi-resolution images.
+    paths = []
+    common_directory = os.path.join(module_directory, 'images', 'common')
+    for name in names:
+        paths.append(os.path.join(common_directory, name))
+
+    for locale in locales:
+        locale_directory = os.path.join(common_directory, locale)
+        for name in names:
+            paths.append(os.path.join(locale_directory, name))
+
+    platform_directory = os.path.join(module_directory, 'images', Settings.get_os())
+    for name in names:
+        paths.append(os.path.join(platform_directory, name))
+
+    for locale in locales:
+        locale_directory = os.path.join(platform_directory, locale)
+        for name in names:
+            paths.append(os.path.join(locale_directory, name))
+
+    found = False
+    image_path = None
+    for path in paths:
+        if os.path.exists(path):
+            found = True
+            image_path = path
+            break
+
+    if found:
+        logger.debug('Module %s requests image %s' % (module, image))
+        return image_path
+    else:
+        # If not found in correct location, fall back to global image search for now.
+        result_list = filter(lambda x: x['name'] == image, _images)
+        if len(result_list) > 0:
+            res = result_list[0]
+            logger.warning('Failed to find image %s in default locations.' % image)
+            logger.warning('Using this one instead: %s' % res['path'])
+            logger.warning('Please move image to correct location relative to calling module %s.' % module)
+            #return res['path']
+        else:
+            logger.error('Module %s requests image %s, not found.' % (module, image))
+            logger.debug('Paths searched:')
+            logger.debug('\n'.join(paths))
+            #raise APIHelperError('Pattern %s not found on disk.' % image)
