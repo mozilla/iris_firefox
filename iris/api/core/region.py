@@ -303,7 +303,7 @@ def hover(where=None, duration=0, in_region=None):
     if isinstance(where, Pattern):
         pos = image_search(where, region=in_region)
         if pos.x != -1:
-            needle_width, needle_height = get_image_size(where.get_filename())
+            needle_width, needle_height = get_image_size(where)
             if isinstance(where, Pattern):
                 possible_offset = where.get_target_offset()
                 if possible_offset is not None:

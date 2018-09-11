@@ -9,6 +9,7 @@ import os
 import cv2
 import numpy as np
 
+from iris.firefox.app import FirefoxApp
 from location import Location
 from util.core_helper import get_module_dir, get_images_path
 from util.parse_args import parse_args
@@ -86,12 +87,20 @@ _images = load_all_patterns()
 
 
 class Pattern(object):
-    def __init__(self, image_name):
-        check_image_path(inspect.stack()[1][1], image_name)
-        name, path, scale = get_pattern_details(image_name)
-        self._image_name = name
-        self._image_path = path
-        self._scale_factor = scale
+    def __init__(self, image_name, from_path=None):
+        if from_path is None:
+            name, path, scale = get_pattern_details(image_name)
+            self._image_name = name
+            self._image_path = path
+            self._scale_factor = scale
+            if parse_args().image_debug:
+                check_image_path(inspect.stack()[1][1], image_name)
+        else:
+            path = from_path
+            name, scale = _parse_name(os.path.split(path)[1])
+            self._image_name = image_name
+            self._image_path = path
+            self._scale_factor = scale
         self._similarity = Settings.min_similarity
         self._target_offset = None
         self._rgb_array = np.array(cv2.imread(path)) if path is not None else None
@@ -105,8 +114,7 @@ class Pattern(object):
         :param int dy: y offset from center
         :return: a new pattern object
         """
-
-        new_pattern = Pattern(self._image_name)
+        new_pattern = Pattern(self._image_name, from_path=self._image_path)
         new_pattern._target_offset = Location(dx, dy)
         return new_pattern
 
@@ -182,24 +190,74 @@ def _apply_scale(scale, rgb_array):
 
 
 def check_image_path(caller, image):
+    # Temporary function used for debugging, as per issue #590.
+    # Eventually it will be turned on by default.
     module = os.path.split(caller)[1]
     module_directory = os.path.split(caller)[0]
+    parent_directory = os.path.basename(module_directory)
     file_name = image.split('.')[0]
+    locales = FirefoxApp.LOCALES
+    locales.append('ja')
+    names = [image, '%s@2x.png' % file_name, '%s@3x.png' % file_name, '%s@4x.png' % file_name]
 
-    # In the future, we can also search subdirectories named for locales.
-    path_1 = os.path.join(module_directory, 'images', 'common', image)
-    path_2 = os.path.join(module_directory, 'images', 'common', '%s@2x.png' % file_name)
-    path_3 = os.path.join(module_directory, 'images', Settings.get_os(), image)
-    path_4 = os.path.join(module_directory, 'images', Settings.get_os(), '%s@2x.png' % file_name)
+    # We will look at all possible paths relative to the calling file, with this priority:
+    #
+    # - common root
+    # - current platform root
+    # - common locale folders
+    # - current platform locale folders
+    #
+    # Each directory is scanned for four possible file names, depending on resolution.
+    # If the above fails, we will look up the file name in the list of project-wide images,
+    # and return whatever we find, with a warning message.
+    # If we find nothing, we will raise an exception.
 
-    if not os.path.exists(path_1) and not os.path.exists(path_2) \
-        and not os.path.exists(path_3) and not os.path.exists(path_4):
-        # Using print statements here instead of logging, as the logger might not be available
-        # when this code is called and we want to catch those errors.
-        if parse_args().image_debug:
-            print ('[IMAGE DEBUG] Image not found: module %s requests image %s') % (module, image)
-            print ('[IMAGE DEBUG] Paths searched:')
-            print ('[IMAGE DEBUG] Path 1: %s' % path_1)
-            print ('[IMAGE DEBUG] Path 2: %s' % path_2)
-            print ('[IMAGE DEBUG] Path 3: %s' % path_3)
-            print ('[IMAGE DEBUG] Path 4: %s\n' % path_4)
+    paths = []
+    common_directory = os.path.join(module_directory, 'images', 'common')
+    for name in names:
+        paths.append(os.path.join(common_directory, name))
+
+    platform_directory = os.path.join(module_directory, 'images', Settings.get_os())
+    for name in names:
+        paths.append(os.path.join(platform_directory, name))
+
+    for locale in locales:
+        locale_directory = os.path.join(common_directory, locale)
+        for name in names:
+            paths.append(os.path.join(locale_directory, name))
+
+    for locale in locales:
+        locale_directory = os.path.join(platform_directory, locale)
+        for name in names:
+            paths.append(os.path.join(locale_directory, name))
+
+    found = False
+    image_path = None
+    for path in paths:
+        if os.path.exists(path):
+            found = True
+            image_path = path
+            break
+
+    if found:
+        logger.debug('Module %s requests image %s' % (module, image))
+        logger.debug('Found %s' % image_path)
+        # return image_path
+    else:
+        # If not found in correct location, fall back to global image search for now.
+        result_list = filter(lambda x: x['name'] == image, _images)
+        if len(result_list) > 0:
+            res = result_list[0]
+            logger.warning('Failed to find image %s in default locations for module %s.' % (image, module))
+            logger.warning('Using this one instead: %s' % res['path'])
+            logger.warning('Please move image to correct location relative to caller.')
+            location_1 = os.path.join(parent_directory, 'images','common')
+            location_2 = os.path.join(parent_directory, get_images_path())
+            logger.warning('Suggested locations: %s, %s' % (location_1, location_2))
+            # return res['path']
+        else:
+            logger.error('Pattern creation for %s failed for caller %s.' % (image, caller))
+            logger.error('Image not found. Either it is in the wrong platform folder, or it does not exist.')
+            logger.debug('Paths searched:')
+            logger.debug('\n'.join(paths))
+            # raise APIHelperError('Pattern not found')
