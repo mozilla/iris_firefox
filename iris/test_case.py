@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from api.core.local_web import *
 from api.core.profile import *
 from api.helpers.general import *
 from asserts import *
@@ -10,6 +9,7 @@ from configuration.config_parser import *
 
 from firefox.app import FirefoxApp
 from iris.test_rail.test_case_results import TestRailTests
+
 logger = logging.getLogger(__name__)
 
 
@@ -58,7 +58,8 @@ class BaseTest(object):
             self.outcome = result.outcome
 
     def create_collection_test_rail_result(self):
-        test_rail_object = TestRailTests(self.meta, self.test_suite_id, self.blocked_by, self.test_case_id, self.get_test_results())
+        test_rail_object = TestRailTests(self.meta, self.test_suite_id, self.blocked_by, self.test_case_id,
+                                         self.get_test_results())
         return test_rail_object
 
     def set_test_title(self, test_title):
@@ -103,11 +104,9 @@ class BaseTest(object):
 
     def setup(self):
         """ Test case setup
-
         This might be a good place to declare variables or initialize Fx state.
         Also, by default, a new Firefox instance is created, with a new profile and
         blank URL. If you wish to change this, override this method in your test case.
-
         If you do override this method in your test case, you *must* call
         BaseTest.setup(self) as the first line in your setup method.
         """

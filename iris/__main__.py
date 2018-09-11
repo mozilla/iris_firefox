@@ -5,26 +5,20 @@
 import glob
 import importlib
 import json
-import logging
-import os
 import shutil
-import subprocess
 import sys
-import tempfile
-import time
 from distutils import dir_util
 from distutils.spawn import find_executable
 from multiprocessing import Process
 
 import coloredlogs
-import git
 import pytesseract
+from packaging.version import Version, InvalidVersion
 
 import firefox.app as fa
 import firefox.downloader as fd
 import firefox.extractor as fe
-from api.core.key import Key, shutdown_process
-from api.core.platform import Platform
+from api.core.key import Key
 from api.core.profile import Profile
 from api.core.settings import Settings
 from api.core.util.core_helper import *
@@ -54,7 +48,6 @@ def main():
 
 
 class Iris(object):
-
     process_list = None
 
     def __init__(self):
@@ -137,28 +130,6 @@ class Iris(object):
         load_tests(self)
         self.current_test = 0
         self.total_tests = len(self.test_list)
-
-    def get_firefox(self):
-        if self.args.firefox == 'local':
-            # Use default Firefox installation
-            logger.info('Running with default installed Firefox build')
-            if Settings.get_os() == Platform.MAC:
-                self.fx_app = self.get_test_candidate('/Applications/Firefox.app/Contents')
-            elif Settings.get_os() == Platform.WINDOWS:
-                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
-                    self.fx_app = self.get_test_candidate('C:\\Program Files (x86)\\Mozilla Firefox')
-                else:
-                    self.fx_app = self.get_test_candidate('C:\\Program Files\\Mozilla Firefox')
-            else:
-                self.fx_app = self.get_test_candidate('/usr/lib/firefox')
-        else:
-            self.fx_app = self.get_test_candidate(self.args.firefox)
-
-        self.fx_channel = self.fx_app.release
-        self.fx_path = self.fx_app.exe
-        self.version = self.fx_app.version
-        self.build_id = self.fx_app.build_id
-        self.fx_locale = self.args.locale
 
     def create_working_directory(self):
         # Create workdir (usually ~/.iris, used for caching etc.)
@@ -322,15 +293,20 @@ class Iris(object):
         arg_data['email'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'}
         arg_data['firefox'] = {'type': 'str', 'value': ['local', 'release', 'esr', 'beta', 'nightly'],
                                'default': 'beta', 'label': 'Firefox'}
-        arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Debug using highlighting'}
+        arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
+                                 'label': 'Debug using highlighting'}
         arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
                              'default': 'INFO', 'label': 'Debug level'}
         arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us', 'label': 'Locale'}
-        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5', 'label': 'Mouse speed'}
-        arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Run disabled tests'}
+        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5',
+                             'label': 'Mouse speed'}
+        arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
+                                'label': 'Run disabled tests'}
         arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000', 'label': 'Local web server port'}
-        arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Create TestRail report'}
-        arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Save profiles to disk'}
+        arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
+                              'label': 'Create TestRail report'}
+        arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
+                            'label': 'Save profiles to disk'}
 
         arg_log_file = os.path.join(self.args.workdir, 'data', 'all_args.json')
         with open(arg_log_file, 'w') as f:
@@ -476,15 +452,53 @@ class Iris(object):
         if restore_terminal_encoding != platform_utf_encoding:
             Iris.set_terminal_encoding(platform_utf_encoding)
 
+    def get_firefox(self):
+        if self.args.firefox == 'local':
+            # Use default Firefox installation
+            logger.info('Running with default installed Firefox build')
+            if Settings.get_os() == Platform.MAC:
+                self.fx_app = self.get_test_candidate('/Applications/Firefox.app/Contents')
+            elif Settings.get_os() == Platform.WINDOWS:
+                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox'):
+                    self.fx_app = self.get_test_candidate('C:\\Program Files (x86)\\Mozilla Firefox')
+                else:
+                    self.fx_app = self.get_test_candidate('C:\\Program Files\\Mozilla Firefox')
+            else:
+                self.fx_app = self.get_test_candidate('/usr/lib/firefox')
+        else:
+            self.fx_app = self.get_test_candidate(self.args.firefox)
+
+        self.fx_channel = self.fx_app.release
+        self.fx_path = self.fx_app.exe
+        self.version = self.fx_app.version
+        self.build_id = self.fx_app.build_id
+        self.fx_locale = self.args.locale
+
+    def get_release_channel(self, fx_version):
+        if 'b' in str(fx_version):
+            release_channel = 'beta'
+        elif 'esr' in str(fx_version):
+            release_channel = 'esr'
+        else:
+            release_channel = 'release'
+        return release_channel
+
     def get_test_candidate(self, build):
         """Download and extract a build candidate.
-
         Build may either refer to a Firefox release identifier, package, or build directory.
         :param:
             build: str with firefox build
         :return:
             FirefoxApp object for test candidate
         """
+
+        fx_version = None
+        try:
+            fx_version = Version(build)
+            build = self.get_release_channel(fx_version)
+        except InvalidVersion:
+            pass
+
         if os.path.isdir(build):
             candidate_app = fa.FirefoxApp(build, Settings.get_os(), False)
             return candidate_app
@@ -493,21 +507,26 @@ class Iris(object):
             if platform is None:
                 logger.error('Unsupported platform: "%s"' % sys.platform)
                 sys.exit(5)
-
             # `build` may refer to a build reference as defined in FirefoxDownloader,
             # a local Firefox package as produced by `mach build`, or a local build tree.
-            if build in fd.FirefoxDownloader.build_urls:
+
+            if build in fd.FirefoxDownloader.build_urls or build in fd.FirefoxDownloader.archive_build_urls:
                 # Download test candidate by Firefox release ID
-                logger.info(
-                    'Downloading Firefox "%s_%s" build for platform "%s"' % (build, self.args.locale, platform))
+                if fx_version is None:
+                    logger.info(
+                        'Downloading Firefox latest version - "%s" build for platform "%s"' % (build, platform))
+                else:
+                    logger.info(
+                        'Downloading Firefox version "%s" - "%s" build for platform "%s"' % (
+                            fx_version, build, platform))
                 fdl = fd.FirefoxDownloader(self.args.workdir, cache_timeout=1 * 60 * 60)
-                build_archive_file = fdl.download(build, self.args.locale, platform)
+                build_archive_file = fdl.download(build, self.args.locale, fx_version, platform)
                 if build_archive_file is None:
                     self.finish(code=-1)
                 # Extract candidate archive
                 candidate_app = fe.extract(build_archive_file, Settings.get_os(), self.args.workdir,
                                            cache_timeout=1 * 60 * 60)
-                candidate_app.package_origin = fdl.get_download_url(build, platform)
+                candidate_app.package_origin = fdl.get_download_url(build, self.args.locale, fx_version, platform)
             elif os.path.isfile(build):
                 # Extract firefox build from archive
                 logger.info('Using file "%s" as Firefox package' % build)
@@ -538,7 +557,6 @@ class Iris(object):
                 logger.critical('"%s" specifies neither a Firefox release, package file, or build directory' % build)
                 logger.critical('Valid Firefox release identifiers are: %s' % ', '.join(fd.FirefoxDownloader.list()[0]))
                 self.finish(5)
-
             logger.debug('Build candidate executable is "%s"' % candidate_app.exe)
             if candidate_app.platform != platform:
                 logger.warning('Platform mismatch detected')
@@ -615,6 +633,7 @@ class ResetTerminalEncoding(cleanup.CleanUp):
 
 class TerminateSubprocesses(cleanup.CleanUp):
     """Class for terminiting subprocesses, such as local web server instances."""
+
     @staticmethod
     def at_exit():
         if hasattr(Iris, 'process_list'):
