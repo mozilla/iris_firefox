@@ -2,10 +2,11 @@ import logging
 import os.path
 from ConfigParser import ConfigParser
 from iris.api.core.errors import *
+from iris.api.core.util.core_helper import get_module_dir
 
 logger = logging.getLogger(__name__)
 
-config_file = 'config.ini'
+config_file = os.path.join(get_module_dir(), 'config.ini')
 config = ConfigParser()
 
 
