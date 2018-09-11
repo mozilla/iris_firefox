@@ -338,7 +338,7 @@ class Iris(object):
         try:
             logger.debug('Starting local web server on port %s for directory %s' % (port, path))
             web_server_process = Process(target=LocalWebServer, args=(path, port,))
-            self.process_list.append(web_server_process)
+            Iris.process_list.append(web_server_process)
             web_server_process.start()
         except IOError:
             logger.critical('Unable to launch local web server, aborting Iris.')
