@@ -315,14 +315,14 @@ class Iris(object):
         arg_data = {}
         arg_data['email'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'}
         arg_data['firefox'] = {'type': 'str', 'value': ['local', 'release', 'esr', 'beta', 'nightly'],
-                               'default': 'release', 'label': ''}
+                               'default': 'beta', 'label': 'Firefox'}
         arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Debug using highlighting'}
         arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
-                             'default': 'INFO', 'label': ''}
-        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us', 'label': ''}
-        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5', 'label': ''}
+                             'default': 'INFO', 'label': 'Debug level'}
+        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us', 'label': 'Locale'}
+        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5', 'label': 'Mouse speed'}
         arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Run disabled tests'}
-        arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000', 'label': ''}
+        arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000', 'label': 'Local web server port'}
         arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Create TestRail report'}
         arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Save profiles to disk'}
 
