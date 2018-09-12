@@ -463,7 +463,7 @@ def quit_firefox():
     if Settings.get_os() == Platform.MAC:
         type(text='q', modifier=KeyModifier.CMD)
     elif Settings.get_os() == Platform.WINDOWS:
-        type(text='q', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        type(text='w', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
     else:
         type(text='q', modifier=KeyModifier.CTRL)
 
