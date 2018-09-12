@@ -9,6 +9,7 @@ from configuration.config_parser import *
 
 from firefox.app import FirefoxApp
 from iris.test_rail.test_case_results import TestRailTests
+from api.core.local_web import LocalWeb
 
 logger = logging.getLogger(__name__)
 
