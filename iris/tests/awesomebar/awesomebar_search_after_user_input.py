@@ -58,6 +58,7 @@ class Test(BaseTest):
 
         # Move focus to the new tab opened.
         next_tab()
+        time.sleep(DEFAULT_UI_DELAY_LONG)
 
         expected = region.exists(twitter_search_results_localhost.similar(0.9), 10)
         assert_true(self, expected, 'A new tab with \'Twitter\' search results for the searched string is opened.')
