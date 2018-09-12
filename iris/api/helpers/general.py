@@ -223,10 +223,10 @@ def click_hamburger_menu_option(option):
 
 def confirm_close_multiple_tabs():
     """Click confirm 'Close all tabs' for warning popup when multiple tabs are opened"""
-    close_all_tabs_dialog_pattern = Pattern('close_all_tabs_dialog.png')
+    close_all_tabs_button_pattern = Pattern('close_all_tabs_button.png')
 
     try:
-        wait(close_all_tabs_dialog_pattern, 5)
+        wait(close_all_tabs_button_pattern, 5)
         logger.debug('"Close all tabs" warning popup found.')
         type(Key.ENTER)
     except FindError:
