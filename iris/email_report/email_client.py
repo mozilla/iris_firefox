@@ -20,12 +20,12 @@ class EmailClient:
 
     def __init__(self):
         logger.info('Starting email reporting.')
-        self.email_host = get_credential('EmailServerConfig', 'smtp_ssl_host')
-        self.email_port = get_credential('EmailServerConfig', 'smtp_ssl_port')
-        self.username = get_credential('EmailAccount', 'username')
-        self.password = get_credential('EmailAccount', 'password')
-        self.sender = get_credential('EmailRecipients', 'sender')
-        self.targets = ast.literal_eval(get_credential('EmailRecipients', 'targets'))
+        self.email_host = get_config_property('EmailServerConfig', 'smtp_ssl_host')
+        self.email_port = get_config_property('EmailServerConfig', 'smtp_ssl_port')
+        self.username = get_config_property('EmailAccount', 'username')
+        self.password = get_config_property('EmailAccount', 'password')
+        self.sender = get_config_property('EmailRecipients', 'sender')
+        self.targets = ast.literal_eval(get_config_property('EmailRecipients', 'targets'))
 
     @staticmethod
     def create_email_subject(firefox_version):

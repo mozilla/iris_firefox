@@ -29,7 +29,10 @@ def extract(archive_file, platform, workdir, cache_timeout=24 * 60 * 60, use_cac
     # Name in cache is file name without extensions
     cache_id = os.path.basename(archive_file)
     cache_id = os.path.splitext(cache_id)[0]
-    cache_id = os.path.splitext(cache_id)[0]
+    if platform == 'win' or platform == 'osx':
+        cache_id = cache_id.replace('.', '_')
+    else:
+        cache_id = os.path.splitext(cache_id)[0]
 
     dc = cache.DiskCache(os.path.join(workdir, 'cache'), cache_timeout, purge=True)
 

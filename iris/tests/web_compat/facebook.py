@@ -111,8 +111,8 @@ class Test(BaseTest):
         time.sleep(2)
 
     def login_facebook(self):
-        username = get_credential('Facebook', 'username')
-        password = get_credential('Facebook', 'password')
+        username = get_config_property('Facebook', 'username')
+        password = get_config_property('Facebook', 'password')
         login = Pattern('login_check.png')
 
         expected_login = exists(login, 10)

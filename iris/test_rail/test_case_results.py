@@ -4,7 +4,7 @@
 
 import ast
 
-from iris.api.helpers.general import get_credential
+from iris.api.helpers.general import get_config_property
 
 
 class TestRailTests(object):
@@ -48,7 +48,7 @@ class TestRailTests(object):
 
 
 class TestSuiteMap:
-    suite_dictionary = ast.literal_eval(get_credential("Test_Rail_Suites", "suite_dictionary"))
+    suite_dictionary = ast.literal_eval(get_config_property("Test_Rail_Suites", "suite_dictionary"))
 
     suite_name = ''
 

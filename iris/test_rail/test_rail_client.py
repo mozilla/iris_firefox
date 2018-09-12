@@ -21,10 +21,10 @@ class TestRail:
         logger.info('Starting TestRail reporting.')
 
         # Set the Test_Rail URL, user name and password.
-        self.test_rail_url = get_credential('Test_rail', 'test_rail_url')
+        self.test_rail_url = get_config_property('Test_rail', 'test_rail_url')
         self.client = api_client.APIClient(self.test_rail_url)
-        self.client.user = get_credential('Test_rail', 'username')
-        self.client.password = get_credential('Test_rail', 'password')
+        self.client.user = get_config_property('Test_rail', 'username')
+        self.client.password = get_config_property('Test_rail', 'password')
 
     # Retrieve all projects from Test_Rail.
 
@@ -270,7 +270,7 @@ class TestRail:
         """
 
         test_suite_array = []
-        suite_dictionary = ast.literal_eval(get_credential('Test_Rail_Suites', 'suite_dictionary'))
+        suite_dictionary = ast.literal_eval(get_config_property('Test_Rail_Suites', 'suite_dictionary'))
         suite_ids = []
         for suite in suite_dictionary:
             suite_ids.append(suite_dictionary.get(suite))
