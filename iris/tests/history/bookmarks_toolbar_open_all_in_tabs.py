@@ -21,7 +21,7 @@ class Test(BaseTest):
         This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         BaseTest.setup(self)
-        self.profile = Profile.BRAND_NEW
+        self.profile = Profile.LIKE_NEW
         return
 
     def run(self):
