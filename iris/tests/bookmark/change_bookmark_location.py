@@ -70,7 +70,9 @@ class Test(BaseTest):
 
         access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
-        drag_drop(bookmark_changed_location_pattern, drag_area_pattern, 0.5)
+        time.sleep(Settings.UI_DELAY_LONG)
+
+        drag_drop(bookmark_changed_location_pattern, drag_area_pattern, 1)
 
         try:
             wait(changed_toolbar_bookmark_pattern, 10)
