@@ -28,7 +28,7 @@ class Test(BaseTest):
         moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
-        done_button_from_star_menu = Pattern('done_button_from_star_menu.png')
+        done_button_from_star_menu = Pattern('done_button.png')
         bookmark_button_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
