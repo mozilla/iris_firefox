@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from packaging.version import Version, InvalidVersion
+import re
 
 version_key = 'versions'
 operator_key = 'operator'
@@ -108,3 +109,18 @@ def check_version(version, running_condition):
             return version_dict[version_key][0] <= current_version <= version_dict[version_key][1]
 
     return False
+
+
+def has_letters(string):
+    return any(c.isalpha() for c in string)
+
+
+def get_channel_from_version(version):
+    if not has_letters(version):
+        return 'release'
+    elif 'b' in version:
+        return 'beta'
+    elif 'esr' in version:
+        return 'esr'
+    else:
+        return 'nightly'

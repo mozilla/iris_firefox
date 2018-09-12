@@ -38,14 +38,14 @@ def launch_firefox(path, profile=None, url=None, args=None):
         cmd.append(url)
 
     logger.debug('Launching Firefox with arguments: %s' % ' '.join(cmd))
-    subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    subprocess.Popen(cmd)
     return cmd
 
 
 def confirm_firefox_launch(app):
     """waits for firefox to exist by waiting for the home button to be present."""
     try:
-        wait(NavBar.HOME_BUTTON, 20)
+        wait(Pattern('iris_logo.png'), 20)
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
@@ -99,7 +99,7 @@ def restart_firefox(path, profile, url, args=None):
     logger.debug('Restarting Firefox.')
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit.')
-    home_pattern = NavBar.HOME_BUTTON
+    home_pattern = Pattern('iris_logo.png')
     try:
         wait_vanish(home_pattern, 10)
         # TODO: This should be made into a robust function instead of a hard coded sleep
@@ -108,7 +108,7 @@ def restart_firefox(path, profile, url, args=None):
         logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
         launch_firefox(path, profile, url, args)
         logger.debug('Confirming that Firefox has been relaunched')
-        if exists(home_pattern, 10):
+        if exists(home_pattern, 20):
             logger.debug('Successful Firefox restart performed')
         else:
             raise APIHelperError('Firefox not relaunched.')
@@ -184,8 +184,8 @@ def reset_mouse():
 
 
 def login_site(site_name):
-    username = get_credential(site_name, 'username')
-    password = get_credential(site_name, 'password')
+    username = get_config_property(site_name, 'username')
+    password = get_config_property(site_name, 'password')
     paste(username)
     focus_next_item()
     paste(password)
@@ -756,7 +756,8 @@ def get_support_info():
 
 
 def get_build_info():
-    '''This method returns the application version information as a dict with the help of mozversion module.'''
+    """This method returns the application version information as a dict with the help of mozversion module."""
+
     if Settings.get_os() == Platform.MAC:
         build_path = os.path.join(get_working_dir(), 'cache',
                                   'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()),
@@ -767,7 +768,14 @@ def get_build_info():
                                   'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()), 'firefox',
                                   'firefox')
     elif Settings.get_os() == Platform.WINDOWS:
-        build_path = os.path.join(get_working_dir(), 'cache',
-                                  'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()), 'core', 'firefox')
+        if parse_args().firefox:
+            fx_version_str = str(parse_args().firefox).replace('.', '_')
+            build_path = os.path.join(get_working_dir(), 'cache',
+                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'core',
+                                      'firefox')
+        else:
+            build_path = os.path.join(get_working_dir(), 'cache',
+                                      'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()),
+                                      'core', 'firefox')
 
     return mozversion.get_version(binary=build_path)

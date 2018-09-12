@@ -28,6 +28,7 @@ from api.helpers.general import launch_firefox, quit_firefox
 from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
+from api.core.util.version_parser import get_channel_from_version
 
 restore_terminal_encoding = None
 LOG_FILENAME = 'iris_log.log'
@@ -474,15 +475,6 @@ class Iris(object):
         self.build_id = self.fx_app.build_id
         self.fx_locale = self.args.locale
 
-    def get_release_channel(self, fx_version):
-        if 'b' in str(fx_version):
-            release_channel = 'beta'
-        elif 'esr' in str(fx_version):
-            release_channel = 'esr'
-        else:
-            release_channel = 'release'
-        return release_channel
-
     def get_test_candidate(self, build):
         """Download and extract a build candidate.
         Build may either refer to a Firefox release identifier, package, or build directory.
@@ -495,7 +487,7 @@ class Iris(object):
         fx_version = None
         try:
             fx_version = Version(build)
-            build = self.get_release_channel(fx_version)
+            build = get_channel_from_version(build)
         except InvalidVersion:
             pass
 

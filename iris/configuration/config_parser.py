@@ -1,7 +1,11 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
 import logging
 import os.path
 from ConfigParser import ConfigParser
-from iris.api.core.errors import *
+from iris.api.core.errors import ConfigError
 from iris.api.core.util.core_helper import get_module_dir
 
 logger = logging.getLogger(__name__)
@@ -10,13 +14,13 @@ config_file = os.path.join(get_module_dir(), 'config.ini')
 config = ConfigParser()
 
 
-def get_credential(section, credential):
-    logger.debug('Extracting %s for section %s' % (credential, section))
+def get_config_property(section, prop):
+    logger.debug('Extracting %s for section %s' % (prop, section))
     if os.path.isfile(config_file):
         try:
             config.read(config_file)
             if config.has_section(section):
-                result = config.get(section, credential)
+                result = config.get(section, prop)
                 return result
             else:
                 raise ConfigError('Section %s not found' % section)

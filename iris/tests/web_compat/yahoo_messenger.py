@@ -34,8 +34,8 @@ class Test(BaseTest):
         time.sleep(3)
 
         # Fill in the credentials and login.
-        username = get_credential('Yahoo', 'username')
-        password = get_credential('Yahoo', 'password')
+        username = get_config_property('Yahoo', 'username')
+        password = get_config_property('Yahoo', 'password')
         paste(username)
         type(Key.ENTER)
         time.sleep(3)

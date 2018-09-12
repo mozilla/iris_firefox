@@ -72,8 +72,8 @@ class Test(BaseTest):
         type(Key.ENTER)
 
     def login_gmail(self):
-        username = get_credential('Gmail', 'username')
-        password = get_credential('Gmail', 'password')
+        username = get_config_property('Gmail', 'username')
+        password = get_config_property('Gmail', 'password')
         login = Pattern('login_gmail.png')
 
         expected_login = exists(login, 10)

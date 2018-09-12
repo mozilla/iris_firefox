@@ -21,10 +21,10 @@ class Test(BaseTest):
         else:
             click(Pattern('amazon_sign_in_button.png'))
             time.sleep(3)
-            paste(get_credential('Amazon', 'username'))
+            paste(get_config_property('Amazon', 'username'))
             type(Key.ENTER)
             time.sleep(3)
-            paste(get_credential('Amazon', 'password'))
+            paste(get_config_property('Amazon', 'password'))
             type(Key.ENTER)
             time.sleep(3)
             amazon_logo = exists(Pattern('amazon_logo.png'), 5)
