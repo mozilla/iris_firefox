@@ -76,6 +76,7 @@ class Test(BaseTest):
                 raise FindError('Element found at position ' + i.__str__() + ' in the list found.')
 
         select_location_bar()
+        paste('moz')
         type(Key.ENTER)
 
         time.sleep(DEFAULT_UI_DELAY_LONG)

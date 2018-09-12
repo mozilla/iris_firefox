@@ -23,7 +23,7 @@ class Test(BaseTest):
         search_in_new_tab_pattern = Pattern('search_in_new_tab.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
         wikipedia_search_results_pattern = Pattern('wikipedia_search_results.png')
-        test_pattern = Pattern('test.png')
+        test_pattern = Pattern('test.png').similar(0.5)
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -76,6 +76,6 @@ class Test(BaseTest):
         expected = exists(wikipedia_search_results_pattern, 10)
         assert_true(self, expected, 'Wikipedia results are opened.')
 
-        expected = exists('test', 10)
+        expected = exists(test_pattern, 10)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the wikipedia search engine.')
