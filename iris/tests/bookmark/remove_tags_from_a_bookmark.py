@@ -7,7 +7,6 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Specific tags can be removed from a bookmark'
@@ -29,7 +28,6 @@ class Test(BaseTest):
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
         done_button_from_star_menu = Pattern('done_button.png')
-        tags = Pattern('tags_field.png')
         bookmark_button_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -84,11 +82,13 @@ class Test(BaseTest):
 
         if Settings.get_os() == Platform.MAC:
             type(Key.TAB)
-        else:
+            edit_delete()
+        elif Settings.get_os() == Platform.WINDOWS:
             for i in range(3):
                 type(Key.TAB)
-
-        edit_delete()
+            edit_delete()
+        else:
+            edit_delete()
 
         click(done_button_from_star_menu)
 
