@@ -42,7 +42,12 @@ class Test(BaseTest):
 
         paste('Iris')
 
-        click(done)
+        try:
+            wait(done, 10)
+            logger.debug('Done button is present on the page.')
+            click(done)
+        except FindError:
+            raise FindError('Done button is NOT present on the page.')
 
         bookmarks_sidebar('open')
 

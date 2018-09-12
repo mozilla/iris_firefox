@@ -79,6 +79,8 @@ class Test(BaseTest):
             logger.error('Can\'t find the Bookmarks sidebar menu.')
             raise FindError
 
+        reset_mouse()
+
         right_click(bookmarks_sidebar_menu_selected_pattern)
 
         bookmark_options(Pattern('paste_option.png'))
