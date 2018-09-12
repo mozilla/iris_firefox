@@ -29,6 +29,7 @@ class Test(BaseTest):
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
         done_button_from_star_menu = Pattern('done_button.png')
+        tags = Pattern('tags_field.png')
         bookmark_button_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -81,12 +82,23 @@ class Test(BaseTest):
 
         time.sleep(Settings.UI_DELAY)
 
-        type(Key.TAB)
+        if Settings.get_os() == Platform.MAC:
+            type(Key.TAB)
+        else:
+            for i in range(3):
+                type(Key.TAB)
 
         edit_delete()
 
         click(done_button_from_star_menu)
 
-        removed_tags_assert = wait_vanish(moz_bookmark_pattern, 10)
-        assert_true(self, removed_tags_assert, 'Tags has been successfully removed from Moz bookmark.')
+        bookmarks_sidebar('close')
 
+        navigate('about:blank')
+
+        bookmarks_sidebar('open')
+
+        paste('iris')
+
+        removed_tags_assert = exists(moz_bookmark_pattern, 10)
+        assert_false(self, removed_tags_assert, 'Tags has been successfully removed from Moz bookmark.')
