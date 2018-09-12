@@ -20,14 +20,15 @@ class Test(BaseTest):
         This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         BaseTest.setup(self)
-        self.profile = Profile.BRAND_NEW
+        self.profile = Profile.LIKE_NEW
         return
 
     def run(self):
         firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo.png')
         search_history_box_pattern = Pattern('search_history_box.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
-        iris_logo_pattern = Pattern('iris_logo.png')
+        iris_logo_pattern = Pattern('iris_logo_tab.png')
+        mozilla_logo_pattern=Pattern('mozilla_logo_tab.png')
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -57,9 +58,7 @@ class Test(BaseTest):
         next_tab()
         expected_6 = exists(firefox_privacy_logo_pattern, 10)
         assert_true(self, expected_6, 'Firefox Privacy Notice loaded successfully.')
-        next_tab()
         expected_7 = exists(iris_logo_pattern, 10)
         assert_true(self, expected_7, 'Iris local page loaded successfully.')
-        next_tab()
-        expected_8 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected_8 = exists(mozilla_logo_pattern, 10)
         assert_true(self, expected_8, 'Mozilla page loaded successfully.')

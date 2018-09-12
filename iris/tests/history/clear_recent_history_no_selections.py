@@ -17,7 +17,11 @@ class Test(BaseTest):
     def run(self):
         clear_recent_history_window = Pattern('clear_recent_history_window.png')
         clear_now_button_disabled = Pattern('clear_now_button_disabled.png')
-        clear_recent_history_expand_button = Pattern('clear_recent_history_expand_button.png')
+        clear_history_dialog_box_browsing = Pattern('clear_history_browsing.png')
+        clear_history_dialog_box_cache = Pattern('clear_history_cache.png')
+        clear_history_dialog_box_cookies = Pattern('clear_history_cookies.png')
+        clear_history_dialog_box_form = Pattern('clear_history_form.png')
+        clear_history_dialog_box_logins = Pattern('clear_history_logins.png')
 
         # Open some pages to create some history.
         new_tab()
@@ -39,7 +43,15 @@ class Test(BaseTest):
         assert_true(self, expected_3, 'Clear Recent History window was displayed properly.')
 
         if Settings.is_mac():
-            click(clear_recent_history_expand_button)
+            pref_list = [clear_history_dialog_box_logins, clear_history_dialog_box_browsing,
+                         clear_history_dialog_box_cache, clear_history_dialog_box_cookies,
+                         clear_history_dialog_box_form]
+            for image in pref_list:
+                if exists(image, 10):
+                    click(image)
+
+
+
 
         else:
             type(Key.TAB)
