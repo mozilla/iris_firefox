@@ -79,12 +79,10 @@ class Test(BaseTest):
             logger.error('Can\'t find the Bookmarks sidebar menu.')
             raise FindError
 
-        reset_mouse()
-
         right_click(bookmarks_sidebar_menu_selected_pattern)
 
         bookmark_options(Pattern('paste_option.png'))
 
         pasted_bookmark_folder_assertion = exists(pasted_bookmark_folder, 10)
-        assert_true(self, pasted_bookmark_folder_assertion, 'Moz Bookmark Folder is present into a different directory,'
+        assert_true(self, pasted_bookmark_folder_assertion, 'Moz Bookmark folder has been moved to a different directory,'
                                                             ' copy option works as expected.')

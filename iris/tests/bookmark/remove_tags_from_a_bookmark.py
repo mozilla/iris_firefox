@@ -7,6 +7,7 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
+    
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Specific tags can be removed from a bookmark'
