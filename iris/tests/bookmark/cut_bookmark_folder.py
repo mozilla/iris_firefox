@@ -16,7 +16,7 @@ class Test(BaseTest):
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
@@ -29,7 +29,7 @@ class Test(BaseTest):
         new_folder = Pattern('new_folder_option.png')
         add_button = Pattern('add_button.png')
         moz_bookmark = Pattern('moz_bookmark_folder.png')
-        pasted_bookmark_folder = Pattern('pasted_bookmark_folder.png')
+        pasted_bookmark_folder = Pattern('pasted_bookmark_folder.png').similar(0.6)
         bookmarks_sidebar_menu_pattern = SidebarBookmarks.BOOKMARKS_MENU
         bookmarks_sidebar_menu_selected_pattern = SidebarBookmarks.BOOKMARKS_MENU_SELECTED
         view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
@@ -86,7 +86,7 @@ class Test(BaseTest):
         bookmark_options(Pattern('paste_option.png'))
 
         pasted_bookmark_folder_assertion = exists(pasted_bookmark_folder, 10)
-        assert_true(self, pasted_bookmark_folder_assertion, 'Moz Bookmark Folder is present into a different directory,'
+        assert_true(self, pasted_bookmark_folder_assertion, 'Moz Bookmark has been moved to a different directory,'
                                                             ' cut option works as expected.')
 
         moz_bookmark_vanish_assert = wait_vanish(moz_bookmark.similar(0.9), 10)

@@ -17,7 +17,7 @@ class Test(BaseTest):
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS

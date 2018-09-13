@@ -16,7 +16,7 @@ class Test(BaseTest):
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
@@ -70,6 +70,9 @@ class Test(BaseTest):
         assert_true(self, tagged_bookmark_assert, 'Moz bookmark was successfully tagged via bookmark sidebar.')
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
 
         try:
             right_upper_corner.wait(bookmark_button_pattern, 10)
