@@ -23,6 +23,9 @@ class Test(BaseTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
+
         try:
             wait(bookmark_button_pattern, 10)
             logger.debug('Bookmark star is present on the page.')
@@ -42,7 +45,12 @@ class Test(BaseTest):
 
         paste('Iris')
 
-        click(done)
+        try:
+            wait(done, 10)
+            logger.debug('Done button is present on the page.')
+            click(done)
+        except FindError:
+            raise FindError('Done button is NOT present on the page.')
 
         bookmarks_sidebar('open')
 

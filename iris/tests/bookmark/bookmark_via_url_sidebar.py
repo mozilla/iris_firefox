@@ -17,10 +17,10 @@ class Test(BaseTest):
     def run(self):
 
         draggable_url_pattern = Pattern('moz_draggable_url.png')
-        sidebar_bookmarks_pattern = Pattern('library_bookmarks.png')
         drag_area_pattern = Pattern('drag_area_moz.png')
         moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         bookmark_selected_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
+        sidebar_bookmarks_pattern = SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
