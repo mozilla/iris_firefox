@@ -759,23 +759,35 @@ def get_build_info():
     """This method returns the application version information as a dict with the help of mozversion module."""
 
     if Settings.get_os() == Platform.MAC:
-        build_path = os.path.join(get_working_dir(), 'cache',
-                                  'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()),
-                                  'Firefox',
-                                  'Firefox.app', 'Contents', 'MacOS', 'firefox')
+        if parse_args().firefox != 'beta':
+            fx_version_str = str(parse_args().firefox)
+            build_path = os.path.join(get_working_dir(), 'cache',
+                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'core',
+                                      'firefox')
+        else:
+            build_path = os.path.join(get_working_dir(), 'cache',
+                                      'firefox-beta_%s_%s' % (parse_args().locale, Settings.get_os()),
+                                      'Firefox',
+                                      'Firefox.app', 'Contents', 'MacOS', 'firefox')
     elif Settings.get_os() == Platform.LINUX:
-        build_path = os.path.join(get_working_dir(), 'cache',
-                                  'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()), 'firefox',
-                                  'firefox')
+        if parse_args().firefox != 'beta':
+            fx_version_str = str(parse_args().firefox)
+            build_path = os.path.join(get_working_dir(), 'cache',
+                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'core',
+                                      'firefox')
+        else:
+            build_path = os.path.join(get_working_dir(), 'cache',
+                                      'firefox-beta_%s_%s' % (parse_args().locale, Settings.get_os()), 'firefox',
+                                      'firefox')
     elif Settings.get_os() == Platform.WINDOWS:
-        if parse_args().firefox:
+        if parse_args().firefox != 'beta':
             fx_version_str = str(parse_args().firefox).replace('.', '_')
             build_path = os.path.join(get_working_dir(), 'cache',
                                       'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'core',
                                       'firefox')
         else:
             build_path = os.path.join(get_working_dir(), 'cache',
-                                      'firefox-release_%s_%s' % (parse_args().locale, Settings.get_os()),
+                                      'firefox-beta_%s_%s' % (parse_args().locale, Settings.get_os()),
                                       'core', 'firefox')
 
     return mozversion.get_version(binary=build_path)

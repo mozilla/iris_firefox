@@ -34,5 +34,5 @@ class Test(BaseTest):
                      'API for Firefox version is correct')
         assert_equal(self, self.app.build_id, get_build_info()['platform_buildid'],
                      'API for Firefox build ID is correct')
-        assert_contains(self, self.app.fx_channel, get_build_info()['application_repository'],
+        assert_contains(self, get_build_info()['application_repository'], self.app.fx_channel,
                      'API for Firefox channel is correct')
