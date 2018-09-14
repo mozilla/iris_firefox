@@ -26,7 +26,7 @@ from api.core.key import Key, shutdown_process
 from api.core.platform import Platform
 from api.core.profile import Profile
 from api.core.settings import Settings
-from api.core.util.core_helper import get_module_dir, get_platform, get_run_id, get_current_run_dir, filter_list
+from api.core.util.core_helper import *
 from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
 from api.helpers.general import launch_firefox, quit_firefox
@@ -34,7 +34,6 @@ from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
 
-tmp_dir = None
 restore_terminal_encoding = None
 LOG_FILENAME = 'iris_log.log'
 LOG_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
@@ -54,6 +53,8 @@ def main():
 
 
 class Iris(object):
+
+    process_list = None
 
     def __init__(self):
         cleanup.init()
@@ -77,8 +78,8 @@ class Iris(object):
         self.create_working_directory()
         self.create_run_directory()
         initialize_logger(LOG_FILENAME, self.args.level)
-        self.clear_profile_cache()
-        self.process_list = []
+        create_profile_cache()
+        Iris.process_list = []
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.create_test_json()
@@ -132,9 +133,6 @@ class Iris(object):
         self.total_tests = len(self.test_list)
 
     def get_firefox(self):
-        global tmp_dir
-        tmp_dir = self.__create_tempdir()
-
         if self.args.firefox == 'local':
             # Use default Firefox installation
             logger.info('Running with default installed Firefox build')
@@ -174,11 +172,6 @@ class Iris(object):
             os.mkdir(master_run_directory)
         run_directory = os.path.join(master_run_directory, get_run_id())
         os.mkdir(run_directory)
-
-    def clear_profile_cache(self):
-        profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
-        if os.path.exists(profile_temp):
-            shutil.rmtree(profile_temp, ignore_errors=True)
 
     def update_run_index(self, new_data=None):
         # Prepare the current entry.
@@ -223,8 +216,6 @@ class Iris(object):
 
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
-
-
 
     def update_run_log(self, new_data=None):
         # Prepare the current entry.
@@ -324,14 +315,14 @@ class Iris(object):
         arg_data = {}
         arg_data['email'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'}
         arg_data['firefox'] = {'type': 'str', 'value': ['local', 'release', 'esr', 'beta', 'nightly'],
-                               'default': 'release', 'label': ''}
+                               'default': 'beta', 'label': 'Firefox'}
         arg_data['highlight'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Debug using highlighting'}
         arg_data['level'] = {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
-                             'default': 'INFO', 'label': ''}
-        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us', 'label': ''}
-        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5', 'label': ''}
+                             'default': 'INFO', 'label': 'Debug level'}
+        arg_data['locale'] = {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us', 'label': 'Locale'}
+        arg_data['mouse'] = {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5', 'label': 'Mouse speed'}
         arg_data['override'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Run disabled tests'}
-        arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000', 'label': ''}
+        arg_data['port'] = {'type': 'int', 'value': ['2000'], 'default': '2000', 'label': 'Local web server port'}
         arg_data['report'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Create TestRail report'}
         arg_data['save'] = {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Save profiles to disk'}
 
@@ -347,7 +338,7 @@ class Iris(object):
         try:
             logger.debug('Starting local web server on port %s for directory %s' % (port, path))
             web_server_process = Process(target=LocalWebServer, args=(path, port,))
-            self.process_list.append(web_server_process)
+            Iris.process_list.append(web_server_process)
             web_server_process.start()
         except IOError:
             logger.critical('Unable to launch local web server, aborting Iris.')
@@ -434,18 +425,6 @@ class Iris(object):
                 shutdown_process('Xquartz')
         if is_lock_on:
             self.finish(code=1)
-
-    @staticmethod
-    def __create_tempdir():
-        """Helper function for creating the temporary directory.
-
-        Writes to the global variable tmp_dir
-        :return:
-             Path of temporary directory.
-        """
-        temp_dir = tempfile.mkdtemp(prefix='iris_')
-        logger.debug('Created temp dir "%s"' % temp_dir)
-        return temp_dir
 
     @staticmethod
     def get_terminal_encoding():
@@ -612,7 +591,7 @@ class RemoveTempDir(cleanup.CleanUp):
 
     @staticmethod
     def at_exit():
-        global tmp_dir
+        tmp_dir = get_tempdir()
         if tmp_dir is not None:
             logger.debug('Removing temp dir "%s"' % tmp_dir)
             shutil.rmtree(tmp_dir, ignore_errors=True)
@@ -626,6 +605,22 @@ class ResetTerminalEncoding(cleanup.CleanUp):
         global restore_terminal_encoding
         if restore_terminal_encoding is not None:
             Iris.set_terminal_encoding(restore_terminal_encoding)
+
+
+class TerminateSubprocesses(cleanup.CleanUp):
+    """Class for terminiting subprocesses, such as local web server instances."""
+    @staticmethod
+    def at_exit():
+        if hasattr(Iris, 'process_list'):
+            logger.debug('There are %s queued process(es) to terminate.' % len(Iris.process_list))
+            for process in Iris.process_list:
+                logger.debug('Terminating process.')
+                process.terminate()
+                process.join()
+        if Settings.is_mac():
+            # Extra call to shutdown the program we use to check keyboard lock,
+            # in case Iris was terminated abruptly.
+            shutdown_process('Xquartz')
 
 
 def initialize_logger_level(level):

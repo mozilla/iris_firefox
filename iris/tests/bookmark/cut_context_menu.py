@@ -12,12 +12,11 @@ class Test(BaseTest):
         self.meta = 'Cut context menu option works properly.'
         self.test_case_id = '4152'
         self.test_suite_id = '75'
-        self.blocked_by = 'https://netbeans.org/bugzilla/show_bug.cgi?id=256674'
 
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
@@ -29,7 +28,7 @@ class Test(BaseTest):
         close_sidebar_search_pattern = Pattern('close_sidebar_search.png')
         moz_sidebar_bookmark = Pattern('moz_sidebar_bookmark.png')
         drag_area = Pattern('drag_area.png')
-        moz_location_changed = Pattern('moz_sidebar_bookmark_location_changed.png')
+        moz_location_changed = Pattern('moz_sidebar_bookmark_location_changed.png').similar(0.6)
         bookmarks_sidebar_menu_pattern = SidebarBookmarks.BOOKMARKS_MENU
         bookmarks_sidebar_menu_selected_pattern = SidebarBookmarks.BOOKMARKS_MENU_SELECTED
         view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
@@ -82,4 +81,4 @@ class Test(BaseTest):
 
         pasted_bookmark_assertion = exists(moz_location_changed, 10)
         assert_true(self, pasted_bookmark_assertion,
-                    'Moz Bookmark is present into a different directory, cut option works as expected.')
+                    'Moz Bookmark has been moved to a different directory, cut option works as expected.')

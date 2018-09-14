@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case checks the zoom indicator animation from the url bar.'
+        self.test_case_id = '7451'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -43,8 +45,7 @@ class Test(BaseTest):
 
         zoom_out()
 
-        if Settings.get_os() == Platform.MAC:
-            select_location_bar()
+        select_location_bar()
 
         expected = new_region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar for '

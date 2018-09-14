@@ -14,15 +14,19 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
-        self.set_profile_pref('browser.tabs.warnOnClose;true')
+        self.profile = Profile.BRAND_NEW
 
     def run(self):
         close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
-        cancel_multiple_tabs_warning_pattern = Pattern('cancel_multiple_tabs_warning.png')
-        close_multiple_tabs_warning_logo_pattern = Pattern('close_multiple_tabs_warning_logo.png')
         home_button_pattern = NavBar.HOME_BUTTON
-        maximize_button_pattern = Pattern('maximize_button.png')
-        restore_button_pattern = Pattern('restore_button.png')
+
+        if Settings.is_mac():
+            cancel_multiple_tabs_warning_pattern = Pattern('cancel_multiple_tabs_warning.png')
+
+        if Settings.is_linux():
+            close_multiple_tabs_warning_logo_pattern = Pattern('close_multiple_tabs_warning_logo.png')
+            maximize_button_pattern = Pattern('maximize_button.png')
+            restore_button_pattern = Pattern('restore_button.png')
 
         new_tab()
 

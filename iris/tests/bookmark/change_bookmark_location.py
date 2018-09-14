@@ -16,7 +16,7 @@ class Test(BaseTest):
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
@@ -29,7 +29,7 @@ class Test(BaseTest):
         save_pattern = Pattern('save_bookmark_name.png')
         changed_toolbar_bookmark_pattern = Pattern('moz_changed_toolbar_bookmark.png')
         moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
-        sidebar_bookmark_location_changed_pattern = Pattern('moz_sidebar_bookmark_location_changed.png')
+        sidebar_bookmark_location_changed_pattern = Pattern('moz_sidebar_bookmark_location_changed.png').similar(0.6)
         moz_page = Pattern('moz_article_page.png')
         bookmark_changed_location_pattern = Pattern('moz_changed_location_bookmark.png')
         properties_option = Pattern('properties_option.png')
@@ -70,7 +70,9 @@ class Test(BaseTest):
 
         access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
-        drag_drop(bookmark_changed_location_pattern, drag_area_pattern, 0.5)
+        time.sleep(Settings.UI_DELAY_LONG)
+
+        drag_drop(bookmark_changed_location_pattern, drag_area_pattern, 1)
 
         try:
             wait(changed_toolbar_bookmark_pattern, 10)

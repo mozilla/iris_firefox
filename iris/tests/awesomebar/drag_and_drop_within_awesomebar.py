@@ -29,7 +29,7 @@ class Test(BaseTest):
         # Highlight the selected area.
         try:
             wait(text_to_be_highlighted, 10)
-            logger.debug('The text is present on the page')
+            logger.debug('The text is present on the page.')
             width, height = get_image_size(text_to_be_highlighted)
             location = image_search(text_to_be_highlighted)
             location_from = Location(location.x, location.y + height / 2)
@@ -38,14 +38,14 @@ class Test(BaseTest):
         except FindError:
             raise FindError('The text is not present on the page, aborting.')
 
-        # Wait for text to be highlighted
+        # Wait for text to be highlighted.
         try:
-            wait(highlighted_text, 10)
+            wait(highlighted_text.similar(0.7), 10)
             logger.debug('Selected text is present on the page.')
         except FindError:
             raise FindError('Selected text is not present on the page, aborting.')
 
-        # Drag and drop highlighted text into awesomebar
+        # Drag and drop highlighted text into awesomebar.
         try:
             drag_drop(highlighted_text, drag_area, 0.5)
         except FindError:

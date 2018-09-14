@@ -16,7 +16,7 @@ class Test(BaseTest):
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
@@ -28,6 +28,7 @@ class Test(BaseTest):
         file_format = Pattern('html_file_format.png')
         import_and_backup_button = Pattern('import_and_backup_button.png')
         save = Pattern('save_button.png')
+        overwrite_save = Pattern('overwrite_save.png')
 
         navigate('about:blank')
 
@@ -50,10 +51,10 @@ class Test(BaseTest):
         save_auxiliary_window_assert = exists(save, 10)
         assert_true(self, save_auxiliary_window_assert, 'Save auxiliary window is present on the page.')
 
-        file_format_assert = exists(file_format, 10)
-        assert_true(self, file_format_assert, 'File format has been found.')
-
         click(save)
+
+        if exists(overwrite_save, 10):
+            click(overwrite_save)
 
         file_saved_assert = wait_vanish(file_format, 10)
         assert_true(self, file_saved_assert, 'The HTML file has been successfully saved.')

@@ -16,7 +16,7 @@ class Test(BaseTest):
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
@@ -26,7 +26,7 @@ class Test(BaseTest):
         moz_draggable_pattern = Pattern('moz_sidebar_bookmark.png')
         drag_area_pattern = Pattern('drag_area.png')
         dragged_bookmark_pattern = Pattern('moz_toolbar_dragged_bookmark.png')
-        firefox_bookmark = Pattern('firefox_bookmark.png')
+        firefox_bookmark = Pattern('firefox_bookmark.png').similar(0.5)
         pocket_bookmark = Pattern('pocket_sidebar_bookmark.png')
         firefox_toolbar_bookmark = Pattern('firefox_toolbar_bookmark.png')
         pocket_toolbar_bookmark = Pattern('pocket_toolbar_bookmark.png')

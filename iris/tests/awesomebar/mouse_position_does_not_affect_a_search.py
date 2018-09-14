@@ -41,13 +41,14 @@ class Test(BaseTest):
         # engine(e.g 'DuckDuckGo') icon in the awesomebar autocomplete area.
         new_tab()
         select_location_bar()
-        hover(coord)
 
         # Type a partial part of the above address.
         type('127')
 
         expected = region.exists(localhost, 10)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
+
+        hover(coord)
 
         expected = exists(hover_duck_duck_go_one_off_button, 10)
         assert_true(self, expected, 'Mouse is over the \'DuckDuckGo\' search engine.')

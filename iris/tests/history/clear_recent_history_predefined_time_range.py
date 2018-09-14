@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Clear Recent History from a predefined time range.'
+        self.test_case_id = '172044'
+        self.test_suite_id = '2000'
 
     def setup(self):
         """Test case setup

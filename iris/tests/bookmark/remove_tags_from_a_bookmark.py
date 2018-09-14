@@ -7,7 +7,7 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-
+    
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Specific tags can be removed from a bookmark'
@@ -17,7 +17,7 @@ class Test(BaseTest):
     def setup(self):
         """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        Override the setup method to use a pre-canned bookmarks profile.
         """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
@@ -28,7 +28,7 @@ class Test(BaseTest):
         moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
-        done_button_from_star_menu = Pattern('done_button_from_star_menu.png')
+        done_button_from_star_menu = Pattern('done_button.png')
         bookmark_button_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -72,6 +72,9 @@ class Test(BaseTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
+
         try:
             right_upper_corner.wait(bookmark_button_pattern, 10)
             logger.debug('Bookmark star is present on the page.')
@@ -81,12 +84,25 @@ class Test(BaseTest):
 
         time.sleep(Settings.UI_DELAY)
 
-        type(Key.TAB)
-
-        edit_delete()
+        if Settings.get_os() == Platform.MAC:
+            type(Key.TAB)
+            edit_delete()
+        elif Settings.get_os() == Platform.WINDOWS:
+            for i in range(3):
+                type(Key.TAB)
+            edit_delete()
+        else:
+            edit_delete()
 
         click(done_button_from_star_menu)
 
-        removed_tags_assert = wait_vanish(moz_bookmark_pattern, 10)
-        assert_true(self, removed_tags_assert, 'Tags has been successfully removed from Moz bookmark.')
+        bookmarks_sidebar('close')
 
+        navigate('about:blank')
+
+        bookmarks_sidebar('open')
+
+        paste('iris')
+
+        removed_tags_assert = exists(moz_bookmark_pattern, 10)
+        assert_false(self, removed_tags_assert, 'Tags has been successfully removed from Moz bookmark.')

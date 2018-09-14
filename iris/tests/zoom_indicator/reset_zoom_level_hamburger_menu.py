@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks the zoom level reset functionality from the hamburger menu.'
+        self.test_case_id = '7457'
+        self.test_suite_id = '242'
 
     def run(self):
         url1 = 'about:home'
@@ -60,10 +62,16 @@ class Test(BaseTest):
                     'Zoom indicator is correctly displayed in the url bar after zoom level is increased.')
 
         click(hamburger_menu_pattern)
-        click(zoom_control_toolbar_increase_pattern.target_offset(-40, 0))
+        click(zoom_control_toolbar_increase_pattern.target_offset(-40, 10))
+
+        select_location_bar()
 
         expected = new_region.exists(hamburger_menu_zoom_indicator_pattern, 10)
         assert_true(self, expected, 'Zoom indicator is successfully reset to default in hamburger menu.')
 
-        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
-        assert_true(self, expected, 'Zoom indicator is displayed anymore in the url bar.')
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
+            expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.95), 10)
+            assert_true(self, expected, 'Zoom indicator is displayed anymore in the url bar.')
+        else:
+            expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.93), 10)
+            assert_true(self, expected, 'Zoom indicator is displayed anymore in the url bar.')

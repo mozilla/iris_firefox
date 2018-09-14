@@ -11,13 +11,14 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test case checks that \'zoom text only\' option works correctly.'
+        self.test_case_id = '7461'
+        self.test_suite_id = '242'
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
         url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
         url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png').similar(0.7)
-        view_menu_pattern = Pattern('view_menu.png')
         zoom_text_only_check_pattern = Pattern('zoom_text_only_check.png')
 
         navigate(url)
@@ -55,9 +56,6 @@ class Test(BaseTest):
 
         expected = region.exists(url_bar_90_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
-
-        if Settings.get_os() == Platform.MAC:
-            click(view_menu_pattern)
 
         select_zoom_menu_option(Option.RESET)
 

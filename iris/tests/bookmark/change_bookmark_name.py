@@ -25,6 +25,9 @@ class Test(BaseTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
+
         bookmark_page()
 
         time.sleep(Settings.UI_DELAY)

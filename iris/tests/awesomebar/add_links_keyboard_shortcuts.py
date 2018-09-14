@@ -34,7 +34,7 @@ class Test(BaseTest):
             type(Key.ENTER)
             key_up(Key.CMD)
 
-        expected = region.exists(cnn_tab_pattern, 10) and region.exists(cnn_icon_pattern, 10)
+        expected = region.exists(cnn_tab_pattern, 15) and region.exists(cnn_icon_pattern, 10)
         assert_true(self, expected, 'CNN page successfully loaded .')
 
         # In a new tab, navigate to the 'Facebook' page using the 'CTRL'/'CMD' + 'ENTER' keys starting from the name of

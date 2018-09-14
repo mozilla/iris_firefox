@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Copy a website from the History sidebar and paste it into the URL bar.'
+        self.test_case_id = '120129'
+        self.test_suite_id = '2000'
 
     def setup(self):
         """Test case setup
