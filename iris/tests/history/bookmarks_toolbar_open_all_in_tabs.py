@@ -22,25 +22,32 @@ class Test(BaseTest):
         """
         BaseTest.setup(self)
         self.profile = Profile.LIKE_NEW
-        self.set_profile_pref("browser.startup.homepage;about:newtab|https://www.mozilla.org/en-US/privacy/firefox/")
+        self.set_profile_pref("browser.warnOnQuit;false")
+
 
 
         return
 
     def run(self):
+        privacy_url="http://www.mozilla.org/en-US/privacy/firefox/"
         search_history_box_pattern = Pattern('search_history_box.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         today_bookmarks_toolbar_pattern = Pattern('today_bookmarks_toolbar.png')
         firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo.png')
-        iris_logo_pattern = Pattern('iris_logo.png')
+        iris_tab_icon = Pattern('iris_logo_tab.png')
+        mozilla_tab_icon = Pattern('mozilla_logo_tab.png')
+
 
         # Open a page to create some history.
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-
         assert_true(self, expected_1, 'Mozilla page loaded successfully.')
+
+        next_tab()
+        navigate(privacy_url)
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
@@ -69,9 +76,7 @@ class Test(BaseTest):
         # Check that all the pages loaded successfully.
         expected_6 = exists(firefox_privacy_logo_pattern, 10)
         assert_true(self, expected_6, 'Firefox Privacy Notice loaded successfully.')
-        next_tab()
-        expected_7 = exists(iris_logo_pattern, 10)
+        expected_7 = exists(iris_tab_icon, 10)
         assert_true(self, expected_7, 'Iris local page loaded successfully.')
-        next_tab()
-        expected_8 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected_8 = exists(mozilla_tab_icon, 10)
         assert_true(self, expected_8, 'Mozilla page loaded successfully.')
