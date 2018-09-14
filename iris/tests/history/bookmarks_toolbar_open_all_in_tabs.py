@@ -22,6 +22,9 @@ class Test(BaseTest):
         """
         BaseTest.setup(self)
         self.profile = Profile.LIKE_NEW
+        self.set_profile_pref("browser.startup.homepage;about:newtab|https://www.mozilla.org/en-US/privacy/firefox/")
+
+
         return
 
     def run(self):
@@ -36,6 +39,7 @@ class Test(BaseTest):
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
+
         assert_true(self, expected_1, 'Mozilla page loaded successfully.')
 
         # Open the Bookmarks toolbar.

@@ -42,25 +42,12 @@ class Test(BaseTest):
         expected_3 = exists(clear_recent_history_window, 10)
         assert_true(self, expected_3, 'Clear Recent History window was displayed properly.')
 
-        if Settings.is_mac():
-            pref_list = [clear_history_dialog_box_logins, clear_history_dialog_box_browsing,
-                         clear_history_dialog_box_cache, clear_history_dialog_box_cookies,
-                         clear_history_dialog_box_form]
-            for image in pref_list:
-                if exists(image, 10):
-                    click(image)
-
-
-
-
-        else:
-            type(Key.TAB)
-            type(Key.ENTER)
-
-        type(Key.TAB)
-        for i in range(5):
-            type(Key.SPACE)
-            type(Key.DOWN)
+        pref_list = [clear_history_dialog_box_logins, clear_history_dialog_box_browsing,
+                     clear_history_dialog_box_cache, clear_history_dialog_box_cookies,
+                     clear_history_dialog_box_form]
+        for image in pref_list:
+            if exists(image, 10):
+                click(image)
 
         # Check that the 'Clear Now' button is disabled.
         expected_4 = exists(clear_now_button_disabled.similar(0.9), 10)
