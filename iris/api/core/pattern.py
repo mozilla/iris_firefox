@@ -196,16 +196,14 @@ def check_image_path(caller, image):
     module_directory = os.path.split(caller)[0]
     parent_directory = os.path.basename(module_directory)
     file_name = image.split('.')[0]
-    locales = FirefoxApp.LOCALES
-    locales.append('ja')
     names = [image, '%s@2x.png' % file_name, '%s@3x.png' % file_name, '%s@4x.png' % file_name]
 
     # We will look at all possible paths relative to the calling file, with this priority:
     #
     # - common root
     # - current platform root
-    # - common locale folders
-    # - current platform locale folders
+    # - common locale folder
+    # - current platform locale folder
     #
     # Each directory is scanned for four possible file names, depending on resolution.
     # If the above fails, we will look up the file name in the list of project-wide images,
@@ -221,15 +219,14 @@ def check_image_path(caller, image):
     for name in names:
         paths.append(os.path.join(platform_directory, name))
 
-    for locale in locales:
-        locale_directory = os.path.join(common_directory, locale)
-        for name in names:
-            paths.append(os.path.join(locale_directory, name))
+    current_locale = parse_args().locale
+    common_locale_directory = os.path.join(common_directory, current_locale)
+    for name in names:
+        paths.append(os.path.join(common_locale_directory, name))
 
-    for locale in locales:
-        locale_directory = os.path.join(platform_directory, locale)
-        for name in names:
-            paths.append(os.path.join(locale_directory, name))
+    platform_locale_directory = os.path.join(platform_directory, current_locale)
+    for name in names:
+        paths.append(os.path.join(platform_locale_directory, name))
 
     found = False
     image_path = None
