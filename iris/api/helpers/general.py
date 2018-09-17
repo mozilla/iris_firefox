@@ -762,7 +762,7 @@ def get_build_info():
         if parse_args().firefox != 'beta':
             fx_version_str = str(parse_args().firefox)
             build_path = os.path.join(get_working_dir(), 'cache',
-                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'core',
+                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'Firefox',
                                       'firefox')
         else:
             build_path = os.path.join(get_working_dir(), 'cache',
@@ -773,7 +773,7 @@ def get_build_info():
         if parse_args().firefox != 'beta':
             fx_version_str = str(parse_args().firefox)
             build_path = os.path.join(get_working_dir(), 'cache',
-                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'core',
+                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'firefox',
                                       'firefox')
         else:
             build_path = os.path.join(get_working_dir(), 'cache',
