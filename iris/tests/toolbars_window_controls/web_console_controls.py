@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This is a test case that checks if the Web Console controls work as expected'
+        self.meta = 'This is a test case that checks if the Web Console controls work as expected.'
 
     def run(self):
 
@@ -22,8 +22,9 @@ class Test(BaseTest):
         customize_dev_tools_pattern = Pattern('customize_developer_tools.png')
         customize_dev_tools_message_pattern = Pattern('customize_dev_tools_message.png')
         responsive_design_message_pattern = Pattern('responsive_design_message.png')
-        responsive_design_active_pattern = Pattern('responsive_design_active.png')
-        dock_to_side_pattern = Pattern('dock_to_side_option.png')
+        responsive_design_active_pattern = Pattern('responsive_design_active.png').similar(0.5)
+        dock_to_left_pattern = Pattern('dock_to_left.png')
+        dock_to_right_pattern = Pattern('dock_to_right.png')
         separate_window_pattern = Pattern('separate_window_option.png')
         dock_to_bottom_pattern = Pattern('dock_to_bottom_option.png')
 
@@ -36,18 +37,19 @@ class Test(BaseTest):
                            close_message_pattern]
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        left_upper_corner = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         button_region = Region(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
         for button in buttons:
             expected_buttons = button_region.exists(button, 5)
-            assert_true(self, expected_buttons, 'option %s has been found' % button)
+            assert_true(self, expected_buttons, 'option %s has been found.' % button)
 
         # Check if the labels are displayed when the cursor hovers over the options.
 
         for m_index, button in enumerate(buttons):
             button_region.hover(button)
             expected_messages = button_region.exists(button_messages[m_index], 10)
-            assert_true(self, expected_messages, 'Message %s found' % button_messages[m_index])
+            assert_true(self, expected_messages, 'Message %s found.' % button_messages[m_index])
 
         # Checking the button functionality.
 
@@ -59,14 +61,26 @@ class Test(BaseTest):
         button_region.click(customize_dev_tools_pattern)
 
         try:
-            wait(dock_to_side_pattern, 10)
-            logger.debug('Dock to side option found.')
-            click(dock_to_side_pattern)
+            wait(dock_to_left_pattern, 10)
+            logger.debug('Dock to left option found.')
+            click(dock_to_left_pattern)
         except FindError:
-            raise FindError('Dock to side option not found, aborting.')
+            raise FindError('Dock to left option not found, aborting.')
 
-        dock_to_side_assert = right_upper_corner.exists(customize_dev_tools_pattern, 10)
-        assert_true(self, dock_to_side_assert, 'Dock to side option works as expected.')
+        dock_to_left_assert = left_upper_corner.exists(customize_dev_tools_pattern, 10)
+        assert_true(self, dock_to_left_assert, 'Dock to left option works as expected.')
+
+        left_upper_corner.click(customize_dev_tools_pattern)
+
+        try:
+            wait(dock_to_right_pattern, 10)
+            logger.debug('Dock to right option found.')
+            click(dock_to_right_pattern)
+        except FindError:
+            raise FindError('Dock to right option not found, aborting.')
+
+        dock_to_right_assert = right_upper_corner.exists(customize_dev_tools_pattern, 10)
+        assert_true(self, dock_to_right_assert, 'Dock to right option works as expected.')
 
         right_upper_corner.click(customize_dev_tools_pattern)
 
@@ -90,7 +104,7 @@ class Test(BaseTest):
             raise FindError('Dock To Bottom option not found, aborting.')
 
         dock_to_bottom_assert = exists(close_dev_tools_button_pattern, 10)
-        assert_true(self, dock_to_bottom_assert, 'Dock To Bottom option works as expected')
+        assert_true(self, dock_to_bottom_assert, 'Dock To Bottom option works as expected.')
 
         button_region.click(close_dev_tools_button_pattern)
 

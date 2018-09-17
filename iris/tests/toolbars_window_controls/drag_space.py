@@ -22,17 +22,15 @@ class Test(BaseTest):
         drag_space_enabled_new_tab_pattern = Pattern('drag_space_enabled_new_tab.png')
         window_controls_restore_pattern = Pattern('window_controls_restore.png')
         window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
-        close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+        zoom_controls_customize_page_pattern = Pattern('zoom_controls_customize_page.png')
 
         navigate(url)
         click_hamburger_menu_option('Customize...')
 
-        # TODO take another pattern for this step. OCR is failing to find 'Drag' text
-
-        # expected_1 = exists('Drag', 10, in_region=Region(0, 0, 150, 150))
-        # logger.debug('Searching for text \'Drag\'')
-        assert_true(self, True, '\'Customize\' page present.')
+        expected_1 = exists(zoom_controls_customize_page_pattern, 10,
+                            in_region=Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        assert_true(self, expected_1, '\'Customize\' page successfully loaded.')
 
         expected_2 = exists(customize_page_drag_space_disabled_pattern, 10) and exists(drag_space_disabled_pattern, 10)
         assert_true(self, expected_2, '\'Customize\' page is correctly displayed before \'drag space\' is enabled')
@@ -82,9 +80,6 @@ class Test(BaseTest):
 
         if exists(hamburger_menu_pattern, 10):
             close_window()
-            expected_10 = exists(window_controls_restore_pattern, 2)
-            assert_true(self, expected_10, 'Close multiple tabs warning is present')
-            click(close_multiple_tabs_warning_pattern)
             try:
                 expected_11 = wait_vanish(hamburger_menu_pattern, 10)
                 assert_true(self, expected_11, 'Window successfully closed')
