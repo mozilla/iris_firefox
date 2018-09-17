@@ -65,6 +65,7 @@ class Test(BaseTest):
             assert_true(self, expected, 'Found \'hamburger menu\'')
 
             minimize_window()
+            time.sleep(Settings.UI_DELAY)
             expected = False
             try:
                 expected = wait_vanish(hamburger_menu_pattern, 10)

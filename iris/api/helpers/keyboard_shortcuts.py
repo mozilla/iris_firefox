@@ -636,7 +636,7 @@ def force_close():
 
 def open_web_developer_menu():
     """
-    Open tWeb_developer tool.
+    Open the Web_developer tool.
     """
     type(text=Key.F2, modifier=KeyModifier.SHIFT)
 

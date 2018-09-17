@@ -346,6 +346,7 @@ def address_crash_reporter():
 def open_about_firefox():
     if Settings.get_os() == Platform.MAC:
         # Key stroke into Firefox Menu to get to About Firefox.
+        type(Key.F3, modifier=KeyModifier.CTRL)
         type(Key.F2, modifier=KeyModifier.CTRL)
 
         time.sleep(0.5)
