@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class ControlCenter(object):
 
-    COMMANDS = ['delete', 'finish']
+    COMMANDS = ['delete', 'go', 'cancel']
 
     @staticmethod
     def is_command(request):
@@ -41,8 +41,10 @@ class ControlCenter(object):
                 ControlCenter.delete(request.path.split('?')[1])
             except KeyError:
                 logger.error('Malformed delete command: %s' % request.path)
-        elif 'finish' in request.path:
-            ControlCenter.finish(request)
+        elif 'go' in request.path:
+            ControlCenter.go(request)
+        elif 'cancel' in request.path:
+            ControlCenter.cancel(request)
         return True
 
     @staticmethod
@@ -77,11 +79,22 @@ class ControlCenter(object):
             logger.error('Run directory does not exist: %s' % target_run)
 
     @staticmethod
-    def finish(request):
+    def go(request):
         """
         Find POST body, handle JSON in body
         """
         logger.debug('Finish command received: %s' % request.path)
-        request.set_result('a new beginning')
+        request.set_result('JSON data here')
+        logger.debug(request.rfile)
+        request.stop_server()
+        return
+
+    @staticmethod
+    def cancel(request):
+        """
+        Exit Iris with no further action.
+        """
+        logger.debug('Cancel command received: %s' % request.path)
+        request.set_result('cancel')
         request.stop_server()
         return
