@@ -125,6 +125,8 @@ class Iris(object):
                 # Temporary - we will parse this returned value and turn it into runtime data.
                 logger.info('Received data from control center: %s' % server.result)
                 return True
+        else:
+            return True
 
     def initialize_run(self):
         self.start_local_web_server(self.local_web_root, self.args.port)
