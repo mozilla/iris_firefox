@@ -16,6 +16,7 @@ class Test(BaseTest):
     def setup(self):
         BaseTest.setup(self)
         self.set_profile_pref("app.update.log;true")
+        self.maximize_window = False
 
     def run(self):
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')

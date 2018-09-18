@@ -6,16 +6,12 @@ import argparse
 import logging
 import os
 
-import iris.firefox.downloader as fd
-
 
 logger = logging.getLogger(__name__)
 
 
 def parse_args():
     home = os.path.expanduser('~')
-    release_choice, _, test_default = fd.FirefoxDownloader.list()
-    release_choice.append('local')
 
     log_level_strings = ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG']
 
@@ -47,10 +43,9 @@ def parse_args():
                         help='Submit email report',
                         action='store_true')
     parser.add_argument('-f', '--firefox',
-                        help=('Firefox version to test. It can be one of {%s}, a package file, '
-                              'or a build directory (default: "%s")') % (','.join(release_choice), test_default),
+                        help='Firefox version to test',
                         action='store',
-                        default=test_default)
+                        default='latest-beta')
     parser.add_argument('-g', '--image_debug',
                         help='Temporary flag to hunt down misplaced pattern images.',
                         action='store_true')

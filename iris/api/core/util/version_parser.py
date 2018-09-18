@@ -116,11 +116,15 @@ def has_letters(string):
 
 
 def get_channel_from_version(version):
-    if not has_letters(version):
-        return 'release'
-    elif 'b' in version:
-        return 'beta'
-    elif 'esr' in version:
-        return 'esr'
-    else:
-        return 'nightly'
+    try:
+        Version(version)
+        if not has_letters(version):
+            return 'release'
+        elif 'b' in version:
+            return 'beta'
+        elif 'esr' in version:
+            return 'esr'
+        else:
+            return 'nightly'
+    except InvalidVersion:
+        return version

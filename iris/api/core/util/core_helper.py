@@ -230,8 +230,7 @@ def verify_test_compat(test, app):
     correct_channel = app.fx_channel in test.channel
     correct_locale = app.args.locale in test.locale
     correct_platform = app.os in test.platform
-    result = True == correct_platform == correct_channel == correct_locale == not_excluded
-    return result
+    return correct_platform == correct_channel == correct_locale == not_excluded
 
 
 def filter_list(original_list, exclude_list):
