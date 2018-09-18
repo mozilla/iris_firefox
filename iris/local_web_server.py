@@ -122,8 +122,9 @@ class CustomHandler(BaseHTTPRequestHandler):
                 path = 'index.html'
             else:
                 path = self.path[1:]
-            logger.debug('Path on disk: %s' % path)
-            f = open(path, 'r')
+            normpath = os.path.normpath(path)
+            logger.debug('Path on disk: %s' % normpath)
+            f = open(os.path.normpath(normpath), 'rb')
             self.wfile.write(f.read())
 
     def do_HEAD(self):
@@ -149,7 +150,6 @@ class LocalWebServer(object):
     ACTIVE = True
 
     def __init__(self, path, port):
-        print 'New web server'
         logger.debug('New LocalWebServer on path/port: %s %s' % (path, port))
         LocalWebServer.ACTIVE = True
         self.port = port
@@ -162,7 +162,6 @@ class LocalWebServer(object):
         LocalWebServer.ACTIVE = False
 
     def start(self):
-        print 'Server start'
         global final_result
 
         os.chdir(self.web_root)
