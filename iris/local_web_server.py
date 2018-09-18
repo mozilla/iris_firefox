@@ -83,6 +83,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                      'png': 'image/png', 'json': 'application/json', 'ico': 'image/x-icon'}
 
     def stop_server(self):
+        logger.debug('Handler stop_server')
         LocalWebServer.ACTIVE = False
 
     def set_result(self, arg):
@@ -90,6 +91,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         final_result = arg
 
     def _set_headers(self):
+        logger.debug(('Handler _set_headers'))
         self.send_response(200)
         value = 'text/html'
         if self.path == '/' or self.path.startswith('/?'):
@@ -110,6 +112,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        logger.debug('Handler do_GET')
         logger.debug(self.path)
         if cc.is_command(self):
             cc.do_command(self)
@@ -127,6 +130,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         self._set_headers()
 
     def do_POST(self):
+        logger.debug('Handler do_POST')
         if cc.is_command(self):
             cc.do_command(self)
         else:
@@ -145,6 +149,7 @@ class LocalWebServer(object):
     ACTIVE = True
 
     def __init__(self, path, port):
+        logger.debug('New LocalWebServer on path/port: %s %s' % (path, port))
         LocalWebServer.ACTIVE = True
         self.port = port
         self.web_root = path
