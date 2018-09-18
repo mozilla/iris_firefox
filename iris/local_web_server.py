@@ -149,6 +149,7 @@ class LocalWebServer(object):
     ACTIVE = True
 
     def __init__(self, path, port):
+        print 'New web server'
         logger.debug('New LocalWebServer on path/port: %s %s' % (path, port))
         LocalWebServer.ACTIVE = True
         self.port = port
@@ -161,6 +162,7 @@ class LocalWebServer(object):
         LocalWebServer.ACTIVE = False
 
     def start(self):
+        print 'Server start'
         global final_result
 
         os.chdir(self.web_root)
