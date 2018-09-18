@@ -61,9 +61,11 @@ class Iris(object):
         Iris.fix_terminal_encoding()
         self.initialize_platform()
         self.verify_config()
-        self.control_center()
-        self.initialize_run()
-        run(self)
+        if self.control_center():
+            self.initialize_run()
+            run(self)
+        else:
+            self.finish(0)
 
     def verify_config(self):
         self.check_keyboard_state()
@@ -115,13 +117,14 @@ class Iris(object):
 
             # Check the result of the user's decision. If they have chosen to run tests,
             # we will continue. Otherwise, abort the current run.
-            if server.result is not None:
-                # Temporary - we will parse this returned value and turn it into runtime data.
-                logger.info('Received data from control center: %s' % server.result)
-            else:
+            if server.result == 'cancel':
                 # Temporary - we will quit Iris gracefully and clean up.
                 logger.info('Nothing received from control center.')
-        return
+                return False
+            else:
+                # Temporary - we will parse this returned value and turn it into runtime data.
+                logger.info('Received data from control center: %s' % server.result)
+                return True
 
     def initialize_run(self):
         self.start_local_web_server(self.local_web_root, self.args.port)
