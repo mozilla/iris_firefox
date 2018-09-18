@@ -459,6 +459,7 @@ def previous_tab():
 
 def quit_firefox():
     """Quit the browser."""
+    time.sleep(Settings.FX_DELAY)
     if Settings.get_os() == Platform.MAC:
         type(text='q', modifier=KeyModifier.CMD)
     elif Settings.get_os() == Platform.WINDOWS:

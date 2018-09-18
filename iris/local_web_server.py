@@ -5,7 +5,7 @@
 
 import logging
 import os
-from BaseHTTPServer import HTTPServer
+from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 
 from control_center import ControlCenter as cc
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 final_result = None
 
 
-class CustomHandler(SimpleHTTPRequestHandler):
+class _CustomHandler(SimpleHTTPRequestHandler):
 
     # The main purpose of this class is to override several superclass methods, in order to
     # prevent undesired error messages from appearing in the console. The HTTPServer used here
@@ -76,6 +76,56 @@ class CustomHandler(SimpleHTTPRequestHandler):
             output += str(arg) + '\t'
         logger.debug(output)
 
+class CustomHandler(BaseHTTPRequestHandler):
+    def stop_server(self):
+        LocalWebServer.ACTIVE = False
+
+    def set_result(self, arg):
+        global final_result
+        final_result = arg
+
+    def _set_headers(self):
+        self.send_response(200)
+        if self.path.endswith('.html'):
+            value = 'text/html'
+        elif self.path.endswith('.css'):
+            value = 'text/css'
+        elif self.path.endswith('.js'):
+            value = 'text/javascript'
+        else:
+            value = 'text/html'
+        self.send_header('Content-Type', value)
+        self.end_headers()
+
+    def do_GET(self):
+        logger.debug(self.path)
+        self._set_headers()
+        if cc.is_command(self):
+            cc.do_command(self)
+        else:
+            if self.path == '/' or self.path.startswith('/?'):
+                path = 'index.html'
+            else:
+                path = self.path[1:]
+            logger.debug('Path on disk: %s' % path)
+            f = open(path, 'r')
+            self.wfile.write(f.read())
+
+    def do_HEAD(self):
+        self._set_headers()
+
+    def do_POST(self):
+        if cc.is_command(self):
+            cc.do_command(self)
+        self._set_headers()
+
+    def log_message(self, format_arg, *args):
+        # Eliminate the default output from the HTTP server unless we are in debug mode.
+        output = ''
+        for arg in args:
+            output += str(arg) + '\t'
+        logger.debug(output)
+
 
 class LocalWebServer(object):
 
@@ -96,13 +146,13 @@ class LocalWebServer(object):
         global final_result
 
         os.chdir(self.web_root)
-        handler = SimpleHTTPRequestHandler
+        handler = CustomHandler
         server = HTTPServer
 
         try:
             server_address = (self.host, self.port)
             handler.protocol_version = 'HTTP/1.0'
-            httpd = server(server_address, CustomHandler)
+            httpd = server(server_address, handler)
             sock_name = httpd.socket.getsockname()
             logger.info('Serving HTTP on %s port %s.' % (sock_name[0], sock_name[1]))
             while LocalWebServer.ACTIVE:
