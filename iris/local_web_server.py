@@ -101,6 +101,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             pos = path.rindex('.') + 1
             suffix = path[pos:]
             value = CustomHandler.CONTENT_TYPES[suffix]
+            logger.debug('File extension %s, content type %s' % (suffix, value))
         except IndexError:
             logger.warning('Unknown file type for resource: %s' % path)
         except ValueError:
@@ -110,10 +111,10 @@ class CustomHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         logger.debug(self.path)
-        self._set_headers()
         if cc.is_command(self):
             cc.do_command(self)
         else:
+            self._set_headers()
             if self.path == '/' or self.path.startswith('/?'):
                 path = 'index.html'
             else:
@@ -128,6 +129,8 @@ class CustomHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if cc.is_command(self):
             cc.do_command(self)
+        else:
+            self._set_headers()
 
     def log_message(self, format_arg, *args):
         # Eliminate the default output from the HTTP server unless we are in debug mode.
