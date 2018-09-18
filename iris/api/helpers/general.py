@@ -760,10 +760,7 @@ def get_build_info():
 
     if Settings.get_os() == Platform.MAC:
         if parse_args().firefox != 'beta':
-            fx_version_str = str(parse_args().firefox)
-            build_path = os.path.join(get_working_dir(), 'cache',
-                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'Firefox',
-                                      'firefox')
+            build_path = os.path.join(get_current_run_dir(), 'Firefox.app', 'Contents', 'MacOS', 'firefox')
         else:
             build_path = os.path.join(get_working_dir(), 'cache',
                                       'firefox-beta_%s_%s' % (parse_args().locale, Settings.get_os()),
