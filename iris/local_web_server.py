@@ -77,6 +77,11 @@ class _CustomHandler(SimpleHTTPRequestHandler):
         logger.debug(output)
 
 class CustomHandler(BaseHTTPRequestHandler):
+
+    CONTENT_TYPES = {'htm': 'text/html', 'html': 'text/html', 'css': 'text/css',
+                     'js': 'text/javascript', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
+                     'png': 'image/png', 'json': 'application/json', 'ico': 'image/x-icon'}
+
     def stop_server(self):
         LocalWebServer.ACTIVE = False
 
@@ -86,14 +91,20 @@ class CustomHandler(BaseHTTPRequestHandler):
 
     def _set_headers(self):
         self.send_response(200)
-        if self.path.endswith('.html'):
-            value = 'text/html'
-        elif self.path.endswith('.css'):
-            value = 'text/css'
-        elif self.path.endswith('.js'):
-            value = 'text/javascript'
+        value = 'text/html'
+        if self.path == '/' or self.path.startswith('/?'):
+            path = 'index.html'
         else:
-            value = 'text/html'
+            path = self.path[1:]
+
+        try:
+            pos = path.rindex('.') + 1
+            suffix = path[pos:]
+            value = CustomHandler.CONTENT_TYPES[suffix]
+        except IndexError:
+            logger.warning('Unknown file type for resource: %s' % path)
+        except ValueError:
+            logger.warning('Can\'t find file extension: %s' % path)
         self.send_header('Content-Type', value)
         self.end_headers()
 
@@ -117,7 +128,6 @@ class CustomHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if cc.is_command(self):
             cc.do_command(self)
-        self._set_headers()
 
     def log_message(self, format_arg, *args):
         # Eliminate the default output from the HTTP server unless we are in debug mode.
