@@ -9,32 +9,23 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'This tests the ability to activate/deactivate the activity stream'
+        self.meta = 'This tests the ability to activate/deactivate the activity stream.'
         self.fx_version = '>=62'
 
     def run(self):
+        top_sites_pattern = Pattern('top_sites.png')
+
         preference = 'browser.newtabpage.activity-stream.feeds.topsites'
         change_preference(preference, 'false')
         new_tab()
-        new_tab()
 
-        # Verify that activity stream has been disabled
-        screen_text = get_firefox_region().text()
-        logger.debug('Found text: %s' % screen_text)
-        expected_1 = 'TOP SITES' in screen_text
-        assert_false(self, expected_1, 'Find TOP SITES')
+        # Verify that activity stream has been disabled.
+        expected_2 = exists(top_sites_pattern, 10)
+        assert_false(self, expected_2, 'Find TOP SITES.')
 
         change_preference(preference, 'true')
         new_tab()
-        new_tab()
 
-        # Verify that activity stream has been enabled
-
-        # NOTE: sometimes fails due to poor text recognition
-        # e.g. "TOP SITES" is seen as "TOP srres" on at least one Linux config
-        # TODO: make more robust
-
-        screen_text = get_firefox_region().text()
-        expected_1 = 'TOP SITES' in screen_text
-        logger.debug('Found text: %s' % screen_text)
-        assert_true(self, expected_1, 'Find TOP SITES')
+        # Verify that activity stream has been enabled.
+        expected_3 = exists(top_sites_pattern, 10)
+        assert_true(self, expected_3, 'Find TOP SITES.')
