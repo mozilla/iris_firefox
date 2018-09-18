@@ -15,6 +15,7 @@ import pyautogui
 
 from iris.api.core.platform import Platform
 from parse_args import parse_args
+from version_parser import check_version
 
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
 SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
@@ -227,10 +228,12 @@ def verify_test_compat(test, app):
     for item in exclude:
         if item in app.fx_channel or item in app.os or item in app.args.locale:
             not_excluded = False
+    correct_version = True if test.fx_version == '' else check_version(app.version, test.fx_version)
     correct_channel = app.fx_channel in test.channel
     correct_locale = app.args.locale in test.locale
     correct_platform = app.os in test.platform
-    return correct_platform == correct_channel == correct_locale == not_excluded
+    result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded
+    return result
 
 
 def filter_list(original_list, exclude_list):
