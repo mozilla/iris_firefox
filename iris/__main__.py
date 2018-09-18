@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from distutils import dir_util
 from distutils.spawn import find_executable
 from multiprocessing import Process
@@ -113,6 +114,7 @@ class Iris(object):
 
             # Iris waits for the user to make a choice in the control center. Once they
             # make a decision, Firefox will quit.
+            time.sleep(0.5)
             quit_firefox()
 
             # Check the result of the user's decision. If they have chosen to run tests,
