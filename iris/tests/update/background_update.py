@@ -53,7 +53,7 @@ class Test(BaseTest):
             try:
                 wait(update_restart_pattern, 120)
                 click(update_restart_pattern)
-                wait(restart_to_update_button)
+                wait(restart_to_update_button, 20)
             except FindError:
                 raise FindError('Background update hamburger menu icon notification did not appear, aborting.')
 
@@ -70,5 +70,5 @@ class Test(BaseTest):
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        expected = exists(LocalWeb.MOZILLA_LOGO, 5)
+        expected = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, expected, 'Background update sanity test passed.')
