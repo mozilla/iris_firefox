@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from distutils import dir_util
 from distutils.spawn import find_executable
 from multiprocessing import Process
@@ -119,7 +120,7 @@ class Iris(object):
             # we will continue. Otherwise, abort the current run.
             if server.result == 'cancel':
                 # Temporary - we will quit Iris gracefully and clean up.
-                logger.info('Nothing received from control center.')
+                logger.info('Canceling Iris run.')
                 return False
             else:
                 # Temporary - we will parse this returned value and turn it into runtime data.
