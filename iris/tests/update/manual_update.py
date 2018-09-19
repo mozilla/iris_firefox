@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-from iris.api.core.util.update_rules import *
 
 
 class Test(BaseTest):
