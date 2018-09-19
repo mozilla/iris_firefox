@@ -42,7 +42,7 @@ class Test(BaseTest):
         expected = region.exists(search_settings_pattern, 10)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesomebar.')
 
-        expected = region.exists(amazon_one_off_button_pattern, 10)
+        expected = region.exists(amazon_one_off_button_pattern.similar(0.7), 10)
         assert_true(self, expected, 'The \'Amazon\' one-off button found.')
 
         expected = region.exists(bing_one_off_button_pattern, 10)
