@@ -13,7 +13,6 @@ class FirefoxApp(object):
     RELEASE = 'release'
     NIGHTLY = 'nightly'
     ESR = 'esr'
-    LOCAL = 'local'
-    CHANNELS = [BETA, ESR, NIGHTLY, RELEASE, LOCAL]
+    CHANNELS = [BETA, ESR, NIGHTLY, RELEASE]
     LOCALES = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro',
                'ja-JP-mac' if get_os() == Platform.MAC else 'ja']

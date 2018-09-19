@@ -14,10 +14,14 @@ class Test(BaseTest):
 
     def run(self):
         # These asserts are for APIs that query the about:config preferences
-        assert_equal(self, self.app.version, get_firefox_version(), 'API for Firefox version is correct')
-        assert_equal(self, self.app.build_id, get_firefox_build_id(), 'API for Firefox build ID is correct')
-        assert_equal(self, self.app.fx_channel, get_firefox_channel(), 'API for Firefox channel is correct')
-        assert_equal(self, self.app.fx_locale, get_firefox_locale(), 'API for Firefox locale is correct')
+        assert_equal(self, self.app.version, get_firefox_version_from_about_support(),
+                     'API for Firefox version is correct')
+        assert_equal(self, self.app.build_id, get_firefox_build_id_from_about_support(),
+                     'API for Firefox build ID is correct')
+        assert_equal(self, self.app.fx_channel, get_firefox_channel_from_about_support(),
+                     'API for Firefox channel is correct')
+        assert_equal(self, self.app.fx_locale, get_firefox_locale_from_about_support(),
+                     'API for Firefox locale is correct')
 
         # These asserts are for APIs that query the about:support preferences
         assert_equal(self, self.app.version, get_support_info()['application']['version'],
@@ -30,9 +34,9 @@ class Test(BaseTest):
                      'API for Firefox locale is correct')
 
         # These asserts are for APIs that query the 'mozversion' module preferences
-        assert_equal(self, self.app.version, get_build_info()['application_version'],
+        assert_equal(self, self.app.version, get_firefox_version(self.app.fx_path),
                      'API for Firefox version is correct')
-        assert_equal(self, self.app.build_id, get_build_info()['platform_buildid'],
+        assert_equal(self, self.app.build_id, get_firefox_build_id(self.app.fx_path),
                      'API for Firefox build ID is correct')
-        assert_contains(self, get_build_info()['application_repository'], self.app.fx_channel,
+        assert_equal(self, self.app.fx_channel, get_firefox_channel(self.app.fx_path),
                      'API for Firefox channel is correct')
