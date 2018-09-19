@@ -12,9 +12,8 @@ from multiprocessing import Process
 
 import coloredlogs
 import pytesseract
-from mozdownload import FactoryScraper
+from mozdownload import FactoryScraper, errors
 from mozinstall import install, get_binary
-from mozversion import get_version
 
 import firefox.app as fa
 from api.core.key import Key
@@ -23,8 +22,8 @@ from api.core.settings import Settings
 from api.core.util.core_helper import *
 from api.core.util.parse_args import parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
-from api.core.util.version_parser import get_channel_from_version
-from api.helpers.general import launch_firefox, quit_firefox
+from api.helpers.general import launch_firefox, quit_firefox, get_firefox_channel, get_firefox_version, \
+    get_firefox_build_id
 from firefox import cleanup
 from local_web_server import LocalWebServer
 from test_runner import run
@@ -191,18 +190,10 @@ class Iris(object):
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 
     def update_run_log(self, new_data=None):
-        # Prepare the current entry.
-        meta = {}
-        meta['run_id'] = get_run_id()
-        meta['fx_version'] = self.version
-        meta['fx_build_id'] = self.build_id
-        meta['platform'] = self.os
-        meta['config'] = '%s, %s-bit, %s' % (Platform.OS_VERSION, Platform.OS_BITS, Platform.PROCESSOR)
-        meta['channel'] = self.fx_channel
-        meta['locale'] = self.fx_locale
-        meta['args'] = ' '.join(sys.argv)
-        meta['params'] = vars(self.args)
-        meta['log'] = os.path.join(get_current_run_dir(), 'iris_log.log')
+        meta = {'run_id': get_run_id(), 'fx_version': self.version, 'fx_build_id': self.build_id, 'platform': self.os,
+                'config': '%s, %s-bit, %s' % (Platform.OS_VERSION, Platform.OS_BITS, Platform.PROCESSOR),
+                'channel': self.fx_channel, 'locale': self.fx_locale, 'args': ' '.join(sys.argv),
+                'params': vars(self.args), 'log': os.path.join(get_current_run_dir(), 'iris_log.log')}
 
         repo = git.Repo(self.module_dir)
         meta['iris_version'] = 0.1
@@ -236,9 +227,7 @@ class Iris(object):
             tests = new_data['tests']
 
         run_file = os.path.join(get_current_run_dir(), 'run.json')
-        run_file_data = {}
-        run_file_data['meta'] = meta
-        run_file_data['tests'] = tests
+        run_file_data = {'meta': meta, 'tests': tests}
 
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
@@ -257,11 +246,8 @@ class Iris(object):
                 current_test = current_module.Test(self)
                 current_package = os.path.basename(os.path.dirname(current_module.__file__))
 
-                test_object = {}
-                test_object['name'] = module
-                test_object['module'] = current_module.__file__
-                test_object['meta'] = current_test.meta
-                test_object['package'] = current_package
+                test_object = {'name': module, 'module': current_module.__file__, 'meta': current_test.meta,
+                               'package': current_package}
 
                 if current_test.fx_version is '':
                     test_object['fx_version'] = 'all'
@@ -449,14 +435,14 @@ class Iris(object):
 
     def get_firefox(self):
         self.fx_path = self.get_test_candidate()
-        build_info = get_version(binary=self.fx_path)
-        self.fx_channel = get_channel_from_version(self.args.firefox)
-        self.version = build_info['application_version']
-        self.build_id = build_info['platform_buildid']
+        self.fx_channel = get_firefox_channel(self.fx_path)
+        self.version = get_firefox_version(self.fx_path)
+        self.build_id = get_firefox_build_id(self.fx_path)
         self.fx_locale = self.args.locale
 
     def get_test_candidate(self):
         """Download and extract a build candidate.
+
         Build may either refer to a Firefox release identifier, package, or build directory.
         :param:
             build: str with firefox build
@@ -491,16 +477,19 @@ class Iris(object):
 
         else:
             cache_dir = os.path.join(get_working_dir(), 'cache')
-            scraper = FactoryScraper('candidate',
-                                     version=self.args.firefox,
-                                     destination=cache_dir,
-                                     locale=self.args.locale)
-            print(scraper.base_url)
-            firefox_dmg = scraper.download()
-            install_folder = install(src=firefox_dmg,
-                                     dest=get_current_run_dir())
+            try:
+                scraper = FactoryScraper('candidate',
+                                         version=self.args.firefox,
+                                         destination=cache_dir,
+                                         locale=self.args.locale)
+                firefox_dmg = scraper.download()
+                install_folder = install(src=firefox_dmg,
+                                         dest=get_current_run_dir())
 
-            return get_binary(install_folder, 'Firefox')
+                return get_binary(install_folder, 'Firefox')
+            except errors.NotFoundError:
+                logger.critical('Specified build (%s) has not been found. Closing Iris ...' % self.args.firefox)
+                self.finish(5)
 
     @staticmethod
     def check_tesseract_path(dir_path):

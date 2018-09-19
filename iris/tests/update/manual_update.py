@@ -22,7 +22,7 @@ class Test(BaseTest):
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
         current_version = self.app.args.firefox
-        channel = get_channel_from_version(current_version)
+        channel = get_firefox_channel(self.app.fx_path)
         rule_dict = get_rule_for_current_channel(channel)
         if rule_dict is None:
             raise ValueError('No rules found for %s channel' % channel)
@@ -30,7 +30,8 @@ class Test(BaseTest):
         starting_condition = rule_dict['starting_condition']
         watershed_version = rule_dict['watershed_version']
         latest_version = rule_dict['latest_version']
-        assert_contains(self, current_version, get_build_info()['application_version'],
+        print('CHANNEL', get_firefox_channel(self.app.fx_path))
+        assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
                         'Firefox version is correct (%s).' % current_version)
 
         while current_version != latest_version:
@@ -49,14 +50,14 @@ class Test(BaseTest):
             wait(update_restart_pattern, 200)
             type(Key.ESC)
             restart_firefox(self.app.fx_path, self.profile_path, url=self.app.base_local_web_url)
-            assert_contains(self, current_version, get_build_info()['application_version'],
+            assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
                             'Firefox successfully updated from %s to %s.' % (starting_version, current_version))
 
         if current_version == latest_version:
             open_about_firefox()
             wait(firefox_up_to_date_pattern, 20)
             type(Key.ESC)
-            assert_contains(self, current_version, get_build_info()['application_version'],
+            assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
                             'Firefox version is correct (%s).' % current_version)
 
         new_tab()

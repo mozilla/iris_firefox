@@ -678,29 +678,27 @@ def restore_firefox_focus():
     click(click_area)
 
 
-def get_firefox_version():
+def get_firefox_version_from_about_support():
     return get_pref_value('extensions.lastAppVersion')
 
 
-def get_firefox_build_id():
+def get_firefox_build_id_from_about_support():
     # There are several prefs that may contain this data, but we are not guaranteed
     # to have them, depending on what type of profile we start with.
     pref_1 = 'browser.startup.homepage_override.buildID'
     pref_2 = 'extensions.lastAppBuildId'
 
     try:
-        id = get_pref_value(pref_1)
+        return get_pref_value(pref_1)
     except APIHelperError:
-        id = get_pref_value(pref_2)
-
-    return id
+        return get_pref_value(pref_2)
 
 
-def get_firefox_channel():
+def get_firefox_channel_from_about_support():
     return get_pref_value('app.update.channel')
 
 
-def get_firefox_locale():
+def get_firefox_locale_from_about_support():
     value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
     logger.debug(value_str)
     try:
@@ -755,36 +753,26 @@ def get_support_info():
     return json.loads(json_text)
 
 
-def get_build_info():
+def get_firefox_info(build_path):
     """This method returns the application version information as a dict with the help of mozversion module."""
-
-    if Settings.get_os() == Platform.MAC:
-        if parse_args().firefox != 'beta':
-            build_path = os.path.join(get_current_run_dir(), 'Firefox.app', 'Contents', 'MacOS', 'firefox')
-        else:
-            build_path = os.path.join(get_working_dir(), 'cache',
-                                      'firefox-beta_%s_%s' % (parse_args().locale, Settings.get_os()),
-                                      'Firefox',
-                                      'Firefox.app', 'Contents', 'MacOS', 'firefox')
-    elif Settings.get_os() == Platform.LINUX:
-        if parse_args().firefox != 'beta':
-            fx_version_str = str(parse_args().firefox)
-            build_path = os.path.join(get_working_dir(), 'cache',
-                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'firefox',
-                                      'firefox')
-        else:
-            build_path = os.path.join(get_working_dir(), 'cache',
-                                      'firefox-beta_%s_%s' % (parse_args().locale, Settings.get_os()), 'firefox',
-                                      'firefox')
-    elif Settings.get_os() == Platform.WINDOWS:
-        if parse_args().firefox != 'beta':
-            fx_version_str = str(parse_args().firefox).replace('.', '_')
-            build_path = os.path.join(get_working_dir(), 'cache',
-                                      'Firefox_Setup_%s_%s' % (parse_args().locale, fx_version_str), 'core',
-                                      'firefox')
-        else:
-            build_path = os.path.join(get_working_dir(), 'cache',
-                                      'firefox-beta_%s_%s' % (parse_args().locale, Settings.get_os()),
-                                      'core', 'firefox')
-
     return mozversion.get_version(binary=build_path)
+
+
+def get_firefox_version(build_path):
+    return get_firefox_info(build_path)['application_version']
+
+
+def get_firefox_build_id(build_path):
+    return get_firefox_info(build_path)['platform_buildid']
+
+
+def get_firefox_channel(build_path):
+    fx_channel = get_firefox_info(build_path)['application_repository']
+    if 'beta' in fx_channel:
+        return 'beta'
+    elif 'release' in fx_channel:
+        return 'release'
+    elif 'esr' in fx_channel:
+        return 'esr'
+    else:
+        return 'nightly'
