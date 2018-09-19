@@ -3,8 +3,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.test_case import *
 from iris.api.core.util.update_rules import *
+from iris.test_case import *
 
 
 class Test(BaseTest):
@@ -15,13 +15,14 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
-        self.set_profile_pref("app.update.interval;7200")
-        self.set_profile_pref("app.update.badgeWaitTime;10")
-        self.set_profile_pref("app.update.lastUpdateTime.background-update-timer;1")
-        self.set_profile_pref("app.update.promptWaitTime;30")
-        self.set_profile_pref("app.update.timerMinimumDelay;10")
-        self.set_profile_pref("app.update.log;true")
-        self.set_profile_pref("app.update.channel;beta-cdntest")
+        self.set_profile_pref('app.update.interval;7200')
+        self.set_profile_pref('app.update.badgeWaitTime;10')
+        self.set_profile_pref('app.update.lastUpdateTime.background-update-timer;1')
+        self.set_profile_pref('app.update.promptWaitTime;30')
+        self.set_profile_pref('app.update.timerMinimumDelay;10')
+        self.set_profile_pref('app.update.log;true')
+        self.set_profile_pref('app.update.channel;%s-cdntest' % self.app.fx_channel)
+        self.maximize_window = False
 
     def run(self):
         update_restart_pattern = Pattern('background_update_menu_notification.png')
@@ -29,11 +30,11 @@ class Test(BaseTest):
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
 
         current_version = self.app.args.firefox
-        channel = get_firefox_channel(self.app.fx_path)
+        channel = self.app.fx_channel
         rule_dict = get_rule_for_current_channel(channel)
 
         if rule_dict is None:
-            raise ValueError('No rules found for %s channel' % channel)
+            raise ValueError('No rules found for %s channel. Please update config.ini file.' % channel)
 
         starting_condition = rule_dict['starting_condition']
         watershed_version = rule_dict['watershed_version']
@@ -71,4 +72,4 @@ class Test(BaseTest):
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected = exists(LocalWeb.MOZILLA_LOGO, 5)
-        assert_true(self, expected, 'Mozilla logo image found.')
+        assert_true(self, expected, 'Background update sanity test passed.')
