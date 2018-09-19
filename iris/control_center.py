@@ -84,8 +84,9 @@ class ControlCenter(object):
         Find POST body, handle JSON in body
         """
         logger.debug('Finish command received: %s' % request.path)
-        request.set_result('JSON data here')
-        logger.debug(request.rfile)
+        data_string = request.rfile.read(int(request.headers['Content-Length']))
+        logger.debug(data_string)
+        request.set_result(json.loads(data_string))
         request.stop_server()
         return
 
