@@ -124,7 +124,7 @@ class Iris(object):
                 return False
             else:
                 # Temporary - we will parse this returned value and turn it into runtime data.
-                logger.debug('Received data from control center: %s' % server.result)
+                logger.info('Received data from control center: %s' % server.result)
                 return True
         else:
             return True
