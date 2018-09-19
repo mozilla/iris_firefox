@@ -240,6 +240,7 @@ def click_auxiliary_window_control(button):
     zoom_full_button_pattern = Pattern('auxiliary_window_maximize.png')
     zoom_restore_button_pattern = Pattern('minimize_full_screen_auxiliary_window.png')
     red_button_pattern = Pattern('unhovered_red_control.png')
+    hovered_red_button = Pattern('hovered_red_button.png')
     minimize_button_pattern = Pattern('auxiliary_window_minimize.png')
     auxiliary_window_controls_pattern = Pattern('auxiliary_window_controls.png')
 
@@ -260,7 +261,8 @@ def click_auxiliary_window_control(button):
 
     if button == 'close':
         if Settings.get_os() == Platform.MAC:
-            click(red_button_pattern)
+            hover(red_button_pattern, 0.3)
+            click(hovered_red_button)
         else:
             click(close_button_pattern)
     elif button == 'minimize':
