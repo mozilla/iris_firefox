@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.api.core.util.update_rules import *
 from iris.test_case import *
 
 
