@@ -3,7 +3,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from iris.configuration.config_parser import get_config_property
-from version_parser import check_version, get_channel_from_version
+from version_parser import check_version
+from iris.api.core.settings import Settings
 import ast
 import logging
 
@@ -15,7 +16,7 @@ def get_update_rules():
 
 
 def get_rule_for_current_channel(channel):
-    result_list = filter(lambda x: x['channel'] == channel, get_update_rules())
+    result_list = filter(lambda x: x['channel'] == channel and Settings.get_os() in x['os'], get_update_rules())
     if len(result_list) == 0:
         return None
     elif len(result_list) > 1:
