@@ -6,75 +6,13 @@
 import logging
 import os
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from SimpleHTTPServer import SimpleHTTPRequestHandler
 
-from control_center import ControlCenter as cc
+from control_center import ControlCenter
 
 
 logger = logging.getLogger(__name__)
-
 final_result = None
 
-
-class _CustomHandler(SimpleHTTPRequestHandler):
-
-    # The main purpose of this class is to override several superclass methods, in order to
-    # prevent undesired error messages from appearing in the console. The HTTPServer used here
-    # raises an exception if the client closes the connection while the server is still
-    # sending data. For our purposes, this behavior is not important, so we just want to ignore
-    # the dropped connection and suppress the error message.
-
-    def stop_server(self):
-        LocalWebServer.ACTIVE = False
-
-    def set_result(self, arg):
-        global final_result
-        final_result = arg
-
-    def do_GET(self):
-        global final_result
-
-        try:
-            if cc.is_command(self):
-                cc.do_command(self)
-                self.send_response(200)
-            else:
-                SimpleHTTPRequestHandler.do_GET(self)
-        except Exception as e:
-            logger.debug('Exception in do_GET')
-            if '10053' in e.args:
-                logger.debug('Browser closed connection before response completed.')
-
-    def do_HEAD(self):
-        try:
-            SimpleHTTPRequestHandler.do_HEAD(self)
-        except Exception as e:
-            logger.debug('Exception in do_HEAD')
-            if '10053' in e.args:
-                logger.debug('Browser closed connection before response completed.')
-
-    def finish(self):
-        try:
-            SimpleHTTPRequestHandler.finish(self)
-        except Exception as e:
-            logger.debug('Exception in finish')
-            if '10053' in e.args:
-                logger.debug('Browser closed connection before response completed.')
-
-    def handle_one_request(self):
-        try:
-            SimpleHTTPRequestHandler.handle_one_request(self)
-        except Exception as e:
-            logger.debug('Exception in handle_one_request')
-            if '10053' in e.args:
-                logger.debug('Browser closed connection before response completed.')
-
-    def log_message(self, format_arg, *args):
-        # Eliminate the default output from the HTTP server unless we are in debug mode.
-        output = ''
-        for arg in args:
-            output += str(arg) + '\t'
-        logger.debug(output)
 
 class CustomHandler(BaseHTTPRequestHandler):
 
@@ -90,52 +28,77 @@ class CustomHandler(BaseHTTPRequestHandler):
         global final_result
         final_result = arg
 
+    @staticmethod
+    def _process_path(raw_path):
+        if raw_path == '/' or raw_path.startswith('/?'):
+            path = 'index.html'
+        elif raw_path.endswith('/'):
+            path = raw_path[1:] + 'index.htm'
+        else:
+            path = raw_path[1:]
+        return os.path.normpath(path)
+
     def _set_headers(self):
-        logger.debug(('Handler _set_headers'))
+        logger.debug('Handler _set_headers')
         self.send_response(200)
         value = 'text/html'
-        if self.path == '/' or self.path.startswith('/?'):
-            path = 'index.html'
-        else:
-            path = self.path[1:]
-
+        path = self._process_path(self.path)
         try:
             pos = path.rindex('.') + 1
             suffix = path[pos:]
-            value = CustomHandler.CONTENT_TYPES[suffix]
+            value = self.CONTENT_TYPES[suffix]
             logger.debug('File extension %s, content type %s' % (suffix, value))
         except IndexError:
             logger.warning('Unknown file type for resource: %s' % path)
         except ValueError:
             logger.warning('Can\'t find file extension: %s' % path)
+
         self.send_header('Content-Type', value)
         self.end_headers()
 
     def do_GET(self):
         logger.debug('Handler do_GET')
         logger.debug(self.path)
-        if cc.is_command(self):
-            cc.do_command(self)
-        else:
-            self._set_headers()
-            if self.path == '/' or self.path.startswith('/?'):
-                path = 'index.html'
+        try:
+            if ControlCenter.is_command(self):
+                ControlCenter.do_command(self)
             else:
-                path = self.path[1:]
-            normpath = os.path.normpath(path)
-            logger.debug('Path on disk: %s' % normpath)
-            f = open(os.path.normpath(normpath), 'rb')
-            self.wfile.write(f.read())
-
-    def do_HEAD(self):
-        self._set_headers()
+                self._set_headers()
+                path = self._process_path(self.path)
+                f = open(path, 'rb')
+                self.wfile.write(f.read())
+        except Exception as e:
+            logger.debug('Exception in do_GET')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
 
     def do_POST(self):
         logger.debug('Handler do_POST')
-        if cc.is_command(self):
-            cc.do_command(self)
-        else:
-            self._set_headers()
+        try:
+            if ControlCenter.is_command(self):
+                ControlCenter.do_command(self)
+            else:
+                self._set_headers()
+        except Exception as e:
+            logger.debug('Exception in do_POSTs')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
+
+    def handle_one_request(self):
+        try:
+            BaseHTTPRequestHandler.handle_one_request(self)
+        except Exception as e:
+            logger.debug('Exception in handle_one_request')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
+
+    def finish(self):
+        try:
+            BaseHTTPRequestHandler.finish(self)
+        except Exception as e:
+            logger.debug('Exception in finish')
+            if '10053' in e.args:
+                logger.debug('Browser closed connection before response completed.')
 
     def log_message(self, format_arg, *args):
         # Eliminate the default output from the HTTP server unless we are in debug mode.
@@ -150,7 +113,6 @@ class LocalWebServer(object):
     ACTIVE = True
 
     def __init__(self, path, port):
-        logger.debug('New LocalWebServer on path/port: %s %s' % (path, port))
         LocalWebServer.ACTIVE = True
         self.port = port
         self.web_root = path
