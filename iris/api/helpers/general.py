@@ -99,7 +99,7 @@ def restart_firefox(path, profile, url, args=None):
     logger.debug('Restarting Firefox.')
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit.')
-    home_pattern = Pattern('iris_logo.png')
+    home_pattern = NavBar.HOME_BUTTON
     try:
         wait_vanish(home_pattern, 10)
         # TODO: This should be made into a robust function instead of a hard coded sleep
