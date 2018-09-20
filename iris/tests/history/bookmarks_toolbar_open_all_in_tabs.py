@@ -24,12 +24,10 @@ class Test(BaseTest):
         self.profile = Profile.LIKE_NEW
         self.set_profile_pref("browser.warnOnQuit;false")
 
-
-
         return
 
     def run(self):
-        privacy_url="http://www.mozilla.org/en-US/privacy/firefox/"
+        privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
         search_history_box_pattern = Pattern('search_history_box.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
@@ -38,7 +36,6 @@ class Test(BaseTest):
         firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo.png')
         iris_tab_icon = Pattern('iris_logo_tab.png')
         mozilla_tab_icon = Pattern('mozilla_logo_tab.png')
-
 
         # Open a page to create some history.
 

@@ -23,7 +23,6 @@ class Test(BaseTest):
         self.profile = Profile.BRAND_NEW
         self.set_profile_pref("browser.warnOnQuit;false")
 
-
         return
 
     def run(self):
@@ -31,7 +30,7 @@ class Test(BaseTest):
         search_history_box_pattern = Pattern('search_history_box.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
         iris_logo_pattern = Pattern('iris_logo_tab.png')
-        mozilla_logo_pattern=Pattern('mozilla_logo_tab.png')
+        mozilla_logo_pattern = Pattern('mozilla_logo_tab.png')
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
