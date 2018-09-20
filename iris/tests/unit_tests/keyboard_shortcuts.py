@@ -28,10 +28,10 @@ class Test(BaseTest):
         t_left = Pattern('ut-top-left.png')
         b_right = Pattern('ut-bottom-right.png')
 
-        ut_alt = Pattern('ut-alt.png')
-        ut_ctrl = Pattern('ut-cmd-ctrl.png')
+        ut_alt = Pattern('ut-alt.png').similar(0.75)
+        ut_ctrl = Pattern('ut-cmd-ctrl.png').similar(0.75)
         ut_reset_all = Pattern('ut-reset-all.png')
-        ut_shift = Pattern('ut-shift.png')
+        ut_shift = Pattern('ut-shift.png').similar(0.75)
 
         navigate(url)
         wait(t_left, 10)
@@ -44,13 +44,13 @@ class Test(BaseTest):
 
         # Test modifiers
         type('y', KeyModifier.CTRL)
-        assert_true(self, page_region.exists(ut_ctrl, 0.99), 'Ctrl key trigger confirmed')
+        assert_true(self, page_region.exists(ut_ctrl), 'Ctrl key trigger confirmed')
         self.reset_all_modifiers(reset_btn)
 
         type('y', KeyModifier.ALT)
-        assert_true(self, page_region.exists(ut_alt, 0.99), 'Alt key trigger confirmed')
+        assert_true(self, page_region.exists(ut_alt), 'Alt key trigger confirmed')
         self.reset_all_modifiers(reset_btn)
 
         type('y', KeyModifier.SHIFT)
-        assert_true(self, page_region.exists(ut_shift, 0.99), 'Shift key trigger confirmed')
+        assert_true(self, page_region.exists(ut_shift), 'Shift key trigger confirmed')
         self.reset_all_modifiers(reset_btn)
