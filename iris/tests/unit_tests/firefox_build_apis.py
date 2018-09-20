@@ -24,8 +24,8 @@ class Test(BaseTest):
                      'API for Firefox locale is correct')
 
         # These asserts are for APIs that query the about:support preferences
-        assert_equal(self, self.app.version, get_support_info()['application']['version'],
-                     'API for Firefox version is correct')
+        assert_true(self, self.app.version in get_support_info()['application']['version'],
+                    'API for Firefox version is correct')
         assert_equal(self, self.app.build_id, get_support_info()['application']['buildID'],
                      'API for Firefox build ID is correct')
         assert_equal(self, self.app.fx_channel, get_support_info()['application']['updateChannel'],
