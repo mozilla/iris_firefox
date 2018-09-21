@@ -27,7 +27,8 @@ class Test(BaseTest):
         clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
         history_items_old_pattern = Pattern('history_items_old.png')
         history_items_today_pattern = Pattern('expand_button_history_sidebar.png')
-        clear_recent_history_last_hour_pattern = Pattern('clear_recent_history_last_hour.png')
+        if Settings.is_mac():
+            clear_recent_history_last_hour_pattern = Pattern('clear_recent_history_last_hour.png')
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
