@@ -52,7 +52,6 @@ class ControlCenter(object):
         # Load run log JSON, find entry that matches the argument and delete it.
         # Then, write new run log file.
         logger.debug('Received delete command with arguments: %s ' % args)
-
         run_file = os.path.join(get_working_dir(), 'data', 'all_runs.json')
         if os.path.exists(run_file):
             logger.debug('Deleting entry %s from run file: %s' % (args, run_file))
