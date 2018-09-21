@@ -795,3 +795,38 @@ def get_firefox_channel(build_path):
         return 'esr'
     else:
         return 'nightly'
+
+
+def get_telemetry_info():
+    copy_raw_data_to_clipboard_pattern = Pattern('copy_raw_data_to_clipboard.png')
+    raw_json_pattern = Pattern('raw_json.png')
+    raw_data_pattern = Pattern('raw_data.png')
+
+    new_tab()
+
+    paste('about:telemetry')
+    type(Key.ENTER)
+
+    try:
+        wait(raw_json_pattern, 10)
+        logger.debug('\'RAW JSON\' button is present on the page.')
+        click(raw_json_pattern)
+    except  Exception as e:
+        raise APIHelperError('\'RAW JSON\' button not present in the page.')
+
+    try:
+        wait(raw_data_pattern, 10)
+        logger.debug('\'Raw Data\' button is present on the page.')
+        click(raw_data_pattern)
+    except  Exception as e:
+        raise APIHelperError('\'Raw Data\' button not present in the page.')
+
+    try:
+        click(copy_raw_data_to_clipboard_pattern)
+        time.sleep(Settings.UI_DELAY)
+        json_text = Env.get_clipboard()
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve raw message information value. %s' % e.message)
+
+    close_tab()
+    return json.loads(json_text)
