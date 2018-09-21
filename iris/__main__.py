@@ -79,6 +79,8 @@ class Iris(object):
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
         self.create_test_json()
         self.create_arg_json()
+        self.test_list = []
+        self.test_packages = []
 
     def control_center(self):
         if self.args.control:
@@ -111,43 +113,52 @@ class Iris(object):
             # Check the result of the user's decision. If they have chosen to run tests,
             # we will continue. Otherwise, abort the current run.
             if server.result == 'cancel':
-                # Temporary - we will quit Iris gracefully and clean up.
+                # We will quit Iris gracefully and clean up.
                 logger.info('Canceling Iris run.')
+
+                """
+                Clean up orphaned folder
+                """
                 return False
             else:
                 # We will parse this returned value and turn it into runtime data.
                 logger.debug('Received data from control center: %s' % server.result)
 
+                # Update app args with new values
                 self.args.locale = server.result['locale']
                 self.args.firefox = server.result['firefox']
                 self.args.override = server.result['override']
                 self.args.port = int(server.result['port'])
                 self.args.email = server.result['email']
                 self.args.highlight = server.result['highlight']
-                self.args.level = server.result['level']
                 self.args.mouse = float(server.result['mouse'])
                 self.args.report = server.result['report']
                 self.args.save = server.result['save']
 
+                # For other parts of Iris that get their arguments from parse_args,
+                # we have to update the values there as well.
                 get_global_args().locale = self.args.locale
                 get_global_args().firefox = self.args.firefox
                 get_global_args().override = self.args.override
                 get_global_args().port = self.args.port
                 get_global_args().email = self.args.email
                 get_global_args().highlight = server.result['highlight']
-                """
-                Remove level, we can't support it
-                """
-                get_global_args().level = self.args.level # ???
                 get_global_args().mouse = self.args.mouse
                 get_global_args().report = self.args.report
                 get_global_args().save = self.args.save
+
+                # Update this URL, used by test cases.
                 self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
 
-
-                """
-                test case parsing here
-                """
+                # Parse tests.
+                if len(server.result['tests']):
+                    for package in server.result['tests']:
+                        self.test_packages.append(package)
+                        for test in server.result['tests'][package]:
+                            self.test_list.append(test['name'])
+                else:
+                    logger.info('No tests selected, canceling Iris run.')
+                    return False
                 return True
         else:
             return True
@@ -157,7 +168,8 @@ class Iris(object):
         self.get_firefox()
         self.update_run_index()
         self.update_run_log()
-        load_tests(self)
+        if len(self.test_list) == 0:
+            load_tests(self)
         self.current_test = 0
         self.total_tests = len(self.test_list)
 
