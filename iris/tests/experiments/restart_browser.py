@@ -10,7 +10,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.app = app
-        self.meta = 'This is a test case that restarts the browser'
+        self.meta = 'This is a test case that restarts the browser.'
 
     def setup(self):
         """ Test case setup
@@ -22,15 +22,15 @@ class Test(BaseTest):
         return
 
     def run(self):
-        google_search_pattern = Pattern('google_search.png')
-        amazon_pattern = Pattern('amazon.png')
+        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
-        navigate('https://www.google.com/?hl=EN')
-        expected_1 = exists(google_search_pattern, 10)
-        assert_true(self, expected_1, 'Find Google search image')
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
+        expected = region.exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, expected, 'Firefox page loaded successfully.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url='https://www.amazon.com')
-        expected_2 = exists(amazon_pattern, 10)
-        assert_true(self, expected_2, 'Find Amazon image')
+        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.MOZILLA_TEST_SITE)
+
+        expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected, 'Mozilla page loaded successfully.')
 
         return
