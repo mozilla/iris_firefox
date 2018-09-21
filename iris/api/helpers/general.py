@@ -400,8 +400,8 @@ class Option(object):
 def open_zoom_menu():
     """Open the Zoom menu from the View Menu."""
 
-    view_menu_pattern = Pattern('view_menu.png')
     if Settings.get_os() == Platform.MAC:
+        view_menu_pattern = Pattern('view_menu.png')
         click(view_menu_pattern)
         for i in range(3):
             type(text=Key.DOWN)
@@ -472,18 +472,18 @@ def create_region_for_url_bar():
 
 def create_region_for_hamburger_menu():
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    exit_menu_pattern = Pattern('exit.png')
-    help_menu_pattern = Pattern('help.png')
-    quit_menu_pattern = Pattern('quit.png')
     try:
         wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
         time.sleep(1)
         if Settings.get_os() == Platform.LINUX:
+            quit_menu_pattern = Pattern('quit.png')
             reg = create_region_from_patterns(None, hamburger_menu_pattern, quit_menu_pattern, None, padding_right=20)
         elif Settings.get_os() == Platform.MAC:
+            help_menu_pattern = Pattern('help.png')
             reg = create_region_from_patterns(None, hamburger_menu_pattern, help_menu_pattern, None, padding_right=20)
         else:
+            exit_menu_pattern = Pattern('exit.png')
             reg = create_region_from_patterns(None, hamburger_menu_pattern, exit_menu_pattern, None, padding_right=20)
     except (FindError, ValueError):
         raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
