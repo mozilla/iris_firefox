@@ -16,8 +16,9 @@ class Test(BaseTest):
 
     def run(self):
         clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
-        clear_recent_history_last_hour_pattern = Pattern('clear_recent_history_last_hour.png')
         history_empty_pattern = Pattern('history_empty.png')
+        if Settings.is_mac():
+            clear_recent_history_last_hour_pattern = Pattern('clear_recent_history_last_hour.png')
 
         # Open some pages to create some history.
         new_tab()

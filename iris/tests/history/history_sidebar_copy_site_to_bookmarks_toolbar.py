@@ -28,7 +28,8 @@ class Test(BaseTest):
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        bookmarks_toolbar_mozilla_pattern = Pattern('bookmarks_toolbar_mozilla.png')
+        if Settings.is_mac():
+            bookmarks_toolbar_mozilla_pattern = Pattern('bookmarks_toolbar_mozilla.png')
 
         # Open a page to create some history.
         new_tab()
