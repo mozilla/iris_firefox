@@ -57,7 +57,8 @@ def confirm_firefox_quit(app):
         wait_vanish(NavBar.HOME_BUTTON, 10)
         address_crash_reporter()
     except FindError:
-        logger.warning('Firefox still around - retrying to quit.')
+        logger.warning('Firefox still around - reattempting quit.')
+        click (NavBar.HOME_BUTTON)
         quit_firefox()
         try:
             wait_vanish(NavBar.HOME_BUTTON, 10)
