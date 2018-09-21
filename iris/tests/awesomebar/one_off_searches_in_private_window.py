@@ -82,4 +82,6 @@ class Test(BaseTest):
 
         expected = region.exists(test_pattern, 10)
         assert_true(self, expected,
-                    'Searched item is successfully found in the page opened by the \'Google\' search engine.')
+                    'Searched item is successfully found in the page opened by the \'Google\' search engine.'
+
+        close_window()
