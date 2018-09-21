@@ -9,8 +9,11 @@ import os
 
 logger = logging.getLogger(__name__)
 
+iris_args = None
+
 
 def parse_args():
+    global iris_args
     home = os.path.expanduser('~')
 
     log_level_strings = ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG']
@@ -94,7 +97,15 @@ def parse_args():
     parser.add_argument('-z', '--resize',
                         help='Convert hi-res images to normal',
                         action='store_true')
-    return parser.parse_args()
+    if iris_args is None:
+        iris_args = parser.parse_args()
+
+    return iris_args
+
+
+def get_global_args():
+    global iris_args
+    return iris_args
 
 
 def _get_module_dir():

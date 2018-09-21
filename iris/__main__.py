@@ -20,7 +20,7 @@ from api.core.key import Key
 from api.core.profile import Profile
 from api.core.settings import Settings
 from api.core.util.core_helper import *
-from api.core.util.parse_args import parse_args
+from api.core.util.parse_args import get_global_args, parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
 from api.helpers.general import launch_firefox, quit_firefox, get_firefox_channel, get_firefox_version, \
     get_firefox_build_id
@@ -115,8 +115,39 @@ class Iris(object):
                 logger.info('Canceling Iris run.')
                 return False
             else:
-                # Temporary - we will parse this returned value and turn it into runtime data.
-                logger.info('Received data from control center: %s' % server.result)
+                # We will parse this returned value and turn it into runtime data.
+                logger.debug('Received data from control center: %s' % server.result)
+
+                self.args.locale = server.result['locale']
+                self.args.firefox = server.result['firefox']
+                self.args.override = server.result['override']
+                self.args.port = int(server.result['port'])
+                self.args.email = server.result['email']
+                self.args.highlight = server.result['highlight']
+                self.args.level = server.result['level']
+                self.args.mouse = float(server.result['mouse'])
+                self.args.report = server.result['report']
+                self.args.save = server.result['save']
+
+                get_global_args().locale = self.args.locale
+                get_global_args().firefox = self.args.firefox
+                get_global_args().override = self.args.override
+                get_global_args().port = self.args.port
+                get_global_args().email = self.args.email
+                get_global_args().highlight = server.result['highlight']
+                """
+                Remove level, we can't support it
+                """
+                get_global_args().level = self.args.level # ???
+                get_global_args().mouse = self.args.mouse
+                get_global_args().report = self.args.report
+                get_global_args().save = self.args.save
+                self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
+
+
+                """
+                test case parsing here
+                """
                 return True
         else:
             return True
@@ -272,13 +303,13 @@ class Iris(object):
 
     def create_arg_json(self):
         arg_data = {'email': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'},
-                    'firefox': {'type': 'str', 'value': ['local', 'release', 'esr', 'beta', 'nightly'],
-                                'default': 'beta', 'label': 'Firefox'},
+                    'firefox': {'type': 'str', 'value': ['local', 'latest', 'latest-esr', 'latest-beta', 'nightly'],
+                                'default': 'latest-beta', 'label': 'Firefox'},
                     'highlight': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
                                   'label': 'Debug using highlighting'},
                     'level': {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
                               'default': 'INFO', 'label': 'Debug level'},
-                    'locale': {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-us', 'label': 'Locale'},
+                    'locale': {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-US', 'label': 'Locale'},
                     'mouse': {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5',
                               'label': 'Mouse speed'},
                     'override': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
