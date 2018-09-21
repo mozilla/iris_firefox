@@ -101,12 +101,16 @@ def navigate(url):
         raise APIHelperError('No active window found, cannot navigate to page')
 
 
-def restart_firefox(path, profile, url, args=None):
+def restart_firefox(path, profile, url, args=None, image=None):
     # Just as it says, with options.
     logger.debug('Restarting Firefox.')
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit.')
     home_pattern = NavBar.HOME_BUTTON
+    if image == None:
+        check_pattern = home_pattern
+    else:
+        check_pattern = image
     try:
         wait_vanish(home_pattern, 10)
         # TODO: This should be made into a robust function instead of a hard coded sleep
@@ -115,7 +119,7 @@ def restart_firefox(path, profile, url, args=None):
         logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
         launch_firefox(path, profile, url, args)
         logger.debug('Confirming that Firefox has been relaunched')
-        if exists(home_pattern, 20):
+        if exists(check_pattern, 20):
             logger.debug('Successful Firefox restart performed')
         else:
             raise APIHelperError('Firefox not relaunched.')
