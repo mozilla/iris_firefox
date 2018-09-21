@@ -57,8 +57,14 @@ def confirm_firefox_quit(app):
         wait_vanish(NavBar.HOME_BUTTON, 10)
         address_crash_reporter()
     except FindError:
-        logger.error('Firefox still around - aborting test run.')
-        app.finish(code=1)
+        logger.warning('Firefox still around - retrying to quit.')
+        quit_firefox()
+        try:
+            wait_vanish(NavBar.HOME_BUTTON, 10)
+            address_crash_reporter()
+        except FindError:
+            logger.error('Firefox still around - aborting test run.')
+            app.finish(code=1)
 
 
 def get_firefox_region():
