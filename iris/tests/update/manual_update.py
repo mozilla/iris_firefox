@@ -20,6 +20,8 @@ class Test(BaseTest):
     def run(self):
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
+        iris_logo_pattern = Pattern('iris_logo.png')
+
         current_version = self.app.args.firefox
         channel = self.app.fx_channel
         rule_dict = get_rule_for_current_channel(channel)
@@ -47,7 +49,7 @@ class Test(BaseTest):
             open_about_firefox()
             wait(update_restart_pattern, 200)
             type(Key.ESC)
-            restart_firefox(self.app.fx_path, self.profile_path, url=self.app.base_local_web_url)
+            restart_firefox(self.app.fx_path, self.profile_path, url=self.app.base_local_web_url, image=iris_logo_pattern)
             assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
                             'Firefox successfully updated from %s to %s.' % (starting_version, current_version))
 

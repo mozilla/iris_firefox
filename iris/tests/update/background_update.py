@@ -27,6 +27,7 @@ class Test(BaseTest):
         update_restart_pattern = Pattern('background_update_menu_notification.png')
         restart_to_update_button = Pattern('background_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
+        iris_logo_pattern = Pattern('iris_logo.png')
 
         current_version = self.app.args.firefox
         channel = self.app.fx_channel
@@ -57,7 +58,7 @@ class Test(BaseTest):
             except FindError:
                 raise FindError('Background update hamburger menu icon notification did not appear, aborting.')
 
-            restart_firefox(self.app.fx_path, self.profile_path, url=self.app.base_local_web_url)
+            restart_firefox(self.app.fx_path, self.profile_path, url=self.app.base_local_web_url, image=iris_logo_pattern)
             assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
                             'Firefox version is correct (%s)' % current_version)
 
