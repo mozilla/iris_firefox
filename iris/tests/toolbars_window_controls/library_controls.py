@@ -14,8 +14,10 @@ class Test(BaseTest):
 
     def run(self):
         library_title_pattern = Pattern('library_title.png')
-        restore_button_pattern = Pattern('restore_button.png')
-        library_restore_button_pattern = Pattern('library_restore_button.png')
+        if Settings.get_os() == Platform.LINUX:
+            restore_button_pattern = Pattern('restore_button.png')
+        if Settings.get_os() == Platform.WINDOWS:
+            library_restore_button_pattern = Pattern('library_restore_button.png')
 
         open_library()
 
