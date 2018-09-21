@@ -58,6 +58,7 @@ class Iris(object):
             self.initialize_run()
             run(self)
         else:
+            self.delete_run_directory()
             self.finish(0)
 
     def verify_config(self):
@@ -115,10 +116,6 @@ class Iris(object):
             if server.result == 'cancel':
                 # We will quit Iris gracefully and clean up.
                 logger.info('Canceling Iris run.')
-
-                """
-                Clean up orphaned folder
-                """
                 return False
             else:
                 # We will parse this returned value and turn it into runtime data.
@@ -168,6 +165,8 @@ class Iris(object):
         self.get_firefox()
         self.update_run_index()
         self.update_run_log()
+        # If tests exist already, they came from the control center.
+        # Otherwise, use the command-line args.
         if len(self.test_list) == 0:
             load_tests(self)
         self.current_test = 0
@@ -191,6 +190,12 @@ class Iris(object):
             os.mkdir(master_run_directory)
         run_directory = os.path.join(master_run_directory, get_run_id())
         os.mkdir(run_directory)
+
+    def delete_run_directory(self):
+        master_run_directory = os.path.join(self.args.workdir, 'runs')
+        run_directory = os.path.join(master_run_directory, get_run_id())
+        if os.path.exists(run_directory):
+            shutil.rmtree(run_directory, ignore_errors=True)
 
     def update_run_index(self, new_data=None):
         # Prepare the current entry.
@@ -319,8 +324,6 @@ class Iris(object):
                                 'default': 'latest-beta', 'label': 'Firefox'},
                     'highlight': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
                                   'label': 'Debug using highlighting'},
-                    'level': {'type': 'str', 'value': ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'],
-                              'default': 'INFO', 'label': 'Debug level'},
                     'locale': {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-US', 'label': 'Locale'},
                     'mouse': {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5',
                               'label': 'Mouse speed'},
