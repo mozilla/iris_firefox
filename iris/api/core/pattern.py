@@ -9,7 +9,7 @@ import os
 import cv2
 import numpy as np
 
-from iris.firefox.app import FirefoxApp
+from errors import APIHelperError
 from location import Location
 from util.core_helper import get_module_dir, get_images_path
 from util.parse_args import parse_args
@@ -89,18 +89,13 @@ _images = load_all_patterns()
 class Pattern(object):
     def __init__(self, image_name, from_path=None):
         if from_path is None:
-            name, path, scale = get_pattern_details(image_name)
-            self._image_name = name
-            self._image_path = path
-            self._scale_factor = scale
-            if parse_args().image_debug:
-                check_image_path(inspect.stack()[1][1], image_name)
+            path = get_image_path(inspect.stack()[1][1], image_name)
         else:
             path = from_path
-            name, scale = _parse_name(os.path.split(path)[1])
-            self._image_name = image_name
-            self._image_path = path
-            self._scale_factor = scale
+        name, scale = _parse_name(os.path.split(path)[1])
+        self._image_name = name
+        self._image_path = path
+        self._scale_factor = scale
         self._similarity = Settings.min_similarity
         self._target_offset = None
         self._rgb_array = np.array(cv2.imread(path)) if path is not None else None
@@ -189,9 +184,14 @@ def _apply_scale(scale, rgb_array):
         return rgb_array
 
 
-def check_image_path(caller, image):
-    # Temporary function used for debugging, as per issue #590.
-    # Eventually it will be turned on by default.
+def get_image_path(caller, image):
+    """Enforce proper location for all Pattern creation.
+
+    :param caller: Path of calling Python module
+    :param image: string filename of image
+    :return: Full path to image on disk
+    """
+
     module = os.path.split(caller)[1]
     module_directory = os.path.split(caller)[0]
     parent_directory = os.path.basename(module_directory)
@@ -239,7 +239,7 @@ def check_image_path(caller, image):
     if found:
         logger.debug('Module %s requests image %s' % (module, image))
         logger.debug('Found %s' % image_path)
-        # return image_path
+        return image_path
     else:
         # If not found in correct location, fall back to global image search for now.
         result_list = filter(lambda x: x['name'] == image, _images)
@@ -251,10 +251,10 @@ def check_image_path(caller, image):
             location_1 = os.path.join(parent_directory, 'images','common')
             location_2 = os.path.join(parent_directory, get_images_path())
             logger.warning('Suggested locations: %s, %s' % (location_1, location_2))
-            # return res['path']
+            return res['path']
         else:
             logger.error('Pattern creation for %s failed for caller %s.' % (image, caller))
             logger.error('Image not found. Either it is in the wrong platform folder, or it does not exist.')
             logger.debug('Paths searched:')
             logger.debug('\n'.join(paths))
-            # raise APIHelperError('Pattern not found')
+            raise APIHelperError('Pattern not found')
