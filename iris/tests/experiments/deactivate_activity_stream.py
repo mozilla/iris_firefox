@@ -11,6 +11,7 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This tests the ability to activate/deactivate the activity stream.'
         self.fx_version = '>=62'
+        self.exclude = Platform.ALL
 
     def run(self):
         top_sites_pattern = Pattern('top_sites.png')

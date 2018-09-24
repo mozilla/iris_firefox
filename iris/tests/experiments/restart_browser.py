@@ -11,6 +11,7 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.app = app
         self.meta = 'This is a test case that restarts the browser.'
+        self.exclude = Platform.ALL
 
     def setup(self):
         """ Test case setup

@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test for checking private browsing navigation'
+        self.exclude = Platform.ALL
 
     def run(self):
         private_browsing_pattern = Pattern('private_browsing.png')

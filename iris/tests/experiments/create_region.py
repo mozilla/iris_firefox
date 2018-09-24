@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This test creates dynamic regions from patterns.'
+        self.exclude = Platform.ALL
 
     def run(self):
 

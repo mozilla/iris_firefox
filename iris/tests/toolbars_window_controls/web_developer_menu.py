@@ -12,6 +12,8 @@ class Test(BaseTest):
         self.meta = "This is a test case that checks that Developer Toolbar controls work as expected."
         # Skipping test from running since the 'Developer Toolbar' has been removed from Firefox 62. See more details
         # here https://developer.mozilla.org/en-US/docs/Tools/GCLI
+        self.test_case_id = '119483'
+        self.test_suite_id = '1998'
         self.exclude = Platform.ALL
 
     def run(self):
