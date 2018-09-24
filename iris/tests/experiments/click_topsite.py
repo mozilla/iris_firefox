@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test for opening the first default topsite from TOP SITES list by clicking on it'
+        self.exclude = Platform.ALL
 
     def run(self):
         url = 'about:home'

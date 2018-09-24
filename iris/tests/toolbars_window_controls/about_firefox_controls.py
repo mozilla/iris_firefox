@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of the \'About Firefox\' window controls'
+        self.test_case_id = '120465'
+        self.test_suite_id = '1998'
 
     def run(self):
         firefox_in_about_pattern = Pattern('firefox_in_about.png')

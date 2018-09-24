@@ -10,6 +10,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test of the Download dialog controls.'
+        self.test_case_id = '118801'
+        self.test_suite_id = '1998'
 
     def run(self):
         url = self.get_web_asset_path('moz.pdf')

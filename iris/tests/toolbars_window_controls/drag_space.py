@@ -11,6 +11,8 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks that the drag space can be activated properly'
+        self.test_case_id = '118184'
+        self.test_suite_id = '1998'
         # Feature not available on LINUX
         self.exclude = Platform.LINUX
 
