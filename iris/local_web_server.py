@@ -38,21 +38,21 @@ class CustomHandler(BaseHTTPRequestHandler):
             path = raw_path[1:]
         return os.path.normpath(path)
 
-    def _set_headers(self):
+    def _set_headers(self, set_content_type=True):
         logger.debug('Handler _set_headers')
         self.send_response(200)
         value = 'text/html'
-        path = self._process_path(self.path)
-        try:
-            pos = path.rindex('.') + 1
-            suffix = path[pos:]
-            value = self.CONTENT_TYPES[suffix]
-            logger.debug('File extension %s, content type %s' % (suffix, value))
-        except IndexError:
-            logger.warning('Unknown file type for resource: %s' % path)
-        except ValueError:
-            logger.warning('Can\'t find file extension: %s' % path)
-
+        if set_content_type:
+            path = self._process_path(self.path)
+            try:
+                pos = path.rindex('.') + 1
+                suffix = path[pos:]
+                value = self.CONTENT_TYPES[suffix]
+                logger.debug('File extension %s, content type %s' % (suffix, value))
+            except IndexError:
+                logger.warning('Unknown file type for resource: %s' % path)
+            except ValueError:
+                logger.warning('Can\'t find file extension: %s' % path)
         self.send_header('Content-Type', value)
         self.end_headers()
 
@@ -62,6 +62,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         try:
             if ControlCenter.is_command(self):
                 ControlCenter.do_command(self)
+                self._set_headers(False)
             else:
                 self._set_headers()
                 path = self._process_path(self.path)
