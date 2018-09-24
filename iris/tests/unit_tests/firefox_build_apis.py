@@ -14,13 +14,13 @@ class Test(BaseTest):
 
     def run(self):
         # These asserts are for APIs that query the about:config preferences
-        assert_equal(self, self.app.version, get_firefox_version_from_about_support(),
+        assert_equal(self, self.app.version, get_firefox_version_from_about_config(),
                      'API for Firefox version is correct')
-        assert_equal(self, self.app.build_id, get_firefox_build_id_from_about_support(),
+        assert_equal(self, self.app.build_id, get_firefox_build_id_from_about_config(),
                      'API for Firefox build ID is correct')
-        assert_equal(self, self.app.fx_channel, get_firefox_channel_from_about_support(),
+        assert_equal(self, self.app.fx_channel, get_firefox_channel_from_about_config(),
                      'API for Firefox channel is correct')
-        assert_equal(self, self.app.fx_locale, get_firefox_locale_from_about_support(),
+        assert_equal(self, self.app.fx_locale, get_firefox_locale_from_about_config(),
                      'API for Firefox locale is correct')
 
         # These asserts are for APIs that query the about:support preferences
