@@ -22,7 +22,6 @@ class Test(BaseTest):
         set_as_default_search_engine_pattern = Pattern('set_as_default_search_engine.png')
         search_in_new_tab_pattern = Pattern('search_in_new_tab.png')
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
-        new_tab_twitter_search_results_2_pattern = Pattern('new_tab_twitter_search_results_2.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -64,6 +63,5 @@ class Test(BaseTest):
 
         next_tab()
 
-        expected = exists(new_tab_twitter_search_results_pattern, 5) or exists(
-            new_tab_twitter_search_results_2_pattern, 5)
+        expected = exists(new_tab_twitter_search_results_pattern, 10)
         assert_true(self, expected, 'A new tab with the Twitter search results is opened.')
