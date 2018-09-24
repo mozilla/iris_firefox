@@ -84,7 +84,10 @@ class Iris(object):
         self.test_packages = []
 
     def control_center(self):
-        if self.args.control:
+        # If user provides custom command-line arguments, we will skip the control center.
+        if len(sys.argv) > 1 and not self.args.control:
+            return True
+        else:
             # Copy web assets to working directory.
             dir_util.copy_tree(os.path.join(self.module_dir, 'iris', 'cc_files'), self.args.workdir)
             # Copy profile for Firefox.
@@ -157,8 +160,6 @@ class Iris(object):
                     logger.info('No tests selected, canceling Iris run.')
                     return False
                 return True
-        else:
-            return True
 
     def initialize_run(self):
         self.start_local_web_server(self.local_web_root, self.args.port)
