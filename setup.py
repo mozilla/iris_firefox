@@ -8,33 +8,12 @@ PACKAGE_NAME = 'iris'
 PACKAGE_VERSION = '0.1'
 
 INSTALL_REQUIRES = [
-    'xlib==0.21;platform_system=="Linux"',
-    'pyobjc-core==5.0;platform_system=="Darwin"',
-    'pyobjc==5.0;platform_system=="Darwin"',
-    'pyobjc-framework-Quartz==5.0;platform_system=="Darwin"',
-    'coloredlogs',
-    'hashfs',
-    'python-dateutil',
-    'opencv-python==3.4.0.12',
-    'pytesseract==0.2.0',
-    'numpy==1.14.2',
-    'image',
-    'PyAutoGUI==0.9.38',
-    'pyperclip==1.6.0',
-    'packaging',
-    'GitPython',
-    'pynput',
-    'mozinfo',
-    'mozversion',
-    'mozdownload',
-    'mozinstall'
 ]
 
 TESTS_REQUIRE = [
 ]
 
 DEV_REQUIRES = [
-    'pep8'
 ]
 
 setup(
