@@ -16,7 +16,6 @@ class Test(BaseTest):
         # use case of multiple Fx instances, such as this test.
         self.exclude = Platform.ALL
 
-
     def run(self):
         amazon_pattern = Pattern('amazon.png')
 
