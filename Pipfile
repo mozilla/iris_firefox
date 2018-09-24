@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+iris = {path = ".", editable = true}
+pyobjc = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-core = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-Quartz = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-cocoa = {version = "*", platform_system = "== 'Darwin'"}
+xlib = {version = "*", platform_system = "== 'Linux'"}
+PyAutoGUI = "*"
+coloredlogs = "*"
+python-dateutil = "*"
+opencv-python = "*"
+pytesseract = "*"
+numpy = "*"
+image = "*"
+pyperclip = "*"
+packaging = "*"
+GitPython = "*"
+pynput = "*"
+mozinstall = "*"
+mozdownload = "*"
+mozversion = "*"
+mozinfo = "*"
+"pep8" = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "2.7"
