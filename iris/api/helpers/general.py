@@ -697,11 +697,11 @@ def restore_firefox_focus():
     click(click_area)
 
 
-def get_firefox_version_from_about_support():
+def get_firefox_version_from_about_config():
     return get_pref_value('extensions.lastAppVersion')
 
 
-def get_firefox_build_id_from_about_support():
+def get_firefox_build_id_from_about_config():
     # There are several prefs that may contain this data, but we are not guaranteed
     # to have them, depending on what type of profile we start with.
     pref_1 = 'browser.startup.homepage_override.buildID'
@@ -713,11 +713,11 @@ def get_firefox_build_id_from_about_support():
         return get_pref_value(pref_2)
 
 
-def get_firefox_channel_from_about_support():
+def get_firefox_channel_from_about_config():
     return get_pref_value('app.update.channel')
 
 
-def get_firefox_locale_from_about_support():
+def get_firefox_locale_from_about_config():
     value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
     logger.debug(value_str)
     try:
