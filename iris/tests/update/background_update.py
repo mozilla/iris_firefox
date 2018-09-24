@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test for Firefox background update.'
+        self.exclude = Platform.ALL
 
     def setup(self):
         BaseTest.setup(self)
@@ -25,49 +26,49 @@ class Test(BaseTest):
 
     def run(self):
         update_restart_pattern = Pattern('background_update_menu_notification.png')
-        restart_to_update_button = Pattern('background_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
         iris_logo_pattern = Pattern('iris_logo.png')
 
         current_version = self.app.args.firefox
         channel = self.app.fx_channel
-        rule_dict = get_rule_for_current_channel(channel)
+        rules_dict = get_rule_for_current_channel(channel)
 
-        if rule_dict is None:
+        if rules_dict is None:
             raise ValueError('No rules found for %s channel. Please update config.ini file.' % channel)
 
-        starting_condition = rule_dict['starting_condition']
-        watershed_version = rule_dict['watershed_version']
-        latest_version = rule_dict['latest_version']
+        starting_condition = rules_dict['starting_condition']
+        update_steps_list = rules_dict['steps'].split(',')
+
         assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
                         'Firefox version is correct (%s)' % current_version)
 
-        while current_version != latest_version:
-            watershed_required = is_watershed_version_required(current_version, starting_condition)
-            if watershed_required:
-                logger.info('Current version: %s, watershed required: %s' % (current_version, watershed_version))
-                current_version = watershed_version
-            else:
-                logger.info('Current version: %s, watershed NOT required. Updating to latest: %s'
-                            % (current_version, latest_version))
-                current_version = latest_version
-            try:
-                wait(update_restart_pattern, 120)
-                click(update_restart_pattern)
-                wait(restart_to_update_button, 20)
-            except FindError:
-                raise FindError('Background update hamburger menu icon notification did not appear, aborting.')
+        if is_update_required(current_version, starting_condition):
+            for update_step in update_steps_list:
+                logger.info('Current version: %s, updating to version: %s.' % (current_version, update_step))
 
-            restart_firefox(self.app.fx_path, self.profile_path, url=self.app.base_local_web_url, image=iris_logo_pattern)
-            assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
-                            'Firefox version is correct (%s)' % current_version)
+                try:
+                    reset_mouse()
+                    wait(update_restart_pattern, 120)
+                except FindError:
+                    raise FindError('Background update hamburger menu icon notification did not appear, aborting.')
 
-        if current_version == latest_version:
-            open_about_firefox()
-            wait(firefox_up_to_date_pattern, 20)
-            type(Key.ESC)
-            assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
-                            'Firefox version is correct (%s)' % current_version)
+                restart_firefox(self.app.fx_path,
+                                self.profile_path,
+                                url=self.app.base_local_web_url,
+                                image=iris_logo_pattern)
+
+                assert_contains(self,
+                                update_step,
+                                get_firefox_version(self.app.fx_path),
+                                'Firefox successfully updated from %s to %s.' % (current_version, update_step))
+
+                current_version = update_step
+
+        open_about_firefox()
+        wait(firefox_up_to_date_pattern, 20)
+        type(Key.ESC)
+        assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
+                        'Firefox version is correct (%s)' % current_version)
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)

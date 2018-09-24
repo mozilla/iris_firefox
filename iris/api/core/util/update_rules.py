@@ -20,12 +20,12 @@ def get_rule_for_current_channel(channel):
     if len(result_list) == 0:
         return None
     elif len(result_list) > 1:
-        print('Multiple rules for "%s" channel' % channel)
+        logger.warning('Multiple rules for "%s" channel' % channel)
         return result_list[0]
     return result_list[0]
 
 
-def is_watershed_version_required(current_version, starting_condition):
+def is_update_required(current_version, starting_condition):
     return check_version(current_version, starting_condition)
 
 
