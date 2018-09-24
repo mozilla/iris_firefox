@@ -12,6 +12,8 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.assets = os.path.join(os.path.split(__file__)[0], "assets")
         self.meta = "This is a test case that checks that Browser Control Console work as expected"
+        self.test_case_id = '119481'
+        self.test_suite_id = '1998'
 
         # Disabling until test has been updated
         self.exclude = Platform.ALL

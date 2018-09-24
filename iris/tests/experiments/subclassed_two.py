@@ -16,6 +16,7 @@ class Test(SubclassedOne):
         # As always, call the superclass constructor first.
         SubclassedOne.__init__(self, app)
         self.meta = "This is a subclassed test from subclassed_one"
+        self.exclude = Platform.ALL
 
     def setup(self):
         # As above, call the superclass constructor.
