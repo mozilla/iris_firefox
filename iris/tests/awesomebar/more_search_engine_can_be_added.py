@@ -99,6 +99,7 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             type(Key.SPACE)
         else:
+            type(Key.TAB)
             click(search_engine_pattern.target_offset(20, 150))
 
         expected = exists(search_engine_pattern, 10)
