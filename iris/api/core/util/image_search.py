@@ -125,9 +125,7 @@ def _match_template_multiple(needle, haystack, threshold=0.99):
         needle = needle.get_color_image()
 
     found_list = iris_image_match_template(needle, haystack, precision, threshold)
-
-    if is_image_save_enabled():
-        save_debug_image(needle, haystack, found_list)
+    save_debug_image(needle, haystack, found_list)
 
     return found_list
 
@@ -162,11 +160,10 @@ def _match_template(needle, haystack):
 
     position = iris_image_match_template(needle, haystack, precision, None)
 
-    if is_image_save_enabled():
-        if position.x == -1:
-            save_debug_image(needle, np.array(haystack), None, True)
-        else:
-            save_debug_image(needle, haystack, position)
+    if position.x == -1:
+        save_debug_image(needle, np.array(haystack), None, True)
+    else:
+        save_debug_image(needle, haystack, position)
 
     return position
 
