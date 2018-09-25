@@ -23,6 +23,7 @@ class Test(BaseTest):
         search_in_new_tab = Pattern('search_in_new_tab.png')
         bing_search_results_localhost = Pattern('bing_search_results_localhost.png')
         twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
+        twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -60,7 +61,8 @@ class Test(BaseTest):
         next_tab()
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(twitter_search_results_localhost.similar(0.9), 10)
+        expected = region.exists(twitter_search_results_localhost.similar(0.9), 5) or region.exists(
+            twitter_search_results_localhost_2, 5)
         assert_true(self, expected, 'A new tab with \'Twitter\' search results for the searched string is opened.')
 
         # Type a partial part of the above address and perform a search, in the same tab, using an one-off .

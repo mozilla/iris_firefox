@@ -126,7 +126,7 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(duckduckgo_search_results_pattern, 10)
+        expected = region.exists(duckduckgo_search_results_pattern.similar(0.7), 10)
         assert_true(self, expected, 'Search results performed with \'DuckDuckGo\' search engine.')
 
         expected = region.exists(moz_search_duckduckgo_pattern, 10)
