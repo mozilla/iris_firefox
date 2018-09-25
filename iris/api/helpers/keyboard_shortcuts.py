@@ -370,6 +370,14 @@ def close_window():
         type(text='w', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
+def change_window_view():
+    """Change the focus on another window."""
+    if Settings.get_os() == Platform.MAC:
+        type(text=Key.TAB, modifier=KeyModifier.CMD)
+    else:
+        type(text=Key.TAB, modifier=KeyModifier.ALT)
+
+
 def full_screen():
     """Toggle full screen mode."""
     if Settings.get_os() == Platform.MAC:
