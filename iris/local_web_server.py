@@ -38,8 +38,8 @@ class CustomHandler(BaseHTTPRequestHandler):
             path = raw_path[1:]
         return os.path.normpath(path)
 
-    def _set_headers(self, set_content_type=True):
-        logger.debug('Handler _set_headers')
+    def set_headers(self, set_content_type=True):
+        logger.debug('Handler set_headers')
         self.send_response(200)
         value = 'text/html'
         if set_content_type:
@@ -62,9 +62,8 @@ class CustomHandler(BaseHTTPRequestHandler):
         try:
             if ControlCenter.is_command(self):
                 ControlCenter.do_command(self)
-                self._set_headers(False)
             else:
-                self._set_headers()
+                self.set_headers()
                 path = self._process_path(self.path)
                 f = open(path, 'rb')
                 self.wfile.write(f.read())
@@ -79,7 +78,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             if ControlCenter.is_command(self):
                 ControlCenter.do_command(self)
             else:
-                self._set_headers()
+                self.set_headers()
         except Exception as e:
             logger.debug('Exception in do_POSTs')
             if '10053' in e.args:
