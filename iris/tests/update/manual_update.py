@@ -24,7 +24,7 @@ class Test(BaseTest):
 
         current_version = self.app.args.firefox
         channel = self.app.fx_channel
-        rules_dict = get_rule_for_current_channel(channel)
+        rules_dict = get_rule_for_current_channel(channel, current_version)
         if rules_dict is None:
             raise ValueError('No rules found for %s channel. Please update config.ini file.' % channel)
 
