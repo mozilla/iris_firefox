@@ -38,7 +38,7 @@ def launch_firefox(path, profile=None, url=None, args=None):
         cmd.append(url)
 
     logger.debug('Launching Firefox with arguments: %s' % ' '.join(cmd))
-    subprocess.Popen(cmd)
+    subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return cmd
 
 
