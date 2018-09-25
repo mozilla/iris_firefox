@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class ControlCenter(object):
 
-    COMMANDS = ['delete', 'go', 'cancel']
+    COMMANDS = ['delete', 'go', 'cancel', 'run']
 
     @staticmethod
     def is_command(request):
@@ -41,10 +41,15 @@ class ControlCenter(object):
                 ControlCenter.delete(request.path.split('?')[1])
             except KeyError:
                 logger.error('Malformed delete command: %s' % request.path)
+            request.set_headers(False)
         elif 'go' in request.path:
             ControlCenter.go(request)
+            request.set_headers(False)
         elif 'cancel' in request.path:
             ControlCenter.cancel(request)
+            request.set_headers(False)
+        elif 'run?' in request.path:
+            ControlCenter.run(request)
         return True
 
     @staticmethod
@@ -97,4 +102,16 @@ class ControlCenter(object):
         logger.debug('Cancel command received: %s' % request.path)
         request.set_result('cancel')
         request.stop_server()
+        return
+
+    @staticmethod
+    def run(request):
+        """
+        View run page with parameters.
+        """
+        logger.debug('Run command received: %s' % request.path)
+        request.set_headers(False)
+        path = os.path.join(get_working_dir(), 'run.html')
+        f = open(path, 'rb')
+        request.wfile.write(f.read())
         return
