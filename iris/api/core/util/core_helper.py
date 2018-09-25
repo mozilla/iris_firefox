@@ -145,10 +145,6 @@ def get_tempdir():
     return tmp_dir
 
 
-def is_image_save_enabled():
-    return parse_args().level == 10
-
-
 def get_run_id():
     global _run_id
     return _run_id
