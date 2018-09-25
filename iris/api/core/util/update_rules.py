@@ -15,8 +15,10 @@ def get_update_rules():
     return ast.literal_eval(get_config_property('Update', 'update_rules'))
 
 
-def get_rule_for_current_channel(channel):
-    result_list = filter(lambda x: x['channel'] == channel and Settings.get_os() in x['os'], get_update_rules())
+def get_rule_for_current_channel(channel, current_version):
+    result_list = filter(
+        lambda x: x['channel'] == channel and Settings.get_os() in x['os'] and
+                  check_version(current_version, x['starting_condition']), get_update_rules())
     if len(result_list) == 0:
         return None
     elif len(result_list) > 1:
@@ -27,5 +29,3 @@ def get_rule_for_current_channel(channel):
 
 def is_update_required(current_version, starting_condition):
     return check_version(current_version, starting_condition)
-
-
