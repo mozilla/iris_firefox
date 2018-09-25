@@ -251,13 +251,11 @@ def text_search_by(what, match_case=True, in_region=None, multiple_matches=False
         if len(final_m_matches) > 0:
             return final_m_matches
         else:
-            if is_image_save_enabled():
-                save_debug_image(what, in_region, None, True)
+            save_debug_image(what, in_region, None, True)
             return None
     else:
         if final_s_match is not None:
             return final_s_match
         else:
-            if is_image_save_enabled():
-                save_debug_image(what, in_region, None, True)
+            save_debug_image(what, in_region, None, True)
             return None
