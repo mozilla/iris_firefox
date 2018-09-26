@@ -10,8 +10,11 @@ import cv2
 import numpy as np
 
 from errors import FindError
+from errors import APIHelperError
+from iris.api.core.platform import Platform
 from location import Location
 from util.core_helper import IrisCore
+from util.core_helper import get_os_version, get_os
 from util.parse_args import parse_args
 from settings import Settings
 
@@ -209,12 +212,16 @@ def get_image_path(caller, image):
     # If the above fails, we will look up the file name in the list of project-wide images,
     # and return whatever we find, with a warning message.
     # If we find nothing, we will raise an exception.
-
+    os_version=get_os_version()
     paths = []
     current_locale = parse_args().locale
 
     platform_directory = os.path.join(module_directory, 'images', Settings.get_os())
     platform_locale_directory = os.path.join(platform_directory, current_locale)
+    if os_version == 'win7':
+        platform_directory = os.path.join(module_directory, 'images', os_version)
+    else:
+        platform_directory = os.path.join(module_directory, 'images', get_os())
     for name in names:
         paths.append(os.path.join(platform_locale_directory, name))
 
@@ -240,6 +247,7 @@ def get_image_path(caller, image):
     if found:
         logger.debug('Module %s requests image %s' % (module, image))
         logger.debug('Found %s' % image_path)
+        print 'image_path is:',image_path
         return image_path
     else:
         # If not found in correct location, fall back to global image search for now.

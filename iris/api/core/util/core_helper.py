@@ -67,7 +67,12 @@ def get_os():
 
 def get_os_version():
     """Get the version string of the operating system your script is running on."""
-    return Platform.OS_VERSION
+    os_version = Platform.OS_VERSION
+    if os_version == '6.1':
+        current_os_version = 'win7'
+    else:
+        current_os_version = 'win10'
+    return current_os_version
 
 
 def get_platform():
