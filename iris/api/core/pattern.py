@@ -9,7 +9,7 @@ import os
 import cv2
 import numpy as np
 
-from errors import APIHelperError
+from errors import FindError
 from location import Location
 from util.core_helper import get_module_dir, get_images_path
 from util.parse_args import parse_args
@@ -257,4 +257,4 @@ def get_image_path(caller, image):
             logger.error('Image not found. Either it is in the wrong platform folder, or it does not exist.')
             logger.debug('Paths searched:')
             logger.debug('\n'.join(paths))
-            raise APIHelperError('Pattern not found')
+            raise FindError('Pattern not found')
