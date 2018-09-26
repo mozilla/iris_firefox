@@ -22,6 +22,7 @@ mozversion = "*"
 mozinfo = "*"
 mozrunner = "*"
 mss = "*"
+wxpython = "*"
 "pep8" = "*"
 
 # Platform dependencies
@@ -44,6 +45,13 @@ pyobjc-framework-coreservices = {version = "*", platform_system = "== 'Darwin'"}
 pyobjc-framework-coredata = {version = "*", platform_system = "== 'Darwin'"}
 pyobjc-framework-cfnetwork = {version = "*", platform_system = "== 'Darwin'"}
 pyobjc-framework-addressbook = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-imagecapturecore = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-corewlan = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-corelocation = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-qtkit = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-scriptingbridge = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-fsevents = {version = "*", platform_system = "== 'Darwin'"}
+pyobjc-framework-inputmethodkit = {version = "*", platform_system = "== 'Darwin'"}
 
 [dev-packages]
 

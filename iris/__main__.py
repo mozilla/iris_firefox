@@ -148,7 +148,7 @@ class Iris(object):
                 self.args.override = server.result['override']
                 self.args.port = int(server.result['port'])
                 self.args.email = server.result['email']
-                self.args.highlight = server.result['highlight']
+                self.args.spotlight = server.result['spotlight']
                 self.args.mouse = float(server.result['mouse'])
                 self.args.report = server.result['report']
                 self.args.save = server.result['save']
@@ -160,7 +160,7 @@ class Iris(object):
                 get_global_args().override = self.args.override
                 get_global_args().port = self.args.port
                 get_global_args().email = self.args.email
-                get_global_args().highlight = server.result['highlight']
+                get_global_args().spotlight = server.result['spotlight']
                 get_global_args().mouse = self.args.mouse
                 get_global_args().report = self.args.report
                 get_global_args().save = self.args.save
@@ -354,8 +354,8 @@ class Iris(object):
         arg_data = {'email': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'},
                     'firefox': {'type': 'str', 'value': ['local', 'latest', 'latest-esr', 'latest-beta', 'nightly'],
                                 'default': 'latest-beta', 'label': 'Firefox'},
-                    'highlight': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
-                                  'label': 'Debug using highlighting'},
+                    'spotlight': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
+                                  'label': 'Debug using spotlight'},
                     'locale': {'type': 'str', 'value': Settings.LOCALES, 'default': 'en-US', 'label': 'Locale'},
                     'mouse': {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5',
                               'label': 'Mouse speed'},

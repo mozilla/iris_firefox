@@ -6,12 +6,10 @@ from errors import FindError
 from key import key_up, key_down, paste
 from key import type
 from mouse import click, double_click, right_click, drag_drop, mouse_move, mouse_press, mouse_release
-from util.color import Color
-from util.highlight_rectangle import HighlightRectangle
+from util.spotlight import Spotlight
 from util.image_search import *
 from util.ocr_search import *
 from util.save_debug_image import save_debug_image
-from util.screen_highlight import ScreenHighlight
 
 try:
     import Image
@@ -196,13 +194,8 @@ class Region(object):
         """
         return text(with_image_processing, self, with_debug)
 
-    def highlight(self, seconds=None, color=None):
-        """
-        :param seconds: How many seconds the region is highlighted. By default the region is highlighted for 2 seconds.
-        :param color: Color used to highlight the region. Default color is red.
-        :return: None.
-        """
-        highlight(self, seconds, color)
+    def spotlight(self, seconds=None):
+        spotlight(self, seconds)
 
     @staticmethod
     def type(txt, modifier, interval):
@@ -300,34 +293,17 @@ class Region(object):
         return mouse_release(where, button, self)
 
 
-def highlight(region=None, seconds=None, color=None, pattern=None, location=None):
-    """
-    :param region: Screen region to be highlighted.
-    :param seconds: How many seconds the region is highlighted. By default the region is highlighted for 2 seconds.
-    :param color: Color used to highlight the region. Default color is red.
-    :param pattern: Pattern.
-    :param location: Location.
-    :return: None.
-    """
-    if color is None:
-        color = Settings.highlight_color
+def spotlight(region=None, seconds=None, pattern=None, location=None):
 
     if seconds is None:
-        seconds = Settings.highlight_duration
+        seconds = Settings.spotlight_duration
 
-    hl = ScreenHighlight()
     if region is not None:
-        hl.draw_rectangle(HighlightRectangle(region.x, region.y, region.width, region.height, color))
-        i = hl.canvas.create_text(region.x, region.y, anchor='nw', text='Region', font=("Arial", 12), fill=Color.WHITE)
-        r = hl.canvas.create_rectangle(hl.canvas.bbox(i), fill=color, outline=color)
-        hl.canvas.tag_lower(r, i)
+        Spotlight(region.x, region.y, region.width, region.height).render(seconds)
 
     if pattern is not None:
         width, height = get_image_size(pattern)
-        hl.draw_rectangle(HighlightRectangle(location.x, location.y, width, height, color))
-
-    hl.render(seconds)
-    time.sleep(seconds)
+        Spotlight(location.x, location.y, width, height).render(seconds)
 
 
 def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
@@ -485,8 +461,8 @@ def find(image_name, region=None):
 
         image_found = image_search(image_name, region)
         if (image_found.x != -1) & (image_found.y != -1):
-            if parse_args().highlight:
-                highlight(region=region, pattern=image_name, location=image_found)
+            if parse_args().spotlight:
+                spotlight(region=region, pattern=image_name, location=image_found)
             return image_found
         else:
             raise FindError('Unable to find image %s' % image_name.get_filename())
@@ -541,8 +517,8 @@ def wait(image_name, timeout=None, region=None):
         image_found = positive_image_search(image_name, timeout, region)
 
         if image_found is not None:
-            if parse_args().highlight:
-                highlight(region=region, pattern=image_name, location=image_found)
+            if parse_args().spotlight:
+                spotlight(region=region, pattern=image_name, location=image_found)
             return True
         else:
             raise FindError('Unable to find image %s' % image_name.get_filename())

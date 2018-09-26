@@ -31,8 +31,8 @@ def parse_args():
     parser.add_argument('-a', '--rerun',
                         help='Rerun last failed tests',
                         action='store_true')
-    parser.add_argument('-b', '--highlight',
-                        help='Highlight patterns and click actions',
+    parser.add_argument('-b', '--spotlight',
+                        help='Spotlight patterns and click actions',
                         action='store_true')
     parser.add_argument('-c', '--clear',
                         help='Clear run data',

@@ -12,11 +12,10 @@ from location import Location
 from pattern import Pattern
 from settings import Settings, DEFAULT_CLICK_DELAY
 from util.core_helper import INVALID_GENERIC_INPUT
-from util.highlight_circle import HighlightCircle
+from util.spotlight import Spotlight
 from util.image_search import positive_image_search, image_search, get_image_size
 from util.ocr_search import text_search_by
 from util.parse_args import parse_args
-from util.screen_highlight import ScreenHighlight
 
 
 class Mouse(object):
@@ -215,10 +214,8 @@ def _click_at(location=None, clicks=None, duration=None, button=None):
         location = Location(0, 0)
 
     pyautogui.moveTo(location.x, location.y, duration)
-    if parse_args().highlight:
-        hl = ScreenHighlight()
-        hl.draw_circle(HighlightCircle(location.x, location.y, 15))
-        hl.render()
+    if parse_args().spotlight:
+        Spotlight(location.x - 10, location.y - 10, 20, 20).render(duration)
     if clicks > 1:
         mouse = Controller()
         mouse.position = (location.x, location.y)
