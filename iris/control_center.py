@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class ControlCenter(object):
 
-    COMMANDS = ['delete', 'go', 'cancel', 'run']
+    COMMANDS = ['delete', 'go', 'cancel']
 
     @staticmethod
     def is_command(request):
@@ -36,7 +36,7 @@ class ControlCenter(object):
     @staticmethod
     def do_command(request):
         logger.debug('Parsing command from path: %s ' % request.path)
-        if 'delete?' in request.path:
+        if 'delete' in request.path:
             try:
                 ControlCenter.delete(request.path.split('?')[1])
             except KeyError:
@@ -48,8 +48,6 @@ class ControlCenter(object):
         elif 'cancel' in request.path:
             ControlCenter.cancel(request)
             request.set_headers(False)
-        elif 'run?' in request.path:
-            ControlCenter.run(request)
         return True
 
     @staticmethod
@@ -102,16 +100,4 @@ class ControlCenter(object):
         logger.debug('Cancel command received: %s' % request.path)
         request.set_result('cancel')
         request.stop_server()
-        return
-
-    @staticmethod
-    def run(request):
-        """
-        View run page with parameters.
-        """
-        logger.debug('Run command received: %s' % request.path)
-        request.set_headers(False)
-        path = os.path.join(get_working_dir(), 'run.html')
-        f = open(path, 'rb')
-        request.wfile.write(f.read())
         return
