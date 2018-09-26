@@ -58,7 +58,7 @@ def confirm_firefox_quit(app):
         address_crash_reporter()
     except FindError:
         logger.warning('Firefox still around - reattempting quit.')
-        click (NavBar.HOME_BUTTON)
+        click(NavBar.HOME_BUTTON)
         quit_firefox()
         try:
             wait_vanish(NavBar.HOME_BUTTON, 10)
@@ -84,8 +84,6 @@ def navigate_slow(url):
 
     try:
         select_location_bar()
-        # increase the delay between each keystroke while typing strings
-        # (sikuli defaults to .02 sec)
         Settings.type_delay = 0.1
         type(url + Key.ENTER)
     except Exception:
@@ -102,12 +100,11 @@ def navigate(url):
 
 
 def restart_firefox(path, profile, url, args=None, image=None):
-    # Just as it says, with options.
     logger.debug('Restarting Firefox.')
     quit_firefox()
     logger.debug('Confirming that Firefox has been quit.')
     home_pattern = NavBar.HOME_BUTTON
-    if image == None:
+    if image is None:
         check_pattern = home_pattern
     else:
         check_pattern = image
@@ -225,11 +222,10 @@ def click_hamburger_menu_option(option):
         try:
             region.wait(option, 10)
             logger.debug('Option found')
-        except FindError:
-            raise APIHelperError('Can\'t find the option in the page, aborting test.')
-        else:
             region.click(option)
             return region
+        except FindError:
+            raise APIHelperError('Can\'t find the option in the page, aborting test.')
 
 
 def confirm_close_multiple_tabs():
@@ -317,10 +313,9 @@ def click_cancel_button():
     try:
         wait(cancel_button_pattern, 10)
         logger.debug('Cancel button found')
+        click(cancel_button_pattern)
     except FindError:
         raise APIHelperError('Can\'t find the cancel button, aborting.')
-    else:
-        click(cancel_button_pattern)
 
 
 def close_customize_page():
@@ -328,10 +323,9 @@ def close_customize_page():
     try:
         wait(customize_done_button_pattern, 10)
         logger.debug('Done button found')
+        click(customize_done_button_pattern)
     except FindError:
         raise APIHelperError('Can\'t find the Done button in the page, aborting.')
-    else:
-        click(customize_done_button_pattern)
 
 
 def address_crash_reporter():
@@ -462,12 +456,16 @@ def create_region_from_image(image):
 
 
 def create_region_for_url_bar():
-    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    show_history_pattern = LocationBar.SHOW_HISTORY_BUTTON
-    select_location_bar()
-    region = create_region_from_patterns(show_history_pattern, hamburger_menu_pattern,
-                                         padding_top=20, padding_bottom=20)
-    return region
+    try:
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+        show_history_pattern = LocationBar.SHOW_HISTORY_BUTTON
+        select_location_bar()
+        return create_region_from_patterns(show_history_pattern,
+                                           hamburger_menu_pattern,
+                                           padding_top=20,
+                                           padding_bottom=20)
+    except FindError:
+        raise APIHelperError('Could not create region for URL bar.')
 
 
 def create_region_for_hamburger_menu():
@@ -478,16 +476,15 @@ def create_region_for_hamburger_menu():
         time.sleep(1)
         if Settings.get_os() == Platform.LINUX:
             quit_menu_pattern = Pattern('quit.png')
-            reg = create_region_from_patterns(None, hamburger_menu_pattern, quit_menu_pattern, None, padding_right=20)
+            return create_region_from_patterns(None, hamburger_menu_pattern, quit_menu_pattern, None, padding_right=20)
         elif Settings.get_os() == Platform.MAC:
             help_menu_pattern = Pattern('help.png')
-            reg = create_region_from_patterns(None, hamburger_menu_pattern, help_menu_pattern, None, padding_right=20)
+            return create_region_from_patterns(None, hamburger_menu_pattern, help_menu_pattern, None, padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            reg = create_region_from_patterns(None, hamburger_menu_pattern, exit_menu_pattern, None, padding_right=20)
+            return create_region_from_patterns(None, hamburger_menu_pattern, exit_menu_pattern, None, padding_right=20)
     except (FindError, ValueError):
         raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
-    return reg
 
 
 def restore_window_from_taskbar():
@@ -526,11 +523,10 @@ def open_library_menu(option):
             time.sleep(Settings.FX_DELAY)
             region.wait(option, 10)
             logger.debug('Option found')
-        except FindError:
-            raise APIHelperError('Can\'t find the option in the page, aborting test.')
-        else:
             region.click(option)
             return region
+        except FindError:
+            raise APIHelperError('Can\'t find the option in the page, aborting test.')
 
 
 def remove_zoom_indicator_from_toolbar():
@@ -680,8 +676,8 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
 
 
 def wait_for_firefox_restart():
-    home_pattern = NavBar.HOME_BUTTON
     try:
+        home_pattern = NavBar.HOME_BUTTON
         wait_vanish(home_pattern, 10)
         logger.debug('Firefox successfully closed.')
         wait(home_pattern, 20)
@@ -691,44 +687,58 @@ def wait_for_firefox_restart():
 
 
 def restore_firefox_focus():
-    w, h = get_image_size(NavBar.HOME_BUTTON)
-    horizontal_offset = w * 2
-    click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
-    click(click_area)
+    try:
+        w, h = get_image_size(NavBar.HOME_BUTTON)
+        horizontal_offset = w * 2
+        click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
+        click(click_area)
+    except FindError:
+        raise APIHelperError('Could not restore firefox focus.')
 
 
 def get_firefox_version_from_about_config():
-    return get_pref_value('extensions.lastAppVersion')
+    """Returns the firefox version from about:config page."""
+    try:
+        return get_pref_value('extensions.lastAppVersion')
+    except APIHelperError:
+        raise APIHelperError('Could not retrieve firefox version information from about:config page.')
 
 
 def get_firefox_build_id_from_about_config():
-    # There are several prefs that may contain this data, but we are not guaranteed
-    # to have them, depending on what type of profile we start with.
+    """Returns the firefox build id from about:config page."""
     pref_1 = 'browser.startup.homepage_override.buildID'
     pref_2 = 'extensions.lastAppBuildId'
 
     try:
         return get_pref_value(pref_1)
     except APIHelperError:
-        return get_pref_value(pref_2)
+        try:
+            return get_pref_value(pref_2)
+        except APIHelperError:
+            raise APIHelperError('Could not retrieve firefox build id information from about:config page.')
 
 
 def get_firefox_channel_from_about_config():
-    return get_pref_value('app.update.channel')
+    """Returns the firefox channel from about:config page."""
+    try:
+        return get_pref_value('app.update.channel')
+    except APIHelperError:
+        raise APIHelperError('Could not retrieve firefox channel information from about:config page.')
 
 
 def get_firefox_locale_from_about_config():
-    value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
-    logger.debug(value_str)
+    """Returns the firefox locale from about:config page."""
     try:
+        value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
+        logger.debug(value_str)
         temp = json.loads(value_str)
-        value = str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
-    except KeyError:
+        return str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
+    except (APIHelperError, KeyError):
         raise APIHelperError('Pref format to determine locale has changed')
-    return value
 
 
 def get_pref_value(pref_name):
+    """Returns the value of a provided preference from about:config page."""
     new_tab()
     select_location_bar()
     paste('about:config')
@@ -753,6 +763,7 @@ def get_pref_value(pref_name):
 
 
 def get_support_info():
+    """Returns support information as a JSON object from about:support page."""
     copy_raw_data_to_clipboard = Pattern('about_support_copy_raw_data_button.png')
 
     new_tab()
@@ -765,27 +776,30 @@ def get_support_info():
         click(copy_raw_data_to_clipboard)
         time.sleep(Settings.UI_DELAY)
         json_text = Env.get_clipboard()
+        return json.loads(json_text)
     except Exception as e:
         raise APIHelperError('Failed to retrieve support information value. %s' % e.message)
-
-    close_tab()
-    return json.loads(json_text)
+    finally:
+        close_tab()
 
 
 def get_firefox_info(build_path):
-    """This method returns the application version information as a dict with the help of mozversion module."""
+    """Returns the application version information as a dict with the help of mozversion library."""
     return mozversion.get_version(binary=build_path)
 
 
 def get_firefox_version(build_path):
+    """Returns application version string from the dictionary generated by mozversion library."""
     return get_firefox_info(build_path)['application_version']
 
 
 def get_firefox_build_id(build_path):
+    """Returns build id string from the dictionary generated by mozversion library."""
     return get_firefox_info(build_path)['platform_buildid']
 
 
 def get_firefox_channel(build_path):
+    """Returns firefox channel from application repository."""
     fx_channel = get_firefox_info(build_path)['application_repository']
     if 'beta' in fx_channel:
         return 'beta'
@@ -811,22 +825,23 @@ def get_telemetry_info():
         wait(raw_json_pattern, 10)
         logger.debug('\'RAW JSON\' button is present on the page.')
         click(raw_json_pattern)
-    except  Exception as e:
+    except (FindError, ValueError):
         raise APIHelperError('\'RAW JSON\' button not present in the page.')
 
     try:
         wait(raw_data_pattern, 10)
         logger.debug('\'Raw Data\' button is present on the page.')
         click(raw_data_pattern)
-    except  Exception as e:
+    except (FindError, ValueError):
+        close_tab()
         raise APIHelperError('\'Raw Data\' button not present in the page.')
 
     try:
         click(copy_raw_data_to_clipboard_pattern)
         time.sleep(Settings.UI_DELAY)
         json_text = Env.get_clipboard()
+        return json.loads(json_text)
     except Exception as e:
         raise APIHelperError('Failed to retrieve raw message information value. %s' % e.message)
-
-    close_tab()
-    return json.loads(json_text)
+    finally:
+        close_tab()
