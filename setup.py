@@ -5,7 +5,7 @@
 from setuptools import setup, find_packages
 
 PACKAGE_NAME = 'iris'
-PACKAGE_VERSION = '0.1'
+PACKAGE_VERSION = '1.0'
 
 INSTALL_REQUIRES = [
 ]
