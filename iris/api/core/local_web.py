@@ -20,32 +20,32 @@ class LocalWeb(object):
     BLANK_PAGE_2 = 'http://%s:%s/blank.htm' % (_domain_host, _port)
 
     # Local Firefox site
-    FIREFOX_TEST_SITE = 'http://%s:%s/firefox/index.htm' % (_ip_host, _port)
-    FIREFOX_TEST_SITE_2 = 'http://%s:%s/firefox/index.htm' % (_domain_host, _port)
+    FIREFOX_TEST_SITE = 'http://%s:%s/firefox/' % (_ip_host, _port)
+    FIREFOX_TEST_SITE_2 = 'http://%s:%s/firefox/' % (_domain_host, _port)
     FIREFOX_LOGO = Pattern('firefox_logo.png')
     FIREFOX_IMAGE = Pattern('firefox_full.png')
     FIREFOX_BOOKMARK = Pattern('firefox_bookmark.png')
     FIREFOX_BOOKMARK_SMALL = Pattern('firefox_bookmark_small.png')
 
     # Local Firefox Focus site
-    FOCUS_TEST_SITE = 'http://%s:%s/focus/index.htm' % (_ip_host, _port)
-    FOCUS_TEST_SITE_2 = 'http://%s:%s/focus/index.htm' % (_domain_host, _port)
+    FOCUS_TEST_SITE = 'http://%s:%s/focus/' % (_ip_host, _port)
+    FOCUS_TEST_SITE_2 = 'http://%s:%s/focus/' % (_domain_host, _port)
     FOCUS_LOGO = Pattern('focus_logo.png')
     FOCUS_IMAGE = Pattern('focus_full.png')
     FOCUS_BOOKMARK = Pattern('focus_bookmark.png')
     FOCUS_BOOKMARK_SMALL = Pattern('focus_bookmark_small.png')
 
     # Local Mozilla site
-    MOZILLA_TEST_SITE = 'http://%s:%s/mozilla/index.htm' % (_ip_host, _port)
-    MOZILLA_TEST_SITE_2 = 'http://%s:%s/mozilla/index.htm' % (_domain_host, _port)
+    MOZILLA_TEST_SITE = 'http://%s:%s/mozilla/' % (_ip_host, _port)
+    MOZILLA_TEST_SITE_2 = 'http://%s:%s/mozilla/' % (_domain_host, _port)
     MOZILLA_LOGO = Pattern('mozilla_logo.png')
     MOZILLA_IMAGE = Pattern('mozilla_full.png')
     MOZILLA_BOOKMARK = Pattern('mozilla_bookmark.png')
     MOZILLA_BOOKMARK_SMALL = Pattern('mozilla_bookmark_small.png')
 
     # Local Pocket site
-    POCKET_TEST_SITE = 'http://%s:%s/pocket/index.htm' % (_ip_host, _port)
-    POCKET_TEST_SITE_2 = 'http://%s:%s/pocket/index.htm' % (_domain_host, _port)
+    POCKET_TEST_SITE = 'http://%s:%s/pocket/' % (_ip_host, _port)
+    POCKET_TEST_SITE_2 = 'http://%s:%s/pocket/' % (_domain_host, _port)
     POCKET_LOGO = Pattern('pocket_logo.png')
     POCKET_IMAGE = Pattern('pocket_full.png')
     POCKET_BOOKMARK = Pattern('pocket_bookmark.png')
