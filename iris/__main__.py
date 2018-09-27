@@ -245,7 +245,7 @@ class Iris(object):
                 'params': vars(self.args), 'log': os.path.join(get_current_run_dir(), 'iris_log.log')}
 
         repo = git.Repo(self.module_dir)
-        meta['iris_version'] = 0.1
+        meta['iris_version'] = 1.0
         meta['iris_repo'] = repo.working_tree_dir
         meta['iris_branch'] = repo.active_branch.name
         meta['iris_branch_head'] = repo.head.object.hexsha
