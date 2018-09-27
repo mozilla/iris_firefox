@@ -18,7 +18,8 @@ class CustomHandler(BaseHTTPRequestHandler):
 
     CONTENT_TYPES = {'htm': 'text/html', 'html': 'text/html', 'css': 'text/css',
                      'js': 'text/javascript', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
-                     'png': 'image/png', 'json': 'application/json', 'ico': 'image/x-icon'}
+                     'png': 'image/png', 'json': 'application/json', 'ico': 'image/x-icon',
+                     'pdf': 'application/pdf'}
 
     def stop_server(self):
         logger.debug('Handler stop_server')
@@ -30,13 +31,18 @@ class CustomHandler(BaseHTTPRequestHandler):
 
     @staticmethod
     def _process_path(raw_path):
-        if raw_path == '/' or raw_path.startswith('/?'):
-            path = 'index.html'
+        if raw_path.startswith('/?'):
+            path = os.path.normpath('index.html')
         elif raw_path.endswith('/'):
-            path = raw_path[1:] + 'index.htm'
+            directory = os.path.normpath(raw_path[1:])
+            index = os.path.join(directory, 'index.htm')
+            if os.path.exists(index):
+                path = index
+            else:
+                path = os.path.join(directory, 'index.html')
         else:
-            path = raw_path[1:]
-        return os.path.normpath(path)
+            path = os.path.normpath(raw_path[1:])
+        return path
 
     def set_headers(self, set_content_type=True):
         logger.debug('Handler set_headers')
