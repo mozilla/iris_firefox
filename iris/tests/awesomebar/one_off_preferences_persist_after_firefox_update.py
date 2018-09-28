@@ -37,7 +37,6 @@ class Test(BaseTest):
         add_button_pattern = Pattern('add_button.png')
         startpage_https_search_engine_pattern = Pattern('startpage_https_search_engine.png')
         search_engine_pattern = Pattern('search_engine.png')
-        search_engine_custom_pattern = Pattern('search_engine_61.0b9.png')
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -84,6 +83,7 @@ class Test(BaseTest):
             expected = exists(search_engine_pattern, 10)
             assert_true(self, expected, 'One-Click Search Engines section found.')
         else:
+            search_engine_custom_pattern = Pattern('search_engine_61.0b9.png')
             type(Key.TAB)
             click(search_engine_custom_pattern.target_offset(20, 150))
 
