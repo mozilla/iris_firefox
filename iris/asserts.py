@@ -18,6 +18,13 @@ class Result(object):
 
 
 def assert_equal(test_case, actual, expected, message):
+    """
+    :param test_case: Instance of BaseTest class.
+    :param actual: Actual result.
+    :param expected: Expected result.
+    :param message: Text message.
+    :return: None.
+    """
     try:
         assert actual == expected
         test_case.add_results('PASSED', message, actual, expected, None)
@@ -27,6 +34,13 @@ def assert_equal(test_case, actual, expected, message):
 
 
 def assert_contains(test_case, actual, expected, message):
+    """
+    :param test_case: Instance of BaseTest class.
+    :param actual: Actual result.
+    :param expected: Expected result.
+    :param message: Text message.
+    :return: None.
+    """
     try:
         assert expected in actual
         test_case.add_results('PASSED', message, actual, expected, None)
@@ -36,8 +50,22 @@ def assert_contains(test_case, actual, expected, message):
 
 
 def assert_true(test_case, actual, message):
+    """Call the assert_equal() method with expected result TRUE.
+
+    :param test_case: Instance of BaseTest class.
+    :param actual: Actual result.
+    :param message: Text message.
+    :return: None.
+    """
     assert_equal(test_case, actual, True, message)
 
 
 def assert_false(test_case, actual, message):
+    """Call the assert_equal() method with expected result FALSE.
+
+    :param test_case: Instance of BaseTest class.
+    :param actual: Actual result.
+    :param message: Text message.
+    :return: None.
+    """
     assert_equal(test_case, actual, False, message)

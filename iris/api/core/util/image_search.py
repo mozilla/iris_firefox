@@ -25,10 +25,10 @@ FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 
 def get_image_size(of_what):
-    """Get image size of asset image
+    """Get image size of asset image.
 
-    :param str || Pattern of_what: Image name or Pattern object
-    :return: width, height as tuple
+    :param str || Pattern of_what: Image name or Pattern object.
+    :return: Width, height as tuple.
     """
     needle_path = None
     scale_factor = 1
@@ -58,13 +58,13 @@ def _calculate_interval_max_attempts(timeout=None):
 
 
 def iris_image_match_template(needle, haystack, precision, threshold=None):
-    """Finds a match or a list of matches
+    """Finds a match or a list of matches.
 
-    :param needle:  Image details (needle)
-    :param haystack: Region as Image (haystack)
-    :param float precision: Min allowed similarity
-    :param float || None threshold:  Max threshold
-    :return: A location or a list of locations
+    :param needle:  Image details (needle).
+    :param haystack: Region as Image (haystack).
+    :param float precision: Min allowed similarity.
+    :param float || None threshold:  Max threshold.
+    :return: A location or a list of locations.
     """
     is_multiple = threshold is not None
 
@@ -109,12 +109,12 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
 
 
 def _match_template_multiple(needle, haystack, threshold=0.99):
-    """Search for needle in stack (multiple matches)
+    """Search for needle in stack (multiple matches).
 
-    :param Pattern needle:  Image details (needle)
-    :param Image.Image haystack: Region as Image (haystack)
-    :param float threshold:  Max threshold
-    :return: List of Location
+    :param Pattern needle:  Image details (needle).
+    :param Image.Image haystack: Region as Image (haystack).
+    :param float threshold:  Max threshold.
+    :return: List of Location.
     """
 
     precision = needle.similarity
@@ -132,11 +132,11 @@ def _match_template_multiple(needle, haystack, threshold=0.99):
 
 
 def image_search_multiple(pattern, region=None):
-    """ Wrapper over _match_template_multiple. Search image (multiple) in a Region or full screen
+    """ Wrapper over _match_template_multiple. Search image (multiple) in a Region or full screen.
 
-    :param Pattern pattern: Image details (needle)
-    :param Region region: Region object
-    :return: List[Location]
+    :param Pattern pattern: Image details (needle).
+    :param Region region: Region object.
+    :return: List[Location].
     """
 
     stack_image = IrisCore.get_region(region=region)
@@ -146,9 +146,9 @@ def image_search_multiple(pattern, region=None):
 def _match_template(needle, haystack):
     """Search for needle in stack (single match).
 
-    :param Pattern needle: Image details (needle)
-    :param Image.Image haystack: Region as Image (haystack)
-    :return: Location
+    :param Pattern needle: Image details (needle).
+    :param Image.Image haystack: Region as Image (haystack).
+    :return: Location.
     """
 
     precision = needle.similarity
@@ -172,9 +172,9 @@ def _match_template(needle, haystack):
 def image_search(pattern, region=None):
     """ Wrapper over _match_template. Search image in a Region or full screen
 
-    :param Pattern pattern: Image details (needle)
-    :param Region region: Region object
-    :return: Location
+    :param Pattern pattern: Image details (needle).
+    :param Region region: Region object.
+    :return: Location.
     """
     logger.debug('Searching for pattern: %s' % pattern.get_filename())
     stack_image = IrisCore.get_region(region=region)
@@ -189,12 +189,11 @@ def image_search(pattern, region=None):
 
 
 def _add_positive_image_search_result_in_queue(queue, pattern, region=None):
-    """Puts result in a queue if image is found
+    """Puts result in a queue if image is found.
 
-    :param Queue.Queue queue: Queue where the result of the search is added
-    :param Pattern pattern: name of the searched image
-    :param Region region: Region object
-    :return:
+    :param Queue.Queue queue: Queue where the result of the search is added.
+    :param Pattern pattern: name of the searched image.
+    :param Region region: Region object.
     """
     result = image_search(pattern, region)
     if result.x != -1:
@@ -202,12 +201,12 @@ def _add_positive_image_search_result_in_queue(queue, pattern, region=None):
 
 
 def _positive_image_search_multiprocess(pattern, timeout=None, region=None):
-    """Checks if image is found using multiprocessing
+    """Checks if image is found using multiprocessing.
 
-    :param Pattern pattern: name of the searched image
+    :param Pattern pattern: Name of the searched image.
     :param timeout: Number as maximum waiting time in seconds.
-    :param Region region: Region object
-    :return: Found image from queue
+    :param Region region: Region object.
+    :return: Found image from queue.
     """
 
     out_q = multiprocessing.Queue()
@@ -236,12 +235,12 @@ def _positive_image_search_multiprocess(pattern, timeout=None, region=None):
 
 
 def _positive_image_search_loop(pattern, timeout=None, region=None):
-    """ Search for an image (in loop) in a Region or full screen
+    """ Search for an image (in loop) in a Region or full screen.
 
-    :param Pattern pattern: name of the searched image
+    :param Pattern pattern: Name of the searched image.
     :param timeout: Number as maximum waiting time in seconds.
-    :param Region region: Region object
-    :return: Location
+    :param Region region: Region object.
+    :return: Location.
     """
 
     if timeout is None:
@@ -268,12 +267,11 @@ def positive_image_search(pattern, timeout=None, region=None):
 
 
 def _add_negative_image_search_result_in_queue(queue, pattern, region=None):
-    """Puts result in a queue if image is NOT found
+    """Puts result in a queue if image is NOT found.
 
-    :param Queue.Queue queue: Queue where the result of the search is added
-    :param Pattern pattern: name of the searched image
+    :param Queue.Queue queue: Queue where the result of the search is added.
+    :param Pattern pattern: Name of the searched image.
     :param Region region: Region object
-    :return:
     """
 
     result = image_search(pattern, region)
@@ -282,12 +280,12 @@ def _add_negative_image_search_result_in_queue(queue, pattern, region=None):
 
 
 def _negative_image_search_multiprocess(pattern, timeout=None, region=None):
-    """Checks if image is NOT found or it vanished using multiprocessing
+    """Checks if image is NOT found or it vanished using multiprocessing.
 
-    :param Pattern pattern: name of the searched image
+    :param Pattern pattern: Name of the searched image.
     :param timeout: Number as maximum waiting time in seconds.
-    :param Region region: Region object
-    :return: Found image from queue
+    :param Region region: Region object.
+    :return: Found image from queue.
     """
     out_q = multiprocessing.Queue()
 
@@ -315,12 +313,12 @@ def _negative_image_search_multiprocess(pattern, timeout=None, region=None):
 
 
 def _negative_image_search_loop(pattern, timeout=None, region=None):
-    """ Search if an image (in loop) is NOT in a Region or full screen
+    """ Search if an image (in loop) is NOT in a Region or full screen.
 
-    :param Pattern pattern: name of the searched image
+    :param Pattern pattern: Name of the searched image.
     :param timeout: Number as maximum waiting time in seconds.
-    :param Region region: Region object
-    :return: Location
+    :param Region region: Region object.
+    :return: Location.
     """
 
     pattern_found = True

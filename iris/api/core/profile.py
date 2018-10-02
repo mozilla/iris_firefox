@@ -51,10 +51,10 @@ class _IrisProfile(object):
             output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
             logger.error('7zip failed: %s' % repr(e.output))
-            raise Exception('Unable to unzip profile')
+            raise Exception('Unable to unzip profile.')
         logger.debug('7zip succeeded: %s' % repr(output))
 
-        # Find the desired profile
+        # Find the desired profile.
         from_directory = os.path.join(_staged_profiles, profile_name)
 
         # Create a folder to hold that profile's contents.
@@ -69,7 +69,7 @@ class _IrisProfile(object):
             shutil.rmtree(from_directory)
         except WindowsError:
             # This error can happen, but does not affect Iris.
-            logger.debug('Error, can\'t remove orphaned directory, leaving in place')
+            logger.debug('Error, can\'t remove orphaned directory, leaving in place.')
 
         # Remove Mac resource fork folders left over from ZIP, if present.
         resource_fork_folder = os.path.join(_staged_profiles, '__MACOSX')
@@ -78,7 +78,7 @@ class _IrisProfile(object):
                 shutil.rmtree(resource_fork_folder)
             except WindowsError:
                 # This error can happen, but does not affect Iris.
-                logger.debug('Error, can\'t remove orphaned directory, leaving in place')
+                logger.debug('Error, can\'t remove orphaned directory, leaving in place.')
 
     def make_profile(self, template):
         """
@@ -102,7 +102,7 @@ class _IrisProfile(object):
             logger.debug('Creating brand new profile: %s' % profile_path)
         elif template is _IrisProfile.LIKE_NEW:
             """Open a staged profile that is nearly new, but with some first-run preferences altered."""
-            logger.debug('Creating new profile from LIKE_NEW staged profile')
+            logger.debug('Creating new profile from LIKE_NEW staged profile.')
             self._get_staged_profile(template, profile_path)
         elif template is _IrisProfile.TEN_BOOKMARKS:
             """Open a staged profile that already has ten bookmarks."""
