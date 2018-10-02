@@ -123,4 +123,4 @@ def save_debug_image(needle, haystack, locations, not_found=False):
         if not os.path.exists(get_image_debug_path()):
             os.mkdir(get_image_debug_path())
         file_name = os.path.join(get_image_debug_path(), '%s.jpg' % temp_f)
-        cv2.imwrite(file_name, haystack)
+        cv2.imwrite(file_name, haystack, [int(cv2.IMWRITE_JPEG_QUALITY), 50])
