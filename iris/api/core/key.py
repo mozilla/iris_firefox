@@ -88,7 +88,7 @@ class Key(object):
     UP = _IrisKey('up')
     WIN = _IrisKey('win', 1 << 2)
 
-    # Additional keys
+    # Additional keys.
     ACCEPT = _IrisKey('accept')
     ALT_LEFT = _IrisKey('altleft')
     ALT_RIGHT = _IrisKey('altright')
@@ -171,7 +171,7 @@ class Key(object):
             try:
                 key_state = hll_dll.GetKeyState(keyboard_code)
             except Exception:
-                raise Exception('Unable to run Command')
+                raise Exception('Unable to run Command.')
             if key_state == 1:
                 return True
             else:
@@ -181,7 +181,7 @@ class Key(object):
                 cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
             except subprocess.CalledProcessError as e:
                 logger.error('Command  failed: %s' % repr(e.cmd))
-                raise Exception('Unable to run Command')
+                raise Exception('Unable to run Command.')
             else:
                 processed_lock_key = keyboard_key.label
                 if 'caps' in processed_lock_key:
@@ -249,34 +249,51 @@ class KeyModifier(object):
 
 
 def key_down(key):
+    """Performs a keyboard key press without the release. This will put that key in a held down state.
+
+    :param key: The key to be pressed down.
+    :return: None.
+    """
     if isinstance(key, _IrisKey):
         pyautogui.keyDown(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
             pyautogui.keyDown(key)
         else:
-            raise ValueError("Unsupported string input")
+            raise ValueError("Unsupported string input.")
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def key_up(key):
+    """Performs a keyboard key release (without the press down beforehand).
+
+    :param key: The key to be released up.
+    :return: None.
+    """
     if isinstance(key, _IrisKey):
         pyautogui.keyUp(str(key))
     elif isinstance(key, str):
         if pyautogui.isValidKey(key):
             pyautogui.keyUp(key)
         else:
-            raise ValueError("Unsupported string input")
+            raise ValueError("Unsupported string input.")
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
 
 def type(text=None, modifier=None, interval=None):
+    """
+    :param str || list text: If a string, then the characters to be pressed. If a list, then the key names of the keys
+                             to press in order.
+    :param modifier: Key modifier.
+    :param interval: The number of seconds in between each press. By default it is 0 seconds.
+    :return: None.
+    """
     logger.debug('type method: ')
     if modifier is None:
         if isinstance(text, _IrisKey):
-            logger.debug('Scenario 1: reserved key')
+            logger.debug('Scenario 1: reserved key.')
             logger.debug('Reserved key: %s' % text)
             pyautogui.keyDown(str(text))
             pyautogui.keyUp(str(text))
@@ -285,11 +302,11 @@ def type(text=None, modifier=None, interval=None):
             if interval is None:
                 interval = Settings.type_delay
 
-            logger.debug('Scenario 2: normal key or text block')
+            logger.debug('Scenario 2: normal key or text block.')
             logger.debug('Text: %s' % text)
             pyautogui.typewrite(text, interval)
     else:
-        logger.debug('Scenario 3: combination of modifiers and other keys')
+        logger.debug('Scenario 3: combination of modifiers and other keys.')
         modifier_keys = KeyModifier.get_active_modifiers(modifier)
         num_keys = len(modifier_keys)
         logger.debug('Modifiers (%s): %s ' % (num_keys, ' '.join(modifier_keys)))
@@ -315,14 +332,18 @@ def type(text=None, modifier=None, interval=None):
             time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
             pyautogui.keyUp(modifier_keys[0])
         else:
-            logger.error('Returned key modifiers out of range')
+            logger.error('Returned key modifiers out of range.')
 
     if Settings.type_delay != DEFAULT_TYPE_DELAY:
         Settings.type_delay = DEFAULT_TYPE_DELAY
 
 
 def paste(text):
-    # load to clipboard
+    """
+    :param text: Text to be pasted.
+    :return: None.
+    """
+    # Load text to clipboard.
     pyperclip.copy(text)
 
     text_copied = False
@@ -339,12 +360,12 @@ def paste(text):
             attempt += 1
 
     if not text_copied:
-        logger.error('Paste method failed')
+        logger.error('Paste method failed.')
         raise FindError
 
     if Settings.get_os() == Platform.MAC:
         type(text='v', modifier=KeyModifier.CMD)
     else:
         type(text='v', modifier=KeyModifier.CTRL)
-    # clear clipboard
+    # Clear clipboard.
     pyperclip.copy('')

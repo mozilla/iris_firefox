@@ -23,48 +23,60 @@ class HighlightRectangle(object):
 
     @property
     def x(self):
+        """Getter for the x property."""
         return self._x
 
     @x.setter
     def x(self, x):
+        """Setter for the x property."""
         self._x = x
 
     @property
     def y(self):
+        """Getter for the y property."""
         return self._y
 
     @y.setter
     def y(self, y):
+        """Getter for the y property."""
         self._y = y
 
     @property
     def width(self):
+        """Getter for the width property."""
         return self._width
 
     @width.setter
     def width(self, width):
+        """Setter for the width property."""
         self._width = width
 
     @property
     def height(self):
+        """Getter for the height property."""
         return self._height
 
     @height.setter
     def height(self, height):
+        """Setter for the height property."""
         self._height = height
 
     @property
     def color(self):
+        """Getter for the color property."""
         return self._color
 
     @color.setter
     def color(self, color):
+        """Setter for the color property."""
         self._color = color
 
     @property
     def thickness(self):
+        """Getter for the thickness property."""
         return self._thickness
 
     @thickness.setter
     def thickness(self, thickness):
+        """Setter for the thickness property."""
         self._thickness = thickness

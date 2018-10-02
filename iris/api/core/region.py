@@ -30,21 +30,29 @@ class Region(object):
         self._height = height
 
     def debug(self):
+        """Saves input image for debug."""
         save_debug_image(None, self, None)
 
     def debug_ocr(self, with_image_processing=True):
+        """
+        :param with_image_processing: With extra dpi and contrast image processing.
+        :return: Call the text() method.
+        """
         return self.text(with_image_processing, True)
 
     def show(self):
+        """Show the screen region. This method is mainly intended for debugging purposes."""
         region_screen = IrisCore.get_region(self)
         region_screen.show()
 
     @property
     def x(self):
+        """Getter for the location x property."""
         return self._x
 
     @x.setter
     def x(self, x):
+        """Setter for the location x property."""
         if isinstance(x, int):
             self._x = x
         else:
@@ -52,10 +60,12 @@ class Region(object):
 
     @property
     def y(self):
+        """Getter for the location y property."""
         return self._y
 
     @y.setter
     def y(self, y):
+        """Setter for the location y property."""
         if isinstance(y, int):
             self._y = y
         else:
@@ -63,10 +73,12 @@ class Region(object):
 
     @property
     def width(self):
+        """Getter for the screen width property."""
         return self._width
 
     @width.setter
     def width(self, width):
+        """Setter for the screen width property."""
         if isinstance(width, int):
             self._width = width
         else:
@@ -74,16 +86,19 @@ class Region(object):
 
     @property
     def height(self):
+        """Getter for the screen height property."""
         return self._height
 
     @height.setter
     def height(self, height):
+        """Setter for the screen height property."""
         if isinstance(height, int):
             self._height = height
         else:
             raise ValueError(INVALID_NUMERIC_INPUT)
 
     def get_center(self):
+        """Returns a Location object for the center of te screen."""
         center_x = int(self._x + self._width) / 2
         center_y = int(self._y + self._height) / 2
         return Location(center_x, center_y)
@@ -93,85 +108,207 @@ class Region(object):
         self._y = location.y
 
     def get_top_left(self):
+        """Returns a Location object for the top left of te screen."""
         return Location(self._x, self._y)
 
     def get_top_right(self):
+        """Returns a Location object for the top right of te screen."""
         top_right_x = self._x + self._width
         return Location(top_right_x, self._y)
 
     def get_bottom_left(self):
+        """Returns a Location object for the bottom left of te screen."""
         bottom_left_y = self._y + self._height
         return Location(self._x, bottom_left_y)
 
     def get_bottom_right(self):
+        """Returns a Location object for the bottom right of te screen."""
         bottom_right_x = self._x + self._width
         bottom_right_y = self._y + self._height
         return Location(bottom_right_x, bottom_right_y)
 
     def hover(self, where=None, duration=0):
+        """Hover over a Location, Pattern or image.
+
+        :param where: Location, Pattern or image name for hover target.
+        :param duration: Speed of hovering from current location to target.
+        :return: Call the hover() method.
+        """
         return hover(where, duration, self)
 
     def find(self, what=None):
+        """Look for a single match of a Pattern or image.
+
+        :param what: String or Pattern.
+        :return: Call the find() method.
+        """
         return find(what, self)
 
     def find_all(self, what=None):
+        """Look for multiple matches of a Pattern or image.
+
+        :param what: String or Pattern.
+        :return: Call the find_all() method.
+        """
         return find_all(what, self)
 
     def wait(self, what=None, timeout=None):
+        """Wait for a Pattern or image to appear.
+
+        :param what: String or Pattern.
+        :param timeout: Number as maximum waiting time in seconds.
+        :return: None.
+        """
         wait(what, timeout, self)
 
     def wait_vanish(self, what=None, timeout=None):
+        """Wait until a Pattern disappears.
+
+        :param what: Pattern.
+        :param timeout: Number as maximum waiting time in seconds.
+        :return: Call the wait_vanish() method.
+        """
         return wait_vanish(what, timeout, self)
 
     def exists(self, what=None, timeout=None):
+        """Check if Pattern or image exists.
+
+        :param what: String or Pattern.
+        :param timeout: Number as maximum waiting time in seconds.
+        :return: Call the exists() method.
+        """
         return exists(what, timeout, self)
 
     def click(self, where=None, duration=None):
+        """Mouse left click.
+
+        :param where: Location , image name or Pattern.
+        :param duration: Speed of hovering from current location to target.
+        :return: Call the click() method.
+        """
         return click(where, duration, self)
 
     def text(self, with_image_processing=True, with_debug=False):
+        """
+        :param bool with_image_processing: With extra dpi and contrast image processing.
+        :param bool with_debug: Boolean for saving ocr images.
+        :return: Call the text() method.
+        """
         return text(with_image_processing, self, with_debug)
 
     def highlight(self, seconds=None, color=None):
+        """
+        :param seconds: How many seconds the region is highlighted. By default the region is highlighted for 2 seconds.
+        :param color: Color used to highlight the region. Default color is red.
+        :return: None.
+        """
         highlight(self, seconds, color)
 
     @staticmethod
     def type(txt, modifier, interval):
+        """Performs a keyboard key press down, followed by a release, for each of the characters in message.
+
+        :param str || list txt: If a string, then the characters to be pressed. If a list, then the key names of the
+                                keys to press in order.
+        :param modifier: Key modifier.
+        :param interval: Type delay. By default it is 0 seconds.
+        :return: Call the type() method.
+        """
         return type(txt, modifier, interval)
 
     @staticmethod
     def drag_drop(drag_from, drop_to, duration=None):
+        """Mouse drag and drop.
+
+        :param drag_from: Starting point for drag and drop. Can be pattern, string or location.
+        :param drop_to: Ending point for drag and drop. Can be pattern, string or location.
+        :param duration: Speed of drag and drop.
+        :return: Call the drag_drop() method.
+        """
         return drag_drop(drag_from, drop_to, duration)
 
     def double_click(self, where, duration):
+        """Mouse double click.
+
+        :param where: Location , image name or Pattern.
+        :param duration: Speed of hovering from current location to target.
+        :return: Call the double_click() method.
+        """
         return double_click(where, duration, self)
 
     def right_click(self, where, duration):
+        """Mouse right click.
+
+        :param where: Location , image name or Pattern.
+        :param duration: Speed of hovering from current location to target.
+        :return: Call the right_click() method.
+        """
         return right_click(where, duration, self)
 
     @staticmethod
     def key_up(key):
+        """Performs a keyboard key release (without the press down beforehand).
+
+        :param key: The key to be released up.
+        :return: Call the key_up() method.
+        """
         return key_up(key)
 
     @staticmethod
     def key_down(key):
+        """Performs a keyboard key press without the release. This will put that key in a held down state.
+
+        :param key: The key to be pressed down.
+        :return: Call the key_down() method.
+        """
         return key_down(key)
 
     @staticmethod
     def paste(text):
+        """
+        :param text: Text to be pasted.
+        :return: Call the paste() method.
+        """
         return paste(text)
 
     def mouse_move(self, where=None, duration=None):
+        """Mouse move.
+
+        :param where: Location , image name or Pattern.
+        :param duration: Speed of hovering from current location to target.
+        :return: Call the mouse_move() method.
+        """
         return mouse_move(where, duration, self)
 
     def mouse_press(self, where, button=None):
+        """Mouse press.
+
+        :param where: Location , image name or Pattern.
+        :param button: 'left','right' or 'middle'.
+        :return: Call the mouse_press() method.
+        """
         return mouse_press(where, button, self)
 
     def mouse_release(self, where, button=None):
+        """Mouse release.
+
+        :param where: Location , image name or Pattern.
+        :param button: 'left','right' or 'middle'.
+        :return: Call the mouse_release() method.
+        """
+
         return mouse_release(where, button, self)
 
 
 def highlight(region=None, seconds=None, color=None, pattern=None, location=None):
+    """
+    :param region: Screen region to be highlighted.
+    :param seconds: How many seconds the region is highlighted. By default the region is highlighted for 2 seconds.
+    :param color: Color used to highlight the region. Default color is red.
+    :param pattern: Pattern.
+    :param location: Location.
+    :return: None.
+    """
     if color is None:
         color = Settings.highlight_color
 
@@ -194,11 +331,17 @@ def highlight(region=None, seconds=None, color=None, pattern=None, location=None
 
 
 def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
+    """Generate a region starting from 2 markers/patterns.
+
+    :param top_left_marker_img: Top left pattern used to generate the region.
+    :param bottom_right_marker_img: Bottom right pattern used to generate the region.
+    :return: Screen region generated.
+    """
     try:
         wait(top_left_marker_img, 10)
         exists(bottom_right_marker_img, 10)
     except FindError:
-        raise FindError('Unable to find page markers')
+        raise FindError('Unable to find page markers.')
 
     top_left_pos = find(top_left_marker_img)
     hover(top_left_pos, 0)
@@ -278,12 +421,12 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
 
 
 def text(with_image_processing=True, in_region=None, debug=False):
-    """Get all text from a Region or full screen
+    """Get all text from a Region or full screen.
 
-    :param bool with_image_processing: With extra dpi and contrast image processing
-    :param Region in_region: In certain Region or full screen
-    :param debug: boolean for saving ocr images
-    :return: list of matches
+    :param bool with_image_processing: With extra dpi and contrast image processing.
+    :param Region in_region: In certain Region or full screen.
+    :param debug: Boolean for saving ocr images.
+    :return: List of matches.
     """
     all_text, debug_img, debug_data = text_search_all(with_image_processing, in_region)
     if debug and debug_img is not None:
@@ -293,12 +436,12 @@ def text(with_image_processing=True, in_region=None, debug=False):
 
 
 def hover(where=None, duration=0, in_region=None):
-    """Hover over a Location, Pattern or image
+    """Hover over a Location, Pattern or image.
 
-    :param where: Location, Pattern or image name for hover target
-    :param duration: speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
-    :return: None
+    :param where: Location, Pattern or image name for hover target.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :return: None.
     """
     if isinstance(where, Pattern):
         pos = image_search(where, region=in_region)
@@ -332,11 +475,11 @@ def hover(where=None, duration=0, in_region=None):
 
 
 def find(image_name, region=None):
-    """Look for a single match of a Pattern or image
+    """Look for a single match of a Pattern or image.
 
-    :param image_name: String or Pattern
-    :param region: Region object in order to minimize the area
-    :return: Location
+    :param image_name: String or Pattern.
+    :param region: Region object in order to minimize the area.
+    :return: Location.
     """
     if isinstance(image_name, Pattern):
 
@@ -360,11 +503,11 @@ def find(image_name, region=None):
 
 
 def find_all(what, in_region=None):
-    """Look for multiple matches of a Pattern or image
+    """Look for multiple matches of a Pattern or image.
 
-    :param what: String or Pattern
-    :param in_region: Region object in order to minimize the area
-    :return:
+    :param what: String or Pattern.
+    :param in_region: Region object in order to minimize the area.
+    :return: List[Location].
     """
     if isinstance(what, Pattern):
         return image_search_multiple(what, in_region)
@@ -384,12 +527,12 @@ def find_all(what, in_region=None):
 
 
 def wait(image_name, timeout=None, region=None):
-    """Wait for a Pattern or image to appear
+    """Wait for a Pattern or image to appear.
 
-    :param image_name: String or Pattern
+    :param image_name: String or Pattern.
     :param timeout: Number as maximum waiting time in seconds.
-    :param region: Region object in order to minimize the area
-    :return: True if found
+    :param region: Region object in order to minimize the area.
+    :return: True if found.
     """
     if isinstance(image_name, Pattern):
         if timeout is None:
@@ -416,12 +559,12 @@ def wait(image_name, timeout=None, region=None):
 
 
 def exists(pattern, timeout=None, in_region=None):
-    """Check if Pattern or image exists
+    """Check if Pattern or image exists.
 
-    :param pattern: String or Pattern
+    :param pattern: String or Pattern.
     :param timeout: Number as maximum waiting time in seconds.
-    :param in_region: Region object in order to minimize the area
-    :return: True if found
+    :param in_region: Region object in order to minimize the area.
+    :return: True if found.
     """
 
     if timeout is None:
@@ -435,12 +578,12 @@ def exists(pattern, timeout=None, in_region=None):
 
 
 def wait_vanish(pattern, timeout=None, in_region=None):
-    """Wait until a Pattern disappears
+    """Wait until a Pattern disappears.
 
-    :param pattern: Pattern
+    :param pattern: Pattern.
     :param timeout:  Number as maximum waiting time in seconds.
-    :param in_region: Region object in order to minimize the area
-    :return: True if vanished
+    :param in_region: Region object in order to minimize the area.
+    :return: True if vanished.
     """
 
     if timeout is None:

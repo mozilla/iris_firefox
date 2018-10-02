@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 def _parse_name(full_name):
-    """Detects scale factor in image name
+    """Detects scale factor in image name.
 
     :param str full_name: Image full name. Valid format name@[scale_factor]x.png.
     Examples: google_search@2x.png, amazon_logo@2.5x.png
@@ -105,11 +105,11 @@ class Pattern(object):
         self._gray_image = self._color_image.convert('L') if scale is not None else None
 
     def target_offset(self, dx, dy):
-        """Add offset to Pattern from top left
+        """Add offset to Pattern from top left.
 
-        :param int dx: x offset from center
-        :param int dy: y offset from center
-        :return: a new pattern object
+        :param int dx: x offset from center.
+        :param int dy: y offset from center.
+        :return: A new pattern object.
         """
         new_pattern = Pattern(self._image_name, from_path=self._image_path)
         new_pattern._target_offset = Location(dx, dy)
@@ -163,11 +163,11 @@ class Pattern(object):
 
 
 def _apply_scale(scale, rgb_array):
-    """Resize the image for HD images
+    """Resize the image for HD images.
 
-    :param scale: scale of image
-    :param rgb_array: rgb array of image
-    :return: Scaled image
+    :param scale: Scale of image.
+    :param rgb_array: RGB array of image.
+    :return: Scaled image.
     """
     if scale > 1:
         temp_h, temp_w, not_needed = rgb_array.shape
@@ -180,9 +180,9 @@ def _apply_scale(scale, rgb_array):
 def _get_image_path(caller, image):
     """Enforce proper location for all Pattern creation.
 
-    :param caller: Path of calling Python module
-    :param image: string filename of image
-    :return: Full path to image on disk
+    :param caller: Path of calling Python module.
+    :param image: String filename of image.
+    :return: Full path to image on disk.
     """
 
     module = os.path.split(caller)[1]
@@ -254,4 +254,4 @@ def _get_image_path(caller, image):
             logger.error('Image not found. Either it is in the wrong platform folder, or it does not exist.')
             logger.debug('Paths searched:')
             logger.debug('\n'.join(paths))
-            raise FindError('Pattern not found')
+            raise FindError('Pattern not found.')

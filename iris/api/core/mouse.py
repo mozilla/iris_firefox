@@ -27,19 +27,34 @@ class Mouse(object):
 
 
 def mouse_press(where=None, button=None, in_region=None):
+    """Mouse press. Wrapper over _mouse_press_release.
+
+    :param where: Location , image name or Pattern.
+    :param button: 'left','right' or 'middle'.
+    :param in_region: Region object in order to minimize the area.
+    :return: Call the _mouse_press_release() method with the 'press' option.
+    """
     return _mouse_press_release(where, 'press', button, in_region)
 
 
 def mouse_release(where=None, button=None, in_region=None):
+    """Mouse release. Wrapper over _mouse_press_release.
+
+    :param where: Location , image name or Pattern.
+    :param button: 'left','right' or 'middle'.
+    :param in_region: Region object in order to minimize the area.
+    :return: Call the _mouse_press_release() method with the 'release' option.
+    """
     return _mouse_press_release(where, 'release', button, in_region)
 
 
 def mouse_move(where=None, duration=None, in_region=None):
-    """Mouse move
-    :param where: Location , image name or Pattern
-    :param duration: speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
-    :return: None
+    """Mouse move. Wrapper over _general_click.
+
+    :param where: Location , image name or Pattern.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :return: None.
     """
     if duration is None:
         duration = Settings.move_mouse_delay
@@ -47,12 +62,12 @@ def mouse_move(where=None, duration=None, in_region=None):
 
 
 def click(where=None, duration=None, in_region=None):
-    """Mouse left click
+    """Mouse left click. Wrapper over _general_click.
 
-    :param where: Location , image name or Pattern
-    :param duration: speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
-    :return: None
+    :param where: Location , image name or Pattern.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :return: None.
     """
 
     if duration is None:
@@ -62,12 +77,12 @@ def click(where=None, duration=None, in_region=None):
 
 
 def right_click(where=None, duration=None, in_region=None):
-    """Mouse right click
+    """Mouse right click. Wrapper over _general_click.
 
-    :param where: Location , image name or Pattern
-    :param duration: speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
-    :return: None
+    :param where: Location , image name or Pattern.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :return: None.
     """
 
     if duration is None:
@@ -77,12 +92,12 @@ def right_click(where=None, duration=None, in_region=None):
 
 
 def double_click(where=None, duration=None, in_region=None):
-    """Mouse double click
+    """Mouse double click. Wrapper over _general_click.
 
-    :param where: Location , image name or Pattern
-    :param duration: speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
-    :return: None
+    :param where: Location , image name or Pattern.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :return: None.
     """
 
     if duration is None:
@@ -92,12 +107,12 @@ def double_click(where=None, duration=None, in_region=None):
 
 
 def to_location(ps=None, in_region=None, align='top_left'):
-    """Transform pattern or string to location
+    """Transform pattern or string to location.
 
-    :param ps: Pattern or string input
-    :param in_region: Region object in order to minimize the area
-    :param align: Alignment could be top_left, center
-    :return: Location object
+    :param ps: Pattern or string input.
+    :param in_region: Region object in order to minimize the area.
+    :param align: Alignment could be top_left, center.
+    :return: Location object.
     """
 
     # TODO: Add multiple alignments if needed
@@ -114,12 +129,12 @@ def to_location(ps=None, in_region=None, align='top_left'):
 
 
 def drag_drop(drag_from, drop_to, duration=None):
-    """Mouse drag and drop
+    """Mouse drag and drop.
 
-    :param drag_from: Starting point for drag and drop. Can be pattern, string or location
-    :param drop_to: Ending point for drag and drop. Can be pattern, string or location
-    :param duration: speed of drag and drop
-    :return: None
+    :param drag_from: Starting point for drag and drop. Can be pattern, string or location.
+    :param drop_to: Ending point for drag and drop. Can be pattern, string or location.
+    :param duration: Speed of drag and drop.
+    :return: None.
     """
 
     if duration is None:
@@ -142,13 +157,14 @@ def drag_drop(drag_from, drop_to, duration=None):
 
 
 def _mouse_press_release(where=None, action=None, button=None, in_region=None):
-    """Mouse press/release
-        :param where: Location , image name or Pattern
-        :param action 'press' or 'release'
-        :param button 'left','right' or 'middle'
-        :param in_region: Region object in order to minimize the area
-        :return: None
-        """
+    """Mouse press/release.
+
+    :param where: Location , image name or Pattern.
+    :param action: 'press' or 'release'.
+    :param button: 'left','right' or 'middle'.
+    :param in_region: Region object in order to minimize the area.
+    :return: None.
+    """
     if isinstance(where, Pattern):
         needle = cv2.imread(where.get_file_path())
         height, width, channels = needle.shape
@@ -183,13 +199,13 @@ def _mouse_press_release(where=None, action=None, button=None, in_region=None):
 
 
 def _click_at(location=None, clicks=None, duration=None, button=None):
-    """Click on Location coordinates
+    """Click on Location coordinates.
 
-    :param location: Location , image name or Pattern
-    :param clicks: Number of mouse clicks
-    :param duration: speed of hovering from current location to target
-    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
-    :return: None
+    :param location: Location , image name or Pattern.
+    :param clicks: Number of mouse clicks.
+    :param duration: Speed of hovering from current location to target.
+    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3).
+    :return: None.
     """
 
     if duration is None:
@@ -215,14 +231,14 @@ def _click_at(location=None, clicks=None, duration=None, button=None):
 
 
 def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=None):
-    """Click on center or offset of a Pattern
+    """Click on center or offset of a Pattern.
 
-    :param pattern: Input Pattern
-    :param clicks: Number of mouse clicks
-    :param duration: Speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
-    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
-    :return: None
+    :param pattern: Input Pattern.
+    :param clicks: Number of mouse clicks.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3).
+    :return: None.
     """
 
     if duration is None:
@@ -245,14 +261,14 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
 
 
 def _general_click(where=None, clicks=None, duration=None, in_region=None, button=None):
-    """General Mouse Click
+    """General Mouse Click.
 
-    :param where: Location , image name or Pattern
-    :param clicks: Number of mouse clicks
-    :param duration: speed of hovering from current location to target
-    :param in_region: Region object in order to minimize the area
-    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3)
-    :return: None
+    :param where: Location , image name or Pattern.
+    :param clicks: Number of mouse clicks.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :param button: Mouse button clicked (can be left, right, middle, 1, 2, 3).
+    :return: None.
     """
 
     if duration is None:

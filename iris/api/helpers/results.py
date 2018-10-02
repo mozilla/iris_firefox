@@ -10,6 +10,18 @@ logger = logging.getLogger(__name__)
 
 def print_report_footer(platform, fx_version, fx_build, passed, failed,
                         skipped, errors, total_time, failures=None):
+    """
+    :param platform: Platform to be printed in the report footer.
+    :param fx_version: Firefox version to be printed in the report footer.
+    :param fx_build: Firefox build to be printed in the report footer.
+    :param passed: Number of passed test cases.
+    :param failed: Number of failed test cases.
+    :param skipped: Number of skipped test cases.
+    :param errors: Number of test cases that run into errors.
+    :param total_time: Time elapsed for a full run.
+    :param failures: Test failures list.
+    :return: Test results to be printed.
+    """
     total = passed + failed + skipped + errors
     fx_details = 'Platform: %s, Firefox Version: %s, Firefox Build: %s' % (platform, fx_version, fx_build)
     test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors: %s -- Total: %s' % (passed, failed, skipped,
@@ -32,6 +44,10 @@ def print_report_footer(platform, fx_version, fx_build, passed, failed,
 
 
 def format_outcome(outcome):
+    """
+    :param outcome: Test case resolution used to log the result.
+    :return: String test case resolution('PASSED'/'FAILED').
+    """
     if outcome:
         return 'PASSED'
     else:
@@ -39,6 +55,10 @@ def format_outcome(outcome):
 
 
 def print_error(error):
+    """
+    :param error: Error message.
+    :return: Formatted error message.
+    """
     lines = error.splitlines()
     result = '\n'
     max_len = 0
@@ -53,6 +73,10 @@ def print_error(error):
 
 
 def format_stack(stack):
+    """
+    :param stack: Stack trace error.
+    :return: Formatted stack trace error.
+    """
     result = 'Traceback (most recent call last):\n'
     for line in stack:
         result += '  File "' + str(line[0]) + '", line ' + str(line[1]) + ', in ' + str(line[2]) + '\n    ' + \
@@ -61,10 +85,20 @@ def format_stack(stack):
 
 
 def get_duration(start_time, end_time):
+    """
+    :param start_time: Start time.
+    :param end_time: End time.
+    :return: Duration displayed with 2 decimals.
+    """
     return round(end_time - start_time, 2)
 
 
 def print_results(current_test, test_case):
+    """
+    :param current_test: Test case(current) for which additional information will be printed.
+    :param test_case: Instance of BaseTest class.
+    :return: None.
+    """
     for result in test_case.results:
         if 'ERROR' == result.outcome:
             logger.error('Error encountered in test, outcome: >>> ERROR <<< %s' % '\n' + result.error if

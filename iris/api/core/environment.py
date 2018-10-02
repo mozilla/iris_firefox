@@ -8,4 +8,5 @@ import pyperclip
 class Env(object):
     @staticmethod
     def get_clipboard():
+        """Return the value copied to clipboard."""
         return pyperclip.paste()

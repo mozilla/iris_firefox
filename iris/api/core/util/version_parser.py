@@ -14,8 +14,8 @@ operator_key = 'operator'
 def find_str(s, char):
     """Finds a substring in a string.
 
-    :param s: string you are searching in
-    :param char: string you are searching for
+    :param s: String you are searching in.
+    :param char: String you are searching for.
     :return: If the substring is found it returns the index of the first occurrence, otherwise returns -1.
     """
     index = 0
@@ -36,7 +36,7 @@ def parse_versions(input_str):
     """Convert a string into a list of versions.
 
     :param input_str: Input string. Examples of accepted formats:
-    '60', '>60', '<60', '>=60', '<=60', '!=60', '60-63'. A '60' version will automatically be converted into '60.0.0'
+    '60', '>60', '<60', '>=60', '<=60', '!=60', '60-63'. A '60' version will automatically be converted into '60.0.0'.
     :return: A dictionary containing a list of versions and the comparison operator. If the input string doesn't
     respect the accepted format it will return None.
 
@@ -91,7 +91,12 @@ def parse_versions(input_str):
 
 
 def check_version(version, running_condition):
-    """Returns True if condition between versions is met, otherwise returns False."""
+    """
+    :param version: Current firefox version.
+    :param running_condition: Input string. Examples of accepted formats:
+    '60', '>60', '<60', '>=60', '<=60', '!=60', '60-63'. A '60' version will automatically be converted into '60.0.0'.
+    :return: returns True if condition between versions is met, otherwise returns False.
+    """
 
     current_version = Version(version)
     version_dict = parse_versions(running_condition)
@@ -114,7 +119,11 @@ def check_version(version, running_condition):
 
 
 def has_letters(string):
-    """Returns True if string contains letters, otherwise returns False."""
+    """Check that a string contains letters.
+
+    :param string: String value.
+    :return: Returns True if string contains letters, otherwise returns False.
+    """
     return any(c.isalpha() for c in string)
 
 
