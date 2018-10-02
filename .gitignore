@@ -47,11 +47,9 @@ local/
 # Our project
 .DS_Store
 .gitignore
-*.class
 *.sh.swp
-test_profiles/
 config.ini
-image_debug
+*.ini
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
