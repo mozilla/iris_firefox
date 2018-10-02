@@ -6,22 +6,22 @@ import importlib
 import json
 import shutil
 import sys
-from distutils import dir_util
 from distutils.spawn import find_executable
 from multiprocessing import Process
 
 import coloredlogs
 import pytesseract
+from distutils import dir_util
 from mozdownload import FactoryScraper, errors
 from mozinstall import install, get_binary
 
-import firefox.app as fa
 from api.core.key import Key
 from api.core.profile import Profile
 from api.core.settings import Settings
 from api.core.util.core_helper import *
 from api.core.util.parse_args import get_global_args, parse_args
 from api.core.util.test_loader import load_tests, scan_all_tests
+from api.core.util.version_parser import get_latest_scraper_details, get_version_from_path, get_scraper_details
 from api.helpers.general import launch_firefox, quit_firefox, get_firefox_channel, get_firefox_version, \
     get_firefox_build_id
 from firefox import cleanup
@@ -201,7 +201,8 @@ class Iris(object):
 
     def update_run_index(self, new_data=None):
         # Prepare the current entry.
-        current_run = {'id': IrisCore.get_run_id(), 'version': self.version, 'build': self.build_id, 'channel': self.fx_channel,
+        current_run = {'id': IrisCore.get_run_id(), 'version': self.version, 'build': self.build_id,
+                       'channel': self.fx_channel,
                        'locale': self.fx_locale}
 
         # If this run is just starting, initialize with blank values
@@ -240,7 +241,8 @@ class Iris(object):
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 
     def update_run_log(self, new_data=None):
-        meta = {'run_id': IrisCore.get_run_id(), 'fx_version': self.version, 'fx_build_id': self.build_id, 'platform': self.os,
+        meta = {'run_id': IrisCore.get_run_id(), 'fx_version': self.version, 'fx_build_id': self.build_id,
+                'platform': self.os,
                 'config': '%s, %s-bit, %s' % (Platform.OS_VERSION, Platform.OS_BITS, Platform.PROCESSOR),
                 'channel': self.fx_channel, 'locale': self.fx_locale, 'args': ' '.join(sys.argv),
                 'params': vars(self.args), 'log': os.path.join(IrisCore.get_current_run_dir(), 'iris_log.log')}
@@ -327,7 +329,7 @@ class Iris(object):
                                 'default': 'latest-beta', 'label': 'Firefox'},
                     'highlight': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
                                   'label': 'Debug using highlighting'},
-                    'locale': {'type': 'str', 'value': fa.FirefoxApp.LOCALES, 'default': 'en-US', 'label': 'Locale'},
+                    'locale': {'type': 'str', 'value': Settings.LOCALES, 'default': 'en-US', 'label': 'Locale'},
                     'mouse': {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5',
                               'label': 'Mouse speed'},
                     'override': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
@@ -496,7 +498,7 @@ class Iris(object):
         :param:
             build: str with firefox build
         :return:
-            FirefoxApp object for test candidate
+            Installation path for the Firefox App
         """
 
         location = ''
@@ -525,17 +527,28 @@ class Iris(object):
             return candidate_app
 
         else:
-            cache_dir = os.path.join(IrisCore.get_working_dir(), 'cache')
             try:
-                scraper = FactoryScraper('candidate',
-                                         version=self.args.firefox,
-                                         destination=cache_dir,
-                                         locale=self.args.locale)
+                locale = 'ja-JP-mac' if self.args.locale == 'ja' and Settings.is_mac() else self.args.locale
+                type, scraper_details = get_scraper_details(self.args.firefox,
+                                                            Settings.CHANNELS,
+                                                            os.path.join(IrisCore.get_working_dir(), 'cache'),
+                                                            locale)
+                scraper = FactoryScraper(type, **scraper_details)
+
                 firefox_dmg = scraper.download()
                 install_folder = install(src=firefox_dmg,
                                          dest=IrisCore.get_current_run_dir())
 
-                return get_binary(install_folder, 'Firefox')
+                binary = get_binary(install_folder, 'Firefox')
+
+                channel = get_firefox_channel(binary)
+                latest_type, latest_scraper_details = get_latest_scraper_details(channel)
+                latest_path = FactoryScraper(latest_type, **latest_scraper_details).filename
+
+                self.latest_version = get_version_from_path(latest_path)
+                logger.info('Latest available version for %s channel is: %s' % (channel, self.latest_version))
+
+                return binary
             except errors.NotFoundError:
                 logger.critical('Specified build (%s) has not been found. Closing Iris ...' % self.args.firefox)
                 self.finish(5)

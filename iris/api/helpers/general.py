@@ -361,7 +361,6 @@ def address_crash_reporter():
 
 def open_about_firefox():
     if Settings.get_os() == Platform.MAC:
-        # Key stroke into Firefox Menu to get to About Firefox.
         type(Key.F3, modifier=KeyModifier.CTRL)
         type(Key.F2, modifier=KeyModifier.CTRL)
 
@@ -372,15 +371,16 @@ def open_about_firefox():
         type(Key.ENTER)
 
     elif Settings.get_os() == Platform.WINDOWS:
-        # Use Help menu keyboard shortcuts to open About Firefox
-        key_down(Key.ALT)
-        type('h')
-        time.sleep(0.5)
-        type('a')
-        key_up(Key.ALT)
+        type(Key.ALT)
+        if parse_args().locale != 'ar':
+            type(Key.LEFT)
+        else:
+            type(Key.RIGHT)
+        type(Key.ENTER)
+        type(Key.UP)
+        type(Key.ENTER)
 
     else:
-        # Use Help menu keyboard shortcuts to open About Firefox
         key_down(Key.ALT)
         type('h')
         time.sleep(1)

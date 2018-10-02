@@ -75,6 +75,7 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
 
     if not is_multiple:
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+        logger.debug('Match score: %s. Desired precision: %s' % (max_val, precision))
         if max_val < precision:
             return Location(-1, -1)
         else:
