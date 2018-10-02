@@ -20,7 +20,6 @@ class Test(BaseTest):
         self.set_profile_pref('app.update.lastUpdateTime.background-update-timer;1')
         self.set_profile_pref('app.update.promptWaitTime;30')
         self.set_profile_pref('app.update.timerMinimumDelay;10')
-        self.set_profile_pref('app.update.log;true')
         self.set_profile_pref('app.update.channel;%s-cdntest' % self.app.fx_channel)
         self.maximize_window = False
 
@@ -44,6 +43,10 @@ class Test(BaseTest):
 
         if is_update_required(current_version, starting_condition):
             for update_step in update_steps_list:
+
+                if update_step == 'latest':
+                    update_step = self.app.latest_version
+
                 logger.info('Current version: %s, updating to version: %s.' % (current_version, update_step))
 
                 try:

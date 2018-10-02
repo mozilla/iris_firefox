@@ -2,15 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import logging
 from packaging.version import Version, InvalidVersion
-import re
+
+logger = logging.getLogger(__name__)
 
 version_key = 'versions'
 operator_key = 'operator'
 
 
 def find_str(s, char):
-    """Find substring in string.
+    """Finds a substring in a string.
 
     :param s: string you are searching in
     :param char: string you are searching for
@@ -31,7 +33,7 @@ def find_str(s, char):
 
 
 def parse_versions(input_str):
-    """Convert a string into a list of versions
+    """Convert a string into a list of versions.
 
     :param input_str: Input string. Examples of accepted formats:
     '60', '>60', '<60', '>=60', '<=60', '!=60', '60-63'. A '60' version will automatically be converted into '60.0.0'
@@ -89,7 +91,7 @@ def parse_versions(input_str):
 
 
 def check_version(version, running_condition):
-    """Returns True if condition between versions is met, otherwise returns False"""
+    """Returns True if condition between versions is met, otherwise returns False."""
 
     current_version = Version(version)
     version_dict = parse_versions(running_condition)
@@ -112,19 +114,73 @@ def check_version(version, running_condition):
 
 
 def has_letters(string):
+    """Returns True if string contains letters, otherwise returns False."""
     return any(c.isalpha() for c in string)
 
 
-def get_channel_from_version(version):
-    try:
-        Version(version)
-        if not has_letters(version):
-            return 'release'
-        elif 'b' in version:
-            return 'beta'
-        elif 'esr' in version:
-            return 'esr'
+def map_latest_release_options(release_option):
+    """Overwrite Iris release options to be compatible with mozdownload."""
+    if release_option == 'beta':
+        return 'latest-beta'
+    elif release_option == 'release':
+        return 'latest'
+    elif release_option == 'esr':
+        return 'latest-esr'
+    else:
+        return 'nightly'
+
+
+def map_version_to_release_option(version):
+    """Returns a release option based on a version provided as input."""
+    if not has_letters(version):
+        return 'latest'
+    elif 'b' in version:
+        return 'latest-beta'
+    elif 'esr' in version:
+        return 'latest-esr'
+    else:
+        return 'nightly'
+
+
+def get_scraper_details(version, channels, destination, locale):
+    """Generate scraper details from version.
+
+    :param version: Can be a Firefox version (ex: 55.0, 55.0b3, etc.) or one of the following options:
+                    beta, release, esr, local
+    :param channels: A list of channels supported by Iris
+    :param destination: Destination path where the Firefox installer will be saved
+    :param locale: Firefox locale used
+    :return: Scraper type followed by a dictionary that contains the version, destination and locale
+    """
+    if version in channels:
+        version = map_latest_release_options(version)
+
+        if version == 'nightly':
+            return 'daily', {'branch': 'mozilla-central', 'destination': destination, 'locale': locale}
         else:
-            return 'nightly'
-    except InvalidVersion:
-        return version
+            return 'candidate', {'version': version, 'destination': destination, 'locale': locale}
+    else:
+        if not has_letters(version) or any(x in version for x in ('b', 'esr')):
+            return 'candidate', {'version': version, 'destination': destination, 'locale': locale}
+        else:
+            logger.warning('Version not recognized. Getting latest nightly build ...')
+            return 'daily', {'branch': 'mozilla-central', 'destination': destination, 'locale': locale}
+
+
+def get_latest_scraper_details(channel):
+    """Generate scraper details for the latest available Firefox version based on the channel provided as input."""
+    channel = map_latest_release_options(channel)
+    if channel == 'nightly':
+        return 'daily', {'branch': 'mozilla-central'}
+    else:
+        return 'candidate', {'version': channel}
+
+
+def get_version_from_path(path):
+    """Extracts a Firefox version from a path.
+
+    Example:
+    for input: '/Users/username/workspace/iris/firefox-62.0.3-build1.en-US.mac.dmg' output is '62.0.3'
+    """
+    new_str = path[path.find('-') + 1: len(path)]
+    return new_str[0:new_str.find('-')]

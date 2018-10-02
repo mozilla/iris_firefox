@@ -35,6 +35,10 @@ class Test(BaseTest):
 
         if is_update_required(current_version, starting_condition):
             for update_step in update_steps_list:
+
+                if update_step == 'latest':
+                    update_step = self.app.latest_version
+
                 logger.info('Current version: %s, updating to version: %s.' % (current_version, update_step))
 
                 confirm_firefox_launch(self.app)
@@ -56,7 +60,7 @@ class Test(BaseTest):
         open_about_firefox()
         wait(firefox_up_to_date_pattern, 20)
         type(Key.ESC)
-        print(get_firefox_version(self.app.fx_path))
+
         assert_contains(self, current_version, get_firefox_version(self.app.fx_path),
                         'Firefox version is correct (%s).' % current_version)
 
