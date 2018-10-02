@@ -774,7 +774,7 @@ def get_support_info():
 
     try:
         click(copy_raw_data_to_clipboard)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.UI_DELAY_LONG)
         json_text = Env.get_clipboard()
         return json.loads(json_text)
     except Exception as e:
