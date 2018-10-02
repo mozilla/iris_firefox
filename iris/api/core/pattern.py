@@ -200,10 +200,10 @@ def get_image_path(caller, image):
 
     # We will look at all possible paths relative to the calling file, with this priority:
     #
-    # - common root
-    # - current platform root
-    # - common locale folder
     # - current platform locale folder
+    # - common locale folder
+    # - current platform root
+    # - common root
     #
     # Each directory is scanned for four possible file names, depending on resolution.
     # If the above fails, we will look up the file name in the list of project-wide images,
@@ -211,22 +211,23 @@ def get_image_path(caller, image):
     # If we find nothing, we will raise an exception.
 
     paths = []
-    common_directory = os.path.join(module_directory, 'images', 'common')
-    for name in names:
-        paths.append(os.path.join(common_directory, name))
+    current_locale = parse_args().locale
 
     platform_directory = os.path.join(module_directory, 'images', Settings.get_os())
+    platform_locale_directory = os.path.join(platform_directory, current_locale)
     for name in names:
-        paths.append(os.path.join(platform_directory, name))
+        paths.append(os.path.join(platform_locale_directory, name))
 
-    current_locale = parse_args().locale
+    common_directory = os.path.join(module_directory, 'images', 'common')
     common_locale_directory = os.path.join(common_directory, current_locale)
     for name in names:
         paths.append(os.path.join(common_locale_directory, name))
 
-    platform_locale_directory = os.path.join(platform_directory, current_locale)
     for name in names:
-        paths.append(os.path.join(platform_locale_directory, name))
+        paths.append(os.path.join(platform_directory, name))
+
+    for name in names:
+        paths.append(os.path.join(common_directory, name))
 
     found = False
     image_path = None
