@@ -307,6 +307,7 @@ class Iris(object):
                 test_object['channel'] = filter_list(current_test.channel, current_test.exclude)
                 test_object['locale'] = filter_list(current_test.locale, current_test.exclude)
                 test_object['enabled'] = self.os in filter_list(current_test.platform, current_test.exclude)
+                test_object['tags'] = current_test.tags
                 test_object['test_case_id'] = current_test.test_case_id
                 test_object['test_suite_id'] = current_test.test_suite_id
                 test_object['blocked_by'] = current_test.blocked_by
