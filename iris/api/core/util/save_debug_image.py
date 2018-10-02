@@ -43,11 +43,11 @@ def _debug_put_text(on_what, input_text='Text', start=(0, 0)):
 def save_debug_image(needle, haystack, locations, not_found=False):
     """Saves input Image for debug.
 
-    :param Image || None needle: Input needle image that needs to be highlighted
-    :param Image || Region haystack: Input Region as Image
-    :param List[Location] || Location || None locations: Location or list of Location as coordinates
-    :param not_found: boolean if image was found or not
-    :return: None
+    :param Image || None needle: Input needle image that needs to be highlighted.
+    :param Image || Region haystack: Input Region as Image.
+    :param List[Location] || Location || None locations: Location or list of Location as coordinates.
+    :param not_found: boolean if image was found or not.
+    :return: None.
     """
     test_name = IrisCore.get_test_name()
 

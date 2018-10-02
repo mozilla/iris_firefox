@@ -35,7 +35,7 @@ def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
     To pass exception information, use the keyword argument exc_info with
     a true value, e.g.
-    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
+    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1).
     """
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
         self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
@@ -84,6 +84,11 @@ def is_multiprocessing_enabled():
 
 
 def scroll(clicks):
+    """Performs a scroll of the mouse scroll wheel.
+
+    :param clicks: The amount of scrolling to perform.
+    :return: None.
+    """
     pyautogui.scroll(clicks)
 
 
@@ -158,8 +163,7 @@ class IrisCore(object):
     def __create_tempdir():
         """Creates the temporary directory.
         Writes to the global variable tmp_dir
-        :return:
-             Path of temporary directory.
+        :return: Path of temporary directory.
         """
         global tmp_dir
         tmp_dir = tempfile.mkdtemp(prefix='iris_')
@@ -287,11 +291,11 @@ class IrisCore(object):
                 subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
             except subprocess.CalledProcessError:
                 logger.error('Command  failed: "%s"' % command_str)
-                raise Exception('Unable to run Command')
+                raise Exception('Unable to run Command.')
         elif get_os() == Platform.MAC or get_os() == Platform.LINUX:
             command_str = 'pkill ' + process_name
             try:
                 subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
             except subprocess.CalledProcessError:
                 logger.error('Command  failed: "%s"' % command_str)
-                raise Exception('Unable to run Command')
+                raise Exception('Unable to run Command.')

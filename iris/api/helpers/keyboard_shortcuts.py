@@ -272,7 +272,7 @@ def open_find():
 
 
 def find_next():
-    """Find next occurrence of term if find is already active on a search term.
+    """Find next occurrence of term, if find is already active on a search term.
 
     Find next (again) can also find the next occurrence of a term without opening the find toolbar.
     """
@@ -345,7 +345,7 @@ def change_search_previous():
 
 
 def open_search_manager():
-    """If the search bar has focus open the search engine manager."""
+    """If the search bar has focus, open the search engine manager."""
     type(text=Key.DOWN, modifier=KeyModifier.ALT)
 
 
@@ -370,6 +370,12 @@ def close_window():
         type(text='w', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
+def force_close():
+    """Move to the previous frame (can be in content or in chrome)."""
+    type(text=Key.F4, modifier=KeyModifier.ALT)
+    type(text='u', modifier=KeyModifier.CTRL)
+
+
 def change_window_view():
     """Change the focus on another window."""
     if Settings.get_os() == Platform.MAC:
@@ -387,7 +393,7 @@ def full_screen():
 
 
 def maximize_window():
-    """Maximize the browser window to fill the screen
+    """Maximize the browser window to fill the screen.
 
     This is NOT Full Screen mode.
     """
@@ -416,17 +422,19 @@ def maximize_window():
         type(text=Key.UP, modifier=KeyModifier.WIN)
     else:
         type(text=Key.UP, modifier=KeyModifier.CTRL + KeyModifier.META)
+    # Wait to allow window to be maximized.
     time.sleep(Settings.UI_DELAY)
 
 
 def minimize_window():
-    """Minimize the browser window to the application launch bar"""
+    """Minimize the browser window to the application launch bar."""
     if Settings.get_os() == Platform.MAC:
         type(text='m', modifier=KeyModifier.CMD)
     elif Settings.get_os() == Platform.WINDOWS:
         type(text=Key.DOWN, modifier=KeyModifier.WIN)
     else:
         type(text=Key.DOWN, modifier=KeyModifier.CTRL + KeyModifier.META)
+    # Wait to allow window to be minimized.
     time.sleep(Settings.UI_DELAY)
 
 
@@ -436,6 +444,7 @@ def new_tab():
         type(text='t', modifier=KeyModifier.CMD)
     else:
         type(text='t', modifier=KeyModifier.CTRL)
+    # Wait to allow new tab to be opened.
     time.sleep(Settings.FX_DELAY)
 
 
@@ -467,6 +476,8 @@ def previous_tab():
 
 def quit_firefox():
     """Quit the browser."""
+
+    # Wait before quiting Firefox to avoid concurrency.
     time.sleep(Settings.FX_DELAY)
     if Settings.get_os() == Platform.MAC:
         type(text='q', modifier=KeyModifier.CMD)
@@ -546,6 +557,7 @@ def bookmark_all_tabs():
         type(text='d', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text='d', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+    # Wait for the Bookmark All Tabs dialog to be opened.
     time.sleep(Settings.UI_DELAY_LONG)
 
 
@@ -619,7 +631,7 @@ def open_downloads():
 
 
 def open_page_source():
-    """Open the current page's page source"""
+    """Open the current page's page source."""
     if Settings.get_os() == Platform.MAC:
         type(text='u', modifier=KeyModifier.CMD)
     else:
@@ -632,15 +644,6 @@ def open_web_console():
         type(text='k', modifier=KeyModifier.CMD + KeyModifier.ALT)
     else:
         type(text='k', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-
-
-def force_close():
-    """Move to the previous frame (can be in content or in chrome)."""
-    type(text=Key.F4, modifier=KeyModifier.ALT)
-    type(text='u', modifier=KeyModifier.CTRL)
-
-
-# End Tools keyboard shortcuts
 
 
 def open_web_developer_menu():
@@ -658,3 +661,5 @@ def open_browser_console():
         type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+# End Tools keyboard shortcuts

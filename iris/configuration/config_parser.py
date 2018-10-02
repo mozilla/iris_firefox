@@ -15,6 +15,12 @@ config = ConfigParser()
 
 
 def get_config_property(section, prop):
+    """Returns the config property for a specific section.
+
+    :param section: Section from the config.ini file.
+    :param prop: Property of a specific section.
+    :return: Config property.
+    """
     logger.debug('Extracting %s for section %s' % (prop, section))
     if os.path.isfile(config_file):
         try:
@@ -25,6 +31,6 @@ def get_config_property(section, prop):
             else:
                 raise ConfigError('Section %s not found' % section)
         except EOFError:
-            raise ConfigError('Config file error')
+            raise ConfigError('Config file error.')
     else:
-        raise ConfigError('Config file not found')
+        raise ConfigError('Config file not found.')

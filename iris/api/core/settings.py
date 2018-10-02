@@ -60,42 +60,52 @@ class _IrisSettings(object):
 
     @property
     def FX_DELAY(self):
+        """Getter for the fx_delay property."""
         return self._fx_delay
 
     @property
     def UI_DELAY(self):
+        """Getter for the ui_delay property."""
         return self._ui_delay
 
     @property
     def UI_DELAY_LONG(self):
+        """Getter for the ui_delay_long property."""
         return self._ui_delay_long
 
     @property
     def SYSTEM_DELAY(self):
+        """Getter for the system_delay property."""
         return self._system_delay
 
     @property
     def CHANNELS(self):
+        """Getter for the channels property."""
         return self._channels
 
     @property
     def LOCALES(self):
+        """Getter for the locales property."""
         return self._locales
 
     @property
     def wait_scan_rate(self):
+        """Getter for the wait_scan_rate property."""
         return self._wait_scan_rate
 
     @wait_scan_rate.setter
     def wait_scan_rate(self, value):
+        """Setter for the wait_scan_rate property."""
         self._wait_scan_rate = value
 
     @property
     def type_delay(self):
+        """Getter for the type_delay property."""
         return self._type_delay
 
     @type_delay.setter
     def type_delay(self, value):
+        """Setter for the type_delay property."""
         if value > 1:
             self._type_delay = 1
         else:
@@ -103,18 +113,22 @@ class _IrisSettings(object):
 
     @property
     def move_mouse_delay(self):
+        """Getter for the move_mouse_delay property."""
         return self._move_mouse_delay
 
     @move_mouse_delay.setter
     def move_mouse_delay(self, value):
+        """Setter for the move_mouse_delay property."""
         self._move_mouse_delay = value
 
     @property
     def click_delay(self):
+        """Getter for the click_delay property."""
         return self._click_delay
 
     @click_delay.setter
     def click_delay(self, value):
+        """Setter for the click_delay property."""
         if value > 1:
             self._click_delay = 1
         else:
@@ -122,10 +136,12 @@ class _IrisSettings(object):
 
     @property
     def min_similarity(self):
+        """Getter for the min_similarity property."""
         return self._min_similarity
 
     @min_similarity.setter
     def min_similarity(self, value):
+        """Setter for the min_similarity property."""
         if value > 1:
             self._min_similarity = 1
         else:
@@ -133,82 +149,102 @@ class _IrisSettings(object):
 
     @property
     def auto_wait_timeout(self):
+        """Getter for the auto_wait_timeout property."""
         return self._auto_wait_timeout
 
     @auto_wait_timeout.setter
     def auto_wait_timeout(self, value):
+        """Setter for the auto_wait_timeout property."""
         self._auto_wait_timeout = value
 
     @property
     def delay_before_mouse_down(self):
+        """Getter for the delay_before_mouse_down property."""
         return self._delay_before_mouse_down
 
     @delay_before_mouse_down.setter
     def delay_before_mouse_down(self, value):
+        """Setter for the delay_before_mouse_down property."""
         self._delay_before_mouse_down = value
 
     @property
     def delay_before_drag(self):
+        """Getter for the delay_before_drag property."""
         return self._delay_before_drag
 
     @delay_before_drag.setter
     def delay_before_drag(self, value):
+        """Setter for the delay_before_drag property."""
         self._delay_before_drag = value
 
     @property
     def delay_before_drop(self):
+        """Getter for the delay_before_drop property."""
         return self._delay_before_drop
 
     @delay_before_drop.setter
     def delay_before_drop(self, value):
+        """Setter for the delay_before_drop property."""
         self._delay_before_drop = value
 
     @property
     def slow_motion_delay(self):
+        """Getter for the slow_motion_delay property."""
         return self._slow_motion_delay
 
     @slow_motion_delay.setter
     def slow_motion_delay(self, value):
+        """Setter for the slow_motion_delay property."""
         self._slow_motion_delay = value
 
     @property
     def observe_scan_rate(self):
+        """Getter for the observe_scan_rate property."""
         return self._observe_scan_rate
 
     @observe_scan_rate.setter
     def observe_scan_rate(self, value):
+        """Setter for the observe_scan_rate property."""
         self._observe_scan_rate = value
 
     @property
     def observe_min_changed_pixels(self):
+        """Getter for the observe_min_changed_pixels property."""
         return self._observe_min_changed_pixels
 
     @observe_min_changed_pixels.setter
     def observe_min_changed_pixels(self, value):
+        """Setter for the observe_min_changed_pixels property."""
         self._observe_min_changed_pixels = value
 
     @property
     def highlight_duration(self):
+        """Getter for the highlight_duration property."""
         return self._highlight_duration
 
     @highlight_duration.setter
     def highlight_duration(self, value):
+        """Setter for the highlight_duration property."""
         self._highlight_duration = value
 
     @property
     def highlight_color(self):
+        """Getter for the highlight_color property."""
         return self._highlight_color
 
     @highlight_color.setter
     def highlight_color(self, value):
+        """Setter for the highlight_color property."""
         self._highlight_color = value
 
     @property
     def highlight_thickness(self):
+        """Getter for the highlight_thickness property."""
         return self._highlight_thickness
 
     @highlight_thickness.setter
     def highlight_thickness(self, value):
+        """Setter for the highlight_thickness property."""
         self._highlight_thickness = value
 
     @staticmethod
@@ -225,7 +261,7 @@ class _IrisSettings(object):
     def is_linux():
         """Checks if we are running on a Linux system.
 
-        :return: True if we are running on a Linux system, False otherwise
+        :return: True if we are running on a Linux system, False otherwise.
         """
         return get_os() == Platform.LINUX
 
@@ -233,7 +269,7 @@ class _IrisSettings(object):
     def is_mac():
         """Checks if we are running on a Mac system.
 
-        :return: True if we are running on a Mac system, False otherwise
+        :return: True if we are running on a Mac system, False otherwise.
         """
         return get_os() == Platform.MAC
 
@@ -241,7 +277,7 @@ class _IrisSettings(object):
     def is_windows():
         """Checks if we are running on a Windows system.
 
-        :return: True if we are running on a Windows system, False otherwise
+        :return: True if we are running on a Windows system, False otherwise.
         """
         return get_os() == Platform.WINDOWS
 

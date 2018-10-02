@@ -17,69 +17,122 @@ logger = logging.getLogger(__name__)
 class BaseTest(object):
 
     def __init__(self, app):
+        """Resets test case properties.
+
+        :param app: Instance of the FirefoxApp class.
+        """
         self.app = app
         self.reset_variables()
 
     def reset_variables(self):
+        """Test case properties."""
+
+        """Test case description."""
         self.meta = ''
+
+        """Firefox version."""
         self.fx_version = ''
+
+        """List of platforms object. E.g: Platform.LINUX, Platform.ALL."""
         self.exclude = []
+
+        """Test case title from test rail."""
         self.test_title = ''
+
+        """List of test results."""
         self.results = []
+
+        """Test case's start time."""
         self.start_time = 0
+
+        """Test case's end time."""
         self.end_time = 0
+
+        """Test case's outcome."""
         self.outcome = 'PASSED'
+
+        """List of test case prefs."""
         self.prefs = []
+
+        """Path to the Firefox profile."""
         self.profile_path = None
+
+        """Browser channel."""
         self.channel = Settings.CHANNELS
+
+        """Firefox locales. E.g: ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 
+        'ro', 'ja']."""
         self.locale = Settings.LOCALES
+
+        """Supported platforms. E.g: [LINUX, MAC, WINDOWS]."""
         self.platform = Platform.ALL
+
+        """Test case tags."""
         self.tags = ''
+
+        """Test case id."""
         self.test_case_id = ''
+
+        """Test case suite id."""
         self.test_suite_id = ''
+
+        """Blocker for current test case."""
         self.blocked_by = ''
 
     def get_test_meta(self):
+        """Getter for the meta property."""
         return self.meta
 
     def get_test_case_id(self):
+        """Getter for the test_case_id property."""
         return self.test_case_id
 
     def get_test_title(self):
+        """Getter for the test_title property."""
         return self.test_title
 
     def get_test_results(self):
+        """Getter for the test results property."""
         return self.results
 
     def add_result(self, result):
+        """Setter for the test results property."""
         self.results.append(result)
         self.get_results()
 
     def get_results(self):
+        """Setter for the test outcome property."""
         for result in self.results:
             self.outcome = result.outcome
 
     def create_collection_test_rail_result(self):
+        """Returns the test rail object."""
         test_rail_object = TestRailTests(self.meta, self.test_suite_id, self.blocked_by, self.test_case_id,
                                          self.get_test_results())
         return test_rail_object
 
     def set_test_title(self, test_title):
+        """Setter for the test_title property."""
         self.test_title = test_title
 
     def get_start_time(self):
+        """Getter for the start_time property."""
         return self.start_time
 
     def set_start_time(self, start_time):
+        """Setter for the start_time property."""
         self.start_time = start_time
 
     def get_end_time(self):
+        """Getter for the end_time property."""
         return self.end_time
 
     def set_end_time(self, end_time):
+        """Setter for the end_time property."""
         self.end_time = end_time
 
     def get_test_duration(self):
+        """Returns the test duration with 2 decimals precision."""
         return round(self.end_time - self.start_time, 2)
 
     def add_results(self, outcome, message, actual, expected, error):
@@ -102,6 +155,7 @@ class BaseTest(object):
         return self.app.base_local_web_url + resource
 
     def set_profile_pref(self, pref):
+        """Setter for the prefs property."""
         self.prefs.append(pref)
 
     def setup(self):
@@ -172,7 +226,7 @@ class BaseTest(object):
         return
 
     def run(self):
-        """This is your test logic."""
+        """This will be overwritten with your test logic."""
         return
 
     def teardown(self):
