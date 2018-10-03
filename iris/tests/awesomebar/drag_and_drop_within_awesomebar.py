@@ -14,6 +14,7 @@ class Test(BaseTest):
                     ' the dropped string.'
         self.test_case_id = '117524'
         self.test_suite_id = '1902'
+        self.locales = ['en-US', 'es-ES', 'fr', 'de', 'ar', 'ru', 'pt-PT', 'vi', 'pl', 'tr', 'ro']
 
     def run(self):
         text_to_be_highlighted = Pattern('focus_text.png')

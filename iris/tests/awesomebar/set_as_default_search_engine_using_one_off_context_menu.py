@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'one-off.'
         self.test_case_id = '108251'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         moz_pattern = Pattern('moz.png')

@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case checks the position of the bookmark drop down for a highlighted link.'
         self.test_case_id = '117526'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

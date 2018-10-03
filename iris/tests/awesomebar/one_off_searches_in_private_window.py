@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case perform one-offs searches in private browsing.'
         self.test_case_id = '108253'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         moz_pattern = Pattern('moz.png')

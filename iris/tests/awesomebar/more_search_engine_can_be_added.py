@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'searches bar.'
         self.test_case_id = '108261'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         moz_pattern = Pattern('moz.png')

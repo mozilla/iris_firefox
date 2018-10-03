@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case adds links using \'CTRL/CMD\' + \'ENTER\' keys.'
         self.test_case_id = '119484'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         cnn_tab_pattern = Pattern('cnn_tab.png')

@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case disables the web search in the awesomebar.'
         self.test_case_id = '108254'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         google_one_off_button_pattern = Pattern('google_one_off_button.png')

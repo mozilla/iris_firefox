@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'each search engine from the Search Settings.'
         self.test_case_id = '108259'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         moz_pattern = Pattern('moz.png')

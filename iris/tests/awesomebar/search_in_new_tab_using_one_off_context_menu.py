@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case verifies that \'Search in New Tab\' option works correctly using an one-off.'
         self.test_case_id = '108250'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         moz_pattern = Pattern('moz.png')
