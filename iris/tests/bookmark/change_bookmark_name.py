@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'The name of a bookmark can be changed.'
         self.test_case_id = '4148'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def run(self):
         done_pattern = Pattern('done_button.png')
