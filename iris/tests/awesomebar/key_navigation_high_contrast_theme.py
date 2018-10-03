@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case performs key navigation in the URL drop-down in high contrast theme.'
         self.test_case_id = '120136'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

@@ -15,6 +15,7 @@ class Test(BaseTest):
         self.test_suite_id = '1902'
         self.exclude = Platform.LINUX
         self.blocked_by = '1488708'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
