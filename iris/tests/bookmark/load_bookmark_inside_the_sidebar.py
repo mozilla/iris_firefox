@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.fx_version = '<=62'
         self.test_case_id = '4162'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

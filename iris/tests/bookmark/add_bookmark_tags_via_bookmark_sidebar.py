@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Tags can be added to bookmarks using the Bookmarks Sidebar.'
         self.test_case_id = '4147'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

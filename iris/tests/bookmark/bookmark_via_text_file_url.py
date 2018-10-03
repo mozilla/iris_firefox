@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Websites can be bookmarked by dragging a URL from a *.txt file.'
         self.test_case_id = '4144'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def run(self):
 

@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Links can be bookmarked via context menu.'
         self.test_case_id = '4143'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def run(self):
 
