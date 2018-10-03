@@ -247,7 +247,6 @@ def get_image_path(caller, image):
     if found:
         logger.debug('Module %s requests image %s' % (module, image))
         logger.debug('Found %s' % image_path)
-        print 'image_path is:',image_path
         return image_path
     else:
         # If not found in correct location, fall back to global image search for now.

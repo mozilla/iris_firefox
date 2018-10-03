@@ -1,8 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
-
+from iris.api.core.firefox_ui.hamburger import HamburgerMenu
 from iris.test_case import *
 
 
@@ -22,6 +21,7 @@ class Test(BaseTest):
         wear_theme_pattern = Pattern('wear_theme.png')
         moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png')
         search_wikipedia_dark_theme_pattern = Pattern('search_wikipedia_dark_theme.png')
+        addon_option = HamburgerMenu.NEW_WINDOW
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -30,7 +30,11 @@ class Test(BaseTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
-        click_hamburger_menu_option("Add-ons")
+        # click_hamburger_menu_option(addon_option)
+        click(NavBar.HAMBURGER_MENU)
+        time.sleep(10)
+
+        click(HamburgerMenu.ADDONS)
 
         expected = region.exists(themes_pattern, 10)
         assert_true(self, expected, 'Add-ons page successfully loaded.')

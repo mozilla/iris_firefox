@@ -11,7 +11,11 @@ import subprocess
 import tempfile
 
 import git
+import mss
+import numpy
 import pyautogui
+import pyscreeze
+from PIL import Image
 
 from iris.api.core.platform import Platform
 from parse_args import parse_args
@@ -86,6 +90,89 @@ def is_multiprocessing_enabled():
 
 def scroll(clicks):
     pyautogui.scroll(clicks)
+
+
+def get_uhd_details():
+    uhd_factor = SCREENSHOT_WIDTH / SCREEN_WIDTH
+    is_uhd = True if uhd_factor > 1 else False
+    return is_uhd, uhd_factor
+
+
+def is_ocr_text(input_text):
+    is_ocr_string = True
+    pattern_extensions = ('.png', '.jpg')
+    if input_text.endswith(pattern_extensions):
+        is_ocr_string = False
+    return is_ocr_string
+
+
+def get_region(region=None, for_ocr=False):
+    """Grabs image from region or full screen.
+
+    :param Region || None region: Region param
+    :param for_ocr: boolean param for ocr processing
+    :return: Image
+    """
+    is_uhd, uhd_factor = get_uhd_details()
+
+    if region is not None:
+        r_x = uhd_factor * region.x if is_uhd else region.x
+        r_y = uhd_factor * region.y if is_uhd else region.y
+        r_w = uhd_factor * region.width if is_uhd else region.width
+        r_h = uhd_factor * region.height if is_uhd else region.height
+
+        if Platform.OS_VERSION == '6.1':
+            with mss.mss() as sct:
+                monitor = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
+                image = numpy.array(sct.grab(monitor))
+                grabbed_area = Image.fromarray(image, mode='RGBA')
+        else:
+            grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
+
+        if is_uhd and not for_ocr:
+            grabbed_area = grabbed_area.resize([region.width, region.height])
+        return grabbed_area
+    if Platform.OS_VERSION == '6.1':
+        with mss.mss() as sct:
+            monitor = {'top': 0, 'left': 0, 'width': SCREENSHOT_WIDTH, 'height': SCREENSHOT_HEIGHT}
+            image = numpy.array(sct.grab(monitor))
+            grabbed_area = Image.fromarray(image, mode='RGBA')
+            #grabbed_area.show()
+
+    else:
+        grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+
+    if is_uhd and not for_ocr:
+        return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
+    else:
+        return grabbed_area
+
+
+def get_test_name():
+    white_list = ['general.py']
+    all_stack = inspect.stack()
+    for stack in all_stack:
+        filename = os.path.basename(stack[1])
+        method_name = stack[3]
+        if filename is not '' and 'tests' in os.path.dirname(stack[1]):
+            return filename
+        elif filename in white_list:
+            return method_name
+    return
+
+
+def verify_test_compat(test, app):
+    not_excluded = True
+    exclude = [test.exclude] if isinstance(test.exclude, str) else [i for i in test.exclude]
+    for item in exclude:
+        if item in app.fx_channel or item in app.os or item in app.args.locale:
+            not_excluded = False
+    correct_version = True if test.fx_version == '' else check_version(app.version, test.fx_version)
+    correct_channel = app.fx_channel in test.channel
+    correct_locale = app.args.locale in test.locale
+    correct_platform = app.os in test.platform
+    result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded
+    return result
 
 
 def filter_list(original_list, exclude_list):
