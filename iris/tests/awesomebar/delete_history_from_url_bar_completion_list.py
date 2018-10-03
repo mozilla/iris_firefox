@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case deletes history from the URL bar completion list.'
         self.test_case_id = '117530'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         page_bookmarked_pattern = Pattern('page_bookmarked.png')

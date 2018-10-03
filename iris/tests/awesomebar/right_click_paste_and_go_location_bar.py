@@ -13,6 +13,8 @@ class Test(BaseTest):
         self.meta = 'This test case checks the \'Paste & Go\' option if CRLF exists at the end of clipboard url.'
         self.test_case_id = '117523'
         self.test_suite_id = '1902'
+        self.locales = ['en-US', 'zh-CN', 'es-ES', 'fr', 'de', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro',
+                        'ja-JP-mac' if get_os() == Platform.MAC else 'ja']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

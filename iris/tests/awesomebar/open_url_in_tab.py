@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'set to true.'
         self.test_case_id = '117527'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         default_status_pattern = Pattern('default_status.png')

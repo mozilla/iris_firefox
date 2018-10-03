@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'awesome bar too.'
         self.test_case_id = '108262'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         search_engine_pattern = Pattern('search_engine.png')

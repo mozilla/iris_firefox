@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case clicks on a search result while the settings gear is focused.'
         self.test_case_id = '108264'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         search_settings_pattern = Pattern('search_settings.png')

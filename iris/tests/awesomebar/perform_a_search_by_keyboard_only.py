@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case perform a search by keyboard only.'
         self.test_case_id = '108268'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
