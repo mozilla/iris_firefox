@@ -577,7 +577,7 @@ def access_bookmarking_tools(option):
     except FindError:
         raise APIHelperError('Can\'t find the Bookmarking Tools option, aborting.')
     try:
-        wait(option, 10)
+        wait(option, 15)
         logger.debug('%s option has been found.' % option)
         click(option)
     except FindError:

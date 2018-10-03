@@ -27,6 +27,5 @@ class Test(BaseTest):
         select_location_bar()
 
         click(bookmark_button_pattern)
-
         expected = exists(bookmark_drop_down_under_bookmark_icon_pattern, 10)
         assert_true(self, expected, 'The bookmark drop down is displayed under the bookmark icon.')
