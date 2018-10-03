@@ -19,7 +19,7 @@ def run(app):
 
     test_failures = []
     test_case_results = []
-    test_log = []
+    test_log = {}
 
     for index, module in enumerate(app.test_list, start=1):
 
@@ -94,7 +94,11 @@ def run(app):
             confirm_firefox_quit(app)
 
             # Save current test log
-            test_log.append(update_log_object(test_log_object))
+            current_package = os.path.split(os.path.dirname(current_module.__file__))[1]
+            if not current_package in test_log:
+                test_log[current_package] = []
+            test_log[current_package].append(update_log_object(test_log_object))
+
         else:
             skipped += 1
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))

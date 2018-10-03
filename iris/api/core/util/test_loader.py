@@ -96,6 +96,29 @@ def get_tests_from_object(obj):
     return test_list, test_packages
 
 
+def sorted_walk(directory, topdown=True, onerror=None):
+
+    names = os.listdir(directory)
+    names.sort()
+    dirs, nondirs = [], []
+
+    for name in names:
+        if os.path.isdir(os.path.join(directory, name)):
+            dirs.append(name)
+        else:
+            nondirs.append(name)
+
+    if topdown:
+        yield directory, dirs, nondirs
+    for name in dirs:
+        path = os.path.join(directory, name)
+        if not os.path.islink(path):
+            for x in sorted_walk(path, topdown, onerror):
+                yield x
+    if not topdown:
+        yield directory, dirs, nondirs
+
+
 def scan_all_tests(arg):
     test_list = []
     test_packages = []
@@ -106,7 +129,8 @@ def scan_all_tests(arg):
         tests_directory = os.path.join(get_module_dir(), 'iris', 'tests')
 
     logger.debug('Path %s found. Checking content ...', tests_directory)
-    for dir_path, sub_dirs, all_files in os.walk(tests_directory):
+
+    for dir_path, sub_dirs, all_files in sorted_walk(tests_directory):
         for current_file in all_files:
             if current_file.endswith('.py') and not current_file.startswith('__'):
                 test_list.append(os.path.splitext(current_file)[0])
