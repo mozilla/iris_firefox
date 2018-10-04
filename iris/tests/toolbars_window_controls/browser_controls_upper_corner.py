@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Browser controls work as expected.'
         self.test_case_id = '119481'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
     def run(self):
         window_controls_minimize_pattern = Pattern('window_controls_minimize.png')
