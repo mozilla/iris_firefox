@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test of the \'About Firefox\' window controls'
         self.test_case_id = '120465'
         self.test_suite_id = '1998'
+        self.locales = FirefoxApp.LOCALES
 
     def run(self):
         firefox_in_about_pattern = Pattern('firefox_in_about.png')

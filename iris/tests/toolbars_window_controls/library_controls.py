@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test of the library window controls'
         self.test_case_id = '120467'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
     def run(self):
         library_title_pattern = Pattern('library_title.png')
