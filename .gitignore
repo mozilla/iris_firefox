@@ -128,3 +128,6 @@ ENV/
 
 #credential file
 config.ini
+
+# __debug__.py (used for debugging in Pycharm)
+__debug__.py
