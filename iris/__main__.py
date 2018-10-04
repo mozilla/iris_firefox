@@ -100,7 +100,7 @@ class Iris(object):
             if Settings.get_os() == Platform.MAC:
                 fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
             elif Settings.get_os() == Platform.WINDOWS:
-                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox\\firefox'):
+                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'):
                     fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox'
                 else:
                     fx_path = 'C:\\Program Files\\Mozilla Firefox\\firefox'
@@ -565,7 +565,7 @@ class Iris(object):
 
     def init_tesseract_path(self):
 
-        win_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
+        which_tesseract = subprocess.Popen(['which', 'tesseract'], stdout=subprocess.PIPE, shell=True).communicate()[0]
         osx_linux_tesseract_path_1 = '/usr/local/bin/tesseract'
         osx_linux_tesseract_path_2 = '/usr/bin/tesseract'
 
@@ -573,10 +573,19 @@ class Iris(object):
         current_os = Settings.get_os()
 
         if current_os == Platform.WINDOWS:
-            if self.check_tesseract_path(win_tesseract_path):
-                pytesseract.pytesseract.tesseract_cmd = win_tesseract_path + '\\tesseract'
+            win_default_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
+            if '/c/' in str(which_tesseract).rstrip():
+                win_which_tesseract_path = which_tesseract.replace('/c/', 'C:\\').replace('/', '\\').rstrip() + '.exe'
+            else:
+                win_which_tesseract_path = which_tesseract.replace('\\', '\\\\').rstrip()
+
+            if self.check_tesseract_path(win_default_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = win_default_tesseract_path + '\\tesseract'
+            elif self.check_tesseract_path(win_which_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = win_which_tesseract_path
             else:
                 path_not_found = True
+
         elif current_os == Platform.LINUX or current_os == Platform.MAC:
             if self.check_tesseract_path(osx_linux_tesseract_path_1):
                 pytesseract.pytesseract.tesseract_cmd = osx_linux_tesseract_path_1
