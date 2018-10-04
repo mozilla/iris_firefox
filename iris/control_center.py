@@ -88,7 +88,8 @@ class ControlCenter(object):
         logger.debug('Finish command received: %s' % request.path)
         data_string = request.rfile.read(int(request.headers['Content-Length']))
         logger.debug(data_string)
-        request.set_result(json.loads(data_string))
+        sorted_response = json.dumps(json.loads(data_string), sort_keys=True)
+        request.set_result(json.loads(sorted_response))
         request.stop_server()
         return
 
