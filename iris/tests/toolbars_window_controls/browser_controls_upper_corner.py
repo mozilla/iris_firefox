@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks that the upper corner browser controls work as expected'
         self.test_case_id = '120464'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
     def run(self):
         url = 'about:home'

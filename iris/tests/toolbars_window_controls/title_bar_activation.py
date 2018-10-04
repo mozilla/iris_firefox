@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'Customize menu'
         self.test_case_id = '118183'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
     def run(self):
 

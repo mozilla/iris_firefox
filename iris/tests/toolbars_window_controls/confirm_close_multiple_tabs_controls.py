@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test of the \'Confirm close multiple tabs\' window controls'
         self.test_case_id = '120468'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
     def setup(self):
         BaseTest.setup(self)

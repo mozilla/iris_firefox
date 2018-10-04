@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.meta = "This is a test case that checks that Browser Control Console work as expected"
         self.test_case_id = '119481'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
         # Disabling until test has been updated
         self.exclude = Platform.ALL

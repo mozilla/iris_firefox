@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'This is a test of the Save Image dialog controls'
         self.test_case_id = '118803'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
     def run(self):
         url = 'cdn2.collective-evolution.com/assets/uploads/2009/09/url.jpeg'

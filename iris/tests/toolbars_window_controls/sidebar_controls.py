@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test of the sidebar controls'
         self.test_case_id = '119466'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
 
     def run(self):
         x_button_sidebar_pattern = Pattern('x_button_sidebar.png')
