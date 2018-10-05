@@ -15,15 +15,15 @@ class Test(BaseTest):
 
     def run(self):
         url = 'www.baidu.com'
-        baidu_logo_pattern = Pattern('baidu_home.png')
+        search_baidu = Pattern('baidu_home.png')
         search_item = 'Barack Obama'
         search_page_pattern = Pattern('baidu_search_page.png')
 
         logger.debug('Accessing ' + url + '...')
         navigate(url)
 
-        expected_1 = exists(baidu_logo_pattern, 10)
-        assert_true(self, expected_1, 'Baidu logo should be visible')
+        expected_1 = exists(search_baidu, 10)
+        assert_true(self, expected_1, 'Baidu search button should be visible')
 
         logger.debug(url + ' successfully loaded')
 

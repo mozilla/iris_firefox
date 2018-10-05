@@ -59,7 +59,10 @@ class Test(BaseTest):
         else:
             raise FindError('Can\'t find the \'hamburger menu\' in the page.')
 
-        restore_window_from_taskbar()
+        if Platform.OS_VERSION == '6.1':
+            click(Pattern('firefox_start_bar.png'))
+        else:
+            restore_window_from_taskbar()
 
         if Settings.get_os() == Platform.WINDOWS:
             maximize_window()

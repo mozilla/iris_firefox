@@ -30,7 +30,7 @@ class EmailClient:
     @staticmethod
     def create_email_subject(firefox_version):
         email_info = '[Firefox %s][%s]Iris Test Report %s' % (
-            firefox_version, Settings.get_os().capitalize(), date.today())
+            firefox_version, get_os_version().capitalize(), date.today())
         return email_info
 
     @staticmethod
