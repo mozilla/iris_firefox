@@ -151,8 +151,9 @@ class Iris(object):
                 self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
 
                 # Parse tests.
-                if len(server.result['tests']):
-                    for package in server.result['tests']:
+                tests = sorted(server.result['tests'])
+                if len(tests):
+                    for package in tests:
                         self.test_packages.append(package)
                         for test in server.result['tests'][package]:
                             self.test_list.append(test['name'])
