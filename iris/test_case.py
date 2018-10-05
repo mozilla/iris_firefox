@@ -156,7 +156,7 @@ class BaseTest(object):
         """Launch default window with the URL specified.
         Currently this is used by Iris, so it should not be overridden.
         """
-        test_name = os.path.splitext(os.path.split(get_current_module())[1])[0]
+        test_name = os.path.splitext(os.path.split(IrisCore.get_current_module())[1])[0]
         parameters = '?current=%s&total=%s&title=%s' % (self.app.current_test, self.app.total_tests, test_name)
         self.url = self.app.base_local_web_url + parameters
 

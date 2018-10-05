@@ -6,11 +6,11 @@ import logging
 import os.path
 from ConfigParser import ConfigParser
 from iris.api.core.errors import ConfigError
-from iris.api.core.util.core_helper import get_module_dir
+from iris.api.core.util.core_helper import IrisCore
 
 logger = logging.getLogger(__name__)
 
-config_file = os.path.join(get_module_dir(), 'config.ini')
+config_file = os.path.join(IrisCore.get_module_dir(), 'config.ini')
 config = ConfigParser()
 
 

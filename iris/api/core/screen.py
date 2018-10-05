@@ -2,7 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from region import Region, get_region
+from region import Region
+from util.core_helper import IrisCore
 from util.image_search import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
@@ -19,10 +20,10 @@ class Screen(object):
             return
 
         elif isinstance(f_arg, Region):
-            return get_region(f_arg)
+            return IrisCore.get_region(f_arg)
 
         elif len(args) is 4:
-            return get_region((args[0], args[1], args[2], args[3]))
+            return IrisCore.get_region((args[0], args[1], args[2], args[3]))
 
     @staticmethod
     def get_number_screens():

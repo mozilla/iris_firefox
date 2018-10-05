@@ -36,7 +36,7 @@ class Region(object):
         return self.text(with_image_processing, True)
 
     def show(self):
-        region_screen = get_region(self)
+        region_screen = IrisCore.get_region(self)
         region_screen.show()
 
     @property

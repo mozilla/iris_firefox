@@ -6,7 +6,7 @@ import logging
 import os
 import sys
 
-from iris.api.core.util.core_helper import get_module_dir
+from iris.api.core.util.core_helper import IrisCore
 
 
 logger = logging.getLogger(__name__)
@@ -126,7 +126,7 @@ def scan_all_tests(arg):
     if os.path.isdir(arg):
         tests_directory = arg
     else:
-        tests_directory = os.path.join(get_module_dir(), 'iris', 'tests')
+        tests_directory = os.path.join(IrisCore.get_module_dir(), 'iris', 'tests')
 
     logger.debug('Path %s found. Checking content ...', tests_directory)
 

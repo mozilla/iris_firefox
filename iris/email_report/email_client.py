@@ -35,7 +35,7 @@ class EmailClient:
 
     @staticmethod
     def get_file_attachment():
-        test_report_file = os.path.join(get_current_run_dir(), 'iris_log.log')
+        test_report_file = os.path.join(IrisCore.get_current_run_dir(), 'iris_log.log')
         if os.path.exists(test_report_file):
             file_log = open(test_report_file)
             attachment = MIMEText(file_log.read(), 1)

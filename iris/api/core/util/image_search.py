@@ -138,7 +138,7 @@ def image_search_multiple(pattern, region=None):
     :return: List[Location]
     """
 
-    stack_image = get_region(region=region)
+    stack_image = IrisCore.get_region(region=region)
     return _match_template_multiple(pattern, stack_image)
 
 
@@ -176,7 +176,7 @@ def image_search(pattern, region=None):
     :return: Location
     """
     logger.debug('Searching for pattern: %s' % pattern.get_filename())
-    stack_image = get_region(region=region)
+    stack_image = IrisCore.get_region(region=region)
     location = _match_template(pattern, stack_image)
 
     if location.x == -1 or location.y == -1:
