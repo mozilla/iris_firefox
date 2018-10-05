@@ -72,6 +72,9 @@ class Test(BaseTest):
 
         restore_window_from_taskbar()
 
+        if Settings.get_os() == Platform.WINDOWS:
+            maximize_window()
+
         expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 

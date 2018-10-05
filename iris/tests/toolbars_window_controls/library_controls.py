@@ -16,6 +16,9 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        firefox_start_bar=Pattern('firefox_start_bar.png')
+        firefox_start_bar_library=Pattern('firefox_start_bar_library.png')
+
         library_title_pattern = Pattern('library_title.png')
         if Settings.get_os() == Platform.LINUX:
             restore_button_pattern = Pattern('restore_button.png')
@@ -47,6 +50,13 @@ class Test(BaseTest):
 
         if Settings.get_os() == Platform.MAC:
             open_library()
+        elif Platform.OS_VERSION == '6.1':
+            hover(firefox_start_bar)
+            click(firefox_start_bar)
+            if exists(firefox_start_bar_library,5):
+                click(firefox_start_bar_library)
+            else:
+                logger.error('library window is not present in the start bar')
         else:
             restore_window_from_taskbar()
 

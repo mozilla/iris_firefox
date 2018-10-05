@@ -54,7 +54,10 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Window not minimized.')
 
-        restore_window_from_taskbar()
+        if Platform.OS_VERSION == '6.1':
+            click(Pattern('firefox_start_bar.png'))
+        else:
+            restore_window_from_taskbar()
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             maximize_window()

@@ -72,10 +72,10 @@ def get_os():
 def get_os_version():
     """Get the version string of the operating system your script is running on."""
     os_version = Platform.OS_VERSION
-    if os_version == '6.1':
+    if Platform.OS_NAME == 'win'and os_version == '6.1':
         current_os_version = 'win7'
     else:
-        current_os_version = 'win10'
+        current_os_version = get_os()
     return current_os_version
 
 
@@ -121,10 +121,10 @@ def get_region(region=None, for_ocr=False):
         r_w = uhd_factor * region.width if is_uhd else region.width
         r_h = uhd_factor * region.height if is_uhd else region.height
 
-        if Platform.OS_VERSION == '6.1':
+        if get_os_version == 'win7':
             with mss.mss() as sct:
-                monitor = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
-                image = numpy.array(sct.grab(monitor))
+                screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
+                image = numpy.array(sct.grab(screen_region))
                 grabbed_area = Image.fromarray(image, mode='RGBA')
         else:
             grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
@@ -132,12 +132,12 @@ def get_region(region=None, for_ocr=False):
         if is_uhd and not for_ocr:
             grabbed_area = grabbed_area.resize([region.width, region.height])
         return grabbed_area
-    if Platform.OS_VERSION == '6.1':
+
+    if get_os_version == 'win7':
         with mss.mss() as sct:
-            monitor = {'top': 0, 'left': 0, 'width': SCREENSHOT_WIDTH, 'height': SCREENSHOT_HEIGHT}
-            image = numpy.array(sct.grab(monitor))
+            screen_region = {'top': 0, 'left': 0, 'width': SCREENSHOT_WIDTH, 'height': SCREENSHOT_HEIGHT}
+            image = numpy.array(sct.grab(screen_region))
             grabbed_area = Image.fromarray(image, mode='RGBA')
-            #grabbed_area.show()
 
     else:
         grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
