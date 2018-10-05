@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case disables search suggestions in awesomebar.'
         self.test_case_id = '108263'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

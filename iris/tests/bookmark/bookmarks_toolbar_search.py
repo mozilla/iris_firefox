@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks if the search bookmark from Bookmarks Toolbar function works.'
         self.test_case_id = '116972'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

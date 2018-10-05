@@ -68,13 +68,13 @@ class Iris(object):
 
     def initialize_platform(self):
         self.args = parse_args()
-        self.module_dir = get_module_dir()
+        self.module_dir = IrisCore.get_module_dir()
         self.platform = get_platform()
         self.os = Settings.get_os()
         self.create_working_directory()
         self.create_run_directory()
         initialize_logger(LOG_FILENAME, self.args.level)
-        create_profile_cache()
+        IrisCore.create_profile_cache()
         Iris.process_list = []
         self.local_web_root = os.path.join(self.module_dir, 'iris', 'local_web')
         self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
@@ -151,8 +151,9 @@ class Iris(object):
                 self.base_local_web_url = 'http://127.0.0.1:%s' % self.args.port
 
                 # Parse tests.
-                if len(server.result['tests']):
-                    for package in server.result['tests']:
+                tests = sorted(server.result['tests'])
+                if len(tests):
+                    for package in tests:
                         self.test_packages.append(package)
                         for test in server.result['tests'][package]:
                             self.test_list.append(test['name'])
@@ -189,18 +190,18 @@ class Iris(object):
                 shutil.rmtree(master_run_directory, ignore_errors=True)
         if not os.path.exists(master_run_directory):
             os.mkdir(master_run_directory)
-        run_directory = os.path.join(master_run_directory, get_run_id())
+        run_directory = os.path.join(master_run_directory, IrisCore.get_run_id())
         os.mkdir(run_directory)
 
     def delete_run_directory(self):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
-        run_directory = os.path.join(master_run_directory, get_run_id())
+        run_directory = os.path.join(master_run_directory, IrisCore.get_run_id())
         if os.path.exists(run_directory):
             shutil.rmtree(run_directory, ignore_errors=True)
 
     def update_run_index(self, new_data=None):
         # Prepare the current entry.
-        current_run = {'id': get_run_id(), 'version': self.version, 'build': self.build_id, 'channel': self.fx_channel,
+        current_run = {'id': IrisCore.get_run_id(), 'version': self.version, 'build': self.build_id, 'channel': self.fx_channel,
                        'locale': self.fx_locale}
 
         # If this run is just starting, initialize with blank values
@@ -227,7 +228,7 @@ class Iris(object):
             with open(run_file, 'r') as f:
                 run_file_data = json.load(f)
             for run in run_file_data['runs']:
-                if run['id'] == get_run_id():
+                if run['id'] == IrisCore.get_run_id():
                     run_file_data['runs'].remove(run)
             run_file_data['runs'].append(current_run)
         else:
@@ -239,10 +240,10 @@ class Iris(object):
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 
     def update_run_log(self, new_data=None):
-        meta = {'run_id': get_run_id(), 'fx_version': self.version, 'fx_build_id': self.build_id, 'platform': self.os,
+        meta = {'run_id': IrisCore.get_run_id(), 'fx_version': self.version, 'fx_build_id': self.build_id, 'platform': self.os,
                 'config': '%s, %s-bit, %s' % (Platform.OS_VERSION, Platform.OS_BITS, Platform.PROCESSOR),
                 'channel': self.fx_channel, 'locale': self.fx_locale, 'args': ' '.join(sys.argv),
-                'params': vars(self.args), 'log': os.path.join(get_current_run_dir(), 'iris_log.log')}
+                'params': vars(self.args), 'log': os.path.join(IrisCore.get_current_run_dir(), 'iris_log.log')}
 
         repo = git.Repo(self.module_dir)
         meta['iris_version'] = 1.0
@@ -275,7 +276,7 @@ class Iris(object):
             meta['total_time'] = new_data['total_time']
             tests = new_data['tests']
 
-        run_file = os.path.join(get_current_run_dir(), 'run.json')
+        run_file = os.path.join(IrisCore.get_current_run_dir(), 'run.json')
         run_file_data = {'meta': meta, 'tests': tests}
 
         with open(run_file, 'w') as f:
@@ -307,6 +308,7 @@ class Iris(object):
                 test_object['channel'] = filter_list(current_test.channel, current_test.exclude)
                 test_object['locale'] = filter_list(current_test.locale, current_test.exclude)
                 test_object['enabled'] = self.os in filter_list(current_test.platform, current_test.exclude)
+                test_object['tags'] = current_test.tags
                 test_object['test_case_id'] = current_test.test_case_id
                 test_object['test_suite_id'] = current_test.test_suite_id
                 test_object['blocked_by'] = current_test.blocked_by
@@ -432,7 +434,7 @@ class Iris(object):
                         logger.error('Cannot run Iris because Key.%s_LOCK is toggled.' % locked.upper())
                         logger.error('Please turn it off to continue.')
                         break
-                shutdown_process('Xquartz')
+                IrisCore.shutdown_process('Xquartz')
         if is_lock_on:
             self.finish(code=1)
 
@@ -523,7 +525,7 @@ class Iris(object):
             return candidate_app
 
         else:
-            cache_dir = os.path.join(get_working_dir(), 'cache')
+            cache_dir = os.path.join(IrisCore.get_working_dir(), 'cache')
             try:
                 scraper = FactoryScraper('candidate',
                                          version=self.args.firefox,
@@ -531,7 +533,7 @@ class Iris(object):
                                          locale=self.args.locale)
                 firefox_dmg = scraper.download()
                 install_folder = install(src=firefox_dmg,
-                                         dest=get_current_run_dir())
+                                         dest=IrisCore.get_current_run_dir())
 
                 return get_binary(install_folder, 'Firefox')
             except errors.NotFoundError:
@@ -589,7 +591,7 @@ class RemoveTempDir(cleanup.CleanUp):
 
     @staticmethod
     def at_exit():
-        tmp_dir = get_tempdir()
+        tmp_dir = IrisCore.get_tempdir()
         if tmp_dir is not None:
             logger.debug('Removing temp dir "%s"' % tmp_dir)
             shutil.rmtree(tmp_dir, ignore_errors=True)
@@ -619,7 +621,7 @@ class TerminateSubprocesses(cleanup.CleanUp):
         if Settings.is_mac():
             # Extra call to shutdown the program we use to check keyboard lock,
             # in case Iris was terminated abruptly.
-            shutdown_process('Xquartz')
+            IrisCore.shutdown_process('Xquartz')
 
 
 def initialize_logger_level(level):
@@ -637,5 +639,5 @@ def initialize_logger_level(level):
 
 def initialize_logger(output, level):
     if output:
-        logging.basicConfig(filename=os.path.join(get_current_run_dir(), LOG_FILENAME), format=LOG_FORMAT)
+        logging.basicConfig(filename=os.path.join(IrisCore.get_current_run_dir(), LOG_FILENAME), format=LOG_FORMAT)
     initialize_logger_level(level)

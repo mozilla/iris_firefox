@@ -19,12 +19,12 @@ def run(app):
 
     test_failures = []
     test_case_results = []
-    test_log = []
+    test_log = {}
 
     for index, module in enumerate(app.test_list, start=1):
 
         current_module = importlib.import_module(module)
-        set_current_module(current_module.__file__)
+        IrisCore.set_current_module(current_module.__file__)
 
         try:
             current = current_module.Test(app)
@@ -35,7 +35,7 @@ def run(app):
             return
         logger.info('\n' + '-' * 120)
 
-        if verify_test_compat(current, app) or app.args.override:
+        if IrisCore.verify_test_compat(current, app) or app.args.override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.set_start_time(time.time())
 
@@ -94,7 +94,11 @@ def run(app):
             confirm_firefox_quit(app)
 
             # Save current test log
-            test_log.append(update_log_object(test_log_object))
+            current_package = os.path.split(os.path.dirname(current_module.__file__))[1]
+            if not current_package in test_log:
+                test_log[current_package] = []
+            test_log[current_package].append(update_log_object(test_log_object))
+
         else:
             skipped += 1
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
@@ -109,7 +113,7 @@ def run(app):
 
     if app.args.email:
         email_report = EmailClient()
-        email_report.send_email_report(app.version, test_results, get_git_details())
+        email_report.send_email_report(app.version, test_results, IrisCore.get_git_details())
 
     app.write_test_failures(test_failures)
     append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests=test_log)
@@ -135,13 +139,13 @@ def create_log_object(module, current, fx_args):
 
 def update_log_object(run_obj):
     # If debug images were created for this test, add their names to the log file.
-    if os.path.exists(get_image_debug_path()):
+    if os.path.exists(IrisCore.get_image_debug_path()):
         debug_images = []
-        for root, dirs, files in os.walk(get_image_debug_path()):
+        for root, dirs, files in os.walk(IrisCore.get_image_debug_path()):
             for file_name in files:
                 debug_images.append(file_name)
         run_obj['debug_images'] = sorted(debug_images)
-        run_obj['debug_image_directory'] = get_image_debug_path()
+        run_obj['debug_image_directory'] = IrisCore.get_image_debug_path()
     return run_obj
 
 

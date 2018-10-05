@@ -12,6 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'This is an empty test case that does nothing'
         self.exclude = Platform.ALL
+        self.tags = 'broken,test,sanity,123'
 
     def run(self):
         """

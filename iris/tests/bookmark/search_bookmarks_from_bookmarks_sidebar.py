@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Searching for bookmarks from the Bookmarks Sidebar works properly.'
         self.test_case_id = '4104'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

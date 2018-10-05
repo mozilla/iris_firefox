@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case perform a search using an one-off focusing on the autocomplete drop-down.'
         self.test_case_id = '108249'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         page_bookmarked_pattern = Pattern('page_bookmarked.png')

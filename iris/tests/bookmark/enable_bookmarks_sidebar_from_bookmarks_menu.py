@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'Bookmarks Sidebar can be enabled from the Bookmarks Menu.'
         self.test_case_id = '4091'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def run(self):
         view_bookmarks_sidebar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_SIDEBAR

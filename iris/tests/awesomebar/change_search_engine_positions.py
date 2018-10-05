@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'awesome bar too.'
         self.test_case_id = '108262'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         search_engine_pattern = Pattern('search_engine.png')
@@ -97,10 +98,15 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        while not exists(search_with_google_one_off_string_pattern, 0.8):
+        # Declare a variable which can close the while loop if the pattern is not found
+
+        max_attempts = 10
+
+        while max_attempts > 0:
             scroll_down()
             if region.exists(search_with_google_one_off_string_pattern, 0.2):
-                break
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert_true(self, expected, 'The \'Google\' one-off search engine still holds the first position in the '

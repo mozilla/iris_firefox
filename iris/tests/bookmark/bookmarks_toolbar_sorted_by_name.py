@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'The items from the Bookmarks Toolbar can be sorted by name.'
         self.test_case_id = '4161'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

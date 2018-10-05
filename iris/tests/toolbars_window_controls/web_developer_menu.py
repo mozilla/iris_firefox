@@ -14,6 +14,7 @@ class Test(BaseTest):
         # here https://developer.mozilla.org/en-US/docs/Tools/GCLI
         self.test_case_id = '119483'
         self.test_suite_id = '1998'
+        self.locales = ['en-US']
         self.exclude = Platform.ALL
 
     def run(self):

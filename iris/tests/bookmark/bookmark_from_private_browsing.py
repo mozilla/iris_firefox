@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Websites can be bookmarked from private browsing.'
         self.test_case_id = '4155'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def run(self):
 

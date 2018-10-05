@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'Bookmarks can be removed from Bookmarks menu.'
         self.test_case_id = '4101'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

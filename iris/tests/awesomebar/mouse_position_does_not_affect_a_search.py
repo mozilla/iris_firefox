@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case checks that mouse position does not affect a search from awesomebar.'
         self.test_case_id = '108256'
         self.test_suite_id = '1902'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

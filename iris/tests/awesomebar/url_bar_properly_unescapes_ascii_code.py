@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case checks that url bar properly unescapes ASCII url.'
         self.test_case_id = '118809'
         self.test_suite_id = '1902'
+        self.locales = ['en-US', 'zh-CN', 'es-ES', 'fr', 'de', 'ar', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
 
     def run(self):
         url_example_pattern = Pattern('url_example.png')

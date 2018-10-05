@@ -12,6 +12,7 @@ class Test(BaseTest):
         self.meta = 'Bookmark folders can be copied via context menu.'
         self.test_case_id = '4151'
         self.test_suite_id = '75'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup
