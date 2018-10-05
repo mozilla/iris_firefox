@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Dismiss the search from the History sidebar.'
         self.test_case_id = '119442'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

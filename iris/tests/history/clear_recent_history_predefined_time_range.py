@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Clear Recent History from a predefined time range.'
         self.test_case_id = '172044'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

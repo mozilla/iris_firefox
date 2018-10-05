@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'Window\' button from the context menu.'
         self.test_case_id = '120122'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

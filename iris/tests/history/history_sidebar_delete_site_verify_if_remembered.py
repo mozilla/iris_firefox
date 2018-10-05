@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Delete a page from the History sidebar and verify it is still remembered in the URL bar.'
         self.test_case_id = '120131'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup
