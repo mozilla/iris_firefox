@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Delete a time range from the History sidebar.'
         self.test_case_id = '120134'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

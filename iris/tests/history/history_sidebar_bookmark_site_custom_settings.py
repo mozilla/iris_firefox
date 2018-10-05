@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test that bookmarks a page from the History sidebar with custom settings.'
         self.test_case_id = '120124'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

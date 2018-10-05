@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test that opens a page from the History sidebar.'
         self.test_case_id = '174037'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

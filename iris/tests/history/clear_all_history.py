@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Clear all the History.'
         self.test_case_id = '172045'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def run(self):
         clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')

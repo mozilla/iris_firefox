@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test of the sorting options from the sidebar - By Most Visited.'
         self.test_case_id = '119447'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

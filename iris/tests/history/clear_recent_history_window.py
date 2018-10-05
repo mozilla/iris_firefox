@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Check that the \'Clear Recent History\' window is displayed properly.'
         self.test_case_id = '172043'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup
