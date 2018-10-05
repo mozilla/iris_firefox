@@ -58,6 +58,10 @@ def confirm_firefox_quit(app):
         address_crash_reporter()
     except FindError:
         logger.warning('Firefox still around - reattempting quit.')
+        type(Key.ENTER)
+        time.sleep(Settings.FX_DELAY)
+        type(Key.ESC)
+        time.sleep(Settings.FX_DELAY)
         click(NavBar.HOME_BUTTON)
         quit_firefox()
         try:
