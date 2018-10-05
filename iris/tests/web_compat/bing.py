@@ -12,8 +12,6 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.assets = os.path.join(os.path.split(__file__)[0], 'assets')
         self.meta = 'Web compatibility test for bing.com'
-
-        # Test disabled until issue #559 is fixed
         self.exclude = Platform.ALL
 
     def run(self):

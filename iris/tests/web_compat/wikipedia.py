@@ -10,6 +10,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Web compatibility test for wikipedia.org'
+        self.exclude = Platform.ALL
 
     def run(self):
         url = 'www.wikipedia.org'
