@@ -43,7 +43,7 @@ class Test(BaseTest):
 
                 confirm_firefox_launch(self.app)
                 open_about_firefox()
-                wait(update_restart_pattern, 200)
+                wait(update_restart_pattern.similar(.7), 200)
                 type(Key.ESC)
                 restart_firefox(self.app.fx_path,
                                 self.profile_path,
