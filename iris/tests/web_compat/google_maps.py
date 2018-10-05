@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-        url = 'maps.google.com'
+        url = 'maps.google.com/'
         google_maps_search_bar_magnifier_pattern = Pattern('google_maps_search_bar_magnifier.png')
         google_maps_item_searched_pattern = Pattern('google_maps_item_searched.png')
 
