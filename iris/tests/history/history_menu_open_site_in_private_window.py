@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Open a website from the Recent History list in a private window.'
         self.test_case_id = '118806'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

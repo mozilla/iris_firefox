@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'use the \'Open All in Tabs\' option on the saved bookmark.'
         self.test_case_id = '120117'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup

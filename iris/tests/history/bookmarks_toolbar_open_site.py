@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Copy a website from the History sidebar and paste it to the Bookmarks toolbar, then open it.'
         self.test_case_id = '120128'
         self.test_suite_id = '2000'
+        self.locales = ['en-US']
 
     def setup(self):
         """Test case setup
