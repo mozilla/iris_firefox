@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'Web compatibility test for maps.google.com'
+        self.exclude = Platform.ALL
 
     def run(self):
         url = 'maps.google.com'
