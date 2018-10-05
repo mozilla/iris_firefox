@@ -34,7 +34,7 @@ def save_ocr_debug_image(on_region, matches):
                           border_line)
     current_time = datetime.datetime.now()
     temp_f = str(current_time).replace(' ', '_').replace(':', '_').replace('.', '_').replace('-', '_') + '.jpg'
-    cv2.imwrite(get_image_debug_path() + '/' + temp_f, on_region)
+    cv2.imwrite(IrisCore.get_image_debug_path() + '/' + temp_f, on_region)
 
 
 def ocr_matches_to_string(matches):
@@ -67,7 +67,7 @@ def _combine_text_matches(matches, value):
 
 def text_search_all(with_image_processing=True, in_region=None, in_image=None):
     if in_image is None:
-        stack_image = get_region(in_region, True)
+        stack_image = IrisCore.get_region(in_region, True)
     else:
         stack_image = in_image
 
@@ -87,7 +87,7 @@ def text_search_all(with_image_processing=True, in_region=None, in_image=None):
     dpi_factor = max(1, int(OCR_IMAGE_SIZE / length_x))
 
     final_data, debug_data = [], []
-    is_uhd, uhd_factor = get_uhd_details()
+    is_uhd, uhd_factor = IrisCore.get_uhd_details()
 
     for line in processed_data.split('\n'):
         try:

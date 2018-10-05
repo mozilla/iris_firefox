@@ -14,7 +14,7 @@ try:
 except ImportError:
     from PIL import Image
 
-from core_helper import get_image_debug_path, get_test_name, is_ocr_text, get_region
+from core_helper import IrisCore
 from iris.api.core.location import Location
 
 
@@ -49,20 +49,20 @@ def save_debug_image(needle, haystack, locations, not_found=False):
     :param not_found: boolean if image was found or not
     :return: None
     """
-    test_name = get_test_name()
+    test_name = IrisCore.get_test_name()
 
     if test_name is not None:
-        is_image = False if isinstance(needle, str) and is_ocr_text(needle) else True
+        is_image = False if isinstance(needle, str) and IrisCore.is_ocr_text(needle) else True
         w, h = 0, 0
 
         try:
-            full_screen = get_region(haystack)
+            full_screen = IrisCore.get_region(haystack)
             haystack = np.array(Image.fromarray(np.array(full_screen)).convert('L'))
         except Exception:
             if haystack is not None:
                 haystack = np.array(Image.fromarray(np.array(haystack)).convert('RGB'))
             else:
-                haystack = get_region(None)
+                haystack = IrisCore.get_region(None)
 
         if needle is None:
             h, w = haystack.shape
@@ -120,7 +120,7 @@ def save_debug_image(needle, haystack, locations, not_found=False):
         elif isinstance(locations, Location):
             _draw_rectangle(haystack, (locations.x, locations.y), (locations.x + w, locations.y + h))
 
-        if not os.path.exists(get_image_debug_path()):
-            os.mkdir(get_image_debug_path())
-        file_name = os.path.join(get_image_debug_path(), '%s.jpg' % temp_f)
+        if not os.path.exists(IrisCore.get_image_debug_path()):
+            os.mkdir(IrisCore.get_image_debug_path())
+        file_name = os.path.join(IrisCore.get_image_debug_path(), '%s.jpg' % temp_f)
         cv2.imwrite(file_name, haystack, [int(cv2.IMWRITE_JPEG_QUALITY), 50])

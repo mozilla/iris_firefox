@@ -11,7 +11,7 @@ import numpy as np
 
 from errors import FindError
 from location import Location
-from util.core_helper import get_module_dir, get_images_path
+from util.core_helper import IrisCore
 from util.parse_args import parse_args
 from settings import Settings
 
@@ -52,10 +52,10 @@ def load_all_patterns():
     if parse_args().resize:
         convert_hi_res_images()
     result_list = []
-    for root, dirs, files in os.walk(get_module_dir()):
+    for root, dirs, files in os.walk(IrisCore.get_module_dir()):
         for file_name in files:
             if file_name.endswith('.png'):
-                if get_images_path() in root or 'common' in root or 'local_web' in root:
+                if IrisCore.get_images_path() in root or 'common' in root or 'local_web' in root:
                     pattern_name, pattern_scale = _parse_name(file_name)
                     pattern_path = os.path.join(root, file_name)
                     pattern = {'name': pattern_name, 'path': pattern_path, 'scale': pattern_scale}
@@ -64,7 +64,7 @@ def load_all_patterns():
 
 
 def convert_hi_res_images():
-    for root, dirs, files in os.walk(get_module_dir()):
+    for root, dirs, files in os.walk(IrisCore.get_module_dir()):
         for file_name in files:
             if file_name.endswith('.png'):
                 if 'images' in root or 'local_web' in root:
@@ -249,8 +249,8 @@ def get_image_path(caller, image):
             logger.warning('Failed to find image %s in default locations for module %s.' % (image, module))
             logger.warning('Using this one instead: %s' % res['path'])
             logger.warning('Please move image to correct location relative to caller.')
-            location_1 = os.path.join(parent_directory, 'images','common')
-            location_2 = os.path.join(parent_directory, get_images_path())
+            location_1 = os.path.join(parent_directory, 'images', 'common')
+            location_2 = os.path.join(parent_directory, IrisCore.get_images_path())
             logger.warning('Suggested locations: %s, %s' % (location_1, location_2))
             return res['path']
         else:
