@@ -14,8 +14,7 @@ class Test(BaseTest):
                     'correctly.'
         self.test_case_id = '117529'
         self.test_suite_id = '1902'
-        self.locales = ['en-US', 'zh-CN', 'es-ES', 'fr', 'de', 'ar', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro',
-                        'ja-JP-mac' if get_os() == Platform.MAC else 'ja']
+        self.locales = ['en-US', 'zh-CN', 'es-ES', 'fr', 'de', 'ar', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
 
     def run(self):
         apache_logo_pattern = Pattern('apache_logo.png')
