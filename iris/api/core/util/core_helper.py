@@ -114,7 +114,7 @@ class IrisCore(object):
 
     @staticmethod
     def set_current_module(module):
-        """Internal-only, used to set the active module name."""
+        """Sets the active module name."""
         global _current_module
         _current_module = module
 
@@ -130,12 +130,12 @@ class IrisCore(object):
 
     @staticmethod
     def get_current_run_dir():
-        """Internal-only, returns the directory inside the working directory of the active run."""
+        """Returns the directory inside the working directory of the active run."""
         return os.path.join(parse_args().workdir, 'runs', IrisCore.get_run_id())
 
     @staticmethod
     def make_test_output_dir():
-        """Internal-only, creates directories inside the current run directory for test output."""
+        """Creates directories inside the current run directory for test output."""
         parent, test = IrisCore.parse_module_path()
         parent_directory = os.path.join(IrisCore.get_current_run_dir(), parent)
         if not os.path.exists(parent_directory):
@@ -146,14 +146,14 @@ class IrisCore(object):
 
     @staticmethod
     def get_image_debug_path():
-        """Internal-only, returns the root directory where a test's debug images are located."""
+        """Returns the root directory where a test's debug images are located."""
         parent, test = IrisCore.parse_module_path()
         path = os.path.join(parse_args().workdir, 'runs', IrisCore.get_run_id(), parent, test, 'debug_images')
         return path
 
     @staticmethod
     def __create_tempdir():
-        """Internal-only, helper function for creating the temporary directory.
+        """Creates the temporary directory.
         Writes to the global variable tmp_dir
         :return:
              Path of temporary directory.
@@ -165,13 +165,12 @@ class IrisCore(object):
 
     @staticmethod
     def create_profile_cache():
-        """Internal-only, creates a temporary directory to hold the run's profile cache."""
+        """Creates a temporary directory to hold the run's profile cache."""
         global tmp_dir
         tmp_dir = IrisCore.__create_tempdir()
 
     @staticmethod
     def get_tempdir():
-        """Internal-only, """
         global tmp_dir
         return tmp_dir
 
