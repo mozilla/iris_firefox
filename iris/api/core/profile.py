@@ -2,10 +2,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import subprocess
 
 from distutils import dir_util
 from distutils.spawn import find_executable
+import os
 import shutil
 
 from util.core_helper import *
@@ -13,8 +13,8 @@ from util.core_helper import *
 
 class _IrisProfile(object):
     # Disk locations for both profile cache and staged profiles.
-    RUN_DIRECTORY = get_current_run_dir()
-    STAGED_PROFILES = os.path.join(get_module_dir(), 'iris', 'profiles')
+    RUN_DIRECTORY = IrisCore.get_current_run_dir()
+    STAGED_PROFILES = os.path.join(IrisCore.get_module_dir(), 'iris', 'profiles')
 
     """These are profile options available to tests. With the exception of BRAND_NEW, 
     they are pre-configured, zipped profiles that are part of the source tree, unzipped 
@@ -75,17 +75,14 @@ class _IrisProfile(object):
                 logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
     def make_profile(self, template):
-        test_directory = make_test_output_dir()
+        test_directory = IrisCore.make_test_output_dir()
 
         if parse_args().save:
             profile_path = os.path.join(test_directory, 'profile')
             os.mkdir(profile_path)
         else:
-            #profile_temp = os.path.join(parse_args().workdir, 'cache', 'profiles')
-            profile_temp = get_tempdir()
-            #if not os.path.exists(profile_temp):
-            #    os.makedirs(profile_temp)
-            parent, test = parse_module_path()
+            profile_temp = IrisCore.get_tempdir()
+            parent, test = IrisCore.parse_module_path()
             profile_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
             os.mkdir(profile_path)
 
