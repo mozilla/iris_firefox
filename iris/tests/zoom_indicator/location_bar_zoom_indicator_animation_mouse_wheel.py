@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case checks the zoom indicator animation from the url bar using the mousewheel.'
         self.test_case_id = '7446'
         self.test_suite_id = '242'
+        self.locales = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

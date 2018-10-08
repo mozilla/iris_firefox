@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case verifies the zoom level on multiple tabs using multiple sites and mouse wheel.'
         self.test_case_id = '7453'
         self.test_suite_id = '242'
+        self.locales = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
 
     def run(self):
         url_1 = LocalWeb.FIREFOX_TEST_SITE
