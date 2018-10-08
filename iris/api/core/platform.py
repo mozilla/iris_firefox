@@ -17,6 +17,6 @@ class Platform(object):
     PROCESSOR = mozinfo.processor
 
     ALL = [LINUX, MAC, WINDOWS]
-    HIGH_DEF = not (pyautogui.screenshot().size == pyautogui.size())
+    HIGH_DEF = not (pyautogui.screenshot('.temp.png').size == pyautogui.size())
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
     LOW_RES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
