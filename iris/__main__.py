@@ -609,11 +609,6 @@ class RemoveTempDir(cleanup.CleanUp):
             logger.debug('Removing temp dir "%s"' % tmp_dir)
             shutil.rmtree(tmp_dir, ignore_errors=True)
 
-        tmp_png = os.path.join(IrisCore.get_module_dir(), '.temp.png')
-        if os.path.isfile(tmp_png):
-            logger.debug('Removing .temp.png in module directory.')
-            os.remove(tmp_png)
-
 
 class ResetTerminalEncoding(cleanup.CleanUp):
     """Class for restoring original terminal encoding at exit."""
