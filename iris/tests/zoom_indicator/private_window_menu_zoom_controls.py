@@ -14,6 +14,7 @@ class Test(BaseTest):
                     ' Menu Zoom Controls.'
         self.test_case_id = '7463'
         self.test_suite_id = '242'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

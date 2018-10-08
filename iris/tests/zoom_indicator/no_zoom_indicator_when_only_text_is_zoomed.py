@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'only\' option is selected.'
         self.test_case_id = '124881'
         self.test_suite_id = '242'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

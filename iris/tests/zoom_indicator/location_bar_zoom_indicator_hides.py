@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case checks that zoom indicator hides in the url bar.'
         self.test_case_id = '7447'
         self.test_suite_id = '242'
+        self.locales = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

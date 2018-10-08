@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test case that resets the zoom level from the menu bar.'
         self.test_case_id = '7460'
         self.test_suite_id = '242'
+        self.locales = ['en-US']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
