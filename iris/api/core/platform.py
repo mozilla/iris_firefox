@@ -3,8 +3,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import mozinfo
+import os
 import pyautogui
-
 
 class Platform(object):
     """Class that holds all supported operating systems (HIGH_DEF = High definition displays)."""
@@ -17,6 +17,7 @@ class Platform(object):
     PROCESSOR = mozinfo.processor
 
     ALL = [LINUX, MAC, WINDOWS]
-    HIGH_DEF = not (pyautogui.screenshot('.temp.png').size == pyautogui.size())
+    tmp_file_path = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../..'), '.temp.png')
+    HIGH_DEF = not (pyautogui.screenshot(tmp_file_path).size == pyautogui.size())
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
     LOW_RES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
