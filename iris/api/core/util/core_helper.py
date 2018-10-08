@@ -18,7 +18,8 @@ from parse_args import parse_args
 from version_parser import check_version
 
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
-SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot('.temp.png').size
+tmp_file_path = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../../..'), '.temp.png')
+SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot(tmp_file_path).size
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
