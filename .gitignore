@@ -50,7 +50,6 @@ local/
 *.sh.swp
 config.ini
 *.ini
-.temp.png
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
