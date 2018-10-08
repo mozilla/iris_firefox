@@ -18,7 +18,8 @@ from parse_args import parse_args
 from version_parser import check_version
 
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
-SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
+tmp_file_path = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../../..'), '.temp.png')
+SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot(tmp_file_path).size
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
@@ -206,20 +207,20 @@ class IrisCore(object):
         :return: Image
         """
         is_uhd, uhd_factor = IrisCore.get_uhd_details()
+        tmp_img_path = os.path.join(IrisCore.get_module_dir(), '.temp.png')
 
         if region is not None:
             r_x = uhd_factor * region.x if is_uhd else region.x
             r_y = uhd_factor * region.y if is_uhd else region.y
             r_w = uhd_factor * region.width if is_uhd else region.width
             r_h = uhd_factor * region.height if is_uhd else region.height
-
-            grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
+            grabbed_area = pyautogui.screenshot(tmp_img_path, region=(r_x, r_y, r_w, r_h))
 
             if is_uhd and not for_ocr:
                 grabbed_area = grabbed_area.resize([region.width, region.height])
             return grabbed_area
 
-        grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+        grabbed_area = pyautogui.screenshot(tmp_img_path, region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
 
         if is_uhd and not for_ocr:
             return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
