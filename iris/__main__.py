@@ -369,7 +369,7 @@ class Iris(object):
             for item in failures:
                 for package in self.master_test_list:
                     for test in self.master_test_list[package]:
-                        if test["name"] in item:
+                        if test["name"] == item:
                             last_fail.write(test["module"] + '\n')
             last_fail.close()
 
