@@ -14,6 +14,7 @@ class Test(BaseTest):
                     'zoom level.'
         self.test_case_id = '7444'
         self.test_suite_id = '242'
+        self.locales = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
