@@ -363,6 +363,8 @@ class Iris(object):
         path = os.path.join(master_run_directory, 'last_fail.txt')
 
         if len(failures):
+            if os.path.exists(path):
+                os.remove(path)
             last_fail = open(path, 'w')
             for item in failures:
                 for package in self.master_test_list:
