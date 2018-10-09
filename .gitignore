@@ -44,11 +44,10 @@ pip-selfcheck.json
 .local
 local/
 
-# Our project
+# Iris
 .DS_Store
 .gitignore
 *.sh.swp
-config.ini
 *.ini
 
 # PyInstaller
