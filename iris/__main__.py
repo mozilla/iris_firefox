@@ -183,11 +183,17 @@ class Iris(object):
         if not os.path.exists(os.path.join(self.args.workdir, 'data')):
             os.makedirs(os.path.join(self.args.workdir, 'data'))
 
-    def create_run_directory(self):
-        master_run_directory = os.path.join(self.args.workdir, 'runs')
+        # Remove all previous runs and downloaded builds
         if self.args.clear:
+            master_run_directory = os.path.join(self.args.workdir, 'runs')
             if os.path.exists(master_run_directory):
                 shutil.rmtree(master_run_directory, ignore_errors=True)
+            cache_builds_directory = os.path.join(self.args.workdir, 'cache')
+            if os.path.exists(cache_builds_directory):
+                shutil.rmtree(cache_builds_directory, ignore_errors=True)
+
+    def create_run_directory(self):
+        master_run_directory = os.path.join(self.args.workdir, 'runs')
         if not os.path.exists(master_run_directory):
             os.mkdir(master_run_directory)
         run_directory = os.path.join(master_run_directory, IrisCore.get_run_id())
