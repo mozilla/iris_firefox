@@ -16,6 +16,7 @@ import numpy
 import pyautogui
 from PIL import Image
 
+from iris.api.core.errors import APIHelperError
 from iris.api.core.platform import Platform
 from parse_args import parse_args
 from version_parser import check_version
@@ -59,8 +60,7 @@ def get_os():
     elif current_system == 'mac':
         current_os = 'osx'
     else:
-        logger.error('Iris does not yet support your current environment: ' + current_system)
-
+        raise APIHelperError('Iris does not yet support your current environment: ' + current_system)
     return current_os
 
 
