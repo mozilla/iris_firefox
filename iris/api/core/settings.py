@@ -55,56 +55,32 @@ class _IrisSettings(object):
         self._ui_delay = DEFAULT_UI_DELAY
         self._ui_delay_long = DEFAULT_UI_DELAY_LONG
         self._system_delay = DEFAULT_SYSTEM_DELAY
-        self._channels = ['beta', 'release', 'nightly', 'esr']
+        self._channels = [BETA, RELEASE, NIGHTLY, ESR]
         self._locales = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
 
     @property
     def FX_DELAY(self):
         return self._fx_delay
 
-    @FX_DELAY.setter
-    def FX_DELAY(self, value):
-        self._fx_delay = value
-
     @property
     def UI_DELAY(self):
         return self._ui_delay
-
-    @UI_DELAY.setter
-    def UI_DELAY(self, value):
-        self._ui_delay = value
 
     @property
     def UI_DELAY_LONG(self):
         return self._ui_delay_long
 
-    @UI_DELAY_LONG.setter
-    def UI_DELAY_LONG(self, value):
-        self._ui_delay_long = value
-
     @property
     def SYSTEM_DELAY(self):
         return self._system_delay
-
-    @SYSTEM_DELAY.setter
-    def SYSTEM_DELAY(self, value):
-        self._system_delay = value
 
     @property
     def CHANNELS(self):
         return self._channels
 
-    @CHANNELS.setter
-    def CHANNELS(self, value):
-        self._channels = value
-
     @property
     def LOCALES(self):
         return self._locales
-
-    @LOCALES.setter
-    def LOCALES(self, value):
-        self._locales = value
 
     @property
     def wait_scan_rate(self):
