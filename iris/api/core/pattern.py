@@ -221,10 +221,6 @@ def get_image_path(caller, image):
 
     platform_directory = os.path.join(module_directory, 'images', os_version)
     platform_locale_directory = os.path.join(platform_directory, current_locale)
-    if os_version == 'win7':
-        platform_directory = os.path.join(module_directory, 'images', os_version)
-    else:
-        platform_directory = os.path.join(module_directory, 'images', get_os())
     for name in names:
         paths.append(os.path.join(platform_locale_directory, name))
 
