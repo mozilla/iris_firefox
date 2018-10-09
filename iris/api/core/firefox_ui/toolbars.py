@@ -18,7 +18,3 @@ class LocationBar(object):
     BOOKMARK_BUTTON = Pattern('bookmark_button.png')
     BOOKMARK_SELECTED_BUTTON = Pattern('bookmark_selected_button.png')
     RELOAD_BUTTON = Pattern('reload_button.png')
-
-
-class HamburgerMenu(object):
-    ADDONS = Pattern('show_history_button.png')

@@ -49,7 +49,7 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.MAC:
             open_library()
         else:
-            restore_window_from_taskbar('library_menu')
+            restore_window_from_taskbar(option='library_menu')
 
         expected_5 = exists(library_title_pattern, 10)
         assert_true(self, expected_5, 'The library was restored successfully')

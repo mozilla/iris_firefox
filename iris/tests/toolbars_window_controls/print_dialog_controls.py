@@ -34,7 +34,7 @@ class Test(BaseTest):
         # Close the dialog.
         if Settings.get_os() == Platform.MAC:
             click_cancel_button()
-        elif Platform.OS_VERSION == '6.1':
+        elif Settings.get_os_version() == 'win7':
             type(Key.ESC)
         else:
             click_auxiliary_window_control('close')
