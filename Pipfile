@@ -26,6 +26,7 @@ mozdownload = "*"
 mozversion = "*"
 mozinfo = "*"
 "pep8" = "*"
+mss="*"
 
 [dev-packages]
 
