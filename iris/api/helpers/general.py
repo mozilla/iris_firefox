@@ -491,7 +491,7 @@ def create_region_for_hamburger_menu():
         raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
 
 
-def restore_window_from_taskbar():
+def restore_window_from_taskbar(option=None):
     if Settings.get_os() == Platform.MAC:
         try:
             main_menu_window_pattern = Pattern('main_menu_window.png')
@@ -502,11 +502,20 @@ def restore_window_from_taskbar():
             type(Key.ENTER)
         except FindError:
             raise APIHelperError('Restore window from taskbar unsuccessful.')
+    elif get_os_version() == 'win7':
+        try:
+            click(Pattern('firefox_start_bar.png'))
+            if option == "library_menu":
+                click(Pattern('firefox_start_bar_library.png'))
+        except FindError:
+            raise APIHelperError('Restore window from taskbar unsuccessful.')
+
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
         if Settings.get_os() == Platform.LINUX:
             hover(Location(0, 50))
     time.sleep(Settings.UI_DELAY)
+
 
 
 def open_library_menu(option):

@@ -14,7 +14,6 @@ import git
 import mss
 import numpy
 import pyautogui
-import pyscreeze
 from PIL import Image
 
 from iris.api.core.platform import Platform
@@ -33,10 +32,8 @@ _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
 
 def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
-
     To pass exception information, use the keyword argument exc_info with
     a true value, e.g.
-
     logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
     """
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
@@ -50,8 +47,6 @@ INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 
 MIN_CPU_FOR_MULTIPROCESSING = 4
-
-
 
 
 def get_os():
@@ -72,7 +67,7 @@ def get_os():
 def get_os_version():
     """Get the version string of the operating system your script is running on."""
     os_version = Platform.OS_VERSION
-    if Platform.OS_NAME == 'win'and os_version == '6.1':
+    if Platform.OS_NAME == 'win' and os_version == '6.1':
         current_os_version = 'win7'
     else:
         current_os_version = get_os()
@@ -92,89 +87,6 @@ def scroll(clicks):
     pyautogui.scroll(clicks)
 
 
-def get_uhd_details():
-    uhd_factor = SCREENSHOT_WIDTH / SCREEN_WIDTH
-    is_uhd = True if uhd_factor > 1 else False
-    return is_uhd, uhd_factor
-
-
-def is_ocr_text(input_text):
-    is_ocr_string = True
-    pattern_extensions = ('.png', '.jpg')
-    if input_text.endswith(pattern_extensions):
-        is_ocr_string = False
-    return is_ocr_string
-
-
-def get_region(region=None, for_ocr=False):
-    """Grabs image from region or full screen.
-
-    :param Region || None region: Region param
-    :param for_ocr: boolean param for ocr processing
-    :return: Image
-    """
-    is_uhd, uhd_factor = get_uhd_details()
-
-    if region is not None:
-        r_x = uhd_factor * region.x if is_uhd else region.x
-        r_y = uhd_factor * region.y if is_uhd else region.y
-        r_w = uhd_factor * region.width if is_uhd else region.width
-        r_h = uhd_factor * region.height if is_uhd else region.height
-
-        if get_os_version == 'win7':
-            with mss.mss() as sct:
-                screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
-                image = numpy.array(sct.grab(screen_region))
-                grabbed_area = Image.fromarray(image, mode='RGBA')
-        else:
-            grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
-
-        if is_uhd and not for_ocr:
-            grabbed_area = grabbed_area.resize([region.width, region.height])
-        return grabbed_area
-
-    if get_os_version == 'win7':
-        with mss.mss() as sct:
-            screen_region = {'top': 0, 'left': 0, 'width': SCREENSHOT_WIDTH, 'height': SCREENSHOT_HEIGHT}
-            image = numpy.array(sct.grab(screen_region))
-            grabbed_area = Image.fromarray(image, mode='RGBA')
-
-    else:
-        grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
-
-    if is_uhd and not for_ocr:
-        return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
-    else:
-        return grabbed_area
-
-
-def get_test_name():
-    white_list = ['general.py']
-    all_stack = inspect.stack()
-    for stack in all_stack:
-        filename = os.path.basename(stack[1])
-        method_name = stack[3]
-        if filename is not '' and 'tests' in os.path.dirname(stack[1]):
-            return filename
-        elif filename in white_list:
-            return method_name
-    return
-
-
-def verify_test_compat(test, app):
-    not_excluded = True
-    exclude = [test.exclude] if isinstance(test.exclude, str) else [i for i in test.exclude]
-    for item in exclude:
-        if item in app.fx_channel or item in app.os or item in app.args.locale:
-            not_excluded = False
-    correct_version = True if test.fx_version == '' else check_version(app.version, test.fx_version)
-    correct_channel = app.fx_channel in test.channel
-    correct_locale = app.args.locale in test.locale
-    correct_platform = app.os in test.platform
-    result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded
-    return result
-
-
 def filter_list(original_list, exclude_list):
     new_list = []
     for item in original_list:
@@ -184,7 +96,6 @@ def filter_list(original_list, exclude_list):
 
 
 class IrisCore(object):
-
     tmp_dir = None
 
     @staticmethod
@@ -305,13 +216,25 @@ class IrisCore(object):
             r_w = uhd_factor * region.width if is_uhd else region.width
             r_h = uhd_factor * region.height if is_uhd else region.height
 
-            grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
+            if get_os_version() == 'win7':
+                with mss.mss() as sct:
+                    screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
+                    image = numpy.array(sct.grab(screen_region))
+                    grabbed_area = Image.fromarray(image, mode='RGBA')
+            else:
+                grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
 
             if is_uhd and not for_ocr:
                 grabbed_area = grabbed_area.resize([region.width, region.height])
             return grabbed_area
-
-        grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+        else:
+            if get_os_version() == 'win7':
+                with mss.mss() as sct:
+                    screen_region = {'top': 0, 'left': 0, 'width': SCREENSHOT_WIDTH, 'height': SCREENSHOT_HEIGHT}
+                    image = numpy.array(sct.grab(screen_region))
+                    grabbed_area = Image.fromarray(image, mode='RGBA')
+            else:
+                grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
 
         if is_uhd and not for_ocr:
             return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])

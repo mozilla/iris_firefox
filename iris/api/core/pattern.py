@@ -212,11 +212,14 @@ def get_image_path(caller, image):
     # If the above fails, we will look up the file name in the list of project-wide images,
     # and return whatever we find, with a warning message.
     # If we find nothing, we will raise an exception.
-    os_version=get_os_version()
+    if Settings.get_os_version() == 'win7':
+        os_version = 'win7'
+    else:
+        os_version = Settings.get_os()
     paths = []
     current_locale = parse_args().locale
 
-    platform_directory = os.path.join(module_directory, 'images', Settings.get_os())
+    platform_directory = os.path.join(module_directory, 'images', os_version)
     platform_locale_directory = os.path.join(platform_directory, current_locale)
     if os_version == 'win7':
         platform_directory = os.path.join(module_directory, 'images', os_version)
