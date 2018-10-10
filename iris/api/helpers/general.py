@@ -381,11 +381,13 @@ def open_about_firefox():
         type(Key.ENTER)
 
     else:
-        key_down(Key.ALT)
-        type('h')
-        time.sleep(1)
-        key_up(Key.ALT)
-        type('a')
+        type(Key.F10)
+        if parse_args().locale != 'ar':
+            type(Key.LEFT)
+        else:
+            type(Key.RIGHT)
+        type(Key.UP)
+        type(Key.ENTER)
 
 
 class Option(object):
