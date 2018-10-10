@@ -66,6 +66,7 @@ sudo apt-get -y install python-tk
 # Install Pipenv
 echo -e "\n${GREEN}##### installing pipenv #####${NC}\n"
 pip install pipenv
+pip install --upgrade pipenv
 
 echo -e "\n${GREEN}##### installing Leptonica #####${NC}\n"
 cd ~

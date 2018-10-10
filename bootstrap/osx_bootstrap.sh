@@ -23,6 +23,7 @@ echo -e "\n${GREEN}##### Installing xquartz #####${NC} \n"
 brew cask install xquartz
 echo -e "\n${GREEN}##### Installing pipenv #####${NC} \n"
 brew install pipenv
+brew upgrade pipenv
 
 # Exporting settings to .bash_profile or .zshrc
 grep -q -F 'export LC_ALL=en_US.UTF-8' ~/.bash_profile || echo 'export LC_ALL=en_US.UTF-8' >> ~/.bash_profile
