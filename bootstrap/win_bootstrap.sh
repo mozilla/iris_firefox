@@ -20,11 +20,11 @@ echo -e "\n${GREEN}##### Installing 'which' & 'sudo' admin package #####${NC}\n"
 powershell -Command "scoop install sudo"
 powershell -Command "scoop install which"
 
-echo -e "\n${GREEN}##### Installing Tesseract #####${NC}\n"
-powershell -Command "scoop install tesseract"
-
 echo -e "\n${GREEN}##### Installing 7zip #####${NC}\n"
 powershell -Command "scoop install 7zip"
+
+echo -e "\n${GREEN}##### Installing Tesseract #####${NC}\n"
+powershell -Command "scoop install tesseract"
 
 echo -e "\n${GREEN}##### Installing Python 2.7 #####${NC}\n"
 powershell -Command "scoop bucket add versions; scoop install python27" | grep 'bucket already exists.' &> /dev/null
@@ -36,3 +36,4 @@ fi
 
 echo -e "\n${GREEN}##### Installing Pipenv #####${NC}\n"
 powershell -Command "pip install pipenv"
+powershell -Command "python -m pip install --upgrade pipenv"
