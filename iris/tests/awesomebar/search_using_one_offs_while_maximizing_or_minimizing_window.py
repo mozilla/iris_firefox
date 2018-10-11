@@ -49,6 +49,7 @@ class Test(BaseTest):
 
         select_location_bar()
         paste('moz')
+        type(Key.SPACE)
 
         expected = region.exists(moz_pattern, 10)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
@@ -80,6 +81,7 @@ class Test(BaseTest):
 
         select_location_bar()
         paste('moz')
+        type(Key.SPACE)
 
         expected = region.exists(moz_pattern, 10)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
