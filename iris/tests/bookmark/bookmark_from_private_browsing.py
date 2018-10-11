@@ -28,6 +28,8 @@ class Test(BaseTest):
         privacy_page_assert = exists(privacy_page_pattern, 10)
         assert_true(self, privacy_page_assert, 'Privacy page has been accessed.')
 
+        paste('remember')
+
         try:
             wait(history_dropdown_pattern, 10)
             logger.debug('History dropdown list can be accessed.')

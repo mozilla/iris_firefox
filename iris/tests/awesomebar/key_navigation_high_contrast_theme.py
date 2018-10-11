@@ -65,6 +65,7 @@ class Test(BaseTest):
 
         select_location_bar()
         paste('moz')
+        type(Key.SPACE)
 
         expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
         assert_true(self, expected, 'The searched string is highlighted.')
