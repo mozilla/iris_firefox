@@ -47,6 +47,7 @@ class Test(BaseTest):
 
         select_location_bar()
         paste('moz')
+        type(Key.SPACE)
 
         pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, ebay_one_off_button_pattern,
@@ -87,6 +88,7 @@ class Test(BaseTest):
         select_location_bar()
         type(Key.DELETE)
         paste('moz')
+        type(Key.SPACE)
 
         expected = exists(moz_search_amazon_search_engine_pattern, 10)
         assert_true(self, expected, 'Default search engine successfully changed.')
@@ -112,6 +114,7 @@ class Test(BaseTest):
         select_location_bar()
         type(Key.DELETE)
         paste('moz')
+        type(Key.SPACE)
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             try:
@@ -164,6 +167,7 @@ class Test(BaseTest):
         select_location_bar()
         type(Key.DELETE)
         paste('moz')
+        type(Key.SPACE)
 
         expected = exists(moz_search_amazon_search_engine_pattern, 10)
         assert_true(self, expected, 'Default search engine is still changed.')
