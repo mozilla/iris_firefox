@@ -101,6 +101,10 @@ class BaseTest(object):
         resource = '/tests%s/%s/%s' % (test_directory, module_name, asset_file_name)
         return self.app.base_local_web_url + resource
 
+    def get_blank_page_url(self):
+        """Returns a fully-resolved URL to a blank web page."""
+        return LocalWeb.BLANK_PAGE
+
     def set_profile_pref(self, pref):
         self.prefs.append(pref)
 
