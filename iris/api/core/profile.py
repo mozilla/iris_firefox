@@ -12,9 +12,6 @@ from util.core_helper import *
 
 
 class _IrisProfile(object):
-    # Disk locations for both profile cache and staged profiles.
-    RUN_DIRECTORY = IrisCore.get_current_run_dir()
-    STAGED_PROFILES = os.path.join(IrisCore.get_module_dir(), 'iris', 'profiles')
 
     """These are profile options available to tests. With the exception of BRAND_NEW, 
     they are pre-configured, zipped profiles that are part of the source tree, unzipped 
@@ -33,13 +30,22 @@ class _IrisProfile(object):
     _profiles = []
 
     @staticmethod
-    def get_staged_profile(profile_name, path):
+    def _get_staged_profile(profile_name, path):
+        """
+        Internal-only method used to extract a given profile.
+        :param profile_name:
+        :param path:
+        :return:
+        """
+        # Disk location for staged profiles.
+        _staged_profiles = os.path.join(IrisCore.get_module_dir(), 'iris', 'profiles')
+
         sz_bin = find_executable('7z')
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
-        zipped_profile = os.path.join(Profile.STAGED_PROFILES, '%s.zip' % profile_name)
+        zipped_profile = os.path.join(_staged_profiles, '%s.zip' % profile_name)
 
-        cmd = [sz_bin, 'x', '-y', '-bd', '-o%s' % Profile.STAGED_PROFILES, zipped_profile]
+        cmd = [sz_bin, 'x', '-y', '-bd', '-o%s' % _staged_profiles, zipped_profile]
         logger.debug('Unzipping profile with command "%s"' % ' '.join(cmd))
         try:
             output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
@@ -49,7 +55,7 @@ class _IrisProfile(object):
         logger.debug('7zip succeeded: %s' % repr(output))
 
         # Find the desired profile
-        from_directory = os.path.join(Profile.STAGED_PROFILES, profile_name)
+        from_directory = os.path.join(_staged_profiles, profile_name)
 
         # Create a folder to hold that profile's contents.
         to_directory = path
@@ -66,7 +72,7 @@ class _IrisProfile(object):
             logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
         # Remove Mac resource fork folders left over from ZIP, if present.
-        resource_fork_folder = os.path.join(Profile.STAGED_PROFILES, '__MACOSX')
+        resource_fork_folder = os.path.join(_staged_profiles, '__MACOSX')
         if os.path.exists(resource_fork_folder):
             try:
                 shutil.rmtree(resource_fork_folder)
@@ -75,6 +81,11 @@ class _IrisProfile(object):
                 logger.debug('Error, can\'t remove orphaned directory, leaving in place')
 
     def make_profile(self, template):
+        """
+        Internal-only method used to create profiles on disk.
+        :param template:
+        :return:
+        """
         test_directory = IrisCore.make_test_output_dir()
 
         if parse_args().save:
@@ -92,20 +103,25 @@ class _IrisProfile(object):
         elif template is _IrisProfile.LIKE_NEW:
             """Open a staged profile that is nearly new, but with some first-run preferences altered."""
             logger.debug('Creating new profile from LIKE_NEW staged profile')
-            self.get_staged_profile(template, profile_path)
+            self._get_staged_profile(template, profile_path)
         elif template is _IrisProfile.TEN_BOOKMARKS:
             """Open a staged profile that already has ten bookmarks."""
             logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
-            self.get_staged_profile(template, profile_path)
+            self._get_staged_profile(template, profile_path)
         else:
             raise ValueError('No profile found: %s' % template)
 
         if not parse_args().save:
-            self.manage_profile_cache(profile_path)
+            self._manage_profile_cache(profile_path)
         return profile_path
 
     @staticmethod
-    def manage_profile_cache(path):
+    def _manage_profile_cache(path):
+        """
+        Internal-only method used to delete old profiles that are not in use.
+        :param path:
+        :return:
+        """
         Profile._profiles.append(path)
         if len(Profile._profiles) > 1:
             shutil.rmtree(Profile._profiles.pop(0), ignore_errors=True)

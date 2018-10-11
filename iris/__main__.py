@@ -94,7 +94,7 @@ class Iris(object):
             profile_path = os.path.join(self.args.workdir, 'cc_profile')
             if os.path.exists(profile_path):
                 shutil.rmtree(profile_path)
-            Profile.get_staged_profile(Profile.LIKE_NEW, profile_path)
+            Profile._get_staged_profile(Profile.LIKE_NEW, profile_path)
 
             # Open local installation of Firefox.
             if Settings.get_os() == Platform.MAC:
