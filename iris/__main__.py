@@ -195,7 +195,6 @@ class Iris(object):
             if os.path.exists(cache_builds_directory):
                 shutil.rmtree(cache_builds_directory, ignore_errors=True)
 
-
     def create_run_directory(self):
         master_run_directory = os.path.join(self.args.workdir, 'runs')
         if not os.path.exists(master_run_directory):
