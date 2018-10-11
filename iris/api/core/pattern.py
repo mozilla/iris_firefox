@@ -45,15 +45,14 @@ def _parse_name(full_name):
             scale_factor = float(full_name[start_index + 1:end_index])
             image_name = full_name[0:start_index] + full_name[end_index + 1:len(full_name)]
             return image_name, scale_factor
-
         except ValueError:
             logger.warning('Invalid file name format: "%s".' % full_name)
             return full_name, 1
 
 
-def load_all_patterns():
+def _load_all_patterns():
     if parse_args().resize:
-        convert_hi_res_images()
+        _convert_hi_res_images()
     result_list = []
     for root, dirs, files in os.walk(IrisCore.get_module_dir()):
         for file_name in files:
@@ -66,7 +65,7 @@ def load_all_patterns():
     return result_list
 
 
-def convert_hi_res_images():
+def _convert_hi_res_images():
     for root, dirs, files in os.walk(IrisCore.get_module_dir()):
         for file_name in files:
             if file_name.endswith('.png'):
@@ -86,13 +85,13 @@ def convert_hi_res_images():
                         os.remove(os.path.join(root, file_name))
 
 
-_images = load_all_patterns()
+_images = _load_all_patterns()
 
 
 class Pattern(object):
     def __init__(self, image_name, from_path=None):
         if from_path is None:
-            path = get_image_path(inspect.stack()[1][1], image_name)
+            path = _get_image_path(inspect.stack()[1][1], image_name)
         else:
             path = from_path
         name, scale = _parse_name(os.path.split(path)[1])
@@ -163,15 +162,6 @@ class Pattern(object):
         return self
 
 
-def get_pattern_details(pattern_name):
-    result_list = filter(lambda x: x['name'] == pattern_name, _images)
-    if len(result_list) == 0:
-        return pattern_name, None, None
-    elif len(result_list) > 0:
-        res = result_list[0]
-        return res['name'], res['path'], res['scale']
-
-
 def _apply_scale(scale, rgb_array):
     """Resize the image for HD images
 
@@ -187,7 +177,7 @@ def _apply_scale(scale, rgb_array):
         return rgb_array
 
 
-def get_image_path(caller, image):
+def _get_image_path(caller, image):
     """Enforce proper location for all Pattern creation.
 
     :param caller: Path of calling Python module
