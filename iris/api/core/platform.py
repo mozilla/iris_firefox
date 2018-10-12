@@ -4,6 +4,7 @@
 
 
 import mozinfo
+import mss
 import pyautogui
 
 
@@ -18,8 +19,9 @@ class Platform(object):
     OS_BITS = mozinfo.bits
     PROCESSOR = mozinfo.processor
 
-
     ALL = [LINUX, MAC, WINDOWS]
-    HIGH_DEF = not (pyautogui.screenshot().size == pyautogui.size())
+    _screenshot = mss.mss().grab(mss.mss().monitors[0])
+    SCREENSHOT_SIZE = (_screenshot.width, _screenshot.height)
+    HIGH_DEF = SCREENSHOT_SIZE != pyautogui.size()
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
     LOW_RES = (SCREEN_WIDTH < 1280 or SCREEN_HEIGHT < 800)
