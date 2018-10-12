@@ -23,7 +23,6 @@ from version_parser import check_version
 
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
 SCREENSHOT_SIZE = Platform.SCREENSHOT_SIZE
-#SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
 SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = SCREENSHOT_SIZE
 
 SUCCESS_LEVEL_NUM = 35
@@ -231,7 +230,7 @@ class IrisCore(object):
                     image = numpy.array(sct.grab(screen_region))
                     grabbed_area = Image.fromarray(image, mode='RGBA')
             else:
-                grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
+                grabbed_area = IrisCore.get_screenshot(region=(r_x, r_y, r_w, r_h))
 
             if is_uhd and not for_ocr:
                 grabbed_area = grabbed_area.resize([region.width, region.height])
@@ -243,8 +242,7 @@ class IrisCore(object):
                     image = numpy.array(sct.grab(screen_region))
                     grabbed_area = Image.fromarray(image, mode='RGBA')
             else:
-                grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
-
+                grabbed_area = IrisCore.get_screenshot()
         if is_uhd and not for_ocr:
             return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
         else:
@@ -292,7 +290,6 @@ class IrisCore(object):
         if get_os() == Platform.WINDOWS:
             command_str = 'taskkill /IM ' + process_name + '.exe'
             try:
-
                 subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
             except subprocess.CalledProcessError:
                 logger.error('Command  failed: "%s"' % command_str)
@@ -317,9 +314,12 @@ class IrisCore(object):
             return 'non_retina'
 
     @staticmethod
-    def get_screenshot(mon=mss.mss().monitors[0], region=None):
+    def get_screenshot(region=None):
         if region is not None:
-            # TODO: convert Iris region to mss region
-            return mss.mss().grab(mon, region)
+            t, l, w, h = region
+            screen_region = {'top': t, 'left': l, 'width': w, 'height': h}
+            image = numpy.array(mss.mss().grab(screen_region))
         else:
-            return mss.mss().grab(mon)
+            image = numpy.array(mss.mss().grab(mss.mss().monitors[0]))
+        grabbed_area = Image.fromarray(image, mode='RGBA')
+        return grabbed_area
