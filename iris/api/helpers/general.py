@@ -8,7 +8,7 @@ import mozversion
 
 from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.menus import LibraryMenu
-from iris.api.core.firefox_ui.toolbars import NavBar
+from iris.api.core.firefox_ui.toolbars import NavBar, SearchBar
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import get_screen

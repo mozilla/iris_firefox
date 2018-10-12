@@ -20,7 +20,7 @@ class Test(BaseTest):
         url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
         zoom_controls_customize_page_pattern = Pattern('zoom_controls_customize_page.png')
         default_zoom_level_toolbar_customize_page_pattern = Pattern('default_zoom_level_toolbar_customize_page.png')
-        default_zoom_level_toolbar_pattern = Pattern('default_zoom_level_toolbar.png')
+        default_zoom_level_toolbar_pattern = LocationBar.DEFAULT_ZOOM_LEVEL
         zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
         zoom_control_toolbar_increase_pattern = Pattern('zoom_control_toolbar_increase.png')
         zoom_control_90_pattern = Pattern('zoom_control_90.png')
