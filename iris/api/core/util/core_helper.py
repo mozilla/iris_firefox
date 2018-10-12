@@ -67,11 +67,10 @@ def get_os():
 def get_os_version():
     """Get the version string of the operating system your script is running on."""
     os_version = Platform.OS_VERSION
-    screen_type = IrisCore.get_osx_screen_type()
     if Platform.OS_NAME == 'win' and os_version == '6.1':
         current_os_version = 'win7'
-    elif Platform.OS_NAME == 'mac' and screen_type == 'Non-Retina':
-        current_os_version = 'osx_non-retina'
+    elif Platform.OS_NAME == 'mac':
+        current_os_version = 'osx_%s' % IrisCore.get_osx_screen_type()
     else:
         current_os_version = get_os()
     return current_os_version
@@ -320,7 +319,7 @@ class IrisCore(object):
         else:
             display_type = "/n".join(line for line in cmd.stdout if key in line.split(":")[0])
             data = display_type.split(":")
-            if data[1] == " Built-In Retina LCD\n":
-                return 'Retina'
+            if 'Retina' in data[1]:
+                return 'retina'
             else:
-                return 'Non-Retina'
+                return 'non_retina'
