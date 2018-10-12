@@ -35,7 +35,7 @@ def success(self, message, *args, **kws):
     """Log 'msg % args' with severity 'SUCCESS' (level = 35).
     To pass exception information, use the keyword argument exc_info with
     a true value, e.g.
-    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1).
+    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
     """
     if self.isEnabledFor(SUCCESS_LEVEL_NUM):
         self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
@@ -67,8 +67,11 @@ def get_os():
 def get_os_version():
     """Get the version string of the operating system your script is running on."""
     os_version = Platform.OS_VERSION
+    screen_type = IrisCore.get_osx_screen_type()
     if Platform.OS_NAME == 'win' and os_version == '6.1':
         current_os_version = 'win7'
+    elif Platform.OS_NAME == 'mac' and screen_type == 'Non-Retina':
+        current_os_version = 'osx_non-retina'
     else:
         current_os_version = get_os()
     return current_os_version
@@ -163,7 +166,8 @@ class IrisCore(object):
     def __create_tempdir():
         """Creates the temporary directory.
         Writes to the global variable tmp_dir
-        :return: Path of temporary directory.
+        :return:
+             Path of temporary directory.
         """
         global tmp_dir
         tmp_dir = tempfile.mkdtemp(prefix='iris_')
@@ -299,3 +303,24 @@ class IrisCore(object):
             except subprocess.CalledProcessError:
                 logger.error('Command  failed: "%s"' % command_str)
                 raise Exception('Unable to run Command.')
+
+    @staticmethod
+    def get_osx_screen_type():
+        """
+        Runs a system command inside of a subprocess using a native OSX process that returns Graphics/Displays
+        information.
+        :return: String
+        """
+        cmd_str = 'system_profiler SPDisplaysDataType'
+        key = 'Display Type'
+        try:
+            cmd = subprocess.Popen(cmd_str, shell=True, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError:
+            raise Exception('Unable to run Command')
+        else:
+            display_type = "/n".join(line for line in cmd.stdout if key in line.split(":")[0])
+            data = display_type.split(":")
+            if data[1] == " Built-In Retina LCD\n":
+                return 'Retina'
+            else:
+                return 'Non-Retina'
