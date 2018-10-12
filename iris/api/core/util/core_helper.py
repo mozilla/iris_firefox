@@ -230,7 +230,7 @@ class IrisCore(object):
                     image = numpy.array(sct.grab(screen_region))
                     grabbed_area = Image.fromarray(image, mode='RGBA')
             else:
-                grabbed_area = IrisCore.get_screenshot(region=(r_x, r_y, r_w, r_h))
+                grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
 
             if is_uhd and not for_ocr:
                 grabbed_area = grabbed_area.resize([region.width, region.height])
@@ -242,7 +242,8 @@ class IrisCore(object):
                     image = numpy.array(sct.grab(screen_region))
                     grabbed_area = Image.fromarray(image, mode='RGBA')
             else:
-                grabbed_area = IrisCore.get_screenshot()
+                grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+
         if is_uhd and not for_ocr:
             return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
         else:
