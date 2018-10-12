@@ -18,3 +18,13 @@ class LocationBar(object):
     BOOKMARK_BUTTON = Pattern('bookmark_button.png')
     BOOKMARK_SELECTED_BUTTON = Pattern('bookmark_selected_button.png')
     RELOAD_BUTTON = Pattern('reload_button.png')
+
+    DEFAULT_ZOOM_LEVEL = Pattern('default_zoom_level_toolbar.png')
+    URL_BAR_30_ZOOM_LEVEL = Pattern('url_bar_30_zoom_level.png')
+    URL_BAR_90_ZOOM_LEVEL = Pattern('url_bar_90_zoom_level.png').similar(0.7)
+    URL_BAR_110_ZOOM_LEVEL = Pattern('url_bar_110_zoom_level.png')
+    URL_BAR_300_ZOOM_LEVEL = Pattern('url_bar_300_zoom_level.png')
+
+
+class SearchBar(object):
+    SEARCH_BAR = Pattern('search_bar.png')

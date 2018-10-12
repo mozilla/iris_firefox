@@ -20,7 +20,7 @@ class Test(BaseTest):
         url_2 = LocalWeb.FIREFOX_TEST_SITE_2
         url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
         hamburger_menu_pattern = Pattern('hamburger_menu.png')
-        url_bar_110_zoom_level_pattern = Pattern('url_bar_110_zoom_level.png')
+        url_bar_110_zoom_level_pattern = LocationBar.URL_BAR_110_ZOOM_LEVEL
 
         navigate(url_1)
 
