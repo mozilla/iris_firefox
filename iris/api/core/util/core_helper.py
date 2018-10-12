@@ -22,7 +22,8 @@ from parse_args import parse_args
 from version_parser import check_version
 
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
-SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = pyautogui.screenshot().size
+SCREENSHOT_SIZE = Platform.SCREENSHOT_SIZE
+SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = SCREENSHOT_SIZE
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
@@ -290,7 +291,6 @@ class IrisCore(object):
         if get_os() == Platform.WINDOWS:
             command_str = 'taskkill /IM ' + process_name + '.exe'
             try:
-
                 subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
             except subprocess.CalledProcessError:
                 logger.error('Command  failed: "%s"' % command_str)
@@ -306,20 +306,21 @@ class IrisCore(object):
     @staticmethod
     def get_osx_screen_type():
         """
-        Runs a system command inside of a subprocess using a native OSX process that returns Graphics/Displays
-        information.
+        Compare size of screenshot with the reported monitor size to determine if pixels match.
         :return: String
         """
-        cmd_str = 'system_profiler SPDisplaysDataType'
-        key = 'Display Type'
-        try:
-            cmd = subprocess.Popen(cmd_str, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            raise Exception('Unable to run Command')
+        if Platform.HIGH_DEF:
+            return 'retina'
         else:
-            display_type = "/n".join(line for line in cmd.stdout if key in line.split(":")[0])
-            data = display_type.split(":")
-            if 'Retina' in data[1]:
-                return 'retina'
-            else:
-                return 'non_retina'
+            return 'non_retina'
+
+    @staticmethod
+    def get_screenshot(region=None):
+        if region is not None:
+            t, l, w, h = region
+            screen_region = {'top': t, 'left': l, 'width': w, 'height': h}
+            image = numpy.array(mss.mss().grab(screen_region))
+        else:
+            image = numpy.array(mss.mss().grab(mss.mss().monitors[0]))
+        grabbed_area = Image.fromarray(image, mode='RGBA')
+        return grabbed_area
