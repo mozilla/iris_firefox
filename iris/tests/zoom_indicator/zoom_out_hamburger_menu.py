@@ -18,12 +18,12 @@ class Test(BaseTest):
     def run(self):
         url1 = 'about:home'
         url2 = LocalWeb.FIREFOX_TEST_SITE
-        search_bar_pattern = Pattern('search_bar.png')
+        search_bar_pattern = SearchBar.SEARCH_BAR
         url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
         hamburger_menu_zoom_indicator_pattern = Pattern('hamburger_menu_zoom_indicator.png')
         zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
         zoom_control_90_pattern = Pattern('zoom_control_90.png')
-        url_bar_90_zoom_level_pattern = Pattern('url_bar_90_zoom_level.png').similar(0.7)
+        url_bar_90_zoom_level_pattern = LocationBar.URL_BAR_90_ZOOM_LEVEL
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url1)
