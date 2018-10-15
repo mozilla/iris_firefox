@@ -8,7 +8,7 @@ iris = {path = ".", editable = true}
 PyAutoGUI = "*"
 coloredlogs = "*"
 python-dateutil = "*"
-opencv-python = "*"
+opencv-python = "==3.4.1.15"
 pytesseract = "*"
 numpy = "*"
 image = "*"
