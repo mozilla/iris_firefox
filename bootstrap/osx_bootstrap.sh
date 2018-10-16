@@ -7,23 +7,39 @@ NC='\033[0m' # No Color
 
 echo -e "\n${RED}##### Starting OS X bootstrap #####${NC} \n"
 
-echo -e "${GREEN}##### Check to see if Homebrew is installed, and install it if it is not #####${NC} \n"
+echo -e "${GREEN}   --->   Check and install Homebrew${NC} \n"
 command -v brew >/dev/null 2>&1 || { echo >&2 "Installing Homebrew Now"; \
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; }
 
-echo -e "\n${GREEN}##### Installing Python 2.7 #####${NC} \n"
-brew install python@2
-brew link python@2
-export PATH=/usr/local/share/python:$PATH
-echo -e "\n${GREEN}##### Installing Tesseract #####${NC} \n"
-brew install tesseract
-echo -e "\n${GREEN}##### Installing p7zip #####${NC} \n"
+echo -e "\n${GREEN}  --->  installing/updating Python 2.7 ${NC} \n"
+
+if command -v python2 &>/dev/null; then
+    echo -e "\n${GREEN}  --->  Skipping Python 2.7 install. Already installed. ${NC}\n"
+else
+    brew install python@2
+    brew link python@2
+    export PATH=/usr/local/share/python:$PATH
+fi
+
+echo -e "\n${GREEN} --->  Installing Tesseract ${NC} \n"
+if command -v tesseract -v >/dev/null 2>&1; then
+    echo -e "\n${GREEN}  --->  Skipping Tesseract install. Already installed. ${NC}\n"
+else
+    brew install tesseract
+fi
+
+echo -e "\n${GREEN}  --->  installing/updating p7zip ${NC} \n"
 brew install p7zip
-echo -e "\n${GREEN}##### Installing xquartz #####${NC} \n"
+
+echo -e "\n${GREEN}  --->  installing/updating xquartz ${NC} \n"
 brew cask install xquartz
-echo -e "\n${GREEN}##### Installing pipenv #####${NC} \n"
-brew install pipenv
-brew upgrade pipenv
+
+echo -e "\n${GREEN}  --->  installing/upgrading pipenv ${NC}\n"
+if [[ ! $(pipenv --version) ]]; then
+    brew install pipenv
+else
+    brew upgrade pipenv
+fi
 
 # Exporting settings to .bash_profile or .zshrc
 grep -q -F 'export LC_ALL=en_US.UTF-8' ~/.bash_profile || echo 'export LC_ALL=en_US.UTF-8' >> ~/.bash_profile
