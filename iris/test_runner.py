@@ -37,7 +37,7 @@ def run(app):
 
         if IrisCore.verify_test_compat(current, app) or app.args.override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
-            current.set_start_time(time.time())
+            current.start_time = time.time()
 
             # Move the mouse to upper left corner of the screen
             reset_mouse()
@@ -79,7 +79,7 @@ def run(app):
                 errors += 1
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
 
-            current.set_end_time(time.time())
+            current.end_time = time.time()
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())
 
@@ -121,11 +121,10 @@ def run(app):
 
 
 def create_log_object(module, current, fx_args):
-    run_obj = {'name': module.__name__, 'meta': current.meta, 'profile': current.profile,
-               'module': module.__file__, 'profile_path': current.profile_path,
-               'fx_args': fx_args, 'prefs': current.prefs,
-               'time': int(current.get_end_time() - current.get_start_time())}
-    run_obj['asserts'] = []
+    run_obj = {'name': module.__name__, 'meta': current.meta, 'profile': current.profile, 'module': module.__file__,
+               'profile_path': current.profile_path, 'fx_args': fx_args, 'prefs': current.prefs,
+               'time': int(current.end_time - current.start_time), 'asserts': []}
+
     outcome = 'PASSED'
     for result in current.results:
         if result.outcome is 'FAILED':

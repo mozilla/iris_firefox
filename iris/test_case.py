@@ -2,14 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from api.core.local_web import LocalWeb
 from api.core.profile import *
 from api.helpers.general import *
 from asserts import *
 from configuration.config_parser import *
-
-from iris.test_rail.test_case_results import TestRailTests
-from api.core.local_web import LocalWeb
 from iris.api.core.util.update_rules import *
+from iris.test_rail.test_case_results import TestRailTests
 
 logger = logging.getLogger(__name__)
 
@@ -21,79 +20,202 @@ class BaseTest(object):
 
         :param app: Instance of the FirefoxApp class.
         """
-        self.app = app
-        self.reset_variables()
-
-    def reset_variables(self):
-        """Test case properties."""
+        self._app = app
 
         """Test case description."""
-        self.meta = ''
+        self._meta = ''
 
         """Firefox version."""
-        self.fx_version = ''
+        self._fx_version = ''
 
         """List of platforms object. E.g: Platform.LINUX, Platform.ALL."""
-        self.exclude = []
+        self._exclude = []
 
         """Test case title from test rail."""
-        self.test_title = ''
+        self._test_title = ''
 
         """List of test results."""
-        self.results = []
+        self._results = []
 
         """Test case's start time."""
-        self.start_time = 0
+        self._start_time = 0
 
         """Test case's end time."""
-        self.end_time = 0
+        self._end_time = 0
 
         """Test case's outcome."""
-        self.outcome = 'PASSED'
+        self._outcome = 'PASSED'
 
         """List of test case prefs."""
-        self.prefs = []
+        self._prefs = []
 
         """Path to the Firefox profile."""
-        self.profile_path = None
+        self._profile_path = None
 
         """Browser channel."""
-        self.channel = Settings.CHANNELS
+        self._channel = Settings.CHANNELS
 
-        """Firefox locales. E.g: ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 
-        'ro', 'ja']."""
-        self.locale = Settings.LOCALES
+        """Firefox locales. E.g: en-US, zh-CN, es-ES, de, fr, ru, ar, ko, pt-PT, vi, pl, tr, ro, ja."""
+        self._locale = Settings.LOCALES
 
-        """Supported platforms. E.g: [LINUX, MAC, WINDOWS]."""
-        self.platform = Platform.ALL
+        """Supported platforms. E.g: LINUX, MAC, WINDOWS."""
+        self._platform = Platform.ALL
 
         """Test case tags."""
-        self.tags = ''
+        self._tags = ''
 
         """Test case id."""
-        self.test_case_id = ''
+        self._test_case_id = ''
 
         """Test case suite id."""
-        self.test_suite_id = ''
+        self._test_suite_id = ''
 
         """Blocker for current test case."""
-        self.blocked_by = ''
+        self._blocked_by = ''
 
-    def get_test_meta(self):
-        """Getter for the meta property."""
-        return self.meta
+    @property
+    def app(self):
+        return self._app
 
-    def get_test_case_id(self):
-        """Getter for the test_case_id property."""
-        return self.test_case_id
+    @app.setter
+    def app(self, value):
+        self._app = value
 
-    def get_test_title(self):
-        """Getter for the test_title property."""
-        return self.test_title
+    @property
+    def meta(self):
+        return self._meta
 
-    def get_test_results(self):
-        """Getter for the test results property."""
-        return self.results
+    @meta.setter
+    def meta(self, value):
+        self._meta = value
+
+    @property
+    def fx_version(self):
+        return self._fx_version
+
+    @fx_version.setter
+    def fx_version(self, value):
+        self._fx_version = value
+
+    @property
+    def exclude(self):
+        return self._exclude
+
+    @exclude.setter
+    def exclude(self, value):
+        self._exclude = value
+
+    @property
+    def test_title(self):
+        return self._test_title
+
+    @test_title.setter
+    def test_title(self, value):
+        self._test_title = value
+
+    @property
+    def results(self):
+        return self._results
+
+    @results.setter
+    def results(self, value):
+        self._results = value
+
+    @property
+    def start_time(self):
+        return self._start_time
+
+    @start_time.setter
+    def start_time(self, value):
+        self._start_time = value
+
+    @property
+    def end_time(self):
+        return self._end_time
+
+    @end_time.setter
+    def end_time(self, value):
+        self._end_time = value
+
+    @property
+    def outcome(self):
+        return self._outcome
+
+    @outcome.setter
+    def outcome(self, value):
+        self._outcome = value
+
+    @property
+    def prefs(self):
+        return self._prefs
+
+    @prefs.setter
+    def prefs(self, value):
+        self._prefs = value
+
+    @property
+    def profile_path(self):
+        return self._profile_path
+
+    @profile_path.setter
+    def profile_path(self, value):
+        self._profile_path = value
+
+    @property
+    def channel(self):
+        return self._channel
+
+    @channel.setter
+    def channel(self, value):
+        self._channel = value
+
+    @property
+    def locale(self):
+        return self._locale
+
+    @locale.setter
+    def locale(self, value):
+        self._locale = value
+
+    @property
+    def platform(self):
+        return self._platform
+
+    @platform.setter
+    def platform(self, value):
+        self._platform = value
+
+    @property
+    def tags(self):
+        return self._tags
+
+    @tags.setter
+    def tags(self, value):
+        self._tags = value
+
+    @property
+    def test_case_id(self):
+        return self._test_case_id
+
+    @test_case_id.setter
+    def test_case_id(self, value):
+        self._test_case_id = value
+
+    @property
+    def test_suite_id(self):
+        return self._test_suite_id
+
+    @test_suite_id.setter
+    def test_suite_id(self, value):
+        self._test_suite_id = value
+
+    @property
+    def blocked_by(self):
+        return self._blocked_by
+
+    @blocked_by.setter
+    def blocked_by(self, value):
+        self._blocked_by = value
 
     def add_result(self, result):
         """Setter for the test results property."""
@@ -108,28 +230,8 @@ class BaseTest(object):
     def create_collection_test_rail_result(self):
         """Returns the test rail object."""
         test_rail_object = TestRailTests(self.meta, self.test_suite_id, self.blocked_by, self.test_case_id,
-                                         self.get_test_results())
+                                         self.results)
         return test_rail_object
-
-    def set_test_title(self, test_title):
-        """Setter for the test_title property."""
-        self.test_title = test_title
-
-    def get_start_time(self):
-        """Getter for the start_time property."""
-        return self.start_time
-
-    def set_start_time(self, start_time):
-        """Setter for the start_time property."""
-        self.start_time = start_time
-
-    def get_end_time(self):
-        """Getter for the end_time property."""
-        return self.end_time
-
-    def set_end_time(self, end_time):
-        """Setter for the end_time property."""
-        self.end_time = end_time
 
     def get_test_duration(self):
         """Returns the test duration with 2 decimals precision."""
@@ -139,7 +241,8 @@ class BaseTest(object):
         res = Result(outcome, message, actual, expected, error)
         self.add_result(res)
 
-    def get_asset_path(self, asset_file_name):
+    @staticmethod
+    def get_asset_path(asset_file_name):
         """Returns a fully-resolved local file path to the test asset."""
         test_path = inspect.stack()[1][1]
         module_path = os.path.split(test_path)[0]
@@ -154,7 +257,8 @@ class BaseTest(object):
         resource = '/tests%s/%s/%s' % (test_directory, module_name, asset_file_name)
         return self.app.base_local_web_url + resource
 
-    def get_blank_page_url(self):
+    @staticmethod
+    def get_blank_page_url():
         """Returns a fully-resolved URL to a blank web page."""
         return LocalWeb.BLANK_PAGE
 
@@ -235,5 +339,4 @@ class BaseTest(object):
 
     def teardown(self):
         """This might be a good place to clean up what was done."""
-        self.reset_variables()
         return
