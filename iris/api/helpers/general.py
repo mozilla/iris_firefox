@@ -56,12 +56,15 @@ def launch_firefox(path, profile=None, url=None, args=None):
 
 
 def close_firefox(test):
-    logger.debug('Closing Firefox ...')
-    quit_firefox()
-    status = test.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
-    if status is None:
-        logger.error('Firefox crashed!')
-        test.firefox_runner.process_handler = None
+    if test.firefox_runner is not None and test.firefox_runner.process_handler is not None:
+        logger.debug('Closing Firefox ...')
+        quit_firefox()
+        status = test.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+        if status is None:
+            logger.error('Firefox crashed!')
+            test.firefox_runner.process_handler = None
+    else:
+        logger.debug('Firefox already closed. Skipping ...')
 
 
 def restart_firefox(test, path, profile, url, args=None, image=None):
