@@ -224,25 +224,15 @@ class IrisCore(object):
             r_w = uhd_factor * region.width if is_uhd else region.width
             r_h = uhd_factor * region.height if is_uhd else region.height
 
-            if get_os_version() == 'win7':
-                with mss.mss() as sct:
-                    screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
-                    image = numpy.array(sct.grab(screen_region))
-                    grabbed_area = Image.fromarray(image, mode='RGBA')
-            else:
-                grabbed_area = pyautogui.screenshot(region=(r_x, r_y, r_w, r_h))
+
+            grabbed_area = IrisCore.get_screenshot(region)
 
             if is_uhd and not for_ocr:
                 grabbed_area = grabbed_area.resize([region.width, region.height])
+
             return grabbed_area
         else:
-            if get_os_version() == 'win7':
-                with mss.mss() as sct:
-                    screen_region = {'top': 0, 'left': 0, 'width': SCREENSHOT_WIDTH, 'height': SCREENSHOT_HEIGHT}
-                    image = numpy.array(sct.grab(screen_region))
-                    grabbed_area = Image.fromarray(image, mode='RGBA')
-            else:
-                grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+            grabbed_area = IrisCore.get_screenshot()
 
         if is_uhd and not for_ocr:
             return grabbed_area.resize([SCREEN_WIDTH, SCREEN_HEIGHT])
@@ -316,11 +306,12 @@ class IrisCore(object):
 
     @staticmethod
     def get_screenshot(region=None):
+
         if region is not None:
-            t, l, w, h = region
-            screen_region = {'top': t, 'left': l, 'width': w, 'height': h}
+            screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
             image = numpy.array(mss.mss().grab(screen_region))
         else:
-            image = numpy.array(mss.mss().grab(mss.mss().monitors[0]))
+            screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
+            image = numpy.array(mss.mss().grab(screen_region))
         grabbed_area = Image.fromarray(image, mode='RGBA')
         return grabbed_area
