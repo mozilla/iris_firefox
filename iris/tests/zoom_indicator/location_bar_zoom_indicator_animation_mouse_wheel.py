@@ -41,7 +41,11 @@ class Test(BaseTest):
         expected = new_region.exists(url_bar_110_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.FIREFOX_TEST_SITE)
+        restart_firefox(self,
+                        self.app.fx_path,
+                        self.profile_path,
+                        LocalWeb.FIREFOX_TEST_SITE,
+                        image=LocalWeb.FIREFOX_LOGO)
 
         expected = new_region.exists(url_bar_110_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')

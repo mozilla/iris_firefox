@@ -20,7 +20,6 @@ class Test(BaseTest):
     def run(self):
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
-        iris_logo_pattern = Pattern('iris_logo.png')
 
         current_version = self.app.args.firefox
         channel = self.app.fx_channel
@@ -41,14 +40,14 @@ class Test(BaseTest):
 
                 logger.info('Current version: %s, updating to version: %s.' % (current_version, update_step))
 
-                confirm_firefox_launch(self.app)
                 open_about_firefox()
                 wait(update_restart_pattern.similar(.7), 200)
                 type(Key.ESC)
-                restart_firefox(self.app.fx_path,
+
+                restart_firefox(self,
+                                self.app.fx_path,
                                 self.profile_path,
-                                url=self.app.base_local_web_url,
-                                image=iris_logo_pattern)
+                                self.app.base_local_web_url)
 
                 assert_contains(self,
                                 update_step,
@@ -68,3 +67,4 @@ class Test(BaseTest):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected = exists(LocalWeb.MOZILLA_LOGO, 5)
         assert_true(self, expected, 'Manual update sanity test passed.')
+        return

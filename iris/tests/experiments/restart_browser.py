@@ -29,7 +29,11 @@ class Test(BaseTest):
         expected = region.exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Firefox page loaded successfully.')
 
-        restart_firefox(self.app.fx_path, self.profile_path, url=LocalWeb.MOZILLA_TEST_SITE)
+        restart_firefox(self,
+                        self.app.fx_path,
+                        self.profile_path,
+                        LocalWeb.MOZILLA_TEST_SITE,
+                        image=LocalWeb.MOZILLA_LOGO)
 
         expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, expected, 'Mozilla page loaded successfully.')
