@@ -112,6 +112,7 @@ class Iris(object):
                 paths.append('C:\\Program Files\\Firefox Developer Edition\\firefox.exe')
                 paths.append('C:\\Program Files\\Nightly\\firefox.exe')
             else:
+                paths.append('/usr/bin/firefox')
                 paths.append('/usr/lib/firefox/firefox')
 
             for path in paths:
