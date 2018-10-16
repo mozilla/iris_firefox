@@ -107,7 +107,8 @@ class Iris(object):
             else:
                 fx_path = '/usr/lib/firefox/firefox'
 
-            launch_firefox(fx_path, profile=profile_path, url=self.base_local_web_url)
+            fx_runner = launch_firefox(fx_path, profile=profile_path, url=self.base_local_web_url)
+            fx_runner.start()
             server = LocalWebServer(self.args.workdir, self.args.port)
 
             # Iris waits for the user to make a choice in the control center. Once they
