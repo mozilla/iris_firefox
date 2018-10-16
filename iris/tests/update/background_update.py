@@ -26,7 +26,6 @@ class Test(BaseTest):
     def run(self):
         update_restart_pattern = Pattern('background_update_menu_notification.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
-        iris_logo_pattern = Pattern('iris_logo.png')
 
         current_version = self.app.args.firefox
         channel = self.app.fx_channel
@@ -55,10 +54,10 @@ class Test(BaseTest):
                 except FindError:
                     raise FindError('Background update hamburger menu icon notification did not appear, aborting.')
 
-                restart_firefox(self.app.fx_path,
+                restart_firefox(self,
+                                self.app.fx_path,
                                 self.profile_path,
-                                url=self.app.base_local_web_url,
-                                image=iris_logo_pattern)
+                                self.app.base_local_web_url)
 
                 assert_contains(self,
                                 update_step,

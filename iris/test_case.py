@@ -78,6 +78,15 @@ class BaseTest(object):
 
         """Blocker for current test case."""
         self.blocked_by = ''
+        self._firefox_runner = None
+
+    @property
+    def firefox_runner(self):
+        return self._firefox_runner
+
+    @firefox_runner.setter
+    def firefox_runner(self, value):
+        self._firefox_runner = value
 
     def get_test_meta(self):
         """Getter for the meta property."""
@@ -235,5 +244,4 @@ class BaseTest(object):
 
     def teardown(self):
         """This might be a good place to clean up what was done."""
-        self.reset_variables()
         return

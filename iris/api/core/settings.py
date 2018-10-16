@@ -26,6 +26,7 @@ DEFAULT_FX_DELAY = 0.5
 DEFAULT_UI_DELAY = 1
 DEFAULT_UI_DELAY_LONG = 2.5
 DEFAULT_SYSTEM_DELAY = 5
+DEFAULT_FIREFOX_TIMEOUT = 10
 
 BETA = 'beta'
 RELEASE = 'release'
@@ -57,6 +58,7 @@ class _IrisSettings(object):
         self._system_delay = DEFAULT_SYSTEM_DELAY
         self._channels = [BETA, RELEASE, NIGHTLY, ESR]
         self._locales = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
+        self._firefox_timeout = DEFAULT_FIREFOX_TIMEOUT
 
     @property
     def FX_DELAY(self):
@@ -87,6 +89,10 @@ class _IrisSettings(object):
     def LOCALES(self):
         """Getter for the locales property."""
         return self._locales
+
+    @property
+    def FIREFOX_TIMEOUT(self):
+        return self._firefox_timeout
 
     @property
     def wait_scan_rate(self):

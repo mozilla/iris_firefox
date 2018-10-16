@@ -51,10 +51,15 @@ def run(app):
             except ValueError:
                 app.finish(code=1)
 
-            # Process test case setup values and launch Firefox
             write_profile_prefs(current)
             args = create_firefox_args(current)
-            fx_args = launch_firefox(path=app.fx_path, profile=current.profile_path, url=current.url, args=args)
+            current.firefox_runner = launch_firefox(path=app.fx_path,
+                                                    profile=current.profile_path,
+                                                    url=current.url,
+                                                    args=args)
+            current.firefox_runner.start()
+
+            fx_args = ','.join(current.firefox_runner.command)
 
             # Verify that Firefox has launched
             confirm_firefox_launch(app)
@@ -80,25 +85,24 @@ def run(app):
                 current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
 
             current.set_end_time(time.time())
+
+            close_firefox(current)
+            status = current.firefox_runner.process_handler.wait()
+            if status is None:
+                logger.error('Firefox crashed!')
+                current.firefox_runner.process_handler = None
+
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())
 
             # Initialize test log object
             test_log_object = create_log_object(current_module, current, fx_args)
 
-            # Clean up and quit Firefox.
-            current.teardown()
-            quit_firefox()
-            if current.profile == Profile.BRAND_NEW:
-                confirm_close_multiple_tabs()
-            confirm_firefox_quit(app)
-
             # Save current test log
             current_package = os.path.split(os.path.dirname(current_module.__file__))[1]
-            if not current_package in test_log:
+            if current_package not in test_log:
                 test_log[current_package] = []
             test_log[current_package].append(update_log_object(test_log_object))
-
         else:
             skipped += 1
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
