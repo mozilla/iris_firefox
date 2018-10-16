@@ -102,10 +102,15 @@ class Iris(object):
             fx_path = ''
             if Settings.get_os() == Platform.MAC:
                 paths.append('/Applications/Firefox.app/Contents/MacOS/firefox')
+                paths.append('/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox')
                 paths.append('/Applications/Firefox Nightly.app/Contents/MacOS/firefox')
             elif Settings.get_os() == Platform.WINDOWS:
                 paths.append('C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe')
+                paths.append('C:\\Program Files (x86)\\Firefox Developer Edition\\firefox.exe')
+                paths.append('C:\\Program Files (x86)\\Nightly\\firefox.exe')
                 paths.append('C:\\Program Files\\Mozilla Firefox\\firefox.exe')
+                paths.append('C:\\Program Files\\Firefox Developer Edition\\firefox.exe')
+                paths.append('C:\\Program Files\\Nightly\\firefox.exe')
             else:
                 paths.append('/usr/lib/firefox/firefox')
 
