@@ -104,8 +104,8 @@ class Iris(object):
                 paths.append('/Applications/Firefox.app/Contents/MacOS/firefox')
                 paths.append('/Applications/Firefox Nightly.app/Contents/MacOS/firefox')
             elif Settings.get_os() == Platform.WINDOWS:
-                paths.append('C:\\Program Files (x86)\\Mozilla Firefox\\firefox')
-                paths.append('C:\\Program Files\\Mozilla Firefox\\firefox')
+                paths.append('C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe')
+                paths.append('C:\\Program Files\\Mozilla Firefox\\firefox.exe')
             else:
                 paths.append('/usr/lib/firefox/firefox')
 
