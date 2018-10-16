@@ -97,15 +97,26 @@ class Iris(object):
             Profile._get_staged_profile(Profile.LIKE_NEW, profile_path)
 
             # Open local installation of Firefox.
+            paths = []
+            is_installed = False
+            fx_path = ''
             if Settings.get_os() == Platform.MAC:
-                fx_path = '/Applications/Firefox.app/Contents/MacOS/firefox'
+                paths.append('/Applications/Firefox.app/Contents/MacOS/firefox')
+                paths.append('/Applications/Firefox Nightly.app/Contents/MacOS/firefox')
             elif Settings.get_os() == Platform.WINDOWS:
-                if os.path.exists('C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'):
-                    fx_path = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox'
-                else:
-                    fx_path = 'C:\\Program Files\\Mozilla Firefox\\firefox'
+                paths.append('C:\\Program Files (x86)\\Mozilla Firefox\\firefox')
+                paths.append('C:\\Program Files\\Mozilla Firefox\\firefox')
             else:
-                fx_path = '/usr/lib/firefox/firefox'
+                paths.append('/usr/lib/firefox/firefox')
+
+            for path in paths:
+                if os.path.exists(path):
+                    fx_path = path
+                    is_installed = True
+                    break
+            if not is_installed:
+                logger.error('Can\'t find local Firefox installation, aborting Iris run.')
+                self.finish(1)
 
             fx_runner = launch_firefox(fx_path, profile=profile_path, url=self.base_local_web_url)
             fx_runner.start()
