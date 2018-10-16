@@ -930,6 +930,8 @@ def get_firefox_info(build_path):
 
     :param build_path: Path to the binary for the application or Android APK file.
     """
+    import mozlog
+    mozlog.commandline.setup_logging('mozversion', None, {})
     return mozversion.get_version(binary=build_path)
 
 
