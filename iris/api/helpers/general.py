@@ -5,6 +5,8 @@
 import json
 
 import mozversion
+from mozprofile import FirefoxProfile
+from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.menus import LibraryMenu
@@ -31,32 +33,68 @@ def launch_firefox(path, profile=None, url=None, args=None):
         args = []
 
     if profile is None:
-        logger.error('No profile name present, aborting run.')
-        raise ValueError
+        raise APIHelperError('No profile name present, aborting run.')
 
-    cmd = [path, '-foreground', '-no-remote', '-profile', profile]
+    profile = FirefoxProfile(profile=profile)
 
-    # Add other Firefox flags.
-    for arg in args:
-        cmd.append(arg)
+    args.append('-foreground')
+    args.append('-no-remote')
 
     if url is not None:
-        cmd.append('-new-tab')
-        cmd.append(url)
+        args.append('-new-tab')
+        args.append(url)
 
-    logger.debug('Launching Firefox with arguments: %s' % ' '.join(cmd))
-    subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return cmd
+    process_args = {'stream': None}
+    logger.debug('Creating Firefox runner ...')
+    try:
+        runner = FirefoxRunner(binary=path, profile=profile, cmdargs=args, process_args=process_args)
+        logger.debug('Firefox runner successfully created.')
+        logger.debug('Running Firefox with command: "%s"' % ','.join(runner.command))
+        return runner
+    except errors.RunnerNotStartedError:
+        raise APIHelperError('Error creating Firefox runner.')
 
 
-def confirm_firefox_launch(app):
+def close_firefox(test):
+    logger.debug('Closing Firefox ...')
+    quit_firefox()
+    status = test.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+    if status is None:
+        logger.error('Firefox crashed!')
+        test.firefox_runner.process_handler = None
+
+
+def restart_firefox(test, path, profile, url, args=None, image=None):
+    """Restart the app with optional args for profile.
+
+    :param test: current test
+    :param path: Firefox path.
+    :param profile: Firefox profile.
+    :param url: URL to be loaded.
+    :param args: Optional list of arguments.
+    :param image: Image checked to confirm that Firefox has successfully restarted.
+    :return: None.
+        """
+    logger.debug('Restarting firefox ...')
+    close_firefox(test)
+    test.firefox_runner = launch_firefox(path, profile, url, args)
+    test.firefox_runner.start()
+    confirm_firefox_launch(test.app, image)
+    logger.debug('Firefox successfully restarted.')
+
+
+def confirm_firefox_launch(app, image=None):
     """Waits for firefox to exist by waiting for the iris logo to be present.
 
     :param app: Instance of FirefoxApp class.
+    :param image: Pattern to confirm Firefox launch
     :return: None.
     """
+    if image is None:
+        image = Pattern('iris_logo.png')
+
     try:
-        wait(Pattern('iris_logo.png'), 20)
+        wait(image, 20)
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
@@ -124,40 +162,6 @@ def navigate(url):
         type(Key.ENTER)
     except Exception:
         raise APIHelperError('No active window found, cannot navigate to page.')
-
-
-def restart_firefox(path, profile, url, args=None, image=None):
-    """Restart the app with optional args for profile.
-
-    :param path: Firefox path.
-    :param profile: Firefox profile.
-    :param url: URL to be loaded.
-    :param args: Optional list of arguments.
-    :param image: Image checked to confirm that Firefox has successfully restarted.
-    :return: None.
-    """
-    logger.debug('Restarting Firefox.')
-    quit_firefox()
-    logger.debug('Confirming that Firefox has been quit.')
-    home_pattern = NavBar.HOME_BUTTON
-    if image is None:
-        check_pattern = home_pattern
-    else:
-        check_pattern = image
-    try:
-        wait_vanish(home_pattern, 10)
-        # TODO: This should be made into a robust function instead of a hard coded sleep.
-        # Give Firefox a chance to cleanly shutdown all of its processes.
-        time.sleep(Settings.SYSTEM_DELAY)
-        logger.debug('Relaunching Firefox with profile name \'%s\'' % profile)
-        launch_firefox(path, profile, url, args)
-        logger.debug('Confirming that Firefox has been relaunched.')
-        if exists(check_pattern, 20):
-            logger.debug('Successful Firefox restart performed.')
-        else:
-            raise APIHelperError('Firefox not relaunched.')
-    except FindError:
-        raise APIHelperError('Firefox still around - cannot restart.')
 
 
 def get_menu_modifier():
@@ -598,9 +602,8 @@ def restore_window_from_taskbar(option=None):
     time.sleep(Settings.UI_DELAY)
 
 
-
 def open_library_menu(option):
-    """
+    """Open the Library menu with an option as argument.
 
     :param option: Library menu option.
     :return: Custom region created for a more efficient and accurate image pattern search.

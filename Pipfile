@@ -20,6 +20,7 @@ mozinstall = "*"
 mozdownload = "*"
 mozversion = "*"
 mozinfo = "*"
+mozrunner = "*"
 mss = "*"
 "pep8" = "*"
 
