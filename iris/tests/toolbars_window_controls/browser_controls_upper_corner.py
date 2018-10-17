@@ -69,14 +69,6 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Window not minimized.')
         assert_true(self, expected, 'Window successfully minimized.')
-        minimize_window()
-        time.sleep(Settings.UI_DELAY)
-        expected = False
-        try:
-            expected = wait_vanish(hamburger_menu_pattern, 10)
-        except FindError:
-            logger.error('Window not minimized.')
-        assert_true(self, expected, 'Window successfully minimized.')
 
         restore_window_from_taskbar()
 
