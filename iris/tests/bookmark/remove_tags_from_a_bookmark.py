@@ -30,6 +30,7 @@ class Test(BaseTest):
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
         done_button_from_star_menu = Pattern('done_button.png')
+        bookmark_tags = Pattern('bookmark_tags_selected.png')
         bookmark_button_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -85,15 +86,14 @@ class Test(BaseTest):
 
         time.sleep(Settings.UI_DELAY)
 
-        if Settings.get_os() == Platform.MAC:
+        max_attempts = 5
+
+        while max_attempts > 0:
             type(Key.TAB)
-            edit_delete()
-        elif Settings.get_os() == Platform.WINDOWS:
-            for i in range(3):
-                type(Key.TAB)
-            edit_delete()
-        else:
-            edit_delete()
+            if exists(bookmark_tags, 0.5):
+                edit_delete()
+                max_attempts = 0
+            max_attempts -= 1
 
         click(done_button_from_star_menu)
 

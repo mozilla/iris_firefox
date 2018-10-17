@@ -21,7 +21,6 @@ class Test(BaseTest):
         wear_theme_pattern = Pattern('wear_theme.png')
         moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png')
         search_wikipedia_dark_theme_pattern = Pattern('search_wikipedia_dark_theme.png')
-        addon_option = HamburgerMenu.NEW_WINDOW
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -72,14 +71,25 @@ class Test(BaseTest):
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
-        for i in range(16):
+
+        max_attempts = 16
+
+        while max_attempts > 0:
             scroll_down()
+            if exists(search_wikipedia_dark_theme_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_wikipedia_dark_theme_pattern, 10)
         assert_true(self, expected, 'The \'Wikipedia\' one-off button is highlighted.')
 
-        for i in range(16):
+        max_attempts = 16
+
+        while max_attempts > 0:
             scroll_up()
+            if exists(moz_search_highlight_dark_theme_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
         assert_true(self, expected, 'The searched string is highlighted.')
