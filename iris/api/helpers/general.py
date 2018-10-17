@@ -405,7 +405,7 @@ def key_to_one_off_search(highlighted_pattern):
     param: highlighted_pattern: The pattern image to search for.
     return: None.
     """
-    max_attempts = 7
+    max_attempts = 11
     while max_attempts > 0:
         if exists(highlighted_pattern, 1):
             max_attempts = 0
