@@ -86,15 +86,6 @@ def is_multiprocessing_enabled():
     return multiprocessing.cpu_count() >= MIN_CPU_FOR_MULTIPROCESSING and get_os() != 'win'
 
 
-def scroll(clicks):
-    """Performs a scroll of the mouse scroll wheel.
-
-    :param clicks: The amount of scrolling to perform.
-    :return: None.
-    """
-    pyautogui.scroll(clicks)
-
-
 def filter_list(original_list, exclude_list):
     new_list = []
     for item in original_list:
@@ -219,12 +210,6 @@ class IrisCore(object):
         is_uhd, uhd_factor = IrisCore.get_uhd_details()
 
         if region is not None:
-            r_x = uhd_factor * region.x if is_uhd else region.x
-            r_y = uhd_factor * region.y if is_uhd else region.y
-            r_w = uhd_factor * region.width if is_uhd else region.width
-            r_h = uhd_factor * region.height if is_uhd else region.height
-
-
             grabbed_area = IrisCore.get_screenshot(region)
 
             if is_uhd and not for_ocr:
@@ -308,10 +293,20 @@ class IrisCore(object):
     def get_screenshot(region=None):
 
         if region is not None:
-            screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
-            image = numpy.array(mss.mss().grab(screen_region))
+            if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
+                screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
+                image = numpy.array(mss.mss().grab(screen_region))
+                grabbed_area = Image.fromarray(image, mode='RGBA')
+
+            else:
+                grabbed_area = pyautogui.screenshot(region)
+
         else:
-            screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
-            image = numpy.array(mss.mss().grab(screen_region))
-        grabbed_area = Image.fromarray(image, mode='RGBA')
+            if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
+                screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
+                image = numpy.array(mss.mss().grab(screen_region))
+                grabbed_area = Image.fromarray(image, mode='RGBA')
+            else:
+                grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+
         return grabbed_area
