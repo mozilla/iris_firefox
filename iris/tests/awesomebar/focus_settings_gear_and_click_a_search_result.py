@@ -60,8 +60,13 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        for i in range(17):
-            type(Key.DOWN)
+        max_attempts = 16
+
+        while max_attempts > 0:
+            scroll_down()
+            if exists(settings_gear_highlighted, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(settings_gear_highlighted, 10)
         assert_true(self, expected, 'The \'Search settings\' button has focus.')
