@@ -43,7 +43,7 @@ class Test(BaseTest):
         expected = region.exists(search_settings_pattern, 10)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
 
-        repeat_key_down(10)
+        repeat_key_down(7)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern,)
 
         expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
