@@ -46,7 +46,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('The \'Google\' one-off button is not highlighted.')
 
-        repeat_key_down(10)
+        repeat_key_down(7)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
         expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
