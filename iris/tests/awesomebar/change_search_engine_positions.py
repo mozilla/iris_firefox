@@ -58,7 +58,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(10)
+        repeat_key_down(7)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert_true(self, expected, 'The \'Google\' one-off search engine holds the first position in the one-offs '
@@ -100,7 +100,7 @@ class Test(BaseTest):
 
         # Declare a variable which can close the while loop if the pattern is not found
 
-        repeat_key_down(10)
+        repeat_key_down(7)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
