@@ -2,11 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 import mozinfo
 import mss
 import pyautogui
-
 
 
 class Platform(object):
@@ -20,7 +18,8 @@ class Platform(object):
     PROCESSOR = mozinfo.processor
 
     ALL = [LINUX, MAC, WINDOWS]
-    _screenshot = mss.mss().grab(mss.mss().monitors[0])
+    primary_monitor = mss.mss().monitors[1]
+    _screenshot = mss.mss().grab(primary_monitor)
     SCREENSHOT_SIZE = (_screenshot.width, _screenshot.height)
     HIGH_DEF = SCREENSHOT_SIZE != pyautogui.size()
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()

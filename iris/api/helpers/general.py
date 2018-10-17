@@ -13,7 +13,7 @@ from iris.api.core.firefox_ui.menus import LibraryMenu
 from iris.api.core.firefox_ui.toolbars import NavBar, SearchBar
 from iris.api.core.key import *
 from iris.api.core.region import *
-from iris.api.core.screen import get_screen
+from iris.api.core.screen import Screen
 from iris.configuration.config_parser import *
 from keyboard_shortcuts import *
 
@@ -132,8 +132,8 @@ def confirm_firefox_quit(app):
 
 def get_firefox_region():
     # TODO: needs better logic to determine bounds.
-    """For now, just return the whole screen."""
-    return get_screen()
+    """For now, just return the Primary Monitor."""
+    return Screen(0)
 
 
 def navigate_slow(url):
