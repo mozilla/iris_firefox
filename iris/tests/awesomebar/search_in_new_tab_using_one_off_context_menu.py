@@ -46,13 +46,8 @@ class Test(BaseTest):
         except FindError:
             raise FindError('The \'Google\' one-off button is not highlighted.')
 
-        max_attempts = 16
-
-        while max_attempts > 0:
-            type(Key.DOWN)
-            if exists(twitter_one_off_button_highlight_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
+        repeat_key_down(10)
+        key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
         expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
         assert_true(self, expected, 'The \'Twitter\' one-off button is highlighted.')

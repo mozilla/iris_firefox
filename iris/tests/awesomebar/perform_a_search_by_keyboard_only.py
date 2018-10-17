@@ -46,13 +46,8 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        max_attempts = 16
-
-        while max_attempts > 0:
-            type(Key.DOWN)
-            if exists(search_with_google_one_off_string_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
+        repeat_key_down(10)
+        key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Google\'.')
@@ -75,15 +70,10 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        max_attempts = 16
+        repeat_key_down(10)
+        key_to_one_off_search(search_with_bing_one_off_string_pattern)
 
-        while max_attempts > 0:
-            type(Key.DOWN)
-            if exists(search_with_bing_one_off_string_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
-
-        expected = region.exists(search_with_bing_one_off_string_pattern, 10)
+        expected = exists(search_with_bing_one_off_string_pattern, 5)
         assert_true(self, expected, 'The search engine in focus is \'Bing\'.')
 
         type(Key.ENTER)
@@ -101,13 +91,8 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        max_attempts = 16
-
-        while max_attempts > 0:
-            type(Key.DOWN)
-            if exists(search_with_amazon_one_off_string_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
+        repeat_key_down(10)
+        key_to_one_off_search(search_with_amazon_one_off_string_pattern)
 
         expected = region.exists(search_with_amazon_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Amazon\'.')
@@ -127,13 +112,8 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        max_attempts = 16
-
-        while max_attempts > 0:
-            type(Key.DOWN)
-            if exists(search_with_duckduckgo_one_off_string_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
+        repeat_key_down(10)
+        key_to_one_off_search(search_with_duckduckgo_one_off_string_pattern)
 
         expected = region.exists(search_with_duckduckgo_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'DuckDuckGo\'.')
@@ -162,13 +142,8 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        max_attempts = 16
-
-        while max_attempts > 0:
-            type(Key.DOWN)
-            if exists(search_with_twitter_one_off_string_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
+        repeat_key_down(10)
+        key_to_one_off_search(search_with_twitter_one_off_string_pattern)
 
         expected = region.exists(search_with_twitter_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Twitter\'.')
@@ -188,13 +163,8 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        max_attempts = 16
-
-        while max_attempts > 0:
-            type(Key.DOWN)
-            if exists(search_with_wikipedia_one_off_string_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
+        repeat_key_down(10)
+        key_to_one_off_search(search_with_wikipedia_one_off_string_pattern)
 
         expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Wikipedia\'.')
