@@ -21,7 +21,6 @@ class Test(BaseTest):
         search_with_duckduckgo_one_off_string_pattern = Pattern('search_with_DuckDuckGo_one_off_string.png')
         search_with_amazon_one_off_string_pattern = Pattern('search_with_Amazon_one_off_string.png')
         search_with_bing_one_off_string_pattern = Pattern('search_with_Bing_one_off_string.png')
-        search_with_ebay_one_off_string_pattern = Pattern('search_with_eBay_one_off_string.png')
         search_with_twitter_one_off_string_pattern = Pattern('search_with_Twitter_one_off_string.png')
         search_with_wikipedia_one_off_string_pattern = Pattern('search_with_Wikipedia_one_off_string.png')
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
@@ -30,7 +29,6 @@ class Test(BaseTest):
         bing_search_results_moz_pattern = Pattern('bing_search_results_moz.png')
         amazon_search_results_moz_pattern = Pattern('amazon_search_results_moz.png')
         duckduckgo_search_results_pattern = Pattern('duckduckgo_search_results.png')
-        ebay_search_results_moz_pattern = Pattern('ebay_search_results_moz.png')
         moz_search_duckduckgo_pattern = Pattern('moz_search_duckduckgo.png')
         moz_search_pattern = Pattern('moz_search.png')
 
@@ -48,9 +46,13 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        # The search suggestion list has 10 suggestions by default.
-        for i in range(10):
+        max_attempts = 16
+
+        while max_attempts > 0:
             type(Key.DOWN)
+            if exists(search_with_google_one_off_string_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Google\'.')
@@ -73,9 +75,13 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        # The search suggestion list has 10 suggestions by default.
-        for i in range(11):
+        max_attempts = 16
+
+        while max_attempts > 0:
             type(Key.DOWN)
+            if exists(search_with_bing_one_off_string_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_with_bing_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Bing\'.')
@@ -95,9 +101,13 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        # The search suggestion list has 10 suggestions by default.
-        for i in range(12):
+        max_attempts = 16
+
+        while max_attempts > 0:
             type(Key.DOWN)
+            if exists(search_with_amazon_one_off_string_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_with_amazon_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Amazon\'.')
@@ -117,9 +127,13 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        # The search suggestion list has 10 suggestions by default.
-        for i in range(13):
+        max_attempts = 16
+
+        while max_attempts > 0:
             type(Key.DOWN)
+            if exists(search_with_duckduckgo_one_off_string_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_with_duckduckgo_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'DuckDuckGo\'.')
@@ -139,22 +153,6 @@ class Test(BaseTest):
         select_location_bar()
         paste('moz')
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
-
-        # The search suggestion list has 10 suggestions by default.
-        for i in range(14):
-            type(Key.DOWN)
-
-        expected = region.exists(search_with_ebay_one_off_string_pattern, 10)
-        assert_true(self, expected, 'The search engine in focus is \'eBay\'.')
-
-        type(Key.ENTER)
-        time.sleep(DEFAULT_UI_DELAY_LONG)
-
-        expected = region.exists(ebay_search_results_moz_pattern, 10)
-        assert_true(self, expected, 'Search results performed with \'eBay\' search engine.')
-
         # Perform a search by keyboard only with 'Twitter' search engine.
         new_tab()
 
@@ -164,9 +162,13 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        # The search suggestion list has 10 suggestions by default.
-        for i in range(15):
+        max_attempts = 16
+
+        while max_attempts > 0:
             type(Key.DOWN)
+            if exists(search_with_twitter_one_off_string_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_with_twitter_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Twitter\'.')
@@ -186,9 +188,13 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        # The search suggestion list has 10 suggestions by default.
-        for i in range(16):
+        max_attempts = 16
+
+        while max_attempts > 0:
             type(Key.DOWN)
+            if exists(search_with_wikipedia_one_off_string_pattern, 0.5):
+                max_attempts = 0
+            max_attempts -= 1
 
         expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)
         assert_true(self, expected, 'The search engine in focus is \'Wikipedia\'.')

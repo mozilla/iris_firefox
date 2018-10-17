@@ -52,8 +52,10 @@ class Test(BaseTest):
         expected = region.exists(duck_duck_go_one_off_button_pattern, 10)
         assert_true(self, expected, 'The \'DuckDuckGo\' one-off button found.')
 
-        expected = region.exists(ebay_one_off_button_pattern, 10)
-        assert_true(self, expected, 'The \'Ebay\' one-off button found.')
+        # deactivate assert for ebay because we no longer have the ebay search engine in place
+
+        # expected = region.exists(ebay_one_off_button_pattern, 10)
+        # assert_true(self, expected, 'The \'Ebay\' one-off button found.')
 
         expected = region.exists(google_one_off_button_pattern, 10)
         assert_true(self, expected, 'The \'Google\' one-off button found.')
