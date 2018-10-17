@@ -288,3 +288,12 @@ def _general_click(where=None, clicks=None, duration=None, in_region=None, butto
 
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
+
+
+def scroll(clicks):
+    """Performs a scroll of the mouse scroll wheel.
+
+    :param clicks: The amount of scrolling to perform.
+    :return: None.
+    """
+    pyautogui.scroll(clicks)
