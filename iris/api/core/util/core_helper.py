@@ -299,7 +299,7 @@ class IrisCore(object):
                 grabbed_area = Image.fromarray(image, mode='RGBA')
 
             else:
-                grabbed_area = pyautogui.screenshot(region)
+                grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
 
         else:
             if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
