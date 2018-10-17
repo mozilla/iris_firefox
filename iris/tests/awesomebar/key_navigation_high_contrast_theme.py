@@ -72,13 +72,8 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        max_attempts = 16
-
-        while max_attempts > 0:
-            scroll_down()
-            if exists(search_wikipedia_dark_theme_pattern, 0.5):
-                max_attempts = 0
-            max_attempts -= 1
+        repeat_key_down(10)
+        key_to_one_off_search(search_wikipedia_dark_theme_pattern)
 
         expected = region.exists(search_wikipedia_dark_theme_pattern, 10)
         assert_true(self, expected, 'The \'Wikipedia\' one-off button is highlighted.')
@@ -87,9 +82,10 @@ class Test(BaseTest):
 
         while max_attempts > 0:
             scroll_up()
-            if exists(moz_search_highlight_dark_theme_pattern, 0.5):
+            if exists(moz_search_highlight_dark_theme_pattern, 1):
                 max_attempts = 0
             max_attempts -= 1
+
 
         expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
         assert_true(self, expected, 'The searched string is highlighted.')

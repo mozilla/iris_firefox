@@ -24,7 +24,6 @@ class Test(BaseTest):
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
         bing_one_off_button_pattern = Pattern('bing_one_off_button.png')
         duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
-        ebay_one_off_button_pattern = Pattern('ebay_one_off_button.png')
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         twitter_one_off_button_pattern = Pattern('twitter_one_off_button.png')
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
@@ -79,8 +78,7 @@ class Test(BaseTest):
         click(default_search_engine_dropdown_pattern)
 
         # Change the default search engine.
-        for i in range(2):
-            type(Key.DOWN)
+        repeat_key_down(2)
 
         type(Key.ENTER)
 

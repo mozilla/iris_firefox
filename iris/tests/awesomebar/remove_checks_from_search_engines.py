@@ -70,7 +70,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'One-Click Search Engines section found.')
 
         # Uncheck all the search engines from the list.
-        for i in range(pattern_list.__len__() - 2):
+        for i in range(pattern_list.__len__() - 1):
             click(check_engine_pattern)
 
         try:
