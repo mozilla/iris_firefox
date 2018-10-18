@@ -24,6 +24,7 @@ class Test(BaseTest):
         search_with_twitter_one_off_string_pattern = Pattern('search_with_Twitter_one_off_string.png')
         search_with_wikipedia_one_off_string_pattern = Pattern('search_with_Wikipedia_one_off_string.png')
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
+        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png')
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
         google_search_results_moz_pattern_pattern = Pattern('google_search_results_moz.png')
         bing_search_results_moz_pattern = Pattern('bing_search_results_moz.png')
@@ -46,7 +47,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(7)
+        repeat_key_up(7)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
@@ -70,7 +71,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(7)
+        repeat_key_up(6)
         key_to_one_off_search(search_with_bing_one_off_string_pattern)
 
         expected = exists(search_with_bing_one_off_string_pattern, 5)
@@ -91,7 +92,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(7)
+        repeat_key_up(5)
         key_to_one_off_search(search_with_amazon_one_off_string_pattern)
 
         expected = region.exists(search_with_amazon_one_off_string_pattern, 10)
@@ -112,7 +113,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(7)
+        repeat_key_up(4)
         key_to_one_off_search(search_with_duckduckgo_one_off_string_pattern)
 
         expected = region.exists(search_with_duckduckgo_one_off_string_pattern, 10)
@@ -142,7 +143,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(7)
+        repeat_key_up(3)
         key_to_one_off_search(search_with_twitter_one_off_string_pattern)
 
         expected = region.exists(search_with_twitter_one_off_string_pattern, 10)
@@ -151,7 +152,8 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(new_tab_twitter_search_results_pattern, 10)
+        expected = region.exists(new_tab_twitter_search_results_pattern, 10) \
+                   or exists(new_tab_twitter_search_results_pattern2, 5)
         assert_true(self, expected, 'Search results performed with \'Twitter\' search engine.')
 
         # Perform a search by keyboard only with 'Wikipedia' search engine.
@@ -163,7 +165,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(7)
+        repeat_key_up(2)
         key_to_one_off_search(search_with_wikipedia_one_off_string_pattern)
 
         expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)

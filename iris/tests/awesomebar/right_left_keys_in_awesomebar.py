@@ -42,6 +42,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'The search engine in focus is \'Google\'.')
 
         # Once the first one-off is selected, arrow key until the first one-off is selected again.
+        repeat_key_up(14)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
@@ -65,7 +66,7 @@ class Test(BaseTest):
         expected = region.exists(settings_gear_highlighted_pattern, 10)
         assert_true(self, expected, 'The settings gear is in focus.')
 
-        repeat_key_down(11)
+        repeat_key_up(6)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)

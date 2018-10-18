@@ -72,7 +72,7 @@ class Test(BaseTest):
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.UI_DELAY)
 
-        repeat_key_down(7)
+        repeat_key_up(2)
         key_to_one_off_search(search_wikipedia_dark_theme_pattern)
 
         expected = region.exists(search_wikipedia_dark_theme_pattern, 10)
