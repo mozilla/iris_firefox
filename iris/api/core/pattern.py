@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 def _parse_name(full_name):
-    """Detects scale factor in image name.
+    """Detects the scale factor in image name.
 
     :param str full_name: Image full name. Valid format name@[scale_factor]x.png.
     Examples: google_search@2x.png, amazon_logo@2.5x.png
@@ -51,6 +51,7 @@ def _parse_name(full_name):
 
 
 def _load_all_patterns():
+    """Function returns a list with all the project's Patterns."""
     if parse_args().resize:
         _convert_hi_res_images()
     result_list = []
@@ -66,6 +67,7 @@ def _load_all_patterns():
 
 
 def _convert_hi_res_images():
+    """Function resizes all the project's hi-resolution images."""
     for root, dirs, files in os.walk(IrisCore.get_module_dir()):
         for file_name in files:
             if file_name.endswith('.png'):
@@ -78,7 +80,7 @@ def _convert_hi_res_images():
                         new_name = '%s.png' % name
                         img = Image.open(os.path.join(root, file_name))
                         logger.debug('Resizing image from %sx scale' % scale)
-                        new_img = img.resize((img.width/scale, img.height/scale), Image.ANTIALIAS)
+                        new_img = img.resize((img.width / scale, img.height / scale), Image.ANTIALIAS)
                         logger.debug('Creating newly converted image file at: %s' % os.path.join(root, new_name))
                         new_img.save(os.path.join(root, new_name))
                         logger.debug('Removing unused image at: %s' % os.path.join(root, file_name))
@@ -89,19 +91,39 @@ _images = _load_all_patterns()
 
 
 class Pattern(object):
+
     def __init__(self, image_name, from_path=None):
+        """Function assign values to the _image_name, _image_path, _scale_factor, _similarity, _target_offset,
+        _rgb_array, _color_image and _gray_image Pattern parameters."""
+
         if from_path is None:
             path = _get_image_path(inspect.stack()[1][1], image_name)
         else:
             path = from_path
         name, scale = _parse_name(os.path.split(path)[1])
+
+        """Image name."""
         self._image_name = name
+
+        """Image path."""
         self._image_path = path
+
+        """Image scale factor."""
         self._scale_factor = scale
+
+        """The minimum similarity to use in a find operation. The value should be between 0 and 1."""
         self._similarity = Settings.min_similarity
+
+        """Offset to Pattern from top left."""
         self._target_offset = None
+
+        """RGB array of image."""
         self._rgb_array = np.array(cv2.imread(path)) if path is not None else None
+
+        """Color image."""
         self._color_image = Image.fromarray(_apply_scale(scale, self._rgb_array)) if scale is not None else None
+
+        """Gray image converted from color image."""
         self._gray_image = self._color_image.convert('L') if scale is not None else None
 
     def target_offset(self, dx, dy):
@@ -116,24 +138,31 @@ class Pattern(object):
         return new_pattern
 
     def get_filename(self):
+        """Getter for the _image_name property."""
         return self._image_name
 
     def get_file_path(self):
+        """Getter for the _image_path property."""
         return self._image_path
 
     def get_target_offset(self):
+        """Getter for the _target_offset property."""
         return self._target_offset
 
     def get_scale_factor(self):
+        """Getter for the _scale_factor property."""
         return self._scale_factor
 
     def get_rgb_array(self):
+        """Getter for the RGB array of image."""
         return self._rgb_array
 
     def get_color_image(self):
+        """Getter for the _color_image property."""
         return self._color_image
 
     def get_gray_image(self):
+        """Getter for the _gray_image property."""
         return self._gray_image
 
     @property
@@ -148,6 +177,7 @@ class Pattern(object):
 
     def similar(self, value):
         """Set the minimum similarity of the given Pattern object to the specified value."""
+
         if value > 0.99:
             self._similarity = 0.99
         elif 0 <= value <= 0.99:
