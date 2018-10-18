@@ -61,7 +61,8 @@ class Iris(object):
             self.finish(0)
 
     def verify_config(self):
-        self.check_keyboard_state()
+        if not self.args.no_check:
+            self.check_keyboard_state()
         self.init_tesseract_path()
         self.check_7zip()
 
