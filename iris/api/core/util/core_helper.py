@@ -24,7 +24,6 @@ from version_parser import check_version
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
 SCREENSHOT_SIZE = Platform.SCREENSHOT_SIZE
 SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = SCREENSHOT_SIZE
-SCREENSHOT_MAX_TRIES = 3
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
@@ -315,5 +314,8 @@ class IrisCore(object):
             screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
         else:
             screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
-        image = numpy.array(mss.mss().grab(screen_region))
+        try:
+            image = numpy.array(mss.mss().grab(screen_region))
+        except:
+            raise ScreenshotError('Unable to take screenshot.')
         return Image.fromarray(image, mode='RGBA')
