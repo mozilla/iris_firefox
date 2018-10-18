@@ -46,7 +46,6 @@ class Test(BaseTest):
 
         select_location_bar()
         paste('moz')
-        type(Key.SPACE)
 
         pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern,google_one_off_button_pattern,
