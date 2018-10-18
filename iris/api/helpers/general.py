@@ -399,18 +399,22 @@ def close_customize_page():
         raise APIHelperError('Can\'t find the Done button in the page, aborting.')
 
 
-def key_to_one_off_search(highlighted_pattern):
+def key_to_one_off_search(highlighted_pattern, direction = "left"):
     """Iterate through the one of search engines list until the given one is highlighted.
 
     param: highlighted_pattern: The pattern image to search for.
+    param: direction: direction to key to: right or left (default)
     return: None.
     """
-    max_attempts = 11
+    max_attempts = 7
     while max_attempts > 0:
         if exists(highlighted_pattern, 1):
             max_attempts = 0
         else:
-            type(Key.DOWN)
+            if direction == 'right':
+                type(Key.RIGHT)
+            else:
+                type (Key.LEFT)
             max_attempts -= 1
 
 
