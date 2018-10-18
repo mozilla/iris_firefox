@@ -61,8 +61,9 @@ def close_firefox(test):
         quit_firefox()
         status = test.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
         if status is None:
-            logger.error('Firefox crashed!')
-            test.firefox_runner.process_handler = None
+            logger.warning('Firefox is hanging. Executing force quit.')
+            test.firefox_runner.stop()
+            test.firefox_runner = None
     else:
         logger.debug('Firefox already closed. Skipping ...')
 
