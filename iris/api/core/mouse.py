@@ -23,6 +23,7 @@ class Mouse(object):
 
     @staticmethod
     def at():
+        """Function returns a location object."""
         return Location(pyautogui.position())
 
 
@@ -115,7 +116,7 @@ def to_location(ps=None, in_region=None, align='top_left'):
     :return: Location object.
     """
 
-    # TODO: Add multiple alignments if needed
+    # TODO: Add multiple alignments if needed.
     if isinstance(ps, Location):
         return ps
 

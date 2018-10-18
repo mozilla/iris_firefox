@@ -8,7 +8,7 @@ import pyautogui
 
 
 class Platform(object):
-    """Class that holds all supported operating systems (HIGH_DEF = High definition displays)."""
+    """Class that holds all the supported operating systems (HIGH_DEF = High definition displays)."""
     WINDOWS = 'win'
     LINUX = 'linux'
     MAC = 'osx'

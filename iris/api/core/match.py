@@ -7,14 +7,27 @@ from region import Region
 
 
 class Match(Region):
+    """An object of class Match represents the result of a successful find operation."""
+
     def __init__(self, x, y, width, height, score):
+        """Function assign values to the x, y, width, height and score region parameters.
+
+        :param x: Location x parameter.
+        :param y: Location y parameter.
+        :param width: Region's width.
+        :param height: Region's height.
+        :param score: Similarity with which the pattern is found.
+        """
+
         Region.__init__(self, x, y, width, height)
         self._width = width
         self._height = height
         self._score = score
 
     def get_target(self):
+        """Returns the location object that will be used as the click point."""
         return Location(self._x, self._y)
 
     def get_score(self):
+        """Get the similarity score the image or pattern was found. The value is between 0 and 1."""
         return self._score
