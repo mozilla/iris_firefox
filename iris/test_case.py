@@ -73,159 +73,197 @@ class BaseTest(object):
         """Blocker for current test case."""
         self._blocked_by = ''
 
-        """Firefox runner for current test case"""
+        """Firefox runner for current test case."""
         self._firefox_runner = None
 
     @property
     def app(self):
+        """Getter for the _app property."""
         return self._app
 
     @app.setter
     def app(self, value):
+        """Setter for the _app property."""
         self._app = value
 
     @property
     def meta(self):
+        """Getter for the _meta property."""
         return self._meta
 
     @meta.setter
     def meta(self, value):
+        """Setter for the _meta property."""
         self._meta = value
 
     @property
     def fx_version(self):
+        """Getter for the _fx_version property."""
         return self._fx_version
 
     @fx_version.setter
     def fx_version(self, value):
+        """Setter for the _fx_version property."""
         self._fx_version = value
 
     @property
     def exclude(self):
+        """Getter for the _exclude property."""
         return self._exclude
 
     @exclude.setter
     def exclude(self, value):
+        """Setter for the _exclude property."""
         self._exclude = value
 
     @property
     def test_title(self):
+        """Getter for the _test_title property."""
         return self._test_title
 
     @test_title.setter
     def test_title(self, value):
+        """Setter for the _test_title property."""
         self._test_title = value
 
     @property
     def results(self):
+        """Getter for the _results property."""
         return self._results
 
     @results.setter
     def results(self, value):
+        """Setter for the _results property."""
         self._results = value
 
     @property
     def start_time(self):
+        """Getter for the _start_time property."""
         return self._start_time
 
     @start_time.setter
     def start_time(self, value):
+        """Setter for the _start_time property."""
         self._start_time = value
 
     @property
     def end_time(self):
+        """Getter for the _end_time property."""
         return self._end_time
 
     @end_time.setter
     def end_time(self, value):
+        """Setter for the _end_time property."""
         self._end_time = value
 
     @property
     def outcome(self):
+        """Getter for the _outcome property."""
         return self._outcome
 
     @outcome.setter
     def outcome(self, value):
+        """Setter for the _outcome property."""
         self._outcome = value
 
     @property
     def prefs(self):
+        """Getter for the _prefs property."""
         return self._prefs
 
     @prefs.setter
     def prefs(self, value):
+        """Setter for the _prefs property."""
         self._prefs = value
 
     @property
     def profile_path(self):
+        """Getter for the _profile_path property."""
         return self._profile_path
 
     @profile_path.setter
     def profile_path(self, value):
+        """Setter for the _profile_path property."""
         self._profile_path = value
 
     @property
     def channel(self):
+        """Getter for the _channel property."""
         return self._channel
 
     @channel.setter
     def channel(self, value):
+        """Setter for the _channel property."""
         self._channel = value
 
     @property
     def locale(self):
+        """Getter for the _locale property."""
         return self._locale
 
     @locale.setter
     def locale(self, value):
+        """Setter for the _locale property."""
         self._locale = value
 
     @property
     def platform(self):
+        """Getter for the _platform property."""
         return self._platform
 
     @platform.setter
     def platform(self, value):
+        """Setter for the _platform property."""
         self._platform = value
 
     @property
     def tags(self):
+        """Getter for the _tags property."""
         return self._tags
 
     @tags.setter
     def tags(self, value):
+        """Setter for the _tags property."""
         self._tags = value
 
     @property
     def test_case_id(self):
+        """Getter for the _test_case_id property."""
         return self._test_case_id
 
     @test_case_id.setter
     def test_case_id(self, value):
+        """Setter for the _test_case_id property."""
         self._test_case_id = value
 
     @property
     def test_suite_id(self):
+        """Getter for the _test_suite_id property."""
         return self._test_suite_id
 
     @test_suite_id.setter
     def test_suite_id(self, value):
+        """Setter for the _test_suite_id property."""
         self._test_suite_id = value
 
     @property
     def blocked_by(self):
+        """Getter for the _blocked_by property."""
         return self._blocked_by
 
     @blocked_by.setter
     def blocked_by(self, value):
+        """Setter for the _blocked_by property."""
         self._blocked_by = value
 
     @property
     def firefox_runner(self):
+        """Getter for the _firefox_runner property."""
         return self._firefox_runner
 
     @firefox_runner.setter
     def firefox_runner(self, value):
+        """Setter for the _firefox_runner property."""
         self._firefox_runner = value
 
     def add_result(self, result):
@@ -249,6 +287,7 @@ class BaseTest(object):
         return round(self.end_time - self.start_time, 2)
 
     def add_results(self, outcome, message, actual, expected, error):
+        """Create test result object."""
         res = Result(outcome, message, actual, expected, error)
         self.add_result(res)
 
