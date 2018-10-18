@@ -29,9 +29,16 @@ class Region(object):
     def __init__(self, x=0, y=0, width=0, height=0):
         """Function assign values to the screen region parameters x, y, width and height."""
 
+        """"x position of a rectangle."""
         self._x = x
+
+        """y position of a rectangle."""
         self._y = y
+
+        """height of a rectangle."""
         self._width = width
+
+        """width of a rectangle."""
         self._height = height
 
     def debug(self):
