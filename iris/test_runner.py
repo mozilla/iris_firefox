@@ -87,11 +87,6 @@ def run(app):
             current.end_time = time.time()
 
             close_firefox(current)
-            status = current.firefox_runner.process_handler.wait()
-            if status is None:
-                logger.error('Firefox crashed!')
-                current.firefox_runner.process_handler = None
-
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())
 
