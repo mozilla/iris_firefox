@@ -69,6 +69,9 @@ def parse_args():
                         type=float,
                         action='store',
                         default=0.5)
+    parser.add_argument('-n', '--no_check',
+                        help='Skip key lock check on startup',
+                        action='store_true')
     parser.add_argument('-o', '--override',
                         help='Override disabled tests',
                         action='store_true')
