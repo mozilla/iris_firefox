@@ -11,6 +11,7 @@ from multiprocessing import Process
 
 import coloredlogs
 import pytesseract
+from distutils import dir_util
 from mozdownload import FactoryScraper, errors
 from mozinstall import install, get_binary
 
@@ -89,7 +90,7 @@ class Iris(object):
             return True
         else:
             # Copy web assets to working directory.
-            shutil.copytree(os.path.join(self.module_dir, 'iris', 'cc_files'), self.args.workdir)
+            dir_util.copy_tree(os.path.join(self.module_dir, 'iris', 'cc_files'), self.args.workdir)
             # Copy profile for Firefox.
             profile_path = os.path.join(self.args.workdir, 'cc_profile')
             if os.path.exists(profile_path):
