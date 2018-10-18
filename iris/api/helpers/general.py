@@ -406,7 +406,7 @@ def key_to_one_off_search(highlighted_pattern, direction = "left"):
     param: direction: direction to key to: right or left (default)
     return: None.
     """
-    max_attempts = 11
+    max_attempts = 7
     while max_attempts > 0:
         if exists(highlighted_pattern, 1):
             max_attempts = 0
