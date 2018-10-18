@@ -23,10 +23,22 @@ logger = logging.getLogger(__name__)
 
 
 class Region(object):
+    """Region is a rectangular area on a screen, which is defined by its upper left corner (x, y) as a distance relative
+     to the upper left corner of the screen (0, 0) and its dimension (w, h) as its width and height."""
+
     def __init__(self, x=0, y=0, width=0, height=0):
+        """Function assign values to the screen region parameters x, y, width and height."""
+
+        """"x position of a rectangle."""
         self._x = x
+
+        """y position of a rectangle."""
         self._y = y
+
+        """height of a rectangle."""
         self._width = width
+
+        """width of a rectangle."""
         self._height = height
 
     def debug(self):
@@ -41,7 +53,7 @@ class Region(object):
         return self.text(with_image_processing, True)
 
     def show(self):
-        """Show the screen region. This method is mainly intended for debugging purposes."""
+        """Displays the screen region. This method is mainly intended for debugging purposes."""
         region_screen = IrisCore.get_region(self)
         region_screen.show()
 
@@ -73,12 +85,12 @@ class Region(object):
 
     @property
     def width(self):
-        """Getter for the screen width property."""
+        """Getter for the screen region width property."""
         return self._width
 
     @width.setter
     def width(self, width):
-        """Setter for the screen width property."""
+        """Setter for the screen region width property."""
         if isinstance(width, int):
             self._width = width
         else:
@@ -86,12 +98,12 @@ class Region(object):
 
     @property
     def height(self):
-        """Getter for the screen height property."""
+        """Getter for the screen region height property."""
         return self._height
 
     @height.setter
     def height(self, height):
-        """Setter for the screen height property."""
+        """Setter for the screen region height property."""
         if isinstance(height, int):
             self._height = height
         else:
@@ -104,6 +116,7 @@ class Region(object):
         return Location(center_x, center_y)
 
     def move_to(self, location):
+        """Set the position of this region regarding it's top left corner to the given location"""
         self._x = location.x
         self._y = location.y
 
@@ -265,14 +278,15 @@ class Region(object):
 
     @staticmethod
     def paste(text):
-        """
+        """Paste text.
+
         :param text: Text to be pasted.
         :return: Call the paste() method.
         """
         return paste(text)
 
     def mouse_move(self, where=None, duration=None):
-        """Mouse move.
+        """Move mouse location.
 
         :param where: Location , image name or Pattern.
         :param duration: Speed of hovering from current location to target.
@@ -331,7 +345,7 @@ def highlight(region=None, seconds=None, color=None, pattern=None, location=None
 
 
 def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img=None):
-    """Generate a region starting from 2 markers/patterns.
+    """Generate a region starting from 2 markers.
 
     :param top_left_marker_img: Top left pattern used to generate the region.
     :param bottom_right_marker_img: Bottom right pattern used to generate the region.
@@ -358,10 +372,20 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
 
 def create_region_from_patterns(top=None, bottom=None, left=None, right=None, padding_top=None, padding_bottom=None,
                                 padding_left=None, padding_right=None):
+    """Returns a region created from combined area of one or more patterns. Argument names are just for convenience and
+    don't influence outcome.
+
+    :param top: Top pattern used to generate the region.
+    :param bottom: Bottom pattern used to generate the region.
+    :param left: Left pattern used to generate the region.
+    :param right: Right pattern used to generate the region.
+    :param padding_top: Padding to be added to the pattern's top.
+    :param padding_bottom: Padding to be added to the pattern's bottom.
+    :param padding_left: Padding to be added to the pattern's left.
+    :param padding_right: Padding to be added to the pattern's right.
+    :return: region created from combined area of one or more patterns.
     """
-    Returns a region created from combined area of one or more patterns.
-    Argument names are just for convenience and don't influence outcome.
-    """
+
     patterns = []
     if top:
         patterns.append(top)
@@ -479,7 +503,7 @@ def find(image_name, region=None):
 
     :param image_name: String or Pattern.
     :param region: Region object in order to minimize the area.
-    :return: Location.
+    :return: Location object.
     """
     if isinstance(image_name, Pattern):
 
