@@ -15,6 +15,7 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
+        self.set_profile_pref('app.update.auto;true')
         self.set_profile_pref('app.update.interval;7200')
         self.set_profile_pref('app.update.badgeWaitTime;10')
         self.set_profile_pref('app.update.lastUpdateTime.background-update-timer;1')

@@ -342,6 +342,9 @@ class BaseTest(object):
         """Temporary code used to write a pref file, not used otherwise."""
         self.set_profile_pref('iris.enabled;true')
 
+        """Prevent auto-update from interrupting an Iris run."""
+        self.set_profile_pref('app.update.auto;false')
+
         return
 
     def run(self):
