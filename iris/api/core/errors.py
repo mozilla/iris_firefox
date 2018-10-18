@@ -26,3 +26,7 @@ class TestRailError(Exception):
 class EmailError(Exception):
     """Exception raised when an email error occurs."""
     pass
+
+class ScreenshotError(Exception):
+    """Exception raised when an email error occurs."""
+    pass

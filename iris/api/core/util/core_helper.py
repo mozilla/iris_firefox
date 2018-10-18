@@ -16,7 +16,7 @@ import numpy
 import pyautogui
 from PIL import Image
 
-from iris.api.core.errors import APIHelperError
+from iris.api.core.errors import APIHelperError, ScreenshotError
 from iris.api.core.platform import Platform
 from parse_args import parse_args
 from version_parser import check_version
@@ -24,6 +24,7 @@ from version_parser import check_version
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
 SCREENSHOT_SIZE = Platform.SCREENSHOT_SIZE
 SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = SCREENSHOT_SIZE
+SCREENSHOT_MAX_TRIES = 3
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
@@ -295,18 +296,42 @@ class IrisCore(object):
         if region is not None:
             if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
                 screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
-                image = numpy.array(mss.mss().grab(screen_region))
+                try:
+                    image = numpy.array(mss.mss().grab(screen_region))
+                except:
+                    raise ScreenshotError('Screenshot Eror')
+
                 grabbed_area = Image.fromarray(image, mode='RGBA')
 
             else:
-                grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
+                for i in range(SCREENSHOT_MAX_TRIES):
+                    try:
+                        grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
+                    except IOError:
+                        if i < SCREENSHOT_MAX_TRIES - 1:
+                            continue
+                        else:
+                            raise ScreenshotError('Screenshot failed.Retrying')
+                    break
 
         else:
             if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
                 screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
-                image = numpy.array(mss.mss().grab(screen_region))
+                try:
+                    image = numpy.array(mss.mss().grab(screen_region))
+                except:
+                    raise ScreenshotError('Screenshot Eror')
+
                 grabbed_area = Image.fromarray(image, mode='RGBA')
             else:
-                grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+                for i in range(SCREENSHOT_MAX_TRIES):
+                    try:
+                        grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
+                    except IOError:
+                        if i < SCREENSHOT_MAX_TRIES - 1:
+                            continue
+                        else:
+                            raise ScreenshotError('Screenshot failed.Retrying')
+                    break
 
         return grabbed_area
