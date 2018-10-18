@@ -291,59 +291,26 @@ class IrisCore(object):
             return 'non_retina'
 
     @staticmethod
-    def get_screenshot2(region=None):
-        if region is not None:
-            if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
-                grabbed_area = IrisCore._mss_screenshot(region)
-            else:
-                try:
-                    grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
-                except IOError:
-                    grabbed_area = IrisCore._mss_screenshot(region)
-        else:
-            if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
-                grabbed_area = IrisCore._mss_screenshot(region)
-            else:
-                try:
-                    grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
-                except IOError:
-                    grabbed_area = IrisCore._mss_screenshot(region)
-        return grabbed_area
-
-    @staticmethod
-    def get_screenshot3(region=None):
+    def get_screenshot(region=None):
         if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
-            grabbed_area = IrisCore._mss_screenshot(region)
+            grabbed_area = IrisCore._mss_screenshot(region=region)
         else:
             if region is not None:
                 try:
                     grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
                 except IOError:
-                    grabbed_area = IrisCore._mss_screenshot(region)
+                    logger.debug('Call to pyautogui.screnshot failed, using mss instead.')
+                    grabbed_area = IrisCore._mss_screenshot(region=region)
             else:
                 try:
                     grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
                 except IOError:
-                    grabbed_area = IrisCore._mss_screenshot(region)
+                    logger.debug('Call to pyautogui.screnshot failed, using mss instead.')
+                    grabbed_area = IrisCore._mss_screenshot(region=region)
         return grabbed_area
 
     @staticmethod
-    def get_screenshot(region=None):
-
-        if region is not None:
-            try:
-                grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
-            except IOError:
-                grabbed_area = IrisCore._mss_screenshot(region)
-        else:
-            try:
-                grabbed_area = pyautogui.screenshot(region=(0, 0, SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT))
-            except IOError:
-                grabbed_area = IrisCore._mss_screenshot(region)
-        return grabbed_area
-
-    @staticmethod
-    def _mss_screenshot(self, region=None):
+    def _mss_screenshot(region=None):
         if region is not None:
             screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
         else:
