@@ -29,11 +29,7 @@ class Test(BaseTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
-        # click_hamburger_menu_option(addon_option)
-        click(NavBar.HAMBURGER_MENU)
-        time.sleep(10)
-
-        click(HamburgerMenu.ADDONS)
+        open_addons()
 
         expected = region.exists(themes_pattern, 10)
         assert_true(self, expected, 'Add-ons page successfully loaded.')
