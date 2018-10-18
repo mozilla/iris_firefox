@@ -21,6 +21,7 @@ class Test(BaseTest):
         search_settings_pattern = Pattern('search_settings.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
+        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png')
         google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
         test_pattern = Pattern('test.png')
@@ -43,7 +44,7 @@ class Test(BaseTest):
         expected = region.exists(search_settings_pattern, 10)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
 
-        repeat_key_down(7)
+        repeat_key_up(3)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern,)
 
         expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
@@ -52,7 +53,8 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = exists(new_tab_twitter_search_results_pattern, 10)
+        expected = exists(new_tab_twitter_search_results_pattern, 10) \
+                   or exists(new_tab_twitter_search_results_pattern2, 5)
         assert_true(self, expected, 'Twitter search results are opened in the same tab.')
 
         new_tab()

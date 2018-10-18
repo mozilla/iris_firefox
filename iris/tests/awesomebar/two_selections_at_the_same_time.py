@@ -79,7 +79,7 @@ class Test(BaseTest):
         expected = region.exists(search_with_url_autocomplete_pattern, 10)
         assert_true(self, expected, 'The autocomplete is still displayed after user hovers an one-off button.')
 
-        repeat_key_down(10)
+        repeat_key_up(3)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
         expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
