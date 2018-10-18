@@ -11,7 +11,6 @@ class Location(object):
 
     def __init__(self, x=0, y=0):
         """Function assign values to the location parameters x and y."""
-
         self._x = x
         self._y = y
 
