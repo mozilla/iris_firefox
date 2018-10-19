@@ -177,8 +177,12 @@ def image_search(pattern, region=None):
     :return: Location.
     """
     logger.debug('Searching for pattern: %s' % pattern.get_filename())
-    stack_image = IrisCore.get_region(region=region)
-    location = _match_template(pattern, stack_image)
+    try:
+        stack_image = IrisCore.get_region(region=region)
+        location = _match_template(pattern, stack_image)
+    except ScreenshotError:
+        logger.warning('Screenshot failed.')
+        location = Location(-1, -1)
 
     if location.x == -1 or location.y == -1:
         return location
