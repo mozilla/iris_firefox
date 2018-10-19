@@ -54,7 +54,7 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
         expected = exists(new_tab_twitter_search_results_pattern, 10) \
-                   or exists(new_tab_twitter_search_results_pattern2, 5)
+            or exists(new_tab_twitter_search_results_pattern2, 5)
         assert_true(self, expected, 'Twitter search results are opened in the same tab.')
 
         new_tab()

@@ -48,10 +48,10 @@ class Test(BaseTest):
         paste('moz')
 
         pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
-                        bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern,google_one_off_button_pattern,
+                        bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, google_one_off_button_pattern,
                         twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 
-        # deleted assert for ebay because we no longer have the ebay search engine in place
+        # Deleted assert for ebay because we no longer have the ebay search engine in some locations.
 
         # Check that the default one-off list is displayed in the awesomebar.
         for i in range(pattern_list.__len__()):
