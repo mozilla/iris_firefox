@@ -41,7 +41,7 @@ class Test(BaseTest):
                         duck_duck_go_one_off_button_pattern, twitter_one_off_button_pattern,
                         wikipedia_one_off_button_pattern]
 
-        # deleted assert for ebay because we no longer have the ebay search engine in place
+        # Deleted assert for ebay because we no longer have the ebay search engine in place in some locations.
 
         # Check that the one-off list is displayed in the awesomebar.
         for i in range(pattern_list.__len__()):

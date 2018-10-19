@@ -82,6 +82,5 @@ class Test(BaseTest):
                 max_attempts = 0
             max_attempts -= 1
 
-
         expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
         assert_true(self, expected, 'The searched string is highlighted.')
