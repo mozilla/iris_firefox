@@ -30,6 +30,7 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
 _run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
 _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
+mss_screenshot=mss.mss()
 
 
 def success(self, message, *args, **kws):
@@ -291,7 +292,7 @@ class IrisCore(object):
 
     @staticmethod
     def get_screenshot(region=None):
-        if Platform.OS_NAME == 'mac' or get_os_version() == 'win7':
+        if Platform.OS_NAME != 'linux':
             grabbed_area = IrisCore._mss_screenshot(region=region)
         else:
             if region is not None:
@@ -315,7 +316,7 @@ class IrisCore(object):
         else:
             screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
         try:
-            image = numpy.array(mss.mss().grab(screen_region))
+            image = numpy.array(mss_screenshot.grab(screen_region))
         except:
             raise ScreenshotError('Unable to take screenshot.')
         return Image.fromarray(image, mode='RGBA')
