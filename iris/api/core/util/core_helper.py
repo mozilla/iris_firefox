@@ -30,7 +30,6 @@ logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
 _run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
 _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
-mss_screenshot=mss.mss()
 
 
 def success(self, message, *args, **kws):
@@ -97,6 +96,7 @@ def filter_list(original_list, exclude_list):
 
 class IrisCore(object):
     tmp_dir = None
+    _mss = mss.mss()
 
     @staticmethod
     def get_current_module():
@@ -316,7 +316,7 @@ class IrisCore(object):
         else:
             screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
         try:
-            image = numpy.array(mss_screenshot.grab(screen_region))
+            image = numpy.array(IrisCore._mss.grab(screen_region))
         except:
             raise ScreenshotError('Unable to take screenshot.')
         return Image.fromarray(image, mode='RGBA')
