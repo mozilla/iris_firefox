@@ -48,10 +48,17 @@ class Test(BaseTest):
         paste('moz')
 
         pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
+<<<<<<< HEAD:iris/tests/awesomebar/search_engine_can_be_added.py
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, google_one_off_button_pattern,
                         twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 
         # Deleted assert for ebay because we no longer have the ebay search engine in some locations.
+=======
+                        bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern,google_one_off_button_pattern,
+                        twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
+
+        # deleted assert for ebay because we no longer have the ebay search engine in place
+>>>>>>> ae16dd49cf324de34b229cb45ab3b62c8149e231:iris/tests/awesomebar/search_engine_can_be_added.py
 
         # Check that the default one-off list is displayed in the awesomebar.
         for i in range(pattern_list.__len__()):
