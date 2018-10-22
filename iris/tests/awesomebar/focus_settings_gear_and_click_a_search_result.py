@@ -61,7 +61,7 @@ class Test(BaseTest):
         time.sleep(Settings.UI_DELAY)
 
         repeat_key_down(16)
-        key_to_one_off_search(settings_gear_highlighted, "right")
+        key_to_one_off_search(settings_gear_highlighted_pattern, "right")
 
         expected = region.exists(settings_gear_highlighted_pattern, 5)
         assert_true(self, expected, 'The \'Search settings\' button has focus.')
