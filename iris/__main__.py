@@ -132,6 +132,11 @@ class Iris(object):
             # Iris waits for the user to make a choice in the control center. Once they
             # make a decision, Firefox will quit.
             quit_firefox()
+            status = fx_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+            if status is None:
+                logger.debug('Firefox did not quit. Executing force quit.')
+                fx_runner.stop()
+                fx_runner = None
 
             # Check the result of the user's decision. If they have chosen to run tests,
             # we will continue. Otherwise, abort the current run.
