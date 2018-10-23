@@ -22,7 +22,6 @@ class Test(BaseTest):
         """
         BaseTest.setup(self)
         self.profile = Profile.LIKE_NEW
-        self.set_profile_pref("browser.warnOnQuit;false")
 
         return
 

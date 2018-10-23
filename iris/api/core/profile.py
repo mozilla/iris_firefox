@@ -4,20 +4,60 @@
 
 
 from distutils import dir_util
-from distutils.spawn import find_executable
-import os
+
 import shutil
+from distutils.spawn import find_executable
+from mozprofile import Profile as FxProfile
 
 from util.core_helper import *
 
 
 class _IrisProfile(object):
-
     """These are profile options available to tests. With the exception of BRAND_NEW, 
     they are pre-configured, zipped profiles that are part of the source tree, unzipped 
     and uniquely created for each test. Profiles are saved to the current run directory, 
     and each is named after the test it was created for. 
     """
+
+    preferences = {  # Don't automatically update the application
+        'app.update.disabledForTesting': True,
+        # Don't restore the last open set of tabs if the browser has crashed
+        'browser.sessionstore.resume_from_crash': False,
+        # Don't check for the default web browser during startup
+        'browser.shell.checkDefaultBrowser': False,
+        # Don't warn on exit when multiple tabs are open
+        'browser.tabs.warnOnClose': False,
+        # Don't warn when exiting the browser
+        'browser.warnOnQuit': False,
+        # Don't send Firefox health reports to the production server
+        'datareporting.healthreport.documentServerURI': 'http://%(server)s/healthreport/',
+        # Skip data reporting policy notifications
+        'datareporting.policy.dataSubmissionPolicyBypassNotification': False,
+        # Only install add-ons from the profile and the application scope
+        # Also ensure that those are not getting disabled.
+        # see: https://developer.mozilla.org/en/Installing_extensions
+        'extensions.enabledScopes': 5,
+        'extensions.autoDisableScopes': 10,
+        # Don't send the list of installed addons to AMO
+        'extensions.getAddons.cache.enabled': False,
+        # Don't install distribution add-ons from the app folder
+        'extensions.installDistroAddons': False,
+        # Don't automatically update add-ons
+        'extensions.update.enabled': False,
+        # Don't open a dialog to show available add-on updates
+        'extensions.update.notifyUser': False,
+        # Enable test mode to run multiple tests in parallel
+        'focusmanager.testmode': True,
+        # Enable test mode to not raise an OS level dialog for location sharing
+        'geo.provider.testing': True,
+        # Suppress delay for main action in popup notifications
+        'security.notification_enable_delay': 0,
+        # Suppress automatic safe mode after crashes
+        'toolkit.startup.max_resumed_crashes': -1,
+        # Don't send Telemetry reports to the production server. This is
+        # needed as Telemetry sends pings also if FHR upload is enabled.
+        'toolkit.telemetry.server': 'http://%(server)s/telemetry-dummy/',
+    }
 
     BRAND_NEW = 'brand_new'
     LIKE_NEW = 'like_new'
@@ -87,6 +127,7 @@ class _IrisProfile(object):
         :return:
         """
         test_directory = IrisCore.make_test_output_dir()
+        prefs = None
 
         if parse_args().save:
             profile_path = os.path.join(test_directory, 'profile')
@@ -98,22 +139,18 @@ class _IrisProfile(object):
             os.mkdir(profile_path)
 
         if template is _IrisProfile.BRAND_NEW:
-            """Make new, unique profile."""
             logger.debug('Creating brand new profile: %s' % profile_path)
-        elif template is _IrisProfile.LIKE_NEW:
-            """Open a staged profile that is nearly new, but with some first-run preferences altered."""
-            logger.debug('Creating new profile from LIKE_NEW staged profile.')
-            self._get_staged_profile(template, profile_path)
-        elif template is _IrisProfile.TEN_BOOKMARKS:
-            """Open a staged profile that already has ten bookmarks."""
-            logger.debug('Creating new profile from TEN_BOOKMARKS staged profile')
+            prefs = _IrisProfile.preferences
+        elif template in (_IrisProfile.LIKE_NEW, _IrisProfile.TEN_BOOKMARKS):
+            logger.debug('Creating new profile from %s staged profile.' % template.upper())
             self._get_staged_profile(template, profile_path)
         else:
             raise ValueError('No profile found: %s' % template)
 
         if not parse_args().save:
             self._manage_profile_cache(profile_path)
-        return profile_path
+
+        return FxProfile(profile=profile_path, preferences=prefs)
 
     @staticmethod
     def _manage_profile_cache(path):

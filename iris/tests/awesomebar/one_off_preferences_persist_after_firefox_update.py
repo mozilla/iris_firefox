@@ -20,13 +20,13 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
-        self.set_profile_pref('app.update.interval;7200')
-        self.set_profile_pref('app.update.badgeWaitTime;10')
-        self.set_profile_pref('app.update.lastUpdateTime.background-update-timer;1')
-        self.set_profile_pref('app.update.promptWaitTime;30')
-        self.set_profile_pref('app.update.timerMinimumDelay;10')
-        self.set_profile_pref('app.update.log;true')
-        self.set_profile_pref('app.update.channel;%s-cdntest' % self.app.fx_channel)
+        self.set_profile_pref({'app.update.auto': True,
+                               'app.update.interval': 7200,
+                               'app.update.badgeWaitTime': 10,
+                               'app.update.lastUpdateTime.background-update-timer': 1,
+                               'app.update.promptWaitTime': 30,
+                               'app.update.timerMinimumDelay': 10,
+                               'app.update.channel': '%s-cdntest' % self.app.fx_channel})
 
     def run(self):
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
