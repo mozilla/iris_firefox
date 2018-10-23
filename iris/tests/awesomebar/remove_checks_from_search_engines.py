@@ -67,11 +67,11 @@ class Test(BaseTest):
         assert_true(self, expected, 'One-Click Search Engines section found.')
 
         # Uncheck all the search engines from the list.
-        for i in range(pattern_list.__len__() - 2):
+        while exists(check_engine_pattern, 2):
             click(check_engine_pattern)
 
         try:
-            expected = region.wait_vanish(check_engine_pattern.similar(0.9), 10)
+            expected = region.wait_vanish(check_engine_pattern.similar(0.9), 5)
             assert_true(self, expected, 'Each search engine is unchecked.')
         except FindError:
             raise FindError('There are search engines still checked.')
