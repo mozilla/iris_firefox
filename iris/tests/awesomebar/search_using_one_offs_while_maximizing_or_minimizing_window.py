@@ -17,7 +17,6 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        one_off_searches_minimized_browser_pattern = Pattern('one_off_searches_minimized_browser.png')
         search_settings_pattern = Pattern('search_settings.png')
         window_controls_restore_pattern = Pattern('window_controls_restore.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
@@ -56,9 +55,6 @@ class Test(BaseTest):
 
         expected = region.exists(search_settings_pattern, 10)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
-
-        expected = region.exists(one_off_searches_minimized_browser_pattern, 10)
-        assert_true(self, expected, 'The one-off searches are displayed in the awesome bar.')
 
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
