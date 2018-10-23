@@ -61,15 +61,13 @@ class Test(BaseTest):
         expected = exists(about_preferences_search_page_pattern, 10)
         assert_true(self, expected, 'The \'about:preferences#search\' page successfully loaded.')
 
-        for i in range(4):
-            type(Key.TAB)
-        type(Key.SPACE)
+        paste('one-click')
 
         expected = exists(search_engine_pattern, 10)
         assert_true(self, expected, 'One-Click Search Engines section found.')
 
         # Uncheck all the search engines from the list.
-        for i in range(pattern_list.__len__() - 1):
+        for i in range(pattern_list.__len__() - 2):
             click(check_engine_pattern)
 
         try:
