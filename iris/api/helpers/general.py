@@ -105,32 +105,6 @@ def confirm_firefox_launch(app, image=None):
         app.finish(code=1)
 
 
-def confirm_firefox_quit(app):
-    """Waits for Firefox to quit by waiting for the home button to be vanished and for a possible crash report to be
-       closed.
-
-    :param app: Instance of FirefoxApp class.
-    :return: None.
-    """
-    try:
-        wait_vanish(NavBar.HOME_BUTTON, 10)
-        address_crash_reporter()
-    except FindError:
-        logger.warning('Firefox still around - reattempting quit.')
-        type(Key.ENTER)
-        time.sleep(Settings.FX_DELAY)
-        type(Key.ESC)
-        time.sleep(Settings.FX_DELAY)
-        click(NavBar.HOME_BUTTON)
-        quit_firefox()
-        try:
-            wait_vanish(NavBar.HOME_BUTTON, 10)
-            address_crash_reporter()
-        except FindError:
-            logger.error('Firefox still around - aborting test run.')
-            app.finish(code=1)
-
-
 def get_firefox_region():
     # TODO: needs better logic to determine bounds.
     """For now, just return the Primary Monitor."""
@@ -416,34 +390,6 @@ def key_to_one_off_search(highlighted_pattern, direction='left'):
             else:
                 type(Key.LEFT)
             max_attempts -= 1
-
-
-def address_crash_reporter():
-    """Close the popped up crash reporter."""
-    # TODO: Only works on Mac and Windows until we can get Linux images.
-    reporter_pattern = Pattern('crash_sorry.png')
-    if exists(reporter_pattern, 2):
-        logger.debug('Crash Reporter found!')
-        # Let crash stats know this is an Iris automation crash.
-        click(reporter_pattern)
-        # TODO: Add additional info in this message to crash stats.
-        type('Iris automation test crash.')
-        # Then dismiss the dialog by choosing to quit Firefox.
-        click(Pattern('quit_firefox_button.png'))
-
-        # Ensure the reporter closes before moving on.
-        try:
-            wait_vanish(reporter_pattern, 20)
-            logger.debug('Crash report sent.')
-        except FindError:
-            logger.error('Crash reporter did not close.')
-            # Close the reporter if it hasn't gone away in time.
-            click_auxiliary_window_control('close')
-        else:
-            return
-    else:
-        # If no crash reporter, silently move on to the next test case.
-        return
 
 
 def open_about_firefox():
