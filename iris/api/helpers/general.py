@@ -565,12 +565,11 @@ def restore_window_from_taskbar(option=None):
     """Restore firefox from taskbar."""
     if Settings.get_os() == Platform.MAC:
         try:
-            main_menu_window_pattern = Pattern('main_menu_window.png')
-            wait(main_menu_window_pattern, 5)
-            click(main_menu_window_pattern)
-            type(Key.DOWN)
-            time.sleep(Settings.FX_DELAY)
-            type(Key.ENTER)
+            click(Pattern('main_menu_window.png'))
+            if option == "browser_console":
+                click(Pattern('window_browser_console.png'))
+            else:
+                click(Pattern('window_firefox.png'))
         except FindError:
             raise APIHelperError('Restore window from taskbar unsuccessful.')
     elif get_os_version() == 'win7':
@@ -578,6 +577,8 @@ def restore_window_from_taskbar(option=None):
             click(Pattern('firefox_start_bar.png'))
             if option == "library_menu":
                 click(Pattern('firefox_start_bar_library.png'))
+            if option == "browser_console":
+                click(Pattern('firefox_start_bar_browser_console.png'))
         except FindError:
             raise APIHelperError('Restore window from taskbar unsuccessful.')
 
