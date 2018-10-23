@@ -23,7 +23,6 @@ class Test(BaseTest):
         """
         BaseTest.setup(self)
         self.profile = Profile.BRAND_NEW
-        self.set_profile_pref("browser.warnOnQuit;false")
 
         return
 

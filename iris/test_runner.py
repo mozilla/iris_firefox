@@ -8,6 +8,7 @@ from api.core.profile import *
 from api.helpers.general import *
 from email_report.email_client import EmailClient
 from iris.test_rail.test_rail_client import *
+from mozprofile import Preferences
 
 logger = logging.getLogger(__name__)
 
@@ -47,11 +48,12 @@ def run(app):
 
             # Generate profile
             try:
-                current.profile_path = Profile.make_profile(current.profile)
+                profile = Profile.make_profile(current.profile)
+                current.profile_path = profile
+                profile.set_preferences(current.prefs)
             except ValueError:
                 app.finish(code=1)
 
-            write_profile_prefs(current)
             args = create_firefox_args(current)
             current.firefox_runner = launch_firefox(path=app.fx_path,
                                                     profile=current.profile_path,
@@ -121,7 +123,7 @@ def run(app):
 
 def create_log_object(module, current, fx_args):
     run_obj = {'name': module.__name__, 'meta': current.meta, 'profile': current.profile, 'module': module.__file__,
-               'profile_path': current.profile_path, 'fx_args': fx_args, 'prefs': current.prefs,
+               'profile_path': current.profile_path.profile, 'fx_args': fx_args, 'prefs': current.prefs,
                'time': int(current.end_time - current.start_time), 'asserts': []}
 
     outcome = 'PASSED'

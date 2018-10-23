@@ -313,7 +313,6 @@ class Iris(object):
 
         run_file = os.path.join(IrisCore.get_current_run_dir(), 'run.json')
         run_file_data = {'meta': meta, 'tests': tests}
-
         with open(run_file, 'w') as f:
             json.dump(run_file_data, f, sort_keys=True, indent=True)
 

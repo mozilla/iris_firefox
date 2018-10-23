@@ -5,7 +5,6 @@
 import json
 
 import mozversion
-from mozprofile import FirefoxProfile
 from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
@@ -34,8 +33,6 @@ def launch_firefox(path, profile=None, url=None, args=None):
 
     if profile is None:
         raise APIHelperError('No profile name present, aborting run.')
-
-    profile = FirefoxProfile(profile=profile)
 
     args.append('-foreground')
     args.append('-no-remote')

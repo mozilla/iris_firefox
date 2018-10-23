@@ -47,7 +47,7 @@ class BaseTest(object):
         self._outcome = 'PASSED'
 
         """List of test case prefs."""
-        self._prefs = []
+        self._prefs = {}
 
         """Path to the Firefox profile."""
         self._profile_path = None
@@ -275,7 +275,7 @@ class BaseTest(object):
 
     def set_profile_pref(self, pref):
         """Setter for the prefs property."""
-        self.prefs.append(pref)
+        self._prefs.update(pref)
 
     def setup(self):
         """ Test case setup
@@ -340,10 +340,7 @@ class BaseTest(object):
         self.window_size = None
 
         """Temporary code used to write a pref file, not used otherwise."""
-        self.set_profile_pref('iris.enabled;true')
-
-        """Prevent auto-update from interrupting an Iris run."""
-        self.set_profile_pref('app.update.auto;false')
+        self.set_profile_pref({'iris.enabled': True})
 
         return
 
