@@ -78,11 +78,7 @@ class Test(BaseTest):
         expected = exists(about_preferences_search_page_pattern, 10)
         assert_true(self, expected, 'The \'about:preferences#search\' page successfully loaded.')
 
-        for i in range(4):
-            type(Key.TAB)
-
-        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            type(Key.SPACE)
+        paste('one-click')
 
         expected = exists(search_engine_pattern, 10)
         assert_true(self, expected, 'One-Click Search Engines section found.')
