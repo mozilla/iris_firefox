@@ -13,9 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case adds links using \'CTRL/CMD\' + \'ENTER\' keys.'
         self.test_case_id = '119484'
         self.test_suite_id = '1902'
-        self.blocked_by = '1501435'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def run(self):
         cnn_tab_pattern = Pattern('cnn_tab.png')
@@ -24,37 +22,27 @@ class Test(BaseTest):
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
-        # Navigate to the 'CNN' page using the 'CTRL'/'CMD' + 'ENTER' keys starting from the name of the page.
+        # Navigate to the 'CNN' page using the 'CTRL' + 'ENTER' keys starting from the name of the page.
         select_location_bar()
         type('cnn')
 
-        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            key_down(Key.CTRL)
-            type(Key.ENTER)
-            key_up(Key.CTRL)
-        else:
-            key_down(Key.CMD)
-            type(Key.ENTER)
-            key_up(Key.CMD)
+        key_down(Key.CTRL)
+        type(Key.ENTER)
+        key_up(Key.CTRL)
 
         expected = region.exists(cnn_tab_pattern, 15) and region.exists(cnn_icon_pattern, 10)
         assert_true(self, expected, 'CNN page successfully loaded .')
 
-        # In a new tab, navigate to the 'Facebook' page using the 'CTRL'/'CMD' + 'ENTER' keys starting from the name of
+        # In a new tab, navigate to the 'Facebook' page using the 'CTRL' + 'ENTER' keys starting from the name of
         # the page.
         new_tab()
 
         select_location_bar()
         type('facebook')
 
-        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            key_down(Key.CTRL)
-            type(Key.ENTER)
-            key_up(Key.CTRL)
-        else:
-            key_down(Key.CMD)
-            type(Key.ENTER)
-            key_up(Key.CMD)
+        key_down(Key.CTRL)
+        type(Key.ENTER)
+        key_up(Key.CTRL)
 
         expected = region.exists(facebook_tab_pattern, 10)
         assert_true(self, expected, 'Facebook page successfully loaded.')
@@ -63,14 +51,9 @@ class Test(BaseTest):
         previous_tab()
         select_location_bar()
 
-        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            key_down(Key.CTRL)
-            type(Key.ENTER)
-            key_up(Key.CTRL)
-        else:
-            key_down(Key.CMD)
-            type(Key.ENTER)
-            key_up(Key.CMD)
+        key_down(Key.CTRL)
+        type(Key.ENTER)
+        key_up(Key.CTRL)
 
         expected = region.exists(cnn_tab_pattern, 10)
         assert_true(self, expected, 'CNN page successfully reloaded.')

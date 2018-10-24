@@ -18,7 +18,7 @@ class Test(BaseTest):
     def run(self):
         x_button_sidebar_pattern = Pattern('x_button_sidebar.png')
         x_button_sidebar_hovered_pattern = Pattern('x_button_sidebar_hovered.png')
-        sidebar_title_pattern = Pattern('sidebar_title.png').similar(0.4)
+        sidebar_title_pattern = Pattern('sidebar_title.png')
 
         bookmarks_sidebar('open')
         expected_1 = exists(sidebar_title_pattern, 10)

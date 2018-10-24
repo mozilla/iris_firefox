@@ -52,11 +52,11 @@ class Test(BaseTest):
         click(expand_button_history_sidebar_pattern)
 
         # Open a page from the History sidebar using the 'Open in a New Window' button from the context menu.
-        history_sidebar_region = Region(0, find(NavBar.HOME_BUTTON).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
-        expected_5 = history_sidebar_region.exists(history_sidebar_mozilla, 10)
+
+        expected_5 = exists(history_sidebar_mozilla, 10)
         assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
 
-        history_sidebar_region.right_click(history_sidebar_mozilla, 1)
+        right_click(history_sidebar_mozilla, 1)
         time.sleep(Settings.FX_DELAY)
         type(text='n')
 
