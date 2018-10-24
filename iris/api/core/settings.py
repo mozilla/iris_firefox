@@ -32,6 +32,7 @@ BETA = 'beta'
 RELEASE = 'release'
 NIGHTLY = 'nightly'
 ESR = 'esr'
+DEV_EDITION = 'dev'
 
 
 class _IrisSettings(object):
@@ -56,7 +57,7 @@ class _IrisSettings(object):
         self._ui_delay = DEFAULT_UI_DELAY
         self._ui_delay_long = DEFAULT_UI_DELAY_LONG
         self._system_delay = DEFAULT_SYSTEM_DELAY
-        self._channels = [BETA, RELEASE, NIGHTLY, ESR]
+        self._channels = [BETA, RELEASE, NIGHTLY, ESR, DEV_EDITION]
         self._locales = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
         self._firefox_timeout = DEFAULT_FIREFOX_TIMEOUT
 

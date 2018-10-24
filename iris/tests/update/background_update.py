@@ -28,7 +28,8 @@ class Test(BaseTest):
         update_restart_pattern = Pattern('background_update_menu_notification.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
 
-        current_version = self.app.args.firefox
+        version = self.app.args.firefox
+        current_version = version if '-dev' not in version else version.replace('-dev', '')
         channel = self.app.fx_channel
         rules_dict = get_rule_for_current_channel(channel, current_version)
 
