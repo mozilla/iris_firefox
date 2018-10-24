@@ -18,6 +18,7 @@ class Test(BaseTest):
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
         bing_search_results_moz_pattern = Pattern('bing_search_results_moz.png')
+        focus_on_search_bar = Pattern('focus_on_search_bar.png')
 
         navigate(url)
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
@@ -26,10 +27,12 @@ class Test(BaseTest):
         new_tab()
         select_location_bar()
 
-        # Tab 3 times to move focus on the search bar in the center of the page.
-        type(Key.TAB)
-        type(Key.TAB)
-        type(Key.TAB)
+        try:
+            wait(focus_on_search_bar, 5)
+            logger.debug('Search Bar is present on the page.')
+            click(focus_on_search_bar)
+        except FindError:
+            raise FindError('Search Bar is NOT present on the page, aborting.')
 
         paste('moz')
 

@@ -69,7 +69,7 @@ class Test(BaseTest):
 
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
-        expected_7 = exists(mozilla_bookmark_small_pattern.similar(0.9), 5)
+        expected_7 = exists(mozilla_bookmark_small_pattern.similar(0.9), 10)
         assert_false(self, expected_7, 'Mozilla page is not displayed in the Recent History list.')
         type(Key.ESC)
 
@@ -77,5 +77,5 @@ class Test(BaseTest):
         select_location_bar()
         paste('127')
 
-        expected_8 = exists(local_server_autocomplete_pattern.similar(0.9), 5)
+        expected_8 = exists(local_server_autocomplete_pattern.similar(0.9), 10)
         assert_false(self, expected_8, 'Local server is not auto-completed in the URL bar.')
