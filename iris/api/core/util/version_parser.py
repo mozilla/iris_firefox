@@ -165,15 +165,29 @@ def get_scraper_details(version, channels, destination, locale):
         version = map_latest_release_options(version)
 
         if version == 'nightly':
-            return 'daily', {'branch': 'mozilla-central', 'destination': destination, 'locale': locale}
+            return 'daily', {'branch': 'mozilla-central',
+                             'destination': destination,
+                             'locale': locale}
         else:
-            return 'candidate', {'version': version, 'destination': destination, 'locale': locale}
+            return 'candidate', {'version': version,
+                                 'destination': destination,
+                                 'locale': locale}
     else:
-        if not has_letters(version) or any(x in version for x in ('b', 'esr')):
-            return 'candidate', {'version': version, 'destination': destination, 'locale': locale}
+        if '-dev' in version:
+            return 'candidate', {'application': 'devedition',
+                                 'version': version.replace('-dev', ''),
+                                 'destination': destination,
+                                 'locale': locale}
+
+        elif not has_letters(version) or any(x in version for x in ('b', 'esr')):
+            return 'candidate', {'version': version,
+                                 'destination': destination,
+                                 'locale': locale}
         else:
             logger.warning('Version not recognized. Getting latest nightly build ...')
-            return 'daily', {'branch': 'mozilla-central', 'destination': destination, 'locale': locale}
+            return 'daily', {'branch': 'mozilla-central',
+                             'destination': destination,
+                             'locale': locale}
 
 
 def get_latest_scraper_details(channel):
