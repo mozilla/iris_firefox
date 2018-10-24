@@ -16,13 +16,14 @@ class Test(BaseTest):
     def setup(self):
         BaseTest.setup(self)
         self.maximize_window = False
-        self.set_profile_pref('app.update.auto;true')
+        self.set_profile_pref({'app.update.auto': True})
 
     def run(self):
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
 
-        current_version = self.app.args.firefox
+        version = self.app.args.firefox
+        current_version = version if '-dev' not in version else version.replace('-dev', '')
         channel = self.app.fx_channel
         rules_dict = get_rule_for_current_channel(channel, current_version)
         if rules_dict is None:
