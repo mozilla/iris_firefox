@@ -49,11 +49,10 @@ class Test(BaseTest):
         click(expand_button_history_sidebar_pattern)
 
         # Bookmark a page from the History sidebar with custom settings.
-        history_sidebar_region = Region(0, find(NavBar.HOME_BUTTON).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)
-        expected_4 = history_sidebar_region.exists(history_sidebar_mozilla_pattern, 10)
+        expected_4 = exists(history_sidebar_mozilla_pattern, 10)
         assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
 
-        history_sidebar_region.right_click(history_sidebar_mozilla_pattern, 1)
+        right_click(history_sidebar_mozilla_pattern, 1)
         type(text='b')
 
         expected_5 = exists(save_bookmark_button_pattern, 10)
