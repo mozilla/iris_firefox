@@ -10,13 +10,11 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = "This is a test case that checks that Browser Control Console work as expected"
+        self.meta = "This is a test case that checks that Browser Control Console work as expected."
         self.test_case_id = '120464'
         self.test_suite_id = '1998'
         self.locales = ['en-US']
 
-        # Disabling until test has been updated
-        # self.exclude = Platform.ALL
 
     def run(self):
 
@@ -26,35 +24,35 @@ class Test(BaseTest):
         toggle_filter_bar = Pattern('toggle.png')
 
         navigate(url)
-        pop_up_region = click_hamburger_menu_option("Web Developer")
+        pop_up_region = click_hamburger_menu_option('Web Developer')
         time.sleep(Settings.UI_DELAY_LONG)
 
-        pop_up_region.click("Browser Console")
+        pop_up_region.click('Browser Console')
         time.sleep(Settings.UI_DELAY_LONG)
         expected_1 = exists(browser_console, 10)
-        assert_true(self, expected_1, 'Browser Console successfully displayed')
+        assert_true(self, expected_1, 'Browser Console successfully displayed.')
 
-        # checking if Browser Console options are available
+        # Check if the Browser Console options are available.
         expected_2 = exists(clear_web_console, 10)
-        assert_true(self, expected_2, 'Clear the web console option is present')
+        assert_true(self, expected_2, 'Clear the web console option is present.')
         expected_3 = exists(toggle_filter_bar, 10)
-        assert_true(self, expected_3, 'Toggle filter bar option is present')
+        assert_true(self, expected_3, 'Toggle filter bar option is present.')
 
-        click_auxiliary_window_control("close")
+        click_auxiliary_window_control('close')
         try:
             expected_4 = wait_vanish(browser_console, 10)
-            assert_true(self, expected_4, 'Browser Console successfully closed')
+            assert_true(self, expected_4, 'Browser Console successfully closed.')
         except FindError:
             logger.error('Browser Console not closed')
 
-        # access Browser Console by keyboard shortcut
+        # Access Browser Console by keyboard shortcut.
         open_browser_console()
         click_auxiliary_window_control("minimize")
         try:
             expected_5 = wait_vanish(browser_console, 10)
-            assert_true(self, expected_5, 'Browser Console successfully minimized')
+            assert_true(self, expected_5, 'Browser Console successfully minimized.')
         except FindError:
-            logger.error('Browser Console not minimized')
+            logger.error('Browser Console not minimized.')
 
         restore_window_from_taskbar(option='browser_console')
         click_auxiliary_window_control("maximize")
@@ -62,8 +60,8 @@ class Test(BaseTest):
         try:
             mouse_move(toggle_filter_bar)
             expected_6 = top_page.exists(browser_console, 10)
-            assert_true(self, expected_6, 'Browser Console successfully maximized')
+            assert_true(self, expected_6, 'Browser Console successfully maximized.')
         except FindError:
-            logger.error('Browser Console not maximized')
+            logger.error('Browser Console not maximized.')
 
         click_auxiliary_window_control("close")
