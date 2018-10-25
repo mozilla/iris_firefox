@@ -150,6 +150,7 @@ class _IrisProfile(object):
             prefs = _IrisProfile.preferences
         elif template in (_IrisProfile.LIKE_NEW, _IrisProfile.TEN_BOOKMARKS):
             logger.debug('Creating new profile from %s staged profile.' % template.upper())
+            self._get_staged_profile(template, profile_path)
         else:
             raise ValueError('No profile found: %s' % template)
 
