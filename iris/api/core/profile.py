@@ -118,7 +118,7 @@ class _IrisProfile(object):
             # This error can happen, but does not affect Iris.
             logger.debug('Error, can\'t remove orphaned directory, leaving in place.')
 
-        #Remove Mac resource fork folders left over from ZIP, if present.
+        # Remove Mac resource fork folders left over from ZIP, if present.
         resource_fork_folder = os.path.join(_staged_profiles, '__MACOSX')
         if os.path.exists(resource_fork_folder):
             try:
