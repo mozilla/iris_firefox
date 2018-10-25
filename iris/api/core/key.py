@@ -367,7 +367,7 @@ def paste(text):
     :return: None.
     """
 
-    """Load text to clipboard."""
+    # Load text to clipboard.
     pyperclip.copy(text)
 
     text_copied = False
@@ -391,5 +391,6 @@ def paste(text):
         type(text='v', modifier=KeyModifier.CMD)
     else:
         type(text='v', modifier=KeyModifier.CTRL)
-    """Clear clipboard."""
+
+    # Clear clipboard.
     pyperclip.copy('')
