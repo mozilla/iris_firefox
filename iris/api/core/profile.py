@@ -84,7 +84,7 @@ class _IrisProfile(object):
         :param path:
         :return:
         """
-        """Disk location for staged profiles."""
+        # Disk location for staged profiles.
         _staged_profiles = os.path.join(IrisCore.get_module_dir(), 'iris', 'profiles')
 
         sz_bin = find_executable('7z')
@@ -101,17 +101,17 @@ class _IrisProfile(object):
             raise Exception('Unable to unzip profile.')
         logger.debug('7zip succeeded: %s' % repr(output))
 
-        """Find the desired profile."""
+        # Find the desired profile.
         from_directory = os.path.join(_staged_profiles, profile_name)
 
-        """Create a folder to hold that profile's contents."""
+        # Create a folder to hold that profile's contents.
         to_directory = path
         logger.debug('Creating new profile: %s' % to_directory)
 
-        """Duplicate profile."""
+        # Duplicate profile.
         dir_util.copy_tree(from_directory, to_directory)
 
-        """Remove old unzipped directory."""
+        # Remove old unzipped directory.
         try:
             shutil.rmtree(from_directory)
         except WindowsError:
