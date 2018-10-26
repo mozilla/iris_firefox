@@ -23,7 +23,6 @@ mozinfo = "*"
 mozrunner = "*"
 mss = "*"
 "pep8" = "*"
-
 # Platform dependencies
 xlib = {version = "*", platform_system = "== 'Linux'"}
 pyobjc = {version = "*", platform_system = "== 'Darwin'"}
