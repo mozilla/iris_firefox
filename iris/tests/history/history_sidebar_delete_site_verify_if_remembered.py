@@ -31,6 +31,8 @@ class Test(BaseTest):
         local_server_autocomplete = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
 
+        left_upper_corner = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
         # Open some pages to create some history.
         close_tab()
         new_tab()
@@ -55,14 +57,14 @@ class Test(BaseTest):
         click(expand_button_history_sidebar)
 
         # Delete a page from the History sidebar.
-        expected_5 = exists(mozilla_bookmark_small_pattern, 10)
+        expected_5 = left_upper_corner.exists(mozilla_bookmark_small_pattern.similar(0.7), 10)
         assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
 
         right_click(mozilla_bookmark_small_pattern)
         type(text='d')
 
         try:
-            expected_6 = wait_vanish(mozilla_bookmark_small_pattern, 10)
+            expected_6 = left_upper_corner.wait_vanish(mozilla_bookmark_small_pattern, 10)
             assert_true(self, expected_6, 'Mozilla page was deleted successfully from the history.')
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
