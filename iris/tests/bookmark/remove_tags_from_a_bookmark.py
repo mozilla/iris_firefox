@@ -90,7 +90,7 @@ class Test(BaseTest):
 
         while max_attempts > 0:
             type(Key.TAB)
-            if exists(bookmark_tags, 1):
+            if exists(bookmark_tags, 2):
                 edit_delete()
                 max_attempts = 0
             max_attempts -= 1

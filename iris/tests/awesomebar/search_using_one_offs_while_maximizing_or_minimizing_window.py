@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '108252'
         self.test_suite_id = '1902'
         self.locales = ['en-US']
+        self.set_profile_pref({'browser.contentblocking.enabled': False})
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
