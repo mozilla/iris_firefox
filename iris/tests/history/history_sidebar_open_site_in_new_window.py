@@ -32,6 +32,8 @@ class Test(BaseTest):
         search_history_box_pattern = Pattern('search_history_box.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
 
+        left_upper_corner = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
@@ -53,10 +55,10 @@ class Test(BaseTest):
 
         # Open a page from the History sidebar using the 'Open in a New Window' button from the context menu.
 
-        expected_5 = exists(history_sidebar_mozilla, 10)
+        expected_5 = left_upper_corner.exists(history_sidebar_mozilla.similar(0.7), 10)
         assert_true(self, expected_5, 'Mozilla page is displayed in the History list successfully.')
 
-        right_click(history_sidebar_mozilla, 1)
+        right_click(history_sidebar_mozilla.similar(0.7), 1)
         time.sleep(Settings.FX_DELAY)
         type(text='n')
 

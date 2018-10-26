@@ -29,6 +29,8 @@ class Test(BaseTest):
         search_history_box_pattern = Pattern('search_history_box.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
 
+        left_upper_corner = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
         # Open a page to create some history.
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -45,14 +47,14 @@ class Test(BaseTest):
         click(expand_button_history_sidebar_pattern)
 
         # Forget a page from the History sidebar.
-        expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+        expected_4 = left_upper_corner.exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.7), 10)
         assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
 
         right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
         type(text='f')
 
         try:
-            expected_5 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+            expected_5 = left_upper_corner.wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
             assert_true(self, expected_5, 'Mozilla page was deleted successfully from the history.')
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
