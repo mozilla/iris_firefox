@@ -18,6 +18,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        ebay_one_off_pattern = Pattern('ebay_one_off_button.png')
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
         search_with_wikipedia_one_off_string_pattern = Pattern('search_with_Wikipedia_one_off_string.png')
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
@@ -43,7 +44,12 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Wikipedia\' is the first one-off in focus when navigating with \'ALT\' and '
                                     'arrow UP keys.')
 
-        for i in range(7):
+        if exists(ebay_one_off_pattern, 3):
+            count = 8
+        else:
+            count = 7
+
+        for i in range(count):
             key_down(Key.ALT)
             type(Key.UP)
             key_up(Key.ALT)
@@ -72,7 +78,7 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Google\' is the first one-off in focus when navigating with \'ALT\' and arrow '
                                     'DOWN keys.')
 
-        for i in range(7):
+        for i in range(count):
             key_down(Key.ALT)
             type(Key.DOWN)
             key_up(Key.ALT)
@@ -104,7 +110,7 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Google\' is the first one-off in focus when navigating with \'ALT\' and arrow '
                                     'DOWN keys.')
 
-        for i in range(7):
+        for i in range(count):
             key_down(Key.ALT)
             type(Key.DOWN)
             key_up(Key.ALT)
