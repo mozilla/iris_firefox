@@ -66,5 +66,5 @@ class Test(BaseTest):
             assert_true(self, expected_4, 'Today\'s history was removed successfully.')
         except FindError:
             raise FindError('Today\'s history is still present.')
-        expected_5 = exists(history_items_old_pattern.similar(0.9), 10)
+        expected_5 = exists(history_items_old_pattern, 10)
         assert_true(self, expected_5, 'Old history is still displayed properly.')
