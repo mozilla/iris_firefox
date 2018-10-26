@@ -132,7 +132,10 @@ class Test(BaseTest):
         for i in range(12):
             type(Key.TAB)
 
-        type(Key.DOWN)
+        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
+            type(Key.SPACE)
+        else:
+            type(Key.TAB)
 
         expected = exists(find_more_search_engines_pattern, 10)
         assert_true(self, expected, '\'Find more search engines\' link found.')
