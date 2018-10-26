@@ -419,59 +419,14 @@ class Iris(object):
 
     def check_keyboard_state(self):
         is_lock_on = False
-        if Settings.get_os() != Platform.MAC:
-            if Key.is_lock_on(Key.CAPS_LOCK):
-                logger.error('Cannot run Iris because Key.CAPS_LOCK is on. Please turn it off to continue.')
+        keyboard_keys = [Key.CAPS_LOCK, Key.NUM_LOCK, Key.SCROLL_LOCK]
+        for key in keyboard_keys:
+            if Key.is_lock_on(key):
+                logger.error('Cannot run Iris because %s is on. Please turn it off to continue.' % key)
                 is_lock_on = True
-            if Key.is_lock_on(Key.NUM_LOCK):
-                logger.error('Cannot run Iris because Key.NUM_LOCK is on. Please turn it off to continue.')
-                is_lock_on = True
-            if Key.is_lock_on(Key.SCROLL_LOCK):
-                logger.error('Cannot run Iris because Key.SCROLL_LOCK is on. Please turn it off to continue.')
-                is_lock_on = True
-        else:
-            try:
-                cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
-            except subprocess.CalledProcessError as e:
-                logger.error('Command failed: %s' % repr(e.cmd))
-                raise Exception('Unable to run command')
-            else:
-                keys = ['Caps', 'Num', 'Scroll']
-                locked = None
-                for line in cmd.stdout:
-                    for key in keys:
-                        if key in line:
-                            value = ' '.join(line.split())
-                            if key in value[0:len(value) / 3]:
-                                button = value[0:len(value) / 3]
-                                if "off" in button:
-                                    is_lock_on = False
-                                else:
-                                    is_lock_on = True
-                                    locked = key
-                                    break
-                            elif key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
-                                button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
-                                if "off" in button:
-                                    is_lock_on = False
-                                else:
-                                    is_lock_on = True
-                                    locked = key
-                                    break
-                            else:
-                                button = value[len(value) / 3 * 2:len(value)]
-                                if "off" in button:
-                                    is_lock_on = False
-                                else:
-                                    is_lock_on = True
-                                    locked = key
-                                    break
-                    if is_lock_on:
-                        logger.error('Cannot run Iris because Key.%s_LOCK is toggled.' % locked.upper())
-                        logger.error('Please turn it off to continue.')
-                        break
-                IrisCore.shutdown_process('Xquartz')
+
         if is_lock_on:
+            logger.error('Please turn it off to continue.')
             self.finish(code=1)
 
     @staticmethod
