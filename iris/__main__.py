@@ -418,15 +418,17 @@ class Iris(object):
         sys.exit(code)
 
     def check_keyboard_state(self):
-        is_lock_on = False
+        key_on = 0
         keyboard_keys = [Key.CAPS_LOCK, Key.NUM_LOCK, Key.SCROLL_LOCK]
         for key in keyboard_keys:
             if Key.is_lock_on(key):
                 logger.error('Cannot run Iris because %s is on. Please turn it off to continue.' % key)
-                is_lock_on = True
+                key_on += 1
 
-        if is_lock_on:
+        if key_on > 0:
             logger.error('Please turn it off to continue.')
+            if Settings.get_os() == Platform.MAC:
+                IrisCore.shutdown_process('Xquartz')
             self.finish(code=1)
 
     @staticmethod

@@ -1,8 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+import ctypes
 
-import win32api
 import logging
 import subprocess
 import time
@@ -176,6 +176,7 @@ class Key(object):
         :return: TRUE if keyboard_key state is ON or FALSE if keyboard_key state is OFF.
         """
         if Settings.get_os() == Platform.WINDOWS:
+            hll_dll = ctypes.WinDLL("User32.dll")
             keyboard_code = 0
             if keyboard_key == Key.CAPS_LOCK:
                 keyboard_code = 0x14
@@ -184,49 +185,49 @@ class Key(object):
             elif keyboard_key == Key.SCROLL_LOCK:
                 keyboard_code = 0x91
             try:
-                key_state = win32api.GetKeyState(keyboard_code)
+                key_state = hll_dll.GetKeyState(keyboard_code)
             except Exception:
                 raise Exception('Unable to run Command.')
             if key_state == 1:
                 return True
             else:
                 return False
-        else:
-                try:
-                    cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
-                except subprocess.CalledProcessError as e:
-                    logger.error('Command failed: %s' % repr(e.cmd))
-                    raise Exception('Unable to run command')
-                else:
-                    keys = ['Caps', 'Num', 'Scroll']
-                    for line in cmd.stdout:
-                        for key in keys:
-                            if key in line:
-                                value = ' '.join(line.split())
-                                if key in value[0:len(value) / 3]:
-                                    button = value[0:len(value) / 3]
-                                    if "off" in button:
-                                        is_lock_on = False
-                                    else:
-                                        is_lock_on = True
-                                        break
-                                elif key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
-                                    button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
-                                    if "off" in button:
-                                        is_lock_on = False
-                                    else:
-                                        is_lock_on = True
-                                        break
-                                else:
-                                    button = value[len(value) / 3 * 2:len(value)]
-                                    if "off" in button:
-                                        is_lock_on = False
-                                    else:
-                                        is_lock_on = True
-                                        break
-                    return is_lock_on
-                    IrisCore.shutdown_process('Xquartz')
+        elif Settings.get_os() == Platform.LINUX or Settings.get_os() == Platform.MAC:
+            try:
+                cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
+            except subprocess.CalledProcessError as e:
+                logger.error('Command  failed: %s' % repr(e.cmd))
+                raise Exception('Unable to run Command.')
+            else:
+                processed_lock_key = keyboard_key.label
+                if 'caps' in processed_lock_key:
+                    processed_lock_key = 'Caps'
+                elif 'num' in processed_lock_key:
+                    processed_lock_key = 'Num'
+                elif 'scroll' in processed_lock_key:
+                    processed_lock_key = 'Scroll'
 
+                for line in cmd.stdout:
+                    if processed_lock_key in line:
+                        value = ' '.join(line.split())
+                        if processed_lock_key in value[0:len(value) / 3]:
+                            button = value[0:len(value) / 3]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
+                        elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
+                            button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
+                        else:
+                            button = value[len(value) / 3 * 2:len(value)]
+                            if "off" in button:
+                                return False
+                            else:
+                                return True
 
 
 class KeyModifier(object):
