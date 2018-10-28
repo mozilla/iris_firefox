@@ -185,7 +185,7 @@ class Key(object):
             elif keyboard_key == Key.SCROLL_LOCK:
                 keyboard_code = 0x91
             try:
-                key_state = hll_dll.GetKeyState(keyboard_code)
+                key_state = hll_dll.GetKeyState(keyboard_code) & 1
             except Exception:
                 raise Exception('Unable to run Command.')
             if key_state == 1:
