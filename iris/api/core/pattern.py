@@ -62,8 +62,9 @@ class Pattern(object):
         :param int dy: y offset from center.
         :return: A new pattern object.
         """
-        self._target_offset = Location(dx, dy)
-        return self
+        new_pattern = Pattern(self.image_name, from_path=self.image_path)
+        new_pattern._target_offset = Location(dx, dy)
+        return new_pattern
 
     def get_filename(self):
         """Getter for the image_name property."""

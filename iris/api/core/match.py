@@ -20,14 +20,14 @@ class Match(Region):
         """
 
         Region.__init__(self, x, y, width, height)
-        self._width = width
-        self._height = height
-        self._score = score
+        self.width = width
+        self.height = height
+        self.score = score
 
     def get_target(self):
         """Returns the location object that will be used as the click point."""
-        return Location(self._x, self._y)
+        return Location(self.x, self.y)
 
     def get_score(self):
         """Get the similarity score the image or pattern was found. The value is between 0 and 1."""
-        return self._score
+        return self.score
