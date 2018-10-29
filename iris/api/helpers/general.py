@@ -34,7 +34,8 @@ def access_bookmarking_tools(option):
         logger.debug('Bookmarking Tools option has been found.')
         click(bookmarking_tools_pattern)
     except FindError:
-        raise APIHelperError('Can\'t find the Bookmarking Tools option, aborting.')
+        raise APIHelperError(
+            'Can\'t find the Bookmarking Tools option, aborting.')
     try:
         wait(option, 15)
         logger.debug('%s option has been found.' % option)
@@ -44,7 +45,8 @@ def access_bookmarking_tools(option):
 
 
 def bookmark_options(option):
-    """Click a bookmark option after right clicking on a bookmark from the library menu.
+    """Click a bookmark option after right clicking on a bookmark from the
+    library menu.
 
     :param option: Bookmark option to be clicked.
     :return: None.
@@ -83,7 +85,8 @@ def change_preference(pref_name, value):
         try:
             retrieved_value = copy_to_clipboard().split(';'[0])[1]
         except Exception as e:
-            raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+            raise APIHelperError(
+                'Failed to retrieve preference value. %s' % e.message)
 
         if retrieved_value == value:
             logger.debug('Flag is already set to value:' + value)
@@ -100,26 +103,31 @@ def change_preference(pref_name, value):
 
         close_tab()
     except Exception:
-        raise APIHelperError('Could not set value: %s to preference: %s' % (value, pref_name))
+        raise APIHelperError(
+            'Could not set value: %s to preference: %s' % (value, pref_name))
 
 
 def click_auxiliary_window_control(button):
-    """Click auxiliary window with options: close, minimize, maximize, full_screen, zoom_restore.
+    """Click auxiliary window with options: close, minimize, maximize,
+    full_screen, zoom_restore.
 
     :param button: Auxiliary window options.
     :return: None.
     """
     if Settings.get_os() == Platform.MAC:
-        auxiliary_window_controls_pattern = Pattern('auxiliary_window_controls.png')
+        auxiliary_window_controls_pattern = Pattern(
+            'auxiliary_window_controls.png')
         red_button_pattern = Pattern('unhovered_red_control.png').similar(0.9)
         hovered_red_button = Pattern('hovered_red_button.png')
     else:
         close_button_pattern = Pattern('auxiliary_window_close_button.png')
         zoom_full_button_pattern = Pattern('auxiliary_window_maximize.png')
-        zoom_restore_button_pattern = Pattern('minimize_full_screen_auxiliary_window.png')
+        zoom_restore_button_pattern = Pattern(
+            'minimize_full_screen_auxiliary_window.png')
         minimize_button_pattern = Pattern('auxiliary_window_minimize.png')
 
-    # Help ensure mouse is not over controls by moving the cursor to the left of the screen.
+    # Help ensure mouse is not over controls by moving the cursor to the left
+    # of the screen.
     hover(Location(1, 300))
 
     if Settings.get_os() == Platform.MAC:
@@ -127,7 +135,8 @@ def click_auxiliary_window_control(button):
             wait(red_button_pattern, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
-            raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
+            raise APIHelperError(
+                'Can\'t find the auxiliary window controls, aborting.')
     else:
         if Settings.get_os() == Platform.LINUX:
             hover(Location(80, 0))
@@ -135,7 +144,8 @@ def click_auxiliary_window_control(button):
             wait(close_button_pattern, 5)
             logger.debug('Auxiliary window control found.')
         except FindError:
-            raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
+            raise APIHelperError(
+                'Can\'t find the auxiliary window controls, aborting.')
 
     if button == 'close':
         if Settings.get_os() == Platform.MAC:
@@ -161,7 +171,8 @@ def click_auxiliary_window_control(button):
             key_down(Key.ALT)
             window_controls_pattern = auxiliary_window_controls_pattern
             width, height = get_image_size(window_controls_pattern)
-            click(window_controls_pattern.target_offset(width - 10, height / 2))
+            click(window_controls_pattern.target_offset(width - 10,
+                                                        height / 2))
             key_up(Key.ALT)
         else:
             click(zoom_full_button_pattern)
@@ -193,7 +204,8 @@ def close_customize_page():
         logger.debug('Done button found.')
         click(customize_done_button_pattern)
     except FindError:
-        raise APIHelperError('Can\'t find the Done button in the page, aborting.')
+        raise APIHelperError(
+            'Can\'t find the Done button in the page, aborting.')
 
 
 def click_hamburger_menu_option(option):
@@ -208,7 +220,8 @@ def click_hamburger_menu_option(option):
         region = create_region_from_image(hamburger_menu_pattern)
         logger.debug('Hamburger menu found.')
     except FindError:
-        raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
+        raise APIHelperError(
+            'Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
         click(hamburger_menu_pattern)
         time.sleep(Settings.UI_DELAY)
@@ -218,14 +231,17 @@ def click_hamburger_menu_option(option):
             region.click(option)
             return region
         except FindError:
-            raise APIHelperError('Can\'t find the option in the page, aborting test.')
+            raise APIHelperError(
+                'Can\'t find the option in the page, aborting test.')
 
 
 def close_firefox(test):
-    if test.firefox_runner is not None and test.firefox_runner.process_handler is not None:
+    if test.firefox_runner is not None and test.firefox_runner.process_handler
+    is not None:
         logger.debug('Closing Firefox ...')
         quit_firefox()
-        status = test.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+        status = test.firefox_runner.process_handler.wait(
+            Settings.FIREFOX_TIMEOUT)
         if status is None:
             logger.warning('Firefox is hanging. Executing force quit.')
             test.firefox_runner.stop()
@@ -235,7 +251,9 @@ def close_firefox(test):
 
 
 def confirm_close_multiple_tabs():
-    """Click confirm 'Close all tabs' for warning popup when multiple tabs are opened."""
+    """Click confirm 'Close all tabs' for warning popup when multiple tabs are
+    opened.
+    """
     close_all_tabs_button_pattern = Pattern('close_all_tabs_button.png')
 
     try:
@@ -297,9 +315,13 @@ def create_firefox_args(test_case):
             args.append('%s' % h)
             test_case.maximize_window = False
             if int(w) < 600:
-                logger.warning('Windows of less than 600 pixels wide may cause Iris to fail.')
+                logger.warning(
+                    'Windows of less than 600 pixels wide may cause Iris to \
+                    fail.')
     except ValueError:
-        raise APIHelperError('Incorrect window size specified. Must specify width and height separated by lowercase x.')
+        raise APIHelperError(
+            'Incorrect window size specified. Must specify width and height \
+            separated by lowercase x.')
 
     if test_case.profile_manager:
         args.append('-ProfileManager')
@@ -342,15 +364,22 @@ def create_region_for_hamburger_menu():
         time.sleep(1)
         if Settings.get_os() == Platform.LINUX:
             quit_menu_pattern = Pattern('quit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern, quit_menu_pattern, None, padding_right=20)
+            return create_region_from_patterns(None, hamburger_menu_pattern,
+                                               quit_menu_pattern, None,
+                                               padding_right=20)
         elif Settings.get_os() == Platform.MAC:
             help_menu_pattern = Pattern('help.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern, help_menu_pattern, None, padding_right=20)
+            return create_region_from_patterns(None, hamburger_menu_pattern,
+                                               help_menu_pattern, None,
+                                               padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern, exit_menu_pattern, None, padding_right=20)
+            return create_region_from_patterns(None, hamburger_menu_pattern,
+                                               exit_menu_pattern, None,
+                                               padding_right=20)
     except (FindError, ValueError):
-        raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
+        raise APIHelperError(
+            'Can\'t find the hamburger menu in the page, aborting test.')
 
 
 def create_region_for_url_bar():
@@ -380,7 +409,8 @@ def create_region_from_image(image):
             hamburger_pop_up_menu_weight = 285
             hamburger_pop_up_menu_height = 655
             logger.debug('Creating a region for Hamburger menu pop up.')
-            region = Region(m.x - hamburger_pop_up_menu_weight, m.y, hamburger_pop_up_menu_weight,
+            region = Region(m.x - hamburger_pop_up_menu_weight, m.y,
+                            hamburger_pop_up_menu_weight,
                             hamburger_pop_up_menu_height)
             return region
         else:
@@ -398,9 +428,11 @@ def dont_save_password():
 
 
 def get_firefox_build_id(build_path):
-    """Returns build id string from the dictionary generated by mozversion library.
+    """Returns build id string from the dictionary generated by mozversion
+    library.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    :param build_path: Path to the binary for the application or Android APK
+    file.
     """
     return get_firefox_info(build_path)['platform_buildid']
 
@@ -417,13 +449,16 @@ def get_firefox_build_id_from_about_config():
         try:
             return get_pref_value(pref_2)
         except APIHelperError:
-            raise APIHelperError('Could not retrieve firefox build id information from about:config page.')
+            raise APIHelperError(
+                'Could not retrieve firefox build id information from \
+                about:config page.')
 
 
 def get_firefox_channel(build_path):
     """Returns Firefox channel from application repository.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    :param build_path: Path to the binary for the application or Android APK
+    file.
     """
 
     fx_channel = get_firefox_info(build_path)['application_repository']
@@ -443,13 +478,17 @@ def get_firefox_channel_from_about_config():
     try:
         return get_pref_value('app.update.channel')
     except APIHelperError:
-        raise APIHelperError('Could not retrieve firefox channel information from about:config page.')
+        raise APIHelperError(
+            'Could not retrieve firefox channel information from about:config \
+            page.')
 
 
 def get_firefox_info(build_path):
-    """Returns the application version information as a dict with the help of mozversion library.
+    """Returns the application version information as a dict with the help of
+    mozversion library.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    :param build_path: Path to the binary for the application or Android APK
+    file.
     """
     import mozlog
     mozlog.commandline.setup_logging('mozversion', None, {})
@@ -460,10 +499,11 @@ def get_firefox_locale_from_about_config():
     """Returns the Firefox locale from 'about:config' page."""
 
     try:
-        value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
+        value_str = get_pref_value(
+            'browser.newtabpage.activity-stream.feeds.section.topstories.options')  # nopep8
         logger.debug(value_str)
         temp = json.loads(value_str)
-        return str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
+        return str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]  # nopep8
     except (APIHelperError, KeyError):
         raise APIHelperError('Pref format to determine locale has changed.')
 
@@ -475,9 +515,11 @@ def get_firefox_region():
 
 
 def get_firefox_version(build_path):
-    """Returns application version string from the dictionary generated by mozversion library.
+    """Returns application version string from the dictionary generated by
+    mozversion library.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    :param build_path: Path to the binary for the application or Android APK
+    file.
     """
     return get_firefox_info(build_path)['application_version']
 
@@ -488,7 +530,9 @@ def get_firefox_version_from_about_config():
     try:
         return get_pref_value('extensions.lastAppVersion')
     except APIHelperError:
-        raise APIHelperError('Could not retrieve firefox version information from about:config page.')
+        raise APIHelperError(
+            'Could not retrieve firefox version information from about:config \
+            page.')
 
 
 def get_main_modifier():
@@ -533,16 +577,19 @@ def get_pref_value(pref_name):
     try:
         value = copy_to_clipboard().split(';'[0])[1]
     except Exception as e:
-        raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+        raise APIHelperError(
+            'Failed to retrieve preference value. %s' % e.message)
 
     close_tab()
     return value
 
 
 def get_support_info():
-    """Returns support information as a JSON object from 'about:support' page."""
+    """Returns support information as a JSON object from 'about:support' page.
+    """
 
-    copy_raw_data_to_clipboard = Pattern('about_support_copy_raw_data_button.png')
+    copy_raw_data_to_clipboard = Pattern(
+        'about_support_copy_raw_data_button.png')
 
     new_tab()
     select_location_bar()
@@ -556,13 +603,15 @@ def get_support_info():
         json_text = Env.get_clipboard()
         return json.loads(json_text)
     except Exception as e:
-        raise APIHelperError('Failed to retrieve support information value. %s' % e.message)
+        raise APIHelperError(
+            'Failed to retrieve support information value. %s' % e.message)
     finally:
         close_tab()
 
 
 def key_to_one_off_search(highlighted_pattern, direction='left'):
-    """Iterate through the one of search engines list until the given one is highlighted.
+    """Iterate through the one of search engines list until the given one is
+    highlighted.
 
     param: highlighted_pattern: The pattern image to search for.
     param: direction: direction to key to: right or left (default)
@@ -605,9 +654,11 @@ def launch_firefox(path, profile=None, url=None, args=None):
     process_args = {'stream': None}
     logger.debug('Creating Firefox runner ...')
     try:
-        runner = FirefoxRunner(binary=path, profile=profile, cmdargs=args, process_args=process_args)
+        runner = FirefoxRunner(binary=path, profile=profile,
+                               cmdargs=args, process_args=process_args)
         logger.debug('Firefox runner successfully created.')
-        logger.debug('Running Firefox with command: "%s"' % ','.join(runner.command))
+        logger.debug('Running Firefox with command: "%s"' %
+                     ','.join(runner.command))
         return runner
     except errors.RunnerNotStartedError:
         raise APIHelperError('Error creating Firefox runner.')
@@ -639,7 +690,8 @@ def navigate(url):
         paste(url)
         type(Key.ENTER)
     except Exception:
-        raise APIHelperError('No active window found, cannot navigate to page.')
+        raise APIHelperError(
+            'No active window found, cannot navigate to page.')
 
 
 def navigate_slow(url):
@@ -656,7 +708,8 @@ def navigate_slow(url):
         Settings.type_delay = 0.1
         type(url + Key.ENTER)
     except Exception:
-        raise APIHelperError('No active window found, cannot navigate to page.')
+        raise APIHelperError(
+            'No active window found, cannot navigate to page.')
 
 
 def open_about_firefox():
@@ -695,18 +748,21 @@ def open_library_menu(option):
     """Open the Library menu with an option as argument.
 
     :param option: Library menu option.
-    :return: Custom region created for a more efficient and accurate image pattern search.
+    :return: Custom region created for a more efficient and accurate image
+    pattern search.
     """
 
     library_menu_pattern = NavBar.LIBRARY_MENU
 
     try:
         wait(library_menu_pattern, 10)
-        region = Region(find(library_menu_pattern).x - SCREEN_WIDTH / 4, find(library_menu_pattern).y, SCREEN_WIDTH / 4,
+        region = Region(find(library_menu_pattern).x - SCREEN_WIDTH / 4,
+                        find(library_menu_pattern).y, SCREEN_WIDTH / 4,
                         SCREEN_HEIGHT / 4)
         logger.debug('Library menu found.')
     except FindError:
-        raise APIHelperError('Can\'t find the library menu in the page, aborting test.')
+        raise APIHelperError(
+            'Can\'t find the library menu in the page, aborting test.')
     else:
         time.sleep(Settings.UI_DELAY_LONG)
         click(library_menu_pattern)
@@ -718,7 +774,8 @@ def open_library_menu(option):
             region.click(option)
             return region
         except FindError:
-            raise APIHelperError('Can\'t find the option in the page, aborting test.')
+            raise APIHelperError(
+                'Can\'t find the option in the page, aborting test.')
 
 
 def open_zoom_menu():
@@ -738,9 +795,12 @@ def open_zoom_menu():
 
 
 def remove_zoom_indicator_from_toolbar():
-    """Remove the zoom indicator from toolbar by clicking on the 'Remove from Toolbar' button."""
+    """Remove the zoom indicator from toolbar by clicking on the 'Remove from
+    Toolbar' button.
+    """
 
-    zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
+    zoom_control_toolbar_decrease_pattern = Pattern(
+        'zoom_control_toolbar_decrease.png')
     remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
     try:
@@ -748,19 +808,24 @@ def remove_zoom_indicator_from_toolbar():
         logger.debug('\'Decrease\' zoom control found.')
         right_click(zoom_control_toolbar_decrease_pattern)
     except FindError:
-        raise APIHelperError('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
+        raise APIHelperError(
+            'Can\'t find the \'Decrease\' zoom control button in the page, \
+            aborting.')
 
     try:
         wait(remove_from_toolbar_pattern, 10)
         logger.debug('\'Remove from Toolbar\' option found.')
         click(remove_from_toolbar_pattern)
     except FindError:
-        raise APIHelperError('Can\'t find the \'Remove from Toolbar\' option in the page, aborting.')
+        raise APIHelperError(
+            'Can\'t find the \'Remove from Toolbar\' option in the page, \
+            aborting.')
 
     try:
         wait_vanish(zoom_control_toolbar_decrease_pattern, 10)
     except FindError:
-        raise APIHelperError('Zoom indicator not removed from toolbar, aborting.')
+        raise APIHelperError(
+            'Zoom indicator not removed from toolbar, aborting.')
 
 
 def repeat_key_down(num):
@@ -796,7 +861,8 @@ def restart_firefox(test, path, profile, url, args=None, image=None):
     :param profile: Firefox profile.
     :param url: URL to be loaded.
     :param args: Optional list of arguments.
-    :param image: Image checked to confirm that Firefox has successfully restarted.
+    :param image: Image checked to confirm that Firefox has successfully
+    restarted.
     :return: None.
         """
     logger.debug('Restarting firefox ...')
@@ -874,9 +940,12 @@ def select_zoom_menu_option(option_number):
 
 
 def get_telemetry_info():
-    """Returns telemetry information as a JSON object from 'about:telemetry' page."""
+    """Returns telemetry information as a JSON object from 'about:telemetry'
+    page.
+    """
 
-    copy_raw_data_to_clipboard_pattern = Pattern('copy_raw_data_to_clipboard.png')
+    copy_raw_data_to_clipboard_pattern = Pattern(
+        'copy_raw_data_to_clipboard.png')
     raw_json_pattern = Pattern('raw_json.png')
     raw_data_pattern = Pattern('raw_data.png')
 
@@ -906,7 +975,8 @@ def get_telemetry_info():
         json_text = Env.get_clipboard()
         return json.loads(json_text)
     except Exception as e:
-        raise APIHelperError('Failed to retrieve raw message information value. %s' % e.message)
+        raise APIHelperError(
+            'Failed to retrieve raw message information value. %s' % e.message)
     finally:
         close_tab()
 
@@ -921,7 +991,8 @@ def wait_for_firefox_restart():
         wait(home_pattern, 20)
         logger.debug('Successful Firefox restart performed.')
     except FindError:
-        raise APIHelperError('Firefox restart has not been performed, aborting.')
+        raise APIHelperError(
+            'Firefox restart has not been performed, aborting.')
 
 
 def write_profile_prefs(test_case):
@@ -946,8 +1017,10 @@ def write_profile_prefs(test_case):
 def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     """Zoom in/Zoom out using the mouse wheel.
 
-    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should take place.
-    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to be performed.
+    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should
+    take place.
+    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to
+    be performed.
     :return: None.
     """
 
