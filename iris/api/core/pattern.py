@@ -2,21 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import inspect
-import logging
 import os
 
 import cv2
+import inspect
+import logging
 import numpy as np
 
 from errors import FindError
-from errors import APIHelperError
-from iris.api.core.platform import Platform
 from location import Location
-from util.core_helper import IrisCore
-from util.core_helper import get_os_version, get_os
-from util.parse_args import parse_args
 from settings import Settings
+from util.core_helper import IrisCore
+from util.parse_args import parse_args
 
 try:
     import Image
@@ -24,6 +21,92 @@ except ImportError:
     from PIL import Image
 
 logger = logging.getLogger(__name__)
+
+
+class Pattern(object):
+    """A pattern is used to associate an image file with additional attributes used in find operations.
+
+    While using a Region.find() operation, if only an image file is provided, Iris searches the region using a default
+    minimum similarity of 0.8. This default value can be changed in Settings.min_similarity. Using similar() you can
+    associate a specific similarity value, that will be used as the minimum value, when this pattern object is searched.
+    """
+
+    def __init__(self, image_name, from_path=None):
+
+        if from_path is None:
+            path = _get_image_path(inspect.stack()[1][1], image_name)
+        else:
+            path = from_path
+        name, scale = _parse_name(os.path.split(path)[1])
+
+        self.image_name = name
+        self.image_path = path
+        self.scale_factor = scale
+        self.similarity = Settings.min_similarity
+        self._target_offset = None
+        self.rgb_array = _get_rgb_array(path)
+        self.color_image = _get_image_from_array(scale, self.rgb_array)
+        self.gray_image = _get_gray_image(self.color_image)
+
+    def __str__(self):
+        return '(%s, %s, %s, %s)' % (self.image_name, self.image_path, self.scale_factor, self.similarity)
+
+    def __repr__(self):
+        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self.image_name, self.image_path,
+                                       self.scale_factor, self.similarity)
+
+    def target_offset(self, dx, dy):
+        """Add offset to Pattern from top left.
+
+        :param int dx: x offset from center.
+        :param int dy: y offset from center.
+        :return: A new pattern object.
+        """
+        self._target_offset = Location(dx, dy)
+        return self
+
+    def get_filename(self):
+        """Getter for the image_name property."""
+        return self.image_name
+
+    def get_file_path(self):
+        """Getter for the image_path property."""
+        return self.image_path
+
+    def get_target_offset(self):
+        """Getter for the target_offset property."""
+        return self._target_offset
+
+    def get_scale_factor(self):
+        """Getter for the scale_factor property."""
+        return self.scale_factor
+
+    def get_rgb_array(self):
+        """Getter for the RGB array of image."""
+        return self.rgb_array
+
+    def get_color_image(self):
+        """Getter for the color_image property."""
+        return self.color_image
+
+    def get_gray_image(self):
+        """Getter for the gray_image property."""
+        return self.gray_image
+
+    def similar(self, value):
+        """Set the minimum similarity of the given Pattern object to the specified value."""
+        if value > 0.99:
+            self.similarity = 0.99
+        elif 0 <= value <= 0.99:
+            self.similarity = value
+        else:
+            self.similarity = Settings.min_similarity
+        return self
+
+    def exact(self):
+        """Set the minimum similarity of the given Pattern object to 0.99, which means exact match is required."""
+        self.similarity = 0.99
+        return self
 
 
 def _parse_name(full_name):
@@ -87,111 +170,6 @@ def _convert_hi_res_images():
                         os.remove(os.path.join(root, file_name))
 
 
-_images = _load_all_patterns()
-
-
-class Pattern(object):
-
-    def __init__(self, image_name, from_path=None):
-        """Function assign values to the _image_name, _image_path, _scale_factor, _similarity, _target_offset,
-        _rgb_array, _color_image and _gray_image Pattern parameters."""
-
-        if from_path is None:
-            path = _get_image_path(inspect.stack()[1][1], image_name)
-        else:
-            path = from_path
-        name, scale = _parse_name(os.path.split(path)[1])
-
-        """Image name."""
-        self._image_name = name
-
-        """Image path."""
-        self._image_path = path
-
-        """Image scale factor."""
-        self._scale_factor = scale
-
-        """The minimum similarity to use in a find operation. The value should be between 0 and 1."""
-        self._similarity = Settings.min_similarity
-
-        """Offset to Pattern from top left."""
-        self._target_offset = None
-
-        """RGB array of image."""
-        self._rgb_array = np.array(cv2.imread(path)) if path is not None else None
-
-        """Color image."""
-        self._color_image = Image.fromarray(_apply_scale(scale, self._rgb_array)) if scale is not None else None
-
-        """Gray image converted from color image."""
-        self._gray_image = self._color_image.convert('L') if scale is not None else None
-
-    def target_offset(self, dx, dy):
-        """Add offset to Pattern from top left.
-
-        :param int dx: x offset from center.
-        :param int dy: y offset from center.
-        :return: A new pattern object.
-        """
-        new_pattern = Pattern(self._image_name, from_path=self._image_path)
-        new_pattern._target_offset = Location(dx, dy)
-        return new_pattern
-
-    def get_filename(self):
-        """Getter for the _image_name property."""
-        return self._image_name
-
-    def get_file_path(self):
-        """Getter for the _image_path property."""
-        return self._image_path
-
-    def get_target_offset(self):
-        """Getter for the _target_offset property."""
-        return self._target_offset
-
-    def get_scale_factor(self):
-        """Getter for the _scale_factor property."""
-        return self._scale_factor
-
-    def get_rgb_array(self):
-        """Getter for the RGB array of image."""
-        return self._rgb_array
-
-    def get_color_image(self):
-        """Getter for the _color_image property."""
-        return self._color_image
-
-    def get_gray_image(self):
-        """Getter for the _gray_image property."""
-        return self._gray_image
-
-    @property
-    def similarity(self):
-        """Getter for the Pattern similarity property."""
-        return self._similarity
-
-    @similarity.setter
-    def similarity(self, value):
-        """Setter for the Pattern similarity property."""
-        self._similarity = value
-
-    def similar(self, value):
-        """Set the minimum similarity of the given Pattern object to the specified value."""
-
-        if value > 0.99:
-            self._similarity = 0.99
-        elif 0 <= value <= 0.99:
-            self._similarity = value
-        else:
-            self._similarity = Settings.min_similarity
-        return self
-
-    def exact(self):
-        """Set the minimum similarity of the given Pattern object to 0.99, which means exact match is required."""
-        self._similarity = 0.99
-        return self
-
-
 def _apply_scale(scale, rgb_array):
     """Resize the image for HD images.
 
@@ -205,6 +183,27 @@ def _apply_scale(scale, rgb_array):
         return cv2.resize(rgb_array, (new_w, new_h), interpolation=cv2.INTER_AREA)
     else:
         return rgb_array
+
+
+def _get_rgb_array(path):
+    """Returns np array from an image path."""
+    if path is None:
+        return None
+    return np.array(cv2.imread(path))
+
+
+def _get_image_from_array(scale, array):
+    """Converts a scaled array into Image."""
+    if scale is None or array is None:
+        return None
+    return Image.fromarray(_apply_scale(scale, array))
+
+
+def _get_gray_image(colored_image):
+    """Converts colored image to gray image."""
+    if colored_image is None:
+        return None
+    return colored_image.convert('L')
 
 
 def _get_image_path(caller, image):
@@ -269,7 +268,7 @@ def _get_image_path(caller, image):
         return image_path
     else:
         # If not found in correct location, fall back to global image search for now.
-        result_list = filter(lambda x: x['name'] == image, _images)
+        result_list = filter(lambda x: x['name'] == image, _load_all_patterns())
         if len(result_list) > 0:
             res = result_list[0]
             logger.warning('Failed to find image %s in default locations for module %s.' % (image, module))
