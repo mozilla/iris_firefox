@@ -19,151 +19,43 @@ from keyboard_shortcuts import *
 logger = logging.getLogger(__name__)
 
 
-def launch_firefox(path, profile=None, url=None, args=None):
-    """Launch the app with optional args for profile, windows, URI, etc.
+def access_bookmarking_tools(option):
+    """Access option from 'Bookmarking Tools'.
 
-    :param path: Firefox path.
-    :param profile: Firefox profile.
-    :param url: URL to be loaded.
-    :param args: Optional list of arguments.
-    :return: List of Firefox flags.
-    """
-    if args is None:
-        args = []
-
-    if profile is None:
-        raise APIHelperError('No profile name present, aborting run.')
-
-    args.append('-foreground')
-    args.append('-no-remote')
-
-    if url is not None:
-        args.append('-new-tab')
-        args.append(url)
-
-    process_args = {'stream': None}
-    logger.debug('Creating Firefox runner ...')
-    try:
-        runner = FirefoxRunner(binary=path, profile=profile, cmdargs=args, process_args=process_args)
-        logger.debug('Firefox runner successfully created.')
-        logger.debug('Running Firefox with command: "%s"' % ','.join(runner.command))
-        return runner
-    except errors.RunnerNotStartedError:
-        raise APIHelperError('Error creating Firefox runner.')
-
-
-def close_firefox(test):
-    if test.firefox_runner is not None and test.firefox_runner.process_handler is not None:
-        logger.debug('Closing Firefox ...')
-        quit_firefox()
-        status = test.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
-        if status is None:
-            logger.warning('Firefox is hanging. Executing force quit.')
-            test.firefox_runner.stop()
-            test.firefox_runner = None
-    else:
-        logger.debug('Firefox already closed. Skipping ...')
-
-
-def restart_firefox(test, path, profile, url, args=None, image=None):
-    """Restart the app with optional args for profile.
-
-    :param test: current test
-    :param path: Firefox path.
-    :param profile: Firefox profile.
-    :param url: URL to be loaded.
-    :param args: Optional list of arguments.
-    :param image: Image checked to confirm that Firefox has successfully restarted.
-    :return: None.
-        """
-    logger.debug('Restarting firefox ...')
-    close_firefox(test)
-    test.firefox_runner = launch_firefox(path, profile, url, args)
-    test.firefox_runner.start()
-    confirm_firefox_launch(test.app, image)
-    logger.debug('Firefox successfully restarted.')
-
-
-def confirm_firefox_launch(app, image=None):
-    """Waits for firefox to exist by waiting for the iris logo to be present.
-
-    :param app: Instance of FirefoxApp class.
-    :param image: Pattern to confirm Firefox launch
+    :param option: Option from 'Bookmarking Tools'.
     :return: None.
     """
-    if image is None:
-        image = Pattern('iris_logo.png')
+
+    bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
+    open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
 
     try:
-        wait(image, 20)
-    except Exception as err:
-        logger.error(err)
-        logger.error('Can\'t launch Firefox - aborting test run.')
-        app.finish(code=1)
+        wait(bookmarking_tools_pattern, 10)
+        logger.debug('Bookmarking Tools option has been found.')
+        click(bookmarking_tools_pattern)
+    except FindError:
+        raise APIHelperError('Can\'t find the Bookmarking Tools option, aborting.')
+    try:
+        wait(option, 15)
+        logger.debug('%s option has been found.' % option)
+        click(option)
+    except FindError:
+        raise APIHelperError('Can\'t find the %s option, aborting.' % option)
 
 
-def get_firefox_region():
-    # TODO: needs better logic to determine bounds.
-    """For now, just return the Primary Monitor."""
-    return Screen(0)
+def bookmark_options(option):
+    """Click a bookmark option after right clicking on a bookmark from the library menu.
 
-
-def navigate_slow(url):
-    """Navigates slow, via the location bar, to a given URL.
-
-    :param url: The string to type into the location bar.
+    :param option: Bookmark option to be clicked.
     :return: None.
-
-    The function handles typing 'Enter' to complete the action.
     """
 
     try:
-        select_location_bar()
-        Settings.type_delay = 0.1
-        type(url + Key.ENTER)
-    except Exception:
-        raise APIHelperError('No active window found, cannot navigate to page.')
-
-
-def navigate(url):
-    """Navigates, via the location bar, to a given URL.
-
-    :param url: The string to type into the location bar.
-    :return: None.
-    """
-    try:
-        select_location_bar()
-        paste(url)
-        type(Key.ENTER)
-    except Exception:
-        raise APIHelperError('No active window found, cannot navigate to page.')
-
-
-def get_menu_modifier():
-    """Return the menu modifier."""
-    if Settings.get_os() == Platform.MAC:
-        menu_modifier = Key.CTRL
-    else:
-        menu_modifier = Key.CMD
-    return menu_modifier
-
-
-def get_main_modifier():
-    """Return the main modifier."""
-    if Settings.get_os() == Platform.MAC:
-        main_modifier = Key.CMD
-    else:
-        main_modifier = Key.CTRL
-    return main_modifier
-
-
-def copy_to_clipboard():
-    """Return the value copied to clipboard."""
-    edit_select_all()
-    edit_copy()
-    value = Env.get_clipboard().strip()
-    logger.debug("Copied to clipboard: %s" % value)
-    return value
+        wait(option, 10)
+        logger.debug('Option %s is present on the page.' % option)
+        click(option)
+    except FindError:
+        raise APIHelperError('Can\'t find option %s, aborting.' % option)
 
 
 def change_preference(pref_name, value):
@@ -209,72 +101,6 @@ def change_preference(pref_name, value):
         close_tab()
     except Exception:
         raise APIHelperError('Could not set value: %s to preference: %s' % (value, pref_name))
-
-
-def reset_mouse():
-    """Reset mouse position to location (0, 0)."""
-    hover(Location(0, 0))
-
-
-def login_site(site_name):
-    """Login into a specific site.
-
-    :param site_name: Name of the site.
-    :return: None.
-    """
-    username = get_config_property(site_name, 'username')
-    password = get_config_property(site_name, 'password')
-    paste(username)
-    focus_next_item()
-    paste(password)
-    focus_next_item()
-    type(Key.ENTER)
-
-
-def dont_save_password():
-    """Do not save the password for a login."""
-    if exists(Pattern('dont_save_password_button.png'), 10):
-        click(Pattern('dont_save_password_button.png'))
-    else:
-        raise APIHelperError('Unable to find dont_save_password_button.png.')
-
-
-def click_hamburger_menu_option(option):
-    """Click on a specific option from the hamburger menu.
-
-    :param option: Hamburger menu option to be clicked.
-    :return: The region created starting from the hamburger menu pattern.
-    """
-    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    try:
-        wait(hamburger_menu_pattern, 10)
-        region = create_region_from_image(hamburger_menu_pattern)
-        logger.debug('Hamburger menu found.')
-    except FindError:
-        raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
-    else:
-        click(hamburger_menu_pattern)
-        time.sleep(Settings.UI_DELAY)
-        try:
-            region.wait(option, 10)
-            logger.debug('Option found.')
-            region.click(option)
-            return region
-        except FindError:
-            raise APIHelperError('Can\'t find the option in the page, aborting test.')
-
-
-def confirm_close_multiple_tabs():
-    """Click confirm 'Close all tabs' for warning popup when multiple tabs are opened."""
-    close_all_tabs_button_pattern = Pattern('close_all_tabs_button.png')
-
-    try:
-        wait(close_all_tabs_button_pattern, 5)
-        logger.debug('"Close all tabs" warning popup found.')
-        type(Key.ENTER)
-    except FindError:
-        logger.debug('Couldn\'t find the "Close all tabs" warning popup.')
-        pass
 
 
 def click_auxiliary_window_control(button):
@@ -370,247 +196,23 @@ def close_customize_page():
         raise APIHelperError('Can\'t find the Done button in the page, aborting.')
 
 
-def key_to_one_off_search(highlighted_pattern, direction='left'):
-    """Iterate through the one of search engines list until the given one is highlighted.
+def click_hamburger_menu_option(option):
+    """Click on a specific option from the hamburger menu.
 
-    param: highlighted_pattern: The pattern image to search for.
-    param: direction: direction to key to: right or left (default)
-    return: None.
+    :param option: Hamburger menu option to be clicked.
+    :return: The region created starting from the hamburger menu pattern.
     """
-    max_attempts = 7
-    while max_attempts > 0:
-        if exists(highlighted_pattern, 1):
-            max_attempts = 0
-        else:
-            if direction == 'right':
-                type(Key.RIGHT)
-            else:
-                type(Key.LEFT)
-            max_attempts -= 1
-
-
-def open_about_firefox():
-    """Open the 'About Firefox' window."""
-    if Settings.get_os() == Platform.MAC:
-        type(Key.F3, modifier=KeyModifier.CTRL)
-        type(Key.F2, modifier=KeyModifier.CTRL)
-
-        time.sleep(0.5)
-        type(Key.RIGHT)
-        type(Key.DOWN)
-        type(Key.DOWN)
-        type(Key.ENTER)
-
-    elif Settings.get_os() == Platform.WINDOWS:
-        type(Key.ALT)
-        if parse_args().locale != 'ar':
-            type(Key.LEFT)
-        else:
-            type(Key.RIGHT)
-        type(Key.ENTER)
-        type(Key.UP)
-        type(Key.ENTER)
-
-    else:
-        type(Key.F10)
-        if parse_args().locale != 'ar':
-            type(Key.LEFT)
-        else:
-            type(Key.RIGHT)
-        type(Key.UP)
-        type(Key.ENTER)
-
-
-class Option(object):
-    """Class with zoom members."""
-
-    ZOOM_IN = 0
-    ZOOM_OUT = 1
-    RESET = 2
-    ZOOM_TEXT_ONLY = 3
-
-
-def open_zoom_menu():
-    """Open the 'Zoom' menu from the 'View' menu."""
-
-    if Settings.get_os() == Platform.MAC:
-        view_menu_pattern = Pattern('view_menu.png')
-        click(view_menu_pattern)
-        for i in range(3):
-            type(text=Key.DOWN)
-        type(text=Key.ENTER)
-    else:
-        type(text='v', modifier=KeyModifier.ALT)
-        for i in range(2):
-            type(text=Key.DOWN)
-        type(text=Key.ENTER)
-
-
-def repeat_key_down(num):
-    """Repeat DOWN keystroke a given number of times.
-
-    :param num: Number of times to repeat DOWN key stroke.
-    :return: None.
-    """
-    for i in range(num):
-        type(Key.DOWN)
-
-
-def repeat_key_up(num):
-    """Repeat UP keystroke a given number of times.
-
-    :param num: Number of times to repeat UP key stroke.
-    :return: None.
-    """
-    for i in range(num):
-        type(Key.UP)
-
-
-def select_zoom_menu_option(option_number):
-    """Open the 'Zoom' menu from the 'View' menu and select option."""
-
-    open_zoom_menu()
-
-    for i in range(option_number):
-        type(text=Key.DOWN)
-    type(text=Key.ENTER)
-
-
-class RightClickLocationBar(object):
-    """Class with location bar members."""
-
-    UNDO = 0
-    CUT = 1
-    COPY = 2
-    PASTE = 3
-    PASTE_GO = 4
-    DELETE = 5
-    SELECT_ALL = 6
-
-
-def select_location_bar_option(option_number):
-    """Select option from the location bar menu.
-
-    :param option_number: Option number.
-    :return: None.
-    """
-    if Settings.get_os() == Platform.WINDOWS:
-        for i in range(option_number + 1):
-            type(text=Key.DOWN)
-        type(text=Key.ENTER)
-    else:
-        for i in range(option_number - 1):
-            type(text=Key.DOWN)
-        type(text=Key.ENTER)
-
-
-def create_region_from_image(image):
-    """Create region starting from a pattern.
-
-    :param image: Pattern used to create a region.
-    :return: None.
-    """
-    try:
-        m = find(image)
-        if m:
-            hamburger_pop_up_menu_weight = 285
-            hamburger_pop_up_menu_height = 655
-            logger.debug('Creating a region for Hamburger menu pop up.')
-            region = Region(m.x - hamburger_pop_up_menu_weight, m.y, hamburger_pop_up_menu_weight,
-                            hamburger_pop_up_menu_height)
-            return region
-        else:
-            raise APIHelperError('No matching found.')
-    except FindError:
-        raise APIHelperError('Image not present.')
-
-
-def create_region_for_url_bar():
-    """Create region for the right side of the url bar."""
-
-    try:
-        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-        show_history_pattern = LocationBar.SHOW_HISTORY_BUTTON
-        select_location_bar()
-        return create_region_from_patterns(show_history_pattern,
-                                           hamburger_menu_pattern,
-                                           padding_top=20,
-                                           padding_bottom=20)
-    except FindError:
-        raise APIHelperError('Could not create region for URL bar.')
-
-
-def create_region_for_hamburger_menu():
-    """Create region for hamburger menu pop up."""
-
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
         wait(hamburger_menu_pattern, 10)
-        click(hamburger_menu_pattern)
-        time.sleep(1)
-        if Settings.get_os() == Platform.LINUX:
-            quit_menu_pattern = Pattern('quit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern, quit_menu_pattern, None, padding_right=20)
-        elif Settings.get_os() == Platform.MAC:
-            help_menu_pattern = Pattern('help.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern, help_menu_pattern, None, padding_right=20)
-        else:
-            exit_menu_pattern = Pattern('exit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern, exit_menu_pattern, None, padding_right=20)
-    except (FindError, ValueError):
-        raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
-
-
-def restore_window_from_taskbar(option=None):
-    """Restore firefox from taskbar."""
-    if Settings.get_os() == Platform.MAC:
-        try:
-            click(Pattern('main_menu_window.png'))
-            if option == "browser_console":
-                click(Pattern('window_browser_console.png'))
-            else:
-                click(Pattern('window_firefox.png'))
-        except FindError:
-            raise APIHelperError('Restore window from taskbar unsuccessful.')
-    elif get_os_version() == 'win7':
-        try:
-            click(Pattern('firefox_start_bar.png'))
-            if option == "library_menu":
-                click(Pattern('firefox_start_bar_library.png'))
-            if option == "browser_console":
-                click(Pattern('firefox_start_bar_browser_console.png'))
-        except FindError:
-            raise APIHelperError('Restore window from taskbar unsuccessful.')
-
-    else:
-        type(text=Key.TAB, modifier=KeyModifier.ALT)
-        if Settings.get_os() == Platform.LINUX:
-            hover(Location(0, 50))
-    time.sleep(Settings.UI_DELAY)
-
-
-def open_library_menu(option):
-    """Open the Library menu with an option as argument.
-
-    :param option: Library menu option.
-    :return: Custom region created for a more efficient and accurate image pattern search.
-    """
-
-    library_menu_pattern = NavBar.LIBRARY_MENU
-
-    try:
-        wait(library_menu_pattern, 10)
-        region = Region(find(library_menu_pattern).x - SCREEN_WIDTH / 4, find(library_menu_pattern).y, SCREEN_WIDTH / 4,
-                        SCREEN_HEIGHT / 4)
-        logger.debug('Library menu found.')
+        region = create_region_from_image(hamburger_menu_pattern)
+        logger.debug('Hamburger menu found.')
     except FindError:
-        raise APIHelperError('Can\'t find the library menu in the page, aborting test.')
+        raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
-        time.sleep(Settings.UI_DELAY_LONG)
-        click(library_menu_pattern)
-        time.sleep(Settings.FX_DELAY)
+        click(hamburger_menu_pattern)
+        time.sleep(Settings.UI_DELAY)
         try:
-            time.sleep(Settings.FX_DELAY)
             region.wait(option, 10)
             logger.debug('Option found.')
             region.click(option)
@@ -619,88 +221,57 @@ def open_library_menu(option):
             raise APIHelperError('Can\'t find the option in the page, aborting test.')
 
 
-def remove_zoom_indicator_from_toolbar():
-    """Remove the zoom indicator from toolbar by clicking on the 'Remove from Toolbar' button."""
+def close_firefox(test):
+    if test.firefox_runner is not None and test.firefox_runner.process_handler is not None:
+        logger.debug('Closing Firefox ...')
+        quit_firefox()
+        status = test.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+        if status is None:
+            logger.warning('Firefox is hanging. Executing force quit.')
+            test.firefox_runner.stop()
+            test.firefox_runner = None
+    else:
+        logger.debug('Firefox already closed. Skipping ...')
 
-    zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
-    remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
-    try:
-        wait(zoom_control_toolbar_decrease_pattern, 10)
-        logger.debug('\'Decrease\' zoom control found.')
-        right_click(zoom_control_toolbar_decrease_pattern)
-    except FindError:
-        raise APIHelperError('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
-
-    try:
-        wait(remove_from_toolbar_pattern, 10)
-        logger.debug('\'Remove from Toolbar\' option found.')
-        click(remove_from_toolbar_pattern)
-    except FindError:
-        raise APIHelperError('Can\'t find the \'Remove from Toolbar\' option in the page, aborting.')
+def confirm_close_multiple_tabs():
+    """Click confirm 'Close all tabs' for warning popup when multiple tabs are opened."""
+    close_all_tabs_button_pattern = Pattern('close_all_tabs_button.png')
 
     try:
-        wait_vanish(zoom_control_toolbar_decrease_pattern, 10)
+        wait(close_all_tabs_button_pattern, 5)
+        logger.debug('"Close all tabs" warning popup found.')
+        type(Key.ENTER)
     except FindError:
-        raise APIHelperError('Zoom indicator not removed from toolbar, aborting.')
+        logger.debug('Couldn\'t find the "Close all tabs" warning popup.')
+        pass
 
 
-def bookmark_options(option):
-    """Click a bookmark option after right clicking on a bookmark from the library menu.
+def confirm_firefox_launch(app, image=None):
+    """Waits for firefox to exist by waiting for the iris logo to be present.
 
-    :param option: Bookmark option to be clicked.
+    :param app: Instance of FirefoxApp class.
+    :param image: Pattern to confirm Firefox launch
     :return: None.
     """
+    if image is None:
+        image = Pattern('iris_logo.png')
 
     try:
-        wait(option, 10)
-        logger.debug('Option %s is present on the page.' % option)
-        click(option)
-    except FindError:
-        raise APIHelperError('Can\'t find option %s, aborting.' % option)
+        wait(image, 20)
+    except Exception as err:
+        logger.error(err)
+        logger.error('Can\'t launch Firefox - aborting test run.')
+        app.finish(code=1)
 
 
-def access_bookmarking_tools(option):
-    """Access option from 'Bookmarking Tools'.
-
-    :param option: Option from 'Bookmarking Tools'.
-    :return: None.
-    """
-
-    bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
-    open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
-
-    try:
-        wait(bookmarking_tools_pattern, 10)
-        logger.debug('Bookmarking Tools option has been found.')
-        click(bookmarking_tools_pattern)
-    except FindError:
-        raise APIHelperError('Can\'t find the Bookmarking Tools option, aborting.')
-    try:
-        wait(option, 15)
-        logger.debug('%s option has been found.' % option)
-        click(option)
-    except FindError:
-        raise APIHelperError('Can\'t find the %s option, aborting.' % option)
-
-
-def write_profile_prefs(test_case):
-    """Add test case setup prefs.
-
-    :param test_case: Instance of BaseTest class.
-    :return: None.
-    """
-
-    if len(test_case.prefs):
-        pref_file = os.path.join(test_case.profile_path, 'user.js')
-        f = open(pref_file, 'w')
-        for pref in test_case.prefs:
-            name, value = pref.split(';')
-            if value == 'true' or value == 'false' or value.isdigit():
-                f.write('user_pref("%s", %s);\n' % (name, value))
-            else:
-                f.write('user_pref("%s", "%s");\n' % (name, value))
-        f.close()
+def copy_to_clipboard():
+    """Return the value copied to clipboard."""
+    edit_select_all()
+    edit_copy()
+    value = Env.get_clipboard().strip()
+    logger.debug("Copied to clipboard: %s" % value)
+    return value
 
 
 def create_firefox_args(test_case):
@@ -761,70 +332,77 @@ def create_firefox_args(test_case):
     return args
 
 
-class ZoomType(object):
-    """Class with zoom type members."""
+def create_region_for_hamburger_menu():
+    """Create region for hamburger menu pop up."""
 
-    IN = 300 if Settings.is_windows() else 1
-    OUT = -300 if Settings.is_windows() else -1
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    try:
+        wait(hamburger_menu_pattern, 10)
+        click(hamburger_menu_pattern)
+        time.sleep(1)
+        if Settings.get_os() == Platform.LINUX:
+            quit_menu_pattern = Pattern('quit.png')
+            return create_region_from_patterns(None, hamburger_menu_pattern, quit_menu_pattern, None, padding_right=20)
+        elif Settings.get_os() == Platform.MAC:
+            help_menu_pattern = Pattern('help.png')
+            return create_region_from_patterns(None, hamburger_menu_pattern, help_menu_pattern, None, padding_right=20)
+        else:
+            exit_menu_pattern = Pattern('exit.png')
+            return create_region_from_patterns(None, hamburger_menu_pattern, exit_menu_pattern, None, padding_right=20)
+    except (FindError, ValueError):
+        raise APIHelperError('Can\'t find the hamburger menu in the page, aborting test.')
 
 
-def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
-    """Zoom in/Zoom out using the mouse wheel.
+def create_region_for_url_bar():
+    """Create region for the right side of the url bar."""
 
-    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should take place.
-    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to be performed.
+    try:
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+        show_history_pattern = LocationBar.SHOW_HISTORY_BUTTON
+        select_location_bar()
+        return create_region_from_patterns(show_history_pattern,
+                                           hamburger_menu_pattern,
+                                           padding_top=20,
+                                           padding_bottom=20)
+    except FindError:
+        raise APIHelperError('Could not create region for URL bar.')
+
+
+def create_region_from_image(image):
+    """Create region starting from a pattern.
+
+    :param image: Pattern used to create a region.
     :return: None.
     """
-
-    # Move focus in the middle of the page to be able to use the scroll.
-    pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
-
-    for i in range(nr_of_times):
-        if Settings.get_os() == Platform.MAC:
-            pyautogui.keyDown('command')
+    try:
+        m = find(image)
+        if m:
+            hamburger_pop_up_menu_weight = 285
+            hamburger_pop_up_menu_height = 655
+            logger.debug('Creating a region for Hamburger menu pop up.')
+            region = Region(m.x - hamburger_pop_up_menu_weight, m.y, hamburger_pop_up_menu_weight,
+                            hamburger_pop_up_menu_height)
+            return region
         else:
-            pyautogui.keyDown('ctrl')
-        pyautogui.scroll(zoom_type)
-        if Settings.get_os() == Platform.MAC:
-            pyautogui.keyUp('command')
-        else:
-            pyautogui.keyUp('ctrl')
-        time.sleep(Settings.UI_DELAY)
-    pyautogui.moveTo(0, 0)
-
-
-def wait_for_firefox_restart():
-    """Wait for Firefox to restart."""
-
-    try:
-        home_pattern = NavBar.HOME_BUTTON
-        wait_vanish(home_pattern, 10)
-        logger.debug('Firefox successfully closed.')
-        wait(home_pattern, 20)
-        logger.debug('Successful Firefox restart performed.')
+            raise APIHelperError('No matching found.')
     except FindError:
-        raise APIHelperError('Firefox restart has not been performed, aborting.')
+        raise APIHelperError('Image not present.')
 
 
-def restore_firefox_focus():
-    """Restore Firefox focus by clicking inside the page."""
-
-    try:
-        w, h = get_image_size(NavBar.HOME_BUTTON)
-        horizontal_offset = w * 2
-        click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
-        click(click_area)
-    except FindError:
-        raise APIHelperError('Could not restore firefox focus.')
+def dont_save_password():
+    """Do not save the password for a login."""
+    if exists(Pattern('dont_save_password_button.png'), 10):
+        click(Pattern('dont_save_password_button.png'))
+    else:
+        raise APIHelperError('Unable to find dont_save_password_button.png.')
 
 
-def get_firefox_version_from_about_config():
-    """Returns the Firefox version from 'about:config' page."""
+def get_firefox_build_id(build_path):
+    """Returns build id string from the dictionary generated by mozversion library.
 
-    try:
-        return get_pref_value('extensions.lastAppVersion')
-    except APIHelperError:
-        raise APIHelperError('Could not retrieve firefox version information from about:config page.')
+    :param build_path: Path to the binary for the application or Android APK file.
+    """
+    return get_firefox_info(build_path)['platform_buildid']
 
 
 def get_firefox_build_id_from_about_config():
@@ -842,6 +420,23 @@ def get_firefox_build_id_from_about_config():
             raise APIHelperError('Could not retrieve firefox build id information from about:config page.')
 
 
+def get_firefox_channel(build_path):
+    """Returns Firefox channel from application repository.
+
+    :param build_path: Path to the binary for the application or Android APK file.
+    """
+
+    fx_channel = get_firefox_info(build_path)['application_repository']
+    if 'beta' in fx_channel:
+        return 'beta'
+    elif 'release' in fx_channel:
+        return 'release'
+    elif 'esr' in fx_channel:
+        return 'esr'
+    else:
+        return 'nightly'
+
+
 def get_firefox_channel_from_about_config():
     """Returns the Firefox channel from 'about:config' page."""
 
@@ -849,6 +444,16 @@ def get_firefox_channel_from_about_config():
         return get_pref_value('app.update.channel')
     except APIHelperError:
         raise APIHelperError('Could not retrieve firefox channel information from about:config page.')
+
+
+def get_firefox_info(build_path):
+    """Returns the application version information as a dict with the help of mozversion library.
+
+    :param build_path: Path to the binary for the application or Android APK file.
+    """
+    import mozlog
+    mozlog.commandline.setup_logging('mozversion', None, {})
+    return mozversion.get_version(binary=build_path)
 
 
 def get_firefox_locale_from_about_config():
@@ -861,6 +466,47 @@ def get_firefox_locale_from_about_config():
         return str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
     except (APIHelperError, KeyError):
         raise APIHelperError('Pref format to determine locale has changed.')
+
+
+def get_firefox_region():
+    # TODO: needs better logic to determine bounds.
+    """For now, just return the Primary Monitor."""
+    return Screen(0)
+
+
+def get_firefox_version(build_path):
+    """Returns application version string from the dictionary generated by mozversion library.
+
+    :param build_path: Path to the binary for the application or Android APK file.
+    """
+    return get_firefox_info(build_path)['application_version']
+
+
+def get_firefox_version_from_about_config():
+    """Returns the Firefox version from 'about:config' page."""
+
+    try:
+        return get_pref_value('extensions.lastAppVersion')
+    except APIHelperError:
+        raise APIHelperError('Could not retrieve firefox version information from about:config page.')
+
+
+def get_main_modifier():
+    """Return the main modifier."""
+    if Settings.get_os() == Platform.MAC:
+        main_modifier = Key.CMD
+    else:
+        main_modifier = Key.CTRL
+    return main_modifier
+
+
+def get_menu_modifier():
+    """Return the menu modifier."""
+    if Settings.get_os() == Platform.MAC:
+        menu_modifier = Key.CTRL
+    else:
+        menu_modifier = Key.CMD
+    return menu_modifier
 
 
 def get_pref_value(pref_name):
@@ -915,47 +561,316 @@ def get_support_info():
         close_tab()
 
 
-def get_firefox_info(build_path):
-    """Returns the application version information as a dict with the help of mozversion library.
+def key_to_one_off_search(highlighted_pattern, direction='left'):
+    """Iterate through the one of search engines list until the given one is highlighted.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    param: highlighted_pattern: The pattern image to search for.
+    param: direction: direction to key to: right or left (default)
+    return: None.
     """
-    import mozlog
-    mozlog.commandline.setup_logging('mozversion', None, {})
-    return mozversion.get_version(binary=build_path)
+    max_attempts = 7
+    while max_attempts > 0:
+        if exists(highlighted_pattern, 1):
+            max_attempts = 0
+        else:
+            if direction == 'right':
+                type(Key.RIGHT)
+            else:
+                type(Key.LEFT)
+            max_attempts -= 1
 
 
-def get_firefox_version(build_path):
-    """Returns application version string from the dictionary generated by mozversion library.
+def launch_firefox(path, profile=None, url=None, args=None):
+    """Launch the app with optional args for profile, windows, URI, etc.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    :param path: Firefox path.
+    :param profile: Firefox profile.
+    :param url: URL to be loaded.
+    :param args: Optional list of arguments.
+    :return: List of Firefox flags.
     """
-    return get_firefox_info(build_path)['application_version']
+    if args is None:
+        args = []
+
+    if profile is None:
+        raise APIHelperError('No profile name present, aborting run.')
+
+    args.append('-foreground')
+    args.append('-no-remote')
+
+    if url is not None:
+        args.append('-new-tab')
+        args.append(url)
+
+    process_args = {'stream': None}
+    logger.debug('Creating Firefox runner ...')
+    try:
+        runner = FirefoxRunner(binary=path, profile=profile, cmdargs=args, process_args=process_args)
+        logger.debug('Firefox runner successfully created.')
+        logger.debug('Running Firefox with command: "%s"' % ','.join(runner.command))
+        return runner
+    except errors.RunnerNotStartedError:
+        raise APIHelperError('Error creating Firefox runner.')
 
 
-def get_firefox_build_id(build_path):
-    """Returns build id string from the dictionary generated by mozversion library.
+def login_site(site_name):
+    """Login into a specific site.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    :param site_name: Name of the site.
+    :return: None.
     """
-    return get_firefox_info(build_path)['platform_buildid']
+    username = get_config_property(site_name, 'username')
+    password = get_config_property(site_name, 'password')
+    paste(username)
+    focus_next_item()
+    paste(password)
+    focus_next_item()
+    type(Key.ENTER)
 
 
-def get_firefox_channel(build_path):
-    """Returns Firefox channel from application repository.
+def navigate(url):
+    """Navigates, via the location bar, to a given URL.
 
-    :param build_path: Path to the binary for the application or Android APK file.
+    :param url: The string to type into the location bar.
+    :return: None.
+    """
+    try:
+        select_location_bar()
+        paste(url)
+        type(Key.ENTER)
+    except Exception:
+        raise APIHelperError('No active window found, cannot navigate to page.')
+
+
+def navigate_slow(url):
+    """Navigates slow, via the location bar, to a given URL.
+
+    :param url: The string to type into the location bar.
+    :return: None.
+
+    The function handles typing 'Enter' to complete the action.
     """
 
-    fx_channel = get_firefox_info(build_path)['application_repository']
-    if 'beta' in fx_channel:
-        return 'beta'
-    elif 'release' in fx_channel:
-        return 'release'
-    elif 'esr' in fx_channel:
-        return 'esr'
+    try:
+        select_location_bar()
+        Settings.type_delay = 0.1
+        type(url + Key.ENTER)
+    except Exception:
+        raise APIHelperError('No active window found, cannot navigate to page.')
+
+
+def open_about_firefox():
+    """Open the 'About Firefox' window."""
+    if Settings.get_os() == Platform.MAC:
+        type(Key.F3, modifier=KeyModifier.CTRL)
+        type(Key.F2, modifier=KeyModifier.CTRL)
+
+        time.sleep(0.5)
+        type(Key.RIGHT)
+        type(Key.DOWN)
+        type(Key.DOWN)
+        type(Key.ENTER)
+
+    elif Settings.get_os() == Platform.WINDOWS:
+        type(Key.ALT)
+        if parse_args().locale != 'ar':
+            type(Key.LEFT)
+        else:
+            type(Key.RIGHT)
+        type(Key.ENTER)
+        type(Key.UP)
+        type(Key.ENTER)
+
     else:
-        return 'nightly'
+        type(Key.F10)
+        if parse_args().locale != 'ar':
+            type(Key.LEFT)
+        else:
+            type(Key.RIGHT)
+        type(Key.UP)
+        type(Key.ENTER)
+
+
+def open_library_menu(option):
+    """Open the Library menu with an option as argument.
+
+    :param option: Library menu option.
+    :return: Custom region created for a more efficient and accurate image pattern search.
+    """
+
+    library_menu_pattern = NavBar.LIBRARY_MENU
+
+    try:
+        wait(library_menu_pattern, 10)
+        region = Region(find(library_menu_pattern).x - SCREEN_WIDTH / 4, find(library_menu_pattern).y, SCREEN_WIDTH / 4,
+                        SCREEN_HEIGHT / 4)
+        logger.debug('Library menu found.')
+    except FindError:
+        raise APIHelperError('Can\'t find the library menu in the page, aborting test.')
+    else:
+        time.sleep(Settings.UI_DELAY_LONG)
+        click(library_menu_pattern)
+        time.sleep(Settings.FX_DELAY)
+        try:
+            time.sleep(Settings.FX_DELAY)
+            region.wait(option, 10)
+            logger.debug('Option found.')
+            region.click(option)
+            return region
+        except FindError:
+            raise APIHelperError('Can\'t find the option in the page, aborting test.')
+
+
+def open_zoom_menu():
+    """Open the 'Zoom' menu from the 'View' menu."""
+
+    if Settings.get_os() == Platform.MAC:
+        view_menu_pattern = Pattern('view_menu.png')
+        click(view_menu_pattern)
+        for i in range(3):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+    else:
+        type(text='v', modifier=KeyModifier.ALT)
+        for i in range(2):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+
+
+def remove_zoom_indicator_from_toolbar():
+    """Remove the zoom indicator from toolbar by clicking on the 'Remove from Toolbar' button."""
+
+    zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
+    remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
+
+    try:
+        wait(zoom_control_toolbar_decrease_pattern, 10)
+        logger.debug('\'Decrease\' zoom control found.')
+        right_click(zoom_control_toolbar_decrease_pattern)
+    except FindError:
+        raise APIHelperError('Can\'t find the \'Decrease\' zoom control button in the page, aborting.')
+
+    try:
+        wait(remove_from_toolbar_pattern, 10)
+        logger.debug('\'Remove from Toolbar\' option found.')
+        click(remove_from_toolbar_pattern)
+    except FindError:
+        raise APIHelperError('Can\'t find the \'Remove from Toolbar\' option in the page, aborting.')
+
+    try:
+        wait_vanish(zoom_control_toolbar_decrease_pattern, 10)
+    except FindError:
+        raise APIHelperError('Zoom indicator not removed from toolbar, aborting.')
+
+
+def repeat_key_down(num):
+    """Repeat DOWN keystroke a given number of times.
+
+    :param num: Number of times to repeat DOWN key stroke.
+    :return: None.
+    """
+    for i in range(num):
+        type(Key.DOWN)
+
+
+def repeat_key_up(num):
+    """Repeat UP keystroke a given number of times.
+
+    :param num: Number of times to repeat UP key stroke.
+    :return: None.
+    """
+    for i in range(num):
+        type(Key.UP)
+
+
+def reset_mouse():
+    """Reset mouse position to location (0, 0)."""
+    hover(Location(0, 0))
+
+
+def restart_firefox(test, path, profile, url, args=None, image=None):
+    """Restart the app with optional args for profile.
+
+    :param test: current test
+    :param path: Firefox path.
+    :param profile: Firefox profile.
+    :param url: URL to be loaded.
+    :param args: Optional list of arguments.
+    :param image: Image checked to confirm that Firefox has successfully restarted.
+    :return: None.
+        """
+    logger.debug('Restarting firefox ...')
+    close_firefox(test)
+    test.firefox_runner = launch_firefox(path, profile, url, args)
+    test.firefox_runner.start()
+    confirm_firefox_launch(test.app, image)
+    logger.debug('Firefox successfully restarted.')
+
+
+def restore_firefox_focus():
+    """Restore Firefox focus by clicking inside the page."""
+
+    try:
+        w, h = get_image_size(NavBar.HOME_BUTTON)
+        horizontal_offset = w * 2
+        click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
+        click(click_area)
+    except FindError:
+        raise APIHelperError('Could not restore firefox focus.')
+
+
+def restore_window_from_taskbar(option=None):
+    """Restore firefox from taskbar."""
+    if Settings.get_os() == Platform.MAC:
+        try:
+            click(Pattern('main_menu_window.png'))
+            if option == "browser_console":
+                click(Pattern('window_browser_console.png'))
+            else:
+                click(Pattern('window_firefox.png'))
+        except FindError:
+            raise APIHelperError('Restore window from taskbar unsuccessful.')
+    elif get_os_version() == 'win7':
+        try:
+            click(Pattern('firefox_start_bar.png'))
+            if option == "library_menu":
+                click(Pattern('firefox_start_bar_library.png'))
+            if option == "browser_console":
+                click(Pattern('firefox_start_bar_browser_console.png'))
+        except FindError:
+            raise APIHelperError('Restore window from taskbar unsuccessful.')
+
+    else:
+        type(text=Key.TAB, modifier=KeyModifier.ALT)
+        if Settings.get_os() == Platform.LINUX:
+            hover(Location(0, 50))
+    time.sleep(Settings.UI_DELAY)
+
+
+def select_location_bar_option(option_number):
+    """Select option from the location bar menu.
+
+    :param option_number: Option number.
+    :return: None.
+    """
+    if Settings.get_os() == Platform.WINDOWS:
+        for i in range(option_number + 1):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+    else:
+        for i in range(option_number - 1):
+            type(text=Key.DOWN)
+        type(text=Key.ENTER)
+
+
+def select_zoom_menu_option(option_number):
+    """Open the 'Zoom' menu from the 'View' menu and select option."""
+
+    open_zoom_menu()
+
+    for i in range(option_number):
+        type(text=Key.DOWN)
+    type(text=Key.ENTER)
 
 
 def get_telemetry_info():
@@ -994,3 +909,88 @@ def get_telemetry_info():
         raise APIHelperError('Failed to retrieve raw message information value. %s' % e.message)
     finally:
         close_tab()
+
+
+def wait_for_firefox_restart():
+    """Wait for Firefox to restart."""
+
+    try:
+        home_pattern = NavBar.HOME_BUTTON
+        wait_vanish(home_pattern, 10)
+        logger.debug('Firefox successfully closed.')
+        wait(home_pattern, 20)
+        logger.debug('Successful Firefox restart performed.')
+    except FindError:
+        raise APIHelperError('Firefox restart has not been performed, aborting.')
+
+
+def write_profile_prefs(test_case):
+    """Add test case setup prefs.
+
+    :param test_case: Instance of BaseTest class.
+    :return: None.
+    """
+
+    if len(test_case.prefs):
+        pref_file = os.path.join(test_case.profile_path, 'user.js')
+        f = open(pref_file, 'w')
+        for pref in test_case.prefs:
+            name, value = pref.split(';')
+            if value == 'true' or value == 'false' or value.isdigit():
+                f.write('user_pref("%s", %s);\n' % (name, value))
+            else:
+                f.write('user_pref("%s", "%s");\n' % (name, value))
+        f.close()
+
+
+def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
+    """Zoom in/Zoom out using the mouse wheel.
+
+    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should take place.
+    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to be performed.
+    :return: None.
+    """
+
+    # Move focus in the middle of the page to be able to use the scroll.
+    pyautogui.moveTo(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2)
+
+    for i in range(nr_of_times):
+        if Settings.get_os() == Platform.MAC:
+            pyautogui.keyDown('command')
+        else:
+            pyautogui.keyDown('ctrl')
+        pyautogui.scroll(zoom_type)
+        if Settings.get_os() == Platform.MAC:
+            pyautogui.keyUp('command')
+        else:
+            pyautogui.keyUp('ctrl')
+        time.sleep(Settings.UI_DELAY)
+    pyautogui.moveTo(0, 0)
+
+
+class Option(object):
+    """Class with zoom members."""
+
+    ZOOM_IN = 0
+    ZOOM_OUT = 1
+    RESET = 2
+    ZOOM_TEXT_ONLY = 3
+
+
+class RightClickLocationBar(object):
+    """Class with location bar members."""
+
+    UNDO = 0
+    CUT = 1
+    COPY = 2
+    PASTE = 3
+    PASTE_GO = 4
+    DELETE = 5
+    SELECT_ALL = 6
+
+
+class ZoomType(object):
+    """Class with zoom type members."""
+
+    IN = 300 if Settings.is_windows() else 1
+    OUT = -300 if Settings.is_windows() else -1
