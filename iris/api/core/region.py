@@ -24,14 +24,53 @@ logger = logging.getLogger(__name__)
 
 class Region(object):
     """Region is a rectangular area on a screen, which is defined by its upper left corner (x, y) as a distance relative
-     to the upper left corner of the screen (0, 0) and its dimension (w, h) as its width and height."""
+     to the upper left corner of the screen (0, 0) and its dimension (w, h) as its width and height.
+
+     Coordinates are based on screen coordinates.
+
+     origin                               top
+        +-----> x increases                |
+        |                           left  -+-  right
+        v                                  |
+     y increases                         bottom
+     """
 
     def __init__(self, x=0, y=0, width=0, height=0):
-        """Function assign values to the screen region parameters x, y, width and height."""
-        self._x = x
-        self._y = y
-        self._width = width
-        self._height = height
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def __str__(self):
+        return '(%s, %s, %s, %s)' % (self.x, self.y, self.width, self.height)
+
+    def __repr__(self):
+        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self.x, self.y, self.width, self.height)
+
+    def get_center(self):
+        """Returns a Location object for the center of te screen."""
+        return Location(int(self.x + self.width) / 2, int(self.y + self.height) / 2)
+
+    def move_to(self, location):
+        """Set the position of this region regarding it's top left corner to the given location"""
+        self.x = location.x
+        self.y = location.y
+
+    def get_top_left(self):
+        """Returns a Location object for the top left of te screen."""
+        return Location(self.x, self.y)
+
+    def get_top_right(self):
+        """Returns a Location object for the top right of te screen."""
+        return Location(self.x + self.width, self.y)
+
+    def get_bottom_left(self):
+        """Returns a Location object for the bottom left of te screen."""
+        return Location(self.x, self.y + self.height)
+
+    def get_bottom_right(self):
+        """Returns a Location object for the bottom right of te screen."""
+        return Location(self.x + self.width, self.y + self.height)
 
     def debug(self):
         """Saves input image for debug. """
@@ -48,89 +87,6 @@ class Region(object):
         """Displays the screen region. This method is mainly intended for debugging purposes."""
         region_screen = IrisCore.get_region(self)
         region_screen.show()
-
-    @property
-    def x(self):
-        """Getter for the location x property."""
-        return self._x
-
-    @x.setter
-    def x(self, x):
-        """Setter for the location x property."""
-        if isinstance(x, int):
-            self._x = x
-        else:
-            raise ValueError(INVALID_NUMERIC_INPUT)
-
-    @property
-    def y(self):
-        """Getter for the location y property."""
-        return self._y
-
-    @y.setter
-    def y(self, y):
-        """Setter for the location y property."""
-        if isinstance(y, int):
-            self._y = y
-        else:
-            raise ValueError(INVALID_NUMERIC_INPUT)
-
-    @property
-    def width(self):
-        """Getter for the screen region width property."""
-        return self._width
-
-    @width.setter
-    def width(self, width):
-        """Setter for the screen region width property."""
-        if isinstance(width, int):
-            self._width = width
-        else:
-            raise ValueError(INVALID_NUMERIC_INPUT)
-
-    @property
-    def height(self):
-        """Getter for the screen region height property."""
-        return self._height
-
-    @height.setter
-    def height(self, height):
-        """Setter for the screen region height property."""
-        if isinstance(height, int):
-            self._height = height
-        else:
-            raise ValueError(INVALID_NUMERIC_INPUT)
-
-    def get_center(self):
-        """Returns a Location object for the center of te screen."""
-        center_x = int(self._x + self._width) / 2
-        center_y = int(self._y + self._height) / 2
-        return Location(center_x, center_y)
-
-    def move_to(self, location):
-        """Set the position of this region regarding it's top left corner to the given location"""
-        self._x = location.x
-        self._y = location.y
-
-    def get_top_left(self):
-        """Returns a Location object for the top left of te screen."""
-        return Location(self._x, self._y)
-
-    def get_top_right(self):
-        """Returns a Location object for the top right of te screen."""
-        top_right_x = self._x + self._width
-        return Location(top_right_x, self._y)
-
-    def get_bottom_left(self):
-        """Returns a Location object for the bottom left of te screen."""
-        bottom_left_y = self._y + self._height
-        return Location(self._x, bottom_left_y)
-
-    def get_bottom_right(self):
-        """Returns a Location object for the bottom right of te screen."""
-        bottom_right_x = self._x + self._width
-        bottom_right_y = self._y + self._height
-        return Location(bottom_right_x, bottom_right_y)
 
     def hover(self, where=None, duration=0):
         """Hover over a Location, Pattern or image.
@@ -269,13 +225,13 @@ class Region(object):
         return key_down(key)
 
     @staticmethod
-    def paste(text):
-        """Paste text.
+    def paste(clipboard):
+        """Paste from clipboard.
 
-        :param text: Text to be pasted.
+        :param clipboard: Content of clipboard.
         :return: Call the paste() method.
         """
-        return paste(text)
+        return paste(clipboard)
 
     def mouse_move(self, where=None, duration=None):
         """Move mouse location.
