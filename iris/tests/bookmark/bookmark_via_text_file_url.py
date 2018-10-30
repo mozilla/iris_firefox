@@ -39,7 +39,7 @@ class Test(BaseTest):
         try:
             wait(local_link, 10)
             logger.debug('The link is present on the page')
-            width, height = get_image_size(local_link)
+            width, height = local_link.get_size()
             location = image_search(local_link)
             location_from = Location(location.x, location.y + height / 2)
             location_to = Location(location.x + width, location.y + height / 2)
