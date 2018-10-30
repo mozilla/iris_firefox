@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Unit tests for Settings Class'
 
     def run(self):

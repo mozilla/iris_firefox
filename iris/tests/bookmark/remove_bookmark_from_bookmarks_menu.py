@@ -7,8 +7,8 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Bookmarks can be removed from Bookmarks menu.'
         self.test_case_id = '4101'
         self.test_suite_id = '75'

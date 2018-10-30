@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Forget a page from the History sidebar and verify it is not remembered in the URL bar.'
         self.test_case_id = '120131'
         self.test_suite_id = '2000'

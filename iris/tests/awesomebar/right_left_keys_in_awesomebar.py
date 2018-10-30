@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case navigates through the awesomebar suggestions/one-offs/settings gear using the ' \
                     'right/left keys.'
         self.test_case_id = '108277'

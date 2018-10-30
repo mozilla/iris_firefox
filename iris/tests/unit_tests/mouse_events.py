@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a unit test for hover, and click.'
 
     def confirm_hover(self, hover_region, hovered_element):

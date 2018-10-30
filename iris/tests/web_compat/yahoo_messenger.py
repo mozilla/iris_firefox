@@ -9,8 +9,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a test of sending messages on Yahoo web messenger'
         self.exclude = Platform.ALL
 

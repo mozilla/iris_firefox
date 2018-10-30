@@ -7,8 +7,8 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'The Copy context menu option works properly.'
         self.test_case_id = '4102'
         self.test_suite_id = '75'

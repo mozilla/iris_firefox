@@ -3,18 +3,21 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import datetime
-import inspect
-import logging
-import multiprocessing
 import os
-import subprocess
-import tempfile
 
 import git
+import inspect
+import logging
 import mss
+import multiprocessing
 import numpy
 import pyautogui
+import pytesseract
+import shutil
+import subprocess
+import tempfile
 from PIL import Image
+from distutils.spawn import find_executable
 
 from iris.api.core.errors import APIHelperError, ScreenshotError
 from iris.api.core.platform import Platform
@@ -25,24 +28,9 @@ SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
 SCREENSHOT_SIZE = Platform.SCREENSHOT_SIZE
 SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT = SCREENSHOT_SIZE
 
-SUCCESS_LEVEL_NUM = 35
-logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
-
 _run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
 _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
 
-
-def success(self, message, *args, **kws):
-    """Log 'msg % args' with severity 'SUCCESS' (level = 35).
-    To pass exception information, use the keyword argument exc_info with
-    a true value, e.g.
-    logger.success('Houston, we have a %s', 'thorny problem', exc_info=1)
-    """
-    if self.isEnabledFor(SUCCESS_LEVEL_NUM):
-        self._log(SUCCESS_LEVEL_NUM, message, args, **kws)
-
-
-logging.Logger.success = success
 logger = logging.getLogger(__name__)
 
 INVALID_GENERIC_INPUT = 'Invalid input'
@@ -86,14 +74,6 @@ def is_multiprocessing_enabled():
     return multiprocessing.cpu_count() >= MIN_CPU_FOR_MULTIPROCESSING and get_os() != 'win'
 
 
-def filter_list(original_list, exclude_list):
-    new_list = []
-    for item in original_list:
-        if item not in exclude_list:
-            new_list.append(item)
-    return new_list
-
-
 class IrisCore(object):
     tmp_dir = None
     _mss = mss.mss()
@@ -129,12 +109,27 @@ class IrisCore(object):
     @staticmethod
     def get_working_dir():
         """Returns the path to the root of the directory where local data is stored."""
+        IrisCore.create_working_directory()
         return parse_args().workdir
+
+    @staticmethod
+    def get_tests_dir():
+        """Returns the directory where tests are located."""
+        return os.path.join(IrisCore.get_module_dir(), 'iris', 'tests')
 
     @staticmethod
     def get_current_run_dir():
         """Returns the directory inside the working directory of the active run."""
+        IrisCore.create_run_directory()
         return os.path.join(parse_args().workdir, 'runs', IrisCore.get_run_id())
+
+    @staticmethod
+    def get_log_file_path():
+        """Returns the path to the log file."""
+        path = IrisCore.get_current_run_dir()
+        if not os.path.exists(path):
+            os.mkdir(path)
+        return os.path.join(path, 'iris_log.log')
 
     @staticmethod
     def make_test_output_dir():
@@ -239,16 +234,19 @@ class IrisCore(object):
         return
 
     @staticmethod
-    def verify_test_compat(test, app):
+    def verify_test_compat(test, browser):
+        if browser.channel is None or browser.version is None:
+            return False
+
         not_excluded = True
         exclude = [test.exclude] if isinstance(test.exclude, str) else [i for i in test.exclude]
         for item in exclude:
-            if item in app.fx_channel or item in app.os or item in app.args.locale:
+            if item in browser.channel or item in get_os() or item in browser.locale:
                 not_excluded = False
-        correct_version = True if test.fx_version == '' else check_version(app.version, test.fx_version)
-        correct_channel = app.fx_channel in test.channel
-        correct_locale = app.args.locale in test.locale
-        correct_platform = app.os in test.platform
+        correct_version = True if test.fx_version == '' else check_version(browser.version, test.fx_version)
+        correct_channel = browser.channel in test.channel
+        correct_locale = parse_args().locale in test.locale
+        correct_platform = get_os() in test.platform
         result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded
         return result
 
@@ -320,3 +318,102 @@ class IrisCore(object):
         except Exception:
             raise ScreenshotError('Unable to take screenshot.')
         return Image.fromarray(image, mode='RGBA')
+
+    @staticmethod
+    def get_base_local_web_url():
+        return 'http://127.0.0.1:%s' % parse_args().port
+
+    @staticmethod
+    def get_local_web_root():
+        return os.path.join(IrisCore.get_module_dir(), 'iris', 'local_web')
+
+    @staticmethod
+    def check_7zip():
+        """Checks if 7zip is installed."""
+        sz_bin = find_executable('7z')
+        if sz_bin is None:
+            logger.critical('Cannot find required library 7zip, aborting Iris.')
+            logger.critical('Please consult wiki for complete setup instructions.')
+            return False
+        return True
+
+    @staticmethod
+    def init_tesseract_path():
+        """Initialize Tesseract path."""
+        which_tesseract = subprocess.Popen('which tesseract', stdout=subprocess.PIPE, shell=True).communicate()[
+            0].rstrip()
+        path_not_found = False
+
+        if get_os() == 'win':
+            win_default_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
+
+            if '/c/' in str(which_tesseract):
+                win_which_tesseract_path = which_tesseract.replace('/c/', 'C:\\').replace('/', '\\') + '.exe'
+            else:
+                win_which_tesseract_path = which_tesseract.replace('\\', '\\\\')
+
+            if _check_path(win_default_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = win_default_tesseract_path + '\\tesseract'
+            elif _check_path(win_which_tesseract_path):
+                pytesseract.pytesseract.tesseract_cmd = win_which_tesseract_path
+            else:
+                path_not_found = True
+
+        elif get_os() == 'linux' or get_os() == 'osx':
+            if _check_path(which_tesseract):
+                pytesseract.pytesseract.tesseract_cmd = which_tesseract
+            else:
+                path_not_found = True
+        else:
+            path_not_found = True
+
+        if path_not_found:
+            logger.critical('Unable to find Tesseract.')
+            logger.critical('Please consult wiki for complete setup instructions.')
+            return False
+        return True
+
+    @staticmethod
+    def delete_run_directory():
+        master_run_directory = os.path.join(parse_args().workdir, 'runs')
+        run_directory = os.path.join(master_run_directory, IrisCore.get_run_id())
+        if os.path.exists(run_directory):
+            shutil.rmtree(run_directory, ignore_errors=True)
+
+    @staticmethod
+    def create_run_directory():
+        IrisCore.create_working_directory()
+        master_run_directory = os.path.join(parse_args().workdir, 'runs')
+        if not os.path.exists(master_run_directory):
+            os.mkdir(master_run_directory)
+        run_directory = os.path.join(master_run_directory, IrisCore.get_run_id())
+        if not os.path.exists(run_directory):
+            os.mkdir(run_directory)
+
+    @staticmethod
+    def create_working_directory():
+        if not os.path.exists(parse_args().workdir):
+            logger.debug('Creating working directory %s' % parse_args().workdir)
+            os.makedirs(parse_args().workdir)
+        if not os.path.exists(os.path.join(parse_args().workdir, 'data')):
+            os.makedirs(os.path.join(parse_args().workdir, 'data'))
+
+        if parse_args().clear:
+            master_run_directory = os.path.join(parse_args().workdir, 'runs')
+            if os.path.exists(master_run_directory):
+                shutil.rmtree(master_run_directory, ignore_errors=True)
+            run_file = os.path.join(parse_args().workdir, 'data', 'all_runs.json')
+            if os.path.exists(run_file):
+                os.remove(run_file)
+            cache_builds_directory = os.path.join(parse_args().workdir, 'cache')
+            if os.path.exists(cache_builds_directory):
+                shutil.rmtree(cache_builds_directory, ignore_errors=True)
+
+
+def _check_path(dir_path):
+    """Check if a path exists."""
+    if not isinstance(dir_path, str):
+        return False
+    if not os.path.exists(dir_path):
+        return False
+    return True

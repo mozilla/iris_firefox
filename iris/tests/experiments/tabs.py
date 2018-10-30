@@ -8,13 +8,12 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a test of a bunch of tabs'
         self.exclude = Platform.ALL
 
     def run(self):
-
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected = exists(LocalWeb.MOZILLA_LOGO, 5)
