@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '119484'
         self.test_suite_id = '1902'
         self.locales = ['en-US']
+        self.set_profile_pref({'browser.contentblocking.enabled': False})
 
     def run(self):
         cnn_tab_pattern = Pattern('cnn_tab.png')
