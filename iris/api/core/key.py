@@ -1,8 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-import ctypes
 
+import ctypes
 import logging
 import subprocess
 import time
@@ -195,6 +195,7 @@ class Key(object):
         elif Settings.get_os() == Platform.LINUX or Settings.get_os() == Platform.MAC:
             try:
                 cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
+                IrisCore.shutdown_process('Xquartz')
             except subprocess.CalledProcessError as e:
                 logger.error('Command  failed: %s' % repr(e.cmd))
                 raise Exception('Unable to run Command.')
