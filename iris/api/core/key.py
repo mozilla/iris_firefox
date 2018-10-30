@@ -176,8 +176,8 @@ class Key(object):
         :return: TRUE if keyboard_key state is ON or FALSE if keyboard_key state is OFF.
         """
         if Settings.get_os() == Platform.WINDOWS:
-            keyboard_code = 0
             hll_dll = ctypes.WinDLL("User32.dll")
+            keyboard_code = 0
             if keyboard_key == Key.CAPS_LOCK:
                 keyboard_code = 0x14
             elif keyboard_key == Key.NUM_LOCK:
@@ -185,7 +185,7 @@ class Key(object):
             elif keyboard_key == Key.SCROLL_LOCK:
                 keyboard_code = 0x91
             try:
-                key_state = hll_dll.GetKeyState(keyboard_code)
+                key_state = hll_dll.GetKeyState(keyboard_code) & 1
             except Exception:
                 raise Exception('Unable to run Command.')
             if key_state == 1:
@@ -195,6 +195,7 @@ class Key(object):
         elif Settings.get_os() == Platform.LINUX or Settings.get_os() == Platform.MAC:
             try:
                 cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
+                IrisCore.shutdown_process('Xquartz')
             except subprocess.CalledProcessError as e:
                 logger.error('Command  failed: %s' % repr(e.cmd))
                 raise Exception('Unable to run Command.')
@@ -216,24 +217,18 @@ class Key(object):
                                 return False
                             else:
                                 return True
-
                         elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
                             button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
                             if "off" in button:
                                 return False
                             else:
                                 return True
-
                         else:
                             button = value[len(value) / 3 * 2:len(value)]
                             if "off" in button:
                                 return False
                             else:
                                 return True
-            finally:
-                if Settings.get_os() == Platform.MAC:
-                    IrisCore.shutdown_process('Xquartz')
-
 
 class KeyModifier(object):
 
