@@ -236,8 +236,7 @@ def click_hamburger_menu_option(option):
 
 
 def close_firefox(test):
-    if test.firefox_runner is not None and test.firefox_runner.process_handler
-    is not None:
+    if test.firefox_runner is not None and test.firefox_runner.process_handler is not None:
         logger.debug('Closing Firefox ...')
         quit_firefox()
         status = test.firefox_runner.process_handler.wait(
