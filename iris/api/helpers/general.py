@@ -137,9 +137,8 @@ def click_auxiliary_window_control(button):
         except FindError:
             raise APIHelperError(
                 'Can\'t find the auxiliary window controls, aborting.')
-    else:
-        if Settings.get_os() == Platform.LINUX:
-            hover(Location(80, 0))
+    elif Settings.get_os() == Platform.LINUX:
+        hover(Location(80, 0))
         try:
             wait(close_button_pattern, 5)
             logger.debug('Auxiliary window control found.')
