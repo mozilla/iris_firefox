@@ -285,7 +285,7 @@ def highlight(region=None, seconds=None, color=None, pattern=None, location=None
         hl.canvas.tag_lower(r, i)
 
     if pattern is not None:
-        width, height = get_image_size(pattern)
+        width, height = pattern.get_size()
         hl.draw_rectangle(HighlightRectangle(location.x, location.y, width, height, color))
 
     hl.render(seconds)
@@ -310,7 +310,7 @@ def generate_region_by_markers(top_left_marker_img=None, bottom_right_marker_img
     bottom_right_pos = find(bottom_right_marker_img)
     hover(bottom_right_pos, 0)
 
-    marker_width, marker_height = get_image_size(bottom_right_marker_img)
+    marker_width, marker_height = bottom_right_marker_img.get_size()
 
     return Region(top_left_pos.x,
                   top_left_pos.y,
@@ -361,7 +361,7 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
             if current_pattern.y < p1.y:
                 p1.y = current_pattern.y
 
-            w, h = get_image_size(pattern)
+            w, h = pattern.get_size()
 
             if current_pattern.x + w > p2.x:
                 p2.x = current_pattern.x + w
@@ -418,7 +418,7 @@ def hover(where=None, duration=0, in_region=None):
     if isinstance(where, Pattern):
         pos = image_search(where, region=in_region)
         if pos.x != -1:
-            needle_width, needle_height = get_image_size(where)
+            needle_width, needle_height = where.get_size()
             if isinstance(where, Pattern):
                 possible_offset = where.get_target_offset()
                 if possible_offset is not None:

@@ -36,7 +36,7 @@ class Test(BaseTest):
         else:
             reset_mouse()
             window_controls_pattern = Pattern('window_controls.png')
-            width, height = get_image_size(window_controls_pattern)
+            width, height = window_controls_pattern.get_size()
             maximize_button = window_controls_pattern.target_offset(width - 10, height / 2)
 
             key_down(Key.ALT)

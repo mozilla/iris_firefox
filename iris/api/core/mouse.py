@@ -13,7 +13,7 @@ from pattern import Pattern
 from settings import Settings, DEFAULT_CLICK_DELAY
 from util.core_helper import INVALID_GENERIC_INPUT
 from util.highlight_circle import HighlightCircle
-from util.image_search import positive_image_search, image_search, get_image_size
+from util.image_search import positive_image_search, image_search
 from util.ocr_search import text_search_by
 from util.parse_args import parse_args
 from util.screen_highlight import ScreenHighlight
@@ -123,7 +123,7 @@ def to_location(ps=None, in_region=None, align='top_left'):
     elif isinstance(ps, Pattern):
         location = image_search(ps, in_region)
         if align == 'center':
-            width, height = get_image_size(ps)
+            width, height = ps.get_size()
             return Location(location.x + width / 2, location.y + height / 2)
         else:
             return location

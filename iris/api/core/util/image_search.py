@@ -24,29 +24,6 @@ logger = logging.getLogger(__name__)
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 
-def get_image_size(of_what):
-    """Get image size of asset image.
-
-    :param str || Pattern of_what: Image name or Pattern object.
-    :return: Width, height as tuple.
-    """
-    needle_path = None
-    scale_factor = 1
-
-    if isinstance(of_what, str):
-        pattern = Pattern(of_what)
-        needle_path = pattern.get_file_path()
-        scale_factor = pattern.get_scale_factor()
-
-    elif isinstance(of_what, Pattern):
-        needle_path = of_what.get_file_path()
-        scale_factor = of_what.get_scale_factor()
-
-    needle = cv2.imread(needle_path)
-    height, width, channels = needle.shape
-    return int(width / scale_factor), int(height / scale_factor)
-
-
 def _calculate_interval_max_attempts(timeout=None):
     if timeout is None:
         timeout = Settings.auto_wait_timeout
