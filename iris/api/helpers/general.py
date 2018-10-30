@@ -156,13 +156,13 @@ def click_auxiliary_window_control(button):
     elif button == 'minimize':
         if Settings.get_os() == Platform.MAC:
             window_controls_pattern = auxiliary_window_controls_pattern
-            width, height = get_image_size(window_controls_pattern)
+            width, height = window_controls_pattern.get_size()
             click(window_controls_pattern.target_offset(width / 2, height / 2))
         else:
             click(minimize_button_pattern)
     elif button == 'full_screen':
         window_controls_pattern = auxiliary_window_controls_pattern
-        width, height = get_image_size(window_controls_pattern)
+        width, height = window_controls_pattern.get_size()
         click(window_controls_pattern.target_offset(width - 10, height / 2))
         if Settings.get_os() == Platform.LINUX:
             hover(Location(80, 0))
@@ -170,7 +170,7 @@ def click_auxiliary_window_control(button):
         if Settings.get_os() == Platform.MAC:
             key_down(Key.ALT)
             window_controls_pattern = auxiliary_window_controls_pattern
-            width, height = get_image_size(window_controls_pattern)
+            width, height = window_controls_pattern.get_size()
             click(window_controls_pattern.target_offset(width - 10,
                                                         height / 2))
             key_up(Key.ALT)
@@ -876,7 +876,7 @@ def restore_firefox_focus():
     """Restore Firefox focus by clicking inside the page."""
 
     try:
-        w, h = get_image_size(NavBar.HOME_BUTTON)
+        w, h = NavBar.HOME_BUTTON.get_size()
         horizontal_offset = w * 2
         click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
         click(click_area)

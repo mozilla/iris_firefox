@@ -39,12 +39,15 @@ class Pattern(object):
             path = from_path
         name, scale = _parse_name(os.path.split(path)[1])
 
+        image = cv2.imread(path)
+
         self.image_name = name
         self.image_path = path
         self.scale_factor = scale
         self.similarity = Settings.min_similarity
         self._target_offset = None
-        self.rgb_array = _get_rgb_array(path)
+        self._size = _get_pattern_size(image, scale)
+        self.rgb_array = _get_rgb_array(image)
         self.color_image = _get_image_from_array(scale, self.rgb_array)
         self.gray_image = _get_gray_image(self.color_image)
 
@@ -108,6 +111,10 @@ class Pattern(object):
         """Set the minimum similarity of the given Pattern object to 0.99, which means exact match is required."""
         self.similarity = 0.99
         return self
+
+    def get_size(self):
+        """Getter for the _size property."""
+        return self._size
 
 
 def _parse_name(full_name):
@@ -186,11 +193,18 @@ def _apply_scale(scale, rgb_array):
         return rgb_array
 
 
-def _get_rgb_array(path):
-    """Returns np array from an image path."""
-    if path is None:
+def _get_rgb_array(image):
+    """Returns np array from an Image."""
+    if image is None:
         return None
-    return np.array(cv2.imread(path))
+    return np.array(image)
+
+
+def _get_pattern_size(image, scale):
+    if image is None or scale is None:
+        return None
+    height, width, channel = image.shape
+    return int(width / scale), int(height / scale)
 
 
 def _get_image_from_array(scale, array):

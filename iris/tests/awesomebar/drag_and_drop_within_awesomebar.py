@@ -31,7 +31,7 @@ class Test(BaseTest):
         try:
             wait(text_to_be_highlighted, 10)
             logger.debug('The text is present on the page.')
-            width, height = get_image_size(text_to_be_highlighted)
+            width, height = text_to_be_highlighted.get_size()
             location = image_search(text_to_be_highlighted)
             location_from = Location(location.x, location.y + height / 2)
             location_to = Location(location.x + width, location.y + height / 2)

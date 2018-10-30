@@ -12,7 +12,6 @@ from iris.api.core.key import Key, KeyModifier, key_down, key_up, type
 from iris.api.core.pattern import Pattern
 from iris.api.core.region import Region, click, wait, wait_vanish
 from iris.api.core.settings import *
-from iris.api.core.util.image_search import get_image_size
 
 logger = logging.getLogger(__name__)
 
@@ -401,7 +400,7 @@ def maximize_window():
         # There is no keyboard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
         maximized_browser_pattern = Pattern('maximized_browser.png')
-        maximized_browser_width, maximized_browser_height = get_image_size(maximized_browser_pattern)
+        maximized_browser_width, maximized_browser_height = maximized_browser_pattern.get_size()
         region = Region(0, 0, maximized_browser_width + 50, maximized_browser_height + 50)
 
         try:
@@ -410,7 +409,7 @@ def maximize_window():
         except (FindError, ValueError):
             logger.debug('Window is not maximized.')
             window_controls_pattern = Pattern('window_controls.png')
-            width, height = get_image_size(window_controls_pattern)
+            width, height = window_controls_pattern.get_size()
             maximize_button = window_controls_pattern.target_offset(width - 10, height / 2)
 
             # Alt key changes maximize button from full screen to maximize window.
