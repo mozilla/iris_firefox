@@ -1,9 +1,10 @@
 function start()
 {
     var progressDiv = document.getElementById('progress-bar');
-    var progress = document.getElementById('progress');
     var label1 = document.getElementById('label-1');
     var label2 = document.getElementById('label-2');
+
+    var bar = document.getElementById('bar');
 
     try
     {
@@ -19,10 +20,10 @@ function start()
         var total = obj["total"];
         var current = obj["current"];
         var title = obj["title"];
-        progress.max = total;
-        progress.value = current;  
         label1.innerHTML = title;
         label2.innerHTML = current + " / " + total;
+        var width = (current / total) * 100;
+        bar.style.width = width + "%";
     } catch (e)
     {
         progressDiv.style.visibility = "hidden";
