@@ -11,9 +11,9 @@ from iris.test_case import *
 
 class Test(BasicUrl):
 
-    def __init__(self, app):
+    def __init__(self):
         # As always, call the superclass constructor first.
-        BasicUrl.__init__(self, app)
+        BasicUrl.__init__(self)
         self.meta = "This is a subclassed test from basic_url"
         self.exclude = Platform.ALL
 

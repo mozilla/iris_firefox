@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case checks the zoom indicator animation from the url bar.'
         self.test_case_id = '7451'
         self.test_suite_id = '242'
@@ -40,7 +40,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         restart_firefox(self,
-                        self.app.fx_path,
+                        self.browser.path,
                         self.profile_path,
                         LocalWeb.FIREFOX_TEST_SITE,
                         image=LocalWeb.FIREFOX_LOGO)

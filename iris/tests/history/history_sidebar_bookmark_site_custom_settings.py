@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a test that bookmarks a page from the History sidebar with custom settings.'
         self.test_case_id = '120124'
         self.test_suite_id = '2000'

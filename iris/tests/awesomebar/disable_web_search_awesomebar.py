@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case disables the web search in the awesomebar.'
         self.test_case_id = '108254'
         self.test_suite_id = '1902'

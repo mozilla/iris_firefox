@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case checks that no zoom indicator is displayed in the location bar for the default ' \
                     'zoom level.'
         self.test_case_id = '7444'

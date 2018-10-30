@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a test of creating various Firefox instances with arguments'
 
         # Disabling test. Due to our new profile handling, it will be hard to support the
@@ -21,15 +21,15 @@ class Test(BaseTest):
 
         time.sleep(5)
         args = ['-width', '800', '-height', '800', '-new-tab', 'http://www.mozilla.org']
-        launch_firefox(path=self.app.fx_path, profile=Profile.DEFAULT, args=args)
+        launch_firefox(path=self.browser.path, profile=Profile.DEFAULT, args=args)
 
         time.sleep(5)
         args = ['-width', '600', '-height', '600', '-search', 'firefox']
-        launch_firefox(path=self.app.fx_path, profile=Profile.DEFAULT, args=args)
+        launch_firefox(path=self.browser.path, profile=Profile.DEFAULT, args=args)
 
         time.sleep(5)
         args = ['-width', '400', '-height', '400', '-private-window', 'http://amazon.com']
-        launch_firefox(path=self.app.fx_path, profile=Profile.DEFAULT, args=args)
+        launch_firefox(path=self.browser.path, profile=Profile.DEFAULT, args=args)
 
         expected_1 = exists(amazon_pattern, 20)
 

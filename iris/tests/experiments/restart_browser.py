@@ -7,9 +7,8 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
-        self.app = app
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a test case that restarts the browser.'
         self.exclude = Platform.ALL
 
@@ -30,7 +29,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Firefox page loaded successfully.')
 
         restart_firefox(self,
-                        self.app.fx_path,
+                        self.browser.path,
                         self.profile_path,
                         LocalWeb.MOZILLA_TEST_SITE,
                         image=LocalWeb.MOZILLA_LOGO)

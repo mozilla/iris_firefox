@@ -4,6 +4,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import logging
+import os
+from iris.api.core.util.parse_args import parse_args
 
 logger = logging.getLogger(__name__)
 
@@ -99,14 +101,32 @@ def print_results(current_test, test_case):
     :param test_case: Instance of BaseTest class.
     :return: None.
     """
-    for result in test_case.results:
+    result_list = test_case.results
+    for index, result in enumerate(result_list, start=1):
         if 'ERROR' == result.outcome:
-            logger.error('Error encountered in test, outcome: >>> ERROR <<< %s' % '\n' + result.error if
+            logger.error('>>> ERROR <<< Error encountered in test %s' % '\n' + result.error if
                          result.error else '')
         elif 'FAILED' == result.outcome:
-            logger.warning('Step: %s, outcome: >>> %s <<< %s' % (
-                result.message, result.outcome, '\n' + result.error if result.error else ''))
+            logger.warning('>>> FAILED <<< Step %s: %s - [Actual]: %s [Expected]: %s %s'
+                           % (index, result.message, result.actual, result.expected,
+                              '\n' + result.error if result.error else ''))
         elif 'PASSED' == result.outcome:
-            logger.success('Step: %s, outcome: >>> %s <<<' % (result.message, result.outcome))
+            logger.success('>>> PASSED <<< Step %s: %s' % (index, result.message))
     logger.info('[%s] - >>> %s <<< (Finished in %s second(s))\n' % (
         current_test, test_case.outcome, get_duration(test_case.start_time, test_case.end_time)))
+
+
+def write_test_failures(failures, master_test_list):
+    master_run_directory = os.path.join(parse_args().workdir, 'runs')
+    path = os.path.join(master_run_directory, 'last_fail.txt')
+
+    if len(failures):
+        if os.path.exists(path):
+            os.remove(path)
+        last_fail = open(path, 'w')
+        for item in failures:
+            for package in master_test_list:
+                for test in master_test_list[package]:
+                    if test["name"] == item:
+                        last_fail.write(test["module"] + '\n')
+        last_fail.close()

@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case adds links using \'CTRL\' + \'ENTER\' keys.'
         self.test_case_id = '119484'
         self.test_suite_id = '1902'

@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case checks that mouse position does not affect a search from awesomebar.'
         self.test_case_id = '108256'
         self.test_suite_id = '1902'

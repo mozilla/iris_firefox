@@ -4,16 +4,16 @@
 
 import importlib
 
-from api.core.profile import *
+from api.core.profile import Profile
+from api.core.util.json_utils import create_log_object, update_log_object, append_logs
 from api.helpers.general import *
 from email_report.email_client import EmailClient
 from iris.test_rail.test_rail_client import *
-from mozprofile import Preferences
 
 logger = logging.getLogger(__name__)
 
 
-def run(app):
+def run(master_tests_list, test_list, browser):
     passed = failed = skipped = errors = 0
     logger.info('Running tests')
     start_time = time.time()
@@ -21,41 +21,39 @@ def run(app):
     test_failures = []
     test_case_results = []
     test_log = {}
-
-    for index, module in enumerate(app.test_list, start=1):
+    for index, module in enumerate(test_list, start=1):
 
         current_module = importlib.import_module(module)
         IrisCore.set_current_module(current_module.__file__)
 
         try:
-            current = current_module.Test(app)
-            app.current_test += 1
+            current = current_module.Test()
+            current.browser = browser
+            current.base_local_web_url = IrisCore.get_base_local_web_url()
+            current.index = index
+            current.total_tests = len(test_list)
         except AttributeError:
             test_failures.append(module)
             logger.warning('[%s] is not a test file. Skipping...', module)
             return
         logger.info('\n' + '-' * 120)
 
-        if IrisCore.verify_test_compat(current, app) or app.args.override:
+        if IrisCore.verify_test_compat(current, browser) or parse_args().override:
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.start_time = time.time()
 
-            # Move the mouse to upper left corner of the screen
             reset_mouse()
-
-            # Set up test case conditions
             current.setup()
 
-            # Generate profile
             try:
                 profile = Profile.make_profile(current.profile)
                 current.profile_path = profile
                 profile.set_preferences(current.prefs)
             except ValueError:
-                app.finish(code=1)
+                logger.error('Error creating profile')
 
             args = create_firefox_args(current)
-            current.firefox_runner = launch_firefox(path=app.fx_path,
+            current.firefox_runner = launch_firefox(path=browser.path,
                                                     profile=current.profile_path,
                                                     url=current.url,
                                                     args=args)
@@ -63,14 +61,10 @@ def run(app):
 
             fx_args = ','.join(current.firefox_runner.command)
 
-            # Verify that Firefox has launched
-            confirm_firefox_launch(app)
-
-            # Adjust Firefox window size
+            confirm_firefox_launch()
             if current.maximize_window:
                 maximize_window()
 
-            # Run the test logic.
             try:
                 current.run()
                 passed += 1
@@ -91,11 +85,8 @@ def run(app):
             close_firefox(current)
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())
-
-            # Initialize test log object
             test_log_object = create_log_object(current_module, current, fx_args)
 
-            # Save current test log
             current_package = os.path.split(os.path.dirname(current_module.__file__))[1]
             if current_package not in test_log:
                 test_log[current_package] = []
@@ -105,67 +96,19 @@ def run(app):
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
-    test_results = print_report_footer(Settings.get_os(), app.version, app.build_id, passed, failed, skipped, errors,
+    test_results = print_report_footer(Settings.get_os(), browser.version,
+                                       browser.build_id, passed, failed, skipped, errors,
                                        get_duration(start_time, end_time), failures=test_failures)
 
-    if app.args.report:
+    if parse_args().report:
         test_rail_report = TestRail()
-        test_rail_report.create_test_plan(app.build_id, app.version, test_case_results)
+        test_rail_report.create_test_plan(browser.build_id, browser.version, test_case_results)
 
-    if app.args.email:
+    if parse_args().email:
         email_report = EmailClient()
-        email_report.send_email_report(app.version, test_results, IrisCore.get_git_details())
+        email_report.send_email_report(browser.version, test_results, IrisCore.get_git_details())
 
-    app.write_test_failures(test_failures)
-    append_logs(app, passed, test_failures, skipped, errors, start_time, end_time, tests=test_log)
-    app.finish()
-
-
-def create_log_object(module, current, fx_args):
-    run_obj = {'name': module.__name__, 'meta': current.meta, 'profile': current.profile, 'module': module.__file__,
-               'profile_path': current.profile_path.profile, 'fx_args': fx_args, 'prefs': current.prefs,
-               'time': int(current.end_time - current.start_time), 'asserts': []}
-
-    outcome = 'PASSED'
-    for result in current.results:
-        if result.outcome is 'FAILED':
-            outcome = result.outcome
-        run_obj['asserts'].append({'outcome': result.outcome, 'message': result.message,
-                                   'expected': result.expected, 'actual': result.actual,
-                                   'error': result.error})
-        run_obj['result'] = outcome
-    return run_obj
-
-
-def update_log_object(run_obj):
-    # If debug images were created for this test, add their names to the log file.
-    if os.path.exists(IrisCore.get_image_debug_path()):
-        debug_images = []
-        for root, dirs, files in os.walk(IrisCore.get_image_debug_path()):
-            for file_name in files:
-                debug_images.append(file_name)
-        run_obj['debug_images'] = sorted(debug_images)
-        run_obj['debug_image_directory'] = IrisCore.get_image_debug_path()
-    return run_obj
-
-
-def append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests):
-    # First, update the runs.json log.
-    app.update_run_index({'total': len(app.test_list), 'failed': len(failed)})
-
-    # Second, update the run.json log for this particular run.
-    failed_tests = {}
-    if len(failed) > 0:
-        for item in failed:
-            for package in app.master_test_list:
-                for test in app.master_test_list[package]:
-                    if test["name"] == item:
-                        if failed_tests.get(package) is None:
-                            failed_tests[package] = []
-                        failed_tests[package].append(item)
-
-    data = {'total': len(app.test_list), 'passed': passed, 'failed': len(failed),
-            'failed_tests': failed_tests, 'skipped': skipped, 'errors': errors,
-            'start_time': int(start_time), 'end_time': int(end_time),
-            'total_time': int(get_duration(start_time, end_time)), 'tests': tests}
-    app.update_run_log(data)
+    write_test_failures(test_failures, master_tests_list)
+    append_logs(browser, test_list, master_tests_list, passed, test_failures, skipped, errors, start_time, end_time,
+                tests=test_log)
+    return
