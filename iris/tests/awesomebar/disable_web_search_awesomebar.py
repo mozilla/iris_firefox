@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '108254'
         self.test_suite_id = '1902'
         self.locales = ['en-US']
+        self.set_profile_pref({'browser.contentblocking.enabled': False})
 
     def run(self):
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
@@ -39,7 +40,10 @@ class Test(BaseTest):
         expected = region.exists(google_one_off_button_pattern, 10)
         assert_true(self, expected, 'The \'Google\' one-off button found.')
 
+        time.sleep(DEFAULT_UI_DELAY_LONG)
+
         click(google_one_off_button_pattern)
+
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
         expected = region.exists(google_search_results_pattern, 10)
