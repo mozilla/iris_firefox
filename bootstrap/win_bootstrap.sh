@@ -72,9 +72,9 @@ fi
 
 
 echo -e "\n${GREEN}  --->  installing/upgrading pipenv ${NC}\n"
-if [[ ! $(pipenv --version) ]]; then
-    powershell -Command "pip install pipenv"
-else
+if command -v pipenv &>/dev/null; then
     powershell -Command "python -m pip install --upgrade pip"
     powershell -Command "python -m pip install --upgrade pipenv"
+else
+    powershell -Command "pip install pipenv"
 fi
