@@ -7,8 +7,8 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = "This is a test case that checks that Developer Toolbar controls work as expected."
         # Skipping test from running since the 'Developer Toolbar' has been removed from Firefox 62. See more details
         # here https://developer.mozilla.org/en-US/docs/Tools/GCLI

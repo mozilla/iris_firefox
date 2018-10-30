@@ -7,8 +7,8 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This tests the ability to activate/deactivate the activity stream.'
         self.fx_version = '>=62'
         self.exclude = Platform.ALL

@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case checks the \'Paste & Go\' option if CRLF exists at the end of clipboard url.'
         self.test_case_id = '117523'
         self.test_suite_id = '1902'

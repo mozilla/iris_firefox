@@ -14,6 +14,7 @@ from errors import FindError
 from platform import Platform
 from settings import Settings, DEFAULT_TYPE_DELAY
 from util.core_helper import INVALID_GENERIC_INPUT, IrisCore
+from util.parse_args import parse_args
 
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
 
@@ -388,3 +389,20 @@ def paste(text):
 
     # Clear clipboard.
     pyperclip.copy('')
+
+
+def check_keyboard_state():
+    """Check Keyboard state.
+
+    Iris cannot run in case Key.CAPS_LOCK, Key.NUM_LOCK or Key.SCROLL_LOCK are pressed.
+    """
+    if parse_args().no_check:
+        return True
+
+    key_on = False
+    keyboard_keys = [Key.CAPS_LOCK, Key.NUM_LOCK, Key.SCROLL_LOCK]
+    for key in keyboard_keys:
+        if Key.is_lock_on(key):
+            logger.error('Cannot run Iris because %s is on. Please turn it off to continue.' % str(key).upper())
+            key_on = True
+    return not key_on

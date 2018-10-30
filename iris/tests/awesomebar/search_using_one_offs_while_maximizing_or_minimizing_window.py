@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This test case performs a search using one-offs while maximizing/minimizing the browser\'s window.'
         self.test_case_id = '108252'
         self.test_suite_id = '1902'

@@ -12,9 +12,9 @@ from iris.test_case import *
 
 class Test(SubclassedOne):
 
-    def __init__(self, app):
+    def __init__(self):
         # As always, call the superclass constructor first.
-        SubclassedOne.__init__(self, app)
+        SubclassedOne.__init__(self)
         self.meta = "This is a subclassed test from subclassed_one"
         self.exclude = Platform.ALL
 

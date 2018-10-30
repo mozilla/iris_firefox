@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Bookmark a website from the Library - History menu - Change Name/ Folder/ Tags.'
         self.test_case_id = '174044'
         self.test_suite_id = '2000'

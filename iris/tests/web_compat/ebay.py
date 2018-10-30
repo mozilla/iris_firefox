@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.assets = os.path.join(os.path.split(__file__)[0], 'assets')
         self.meta = 'Web compatibility test for eBay'
         self.exclude = Platform.ALL

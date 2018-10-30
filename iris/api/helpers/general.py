@@ -263,7 +263,7 @@ def confirm_close_multiple_tabs():
         pass
 
 
-def confirm_firefox_launch(app, image=None):
+def confirm_firefox_launch(image=None):
     """Waits for firefox to exist by waiting for the iris logo to be present.
 
     :param app: Instance of FirefoxApp class.
@@ -278,7 +278,6 @@ def confirm_firefox_launch(app, image=None):
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
-        app.finish(code=1)
 
 
 def copy_to_clipboard():
@@ -432,6 +431,9 @@ def get_firefox_build_id(build_path):
     :param build_path: Path to the binary for the application or Android APK
     file.
     """
+    if build_path is None:
+        return None
+
     return get_firefox_info(build_path)['platform_buildid']
 
 
@@ -458,6 +460,9 @@ def get_firefox_channel(build_path):
     :param build_path: Path to the binary for the application or Android APK
     file.
     """
+
+    if build_path is None:
+        return None
 
     fx_channel = get_firefox_info(build_path)['application_repository']
     if 'beta' in fx_channel:
@@ -488,6 +493,8 @@ def get_firefox_info(build_path):
     :param build_path: Path to the binary for the application or Android APK
     file.
     """
+    if build_path is None:
+        return None
     import mozlog
     mozlog.commandline.setup_logging('mozversion', None, {})
     return mozversion.get_version(binary=build_path)
@@ -519,6 +526,8 @@ def get_firefox_version(build_path):
     :param build_path: Path to the binary for the application or Android APK
     file.
     """
+    if build_path is None:
+        return None
     return get_firefox_info(build_path)['application_version']
 
 
@@ -909,7 +918,7 @@ def restart_firefox(test, path, profile, url, args=None, image=None):
     close_firefox(test)
     test.firefox_runner = launch_firefox(path, profile, url, args)
     test.firefox_runner.start()
-    confirm_firefox_launch(test.app, image)
+    confirm_firefox_launch(image)
     logger.debug('Firefox successfully restarted.')
 
 

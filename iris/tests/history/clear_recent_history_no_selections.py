@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'No sections selected in Clear Recent History window.'
         self.test_case_id = '172046'
         self.test_suite_id = '2000'

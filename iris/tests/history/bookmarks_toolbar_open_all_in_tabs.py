@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Copy a History time range from the History sidebar and paste it to the Bookmarks toolbar, then' \
                     'use the \'Open All in Tabs\' option on the saved bookmark.'
         self.test_case_id = '120117'
