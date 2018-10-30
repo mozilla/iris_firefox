@@ -35,10 +35,10 @@ echo -e "\n${GREEN}  --->  installing/updating xquartz ${NC} \n"
 brew cask install xquartz
 
 echo -e "\n${GREEN}  --->  installing/upgrading pipenv ${NC}\n"
-if [[ ! $(pipenv --version) ]]; then
-    brew install pipenv
-else
+if command -v pipenv &>/dev/null; then
     brew upgrade pipenv
+else
+    brew install pipenv
 fi
 
 # Exporting settings to .bash_profile or .zshrc
