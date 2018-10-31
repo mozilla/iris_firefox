@@ -117,7 +117,7 @@ def run(app):
         email_report.send_email_report(app.version, test_results, IrisCore.get_git_details())
 
     app.write_test_failures(test_failures)
-    append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests=test_log)
+    append_logs(app, passed, test_failures, skipped, errors, start_time, end_time, tests=test_log)
     app.finish()
 
 
@@ -154,8 +154,18 @@ def append_logs(app, passed, failed, skipped, errors, start_time, end_time, test
     app.update_run_index({'total': len(app.test_list), 'failed': failed})
 
     # Second, update the run.json log for this particular run.
-    data = {'total': len(app.test_list), 'passed': passed, 'failed': failed,
-            'skipped': skipped, 'errors': errors, 'start_time': int(start_time),
-            'end_time': int(end_time), 'total_time': int(get_duration(start_time, end_time)),
-            'tests': tests}
+    failed_tests = {}
+    if len(failed) > 0:
+        for item in failed:
+            for package in app.master_test_list:
+                for test in app.master_test_list[package]:
+                    if test["name"] == item:
+                        if failed_tests.get(package) is None:
+                            failed_tests[package] = []
+                        failed_tests[package].append(item)
+
+    data = {'total': len(app.test_list), 'passed': passed, 'failed': len(failed),
+            'failed_tests': failed_tests, 'skipped': skipped, 'errors': errors,
+            'start_time': int(start_time), 'end_time': int(end_time),
+            'total_time': int(get_duration(start_time, end_time)), 'tests': tests}
     app.update_run_log(data)
