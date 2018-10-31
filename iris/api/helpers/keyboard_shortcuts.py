@@ -9,8 +9,9 @@ from iris.api.core.errors import FindError, APIHelperError
 from iris.api.core.firefox_ui.menus import SidebarBookmarks
 from iris.api.core.firefox_ui.toolbars import LocationBar
 from iris.api.core.key import Key, KeyModifier, key_down, key_up, type
+from iris.api.core.location import Location
 from iris.api.core.pattern import Pattern
-from iris.api.core.region import Region, click, wait, wait_vanish
+from iris.api.core.region import Region, click, drag_drop, find, wait, wait_vanish
 from iris.api.core.settings import *
 
 logger = logging.getLogger(__name__)
@@ -399,23 +400,21 @@ def maximize_window():
     if Settings.is_mac():
         # There is no keyboard shortcut for this on Mac. We'll do it the old fashioned way.
         # This image is of the three window control buttons at top left of the window.
-        maximized_browser_pattern = Pattern('maximized_browser.png')
-        maximized_browser_width, maximized_browser_height = maximized_browser_pattern.get_size()
-        region = Region(0, 0, maximized_browser_width + 50, maximized_browser_height + 50)
+        # We have to resize the window to ensure maximize works properly in all cases.
+        window_controls_pattern = Pattern('window_controls.png')
+        controls_location = find(window_controls_pattern)
+        xcoord = controls_location.x
+        ycoord = controls_location.y
+        width, height = window_controls_pattern.get_size()
+        drag_start = Location(xcoord + 70, ycoord + 5)
+        drag_end = Location(xcoord + 75, ycoord + 5)
+        drag_drop(drag_start, drag_end, 0.1)
 
-        try:
-            region.find(maximized_browser_pattern.similar(0.95))
-            logger.debug('Window is already maximized.')
-        except (FindError, ValueError):
-            logger.debug('Window is not maximized.')
-            window_controls_pattern = Pattern('window_controls.png')
-            width, height = window_controls_pattern.get_size()
-            maximize_button = window_controls_pattern.target_offset(width - 10, height / 2)
-
-            # Alt key changes maximize button from full screen to maximize window.
-            key_down(Key.ALT)
-            click(maximize_button)
-            key_up(Key.ALT)
+        # Alt key changes maximize button from full screen to maximize window.
+        maximize_button = window_controls_pattern.target_offset(width - 3, height / 2)
+        key_down(Key.ALT)
+        click(maximize_button)
+        key_up(Key.ALT)
 
     elif Settings.is_windows():
         type(text=Key.UP, modifier=KeyModifier.WIN)
