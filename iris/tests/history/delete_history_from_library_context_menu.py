@@ -54,7 +54,7 @@ class Test(BaseTest):
         type(text='d')
 
         try:
-            expected_5 = wait_vanish(history_mozilla_pattern, 10)
+            expected_5 = wait_vanish(history_mozilla_pattern.similar(0.9), 10)
             assert_true(self, expected_5, 'Mozilla page was deleted successfully from the history.')
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
