@@ -84,7 +84,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Bookmark star is not present on the page, aborting.')
 
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         max_attempts = 5
 
