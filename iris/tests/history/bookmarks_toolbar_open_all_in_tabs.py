@@ -16,16 +16,6 @@ class Test(BaseTest):
         self.test_suite_id = '2000'
         self.locales = ['en-US']
 
-    def setup(self):
-        """Test case setup
-
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
-        """
-        BaseTest.setup(self)
-        self.profile = Profile.LIKE_NEW
-
-        return
-
     def run(self):
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
         search_history_box_pattern = Pattern('search_history_box.png')
@@ -38,7 +28,6 @@ class Test(BaseTest):
         mozilla_tab_icon = Pattern('mozilla_logo_tab.png')
 
         # Open a page to create some history.
-
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, expected_1, 'Mozilla page loaded successfully.')
