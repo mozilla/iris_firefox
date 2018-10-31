@@ -16,6 +16,13 @@ class LibraryMenu(object):
             VIEW_BOOKMARKS_TOOLBAR = Pattern('view_bookmarks_toolbar.png')
             VIEW_BOOKMARKS_SIDEBAR = Pattern('view_bookmarks_sidebar.png')
 
+    class HistoryOption(object):
+        VIEW_HISTORY_SIDEBAR = Pattern('view_history_sidebar.png')
+        CLEAR_RECENT_HISTORY = Pattern('clear_recent_history.png')
+        RECENTLY_CLOSED_TABS = Pattern('recently_closed_tabs.png')
+        RECENTLY_CLOSED_WINDOWS = Pattern('recently_closed_windows.png')
+        SHOW_ALL_HISTORY = Pattern('show_all_history.png')
+
 
 class SidebarBookmarks(object):
     BOOKMARKS_HEADER = Pattern('bookmarks_header.png')
