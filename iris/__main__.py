@@ -304,6 +304,7 @@ class Iris(object):
             meta['total'] = new_data['total']
             meta['passed'] = new_data['passed']
             meta['failed'] = new_data['failed']
+            meta['failed_tests'] = new_data['failed_tests']
             meta['skipped'] = new_data['skipped']
             meta['errors'] = new_data['errors']
             meta['start_time'] = new_data['start_time']
