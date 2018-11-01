@@ -20,9 +20,9 @@ fi
 
 echo -e "\n${GREEN}  --->  installing/upgrading pip #####${NC}\n"
 if command -v pip &>/dev/null; then
-    sudo apt-get -y install python-pip
-else
     pip install --upgrade pip
+else
+    sudo apt-get -y install python-pip
 fi
 
 # Installing library dependencies
@@ -82,10 +82,10 @@ sudo apt-get -y install python-tk
 
 
 echo -e "\n${GREEN}  --->  installing/upgrading pipenv #####${NC}\n"
-if [[ ! $(pipenv --version) ]]; then
-    pip install pipenv
-else
+if command -v pipenv &>/dev/null; then
     pip install --upgrade pipenv
+else
+    pip install pipenv
 fi
 
 
@@ -184,7 +184,9 @@ if  [ ! -f /usr/local/share/tessdata/afr.traineddata ]; then
     fi
 
     if [[ "$PWD" =~ tessdata-3.04.00 ]]; then
-        sudo mkdir /usr/local/share/tessdata/
+        if [ ! -d /usr/local/share/tessdata/ ]; then
+            sudo mkdir /usr/local/share/tessdata/
+        fi
         sudo mv * /usr/local/share/tessdata/
     fi
 
