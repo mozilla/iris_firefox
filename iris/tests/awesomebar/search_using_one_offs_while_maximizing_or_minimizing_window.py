@@ -24,6 +24,7 @@ class Test(BaseTest):
         window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
+        moz_wiki_item = Pattern('moz_wiki_item.png')
         moz_pattern = Pattern('moz.png')
 
         left_upper_corner = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -102,6 +103,6 @@ class Test(BaseTest):
         expected = region.exists(wikipedia_search_results_moz_pattern, 10)
         assert_true(self, expected, 'Wikipedia results are opened.')
 
-        expected = left_upper_corner.exists('Moz', 10)
+        expected = left_upper_corner.exists(moz_wiki_item, 10)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the wikipedia search engine.')
