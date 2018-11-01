@@ -49,6 +49,7 @@ class Test(BaseTest):
 
         if exists(hamburger_menu_pattern, 10):
             minimize_window()
+            time.sleep(DEFAULT_UI_DELAY_LONG)
             if Settings.get_os() == Platform.WINDOWS:
                 minimize_window()
             try:
