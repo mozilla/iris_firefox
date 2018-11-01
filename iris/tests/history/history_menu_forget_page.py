@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self, app):
         BaseTest.__init__(self, app)
-        self.meta = 'Forget a page from the Library - History menu'
+        self.meta = 'Forget a page from the Library - History menu.'
         self.test_case_id = '174050'
         self.test_suite_id = '905'
 
