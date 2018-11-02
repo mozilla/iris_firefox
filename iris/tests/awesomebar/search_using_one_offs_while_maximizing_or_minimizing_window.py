@@ -13,7 +13,9 @@ class Test(BaseTest):
         self.meta = 'This test case performs a search using one-offs while maximizing/minimizing the browser\'s window.'
         self.test_case_id = '108252'
         self.test_suite_id = '1902'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
         self.set_profile_pref({'browser.contentblocking.enabled': False})
 
     def run(self):

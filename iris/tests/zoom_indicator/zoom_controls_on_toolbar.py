@@ -13,7 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks the zoom controls on toolbar.'
         self.test_case_id = '7443'
         self.test_suite_id = '242'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
