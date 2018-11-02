@@ -151,7 +151,7 @@ def update_log_object(run_obj):
 
 def append_logs(app, passed, failed, skipped, errors, start_time, end_time, tests):
     # First, update the runs.json log.
-    app.update_run_index({'total': len(app.test_list), 'failed': failed})
+    app.update_run_index({'total': len(app.test_list), 'failed': len(failed)})
 
     # Second, update the run.json log for this particular run.
     failed_tests = {}
