@@ -13,7 +13,9 @@ class Test(BaseTest):
         self.meta = 'Open the History Menu and check the Recent History list.'
         self.test_case_id = '118799'
         self.test_suite_id = '2000'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def setup(self):
         """Test case setup

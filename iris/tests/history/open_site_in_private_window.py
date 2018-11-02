@@ -13,7 +13,9 @@ class Test(BaseTest):
         self.meta = 'Open a website in a private window and then check it is not displayed in the Recent History list.'
         self.test_case_id = '174041'
         self.test_suite_id = '2000'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def setup(self):
         """Test case setup
