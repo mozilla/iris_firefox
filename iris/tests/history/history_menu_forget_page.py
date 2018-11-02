@@ -13,6 +13,9 @@ class Test(BaseTest):
         self.meta = 'Forget a page from the Library - History menu.'
         self.test_case_id = '174050'
         self.test_suite_id = '905'
+        self.blocked_by = 'issue 1410'
+        self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def run(self):
         show_all_history = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY

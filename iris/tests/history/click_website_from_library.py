@@ -13,7 +13,9 @@ class Test(BaseTest):
         self.meta = 'Click on a website from the Library.'
         self.test_case_id = '174037'
         self.test_suite_id = '2000'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def run(self):
         show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
