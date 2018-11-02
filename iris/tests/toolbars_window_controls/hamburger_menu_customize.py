@@ -11,7 +11,9 @@ class Test(BaseTest):
     def __init__(self, app):
         BaseTest.__init__(self, app)
         self.meta = 'This is a test case that checks the Hamburger menu > Customize opens the customize page'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
   
     def run(self):
         navigate('about:home')

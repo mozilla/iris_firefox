@@ -13,7 +13,9 @@ class Test(BaseTest):
         self.meta = 'Forget all the history from the last 5 minutes.'
         self.test_case_id = '174072'
         self.test_suite_id = '2000'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def run(self):
         forget_customize_page_pattern = Pattern('forget_customize_page.png')

@@ -14,7 +14,9 @@ class Test(BaseTest):
                     'Customize menu'
         self.test_case_id = '118183'
         self.test_suite_id = '1998'
+        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def run(self):
 
