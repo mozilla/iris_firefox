@@ -274,7 +274,7 @@ def confirm_firefox_launch(app, image=None):
         image = Pattern('iris_logo.png')
 
     try:
-        wait(image, 20)
+        wait(image, 60)
     except Exception as err:
         logger.error(err)
         logger.error('Can\'t launch Firefox - aborting test run.')
@@ -603,6 +603,48 @@ def get_support_info():
     except Exception as e:
         raise APIHelperError(
             'Failed to retrieve support information value. %s' % e.message)
+    finally:
+        close_tab()
+        
+
+def get_telemetry_info():
+    """Returns telemetry information as a JSON object from 'about:telemetry'
+    page.
+    """
+
+    copy_raw_data_to_clipboard_pattern = Pattern(
+        'copy_raw_data_to_clipboard.png')
+    raw_json_pattern = Pattern('raw_json.png')
+    raw_data_pattern = Pattern('raw_data.png')
+
+    new_tab()
+
+    paste('about:telemetry')
+    type(Key.ENTER)
+
+    try:
+        wait(raw_json_pattern, 10)
+        logger.debug('\'RAW JSON\' button is present on the page.')
+        click(raw_json_pattern)
+    except (FindError, ValueError):
+        raise APIHelperError('\'RAW JSON\' button not present in the page.')
+
+    try:
+        wait(raw_data_pattern, 10)
+        logger.debug('\'Raw Data\' button is present on the page.')
+        click(raw_data_pattern)
+    except (FindError, ValueError):
+        close_tab()
+        raise APIHelperError('\'Raw Data\' button not present in the page.')
+
+    try:
+        click(copy_raw_data_to_clipboard_pattern)
+        time.sleep(Settings.UI_DELAY)
+        json_text = Env.get_clipboard()
+        return json.loads(json_text)
+    except Exception as e:
+        raise APIHelperError(
+            'Failed to retrieve raw message information value. %s' % e.message)
     finally:
         close_tab()
 
@@ -935,48 +977,6 @@ def select_zoom_menu_option(option_number):
     for i in range(option_number):
         type(text=Key.DOWN)
     type(text=Key.ENTER)
-
-
-def get_telemetry_info():
-    """Returns telemetry information as a JSON object from 'about:telemetry'
-    page.
-    """
-
-    copy_raw_data_to_clipboard_pattern = Pattern(
-        'copy_raw_data_to_clipboard.png')
-    raw_json_pattern = Pattern('raw_json.png')
-    raw_data_pattern = Pattern('raw_data.png')
-
-    new_tab()
-
-    paste('about:telemetry')
-    type(Key.ENTER)
-
-    try:
-        wait(raw_json_pattern, 10)
-        logger.debug('\'RAW JSON\' button is present on the page.')
-        click(raw_json_pattern)
-    except (FindError, ValueError):
-        raise APIHelperError('\'RAW JSON\' button not present in the page.')
-
-    try:
-        wait(raw_data_pattern, 10)
-        logger.debug('\'Raw Data\' button is present on the page.')
-        click(raw_data_pattern)
-    except (FindError, ValueError):
-        close_tab()
-        raise APIHelperError('\'Raw Data\' button not present in the page.')
-
-    try:
-        click(copy_raw_data_to_clipboard_pattern)
-        time.sleep(Settings.UI_DELAY)
-        json_text = Env.get_clipboard()
-        return json.loads(json_text)
-    except Exception as e:
-        raise APIHelperError(
-            'Failed to retrieve raw message information value. %s' % e.message)
-    finally:
-        close_tab()
 
 
 def wait_for_firefox_restart():
