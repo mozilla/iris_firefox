@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['mac',['MAC',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a7e447e456c28788536810ffacd3126cd',1,'iris::api::core::platform::Platform']]],
+  ['match',['Match',['../classiris_1_1api_1_1core_1_1match_1_1_match.html',1,'iris::api::core::match']]],
+  ['maximize_5fwindow',['maximize_window',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a35b697682ef177a1529c4afa69b59dd3',1,'iris::api::helpers::keyboard_shortcuts']]],
+  ['meta',['META',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#aea770c8ecbf02727964e91da47ac7128',1,'iris.api.core.key.Key.META()'],['../classiris_1_1api_1_1core_1_1key_1_1_key_modifier.html#a08a9a3dad3aa4a403883b875b9f909e5',1,'iris.api.core.key.KeyModifier.META()']]],
+  ['min_5fsimilarity',['min_similarity',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a7f3632446e594e55edbfaaa72e30b11c',1,'iris.api.core.settings._IrisSettings.min_similarity(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a4166d9dee8b1953d267947ed0263e378',1,'iris.api.core.settings._IrisSettings.min_similarity(self, value)']]],
+  ['minimize_5fwindow',['minimize_window',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a0174fb4520c9cdee352258584f3123a0',1,'iris::api::helpers::keyboard_shortcuts']]],
+  ['minus',['MINUS',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a835d9d08b72dc8fe7b395909d9aafd37',1,'iris::api::core::key::Key']]],
+  ['mode_5fchange',['MODE_CHANGE',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a499f9332273893d06103eba8b33040f4',1,'iris::api::core::key::Key']]],
+  ['most_5fvisited',['MOST_VISITED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1menus_1_1_sidebar_bookmarks_1_1_bookmarks_toolbar.html#a260ee15298afddc0c6f9321b4682ef94',1,'iris::api::core::firefox_ui::menus::SidebarBookmarks::BookmarksToolbar']]],
+  ['mouse',['Mouse',['../classiris_1_1api_1_1core_1_1mouse_1_1_mouse.html',1,'iris::api::core::mouse']]],
+  ['mouse_5fmove',['mouse_move',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a0bc4ee659842d8de62e3cba4f88f1ee8',1,'iris.api.core.region.Region.mouse_move()'],['../namespaceiris_1_1api_1_1core_1_1mouse.html#a97d43a3ccf57b21958f7171b3bb82982',1,'iris.api.core.mouse.mouse_move()']]],
+  ['mouse_5fpress',['mouse_press',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a42bcb660559fed82c2485ce64a7406dd',1,'iris.api.core.region.Region.mouse_press()'],['../namespaceiris_1_1api_1_1core_1_1mouse.html#afb6897b6c94444144472950969e6927d',1,'iris.api.core.mouse.mouse_press()']]],
+  ['mouse_5frelease',['mouse_release',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#aaf5903a3eccd67c608f1a952b2a9493d',1,'iris.api.core.region.Region.mouse_release()'],['../namespaceiris_1_1api_1_1core_1_1mouse.html#a83cc1515b15d9ea6ac7273989eae1a53',1,'iris.api.core.mouse.mouse_release()']]],
+  ['move_5fmouse_5fdelay',['move_mouse_delay',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#ac9e431aeddc404f4ad0f9cb2946eb2bc',1,'iris.api.core.settings._IrisSettings.move_mouse_delay(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a3baf01d8f6370336373c1ba1df5034f4',1,'iris.api.core.settings._IrisSettings.move_mouse_delay(self, value)']]],
+  ['move_5fto',['move_to',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a80bc939a42e3e86861fb574cb13e3cf3',1,'iris::api::core::region::Region']]],
+  ['mozilla_5fbookmark',['MOZILLA_BOOKMARK',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a4b9b3cef39d33d6f9b996462dbb300e4',1,'iris::api::core::local_web::LocalWeb']]],
+  ['mozilla_5fbookmark_5fsmall',['MOZILLA_BOOKMARK_SMALL',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a88f4dc5179faf7d3cf8cb853ce41d341',1,'iris::api::core::local_web::LocalWeb']]],
+  ['mozilla_5fimage',['MOZILLA_IMAGE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a166735fadc1e305540875f9d976003de',1,'iris::api::core::local_web::LocalWeb']]],
+  ['mozilla_5flogo',['MOZILLA_LOGO',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a606b03741e646fd3accf3fe66f7b480d',1,'iris::api::core::local_web::LocalWeb']]],
+  ['mozilla_5ftest_5fsite',['MOZILLA_TEST_SITE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#ab2a70b5f527f009ef2cd81125746f4a1',1,'iris::api::core::local_web::LocalWeb']]],
+  ['mozilla_5ftest_5fsite_5f2',['MOZILLA_TEST_SITE_2',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#ab615f146be77cd5e458cd83b685eaf69',1,'iris::api::core::local_web::LocalWeb']]],
+  ['multiply',['MULTIPLY',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#afa9c577667ceec3952668fa34cfef979',1,'iris::api::core::key::Key']]]
+];

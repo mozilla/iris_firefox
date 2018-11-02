@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['save_5foptions',['SAVE_OPTIONS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1hamburger_1_1_hamburger_menu.html#ab20bbe3847acbe1eaeb4947d042adabe',1,'iris::api::core::firefox_ui::hamburger::HamburgerMenu']]],
+  ['scale_5ffactor',['scale_factor',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#ae25f4e30658d1a8f666254a62ca58ef5',1,'iris::api::core::pattern::Pattern']]],
+  ['score',['score',['../classiris_1_1api_1_1core_1_1match_1_1_match.html#a53718fa6a881b7930e936301e4bce566',1,'iris::api::core::match::Match']]],
+  ['screen_5fheight',['SCREEN_HEIGHT',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#ab0c7ff62ce7f8990da4398759b809e73',1,'iris::api::core::platform::Platform']]],
+  ['screen_5fwidth',['SCREEN_WIDTH',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#ab5d9b265e42e56be29c0c6423dacf0cc',1,'iris::api::core::platform::Platform']]],
+  ['screenshot_5fsize',['SCREENSHOT_SIZE',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a1b2775eed77b5bb5b09400353c51f8fa',1,'iris::api::core::platform::Platform']]],
+  ['scroll_5flock',['SCROLL_LOCK',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a605e59061e930ab9e6dafb5757645610',1,'iris::api::core::key::Key']]],
+  ['search_5fbar',['SEARCH_BAR',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_search_bar.html#abbdbbd5d4776598a4acf344b26318566',1,'iris::api::core::firefox_ui::toolbars::SearchBar']]],
+  ['search_5fbookmarks',['SEARCH_BOOKMARKS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1menus_1_1_library_menu_1_1_bookmarks_option.html#a382ecdfb780ecd6439160afaa330049d',1,'iris::api::core::firefox_ui::menus::LibraryMenu::BookmarksOption']]],
+  ['select',['SELECT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a65c14baede574b152bf8dcfb6f42a0e7',1,'iris::api::core::key::Key']]],
+  ['select_5fall',['SELECT_ALL',['../classiris_1_1api_1_1helpers_1_1general_1_1_right_click_location_bar.html#ab3f158269e00a141da348ed9eb728c6e',1,'iris::api::helpers::general::RightClickLocationBar']]],
+  ['separator',['SEPARATOR',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a4d8e7eeea29eb7333b34575f31f8a004',1,'iris::api::core::key::Key']]],
+  ['shift',['SHIFT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae96413901c8793b9d6f9a9c74340abf2',1,'iris.api.core.key.Key.SHIFT()'],['../classiris_1_1api_1_1core_1_1key_1_1_key_modifier.html#aa5b13b252ff5217cf607c79387aa4af5',1,'iris.api.core.key.KeyModifier.SHIFT()']]],
+  ['shift_5fleft',['SHIFT_LEFT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a075307e69ec9bb90e380752b9911f149',1,'iris::api::core::key::Key']]],
+  ['shift_5fright',['SHIFT_RIGHT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a454147a8a39245dbe3da04eb78dd3a40',1,'iris::api::core::key::Key']]],
+  ['show_5fall_5fhistory',['SHOW_ALL_HISTORY',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1menus_1_1_library_menu_1_1_history_option.html#a5813b7ede38b06ab50b8c8f4f1343235',1,'iris::api::core::firefox_ui::menus::LibraryMenu::HistoryOption']]],
+  ['show_5fhistory_5fbutton',['SHOW_HISTORY_BUTTON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_location_bar.html#add432b3682fcf04948e14574728d0182',1,'iris::api::core::firefox_ui::toolbars::LocationBar']]],
+  ['similarity',['similarity',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#a75aa7b13962921503f7028d23e54517d',1,'iris::api::core::pattern::Pattern']]],
+  ['sleep',['SLEEP',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a6e1720c58de8a0a5397a929d1d148a01',1,'iris::api::core::key::Key']]],
+  ['space',['SPACE',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a9958501287e421d22e3a7a86f7674e99',1,'iris::api::core::key::Key']]],
+  ['stop',['STOP',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a3e47d377765563dcc59f3325d3f37253',1,'iris::api::core::key::Key']]],
+  ['subtract',['SUBTRACT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a15ea9bb44560de78f8aef56322c6c499',1,'iris::api::core::key::Key']]]
+];

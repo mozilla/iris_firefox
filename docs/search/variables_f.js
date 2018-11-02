@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['page_5fdown',['PAGE_DOWN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ad9509eb00c2cccbec6440f154b8a0f07',1,'iris::api::core::key::Key']]],
+  ['page_5fup',['PAGE_UP',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ace2b06878c507f552c891c391bbca5cc',1,'iris::api::core::key::Key']]],
+  ['paste',['PASTE',['../classiris_1_1api_1_1helpers_1_1general_1_1_right_click_location_bar.html#a967aaca6c195d08967ed7eea9aa505b1',1,'iris::api::helpers::general::RightClickLocationBar']]],
+  ['paste_5fgo',['PASTE_GO',['../classiris_1_1api_1_1helpers_1_1general_1_1_right_click_location_bar.html#ab49bbdef03834d01ef913491169e46a0',1,'iris::api::helpers::general::RightClickLocationBar']]],
+  ['pause',['PAUSE',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ac78405a3a813c56eb4a29dc29cbd61e4',1,'iris::api::core::key::Key']]],
+  ['pgdn',['PGDN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae8bb429bb786f1f38eb75e62482762a9',1,'iris::api::core::key::Key']]],
+  ['pgup',['PGUP',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae5236a29c1dd0ce1855b258954d2e6f8',1,'iris::api::core::key::Key']]],
+  ['play_5fpause',['PLAY_PAUSE',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a9f6c3f2b4a70d7d9a1168fd80314f9d4',1,'iris::api::core::key::Key']]],
+  ['pocket_5fbookmark',['POCKET_BOOKMARK',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#af2ad3b78a93ec9c2d6233c0903477855',1,'iris::api::core::local_web::LocalWeb']]],
+  ['pocket_5fbookmark_5fsmall',['POCKET_BOOKMARK_SMALL',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#ad54f048e2a08fbe41814d29e6ee51cc6',1,'iris::api::core::local_web::LocalWeb']]],
+  ['pocket_5fimage',['POCKET_IMAGE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a3ba4c3561ef533d004298dadae3ba87c',1,'iris::api::core::local_web::LocalWeb']]],
+  ['pocket_5flogo',['POCKET_LOGO',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a9821ec7ec64bf63bf5f7eea0a2d3f5d3',1,'iris::api::core::local_web::LocalWeb']]],
+  ['pocket_5ftest_5fsite',['POCKET_TEST_SITE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#ae832f33b925641c3bfaf4e480d6058e9',1,'iris::api::core::local_web::LocalWeb']]],
+  ['pocket_5ftest_5fsite_5f2',['POCKET_TEST_SITE_2',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#abae78ceffa12c305f9986dcab4372a86',1,'iris::api::core::local_web::LocalWeb']]],
+  ['prev_5ftrack',['PREV_TRACK',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#afdb1a080066c8de4e6c038618a58a856',1,'iris::api::core::key::Key']]],
+  ['primary_5fmonitor',['primary_monitor',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a8f73f6435dd8543698713a7a2e37aa3d',1,'iris::api::core::platform::Platform']]],
+  ['print',['PRINT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ad66b36f80adba2e74474c7278bb70a20',1,'iris::api::core::key::Key']]],
+  ['print_5fscreen',['PRINT_SCREEN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#af3f32555de433fbd7c5c76a5ba1e091a',1,'iris::api::core::key::Key']]],
+  ['prnt_5fscrn',['PRNT_SCRN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a8b5dfee9202a7a836b1c84e4e52eb2e9',1,'iris::api::core::key::Key']]],
+  ['processor',['PROCESSOR',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a9a76e29d063c60b36575f8a55e8d1a65',1,'iris::api::core::platform::Platform']]],
+  ['prtsc',['PRTSC',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ab6b85a3b02e3d8dcd30d8d9476004344',1,'iris::api::core::key::Key']]],
+  ['prtscr',['PRTSCR',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a461e3d6cd825401d0f015114516662ed',1,'iris::api::core::key::Key']]]
+];
