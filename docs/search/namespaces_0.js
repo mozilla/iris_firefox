@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['api',['api',['../namespaceiris_1_1api.html',1,'iris']]],
+  ['core',['core',['../namespaceiris_1_1api_1_1core.html',1,'iris::api']]],
+  ['firefox_5fui',['firefox_ui',['../namespaceiris_1_1api_1_1core_1_1firefox__ui.html',1,'iris::api::core']]],
+  ['general',['general',['../namespaceiris_1_1api_1_1helpers_1_1general.html',1,'iris::api::helpers']]],
+  ['hamburger',['hamburger',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1hamburger.html',1,'iris::api::core::firefox_ui']]],
+  ['helpers',['helpers',['../namespaceiris_1_1api_1_1helpers.html',1,'iris::api']]],
+  ['iris',['iris',['../namespaceiris.html',1,'']]],
+  ['key',['key',['../namespaceiris_1_1api_1_1core_1_1key.html',1,'iris::api::core']]],
+  ['keyboard_5fshortcuts',['keyboard_shortcuts',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html',1,'iris::api::helpers']]],
+  ['local_5fweb',['local_web',['../namespaceiris_1_1api_1_1core_1_1local__web.html',1,'iris::api::core']]],
+  ['location',['location',['../namespaceiris_1_1api_1_1core_1_1location.html',1,'iris::api::core']]],
+  ['match',['match',['../namespaceiris_1_1api_1_1core_1_1match.html',1,'iris::api::core']]],
+  ['menus',['menus',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1menus.html',1,'iris::api::core::firefox_ui']]],
+  ['mouse',['mouse',['../namespaceiris_1_1api_1_1core_1_1mouse.html',1,'iris::api::core']]],
+  ['pattern',['pattern',['../namespaceiris_1_1api_1_1core_1_1pattern.html',1,'iris::api::core']]],
+  ['platform',['platform',['../namespaceiris_1_1api_1_1core_1_1platform.html',1,'iris::api::core']]],
+  ['region',['region',['../namespaceiris_1_1api_1_1core_1_1region.html',1,'iris::api::core']]],
+  ['results',['results',['../namespaceiris_1_1api_1_1helpers_1_1results.html',1,'iris::api::helpers']]],
+  ['settings',['settings',['../namespaceiris_1_1api_1_1core_1_1settings.html',1,'iris::api::core']]],
+  ['toolbars',['toolbars',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars.html',1,'iris::api::core::firefox_ui']]]
+];
