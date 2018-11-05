@@ -13,9 +13,7 @@ class Test(BaseTest):
         self.meta = 'Copy a website from the Library - History menu and paste it in to the Bookmark Toolbar.'
         self.test_case_id = '174045'
         self.test_suite_id = '2000'
-        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def run(self):
         show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
