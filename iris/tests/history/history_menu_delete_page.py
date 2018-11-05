@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'Delete a page from the Library - History menu.'
         self.test_case_id = '174048'
-        self.test_suite_id = '903'
+        self.test_suite_id = '2000'
         self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
         self.exclude = Platform.ALL
