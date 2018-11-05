@@ -13,11 +13,9 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks that the drag space can be activated properly'
         self.test_case_id = '118184'
         self.test_suite_id = '1998'
-        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
         # Feature not available on LINUX
-        # self.exclude = Platform.LINUX
+        self.exclude = Platform.LINUX
 
     def run(self):
         url = 'about:home'
