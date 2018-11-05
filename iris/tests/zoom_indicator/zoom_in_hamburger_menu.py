@@ -13,9 +13,7 @@ class Test(BaseTest):
         self.meta = 'This is a test case that checks the zoom in functionality from the hamburger menu.'
         self.test_case_id = '7458'
         self.test_suite_id = '242'
-        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def run(self):
         url1 = 'about:home'

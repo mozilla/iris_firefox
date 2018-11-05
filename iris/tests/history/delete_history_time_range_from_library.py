@@ -13,9 +13,7 @@ class Test(BaseTest):
         self.meta = 'Delete a history time range from the Library.'
         self.test_case_id = '174036'
         self.test_suite_id = '2000'
-        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def run(self):
         show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY

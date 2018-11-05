@@ -13,9 +13,7 @@ class Test(BaseTest):
         self.meta = 'Forget a page from the History sidebar.'
         self.test_case_id = '120132'
         self.test_suite_id = '2000'
-        self.blocked_by = 'issue 1410'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def setup(self):
         """Test case setup
