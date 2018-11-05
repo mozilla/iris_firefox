@@ -20,11 +20,13 @@ else
     fi
 fi
 
+powershell -Command "scoop bucket add versions"
+
 echo -e "\n${GREEN}  --->  Updating Scoop package management #####${NC}\n"
 if [[ $(scoop status) =~ "WARN  Scoop is out of date." ]]; then
     powershell -Command "scoop update"
 else
-     echo -e "${GREEN}  --->  Skipping Scoop update. Already latest version. ${NC}\n"
+    echo -e "${GREEN}  --->  Skipping Scoop update. Already latest version. ${NC}\n"
 fi
 
 
@@ -50,11 +52,19 @@ else
 fi
 
 
-echo -e "\n${GREEN} --->  Installing Tesseract ${NC} \n"
+echo -e "\n${GREEN} --->  Installing Tesseract 3 ${NC} \n"
 if command -v tesseract &>/dev/null; then
-    echo -e "${GREEN}  --->  Skipping Tesseract install. Already installed. ${NC}\n"
+    echo -e "${GREEN}  --->  Tesseract already installed. ${NC}\n"
+    echo -e "${GREEN}    --->  Checking Tesseract version. ${NC}\n"
+    if [[ $(tesseract -v) =~ "tesseract v4." ]]; then
+        echo -e "${RED}  --->  You have Tesseract 4, removing and installing Tesseract 3.${NC}\n"
+        powershell -Command "scoop uninstall tesseract"
+        powershell -Command "scoop install tesseract3"
+    else
+        echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
+    fi
 else
-    powershell -Command "scoop install tesseract"
+    powershell -Command "scoop install tesseract3"
 fi
 
 
@@ -62,7 +72,7 @@ echo -e "\n${GREEN}  --->  Installing Python 2.7 #####${NC}\n"
 if command -v python2 &>/dev/null; then
     echo -e "${GREEN}  --->  Skipping Python 2.7 install. Already installed. ${NC}\n"
 else
-    powershell -Command "scoop bucket add versions; scoop install python27" | grep 'bucket already exists.' &> /dev/null
+    powershell -Command "scoop install python27" | grep 'bucket already exists.' &> /dev/null
     if [ $? != 0 ]; then
        echo -e "\n${RED} --->  Python 2.7 now installed. You need to restart the terminal 2nd time and run the bootstrap.sh again to complete the install.${NC}\n"
        sleep 20
