@@ -42,8 +42,7 @@ class Test(BaseTest):
             wait(SidebarBookmarks.BookmarksToolbar.MOST_VISITED, 10)
             logger.debug('Toolbar has been activated.')
         except FindError:
-            logger.error('Toolbar can not be activated, aborting.')
-            raise FindError
+            raise FindError('Toolbar can not be activated, aborting.')
 
         bookmarks_sidebar('open')
 
@@ -66,16 +65,14 @@ class Test(BaseTest):
             logger.debug('Close button is present.')
             click(close_sidebar_search_pattern)
         except FindError:
-            logger.error('Can\'t find the close button.')
-            raise FindError
+            raise FindError('Can\'t find the close button.')
 
         try:
             wait(bookmarks_sidebar_menu_pattern, 10)
             logger.debug('Bookmarks sidebar menu is present.')
             click(bookmarks_sidebar_menu_pattern)
         except FindError:
-            logger.error('Can\'t find the Bookmarks sidebar menu.')
-            raise FindError
+            raise FindError('Can\'t find the Bookmarks sidebar menu.')
 
         right_click(bookmarks_sidebar_menu_selected_pattern)
 

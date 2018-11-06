@@ -62,7 +62,7 @@ class Test(BaseTest):
             logger.debug('Changed bookmark is present in Bookmark sidebar.')
             click(sidebar_bookmark_location_changed_pattern)
         except FindError:
-            logger.error('Can\'t find the bookmark in Bookmark sidebar, aborting.')
+            raise FindError('Can\'t find the bookmark in Bookmark sidebar, aborting.')
 
         bookmark_location_assert = exists(moz_page, 10)
         assert_true(self, bookmark_location_assert, 'The URL of the bookmark is successfully modified.')
@@ -80,8 +80,7 @@ class Test(BaseTest):
             logger.debug('Bookmark is present in Bookmark Toolbar section.')
             right_click(changed_toolbar_bookmark_pattern)
         except FindError:
-            logger.error('Can\'t find the bookmark in Bookmark Toolbar section, aborting.')
-            raise FindError
+            raise FindError('Can\'t find the bookmark in Bookmark Toolbar section, aborting.')
 
         bookmark_options(properties_option)
 
@@ -99,7 +98,7 @@ class Test(BaseTest):
             logger.debug('Bookmark is present in Bookmark Toolbar section.')
             click(changed_toolbar_bookmark_pattern)
         except FindError:
-            logger.error('Can\'t find the bookmark in Bookmark Toolbar section, aborting.')
+            raise FindError('Can\'t find the bookmark in Bookmark Toolbar section, aborting.')
 
         mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, mozilla_page_assert, 'The URL has been successfully modified, Moz page loaded successfully.')

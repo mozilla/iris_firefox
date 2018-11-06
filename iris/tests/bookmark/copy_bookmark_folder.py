@@ -77,8 +77,7 @@ class Test(BaseTest):
             logger.debug('Bookmarks sidebar menu is present.')
             click(bookmarks_sidebar_menu_pattern)
         except FindError:
-            logger.error('Can\'t find the Bookmarks sidebar menu.')
-            raise FindError
+            raise FindError('Can\'t find the Bookmarks sidebar menu.')
 
         right_click(bookmarks_sidebar_menu_selected_pattern)
 
