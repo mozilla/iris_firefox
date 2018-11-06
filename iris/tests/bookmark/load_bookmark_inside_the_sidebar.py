@@ -55,8 +55,7 @@ class Test(BaseTest):
             logger.debug('Changes can be saved.')
             click(save_pattern)
         except FindError:
-            logger.error('Can\'t find save button, aborting.')
-            raise FindError
+            raise FindError('Can\'t find save button, aborting.')
 
         amazon_sidebar_assert = exists(access_sidebar_moz_pattern, 10)
         assert_true(self, amazon_sidebar_assert, 'Moz bookmark can be accessed.')

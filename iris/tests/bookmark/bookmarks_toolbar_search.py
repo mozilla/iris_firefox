@@ -38,8 +38,7 @@ class Test(BaseTest):
             logger.debug('Search Bookmarks option is present on the page.')
             click(search_bookmarks)
         except FindError:
-            logger.error('Can\'t find Search Bookmarks option, aborting.')
-            raise FindError
+            raise FindError('Can\'t find Search Bookmarks option, aborting.')
 
         star_search_assert = exists(search_star, 10)
         assert_true(self, star_search_assert, 'Star search is present on the page.')
