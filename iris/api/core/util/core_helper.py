@@ -317,6 +317,6 @@ class IrisCore(object):
             screen_region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
         try:
             image = numpy.array(IrisCore._mss.grab(screen_region))
-        except:
+        except Exception:
             raise ScreenshotError('Unable to take screenshot.')
         return Image.fromarray(image, mode='RGBA')

@@ -379,8 +379,7 @@ def paste(text):
             attempt += 1
 
     if not text_copied:
-        logger.error('Paste method failed.')
-        raise FindError
+        raise FindError('Paste method failed.')
 
     if Settings.get_os() == Platform.MAC:
         type(text='v', modifier=KeyModifier.CMD)

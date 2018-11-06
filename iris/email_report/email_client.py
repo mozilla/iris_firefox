@@ -3,15 +3,18 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
-from iris.api.core.util.core_helper import *
-from iris.configuration.config_parser import *
 import ast
+import logging
+import os
+import smtplib
 from datetime import date
-from iris.api.core.settings import *
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from iris.api.core.errors import EmailError
+from iris.api.core.settings import get_os_version
+from iris.api.core.util.core_helper import IrisCore
+from iris.configuration.config_parser import get_config_property
 
 logger = logging.getLogger(__name__)
 

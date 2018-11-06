@@ -5,28 +5,41 @@
 
 class FindError(Exception):
     """Exception raised when a Location, Pattern, image or text is not found."""
-    pass
+    def __init__(self, message):
+        """Create an instance of an exception."""
+        Exception.__init__(self, message)
 
 
 class ConfigError(Exception):
     """Exception raised if there is unexpected behavior when manipulating config files."""
-    pass
+    def __init__(self, message):
+        """Create an instance of an exception."""
+        Exception.__init__(self, message)
 
 
 class APIHelperError(Exception):
     """Exception raised when an API helper returns an error."""
-    pass
+    def __init__(self, message):
+        """Create an instance of an exception."""
+        Exception.__init__(self, message)
 
 
 class TestRailError(Exception):
     """Exception raised when TestRail Api returns an error."""
-    pass
+    def __init__(self, message):
+        """Create an instance of an exception."""
+        Exception.__init__(self, message)
 
 
 class EmailError(Exception):
     """Exception raised when an email error occurs."""
-    pass
+    def __init__(self, message):
+        """Create an instance of an exception."""
+        Exception.__init__(self, message)
+
 
 class ScreenshotError(Exception):
     """Exception raised when an email error occurs."""
-    pass
+    def __init__(self, message):
+        """Create an instance of an exception."""
+        Exception.__init__(self, message)
