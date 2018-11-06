@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self, app)
         self.meta = 'Delete history from Library context menu'
         self.test_case_id = '1385883'
-        self.test_suite_id = '909'
+        self.test_suite_id = '2000'
 
     def setup(self):
         """Test case setup
