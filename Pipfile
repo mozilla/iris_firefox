@@ -4,53 +4,26 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-iris = {path = ".", editable = true}
-PyAutoGUI = "*"
-coloredlogs = "*"
-python-dateutil = "*"
+pyautogui = "==0.9.38"
+coloredlogs = "==10.0"
+python-dateutil = "==2.7.5"
 opencv-python = "==3.4.1.15"
-pytesseract = "*"
-numpy = "*"
-image = "*"
-pyperclip = "*"
-packaging = "*"
-GitPython = "*"
-pynput = "*"
-mozinstall = "*"
-mozdownload = "*"
-mozversion = "*"
-mozinfo = "*"
-mozrunner = "*"
-mss = "*"
-"pep8" = "*"
-
+pytesseract = "==0.2.5"
+numpy = "==1.15.4"
+image = "==1.5.27"
+pyperclip = "==1.7.0"
+packaging = "==18.0"
+gitpython = "==2.1.11"
+pynput = "==1.4"
+mozinstall = "==1.16.0"
+mozdownload = "==1.25"
+mozversion = "==1.5"
+mozinfo = "==1.0.0"
+mozrunner = "==7.2.0"
+mss = "==3.3.1"
+pep8 = "*"
 # Platform dependencies
-xlib = {version = "*", platform_system = "== 'Linux'"}
-pyobjc = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-core = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-quartz = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-cocoa = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-webkit = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-screensaver = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-discrecording = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-syncservices = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-coretext = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-systemconfiguration = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-coreaudiokit = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-securityinterface = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-security = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-coreaudio = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-coreservices = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-coredata = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-cfnetwork = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-addressbook = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-imagecapturecore = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-corewlan = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-corelocation = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-qtkit = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-scriptingbridge = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-fsevents = {version = "*", platform_system = "== 'Darwin'"}
-pyobjc-framework-inputmethodkit = {version = "*", platform_system = "== 'Darwin'"}
+xlib = {version = "==0.21", platform_system = "== 'Linux'"}
 
 [dev-packages]
 
