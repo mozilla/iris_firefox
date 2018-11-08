@@ -25,11 +25,16 @@ class Test(BaseTest):
 
         navigate(privacy_url)
         new_tab()
+        previous_tab()
+        close_tab()
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, expected, 'Mozilla page loaded successfully.')
+        new_tab()
+        previous_tab()
+        close_tab()
 
         # Open History and check if it is populated with the Iris page.
         open_library_menu('History')
