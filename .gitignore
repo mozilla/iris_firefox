@@ -130,3 +130,6 @@ config.ini
 
 # __debug__.py (used for debugging in Pycharm)
 __debug__.py
+
+# Pipfile.lock (since we are using multiple platforms, differences will appear)
+Pipfile.lock
