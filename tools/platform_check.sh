@@ -300,6 +300,22 @@ help_script(){
             fi
 
 
+            echo -e "\n → Checking if Pyobjc is installed \n"
+            if [[ $(pip show pyobjc | grep Name:) =~ "pyobjc" ]]; then
+                echo -e "${GREEN}  ---> √ Pyobjc is installed. √ ${STD} Info: \n$(pip show pyobjc)"
+            else
+                echo -e "\n${RED}  ---> ✘ Error... Pyobjc not found installed. Please run the Iris Bootstrap. ✘ ${STD}\n"
+            fi
+
+
+            echo -e "\n → Checking if Pyobjc-core is installed \n"
+            if [[ $(pip show pyobjc-core | grep Name:) =~ "pyobjc-core" ]]; then
+                echo -e "${GREEN}  ---> √ Pyobjc-core is installed. √ ${STD} Info: \n$(pip show pyobjc-core)"
+            else
+                echo -e "\n${RED}  ---> ✘ Error... Pyobjc-core not found installed. Please run the Iris Bootstrap. ✘ ${STD}\n"
+            fi
+
+
             echo -e "\n → Checking if Firefox is installed \n"
             if [[ $(cd /Applications && ls | grep Firefox.app) == 'Firefox.app' ]]; then
                 echo -e "${GREEN}  ---> √ Firefox is installed. √ ${STD} Version: $(/Applications/Firefox.app/Contents/MacOS/firefox --version)"
