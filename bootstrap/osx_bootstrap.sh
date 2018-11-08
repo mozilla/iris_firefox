@@ -41,6 +41,20 @@ else
     brew install pipenv
 fi
 
+echo -e "\n${GREEN}--->  Installing pyobjc library #####${NC}\n"
+if [[ $(pip show pyobjc | grep Name:) =~ "pyobjc" ]]; then
+    echo -e "${GREEN}  --->  Skipping pyobjc install. Already installed. ${NC}\n"
+else
+    pip install -U pyobjc
+fi
+
+echo -e "\n${GREEN}--->  Installing pyobjc-core library #####${NC}\n"
+if [[ $(pip show pyobjc-core | grep Name:) =~ "pyobjc-core" ]]; then
+    echo -e "${GREEN}  --->  Skipping pyobjc-core install. Already installed. ${NC}\n"
+else
+    pip install -U pyobjc-core
+fi
+
 # Exporting settings to .bash_profile or .zshrc
 grep -q -F 'export LC_ALL=en_US.UTF-8' ~/.bash_profile || echo 'export LC_ALL=en_US.UTF-8' >> ~/.bash_profile
 grep -q -F 'export LANG=en_US.UTF-8' ~/.bash_profile || echo 'export LANG=en_US.UTF-8' >> ~/.bash_profile
