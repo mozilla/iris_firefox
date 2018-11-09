@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Open all the history from a history time range.'
         self.test_case_id = '174033'
         self.test_suite_id = '2000'
@@ -21,17 +21,19 @@ class Test(BaseTest):
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
         history_today_pattern = Pattern('history_today.png')
+        new_tab_pattern = Pattern('new_tab.png')
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
-
-        navigate(privacy_url)
-        new_tab()
-        previous_tab()
-        close_tab()
+        firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo_for_bookmarks.png')
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, expected, 'Mozilla page loaded successfully.')
+        new_tab()
+        previous_tab()
+        close_tab()
+
+        navigate(privacy_url)
         new_tab()
         previous_tab()
         close_tab()
@@ -60,7 +62,10 @@ class Test(BaseTest):
         assert_true(self, expected, 'Iris local page loaded successfully.')
 
         expected = exists(mozilla_tab_icon, 10)
-        assert_true(self, expected, 'Mozilla privacy page loaded successfully.')
-
-        expected = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, expected, 'Mozilla page loaded successfully.')
+
+        expected = exists(firefox_privacy_logo_pattern, 10)
+        assert_true(self, expected, 'Firefox Privacy Notice page loaded successfully.')
+
+        expected = exists(new_tab_pattern, 10)
+        assert_true(self, expected, 'about:newtab page loaded successfully.')
