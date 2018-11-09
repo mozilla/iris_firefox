@@ -275,9 +275,8 @@ def confirm_firefox_launch(image=None):
 
     try:
         wait(image, 60)
-    except Exception as err:
-        logger.error(err)
-        logger.error('Can\'t launch Firefox - aborting test run.')
+    except Exception:
+        raise APIHelperError('Can\'t launch Firefox - aborting test run.')
 
 
 def copy_to_clipboard():
