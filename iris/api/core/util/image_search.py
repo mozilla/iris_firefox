@@ -34,6 +34,21 @@ def _calculate_interval_max_attempts(timeout=None):
     return interval, max_attempts
 
 
+def is_pattern_size_correct(pattern, region):
+    p_width, p_height = pattern.get_size()
+    r_width = region.width if region else SCREEN_WIDTH
+    r_height = region.height if region else SCREEN_HEIGHT
+    is_correct = True
+
+    if p_width > r_width:
+        logger.warning('Pattern Width (%s) greater than Region/Screenshot Width (%s)' % (p_width, r_width))
+        is_correct = False
+    if p_height > r_height:
+        logger.warning('Pattern Height (%s) greater than Region/Screenshot Height (%s)' % (p_height, r_height))
+        is_correct = False
+    return is_correct
+
+
 def iris_image_match_template(needle, haystack, precision, threshold=None):
     """Finds a match or a list of matches.
 
@@ -241,6 +256,9 @@ def _positive_image_search_loop(pattern, timeout=None, region=None):
 
 
 def positive_image_search(pattern, timeout=None, region=None):
+    if not is_pattern_size_correct(pattern, region):
+        return None
+
     if is_multiprocessing_enabled():
         return _positive_image_search_multiprocess(pattern, timeout, region)
     else:
@@ -319,6 +337,8 @@ def _negative_image_search_loop(pattern, timeout=None, region=None):
 
 
 def negative_image_search(pattern, timeout=None, region=None):
+    if not is_pattern_size_correct(pattern, region):
+        return None
     if is_multiprocessing_enabled():
         return _negative_image_search_multiprocess(pattern, timeout, region)
     else:

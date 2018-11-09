@@ -61,11 +61,10 @@ def run(master_tests_list, test_list, browser):
 
             fx_args = ','.join(current.firefox_runner.command)
 
-            confirm_firefox_launch()
-            if current.maximize_window:
-                maximize_window()
-
             try:
+                confirm_firefox_launch()
+                if current.maximize_window:
+                    maximize_window()
                 current.run()
                 passed += 1
             except AssertionError:
