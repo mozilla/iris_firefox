@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Open a website in a new window and then check it is displayed in the Recent History list.'
-        self.test_case_id = '174040'
+        self.test_case_id = '118805'
         self.test_suite_id = '2000'
         self.locales = ['en-US']
 

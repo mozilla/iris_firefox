@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Page visits show in Recent history.'
-        self.test_case_id = '1385083'
+        self.test_case_id = '178345'
         self.test_suite_id = '2000'
         self.locales = ['en-US']
 
