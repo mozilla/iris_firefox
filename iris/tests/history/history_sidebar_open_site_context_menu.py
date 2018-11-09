@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'This is a test that opens a page from the History sidebar using the \'Open\' button from the' \
                     ' context menu.'
-        self.test_case_id = '174038'
+        self.test_case_id = '120119'
         self.test_suite_id = '2000'
         self.locales = ['en-US']
 

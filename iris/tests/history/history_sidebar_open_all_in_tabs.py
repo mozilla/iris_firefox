@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a test for the \'Open All in Tabs\' option from the History sidebar.'
-        self.test_case_id = '174035'
+        self.test_case_id = '120117'
         self.test_suite_id = '2000'
         self.locales = ['en-US']
 
