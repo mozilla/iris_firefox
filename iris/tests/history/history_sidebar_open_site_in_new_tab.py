@@ -8,11 +8,11 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a test that opens a page from the History sidebar using the \'Open in a New Tab\' ' \
                     'button from the context menu.'
-        self.test_case_id = '174039'
+        self.test_case_id = '120120'
         self.test_suite_id = '2000'
         self.locales = ['en-US']
 

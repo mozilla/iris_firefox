@@ -7,8 +7,8 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Bookmarks can be loaded inside the Bookmarks Sidebar.'
         # This feature was removed from Firefox 63 and beyond in bug 1452645.
         self.fx_version = '<=62'

@@ -7,8 +7,8 @@ from iris.test_case import *
 
 
 class Test(BaseTest):
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Bookmarks can be exported to a HTML file.'
         self.test_case_id = '4153'
         self.test_suite_id = '75'

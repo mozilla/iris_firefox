@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Forget all the history from the last 5 minutes.'
         self.test_case_id = '174072'
         self.test_suite_id = '2000'

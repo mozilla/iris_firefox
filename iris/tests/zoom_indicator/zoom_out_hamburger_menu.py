@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'This is a test case that checks the zoom out functionality from the hamburger menu.'
         self.test_case_id = '7456'
         self.test_suite_id = '242'

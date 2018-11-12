@@ -106,10 +106,5 @@ def parse_args():
     return iris_args
 
 
-def get_global_args():
-    global iris_args
-    return iris_args
-
-
 def _get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../../../..')

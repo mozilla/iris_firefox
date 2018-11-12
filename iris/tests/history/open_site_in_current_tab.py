@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Open a website in the current tab and then check it is displayed in the Recent History list.'
         self.test_case_id = '118800'
         self.test_suite_id = '2000'

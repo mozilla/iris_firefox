@@ -8,10 +8,10 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Open a website from the Recent History list in a private window.'
-        self.test_case_id = '118806'
+        self.test_case_id = '118808'
         self.test_suite_id = '2000'
         self.locales = ['en-US']
 

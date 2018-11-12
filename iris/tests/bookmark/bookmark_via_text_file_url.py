@@ -8,8 +8,8 @@ from iris.test_case import *
 
 class Test(BaseTest):
 
-    def __init__(self, app):
-        BaseTest.__init__(self, app)
+    def __init__(self):
+        BaseTest.__init__(self)
         self.meta = 'Websites can be bookmarked by dragging a URL from a *.txt file.'
         self.test_case_id = '4144'
         self.test_suite_id = '75'
