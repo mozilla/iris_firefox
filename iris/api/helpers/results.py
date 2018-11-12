@@ -101,17 +101,6 @@ def print_results(current_test, test_case):
     :param test_case: Instance of BaseTest class.
     :return: None.
     """
-    result_list = test_case.results
-    for index, result in enumerate(result_list, start=1):
-        if 'ERROR' == result.outcome:
-            logger.error('>>> ERROR <<< Error encountered in test %s' % '\n' + result.error if
-                         result.error else '')
-        elif 'FAILED' == result.outcome:
-            logger.warning('>>> FAILED <<< Step %s: %s - [Actual]: %s [Expected]: %s %s'
-                           % (index, result.message, result.actual, result.expected,
-                              '\n' + result.error if result.error else ''))
-        elif 'PASSED' == result.outcome:
-            logger.success('>>> PASSED <<< Step %s: %s' % (index, result.message))
     logger.info('[%s] - >>> %s <<< (Finished in %s second(s))\n' % (
         current_test, test_case.outcome, get_duration(test_case.start_time, test_case.end_time)))
 

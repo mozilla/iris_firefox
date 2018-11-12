@@ -60,10 +60,18 @@ class BaseTest(object):
         """Returns the test duration with 2 decimals precision."""
         return round(self.end_time - self.start_time, 2)
 
-    def add_results(self, outcome, message, actual, expected, error):
+    def add_results(self, result):
         """Create test result object."""
-        res = Result(outcome, message, actual, expected, error)
-        self.add_result(res)
+        self.add_result(result)
+        if 'ERROR' == result.outcome:
+            logger.error('>>> ERROR <<< Error encountered in test %s' % '\n' + result.error if
+                         result.error else '')
+        elif 'FAILED' == result.outcome:
+            logger.warning('>>> FAILED <<< Step %s: %s - [Actual]: %s [Expected]: %s %s'
+                           % (len(self.results), result.message, result.actual, result.expected,
+                              '\n' + result.error if result.error else ''))
+        elif 'PASSED' == result.outcome:
+            logger.success('>>> PASSED <<< Step %s: %s' % (len(self.results), result.message))
 
     @staticmethod
     def get_asset_path(asset_file_name):

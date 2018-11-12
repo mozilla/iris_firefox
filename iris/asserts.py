@@ -27,9 +27,10 @@ def assert_equal(test_case, actual, expected, message):
     """
     try:
         assert actual == expected
-        test_case.add_results('PASSED', message, actual, expected, None)
+        test_case.add_results(Result('PASSED', message, actual, expected, None))
     except AssertionError:
-        test_case.add_results('FAILED', message, actual, expected, print_error(format_stack(traceback.extract_stack())))
+        test_case.add_results(
+            Result('FAILED', message, actual, expected, print_error(format_stack(traceback.extract_stack()))))
         raise AssertionError
 
 
@@ -43,9 +44,10 @@ def assert_contains(test_case, actual, expected, message):
     """
     try:
         assert expected in actual
-        test_case.add_results('PASSED', message, actual, expected, None)
+        test_case.add_results(Result('PASSED', message, actual, expected, None))
     except AssertionError:
-        test_case.add_results('FAILED', message, actual, expected, print_error(format_stack(traceback.extract_stack())))
+        test_case.add_results(
+            Result('FAILED', message, actual, expected, print_error(format_stack(traceback.extract_stack()))))
         raise AssertionError
 
 
