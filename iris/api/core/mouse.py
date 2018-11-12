@@ -115,16 +115,20 @@ def to_location(ps=None, in_region=None, align='top_left'):
     :param align: Alignment could be top_left, center.
     :return: Location object.
     """
-
-    # TODO: Add multiple alignments if needed.
     if isinstance(ps, Location):
         return ps
 
     elif isinstance(ps, Pattern):
         location = image_search(ps, in_region)
+        width, height = ps.get_size()
         if align == 'center':
-            width, height = ps.get_size()
             return Location(location.x + width / 2, location.y + height / 2)
+        elif align == 'top_right':
+            return Location(location.x + width, location.y)
+        elif align == 'bottom_left':
+            return Location(location.x, location.y + height)
+        elif align == 'bottom_right':
+            return Location(location.x + width, location.y + height)
         else:
             return location
 
