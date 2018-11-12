@@ -73,11 +73,11 @@ def run(master_tests_list, test_list, browser):
             except FindError:
                 test_failures.append(module)
                 failed += 1
-                current.add_results('FAILED', None, None, None, print_error(traceback.format_exc()))
+                current.add_results(Result('FAILED', None, None, None, print_error(traceback.format_exc())))
             except (APIHelperError, ValueError, ConfigError, TypeError):
                 test_failures.append(module)
                 errors += 1
-                current.add_results('ERROR', None, None, None, print_error(traceback.format_exc()))
+                current.add_results(Result('ERROR', None, None, None, print_error(traceback.format_exc())))
 
             current.end_time = time.time()
 
