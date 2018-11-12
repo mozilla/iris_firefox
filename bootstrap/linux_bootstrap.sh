@@ -90,10 +90,12 @@ fi
 
 
 echo -e "\n${GREEN}  --->  installing/upgrading Leptonica #####${NC}\n"
-if [[ ! $(tesseract -v) =~ leptonica-1.76.0 ]]; then
+if [[ $(tesseract -v | grep "leptonica-1.76") ]]; then
+    echo -e "\n${GREEN} --->  Skipping Leptonica install. Already installed. ${NC}\n"
+else
     cd ~
     if [ ! -f leptonica-1.76.0.tar.gz ]; then
-        echo "\n${GREEN}  --->  Downloading Tesseract archive 3.05.02.tar.gz ${NC}\n"
+        echo "\n${GREEN}  --->  Downloading leptonica-1.76.0.tar.gz ${NC}\n"
         wget http://www.leptonica.com/source/leptonica-1.76.0.tar.gz
     fi
 
@@ -111,49 +113,46 @@ if [[ ! $(tesseract -v) =~ leptonica-1.76.0 ]]; then
         cd leptonica-1.76.0
     fi
 
-    if [[ "$PWD" =~ leptonica-1.76.0 ]]; then
-        ./configure
-        sudo make
+    if [[ $(pwd | grep "leptonica-1.76.0") ]]; then
+        sudo ./configure &&\
+        sudo make &&\
         sudo make install
     fi
-else
-    echo -e "\n${GREEN} --->  Skipping Leptonica install. Already installed. ${NC}\n"
 fi
 
 
 echo -e "\n${GREEN}  --->  installing/upgrading Tesseract #####${NC}\n"
-if [[ ! $(tesseract -v) ]]; then
+if [[ $(tesseract -v | grep "tesseract 4.") ]]; then
+    echo -e "\n${GREEN} --->  Skipping Tesseract v4 install. Already installed. ${NC}\n"
+else
     cd ~
-    if [ ! -f 3.05.02.tar.gz ]; then
-        echo "\n${GREEN}  --->  Downloading Tesseract archive 3.05.02.tar.gz ${NC}\n"
-        wget https://github.com/tesseract-ocr/tesseract/archive/3.05.02.tar.gz
+    if [ ! -f 4.0.0.tar.gz ]; then
+        echo "\n${GREEN}  --->  Downloading Tesseract archive 4.0.0.tar.gz ${NC}\n"
+        wget https://github.com/tesseract-ocr/tesseract/archive/4.0.0.tar.gz
     fi
 
-    if [ ! -d tesseract-3.05.02 ]; then
-        if [ -f 3.05.02.tar.gz ]; then
-            tar xopf 3.05.02.tar.gz
+    if [ ! -d tesseract-4.0.0 ]; then
+        if [ -f 4.0.0.tar.gz ]; then
+            tar xopf 4.0.0.tar.gz
         else
-            echo -e "\n${RED}  --->  Tesseract archive 3.05.02.tar.gz not found! Maybe download failed. ${NC}\n" && exit 0
+            echo -e "\n${RED}  --->  Tesseract archive 4.0.0.tar.gz not found! Maybe download failed. ${NC}\n" && exit 0
         fi
     fi
 
-    if [ ! -d tesseract-3.05.02 ]; then
-        echo "\n${RED}  --->  tesseract-3.05.02 directory not found! Maybe the extraction failed. ${NC}\n" && exit 0
+    if [ ! -d tesseract-4.0.0 ]; then
+        echo "\n${RED}  --->  tesseract-4.0.0 directory not found! Maybe the extraction failed. ${NC}\n" && exit 0
     else
-        cd tesseract-3.05.02
+        cd tesseract-4.0.0
     fi
 
-    if [[ "$PWD" =~ tesseract-3.05.02 ]]; then
-        ./autogen.sh
-        ./configure --enable-debug
-        LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make
-        sudo make install
-        sudo make install-langs
+    if [[ $(pwd | grep "tesseract-4.0.0") ]]; then
+        sudo ./autogen.sh &&\
+        ./configure --enable-debug &&\
+        LDFLAGS="-L/usr/local/lib" CFLAGS="-I/usr/local/include" make &&\
+        sudo make install &&\
+        sudo make install -langs &&\
         sudo ldconfig
     fi
-
-else
-    echo -e "\n${GREEN} --->  Skipping Tesseract install. Already installed. ${NC}\n"
 fi
 
 
@@ -183,7 +182,7 @@ if  [ ! -f /usr/local/share/tessdata/afr.traineddata ]; then
         cd tessdata-3.04.00
     fi
 
-    if [[ "$PWD" =~ tessdata-3.04.00 ]]; then
+    if [[ $(pwd | grep "tessdata-3.04.00") ]]; then
         if [ ! -d /usr/local/share/tessdata/ ]; then
             sudo mkdir /usr/local/share/tessdata/
         fi

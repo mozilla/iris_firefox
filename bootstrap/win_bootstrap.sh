@@ -52,19 +52,19 @@ else
 fi
 
 
-echo -e "\n${GREEN} --->  Installing Tesseract 3 ${NC} \n"
+echo -e "\n${GREEN} --->  Installing Tesseract 4 ${NC} \n"
 if command -v tesseract &>/dev/null; then
     echo -e "${GREEN}  --->  Tesseract already installed. ${NC}\n"
     echo -e "${GREEN}    --->  Checking Tesseract version. ${NC}\n"
-    if [[ $(tesseract -v) =~ "tesseract v4." ]]; then
-        echo -e "${RED}  --->  You have Tesseract 4, removing and installing Tesseract 3.${NC}\n"
-        powershell -Command "scoop uninstall tesseract"
-        powershell -Command "scoop install tesseract3"
+    if [[ $(tesseract -v | grep "tesseract 3.05") ]]; then
+        echo -e "${RED}  --->  You have Tesseract 3, removing and installing Tesseract 4.${NC}\n"
+        powershell -Command "scoop uninstall tesseract3"
+        powershell -Command "scoop install tesseract"
     else
         echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
     fi
 else
-    powershell -Command "scoop install tesseract3"
+    powershell -Command "scoop install tesseract"
 fi
 
 
