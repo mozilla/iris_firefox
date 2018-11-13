@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+iris = {path = ".", editable = true}
 pyautogui = "==0.9.38"
 coloredlogs = "==10.0"
 python-dateutil = "==2.7.5"
