@@ -41,7 +41,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Iris page is still displayed in the history.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
 
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')

@@ -48,7 +48,7 @@ class Test(BaseTest):
 
         if Settings.get_os() == Platform.WINDOWS:
             change_window_view()
-            click_auxiliary_window_control('close')
+            click_window_control('close')
 
         mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')

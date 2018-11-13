@@ -59,7 +59,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('New Bookmark popup is still open')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
         time.sleep(DEFAULT_UI_DELAY)
 
         # Open the library and check that the page was bookmarked with default settings.
@@ -74,4 +74,4 @@ class Test(BaseTest):
         assert_true(self, expected, 'The website is bookmarked in the Bookmarks Menu folder, with the default name and '
                                     'without any tags.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')

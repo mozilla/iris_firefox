@@ -37,7 +37,7 @@ class Test(BaseTest):
         elif Settings.get_os_version() == 'win7':
             type(Key.ESC)
         else:
-            click_auxiliary_window_control('close')
+            click_window_control('close')
 
         try:
             expected = wait_vanish(dialog_pattern, 5)

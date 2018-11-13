@@ -42,7 +42,7 @@ class Test(BaseTest):
         if Settings.is_mac():
             click(cancel_multiple_tabs_warning_pattern)
         else:
-            click_auxiliary_window_control('close')
+            click_window_control('close')
 
         try:
             expected_2 = wait_vanish(close_multiple_tabs_warning_pattern, 10)
