@@ -201,8 +201,6 @@ def control_center():
     else:
         dir_util.copy_tree(os.path.join(IrisCore.get_module_dir(), 'iris', 'cc_files'), parse_args().workdir)
         profile_path = os.path.join(parse_args().workdir, 'cc_profile')
-        if os.path.exists(profile_path):
-            shutil.rmtree(profile_path)
 
         fx_path = get_local_firefox_path()
         if fx_path is None:
