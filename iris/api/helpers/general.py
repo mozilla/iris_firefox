@@ -198,7 +198,7 @@ def maximize_window_control(window_type):
             click(window_controls_pattern.target_offset(width - 10, height / 2))
             key_up(Key.ALT)
         else:
-            click(AuxiliaryWindow.MINIMIZE_BUTTON)
+            click(AuxiliaryWindow.ZOOM_FULL_BUTTON)
 
     elif window_type == 'main':
         find_window_controls('main')
