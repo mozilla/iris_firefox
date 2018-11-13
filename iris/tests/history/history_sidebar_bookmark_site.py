@@ -73,4 +73,4 @@ class Test(BaseTest):
         click(library_expand_bookmarks_menu_pattern)
         expected_8 = exists(library_bookmarks_mozilla_pattern, 10)
         assert_true(self, expected_8, 'Mozilla page is bookmarked with default name and without tags.')
-        click_auxiliary_window_control('close')
+        click_window_control('close')

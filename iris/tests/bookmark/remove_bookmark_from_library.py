@@ -57,4 +57,4 @@ class Test(BaseTest):
         except FindError:
             raise FindError('MOz bookmark can NOT be removed from the Library, aborting.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')

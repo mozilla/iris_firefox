@@ -32,7 +32,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Download dialog is present.')
 
         # Close the dialog.
-        click_auxiliary_window_control('close')
+        click_window_control('close')
 
         try:
             expected = wait_vanish(dialog_pattern, 5)

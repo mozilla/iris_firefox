@@ -82,4 +82,4 @@ class Test(BaseTest):
         open_library()
         expected_7 = exists(library_bookmarks_mozilla_custom_settings_pattern, 10)
         assert_true(self, expected_7, 'Mozilla page is bookmarked with custom name and tags in a different folder.')
-        click_auxiliary_window_control('close')
+        click_window_control('close')

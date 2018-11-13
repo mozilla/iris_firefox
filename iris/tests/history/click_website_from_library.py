@@ -44,4 +44,4 @@ class Test(BaseTest):
         # Get the library in focus again.
         open_library()
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')

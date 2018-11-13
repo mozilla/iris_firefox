@@ -37,7 +37,7 @@ class Test(BaseTest):
         expected_3 = exists(toggle_filter_bar, 10)
         assert_true(self, expected_3, 'Toggle filter bar option is present.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
         try:
             expected_4 = wait_vanish(browser_console, 10)
             assert_true(self, expected_4, 'Browser Console successfully closed.')
@@ -46,7 +46,7 @@ class Test(BaseTest):
 
         # Access Browser Console by keyboard shortcut.
         open_browser_console()
-        click_auxiliary_window_control("minimize")
+        click_window_control("minimize")
         try:
             expected_5 = wait_vanish(browser_console, 10)
             assert_true(self, expected_5, 'Browser Console successfully minimized.')
@@ -54,7 +54,7 @@ class Test(BaseTest):
             logger.error('Browser Console not minimized.')
 
         restore_window_from_taskbar(option='browser_console')
-        click_auxiliary_window_control("maximize")
+        click_window_control("maximize")
         top_page = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 4)
         try:
             mouse_move(toggle_filter_bar)
@@ -63,4 +63,4 @@ class Test(BaseTest):
         except FindError:
             logger.error('Browser Console not maximized.')
 
-        click_auxiliary_window_control("close")
+        click_window_control("close")

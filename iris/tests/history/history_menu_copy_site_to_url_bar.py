@@ -42,7 +42,7 @@ class Test(BaseTest):
         # Copy a website from the History section and paste it into the URL bar.
         right_click(mozilla_bookmark_focus)
         type(text='c')
-        click_auxiliary_window_control('close')
+        click_window_control('close')
         select_location_bar()
         edit_paste()
         type(Key.ENTER)

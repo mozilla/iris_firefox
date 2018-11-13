@@ -37,7 +37,7 @@ class Test(BaseTest):
         assert_true(self, expected_1, 'Save Image dialog is present')
 
         if Settings.get_os() == Platform.WINDOWS:
-            click_auxiliary_window_control('close')
+            click_window_control('close')
         else:
             click_cancel_button()
             
