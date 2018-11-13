@@ -22,7 +22,7 @@ class Test(BaseTest):
         expected_1 = exists(firefox_in_about_pattern, 10)
         assert_true(self, expected_1, '\'About Firefox\' window was opened successfully.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
         try:
             expected_2 = wait_vanish(firefox_in_about_pattern, 10)
             assert_true(self, expected_2, '\'About Firefox\' window was closed successfully.')

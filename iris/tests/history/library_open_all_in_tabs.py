@@ -54,7 +54,7 @@ class Test(BaseTest):
         right_click(history_today_pattern)
         type(text='o')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
         time.sleep(DEFAULT_UI_DELAY)
 
         # Make sure that all the pages from the selected history time range are opened in the current window.

@@ -56,7 +56,7 @@ class Test(BaseTest):
 
         paste('Iris')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
 
         bookmarks_sidebar('open')
 

@@ -59,4 +59,4 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')

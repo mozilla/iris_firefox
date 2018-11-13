@@ -60,4 +60,4 @@ class Test(BaseTest):
         file_saved_assert = wait_vanish(file_format, 10)
         assert_true(self, file_saved_assert, 'The HTML file has been successfully saved.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')

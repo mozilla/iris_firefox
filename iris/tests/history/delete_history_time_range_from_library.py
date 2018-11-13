@@ -50,4 +50,4 @@ class Test(BaseTest):
         except FindError:
             raise FindError('The selected time range is not deleted.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
