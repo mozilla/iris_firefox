@@ -53,7 +53,7 @@ class Test(BaseTest):
         right_click(history_pattern)
         type(text='c')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
         time.sleep(DEFAULT_UI_DELAY)
 
         right_click(bookmarks_toolbar_most_visited_pattern)
