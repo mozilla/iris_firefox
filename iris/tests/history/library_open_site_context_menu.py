@@ -29,6 +29,7 @@ class Test(BaseTest):
         show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
         history_today_pattern = Pattern('history_today.png')
         library_bookmarks_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
+        iris_logo_tab_pattern = Pattern('iris_logo_tab.png')
 
         # Open a page to create some today's history.
         new_tab()
@@ -40,18 +41,18 @@ class Test(BaseTest):
         # Select the History option from the View History, saved bookmarks and more Menu.
         open_library_menu('History')
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
-        assert_true(self, expected, 'Iris page is displayed in the History menu list.')
+        expected_2 = right_upper_corner.exists(iris_bookmark_pattern, 10)
+        assert_true(self, expected_2, 'Iris page is displayed in the History menu list.')
 
         # Click on the Show All History button.
         click(show_all_history_pattern)
-        expected_2 = exists(history_today_pattern, 10)
-        assert_true(self, expected_2, 'Today history option is available.')
+        expected_3 = exists(history_today_pattern, 10)
+        assert_true(self, expected_3, 'Today history option is available.')
 
         # Verify if Mozilla page is present in Today's History.
         click(history_today_pattern)
-        expected_3 = exists(library_bookmarks_mozilla_pattern, 10)
-        assert_true(self, expected_3, 'Mozilla page is displayed successfully in the History list.')
+        expected_4 = exists(library_bookmarks_mozilla_pattern, 10)
+        assert_true(self, expected_4, 'Mozilla page is displayed successfully in the History list.')
 
         # Open the Mozilla page using the 'Open' button from the context menu.
         right_click(library_bookmarks_mozilla_pattern)
@@ -63,6 +64,9 @@ class Test(BaseTest):
         click_auxiliary_window_control('close')
         time.sleep(Settings.FX_DELAY)
 
-        # Check that the Mozilla page loaded successfully.
-        expected_4 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, expected_4, 'Mozilla page loaded successfully.')
+        # Check that the Mozilla page loaded successfully in the current tab(Iris page).
+        expected_5 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected_5, 'Mozilla page loaded successfully.')
+
+        expected_6 = exists(iris_logo_tab_pattern, 3)
+        assert_false(self, expected_6, 'Mozilla page loaded successfully in the current tab.')
