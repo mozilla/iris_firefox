@@ -109,17 +109,23 @@ def change_preference(pref_name, value):
 
 
 def find_window_controls(window_type):
+    """Find window controls for main and auxiliary windows.
+
+    :param window_type: Controls for a specific window type.
+    :return: None.
+    """
     if window_type == 'auxiliary':
         hover(Location(1, 300))
 
-        if Settings.get_os() == Platform.MAC:
+        if Settings.is_mac():
             try:
                 wait(AuxiliaryWindow.RED_BUTTON_PATTERN.similar(0.9), 5)
                 logger.debug('Auxiliary window control found.')
             except FindError:
                 raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
-        elif Settings.get_os() == Platform.LINUX:
-            hover(Location(80, 0))
+        else:
+            if Settings.is_linux():
+                hover(Location(80, 0))
             try:
                 wait(AuxiliaryWindow.CLOSE_BUTTON, 5)
                 logger.debug('Auxiliary window control found.')
@@ -130,140 +136,127 @@ def find_window_controls(window_type):
     elif window_type == 'main':
         reset_mouse()
 
-        if Settings.get_os() == Platform.MAC:
+        if Settings.is_mac():
             try:
                 wait(MainWindow.MAIN_WINDOW_CONTROLS.similar(0.9), 5)
                 logger.debug('Main window controls found.')
             except FindError:
                 raise APIHelperError('Can\'t find the Main window controls, aborting.')
-        elif Settings.get_os() == Platform.LINUX:
+        else:
             try:
-                wait(AuxiliaryWindow.CLOSE_BUTTON, 5)
+                wait(MainWindow.CLOSE_BUTTON, 5)
                 logger.debug('Main window control found.')
             except FindError:
                 raise APIHelperError(
                     'Can\'t find the Main window controls, aborting.')
-
     else:
         raise APIHelperError('Window Type not supported.')
 
 
 def close_window_control(window_type):
-    if window_type == 'auxiliary':
-        find_window_controls('auxiliary')
-        if Settings.get_os() == Platform.MAC:
-            hover(AuxiliaryWindow.RED_BUTTON_PATTERN, 0.3)
-            click(AuxiliaryWindow.HOVERED_RED_BUTTON)
-        else:
-            click(AuxiliaryWindow.CLOSE_BUTTON)
+    """Click on close window control.
 
-    elif window_type == 'main':
-        find_window_controls('main')
-        if Settings.get_os() == Platform.MAC:
-            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL, 0.3)
-            click(MainWindow.HOVERED_MAIN_RED_CONTROL)
-        else:
-            click(MainWindow.CLOSE_CONTROL)
+    :param window_type: Type of window that need to be closed.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        hovered_closed_button = AuxiliaryWindow.HOVERED_RED_BUTTON
+        unhovered_close_button = AuxiliaryWindow.RED_BUTTON_PATTERN
+        close_button = AuxiliaryWindow.CLOSE_BUTTON
     else:
-        raise APIHelperError('Window Type not supported')
+        hovered_closed_button = MainWindow.HOVERED_MAIN_RED_CONTROL
+        unhovered_close_button = MainWindow.UNHOVERED_MAIN_RED_CONTROL
+        close_button = MainWindow.CLOSE_BUTTON
+
+    if Settings.is_mac():
+        hover(unhovered_close_button, 0.3)
+        click(hovered_closed_button)
+    else:
+        click(close_button)
 
 
 def minimize_window_control(window_type):
-    if window_type == 'auxiliary':
-        find_window_controls('auxiliary')
-        if Settings.get_os() == Platform.MAC:
-            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
-            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width / 2, height / 2))
-        else:
-            click(AuxiliaryWindow.MINIMIZE_BUTTON)
+    """Click on minimize window control.
 
-    elif window_type == 'main':
-        find_window_controls('main')
-        if Settings.get_os() == Platform.MAC:
-            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
-            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width / 2, height / 2))
-        else:
-            click(MainWindow.MINIMIZE_CONTROL)
+    :param window_type: Type of window that need to be minimized.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        window_controls_pattern = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS
+        main_controls_button = AuxiliaryWindow.MINIMIZE_BUTTON
     else:
-        raise APIHelperError('Window Type not supported')
+        window_controls_pattern = MainWindow.MAIN_WINDOW_CONTROLS
+        main_controls_button = MainWindow.MINIMIZE_BUTTON
+
+    if Settings.is_mac():
+        width, height = window_controls_pattern.get_size()
+        click(window_controls_pattern.target_offset(width / 2, height / 2))
+    else:
+        click(main_controls_button)
 
 
 def maximize_window_control(window_type):
-    if window_type == 'auxiliary':
-        find_window_controls('auxiliary')
-        if Settings.get_os() == Platform.MAC:
-            key_down(Key.ALT)
-            window_controls_pattern = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS
-            width, height = window_controls_pattern.get_size()
-            click(window_controls_pattern.target_offset(width - 10, height / 2))
-            key_up(Key.ALT)
-        else:
-            click(AuxiliaryWindow.ZOOM_FULL_BUTTON)
+    """Click on maximize window control.
 
-    elif window_type == 'main':
-        find_window_controls('main')
-        if Settings.get_os() == Platform.MAC:
-            key_down(Key.ALT)
-            main_window_controls = MainWindow.MAIN_WINDOW_CONTROLS
-            width, height = main_window_controls.get_size()
-            click(main_window_controls.target_offset(width - 10, height / 2))
-            key_up(Key.ALT)
-        else:
-            click(MainWindow.MAXIMIZE_CONTROL)
+    :param window_type: Type of window that need to be maximized.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        window_controls_pattern = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS
+        main_controls_button = AuxiliaryWindow.MAXIMIZE_BUTTON
     else:
-        raise APIHelperError('Window Type not supported')
+        window_controls_pattern = MainWindow.MAIN_WINDOW_CONTROLS
+        main_controls_button = MainWindow.MAXIMIZE_BUTTON
+
+    if Settings.is_mac():
+        key_down(Key.ALT)
+        width, height = window_controls_pattern.get_size()
+        click(window_controls_pattern.target_offset(width - 10, height / 2))
+        key_up(Key.ALT)
+    else:
+        click(main_controls_button)
 
 
 def full_screen_control(window_type):
-    if window_type == 'auxiliary':
-        find_window_controls('auxiliary')
-        if Settings.get_os() == Platform.MAC:
+    """Click on full screen window mode (Applicable only for MAC system).
+
+    :param window_type: Type of window that need to be maximized in full screen mode.
+    :reurn: None.
+    """
+    if Settings.is_mac():
+        find_window_controls(window_type)
+        if window_type == 'auxiliary':
             window_controls = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS
-            width, height = window_controls.get_size()
-            click(window_controls.target_offset(width - 10, height / 2))
         else:
-            raise APIHelperError('Full screen mode applicable only for MAC')
-
-    elif window_type == 'main':
-        find_window_controls('main')
-        if Settings.get_os() == Platform.MAC:
             window_controls = MainWindow.MAIN_WINDOW_CONTROLS
-            width, height = window_controls.get_size()
-            click(window_controls.target_offset(width - 10, height / 2))
-        else:
-            raise APIHelperError('Full screen mode applicable only for MAC')
+        width, height = window_controls.get_size()
+        click(window_controls.target_offset(width - 10, height / 2))
     else:
-        raise APIHelperError('Window Type not supported')
+        raise APIHelperError('Full screen mode applicable only for MAC')
 
 
-def click_window_control(button, window_type=None):
-    """Click window with options: close, minimize, maximize,
-    full_screen.
+def click_window_control(button, window_type='auxiliary'):
+    """Click window with options: close, minimize, maximize, full_screen.
 
     :param button: Auxiliary or main window options.
     :param window_type: Type of window that need to be controlled.
     :return: None.
     """
+
     if button == 'close':
-        if window_type is None:
-            close_window_control('auxiliary')
-        else:
-            close_window_control('main')
+        close_window_control(window_type)
     elif button == 'minimize':
-        if window_type is None:
-            minimize_window_control('auxiliary')
-        else:
-            minimize_window_control('main')
+        minimize_window_control(window_type)
     elif button == 'maximize':
-        if window_type is None:
-            maximize_window_control('auxiliary')
-        else:
-            maximize_window_control('main')
+        maximize_window_control(window_type)
     elif button == 'full_screen':
-        if window_type is None:
-            full_screen_control('auxiliary')
-        else:
-            full_screen_control('main')
+        full_screen_control(window_type)
     else:
         raise APIHelperError('Button option is not supported.')
 
