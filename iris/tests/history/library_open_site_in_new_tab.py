@@ -41,18 +41,18 @@ class Test(BaseTest):
         # Select the History option from the View History, saved bookmarks and more Menu.
         open_library_menu('History')
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
-        assert_true(self, expected, 'Iris page is displayed in the History menu list.')
+        expected_2 = right_upper_corner.exists(iris_bookmark_pattern, 10)
+        assert_true(self, expected_2, 'Iris page is displayed in the History menu list.')
 
         # Click on the Show All History button.
         click(show_all_history_pattern)
-        expected_2 = exists(history_today_pattern, 10)
-        assert_true(self, expected_2, 'Today history option is available.')
+        expected_3 = exists(history_today_pattern, 10)
+        assert_true(self, expected_3, 'Today history option is available.')
 
         # Verify if Mozilla page is present in Today's History.
         click(history_today_pattern)
-        expected_3 = exists(library_bookmarks_mozilla_pattern, 10)
-        assert_true(self, expected_3, 'Mozilla page is displayed successfully in the History list.')
+        expected_4 = exists(library_bookmarks_mozilla_pattern, 10)
+        assert_true(self, expected_4, 'Mozilla page is displayed successfully in the History list.')
 
         # Open the Mozilla page using the 'Open in a New Tab' button from the context menu.
         right_click(library_bookmarks_mozilla_pattern)
@@ -66,8 +66,8 @@ class Test(BaseTest):
         time.sleep(Settings.FX_DELAY)
 
         # Check that the Mozilla page loaded successfully in a new tab.
-        expected_4 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, expected_4, 'Mozilla page loaded successfully.')
+        expected_5 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        assert_true(self, expected_5, 'Mozilla page loaded successfully.')
 
-        expected_5 = exists(iris_tab_icon, 10)
-        assert_true(self, expected_5, 'Iris local page is still open in the first tab.')
+        expected_6 = exists(iris_tab_icon, 10)
+        assert_true(self, expected_6, 'Iris local page is still open in the first tab.')
