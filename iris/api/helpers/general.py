@@ -162,19 +162,17 @@ def close_window_control(window_type):
     find_window_controls(window_type)
 
     if window_type == 'auxiliary':
-        hovered_closed_button = AuxiliaryWindow.HOVERED_RED_BUTTON
-        unhovered_close_button = AuxiliaryWindow.RED_BUTTON_PATTERN
-        close_button = AuxiliaryWindow.CLOSE_BUTTON
+        if Settings.is_mac():
+            hover(AuxiliaryWindow.RED_BUTTON_PATTERN, 0.3)
+            click(AuxiliaryWindow.HOVERED_RED_BUTTON)
+        else:
+            click(AuxiliaryWindow.CLOSE_BUTTON)
     else:
-        hovered_closed_button = MainWindow.HOVERED_MAIN_RED_CONTROL
-        unhovered_close_button = MainWindow.UNHOVERED_MAIN_RED_CONTROL
-        close_button = MainWindow.CLOSE_BUTTON
-
-    if Settings.is_mac():
-        hover(unhovered_close_button, 0.3)
-        click(hovered_closed_button)
-    else:
-        click(close_button)
+        if Settings.is_mac():
+            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL, 0.3)
+            click(MainWindow.HOVERED_MAIN_RED_CONTROL)
+        else:
+            click(MainWindow.CLOSE_BUTTON)
 
 
 def minimize_window_control(window_type):
@@ -186,17 +184,17 @@ def minimize_window_control(window_type):
     find_window_controls(window_type)
 
     if window_type == 'auxiliary':
-        window_controls_pattern = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS
-        main_controls_button = AuxiliaryWindow.MINIMIZE_BUTTON
+        if Settings.is_mac():
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width / 2, height / 2))
+        else:
+            click(AuxiliaryWindow.MINIMIZE_BUTTON)
     else:
-        window_controls_pattern = MainWindow.MAIN_WINDOW_CONTROLS
-        main_controls_button = MainWindow.MINIMIZE_BUTTON
-
-    if Settings.is_mac():
-        width, height = window_controls_pattern.get_size()
-        click(window_controls_pattern.target_offset(width / 2, height / 2))
-    else:
-        click(main_controls_button)
+        if Settings.is_mac():
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width / 2, height / 2))
+        else:
+            click(MainWindow.MINIMIZE_BUTTON)
 
 
 def maximize_window_control(window_type):
@@ -208,19 +206,21 @@ def maximize_window_control(window_type):
     find_window_controls(window_type)
 
     if window_type == 'auxiliary':
-        window_controls_pattern = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS
-        main_controls_button = AuxiliaryWindow.MAXIMIZE_BUTTON
+        if Settings.is_mac():
+            key_down(Key.ALT)
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2))
+            key_up(Key.ALT)
+        else:
+            click(AuxiliaryWindow.MAXIMIZE_BUTTON)
     else:
-        window_controls_pattern = MainWindow.MAIN_WINDOW_CONTROLS
-        main_controls_button = MainWindow.MAXIMIZE_BUTTON
-
-    if Settings.is_mac():
-        key_down(Key.ALT)
-        width, height = window_controls_pattern.get_size()
-        click(window_controls_pattern.target_offset(width - 10, height / 2))
-        key_up(Key.ALT)
-    else:
-        click(main_controls_button)
+        if Settings.is_mac():
+            key_down(Key.ALT)
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2))
+            key_up(Key.ALT)
+        else:
+            click(MainWindow.MAXIMIZE_BUTTON)
 
 
 def full_screen_control(window_type):
@@ -231,12 +231,13 @@ def full_screen_control(window_type):
     """
     if Settings.is_mac():
         find_window_controls(window_type)
+
         if window_type == 'auxiliary':
-            window_controls = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2))
         else:
-            window_controls = MainWindow.MAIN_WINDOW_CONTROLS
-        width, height = window_controls.get_size()
-        click(window_controls.target_offset(width - 10, height / 2))
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2))
     else:
         raise APIHelperError('Full screen mode applicable only for MAC')
 
