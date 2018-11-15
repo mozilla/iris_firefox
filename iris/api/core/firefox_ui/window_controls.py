@@ -14,7 +14,7 @@ class AuxiliaryWindow(object):
         HOVERED_RED_BUTTON = Pattern('hovered_red_button.png')
     else:
         CLOSE_BUTTON = Pattern('auxiliary_window_close_button.png')
-        ZOOM_FULL_BUTTON = Pattern('auxiliary_window_maximize.png')
+        MAXIMIZE_BUTTON = Pattern('auxiliary_window_maximize.png')
         ZOOM_RESTORE_BUTTON = Pattern('minimize_full_screen_auxiliary_window.png')
         MINIMIZE_BUTTON = Pattern('auxiliary_window_minimize.png')
 
@@ -25,7 +25,7 @@ class MainWindow(object):
         UNHOVERED_MAIN_RED_CONTROL = Pattern('unhovered_main_red_control.png')
         HOVERED_MAIN_RED_CONTROL = Pattern('hovered_red_main_control.png')
     else:
-        CLOSE_CONTROL = Pattern('main_close_control.png')
-        MINIMIZE_CONTROL = Pattern('main_minimize_control.png')
-        MAXIMIZE_CONTROL = Pattern('main_maximize_control.png')
-        RESIZE_CONTROL = Pattern('main_resize_control.png')
+        CLOSE_BUTTON = Pattern('main_close_control.png')
+        MINIMIZE_BUTTON = Pattern('main_minimize_control.png')
+        MAXIMIZE_BUTTON = Pattern('main_maximize_control.png')
+        RESIZE_BUTTON = Pattern('main_resize_control.png')
