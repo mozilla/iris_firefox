@@ -62,7 +62,7 @@ class Test(BaseTest):
         # Close the library.
         open_library()
         time.sleep(Settings.FX_DELAY)
-        click_auxiliary_window_control('close')
+        click_window_control('close')
         time.sleep(Settings.FX_DELAY)
 
         # Check that the Mozilla page loaded successfully in a new tab.
