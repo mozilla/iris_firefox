@@ -60,7 +60,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
 
         # Check that the local server is still auto-completed in the URL bar.
         select_location_bar()

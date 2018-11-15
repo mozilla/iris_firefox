@@ -53,4 +53,4 @@ class Test(BaseTest):
         assert_false(self, expected, 'about:newtab page is not visible in the new opened window.')
 
         close_window()
-        click_auxiliary_window_control('close')
+        click_window_control('close')
