@@ -55,7 +55,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Mozilla page is still displayed in the Library.')
 
-        click_auxiliary_window_control('close')
+        click_window_control('close')
 
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
