@@ -134,8 +134,6 @@ def find_window_controls(window_type):
                     'Can\'t find the auxiliary window controls, aborting.')
 
     elif window_type == 'main':
-        reset_mouse()
-
         if Settings.is_mac():
             try:
                 wait(MainWindow.MAIN_WINDOW_CONTROLS.similar(0.9), 5)
@@ -144,6 +142,8 @@ def find_window_controls(window_type):
                 raise APIHelperError('Can\'t find the Main window controls, aborting.')
         else:
             try:
+                if Settings.is_linux():
+                    reset_mouse()
                 wait(MainWindow.CLOSE_BUTTON, 5)
                 logger.debug('Main window control found.')
             except FindError:
@@ -213,6 +213,8 @@ def maximize_window_control(window_type):
             key_up(Key.ALT)
         else:
             click(AuxiliaryWindow.MAXIMIZE_BUTTON)
+            if Settings.is_linux():
+                reset_mouse()
     else:
         if Settings.is_mac():
             key_down(Key.ALT)
