@@ -28,3 +28,13 @@ class LocationBar(object):
 
 class SearchBar(object):
     SEARCH_BAR = Pattern('search_bar.png')
+
+
+class FindToolbar(object):
+    FIND_CLOSEBUTTON = Pattern('find_closebutton.png')
+    FINDBAR_TEXTBOX = Pattern('findbar_textbox.png')
+    FIND_PREVIOUS = Pattern('find_previous.png')
+    FIND_NEXT = Pattern('find_next.png')
+    HIGHLIGHT = Pattern('highlight.png')
+    FIND_CASE_SENSITIVE = Pattern('find_case_sensitive.png')
+    FIND_ENTIRE_WORD = Pattern('find_entire_word.png')

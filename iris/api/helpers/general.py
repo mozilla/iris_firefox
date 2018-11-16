@@ -9,7 +9,7 @@ from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.menus import LibraryMenu
-from iris.api.core.firefox_ui.toolbars import NavBar, SearchBar
+from iris.api.core.firefox_ui.toolbars import NavBar, SearchBar, FindToolbar
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from iris.api.core.key import *
 from iris.api.core.region import *
