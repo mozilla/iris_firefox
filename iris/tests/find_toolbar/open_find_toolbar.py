@@ -10,14 +10,14 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Opens find toolbar'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.meta = 'Open find toolbar'
+        self.test_case_id = '127238'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
         """
-        Opens find toolbar
+        Open find toolbar
 
         STEP 1:
             DESCRIPTION:
@@ -70,7 +70,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = wait(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
 
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')
@@ -81,7 +81,12 @@ class Test(BaseTest):
         find_bttn_whole_words_pattern_x = find(find_bttn_whole_words_pattern).x
 
         type(Key.ESC)
-        wait_vanish(find_toolbar_pattern, 20)
+
+        try:
+            wait_vanish(find_toolbar_pattern, 20)
+            logger.debug('The Find toolbar successfully disappeared.')
+        except FindError:
+            raise FindError('The Find toolbar did not disappear.')
 
         items_appear_in_proper_way = find_toolbar_x < bttn_hl_all_x < bttn_match_case_x < find_bttn_whole_words_pattern_x
 
@@ -94,10 +99,10 @@ class Test(BaseTest):
             key_down(Key.ALT)
             key_up(Key.ALT)
 
-            wait(menu_bar_edit_pattern, 5)
+            exists(menu_bar_edit_pattern, 5)
             click(menu_bar_edit_pattern, 1)
 
-            wait(menu_bar_edit_find_in_page_pattern, 3)
+            exists(menu_bar_edit_find_in_page_pattern, 3)
             click(menu_bar_edit_find_in_page_pattern, 1)
 
         if Settings.get_os() == Platform.MAC:
@@ -117,7 +122,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_menu_bar = wait(find_toolbar_pattern, 5)
+        find_toolbar_menu_bar = exists(find_toolbar_pattern, 5)
 
         assert_true(self, find_toolbar_menu_bar, 'The Find Toolbar is successfully displayed '
                                                   'by pressing Menu bar > Edit > Find in This Page.')
@@ -128,7 +133,12 @@ class Test(BaseTest):
         find_bttn_whole_words_pattern_x = find(find_bttn_whole_words_pattern).x
 
         type(Key.ESC)
-        wait_vanish(find_toolbar_pattern, 20)
+
+        try:
+            wait_vanish(find_toolbar_pattern, 20)
+            logger.debug('The Find toolbar successfully disappeared.')
+        except FindError:
+            raise FindError('The Find toolbar did not disappear.')
 
         items_appear_in_proper_way = find_toolbar_x < bttn_hl_all_x < bttn_match_case_x < find_bttn_whole_words_pattern_x
 
@@ -137,16 +147,16 @@ class Test(BaseTest):
 
         # 3) Menu > Find in This Page.
 
-        wait(hamburger_menu_pattern, 5)
+        exists(hamburger_menu_pattern, 5)
         click(hamburger_menu_pattern, 1)
 
-        wait(hamburger_menu_find_in_page_pattern, 5)
+        exists(hamburger_menu_find_in_page_pattern, 5)
         click(hamburger_menu_find_in_page_pattern, 1)
 
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened_hamburger = wait(find_toolbar_pattern, 5)
+        find_toolbar_opened_hamburger = exists(find_toolbar_pattern, 5)
 
         assert_true(self, find_toolbar_opened_hamburger,
                     'The Find Toolbar is successfully displayed by pressing Menu bar > Edit > Find in This Page.')
@@ -157,7 +167,12 @@ class Test(BaseTest):
         find_bttn_whole_words_pattern_x = find(find_bttn_whole_words_pattern).x
 
         type(Key.ESC)
-        wait_vanish(find_toolbar_pattern, 20)
+
+        try:
+            wait_vanish(find_toolbar_pattern, 20)
+            logger.debug('The Find toolbar successfully disappeared.')
+        except FindError:
+            raise FindError('The Find toolbar did not disappear.')
 
         items_appear_in_proper_way = find_toolbar_x < bttn_hl_all_x < bttn_match_case_x < find_bttn_whole_words_pattern_x
 

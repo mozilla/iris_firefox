@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Search on a XML page'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.test_case_id = '127272'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
@@ -70,7 +70,9 @@ class Test(BaseTest):
 
         """ STEP 1 """
 
-        navigate('https://www.w3schools.com/xml/cd_catalog.xml')
+        test_page_local = self.get_asset_path('cd_catalog.xml')
+        navigate(test_page_local)
+
         xml_url_logo_exists = exists(xml_page_logo_pattern, 5)
 
         assert_true(self, xml_url_logo_exists, 'The page is successfully loaded.')
@@ -85,7 +87,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = wait(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
 
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')
@@ -123,7 +125,7 @@ class Test(BaseTest):
         
         """ STEP 5 """
 
-        # Goto first occurrence
+        # Go to first occurrence
         find_previous()
 
         text_first_occurrence_exists = exists(text_first_occurrence_pattern, 5)

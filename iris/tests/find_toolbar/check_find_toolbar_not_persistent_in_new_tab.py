@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Check Find Toolbar is not persistent in a new tab / window'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.test_case_id = '127262'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
@@ -77,15 +77,12 @@ class Test(BaseTest):
                Find Toolbar is opened.
         """
 
-        # new_tab()
-        if Settings.get_os() == Platform.MAC:
-            type('f', KeyModifier.CMD)
-        else:
-            type('f', KeyModifier.CTRL)
+        open_find()
         edit_select_all()
         edit_delete()
 
         find_toolbar_is_opened = wait(find_toolbar_pattern, 5)
+
         assert_true(self, find_toolbar_is_opened, 'The find toolbar is opened')
 
         """ END OF STEP 2 """
@@ -100,8 +97,10 @@ class Test(BaseTest):
         """
 
         new_tab()
-        wait(new_tab_icon_pattern, 5)
+        exists(new_tab_icon_pattern, 5)
+
         find_toolbar_is_opened = exists(find_toolbar_pattern, 2)
+
         assert_false(self, find_toolbar_is_opened, 'The find toolbar is not opened on a new tab')
 
         """ END OF STEP 3 """
@@ -116,9 +115,11 @@ class Test(BaseTest):
         """
 
         new_window()
-        wait(new_tab_icon_pattern, 5)
+        exists(new_tab_icon_pattern, 5)
+
         find_toolbar_is_opened = exists(find_toolbar_pattern, 2)
         close_window()
+
         assert_false(self, find_toolbar_is_opened, 'The find toolbar is not opened in a new window')
 
         """ END OF STEP 4 """

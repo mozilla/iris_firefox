@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Search on a text file (.txt)'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.test_case_id = '127273'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
@@ -75,7 +75,9 @@ class Test(BaseTest):
 
         """ STEP 1 """
 
-        navigate('https://www.kernel.org/doc/Documentation/dmaengine/dmatest.txt')
+        test_page_local = self.get_asset_path('dmatest.txt')
+        navigate(test_page_local)
+
         txt_page_title_pattern_exists = exists(txt_page_title_pattern, 5)
 
         assert_true(self, txt_page_title_pattern_exists, 'The page is successfully loaded.')
@@ -90,7 +92,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = wait(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
 
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')

@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Check "Find Again" works on a new tab/window'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.test_case_id = '127263'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
@@ -92,7 +92,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = wait(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
 
         assert_true(self, find_toolbar_is_opened, 'The find toolbar is opened')
 

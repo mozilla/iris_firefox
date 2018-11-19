@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Check the highlight of the found items on a page with dark background'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.test_case_id = '127242'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
@@ -58,7 +58,9 @@ class Test(BaseTest):
 
         """ STEP 1 """
 
-        navigate('http://www.vanschneider.com')
+        test_page_local = self.get_asset_path('dark_backgound.html')
+        navigate(test_page_local)
+
         page_loaded = exists(instagram_unselected_pattern, 100)
 
         assert_true(self, page_loaded, 'The page is successfully loaded.')

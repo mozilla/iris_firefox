@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Search on a PDF page'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.test_case_id = '127271'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
@@ -61,14 +61,17 @@ class Test(BaseTest):
 
         find_toolbar_pattern = Pattern('find_toolbar_text.png')
         pdf_logo_pattern = Pattern('pdf_page_logo.png')
+        pdf_logo_pattern.similarity = 0.6
         first_printer_hl_pattern = Pattern('first_printer_highlight.png')
         second_printer_hl_pattern = Pattern('second_printer_highlight.png')
         second_printer_white_pattern = Pattern('second_printer_white.png')
 
         """ STEP 1 """
 
-        navigate('http://www.pdf995.com/samples/pdf.pdf')
-        navigated_to_pdf_url = wait(pdf_logo_pattern, 5)
+        test_page_local = self.get_asset_path('pdf.pdf')
+        navigate(test_page_local)
+
+        navigated_to_pdf_url = exists(pdf_logo_pattern, 5)
 
         assert_true(self, navigated_to_pdf_url, 'PDF URL loaded successfully.')
 
@@ -83,7 +86,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = wait(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
 
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')

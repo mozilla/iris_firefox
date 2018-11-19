@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Search on a XSL file'
-        self.test_case_id = '0'
-        self.test_suite_id = '0'
+        self.test_case_id = '127274'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
