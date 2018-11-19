@@ -22,7 +22,7 @@ class Test(BaseTest):
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         today_bookmarks_toolbar_pattern = Pattern('today_bookmarks_toolbar.png')
-        history_today_pattern = Pattern('history_today.png')
+        history_today_pattern = Library.HISTORY_TODAY
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)

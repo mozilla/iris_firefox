@@ -29,7 +29,7 @@ class Test(BaseTest):
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         iris_bookmark_focus_pattern = Pattern('iris_bookmark_focus.png')
         library_bookmarks_iris_pattern = Pattern('library_bookmarks_iris.png')
-        library_expand_bookmarks_menu_pattern = Pattern('library_expand_bookmarks_menu.png')
+        library_expand_bookmarks_menu_pattern = Library.BOOKMARKS_MENU
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
 
         # Open History and check if it is populated with the Iris page.

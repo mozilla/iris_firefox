@@ -26,8 +26,8 @@ class Test(BaseTest):
 
     def run(self):
         history_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
-        history_pattern = Pattern('history.png')
-        history_today_pattern = Pattern('history_today.png')
+        history_pattern = Library.HISTORY
+        history_today_pattern = Library.HISTORY_TODAY
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
