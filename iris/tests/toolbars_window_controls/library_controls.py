@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
 
-        library_title_pattern = Pattern('library_title.png')
+        library_title_pattern = Library.TITLE
         if Settings.get_os() == Platform.LINUX:
             restore_button_pattern = Pattern('restore_button.png')
         if Settings.get_os() == Platform.WINDOWS:
