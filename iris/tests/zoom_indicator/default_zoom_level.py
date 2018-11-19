@@ -17,8 +17,8 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
-        edit_buttons_below_zoom_buttons_pattern = Pattern('edit_buttons_below_zoom_buttons.png')
+        url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
+        edit_buttons_below_zoom_buttons_pattern = HamburgerMenu.EDIT_BUTTONS_BELOW_ZOOM_BUTTONS
 
         navigate(url)
 

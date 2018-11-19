@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
 
-        bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
+        bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 

@@ -18,9 +18,9 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
-        url_bar_110_zoom_level_pattern = LocationBar.URL_BAR_110_ZOOM_LEVEL
-        url_bar_90_zoom_level_pattern = LocationBar.URL_BAR_90_ZOOM_LEVEL
+        url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
+        urlbar_zoom_button_110_pattern = LocationBar.URLBAR_ZOOM_BUTTON_110
+        urlbar_zoom_button_90_pattern = LocationBar.URLBAR_ZOOM_BUTTON_90
 
         navigate(url)
 
@@ -38,7 +38,7 @@ class Test(BaseTest):
         new_region = create_region_for_url_bar()
         click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
 
-        expected = new_region.exists(url_bar_110_zoom_level_pattern, 10)
+        expected = new_region.exists(urlbar_zoom_button_110_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         zoom_with_mouse_wheel(1, ZoomType.OUT)
@@ -50,7 +50,7 @@ class Test(BaseTest):
 
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
-        expected = new_region.exists(url_bar_90_zoom_level_pattern, 10)
+        expected = new_region.exists(urlbar_zoom_button_90_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         zoom_with_mouse_wheel(1, ZoomType.IN)
