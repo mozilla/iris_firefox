@@ -9,7 +9,10 @@ from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.menus import LibraryMenu
-from iris.api.core.firefox_ui.toolbars import NavBar, SearchBar, FindToolbar
+from iris.api.core.firefox_ui.location_bar import LocationBar
+from iris.api.core.firefox_ui.find_toolbar import FindToolbar
+from iris.api.core.firefox_ui.hamburger import HamburgerMenu
+from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from iris.api.core.key import *
 from iris.api.core.region import *
@@ -348,7 +351,7 @@ def create_region_for_url_bar():
 
     try:
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-        show_history_pattern = LocationBar.SHOW_HISTORY_BUTTON
+        show_history_pattern = LocationBar.HISTORY_DROPMARKER
         select_location_bar()
         return create_region_from_patterns(show_history_pattern,
                                            hamburger_menu_pattern,
@@ -926,8 +929,7 @@ def remove_zoom_indicator_from_toolbar():
     Toolbar' button.
     """
 
-    zoom_control_toolbar_decrease_pattern = Pattern(
-        'zoom_control_toolbar_decrease.png')
+    zoom_control_toolbar_decrease_pattern = NavBar.ZOOM_OUT
     remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
     try:

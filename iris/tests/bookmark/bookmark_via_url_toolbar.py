@@ -21,7 +21,7 @@ class Test(BaseTest):
         toolbar_dragged_bookmark_pattern = Pattern('moz_toolbar_dragged_bookmark.png')
         drag_area_pattern = Pattern('drag_area.png')
         view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        bookmark_selected_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
+        bookmark_selected_pattern = LocationBar.STAR_BUTTON_STARRED
 
         navigate(url)
 

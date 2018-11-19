@@ -26,7 +26,7 @@ class Test(BaseTest):
         window_controls_restore_pattern = Pattern('window_controls_restore.png')
         window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-        zoom_controls_customize_page_pattern = Pattern('zoom_controls_customize_page.png')
+        zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
 
         navigate(url)
         click_hamburger_menu_option('Customize...')

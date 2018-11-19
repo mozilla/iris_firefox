@@ -20,7 +20,7 @@ class Test(BaseTest):
         forget_toolbar_pattern = Pattern('forget_toolbar.png')
         forget_button_pattern = Pattern('forget_button.png')
         five_minutes_selected_pattern = Pattern('five_minutes_selected.png')
-        toolbar_pattern = Pattern('toolbar.png')
+        toolbar_pattern = NavBar.TOOLBAR
         recent_history_cleared_pattern = Pattern('recent_history_cleared.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
 

@@ -17,9 +17,9 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
-        url_bar_110_zoom_level_pattern = LocationBar.URL_BAR_110_ZOOM_LEVEL
-        url_bar_300_zoom_level_pattern = LocationBar.URL_BAR_300_ZOOM_LEVEL
+        url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
+        urlbar_zoom_button_110_pattern = LocationBar.URLBAR_ZOOM_BUTTON_110
+        urlbar_zoom_button_300_pattern = LocationBar.URLBAR_ZOOM_BUTTON_300
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url)
@@ -28,7 +28,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         region = create_region_for_url_bar()
-        click(LocalWeb.FIREFOX_LOGO)
+        select_location_bar()
 
         expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
@@ -39,12 +39,12 @@ class Test(BaseTest):
 
         click(hamburger_menu_pattern.target_offset(-170, 15))
 
-        expected = new_region.exists(url_bar_110_zoom_level_pattern, 10)
+        expected = new_region.exists(urlbar_zoom_button_110_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         zoom_with_mouse_wheel(19, ZoomType.IN)
 
-        expected = new_region.exists(url_bar_300_zoom_level_pattern, 10)
+        expected = new_region.exists(urlbar_zoom_button_300_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, maximum zoom level(300%) reached.')
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
@@ -67,5 +67,5 @@ class Test(BaseTest):
         expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
-        expected = new_region.exists(url_bar_300_zoom_level_pattern, 10)
+        expected = new_region.exists(urlbar_zoom_button_300_pattern, 10)
         assert_true(self, expected, 'Zoom indicator still display 300%.')

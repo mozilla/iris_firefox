@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
 
-        bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
+        bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
         tags_field = Pattern('tags_field.png')
         done = Pattern('done_button.png')
         moz_tagged_bookmark = Pattern('moz_sidebar_bookmark.png')

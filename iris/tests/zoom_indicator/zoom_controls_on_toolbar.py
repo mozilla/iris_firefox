@@ -17,15 +17,15 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
-        zoom_controls_customize_page_pattern = Pattern('zoom_controls_customize_page.png')
-        default_zoom_level_toolbar_customize_page_pattern = Pattern('default_zoom_level_toolbar_customize_page.png')
-        default_zoom_level_toolbar_pattern = LocationBar.DEFAULT_ZOOM_LEVEL
-        zoom_control_toolbar_decrease_pattern = Pattern('zoom_control_toolbar_decrease.png')
-        zoom_control_toolbar_increase_pattern = Pattern('zoom_control_toolbar_increase.png')
-        zoom_control_90_pattern = Pattern('zoom_control_90.png')
-        zoom_control_110_pattern = Pattern('zoom_control_110.png')
-        toolbar_pattern = Pattern('toolbar.png')
+        url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
+        zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
+        default_zoom_level_toolbar_customize_page_pattern = NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE
+        zoom_reset_button_100_pattern = NavBar.ZOOM_RESET_BUTTON
+        zoom_control_toolbar_decrease_pattern = NavBar.ZOOM_OUT
+        zoom_control_toolbar_increase_pattern = NavBar.ZOOM_IN
+        zoom_control_90_pattern = NavBar.ZOOM_RESET_BUTTON_90
+        zoom_control_110_pattern = NavBar.ZOOM_RESET_BUTTON_110
+        toolbar_pattern = NavBar.TOOLBAR
 
         navigate(url)
 
@@ -53,7 +53,7 @@ class Test(BaseTest):
 
         new_region = create_region_for_url_bar()
 
-        expected = new_region.exists(default_zoom_level_toolbar_pattern, 10)
+        expected = new_region.exists(zoom_reset_button_100_pattern, 10)
         assert_true(self, expected, 'Zoom controls still displayed in toolbar after the Customize page is closed.')
 
         expected = new_region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
@@ -66,7 +66,7 @@ class Test(BaseTest):
 
         click(zoom_control_toolbar_increase_pattern)
 
-        expected = new_region.exists(default_zoom_level_toolbar_pattern, 10)
+        expected = new_region.exists(zoom_reset_button_100_pattern, 10)
         assert_true(self, expected, 'Zoom controls are correctly displayed in toolbar after zoom level is increased.')
 
         click(zoom_control_toolbar_increase_pattern)
@@ -83,7 +83,7 @@ class Test(BaseTest):
         # deactivation.
         click(zoom_control_toolbar_decrease_pattern)
 
-        expected = new_region.exists(default_zoom_level_toolbar_pattern, 10)
+        expected = new_region.exists(zoom_reset_button_100_pattern, 10)
         assert_true(self, expected,
                     'Zoom controls are correctly displayed in toolbar after several zoom level increases/decreases.')
 

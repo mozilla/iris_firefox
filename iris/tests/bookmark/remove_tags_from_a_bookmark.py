@@ -31,7 +31,7 @@ class Test(BaseTest):
         save_pattern = Pattern('save_bookmark_name.png')
         done_button_from_star_menu = Pattern('done_button.png')
         bookmark_tags = Pattern('bookmark_tags_selected.png')
-        bookmark_button_pattern = LocationBar.BOOKMARK_SELECTED_BUTTON
+        bookmark_button_pattern = LocationBar.STAR_BUTTON_STARRED
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
