@@ -18,11 +18,11 @@ class Test(BaseTest):
     def run(self):
         url1 = 'about:home'
         url2 = LocalWeb.FIREFOX_TEST_SITE
-        search_bar_pattern = SearchBar.SEARCH_BAR
-        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
-        hamburger_menu_zoom_indicator_pattern = Pattern('hamburger_menu_zoom_indicator.png')
-        zoom_control_toolbar_increase_pattern = Pattern('zoom_control_toolbar_increase.png')
-        url_bar_110_zoom_level_pattern = LocationBar.URL_BAR_110_ZOOM_LEVEL
+        search_bar_pattern = LocationBar.SEARCH_BAR
+        url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
+        hamburger_menu_zoom_indicator_pattern = HamburgerMenu.HAMBURGER_MENU_ZOOM_INDICATOR
+        zoom_control_toolbar_increase_pattern = NavBar.ZOOM_IN
+        urlbar_zoom_button_110_pattern = LocationBar.URLBAR_ZOOM_BUTTON_110
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(url1)
@@ -57,6 +57,6 @@ class Test(BaseTest):
         click(hamburger_menu_pattern)
 
         new_reg = create_region_for_url_bar()
-        expected = new_reg.exists(url_bar_110_zoom_level_pattern, 10)
+        expected = new_reg.exists(urlbar_zoom_button_110_pattern, 10)
         assert_true(self, expected,
                     'Zoom indicator is correctly displayed in the url bar after zoom level is increased.')

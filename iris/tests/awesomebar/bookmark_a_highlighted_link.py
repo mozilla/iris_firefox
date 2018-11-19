@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
+        bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
         bookmark_drop_down_under_bookmark_icon_pattern = Pattern('bookmark_drop_down_under_bookmark_icon.png')
 
         navigate(url)

@@ -18,9 +18,9 @@ class Test(BaseTest):
     def run(self):
         url_1 = LocalWeb.FIREFOX_TEST_SITE
         url_2 = LocalWeb.FIREFOX_TEST_SITE_2
-        url_bar_default_zoom_level_pattern = Pattern('url_bar_default_zoom_level.png')
-        hamburger_menu_pattern = Pattern('hamburger_menu.png')
-        url_bar_110_zoom_level_pattern = LocationBar.URL_BAR_110_ZOOM_LEVEL
+        url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+        urlbar_zoom_button_110_pattern = LocationBar.URLBAR_ZOOM_BUTTON_110
 
         navigate(url_1)
 
@@ -36,7 +36,7 @@ class Test(BaseTest):
 
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
-        expected = exists(url_bar_110_zoom_level_pattern, 10)
+        expected = exists(urlbar_zoom_button_110_pattern, 10)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
         new_tab()
@@ -45,7 +45,7 @@ class Test(BaseTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
-        expected = exists(url_bar_110_zoom_level_pattern, 10)
+        expected = exists(urlbar_zoom_button_110_pattern, 10)
         assert_true(self, expected,
                     'Zoom indicator still displays 110% in the new tab opened for the site for which the '
                     'zoom level was set.')
@@ -56,5 +56,6 @@ class Test(BaseTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
+        select_location_bar()
         expected = region.exists(url_bar_default_zoom_level_pattern, 10)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar.')

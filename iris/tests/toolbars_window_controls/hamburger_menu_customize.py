@@ -18,6 +18,6 @@ class Test(BaseTest):
 
         click_hamburger_menu_option('Customize...')
 
-        expected_1 = exists(Pattern('zoom_controls_customize_page.png'), 10)
+        expected_1 = exists(NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE, 10)
         assert_true(self, expected_1, '\'Customize\' page present.')
         close_customize_page()

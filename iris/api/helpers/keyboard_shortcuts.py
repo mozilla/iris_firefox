@@ -7,7 +7,7 @@ import time
 
 from iris.api.core.errors import FindError, APIHelperError
 from iris.api.core.firefox_ui.menus import SidebarBookmarks
-from iris.api.core.firefox_ui.toolbars import LocationBar
+from iris.api.core.firefox_ui.location_bar import LocationBar
 from iris.api.core.key import Key, KeyModifier, key_down, key_up, type
 from iris.api.core.location import Location
 from iris.api.core.pattern import Pattern
@@ -566,7 +566,7 @@ def bookmark_page():
     else:
         type(text='d', modifier=KeyModifier.CTRL)
     try:
-        wait(LocationBar.BOOKMARK_SELECTED_BUTTON, 10)
+        wait(LocationBar.STAR_BUTTON_STARRED, 10)
         logger.debug('Page was successfully bookmarked')
     except FindError:
         raise APIHelperError('Page can not be bookmarked')

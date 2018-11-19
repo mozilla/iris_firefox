@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
 
-        bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
+        bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
         private_browsing_pattern = Pattern('private_browsing.png')
 
         new_private_window()

@@ -21,7 +21,7 @@ class Test(BaseTest):
         privacy_page_pattern = Pattern('privacy_page.png')
         restart_browser_pattern = Pattern('restart_browser.png')
         never_remember_history_pattern = Pattern('never_remember_history.png')
-        bookmark_button_pattern = LocationBar.BOOKMARK_BUTTON
+        bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
 
         navigate('about:preferences#privacy')
 

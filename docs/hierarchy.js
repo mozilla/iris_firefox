@@ -10,7 +10,7 @@ var hierarchy =
       [ "iris.api.core.firefox_ui.menus.SidebarBookmarks.BookmarksToolbar", "classiris_1_1api_1_1core_1_1firefox__ui_1_1menus_1_1_sidebar_bookmarks_1_1_bookmarks_toolbar.html", null ],
       [ "iris.api.core.firefox_ui.toolbars.LocationBar", "classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_location_bar.html", null ],
       [ "iris.api.core.firefox_ui.toolbars.NavBar", "classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_nav_bar.html", null ],
-      [ "iris.api.core.firefox_ui.toolbars.SearchBar", "classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_search_bar.html", null ],
+      [ "iris.api.core.firefox_ui.toolbars.LocationBar", "classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_search_bar.html", null ],
       [ "iris.api.core.key._IrisKey", "classiris_1_1api_1_1core_1_1key_1_1___iris_key.html", null ],
       [ "iris.api.core.key.Key", "classiris_1_1api_1_1core_1_1key_1_1_key.html", null ],
       [ "iris.api.core.key.KeyModifier", "classiris_1_1api_1_1core_1_1key_1_1_key_modifier.html", null ],
