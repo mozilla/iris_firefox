@@ -43,3 +43,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'The private window was successfully opened.')
         expected = exists(iris_logo, 10)
         assert_true(self, expected, 'The page was successfully opened.')
+
+        # Close the private window and then the auxiliary window.
+        close_window()
+        click_window_control('close')
