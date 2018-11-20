@@ -19,7 +19,7 @@ class Test(BaseTest):
 
         soap_label_pattern = Pattern('soap_label.png')
         see_label_selected_pattern = Pattern('cleaning_see_selected_label.png')
-        find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
+        quick_find_label_pattern = Pattern('quick_find_label.png')
 
         test_page_local = self.get_asset_path('wiki_soap.html')
         navigate(test_page_local)
@@ -31,7 +31,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
+        find_toolbar_opened = exists(quick_find_label_pattern, 10)
 
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
