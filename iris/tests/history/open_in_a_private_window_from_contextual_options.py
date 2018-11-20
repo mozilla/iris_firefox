@@ -7,7 +7,7 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Copy the history menu and paste it into the Bookmark toolbar.'
+        self.meta = 'Use \'Open in a Private Window\' button from the contextual options.'
         self.test_case_id = '174041'
         self.test_suite_id = '2000'
         self.locales = ['en-US']
