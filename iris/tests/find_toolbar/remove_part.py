@@ -16,41 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        """
-        Remove part of the searched item
-
-        STEP 1:
-            DESCRIPTION:
-                Open Firefox and navigate to a popular website (Google.com, Amazon.com, Yahoo etc).
-
-            EXPECTED:
-                The page is successfully loaded.
-
-        STEP 2:
-            DESCRIPTION:
-                Open the Find toolbar.
-
-            EXPECTED:
-                Find Toolbar is opened.
-
-        STEP 3:
-            DESCRIPTION:
-                Search for a term that appears on the page (e.g "this").
-
-            EXPECTED:
-                All the matching words/characters are found. The first one has a green background highlighted, and the others are not highlighted.
-
-        STEP 4:
-            DESCRIPTION:
-                Delete letters from the searched term, one by one (e.g "thi", "th" , "t" , " ")
-
-            EXPECTED:
-                The matching characters are changing accordingly. When the find input becomes empty, no item should be highlighted on the page.
-
-        NOTES:
-            Initial version - Dmitry Bakaev  - 15-Nov-2018
-            Code review complete - Paul Prokhorov - 15-Nov-2018
-        """
 
         find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         soap_label_pattern = Pattern('soap_label.png')
@@ -60,18 +25,12 @@ class Test(BaseTest):
         soap_so_large_title_selected_pattern = Pattern('soap_so_large_title_selected.png')
         soap_soa_large_title_selected_pattern = Pattern('soap_soa_large_title_selected.png')
 
-        """ STEP 1 """
-
         test_page_local = self.get_asset_path('wiki_soap.html')
         navigate(test_page_local)
 
         soap_label_exists = exists(soap_label_pattern, 20)
 
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
-
-        """ END STEP 1 """
-
-        """ STEP 2 """
 
         open_find()
         edit_select_all()
@@ -81,10 +40,6 @@ class Test(BaseTest):
 
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
-        """ END STEP 2 """
-
-        """ STEP 3 """
-
         type('soap', interval=1)
 
         selected_label_exists = exists(soap_large_title_selected_pattern, 5)
@@ -92,10 +47,6 @@ class Test(BaseTest):
 
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, unselected_label_exists, 'The others are not highlighted.')
-
-        """ END STEP 3 """
-
-        """ STEP 4 """
 
         type(Key.BACKSPACE)
 
@@ -117,4 +68,3 @@ class Test(BaseTest):
                     soap_clean_exists,
                     'The matching characters are changing accordingly.')
 
-        """ END STEP 4 """

@@ -16,33 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        """
-        Open find toolbar
-
-        STEP 1:
-            DESCRIPTION:
-                Launch Firefox.
-
-            EXPECTED:
-                Firefox launches without any issues.
-
-        STEP 2:
-            DESCRIPTION:
-                Open the Find Toolbar.
-                1) by pressing CTRL + F / Cmd + F,
-                2) Menu bar > Edit > Find in This Page,
-                3) Menu > Find in This Page.
-
-            EXPECTED:
-                - Find Tollbar is opened at the bottom of the browser.
-                - On the lower left corner you can find the search field.
-                - 'Highlight All', 'Match Case' and 'Whole Words' buttons
-                are displayed on the right side of the search field."
-
-        NOTES:
-            Initial version - Pavel Ciapa  - 11-Nov-2018
-            Code review complete - Paul Prokhorov - 16-Nov-2018
-        """
 
         find_toolbar_pattern = Pattern('find_toolbar_text.png')
         bttn_hl_all_pattern = Pattern('find_bttn_hl_all.png')
@@ -53,14 +26,6 @@ class Test(BaseTest):
         hamburger_menu_pattern = Pattern('hamburger_menu_pattern.png')
         hamburger_menu_find_in_page_pattern = Pattern('hamburger_menu_find_in_page_pattern.png')
         menu_bar_edit_find_in_page_pattern = Pattern('menu_bar_edit_find_in_page_pattern.png')
-
-        """ STEP 1 """
-
-        # Step is done by the test framework
-
-        """ END STEP 1 """
-
-        """ STEP 2 """
 
         # 1) by pressing CTRL + F / Cmd + F
 
@@ -178,5 +143,3 @@ class Test(BaseTest):
 
         assert_true(self, items_appear_in_proper_way,
                     'The Buttons of Find toolbar are displayed in correct order.')
-
-        """ END STEP 2 """

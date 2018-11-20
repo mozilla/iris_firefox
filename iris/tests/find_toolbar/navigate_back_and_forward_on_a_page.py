@@ -16,49 +16,12 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        """
-        Navigate back and forward on a page
-
-        STEP 1:
-            DESCRIPTION:
-                Open Firefox and navigate to some popular websites on the same tab (Ebay, Reddit, etc).
-
-            EXPECTED:
-                The page is successfully loaded.
-
-        STEP 2:
-            DESCRIPTION:
-                Open the Find Toolbar.
-
-            EXPECTED:
-                Find Toolbar is opened.
-
-        STEP 3:
-            DESCRIPTION:
-                Navigate back to the previous page (Click the left arrow next to the URL bar).
-
-            EXPECTED:
-                Find Toolbar persist on this page.
-
-        STEP 4:
-            DESCRIPTION:
-                Navigate forward to the next page (Click the right arrow next to the URL bar).
-
-            EXPECTED:
-                Find Toolbar persist on this page.
-
-        NOTES:
-            Initial version - Pavel Ciapa  - 11-Nov-2018
-            Code review complete - Paul Prokhorov - 15-Nov-2018
-        """
 
         find_toolbar_pattern = Pattern('find_toolbar_text.png')
         wiki_logo = Pattern('wiki_logo_icon.png')
         arrow_back_button_pattern = Pattern('arrow_back_button.png')
         arrow_forward_button_pattern = Pattern('arrow_forward_button.png')
         new_tab_icon_pattern = Pattern('new_tab_icon.png')
-
-        """ STEP 1 """
 
         new_tab()
 
@@ -69,10 +32,6 @@ class Test(BaseTest):
 
         assert_true(self, page_loaded, 'The website successfully loaded.')
 
-        """ END STEP 1 """
-
-        """ STEP 2 """
-
         open_find()
 
         # Remove all text from the Find Toolbar
@@ -82,18 +41,10 @@ class Test(BaseTest):
         find_toolbar_is_opened = exists(find_toolbar_pattern, 15)
         assert_true(self, find_toolbar_is_opened, 'The find toolbar is opened')
 
-        """ END STEP 2 """
-
-        """ STEP 3 """
-
         click(arrow_back_button_pattern, 2)
         find_toolbar_is_opened_previous_page = exists(new_tab_icon_pattern, 10)
 
         assert_true(self, find_toolbar_is_opened_previous_page, 'The find toolbar is present on the previous page')
-
-        """ END STEP 3 """
-
-        """ STEP 4 """
 
         # Navigate forward to the page
         click(arrow_forward_button_pattern)
@@ -101,4 +52,3 @@ class Test(BaseTest):
 
         assert_true(self, find_toolbar_is_opened_next_page, 'The find toolbar is present on the next page')
 
-        """ END STEP 4 """

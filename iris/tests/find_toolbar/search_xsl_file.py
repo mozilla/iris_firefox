@@ -16,51 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        """
-        Search on a XSL file
-
-        STEP 1:
-            DESCRIPTION:
-                Open Firefox and open a [XSL file](https://docs.google.com/spreadsheets/d/1izvhs2b9UX2JCD-0MsHonQBfPnjFsRpVuUOYGJYX2Oo/edit#gid=1283474565)
-
-            EXPECTED:
-                The page is loaded.
-
-        STEP 2:
-            DESCRIPTION:
-                Open the Find Toolbar from Menubar > Edit > Find.
-
-            EXPECTED:
-                Find Toolbar is opened.
-
-        STEP 3:
-            DESCRIPTION:
-                Search for a term that appears on the header of the page or on the footer (e.g. ""sheet"").
-                Note: The content of the Stylesheet is not found - this is expected.
-
-            EXPECTED:
-                All the matching words/characters are found. The first one has a green background highlighted, and the others are not highlighted.
-
-        STEP 4:
-            DESCRIPTION:
-                Navigate through found items (F3, SHIFT+F3)
-
-            EXPECTED:
-                The green box is moved with the current item.
-
-        STEP 5:
-            DESCRIPTION:
-                Scroll the page up and down.
-
-            EXPECTED:
-                No checkboarding is present. The performance is good.
-
-
-        NOTES:
-            Initial version - Pavel Ciapa  - 13-Nov-2018
-            Code review complete - Dmitry Bakaev - 16-Nov-2018
-
-        """
 
         find_toolbar_pattern = Pattern('find_toolbar_text.png')
         xls_spreadsheet_logo_pattern = Pattern('xls_tab_logo.png')
@@ -77,8 +32,6 @@ class Test(BaseTest):
         xls_cell_pattern = Pattern('xls_cell.png')
         xls_cell_pattern.similarity = 0.6
 
-        """ STEP 1 """
-
         navigate('https://docs.google.com/spreadsheets/d/1izvhs2b9UX2JCD-0MsHonQBfPnjFsRpVuUOYGJYX2Oo/edit#gid=1283474565t')
 
         xls_spreadsheet_logo_pattern_exists = exists(xls_spreadsheet_logo_pattern, 15)
@@ -86,10 +39,6 @@ class Test(BaseTest):
         assert_true(self, xls_spreadsheet_logo_pattern_exists, 'The page is successfully loaded.')
 
         click(xls_cell_pattern, 5)
-
-        """ END STEP 1 """
-
-        """ STEP 2 """
 
         # Menu bar > Edit > Find in This Page,
 
@@ -135,10 +84,6 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing Menu bar > Edit > Find in This Page.')
 
-        """ END STEP 2 """
-
-        """ STEP 3 """
-
         type('an')
 
         first_occurrence_hl_exists = exists(xls_first_occurrence_hl_pattern, 5)
@@ -146,10 +91,6 @@ class Test(BaseTest):
 
         assert_true(self, (first_occurrence_hl_exists and second_occurrence_white_exists),
                     'All the matching words/characters are found.')
-
-        """ END STEP 3 """
-
-        """ STEP 4 """
 
         first_occurrence_hl_exists = exists(xls_first_occurrence_hl_pattern, 5)
         second_occurrence_white_exists = exists(xls_second_occurrence_white_pattern, 5)
@@ -167,10 +108,6 @@ class Test(BaseTest):
         # Get back to first occurrence
         find_previous()
 
-        """ END STEP 4 """
-
-        """ STEP 5 """
-
         first_occurrence_exists_before_scroll = exists(xls_first_occurrence_hl_pattern, 5)
 
         for i in range(4):
@@ -183,5 +120,3 @@ class Test(BaseTest):
 
         assert_true(self, first_occurrence_exists_before_scroll and first_occurrence_exists_after_scroll,
                     'Occurrence exists after scroll up and down')
-
-        """ END STEP 5 """

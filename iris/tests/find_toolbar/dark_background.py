@@ -16,47 +16,10 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        """
-        Check the highlight of the found items on a page with dark background
-
-        STEP 1:
-            DESCRIPTION:
-                Open Firefox and navigate to a page with dark background, for example [this page](http://www.vanschneider.com)
-
-            EXPECTED:
-                The page is successfully loaded.
-
-        STEP 2:
-            DESCRIPTION:
-                Open the Find toolbar.
-
-            EXPECTED:
-                Find Toolbar is opened.
-
-        STEP 3:
-            DESCRIPTION:
-                Search for a term that appears in the page.
-
-            EXPECTED:
-                All the matching words/characters are found. The first one has a green background highlighted, and the others are not highlighted.
-
-        STEP 4:
-            DESCRIPTION:
-                Check the visibility of the highlighted term.
-
-            EXPECTED:
-                The highlight of the matches should be visible.
-
-        NOTES:
-            Initial version - Dmitry Bakaev  - 14-Nov-2018
-            Code review complete - Paul Prokhorov - 14-Nov-2018
-        """
 
         find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         work_in_label_pattern = Pattern('work_in_selected_label.png')
         instagram_unselected_pattern = Pattern('instagram_unselected_label.png')
-
-        """ STEP 1 """
 
         test_page_local = self.get_asset_path('dark_backgound.html')
         navigate(test_page_local)
@@ -64,10 +27,6 @@ class Test(BaseTest):
         page_loaded = exists(instagram_unselected_pattern, 100)
 
         assert_true(self, page_loaded, 'The page is successfully loaded.')
-
-        """ END STEP 1 """
-
-        """ STEP 2 """
 
         open_find()
         edit_select_all()
@@ -77,10 +36,6 @@ class Test(BaseTest):
 
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
-        """ END STEP 2 """
-
-        """ STEP 3 / 4 """
-
         type('in', interval=1)
 
         selected_label_exists = exists(work_in_label_pattern, 15)
@@ -89,4 +44,3 @@ class Test(BaseTest):
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, unselected_label_exists, 'The others are not highlighted.')
 
-        """ END STEP 3 / 4 """
