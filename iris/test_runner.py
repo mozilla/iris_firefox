@@ -19,6 +19,7 @@ def run(master_tests_list, test_list, browser):
     start_time = time.time()
 
     test_failures = []
+    tests_blocked = []
     test_case_results = []
     test_log = {}
     for index, module in enumerate(test_list, start=1):
@@ -92,12 +93,14 @@ def run(master_tests_list, test_list, browser):
             test_log[current_package].append(update_log_object(test_log_object))
         else:
             skipped += 1
+            if current.blocked_by and len(current.blocked_by) > 0:
+                tests_blocked.append(module)
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
     end_time = time.time()
     test_results = print_report_footer(Settings.get_os(), browser.version,
                                        browser.build_id, passed, failed, skipped, errors,
-                                       get_duration(start_time, end_time), failures=test_failures)
+                                       get_duration(start_time, end_time), failures=test_failures, blocked=tests_blocked)
 
     if parse_args().report:
         test_rail_report = TestRail()

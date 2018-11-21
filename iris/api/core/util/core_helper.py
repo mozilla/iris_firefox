@@ -247,7 +247,8 @@ class IrisCore(object):
         correct_channel = browser.channel in test.channel
         correct_locale = parse_args().locale in test.locale
         correct_platform = get_os() in test.platform
-        result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded
+        blocked_by = True if test.blocked_by and len(test.blocked_by) > 0 else False
+        result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded != blocked_by
         return result
 
     @staticmethod
