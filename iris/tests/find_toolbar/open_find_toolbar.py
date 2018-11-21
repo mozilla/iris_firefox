@@ -35,11 +35,12 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(find_toolbar_pattern, 1)
 
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')
 
+	exists(find_toolbar_pattern, 5)
         find_toolbar_x = find(find_toolbar_pattern).x
         bttn_hl_all_x = find(bttn_hl_all_pattern).x
         bttn_match_case_x = find(bttn_match_case_pattern).x
