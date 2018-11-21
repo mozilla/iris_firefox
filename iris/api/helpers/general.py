@@ -108,48 +108,6 @@ def change_preference(pref_name, value):
             'Could not set value: %s to preference: %s' % (value, pref_name))
 
 
-def close_window_control(window_type):
-    """Click on close window control.
-
-    :param window_type: Type of window that need to be closed.
-    :return: None.
-    """
-    find_window_controls(window_type)
-
-    if window_type == 'auxiliary':
-        if Settings.is_mac():
-            hover(AuxiliaryWindow.RED_BUTTON_PATTERN, 0.3)
-            click(AuxiliaryWindow.HOVERED_RED_BUTTON)
-        else:
-            click(AuxiliaryWindow.CLOSE_BUTTON)
-    else:
-        if Settings.is_mac():
-            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL, 0.3)
-            click(MainWindow.HOVERED_MAIN_RED_CONTROL)
-        else:
-            click(MainWindow.CLOSE_BUTTON)
-
-
-def click_window_control(button, window_type='auxiliary'):
-    """Click window with options: close, minimize, maximize, full_screen.
-
-    :param button: Auxiliary or main window options.
-    :param window_type: Type of window that need to be controlled.
-    :return: None.
-    """
-
-    if button == 'close':
-        close_window_control(window_type)
-    elif button == 'minimize':
-        minimize_window_control(window_type)
-    elif button == 'maximize':
-        maximize_window_control(window_type)
-    elif button == 'full_screen':
-        full_screen_control(window_type)
-    else:
-        raise APIHelperError('Button option is not supported.')
-
-
 def click_cancel_button():
     """Click cancel button."""
     cancel_button_pattern = Pattern('cancel_button.png')
@@ -159,18 +117,6 @@ def click_cancel_button():
         click(cancel_button_pattern)
     except FindError:
         raise APIHelperError('Can\'t find the cancel button, aborting.')
-
-
-def close_customize_page():
-    """Close the 'Customize...' page by pressing the 'Done' button."""
-    customize_done_button_pattern = Pattern('customize_done_button.png')
-    try:
-        wait(customize_done_button_pattern, 10)
-        logger.debug('Done button found.')
-        click(customize_done_button_pattern)
-    except FindError:
-        raise APIHelperError(
-            'Can\'t find the Done button in the page, aborting.')
 
 
 def click_hamburger_menu_option(option):
@@ -200,6 +146,37 @@ def click_hamburger_menu_option(option):
                 'Can\'t find the option in the page, aborting test.')
 
 
+def click_window_control(button, window_type='auxiliary'):
+    """Click window with options: close, minimize, maximize, full_screen.
+
+    :param button: Auxiliary or main window options.
+    :param window_type: Type of window that need to be controlled.
+    :return: None.
+    """
+    if button == 'close':
+        close_window_control(window_type)
+    elif button == 'minimize':
+        minimize_window_control(window_type)
+    elif button == 'maximize':
+        maximize_window_control(window_type)
+    elif button == 'full_screen':
+        full_screen_control(window_type)
+    else:
+        raise APIHelperError('Button option is not supported.')
+        
+
+def close_customize_page():
+    """Close the 'Customize...' page by pressing the 'Done' button."""
+    customize_done_button_pattern = Pattern('customize_done_button.png')
+    try:
+        wait(customize_done_button_pattern, 10)
+        logger.debug('Done button found.')
+        click(customize_done_button_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the Done button in the page, aborting.')
+
+
 def close_firefox(test):
     if test.firefox_runner is not None and test.firefox_runner.process_handler is not None:
         logger.debug('Closing Firefox ...')
@@ -212,6 +189,28 @@ def close_firefox(test):
             test.firefox_runner = None
     else:
         logger.debug('Firefox already closed. Skipping ...')
+
+        
+def close_window_control(window_type):
+    """Click on close window control.
+
+    :param window_type: Type of window that need to be closed.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        if Settings.is_mac():
+            hover(AuxiliaryWindow.RED_BUTTON_PATTERN, 0.3)
+            click(AuxiliaryWindow.HOVERED_RED_BUTTON)
+        else:
+            click(AuxiliaryWindow.CLOSE_BUTTON)
+    else:
+        if Settings.is_mac():
+            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL, 0.3)
+            click(MainWindow.HOVERED_MAIN_RED_CONTROL)
+        else:
+            click(MainWindow.CLOSE_BUTTON)
 
 
 def confirm_close_multiple_tabs():
