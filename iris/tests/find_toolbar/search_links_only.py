@@ -32,6 +32,10 @@ class Test(BaseTest):
 
         type("'")
 
+        # Remove all text from the toolbar
+        edit_select_all()
+        edit_delete()
+
         find_toolbar_opened = exists(find_in_page_links_only_icon_pattern, 10)
 
         assert_true(self, find_toolbar_opened, 'Find Toolbar (links only) is opened.')
