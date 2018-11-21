@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Search on a page with small fonts'
+        self.meta = 'Search on a page with stylized words'
         self.test_case_id = '127280'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
@@ -30,7 +30,7 @@ class Test(BaseTest):
         navigate(vertical_search_page_local)         # https://bug1279704.bmoattachments.org/attachment.cgi?id=8762295
         navigated_to_style_url = exists(style_text_url_pattern, 5)
 
-        assert_true(self, navigated_to_style_url, 'Small text URL loaded successfully.')
+        assert_true(self, navigated_to_style_url, 'Style text URL loaded successfully.')
 
         # to prevent selecting of all text in win 10
         delay_click = Location(500, 500)
