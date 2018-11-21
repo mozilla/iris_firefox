@@ -23,8 +23,8 @@ class Test(BaseTest):
 
         style_text_first_not_selected_pattern = Pattern('style_text_first_not_selected.png')
         style_text_first_selected_pattern = Pattern('style_text_first_selected.png')
-        style_text_last_selected_pattern = Pattern('style_text_last_selected.png')
         style_text_second_selected_pattern = Pattern('style_text_second_selected.png')
+        style_text_last_selected_pattern = Pattern('style_text_last_selected.png')
 
         vertical_search_page_local = self.get_asset_path('findbar_stylized.html')
         navigate(vertical_search_page_local)         # https://bug1279704.bmoattachments.org/attachment.cgi?id=8762295
@@ -68,7 +68,7 @@ class Test(BaseTest):
         assert_true(self, second_text_selected_exists, 'Second matching style text was found.')
 
         # to last
-        for _ in range(1,10):
+        for _ in range(1, 10):
             find_next()
 
         last_text_selected_exist = exists(style_text_last_selected_pattern, 5)
