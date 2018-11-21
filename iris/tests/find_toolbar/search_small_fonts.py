@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Search on a page with small fonts'
         self.test_case_id = '127279'
-        self.test_suite_id = '0'
+        self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
