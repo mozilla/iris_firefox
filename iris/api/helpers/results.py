@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def print_report_footer(platform, fx_version, fx_build, passed, failed,
-                        skipped, errors, total_time, failures=None):
+                        skipped, errors, total_time, failures=None, blocked=None):
     """
     :param platform: Platform to be printed in the report footer.
     :param fx_version: Firefox version to be printed in the report footer.
@@ -26,8 +26,8 @@ def print_report_footer(platform, fx_version, fx_build, passed, failed,
     """
     total = passed + failed + skipped + errors
     fx_details = 'Platform: %s, Firefox Version: %s, Firefox Build: %s' % (platform, fx_version, fx_build)
-    test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors: %s -- Total: %s' % (passed, failed, skipped,
-                                                                                         errors, total)
+    test_results_str = 'Passed: %s, Failed: %s, Skipped: %s (Blocked: %s), Errors: %s -- Total: %s'\
+                       % (passed, failed, skipped, len(blocked), errors, total)
     total_time_str = 'Total time: %s second(s)' % total_time
 
     failure_str = ''
@@ -37,10 +37,17 @@ def print_report_footer(platform, fx_version, fx_build, passed, failed,
             failure_str += module + '\n'
         failure_str += '\n'
 
+    blocked_str = ''
+    if len(blocked):
+        blocked_str = '\n\nThe following tests are blocked:\n'
+        for module in blocked:
+            blocked_str += module + '\n'
+        blocked_str += '\n'
+
     separator = '\n' + '-' * 120 + '\n'
     test_results = (separator + fx_details + '\n' + test_results_str + ' ' *
                     (120 - (len(test_results_str) + len(total_time_str))) +
-                    total_time_str + failure_str + separator)
+                    total_time_str + failure_str + separator + blocked_str + separator)
     logger.info(test_results)
     return test_results
 
