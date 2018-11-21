@@ -27,7 +27,7 @@ class Test(BaseTest):
         test_page_local = self.get_asset_path('pdf.pdf')
         navigate(test_page_local)
 
-        navigated_to_pdf_url = exists(pdf_logo_pattern, 5)
+        navigated_to_pdf_url = exists(pdf_logo_pattern, 80)
 
         assert_true(self, navigated_to_pdf_url, 'PDF URL loaded successfully.')
 
