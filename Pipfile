@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyautogui = "==0.9.38"
+coloredlogs = "==10.0"
+python-dateutil = "==2.7.5"
+opencv-python = "==3.4.1.15"
+pytesseract = "==0.2.5"
+numpy = "==1.15.4"
+image = "==1.5.27"
+pyperclip = "==1.7.0"
+packaging = "==18.0"
+gitpython = "==2.1.11"
+pynput = "==1.4"
+mozinstall = "==1.16.0"
+mozdownload = "==1.25"
+mozversion = "==1.5"
+mozinfo = "==1.0.0"
+mozrunner = "==7.2.0"
+mss = "==3.3.1"
+pep8 = "*"
+# Platform dependencies
+xlib = {platform_system = "== 'Linux'",version = "==0.21"}
+
+[dev-packages]
+
+[requires]
+python_version = "3"
