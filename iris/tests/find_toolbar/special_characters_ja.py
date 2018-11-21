@@ -20,9 +20,9 @@ class Test(BaseTest):
     def run(self):
         find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         test_label_pattern = Pattern('test_label_pattern.png')
-        first_uber_highlighted_pattern = Pattern('first_japan_highlighted.png')
-        second_uber_highlighted_pattern = Pattern('second_japan_highlighted.png')
-        uber_not_highlighted_pattern = Pattern('japan_not_highlighted.png')
+        first_japan_highlighted_pattern = Pattern('first_japan_highlighted.png')
+        second_japan_highlighted_pattern = Pattern('second_japan_highlighted.png')
+        japan_not_highlighted_pattern = Pattern('japan_not_highlighted.png')
 
         test_page_local = self.get_asset_path('ja.htm')
         navigate(test_page_local)
@@ -43,12 +43,12 @@ class Test(BaseTest):
 
         paste('辻希美')
 
-        selected_label_exists = exists(first_uber_highlighted_pattern, 1)
-        not_selected_label_exists = exists(uber_not_highlighted_pattern, 1)
+        selected_label_exists = exists(first_japan_highlighted_pattern, 1)
+        not_selected_label_exists = exists(japan_not_highlighted_pattern, 1)
 
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, not_selected_label_exists, 'The second one is not highlighted.')
 
         find_next()
-        second_highlighted_exists = exists(second_uber_highlighted_pattern, 1)
+        second_highlighted_exists = exists(second_japan_highlighted_pattern, 1)
         assert_true(self, second_highlighted_exists, 'The green box is moved with the current item.')
