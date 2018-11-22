@@ -61,9 +61,6 @@ class Test(BaseTest):
             raise FindError("The Findbar is NOT disappeared")
 
 
-        # test
-
-
 
 
 
