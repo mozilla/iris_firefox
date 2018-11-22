@@ -22,6 +22,8 @@ class Test(BaseTest):
         find_in_page_links_only_soap_pattern = Pattern('find_links_only_part.png')
 
         soap_link_highlighted_green_pattern = Pattern('soap_link_highlighted.png')
+        soap_link_highlighted_green_pattern.similarity = 0.6
+
         soap_other_link_highlighted_pink_pattern = Pattern('soap_link_disambiguation_highlighted.png')
 
         test_page_local = self.get_asset_path('wiki_soap.html')
@@ -42,7 +44,7 @@ class Test(BaseTest):
 
         type('soap', interval=1)
 
-        found_link_highlighted_green = exists(soap_link_highlighted_green_pattern, 10)
+        found_link_highlighted_green = exists(soap_link_highlighted_green_pattern, 5)
 
         assert_true(self, found_link_highlighted_green, 'Matching link is found.')
 
