@@ -52,13 +52,16 @@ class Test(BaseTest):
         # raise AssertionError
 
         # other_link_highlighted_pink = exists(soap_another_link_pattern, 10)
-        # assert_true(self, other_link_highlighted_pink, 'Other link is found.')
+        assert_true(self, False, 'Other links are pink. [Known issue other links do not have pink background]')
 
         try:
             search_links_only_toolbar_disappeared = wait_vanish(find_in_page_links_only_soap_pattern, 30)
             assert_true(self, search_links_only_toolbar_disappeared, "The Findbar is disappeared")
         except FindError:
             raise FindError("The Findbar is NOT disappeared")
+
+
+        # test
 
 
 
