@@ -66,10 +66,12 @@ class Test(BaseTest):
                     'The current item is highlighted with green. No functional or visible issue appears.')
 
         type(Key.F3)
-        one_of_two_matches_displayed = exists(one_of_two_matches_pattern, 5)
+        two_of_two_matches_displayed = exists(two_of_two_matches_pattern, 5)
 
         type(Key.F3, KeyModifier.SHIFT)
-        two_of_two_matches_displayed = exists(two_of_two_matches_pattern, 5)
+        one_of_two_matches_displayed = exists(one_of_two_matches_pattern, 5)
 
         assert_true(self, one_of_two_matches_displayed and two_of_two_matches_displayed,
                     'The number of the highlighted item changes when navigating.')
+
+        quick_find_link()
