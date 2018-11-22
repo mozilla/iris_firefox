@@ -59,12 +59,3 @@ class Test(BaseTest):
             assert_true(self, search_links_only_toolbar_disappeared, "The Findbar is disappeared")
         except FindError:
             raise FindError("The Findbar is NOT disappeared")
-
-
-
-
-
-
-
-
-
