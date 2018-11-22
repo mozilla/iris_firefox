@@ -18,16 +18,19 @@ class Test(BaseTest):
     def run(self):
 
         find_toolbar_pattern = Pattern('find_toolbar_text.png')
-        small_text_url_pattern = Pattern('small_text_url.png')
 
         small_text_unselected_pattern = Pattern('small_text_unselected.png')
+        small_text_unselected_pattern.similarity = 0.6
+
         small_text_selected_pattern = Pattern('small_text_selected.png')
+        small_text_selected_pattern.similarity = 0.6
 
         vertical_search_page_local = self.get_asset_path('test-findinpage.html')
-        navigate(vertical_search_page_local)     # https://bug1279751.bmoattachments.org/attachment.cgi?id=8762332
-        navigated_to_small_text_url = exists(small_text_url_pattern, 5)
 
-        assert_true(self, navigated_to_small_text_url, 'Small text URL loaded successfully.')
+        navigate(vertical_search_page_local)     # https://bug1279751.bmoattachments.org/attachment.cgi?id=8762332
+        page_is_opened = exists(small_text_unselected_pattern, 10)
+
+        assert_true(self, page_is_opened, 'The page is loaded.')
 
         # to prevent selecting of all text in win 10
         delay_click = Location(500, 500)
