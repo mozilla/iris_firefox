@@ -1,4 +1,23 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from enum import Enum
+
+
+class Channels(Enum):
+    BETA = 'beta'
+    DEV_EDITION = 'dev'
+    ESR = 'esr'
+    NIGHTLY = 'nightly'
+    RELEASE = 'release'
+
+
+class Color(Enum):
+    RED = 'red'
+    GREEN = 'green'
+    BLUE = 'blue'
 
 
 class LanguageCode(Enum):
@@ -105,3 +124,28 @@ class LanguageCode(Enum):
     UZBEK_CYRILLIC = 'uzb-cyrl'
     VIETNAMESE = 'vie'
     YIDDISH = 'yid'
+
+
+class Locales(Enum):
+    ARABIC = 'ar'
+    CHINESE = 'zh-CN'
+    ENGLISH = 'en-US'
+    FRENCH = 'fr'
+    GERMAN = 'de'
+    JAPANESE = 'ja'
+    KOREAN = 'ko'
+    POLISH = 'pl'
+    PORTUGUESE = 'pt-PT'
+    ROMANIAN = 'ro'
+    RUSSIAN = 'ru'
+    SPANISH = 'es-ES'
+    TURKISH = 'tr'
+    VIETNAMESE = 'vi'
+
+
+class OSPlatform(Enum):
+    WINDOWS = 'win'
+    LINUX = 'linux'
+    MAC = 'osx'
+
+
