@@ -25,7 +25,6 @@ class Test(BaseTest):
         # soap_other_link_highlighted_pink_pattern = Pattern('')
 
         soap_link_pattern = Pattern('soap_link.png')
-        soap_link_pattern.similarity = 0.6
         soap_link_highlighted_pattern = Pattern('soap_link_highlighted.png')
         soap_other_link_pattern = Pattern('soap_link_disambiguation.png')
         soap_other_link_highlighted_pattern = Pattern('soap_link_disambiguation_highlighted.png')
