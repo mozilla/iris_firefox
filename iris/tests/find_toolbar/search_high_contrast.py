@@ -42,28 +42,43 @@ class Test(BaseTest):
                 win_on_high_contrast_theme_pattern = Pattern('high_contrast_is_on.png')  # high contrast is on
 
         if Settings.is_linux():
-            normal_contrast_bttn_normal_theme_pattern = Pattern('normal_contrast_bttn_normal_theme.png')
+
             high_contrast_bttn_normal_theme_pattern = Pattern('high_contrast_bttn_normal_theme.png')
-            normal_contrast_bttn_high_theme_pattern = Pattern('normal_contrast_bttn_high_theme.png')
-            high_contrast_bttn_high_theme_pattern = Pattern('high_contrast_bttn_high_theme.png')
 
-            type(text='t', modifier=KeyModifier.CTRL + KeyModifier.ALT)
-            time.sleep(3)
-            type(r"unity-control-center")
-            type(Key.ENTER)
-            time.sleep(5)
-            type(Key.TAB)
+            default_contrast_bttn_normal_theme_pattern = Pattern('default_contrast_bttn_normal_theme.png')
+            default_contrast_bttn_normal_theme_pattern.similarity = 0.6
+
+            default_contrast_bttn_high_theme_pattern = Pattern('default_contrast_bttn_high_theme.png') # for closing
+            default_contrast_bttn_high_theme_pattern.similarity = 0.6
+
+            system_menu_opened_pattern = Pattern('system_search_menu_contrast.png')
+            appearance_panel_default_pattern = Pattern('appearance_panel_default_contrast_displayed.png')
+            appearance_panel_default_pattern.similarity = 0.6
+
+            appearance_panel_high_pattern = Pattern('appearance_panel_high_contrast_displayed.png')
+
+            type(Key.META)
+
+            system_menu_opened = exists(system_menu_opened_pattern, 5)
+            assert_true(self, system_menu_opened, 'System menu opened')
+
+            type('appearance')
+            # type(Key.TAB)
             type(Key.ENTER)
 
-            click(normal_contrast_bttn_normal_theme_pattern, 1)
+
+            appearance_panel_default_contrast_loaded = exists(appearance_panel_default_pattern, 5)
+            assert_true(self, appearance_panel_default_contrast_loaded, 'Appearence menu loaded in default theme')
+
+            contrast_dropdown_bttn_location = find(default_contrast_bttn_normal_theme_pattern)
+            click(Location(contrast_dropdown_bttn_location.x+3,
+                           contrast_dropdown_bttn_location.y+3), 1)
+
             click(high_contrast_bttn_normal_theme_pattern, 1)
 
-            high_contrast_is_on = exists(high_contrast_bttn_high_theme_pattern, 5)
+            high_contrast_is_on = exists(appearance_panel_high_pattern, 5)
 
             type(Key.F4, KeyModifier.ALT) # close window
-            time.sleep(3)
-            type('exit')
-            type(Key.ENTER)
 
             assert_true(self, high_contrast_is_on,
                         'Ubuntu theme changed to "HighContrast". High contrast theme activated')
@@ -170,27 +185,31 @@ class Test(BaseTest):
 
         if Settings.is_linux():
 
-            type(text='t', modifier=KeyModifier.CTRL + KeyModifier.ALT)
-            time.sleep(3)
-            type(r"unity-control-center")
-            type(Key.ENTER)
-            time.sleep(3)
-            type(Key.TAB)
+            type(Key.META)
+
+            system_menu_opened = exists(system_menu_opened_pattern, 5)
+            assert_true(self, system_menu_opened, 'System menu opened')
+
+            type('appearance')
+            # type(Key.TAB)
             type(Key.ENTER)
 
-            click(high_contrast_bttn_high_theme_pattern, 1)
-            click(normal_contrast_bttn_high_theme_pattern, 1)
+            appearance_panel_high_contrast_loaded = exists(appearance_panel_high_pattern, 5)
+            assert_true(self, appearance_panel_high_contrast_loaded, 'Appearence menu loaded in high contrast theme')
 
-            # close theme settings window and console window
-            high_contrast_is_off = exists(normal_contrast_bttn_normal_theme_pattern, 5)
+            click(Location(contrast_dropdown_bttn_location.x+5,
+                           contrast_dropdown_bttn_location.y+5), 1)
+
+            click(default_contrast_bttn_high_theme_pattern, 1)
+
+            high_contrast_is_off = exists(appearance_panel_default_pattern, 5)
+
             type(Key.F4, KeyModifier.ALT) # close window
-            time.sleep(3)
-            type('exit')
-            type(Key.ENTER)
 
             assert_true(self, high_contrast_is_off,
                             'Ubuntu theme changed to default "Ambiance". '
                             'High contrast theme deactivated')
+
 
         if Settings.is_windows():
             if get_os_version() == 'win7':
