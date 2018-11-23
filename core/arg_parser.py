@@ -93,7 +93,7 @@ def parse_args():
                         help='Path to working directory',
                         type=os.path.abspath,
                         action='store',
-                        default='%s/.iris' % home)
+                        default='%s/.iris2' % home)
     parser.add_argument('-x', '--exclude',
                         help='List of test names or directories to exclude',
                         metavar='empty')
