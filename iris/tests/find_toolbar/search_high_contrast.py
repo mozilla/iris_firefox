@@ -27,6 +27,7 @@ class Test(BaseTest):
         see_label_zoom_in_contrast_pattern = Pattern('see_label_zoom_in_contrast.png')
         see_label_zoom_out_contrast_pattern = Pattern('see_label_zoom_out_contrast.png')
 
+
         # win theme settings
         if Settings.get_os() == Platform.WINDOWS:
             close_active_contrast_window_pattern = Pattern('close_active_contrast_window.png')
