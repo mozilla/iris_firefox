@@ -29,7 +29,7 @@ class Test(BaseTest):
         test_page_local = self.get_asset_path('wiki_soap.html')
         navigate(test_page_local)
 
-        soap_label_exists = exists(soap_label_pattern, 20)
+        soap_label_exists = exists(soap_label_pattern, 40)
 
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
