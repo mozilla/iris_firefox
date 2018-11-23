@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '127254'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
+        self.exclude = Platform.MAC
 
     def run(self):
 
@@ -71,6 +72,7 @@ class Test(BaseTest):
                 type(Key.WIN)
                 type('cmd')
                 type(Key.ENTER)
+                time.sleep(3)
                 type(Key.ENTER)
                 type(r'start "" "c:\windows\resources\ease of access themes\hcblack.theme"')
                 type(Key.ENTER)
@@ -160,8 +162,10 @@ class Test(BaseTest):
                     'Zoom out: The highlight of the found items does not affect the visibility '
                     'of other words/letters')
 
+        #
         # Return back to normal mode,
         # and close themes settings, and console window
+        #
 
         if Settings.is_linux():
 
