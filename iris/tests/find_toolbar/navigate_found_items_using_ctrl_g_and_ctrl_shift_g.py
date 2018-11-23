@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Navigate through found items using F3 / SHIFT+F3'
+        self.meta = 'Navigate through found items using CTRL+G / CTRL+SHIFT+G'
         self.test_case_id = '127257'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
