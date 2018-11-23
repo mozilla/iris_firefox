@@ -4,14 +4,13 @@
 
 
 import datetime
-import os
 import logging
-import tempfile
+import os
 import shutil
+import tempfile
 
 from core.arg_parser import parse_args
 from core.helpers.os_helpers import OSHelper
-
 
 logger = logging.getLogger(__name__)
 
@@ -104,18 +103,22 @@ class PathManager:
 
     @staticmethod
     def get_tempdir():
+        """Returns temporary directory path."""
         return _tmp_dir
 
     @staticmethod
     def get_run_id():
+        """Returns run id based on timestamp."""
         return _run_id
 
     @staticmethod
     def get_images_path():
+        """Returns images directory path."""
         return os.path.join('images', OSHelper.get_os().value)
 
     @staticmethod
     def delete_run_directory():
+        """Removes run directory."""
         master_run_directory = os.path.join(parse_args().workdir, 'runs')
         run_directory = os.path.join(master_run_directory, PathManager.get_run_id())
         if os.path.exists(run_directory):
@@ -123,6 +126,7 @@ class PathManager:
 
     @staticmethod
     def create_run_directory():
+        """Creates run directory."""
         PathManager.create_working_directory()
         master_run_directory = os.path.join(parse_args().workdir, 'runs')
         if not os.path.exists(master_run_directory):
@@ -133,6 +137,7 @@ class PathManager:
 
     @staticmethod
     def create_working_directory():
+        """Creates working directory."""
         work_dir = parse_args().workdir
         if not os.path.exists(work_dir):
             logger.debug('Creating working directory %s' % work_dir)
@@ -150,5 +155,3 @@ class PathManager:
             cache_builds_directory = os.path.join(work_dir, 'cache')
             if os.path.exists(cache_builds_directory):
                 shutil.rmtree(cache_builds_directory, ignore_errors=True)
-
-print(PathManager.get_current_run_dir())

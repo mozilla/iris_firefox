@@ -147,5 +147,3 @@ class OSPlatform(Enum):
     WINDOWS = 'win'
     LINUX = 'linux'
     MAC = 'osx'
-
-
