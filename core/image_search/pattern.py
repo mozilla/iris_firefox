@@ -2,18 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import inspect
+import logging
 import os
 
 import cv2
-import inspect
-import logging
 import numpy as np
 
-from core.errors import FindError
-from core.screen.location import Location
-from core.settings import Settings
-from core.helpers.path_manager import PathManager
 from core.arg_parser import parse_args
+from core.errors import FindError
+from core.helpers.path_manager import PathManager
+from core.screen import Location
+from core.settings import Settings
 
 try:
     import Image
