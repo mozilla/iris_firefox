@@ -5,6 +5,8 @@
 import mozinfo
 import mss
 import pyautogui
+from util.parse_args import parse_args
+
 
 
 class Platform(object):
@@ -18,7 +20,8 @@ class Platform(object):
     PROCESSOR = mozinfo.processor
 
     ALL = [LINUX, MAC, WINDOWS]
-    primary_monitor = mss.mss().monitors[1]
+
+    primary_monitor = {"top": 0, "left": 0, "width": 1920, "height": 1080} if parse_args().headless_run else mss.mss().monitors[1]
     _screenshot = mss.mss().grab(primary_monitor)
     SCREENSHOT_SIZE = (_screenshot.width, _screenshot.height)
     HIGH_DEF = SCREENSHOT_SIZE != pyautogui.size()
