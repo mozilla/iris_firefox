@@ -12,7 +12,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Search a word that contains special characters'
+        self.meta = 'Search a word that contains special characters (1)'
         self.test_case_id = '127275'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
@@ -50,5 +50,8 @@ class Test(BaseTest):
         assert_true(self, not_selected_label_exists, 'The second one is not highlighted.')
 
         find_next()
+
         second_highlighted_exists = exists(second_uber_highlighted_pattern, 1)
         assert_true(self, second_highlighted_exists, 'The green box is moved with the current item.')
+
+        sys.setdefaultencoding('ascii')
