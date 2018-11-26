@@ -32,7 +32,7 @@ class Test(BaseTest):
         tabbed_browser_page_local = self.get_asset_path('page_1.htm')
 
         navigate(tabbed_browser_page_local)
-        page_title_pattern_exists = exists(page_title_pattern, 5)
+        page_title_pattern_exists = exists(page_title_pattern, 30)
 
         assert_true(self, page_title_pattern_exists, 'The page is successfully loaded.')
 
