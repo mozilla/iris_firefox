@@ -142,7 +142,6 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Find more search engines\' link found.')
 
         click(find_more_search_engines_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
 
         try:
             wait(find_add_ons, 10)
