@@ -84,25 +84,35 @@ class Test(BaseTest):
 
         if Settings.is_windows():
             if get_os_version() == 'win7':
+                os_program_menu_opened_basic_contrast_pattern = Pattern('os_program_menu_opened_basic_contrast.png')
+                theme_menu_opened_pattern = Pattern('theme_menu_opened_basic_contrast.png')
+                high_contrast_normal_button_pattern = Pattern('high_contrast_normal_button.png')
+                high_contrast_black_button_active_pattern = Pattern('high_contrast_black_button_active.png')
+
                 type(Key.WIN)
-                type('cmd')
-                type(Key.ENTER)
-                time.sleep(3)
-                type(Key.ENTER)
-                type(r'start "" "c:\windows\resources\ease of access themes\hcblack.theme"')
-                type(Key.ENTER)
+                os_program_menu_opened = exists(os_program_menu_opened_basic_contrast_pattern, 20)
+                assert_true(self, os_program_menu_opened, 'OS program menu opened properly.')
 
-                time.sleep(5)  # wait until contrast screen appears
-                close_active_contrast_window_exists = exists(close_active_contrast_window_pattern, 5)
-                assert_true(self, close_active_contrast_window_exists,
-                            'Windows theme changed to hcblack.theme')
-
-                # close theme window and console window
-                click(close_active_contrast_window_pattern, 1)
-                time.sleep(5)
-                type('exit')
+                type("Change the theme")
                 type(Key.ENTER)
-                # Active window now Firefox
+                theme_menu_opened_exists = exists(theme_menu_opened_pattern, 30)
+                assert_true(self, theme_menu_opened_exists, "Theme settings menu opened properly")
+
+                #  click on theme
+                click(high_contrast_normal_button_pattern, 1)
+                #  theme changed
+
+                theme_changed_to_high_contrast = wait_vanish(high_contrast_normal_button_pattern.similar(0.75), 40)
+                assert_true(self, theme_changed_to_high_contrast, 'Theme changed to high contrast theme.')
+
+                #  close theme page
+                #  wait wanish theme page close
+                type(Key.F4, KeyModifier.ALT)
+
+                # Check that the Theme Settings window was closed properly.
+                theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.similar(0.75), 10)
+                assert_true(self, theme_settings_window_is_closed,
+                            'Theme Setting window was closed properly.')
 
             else:  # win 10
 
@@ -236,55 +246,33 @@ class Test(BaseTest):
 
         if Settings.is_windows():
             if get_os_version() == 'win7':
+                theme_menu_opened_in_high_contrast_pattern = Pattern('os_program_menu_opened_high_contrast.png')
+                high_contrast_basic_theme_button_pattern = Pattern('high_contrast_basic_theme_button.png')
 
-                try:
-                    type(Key.WIN)
-                    type('cmd')
-                    type(Key.ENTER)
-                    type(Key.ENTER)
-                    type(r'start "" "c:\windows\resources\ease of access themes\basic.theme"')
-                    type(Key.ENTER)
-                    time.sleep(5)
+                type(Key.WIN)
+                os_program_menu_opened_in_high_contrast = exists(theme_menu_opened_in_high_contrast_pattern, 20)
+                assert_true(self, os_program_menu_opened_in_high_contrast, 'OS program menu opened properly.')
 
-                    # wait until contrast screen appears
-                    close_active_contrast_deactivated_exists = exists(close_window_contrast_deactivated_pattern, 5)
-                    contrast_theme_deactivated = exists(win_off_high_contrast_button_theme_pattern, 5)
+                type("Change the theme")
+                type(Key.ENTER)
+                theme_menu_opened_in_high_contrast = exists(high_contrast_black_button_active_pattern, 30)
+                assert_true(self, theme_menu_opened_in_high_contrast, "Theme settings menu opened properly")
 
-                    assert_true(self, close_active_contrast_deactivated_exists,
-                                'Windows theme changed to basic.theme')
+                #  click on theme
+                click(high_contrast_basic_theme_button_pattern, 1)
+                #  theme changed
 
-                    # close theme window and console window
-                    click(close_window_contrast_deactivated_pattern)
-                    time.sleep(1)
-                    type('exit')
-                    type(Key.ENTER)  # Active window now Firefox
+                theme_changed_to_basic_contrast = exists(theme_menu_opened_pattern.similar(0.75), 40)
+                assert_true(self, theme_changed_to_basic_contrast, 'Theme changed to basic contrast theme.')
 
-                    assert_true(self, contrast_theme_deactivated, 'High contrast mode deactivated')
+                #  close theme page
+                #  wait vanish theme page close
+                type(Key.F4, KeyModifier.ALT)
 
-                except FindError:
-                    logger.warn("Can't find pattern to exit contrast mode. One more attempt")
-                    type(Key.WIN)
-                    type('cmd')
-                    type(Key.ENTER)
-                    type(Key.ENTER)
-                    type(r'start "" "c:\windows\resources\ease of access themes\basic.theme"')
-                    type(Key.ENTER)
-                    time.sleep(5)
-
-                    # wait until contrast screen appears
-                    close_active_contrast_deactivated_exists = exists(close_window_contrast_deactivated_pattern, 5)
-                    contrast_theme_deactivated = exists(win_off_high_contrast_button_theme_pattern, 5)
-
-                    assert_true(self, close_active_contrast_deactivated_exists,
-                                'Windows theme changed to basic.theme')
-
-                    # close theme window and console window
-                    click(close_window_contrast_deactivated_pattern)
-                    time.sleep(1)
-                    type('exit')
-                    type(Key.ENTER)  # Active window now Firefox
-
-                    assert_true(self, contrast_theme_deactivated, 'High contrast mode deactivated')
+                # Check that the Theme Settings window was closed properly.
+                theme_settings_window_is_closed = wait_vanish(theme_menu_opened_pattern.similar(0.75), 40)
+                assert_true(self, theme_settings_window_is_closed,
+                            'Theme Setting window was closed properly.')
 
             else: # deactivate high contrast mode on WIN 10
                 try:
