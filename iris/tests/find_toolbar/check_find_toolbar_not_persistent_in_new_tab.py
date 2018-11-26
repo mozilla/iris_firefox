@@ -24,21 +24,17 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = wait(find_toolbar_pattern, 5)
-
+        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
         assert_true(self, find_toolbar_is_opened, 'The find toolbar is opened')
 
         new_tab()
         exists(new_tab_icon_pattern, 5)
 
         find_toolbar_is_opened = exists(find_toolbar_pattern, 2)
-
         assert_false(self, find_toolbar_is_opened, 'The find toolbar is not opened on a new tab')
 
         new_window()
         exists(new_tab_icon_pattern, 5)
-
         find_toolbar_is_opened = exists(find_toolbar_pattern, 2)
         close_window()
-
         assert_false(self, find_toolbar_is_opened, 'The find toolbar is not opened in a new window')
