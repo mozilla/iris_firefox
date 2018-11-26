@@ -287,8 +287,6 @@ class Test(BaseTest):
 
             else: # deactivate high contrast mode on WIN 10
                 try:
-                    # click(Location(type_here_theme_options_location.x + 5,
-                    #                type_here_theme_options_location.y + 5), 1)
 
                     type(Key.WIN)
 
