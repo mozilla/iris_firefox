@@ -37,7 +37,6 @@ class Test(BaseTest):
                 close_window_contrast_deactivated_pattern = Pattern('close_window_contrast_deactivated.png')
 
             else:   # windows 10 theme settings
-                win_type_here_to_search_pattern = Pattern('win_type_here_to_search.png')
                 win_high_contrast_settings_pattern = Pattern('win_high_contrast_settings.png')
                 win_on_high_contrast_theme_pattern = Pattern('high_contrast_is_on.png')  # high contrast is on
 
@@ -106,10 +105,7 @@ class Test(BaseTest):
 
             else:  # win 10
 
-                win_type_here_to_search_exists = exists(win_type_here_to_search_pattern, 10)
-                type_here_theme_options_location = find(win_type_here_to_search_pattern)
-                click(Location(type_here_theme_options_location.x+5,
-                               type_here_theme_options_location.y+5), 1)
+                type(Key.WIN)
 
                 paste('themes and related settings')
                 type(Key.ENTER)
@@ -291,8 +287,10 @@ class Test(BaseTest):
 
             else: # deactivate high contrast mode on WIN 10
                 try:
-                    click(Location(type_here_theme_options_location.x + 5,
-                                   type_here_theme_options_location.y + 5), 1)
+                    # click(Location(type_here_theme_options_location.x + 5,
+                    #                type_here_theme_options_location.y + 5), 1)
+
+                    type(Key.WIN)
 
                     paste('themes and related settings')
                     type(Key.ENTER)
@@ -313,26 +311,22 @@ class Test(BaseTest):
                                 'High contrast mode deactivated')
 
                 except FindError:
-                    logger.warn("Can't find pattern to exit contrast mode. One more attempt")
                     type(Key.WIN)
-                    type('cmd')
+
+                    paste('themes and related settings')
                     type(Key.ENTER)
-                    type(Key.ENTER)
-                    type(r'start "" "c:\windows\resources\ease of access themes\basic.theme"')
-                    type(Key.ENTER)
-                    time.sleep(5)
 
-                    # wait until contrast screen appears
-                    close_active_contrast_deactivated_exists = exists(close_window_contrast_deactivated_pattern, 5)
-                    contrast_theme_deactivated = exists(win_off_high_contrast_button_theme_pattern, 5)
+                    click(Location(win_high_contrast_settings_location.x + 10,
+                                   win_high_contrast_settings_location.y + 10), 1)
 
-                    assert_true(self, close_active_contrast_deactivated_exists,
-                                'Windows theme changed to basic.theme')
+                    click(Location(win_off_high_contrast_theme_location.x + 7,
+                                   win_off_high_contrast_theme_location.y + 7), 1)
 
-                    # close theme window and console window
-                    click(close_window_contrast_deactivated_pattern)
-                    time.sleep(1)
-                    type('exit')
-                    type(Key.ENTER)  # Active window now Firefox
+                    contrast_mode_off = exists(win_off_high_contrast_button_theme_pattern, 10)
 
-                    assert_true(self, contrast_theme_deactivated, 'High contrast mode deactivated')
+                    # close theme settings window
+                    click(Location(win_close_active_window_location.x+2,
+                                   win_close_active_window_location.y+2), 1)
+
+                    assert_true(self, contrast_mode_off,
+                                'High contrast mode deactivated')
