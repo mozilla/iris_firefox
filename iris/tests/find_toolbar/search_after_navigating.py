@@ -47,8 +47,8 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F.')
 
-        type('browser')
-        type(Key.ENTER)
+        type('browser', interval=1)
+        type(Key.ENTER, interval=1)
 
         word_browser_green_exists = exists(word_browser_green_pattern, 5)
 
@@ -68,7 +68,7 @@ class Test(BaseTest):
 
         # Linux needs extra Key.ENTER to pass a test
         if Settings.get_os() == Platform.LINUX:
-            type(Key.ENTER)
+            type(Key.ENTER, interval=1)
 
         phrase_not_found_label_exists = exists(phrase_not_found_label_pattern, 2)
 
