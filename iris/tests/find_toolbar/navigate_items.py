@@ -47,25 +47,26 @@ class Test(BaseTest):
         not_highlighted_label_exists = exists(see_label_not_highlighted_pattern, 1)
 
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
-        assert_true(self, not_highlighted_label_exists,
-                    'The others are not highlighted.')
+        assert_true(self, not_highlighted_label_exists, 'The others are not highlighted.')
 
         click(arrow_up_button_pattern)
         cleaning_see_label_exists = exists(cleaning_see_label_pattern, 1)
 
-        assert_true(self, cleaning_see_label_exists, 'Navigation up works fine.')
+        assert_true(self, cleaning_see_label_exists, 'Navigation using toolbar up arrow works fine.')
 
         click(arrow_down_button_pattern)
         selected_label_exists = exists(see_label_pattern, 1)
 
-        assert_true(self, selected_label_exists, 'Navigation down works fine.')
+        assert_true(self, selected_label_exists, 'Navigation using toolbar down arrow works fine.')
 
         click(arrow_up_button_pattern)
         one_of_five_label_exists = exists(one_of_five_label_pattern, 1)
 
-        assert_true(self, one_of_five_label_exists, 'The number of the highlighted item changes when navigating')
+        assert_true(self, one_of_five_label_exists,
+                    'The number of the highlighted item changes when navigating. ("1 of 5" expected)')
 
         click(arrow_down_button_pattern)
         two_of_five_label_exists = exists(two_of_five_label_pattern, 1)
 
-        assert_true(self, two_of_five_label_exists, 'The number of the highlighted item changes when navigating.')
+        assert_true(self, two_of_five_label_exists,
+                    'The number of the highlighted item changes when navigating. ("2 of 5" expected)')
