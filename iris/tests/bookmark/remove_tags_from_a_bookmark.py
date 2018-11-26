@@ -86,7 +86,7 @@ class Test(BaseTest):
 
         time.sleep(Settings.UI_DELAY_LONG)
 
-        max_attempts = 5
+        max_attempts = 10
 
         while max_attempts > 0:
             type(Key.TAB)
