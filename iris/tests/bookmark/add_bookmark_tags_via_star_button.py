@@ -18,8 +18,8 @@ class Test(BaseTest):
     def run(self):
 
         bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
-        tags_field = Pattern('tags_field.png')
-        done = Pattern('done_button.png')
+        tags_field = Bookmarks.StarDialog.TAGS_FIELD
+        done = Bookmarks.StarDialog.DONE
         moz_tagged_bookmark = Pattern('moz_sidebar_bookmark.png')
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -34,7 +34,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Bookmark star is not present on the page, aborting.')
 
-        page_bookmarked_assert = exists(Pattern('page_bookmarked.png'), 10)
+        page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, 10)
         assert_true(self, page_bookmarked_assert, 'The page was successfully bookmarked via star button.')
 
         try:

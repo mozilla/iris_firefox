@@ -28,7 +28,7 @@ class Test(BaseTest):
         library_bookmarks_pattern = Pattern('library_bookmarks.png')
         moz_library_pattern = Pattern('moz_library_bookmark.png')
         moz_tagged_bookmark = Pattern('moz_sidebar_bookmark.png')
-        tags_field = Pattern('tags_field.png')
+        tags_field = Bookmarks.StarDialog.TAGS_FIELD
 
         navigate('about:blank')
 
