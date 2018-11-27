@@ -32,7 +32,6 @@ class Test(BaseTest):
         edit_delete()
 
         find_toolbar_opened = exists(quick_find_label_pattern, 10)
-
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         type('see', interval=1)
@@ -42,8 +41,7 @@ class Test(BaseTest):
         type(Key.F3)
 
         changed_selection_exists = exists(see_label_second_pattern)
-
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, changed_selection_exists, 'The green box is moved on next.')
         assert_true(self, False,
-                    'The others are not highlighted as pink')
+                    'The others are not highlighted as pink [known issue]')
