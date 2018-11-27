@@ -39,7 +39,6 @@ class Test(BaseTest):
             default_contrast_normal_button_pattern = Pattern('default_contrast_normal_button.png')  # for closing
             high_contrast_button_high_theme_pattern = Pattern('high_contrast_button_high_theme.png')
 
-
         if Settings.is_linux():
             type(Key.META)
         else:
@@ -63,6 +62,10 @@ class Test(BaseTest):
 
         if Settings.is_linux():
             click(default_contrast_normal_button_pattern, 1)
+
+        if Settings.get_os_version() == 'win7':
+            maximize_window()
+
         click(high_contrast_normal_button_pattern, 1)
         theme_changed_to_high_contrast = exists(high_contrast_black_button_active_pattern.similar(0.75), 40)
         assert_true(self, theme_changed_to_high_contrast, 'Theme changed to high contrast theme.')
