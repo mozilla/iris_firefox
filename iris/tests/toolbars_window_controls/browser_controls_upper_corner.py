@@ -54,14 +54,14 @@ class Test(BaseTest):
             assert_true(self, expected, 'Hover over the \'close\' button works correctly.')
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            minimize_window()
+            click_window_control('restore', 'main')
             time.sleep(Settings.UI_DELAY)
             hover(window_controls_maximize_pattern)
             expected = exists(hover_maximize_control_pattern, 10)
             assert_true(self, expected,
                         'Hover over the \'maximize\' button works correctly; Window successfully restored.')
 
-        minimize_window()
+        click_window_control('minimize', 'main')
         time.sleep(Settings.UI_DELAY)
 
         try:
@@ -73,12 +73,12 @@ class Test(BaseTest):
         restore_window_from_taskbar()
 
         if Settings.get_os() == Platform.WINDOWS:
-            maximize_window()
+            click_window_control('maximize', 'main')
 
         expected = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
-        close_window()
+        click_window_control('close', 'main')
 
         try:
             expected = wait_vanish(hamburger_menu_pattern, 10)
