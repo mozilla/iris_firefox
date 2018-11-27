@@ -44,5 +44,6 @@ class Test(BaseTest):
         assert_true(self, not_selected_label_exists, 'The second one is not highlighted.')
 
         find_next()
+
         second_highlighted_exists = exists(second_symbols_highlighted_pattern, 1)
         assert_true(self, second_highlighted_exists, 'The green box is moved with the current item.')

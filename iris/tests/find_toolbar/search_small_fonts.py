@@ -17,7 +17,6 @@ class Test(BaseTest):
 
     def run(self):
 
-        find_toolbar_pattern = Pattern('find_toolbar_text.png')
         small_text_unselected_pattern = Pattern('small_text_unselected.png')
         small_text_unselected_pattern.similarity = 0.6
         small_text_selected_pattern = Pattern('small_text_selected.png')
@@ -38,7 +37,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')
         # Assure that text is not selected before testing

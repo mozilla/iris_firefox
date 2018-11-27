@@ -18,7 +18,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         test_label_pattern = Pattern('test_label_pattern.png')
         first_uber_highlighted_pattern = Pattern('first_uber_highlighted.png')
         second_uber_highlighted_pattern = Pattern('second_uber_highlighted.png')
@@ -34,8 +33,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
-
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         reload(sys)
@@ -45,7 +43,6 @@ class Test(BaseTest):
 
         selected_label_exists = exists(first_uber_highlighted_pattern, 1)
         not_selected_label_exists = exists(uber_not_highlighted_pattern, 1)
-
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, not_selected_label_exists, 'The second one is not highlighted.')
 

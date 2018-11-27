@@ -18,7 +18,6 @@ class Test(BaseTest):
     def run(self):
 
         soap_label_pattern = Pattern('soap_label.png')
-        find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         operating_all_pattern = Pattern('operating_all.png')
         operating_all_highlighted_pattern = Pattern('operating_all_highlighted.png')
         operating_disparate_pattern = Pattern('operating_disparate.png')
@@ -36,7 +35,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         type('operating')

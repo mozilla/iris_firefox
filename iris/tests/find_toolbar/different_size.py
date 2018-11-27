@@ -17,7 +17,6 @@ class Test(BaseTest):
 
     def run(self):
 
-        find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         soap_label_pattern = Pattern('soap_label.png')
         match_case_button_pattern = Pattern('match_case_button.png')
         soap_xml_label_pattern = Pattern('soap_xml_label.png')
@@ -45,7 +44,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
 
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 

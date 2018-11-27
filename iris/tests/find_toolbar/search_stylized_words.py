@@ -16,18 +16,17 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        find_toolbar_pattern = Pattern('find_in_page_icon.png')
         style_text_url_pattern = Pattern('style_text_url.png')
         style_text_first_not_selected_pattern = Pattern('style_text_first_not_selected.png')
         style_text_first_not_selected_pattern.similarity = 0.6
         style_text_first_selected_pattern = Pattern('style_text_first_selected.png')
         style_text_second_selected_pattern = Pattern('style_text_second_selected.png')
         style_text_last_selected_pattern = Pattern('style_text_last_selected.png')
-        vertical_search_page_local = self.get_asset_path('findbar_stylized.html')
-        navigate(vertical_search_page_local)         # https://bug1279704.bmoattachments.org/attachment.cgi?id=8762295
-        navigated_to_style_url = exists(style_text_url_pattern, 5)
 
+        vertical_search_page_local = self.get_asset_path('findbar_stylized.html')
+        navigate(vertical_search_page_local)  # https://bug1279704.bmoattachments.org/attachment.cgi?id=8762295
+
+        navigated_to_style_url = exists(style_text_url_pattern, 5)
         assert_true(self, navigated_to_style_url, 'Style text URL loaded successfully.')
 
         # to prevent selecting of all text in win 10
@@ -41,7 +40,7 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')
 
@@ -61,8 +60,7 @@ class Test(BaseTest):
         assert_true(self, second_text_selected_exists, 'Second matching style text was found.')
 
         # to last
-        for _ in range(1, 10):
-            find_next()
+        [find_next() for _ in range(1, 10)]
 
         last_text_selected_exist = exists(style_text_last_selected_pattern, 5)
         assert_true(self, last_text_selected_exist, 'Last matching style text was found.')
