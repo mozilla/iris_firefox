@@ -56,7 +56,7 @@ class PathManager:
     @staticmethod
     def get_module_dir():
         """Returns the path to the root of the local Iris repo."""
-        return os.path.realpath(os.path.split(__file__)[0] + '/../../../..')
+        return os.path.realpath(os.path.split(__file__)[0] + '/../..')
 
     @staticmethod
     def get_working_dir():
@@ -67,7 +67,7 @@ class PathManager:
     @staticmethod
     def get_tests_dir():
         """Returns the directory where tests are located."""
-        return os.path.join(PathManager.get_module_dir(), 'iris2', 'tests')
+        return os.path.join(PathManager.get_module_dir(), 'tests')
 
     @staticmethod
     def get_current_run_dir():

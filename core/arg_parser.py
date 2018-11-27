@@ -57,6 +57,10 @@ def parse_args():
                         type=log_level_string_to_int,
                         dest='level',
                         default='INFO')
+    parser.add_argument('-j', '--application',
+                        help='Application to test',
+                        action='store',
+                        default='firefox')
     parser.add_argument('-k', '--control',
                         help='Display control center',
                         action='store_true')

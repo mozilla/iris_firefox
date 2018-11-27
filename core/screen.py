@@ -231,7 +231,7 @@ class ScreenshotImage:
         return cv2.threshold(self.gray_array, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
 
-region1 = Screen(0).new_region(0, 0, 50, 50)
-print(region1.get_region())
-print(region1.get_bottom_right())
-region1.show()
+# region1 = Screen(0).new_region(0, 0, 50, 50)
+# print(region1.get_region())
+# print(region1.get_bottom_right())
+# region1.show()

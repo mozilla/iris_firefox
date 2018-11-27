@@ -14,6 +14,7 @@ from core.errors import FindError
 from core.helpers.path_manager import PathManager
 from core.screen import Location
 from core.settings import Settings
+from core.helpers.os_helpers import OSHelper
 
 try:
     import Image
@@ -31,10 +32,10 @@ class Pattern:
     associate a specific similarity value, that will be used as the minimum value, when this pattern object is searched.
     """
 
-    def __init__(self, image_name: str, from_path: str = None):
+    def __init__(self, image_name: str, from_path: str = None, application: str = parse_args().application):
 
         if from_path is None:
-            path = _get_image_path(inspect.stack()[1][1], image_name)
+            path = _get_image_path(inspect.stack()[1][1], image_name, application)
         else:
             path = from_path
         name, scale = _parse_name(os.path.split(path)[1])
@@ -117,7 +118,7 @@ class Pattern:
         return self._size
 
 
-def _parse_name(full_name: str):
+def _parse_name(full_name: str) -> (str, int):
     """Detects the scale factor in image name.
 
     :param str full_name: Image full name. Valid format name@[scale_factor]x.png.
@@ -141,7 +142,7 @@ def _parse_name(full_name: str):
             return full_name, 1
 
 
-def _load_all_patterns():
+def _load_all_patterns(application: str) -> list:
     """Function returns a list with all the project's Patterns."""
     if parse_args().resize:
         _convert_hi_res_images()
@@ -149,7 +150,7 @@ def _load_all_patterns():
     for root, dirs, files in os.walk(PathManager.get_module_dir()):
         for file_name in files:
             if file_name.endswith('.png'):
-                if PathManager.get_images_path() in root or 'common' in root or 'local_web' in root:
+                if application in root and (PathManager.get_images_path() in root or 'common' in root):
                     pattern_name, pattern_scale = _parse_name(file_name)
                     pattern_path = os.path.join(root, file_name)
                     pattern = {'name': pattern_name, 'path': pattern_path, 'scale': pattern_scale}
@@ -200,28 +201,28 @@ def _get_rgb_array(image: Image):
     return np.array(image)
 
 
-def _get_pattern_size(image: Image, scale: float):
+def _get_pattern_size(image: Image, scale: float) -> (int, int):
     if image is None or scale is None:
         return None
     height, width, channel = image.shape
     return int(width / scale), int(height / scale)
 
 
-def _get_image_from_array(scale, array):
+def _get_image_from_array(scale: int, array) -> Image:
     """Converts a scaled array into Image."""
     if scale is None or array is None:
         return None
     return Image.fromarray(_apply_scale(scale, array))
 
 
-def _get_gray_image(colored_image):
+def _get_gray_image(colored_image: Image) -> Image:
     """Converts colored image to gray image."""
     if colored_image is None:
         return None
     return colored_image.convert('L')
 
 
-def _get_image_path(caller, image):
+def _get_image_path(caller: list, image: str, application: str) -> str:
     """Enforce proper location for all Pattern creation.
 
     :param caller: Path of calling Python module.
@@ -247,10 +248,10 @@ def _get_image_path(caller, image):
     file_name = image.split('.')[0]
     names = [image, '%s@2x.png' % file_name, '%s@3x.png' % file_name, '%s@4x.png' % file_name]
 
-    if Settings.get_os_version() == 'win7':
+    if OSHelper.get_os_version() == 'win7':
         os_version = 'win7'
     else:
-        os_version = Settings.get_os()
+        os_version = OSHelper.get_os().value
     paths = []
     current_locale = parse_args().locale
 
@@ -283,7 +284,7 @@ def _get_image_path(caller, image):
         logger.debug('Found %s' % image_path)
         return image_path
     else:
-        result_list = filter(lambda x: x['name'] == image, _load_all_patterns())
+        result_list = [x for x in _load_all_patterns(application) if x['name'] == image]
         if len(result_list) > 0:
             res = result_list[0]
             logger.warning('Failed to find image %s in default locations for module %s.' % (image, module))
