@@ -5,7 +5,13 @@ import mss
 import mss.tools
 import numpy as np
 
+from core.errors import ScreenshotError
 from core.helpers.os_helpers import MONITORS
+
+try:
+    import Image
+except ImportError:
+    from PIL import Image
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +23,6 @@ class Location:
     def __init__(self, x: int = 0, y: int = 0):
         self.x = x
         self.y = y
-
-    def __str__(self):
-        return '(%s, %s)' % (self.x, self.y)
 
     def __repr__(self):
         return '%s(%r, %r)' % (self.__class__.__name__, self.x, self.y)
@@ -82,9 +85,6 @@ class Rectangle:
         self.width: int = width
         self.height: int = height
 
-    def __str__(self):
-        return '(%s, %s, %s, %s)' % (self.x, self.y, self.width, self.height)
-
     def __repr__(self):
         return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self.x, self.y, self.width, self.height)
 
@@ -105,19 +105,42 @@ class Region(Rectangle):
     def __init__(self, x_start: int = 0, y_start: int = 0, width=0, height=0):
         Rectangle.__init__(self, x_start, y_start, width, height)
 
-    def __str__(self):
-        return '(%s, %s, %s, %s)' % (self.x, self.y, self.width, self.height)
-
     def __repr__(self):
         return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self.x, self.y, self.width, self.height)
 
-    def get_center(self):
+    def get_center(self) -> Location:
         """Returns a Location object for the center of te screen."""
         return Location(int((self.x + self.width) / 2), int((self.y + self.height) / 2))
+
+    def move_to(self, location):
+        """Set the position of this region regarding it's top left corner to the given location"""
+        self.x = location.x
+        self.y = location.y
+
+    def get_top_left(self) -> Location:
+        """Returns a Location object for the top left of te screen."""
+        return Location(self.x, self.y)
+
+    def get_top_right(self) -> Location:
+        """Returns a Location object for the top right of te screen."""
+        return Location(self.x + self.width, self.y)
+
+    def get_bottom_left(self) -> Location:
+        """Returns a Location object for the bottom left of te screen."""
+        return Location(self.x, self.y + self.height)
+
+    def get_bottom_right(self) -> Location:
+        """Returns a Location object for the bottom right of te screen."""
+        return Location(self.x + self.width, self.y + self.height)
 
     def get_region(self):
         """Returns a region."""
         return Region(self.x, self.y, self.width, self.height)
+
+    def show(self):
+        """Displays the screen region. This method is mainly intended for debugging purposes."""
+        region = Rectangle(self.x, self.y, self.width, self.height)
+        ScreenshotImage(region).image.show()
 
     def new_region(self, x_0: int, y_0: int, w: int, h: int):
         """Creates a new region from the current region."""
@@ -127,14 +150,13 @@ class Region(Rectangle):
             raise ValueError(
                 'Out of bounds. Cannot create R1 %s in R2 %s' % (Region(self.x + x_0, self.y + y_0, w, h), self))
 
-    def screenshot(self, image_name):
-        """Creates a screenshot from the region.
 
-        :param image_name: Name/path for the output file.
-        """
-        region = Rectangle(self.x, self.y, self.width, self.height)
-        image = ScreenshotImage(region)
-        image.save(image_name)
+def _region_to_image(region) -> Image or ScreenshotError:
+    try:
+        image = np.array(mss.mss().grab(region))
+        return Image.fromarray(image, mode='RGBA')
+    except Exception:
+        raise ScreenshotError('Unable to take screenshot.')
 
 
 class Screen(Region):
@@ -149,23 +171,20 @@ class Screen(Region):
         self._bounds = _get_screen_details(self.screen_list, self.screen_id)
         Region.__init__(self, self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
 
-    def __str__(self):
-        return '(%s, %s, %s, %s)' % (self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
-
     def __repr__(self):
         return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self._bounds.x, self.y, self._bounds.width,
                                        self._bounds.height)
 
-    def get_number_screens(self):
+    def get_number_screens(self) -> int:
         """Get the number of screens in a multi-monitor environment at the time the script is running."""
         return len(self.screen_list)
 
-    def get_bounds(self):
+    def get_bounds(self) -> Rectangle:
         """Get the dimensions of monitor represented by the screen object."""
         return self._bounds
 
 
-def _get_screen_details(screen_list, screen_id):
+def _get_screen_details(screen_list: list, screen_id: int) -> Rectangle:
     """Get the screen details.
 
     :param screen_list: List with available monitors.
@@ -184,7 +203,7 @@ def _get_screen_details(screen_list, screen_id):
     return Rectangle()
 
 
-def _get_available_monitors(screen_list):
+def _get_available_monitors(screen_list: list) -> list:
     """Return a list with all the available monitors."""
     res = []
     for screen in screen_list:
@@ -196,28 +215,23 @@ class ScreenshotImage:
     """This class represents the visual representation of a region/screen."""
 
     def __init__(self, region: Rectangle = None, screen_id: int = 0):
-
         if region is None:
             region = Screen(screen_id).get_bounds()
 
         screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
 
-        self.image = mss.mss().grab(screen_region)
+        self.image = _region_to_image(screen_region)
         self.rgb_array = np.array(self.image)
         self.gray_array = cv2.cvtColor(np.array(self.image), cv2.COLOR_BGR2GRAY)
         height, width = self.gray_array.shape
         self.width = width
         self.height = height
 
-    def save(self, file_name: str):
-        if file_name is None:
-            return
-        else:
-            mss.tools.to_png(self.image.rgb, self.image.size, output=file_name)
-
     def binarize(self):
         return cv2.threshold(self.gray_array, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
-# region1 = Screen(1).new_region(0, 0, 50, 50)
-# region2 = region1.new_region(25, 25, 25, 25)
-# region2.screenshot()
+
+region1 = Screen(0).new_region(0, 0, 50, 50)
+print(region1.get_region())
+print(region1.get_bottom_right())
+region1.show()
