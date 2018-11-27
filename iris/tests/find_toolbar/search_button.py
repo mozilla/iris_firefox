@@ -17,7 +17,6 @@ class Test(BaseTest):
 
     def run(self):
 
-        find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         google_search_button_pattern = Pattern('google_search_button.png')
         season_label_not_selected_pattern = Pattern('season_label_not_selected.png')
         season_label_selected_pattern = Pattern('season_label_selected.png')
@@ -30,15 +29,13 @@ class Test(BaseTest):
         navigate(test_page_local)
 
         soap_label_exists = exists(google_search_button_pattern, 20)
-
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         open_find()
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
-
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         type('se', interval=1)
@@ -46,7 +43,6 @@ class Test(BaseTest):
         selected_label_exists = exists(season_label_selected_pattern, 1)
         label_not_found = exists(settings_label_not_selected_pattern, 1)
         button_not_selected = exists(google_search_button_pattern, 1)
-
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted')
         assert_true(self, label_not_found, 'the others are not highlighted.')
         assert_true(self, button_not_selected, 'Submit button is not highlighted.')
@@ -56,7 +52,6 @@ class Test(BaseTest):
         settings_selected = exists(settings_label_selected, 1)
         season_not_selected = exists(season_label_not_selected_pattern, 1)
         button_not_selected = exists(google_search_button_pattern, 1)
-
         assert_true(self, settings_selected, 'The second one has a green background highlighted')
         assert_true(self, season_not_selected, 'the others are not highlighted.')
         assert_true(self, button_not_selected, 'Submit button is not highlighted.')
