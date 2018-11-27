@@ -21,7 +21,7 @@ class Test(BaseTest):
         find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         operating_all_pattern = Pattern('operating_all.png')
         operating_all_highlighted_pattern = Pattern('operating_all_highlighted.png')
-        operating_diaparate_pattern = Pattern('operating_disparate.png')
+        operating_disparate_pattern = Pattern('operating_disparate.png')
         operating_disparate_highlighted_pattern = Pattern('operating_disparate_highlighted.png')
         one_of_two_matches_pattern = Pattern('1_of_2_matches.png')
         two_of_two_matches_pattern = Pattern('2_of_2_matches.png')
@@ -30,7 +30,6 @@ class Test(BaseTest):
         navigate(test_page_local)
 
         soap_label_exists = exists(soap_label_pattern, 20)
-
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         open_find()
@@ -38,39 +37,34 @@ class Test(BaseTest):
         edit_delete()
 
         find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
-
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         type('operating')
 
         operating_disparate_highlighted_displayed = exists(operating_disparate_highlighted_pattern, 5)
         operating_all_displayed = exists(operating_all_pattern, 5)
-
         assert_true(self, operating_disparate_highlighted_displayed and operating_all_displayed,
                     'All the matching words/characters are found. '
                     'The first one has a green background highlighted, and the others are not highlighted.')
 
         type(Key.F3)
 
-        operating_disparate_displayed = exists(operating_diaparate_pattern, 5)
+        operating_disparate_displayed = exists(operating_disparate_pattern, 5)
         operating_all_highlighted_displayed = exists(operating_all_highlighted_pattern, 5)
 
         type(Key.F3, KeyModifier.SHIFT)
 
         operating_disparate_highlighted_displayed = exists(operating_disparate_highlighted_pattern, 5)
         operating_all_displayed = exists(operating_all_pattern, 5)
-
         assert_true(self, operating_disparate_displayed and operating_all_highlighted_displayed
                     and operating_disparate_highlighted_displayed and operating_all_displayed,
                     'Navigation works fine. '
                     'The current item is highlighted with green. No functional or visible issue appears.')
 
         type(Key.F3)
-        two_of_two_matches_displayed = exists(two_of_two_matches_pattern, 5)
 
+        two_of_two_matches_displayed = exists(two_of_two_matches_pattern, 5)
         type(Key.F3, KeyModifier.SHIFT)
         one_of_two_matches_displayed = exists(one_of_two_matches_pattern, 5)
-
         assert_true(self, one_of_two_matches_displayed and two_of_two_matches_displayed,
                     'The number of the highlighted item changes when navigating.')
-
