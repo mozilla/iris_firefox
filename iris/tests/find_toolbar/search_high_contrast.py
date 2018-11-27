@@ -42,102 +42,125 @@ class Test(BaseTest):
                 win_on_high_contrast_theme_pattern = Pattern('high_contrast_is_on.png')  # high contrast is on
 
         if Settings.is_linux():
-
             high_contrast_bttn_normal_theme_pattern = Pattern('high_contrast_bttn_normal_theme.png')
-
             default_contrast_bttn_normal_theme_pattern = Pattern('default_contrast_bttn_normal_theme.png')
-            default_contrast_bttn_normal_theme_pattern.similarity = 0.6
-
             default_contrast_bttn_high_theme_pattern = Pattern('default_contrast_bttn_high_theme.png')  # for closing
-            default_contrast_bttn_high_theme_pattern.similarity = 0.6
-
             system_menu_opened_pattern = Pattern('system_search_menu_contrast.png')
             appearance_panel_default_pattern = Pattern('appearance_panel_default_contrast_displayed.png')
-            appearance_panel_default_pattern.similarity = 0.6
+            # appearance_panel_high_pattern = Pattern('appearance_panel_high_contrast_displayed.png')
+           ###
+            # appearance_panel_default_pattern
+            # system_menu_opened_pattern = Pattern('system_search_menu_contrast.png')
+            os_program_menu_opened_basic_contrast_pattern = Pattern('system_search_menu_contrast.png')
+            #theme_menu_opened_pattern = Pattern('theme_menu_opened_basic_contrast.png')
+            appearance_panel_default_contrast_displayed_pattern = ('appearance_panel_default_contrast_displayed.png')
 
-            appearance_panel_high_pattern = Pattern('appearance_panel_high_contrast_displayed.png')
+            high_contrast_normal_button_pattern = Pattern('high_contrast_normal_button.png')
+            # high_contrast_black_button_active_pattern = Pattern('high_contrast_black_button_active.png')
+
+            high_contrast_black_button_active_pattern = Pattern('appearance_panel_high_contrast_displayed.png')
 
             type(Key.META)
-
-            system_menu_opened = exists(system_menu_opened_pattern, 5)
+            system_menu_opened = exists(os_program_menu_opened_basic_contrast_pattern, 5)
             assert_true(self, system_menu_opened, 'System menu opened')
 
-            type('appearance')
-            # type(Key.TAB)
+            type("appearance")
             type(Key.ENTER)
-
-            appearance_panel_default_contrast_loaded = exists(appearance_panel_default_pattern, 5)
+            appearance_panel_default_contrast_loaded = exists(appearance_panel_default_contrast_displayed_pattern, 5)
             assert_true(self, appearance_panel_default_contrast_loaded, 'Appearence menu loaded in default theme')
+            # theme_menu_opened = exists(theme_menu_opened_pattern, 30)
+            # assert_true(self, theme_menu_opened, "Theme settings menu opened properly")
 
-            contrast_dropdown_bttn_location = find(default_contrast_bttn_normal_theme_pattern)
-            click(Location(contrast_dropdown_bttn_location.x+3,
-                           contrast_dropdown_bttn_location.y+3), 1)
+            #  click on theme
+            click(high_contrast_normal_button_pattern, 1)
+            click(default_contrast_bttn_high_theme_pattern, 1)
 
-            click(high_contrast_bttn_normal_theme_pattern, 1)
+            theme_changed_to_high_contrast = exists(high_contrast_black_button_active_pattern.similar(0.75), 40)
+            assert_true(self, theme_changed_to_high_contrast, 'Theme changed to high contrast theme.')
 
-            high_contrast_is_on = exists(appearance_panel_high_pattern, 5)
+            type(Key.F4, KeyModifier.ALT)
 
-            type(Key.F4, KeyModifier.ALT)  # close window
+            theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.similar(0.75), 30)
+            assert_true(self, theme_settings_window_is_closed,
+                        'Theme Setting window was closed properly.')
 
-            assert_true(self, high_contrast_is_on,
-                        'Ubuntu theme changed to "HighContrast". High contrast theme activated')
 
-        if Settings.is_windows():
-            if get_os_version() == 'win7':
-                os_program_menu_opened_basic_contrast_pattern = Pattern('os_program_menu_opened_basic_contrast.png')
-                theme_menu_opened_pattern = Pattern('theme_menu_opened_basic_contrast.png')
-                high_contrast_normal_button_pattern = Pattern('high_contrast_normal_button.png')
-                high_contrast_black_button_active_pattern = Pattern('high_contrast_black_button_active.png')
+            # Check that the Theme Settings window was closed properly.
 
-                type(Key.WIN)
-                os_program_menu_opened = exists(os_program_menu_opened_basic_contrast_pattern, 20)
-                assert_true(self, os_program_menu_opened, 'OS program menu opened properly.')
 
-                type("Change the theme")
-                type(Key.ENTER)
-                theme_menu_opened_exists = exists(theme_menu_opened_pattern, 30)
-                assert_true(self, theme_menu_opened_exists, "Theme settings menu opened properly")
+            #
+            # high_contrast_bttn_normal_theme_pattern = Pattern('high_contrast_bttn_normal_theme.png')
+            #
+            # default_contrast_bttn_normal_theme_pattern = Pattern('default_contrast_bttn_normal_theme.png')
+            # default_contrast_bttn_normal_theme_pattern.similarity = 0.6
+            #
+            # default_contrast_bttn_high_theme_pattern = Pattern('default_contrast_bttn_high_theme.png')  # for closing
+            # default_contrast_bttn_high_theme_pattern.similarity = 0.6
+            #
+            # system_menu_opened_pattern = Pattern('system_search_menu_contrast.png')
+            # appearance_panel_default_pattern = Pattern('appearance_panel_default_contrast_displayed.png')
+            # appearance_panel_default_pattern.similarity = 0.6
+            #
+            # appearance_panel_high_pattern = Pattern('appearance_panel_high_contrast_displayed.png')
+            #
+            # type(Key.META)
+            #
+            # system_menu_opened = exists(system_menu_opened_pattern, 5)
+            # assert_true(self, system_menu_opened, 'System menu opened')
+            #
+            # type('appearance')
+            # # type(Key.TAB)
+            # type(Key.ENTER)
+            #
+            # appearance_panel_default_contrast_loaded = exists(appearance_panel_default_pattern, 5)
+            # assert_true(self, appearance_panel_default_contrast_loaded, 'Appearence menu loaded in default theme')
+            #
+            # contrast_dropdown_bttn_location = find(default_contrast_bttn_normal_theme_pattern)
+            # click(Location(contrast_dropdown_bttn_location.x+3,
+            #                contrast_dropdown_bttn_location.y+3), 1)
+            #
+            # click(high_contrast_bttn_normal_theme_pattern, 1)
+            #
+            # high_contrast_is_on = exists(appearance_panel_high_pattern, 5)
+            #
+            # type(Key.F4, KeyModifier.ALT)  # close window
+            #
+            # assert_true(self, high_contrast_is_on,
+            #             'Ubuntu theme changed to "HighContrast". High contrast theme activated')
 
-                #  click on theme
-                click(high_contrast_normal_button_pattern, 1)
-                #  theme changed
 
-                theme_changed_to_high_contrast = wait_vanish(high_contrast_normal_button_pattern.similar(0.75), 40)
-                assert_true(self, theme_changed_to_high_contrast, 'Theme changed to high contrast theme.')
+         # and win 10
+        os_program_menu_opened_basic_contrast_pattern = Pattern('os_program_menu_opened_basic_contrast.png')
+        theme_menu_opened_pattern = Pattern('theme_menu_opened_basic_contrast.png')
+        high_contrast_normal_button_pattern = Pattern('high_contrast_normal_button.png')
+        high_contrast_black_button_active_pattern = Pattern('high_contrast_black_button_active.png')
 
-                #  close theme page
-                #  wait wanish theme page close
-                type(Key.F4, KeyModifier.ALT)
+        type(Key.WIN)
+        os_program_menu_opened = exists(os_program_menu_opened_basic_contrast_pattern, 20)
+        assert_true(self, os_program_menu_opened,
+                    'OS program menu opened properly.')
 
-                # Check that the Theme Settings window was closed properly.
-                theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.similar(0.75), 10)
-                assert_true(self, theme_settings_window_is_closed,
-                            'Theme Setting window was closed properly.')
+        type("Change the theme")
+        type(Key.ENTER)
+        theme_menu_opened = exists(theme_menu_opened_pattern, 30)
+        assert_true(self, theme_menu_opened,
+                    "Theme settings menu opened properly")
 
-            else:  # win 10
+        if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
+            win_open_contrast_settings_location = find(theme_menu_opened_pattern)
+            click(Location(win_open_contrast_settings_location.x+10,
+                           win_open_contrast_settings_location.y+10), 1)
 
-                type(Key.WIN)
+        click(high_contrast_normal_button_pattern, 1)
+        theme_changed_to_high_contrast = exists(high_contrast_black_button_active_pattern.similar(0.75), 40)
+        assert_true(self, theme_changed_to_high_contrast,
+                    'Theme changed to high contrast theme.')
 
-                paste('themes and related settings')
-                type(Key.ENTER)
+        type(Key.F4, KeyModifier.ALT)
+        theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.                                                              similar(0.75), 10)
+        assert_true(self, theme_settings_window_is_closed,
+                    'Theme Setting window was closed properly.')
 
-                win_high_contrast_settings_exists = exists(win_high_contrast_settings_pattern, 10)
-                win_high_contrast_settings_location = find(win_high_contrast_settings_pattern)
-                click(Location(win_high_contrast_settings_location.x+10,
-                               win_high_contrast_settings_location.y+10), 1)
-
-                win_off_high_contrast_theme_exists = exists(win_off_high_contrast_button_theme_pattern, 10)
-                win_off_high_contrast_theme_location = find(win_off_high_contrast_button_theme_pattern)
-                click(Location(win_off_high_contrast_theme_location.x+7,
-                               win_off_high_contrast_theme_location.y+7), 1)
-
-                # delay for high contrast to be enabled
-                time.sleep(5)
-                high_contrast_enabled = exists(win_on_high_contrast_theme_pattern, 5)
-                assert_true(self, high_contrast_enabled, 'High contrast option enabled on Windows 10')
-
-                win_close_active_window_location = find(close_active_contrast_window_pattern)
-                click(close_active_contrast_window_pattern, 1)
 
         # test body
         test_page_local = self.get_asset_path('wiki_soap.html')
