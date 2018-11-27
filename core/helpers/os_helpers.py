@@ -5,6 +5,7 @@
 
 import mozinfo
 import mss
+import multiprocessing
 
 from core.enums import OSPlatform
 from core.errors import APIHelperError
@@ -47,3 +48,7 @@ class OSHelper:
             return 'osx_%s' % 'retina ' if OSHelper.is_high_def_display() else 'non_retina'
         else:
             return current_os
+
+    @staticmethod
+    def use_multiprocessing():
+        return multiprocessing.cpu_count() >= 4 and OSHelper.get_os() != 'win'
