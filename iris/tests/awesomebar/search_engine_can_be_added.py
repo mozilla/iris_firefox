@@ -36,6 +36,7 @@ class Test(BaseTest):
         add_button_pattern = Pattern('add_button.png')
         startpage_https_search_engine_pattern = Pattern('startpage_https_search_engine.png')
         startpage_one_off_button_pattern = Pattern('startpage_one_off_button.png')
+        find_add_ons = Pattern('find_add_ons.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
@@ -141,7 +142,15 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Find more search engines\' link found.')
 
         click(find_more_search_engines_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
+
+        try:
+            wait(find_add_ons, 10)
+            logger.debug('Find add-ons field is present on the page.')
+            click(find_add_ons)
+        except FindError:
+            raise FindError('Find add-ons field is NOT present on the page, aborting.')
+
+        paste('startpage')
 
         expected = exists(add_startpage_https_privacy_search_engine_pattern, 10)
         assert_true(self, expected, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.')

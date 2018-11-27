@@ -21,7 +21,6 @@ class Test(BaseTest):
         bttn_hl_all_pattern = Pattern('find_bttn_hl_all.png')
         bttn_match_case_pattern = Pattern('find_bttn_match_case.png')
         find_bttn_whole_words_pattern = Pattern('find_bttn_whole_words.png')
-
         menu_bar_edit_pattern = Pattern('menu_bar_edit_pattern.png')
         hamburger_menu_pattern = Pattern('hamburger_menu_pattern.png')
         hamburger_menu_find_in_page_pattern = Pattern('hamburger_menu_find_in_page_pattern.png')
@@ -36,11 +35,10 @@ class Test(BaseTest):
         edit_delete()
 
         find_toolbar_is_opened = exists(find_toolbar_pattern, 1)
-
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
                                                   'by pressing CTRL + F / Cmd + F,.')
 
-	exists(find_toolbar_pattern, 5)
+        exists(find_toolbar_pattern, 5)
         find_toolbar_x = find(find_toolbar_pattern).x
         bttn_hl_all_x = find(bttn_hl_all_pattern).x
         bttn_match_case_x = find(bttn_match_case_pattern).x
@@ -55,7 +53,6 @@ class Test(BaseTest):
             raise FindError('The Find toolbar did not disappear.')
 
         items_appear_in_proper_way = find_toolbar_x < bttn_hl_all_x < bttn_match_case_x < find_bttn_whole_words_pattern_x
-
         assert_true(self, items_appear_in_proper_way,
                     'The Buttons of Find toolbar are displayed in correct order.')
 
@@ -89,9 +86,8 @@ class Test(BaseTest):
         edit_delete()
 
         find_toolbar_menu_bar = exists(find_toolbar_pattern, 5)
-
         assert_true(self, find_toolbar_menu_bar, 'The Find Toolbar is successfully displayed '
-                                                  'by pressing Menu bar > Edit > Find in This Page.')
+                                                 'by pressing Menu bar > Edit > Find in This Page.')
 
         find_toolbar_x = find(find_toolbar_pattern).x
         bttn_hl_all_x = find(bttn_hl_all_pattern).x
@@ -107,7 +103,6 @@ class Test(BaseTest):
             raise FindError('The Find toolbar did not disappear.')
 
         items_appear_in_proper_way = find_toolbar_x < bttn_hl_all_x < bttn_match_case_x < find_bttn_whole_words_pattern_x
-
         assert_true(self, items_appear_in_proper_way,
                     'The Buttons of Find toolbar are displayed in correct order.')
 
@@ -123,7 +118,6 @@ class Test(BaseTest):
         edit_delete()
 
         find_toolbar_opened_hamburger = exists(find_toolbar_pattern, 5)
-
         assert_true(self, find_toolbar_opened_hamburger,
                     'The Find Toolbar is successfully displayed by pressing Menu bar > Edit > Find in This Page.')
 
@@ -141,6 +135,5 @@ class Test(BaseTest):
             raise FindError('The Find toolbar did not disappear.')
 
         items_appear_in_proper_way = find_toolbar_x < bttn_hl_all_x < bttn_match_case_x < find_bttn_whole_words_pattern_x
-
         assert_true(self, items_appear_in_proper_way,
                     'The Buttons of Find toolbar are displayed in correct order.')
