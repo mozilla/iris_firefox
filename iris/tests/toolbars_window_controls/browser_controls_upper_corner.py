@@ -60,7 +60,8 @@ class Test(BaseTest):
             expected = exists(hover_maximize_control_pattern, 10)
             assert_true(self, expected,
                         'Hover over the \'maximize\' button works correctly; Window successfully restored.')
-
+        if Settings.is_mac():
+            mouse_move(Pattern('home_button.png'))
         click_window_control('minimize', 'main')
         time.sleep(Settings.UI_DELAY)
 
