@@ -163,6 +163,8 @@ def click_window_control(button, window_type='auxiliary'):
         minimize_window_control(window_type)
     elif button == 'maximize':
         maximize_window_control(window_type)
+    elif button == 'restore':
+        restore_window_control(window_type)
     elif button == 'full_screen':
         full_screen_control(window_type)
     else:
@@ -923,6 +925,36 @@ def open_zoom_menu():
         for i in range(2):
             type(text=Key.DOWN)
         type(text=Key.ENTER)
+
+
+def restore_window_control(window_type):
+    """Click on maximize window control.
+
+    :param window_type: Type of window that need to be maximized.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        if Settings.is_mac():
+            key_down(Key.ALT)
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2))
+            key_up(Key.ALT)
+        else:
+            if Settings.is_linux():
+                reset_mouse()
+            click(AuxiliaryWindow.ZOOM_RESTORE_BUTTON)
+    else:
+        if Settings.is_mac():
+            key_down(Key.ALT)
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2))
+            key_up(Key.ALT)
+        else:
+            if Settings.is_linux():
+                reset_mouse()
+            click(MainWindow.RESIZE_BUTTON)
 
 
 def remove_zoom_indicator_from_toolbar():
