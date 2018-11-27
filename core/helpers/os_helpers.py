@@ -11,6 +11,7 @@ from core.errors import APIHelperError
 
 OS_NAME = mozinfo.os
 OS_VERSION = mozinfo.os_version
+MONITORS = mss.mss().monitors[1:]
 
 
 class OSHelper:
@@ -18,7 +19,7 @@ class OSHelper:
     @staticmethod
     def is_high_def_display():
         """Checks if the primary display is high definition."""
-        main_display = mss.mss().monitors[1]
+        main_display = MONITORS[0]
         screenshot = mss.mss().grab(main_display)
         if screenshot.width > main_display['width'] or screenshot.height > main_display['height']:
             return True

@@ -2,11 +2,12 @@ import logging
 
 import cv2
 import mss
+import mss.tools
 import numpy as np
-from pyautogui import screenshot
+
+from core.helpers.os_helpers import MONITORS
 
 logger = logging.getLogger(__name__)
-MONITORS = mss.mss().monitors[1:]
 
 
 class Location:
@@ -73,41 +74,98 @@ class Location:
 
 
 class Rectangle:
-    def __init__(self, start_point: Location = Location(0, 0), width: int = 0, height: int = 0):
-        self.start_point: Location = start_point
+    """Rectangle class represents the coordinates and size of a region/screen."""
+
+    def __init__(self, x_start: int = 0, y_start: int = 0, width: int = 0, height: int = 0):
+        self.x = x_start
+        self.y = y_start
         self.width: int = width
         self.height: int = height
 
     def __str__(self):
-        return '(%s, %s, %s)' % (self.start_point, self.width, self.height)
+        return '(%s, %s, %s, %s)' % (self.x, self.y, self.width, self.height)
 
     def __repr__(self):
-        return '%s(%r, %r, %r)' % (self.__class__.__name__, self.start_point, self.width, self.height)
+        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self.x, self.y, self.width, self.height)
 
 
-class Display:
-    def __init__(self, screen_id=0):
-        self._screen_id = screen_id
-        self._screen_list = [item for item in MONITORS]
-        self._bounds = get_screen_details(self._screen_list, self._screen_id)
+class Region(Rectangle):
+    """Region is a rectangular area on a screen, which is defined by its upper left corner (x, y) as a distance relative
+     to the upper left corner of the screen (0, 0) and its dimension (w, h) as its width and height.
+
+     Coordinates are based on screen coordinates.
+
+     origin                               top
+        +-----> x increases                |
+        |                           left  -+-  right
+        v                                  |
+     y increases                         bottom
+     """
+
+    def __init__(self, x_start: int = 0, y_start: int = 0, width=0, height=0):
+        Rectangle.__init__(self, x_start, y_start, width, height)
 
     def __str__(self):
-        return '(%s, %s, %s)' % (self._bounds.start_point, self._bounds.width, self._bounds.height)
+        return '(%s, %s, %s, %s)' % (self.x, self.y, self.width, self.height)
 
     def __repr__(self):
-        return '%s(%r, %r, %r)' % (self.__class__.__name__, self._bounds.start_point, self._bounds.width,
-                                   self._bounds.height)
+        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self.x, self.y, self.width, self.height)
+
+    def get_center(self):
+        """Returns a Location object for the center of te screen."""
+        return Location(int((self.x + self.width) / 2), int((self.y + self.height) / 2))
+
+    def get_region(self):
+        """Returns a region."""
+        return Region(self.x, self.y, self.width, self.height)
+
+    def new_region(self, x_0: int, y_0: int, w: int, h: int):
+        """Creates a new region from the current region."""
+        if self.x + x_0 >= self.x and x_0 + w <= self.width and self.y + y_0 >= self.y and y_0 + h <= self.height:
+            return Region(self.x + x_0, self.y + y_0, w, h)
+        else:
+            raise ValueError(
+                'Out of bounds. Cannot create R1 %s in R2 %s' % (Region(self.x + x_0, self.y + y_0, w, h), self))
+
+    def screenshot(self, image_name):
+        """Creates a screenshot from the region.
+
+        :param image_name: Name/path for the output file.
+        """
+        region = Rectangle(self.x, self.y, self.width, self.height)
+        image = ScreenshotImage(region)
+        image.save(image_name)
+
+
+class Screen(Region):
+    """Class Screen is the representation for a physical monitor where the capturing process (grabbing a rectangle
+    from a screenshot). It is used for further processing with find operations. For Multi Monitor Environments it
+    contains features to map to the relevant monitor.
+    """
+
+    def __init__(self, screen_id: int = 0):
+        self.screen_id = screen_id
+        self.screen_list = [item for item in MONITORS]
+        self._bounds = _get_screen_details(self.screen_list, self.screen_id)
+        Region.__init__(self, self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
+
+    def __str__(self):
+        return '(%s, %s, %s, %s)' % (self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
+
+    def __repr__(self):
+        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self._bounds.x, self.y, self._bounds.width,
+                                       self._bounds.height)
 
     def get_number_screens(self):
-        """Returns the number of screens."""
-        return len(self._screen_list)
+        """Get the number of screens in a multi-monitor environment at the time the script is running."""
+        return len(self.screen_list)
 
     def get_bounds(self):
-        """Call the get_screen_details() method."""
+        """Get the dimensions of monitor represented by the screen object."""
         return self._bounds
 
 
-def get_screen_details(screen_list, screen_id):
+def _get_screen_details(screen_list, screen_id):
     """Get the screen details.
 
     :param screen_list: List with available monitors.
@@ -119,14 +177,14 @@ def get_screen_details(screen_list, screen_id):
     else:
         try:
             details = screen_list[screen_id]
-            return Rectangle(Location(details['left'], details['top']), details['width'], details['height'])
+            return Rectangle(details['left'], details['top'], details['width'], details['height'])
         except IndexError:
             logger.warning('Screen %s does not exist. Available monitors: %s'
-                           % (screen_id, ', '.join(get_available_monitors(screen_list))))
+                           % (screen_id, ', '.join(_get_available_monitors(screen_list))))
     return Rectangle()
 
 
-def get_available_monitors(screen_list):
+def _get_available_monitors(screen_list):
     """Return a list with all the available monitors."""
     res = []
     for screen in screen_list:
@@ -135,23 +193,31 @@ def get_available_monitors(screen_list):
 
 
 class ScreenshotImage:
-    def __init__(self, region: Rectangle = None):
+    """This class represents the visual representation of a region/screen."""
+
+    def __init__(self, region: Rectangle = None, screen_id: int = 0):
 
         if region is None:
-            region = Display().get_bounds()
+            region = Screen(screen_id).get_bounds()
 
-        region_coordinates = (region.start_point.x, region.start_point.y, region.width, region.height)
-        print(region_coordinates)
-        screen_pil_image = screenshot(region=region_coordinates)
-        height, width = self._gray_array.shape
+        screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
 
-        self._gray_array = cv2.cvtColor(np.array(screen_pil_image), cv2.COLOR_BGR2GRAY)
+        self.image = mss.mss().grab(screen_region)
+        self.rgb_array = np.array(self.image)
+        self.gray_array = cv2.cvtColor(np.array(self.image), cv2.COLOR_BGR2GRAY)
+        height, width = self.gray_array.shape
         self.width = width
         self.height = height
 
-    @property
-    def image_gray_array(self):
-        return self._gray_array
+    def save(self, file_name: str):
+        if file_name is None:
+            return
+        else:
+            mss.tools.to_png(self.image.rgb, self.image.size, output=file_name)
 
     def binarize(self):
-        return cv2.threshold(self._gray_array, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        return cv2.threshold(self.gray_array, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+
+# region1 = Screen(1).new_region(0, 0, 50, 50)
+# region2 = region1.new_region(25, 25, 25, 25)
+# region2.screenshot()
