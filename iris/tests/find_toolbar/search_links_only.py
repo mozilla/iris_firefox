@@ -22,7 +22,6 @@ class Test(BaseTest):
         find_in_page_links_only_soap_pattern = Pattern('find_links_only_part.png')
         soap_link_highlighted_green_pattern = Pattern('soap_link_highlighted.png')
         soap_link_highlighted_green_pattern.similarity = 0.6
-        soap_other_link_highlighted_pink_pattern = Pattern('soap_link_disambiguation_highlighted.png')
 
         test_page_local = self.get_asset_path('wiki_soap.html')
         navigate(test_page_local)
