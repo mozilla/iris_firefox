@@ -86,11 +86,11 @@ class Test(BaseTest):
 
         time.sleep(Settings.UI_DELAY_LONG)
 
-        max_attempts = 5
+        max_attempts = 10
 
         while max_attempts > 0:
             type(Key.TAB)
-            if exists(bookmark_tags, 2):
+            if exists(bookmark_tags, 1):
                 edit_delete()
                 max_attempts = 0
             max_attempts -= 1
