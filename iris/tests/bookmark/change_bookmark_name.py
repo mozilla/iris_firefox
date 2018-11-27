@@ -15,7 +15,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        done_pattern = Pattern('done_button.png')
+        done_pattern = Bookmarks.StarDialog.DONE
         modified_bookmark_pattern = Pattern('moz_modified_bookmark.png')
         modified_bookmark_2_pattern = Pattern('moz_modified_bookmark_2.png')
         properties_pattern = Pattern('properties_option.png')

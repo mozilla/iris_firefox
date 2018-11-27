@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        page_bookmarked_pattern = Pattern('page_bookmarked.png')
+        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png')
         search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')
         search_suggestion_history_pattern = Pattern('search_suggestion_history.png')

@@ -29,7 +29,7 @@ class Test(BaseTest):
         moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
-        done_button_from_star_menu = Pattern('done_button.png')
+        done_button_from_star_menu = Bookmarks.StarDialog.DONE
         bookmark_tags = Pattern('bookmark_tags_selected.png')
         bookmark_button_pattern = LocationBar.STAR_BUTTON_STARRED
 

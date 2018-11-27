@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
         search_settings_pattern = Pattern('search_settings.png')
-        page_bookmarked_pattern = Pattern('page_bookmarked.png')
+        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
         search_suggestion_history_pattern = Pattern('search_suggestion_history.png')
 

@@ -37,5 +37,5 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Bookmark star is not present on the page, aborting.')
 
-        page_bookmarked_assert = exists(Pattern('page_bookmarked.png'), 10)
+        page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, 10)
         assert_true(self, page_bookmarked_assert, 'The page was successfully bookmarked from a private window.')
