@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Search with the Quick Find [Failed due to bug (other items are not highlighted as pink)'
+        self.meta = 'Search with the Quick Find [Failed due to bug (other items are not highlighted as pink)]'
         self.test_case_id = '127259'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
@@ -32,13 +32,11 @@ class Test(BaseTest):
         edit_delete()
 
         find_toolbar_opened = exists(quick_find_label_pattern, 10)
-
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         type('see', interval=1)
 
         selected_label_exists = exists(see_label_selected_pattern, 5)
-
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, False,
                     'The others are not highlighted as pink')
