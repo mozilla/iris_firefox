@@ -42,6 +42,8 @@ class Test(BaseTest):
 
         if Settings.is_linux():
             type(Key.META)
+        else:
+            type(Key.WIN)
 
         os_program_menu_opened = exists(os_program_menu_opened_basic_contrast_pattern, 30)
         assert_true(self, os_program_menu_opened, 'System menu opened')
@@ -123,8 +125,7 @@ class Test(BaseTest):
 
         if Settings.is_linux():
             type(Key.META)
-
-        if Settings.is_windows():
+        else:
             type(Key.WIN)
 
         os_program_menu_opened_in_high_contrast = exists(theme_menu_opened_in_high_contrast_pattern, 20)
