@@ -7,7 +7,9 @@ import time
 
 from iris.api.core.errors import FindError, APIHelperError
 from iris.api.core.firefox_ui.menus import SidebarBookmarks
+
 from iris.api.core.firefox_ui.location_bar import LocationBar
+from iris.api.core.firefox_ui.bookmarks import Bookmarks
 from iris.api.core.key import Key, KeyModifier, key_down, key_up, type
 from iris.api.core.location import Location
 from iris.api.core.pattern import Pattern
