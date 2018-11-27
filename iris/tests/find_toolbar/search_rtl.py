@@ -57,5 +57,19 @@ class Test(BaseTest):
         rtl_second_not_highlighted_exists = exists(rtl_second_not_highlighted_pattern, 1)
         assert_true(self, rtl_second_not_highlighted_exists, 'The second one not highlighted.')
 
-        sys.setdefaultencoding('ascii')
+        edit_select_all()
+        edit_delete()
+        paste('على')
+        find_next()
+        find_next()
 
+        selected_label_exists = exists(rtl_full_selected_pattern, 1)
+        assert_true(self, selected_label_exists, 'After navigation The first one has a green background highlighted.')
+
+        [scroll_down() for _ in range(4)]
+        [scroll_up() for _ in range(4)]
+
+        selected_label_exists = exists(rtl_full_selected_pattern, 1)
+        assert_true(self, selected_label_exists, 'After scroll, no checkboarding is present.')
+
+        sys.setdefaultencoding('ascii')
