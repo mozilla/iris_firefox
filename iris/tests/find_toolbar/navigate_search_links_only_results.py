@@ -20,14 +20,9 @@ class Test(BaseTest):
 
         soap_label_pattern = Pattern('soap_label.png')
         find_in_page_links_only_icon_pattern = Pattern('find_in_page_links_only_icon.png')
-
-        # Cannot detect the highlighted pink pattern
-        # soap_other_link_highlighted_pink_pattern = Pattern('')
-
         soap_link_pattern = Pattern('soap_link.png')
         soap_link_highlighted_pattern = Pattern('soap_link_highlighted.png')
         soap_link_highlighted_pattern.similarity = 0.6
-
         soap_other_link_pattern = Pattern('soap_link_disambiguation.png')
         soap_other_link_highlighted_pattern = Pattern('soap_link_disambiguation_highlighted.png')
 
@@ -44,13 +39,11 @@ class Test(BaseTest):
         edit_delete()
 
         find_toolbar_opened = exists(find_in_page_links_only_icon_pattern, 10)
-
         assert_true(self, find_toolbar_opened, 'Quick find (links only) toolbar is opened.')
 
         type('soap', interval=1)
 
         found_link_highlighted_green = exists(soap_link_highlighted_pattern, 5)
-
         assert_true(self, found_link_highlighted_green, 'Matching link is found.')
 
         # Other link doesn't have pink background
@@ -65,7 +58,6 @@ class Test(BaseTest):
 
         soap_link_highlighted = exists(soap_link_highlighted_pattern, 5)
         soap_other_link_not_highlighted = exists(soap_other_link_pattern, 5)
-
         assert_true(self, soap_link_not_highlighted and soap_other_link_highlighted
                     and soap_link_highlighted and soap_other_link_not_highlighted,
                     'The green box is moved with the current item')
