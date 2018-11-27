@@ -140,10 +140,10 @@ class Test(BaseTest):
         assert_true(self, os_program_menu_opened,
                     'OS program menu opened properly.')
 
-        if Settings.get_os_version() == 'win7':
-            type("Change the theme")
         if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
             type("High contrast settings")
+        if Settings.get_os_version() == 'win7':
+            type("Change the theme")
         if Settings.get_os() == Platform.LINUX:
             type("Appearance")
 
@@ -161,7 +161,6 @@ class Test(BaseTest):
         theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.                                                              similar(0.75), 10)
         assert_true(self, theme_settings_window_is_closed,
                     'Theme Setting window was closed properly.')
-
 
         # test body
         test_page_local = self.get_asset_path('wiki_soap.html')
@@ -269,29 +268,34 @@ class Test(BaseTest):
                             'High contrast theme deactivated')
 
         if Settings.is_windows():
-            if get_os_version() == 'win7':
-                theme_menu_opened_in_high_contrast_pattern = Pattern('os_program_menu_opened_high_contrast.png')
-                high_contrast_basic_theme_button_pattern = Pattern('high_contrast_basic_theme_button.png')
+            theme_menu_opened_in_high_contrast_pattern = Pattern('os_program_menu_opened_high_contrast.png')
+            high_contrast_basic_theme_button_pattern = Pattern('high_contrast_basic_theme_button.png')
 
-                type(Key.WIN)
-                os_program_menu_opened_in_high_contrast = exists(theme_menu_opened_in_high_contrast_pattern, 20)
-                assert_true(self, os_program_menu_opened_in_high_contrast, 'OS program menu opened properly.')
+            type(Key.WIN)
+            os_program_menu_opened_in_high_contrast = exists(theme_menu_opened_in_high_contrast_pattern, 20)
+            assert_true(self, os_program_menu_opened_in_high_contrast, 'OS program menu opened properly.')
 
+            if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
+                type("High contrast settings")
+            if Settings.get_os_version() == 'win7':
                 type("Change the theme")
-                type(Key.ENTER)
-                theme_menu_opened_in_high_contrast = exists(high_contrast_black_button_active_pattern, 30)
-                assert_true(self, theme_menu_opened_in_high_contrast, "Theme settings menu opened properly")
+            if Settings.get_os() == Platform.LINUX:
+                type("Appearance")
 
-                click(high_contrast_basic_theme_button_pattern, 1)
-                theme_changed_to_basic_contrast = exists(theme_menu_opened_pattern.similar(0.75), 40)
-                assert_true(self, theme_changed_to_basic_contrast, 'Theme changed to basic contrast theme.')
+            type(Key.ENTER)
+            theme_menu_opened_in_high_contrast = exists(high_contrast_black_button_active_pattern, 30)
+            assert_true(self, theme_menu_opened_in_high_contrast, "Theme settings menu opened properly")
 
-                type(Key.F4, KeyModifier.ALT)
-                theme_settings_window_is_closed = wait_vanish(theme_menu_opened_pattern.similar(0.75), 40)
-                assert_true(self, theme_settings_window_is_closed,
-                            'Theme Setting window was closed properly.')
+            click(high_contrast_basic_theme_button_pattern, 1)
+            theme_changed_to_basic_contrast = exists(theme_menu_opened_pattern.similar(0.75), 40)
+            assert_true(self, theme_changed_to_basic_contrast, 'Theme changed to basic contrast theme.')
 
-            else: # deactivate high contrast mode on WIN 10
+            type(Key.F4, KeyModifier.ALT)
+            theme_settings_window_is_closed = wait_vanish(theme_menu_opened_pattern.similar(0.75), 40)
+            assert_true(self, theme_settings_window_is_closed,
+                        'Theme Setting window was closed properly.')
+
+        else: # deactivate high contrast mode on WIN 10
                 try:
 
                     type(Key.WIN)
