@@ -18,7 +18,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         rtl_full_selected_pattern = Pattern('rtl_full_selected.png')
         rtl_deleted_selected_pattern = Pattern('rtl_deleted_selected.png')
         rtl_second_highlighted_pattern = Pattern('rtl_second_highlighted.png')
@@ -34,33 +33,29 @@ class Test(BaseTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
-
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         reload(sys)
         sys.setdefaultencoding('utf8')
 
         paste('على')
-
         selected_label_exists = exists(rtl_full_selected_pattern, 1)
+        assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
 
         type(Key.BACKSPACE)
-
         rtl_deleted_selected_exists = exists(rtl_deleted_selected_pattern, 1)
-
-        assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, rtl_deleted_selected_exists,
                     'Typing and deleting work. The caret is placed on the left side of the word.')
 
         edit_select_all()
         edit_delete()
-
         paste('ما')
-
         rtl_second_highlighted_exists = exists(rtl_second_highlighted_pattern, 1)
-        rtl_second_not_highlighted_exists = exists(rtl_second_not_highlighted_pattern, 1)
-
         assert_true(self, rtl_second_highlighted_exists, 'The first one has a green background highlighted.')
+
+        rtl_second_not_highlighted_exists = exists(rtl_second_not_highlighted_pattern, 1)
         assert_true(self, rtl_second_not_highlighted_exists, 'The second one not highlighted.')
+
+        sys.setdefaultencoding('ascii')
 
