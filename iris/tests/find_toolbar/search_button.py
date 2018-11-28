@@ -22,8 +22,6 @@ class Test(BaseTest):
         season_label_selected_pattern = Pattern('season_label_selected.png')
         settings_label_not_selected_pattern = Pattern('settings_label_not_selected.png')
         settings_label_selected = Pattern('settings_label_selected.png')
-        arrow_up_button_pattern = Pattern('arrow_up_button.png')
-        arrow_down_button_pattern = Pattern('arrow_down_button.png')
 
         test_page_local = self.get_asset_path('google.htm')
         navigate(test_page_local)
@@ -47,7 +45,7 @@ class Test(BaseTest):
         assert_true(self, label_not_found, 'the others are not highlighted.')
         assert_true(self, button_not_selected, 'Submit button is not highlighted.')
 
-        click(arrow_down_button_pattern)
+        click(FindToolbar.FIND_NEXT)
 
         settings_selected = exists(settings_label_selected, 1)
         season_not_selected = exists(season_label_not_selected_pattern, 1)
@@ -56,7 +54,7 @@ class Test(BaseTest):
         assert_true(self, season_not_selected, 'the others are not highlighted.')
         assert_true(self, button_not_selected, 'Submit button is not highlighted.')
 
-        click(arrow_up_button_pattern)
+        click(FindToolbar.FIND_PREVIOUS)
 
         season_selected = exists(season_label_selected_pattern, 1)
         settings_not_selected = exists(settings_label_not_selected_pattern, 1)

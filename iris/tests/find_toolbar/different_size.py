@@ -18,7 +18,6 @@ class Test(BaseTest):
     def run(self):
 
         soap_label_pattern = Pattern('soap_label.png')
-        match_case_button_pattern = Pattern('match_case_button.png')
         soap_xml_label_pattern = Pattern('soap_xml_label.png')
         soap_envelope_label_selected_pattern = Pattern('soap_envelope_label_selected.png')
 
@@ -49,7 +48,7 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         type('soap', interval=1)
-        click(match_case_button_pattern)
+        click(FindToolbar.FIND_CASE_SENSITIVE)
 
         find_next()
 
