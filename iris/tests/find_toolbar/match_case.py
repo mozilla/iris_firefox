@@ -16,45 +16,38 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        find_in_page_icon_pattern = Pattern('find_in_page_icon.png')
         soap_label_pattern = Pattern('soap_label.png')
-        match_case_button_pattern = Pattern('match_case_button.png')
         soap_xml_label_pattern = Pattern('soap_xml_label.png')
         soap_envelope_label_selected_pattern = Pattern('soap_envelope_label_selected.png')
         soap_label_selected_pattern = Pattern('soap_label_selected.png')
 
+        # Open Firefox and navigate to a popular website
         test_page_local = self.get_asset_path('wiki_soap.html')
         navigate(test_page_local)
-
         soap_label_exists = exists(soap_label_pattern, 20)
-
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
+        # Open the Find Toolbar
         open_find()
         edit_select_all()
         edit_delete()
-
-        find_toolbar_opened = exists(find_in_page_icon_pattern, 10)
-
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
+        # Enter a search term using a word written with an upper case, activate "Match Case" and press ENTER
         type('soap', interval=1)
-        click(match_case_button_pattern)
+        click(FindToolbar.FIND_CASE_SENSITIVE)
         find_next()
-
         selected_label_exists = exists(soap_envelope_label_selected_pattern, 5)
-        unselected_label_exists = exists(soap_xml_label_pattern, 5)
-
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
-        assert_true(self, unselected_label_exists,
-                    'The others are not highlighted.')
+        unselected_label_exists = exists(soap_xml_label_pattern, 5)
+        assert_true(self, unselected_label_exists, 'The others are not highlighted.')
 
+        # Navigate through the result
         find_next()
-
         first_label_is_green = exists(soap_label_selected_pattern, 5)
+        assert_true(self, first_label_is_green,
+                    'The next matching words/characters have a green background highlighted')
         other_label_is_unhighlighted = exists(soap_xml_label_pattern, 5)
-
-        assert_true(self, first_label_is_green, 'The next matching words/characters have a green background highlighted')
         assert_true(self, other_label_is_unhighlighted, 'The other is not highlighted')
 

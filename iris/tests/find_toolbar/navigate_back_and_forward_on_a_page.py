@@ -16,39 +16,30 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        find_toolbar_pattern = Pattern('find_toolbar_text.png')
         wiki_logo = Pattern('wiki_logo_icon.png')
-        arrow_back_button_pattern = Pattern('arrow_back_button.png')
-        arrow_forward_button_pattern = Pattern('arrow_forward_button.png')
         new_tab_icon_pattern = Pattern('new_tab_icon.png')
 
+        # Open Firefox and navigate to some popular websites on the same tab
         new_tab()
-
         test_page_local = self.get_asset_path('Wikipedia.htm')
         navigate(test_page_local)
-
         page_loaded = exists(wiki_logo, 20)
-
         assert_true(self, page_loaded, 'The website successfully loaded.')
 
+        # Open the Find Toolbar
         open_find()
-
-        # Remove all text from the Find Toolbar
         edit_select_all()
         edit_delete()
-
-        find_toolbar_is_opened = exists(find_toolbar_pattern, 15)
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 15)
         assert_true(self, find_toolbar_is_opened, 'The find toolbar is opened')
 
-        click(arrow_back_button_pattern, 2)
+        # Navigate back to the previous page (Click the left arrrow next to the URL bar)
+        click(NavBar.BACK_BUTTON, 2)
         find_toolbar_is_opened_previous_page = exists(new_tab_icon_pattern, 10)
-
         assert_true(self, find_toolbar_is_opened_previous_page, 'The find toolbar is present on the previous page')
 
-        # Navigate forward to the page
-        click(arrow_forward_button_pattern)
+        # Navigate forward to the next page (Click the right arrow next to the URL bar)
+        click(NavBar.FORWARD_BUTTON)
         find_toolbar_is_opened_next_page = exists(wiki_logo, 10)
-
         assert_true(self, find_toolbar_is_opened_next_page, 'The find toolbar is present on the next page')
 

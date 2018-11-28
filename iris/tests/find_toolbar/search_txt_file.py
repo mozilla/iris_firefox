@@ -16,70 +16,50 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        find_toolbar_pattern = Pattern('find_toolbar_text.png')
         txt_page_title_pattern = Pattern('txt_page_title.png')
+        text_first_occurrence_hightlighted_pattern = Pattern('txt_text_first_occurrence_hl.png')
+        text_first_occurrence_unhighlighted_pattern = Pattern('txt_text_first_occurrence_white.png')
+        text_second_occurrence_highlighted_pattern = Pattern('txt_text_second_occurrence_hl.png')
+        text_second_occurrence_unhighlighted_pattern = Pattern('txt_text_second_occurrence_white.png')
         txt_page_title_pattern.similarity = 0.6
 
-        text_first_occurrence_hl_pattern = Pattern('txt_text_first_occurrence_hl.png')
-        text_first_occurrence_white_pattern = Pattern('txt_text_first_occurrence_white.png')
-        text_second_occurrence_hl_pattern = Pattern('txt_text_second_occurrence_hl.png')
-        text_second_occurrence_white_pattern = Pattern('txt_text_second_occurrence_white.png')
-
+        # Open Firefox and open a [.txt page]
         test_page_local = self.get_asset_path('dmatest.txt')
         navigate(test_page_local)
-
         txt_page_title_pattern_exists = exists(txt_page_title_pattern, 5)
-
         assert_true(self, txt_page_title_pattern_exists, 'The page is successfully loaded.')
 
+        # Open the Find Toolbar
         open_find()
-
-        # Remove all text from the Find Toolbar
         edit_select_all()
         edit_delete()
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
+        assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is displayed ')
 
-        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
-
-        assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
-                                                  'by pressing CTRL + F / Cmd + F,.')
-
+        # Search for a term that appears on the page
         type('Part')
+        text_first_occurrence_highlighted = exists(text_first_occurrence_hightlighted_pattern, 5)
+        assert_true(self, text_first_occurrence_highlighted, 'The first occurrence is highlighted.')
+        text_second_occurrence_unhighlighted = exists(text_second_occurrence_unhighlighted_pattern, 5)
+        assert_true(self, text_second_occurrence_unhighlighted, 'The second occurrence is not highlighted.')
 
-        text_first_occurrence_hl_exists = exists(text_first_occurrence_hl_pattern, 5)
-        text_second_occurrence_white_exists = exists(text_second_occurrence_white_pattern, 5)
-
-        assert_true(self, (text_first_occurrence_hl_exists and text_second_occurrence_white_exists),
-                    'All the matching words/characters are found.')
-
-        text_first_occurrence_hl_exists = exists(text_first_occurrence_hl_pattern, 5)
-        text_second_occurrence_white_exists = exists(text_second_occurrence_white_pattern, 5)
-
-        assert_true(self, text_first_occurrence_hl_exists and text_second_occurrence_white_exists,
-                    'First occurrence highlighted')
-
-        # Go to next occurrence
+        # Navigate through found items
         find_next()
-
-        text_first_occurrence_white_exists = exists(text_first_occurrence_white_pattern, 5)
-        text_second_occurrence_hl_exists = exists(text_second_occurrence_hl_pattern, 5)
-
-        assert_true(self, text_first_occurrence_white_exists and text_second_occurrence_hl_exists,
-                    'Second occurrence highlighted')
-
-        # Get back to first occurrence
+        text_first_occurrence_unhighlighted = exists(text_first_occurrence_unhighlighted_pattern, 5)
+        assert_true(self, text_first_occurrence_unhighlighted, 'The first occurrence is not highlighted.')
+        text_second_occurrence_highlighted = exists(text_second_occurrence_highlighted_pattern, 5)
+        assert_true(self, text_second_occurrence_highlighted, 'The first occurrence is not highlighted.')
         find_previous()
+        text_first_occurrence_highlighted = exists(text_first_occurrence_hightlighted_pattern, 5)
+        assert_true(self, text_first_occurrence_highlighted, 'The first occurrence is highlighted again.')
+        text_second_occurrence_unhighlighted = exists(text_second_occurrence_unhighlighted_pattern, 5)
+        assert_true(self, text_second_occurrence_unhighlighted, 'The second occurrence is not highlighted again.')
 
-        text_first_occurrence_exists_before_scroll = exists(text_first_occurrence_hl_pattern, 5)
+        # Scroll the page up and down
+        [scroll_down() for _ in range(4)]
+        [scroll_up() for _ in range(4)]
+        assert_true(self, text_first_occurrence_highlighted,
+                    'The first occurrence is highlighted after scrolling down and up.')
+        assert_true(self, text_second_occurrence_unhighlighted,
+                    'The second occurrence is not highlighted after scrolling down and up.')
 
-        # Move found word away of screen and back
-        for i in range(4):
-            scroll_down()
-
-        for i in range(4):
-            scroll_up()
-
-        text_first_occurrence_exists_after_scroll = exists(text_first_occurrence_hl_pattern, 5)
-
-        assert_true(self, text_first_occurrence_exists_before_scroll and text_first_occurrence_exists_after_scroll,
-                    'Occurrence exists after scroll up and down')

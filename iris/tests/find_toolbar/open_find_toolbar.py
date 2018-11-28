@@ -16,38 +16,43 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        find_toolbar_pattern = Pattern('find_toolbar_text.png')
-        bttn_hl_all_pattern = Pattern('find_bttn_hl_all.png')
-        bttn_match_case_pattern = Pattern('find_bttn_match_case.png')
-        find_bttn_whole_words_pattern = Pattern('find_bttn_whole_words.png')
         menu_bar_edit_pattern = Pattern('menu_bar_edit_pattern.png')
         hamburger_menu_pattern = Pattern('hamburger_menu_pattern.png')
         hamburger_menu_find_in_page_pattern = Pattern('hamburger_menu_find_in_page_pattern.png')
         menu_bar_edit_find_in_page_pattern = Pattern('menu_bar_edit_find_in_page_pattern.png')
 
+        # Open Find Toolbar
         # 1) by pressing CTRL + F / Cmd + F
-
         open_find()
-
-        # Remove all text from the Find Toolbar
         edit_select_all()
         edit_delete()
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 1)
+        assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed ')
 
-        find_toolbar_is_opened = exists(find_toolbar_pattern, 1)
-        assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
-                                                  'by pressing CTRL + F / Cmd + F,.')
+        try:
+            find_toolbar_x = find(FindToolbar.FINDBAR_TEXTBOX).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Find Toolbar')
 
-        exists(find_toolbar_pattern, 5)
-        find_toolbar_x = find(find_toolbar_pattern).x
-        bttn_hl_all_x = find(bttn_hl_all_pattern).x
-        bttn_match_case_x = find(bttn_match_case_pattern).x
-        find_bttn_whole_words_pattern_x = find(find_bttn_whole_words_pattern).x
+        try:
+            bttn_hl_all_x = find(FindToolbar.HIGHLIGHT).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Highlight All button')
+
+        try:
+            bttn_match_case_x = find(FindToolbar.FIND_CASE_SENSITIVE).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Match Case button')
+
+        try:
+            find_bttn_whole_words_pattern_x = find(FindToolbar.FIND_ENTIRE_WORD).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Whole Words button')
 
         type(Key.ESC)
 
         try:
-            wait_vanish(find_toolbar_pattern, 20)
+            wait_vanish(FindToolbar.FINDBAR_TEXTBOX, 20)
             logger.debug('The Find toolbar successfully disappeared.')
         except FindError:
             raise FindError('The Find toolbar did not disappear.')
@@ -62,11 +67,17 @@ class Test(BaseTest):
             key_down(Key.ALT)
             key_up(Key.ALT)
 
-            exists(menu_bar_edit_pattern, 5)
-            click(menu_bar_edit_pattern, 1)
+            menu_bar_displayed = exists(menu_bar_edit_pattern, 5)
+            if menu_bar_displayed:
+                click(menu_bar_edit_pattern, 3)
+            else:
+                raise FindError('Menu bar is not displayed')
 
-            exists(menu_bar_edit_find_in_page_pattern, 3)
-            click(menu_bar_edit_find_in_page_pattern, 1)
+            menu_bar_find_in_page_displayed = exists(menu_bar_edit_find_in_page_pattern, 3)
+            if menu_bar_find_in_page_displayed:
+                click(menu_bar_edit_find_in_page_pattern, 3)
+            else:
+                raise FindError('Find in page tab in Menu bar is not displayed')
 
         if Settings.get_os() == Platform.MAC:
             type(Key.F2, KeyModifier.CTRL)
@@ -84,20 +95,33 @@ class Test(BaseTest):
 
         edit_select_all()
         edit_delete()
+        find_toolbar_menu_bar = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
+        assert_true(self, find_toolbar_menu_bar, 'The Find Toolbar is successfully displayed ')
 
-        find_toolbar_menu_bar = exists(find_toolbar_pattern, 5)
-        assert_true(self, find_toolbar_menu_bar, 'The Find Toolbar is successfully displayed '
-                                                 'by pressing Menu bar > Edit > Find in This Page.')
+        try:
+            find_toolbar_x = find(FindToolbar.FINDBAR_TEXTBOX).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Find Toolbar')
 
-        find_toolbar_x = find(find_toolbar_pattern).x
-        bttn_hl_all_x = find(bttn_hl_all_pattern).x
-        bttn_match_case_x = find(bttn_match_case_pattern).x
-        find_bttn_whole_words_pattern_x = find(find_bttn_whole_words_pattern).x
+        try:
+            bttn_hl_all_x = find(FindToolbar.HIGHLIGHT).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Highlight All button')
+
+        try:
+            bttn_match_case_x = find(FindToolbar.FIND_CASE_SENSITIVE).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Match Case button')
+
+        try:
+            find_bttn_whole_words_pattern_x = find(FindToolbar.FIND_ENTIRE_WORD).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Whole Words button')
 
         type(Key.ESC)
 
         try:
-            wait_vanish(find_toolbar_pattern, 20)
+            wait_vanish(FindToolbar.FINDBAR_TEXTBOX, 20)
             logger.debug('The Find toolbar successfully disappeared.')
         except FindError:
             raise FindError('The Find toolbar did not disappear.')
@@ -108,28 +132,48 @@ class Test(BaseTest):
 
         # 3) Menu > Find in This Page.
 
-        exists(hamburger_menu_pattern, 5)
-        click(hamburger_menu_pattern, 1)
+        hamburger_menu_displayed = exists(hamburger_menu_pattern, 5)
+        if hamburger_menu_displayed:
+            click(hamburger_menu_pattern, 1)
+        else:
+            raise FindError('Hamburger menu is not displayed')
 
-        exists(hamburger_menu_find_in_page_pattern, 5)
-        click(hamburger_menu_find_in_page_pattern, 1)
+        hamburger_menu_find_in_page_displayed = exists(hamburger_menu_find_in_page_pattern, 5)
+        if hamburger_menu_find_in_page_displayed:
+            click(hamburger_menu_find_in_page_pattern, 1)
+        else:
+            raise FindError('The Find in page tab in the Hamburger menu is not displayed')
 
         edit_select_all()
         edit_delete()
-
-        find_toolbar_opened_hamburger = exists(find_toolbar_pattern, 5)
+        find_toolbar_opened_hamburger = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
         assert_true(self, find_toolbar_opened_hamburger,
                     'The Find Toolbar is successfully displayed by pressing Menu bar > Edit > Find in This Page.')
 
-        find_toolbar_x = find(find_toolbar_pattern).x
-        bttn_hl_all_x = find(bttn_hl_all_pattern).x
-        bttn_match_case_x = find(bttn_match_case_pattern).x
-        find_bttn_whole_words_pattern_x = find(find_bttn_whole_words_pattern).x
+        try:
+            find_toolbar_x = find(FindToolbar.FINDBAR_TEXTBOX).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Find Toolbar')
+
+        try:
+            bttn_hl_all_x = find(FindToolbar.HIGHLIGHT).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Highlight All button')
+
+        try:
+            bttn_match_case_x = find(FindToolbar.FIND_CASE_SENSITIVE).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Match Case button')
+
+        try:
+            find_bttn_whole_words_pattern_x = find(FindToolbar.FIND_ENTIRE_WORD).x
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the Whole Words button')
 
         type(Key.ESC)
 
         try:
-            wait_vanish(find_toolbar_pattern, 20)
+            wait_vanish(FindToolbar.FINDBAR_TEXTBOX, 20)
             logger.debug('The Find toolbar successfully disappeared.')
         except FindError:
             raise FindError('The Find toolbar did not disappear.')

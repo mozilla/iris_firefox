@@ -16,63 +16,41 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        find_toolbar_pattern = Pattern('find_toolbar_text.png')
         xml_page_logo_pattern = Pattern('xml_page_logo.png')
+        first_occurrence_highlighted_pattern = Pattern('xml_text_first_occurrence_pattern.png')
+        second_occurrence_highlighted_pattern = Pattern('xml_text_second_occurrence_pattern.png')
         xml_page_logo_pattern.similarity = 0.6
 
-        text_first_occurrence_pattern = Pattern('xml_text_first_occurrence_pattern.png')
-        text_second_occurrence_pattern = Pattern('xml_text_second_occurrence_pattern.png')
-
+        # Open Firefox and open a [XML page]
         test_page_local = self.get_asset_path('cd_catalog.xml')
         navigate(test_page_local)
-
         xml_url_logo_exists = exists(xml_page_logo_pattern, 5)
-
         assert_true(self, xml_url_logo_exists, 'The page is successfully loaded.')
 
+        # Open the Find Toolbar
         open_find()
-
-        # Remove all text from the Find Toolbar
         edit_select_all()
         edit_delete()
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
+        assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed ')
 
-        find_toolbar_is_opened = exists(find_toolbar_pattern, 5)
-
-        assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed '
-                                                  'by pressing CTRL + F / Cmd + F,.')
-
+        # Search for a term that appears on the page
         type('for')
+        text_first_occurrence_exists = exists(first_occurrence_highlighted_pattern, 5)
+        assert_true(self, text_first_occurrence_exists, 'The first occurrence is highlighted.')
 
-        selected_label_exists = exists(text_first_occurrence_pattern, 5)
-
-        assert_true(self, selected_label_exists, 'All the matching words/characters are found.')
-
-        text_first_occurrence_exists = exists(text_first_occurrence_pattern, 5)
-        text_second_occurrence_exists = exists(text_second_occurrence_pattern, 5)
-
-        assert_true(self, (text_first_occurrence_exists is True) and (text_second_occurrence_exists is False),
-                    'First occurrence highlighted')
-
-        # Go to next occurrence
+        # Navigate throught found items
         find_next()
+        text_second_occurrence_exists = exists(second_occurrence_highlighted_pattern, 5)
+        assert_true(self, text_second_occurrence_exists, 'The second occurrence is highlighted.')
 
-        text_first_occurrence_exists = exists(text_first_occurrence_pattern, 5)
-        text_second_occurrence_exists = exists(text_second_occurrence_pattern, 5)
-
-        assert_true(self, (text_first_occurrence_exists is False) and (text_second_occurrence_exists is True),
-                    'Second occurrence highlighted')
-
-        # Go to first occurrence
+        # Scroll the page up and down
         find_previous()
-
-        text_first_occurrence_exists = exists(text_first_occurrence_pattern, 5)
-
+        text_first_occurrence_exists = exists(first_occurrence_highlighted_pattern, 5)
+        assert_true(self, text_first_occurrence_exists, 'The first occurrence is highlighted before scrolling.')
         type(Key.DOWN)
         type(Key.UP)
-
-        text_first_occurrence_exists_after_scroll = exists(text_first_occurrence_pattern, 5)
-
-        assert_true(self, text_first_occurrence_exists == text_first_occurrence_exists_after_scroll,
-                    'Occurrence exists after scroll up and down. No checkboarding is present.')
+        text_first_occurrence_exists_after_scroll = exists(first_occurrence_highlighted_pattern, 5)
+        assert_true(self, text_first_occurrence_exists_after_scroll,
+                    'The first occurrence is highlighted after scrolling.')
 
