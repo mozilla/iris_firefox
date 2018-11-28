@@ -31,8 +31,8 @@ class Test(BaseTest):
         # Enter a search term (e.g. "abc")
         type('abc')
         if Settings.get_os() == Platform.MAC:
-            key_down(Key.ENTER)
-            key_up(Key.ENTER)
+            type(Key.ENTER)
+
         # When 'abc' doesn't appear on the page it has red highlight
         find_toolbar_abc_text_typed_red = exists(find_toolbar_abc_text_pattern, 5)
         assert_true(self, find_toolbar_abc_text_typed_red, 'The search term \'abc\' is typed into find toolbar.')

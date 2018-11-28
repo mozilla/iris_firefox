@@ -64,8 +64,7 @@ class Test(BaseTest):
         # 2) Menu bar > Edit > Find in This Page,
 
         if Settings.get_os() == Platform.WINDOWS:
-            key_down(Key.ALT)
-            key_up(Key.ALT)
+            type(Key.ALT)
 
             menu_bar_displayed = exists(menu_bar_edit_pattern, 5)
             if menu_bar_displayed:
