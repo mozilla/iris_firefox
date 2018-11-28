@@ -48,10 +48,8 @@ class Test(BaseTest):
         assert_true(self, expected_4, '\'Drag space\' successfully activated in a new tab.')
 
         if exists(hamburger_menu_pattern, 10):
-            minimize_window()
+            click_window_control('minimize', 'main')
             time.sleep(DEFAULT_UI_DELAY_LONG)
-            if Settings.get_os() == Platform.WINDOWS:
-                minimize_window()
             try:
                 expected_5 = wait_vanish(hamburger_menu_pattern, 10)
                 assert_true(self, expected_5, 'Window successfully minimized')
@@ -62,9 +60,6 @@ class Test(BaseTest):
 
         restore_window_from_taskbar()
 
-        if Settings.get_os() == Platform.WINDOWS:
-            maximize_window()
-
         expected_6 = exists(hamburger_menu_pattern, 10)
         assert_true(self, expected_6, 'Window in view again')
 
@@ -73,17 +68,17 @@ class Test(BaseTest):
         else:
             expected_7 = exists(window_controls_restore_pattern, 10)
             assert_true(self, expected_7, 'The window control \'restore\' is visible')
-            minimize_window()
+            click_window_control('restore', 'main')
 
             expected_8 = exists(window_controls_maximize_pattern, 10)
             assert_true(self, expected_8, 'Window successfully restored')
 
-            maximize_window()
+            click_window_control('maximize', 'main')
             expected_9 = exists(window_controls_restore_pattern, 10)
             assert_true(self, expected_9, 'Window successfully maximized')
 
         if exists(hamburger_menu_pattern, 10):
-            close_window()
+            click_window_control('close', 'main')
             try:
                 expected_11 = wait_vanish(hamburger_menu_pattern, 10)
                 assert_true(self, expected_11, 'Window successfully closed')
