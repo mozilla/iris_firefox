@@ -6,8 +6,7 @@
 from core.errors import FindError
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
-from core.image_search.finder import wait
-from core.image_search.image_search import match_template
+from core.image_search.finder import wait, find, find_all, exists
 
 
 class Region:
@@ -76,7 +75,16 @@ class Region:
         :param ps: Pattern or String.
         :return: Call the find() method.
         """
-        return match_template(ps, self)
+        return find(ps, self)
+
+    def find_all(self, what=None, threshold=0.99):
+        """Look for multiple matches of a Pattern or image.
+
+        :param what: String or Pattern.
+        :param threshold: float
+        :return: Call the find_all() method.
+        """
+        return find_all(what, self, threshold)
 
     def wait(self, what=None, timeout=None) -> bool or FindError:
         """Wait for a Pattern or image to appear.
@@ -86,3 +94,12 @@ class Region:
         :return: True or FineError Exception.
         """
         return wait(what, timeout, self)
+
+    def exists(self, what=None, timeout=None):
+        """Check if Pattern or image exists.
+
+        :param what: String or Pattern.
+        :param timeout: Number as maximum waiting time in seconds.
+        :return: Call the exists() method.
+        """
+        return exists(what, timeout, self)

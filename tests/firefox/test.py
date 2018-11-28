@@ -1,4 +1,6 @@
 from core.screen.screen import Screen
 from core.image_search.pattern import Pattern
+from core.image_search.finder import find_all, find, wait
 
-print(Screen(1).wait(Pattern('test.png', application='firefox'), 10))
+screen = Screen(1)
+print(screen.find(Pattern('test.png', application='firefox')))

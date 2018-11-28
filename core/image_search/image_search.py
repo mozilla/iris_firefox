@@ -28,16 +28,6 @@ logger = logging.getLogger(__name__)
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 
-def _calculate_interval_max_attempts(timeout=None):
-    if timeout is None:
-        timeout = Settings.auto_wait_timeout
-
-    wait_scan_rate = float(Settings.wait_scan_rate)
-    interval = 1 / wait_scan_rate
-    max_attempts = int(timeout * wait_scan_rate)
-    return interval, max_attempts
-
-
 def is_pattern_size_correct(pattern, region):
     p_width, p_height = pattern.get_size()
     r_width = region.width
@@ -92,9 +82,17 @@ def match_template(pattern: Pattern, region=None) -> Location:
         return position
 
 
-def match_template_multiple(pattern: Pattern, region=None, threshold: int = 0.99) -> List[Location]:
+def match_template_multiple(pattern: Pattern, region=None, threshold: float = 0.5) -> List[Location]:
+    """Find all occurrences of a pattern in a Region or full screen
+
+    :param Pattern pattern: Image details
+    :param Region region: Region object.
+    :param threshold: float
+    :return: List of locations.
+    """
     logger.debug('Searching for pattern: %s' % pattern.get_filename())
     try:
+        print(region)
         stack_image = ScreenshotImage(region=region)
         precision = pattern.similarity
 
@@ -113,8 +111,9 @@ def match_template_multiple(pattern: Pattern, region=None, threshold: int = 0.99
 
             if precision > max_val > threshold:
                 sx, sy = top_left
-                for x in range(sx - pattern.get_size().width / 2, sx + pattern.get_size().width / 2):
-                    for y in range(sy - pattern.get_size().height / 2, sy + pattern.get_size().height / 2):
+                width, height = pattern.get_size()
+                for x in range(int(sx - width / 2), int(sx + width / 2)):
+                    for y in range(int(sy - height / 2), int(sy + height / 2)):
                         try:
                             res[y][x] = np.float32(-10000)
                         except IndexError:
