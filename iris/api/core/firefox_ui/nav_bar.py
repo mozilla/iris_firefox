@@ -25,3 +25,4 @@ class NavBar(object):
     ZOOM_CONTROLS_CUSTOMIZE_PAGE = Pattern('wrapper_zoom_controls.png')
     TOOLBAR = Pattern('toolbar.png')
 
+    DOWNLOADS_BUTTON = Pattern('downloads_button.png')
