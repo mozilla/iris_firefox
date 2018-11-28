@@ -75,10 +75,13 @@ class Test(BaseTest):
         assert_true(self, theme_changed_to_high_contrast,
                     'Theme changed to high contrast theme.')
 
-        type(Key.F4, KeyModifier.ALT)
-        theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.similar(0.75), 30)
-        assert_true(self, theme_settings_window_is_closed,
-                    'Theme Setting window was closed properly.')
+        try:
+            type(Key.F4, KeyModifier.ALT)
+            theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.similar(0.75), 30)
+            assert_true(self, theme_settings_window_is_closed,
+                        'Theme Setting window was closed properly.')
+        except FindError:
+            raise FindError('Theme Setting window was not closed properly.')
 
         # test body
         try:
@@ -164,7 +167,10 @@ class Test(BaseTest):
             assert_true(self, theme_changed_to_basic_contrast,
                         'Theme changed to basic contrast theme.')
 
-            type(Key.F4, KeyModifier.ALT)
-            theme_settings_window_is_closed = wait_vanish(theme_menu_opened_pattern.similar(0.75), 40)
-            assert_true(self, theme_settings_window_is_closed,
-                        'Theme Setting window was closed properly.')
+            try:
+                type(Key.F4, KeyModifier.ALT)
+                theme_settings_window_is_closed = wait_vanish(theme_menu_opened_pattern.similar(0.75), 40)
+                assert_true(self, theme_settings_window_is_closed,
+                            'Theme Setting window was closed properly.')
+            except FindError:
+                raise FindError('Theme Setting window was not closed properly.')
