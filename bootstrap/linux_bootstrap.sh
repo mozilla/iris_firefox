@@ -159,30 +159,30 @@ fi
 echo -e "\n${GREEN}  --->  Downloading and installing Tesseract data #####${NC}\n"
 if  [ ! -f /usr/local/share/tessdata/afr.traineddata ]; then
     cd ~
-    if [ ! -f 3.04.00.zip ]; then
-        echo "\n${GREEN}   --->  Downloading Tessdata archive 3.04.00.zip ${NC}\n"
-        wget https://github.com/tesseract-ocr/tessdata/archive/3.04.00.zip
+    if [ ! -f 4.0.0.zip ]; then
+        echo "\n${GREEN}   --->  Downloading Tessdata archive 4.0.0.zip ${NC}\n"
+        wget https://github.com/tesseract-ocr/tessdata/archive/4.0.0.zip
     fi
 
-    if [ -f 3.04.00.zip ]; then
-        if [[ $(find 3.04.00.zip -type f -size +490000000c 2>/dev/null) ]]; then
-            echo -e "\n${GREEN}  --->  Download finished. Unziping Tessdata archive 3.04.00.zip ${NC}\n"
-            unzip 3.04.00.zip
+    if [ -f 4.0.0.zip ]; then
+        if [[ $(find 4.0.0.zip -type f -size +490000000c 2>/dev/null) ]]; then
+            echo -e "\n${GREEN}  --->  Download finished. Unziping Tessdata archive 4.0.0.zip ${NC}\n"
+            unzip 4.0.0.zip
         else
-            echo -e "\n${RED}  --->  Tessdata archive 3.04.00.zip is not the correct size. Maybe download was stopped or did not completely finish. ${NC}\n"
+            echo -e "\n${RED}  --->  Tessdata archive 4.0.0.zip is not the correct size. Maybe download was stopped or did not completely finish. ${NC}\n"
             echo -e "${RED}        Please delete the file and restart the process. ${NC}\n" && exit 0
         fi
     else
-        echo -e "\n${RED}  --->  Tessdata archive 3.04.00.zip not found! Maybe download failed. ${NC}\n" && exit 0
+        echo -e "\n${RED}  --->  Tessdata archive 4.0.0.zip not found! Maybe download failed. ${NC}\n" && exit 0
     fi
 
-    if [ ! -d tessdata-3.04.00 ]; then
-        echo "\n${RED}  --->  tessdata-3.04.00 directory not found! Maybe the extraction failed. ${NC}\n" && exit 0
+    if [ ! -d tessdata-4.0.0 ]; then
+        echo "\n${RED}  --->  tessdata-4.0.0 directory not found! Maybe the extraction failed. ${NC}\n" && exit 0
     else
-        cd tessdata-3.04.00
+        cd tessdata-4.0.0
     fi
 
-    if [[ $(pwd | grep "tessdata-3.04.00") ]]; then
+    if [[ $(pwd | grep "tessdata-4.0.0") ]]; then
         if [ ! -d /usr/local/share/tessdata/ ]; then
             sudo mkdir /usr/local/share/tessdata/
         fi

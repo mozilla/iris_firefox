@@ -337,20 +337,21 @@ def create_region_for_hamburger_menu():
     try:
         wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
-        time.sleep(1)
+        time.sleep(0.5)
+        sign_in_to_sync = Pattern('sign_in_to_sync.png')
         if Settings.get_os() == Platform.LINUX:
             quit_menu_pattern = Pattern('quit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                quit_menu_pattern, None,
                                                padding_right=20)
         elif Settings.get_os() == Platform.MAC:
             help_menu_pattern = Pattern('help.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                help_menu_pattern, None,
                                                padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                exit_menu_pattern, None,
                                                padding_right=20)
     except (FindError, ValueError):
