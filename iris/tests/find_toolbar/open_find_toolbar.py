@@ -26,11 +26,11 @@ class Test(BaseTest):
         open_find()
         edit_select_all()
         edit_delete()
-        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 1)
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed ')
 
         try:
-            find_toolbar_x = find(FindToolbar.FINDBAR_TEXTBOX).x
+            find_toolbar_x = find(FindToolbar.FINDBAR_TEXTBOX.similar(0.6)).x
         except FindError:
             raise FindError('Could not get the x-coordinate of the Find Toolbar')
 
@@ -52,7 +52,7 @@ class Test(BaseTest):
         type(Key.ESC)
 
         try:
-            wait_vanish(FindToolbar.FINDBAR_TEXTBOX, 20)
+            wait_vanish(FindToolbar.FINDBAR_TEXTBOX, 10)
             logger.debug('The Find toolbar successfully disappeared.')
         except FindError:
             raise FindError('The Find toolbar did not disappear.')
