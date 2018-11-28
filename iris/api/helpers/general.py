@@ -151,7 +151,7 @@ def click_hamburger_menu_option(option):
 
 
 def click_window_control(button, window_type='auxiliary'):
-    """Click window with options: close, minimize, maximize, full_screen.
+    """Click window with options: close, minimize, maximize, restore, full_screen.
 
     :param button: Auxiliary or main window options.
     :param window_type: Type of window that need to be controlled.
@@ -928,9 +928,9 @@ def open_zoom_menu():
 
 
 def restore_window_control(window_type):
-    """Click on maximize window control.
+    """Click on restore window control.
 
-    :param window_type: Type of window that need to be maximized.
+    :param window_type: Type of window that need to be restored.
     :return: None.
     """
     find_window_controls(window_type)
