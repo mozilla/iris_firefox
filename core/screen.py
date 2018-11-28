@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 import logging
 
 import cv2
@@ -229,7 +234,6 @@ class ScreenshotImage:
 
     def binarize(self):
         return cv2.threshold(self.gray_array, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-
 
 # region1 = Screen(0).new_region(0, 0, 50, 50)
 # print(region1.get_region())

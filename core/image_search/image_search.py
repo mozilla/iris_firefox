@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
 import datetime
 import logging
 import multiprocessing
@@ -338,5 +339,3 @@ def negative_image_search(pattern, timeout=None, region=None):
         return _negative_image_search_multiprocess(pattern, timeout, region)
     else:
         return _negative_image_search_loop(pattern, timeout, region)
-
-

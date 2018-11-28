@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
 import inspect
 import logging
 import os
@@ -11,10 +12,10 @@ import numpy as np
 
 from core.arg_parser import parse_args
 from core.errors import FindError
+from core.helpers.os_helpers import OSHelper
 from core.helpers.path_manager import PathManager
 from core.screen import Location
 from core.settings import Settings
-from core.helpers.os_helpers import OSHelper
 
 try:
     import Image
@@ -222,7 +223,7 @@ def _get_gray_image(colored_image: Image) -> Image:
     return colored_image.convert('L')
 
 
-def _get_image_path(caller: list, image: str, application: str) -> str:
+def _get_image_path(caller, image: str, application: str) -> str:
     """Enforce proper location for all Pattern creation.
 
     :param caller: Path of calling Python module.

@@ -39,6 +39,30 @@ class OSHelper:
             raise APIHelperError('Iris does not yet support your current environment: %s' % OS_NAME)
 
     @staticmethod
+    def is_mac():
+        """Checks if we are running on a Mac system.
+
+        :return: True if we are running on a Mac system, False otherwise.
+        """
+        return OSHelper.get_os() is OSPlatform.MAC
+
+    @staticmethod
+    def is_windows():
+        """Checks if we are running on a Windows system.
+
+         :return: True if we are running on a Windows system, False otherwise.
+        """
+        return OSHelper.get_os() is OSPlatform.WINDOWS
+
+    @staticmethod
+    def is_linux():
+        """Checks if we are running on a Linux system.
+
+        :return: True if we are running on a Linux system, False otherwise.
+        """
+        return OSHelper.get_os() is OSPlatform.LINUX
+
+    @staticmethod
     def get_os_version():
         """Get the version string of the operating system your script is running on."""
         current_os = OSHelper.get_os()

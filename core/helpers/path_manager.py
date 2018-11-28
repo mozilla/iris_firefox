@@ -155,5 +155,3 @@ class PathManager:
             cache_builds_directory = os.path.join(work_dir, 'cache')
             if os.path.exists(cache_builds_directory):
                 shutil.rmtree(cache_builds_directory, ignore_errors=True)
-
-PathManager.create_run_directory()
