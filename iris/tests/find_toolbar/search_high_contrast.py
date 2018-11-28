@@ -41,24 +41,25 @@ class Test(BaseTest):
 
         if Settings.is_linux():
             type(Key.META)
-        else:
+
+        if Settings.is_windows():
             type(Key.WIN)
 
         os_program_menu_opened = exists(os_program_menu_opened_basic_contrast_pattern, 30)
         assert_true(self, os_program_menu_opened, 'System menu opened')
 
         if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
-            type("High contrast settings")
+            type('High contrast settings')
         if Settings.get_os_version() == 'win7':
-            type("Change the theme")
+            type('Change the theme')
         if Settings.get_os() == Platform.LINUX:
-            type("Appearance")
+            type('Appearance')
 
         type(Key.ENTER)
 
         theme_menu_opened = exists(theme_menu_opened_pattern, 30)
         assert_true(self, theme_menu_opened,
-            "Theme settings menu opened properly")
+            'Theme settings menu opened properly')
 
         if Settings.is_linux():
             click(default_contrast_normal_button_pattern, 1)
@@ -66,9 +67,13 @@ class Test(BaseTest):
         if Settings.get_os_version() == 'win7':
             maximize_window()
 
+        high_contrast_normal_button_pattern_is_visible = exists(high_contrast_normal_button_pattern, 50)
+        assert_true(self, high_contrast_normal_button_pattern_is_visible,
+                    'High contrast button is visible.')
         click(high_contrast_normal_button_pattern, 1)
         theme_changed_to_high_contrast = exists(high_contrast_black_button_active_pattern.similar(0.75), 40)
-        assert_true(self, theme_changed_to_high_contrast, 'Theme changed to high contrast theme.')
+        assert_true(self, theme_changed_to_high_contrast,
+                    'Theme changed to high contrast theme.')
 
         type(Key.F4, KeyModifier.ALT)
         theme_settings_window_is_closed = wait_vanish(high_contrast_black_button_active_pattern.similar(0.75), 30)
@@ -78,9 +83,7 @@ class Test(BaseTest):
         # test body
         test_page_local = self.get_asset_path('wiki_soap.html')
         navigate(test_page_local)
-
         soap_page_loaded_exists = exists(soap_page_loaded_contrast_pattern, 20)
-
         assert_true(self, soap_page_loaded_exists, 'The page is successfully loaded.')
 
         time.sleep(1)
@@ -104,18 +107,14 @@ class Test(BaseTest):
                     'The others are not highlighted.')
 
         zoom_in()
-
         selected_label_exists = exists(see_label_zoom_in_contrast_pattern, 5)
-
         assert_true(self, selected_label_exists,
                     'Zoom in: The highlight of the found items does not affect the visibility '
                     'of other words/letters')
 
         zoom_out()
         zoom_out()
-
         selected_label_exists = exists(see_label_zoom_out_contrast_pattern, 5)
-
         assert_true(self, selected_label_exists,
                     'Zoom out: The highlight of the found items does not affect the visibility '
                     'of other words/letters')
@@ -124,7 +123,6 @@ class Test(BaseTest):
         # Return back to default contrast theme,
         # and close themes settings window
         #
-
 
         if Settings.is_linux():
             type(Key.META)
@@ -135,24 +133,30 @@ class Test(BaseTest):
         assert_true(self, os_program_menu_opened_in_high_contrast, 'OS program menu opened properly.')
 
         if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
-            type("High contrast settings")
+            type('High contrast settings')
         if Settings.get_os_version() == 'win7':
-            type("Change the theme")
+            type('Change the theme')
         if Settings.get_os() == Platform.LINUX:
-            type("Appearance")
+            type('Appearance')
 
         time.sleep(3)
         type(Key.ENTER)
         theme_menu_opened_in_high_contrast = exists(high_contrast_black_button_active_pattern, 30)
-        assert_true(self, theme_menu_opened_in_high_contrast, "Theme settings menu opened properly")
-
+        assert_true(self, theme_menu_opened_in_high_contrast,
+                    'Theme settings menu opened properly')
+        if Settings.get_os_version() == 'win7':
+            maximize_window()
         if Settings.is_linux():
             click(high_contrast_button_high_theme_pattern, 1)
 
+        high_contrast_basic_theme_button_pattern_is_visible = exists(high_contrast_basic_theme_button_pattern, 30)
+        assert_true(self, high_contrast_basic_theme_button_pattern_is_visible,
+                    'High contrast basic theme button is visible.')
         click(high_contrast_basic_theme_button_pattern, 1)
 
         theme_changed_to_basic_contrast = exists(theme_menu_opened_pattern.similar(0.75), 40)
-        assert_true(self, theme_changed_to_basic_contrast, 'Theme changed to basic contrast theme.')
+        assert_true(self, theme_changed_to_basic_contrast,
+                    'Theme changed to basic contrast theme.')
 
         type(Key.F4, KeyModifier.ALT)
         theme_settings_window_is_closed = wait_vanish(theme_menu_opened_pattern.similar(0.75), 40)
