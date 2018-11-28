@@ -12,9 +12,9 @@ import numpy as np
 
 from core.arg_parser import parse_args
 from core.errors import FindError
+from core.helpers.location import Location
 from core.helpers.os_helpers import OSHelper
 from core.helpers.path_manager import PathManager
-from core.screen import Location
 from core.settings import Settings
 
 try:
@@ -49,9 +49,10 @@ class Pattern:
         self.similarity = Settings.min_similarity
         self._target_offset = None
         self._size = _get_pattern_size(image, scale)
-        self.rgb_array = _get_rgb_array(image)
+        self.rgb_array = _get_array_from_image(image)
         self.color_image = _get_image_from_array(scale, self.rgb_array)
         self.gray_image = _get_gray_image(self.color_image)
+        self.gray_array = _get_array_from_image(self.gray_image)
 
     def __str__(self):
         return '(%s, %s, %s, %s)' % (self.image_name, self.image_path, self.scale_factor, self.similarity)
@@ -98,6 +99,10 @@ class Pattern:
     def get_gray_image(self):
         """Getter for the gray_image property."""
         return self.gray_image
+
+    def get_gray_array(self):
+        """Getter for the gray_array property."""
+        return self.gray_array
 
     def similar(self, value: float):
         """Set the minimum similarity of the given Pattern object to the specified value."""
@@ -195,7 +200,7 @@ def _apply_scale(scale: int, rgb_array):
         return rgb_array
 
 
-def _get_rgb_array(image: Image):
+def _get_array_from_image(image: Image):
     """Returns np array from an Image."""
     if image is None:
         return None
