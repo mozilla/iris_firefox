@@ -8,7 +8,7 @@ import mozversion
 from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
-from iris.api.core.firefox_ui.menus import LibraryMenu
+from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.location_bar import LocationBar
 from iris.api.core.firefox_ui.find_toolbar import FindToolbar
 from iris.api.core.firefox_ui.hamburger import HamburgerMenu

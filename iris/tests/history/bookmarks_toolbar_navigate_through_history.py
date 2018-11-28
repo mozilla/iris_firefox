@@ -4,6 +4,7 @@
 
 
 from iris.test_case import *
+from iris.api.core.firefox_ui.history import History
 
 
 class Test(BaseTest):
@@ -25,7 +26,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         history_pattern = Pattern('history.png')
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
