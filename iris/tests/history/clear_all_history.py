@@ -4,6 +4,8 @@
 
 
 from iris.test_case import *
+from iris.api.core.firefox_ui.history import History
+from iris.api.helpers.history_utils import open_clear_recent_history_window
 
 
 class Test(BaseTest):
@@ -16,10 +18,9 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
         history_empty_pattern = Pattern('history_empty.png')
         if Settings.is_mac():
-            clear_recent_history_last_hour_pattern = Pattern('clear_recent_history_last_hour.png')
+            clear_recent_history_last_hour_pattern = History.CLearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
 
         # Open some pages to create some history.
         new_tab()
@@ -36,10 +37,7 @@ class Test(BaseTest):
         history_sidebar()
 
         # Open the Clear Recent History window and select 'Everything'.
-        clear_recent_history()
-        expected_3 = exists(clear_recent_history_window_pattern, 10)
-        assert_true(self, expected_3, 'Clear Recent History window was displayed properly.')
-
+        open_clear_recent_history_window(self)
         if Settings.is_mac():
             click(clear_recent_history_last_hour_pattern)
             for i in range(4):

@@ -4,6 +4,7 @@
 
 
 from iris.test_case import *
+from iris.api.core.firefox_ui.history import History
 
 
 class Test(BaseTest):
@@ -16,7 +17,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        show_all_history = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history = History.HistoryMenu.SHOW_ALL_HISTORY
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
         mozilla_autocomplete = Pattern('mozilla_autocomplete.png')
 
