@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Search again after navigating to another page'
-        self.test_case_id = 'C127264'
+        self.test_case_id = '127264'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
 
