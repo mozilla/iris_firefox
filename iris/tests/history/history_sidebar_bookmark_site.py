@@ -30,7 +30,7 @@ class Test(BaseTest):
         search_history_box_pattern = Pattern('search_history_box.png')
         expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
-        library_expand_bookmarks_menu_pattern = Pattern('library_expand_bookmarks_menu.png')
+        library_expand_bookmarks_menu_pattern = Library.BOOKMARKS_MENU
         library_bookmarks_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
 
         # Open a page to create some history.

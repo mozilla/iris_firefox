@@ -21,7 +21,7 @@ class Test(BaseTest):
         iris_bookmark_focus_pattern = Pattern('iris_bookmark_focus.png')
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        history_today_pattern = Pattern('history_today.png')
+        history_today_pattern = Library.HISTORY_TODAY
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
