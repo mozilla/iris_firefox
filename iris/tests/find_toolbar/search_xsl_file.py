@@ -16,16 +16,14 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        xls_spreadsheet_logo_pattern = Pattern('xls_tab_logo.png')
+        xls_spreadsheet_logo_pattern = Pattern('xls_tab_logo.png').similar(0.6)
         menu_bar_edit_pattern = Pattern('menu_bar_edit_pattern.png')
         menu_bar_edit_find_in_page_pattern = Pattern('menu_bar_edit_find_in_page_pattern.png')
         xls_first_occurrence_highlighted_pattern = Pattern('xls_first_occurrence_hl.png')
         xls_first_occurrence_unhighlighted_pattern = Pattern('xls_first_occurrence_white.png')
         xls_second_occurrence_highlighted_pattern = Pattern('xls_second_occurrence_hl.png')
         xls_second_occurrence_unhighlighted_pattern = Pattern('xls_second_occurrence_white.png')
-        xls_cell_pattern = Pattern('xls_cell.png')
-        xls_spreadsheet_logo_pattern.similarity = 0.6
-        xls_cell_pattern.similarity = 0.6
+        xls_cell_pattern = Pattern('xls_cell.png').similar(0.6)
 
         # Open Firefox and open a [XSL file]
         navigate('https://docs.google.com/spreadsheets/d/1izvhs2b9UX2JCD-0MsHonQBfPnjFsRpVuUOYGJYX2Oo/edit#gid=1283474565t')
@@ -56,7 +54,7 @@ class Test(BaseTest):
                 raise FindError('Menu bar edit -> find in page is not displayed (Windows)')
 
         if Settings.get_os() == Platform.LINUX:
-            x = Location(x = 500, y = 0)
+            x = Location(x=500, y=0)
             key_down(Key.ALT)
             mouse_move(x, 2)
             key_up(Key.ALT)

@@ -18,8 +18,7 @@ class Test(BaseTest):
 
     def run(self):
 
-        find_in_page_bar_contrast_pattern = Pattern('find_in_page_bar_contrast.png')
-        find_in_page_bar_contrast_pattern.similarity = 0.6
+        find_in_page_bar_contrast_pattern = Pattern('find_in_page_bar_contrast.png').similar(0.6)
         soap_page_loaded_contrast_pattern = Pattern('soap_page_loaded_contrast.png')
         see_label_contrast_pattern = Pattern('see_label_contrast.png')
         see_label_unhighlited_contrast_pattern = Pattern('see_label_unhighlited_contrast.png')

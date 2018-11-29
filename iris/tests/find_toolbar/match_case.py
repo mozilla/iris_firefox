@@ -50,4 +50,3 @@ class Test(BaseTest):
                     'The next matching words/characters have a green background highlighted')
         other_label_is_unhighlighted = exists(soap_xml_label_pattern, 5)
         assert_true(self, other_label_is_unhighlighted, 'The other is not highlighted')
-

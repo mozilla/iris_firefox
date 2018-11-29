@@ -45,4 +45,3 @@ class Test(BaseTest):
         click(FindToolbar.FIND_PREVIOUS)
         red_textbox_exists = exists(merge_red_textbox_pattern, 5)
         assert_true(self, red_textbox_exists, 'The arrows do not change the state.')
-

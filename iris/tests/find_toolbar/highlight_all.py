@@ -60,4 +60,3 @@ class Test(BaseTest):
         next_matching_pink_exists = exists(see_also_label_pattern, 5)
         assert_true(self, next_matching_pink_exists,
                     'The other ones have a pink background highlighted')
-

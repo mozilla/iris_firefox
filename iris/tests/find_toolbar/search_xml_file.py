@@ -18,8 +18,7 @@ class Test(BaseTest):
     def run(self):
         xml_page_logo_pattern = Pattern('xml_page_logo.png')
         first_occurrence_highlighted_pattern = Pattern('xml_text_first_occurrence_pattern.png')
-        second_occurrence_highlighted_pattern = Pattern('xml_text_second_occurrence_pattern.png')
-        xml_page_logo_pattern.similarity = 0.6
+        second_occurrence_highlighted_pattern = Pattern('xml_text_second_occurrence_pattern.png').similar(0.6)
 
         # Open Firefox and open a [XML page]
         test_page_local = self.get_asset_path('cd_catalog.xml')
@@ -53,4 +52,3 @@ class Test(BaseTest):
         text_first_occurrence_exists_after_scroll = exists(first_occurrence_highlighted_pattern, 5)
         assert_true(self, text_first_occurrence_exists_after_scroll,
                     'The first occurrence is highlighted after scrolling.')
-

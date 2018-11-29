@@ -56,4 +56,5 @@ class Test(BaseTest):
         # Inspect if the number of matches items is displayed and it is correct
         number_of_items_found = exists(of_4_matches_label_pattern, 5)
         assert_true(self, number_of_items_found,
-                    'The number of matches found on the page is displayed and it corresponds to the actual number of items')
+                    'The number of matches found on the page is displayed and it corresponds '
+                    'to the actual number of items')

@@ -40,4 +40,3 @@ class Test(BaseTest):
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         unhighlighted_label_exists = exists(see_label_unhighlighted_pattern, 5)
         assert_true(self, unhighlighted_label_exists, 'The others are not highlighted.')
-

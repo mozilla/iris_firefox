@@ -17,8 +17,7 @@ class Test(BaseTest):
 
     def run(self):
         style_text_url_pattern = Pattern('style_text_url.png')
-        style_text_first_not_selected_pattern = Pattern('style_text_first_not_selected.png')
-        style_text_first_not_selected_pattern.similarity = 0.6
+        style_text_first_not_selected_pattern = Pattern('style_text_first_not_selected.png').similar(0.6)
         style_text_first_selected_pattern = Pattern('style_text_first_selected.png')
         style_text_second_selected_pattern = Pattern('style_text_second_selected.png')
         style_text_last_selected_pattern = Pattern('style_text_last_selected.png')
@@ -54,7 +53,6 @@ class Test(BaseTest):
         assert_true(self, first_text_selected_exists, 'First matching style text was found.')
 
         # next
-
         find_next()
         second_text_selected_exists = exists(style_text_second_selected_pattern, 5)
         assert_true(self, second_text_selected_exists, 'Second matching style text was found.')
