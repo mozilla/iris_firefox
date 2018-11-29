@@ -27,8 +27,7 @@ class Test(BaseTest):
         soap_other_link_pattern = Pattern('soap_link_disambiguation.png')
         soap_other_link_highlighted_pattern = Pattern('soap_link_disambiguation_highlighted.png')
 
-        test_page_local = self.get_asset_path('wiki_soap.html')
-        navigate(test_page_local)
+        navigate(LocalWeb.WIKI_TEST_SITE)
 
         soap_label_exists = exists(soap_label_pattern, 40)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')

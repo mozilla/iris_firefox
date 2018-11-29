@@ -84,8 +84,7 @@ class Test(BaseTest):
 
         # test body
         try:
-            test_page_local = self.get_asset_path('wiki_soap.html')
-            navigate(test_page_local)
+            navigate(LocalWeb.WIKI_TEST_SITE)
             soap_page_loaded_exists = exists(soap_page_loaded_contrast_pattern, 20)
             assert_true(self, soap_page_loaded_exists, 'The page is successfully loaded.')
 

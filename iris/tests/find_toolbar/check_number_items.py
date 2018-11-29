@@ -24,8 +24,7 @@ class Test(BaseTest):
         about_errors_label_pattern = Pattern('about_errors_label.png')
 
         # Open Firefox and navigate to a popular website
-        test_page_local = self.get_asset_path('wiki_soap.html')
-        navigate(test_page_local)
+        navigate(LocalWeb.WIKI_TEST_SITE)
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 

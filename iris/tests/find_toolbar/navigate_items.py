@@ -24,8 +24,7 @@ class Test(BaseTest):
         two_of_five_label_pattern = Pattern('2_of_5_matches_label.png')
 
         # Open Firefox and navigate to a website
-        wiki_page_local = self.get_asset_path('soap.html')
-        navigate(wiki_page_local)
+        navigate(LocalWeb.WIKI_TEST_SITE)
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 

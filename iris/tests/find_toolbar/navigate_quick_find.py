@@ -23,8 +23,7 @@ class Test(BaseTest):
         quick_find_label_pattern = Pattern('quick_find_label.png')
         see_label_second_pattern = Pattern('see_label.png')
 
-        test_page_local = self.get_asset_path('wiki_soap.html')
-        navigate(test_page_local)
+        navigate(LocalWeb.WIKI_TEST_SITE)
 
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
