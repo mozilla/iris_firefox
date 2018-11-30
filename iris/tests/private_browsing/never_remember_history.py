@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '120453'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
+        self.exclude = [Platform.WINDOWS, Platform.LINUX]
 
     def setup(self):
         """ Test case setup
