@@ -23,6 +23,7 @@ class Test(BaseTest):
         xls_second_occurrence_highlighted_pattern = Pattern('xls_second_occurrence_hl.png')
         xls_second_occurrence_unhighlighted_pattern = Pattern('xls_second_occurrence_white.png')
         xls_cell_pattern = Pattern('xls_cell.png').similar(0.6)
+        autosum_icon_pattern = Pattern('autosum_xls_icon.png')
 
         # Open Firefox and open a [XSL file]
         navigate('https://docs.google.com/spreadsheets/d/1izvhs2b9UX2JCD-0MsHonQBfPnjFsRpVuUOYGJYX2Oo/edit#gid=1283474565t')
@@ -32,9 +33,13 @@ class Test(BaseTest):
         # Open the Find Toolbar from Menubar > Edit > Find
         xls_cell_displayed = exists(xls_cell_pattern, 5)
         if xls_cell_displayed:
-            click(xls_cell_pattern, 5)
+            hover(xls_cell_pattern, 0.1)
+            click(xls_cell_pattern)
         else:
             raise FindError('XLS cell is not displayed')
+
+        autosum_icon_exists = exists(autosum_icon_pattern, 20)
+        assert_true(self, autosum_icon_exists, 'Spreadsheet loaded')
 
         if Settings.get_os() == Platform.WINDOWS:
             key_down(Key.ALT)
