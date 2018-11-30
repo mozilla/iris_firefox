@@ -38,8 +38,7 @@ class Test(BaseTest):
         private_browsing_window_opened = exists(private_browsing_icon_pattern, 5)
         assert_true(self, private_browsing_window_opened, 'Private Browsing window is successfully opened.')
 
-        test_page_local = self.get_asset_path('wiki_soap.html')
-        navigate(test_page_local)
+        navigate(LocalWeb.WIKI_TEST_SITE)
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
@@ -64,7 +63,7 @@ class Test(BaseTest):
 
         history_sidebar()
 
-        type('Mozilla', interval=1)
+        type('Mozilla')
 
         mozilla_history_item_exists = exists(mozilla_history_item_pattern, 5)
         assert_true(self, mozilla_history_item_exists, 'Websites visited previously in the Normal window are '
@@ -81,6 +80,14 @@ class Test(BaseTest):
 
         history_sidebar()
 
-        type('soap', interval=1)
-        wiki_soap_history_icon_exists = exists(wiki_soap_history_icon_pattern, 1)
+        type('soap')
+        wiki_soap_history_icon_exists = exists(wiki_soap_history_icon_pattern, 2)
         assert_false(self, wiki_soap_history_icon_exists, 'The website is not displayed in the Recent History section.')
+
+        edit_select_all()
+        edit_delete()
+
+        type('Mozilla')
+        mozilla_history_item_exists = exists(mozilla_history_item_pattern, 5)
+        assert_true(self, mozilla_history_item_exists, 'Websites visited previously in the Normal window are '
+                                                       'displayed in the History section')
