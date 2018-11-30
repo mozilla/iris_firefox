@@ -11,19 +11,17 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Search again after navigating to another page'
-        self.test_case_id = 'C127264'
+        self.test_case_id = '127264'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
         page_title_pattern = Pattern('page_title_search_navigate.png')
         word_browser_green_pattern = Pattern('word_browser_green.png')
-        link_load_listener_pattern = Pattern('link_load_listener.png')
-        navigate_load_listener_page_title_pattern = Pattern('navigate_page_title.png')
+        link_load_listener_pattern = Pattern('link_load_listener.png').similar(0.6)
+        navigate_load_listener_page_title_pattern = Pattern('navigate_page_title.png').similar(0.6)
         word_browser_in_find_bar_pattern = Pattern('word_browser_in_find_bar.png')
         phrase_not_found_label_pattern = Pattern('phrase_not_found_label.png')
-        link_load_listener_pattern.similarity = 0.6
-        navigate_load_listener_page_title_pattern.similarity = 0.6
 
         tabbed_browser_page_local = self.get_asset_path('page_1.htm')
         navigate(tabbed_browser_page_local)
@@ -38,7 +36,7 @@ class Test(BaseTest):
 
         # Write the word "browser" and hit ENTER
         type('browser', interval=1)
-        type(Key.ENTER, interval=1)
+        type(Key.ENTER)
         word_browser_green_exists = exists(word_browser_green_pattern, 5)
         assert_true(self, word_browser_green_exists, 'The items corresponding to "browser" are found.')
 
@@ -54,6 +52,6 @@ class Test(BaseTest):
         type(Key.ENTER)
         # Linux needs extra Key.ENTER to pass a test
         if Settings.get_os() == Platform.LINUX:
-            type(Key.ENTER, interval=1)
+            type(Key.ENTER)
         phrase_not_found_label_exists = exists(phrase_not_found_label_pattern, 2)
         assert_true(self, phrase_not_found_label_exists, 'No visible issue of the highlighted items are present.')

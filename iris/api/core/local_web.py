@@ -48,3 +48,7 @@ class LocalWeb(object):
     POCKET_IMAGE = Pattern('pocket_full.png')
     POCKET_BOOKMARK = Pattern('pocket_bookmark.png')
     POCKET_BOOKMARK_SMALL = Pattern('pocket_bookmark_small.png')
+
+    """Wiki Test site."""
+    WIKI_TEST_SITE = 'http://%s:%s/wiki/' % (_ip_host, _port)
+

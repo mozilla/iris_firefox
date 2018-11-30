@@ -18,8 +18,7 @@ class Test(BaseTest):
 
     def run(self):
 
-        find_in_page_bar_contrast_pattern = Pattern('find_in_page_bar_contrast.png')
-        find_in_page_bar_contrast_pattern.similarity = 0.6
+        find_in_page_bar_contrast_pattern = Pattern('find_in_page_bar_contrast.png').similar(0.6)
         soap_page_loaded_contrast_pattern = Pattern('soap_page_loaded_contrast.png')
         see_label_contrast_pattern = Pattern('see_label_contrast.png')
         see_label_unhighlited_contrast_pattern = Pattern('see_label_unhighlited_contrast.png')
@@ -85,8 +84,7 @@ class Test(BaseTest):
 
         # test body
         try:
-            test_page_local = self.get_asset_path('wiki_soap.html')
-            navigate(test_page_local)
+            navigate(LocalWeb.WIKI_TEST_SITE)
             soap_page_loaded_exists = exists(soap_page_loaded_contrast_pattern, 20)
             assert_true(self, soap_page_loaded_exists, 'The page is successfully loaded.')
 

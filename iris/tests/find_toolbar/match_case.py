@@ -22,8 +22,7 @@ class Test(BaseTest):
         soap_label_selected_pattern = Pattern('soap_label_selected.png')
 
         # Open Firefox and navigate to a popular website
-        test_page_local = self.get_asset_path('wiki_soap.html')
-        navigate(test_page_local)
+        navigate(LocalWeb.WIKI_TEST_SITE)
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
@@ -50,4 +49,3 @@ class Test(BaseTest):
                     'The next matching words/characters have a green background highlighted')
         other_label_is_unhighlighted = exists(soap_xml_label_pattern, 5)
         assert_true(self, other_label_is_unhighlighted, 'The other is not highlighted')
-
