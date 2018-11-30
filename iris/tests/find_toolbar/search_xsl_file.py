@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Search on a XSL file'
+        self.meta = 'Search on a XSL file. [Test is unstable on Linux.]'
         self.test_case_id = '127274'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
@@ -27,6 +27,7 @@ class Test(BaseTest):
 
         # Open Firefox and open a [XSL file]
         navigate('https://docs.google.com/spreadsheets/d/1izvhs2b9UX2JCD-0MsHonQBfPnjFsRpVuUOYGJYX2Oo/edit#gid=1283474565t')
+        time.sleep(30)
         xls_spreadsheet_logo_pattern_exists = exists(xls_cell_pattern, 15)
         assert_true(self, xls_spreadsheet_logo_pattern_exists, 'The page is successfully loaded.')
 
@@ -91,7 +92,7 @@ class Test(BaseTest):
         # Navigate through found items
         type('re')
         if Settings.get_os() == Platform.LINUX:
-            type(Key.ENTER) 
+            type(Key.ENTER)
 
         first_occurrence_highlighted_exists = exists(xls_first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_highlighted_exists, 'The first occurrence is highlighted.')
