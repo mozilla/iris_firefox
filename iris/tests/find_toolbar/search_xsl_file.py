@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        xls_spreadsheet_logo_pattern = Pattern('xls_tab_logo.png').similar(0.6)
         menu_bar_edit_pattern = Pattern('menu_bar_edit_pattern.png')
         menu_bar_edit_find_in_page_pattern = Pattern('menu_bar_edit_find_in_page_pattern.png')
         xls_first_occurrence_highlighted_pattern = Pattern('xls_first_occurrence_hl.png')
@@ -27,7 +26,7 @@ class Test(BaseTest):
 
         # Open Firefox and open a [XSL file]
         navigate('https://docs.google.com/spreadsheets/d/1izvhs2b9UX2JCD-0MsHonQBfPnjFsRpVuUOYGJYX2Oo/edit#gid=1283474565t')
-        xls_spreadsheet_logo_pattern_exists = exists(xls_spreadsheet_logo_pattern, 15)
+        xls_spreadsheet_logo_pattern_exists = exists(xls_cell_pattern, 15)
         assert_true(self, xls_spreadsheet_logo_pattern_exists, 'The page is successfully loaded.')
 
         # Open the Find Toolbar from Menubar > Edit > Find
@@ -85,7 +84,7 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed ')
 
         # Navigate through found items
-        type('an')
+        type('re')
         first_occurrence_highlighted_exists = exists(xls_first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_highlighted_exists, 'The first occurrence is highlighted.')
         second_occurrence_unhighlighted_exists = exists(xls_second_occurrence_unhighlighted_pattern, 5)
