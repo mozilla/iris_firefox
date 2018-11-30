@@ -29,13 +29,13 @@ class Test(BaseTest):
         new_tab()
         new_tab_is_opened = exists(new_tab_icon_pattern, 5)
         assert_true(self, new_tab_is_opened, 'New tab is opened')
-        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 2)
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
         assert_false(self, find_toolbar_is_opened, 'The find toolbar is not opened on a new tab')
 
         # Open a new window
         new_window()
         new_tab_is_opened = exists(new_tab_icon_pattern, 5)
         assert_true(self, new_tab_is_opened, 'New tab is opened')
-        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 2)
+        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
         assert_false(self, find_toolbar_is_opened, 'The find toolbar is not opened in a new window')
         close_window()

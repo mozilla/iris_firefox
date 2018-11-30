@@ -16,11 +16,10 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        pdf_logo_pattern = Pattern('pdf_page_logo.png')
+        pdf_logo_pattern = Pattern('pdf_page_logo.png').similar(0.6)
         first_occurrence_highlighted_pattern = Pattern('first_printer_highlight.png')
         second_occurrence_highlighted_pattern = Pattern('second_printer_highlight.png')
         second_occurrence_unhighlighted_pattern = Pattern('second_printer_white.png')
-        pdf_logo_pattern.similarity = 0.6
 
         # Open Firefox and open a [PDF page]
         test_page_local = self.get_asset_path('pdf.pdf')
@@ -58,5 +57,3 @@ class Test(BaseTest):
         first_occurrence_after_scrolling_highlighted = exists(first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_after_scrolling_highlighted,
                     'The first occurrence is highlighted after scrolling')
-
-

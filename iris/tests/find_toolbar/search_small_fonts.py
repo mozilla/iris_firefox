@@ -17,10 +17,8 @@ class Test(BaseTest):
 
     def run(self):
 
-        small_text_unselected_pattern = Pattern('small_text_unselected.png')
-        small_text_unselected_pattern.similarity = 0.6
-        small_text_selected_pattern = Pattern('small_text_selected.png')
-        small_text_selected_pattern.similarity = 0.6
+        small_text_unselected_pattern = Pattern('small_text_unselected.png').similar(0.6)
+        small_text_selected_pattern = Pattern('small_text_selected.png').similar(0.6)
         vertical_search_page_local = self.get_asset_path('test-findinpage.html')
 
         navigate(vertical_search_page_local)     # https://bug1279751.bmoattachments.org/attachment.cgi?id=8762332

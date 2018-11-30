@@ -62,4 +62,3 @@ class Test(BaseTest):
                     'The first occurrence is highlighted after scrolling down and up.')
         assert_true(self, text_second_occurrence_unhighlighted,
                     'The second occurrence is not highlighted after scrolling down and up.')
-
