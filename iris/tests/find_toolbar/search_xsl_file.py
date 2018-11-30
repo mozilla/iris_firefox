@@ -90,6 +90,9 @@ class Test(BaseTest):
 
         # Navigate through found items
         type('re')
+        if Settings.get_os() == Platform.LINUX:
+            type(Key.ENTER) 
+
         first_occurrence_highlighted_exists = exists(xls_first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_highlighted_exists, 'The first occurrence is highlighted.')
         second_occurrence_unhighlighted_exists = exists(xls_second_occurrence_unhighlighted_pattern, 5)
