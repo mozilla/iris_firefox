@@ -37,7 +37,7 @@ jobs:
     - stage: Ubuntu 16.04 Image search and mouse movement tests
       os: linux
       dist: xenial
-      script:script: pipenv run iris -j -n -d ci_tests
+      script: pipenv run iris -j -n -d ci_tests
 
 
 # Email notification
