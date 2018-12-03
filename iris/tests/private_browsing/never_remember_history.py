@@ -17,12 +17,8 @@ class Test(BaseTest):
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
 
     def setup(self):
-        """ Test case setup
-        This overrides the setup method in the BaseTest class,
-        so that it can use a profile that already has bookmarks.
-        """
         BaseTest.setup(self)
-        self.profile = Profile.BRAND_NEW
+        self.profile = Profile.LIKE_NEW
         return
 
     def run(self):
@@ -84,23 +80,3 @@ class Test(BaseTest):
 
         wiki_soap_history_icon_exists = exists(wiki_soap_history_icon_pattern, 1)
         assert_false(self, wiki_soap_history_icon_exists, 'The website is not displayed in the Recent History section.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
