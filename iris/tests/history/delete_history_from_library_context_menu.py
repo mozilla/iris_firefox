@@ -4,6 +4,7 @@
 
 
 from iris.test_case import *
+from iris.test_dependencies import *
 
 
 class Test(BaseTest):
