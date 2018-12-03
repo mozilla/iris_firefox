@@ -13,6 +13,7 @@ from core.errors import APIHelperError
 OS_NAME = mozinfo.os
 OS_VERSION = mozinfo.os_version
 MONITORS = mss.mss().monitors[1:]
+MULTI_MONITOR_AREA = mss.mss().monitors[0]
 
 
 class OSHelper:

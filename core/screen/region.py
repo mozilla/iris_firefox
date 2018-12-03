@@ -6,7 +6,7 @@
 from core.errors import FindError
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
-from core.image_search.finder import wait, find, find_all, exists
+from core.image_search.finder import wait, find, find_all, exists, highlight
 
 
 class Region:
@@ -103,3 +103,11 @@ class Region:
         :return: Call the exists() method.
         """
         return exists(ps, timeout, self._area)
+
+    def highlight(self, seconds=None, color=None):
+        """
+        :param seconds: How many seconds the region is highlighted. By default the region is highlighted for 2 seconds.
+        :param color: Color used to highlight the region. Default color is red.
+        :return: None.
+        """
+        highlight(self, seconds, color)

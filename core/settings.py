@@ -74,7 +74,7 @@ class _Settings:
         self.observe_scan_rate = observe_scan_rate
         self.observe_min_changed_pixels = observe_min_changed_pixels
         self.highlight_duration = highlight_duration
-        self.highlight_color = highlight_color
+        self.highlight_color = highlight_color.value
         self.highlight_thickness = highlight_thickness
 
     @property

@@ -18,6 +18,8 @@ class Color(Enum):
     RED = 'red'
     GREEN = 'green'
     BLUE = 'blue'
+    BLACK = 'black'
+    WHITE = 'white'
 
 
 class LanguageCode(Enum):
