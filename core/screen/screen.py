@@ -5,9 +5,9 @@
 
 import logging
 
-from core.screen.region import Region
 from core.helpers.rectangle import Rectangle
 from core.screen.display import Display
+from core.screen.region import Region
 
 logger = logging.getLogger(__name__)
 
@@ -25,8 +25,8 @@ class Screen(Region):
         Region.__init__(self, self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
 
     def __repr__(self):
-        return '%s(%r, %r, %r, %r)' % (self.__class__.__name__, self._bounds.x, self.y, self._bounds.width,
-                                       self._bounds.height)
+        return '%s(x: %r, y: %r, size: %r x %r)' % (self.__class__.__name__, self._bounds.x, self.y, self._bounds.width,
+                                                    self._bounds.height)
 
     def get_number_screens(self) -> int:
         """Get the number of screens in a multi-monitor environment at the time the script is running."""
@@ -35,12 +35,3 @@ class Screen(Region):
     def get_bounds(self) -> Rectangle:
         """Get the dimensions of monitor represented by the screen object."""
         return self._bounds
-
-
-
-
-
-# region1 = Screen(0).new_region(0, 0, 50, 50)
-# print(region1.get_region())
-# print(region1.get_bottom_right())
-# region1.show()

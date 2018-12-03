@@ -22,7 +22,7 @@ class Region:
      y increases                         bottom
      """
 
-    def __init__(self, x_start: int = 0, y_start: int = 0, width=0, height=0):
+    def __init__(self, x_start: int = 0, y_start: int = 0, width: int = 0, height: int = 0):
         self._area: Rectangle = Rectangle(x_start, y_start, width, height)
         self.x = x_start
         self.y = y_start
@@ -75,31 +75,31 @@ class Region:
         :param ps: Pattern or String.
         :return: Call the find() method.
         """
-        return find(ps, self)
+        return find(ps, self._area)
 
-    def find_all(self, what=None, threshold=0.99):
+    def find_all(self, ps=None, threshold=0.99):
         """Look for multiple matches of a Pattern or image.
 
-        :param what: String or Pattern.
+        :param ps: Pattern or String.
         :param threshold: float
         :return: Call the find_all() method.
         """
-        return find_all(what, self, threshold)
+        return find_all(ps, self._area, threshold)
 
-    def wait(self, what=None, timeout=None) -> bool or FindError:
+    def wait(self, ps=None, timeout=None) -> bool or FindError:
         """Wait for a Pattern or image to appear.
 
-        :param what: String or Pattern.
+        :param ps: Pattern or String.
         :param timeout: Number as maximum waiting time in seconds.
         :return: True or FineError Exception.
         """
-        return wait(what, timeout, self)
+        return wait(ps, timeout, self._area)
 
-    def exists(self, what=None, timeout=None):
+    def exists(self, ps=None, timeout=None):
         """Check if Pattern or image exists.
 
-        :param what: String or Pattern.
+        :param ps: Pattern or String.
         :param timeout: Number as maximum waiting time in seconds.
         :return: Call the exists() method.
         """
-        return exists(what, timeout, self)
+        return exists(ps, timeout, self._area)

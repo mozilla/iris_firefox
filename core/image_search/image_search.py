@@ -19,6 +19,7 @@ from core.image_search.pattern import Pattern
 from core.settings import Settings
 from core.helpers.location import Location
 from core.errors import ScreenshotError
+from core.helpers.rectangle import Rectangle
 from core.screen.screenshot_image import ScreenshotImage
 
 # from save_debug_image import save_debug_image
@@ -28,7 +29,8 @@ logger = logging.getLogger(__name__)
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 
-def is_pattern_size_correct(pattern, region):
+def is_pattern_size_correct(pattern: Pattern, region: Rectangle):
+    """validates that the pattern is inside the region."""
     p_width, p_height = pattern.get_size()
     r_width = region.width
     r_height = region.height
@@ -43,7 +45,7 @@ def is_pattern_size_correct(pattern, region):
     return is_correct
 
 
-def match_template(pattern: Pattern, region=None) -> Location:
+def match_template(pattern: Pattern, region: Rectangle = None) -> Location:
     """Find a pattern in a Region or full screen
 
     :param Pattern pattern: Image details
@@ -82,7 +84,7 @@ def match_template(pattern: Pattern, region=None) -> Location:
         return position
 
 
-def match_template_multiple(pattern: Pattern, region=None, threshold: float = 0.5) -> List[Location]:
+def match_template_multiple(pattern: Pattern, region: Rectangle = None, threshold: float = 0.5) -> List[Location]:
     """Find all occurrences of a pattern in a Region or full screen
 
     :param Pattern pattern: Image details
@@ -92,7 +94,6 @@ def match_template_multiple(pattern: Pattern, region=None, threshold: float = 0.
     """
     logger.debug('Searching for pattern: %s' % pattern.get_filename())
     try:
-        print(region)
         stack_image = ScreenshotImage(region=region)
         precision = pattern.similarity
 
@@ -128,7 +129,7 @@ def match_template_multiple(pattern: Pattern, region=None, threshold: float = 0.
         return []
 
 
-def image_search_find(pattern, timeout=None, region=None):
+def image_find(pattern: Pattern, timeout: float = None, region: Rectangle = None) -> None or Location:
     """ Search for an image in a Region or full screen.
 
     :param Pattern pattern: Name of the searched image.
@@ -136,8 +137,8 @@ def image_search_find(pattern, timeout=None, region=None):
     :param Region region: Region object.
     :return: Location.
     """
-    # if not is_pattern_size_correct(pattern, region):
-    #     return None
+    if not is_pattern_size_correct(pattern, region):
+        return None
 
     if timeout is None:
         timeout = Settings.auto_wait_timeout
@@ -156,7 +157,7 @@ def image_search_find(pattern, timeout=None, region=None):
     return None
 
 
-def image_search_vanish(pattern, timeout=None, region=None):
+def image_vanish(pattern: Pattern, timeout: float = None, region: Rectangle = None) -> None or bool:
     """ Search if an image is NOT in a Region or full screen.
 
     :param Pattern pattern: Name of the searched image.
@@ -164,6 +165,8 @@ def image_search_vanish(pattern, timeout=None, region=None):
     :param Region region: Region object.
     :return: Location.
     """
+    if not is_pattern_size_correct(pattern, region):
+        return None
 
     pattern_found = True
 
