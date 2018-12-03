@@ -19,7 +19,7 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
-        self.profile = Profile.BRAND_NEW
+        self.profile = Profile.LIKE_NEW
         return
 
     def run(self):
