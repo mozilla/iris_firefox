@@ -8,3 +8,6 @@ class Utils(object):
     # Checkbox.
     CHECKEDBOX = Pattern('checked_box.png')
     UNCHECKEDBOX = Pattern('unchecked_box.png')
+
+    # Back Arrow.
+    LIBRARY_BACK_BUTTON = Pattern('subview_button_back.png')

@@ -27,6 +27,8 @@ class History(object):
             LAST_FOUR_HOURS = Pattern('last_four_hours.png')
             TODAY = Pattern('today.png')
             EVERYTHING = Pattern('everything.png')
+
+            # Focused time ranges.
             CLEAR_CHOICE_LAST_HOUR = Pattern('sanitize_duration_choice_last_hour.png')
             CLEAR_CHOICE_LAST_TWO_HOURS = Pattern('sanitize_duration_choice_last_two_hours.png')
             CLEAR_CHOICE_LAST_FOUR_HOURS = Pattern('sanitize_duration_choice_last_four_hours.png')
@@ -49,3 +51,11 @@ class History(object):
         CANCEL = Pattern('cancel_button.png')
         CLEAR_NOW = Pattern('clear_now_button.png')
         DISABLED_CLEAR_NOW = Pattern('disabled_clear_now_button.png')
+
+    class RecentlyClosedTabs(object):
+        RECENTLY_CLOSED_TABS_TITLE = Pattern('recently_closed_tabs_label.png')
+        RESTORE_ALL_TABS = Pattern('closed_tabs_restore_all_items.png')
+
+    class RecentlyClosedWindows(object):
+        RECENTLY_CLOSED_WINDOWS_TITLE = Pattern('recently_closed_windows_label.png')
+        RESTORE_ALL_WINDOWS = Pattern('closed_windows_restore_all_items.png')

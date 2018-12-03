@@ -4,8 +4,8 @@
 
 
 from iris.test_case import *
-from iris.api.core.firefox_ui.history import History
-from iris.api.helpers.history_utils import open_clear_recent_history_window
+from iris.test_dependencies import *
+
 
 
 class Test(BaseTest):
