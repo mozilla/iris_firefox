@@ -46,7 +46,15 @@ class Test(BaseTest):
         assert_true(self, ok_button_exists, 'Button OK exists')
         click(ok_save_file_button_pattern)
 
-        open_downloads()
+        # bug in open_downloads shortcut for linux - raise a new issue
+        if Settings.is_linux():
+            key_down(Key.CTRL)
+            key_down(Key.SHIFT)
+            type('y')
+            key_up(Key.SHIFT)
+            key_up(Key.CTRL)
+        else:
+            open_downloads()
 
         about_downloads_label_exists = exists(about_downloads_label_pattern, 5)
         assert_true(self, about_downloads_label_exists, 'Downloads opened')
