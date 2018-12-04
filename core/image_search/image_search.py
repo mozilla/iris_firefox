@@ -21,6 +21,8 @@ from core.helpers.location import Location
 from core.errors import ScreenshotError
 from core.helpers.rectangle import Rectangle
 from core.screen.screenshot_image import ScreenshotImage
+from core.enums import MatchTemplateType
+from core.screen.display import Display
 
 # from save_debug_image import save_debug_image
 
@@ -45,14 +47,23 @@ def is_pattern_size_correct(pattern: Pattern, region: Rectangle):
     return is_correct
 
 
-def match_template(pattern: Pattern, region: Rectangle = None) -> Location:
+def match_template(pattern: Pattern, region: Rectangle = None,
+                   match_type: MatchTemplateType = MatchTemplateType.SINGLE) -> List[Location]:
     """Find a pattern in a Region or full screen
 
     :param Pattern pattern: Image details
     :param Region region: Region object.
+    :param MatchTemplateType match_type: Type of match_template (single or multiple)
     :return: Location.
     """
+    if region is None:
+        region = Display(1).bounds
+
+    locations_list = []
     logger.debug('Searching for pattern: %s' % pattern.get_filename())
+    if not isinstance(match_type, MatchTemplateType):
+        logger.warning('%s should be an instance of `%s`' % (match_type, MatchTemplateType))
+        return []
     try:
         stack_image = ScreenshotImage(region=region)
         precision = pattern.similarity
@@ -61,12 +72,15 @@ def match_template(pattern: Pattern, region: Rectangle = None) -> Location:
         haystack = stack_image.get_color_image() if precision == 0.99 else stack_image.get_gray_image()
 
         res = cv2.matchTemplate(np.array(haystack), np.array(needle), FIND_METHOD)
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-        if max_val < precision:
-            position = Location(-1, -1)
-        else:
-            position = Location(max_loc[0], max_loc[1])
+        if match_type is MatchTemplateType.SINGLE:
+            min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+            if max_val >= precision:
+                locations_list.append(Location(max_loc[0] + region.x, max_loc[1] + region.y))
+        elif match_type is MatchTemplateType.MULTIPLE:
+            loc = np.where(res >= precision)
+            for pt in zip(*loc[::-1]):
+                location = Location(pt[0] + region.x, pt[1] + region.y)
+                locations_list.append(location)
 
         # if position.x == -1:
         #     save_debug_image(needle, np.array(haystack), None, True)
@@ -74,59 +88,9 @@ def match_template(pattern: Pattern, region: Rectangle = None) -> Location:
         #     save_debug_image(needle, haystack, position)
     except ScreenshotError:
         logger.warning('Screenshot failed.')
-        position = Location(-1, -1)
-
-    if position.x == -1 or position.y == -1:
-        return position
-    elif region is not None:
-        return Location(position.x + region.x, position.y + region.y)
-    else:
-        return position
-
-
-def match_template_multiple(pattern: Pattern, region: Rectangle = None, threshold: float = 0.5) -> List[Location]:
-    """Find all occurrences of a pattern in a Region or full screen
-
-    :param Pattern pattern: Image details
-    :param Region region: Region object.
-    :param threshold: float
-    :return: List of locations.
-    """
-    logger.debug('Searching for pattern: %s' % pattern.get_filename())
-    try:
-        stack_image = ScreenshotImage(region=region)
-        precision = pattern.similarity
-
-        needle = pattern.get_rgb_array() if precision == 0.99 else pattern.get_gray_array()
-        haystack = stack_image.get_rgb_array() if precision == 0.99 else stack_image.get_gray_array()
-
-        res = cv2.matchTemplate(haystack, needle, FIND_METHOD)
-
-        final_matches = []
-        while True:
-            min_val, max_val, min_loc, best_match = cv2.minMaxLoc(res)
-            if FIND_METHOD in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
-                top_left = min_loc
-            else:
-                top_left = best_match
-
-            if precision > max_val > threshold:
-                sx, sy = top_left
-                width, height = pattern.get_size()
-                for x in range(int(sx - width / 2), int(sx + width / 2)):
-                    for y in range(int(sy - height / 2), int(sy + height / 2)):
-                        try:
-                            res[y][x] = np.float32(-10000)
-                        except IndexError:
-                            pass
-                new_match_point = Location(top_left[0], top_left[1])
-                final_matches.append(new_match_point)
-            else:
-                break
-        return final_matches
-    except ScreenshotError:
-        logger.warning('Screenshot failed.')
         return []
+
+    return locations_list
 
 
 def image_find(pattern: Pattern, timeout: float = None, region: Rectangle = None) -> None or Location:
@@ -149,11 +113,11 @@ def image_find(pattern: Pattern, timeout: float = None, region: Rectangle = None
     while start_time < end_time:
         time_remaining = end_time - start_time
         logger.debug("Searching for image %s - %s seconds remaining" % (pattern.get_filename(), time_remaining))
-        pos = match_template(pattern, region)
+        pos = match_template(pattern, region, MatchTemplateType.SINGLE)
         start_time = datetime.datetime.now()
 
-        if pos.x != -1:
-            return pos
+        if len(pos) == 1:
+            return pos[0]
     return None
 
 
@@ -174,8 +138,8 @@ def image_vanish(pattern: Pattern, timeout: float = None, region: Rectangle = No
     end_time = start_time + datetime.timedelta(seconds=timeout)
 
     while pattern_found is True and start_time < end_time:
-        image_found = match_template(pattern, region)
-        if (image_found.x != -1) & (image_found.y != -1):
+        image_found = match_template(pattern, region, MatchTemplateType.SINGLE)
+        if len(image_found) == 0:
             pattern_found = True
         else:
             pattern_found = False

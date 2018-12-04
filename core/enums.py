@@ -145,6 +145,11 @@ class Locales(Enum):
     VIETNAMESE = 'vi'
 
 
+class MatchTemplateType(Enum):
+    SINGLE = 0
+    MULTIPLE = 1
+
+
 class OSPlatform(Enum):
     WINDOWS = 'win'
     LINUX = 'linux'

@@ -77,14 +77,13 @@ class Region:
         """
         return find(ps, self._area)
 
-    def find_all(self, ps=None, threshold=0.99):
+    def find_all(self, ps=None):
         """Look for multiple matches of a Pattern or image.
 
         :param ps: Pattern or String.
-        :param threshold: float
         :return: Call the find_all() method.
         """
-        return find_all(ps, self._area, threshold)
+        return find_all(ps, self._area)
 
     def wait(self, ps=None, timeout=None) -> bool or FindError:
         """Wait for a Pattern or image to appear.

@@ -6,14 +6,15 @@
 import time
 from typing import List
 
+from core.arg_parser import parse_args
 from core.enums import Color
+from core.enums import MatchTemplateType
 from core.errors import FindError
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
 from core.highlight.screen_highlight import ScreenHighlight, HighlightRectangle
-from core.image_search.image_search import image_find, match_template, match_template_multiple, image_vanish
+from core.image_search.image_search import image_find, match_template, image_vanish
 from core.image_search.pattern import Pattern
-from core.screen.display import Display
 from core.settings import Settings
 
 
@@ -46,7 +47,8 @@ def highlight(region=None, seconds=None, color=None, pattern=None, location=None
 
     if pattern is not None:
         width, height = pattern.get_size()
-        hl.draw_rectangle(HighlightRectangle(location.x, location.y, width, height, color))
+        for loc in location:
+            hl.draw_rectangle(HighlightRectangle(loc.x, loc.y, width, height, color))
 
     hl.render(seconds)
     time.sleep(seconds)
@@ -60,32 +62,27 @@ def find(ps: Pattern or str, region: Rectangle = None) -> Location or FindError:
     :return: Location object.
     """
     if isinstance(ps, Pattern):
-        if region is None:
-            region = Display(1).bounds
-
-        image_found = match_template(ps, region)
-        if (image_found.x != -1) & (image_found.y != -1):
-            # if parse_args().highlight:
-            highlight(region=region, pattern=ps, location=image_found)
-            return image_found
+        image_found = match_template(ps, region, MatchTemplateType.SINGLE)
+        if len(image_found) > 0:
+            if parse_args().highlight:
+                highlight(region=region, pattern=ps, location=image_found)
+            return image_found[0]
         else:
             raise FindError('Unable to find image %s' % ps.get_filename())
     # TODO OCR text search
 
 
-def find_all(pattern: Pattern or str, region: Rectangle = None, threshold: float = 0.5) -> List[Location] or FindError:
+def find_all(pattern: Pattern or str, region: Rectangle = None) -> List[Location] or FindError:
     """Look for all matches of a Pattern or image.
 
     :param pattern: Pattern or String.
     :param region: Rectangle object in order to minimize the area.
-    :param threshold: float that stores the minimum similarity.
     :return: Location object or FindError.
     """
-    if region is None:
-        region = Display(0).bounds
-
-    images_found: List[Location] = match_template_multiple(pattern, region, threshold)
+    images_found: List[Location] = match_template(pattern, region, MatchTemplateType.MULTIPLE)
     if len(images_found) > 0:
+        if parse_args().highlight:
+            highlight(region=region, pattern=pattern, location=images_found)
         return images_found
     else:
         raise FindError('Unable to find image %s' % pattern.get_filename())
@@ -103,13 +100,10 @@ def wait(ps: Pattern or str, timeout: float = None, region: Rectangle = None) ->
         if timeout is None:
             timeout = Settings.auto_wait_timeout
 
-        if region is None:
-            region = Display(0).bounds
-
         image_found = image_find(ps, timeout, region)
         if image_found is not None:
-            # if parse_args().highlight:
-            highlight(region=region, pattern=ps, location=image_found)
+            if parse_args().highlight:
+                highlight(region=region, pattern=ps, location=image_found)
             return True
         else:
             raise FindError('Unable to find image %s' % ps.get_filename())
@@ -146,9 +140,6 @@ def wait_vanish(pattern: Pattern, timeout: float = None, region: Rectangle = Non
 
     if timeout is None:
         timeout = Settings.auto_wait_timeout
-
-    if region is None:
-        region = Display(0).bounds
 
     image_found = image_vanish(pattern, timeout, region)
 
