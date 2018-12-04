@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Private Browsing window is not restored after Firefox crash'
+        self.meta = 'The user is prompted for confirmation when closing a private window with active downloads'
         self.test_case_id = '101675'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
