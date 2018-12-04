@@ -70,4 +70,4 @@ class Test(BaseTest):
             private_window_closed = wait_vanish(private_browsing_icon_pattern, 5)
             assert_true(self, private_window_closed, 'Private window is dismissed')
         except FindError:
-            raise FindError('Private is not dismissed')
+            raise FindError('Private window is not dismissed')
