@@ -10,7 +10,9 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'This test verifies if Pyautogui/MSS screenshot and image search are working properly in a framebuffer environment.'
+        self.meta = 'This test verifies if Pyautogui/MSS screenshot and image search are working properly in a ' \
+                    'framebuffer environment.'
+        self.exclude = Platform.MAC, Platform.WINDOWS
 
     def run(self):
 
