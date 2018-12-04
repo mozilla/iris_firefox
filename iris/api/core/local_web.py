@@ -52,3 +52,6 @@ class LocalWeb(object):
     """Wiki Test site."""
     WIKI_TEST_SITE = 'http://%s:%s/wiki/' % (_ip_host, _port)
 
+    """Local files samples."""
+    SAMPLE_FILES = 'http://%s:%s/files/' % (_ip_host, _port)
+
