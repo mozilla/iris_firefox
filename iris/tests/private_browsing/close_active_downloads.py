@@ -46,6 +46,8 @@ class Test(BaseTest):
             time.sleep(5)
             type(Key.ESC)
 
+        close_tab()
+
         stay_in_private_browsing_button_exists = exists(stay_in_private_browsing_button_pattern, 5)
         assert_true(self, stay_in_private_browsing_button_exists, 'The Cancel All Downloads dialog is opened')
 
