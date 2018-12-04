@@ -40,7 +40,11 @@ class Test(BaseTest):
 
         click(ok_save_file_button_pattern)
 
-        close_tab()
+        # handle linux save progress popup
+
+        if Settings.is_linux():
+            time.sleep(5)
+            type(Key.ESC)
 
         stay_in_private_browsing_button_exists = exists(stay_in_private_browsing_button_pattern, 5)
         assert_true(self, stay_in_private_browsing_button_exists, 'The Cancel All Downloads dialog is opened')
