@@ -13,8 +13,8 @@ from core.errors import FindError
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
 from core.highlight.screen_highlight import ScreenHighlight, HighlightRectangle
-from core.image_search.image_search import image_find, match_template, image_vanish
-from core.image_search.pattern import Pattern
+from core.finder.image_search import image_find, match_template, image_vanish
+from core.finder.pattern import Pattern
 from core.settings import Settings
 
 

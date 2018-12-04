@@ -15,7 +15,7 @@ try:
 except ImportError:
     from PIL import Image
 
-from core.image_search.pattern import Pattern
+from core.finder.pattern import Pattern
 from core.settings import Settings
 from core.helpers.location import Location
 from core.errors import ScreenshotError
@@ -24,7 +24,7 @@ from core.screen.screenshot_image import ScreenshotImage
 from core.enums import MatchTemplateType
 from core.screen.display import Display
 
-# from save_debug_image import save_debug_image
+from core.save_debug_image.save_image import save_debug_image
 
 logger = logging.getLogger(__name__)
 
@@ -57,9 +57,10 @@ def match_template(pattern: Pattern, region: Rectangle = None,
     :return: Location.
     """
     if region is None:
-        region = Display(1).bounds
+        region = Display(0).bounds
 
     locations_list = []
+    save_img_location_list = []
     logger.debug('Searching for pattern: %s' % pattern.get_filename())
     if not isinstance(match_type, MatchTemplateType):
         logger.warning('%s should be an instance of `%s`' % (match_type, MatchTemplateType))
@@ -76,16 +77,17 @@ def match_template(pattern: Pattern, region: Rectangle = None,
             min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
             if max_val >= precision:
                 locations_list.append(Location(max_loc[0] + region.x, max_loc[1] + region.y))
+                save_img_location_list.append(Location(max_loc[0], max_loc[1]))
         elif match_type is MatchTemplateType.MULTIPLE:
             loc = np.where(res >= precision)
             for pt in zip(*loc[::-1]):
+                save_img_location = Location(pt[0], pt[1])
                 location = Location(pt[0] + region.x, pt[1] + region.y)
+                save_img_location_list.append(save_img_location)
                 locations_list.append(location)
 
-        # if position.x == -1:
-        #     save_debug_image(needle, np.array(haystack), None, True)
-        # else:
-        #     save_debug_image(needle, haystack, position)
+        save_debug_image(pattern, stack_image, save_img_location_list)
+
     except ScreenshotError:
         logger.warning('Screenshot failed.')
         return []

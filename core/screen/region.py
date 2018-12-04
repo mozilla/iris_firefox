@@ -6,7 +6,7 @@
 from core.errors import FindError
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
-from core.image_search.finder import wait, find, find_all, exists, highlight
+from core.finder.finder import wait, find, find_all, exists, highlight
 
 
 class Region:
