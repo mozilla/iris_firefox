@@ -20,14 +20,25 @@ class Test(BaseTest):
         private_browsing_icon_pattern = Pattern('private_browsing_icon.png')
         save_file_radiobutton_pattern = Pattern('save_file_radiobutton.png')
         ok_save_file_button_pattern = Pattern('ok_save_file_button.png')
-        stay_in_private_browsing_button_pattern = Pattern('stay_in_private_browsing_button.png')
-        cancel_one_download_button_pattern = Pattern('cancel_one_download_button.png')
+        first_bytes_label_pattern = Pattern('724_bytes_label.png')
+        second_bytes_label_pattern = Pattern('163_bytes_label.png')
+        about_downloads_label_pattern = Pattern('about_downloads_label.png')
 
         new_private_window()
         private_browsing_window_opened = exists(private_browsing_icon_pattern, 5)
         assert_true(self, private_browsing_window_opened, 'Private Browsing Window opened')
 
-        navigate('https://www.sample-videos.com/text/Sample-text-file-10kb.txt')
+        navigate(LocalWeb.SAMPLE_FILES + '1.zip')
+        save_file_dialog_exists = exists(save_file_radiobutton_pattern, 10)
+        assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
+        click(save_file_radiobutton_pattern)
+        ok_button_exists = exists(ok_save_file_button_pattern, 5)
+        assert_true(self, ok_button_exists, 'Button OK exists')
+        click(ok_save_file_button_pattern)
+        type(Key.ESC)
+        time.sleep(1)
+
+        navigate(LocalWeb.SAMPLE_FILES + '2.zip')
         save_file_dialog_exists = exists(save_file_radiobutton_pattern, 10)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
         click(save_file_radiobutton_pattern)
@@ -35,43 +46,14 @@ class Test(BaseTest):
         assert_true(self, ok_button_exists, 'Button OK exists')
         click(ok_save_file_button_pattern)
 
-        navigate('https://www.sample-videos.com/text/Sample-text-file-20kb.txt')
-        save_file_dialog_exists = exists(save_file_radiobutton_pattern, 10)
-        assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
-        click(save_file_radiobutton_pattern)
-        ok_button_exists = exists(ok_save_file_button_pattern, 5)
-        assert_true(self, ok_button_exists, 'Button OK exists')
-        click(ok_save_file_button_pattern)
+        open_downloads()
 
+        about_downloads_label_exists = exists(about_downloads_label_pattern, 5)
+        assert_true(self, about_downloads_label_exists, 'Downloads opened')
 
-        # handle linux save progress popup
+        first_file_downloaded = exists(first_bytes_label_pattern, 5)
+        assert_true(self, first_file_downloaded, 'First file saved')
 
-        if Settings.is_linux():
-            time.sleep(5)
-            type(Key.ESC)
+        second_file_downloaded = exists(second_bytes_label_pattern, 5)
+        assert_true(self, second_file_downloaded, 'Second file saved')
 
-        close_tab()
-
-        stay_in_private_browsing_button_exists = exists(stay_in_private_browsing_button_pattern, 5)
-        assert_true(self, stay_in_private_browsing_button_exists, 'The Cancel All Downloads dialog is opened')
-
-        click(stay_in_private_browsing_button_pattern)
-
-        try:
-            dialog_dismissed = wait_vanish(stay_in_private_browsing_button_pattern, 5)
-            assert_true(self, dialog_dismissed, 'The dialog is dismissed')
-        except FindError:
-            raise FindError('The dialog is not dismissed')
-
-        close_tab()
-
-        cancel_one_download_button_exists = exists(cancel_one_download_button_pattern, 5)
-        assert_true(self, cancel_one_download_button_exists, 'Cancel button exists')
-
-        click(cancel_one_download_button_pattern)
-
-        try:
-            private_window_closed = wait_vanish(private_browsing_icon_pattern, 5)
-            assert_true(self, private_window_closed, 'Private window is dismissed')
-        except FindError:
-            raise FindError('Private window is not dismissed')
