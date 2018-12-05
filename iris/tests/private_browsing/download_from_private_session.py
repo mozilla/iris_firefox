@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
         private_browsing_icon_pattern = Pattern('private_browsing_icon.png')
         save_file_radiobutton_pattern = Pattern('save_file_radiobutton.png')
         ok_save_file_button_pattern = Pattern('ok_save_file_button.png')
@@ -46,7 +45,8 @@ class Test(BaseTest):
         assert_true(self, ok_button_exists, 'Button OK exists')
         click(ok_save_file_button_pattern)
 
-        # bug in open_downloads shortcut for linux - raise a new issue
+        # bug in open_downloads shortcut for linux
+        # https://github.com/mozilla/iris/issues/1637
         if Settings.is_linux():
             key_down(Key.CTRL)
             key_down(Key.SHIFT)
