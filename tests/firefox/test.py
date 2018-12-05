@@ -5,7 +5,7 @@ from core.screen.region import Region
 from core.enums import MatchTemplateType
 
 
-region = Region(2920, 0, 500, 500)
+region = Region(1920, 50, 400, 600)
 # region.highlight()
 print(region.find(Pattern('test.png', application='firefox')))
 
