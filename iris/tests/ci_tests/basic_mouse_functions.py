@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This test will verify if Pyautogui mouse is working properly in a framebuffer environment.'
+        self.exclude = Platform.MAC, Platform.WINDOWS
 
     def run(self):
 
