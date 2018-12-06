@@ -33,6 +33,8 @@ class Test(BaseTest):
         soap_label_pattern = Pattern('soap_label.png')
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
 
+        dock_region = Region(0, 0.8 * SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
+
         navigate('about:preferences#privacy')
 
         privacy_preferences_page_opened = exists(browser_privacy_label_pattern, 10)
@@ -60,7 +62,7 @@ class Test(BaseTest):
 
         close_tab()
 
-        right_click(firefox_icon_dock_pattern)
+        right_click(firefox_icon_dock_pattern, in_region=dock_region)
         new_private_window_item_exists = exists(new_private_window_item_pattern, 5)
         assert_true(self, new_private_window_item_exists, 'New Private Window option is available.')
         new_window_item_pattern_not_exists = exists(new_window_item_pattern, 1)
