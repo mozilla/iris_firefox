@@ -32,6 +32,8 @@ class Test(BaseTest):
         new_private_window_item_pattern = Pattern('new_private_window_item.png').target_offset(-2, -2)
         mozilla_history_item_pattern = Pattern('mozilla_history_item.png')
 
+        dock_region = Region(0, 0.8 * SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         new_private_window()
@@ -51,7 +53,7 @@ class Test(BaseTest):
         firefox_icon_dock_exists = exists(firefox_icon_dock_pattern, 5)
         assert_true(self, firefox_icon_dock_exists, 'The Firefox icon is still visible in the dock.')
 
-        right_click(firefox_icon_dock_pattern)
+        right_click(firefox_icon_dock_pattern, in_region=dock_region)
 
         new_window_item_exists = exists(new_window_item_pattern, 5)
         assert_true(self, new_window_item_exists, 'New window menu item exists.')
