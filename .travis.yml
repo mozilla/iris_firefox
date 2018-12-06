@@ -1,0 +1,52 @@
+
+dist: xenial
+language: python
+python: '2.7'
+
+
+# blocklist Ex.if there are particular branches that we don't want to test with Travis should be added to 'except'
+branches:
+  except:
+  - test2
+
+
+# safelist
+branches:
+  only:
+  - master
+  - /.*/
+
+#Bootstrap install /due to a pipenv bug pip is downgraded to a lower version
+install:
+  - 'bootstrap/bootstrap.sh'
+  - 'pip install pip==9.0.3'
+  - 'pip install pipenv'
+  - 'pipenv install'
+
+#virtual display for headless run at a 1920x1080 32 bit resolution
+before_script:
+    - "export DISPLAY=:99.0"
+    - "Xvfb :99 -screen 0 1920x1080x24+32 +extension GLX +extension RANDR > /dev/null 2>&1 &"
+    - sleep 3 # give xvfb some time to start
+
+with_content_shell: true
+
+#Job sections-At this point we have only one stage with a test folder ,multiple jobs can be added(test suites,etc)
+jobs:
+  include:
+    - stage: Ubuntu 16.04 Image search and mouse movement tests
+      os: linux
+      dist: xenial
+      script: pipenv run iris -j -n -d ci_tests
+
+
+# Email notification
+notifications:
+  email:
+    recipients:
+      - afilip@mozilla.com
+    on_success: change
+    on_failure: always
+    on_cancel: always
+
+

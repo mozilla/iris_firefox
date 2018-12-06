@@ -33,7 +33,7 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         # Search for a long term that appears on the page
-        type('Pneumonoultramicroscopicsilicovolcanoconiosis')
+        paste('Pneumonoultramicroscopicsilicovolcanoconiosis')
         selected_label_exists = exists(long_word_selected_label_pattern, 5)
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         unselected_label_exists = exists(long_word_unselected_label_pattern, 5)

@@ -26,7 +26,7 @@ class Test(BaseTest):
 
     def run(self):
 
-        library_bookmarks_pattern = Pattern('library_bookmarks.png')
+        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
         moz_library_pattern = Pattern('moz_library_bookmark.png')
         delete_pattern = Pattern('delete_bookmark.png')
 

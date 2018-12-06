@@ -77,8 +77,11 @@ def update_run_log(fx_app, new_data=None):
     repo = git.Repo(IrisCore.get_module_dir())
     meta['iris_version'] = 1.0
     meta['iris_repo'] = repo.working_tree_dir
-    meta['iris_branch'] = repo.active_branch.name
-    meta['iris_branch_head'] = repo.head.object.hexsha
+    if parse_args().headless_run:
+        pass
+    else:
+        meta['iris_branch'] = repo.active_branch.name
+        meta['iris_branch_head'] = repo.head.object.hexsha
 
     if new_data is None:
         logger.debug('Updating run.json with initial run data.')

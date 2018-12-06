@@ -27,7 +27,7 @@ class Test(BaseTest):
     def run(self):
         show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
-        history_pattern = Pattern('history.png')
+        history_pattern = Library.HISTORY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         iris_logo_pattern = Pattern('iris_logo.png')
