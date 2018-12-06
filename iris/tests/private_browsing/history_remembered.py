@@ -71,7 +71,7 @@ class Test(BaseTest):
         assert_true(self, mozilla_history_item_exists, 'Websites visited previously in the Normal window are '
                                                        'displayed in the History section')
 
-        right_click(firefox_icon_dock_pattern)
+        right_click(firefox_icon_dock_pattern, in_region=dock_region)
 
         new_private_window_item_exists = exists(new_private_window_item_pattern, 5)
         assert_true(self, new_private_window_item_exists, 'New private window menu item exists.')
