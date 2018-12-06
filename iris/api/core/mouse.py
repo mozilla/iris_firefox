@@ -249,8 +249,7 @@ def _click_pattern(pattern, clicks=None, duration=None, in_region=None, button=N
     if duration is None:
         duration = Settings.move_mouse_delay
 
-    needle = cv2.imread(pattern.get_file_path())
-    height, width, channels = needle.shape
+    width, height = pattern.get_size()
 
     p_top = positive_image_search(pattern=pattern, region=in_region)
 
