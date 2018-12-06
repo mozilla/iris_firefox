@@ -6,25 +6,27 @@
 from iris.api.core.errors import FindError, APIHelperError
 from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.mouse import click
-from iris.api.core.region import wait, exists, Pattern
+from iris.api.core.region import wait, Pattern, logger
 from iris.api.helpers.general import click_hamburger_menu_option, close_customize_page
-from iris.asserts import assert_true
 
 
 class CustomizePage(object):
     AUTO_HIDE = Pattern('auto_hide.png')
 
 
-def auto_hide_download_button(self):
+def auto_hide_download_button():
     click_hamburger_menu_option('Customize...')
 
-    expected = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
-    assert_true(self, expected, 'Downloads button found in the \'Customize\' page.')
+    try:
+        wait(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
+        logger.debug('Downloads button found in the \'Customize\' page.')
+    except FindError:
+        raise APIHelperError('Downloads button not found in the \'Customize\' page.')
 
     click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
     try:
-        expected = wait(CustomizePage.AUTO_HIDE, 5)
-        assert_true(self, expected, 'The auto-hide button found in the page.')
+        wait(CustomizePage.AUTO_HIDE, 5)
+        logger.debug('The auto-hide button found in the page.')
     except FindError:
         raise APIHelperError('The auto-hide button not found in the page.')
 
