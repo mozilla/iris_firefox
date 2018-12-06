@@ -39,6 +39,8 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS:
             click_window_control('close')
         else:
+            if Settings.is_linux():
+                click_window_control('maximize')
             click_cancel_button()
             
         try:

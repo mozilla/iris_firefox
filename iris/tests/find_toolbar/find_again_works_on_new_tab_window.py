@@ -15,6 +15,8 @@ class Test(BaseTest):
         self.test_case_id = '127263'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
+        self.exclude = [Platform.WINDOWS, Platform.LINUX]
+        self.blocked_by = '913536'
 
     def run(self):
         new_tab_icon_pattern = Pattern('new_tab_icon.png')

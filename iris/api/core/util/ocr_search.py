@@ -6,14 +6,12 @@ import copy
 
 import cv2
 import numpy as np
-import pytesseract
 
 try:
     import Image
 except ImportError:
     from PIL import Image
 
-from pyautogui import screenshot
 from core_helper import *
 from image_remove_noise import process_image_for_ocr, OCR_IMAGE_SIZE
 from save_debug_image import save_debug_image
@@ -214,8 +212,10 @@ def text_search_by(what, match_case=True, in_region=None, multiple_matches=False
     for match_index, match_object in enumerate(text_dict):
         # Word region
         if match_object['width'] > 0 and match_object['height'] > 0:
-            zoomed_word_image = screenshot(region=(match_object['x'] - 3, match_object['y'] - 2,
-                                                   match_object['width'] + 6, match_object['height'] + 4))
+            from iris.api.core.region import Region
+            zoomed_word_image = IrisCore.get_screenshot(region=Region(match_object['x'] - 3, match_object['y'] - 2,
+                                                                      match_object['width'] + 6,
+                                                                      match_object['height'] + 4))
 
             w_img_w, w_img_h = zoomed_word_image.size
             # New white image background for zoom in search

@@ -27,7 +27,7 @@ class Test(BaseTest):
 
         export_bookmarks = Pattern('export_bookmarks_to_html.png')
         file_format = Pattern('html_file_format.png')
-        import_and_backup_button = Pattern('import_and_backup_button.png')
+        import_and_backup_button = Library.IMPORT_AND_BACKUP_BUTTON
         save = Pattern('save_button.png')
         overwrite_save = Pattern('overwrite_save.png')
 

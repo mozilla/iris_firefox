@@ -13,6 +13,8 @@ from iris.api.core.firefox_ui.location_bar import LocationBar
 from iris.api.core.firefox_ui.find_toolbar import FindToolbar
 from iris.api.core.firefox_ui.hamburger import HamburgerMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
+from iris.api.core.firefox_ui.library import Library
+from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from iris.api.core.firefox_ui.bookmarks import Bookmarks
 from iris.api.core.key import *

@@ -10,13 +10,12 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Search on a XSL file'
+        self.meta = 'Search on a XSL file. [Test is unstable on Linux.]'
         self.test_case_id = '127274'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
 
     def run(self):
-        xls_spreadsheet_logo_pattern = Pattern('xls_tab_logo.png').similar(0.6)
         menu_bar_edit_pattern = Pattern('menu_bar_edit_pattern.png')
         menu_bar_edit_find_in_page_pattern = Pattern('menu_bar_edit_find_in_page_pattern.png')
         xls_first_occurrence_highlighted_pattern = Pattern('xls_first_occurrence_hl.png')
@@ -24,18 +23,24 @@ class Test(BaseTest):
         xls_second_occurrence_highlighted_pattern = Pattern('xls_second_occurrence_hl.png')
         xls_second_occurrence_unhighlighted_pattern = Pattern('xls_second_occurrence_white.png')
         xls_cell_pattern = Pattern('xls_cell.png').similar(0.6)
+        autosum_icon_pattern = Pattern('autosum_xls_icon.png')
 
         # Open Firefox and open a [XSL file]
         navigate('https://docs.google.com/spreadsheets/d/1izvhs2b9UX2JCD-0MsHonQBfPnjFsRpVuUOYGJYX2Oo/edit#gid=1283474565t')
-        xls_spreadsheet_logo_pattern_exists = exists(xls_spreadsheet_logo_pattern, 15)
+        time.sleep(30)
+        xls_spreadsheet_logo_pattern_exists = exists(xls_cell_pattern, 15)
         assert_true(self, xls_spreadsheet_logo_pattern_exists, 'The page is successfully loaded.')
 
         # Open the Find Toolbar from Menubar > Edit > Find
         xls_cell_displayed = exists(xls_cell_pattern, 5)
         if xls_cell_displayed:
-            click(xls_cell_pattern, 5)
+            hover(xls_cell_pattern, 0.1)
+            click(xls_cell_pattern)
         else:
             raise FindError('XLS cell is not displayed')
+
+        autosum_icon_exists = exists(autosum_icon_pattern, 20)
+        assert_true(self, autosum_icon_exists, 'Spreadsheet loaded')
 
         if Settings.get_os() == Platform.WINDOWS:
             key_down(Key.ALT)
@@ -85,7 +90,10 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed ')
 
         # Navigate through found items
-        type('an')
+        type('re')
+        if Settings.get_os() == Platform.LINUX:
+            type(Key.ENTER)
+
         first_occurrence_highlighted_exists = exists(xls_first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_highlighted_exists, 'The first occurrence is highlighted.')
         second_occurrence_unhighlighted_exists = exists(xls_second_occurrence_unhighlighted_pattern, 5)
