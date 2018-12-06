@@ -11,7 +11,9 @@ class DownloadManager(object):
     class DownloadsPanel(object):
         DOWNLOADS_BUTTON = Pattern('downloads_button_open.png')
         DOWNLOAD_RETRY = Pattern('downloadRetry.png')
+        DOWNLOAD_RETRY_HIGHLIGHTED = Pattern('downloadRetry_highlighted.png')
         DOWNLOAD_CANCEL = Pattern('downloadCancel.png')
+        DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern('downloadCancel_highlighted.png')
         NO_DOWNLOADS_FOR_THIS_SESSION = Pattern('emptyDownloads.png')
 
     class Downloads(object):

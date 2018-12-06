@@ -14,6 +14,8 @@ class DownloadFiles(object):
     SMALL_FILE_20MB = Pattern('20MB.png').similar(0.95)
     MEDIUM_FILE_50MB = Pattern('50MB.png')
     MEDIUM_FILE_100MB = Pattern('100MB.png')
+    VERY_LARGE_FILE_1GB = Pattern('1GB.png')
+    DOWNLOAD_NAME_1GB = Pattern('download_name_1GB.png')
     LIBRARY_DOWNLOADS_5MB = Pattern('5MB_library_downloads.png')
     LIBRARY_DOWNLOADS_10MB = Pattern('10MB_library_downloads.png')
     LIBRARY_DOWNLOADS_20MB = Pattern('20MB_library_downloads.png')
@@ -21,6 +23,7 @@ class DownloadFiles(object):
     LIBRARY_DOWNLOADS_100MB = Pattern('100MB_library_downloads.png')
     ABOUT = Pattern('about.png')
     SAVE_FILE = Pattern('save_file.png')
+    DOWNLOAD_CANCELED = Pattern('download_canceled.png')
     OK = Pattern('ok.png')
 
 
