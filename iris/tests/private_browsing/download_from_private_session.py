@@ -67,3 +67,4 @@ class Test(BaseTest):
         second_file_downloaded = exists(second_bytes_label_pattern, 5)
         assert_true(self, second_file_downloaded, 'Second file saved')
 
+        close_window()
