@@ -59,6 +59,8 @@ class Test(BaseTest):
         about_downloads_label_exists = exists(about_downloads_label_pattern, 5)
         assert_true(self, about_downloads_label_exists, 'Downloads opened')
 
+        click(about_downloads_label_pattern)
+
         first_file_downloaded = exists(first_bytes_label_pattern, 5)
         assert_true(self, first_file_downloaded, 'First file saved')
 
