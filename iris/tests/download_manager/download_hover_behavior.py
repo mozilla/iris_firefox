@@ -3,8 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.api.core.firefox_ui.private_window import PrivateWindow
-from iris.api.helpers.customize_utils import auto_hide_download_button
 from iris.api.helpers.download_manager_utils import download_file, DownloadFiles
 from iris.test_case import *
 
@@ -28,28 +26,25 @@ class Test(BaseTest):
         return
 
     def run(self):
-        # Download a large file.
         navigate('https://www.thinkbroadband.com/download')
 
         download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
-        time.sleep(DEFAULT_UI_DELAY)
 
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
         assert_true(self, expected, 'Downloads button found.')
 
-        # Open the Downloads Panel.
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        assert_true(self, expected, 'X button is properly displayed.')
+        assert_true(self, expected, 'The \'X\' button is properly displayed.')
 
-        # Hover the 'Close' button.
+        # Hover the 'X' button.
         hover(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, 10)
-        assert_true(self, expected, 'Cancel button is highlighted properly.')
+        assert_true(self, expected, 'The \'X\' button is highlighted properly.')
 
-        # Click the 'Close' button.
+        # Click the 'X' button.
         click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, 10)
-        assert_true(self, expected, 'Retry button is highlighted properly.')
+        assert_true(self, expected, 'The Retry button is highlighted properly.')
 
         expected = exists(DownloadFiles.DOWNLOAD_NAME_1GB, 10)
         assert_true(self, expected, 'The downloaded file name is properly displayed.')
