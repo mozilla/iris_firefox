@@ -17,11 +17,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
 
-    def setup(self):
-        BaseTest.setup(self)
-        self.profile = Profile.LIKE_NEW
-        return
-
     def run(self):
         soap_label_pattern = Pattern('soap_label.png')
         private_browsing_icon_pattern = Pattern('private_browsing_icon.png')
