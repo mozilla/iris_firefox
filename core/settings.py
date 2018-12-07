@@ -47,6 +47,7 @@ class _Settings:
     DEFAULT_HIGHLIGHT_DURATION = 2
     DEFAULT_HIGHLIGHT_COLOR = Color.RED
     DEFAULT_HIGHLIGHT_THICKNESS = 2
+    UI_DELAY = 1
 
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
                  move_mouse_delay=DEFAULT_MOVE_MOUSE_DELAY, click_delay=DEFAULT_CLICK_DELAY,

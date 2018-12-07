@@ -1,117 +1,158 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+import time
+
+from pynput.mouse import Controller as MouseController, Button
+
 from core.helpers.location import Location
-from core.mouse.mouse_utils import _mouse_press_release, _general_click, _to_location, _scroll, _drag_drop, \
-    _click_delay, _move_mouse_delay
+from core.settings import Settings
+
+
+def get_point_on_line(x1, y1, x2, y2, n):
+    """Returns the (x, y) tuple of the point that has progressed a proportion
+    n along the line defined by the two x, y coordinates.
+    """
+    x = ((x2 - x1) * n) + x1
+    y = ((y2 - y1) * n) + y1
+    return x, y
 
 
 class Mouse:
+    def __init__(self):
+        self.mouse = MouseController()
 
+    def move(self, location: Location = None, duration: float = None):
+        """Mouse move with tween.
 
+        :param location: Location , image name or Pattern.
+        :param duration: Speed of mouse movement from current mouse location to target.
+        :return: None.
+        """
 
-    def mouse_press(self, where: type = None, button: str = None, in_region: type = None):
-        """Mouse press. Wrapper over _mouse_press_release.
+        if location is None:
+            location = Location(0, 0)
 
-        :param where: Location , image name or Pattern.
+        if duration is None:
+            duration = Settings.move_mouse_delay
+
+        def set_mouse_position(loc_x, loc_y):
+            self.mouse.position = (int(loc_x), int(loc_y))
+
+        def smooth_move_mouse(from_x, from_y, to_x, to_y):
+            num_steps = int(duration / 0.05)
+            sleep_amount = 0
+            try:
+                sleep_amount = duration / num_steps
+            except ZeroDivisionError:
+                pass
+
+            steps = [
+                get_point_on_line(from_x, from_y, to_x, to_y, n / num_steps)
+                for n in range(num_steps)
+            ]
+
+            steps.append((to_x, to_y))
+            for tween_x, tween_y in steps:
+                tween_x = int(round(tween_x))
+                tween_y = int(round(tween_y))
+                set_mouse_position(tween_x, tween_y)
+                time.sleep(sleep_amount)
+
+        return smooth_move_mouse(
+            self.mouse.position[0],
+            self.mouse.position[1],
+            location.x,
+            location.y
+        )
+
+    def press(self, location: Location = None, duration: float = None, button: Button = Button.left):
+        """Mouse press.
+
+        :param location: Mouse press location.
+        :param duration: Speed of mouse movement from current mouse location to target.
         :param button: 'left','right' or 'middle'.
-        :param in_region: Region object in order to minimize the area.
-        :return: Call the _mouse_press_release() method with the 'press' option.
+        :return: None
         """
-        return _mouse_press_release(where, 'press', button, in_region)
+        self.move(location, duration)
+        self.mouse.press(button)
 
-    def mouse_release(self, where: type = None, button: str = None, in_region: type = None):
-        """Mouse release. Wrapper over _mouse_press_release.
+    def release(self, location: Location = None, duration: float = None, button: Button = Button.left):
+        """Mouse press.
 
-        :param where: Location , image name or Pattern.
+        :param location: Mouse press location.
+        :param duration: Speed of mouse movement from current mouse location to target.
         :param button: 'left','right' or 'middle'.
-        :param in_region: Region object in order to minimize the area.
-        :return: Call the _mouse_press_release() method with the 'release' option.
+        :return: None
         """
-        return _mouse_press_release(where, 'release', button, in_region)
+        self.move(location, duration)
+        self.mouse.release(button)
 
-    def mouse_move(self, where: type = None, duration: int = None, in_region: type = None):
-        """Mouse move. Wrapper over _general_click.
-        :param where: Location , image name or Pattern.
-        :param duration: Speed of hovering from current location to target.
-        :param in_region: Region object in order to minimize the area.
+    def _click_location(self, location: Location = None, duration: float = None, button: Button = Button.left,
+                        clicks: int = 1):
+        """General mouse click location.
+
+        :param location: click location
+        :param duration: Speed of mouse movement from current mouse location to target.
+        :param button: 'left','right' or 'middle'.
+        :param clicks: number of mouse clicks.
         :return: None.
         """
-        if duration is None:
-            duration = _move_mouse_delay()
-        _general_click(where, 0, duration, in_region, 'left')
+        self.move(location, duration)
+        self.mouse.click(button, clicks)
 
-    def click(self, where: type = None, duration: int = None, in_region: type = None):
-        """Mouse left click. Wrapper over _general_click.
+    def click(self, location: Location = None, duration: float = None):
+        """Mouse left click.
 
-        :param where: Location , image name or Pattern.
-        :param duration: Speed of hovering from current location to target.
-        :param in_region: Region object in order to minimize the area.
+        :param location: click location
+        :param duration: Speed of mouse movement from current mouse location to target.
         :return: None.
         """
+        self._click_location(location, duration, Button.left)
 
-        if duration is None:
-            duration = self.move_mouse_delay
+    def right_click(self, location: Location = None, duration: float = None):
+        """Mouse right click.
 
-        _general_click(where, 1, duration, in_region, 'left')
-
-    def right_click(self, where: type = None, duration: int = None, in_region: type = None):
-        """Mouse right click. Wrapper over _general_click.
-
-        :param where: Location , image name or Pattern.
-        :param duration: Speed of hovering from current location to target.
-        :param in_region: Region object in order to minimize the area.
+        :param location: click location
+        :param duration: Speed of mouse movement from current mouse location to target.
         :return: None.
         """
+        self._click_location(location, duration, Button.right)
 
-        if duration is None:
-            duration = self.move_mouse_delay
+    def double_click(self, location: Location = None, duration: float = None):
+        """Mouse double click.
 
-        _general_click(where, 1, duration, in_region, 'right')
-
-    def double_click(self, where: type = None, duration: int = None, in_region: type = None):
-        """Mouse double click. Wrapper over _general_click.
-
-        :param where: Location , image name or Pattern.
-        :param duration: Speed of hovering from current location to target.
-        :param in_region: Region object in order to minimize the area.
+        :param location: click location
+        :param duration: Speed of mouse movement from current mouse location to target.
         :return: None.
         """
+        self._click_location(location, duration, Button.left, 2)
 
-        if duration is None:
-            duration = self.move_mouse_delay
-
-        _general_click(where, 2, duration, in_region, 'left')
-
-    def to_location(self, ps: type = None, in_region: type = None):
-        """Transform pattern or string to location.
-
-        :param ps: Pattern or string input.
-        :param in_region: Region object in order to minimize the area.
-        :param align: Alignment could be top_left, center.
-        :return: Location object.
-        """
-        return _to_location(ps, in_region, 'top_left')
-
-    def drag_drop(self, drag_from: type, drop_to: type, duration: int = None):
+    def drag_and_drop(self, start: Location, end: Location, duration: float = None):
         """Mouse drag and drop.
 
-        :param drag_from: Starting point for drag and drop. Can be pattern, string or location.
-        :param drop_to: Ending point for drag and drop. Can be pattern, string or location.
-        :param duration: Speed of drag and drop.
+        :param start: Starting location
+        :param end: Drop location
+        :param duration: Speed of mouse movement to the drag and drop location.
         :return: None.
         """
-        return _drag_drop(drag_from, drop_to, duration)
+        time.sleep(Settings.UI_DELAY)
+        self.move(start, duration)
+        time.sleep(Settings.delay_before_mouse_down)
+        self.mouse.press(Button.left)
+        time.sleep(Settings.delay_before_drag)
+        self.move(end, duration)
+        time.sleep(Settings.delay_before_drop)
+        self.mouse.release(Button.left)
 
-    def scroll(self, clicks: int):
-        """Performs a scroll of the mouse scroll wheel.
+    def _scroll(self, dx, dy, iterations: int = 1):
+        for i in range(iterations):
+            self.mouse.scroll(dx, dy)
+            time.sleep(0.5)
 
-        :param clicks: The amount of scrolling to perform.
-        :return: None.
-        """
-        return _scroll(clicks)
-
-
-if __name__ == '__main__':
-    m = Mouse()
-    m.mouse_move(Location(100,100))
+    def scroll_down(self, dy, iterations: int = 1):
+        if dy > 0:
+            dy = -dy
+        self._scroll(0, dy, iterations)
