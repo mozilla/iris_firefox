@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
         private_browsing_icon_pattern = Pattern('private_browsing_icon.png')
         save_file_radiobutton_pattern = Pattern('save_file_radiobutton.png')
         ok_save_file_button_pattern = Pattern('ok_save_file_button.png')
