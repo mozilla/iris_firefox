@@ -627,7 +627,7 @@ def open_downloads():
     elif Settings.get_os() == Platform.WINDOWS:
         type(text='j', modifier=KeyModifier.CTRL)
     else:
-        type(text='y', modifier=KeyModifier.CTRL)
+        type(text='y', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
 
 def open_page_source():
