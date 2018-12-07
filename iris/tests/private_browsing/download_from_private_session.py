@@ -32,19 +32,23 @@ class Test(BaseTest):
         navigate(LocalWeb.SAMPLE_FILES + '1.zip')
         save_file_dialog_exists = exists(save_file_radiobutton_pattern, 10)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
+
         click(save_file_radiobutton_pattern)
         ok_button_exists = exists(ok_save_file_button_pattern, 5)
         assert_true(self, ok_button_exists, 'Button OK exists')
+
         click(ok_save_file_button_pattern)
-        type(Key.ESC)
-        time.sleep(1)
+        
+        restore_firefox_focus()
 
         navigate(LocalWeb.SAMPLE_FILES + '2.zip')
         save_file_dialog_exists = exists(save_file_radiobutton_pattern, 10)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
+
         click(save_file_radiobutton_pattern)
         ok_button_exists = exists(ok_save_file_button_pattern, 5)
         assert_true(self, ok_button_exists, 'Button OK exists')
+
         click(ok_save_file_button_pattern)
 
         # bug in open_downloads shortcut for linux
