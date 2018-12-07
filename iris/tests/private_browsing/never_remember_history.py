@@ -16,11 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
 
-    def setup(self):
-        BaseTest.setup(self)
-        self.profile = Profile.LIKE_NEW
-        return
-
     def run(self):
         browser_privacy_label_pattern = Pattern('browser_privacy_label.png')
         drop_down_toggle_button_pattern = Pattern('drop_down_toggle_button.png')
