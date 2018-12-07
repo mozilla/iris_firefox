@@ -19,8 +19,10 @@ class Test(BaseTest):
         private_browsing_icon_pattern = Pattern('private_browsing_icon.png')
         save_file_radiobutton_pattern = Pattern('save_file_radiobutton.png')
         ok_save_file_button_pattern = Pattern('ok_save_file_button.png')
-        first_bytes_label_pattern = Pattern('724_bytes_label.png')
-        second_bytes_label_pattern = Pattern('163_bytes_label.png')
+        first_bytes_label_pattern = Pattern('163_bytes_label.png')
+        first_bytes_label_pattern.similar(0.7)
+        second_bytes_label_pattern = Pattern('724_bytes_label.png')
+        second_bytes_label_pattern.similar(0.7)
         about_downloads_label_pattern = Pattern('about_downloads_label.png')
 
         new_private_window()
