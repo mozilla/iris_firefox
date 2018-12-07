@@ -40,11 +40,7 @@ class Test(BaseTest):
 
         click(ok_save_file_button_pattern)
 
-        # handle linux save progress popup
-
-        if Settings.is_linux():
-            time.sleep(5)
-            type(Key.ESC)
+        restore_firefox_focus()
 
         close_tab()
 
