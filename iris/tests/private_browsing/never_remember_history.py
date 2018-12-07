@@ -73,7 +73,7 @@ class Test(BaseTest):
 
         history_sidebar()
 
-        type('soap', interval=1)
+        paste('soap')
 
         wiki_soap_history_icon_exists = exists(wiki_soap_history_icon_pattern, 1)
         assert_false(self, wiki_soap_history_icon_exists, 'The website is not displayed in the Recent History section.')
