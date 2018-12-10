@@ -7,15 +7,10 @@ from core.mouse.mouse_controller import Mouse
 from core.helpers.location import Location
 import time
 
-# region = Region(1920, 50, 400, 600)
-# # region.highlight()
-# print(region.find(Pattern('test.png', application='firefox')))
+region = Region(1920, 50, 400, 600)
+# region.highlight()
+print(region.double_click(Pattern('test.png', application='firefox')))
 
-time.sleep(2)
-# from_location = Location(1980, 160)
-# to_location = Location(1980, 50)
-# Mouse().drag_and_drop(from_location, to_location)
-Mouse().scroll_left(100, 3)
 
 
 

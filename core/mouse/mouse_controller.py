@@ -11,7 +11,7 @@ from core.helpers.location import Location
 from core.settings import Settings
 
 
-def get_point_on_line(x1, y1, x2, y2, n):
+def _get_point_on_line(x1, y1, x2, y2, n):
     """Returns the (x, y) tuple of the point that has progressed a proportion
     n along the line defined by the two x, y coordinates.
     """
@@ -50,7 +50,7 @@ class Mouse:
                 pass
 
             steps = [
-                get_point_on_line(from_x, from_y, to_x, to_y, n / num_steps)
+                _get_point_on_line(from_x, from_y, to_x, to_y, n / num_steps)
                 for n in range(num_steps)
             ]
 
@@ -90,8 +90,8 @@ class Mouse:
         self.move(location, duration)
         self.mouse.release(button)
 
-    def _click_location(self, location: Location = None, duration: float = None, button: Button = Button.left,
-                        clicks: int = 1):
+    def general_click(self, location: Location = None, duration: float = None, button: Button = Button.left,
+                      clicks: int = 1):
         """General mouse click location.
 
         :param location: click location
@@ -102,33 +102,6 @@ class Mouse:
         """
         self.move(location, duration)
         self.mouse.click(button, clicks)
-
-    def click(self, location: Location = None, duration: float = None):
-        """Mouse left click.
-
-        :param location: click location
-        :param duration: Speed of mouse movement from current mouse location to target.
-        :return: None.
-        """
-        self._click_location(location, duration, Button.left)
-
-    def right_click(self, location: Location = None, duration: float = None):
-        """Mouse right click.
-
-        :param location: click location
-        :param duration: Speed of mouse movement from current mouse location to target.
-        :return: None.
-        """
-        self._click_location(location, duration, Button.right)
-
-    def double_click(self, location: Location = None, duration: float = None):
-        """Mouse double click.
-
-        :param location: click location
-        :param duration: Speed of mouse movement from current mouse location to target.
-        :return: None.
-        """
-        self._click_location(location, duration, Button.left, 2)
 
     def drag_and_drop(self, start: Location, end: Location, duration: float = None):
         """Mouse drag and drop.
@@ -147,7 +120,7 @@ class Mouse:
         time.sleep(Settings.delay_before_drop)
         self.mouse.release(Button.left)
 
-    def _scroll(self, dx: int = None, dy: int = None, iterations: int = 1):
+    def scroll(self, dx: int = None, dy: int = None, iterations: int = 1):
         """Sends scroll events.
 
         :param int dx: The horizontal scroll.
@@ -164,19 +137,3 @@ class Mouse:
         for i in range(iterations):
             self.mouse.scroll(dx, dy)
             time.sleep(0.5)
-
-    def scroll_down(self, dy: int = None, iterations: int = 1):
-        """Scroll down mouse event."""
-        self._scroll(0, -abs(dy), iterations)
-
-    def scroll_up(self, dy: int = None, iterations: int = 1):
-        """Scroll up mouse event."""
-        self._scroll(0, abs(dy), iterations)
-
-    def scroll_left(self, dx: int = None, iterations: int = 1):
-        """Scroll left mouse event."""
-        self._scroll(-abs(dx), 0, iterations)
-
-    def scroll_right(self, dx: int = None, iterations: int = 1):
-        """Scroll right mouse event."""
-        self._scroll(abs(dx), 0, iterations)

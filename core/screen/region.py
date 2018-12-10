@@ -4,9 +4,10 @@
 
 
 from core.errors import FindError
+from core.finder.finder import wait, find, find_all, exists, highlight
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
-from core.finder.finder import wait, find, find_all, exists, highlight
+from core.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
 
 
 class Region:
@@ -103,10 +104,84 @@ class Region:
         """
         return exists(ps, timeout, self._area)
 
-    def highlight(self, seconds=None, color=None):
-        """
-        :param seconds: How many seconds the region is highlighted. By default the region is highlighted for 2 seconds.
+    def highlight(self, duration=None, color=None):
+        """Region highlight.
+
+        :param duration: How many seconds the region is highlighted. By default the region is highlighted for 2 seconds.
         :param color: Color used to highlight the region. Default color is red.
         :return: None.
         """
-        highlight(self, seconds, color)
+        highlight(self, duration, color)
+
+    def mouse_move(self, ps=None, duration=None, align=None):
+        """Mouse move.
+
+        :param ps: Pattern or String.
+        :param duration: Speed of hovering from current location to target.
+        :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        :return: None.
+        """
+        return move(ps, duration, self._area, align)
+
+    def mouse_press(self, ps=None, duration=None, button=None, align=None):
+        """Mouse press.
+
+        :param ps: Pattern or String.
+        :param duration: Speed of hovering from current location to target.
+        :param button: 'left','right' or 'middle'.
+        :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        :return: None.
+        """
+        return press(ps, duration, self._area, button, align)
+
+    def mouse_release(self, ps=None, duration=None, button=None, align=None):
+        """Mouse release.
+
+        :param ps: Pattern or String.
+        :param duration: Speed of hovering from current location to target.
+        :param button: 'left','right' or 'middle'.
+        :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        :return: None.
+        """
+        return release(ps, duration, self._area, button, align)
+
+    def click(self, ps=None, duration=None, align=None):
+        """Mouse left click.
+
+        :param ps: Pattern or String.
+        :param duration: Speed of hovering from current location to target.
+        :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        :return: None.
+        """
+        return click(ps, duration, self._area, align)
+
+    def right_click(self, ps=None, duration=None, align=None):
+        """Mouse right click.
+
+        :param ps: Pattern or String.
+        :param duration: Speed of hovering from current location to target.
+        :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        :return: None.
+        """
+        return right_click(ps, duration, self._area, align)
+
+    def double_click(self, ps=None, duration=None, align=None):
+        """Mouse double click.
+
+        :param ps: Pattern or String.
+        :param duration: Speed of hovering from current location to target.
+        :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        :return: None.
+        """
+        return double_click(ps, duration, self._area, align)
+
+    def drag_drop(self, drag_from=None, drop_to=None, duration=None, align=None):
+        """Mouse drag and drop.
+
+        :param drag_from: Starting point for drag and drop. Can be pattern or String.
+        :param drop_to: Ending point for drag and drop. Can be pattern or String.
+        :param duration: Speed of hovering from current location to target.
+        :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        :return: None.
+        """
+        return drag_drop(drag_from, drop_to, self._area, duration, align)

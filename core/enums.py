@@ -6,6 +6,14 @@
 from enum import Enum
 
 
+class Alignment(Enum):
+    CENTER = 'center'
+    TOP_LEFT = 'top_left'
+    TOP_RIGHT = 'top_right'
+    BOTTOM_LEFT = 'bottom_left'
+    BOTTOM_RIGHT = 'bottom_right'
+
+
 class Channels(Enum):
     BETA = 'beta'
     DEV_EDITION = 'dev'
