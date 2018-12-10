@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '127254'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.exclude = Platform.MAC
+        self.exclude = Platform.MAC, Platform.WINDOWS
 
     def run(self):
 
