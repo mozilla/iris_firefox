@@ -15,6 +15,7 @@ class Test(BaseTest):
         self.test_case_id = '127277'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def run(self):
         test_label_pattern = Pattern('test_label_pattern.png')

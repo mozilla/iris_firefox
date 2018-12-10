@@ -63,8 +63,13 @@ class Test(BaseTest):
 
         # 2) Menu bar > Edit > Find in This Page,
 
-        if Settings.get_os() == Platform.WINDOWS:
-            type(Key.ALT)
+        if Settings.get_os() == Platform.LINUX:
+            type('e', KeyModifier.ALT, 15)
+
+            click(menu_bar_edit_find_in_page_pattern, 5)
+        else:
+            if Settings.get_os() == Platform.WINDOWS:
+                type(Key.ALT)
 
             menu_bar_displayed = exists(menu_bar_edit_pattern, 5)
             if menu_bar_displayed:
@@ -77,20 +82,6 @@ class Test(BaseTest):
                 click(menu_bar_edit_find_in_page_pattern, 3)
             else:
                 raise FindError('Find in page tab in Menu bar is not displayed')
-
-        if Settings.get_os() == Platform.MAC:
-            type(Key.F2, KeyModifier.CTRL)
-            type(Key.RIGHT)
-            type(Key.RIGHT)
-            type(Key.RIGHT)
-            type(Key.DOWN)
-            type('f')
-            type(Key.ENTER)
-
-        if Settings.get_os() == Platform.LINUX:
-            type('e', KeyModifier.ALT, 15)
-
-            click(menu_bar_edit_find_in_page_pattern, 5)
 
         edit_select_all()
         edit_delete()

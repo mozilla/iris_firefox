@@ -35,7 +35,7 @@ class Test(BaseTest):
         # Search for an inexistent String on the page
         type('merge', interval=1)
         red_textbox_exists = exists(merge_red_textbox_pattern, 5)
-        assert_true(self, red_textbox_exists, 'input field has a red background')
+        assert_true(self, red_textbox_exists, 'Input field has a red background')
         label_not_found = exists(phrase_not_found_label_pattern, 5)
         assert_true(self, label_not_found, 'Phrase not found appears')
 
