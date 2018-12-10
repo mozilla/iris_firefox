@@ -13,7 +13,8 @@ import Xlib.XK
 class XKeyboard:
 
     def __init__(self):
-        """Initializing a X Display that will be used for screenshot , keyboard and mouse
+        """
+        Initializing a X Display that will be used for screenshot , keyboard and mouse
         actions in a framebuffer environment
 
         """
@@ -21,7 +22,8 @@ class XKeyboard:
         self.display = Display(os.environ['DISPLAY'])
 
     def _screen_size(self):
-        """Performs a keyboard key press without the release. This will put that
+        """
+        Performs a keyboard key press without the release. This will put that
             key in a held down state.
 
             Args:
@@ -35,7 +37,8 @@ class XKeyboard:
         return self.display.screen().width_in_pixels, self.display.screen().height_in_pixels
 
     def keyDown(self, key):
-        """Performs a keyboard key press without the release. This will put that
+        """
+        Performs a keyboard key press without the release. This will put that
         key in a held down state.
 
         Args:
@@ -64,7 +67,8 @@ class XKeyboard:
         self.display.sync()
 
     def keyUp(self, key):
-        """Performs a keyboard key release (without the press down beforehand).
+        """
+        Performs a keyboard key release (without the press down beforehand).
 
         Args:
           key (str): The key to be released up. The valid names are listed in
@@ -92,9 +96,8 @@ class XKeyboard:
 
 @staticmethod
 def isShiftCharacter(character):
-    """Returns True if the key character is uppercase or shifted."""
+    """
+    Returns True if the key character is uppercase or shifted.
+    """
     return character.isupper() or character in '~!@#$%^&*()_+{}|:"<>?'
 
-
-if __name__ == "__main__":
-    print('')
