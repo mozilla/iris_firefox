@@ -42,7 +42,7 @@ class Test(BaseTest):
 
         open_downloads()
 
-        expected = exists(DownloadManager.PrivateDownloadManager.NO_DOWNLOADS, 10)
+        expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
         assert_true(self, expected, 'The downloads category is brought to view and the following message is displayed '
                                     'in the tab: \'There are no downloads\'.')
 
