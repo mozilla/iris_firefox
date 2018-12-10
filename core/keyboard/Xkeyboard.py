@@ -10,7 +10,7 @@ from Xlib.ext.xtest import fake_input
 import Xlib.XK
 
 
-class XKeyboard:
+class Xscreen:
 
     def __init__(self):
         """
@@ -23,18 +23,18 @@ class XKeyboard:
 
     def _screen_size(self):
         """
-        Performs a keyboard key press without the release. This will put that
-            key in a held down state.
-
-            Args:
-            key (str): The key to be pressed down. The valid names are listed in
-            Key class
-
             Returns:
-                 Screen Width and Height
+                 Screen Width and Height of the virtual screen
         """
 
         return self.display.screen().width_in_pixels, self.display.screen().height_in_pixels
+
+
+class XKeyboard(Xscreen):
+
+    def __init__(self):
+
+        self.display = Xscreen()
 
     def keyDown(self, key):
         """
@@ -100,4 +100,3 @@ def isShiftCharacter(character):
     Returns True if the key character is uppercase or shifted.
     """
     return character.isupper() or character in '~!@#$%^&*()_+{}|:"<>?'
-

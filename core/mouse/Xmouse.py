@@ -5,15 +5,25 @@ from Xlib import X
 from Xlib.ext.xtest import fake_input
 
 from core.helpers.location import Location
-from core.keyboard.Xkeyboard import XKeyboard
+from core.keyboard.Xkeyboard import Xscreen
 
 
-class XMouse(XKeyboard):
+class XMouse(Xscreen):
 
     def __init__(self):
+        self.display = Xscreen()
         self.MOUSE_BUTTONS = {'left': 1, 'middle': 2, 'right': 3, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7}
 
     def click(self, location: Location, button: str):
+
+        """
+        Performs a click
+
+        :param button :'left','middle','right'
+        :param location :x,y coordinates where to click
+
+        """
+
         assert button in self.MOUSE_BUTTONS.keys(), "button argument not in ('left', 'middle', 'right', 4, 5, 6, 7)"
         button = self.MOUSE_BUTTONS[button]
 
@@ -21,6 +31,14 @@ class XMouse(XKeyboard):
         self._mouseUp(location, button)
 
     def _vertical_scroll(self, clicks: int, location: Location = None):
+
+        """
+        Performs a vertical mouse movement
+
+        :param clicks :number of clicks
+        :param location :x,y coordinates where to click
+
+        """
         clicks = int(clicks)
         if clicks == 0:
             return
@@ -32,7 +50,14 @@ class XMouse(XKeyboard):
         for i in range(abs(clicks)):
             self.click(location, button=button)
 
-    def _horizontal_scroll(self, clicks, location: Location):
+    def horizontal_scroll(self, clicks: int, location: Location):
+        """
+        Performs a horizontal mouse movement
+
+        :param clicks :number of clicks
+        :param location :x,y coordinates where to click
+
+        """
         clicks = int(clicks)
         if clicks == 0:
             return
@@ -44,22 +69,50 @@ class XMouse(XKeyboard):
         for i in range(abs(clicks)):
             self.click(location, button=button)
 
-    def scroll(self, clicks, location: Location):
+    def scroll(self, clicks: int, location: Location):
+        """
+        Performs a scroll mouse movement
+
+        :param clicks :number of clicks
+        :param location :x,y coordinates where to click
+
+        """
         return self.vertical_scroll(clicks, location)
 
-    def _moveTo(self, location: Location):
+    def moveTo(self, location: Location):
+
+        """
+        Mouse move to specific Location
+
+        :param location :x,y coordinates where to click
+
+        """
         fake_input(self.display, X.MotionNotify, x=location.x, y=location.y)
         self.display.sync()
 
-    def _mouseDown(self, location: Location, button):
-        self._moveTo(location)
+    def _mouseDown(self, location: Location, button: str):
+        """
+        Mouse button press
+
+        :param location :x,y coordinates where to click
+        :param button 'left','middle','right'
+
+        """
+        self.moveTo(location)
         assert button in self.MOUSE_BUTTONS.keys(), "button argument not in ('left', 'middle', 'right', 4, 5, 6, 7)"
         button = self.MOUSE_BUTTONS[button]
         fake_input(self.display, X.ButtonPress, button)
         self.display.sync()
 
-    def _mouseUp(self, location: Location, button):
-        self._moveTo(location)
+    def _mouseUp(self, location: Location, button: str):
+        """
+        Mouse button Up
+
+        :param location :x,y coordinates where to click
+        :param button 'left','middle','right'
+
+        """
+        self.moveTo(location)
         assert button in self.MOUSE_BUTTONS.keys(), "button argument not in ('left', 'middle', 'right', 4, 5, 6, 7)"
         button = self.MOUSE_BUTTONS[button]
         fake_input(self.display, X.ButtonRelease, button)
