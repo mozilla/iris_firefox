@@ -48,22 +48,22 @@ class XMouse(XKeyboard):
         return self.vertical_scroll(clicks, location)
 
     def _moveTo(self, location: Location):
-        fake_input(self._display, X.MotionNotify, x=location.x, y=location.y)
-        self._display.sync()
+        fake_input(self.display, X.MotionNotify, x=location.x, y=location.y)
+        self.display.sync()
 
     def _mouseDown(self, location: Location, button):
         self._moveTo(location)
         assert button in self.MOUSE_BUTTONS.keys(), "button argument not in ('left', 'middle', 'right', 4, 5, 6, 7)"
         button = self.MOUSE_BUTTONS[button]
-        fake_input(self._display, X.ButtonPress, button)
-        self._display.sync()
+        fake_input(self.display, X.ButtonPress, button)
+        self.display.sync()
 
     def _mouseUp(self, location: Location, button):
         self._moveTo(location)
         assert button in self.MOUSE_BUTTONS.keys(), "button argument not in ('left', 'middle', 'right', 4, 5, 6, 7)"
         button = self.MOUSE_BUTTONS[button]
-        fake_input(self._display, X.ButtonRelease, button)
-        self._display.sync()
+        fake_input(self.display, X.ButtonRelease, button)
+        self.display.sync()
 
     def position(self):
         """Returns:
