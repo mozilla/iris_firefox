@@ -147,12 +147,36 @@ class Mouse:
         time.sleep(Settings.delay_before_drop)
         self.mouse.release(Button.left)
 
-    def _scroll(self, dx, dy, iterations: int = 1):
+    def _scroll(self, dx: int = None, dy: int = None, iterations: int = 1):
+        """Sends scroll events.
+
+        :param int dx: The horizontal scroll.
+        :param int dy: The vertical scroll.
+        :param int iterations: Number of iterations for the scroll event.
+        :return None.
+        """
+        if dx is None:
+            dx = Settings.mouse_scroll_step
+
+        if dy is None:
+            dy = Settings.mouse_scroll_step
+
         for i in range(iterations):
             self.mouse.scroll(dx, dy)
             time.sleep(0.5)
 
-    def scroll_down(self, dy, iterations: int = 1):
-        if dy > 0:
-            dy = -dy
-        self._scroll(0, dy, iterations)
+    def scroll_down(self, dy: int = None, iterations: int = 1):
+        """Scroll down mouse event."""
+        self._scroll(0, -abs(dy), iterations)
+
+    def scroll_up(self, dy: int = None, iterations: int = 1):
+        """Scroll up mouse event."""
+        self._scroll(0, abs(dy), iterations)
+
+    def scroll_left(self, dx: int = None, iterations: int = 1):
+        """Scroll left mouse event."""
+        self._scroll(-abs(dx), 0, iterations)
+
+    def scroll_right(self, dx: int = None, iterations: int = 1):
+        """Scroll right mouse event."""
+        self._scroll(abs(dx), 0, iterations)

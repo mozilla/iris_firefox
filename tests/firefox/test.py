@@ -3,7 +3,7 @@ from core.finder.pattern import Pattern
 from core.finder.finder import find_all, find, wait, match_template
 from core.screen.region import Region
 from core.enums import MatchTemplateType
-from core.mouse.mouse import Mouse
+from core.mouse.mouse_controller import Mouse
 from core.helpers.location import Location
 import time
 
@@ -15,7 +15,7 @@ time.sleep(2)
 # from_location = Location(1980, 160)
 # to_location = Location(1980, 50)
 # Mouse().drag_and_drop(from_location, to_location)
-Mouse().scroll_down(400, 3)
+Mouse().scroll_left(100, 3)
 
 
 

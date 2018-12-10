@@ -30,6 +30,7 @@ class _Settings:
     highlight_duration          -   The duration of the highlight effect.
     highlight_color             -   The rectangle/circle border color for the highlight effect.
     highlight_thickness         -   The rectangle/circle border thickness for the highlight effect.
+    mouse_scroll_step           -   The number of pixels for a vertical/horizontal scroll event.
     """
 
     DEFAULT_MIN_SIMILARITY = 0.8
@@ -47,6 +48,7 @@ class _Settings:
     DEFAULT_HIGHLIGHT_DURATION = 2
     DEFAULT_HIGHLIGHT_COLOR = Color.RED
     DEFAULT_HIGHLIGHT_THICKNESS = 2
+    DEFAULT_MOUSE_SCROLL_STEP = 100
     UI_DELAY = 1
 
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
@@ -60,7 +62,8 @@ class _Settings:
                  observe_min_changed_pixels=DEFAULT_OBSERVE_MIN_CHANGED_PIXELS,
                  highlight_duration=DEFAULT_HIGHLIGHT_DURATION,
                  highlight_color=DEFAULT_HIGHLIGHT_COLOR,
-                 highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS):
+                 highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS,
+                 mouse_scroll_step=DEFAULT_MOUSE_SCROLL_STEP):
 
         self.wait_scan_rate = wait_scan_rate
         self._type_delay = type_delay
@@ -77,6 +80,7 @@ class _Settings:
         self.highlight_duration = highlight_duration
         self.highlight_color = highlight_color.value
         self.highlight_thickness = highlight_thickness
+        self.mouse_scroll_step = mouse_scroll_step
 
     @property
     def type_delay(self):
