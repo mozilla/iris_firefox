@@ -51,16 +51,7 @@ class Test(BaseTest):
 
         click(ok_save_file_button_pattern)
 
-        # bug in open_downloads shortcut for linux
-        # https://github.com/mozilla/iris/issues/1637
-        if Settings.is_linux():
-            key_down(Key.CTRL)
-            key_down(Key.SHIFT)
-            type('y')
-            key_up(Key.SHIFT)
-            key_up(Key.CTRL)
-        else:
-            open_downloads()
+        open_downloads()
 
         about_downloads_label_exists = exists(about_downloads_label_pattern, 5)
         assert_true(self, about_downloads_label_exists, 'Downloads opened')
