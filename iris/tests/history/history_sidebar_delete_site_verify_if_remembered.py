@@ -4,6 +4,7 @@
 
 
 from iris.test_case import *
+from iris.test_dependencies import *
 
 
 class Test(BaseTest):
@@ -26,8 +27,8 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box = Pattern('search_history_box.png')
-        expand_button_history_sidebar = Pattern('expand_button_history_sidebar.png')
+        search_history_box = Sidebar.HistorySidebar.SEARCH_BOX
+        expand_button_history_sidebar = Sidebar.SidebarHeader.OPEN_ARROW
         local_server_autocomplete = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
 

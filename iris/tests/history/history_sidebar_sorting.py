@@ -4,6 +4,7 @@
 
 
 from iris.test_case import *
+from iris.test_dependencies import *
 
 
 class Test(BaseTest):
@@ -26,9 +27,9 @@ class Test(BaseTest):
         return
 
     def run(self):
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
-        history_sidebar_view_button_pattern = Pattern('history_sidebar_view_button.png')
-        history_sidebar_sort_by_date_pattern = Pattern('history_sidebar_sort_by_date.png')
+        expand_button_history_sidebar_pattern = Sidebar.SidebarHeader.OPEN_ARROW
+        history_sidebar_view_button_pattern = Sidebar.HistorySidebar.VIEW_BUTTON
+        history_sidebar_sort_by_date_pattern = Sidebar.HistorySidebar.ViewBy.VIEW_BY_DATE_CHECKED
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)

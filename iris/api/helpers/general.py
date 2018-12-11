@@ -8,15 +8,9 @@ import mozversion
 from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
-from iris.api.core.firefox_ui.menus import LibraryMenu
-from iris.api.core.firefox_ui.location_bar import LocationBar
-from iris.api.core.firefox_ui.find_toolbar import FindToolbar
-from iris.api.core.firefox_ui.hamburger import HamburgerMenu
+from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
-from iris.api.core.firefox_ui.library import Library
-from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
-from iris.api.core.firefox_ui.bookmarks import Bookmarks
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import Screen
@@ -171,7 +165,7 @@ def click_window_control(button, window_type='auxiliary'):
         full_screen_control(window_type)
     else:
         raise APIHelperError('Button option is not supported.')
-        
+
 
 def close_customize_page():
     """Close the 'Customize...' page by pressing the 'Done' button."""
@@ -198,7 +192,7 @@ def close_firefox(test):
     else:
         logger.debug('Firefox already closed. Skipping ...')
 
-        
+
 def close_window_control(window_type):
     """Click on close window control.
 

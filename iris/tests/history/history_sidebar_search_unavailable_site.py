@@ -4,7 +4,7 @@
 
 
 from iris.test_case import *
-
+from iris.test_dependencies import *
 
 class Test(BaseTest):
 
@@ -26,8 +26,8 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box_pattern = Pattern('search_history_box.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
+        expand_button_history_sidebar_pattern = Sidebar.SidebarHeader.OPEN_ARROW
         history_search_no_results_pattern = Pattern('history_search_no_results.png')
 
         # Open a page to create some history.

@@ -4,6 +4,7 @@
 
 
 from iris.test_case import *
+from iris.test_dependencies import *
 
 
 class Test(BaseTest):
@@ -18,11 +19,11 @@ class Test(BaseTest):
     def run(self):
         forget_customize_page_pattern = Pattern('forget_customize_page.png')
         forget_toolbar_pattern = Pattern('forget_toolbar.png')
-        forget_button_pattern = Pattern('forget_button.png')
-        five_minutes_selected_pattern = Pattern('five_minutes_selected.png')
+        forget_button_pattern = History.ForgetLast.FORGET_BUTTON
+        five_minutes_selected_pattern = History.ForgetLast.LAST_FIVE_MINUTES_SELECTED
         toolbar_pattern = NavBar.TOOLBAR
-        recent_history_cleared_pattern = Pattern('recent_history_cleared.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        recent_history_cleared_pattern = History.ForgetLast.SUCCESS_FORGET_MSG
+        expand_button_history_sidebar_pattern = Sidebar.SidebarHeader.OPEN_ARROW
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -63,6 +64,7 @@ class Test(BaseTest):
             assert_true(self, expected, 'Expand history button for \'Today\' history is successfully removed.')
         except FindError:
             raise FindError('Expand history button for \'Today\' history is not removed.')
+
 
         expected = exists(recent_history_cleared_pattern, 10)
         assert_true(self, expected, 'Recent history successfully cleared.')

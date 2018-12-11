@@ -4,6 +4,8 @@
 
 
 from iris.test_case import *
+from iris.test_dependencies import *
+from iris.api.core import mouse
 
 
 class Test(BaseTest):
@@ -46,6 +48,7 @@ class Test(BaseTest):
 
         # Verify if Mozilla page is present in Today History.
         click(history_today_pattern)
+        mouse.mouse_move(Location(SCREEN_WIDTH / 4 + 100, SCREEN_HEIGHT / 4))
         expected_4 = exists(history_mozilla_pattern, 10)
         assert_true(self, expected_4, 'Mozilla page is displayed in the History list successfully.')
 
