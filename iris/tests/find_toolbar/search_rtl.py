@@ -66,8 +66,8 @@ class Test(BaseTest):
         selected_label_exists = exists(rtl_full_selected_pattern, 1)
         assert_true(self, selected_label_exists, 'After navigation The first one has a green background highlighted.')
 
-        [scroll_down() for _ in range(4)]
-        [scroll_up() for _ in range(4)]
+        repeat_key_down(4)
+        repeat_key_up(4)
 
         selected_label_exists = exists(rtl_full_selected_pattern, 1)
         assert_true(self, selected_label_exists, 'After scroll, no checkboarding is present.')
