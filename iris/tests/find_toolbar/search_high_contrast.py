@@ -21,7 +21,7 @@ class Test(BaseTest):
         find_in_page_bar_contrast_pattern = Pattern('find_in_page_bar_contrast.png').similar(0.6)
         soap_page_loaded_contrast_pattern = Pattern('soap_page_loaded_contrast.png')
         see_label_contrast_pattern = Pattern('see_label_contrast.png')
-        see_label_unhighlited_contrast_pattern = Pattern('see_label_unhighlited_contrast.png')
+        see_label_not_highlighted_contrast_pattern = Pattern('see_label_not_highlighted_contrast.png')
         see_label_zoom_in_contrast_pattern = Pattern('see_label_zoom_in_contrast.png')
         see_label_zoom_out_contrast_pattern = Pattern('see_label_zoom_out_contrast.png')
 
@@ -103,7 +103,7 @@ class Test(BaseTest):
             type(Key.ENTER)
 
             selected_label_exists = exists(see_label_contrast_pattern, 5)
-            unhighlighted_label_exists = exists(see_label_unhighlited_contrast_pattern, 5)
+            unhighlighted_label_exists = exists(see_label_not_highlighted_contrast_pattern, 5)
 
             assert_true(self, selected_label_exists,
                         'The first one has a green background highlighted.')
