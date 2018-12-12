@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.api.helpers.download_manager_utils import download_file, DownloadFiles
+from iris.api.helpers.download_manager_utils import download_file, DownloadFiles, downloads_cleanup
 from iris.test_case import *
 
 
@@ -16,21 +16,10 @@ class Test(BaseTest):
         self.test_suite_id = '1827'
         self.locales = ['en-US']
 
-    def setup(self):
-        """Test case setup
-
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
-        """
-        BaseTest.setup(self)
-        self.profile = Profile.BRAND_NEW
-        return
-
     def run(self):
         download_files_list = [DownloadFiles.SMALL_FILE_10MB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
         downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
 
-        # Perform some downloads of your choice.
-        new_tab()
         navigate('https://www.thinkbroadband.com/download')
 
         for pattern in download_files_list:
@@ -63,15 +52,18 @@ class Test(BaseTest):
         for pattern in downloads_library_list:
             try:
                 expected = wait_vanish(pattern, 5)
+                assert_true(self, expected, '%s file not found in the Library, Downloads section.'
+                            % str(pattern.get_filename()).replace('_library_downloads.png', ''))
             except FindError:
                 raise FindError('Downloads are still present in the Library.')
-            assert_true(self, expected, '%s file not found in the Library, Downloads section.'
-                            % str(pattern.get_filename()).replace('_library_downloads.png', ''))
 
         click_window_control('close')
 
-        # Check that there are no downloads displayed on the 'about:downloads' page.
-        new_tab()
+        # Check that there are no downloads displayed in the 'about:downloads' page.
         navigate('about:downloads')
         expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
         assert_true(self, expected, 'There are no downloads displayed in the \'about:downloads\' page.')
+
+        # Cleanup.
+        downloads_cleanup('5MB.zip')
+        downloads_cleanup('10MB.zip')
