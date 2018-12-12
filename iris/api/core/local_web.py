@@ -49,9 +49,6 @@ class LocalWeb(object):
     POCKET_BOOKMARK = Pattern('pocket_bookmark.png')
     POCKET_BOOKMARK_SMALL = Pattern('pocket_bookmark_small.png')
 
-    """Wiki Test site."""
-    WIKI_TEST_SITE = 'http://%s:%s/wiki/' % (_ip_host, _port)
-
     """Soap Wiki Test Site"""
     SOAP_WIKI_TEST_SITE = 'http://%s:%s/soap_wiki_test_site/' % (_ip_host, _port)
     SOAP_WIKI_1_OF_2_MATCHES = Pattern('1_of_2_matches.png')
