@@ -1,8 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
-
+from iris.api.core.firefox_ui.history import History
 from iris.test_case import *
 
 
@@ -24,7 +23,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        show_all_history = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history = History.HistoryMenu.SHOW_ALL_HISTORY
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
 
         # Open some page to create some history for today.

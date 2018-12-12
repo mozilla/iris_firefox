@@ -5,7 +5,7 @@
 
 from iris.api.core import mouse
 from iris.test_case import *
-
+from iris.test_dependencies import *
 
 class Test(BaseTest):
 
@@ -30,11 +30,11 @@ class Test(BaseTest):
         return
 
     def run(self):
-        clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
-        clear_now_button_pattern = Pattern('clear_now_button.png')
-        search_uncheked_box_pattern = Pattern('unchecked_box.png')
-        history_pattern = Pattern('history_logo.png')
-        searched_history_logo_pattern = Pattern('explored_history_logo.png')
+        clear_recent_history_window_pattern = History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
+        clear_now_button_pattern = History.CLearRecentHistory.CLEAR_NOW
+        search_uncheked_box_pattern = Utils.UNCHECKEDBOX
+        history_pattern = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE
+        searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON
         privacy_logo_pattern = Pattern('privacy_logo.png')
         manage_data_pattern = Pattern('manage_data_button.png')
         manage_data_title_pattern = Pattern('manage_cookies_and_site_data_table_heads.png')
@@ -43,15 +43,11 @@ class Test(BaseTest):
         ago_word_pattern = Pattern('ago_pattern.png')
         empty_saved_logins_pattern = Pattern('empty_saved_logins.png')
         disk_space_is_not_used_pattern = Pattern('0_bytes_of_data.png')
-        clear_recent_history_menu_pattern = Pattern('clear_recent_history_menu.png')
 
-        # Check that the Clear Recent History window is displayed properly.
-        open_library_menu('History')
-        expected = exists(clear_recent_history_menu_pattern, 10)
-        assert_true(self, expected, '\"Clear recent history\" menu exists.')
-        click(clear_recent_history_menu_pattern)
-        expected = exists(clear_recent_history_window_pattern, 10)
-        assert_true(self, expected, '\"Clear Recent History\" window was displayed properly.')
+        # Open the 'Clear Recent History' window and uncheck all the items.
+        for step in open_clear_recent_history_window():
+            assert_true(self, step.resolution, step.message)
+
 
         # Check all options to be cleared.
         expected = exists(search_uncheked_box_pattern.similar(0.9), 10)
