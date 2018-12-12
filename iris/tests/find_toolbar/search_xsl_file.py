@@ -27,8 +27,10 @@ class Test(BaseTest):
         # Open Firefox and open a [XSL file]
         navigate('https://docs.google.com/spreadsheets/d/1DerWok62-wirXdtk7HhE_JAHZImPc7d6LT2jFFJRPxs')
         time.sleep(30)
+
         xls_spreadsheet_logo_pattern_exists = exists(xls_cell_pattern, 15)
         assert_true(self, xls_spreadsheet_logo_pattern_exists, 'The page is successfully loaded.')
+
         autosum_icon_exists = exists(autosum_icon_pattern, 20)
         assert_true(self, autosum_icon_exists, 'Spreadsheet loaded')
 
@@ -61,6 +63,7 @@ class Test(BaseTest):
                 raise FindError('Menu bar edit is not displayed.')
 
             menu_bar_edit_find_in_page_displayed = exists(MenuBar.Edit.EDIT_FIND_IN_PAGE, 3)
+
             if menu_bar_edit_find_in_page_displayed:
                 click(MenuBar.Edit.EDIT_FIND_IN_PAGE, 1)
             else:
@@ -68,6 +71,7 @@ class Test(BaseTest):
 
         edit_select_all()
         edit_delete()
+
         find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 5)
         assert_true(self, find_toolbar_is_opened, 'The Find Toolbar is successfully displayed ')
 
@@ -78,11 +82,15 @@ class Test(BaseTest):
 
         first_occurrence_highlighted_exists = exists(xls_first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_highlighted_exists, 'The first occurrence is highlighted.')
+
         second_occurrence_unhighlighted_exists = exists(xls_second_occurrence_unhighlighted_pattern, 5)
         assert_true(self, second_occurrence_unhighlighted_exists, 'The second occurrence is not highlighted.')
+
         find_next()
+
         first_occurrence_unhighlighted_exists = exists(xls_first_occurrence_unhighlighted_pattern, 5)
         assert_true(self, first_occurrence_unhighlighted_exists, 'The first occurrence is not highlighted.')
+
         second_occurrence_highlighted_exists = exists(xls_second_occurrence_highlighted_pattern, 5)
         assert_true(self, second_occurrence_highlighted_exists, 'The second occurrence is highlighted.')
 
@@ -91,8 +99,10 @@ class Test(BaseTest):
         first_occurrence_exists_before_scroll = exists(xls_first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_exists_before_scroll,
                     'The first occurrence is displayed before scrolling down and up')
-        [scroll_down() for _ in range(4)]
-        [scroll_up() for _ in range(4)]
+
+        repeat_key_down(4)
+        repeat_key_up(4)
+
         first_occurrence_exists_after_scroll = exists(xls_first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_exists_after_scroll,
                     'The first occurrence is displayed after scrolling down and up')

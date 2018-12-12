@@ -56,8 +56,8 @@ class Test(BaseTest):
 
         before_scroll_selected_exists = exists(word_mozilla_first_selected_pattern, 5)
 
-        [scroll_down() for _ in range(4)]
-        [scroll_up() for _ in range(4)]
+        repeat_key_down(4)
+        repeat_key_up(4)
 
         after_scroll_selected_exists = exists(word_mozilla_first_selected_pattern, 5)
         assert_true(self, before_scroll_selected_exists and after_scroll_selected_exists,

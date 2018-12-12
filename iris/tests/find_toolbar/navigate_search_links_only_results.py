@@ -19,7 +19,6 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-
         find_in_page_links_only_icon_pattern = Pattern('find_in_page_links_only_icon.png')
         soap_link_pattern = Pattern('soap_link.png')
         soap_other_link_pattern = Pattern('soap_link_disambiguation.png')
