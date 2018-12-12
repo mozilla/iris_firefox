@@ -64,7 +64,7 @@ class Library(object):
 
     HISTORY = Pattern('history.png')
     HISTORY_NAME = Pattern('history_name.png')
-    HISTORY_TODAY = Pattern('history_today.png')
+    HISTORY_TODAY = Pattern('library_history_today.png')
     TODAY_NAME = Pattern('today_name.png')
     HISTORY_OLDER_THAN_6_MONTHS = Pattern('history_older_than_6_months.png')
     OLDER_THAN_6_MONTHS_NAME = Pattern('older_than_6_months_name.png')
