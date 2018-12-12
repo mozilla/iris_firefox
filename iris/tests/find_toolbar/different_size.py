@@ -16,14 +16,9 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_label_pattern = Pattern('soap_label.png')
-        soap_xml_label_pattern = Pattern('soap_xml_label.png')
-        soap_envelope_label_selected_pattern = Pattern('soap_envelope_label_selected.png')
-
-        navigate(LocalWeb.WIKI_TEST_SITE)
-
-        soap_label_exists = exists(soap_label_pattern, 20)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         if Settings.is_mac():
@@ -50,8 +45,8 @@ class Test(BaseTest):
 
         find_next()
 
-        selected_label_exists = exists(soap_envelope_label_selected_pattern, 5)
-        unselected_label_exists = exists(soap_xml_label_pattern, 5)
+        selected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED, 5)
+        unselected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_XML_LABEL, 5)
 
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, unselected_label_exists, 'The others are not highlighted.')
@@ -65,8 +60,8 @@ class Test(BaseTest):
         else:
             type(Key.F11)
 
-        selected_label_exists = exists(soap_envelope_label_selected_pattern, 5)
-        unselected_label_exists = exists(soap_xml_label_pattern, 5)
+        selected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED, 5)
+        unselected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_XML_LABEL, 5)
 
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, unselected_label_exists,
