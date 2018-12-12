@@ -17,8 +17,6 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-        menu_bar_edit_pattern = Pattern('menu_bar_edit_pattern.png')
-        menu_bar_edit_find_in_page_pattern = Pattern('menu_bar_edit_find_in_page_pattern.png')
         xls_first_occurrence_highlighted_pattern = Pattern('xls_first_occurrence_hl.png')
         xls_first_occurrence_unhighlighted_pattern = Pattern('xls_first_occurrence_white.png')
         xls_second_occurrence_highlighted_pattern = Pattern('xls_second_occurrence_hl.png')
@@ -27,19 +25,10 @@ class Test(BaseTest):
         autosum_icon_pattern = Pattern('autosum_xls_icon.png')
 
         # Open Firefox and open a [XSL file]
-        navigate('https://docs.google.com/spreadsheets/d/1DerWok62-wirXdtk7HhE_JAHZImPc7d6LT2jFFJRPxs/edit?usp=sharing')
+        navigate('https://docs.google.com/spreadsheets/d/1DerWok62-wirXdtk7HhE_JAHZImPc7d6LT2jFFJRPxs')
         time.sleep(30)
         xls_spreadsheet_logo_pattern_exists = exists(xls_cell_pattern, 15)
         assert_true(self, xls_spreadsheet_logo_pattern_exists, 'The page is successfully loaded.')
-
-        # Open the Find Toolbar from Menubar > Edit > Find
-        xls_cell_displayed = exists(xls_cell_pattern, 5)
-        if xls_cell_displayed:
-            hover(xls_cell_pattern, 0.1)
-            click(xls_cell_pattern)
-        else:
-            raise FindError('XLS cell is not displayed')
-
         autosum_icon_exists = exists(autosum_icon_pattern, 20)
         assert_true(self, autosum_icon_exists, 'Spreadsheet loaded')
 
@@ -52,11 +41,11 @@ class Test(BaseTest):
             mouse_move(x, 1)
             key_up(Key.ALT)
 
-            menu_bar_edit_displayed = exists(menu_bar_edit_pattern, 5)
+            menu_bar_edit_displayed = exists(MenuBar.Edit.EDIT_PATTERN, 5)
             if menu_bar_edit_displayed:
                 key_up(Key.ALT)
-                click(menu_bar_edit_pattern, 5)
-                click(menu_bar_edit_find_in_page_pattern, 2)
+                click(MenuBar.Edit.EDIT_PATTERN, 5)
+                click(MenuBar.Edit.EDIT_FIND_IN_PAGE, 2)
             else:
                 raise FindError('Menu bar edit is not displayed (Linux)')
 
@@ -65,15 +54,15 @@ class Test(BaseTest):
                 key_down(Key.ALT)
                 key_up(Key.ALT)
 
-            menu_bar_edit_displayed = exists(menu_bar_edit_pattern, 5)
+            menu_bar_edit_displayed = exists(MenuBar.Edit.EDIT_PATTERN, 5)
             if menu_bar_edit_displayed:
-                click(menu_bar_edit_pattern, 1)
+                click(MenuBar.Edit.EDIT_PATTERN, 1)
             else:
                 raise FindError('Menu bar edit is not displayed.')
 
-            menu_bar_edit_find_in_page_displayed = exists(menu_bar_edit_find_in_page_pattern, 3)
+            menu_bar_edit_find_in_page_displayed = exists(MenuBar.Edit.EDIT_FIND_IN_PAGE, 3)
             if menu_bar_edit_find_in_page_displayed:
-                click(menu_bar_edit_find_in_page_pattern, 1)
+                click(MenuBar.Edit.EDIT_FIND_IN_PAGE, 1)
             else:
                 raise FindError('Menu bar edit -> find in page is not displayed.')
 
