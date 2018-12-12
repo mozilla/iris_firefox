@@ -17,7 +17,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
         word_mozilla_first_selected_pattern = Pattern('word_mozilla_first_selected.png')
         word_mozilla_second_selected_pattern = Pattern('word_mozilla_second_selected.png')
         word_mozilla_second_unselected_pattern = Pattern('word_mozilla_second_unselected.png')

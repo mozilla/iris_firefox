@@ -16,17 +16,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        soap_label_pattern = Pattern('soap_label.png')
-        operating_all_pattern = Pattern('operating_all.png')
-        operating_all_highlighted_pattern = Pattern('operating_all_highlighted.png')
-        operating_disparate_pattern = Pattern('operating_disparate.png')
-        operating_disparate_highlighted_pattern = Pattern('operating_disparate_highlighted.png')
-        one_of_two_matches_pattern = Pattern('1_of_2_matches.png')
-        two_of_two_matches_pattern = Pattern('2_of_2_matches.png')
-
-        navigate(LocalWeb.WIKI_TEST_SITE)
-        soap_label_exists = exists(soap_label_pattern, 40)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 40)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         open_find()
@@ -38,21 +29,21 @@ class Test(BaseTest):
 
         type('operating')
 
-        operating_disparate_highlighted_displayed = exists(operating_disparate_highlighted_pattern, 5)
-        operating_all_displayed = exists(operating_all_pattern, 5)
+        operating_disparate_highlighted_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED, 5)
+        operating_all_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_ALL, 5)
         assert_true(self, operating_disparate_highlighted_displayed and operating_all_displayed,
                     'All the matching words/characters are found. '
                     'The first one has a green background highlighted, and the others are not highlighted.')
 
         find_next()
 
-        operating_disparate_displayed = exists(operating_disparate_pattern, 5)
-        operating_all_highlighted_displayed = exists(operating_all_highlighted_pattern, 5)
+        operating_disparate_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_DISPARATE, 5)
+        operating_all_highlighted_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED, 5)
 
         find_previous()
 
-        operating_disparate_highlighted_displayed = exists(operating_disparate_highlighted_pattern, 5)
-        operating_all_displayed = exists(operating_all_pattern, 5)
+        operating_disparate_highlighted_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED, 5)
+        operating_all_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_ALL, 5)
         assert_true(self, operating_disparate_displayed and operating_all_highlighted_displayed
                     and operating_disparate_highlighted_displayed and operating_all_displayed,
                     'Navigation works fine. '
@@ -60,10 +51,10 @@ class Test(BaseTest):
 
         find_next()
 
-        two_of_two_matches_displayed = exists(two_of_two_matches_pattern, 5)
+        two_of_two_matches_displayed = exists(LocalWeb.SOAP_WIKI_2_OF_2_MATCHES, 5)
 
         find_previous()
 
-        one_of_two_matches_displayed = exists(one_of_two_matches_pattern, 5)
+        one_of_two_matches_displayed = exists(LocalWeb.SOAP_WIKI_1_OF_2_MATCHES, 5)
         assert_true(self, one_of_two_matches_displayed and two_of_two_matches_displayed,
                     'The number of the highlighted item changes when navigating.')

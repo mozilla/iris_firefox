@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
         small_text_unselected_pattern = Pattern('small_text_unselected.png').similar(0.6)
         small_text_selected_pattern = Pattern('small_text_selected.png').similar(0.6)
         vertical_search_page_local = self.get_asset_path('test-findinpage.html')

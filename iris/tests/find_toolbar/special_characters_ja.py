@@ -18,7 +18,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        test_label_pattern = Pattern('test_label_pattern.png')
         first_japan_highlighted_pattern = Pattern('first_japan_highlighted.png')
         second_japan_highlighted_pattern = Pattern('second_japan_highlighted.png')
         japan_not_highlighted_pattern = Pattern('japan_not_highlighted.png')
@@ -26,7 +25,7 @@ class Test(BaseTest):
         test_page_local = self.get_asset_path('ja.htm')
         navigate(test_page_local)
 
-        page_loaded_anchor_exists = exists(test_label_pattern, 20)
+        page_loaded_anchor_exists = exists(LocalWeb.SOAP_WIKI_TEST_LABEL_PATTERN, 20)
         assert_true(self, page_loaded_anchor_exists, 'The page is successfully loaded.')
 
         open_find()
