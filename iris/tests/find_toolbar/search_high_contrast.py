@@ -54,6 +54,8 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.LINUX:
             type('Appearance')
 
+        time.sleep(DEFAULT_UI_DELAY_LONG)
+
         type(Key.ENTER)
 
         theme_menu_opened = exists(theme_menu_opened_pattern, 30)
@@ -88,7 +90,7 @@ class Test(BaseTest):
             soap_page_loaded_exists = exists(soap_page_loaded_contrast_pattern, 20)
             assert_true(self, soap_page_loaded_exists, 'The page is successfully loaded.')
 
-            time.sleep(1)
+            time.sleep(DEFAULT_UI_DELAY)
 
             open_find()
             edit_select_all()
@@ -146,7 +148,7 @@ class Test(BaseTest):
             if Settings.get_os() == Platform.LINUX:
                 type('Appearance')
 
-            time.sleep(3)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
             type(Key.ENTER)
             theme_menu_opened_in_high_contrast = exists(high_contrast_black_button_active_pattern, 30)
             assert_true(self, theme_menu_opened_in_high_contrast,
