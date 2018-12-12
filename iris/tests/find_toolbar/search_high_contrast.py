@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '127254'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.exclude = Platform.MAC, Platform.WINDOWS
+        self.exclude = Platform.MAC
 
     def run(self):
 
@@ -48,7 +48,7 @@ class Test(BaseTest):
         assert_true(self, os_program_menu_opened, 'System menu opened')
 
         if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
-            type('High contrast settings')
+            type('Change high contrast theme')
         if Settings.get_os_version() == 'win7':
             type('Change the theme')
         if Settings.get_os() == Platform.LINUX:
@@ -140,7 +140,7 @@ class Test(BaseTest):
             assert_true(self, os_program_menu_opened_in_high_contrast, 'OS program menu opened properly.')
 
             if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
-                type('High contrast settings')
+                type('Change high contrast theme')
             if Settings.get_os_version() == 'win7':
                 type('Change the theme')
             if Settings.get_os() == Platform.LINUX:
