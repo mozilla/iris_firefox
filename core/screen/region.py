@@ -4,7 +4,7 @@
 
 
 from core.errors import FindError
-from core.finder.finder import wait, find, find_all, exists, highlight
+from core.finder.finder import wait, find, find_all, exists, highlight, wait_vanish
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
 from core.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
@@ -94,6 +94,15 @@ class Region:
         :return: True or FineError Exception.
         """
         return wait(ps, timeout, self._area)
+
+    def wait_vanish(self, ps=None, timeout=None) -> bool or FindError:
+        """Wait for a Pattern or image to disappear.
+
+        :param ps: Pattern or String.
+        :param timeout: Number as maximum waiting time in seconds.
+        :return: True or FineError Exception.
+        """
+        return wait_vanish(ps, timeout, self._area)
 
     def exists(self, ps=None, timeout=None):
         """Check if Pattern or image exists.

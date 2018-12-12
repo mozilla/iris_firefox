@@ -5,24 +5,19 @@
 import ctypes
 import logging
 import subprocess
-import time
 
-import pyautogui
-import pyperclip as pyperclip
-
-from core.arg_parser import parse_args
 from core.enums import OSPlatform
-from core.errors import FindError
-from core.settings import Settings
+from core.helpers.os_helpers import OSHelper
+from core.keyboard.keyboard_api import shutdown_process
 
-DEFAULT_KEY_SHORTCUT_DELAY = 0.1
+from core.settings import Settings
 
 logger = logging.getLogger(__name__)
 
 
 class _IrisKey(object):
 
-    def __init__(self, label: str, value: int = None, x11key=None, reserved=True):
+    def __init__(self, label: str, value: type = None, x11key: str = None, reserved: type = True):
         """Function assign values to the 'label', 'value' and 'is_reserved' parameters."""
 
         """Key label."""
@@ -172,7 +167,7 @@ class Key(object):
     YEN = _IrisKey('yen', None)
 
     @staticmethod
-    def is_lock_on(keyboard_key: str):
+    def is_lock_on(keyboard_key: type):
         """Static method which determines if a keyboard key(CAPS LOCK, NUM LOCK or SCROLL LOCK) is ON.
 
         :param keyboard_key: Keyboard key(CAPS LOCK, NUM LOCK or SCROLL LOCK).
@@ -253,9 +248,9 @@ class KeyModifier(object):
         all_modifiers = [
             Key.SHIFT,
             Key.CTRL]
-        if Settings.get_os() == OSPlatform.MAC:
+        if OSHelper.get_os() == OSPlatform.MAC:
             all_modifiers.append(Key.CMD)
-        elif Settings.get_os() == OSPlatform.WINDOWS:
+        elif OSHelper.get_os() == OSPlatform.WINDOWS:
             all_modifiers.append(Key.WIN)
         else:
             all_modifiers.append(Key.META)
@@ -267,166 +262,3 @@ class KeyModifier(object):
             if item.value & value:
                 active_modifiers.append(item.label)
         return active_modifiers
-
-
-def key_down(key: str):
-    """Performs a keyboard key press without the release. This will put that key in a held down state.
-
-    :param key: The key to be pressed down.
-    :return: None.
-    """
-    if isinstance(key, _IrisKey):
-        pyautogui.keyDown(str(key))
-    elif isinstance(key, str):
-        if pyautogui.isValidKey(key):
-            pyautogui.keyDown(key)
-        else:
-            raise ValueError("Unsupported string input.")
-    else:
-        raise ValueError('')
-
-
-def key_up(key: str):
-    """Performs a keyboard key release (without the press down beforehand).
-
-    :param key: The key to be released up.
-    :return: None.
-    """
-    if isinstance(key, _IrisKey):
-        pyautogui.keyUp(str(key))
-    elif isinstance(key, str):
-        if pyautogui.isValidKey(key):
-            pyautogui.keyUp(key)
-        else:
-            raise ValueError("Unsupported string input.")
-    else:
-        raise ValueError('')
-
-
-def type(text: str = None, modifier: str = None, interval: int = None):
-    """
-    :param str || list text: If a string, then the characters to be pressed. If a list, then the key names of the keys
-                             to press in order.
-    :param modifier: Key modifier.
-    :param interval: The number of seconds in between each press. By default it is 0 seconds.
-    :return: None.
-    """
-    logger.debug('type method: ')
-    if modifier is None:
-        if isinstance(text, _IrisKey):
-            logger.debug('Scenario 1: reserved key.')
-            logger.debug('Reserved key: %s' % text)
-            pyautogui.keyDown(str(text))
-            pyautogui.keyUp(str(text))
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-        else:
-            if interval is None:
-                interval = Settings.type_delay
-
-            logger.debug('Scenario 2: normal key or text block.')
-            logger.debug('Text: %s' % text)
-            pyautogui.typewrite(text, interval)
-    else:
-        logger.debug('Scenario 3: combination of modifiers and other keys.')
-        modifier_keys = KeyModifier.get_active_modifiers(modifier)
-        num_keys = len(modifier_keys)
-        logger.debug('Modifiers (%s): %s ' % (num_keys, ' '.join(modifier_keys)))
-        logger.debug('text: %s' % text)
-        if num_keys == 1:
-            pyautogui.keyDown(modifier_keys[0])
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyDown(str(text))
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyUp(str(text))
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyUp(modifier_keys[0])
-        elif num_keys == 2:
-            pyautogui.keyDown(modifier_keys[0])
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyDown(modifier_keys[1])
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyDown(str(text))
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyUp(str(text))
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyUp(modifier_keys[1])
-            time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
-            pyautogui.keyUp(modifier_keys[0])
-        else:
-            logger.error('Returned key modifiers out of range.')
-
-    if Settings.type_delay != Settings.DEFAULT_TYPE_DELAY:
-        Settings.type_delay = Settings.DEFAULT_TYPE_DELAY
-
-
-def paste(text: str):
-    """
-    :param text: Text to be pasted.
-    :return: None.
-    """
-
-    # Load text to clipboard.
-    pyperclip.copy(text)
-
-    text_copied = False
-    wait_scan_rate = float(Settings.wait_scan_rate)
-    interval = 1 / wait_scan_rate
-    max_attempts = int(Settings.auto_wait_timeout * wait_scan_rate)
-    attempt = 0
-
-    while not text_copied and attempt < max_attempts:
-        if pyperclip.paste() == text:
-            text_copied = True
-        else:
-            time.sleep(interval)
-            attempt += 1
-
-    if not text_copied:
-        raise FindError('Paste method failed.')
-
-    if Settings.get_os() == OSPlatform.MAC:
-        type(text='v', modifier=KeyModifier.CMD)
-    else:
-        type(text='v', modifier=KeyModifier.CTRL)
-
-    # Clear clipboard.
-    pyperclip.copy('')
-
-
-def check_keyboard_state():
-    """Check Keyboard state.
-
-    Iris cannot run in case Key.CAPS_LOCK, Key.NUM_LOCK or Key.SCROLL_LOCK are pressed.
-    """
-    if parse_args().no_check:
-        return True
-
-    key_on = False
-    keyboard_keys = [Key.CAPS_LOCK, Key.NUM_LOCK, Key.SCROLL_LOCK]
-    for key in keyboard_keys:
-        if Key.is_lock_on(key):
-            logger.error('Cannot run Iris because %s is on. Please turn it off to continue.' % str(key).upper())
-            key_on = True
-    return not key_on
-
-
-@staticmethod
-def shutdown_process(process_name: str):
-    """Checks if the process name exists in the process list and close it .
-
-    """
-
-    if Settings.get_os() == OSPlatform.WINDOWS:
-        command_str = 'taskkill /IM ' + process_name + '.exe'
-        try:
-            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            logger.error('Command  failed: "%s"' % command_str)
-            raise Exception('Unable to run Command.')
-    elif Settings.get_os() == OSPlatform.MAC or Settings.get_os() == OSPlatform.LINUX:
-        command_str = 'pkill ' + process_name
-        try:
-            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            logger.error('Command  failed: "%s"' % command_str)
-            raise Exception('Unable to run Command.')
