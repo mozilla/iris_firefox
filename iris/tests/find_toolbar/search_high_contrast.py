@@ -84,7 +84,7 @@ class Test(BaseTest):
 
         # test body
         try:
-            navigate(LocalWeb.WIKI_TEST_SITE)
+            navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
             soap_page_loaded_exists = exists(soap_page_loaded_contrast_pattern, 20)
             assert_true(self, soap_page_loaded_exists, 'The page is successfully loaded.')
 
@@ -97,7 +97,7 @@ class Test(BaseTest):
             find_toolbar_opened = exists(find_in_page_bar_contrast_pattern, 10)
             assert_true(self, find_toolbar_opened, 'Find Toolbar opened.')
 
-            type('see', interval=1)
+            paste('see')
             type(Key.ENTER)
 
             selected_label_exists = exists(see_label_contrast_pattern, 5)
