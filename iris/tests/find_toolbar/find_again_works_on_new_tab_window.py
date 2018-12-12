@@ -19,7 +19,7 @@ class Test(BaseTest):
         self.blocked_by = '913536'
 
     def run(self):
-        new_tab_icon_pattern = Pattern('new_tab_icon.png')
+        new_tab_icon_pattern = Tabs.NEW_TAB_HIGHLIGHTED
         find_toolbar_abc_text_pattern = Pattern('find_toolbar_abc_text.png')
         find_toolbar_abc_text_hovered_pattern = Pattern('find_toolbar_abc_text_hovered.png')
 
