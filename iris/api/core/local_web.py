@@ -54,8 +54,8 @@ class LocalWeb(object):
 
     """Soap Wiki Test Site"""
     SOAP_WIKI_TEST_SITE = 'http://%s:%s/soap_wiki_test_site/' % (_ip_host, _port)
-    SOAP_WIKI_1_OF_2_MATCHES = Pattern('1_of_2_matches'.png)
-    SOAP_WIKI_2_OF_2_MATCHES = Pattern('2_of_2_matches'.png)
+    SOAP_WIKI_1_OF_2_MATCHES = Pattern('1_of_2_matches.png')
+    SOAP_WIKI_2_OF_2_MATCHES = Pattern('2_of_2_matches.png')
     SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL = Pattern('cleaning_see_selected_label.png')
     SOAP_WIKI_OPERATING_ALL = Pattern('operating_all.png')
     SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED = Pattern('operating_all_highlighted.png')
