@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        cleaning_see_label_pattern = Pattern('cleaning_see_label.png')
         one_of_five_label_pattern = Pattern('1_of_5_matches_label.png')
         two_of_five_label_pattern = Pattern('2_of_5_matches_label.png')
 
@@ -42,7 +41,7 @@ class Test(BaseTest):
 
         # Navigate forward and back through found items using the toolbar arrows
         click(FindToolbar.FIND_PREVIOUS)
-        cleaning_see_label_exists = exists(cleaning_see_label_pattern, 1)
+        cleaning_see_label_exists = exists(LocalWeb.SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL, 1)
         assert_true(self, cleaning_see_label_exists, 'Navigation using toolbar up arrow works fine.')
         click(FindToolbar.FIND_NEXT)
         selected_label_exists = exists(LocalWeb.SOAP_WIKI_SEE_LABEL, 1)
