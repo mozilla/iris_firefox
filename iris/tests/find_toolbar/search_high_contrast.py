@@ -128,7 +128,7 @@ class Test(BaseTest):
 
             #
             # Return back to default contrast theme,
-            # and close themes settings window
+            # and close Themes Settings window
             #
 
             if Settings.is_linux():

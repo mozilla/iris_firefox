@@ -16,11 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        menu_bar_edit_pattern = Pattern('menu_bar_edit_pattern.png')
-        hamburger_menu_pattern = Pattern('hamburger_menu_pattern.png')
-        hamburger_menu_find_in_page_pattern = Pattern('hamburger_menu_find_in_page_pattern.png')
-        menu_bar_edit_find_in_page_pattern = Pattern('menu_bar_edit_find_in_page_pattern.png')
-
         # Open Find Toolbar
         # 1) by pressing CTRL + F / Cmd + F
         open_find()
@@ -66,20 +61,20 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.LINUX:
             type('e', KeyModifier.ALT, 15)
 
-            click(menu_bar_edit_find_in_page_pattern, 5)
+            click(MenuBar.Edit.EDIT_FIND_IN_PAGE, 5)
         else:
             if Settings.get_os() == Platform.WINDOWS:
                 type(Key.ALT)
 
-            menu_bar_displayed = exists(menu_bar_edit_pattern, 5)
+            menu_bar_displayed = exists(MenuBar.Edit.EDIT_PATTERN, 5)
             if menu_bar_displayed:
-                click(menu_bar_edit_pattern, 3)
+                click(MenuBar.Edit.EDIT_PATTERN, 3)
             else:
                 raise FindError('Menu bar is not displayed')
 
-            menu_bar_find_in_page_displayed = exists(menu_bar_edit_find_in_page_pattern, 3)
+            menu_bar_find_in_page_displayed = exists(MenuBar.Edit.EDIT_FIND_IN_PAGE, 3)
             if menu_bar_find_in_page_displayed:
-                click(menu_bar_edit_find_in_page_pattern, 3)
+                click(MenuBar.Edit.EDIT_FIND_IN_PAGE, 3)
             else:
                 raise FindError('Find in page tab in Menu bar is not displayed')
 
@@ -122,15 +117,15 @@ class Test(BaseTest):
 
         # 3) Menu > Find in This Page.
 
-        hamburger_menu_displayed = exists(hamburger_menu_pattern, 5)
+        hamburger_menu_displayed = exists(HamburgerMenu.HAMBUREGR_MENU, 5)
         if hamburger_menu_displayed:
-            click(hamburger_menu_pattern, 1)
+            click(HamburgerMenu.HAMBUREGR_MENU, 1)
         else:
             raise FindError('Hamburger menu is not displayed')
 
-        hamburger_menu_find_in_page_displayed = exists(hamburger_menu_find_in_page_pattern, 5)
+        hamburger_menu_find_in_page_displayed = exists(HamburgerMenu.HAMBURGER_MENU_FIND_IN_PAGE_PATTERN, 5)
         if hamburger_menu_find_in_page_displayed:
-            click(hamburger_menu_find_in_page_pattern, 1)
+            click(HamburgerMenu.HAMBURGER_MENU_FIND_IN_PAGE_PATTERN, 1)
         else:
             raise FindError('The Find in page tab in the Hamburger menu is not displayed')
 
