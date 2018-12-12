@@ -38,7 +38,7 @@ class Test(BaseTest):
         text_first_occurrence_exists = exists(first_occurrence_highlighted_pattern, 5)
         assert_true(self, text_first_occurrence_exists, 'The first occurrence is highlighted.')
 
-        # Navigate throught found items
+        # Navigate through found items
         find_next()
         text_second_occurrence_exists = exists(second_occurrence_highlighted_pattern, 5)
         assert_true(self, text_second_occurrence_exists, 'The second occurrence is highlighted.')
@@ -47,8 +47,8 @@ class Test(BaseTest):
         find_previous()
         text_first_occurrence_exists = exists(first_occurrence_highlighted_pattern, 5)
         assert_true(self, text_first_occurrence_exists, 'The first occurrence is highlighted before scrolling.')
-        type(Key.DOWN)
-        type(Key.UP)
+        repeat_key_down(4)
+        repeat_key_up(4)
         text_first_occurrence_exists_after_scroll = exists(first_occurrence_highlighted_pattern, 5)
         assert_true(self, text_first_occurrence_exists_after_scroll,
                     'The first occurrence is highlighted after scrolling.')

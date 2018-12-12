@@ -12,6 +12,8 @@ from iris.api.core.firefox_ui.menus import LibraryMenu
 from iris.api.core.firefox_ui.location_bar import LocationBar
 from iris.api.core.firefox_ui.find_toolbar import FindToolbar
 from iris.api.core.firefox_ui.hamburger import HamburgerMenu
+from iris.api.core.firefox_ui.menu_bar import MenuBar
+from iris.api.core.firefox_ui.tabs import Tabs
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.download_manager import DownloadManager
