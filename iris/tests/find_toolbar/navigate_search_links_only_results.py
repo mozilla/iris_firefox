@@ -20,16 +20,14 @@ class Test(BaseTest):
 
     def run(self):
 
-        soap_label_pattern = Pattern('soap_label.png')
         find_in_page_links_only_icon_pattern = Pattern('find_in_page_links_only_icon.png')
         soap_link_pattern = Pattern('soap_link.png')
-        soap_link_highlighted_pattern = Pattern('soap_link_highlighted.png').similar(0.6)
         soap_other_link_pattern = Pattern('soap_link_disambiguation.png')
         soap_other_link_highlighted_pattern = Pattern('soap_link_disambiguation_highlighted.png')
 
         navigate(LocalWeb.WIKI_TEST_SITE)
 
-        soap_label_exists = exists(soap_label_pattern, 40)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 40)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         type("'")
@@ -43,7 +41,7 @@ class Test(BaseTest):
 
         type('soap', interval=1)
 
-        found_link_highlighted_green = exists(soap_link_highlighted_pattern, 5)
+        found_link_highlighted_green = exists(LocalWeb.SOAP_WIKI_SOAP_LINK_HIGHLIGHTED, 5)
         assert_true(self, found_link_highlighted_green, 'Matching link is found.')
 
         # Other link doesn't have pink background
@@ -56,7 +54,7 @@ class Test(BaseTest):
 
         type(Key.F3, KeyModifier.SHIFT)
 
-        soap_link_highlighted = exists(soap_link_highlighted_pattern, 5)
+        soap_link_highlighted = exists(LocalWeb.SOAP_WIKI_SOAP_LINK_HIGHLIGHTED, 5)
         soap_other_link_not_highlighted = exists(soap_other_link_pattern, 5)
         assert_true(self, soap_link_not_highlighted and soap_other_link_highlighted
                     and soap_link_highlighted and soap_other_link_not_highlighted,

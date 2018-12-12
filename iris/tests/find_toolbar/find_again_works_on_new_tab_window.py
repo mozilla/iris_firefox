@@ -42,7 +42,7 @@ class Test(BaseTest):
         # Open another tab
         new_tab()
         new_tab_is_opened = exists(new_tab_icon_pattern)
-        assert_true(self, new_tab_is_opened, "New tab is opened.")
+        assert_true(self, new_tab_is_opened, 'New tab is opened.')
 
         # Open the Find Toolbar
         open_find()
@@ -52,7 +52,7 @@ class Test(BaseTest):
         # Open a new window
         new_window()
         new_window_is_opened = exists(new_tab_icon_pattern)
-        assert_true(self, new_window_is_opened, "New window is opened.")
+        assert_true(self, new_window_is_opened, 'New window is opened.')
 
         # Open the Find Toolbar
         open_find()
