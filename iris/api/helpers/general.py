@@ -17,6 +17,7 @@ from iris.api.core.firefox_ui.location_bar import LocationBar
 from iris.api.core.firefox_ui.menus import LibraryMenu
 from iris.api.core.firefox_ui.menu_bar import MenuBar
 from iris.api.core.firefox_ui.nav_bar import NavBar
+from iris.api.core.firefox_ui.private_window import PrivateWindow
 from iris.api.core.firefox_ui.tabs import Tabs
 from iris.api.core.firefox_ui.window_controls import AuxiliaryWindow, MainWindow
 from iris.api.core.key import *
