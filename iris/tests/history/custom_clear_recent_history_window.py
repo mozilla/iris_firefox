@@ -5,7 +5,7 @@
 
 from iris.api.core import mouse
 from iris.test_case import *
-from iris.test_dependencies import *
+
 
 class Test(BaseTest):
 
@@ -47,7 +47,6 @@ class Test(BaseTest):
         # Open the 'Clear Recent History' window and uncheck all the items.
         for step in open_clear_recent_history_window():
             assert_true(self, step.resolution, step.message)
-
 
         # Check all options to be cleared.
         expected = exists(search_uncheked_box_pattern.similar(0.9), 10)

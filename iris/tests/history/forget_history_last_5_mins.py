@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-from iris.test_dependencies import *
 
 
 class Test(BaseTest):
@@ -64,7 +63,6 @@ class Test(BaseTest):
             assert_true(self, expected, 'Expand history button for \'Today\' history is successfully removed.')
         except FindError:
             raise FindError('Expand history button for \'Today\' history is not removed.')
-
 
         expected = exists(recent_history_cleared_pattern, 10)
         assert_true(self, expected, 'Recent history successfully cleared.')

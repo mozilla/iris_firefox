@@ -13,8 +13,6 @@ class Sidebar(object):
         OPEN_ARROW = Pattern('open_arrow.png')
         CLEAR_SEARCH_BOX = Pattern('clear_textbox_search.png')
 
-
-
     class HistorySidebar(object):
         SIDEBAR_HISTORY_TITLE = Pattern('sidebar_history_title.png')
         SIDEBAR_HISTORY_ICON = Pattern('sidebar_history_icon.png')
@@ -61,4 +59,3 @@ class Sidebar(object):
     class SyncedTabsSidebar(object):
         SIDEBAR_SYNCED_TABS_TITLE = Pattern('sidebar_synced_tabs_title.png')
         SIDEBAR_SYNCED_TABS_ICON = Pattern('sidebar_synced_tabs_icon.png')
-

@@ -5,14 +5,13 @@
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.history import History
-from iris.api.helpers.testUtils import access_and_check_pattern
+from iris.api.helpers.test_utils import access_and_check_pattern
 
 
 def open_clear_recent_history_window():
-    steps = [
+    return [
         access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.HISTORY_BUTTON, 'click'),
         access_and_check_pattern(LibraryMenu.HISTORY_BUTTON, '\"History menu\"',
                                  History.HistoryMenu.CLEAR_RECENT_HISTORY, 'click'),
         access_and_check_pattern(History.HistoryMenu.CLEAR_RECENT_HISTORY, '\"Clear recent History\"',
                                  History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE, 'click')]
-    return steps

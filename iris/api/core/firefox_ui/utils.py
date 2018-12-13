@@ -4,6 +4,7 @@
 
 from iris.api.core.pattern import Pattern
 
+
 class Utils(object):
     # Checkbox.
     CHECKEDBOX = Pattern('checked_box.png')

@@ -39,4 +39,3 @@ class Test(BaseTest):
 
         find_toolbar_is_opened_next_page = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_is_opened_next_page, 'The find toolbar is present on the next page')
-

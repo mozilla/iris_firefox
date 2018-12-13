@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from iris.test_case import *
-from iris.api.core.firefox_ui.history import History
 
 
 class Test(BaseTest):

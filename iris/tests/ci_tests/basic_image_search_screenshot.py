@@ -79,4 +79,3 @@ class Test(BaseTest):
         else:
             logger.error('Image search in full screen screenshot failed!!!')
             exit(1)
-
