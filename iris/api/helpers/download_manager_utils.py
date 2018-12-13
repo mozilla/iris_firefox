@@ -23,6 +23,8 @@ class DownloadFiles(object):
     LIBRARY_DOWNLOADS_20MB = Pattern('20MB_library_downloads.png')
     LIBRARY_DOWNLOADS_50MB = Pattern('50MB_library_downloads.png')
     LIBRARY_DOWNLOADS_100MB = Pattern('100MB_library_downloads.png')
+    DOWNLOADS_PANEL_5MB_COMPLETED = Pattern('5MB_completed_downloadsPanel.png')
+    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png')
     ABOUT = Pattern('about.png')
     SAVE_FILE = Pattern('save_file.png')
     DOWNLOAD_CANCELED = Pattern('download_canceled.png')
