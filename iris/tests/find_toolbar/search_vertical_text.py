@@ -51,7 +51,7 @@ class Test(BaseTest):
         before_prev_selected_label_y = find(word_mozilla_second_selected_pattern).y
         find_previous()
         after_prev_selected_label_y = find(word_mozilla_first_selected_pattern).y
-        assert_true(self, before_prev_selected_label_y != after_prev_selected_label_y ,
+        assert_true(self, before_prev_selected_label_y != after_prev_selected_label_y,
                     'Selected label moved backward.')
 
         before_scroll_selected_exists = exists(word_mozilla_first_selected_pattern, 5)

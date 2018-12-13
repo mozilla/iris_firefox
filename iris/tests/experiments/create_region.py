@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-
         cat1_pattern = Pattern('cat1.png')
         cat2_pattern = Pattern('cat2.png')
         dog1_pattern = Pattern('dog1.png')

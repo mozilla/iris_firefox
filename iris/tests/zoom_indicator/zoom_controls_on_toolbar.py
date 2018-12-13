@@ -46,7 +46,8 @@ class Test(BaseTest):
         time.sleep(Settings.UI_DELAY)
         reset_mouse()
 
-        expected = exists(default_zoom_level_toolbar_customize_page_pattern, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
+        expected = exists(default_zoom_level_toolbar_customize_page_pattern, 10,
+                          in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls successfully dragged and dropped in toolbar.')
 
         close_customize_page()

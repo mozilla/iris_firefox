@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         iris_bookmark_focus_pattern = Pattern('iris_bookmark_focus.png')
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED

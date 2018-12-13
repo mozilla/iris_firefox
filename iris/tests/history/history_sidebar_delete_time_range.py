@@ -26,8 +26,8 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box_pattern = Pattern('search_history_box.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -38,11 +38,11 @@ class Test(BaseTest):
         history_sidebar()
         expected_2 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_2, 'Sidebar was opened successfully.')
-        expected_3 = exists(expand_button_history_sidebar_pattern, 10)
+        expected_3 = exists(history_today_sidebar_pattern, 10)
         assert_true(self, expected_3, 'Expand history button displayed properly.')
 
         # Delete a time range from the History sidebar.
-        right_click(expand_button_history_sidebar_pattern)
+        right_click(history_today_sidebar_pattern)
         type(text='d')
-        expected_4 = exists(expand_button_history_sidebar_pattern, 5)
+        expected_4 = exists(history_today_sidebar_pattern, 5)
         assert_false(self, expected_4, 'Time range was deleted successfully from the history sidebar.')

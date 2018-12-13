@@ -26,9 +26,9 @@ class Test(BaseTest):
         return
 
     def run(self):
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
-        history_sidebar_view_button_pattern = Pattern('history_sidebar_view_button.png')
-        history_sidebar_sort_by_date_pattern = Pattern('history_sidebar_sort_by_date.png')
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
+        history_sidebar_view_button_pattern = Sidebar.HistorySidebar.VIEW_BUTTON
+        history_sidebar_sort_by_date_pattern = Sidebar.HistorySidebar.ViewBy.VIEW_BY_DATE_CHECKED
         history_sidebar_items_sort_by_date_pattern = Pattern('history_sidebar_items_sort_by_date.png')
 
         # Open some pages to create some history.
@@ -58,9 +58,9 @@ class Test(BaseTest):
 
         # Open the History sidebar.
         history_sidebar()
-        expected_6 = exists(expand_button_history_sidebar_pattern, 10)
+        expected_6 = exists(history_today_sidebar_pattern, 10)
         assert_true(self, expected_6, 'Expand history sidebar button displayed properly.')
-        click(expand_button_history_sidebar_pattern)
+        click(history_today_sidebar_pattern)
 
         # Sort by date.
         expected_7 = exists(history_sidebar_view_button_pattern, 10)

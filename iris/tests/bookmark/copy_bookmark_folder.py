@@ -84,5 +84,6 @@ class Test(BaseTest):
         bookmark_options(Pattern('paste_option.png'))
 
         pasted_bookmark_folder_assertion = exists(pasted_bookmark_folder, 10)
-        assert_true(self, pasted_bookmark_folder_assertion, 'Moz Bookmark folder has been moved to a different directory,'
-                                                            ' copy option works as expected.')
+        assert_true(self, pasted_bookmark_folder_assertion,
+                    'Moz Bookmark folder has been moved to a different directory,'
+                    ' copy option works as expected.')

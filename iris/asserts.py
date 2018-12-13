@@ -6,7 +6,6 @@ import traceback
 
 from api.helpers.results import *
 
-
 class Result(object):
 
     def __init__(self, outcome, message, actual, expected, error):
