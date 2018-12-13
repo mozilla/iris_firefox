@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.meta = 'Custom sections selected in \'Clear Recent History\' window'
         self.test_case_id = '172047'
         self.test_suite_id = '2000'
-        self.blocked_by = '1505771'
+        self.blocked_by = {'id': '1505771', 'platform': [Platform.ALL]}
         self.exclude = Platform.ALL
         self.locales = ['en-US']
 
