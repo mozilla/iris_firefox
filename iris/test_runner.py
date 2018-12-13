@@ -82,6 +82,7 @@ def run(master_tests_list, test_list, browser):
 
             current.end_time = time.time()
 
+            current.teardown()
             close_firefox(current)
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())
@@ -100,7 +101,8 @@ def run(master_tests_list, test_list, browser):
     end_time = time.time()
     test_results = print_report_footer(Settings.get_os(), browser.version,
                                        browser.build_id, passed, failed, skipped, errors,
-                                       get_duration(start_time, end_time), failures=test_failures, blocked=tests_blocked)
+                                       get_duration(start_time, end_time), failures=test_failures,
+                                       blocked=tests_blocked)
 
     if parse_args().report:
         test_rail_report = TestRail()
