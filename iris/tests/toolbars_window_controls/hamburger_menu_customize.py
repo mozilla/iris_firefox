@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'This is a test case that checks the Hamburger menu > Customize opens the customize page'
         self.locales = ['en-US']
-  
+
     def run(self):
         navigate('about:home')
 

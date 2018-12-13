@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
-        show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         new_tab_pattern = Pattern('new_tab.png')
         mozilla_bookmark_focus_pattern = Pattern('mozilla_bookmark_focus.png')
 

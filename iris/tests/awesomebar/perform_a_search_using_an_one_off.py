@@ -46,7 +46,7 @@ class Test(BaseTest):
         expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
         assert_true(self, expected, 'Focus page loaded successfully.')
 
-        restart_firefox(self, 
+        restart_firefox(self,
                         self.browser.path,
                         self.profile_path,
                         LocalWeb.FIREFOX_TEST_SITE,

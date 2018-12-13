@@ -18,8 +18,8 @@ class Test(BaseTest):
 
     def run(self):
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
-        search_history_box_pattern = Pattern('search_history_box.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
+        expand_button_history_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         today_bookmarks_toolbar_pattern = Pattern('today_bookmarks_toolbar.png')
