@@ -70,4 +70,3 @@ class History(object):
         FORGET_BUTTON = Pattern('panelUI_panic_view_button.png')
         SUCCESS_FORGET_MSG = Pattern('panelUI_panic_button_success_msg.png')
         CLOSE_FORGET_PANEL_BUTTON = Pattern('panelUI_panic_success_close_button.png')
-

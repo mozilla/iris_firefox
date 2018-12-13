@@ -26,7 +26,7 @@ def print_report_footer(platform, fx_version, fx_build, passed, failed,
     """
     total = passed + failed + skipped + errors
     fx_details = 'Platform: %s, Firefox Version: %s, Firefox Build: %s' % (platform, fx_version, fx_build)
-    test_results_str = 'Passed: %s, Failed: %s, Skipped: %s (Blocked: %s), Errors: %s -- Total: %s'\
+    test_results_str = 'Passed: %s, Failed: %s, Skipped: %s (Blocked: %s), Errors: %s -- Total: %s' \
                        % (passed, failed, skipped, len(blocked), errors, total)
     total_time_str = 'Total time: %s second(s)' % total_time
 

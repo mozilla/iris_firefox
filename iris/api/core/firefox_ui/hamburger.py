@@ -7,7 +7,6 @@ from iris.api.core.pattern import Pattern
 
 
 class HamburgerMenu(object):
-
     ADDONS = Pattern('hamburger_menu_addons.png')
     SAVE_OPTIONS = Pattern('hamburger_menu_save_options.png')
     NEW_WINDOW = Pattern('hamburger_menu_new_window.png')
@@ -15,4 +14,3 @@ class HamburgerMenu(object):
     EDIT_BUTTONS_BELOW_ZOOM_BUTTONS = Pattern('edit_buttons_below_zoom_buttons.png')
     HAMBUREGR_MENU = Pattern('PanelUI_menu_button.png')
     HAMBURGER_MENU_FIND_IN_PAGE_PATTERN = Pattern('hamburger_menu_find_in_page_pattern.png')
-

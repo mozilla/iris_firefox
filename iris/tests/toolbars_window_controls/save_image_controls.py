@@ -42,7 +42,7 @@ class Test(BaseTest):
             if Settings.is_linux():
                 click_window_control('maximize')
             click_cancel_button()
-            
+
         try:
             expected_2 = wait_vanish(save_as_pattern, 5)
             assert_true(self, expected_2, 'Save Image dialog was closed')

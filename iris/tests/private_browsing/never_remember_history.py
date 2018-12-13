@@ -17,6 +17,3 @@ class Test(BaseTest):
 
     def run(self):
         soap_label_pattern = Pattern('soap_label.png')
-
-
-

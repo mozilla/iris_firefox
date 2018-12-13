@@ -33,13 +33,13 @@ def access_and_check_pattern(access_pattern, msg, check_pattern=None, access_typ
     try:
         exists = wait(access_pattern, 10)
         logger.debug('%s pattern is displayed properly.' % access_pattern)
-        if access_type is not None and access_type == 'click':
+        if access_type and access_type == 'click':
             click(access_pattern)
     except FindError:
         raise APIHelperError(
             'Can\'t find the %s pattern, aborting.' % access_pattern.get_filename())
 
-    if check_pattern is not None:
+    if check_pattern:
         try:
             exists = wait(check_pattern, 15)
             logger.debug('%s pattern has been found.' % check_pattern.get_filename())
