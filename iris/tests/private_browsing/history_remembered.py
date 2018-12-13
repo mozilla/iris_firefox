@@ -18,10 +18,7 @@ class Test(BaseTest):
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
 
     def run(self):
-        firefox_icon_dock_pattern = Pattern('firefox_logo_dock.png')
-        new_window_item_pattern = Pattern('new_window_item.png')
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
-        new_private_window_item_pattern = Pattern('new_private_window_item.png')
         mozilla_history_item_pattern = Pattern('mozilla_history_item.png')
 
         dock_region = Region(0, 0.8 * SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -42,15 +39,15 @@ class Test(BaseTest):
         all_windows_closed = exists(Tabs.NEW_TAB_HIGHLIGHTED, 1)
         assert_false(self, all_windows_closed, 'The windows are closed')
 
-        firefox_icon_dock_exists = exists(firefox_icon_dock_pattern, 5)
+        firefox_icon_dock_exists = exists(Docker.FIREFOX_DOCKER_ICON, 5)
         assert_true(self, firefox_icon_dock_exists, 'The Firefox icon is still visible in the dock.')
 
-        right_click(firefox_icon_dock_pattern, in_region=dock_region)
+        right_click(Docker.FIREFOX_DOCKER_ICON, in_region=dock_region)
 
-        new_window_item_exists = exists(new_window_item_pattern, 5)
+        new_window_item_exists = exists(Docker.NEW_WINDOW_MENU_ITEM, 5)
         assert_true(self, new_window_item_exists, 'New window menu item exists.')
 
-        click(new_window_item_pattern)
+        click(Docker.NEW_WINDOW_MENU_ITEM)
 
         new_window_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED, 5)
         assert_true(self, new_window_opened, 'The Normal Browsing window is successfully opened.')
@@ -63,12 +60,12 @@ class Test(BaseTest):
         assert_true(self, mozilla_history_item_exists, 'Websites visited previously in the Normal window are '
                                                        'displayed in the History section')
 
-        right_click(firefox_icon_dock_pattern, in_region=dock_region)
+        right_click(Docker.FIREFOX_DOCKER_ICON, in_region=dock_region)
 
-        new_private_window_item_exists = exists(new_private_window_item_pattern, 5)
+        new_private_window_item_exists = exists(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM, 5)
         assert_true(self, new_private_window_item_exists, 'New private window menu item exists.')
 
-        click(new_private_window_item_pattern)
+        click(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM)
         private_browsing_window_opened = exists(PrivateWindow.private_window_pattern, 5)
         assert_true(self, private_browsing_window_opened, 'Private Browsing window is successfully opened.')
 
