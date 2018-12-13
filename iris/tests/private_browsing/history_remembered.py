@@ -18,13 +18,10 @@ class Test(BaseTest):
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
 
     def run(self):
-        soap_label_pattern = Pattern('soap_label.png')
-        private_browsing_icon_pattern = Pattern('private_browsing_icon.png')
-        new_tab_label_pattern = Pattern('new_tab_label.png')
         firefox_icon_dock_pattern = Pattern('firefox_logo_dock.png')
         new_window_item_pattern = Pattern('new_window_item.png')
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
-        new_private_window_item_pattern = Pattern('new_private_window_item.png').target_offset(-2, -2)
+        new_private_window_item_pattern = Pattern('new_private_window_item.png')
         mozilla_history_item_pattern = Pattern('mozilla_history_item.png')
 
         dock_region = Region(0, 0.8 * SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -32,17 +29,17 @@ class Test(BaseTest):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         new_private_window()
-        private_browsing_window_opened = exists(private_browsing_icon_pattern, 5)
+        private_browsing_window_opened = exists(PrivateWindow.private_window_pattern, 5)
         assert_true(self, private_browsing_window_opened, 'Private Browsing window is successfully opened.')
 
-        navigate(LocalWeb.WIKI_TEST_SITE)
-        soap_label_exists = exists(soap_label_pattern, 20)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         close_window()
         close_window()
 
-        all_windows_closed = exists(new_tab_label_pattern, 1)
+        all_windows_closed = exists(Tabs.NEW_TAB_HIGHLIGHTED, 1)
         assert_false(self, all_windows_closed, 'The windows are closed')
 
         firefox_icon_dock_exists = exists(firefox_icon_dock_pattern, 5)
@@ -55,7 +52,7 @@ class Test(BaseTest):
 
         click(new_window_item_pattern)
 
-        new_window_opened = exists(new_tab_label_pattern, 5)
+        new_window_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED, 5)
         assert_true(self, new_window_opened, 'The Normal Browsing window is successfully opened.')
 
         history_sidebar()
@@ -72,7 +69,7 @@ class Test(BaseTest):
         assert_true(self, new_private_window_item_exists, 'New private window menu item exists.')
 
         click(new_private_window_item_pattern)
-        private_browsing_window_opened = exists(private_browsing_icon_pattern, 5)
+        private_browsing_window_opened = exists(PrivateWindow.private_window_pattern, 5)
         assert_true(self, private_browsing_window_opened, 'Private Browsing window is successfully opened.')
 
         history_sidebar()
