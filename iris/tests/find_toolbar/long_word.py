@@ -22,6 +22,7 @@ class Test(BaseTest):
         # Open Firefox and navigate to a popular website
         test_page_local = self.get_asset_path('long_word.html')
         navigate(test_page_local)
+
         start_label_exists = exists(long_word_unselected_label_pattern, 30)
         assert_true(self, start_label_exists, 'The page is successfully loaded.')
 
@@ -29,12 +30,15 @@ class Test(BaseTest):
         open_find()
         edit_select_all()
         edit_delete()
+
         find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         # Search for a long term that appears on the page
         paste('Pneumonoultramicroscopicsilicovolcanoconiosis')
+
         selected_label_exists = exists(long_word_selected_label_pattern, 5)
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
+
         unselected_label_exists = exists(long_word_unselected_label_pattern, 5)
         assert_true(self, unselected_label_exists, 'The others are not highlighted.')

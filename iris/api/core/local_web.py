@@ -49,6 +49,22 @@ class LocalWeb(object):
     POCKET_BOOKMARK = Pattern('pocket_bookmark.png')
     POCKET_BOOKMARK_SMALL = Pattern('pocket_bookmark_small.png')
 
-    """Wiki Test site."""
-    WIKI_TEST_SITE = 'http://%s:%s/wiki/' % (_ip_host, _port)
+    """Soap Wiki Test Site"""
+    SOAP_WIKI_TEST_SITE = 'http://%s:%s/soap_wiki_test_site/' % (_ip_host, _port)
+    SOAP_WIKI_1_OF_2_MATCHES = Pattern('1_of_2_matches.png')
+    SOAP_WIKI_2_OF_2_MATCHES = Pattern('2_of_2_matches.png')
+    SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL = Pattern('cleaning_see_selected_label.png')
+    SOAP_WIKI_OPERATING_ALL = Pattern('operating_all.png')
+    SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED = Pattern('operating_all_highlighted.png')
+    SOAP_WIKI_OPERATING_DISPARATE = Pattern('operating_disparate.png')
+    SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED = Pattern('operating_disparate_highlighted.png')
+    SOAP_WIKI_SEE_LABEL = Pattern('see_label.png')
+    SOAP_WIKI_SEE_LABEL_UNHIGHLITED = Pattern('see_label_unhighlited.png')
+    SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED = Pattern('soap_envelope_label_selected.png')
+    SOAP_WIKI_SOAP_LABEL = Pattern('soap_label.png')
+    SOAP_WIKI_SOAP_LINK_HIGHLIGHTED = Pattern('soap_link_highlighted.png')
+    SOAP_WIKI_SOAP_XML_LABEL = Pattern('soap_xml_label.png')
+    SOAP_WIKI_TEST_LABEL_PATTERN = Pattern('test_label_pattern.png')
+
+
 
