@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
         google_search_button_pattern = Pattern('google_search_button.png')
         season_label_not_selected_pattern = Pattern('season_label_not_selected.png')
         season_label_selected_pattern = Pattern('season_label_selected.png')

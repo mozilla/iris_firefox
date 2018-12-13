@@ -27,8 +27,8 @@ class Test(BaseTest):
 
     def run(self):
         history_sidebar_mozilla_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
-        search_history_box_pattern = Pattern('search_history_box.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
         library_expand_bookmarks_menu_pattern = Library.BOOKMARKS_MENU
         library_bookmarks_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
@@ -43,9 +43,9 @@ class Test(BaseTest):
         expected_2 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_2, 'Sidebar was opened successfully.')
 
-        expected_3 = exists(expand_button_history_sidebar_pattern, 10)
+        expected_3 = exists(history_today_sidebar_pattern, 10)
         assert_true(self, expected_3, 'Expand history button displayed properly.')
-        click(expand_button_history_sidebar_pattern)
+        click(history_today_sidebar_pattern)
 
         # Bookmark a page from the History sidebar.
         history_sidebar_region = Region(0, find(NavBar.HOME_BUTTON).y, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3)

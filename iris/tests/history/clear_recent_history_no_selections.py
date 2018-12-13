@@ -16,13 +16,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        clear_recent_history_window = Pattern('clear_recent_history_window.png')
-        clear_now_button_disabled = Pattern('clear_now_button_disabled.png')
-        clear_history_dialog_box_browsing = Pattern('clear_history_browsing.png')
-        clear_history_dialog_box_cache = Pattern('clear_history_cache.png')
-        clear_history_dialog_box_cookies = Pattern('clear_history_cookies.png')
-        clear_history_dialog_box_form = Pattern('clear_history_form.png')
-        clear_history_dialog_box_logins = Pattern('clear_history_logins.png')
+        checked_box = Utils.CHECKEDBOX
+        clear_now_button_disabled = History.CLearRecentHistory.DISABLED_CLEAR_NOW
 
         # Open some pages to create some history.
         new_tab()
@@ -39,16 +34,14 @@ class Test(BaseTest):
         history_sidebar()
 
         # Open the 'Clear Recent History' window and uncheck all the items.
-        clear_recent_history()
-        expected_3 = exists(clear_recent_history_window, 10)
-        assert_true(self, expected_3, 'Clear Recent History window was displayed properly.')
+        for step in open_clear_recent_history_window():
+            assert_true(self, step.resolution, step.message)
 
-        pref_list = [clear_history_dialog_box_logins, clear_history_dialog_box_browsing,
-                     clear_history_dialog_box_cache, clear_history_dialog_box_cookies,
-                     clear_history_dialog_box_form]
-        for image in pref_list:
-            if exists(image, 10):
-                click(image)
+        # Uncheck all options to be cleared.
+        expected = exists(checked_box.similar(0.9), 10)
+        while expected:
+            click(checked_box)
+            expected = exists(checked_box, 10)
 
         # Check that the 'Clear Now' button is disabled.
         expected_4 = exists(clear_now_button_disabled.similar(0.9), 10)

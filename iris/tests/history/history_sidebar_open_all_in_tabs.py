@@ -27,8 +27,8 @@ class Test(BaseTest):
 
     def run(self):
         firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo.png')
-        search_history_box_pattern = Pattern('search_history_box.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         iris_logo_pattern = Pattern('iris_logo_tab.png')
         mozilla_logo_pattern = Pattern('mozilla_logo_tab.png')
 
@@ -46,11 +46,11 @@ class Test(BaseTest):
         history_sidebar()
         expected_3 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar_pattern, 10)
+        expected_4 = exists(history_today_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
 
         # 'Open All in Tabs' from the context menu.
-        right_click(expand_button_history_sidebar_pattern)
+        right_click(history_today_sidebar_pattern)
         time.sleep(Settings.FX_DELAY)
         type(text='o')
 

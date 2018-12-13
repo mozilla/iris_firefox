@@ -26,7 +26,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
+        clear_recent_history_window_pattern = History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
 
         # Check that the Clear Recent History window is displayed properly.
         clear_recent_history()

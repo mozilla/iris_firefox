@@ -9,6 +9,7 @@ from asserts import *
 from configuration.config_parser import *
 from iris.api.core.util.update_rules import *
 from iris.test_rail.test_case_results import TestRailTests
+from iris.test_dependencies import *
 
 logger = logging.getLogger(__name__)
 
