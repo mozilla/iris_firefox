@@ -89,7 +89,7 @@ def find_all(pattern: Pattern or str, region: Rectangle = None) -> List[Location
         raise FindError('Unable to find image %s' % pattern.get_filename())
 
 
-def check(ps: Pattern or str, timeout: float = None, region: Rectangle = None) -> bool or FindError:
+def verify(ps: Pattern or str, timeout: float = None, region: Rectangle = None) -> bool or FindError:
     """Wait for a Pattern or image to appear.
 
     :param ps: String or Pattern.
@@ -133,7 +133,7 @@ def exists(ps: Pattern or str, timeout: float = None, region: Rectangle = None) 
         timeout = Settings.auto_wait_timeout
 
     try:
-        check(ps, timeout, region)
+        verify(ps, timeout, region)
         return True
     except FindError:
         return False

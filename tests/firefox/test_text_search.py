@@ -1,6 +1,6 @@
 from core.screen.screen import Screen
 from core.finder.pattern import Pattern
-from core.finder.finder import find_all, find, check, match_template
+from core.finder.finder import find_all, find, verify, match_template
 from core.screen.region import Region
 from core.enums import MatchTemplateType
 from core.mouse.mouse_controller import Mouse
