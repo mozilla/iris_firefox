@@ -65,19 +65,20 @@ def download_file(file_to_download, accept_download):
 
 
 def downloads_cleanup(filename):
-    username = getpass.getuser()
-
-    if Settings.get_os() == Platform.MAC:
-        os.chdir('/Users/' + username + '/Downloads')
-    elif Settings.get_os() == Platform.LINUX:
-        os.chdir('/home/' + username + '/Downloads')
-    else:
-        if Settings.get_os() == Platform.WINDOWS:
-            os.chdir('C:\\Users\\' + username + '\\Downloads')
-
-    exist_file = os.path.isfile('%s/%s' % (os.getcwd(), filename))
-    if exist_file:
-        os.remove(filename)
-        logger.debug('Removing the ' + filename + ' file.')
-    else:
-        raise APIHelperError(('The ' + filename + ' file does not exist.'))
+    # username = getpass.getuser()
+    #
+    # if Settings.get_os() == Platform.MAC:
+    #     os.chdir('/Users/' + username + '/Downloads')
+    # elif Settings.get_os() == Platform.LINUX:
+    #     os.chdir('/home/' + username + '/Downloads')
+    # else:
+    #     if Settings.get_os() == Platform.WINDOWS:
+    #         os.chdir('C:\\Users\\' + username + '\\Downloads')
+    #
+    # exist_file = os.path.isfile('%s/%s' % (os.getcwd(), filename))
+    # if exist_file:
+    #     os.remove(filename)
+    #     logger.debug('Removing the ' + filename + ' file.')
+    # else:
+    #     raise APIHelperError(('The ' + filename + ' file does not exist.'))
+    pass
