@@ -64,6 +64,7 @@ class Test(BaseTest):
         expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
         assert_true(self, expected, 'There are no downloads displayed in the \'about:downloads\' page.')
 
+    def teardown(self):
         # Cleanup.
         downloads_cleanup('5MB.zip')
         downloads_cleanup('10MB.zip')
