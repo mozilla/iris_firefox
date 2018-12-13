@@ -19,6 +19,7 @@ def print_report_footer(platform, fx_version, fx_build, passed, failed,
     :param passed: Number of passed test cases.
     :param failed: Number of failed test cases.
     :param skipped: Number of skipped test cases.
+    :param blocked: Number of blocked test cases
     :param errors: Number of test cases that run into errors.
     :param total_time: Time elapsed for a full run.
     :param failures: Test failures list.

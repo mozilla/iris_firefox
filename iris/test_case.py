@@ -52,7 +52,8 @@ class BaseTest(object):
 
     def create_collection_test_rail_result(self):
         """Returns the test rail object."""
-        test_rail_object = TestRailTests(self.meta, self.test_suite_id, self.blocked_by, self.test_case_id,
+        blocked_by = self.blocked_by['id'] if all(k in self.blocked_by for k in ("id", "platform")) else ''
+        test_rail_object = TestRailTests(self.meta, self.test_suite_id, blocked_by, self.test_case_id,
                                          self.results)
         return test_rail_object
 
