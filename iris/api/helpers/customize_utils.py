@@ -4,7 +4,7 @@
 
 
 from iris.api.core.errors import FindError, APIHelperError
-from iris.api.core.firefox_ui.download_manager import DownloadManager
+from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.mouse import click
 from iris.api.core.region import wait, Pattern, logger
 from iris.api.helpers.general import click_hamburger_menu_option, close_customize_page
@@ -18,12 +18,12 @@ def auto_hide_download_button():
     click_hamburger_menu_option('Customize...')
 
     try:
-        wait(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
+        wait(NavBar.DOWNLOADS_BUTTON, 10)
         logger.debug('Downloads button found in the \'Customize\' page.')
     except FindError:
         raise APIHelperError('Downloads button not found in the \'Customize\' page.')
 
-    click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
+    click(NavBar.DOWNLOADS_BUTTON)
     try:
         wait(CustomizePage.AUTO_HIDE, 5)
         logger.debug('The auto-hide button found in the page.')
