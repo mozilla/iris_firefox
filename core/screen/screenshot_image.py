@@ -16,6 +16,8 @@ try:
 except ImportError:
     from PIL import Image
 
+SCREEN_WIDTH = mss.mss().monitors[2]['width']
+SCREEN_HEIGHT = mss.mss().monitors[2]['height']
 
 class ScreenshotImage:
     """This class represents the visual representation of a region/screen."""
@@ -55,6 +57,10 @@ class ScreenshotImage:
 
 
 def _region_to_image(region) -> Image or ScreenshotError:
+    # if region is not None:
+    #     region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
+    if region is not None:
+        region = {'top': 0, 'left': 0, 'width': SCREEN_WIDTH, 'height': SCREEN_HEIGHT}
     try:
         image = np.array(mss.mss().grab(region))
         return Image.fromarray(image, mode='RGBA')

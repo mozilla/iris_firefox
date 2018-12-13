@@ -4,7 +4,7 @@
 
 
 from core.errors import FindError
-from core.finder.finder import wait, find, find_all, exists, highlight
+from core.finder.finder import check, find, find_all, exists, highlight
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
 from core.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
@@ -93,7 +93,7 @@ class Region:
         :param timeout: Number as maximum waiting time in seconds.
         :return: True or FineError Exception.
         """
-        return wait(ps, timeout, self._area)
+        return check(ps, timeout, self._area)
 
     def exists(self, ps=None, timeout=None):
         """Check if Pattern or image exists.

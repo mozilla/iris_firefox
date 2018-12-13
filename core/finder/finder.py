@@ -10,11 +10,12 @@ from core.arg_parser import parse_args
 from core.enums import Color
 from core.enums import MatchTemplateType
 from core.errors import FindError
+from core.finder.image_search import image_find, match_template, image_vanish
+from core.finder.pattern import Pattern
+from core.finder.text_search import TextSearch
 from core.helpers.location import Location
 from core.helpers.rectangle import Rectangle
 from core.highlight.screen_highlight import ScreenHighlight, HighlightRectangle
-from core.finder.image_search import image_find, match_template, image_vanish
-from core.finder.pattern import Pattern
 from core.settings import Settings
 
 
@@ -88,7 +89,7 @@ def find_all(pattern: Pattern or str, region: Rectangle = None) -> List[Location
         raise FindError('Unable to find image %s' % pattern.get_filename())
 
 
-def wait(ps: Pattern or str, timeout: float = None, region: Rectangle = None) -> bool or FindError:
+def check(ps: Pattern or str, timeout: float = None, region: Rectangle = None) -> bool or FindError:
     """Wait for a Pattern or image to appear.
 
     :param ps: String or Pattern.
@@ -107,7 +108,16 @@ def wait(ps: Pattern or str, timeout: float = None, region: Rectangle = None) ->
             return True
         else:
             raise FindError('Unable to find image %s' % ps.get_filename())
-    # TODO OCR text search
+
+    elif isinstance(ps, str):
+        a_match = TextSearch().text_search(ps, True, region)
+        if a_match is not None:
+            return True
+        else:
+            raise FindError('Unable to find text %s' % ps)
+
+    else:
+        raise ValueError('Invalid input')
 
 
 def exists(ps: Pattern or str, timeout: float = None, region: Rectangle = None) -> bool:
@@ -123,7 +133,7 @@ def exists(ps: Pattern or str, timeout: float = None, region: Rectangle = None) 
         timeout = Settings.auto_wait_timeout
 
     try:
-        wait(ps, timeout, region)
+        check(ps, timeout, region)
         return True
     except FindError:
         return False
