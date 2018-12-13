@@ -5,6 +5,8 @@
 
 from enum import Enum
 
+import Quartz
+
 
 class Alignment(Enum):
     CENTER = 'center'
@@ -12,6 +14,32 @@ class Alignment(Enum):
     TOP_RIGHT = 'top_right'
     BOTTOM_LEFT = 'bottom_left'
     BOTTOM_RIGHT = 'bottom_right'
+
+
+def _button_value(base_name, mouse_button):
+    """Generates the value tuple for a :class:`Button` value.
+
+    :param str base_name: The base name for the button. This shuld be a string
+        like ``'kCGEventLeftMouse'``.
+
+    :param int mouse_button: The mouse button ID.
+
+    :return: a value tuple
+    """
+    return (
+        tuple(
+            getattr(Quartz, '%sMouse%s' % (base_name, name))
+            for name in ('Down', 'Up', 'Dragged')),
+        mouse_button)
+
+
+class Button(Enum):
+    """The various buttons.
+    """
+    unknown = None
+    left = _button_value('kCGEventLeft', 0)
+    middle = _button_value('kCGEventOther', 2)
+    right = _button_value('kCGEventRight', 1)
 
 
 class Channels(Enum):

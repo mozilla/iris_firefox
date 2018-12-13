@@ -7,9 +7,9 @@ from core.mouse.mouse_controller import Mouse
 from core.helpers.location import Location
 import time
 
-region = Region(1920, 50, 400, 600)
+region = Region(0, 50, 400, 600)
 # region.highlight()
-print(region.double_click(Pattern('test.png', application='firefox')))
+print(region.right_click(Pattern('test.png', application='firefox')))
 
 
 

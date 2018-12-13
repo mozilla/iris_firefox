@@ -8,7 +8,12 @@ from core.errors import FindError
 from core.finder.image_search import image_find
 from core.finder.pattern import Pattern
 from core.helpers.rectangle import Rectangle
-from core.mouse.mouse_controller import Mouse, Button
+from core.mouse.mouse_controller import Mouse
+
+try:
+    from core.mouse.mouse_controller import Button
+except AttributeError:
+    from core.enums import Button
 
 
 def move(ps: Pattern or str, duration: int = None, region: Rectangle = None, align: Alignment = None):
