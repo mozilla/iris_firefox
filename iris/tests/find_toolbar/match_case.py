@@ -16,13 +16,13 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        soap_label_pattern = Pattern('soap_label.png')
-        soap_xml_label_pattern = Pattern('soap_xml_label.png')
-        soap_envelope_label_selected_pattern = Pattern('soap_envelope_label_selected.png')
+        soap_label_pattern = LocalWeb.SOAP_WIKI_SOAP_LABEL
+        soap_xml_label_pattern = LocalWeb.SOAP_WIKI_SOAP_XML_LABEL
+        soap_envelope_label_selected_pattern = LocalWeb.SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED
         soap_label_selected_pattern = Pattern('soap_label_selected.png')
 
         # Open Firefox and navigate to a popular website
-        navigate(LocalWeb.WIKI_TEST_SITE)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
@@ -30,6 +30,7 @@ class Test(BaseTest):
         open_find()
         edit_select_all()
         edit_delete()
+
         find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
@@ -37,15 +38,19 @@ class Test(BaseTest):
         type('soap', interval=1)
         click(FindToolbar.FIND_CASE_SENSITIVE)
         find_next()
+
         selected_label_exists = exists(soap_envelope_label_selected_pattern, 5)
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
+
         unselected_label_exists = exists(soap_xml_label_pattern, 5)
         assert_true(self, unselected_label_exists, 'The others are not highlighted.')
 
         # Navigate through the result
         find_next()
+
         first_label_is_green = exists(soap_label_selected_pattern, 5)
         assert_true(self, first_label_is_green,
                     'The next matching words/characters have a green background highlighted')
+
         other_label_is_unhighlighted = exists(soap_xml_label_pattern, 5)
         assert_true(self, other_label_is_unhighlighted, 'The other is not highlighted')
