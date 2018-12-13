@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.test_suite_id = '2085'
         self.locales = ['en-US']
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
-        self.blocked_by = '913536'
+        self.blocked_by = {'id': '913536', 'platform': [Platform.WINDOWS, Platform.LINUX]}
 
     def run(self):
         new_tab_icon_pattern = Tabs.NEW_TAB_HIGHLIGHTED

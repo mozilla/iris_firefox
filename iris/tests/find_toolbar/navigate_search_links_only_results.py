@@ -15,7 +15,7 @@ class Test(BaseTest):
         self.test_case_id = '127253'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.blocked_by = 'issue 1628'
+        self.blocked_by = {'id': '1628', 'platform': [Platform.ALL]}
         self.exclude = Platform.ALL
 
     def run(self):
