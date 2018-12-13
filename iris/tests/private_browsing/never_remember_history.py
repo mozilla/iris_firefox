@@ -25,7 +25,6 @@ class Test(BaseTest):
         new_window_item_pattern = Pattern('new_window_item.png')
         new_private_window_item_pattern = Pattern('new_private_window_item.png').target_offset(-2, -2)
         new_tab_label_pattern = Pattern('new_tab_label.png')
-        soap_label_pattern = Pattern('soap_label.png')
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
 
         dock_region = Region(0, 0.8 * SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -58,8 +57,10 @@ class Test(BaseTest):
         close_tab()
 
         right_click(firefox_icon_dock_pattern, in_region=dock_region)
+
         new_private_window_item_exists = exists(new_private_window_item_pattern, 5)
         assert_true(self, new_private_window_item_exists, 'New Private Window option is available.')
+
         new_window_item_pattern_not_exists = exists(new_window_item_pattern, 1)
         assert_false(self, new_window_item_pattern_not_exists, 'New Window option is not available.')
 
@@ -67,8 +68,8 @@ class Test(BaseTest):
         private_browsing_icon_exists = exists(new_tab_label_pattern, 5)
         assert_true(self, private_browsing_icon_exists, 'The browser opens the new page.')
 
-        navigate(LocalWeb.WIKI_TEST_SITE)
-        soap_label_exists = exists(soap_label_pattern, 20)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         history_sidebar()
