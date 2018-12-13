@@ -90,7 +90,7 @@ def find_all(pattern: Pattern or str, region: Rectangle = None) -> List[Location
 
 
 def verify(ps: Pattern or str, timeout: float = None, region: Rectangle = None) -> bool or FindError:
-    """Wait for a Pattern or image to appear.
+    """Verify that a Pattern or str appears.
 
     :param ps: String or Pattern.
     :param timeout: Number as maximum waiting time in seconds.

@@ -7,10 +7,11 @@ from core.mouse.mouse_controller import Mouse
 from core.helpers.location import Location
 import time
 
-region = Region(0, 50, 400, 600)
+region = Region(0, 50, 300, 200)
 # region.highlight()
 # print(region.double_click(Pattern('test.png', application='firefox')))
-print(region.exists('b', 'Word found'))
+print(region.exists('Project', 'Word found'))
+
 
 
 

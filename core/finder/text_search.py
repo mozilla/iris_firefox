@@ -123,10 +123,10 @@ class TextSearch:
         input_image_array = numpy.array(input_image)
         debug_img = input_image_array
 
-        # if image_processing:
-        #     input_image = ImproveImage().process_image_for_ocr(image_array=input_image)
-        #     input_image_array = numpy.array(input_image)
-        #     debug_img = cv2.cvtColor(input_image_array, cv2.COLOR_GRAY2BGR)
+        if image_processing:
+            input_image = ImproveImage().process_image_for_ocr(image_array=input_image)
+            input_image_array = numpy.array(input_image)
+            debug_img = cv2.cvtColor(input_image_array, cv2.COLOR_GRAY2BGR)
 
         processed_data = pytesseract.image_to_data(input_image)
 
@@ -207,15 +207,15 @@ class TextSearch:
         for match_index, match_object in enumerate(text_dict):
             # Word region
             if match_object['width'] > 0 and match_object['height'] > 0:
-                from core.helpers.rectangle import Rectangle
                 from core.screen.region import Region
-                zoomed_word_image = ScreenshotImage(region=Region(match_object['x'], match_object['y'] - 2,
-                                                                          match_object['width'] + 6,
-                                                                          match_object['height'] + 4)).get_gray_image()
+                zoomed_word_image = ScreenshotImage(
+                    region=Region(int(match_object['x']), int(match_object['y'] - 2),
+                                  int(match_object['width'] + 6),
+                                  int(match_object['height'] + 4))).get_gray_image()
 
                 w_img_w, w_img_h = zoomed_word_image.size
                 # New white image background for zoom in search
-                word_background = Image.new('RGBA', (match_object['width'] * 10, match_object['height'] * 5),
+                word_background = Image.new('RGBA', (int(match_object['width'] * 10), int(match_object['height'] * 5)),
                                             (255, 255, 255, 255))
 
                 b_img_w, b_img_h = word_background.size
