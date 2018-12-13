@@ -295,8 +295,8 @@ class ImproveImage:
 
         # Apply dilation and erosion to remove some noise
         kernel = numpy.ones((1, 1), numpy.uint8)
-        dilated_image = cv2.dilate(image, kernel, iterations=1)
-        eroded_image = cv2.erode(dilated_image, kernel, iterations=1)
+        image = cv2.dilate(image, kernel, iterations=1)
+        image = cv2.erode(image, kernel, iterations=1)
         opening = cv2.morphologyEx(filtered, cv2.MORPH_OPEN, kernel)
         closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
 
