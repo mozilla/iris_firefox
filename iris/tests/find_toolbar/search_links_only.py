@@ -18,15 +18,12 @@ class Test(BaseTest):
         self.exclude = Platform.ALL
 
     def run(self):
-
-        soap_label_pattern = Pattern('soap_label.png')
         find_in_page_links_only_icon_pattern = Pattern('find_in_page_links_only_icon.png')
         find_in_page_links_only_soap_pattern = Pattern('find_links_only_part.png')
-        soap_link_highlighted_green_pattern = Pattern('soap_link_highlighted.png')
-        soap_link_highlighted_green_pattern.similarity = 0.6
+        LocalWeb.SOAP_WIKI_SOAP_LINK_HIGHLIGHTED.similarity = 0.6
 
         navigate(LocalWeb.WIKI_TEST_SITE)
-        soap_label_exists = exists(soap_label_pattern, 20)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         type("'")
@@ -39,7 +36,7 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_opened, 'Find Toolbar (links only) is opened.')
 
         type('soap', interval=1)
-        found_link_highlighted_green = exists(soap_link_highlighted_green_pattern, 5)
+        found_link_highlighted_green = exists(LocalWeb.SOAP_WIKI_SOAP_LINK_HIGHLIGHTED, 5)
         assert_true(self, found_link_highlighted_green, 'Matching link is found.')
 
         # Other link doesn't have pink background, so raise an Exception

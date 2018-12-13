@@ -52,8 +52,9 @@ class Test(BaseTest):
         first_occurrence_before_scrolling_highlighted = exists(first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_before_scrolling_highlighted,
                     'The first occurrence is highlighted before scrolling')
-        [scroll_down() for _ in range(4)]
-        [scroll_up() for _ in range(4)]
+
+        repeat_key_down(4)
+        repeat_key_up(4)
         first_occurrence_after_scrolling_highlighted = exists(first_occurrence_highlighted_pattern, 5)
         assert_true(self, first_occurrence_after_scrolling_highlighted,
                     'The first occurrence is highlighted after scrolling')

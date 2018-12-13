@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        soap_label_pattern = Pattern('soap_label.png')
+        soap_label_pattern = LocalWeb.SOAP_WIKI_SOAP_LABEL
         policy_about_label_pattern = Pattern('policy_about.png')
         of_4_matches_label_pattern = Pattern('of_4_matches_label.png')
         is_about_label_pattern = Pattern('is_about_label.png')
@@ -24,7 +24,7 @@ class Test(BaseTest):
         about_errors_label_pattern = Pattern('about_errors_label.png')
 
         # Open Firefox and navigate to a popular website
-        navigate(LocalWeb.WIKI_TEST_SITE)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
@@ -32,23 +32,33 @@ class Test(BaseTest):
         open_find()
         edit_select_all()
         edit_delete()
+
         find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         # Search for a term that appears more than once in the page
         type('about', interval=1)
+
         is_about_label_found = exists(is_about_label_pattern, 5)
         assert_true(self, is_about_label_found, '"is about" label found.')
+
         find_next()
+
         about_errors_label_found = exists(about_errors_label_pattern, 5)
         assert_true(self, about_errors_label_found, '"about errors" label found.')
+
         find_next()
+
         help_about_label_found = exists(help_about_label_pattern, 5)
         assert_true(self, help_about_label_found, '"help about" label found.')
+
         find_next()
+
         policy_about_label_found = exists(policy_about_label_pattern, 5)
         assert_true(self, policy_about_label_found, '"policy about" label found.')
+
         find_next()
+
         is_about_label_found_again = exists(is_about_label_pattern, 5)
         assert_true(self, is_about_label_found_again, '"is about" label is found again.')
 

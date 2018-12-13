@@ -13,3 +13,6 @@ class FindToolbar(object):
     HIGHLIGHT = Pattern('highlight.png')
     FIND_CASE_SENSITIVE = Pattern('find_case_sensitive.png')
     FIND_ENTIRE_WORD = Pattern('find_entire_word.png')
+    QUICK_FIND_LABEL = Pattern('quick_find_label.png')
+    QUICK_FIND_LINKS_ONLY_LABEL = Pattern('quick_find_links_only_label.png')
+    FIND_STATUS_PHRASE_NOT_FOUND = Pattern('findbar_find_status_phrase_not_found.png')

@@ -13,3 +13,6 @@ class HamburgerMenu(object):
     NEW_WINDOW = Pattern('hamburger_menu_new_window.png')
     HAMBURGER_MENU_ZOOM_INDICATOR = Pattern('appMenu_zoom_controls.png')
     EDIT_BUTTONS_BELOW_ZOOM_BUTTONS = Pattern('edit_buttons_below_zoom_buttons.png')
+    HAMBUREGR_MENU = Pattern('PanelUI_menu_button.png')
+    HAMBURGER_MENU_FIND_IN_PAGE_PATTERN = Pattern('hamburger_menu_find_in_page_pattern.png')
+

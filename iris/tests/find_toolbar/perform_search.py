@@ -16,11 +16,11 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        soap_label_pattern = Pattern('soap_label.png')
+        soap_label_pattern = LocalWeb.SOAP_WIKI_SOAP_LABEL
         from_wikipedia_label_pattern = Pattern('from_wikipedia_label.png')
 
         # Open Firefox and navigate to a popular website
-        navigate(LocalWeb.WIKI_TEST_SITE)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
