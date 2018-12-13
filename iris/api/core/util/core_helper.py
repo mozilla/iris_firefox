@@ -247,9 +247,22 @@ class IrisCore(object):
         correct_channel = browser.channel in test.channel
         correct_locale = parse_args().locale in test.locale
         correct_platform = get_os() in test.platform
-        blocked_by = True if test.blocked_by and len(test.blocked_by) > 0 else False
-        result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded != blocked_by
+        blocked_by = IrisCore.test_is_blocked(test)
+        result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded \
+                 != blocked_by
         return result
+
+    @staticmethod
+    def test_is_blocked(test):
+        if test.blocked_by:
+            blocked_dict = test.blocked_by
+            if all(k in blocked_dict for k in ('id', 'platform')):
+                platform = blocked_dict['platform']
+                if get_os() in platform:
+                    return True
+            else:
+                return False
+        return False
 
     @staticmethod
     def get_git_details():
