@@ -165,7 +165,7 @@ def click_window_control(button, window_type='auxiliary'):
         full_screen_control(window_type)
     else:
         raise APIHelperError('Button option is not supported.')
-        
+
 
 def close_customize_page():
     """Close the 'Customize...' page by pressing the 'Done' button."""
@@ -192,7 +192,7 @@ def close_firefox(test):
     else:
         logger.debug('Firefox already closed. Skipping ...')
 
-        
+
 def close_window_control(window_type):
     """Click on close window control.
 
