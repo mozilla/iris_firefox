@@ -9,6 +9,7 @@ from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.bookmarks import Bookmarks
+from iris.api.core.firefox_ui.docker import Docker
 from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.find_toolbar import FindToolbar
 from iris.api.core.firefox_ui.hamburger import HamburgerMenu
