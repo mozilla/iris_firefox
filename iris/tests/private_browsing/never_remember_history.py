@@ -21,9 +21,6 @@ class Test(BaseTest):
         drop_down_toggle_button_pattern = Pattern('drop_down_toggle_button.png')
         never_remember_history_label_pattern = Pattern('never_remember_history_label.png')
         restart_firefox_now_button_pattern = Pattern('restart_firefox_now_button.png')
-        firefox_icon_dock_pattern = Pattern('firefox_logo_dock.png')
-        new_window_item_pattern = Pattern('new_window_item.png')
-        new_private_window_item_pattern = Pattern('new_private_window_item.png').target_offset(-2, -2)
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
 
         dock_region = Region(0, 0.8 * SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -55,15 +52,15 @@ class Test(BaseTest):
 
         close_tab()
 
-        right_click(firefox_icon_dock_pattern, in_region=dock_region)
+        right_click(Docker.FIREFOX_DOCKER_ICON, in_region=dock_region)
 
-        new_private_window_item_exists = exists(new_private_window_item_pattern, 5)
+        new_private_window_item_exists = exists(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM, 5)
         assert_true(self, new_private_window_item_exists, 'New Private Window option is available.')
 
-        new_window_item_pattern_not_exists = exists(new_window_item_pattern, 1)
+        new_window_item_pattern_not_exists = exists(Docker.NEW_WINDOW_MENU_ITEM, 1)
         assert_false(self, new_window_item_pattern_not_exists, 'New Window option is not available.')
 
-        click(new_private_window_item_pattern)
+        click(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM)
         private_browsing_icon_exists = exists(Tabs.NEW_TAB_HIGHLIGHTED, 5)
         assert_true(self, private_browsing_icon_exists, 'The browser opens the new page.')
 
