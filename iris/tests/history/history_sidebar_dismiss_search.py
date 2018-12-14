@@ -27,9 +27,9 @@ class Test(BaseTest):
 
     def run(self):
         history_sidebar_focus_pattern = Pattern('history_sidebar_focus.png')
-        search_history_box_pattern = Pattern('search_history_box.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
-        x_button_search_history_box_pattern = Pattern('x_button_search_history_box.png')
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
+        x_button_search_history_box_pattern = Sidebar.SidebarHeader.CLEAR_SEARCH_BOX
         history_sidebar_items_pattern = Pattern('history_sidebar_items.png')
 
         # Open a page to create some history.
@@ -41,9 +41,9 @@ class Test(BaseTest):
         history_sidebar()
         expected_2 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_2, 'Sidebar was opened successfully.')
-        expected_3 = exists(expand_button_history_sidebar_pattern, 10)
+        expected_3 = exists(history_today_sidebar_pattern, 10)
         assert_true(self, expected_3, 'Expand history button displayed properly.')
-        click(expand_button_history_sidebar_pattern)
+        click(history_today_sidebar_pattern)
         click(search_history_box_pattern)
 
         # Check that Focus page is found in the History list.

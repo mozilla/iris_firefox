@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.api.helpers.download_manager_utils import download_file, DownloadFiles
 from iris.test_case import *
 
 

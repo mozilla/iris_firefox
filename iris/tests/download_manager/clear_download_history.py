@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
-from iris.api.helpers.download_manager_utils import download_file, DownloadFiles, downloads_cleanup
 from iris.test_case import *
 
 
@@ -65,6 +63,7 @@ class Test(BaseTest):
         expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
         assert_true(self, expected, 'There are no downloads displayed in the \'about:downloads\' page.')
 
+    def teardown(self):
         # Cleanup.
         for i in range(len(cleanup_list)):
             downloads_cleanup(cleanup_list[i])

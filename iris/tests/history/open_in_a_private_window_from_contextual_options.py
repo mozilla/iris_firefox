@@ -1,6 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
 from iris.test_case import *
 
 
@@ -21,7 +22,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         last_searched_item = Pattern('iris_bookmark_focus.png')
         iris_logo = Pattern('iris_logo.png')
         private_window = Pattern('private_window.png')
