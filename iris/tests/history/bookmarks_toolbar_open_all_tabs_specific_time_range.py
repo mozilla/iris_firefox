@@ -19,7 +19,7 @@ class Test(BaseTest):
         iris_tab_icon = Pattern('iris_logo_tab.png')
         mozilla_tab_icon = Pattern('mozilla_logo_tab.png')
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
-        show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         history_today_pattern = Library.HISTORY_TODAY
         new_tab_pattern = Pattern('new_tab.png')
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"

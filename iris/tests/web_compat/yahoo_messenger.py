@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from datetime import datetime
-
 from iris.test_case import *
 
 
@@ -21,7 +20,6 @@ class Test(BaseTest):
         yahoo_messenger_test_message_pattern = Pattern('yahoo_messenger_test_message.png')
         delete_button_pattern = Pattern('delete_button.png')
         unsend_button_pattern = Pattern('unsend_button.png')
-
 
         url = 'https://login.yahoo.com/?.done=https%3A%2F%2Fmessenger.yahoo.com%2F&.pd=c%3DU4ZyUvq72e4_yB0G1IX7c9q7dSw-&.src=messenger&.lang=en'
         today = datetime.now()

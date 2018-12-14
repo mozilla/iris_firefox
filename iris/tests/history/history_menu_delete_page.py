@@ -25,7 +25,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        show_all_history = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark = Pattern('iris_bookmark.png')
         iris_bookmark_focus = Pattern('iris_bookmark_focus.png')
 

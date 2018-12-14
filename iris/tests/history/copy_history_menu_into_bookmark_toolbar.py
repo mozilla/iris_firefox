@@ -25,7 +25,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        show_all_history_pattern = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         library_pattern = Library.TITLE
