@@ -355,7 +355,7 @@ def open_search_manager():
 # Keyboard shortcuts for Windows & Tabs.
 
 def close_tab():
-    """Close the currently focused tab (Except for app tabs)."""
+    """Close the currently focused tab/window (Except for app tabs)."""
     if Settings.get_os() == Platform.MAC:
         type(text='w', modifier=KeyModifier.CMD)
     else:
