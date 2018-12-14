@@ -714,6 +714,7 @@ def launch_firefox(path, profile=None, url=None, args=None, show_crash_reporter=
     :param profile: Firefox profile.
     :param url: URL to be loaded.
     :param args: Optional list of arguments.
+    :param show_crash_reporter: Enable or disable Firefox Crash Reporting tool.
     :return: List of Firefox flags.
     """
     if args is None:
