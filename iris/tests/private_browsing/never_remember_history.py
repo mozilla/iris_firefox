@@ -17,7 +17,6 @@ class Test(BaseTest):
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
 
     def run(self):
-        browser_privacy_label_pattern = Pattern('browser_privacy_label.png')
         drop_down_toggle_button_pattern = Pattern('drop_down_toggle_button.png')
         never_remember_history_label_pattern = Pattern('never_remember_history_label.png')
         restart_firefox_now_button_pattern = Pattern('restart_firefox_now_button.png')
@@ -27,7 +26,7 @@ class Test(BaseTest):
 
         navigate('about:preferences#privacy')
 
-        privacy_preferences_page_opened = exists(browser_privacy_label_pattern, 10)
+        privacy_preferences_page_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, 10)
         assert_true(self, privacy_preferences_page_opened, 'Privacy page opened.')
 
         type('never remember')
