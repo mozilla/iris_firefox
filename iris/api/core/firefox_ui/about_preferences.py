@@ -18,13 +18,13 @@ class AboutPreferences(object):
         CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_SELECTED = \
             Pattern('content-blocking-tracking-protection-option-always_radio_selected.png')
         CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED \
-            = Pattern('content-blocking-tracking-protection-option-always_radio_not_selected')
+            = Pattern('content-blocking-tracking-protection-option-always_radio_not_selected.png')
         CONTENT_TRACKING_TRACKERS_ONLY_PRIVATE_WINDOWS_RADIO_SELECTED = \
-            Pattern('content-blocking-tracking-protection-option-private_radio_selected')
+            Pattern('content-blocking-tracking-protection-option-private_radio_selected.png')
         CONTENT_TRACKING_TRACKERS_ONLY_PRIVATE_WINDOWS_RADIO_NOT_SELECTED = \
-            Pattern('content-blocking-tracking-protection-option-private_radio_not_selected')
+            Pattern('content-blocking-tracking-protection-option-private_radio_not_selected.png')
 
-        TRACKING_PROTECTION_EXCEPTIONS_BUTTON = Pattern('trackingProtectionExceptions_button')
+        TRACKING_PROTECTION_EXCEPTIONS_BUTTON = Pattern('trackingProtectionExceptions_button.png')
 
         class Exceptions(object):
             EXCEPTIONS_CONTENT_BLOCKING_LABEL = Pattern('exceptions_content_blocking_label.png')
