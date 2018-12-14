@@ -15,8 +15,7 @@ class Test(BaseTest):
         self.test_case_id = '127253'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.blocked_by = {'id': '1628', 'platform': [Platform.ALL]}
-        self.exclude = Platform.ALL
+        self.blocked_by = {'id': 'issue_1628', 'platform': [Platform.ALL]}
 
     def run(self):
         find_in_page_links_only_icon_pattern = Pattern('find_in_page_links_only_icon.png')

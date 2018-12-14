@@ -15,7 +15,6 @@ class Test(BaseTest):
         self.test_suite_id = '1902'
         self.blocked_by = {'id': '1297382', 'platform': [Platform.ALL]}
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
