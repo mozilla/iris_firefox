@@ -21,3 +21,7 @@ class LocationBar(object):
 
     SEARCH_BAR = Pattern('search_bar.png')
     URL_BAR_DEFAULT_ZOOM_LEVEL = Pattern('url_bar_default_zoom_level.png')
+
+    TRACKING_PROTECTION_SHIELD_ACTIVATED = Pattern('tracking-protection-icon_enabled.png')
+    TRACKING_PROTECTION_SHIELD_DEACTIVATED = Pattern('tracking-protection-icon_disabled.png')
+
