@@ -8,8 +8,10 @@ import mozversion
 from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
+from iris.api.core.firefox_ui.about_preferences import AboutPreferences
 from iris.api.core.firefox_ui.bookmarks import Bookmarks
 from iris.api.core.firefox_ui.docker import Docker
+from iris.api.core.firefox_ui.download_dialog import DownloadDialog
 from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.find_toolbar import FindToolbar
 from iris.api.core.firefox_ui.hamburger import HamburgerMenu
@@ -19,6 +21,7 @@ from iris.api.core.firefox_ui.menus import LibraryMenu
 from iris.api.core.firefox_ui.menu_bar import MenuBar
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.private_window import PrivateWindow
+from iris.api.core.firefox_ui.site_information_panel import SiteInformationPanel
 from iris.api.core.firefox_ui.tabs import Tabs
 from iris.api.core.firefox_ui.window_controls import AuxiliaryWindow, MainWindow
 from iris.api.core.key import *
