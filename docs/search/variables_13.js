@@ -1,9 +1,15 @@
 var searchData=
 [
-  ['undo',['UNDO',['../classiris_1_1api_1_1helpers_1_1general_1_1_right_click_location_bar.html#aeed0fda2e4b01b86c895f679c5b4c30d',1,'iris::api::helpers::general::RightClickLocationBar']]],
-  ['up',['UP',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae64fa9c6f7bca7f28594cfc9011780df',1,'iris::api::core::key::Key']]],
-  ['url_5fbar_5f110_5fzoom_5flevel',['URLBAR_ZOOM_BUTTON_110',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_location_bar.html#aa7e4ba7b4df55d42eac14f5a22f576f4',1,'iris::api::core::firefox_ui::toolbars::LocationBar']]],
-  ['url_5fbar_5f300_5fzoom_5flevel',['URLBAR_ZOOM_BUTTON_300',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_location_bar.html#a493a22c745a9c2a228da07cefab46ba8',1,'iris::api::core::firefox_ui::toolbars::LocationBar']]],
-  ['url_5fbar_5f30_5fzoom_5flevel',['URLBAR_ZOOM_BUTTON_30',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_location_bar.html#ae9b17c026172b99b13c97c602c1adba6',1,'iris::api::core::firefox_ui::toolbars::LocationBar']]],
-  ['url_5fbar_5f90_5fzoom_5flevel',['URLBAR_ZOOM_BUTTON_90',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1toolbars_1_1_location_bar.html#a699bd697e4b5974cdbbbc7103990c287',1,'iris::api::core::firefox_ui::toolbars::LocationBar']]]
+  ['tab',['TAB',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ab24a3124a9a15a61422ee8ceca9e2df6',1,'iris::api::core::key::Key']]],
+  ['tags',['TAGS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library_1_1_views_1_1_show_columns.html#af7ec63745da3253e2886334aa7f4facf',1,'iris.api.core.firefox_ui.library.Library.Views.ShowColumns.TAGS()'],['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#a7d425a22f46aa92daeee2df323d22d2f',1,'iris.api.core.firefox_ui.library.Library.TAGS()']]],
+  ['tags_5fcolumn',['TAGS_COLUMN',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#a67409dae7d8de869d0bd2c78d1530433',1,'iris::api::core::firefox_ui::library::Library']]],
+  ['tags_5ffield',['TAGS_FIELD',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1bookmarks_1_1_bookmarks_1_1_star_dialog.html#a51eec09f7e85a1a5869ab3bb5caa2c41',1,'iris::api::core::firefox_ui::bookmarks::Bookmarks::StarDialog']]],
+  ['tags_5fname',['TAGS_NAME',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#a5b16d4f3296c651a928459a4c1a64702',1,'iris::api::core::firefox_ui::library::Library']]],
+  ['title',['TITLE',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#aeb2c430880e8a4fe899e3ff56243fe98',1,'iris::api::core::firefox_ui::library::Library']]],
+  ['today',['TODAY',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_c_lear_recent_history_1_1_time_range.html#a5f2ee23843ac8be23cb0b08b4e4158fa',1,'iris.api.core.firefox_ui.history.History.CLearRecentHistory.TimeRange.TODAY()'],['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_history_sidebar_1_1_timeline.html#a427e161ad7b2b83726fcb99fe99ad990',1,'iris.api.core.firefox_ui.sidebar.Sidebar.HistorySidebar.Timeline.TODAY()']]],
+  ['today_5fname',['TODAY_NAME',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#abef9de5b104a9dcad205eb3d5fe63f80',1,'iris::api::core::firefox_ui::library::Library']]],
+  ['toolbar',['TOOLBAR',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1nav__bar_1_1_nav_bar.html#aa9667629d96a3df3f626ab6690f88864',1,'iris::api::core::firefox_ui::nav_bar::NavBar']]],
+  ['tracking_5fprotection_5fexceptions_5fbutton',['TRACKING_PROTECTION_EXCEPTIONS_BUTTON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences_1_1_about_preferences_1_1_privacy.html#ae7800590bf3575f534d17f1014ca58cb',1,'iris::api::core::firefox_ui::about_preferences::AboutPreferences::Privacy']]],
+  ['tracking_5fprotection_5fshield_5factivated',['TRACKING_PROTECTION_SHIELD_ACTIVATED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1location__bar_1_1_location_bar.html#aaa058fc18d11d2b262c9192209e46662',1,'iris::api::core::firefox_ui::location_bar::LocationBar']]],
+  ['tracking_5fprotection_5fshield_5fdeactivated',['TRACKING_PROTECTION_SHIELD_DEACTIVATED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1location__bar_1_1_location_bar.html#a8b3fcc6954779d540e92f96cc64ad259',1,'iris::api::core::firefox_ui::location_bar::LocationBar']]]
 ];

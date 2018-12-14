@@ -8,6 +8,6 @@ var searchData=
   ['previous_5fframe',['previous_frame',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a5dcdaeb4f450d98fd5e442b6938fde7d',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['previous_5ftab',['previous_tab',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a518269adbcaba5f5790830309d949e07',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['print_5ferror',['print_error',['../namespaceiris_1_1api_1_1helpers_1_1results.html#a0cf8d5b3f074d9a354f2b6aeaea48554',1,'iris::api::helpers::results']]],
-  ['print_5freport_5ffooter',['print_report_footer',['../namespaceiris_1_1api_1_1helpers_1_1results.html#aa8d435007a16509f1cc5a6a545106bfd',1,'iris::api::helpers::results']]],
+  ['print_5freport_5ffooter',['print_report_footer',['../namespaceiris_1_1api_1_1helpers_1_1results.html#a44e8f7a03ba2e2ab688302f0b844c476',1,'iris::api::helpers::results']]],
   ['print_5fresults',['print_results',['../namespaceiris_1_1api_1_1helpers_1_1results.html#aa97e0f4b50f33aeecc2b7fa746c2e165',1,'iris::api::helpers::results']]]
 ];

@@ -1,9 +1,6 @@
 var searchData=
 [
   ['highlight',['highlight',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#ac632e7000b4bb00cf70f3b3ce28b2eb2',1,'iris.api.core.region.Region.highlight()'],['../namespaceiris_1_1api_1_1core_1_1region.html#a0b864c7749bf80530f20f1cf417bea3c',1,'iris.api.core.region.highlight()']]],
-  ['highlight_5fcolor',['highlight_color',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#ac03acf5f1e8966bedbf4e3748408aac6',1,'iris.api.core.settings._IrisSettings.highlight_color(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#ab0a01e36118ba86a55aac4a1e96a2124',1,'iris.api.core.settings._IrisSettings.highlight_color(self, value)']]],
-  ['highlight_5fduration',['highlight_duration',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#adffd7a324b67939591466475d3d21af7',1,'iris.api.core.settings._IrisSettings.highlight_duration(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#aaa908c26d27254ed3962ef9419950d01',1,'iris.api.core.settings._IrisSettings.highlight_duration(self, value)']]],
-  ['highlight_5fthickness',['highlight_thickness',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#afc0f0d486229f00cadff28d08437dccd',1,'iris.api.core.settings._IrisSettings.highlight_thickness(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a2c619e3762258c2dbc87ed1da968f5c2',1,'iris.api.core.settings._IrisSettings.highlight_thickness(self, value)']]],
   ['history_5fsidebar',['history_sidebar',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a1c81ed48d0e407b5d7537450b6860f72',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['hover',['hover',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#ae4c86c7a7f34e153b95fa5247b73e2ea',1,'iris.api.core.region.Region.hover()'],['../namespaceiris_1_1api_1_1core_1_1region.html#a1eff1747c420e79c7637da4eeebff821',1,'iris.api.core.region.hover()']]]
 ];

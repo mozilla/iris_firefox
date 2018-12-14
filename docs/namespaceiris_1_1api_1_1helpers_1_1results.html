@@ -96,8 +96,8 @@ $(document).ready(function(){initNavTree('namespaceiris_1_1api_1_1helpers_1_1res
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa8d435007a16509f1cc5a6a545106bfd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiris_1_1api_1_1helpers_1_1results.html#aa8d435007a16509f1cc5a6a545106bfd">print_report_footer</a> (platform, fx_version, fx_build, passed, failed, skipped, errors, total_time, failures=None)</td></tr>
-<tr class="separator:aa8d435007a16509f1cc5a6a545106bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44e8f7a03ba2e2ab688302f0b844c476"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiris_1_1api_1_1helpers_1_1results.html#a44e8f7a03ba2e2ab688302f0b844c476">print_report_footer</a> (platform, fx_version, fx_build, passed, failed, skipped, errors, total_time, failures=None, blocked=None)</td></tr>
+<tr class="separator:a44e8f7a03ba2e2ab688302f0b844c476"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bf67bba6444eab218da2d989538590e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiris_1_1api_1_1helpers_1_1results.html#a7bf67bba6444eab218da2d989538590e">format_outcome</a> (outcome)</td></tr>
 <tr class="separator:a7bf67bba6444eab218da2d989538590e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cf8d5b3f074d9a354f2b6aeaea48554"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiris_1_1api_1_1helpers_1_1results.html#a0cf8d5b3f074d9a354f2b6aeaea48554">print_error</a> (error)</td></tr>
@@ -108,6 +108,8 @@ Functions</h2></td></tr>
 <tr class="separator:aaac50ff85e6d8591dacb35fdbb909334"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa97e0f4b50f33aeecc2b7fa746c2e165"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiris_1_1api_1_1helpers_1_1results.html#aa97e0f4b50f33aeecc2b7fa746c2e165">print_results</a> (current_test, test_case)</td></tr>
 <tr class="separator:aa97e0f4b50f33aeecc2b7fa746c2e165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf29a456b6a1eb0e51f6485fa8d9d936"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiris_1_1api_1_1helpers_1_1results.html#aaf29a456b6a1eb0e51f6485fa8d9d936">write_test_failures</a> (failures, master_test_list)</td></tr>
+<tr class="separator:aaf29a456b6a1eb0e51f6485fa8d9d936"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a7bf67bba6444eab218da2d989538590e"></a>
@@ -201,8 +203,8 @@ Functions</h2></td></tr>
 </pre> 
 </div>
 </div>
-<a id="aa8d435007a16509f1cc5a6a545106bfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8d435007a16509f1cc5a6a545106bfd">&#9670;&nbsp;</a></span>print_report_footer()</h2>
+<a id="a44e8f7a03ba2e2ab688302f0b844c476"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44e8f7a03ba2e2ab688302f0b844c476">&#9670;&nbsp;</a></span>print_report_footer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,7 +261,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>failures</em> = <code>None</code>&#160;</td>
+          <td class="paramname"><em>failures</em> = <code>None</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>blocked</em> = <code>None</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -274,6 +282,7 @@ Functions</h2></td></tr>
 :param passed: Number of passed test cases.
 :param failed: Number of failed test cases.
 :param skipped: Number of skipped test cases.
+:param blocked: Number of blocked test cases
 :param errors: Number of test cases that run into errors.
 :param total_time: Time elapsed for a full run.
 :param failures: Test failures list.
@@ -310,6 +319,34 @@ Functions</h2></td></tr>
 :param test_case: Instance of BaseTest class.
 :return: None.
 </pre> 
+</div>
+</div>
+<a id="aaf29a456b6a1eb0e51f6485fa8d9d936"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf29a456b6a1eb0e51f6485fa8d9d936">&#9670;&nbsp;</a></span>write_test_failures()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def iris.api.helpers.results.write_test_failures </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>failures</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>master_test_list</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 </div><!-- contents -->
