@@ -4,9 +4,7 @@
 
 
 from enum import Enum
-
-import Quartz
-
+import mozinfo
 
 class Alignment(Enum):
     CENTER = 'center'
@@ -26,11 +24,13 @@ def _button_value(base_name, mouse_button):
 
     :return: a value tuple
     """
-    return (
-        tuple(
-            getattr(Quartz, '%sMouse%s' % (base_name, name))
-            for name in ('Down', 'Up', 'Dragged')),
-        mouse_button)
+    if mozinfo.os == 'mac':
+        import Quartz
+        return (
+            tuple(
+                getattr(Quartz, '%sMouse%s' % (base_name, name))
+                for name in ('Down', 'Up', 'Dragged')),
+            mouse_button)
 
 
 class Button(Enum):
