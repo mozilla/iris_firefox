@@ -1,0 +1,4 @@
+var classiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences_1_1_about_preferences =
+[
+    [ "Privacy", "classiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences_1_1_about_preferences_1_1_privacy.html", "classiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences_1_1_about_preferences_1_1_privacy" ]
+];
