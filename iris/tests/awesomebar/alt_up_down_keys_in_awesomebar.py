@@ -13,8 +13,7 @@ class Test(BaseTest):
         self.meta = 'Alt+UP/DOWN Keys - in the Awesome Bar.'
         self.test_case_id = '108278'
         self.test_suite_id = '1902'
-        self.exclude = Platform.LINUX
-        self.blocked_by = '1488708'
+        self.blocked_by = {'id': '1488708', 'platform': [Platform.LINUX]}
         self.locales = ['en-US']
 
     def run(self):

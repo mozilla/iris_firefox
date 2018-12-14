@@ -16,8 +16,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        search_history_box_pattern = Pattern('search_history_box.png')
-        expand_button_history_sidebar_pattern = Pattern('expand_button_history_sidebar.png')
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         today_bookmarks_toolbar_pattern = Pattern('today_bookmarks_toolbar.png')
@@ -36,11 +36,11 @@ class Test(BaseTest):
         history_sidebar()
         expected_3 = exists(search_history_box_pattern, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar_pattern, 10)
+        expected_4 = exists(history_today_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
 
         # Copy the History time range from the History sidebar and paste it to the Bookmarks toolbar.
-        right_click(expand_button_history_sidebar_pattern)
+        right_click(history_today_sidebar_pattern)
         type(text='c')
         right_click(bookmarks_toolbar_most_visited_pattern)
         type(text='p')

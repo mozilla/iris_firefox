@@ -20,7 +20,7 @@ class Test(BaseTest):
         small_text_selected_pattern = Pattern('small_text_selected.png').similar(0.6)
         vertical_search_page_local = self.get_asset_path('test-findinpage.html')
 
-        navigate(vertical_search_page_local)     # https://bug1279751.bmoattachments.org/attachment.cgi?id=8762332
+        navigate(vertical_search_page_local)  # https://bug1279751.bmoattachments.org/attachment.cgi?id=8762332
         page_is_opened = exists(small_text_unselected_pattern, 10)
         assert_true(self, page_is_opened, 'The page is loaded.')
 
