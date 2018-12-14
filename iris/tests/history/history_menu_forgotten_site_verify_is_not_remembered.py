@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        show_all_history = LibraryMenu.HistoryOption.SHOW_ALL_HISTORY
+        show_all_history = History.HistoryMenu.SHOW_ALL_HISTORY
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
         mozilla_autocomplete = Pattern('mozilla_autocomplete.png')
         recent_history_mozilla_pattern = Pattern('recent_history_mozilla.png')

@@ -26,8 +26,8 @@ class Test(BaseTest):
         return
 
     def run(self):
-        search_history_box = Pattern('search_history_box.png')
-        expand_button_history_sidebar = Pattern('expand_button_history_sidebar.png')
+        search_history_box = Sidebar.HistorySidebar.SEARCH_BOX
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         local_server_autocomplete = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
 
@@ -52,9 +52,9 @@ class Test(BaseTest):
         history_sidebar()
         expected_3 = exists(search_history_box, 10)
         assert_true(self, expected_3, 'Sidebar was opened successfully.')
-        expected_4 = exists(expand_button_history_sidebar, 10)
+        expected_4 = exists(history_today_sidebar_pattern, 10)
         assert_true(self, expected_4, 'Expand history button displayed properly.')
-        click(expand_button_history_sidebar)
+        click(history_today_sidebar_pattern)
 
         # Delete a page from the History sidebar.
         expected_5 = left_upper_corner.exists(mozilla_bookmark_small_pattern.similar(0.7), 10)

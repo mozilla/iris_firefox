@@ -46,7 +46,8 @@ class Test(BaseTest):
         time.sleep(Settings.UI_DELAY)
         reset_mouse()
 
-        expected = exists(default_zoom_level_toolbar_customize_page_pattern, 10, in_region=Region(0, 0, SCREEN_WIDTH, 300))
+        expected = exists(default_zoom_level_toolbar_customize_page_pattern, 10,
+                          in_region=Region(0, 0, SCREEN_WIDTH, 300))
         assert_true(self, expected, 'Zoom controls successfully dragged and dropped in toolbar.')
 
         close_customize_page()
@@ -86,6 +87,8 @@ class Test(BaseTest):
         expected = new_region.exists(zoom_reset_button_100_pattern, 10)
         assert_true(self, expected,
                     'Zoom controls are correctly displayed in toolbar after several zoom level increases/decreases.')
+
+        reset_mouse()
 
         remove_zoom_indicator_from_toolbar()
 

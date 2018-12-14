@@ -26,13 +26,12 @@ class Test(BaseTest):
         return
 
     def run(self):
-        clear_recent_history_window_pattern = Pattern('clear_recent_history_window.png')
-        dismiss_clear_recent_history_window_button_pattern = Pattern('dismiss_clear_recent_history_window.png')
+        clear_recent_history_window_pattern = History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
+        dismiss_clear_recent_history_window_button_pattern = History.CLearRecentHistory.CANCEL
 
-        # Check that the Clear Recent History window is displayed properly.
-        clear_recent_history()
-        expected = exists(clear_recent_history_window_pattern, 10)
-        assert_true(self, expected, 'Clear Recent History window was displayed properly.')
+        # Open the 'Clear Recent History' window and uncheck all the items.
+        for step in open_clear_recent_history_window():
+            assert_true(self, step.resolution, step.message)
 
         # Dismiss the Clear recent window
         if exists(dismiss_clear_recent_history_window_button_pattern, 10):

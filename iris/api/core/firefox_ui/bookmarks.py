@@ -26,4 +26,3 @@ class Bookmarks(object):
         DONE = Pattern('editBookmarkPanelDoneButton.png')
         CANCEL = Pattern('editBookmarkPanelCancelButton.png')
         REMOVE_BOOKMARK = Pattern('editBookmarkPanelRemoveButton.png')
-
