@@ -26,7 +26,8 @@ var NAVTREE =
   [ "Mozilla Iris", "index.html", [
     [ "Namespace Members", "namespacemembers.html", [
       [ "All", "namespacemembers.html", null ],
-      [ "Functions", "namespacemembers_func.html", null ]
+      [ "Functions", "namespacemembers_func.html", null ],
+      [ "Variables", "namespacemembers_vars.html", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -43,7 +44,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"annotated.html",
+"namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1location__bar.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
