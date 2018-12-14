@@ -88,6 +88,8 @@ class Test(BaseTest):
         assert_true(self, expected,
                     'Zoom controls are correctly displayed in toolbar after several zoom level increases/decreases.')
 
+        reset_mouse()
+
         remove_zoom_indicator_from_toolbar()
 
         expected = new_region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
