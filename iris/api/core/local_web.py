@@ -66,5 +66,12 @@ class LocalWeb(object):
     SOAP_WIKI_SOAP_XML_LABEL = Pattern('soap_xml_label.png')
     SOAP_WIKI_TEST_LABEL_PATTERN = Pattern('test_label_pattern.png')
 
+    """about:preferences#privacy"""
+    ABOUT_PREFERENCES_PRIVACY_ADDRESS = Pattern('about_preferences_privacy_address.png')
+
+    """CNN Site"""
+    CNN_LOGO = Pattern('cnn_logo.png')
+    CNN_BLOCKED_CONTENT_ADV = Pattern('cnn_blocked_content.png')
+    CNN_CONTENT_BLOCKING_EXCEPTION = Pattern('cnn_content_blocked_exception.png')
 
 
