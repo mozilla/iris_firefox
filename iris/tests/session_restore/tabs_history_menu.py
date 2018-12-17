@@ -25,13 +25,13 @@ class Test(BaseTest):
         tabs_list_pattern = Pattern('tabs_list.png')
         restore_tabs_pattern = Pattern('restore_all_tabs_button.png')
 
-        for _ in range(6):
+        for index in range(6):
             new_tab()
-            navigate(local_url[_])
-            website_loaded = exists(website_image_pattern[_], 20)
+            navigate(local_url[index])
+            website_loaded = exists(website_image_pattern[index], 20)
             assert_true(self, website_loaded,
                         'Website {0} loaded'
-                        .format(_+1))
+                        .format(index+1))
 
         [close_tab() for _ in range(5)]
 
@@ -47,7 +47,7 @@ class Test(BaseTest):
 
         if Settings.get_os() == Platform.MAC:  # menu bar background may have transparency on MAC
             type(Key.F2, KeyModifier.CTRL)
-            [type(Key.RIGHT) for _ in range(5)]
+            [type(Key.RIGHT) for tab_index in range(5)]
             type(Key.ENTER)
         else:
             history_menu_bar_exists = exists(history_menu_bar_pattern, 20)
@@ -69,7 +69,7 @@ class Test(BaseTest):
         click(restore_tabs_pattern, 0.2)
         #  check if all tabs reopened correctly
         tabs_count = len(website_image_pattern)
-        for _ in range(6):
+        for tab_index in range(6):
             if len(website_image_pattern) == 1:
                 one_tab_left = exists(website_image_pattern[0], 20)
                 assert_true(self, one_tab_left,
@@ -79,5 +79,5 @@ class Test(BaseTest):
                 tab_exists = exists(website_image_pattern.pop())
                 assert_true(self, tab_exists,
                             'Tab {0} successfully reopened.'
-                            .format(tabs_count - _))
+                            .format(tabs_count - tab_index))
                 previous_tab()
