@@ -4,6 +4,7 @@
 
 from iris.api.core.firefox_ui.about_preferences import *
 from iris.api.core.firefox_ui.bookmarks import *
+from iris.api.core.firefox_ui.content_blocking_tour import *
 from iris.api.core.firefox_ui.docker import *
 from iris.api.core.firefox_ui.download_dialog import *
 from iris.api.core.firefox_ui.download_manager import *
