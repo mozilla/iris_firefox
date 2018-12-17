@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.api.helpers.download_manager_utils import download_file, DownloadFiles, downloads_cleanup
 from iris.test_case import *
 
 
@@ -19,7 +18,6 @@ class Test(BaseTest):
     def run(self):
         download_files_list = [DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
 
-        # Download a small file and a large file.
         navigate('https://www.thinkbroadband.com/download')
 
         for pattern in download_files_list:
@@ -41,12 +39,13 @@ class Test(BaseTest):
 
         # Check that the 1GB download in progress is still displayed.
         expected = exists(DownloadFiles.DOWNLOAD_NAME_1GB, 10)
-        assert_true(self, expected, 'The downloaded file name is properly displayed.')
+        assert_true(self, expected, 'The 1GB download in progress is properly displayed.')
 
         # Stop the active download.
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert_true(self, expected, 'The \'X\' button is properly displayed.')
         click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
 
+    def teardown(self):
         # Cleanup.
         downloads_cleanup('5MB.zip')
