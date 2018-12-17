@@ -43,6 +43,7 @@ class Test(BaseTest):
         focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, 20)
         assert_true(self, focus_test_site_tab_exists, 'Focus site tab is active.')
 
+        # Drag-n-drop Focus tab
         focus_tab_drop_location = Location(x=focus_tab_location_before.x,
                                            y=(focus_tab_location_before.y + SCREEN_HEIGHT / 10))
 
@@ -60,7 +61,7 @@ class Test(BaseTest):
         focus_tab_location_after = find(focus_test_site_tab_pattern)
         focus_tab_location_after_coordinates = (focus_tab_location_after.x, focus_tab_location_after.y)
 
-        # Drag-n-drop another tab
+        # Drag-n-drop Firefox tab
         firefox_tab_drop_location = Location(x=firefox_tab_location_before.x,
                    y=(firefox_tab_location_before.y + SCREEN_HEIGHT / 6))
 
