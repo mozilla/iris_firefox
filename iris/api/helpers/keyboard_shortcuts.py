@@ -355,7 +355,7 @@ def open_search_manager():
 # Keyboard shortcuts for Windows & Tabs.
 
 def close_tab():
-    """Close the currently focused tab (Except for app tabs)."""
+    """Close the currently focused tab/window (Except for app tabs)."""
     if Settings.get_os() == Platform.MAC:
         type(text='w', modifier=KeyModifier.CMD)
     else:
@@ -659,5 +659,15 @@ def open_browser_console():
         type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
+def restart_via_console():
+    """
+     restarts Firefox if web console is opened
+    """
+    if Settings.get_os() == Platform.MAC:
+        type(text='r', modifier=KeyModifier.CMD + KeyModifier.ALT)
+    else:
+        type(text='r', modifier=KeyModifier.CTRL + KeyModifier.ALT)
 
 # End Tools keyboard shortcuts

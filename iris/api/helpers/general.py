@@ -707,13 +707,14 @@ def key_to_one_off_search(highlighted_pattern, direction='left'):
             max_attempts -= 1
 
 
-def launch_firefox(path, profile=None, url=None, args=None):
+def launch_firefox(path, profile=None, url=None, args=None, show_crash_reporter=False):
     """Launch the app with optional args for profile, windows, URI, etc.
 
     :param path: Firefox path.
     :param profile: Firefox profile.
     :param url: URL to be loaded.
     :param args: Optional list of arguments.
+    :param show_crash_reporter: Enable or disable Firefox Crash Reporting tool.
     :return: List of Firefox flags.
     """
     if args is None:
@@ -733,7 +734,7 @@ def launch_firefox(path, profile=None, url=None, args=None):
     logger.debug('Creating Firefox runner ...')
     try:
         runner = FirefoxRunner(binary=path, profile=profile,
-                               cmdargs=args, process_args=process_args)
+                               cmdargs=args, process_args=process_args, show_crash_reporter=show_crash_reporter)
         logger.debug('Firefox runner successfully created.')
         logger.debug('Running Firefox with command: "%s"' %
                      ','.join(runner.command))
@@ -1010,7 +1011,7 @@ def reset_mouse():
     hover(Location(0, 0))
 
 
-def restart_firefox(test, path, profile, url, args=None, image=None):
+def restart_firefox(test, path, profile, url, args=None, image=None, show_crash_reporter=False):
     """Restart the app with optional args for profile.
 
     :param test: current test
@@ -1019,15 +1020,17 @@ def restart_firefox(test, path, profile, url, args=None, image=None):
     :param url: URL to be loaded.
     :param args: Optional list of arguments.
     :param image: Image checked to confirm that Firefox has successfully
+    :param show_crash_reporter: Enable or disable Firefox Crash Reporting tool.
     restarted.
     :return: None.
         """
     logger.debug('Restarting firefox ...')
     close_firefox(test)
-    test.firefox_runner = launch_firefox(path, profile, url, args)
+    test.firefox_runner = launch_firefox(path, profile, url, args, show_crash_reporter)
     test.firefox_runner.start()
     confirm_firefox_launch(image)
     logger.debug('Firefox successfully restarted.')
+
 
 
 def restore_firefox_focus():

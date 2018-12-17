@@ -17,7 +17,6 @@ class Test(BaseTest):
     def run(self):
         download_files_list = [DownloadFiles.SMALL_FILE_10MB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
         downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
-        cleanup_list = ['5MB.zip', '10MB.zip']
 
         navigate('https://www.thinkbroadband.com/download')
 
@@ -65,5 +64,6 @@ class Test(BaseTest):
 
     def teardown(self):
         # Cleanup.
+        cleanup_list = ['5MB.zip', '10MB.zip']
         for i in range(len(cleanup_list)):
             downloads_cleanup(cleanup_list[i])
