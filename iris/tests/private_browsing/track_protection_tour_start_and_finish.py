@@ -15,6 +15,15 @@ class Test(BaseTest):
         self.test_suite_id = '1826'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+
+        Override the setup method to use a pre-canned bookmarks profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        return
+
     def run(self):
         see_how_it_works_button_pattern = PrivateWindow.SEE_HOW_IT_WORKS_BUTTON
         next_button_first_tour_step_pattern = LocationBar.NEXT_BUTTON_TOUR_FIRST_STEP
