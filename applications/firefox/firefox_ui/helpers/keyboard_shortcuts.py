@@ -12,11 +12,10 @@ from core.helpers.location import Location
 from core.helpers.os_helpers import OSHelper
 from core.keyboard.key import KeyModifier, Key
 from core.keyboard.keyboard_api import key_down, key_up
-from core.screen.region import click, drag_drop, find, wait,wait_vanish
-
+from core.screen.region import click, drag_drop, find, verify, wait_vanish
 from core.settings import Settings, _Settings
-from firefox_ui.location_bar import LocationBar
-from firefox_ui.menus import SidebarBookmarks
+from applications.firefox.firefox_ui.location_bar import LocationBar
+from applications.firefox.firefox_ui.menus import SidebarBookmarks
 
 logger = logging.getLogger(__name__)
 
@@ -570,13 +569,13 @@ def bookmark_page():
     else:
         type(text='d', modifier=KeyModifier.CTRL)
     try:
-        wait(LocationBar.STAR_BUTTON_STARRED, 10)
+        verify(LocationBar.STAR_BUTTON_STARRED, 10)
         logger.debug('Page was successfully bookmarked')
     except FindError:
         raise APIHelperError('Page can not be bookmarked')
 
 
-def bookmarks_sidebar(option:str):
+def bookmarks_sidebar(option: str):
     """Toggle open/close the bookmarks sidebar."""
     if OSHelper.get_os() == OSPlatform.MAC:
         type(text='b', modifier=KeyModifier.CMD)
@@ -586,7 +585,7 @@ def bookmarks_sidebar(option:str):
     bookmark_sidebar_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
     if option == 'open':
         try:
-            wait(bookmark_sidebar_header_pattern, 10)
+            verify(bookmark_sidebar_header_pattern, 10)
             logger.debug('Sidebar is opened.')
         except FindError:
             raise APIHelperError('Sidebar is NOT present on the page, aborting.')
