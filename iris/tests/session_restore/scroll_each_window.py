@@ -104,7 +104,7 @@ class Test(BaseTest):
         self.firefox_runner.start()
         wait_for_firefox_restart()
 
-        if Settings.is_linux:
+        if Settings.is_linux():
             click_window_control('maximize')
 
         click_hamburger_menu_option("Restore Previous Session")
