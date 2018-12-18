@@ -23,6 +23,9 @@ class Test(BaseTest):
         """
         BaseTest.setup(self)
         self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
         return
 
     def run(self):
@@ -89,3 +92,8 @@ class Test(BaseTest):
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
         expected = exists(DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, 10)
         assert_true(self, expected, 'There are no downloads displayed in the Downloads Panel.')
+
+    def teardown(self):
+        # Cleanup.
+        path = IrisCore.get_downloads_dir()
+        downloads_cleanup(path)
