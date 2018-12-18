@@ -23,6 +23,7 @@ class Test(BaseTest):
         change_preference("devtools.chrome.enabled", True)
 
         open_browser_console()
+        time.sleep(DEFAULT_UI_DELAY)
         paste("window.resizeTo(800, 500)")
         type(Key.ENTER)
 
