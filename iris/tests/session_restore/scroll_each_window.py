@@ -27,7 +27,7 @@ class Test(BaseTest):
 
         open_browser_console()
         time.sleep(DEFAULT_SYSTEM_DELAY)
-        paste("window.resizeTo(900, 500)")
+        paste("window.resizeTo(800, 500)")
         time.sleep(DEFAULT_SYSTEM_DELAY)
         type(Key.ENTER)
 
