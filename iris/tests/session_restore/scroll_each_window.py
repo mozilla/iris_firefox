@@ -104,8 +104,14 @@ class Test(BaseTest):
         self.firefox_runner.start()
         wait_for_firefox_restart()
 
+        if Settings.is_linux:
+            click_window_control('maximize')
+
         click_hamburger_menu_option("Restore Previous Session")
         time.sleep(DEFAULT_SYSTEM_DELAY)
+
+        if Settings.is_linux:
+            type('`', KeyModifier.ALT)
 
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
         assert_true(self, firefox_tab_exists, 'Firefox tab exists after restart.')
