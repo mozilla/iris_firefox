@@ -11,6 +11,7 @@ from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
+from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import Screen
@@ -213,6 +214,19 @@ def close_window_control(window_type):
             click(MainWindow.HOVERED_MAIN_RED_CONTROL)
         else:
             click(MainWindow.CLOSE_BUTTON)
+
+
+def close_content_blocking_pop_up():
+    """Closes the content blocking pop up"""
+    if exists(ContentBlocking.POP_UP_ENABLED, 10):
+        try:
+            wait(ContentBlocking.CLOSE_CB_POP_UP, 5)
+            logger.debug('Content blocking pop can be closed.')
+            click(ContentBlocking.CLOSE_CB_POP_UP)
+        except FindError:
+            raise FindError('Content blocking pop up can\'t be closed, aborting.')
+    else:
+        raise FindError('Content blocking pop up is not enabled, aborting.')
 
 
 def confirm_close_multiple_tabs():

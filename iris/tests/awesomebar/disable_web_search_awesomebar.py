@@ -31,6 +31,8 @@ class Test(BaseTest):
 
         navigate('www.amazon.com')
 
+        close_content_blocking_pop_up()
+
         expected = exists(amazon_logo_pattern, 10)
         assert_true(self, expected, 'Page successfully loaded, amazon logo found.')
 
