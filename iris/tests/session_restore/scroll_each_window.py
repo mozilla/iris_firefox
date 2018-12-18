@@ -16,15 +16,19 @@ class Test(BaseTest):
         firefox_tab_scrolled_pattern = Pattern("firefox_tab_scrolled.png")
         focus_tab_scrolled_pattern = Pattern("focus_tab_scrolled.png")
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
-        hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png')
+        if Settings.get_os() != "osx":
+            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png')
 
         change_preference("devtools.chrome.enabled", True)
 
-        minimize_window()
+        # minimize_window()
         open_browser_console()
-        paste("window.resizeTo(700, 500)")
+        paste("window.resizeTo(800, 500)")
         type(Key.ENTER)
-        click_window_control("close")
+        if Settings.get_os() == "osx":
+            type('w', KeyModifier.CMD)
+        else:
+            click_window_control("close")
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -82,13 +86,16 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY)
 
         # Exit doesn't work from method click_hamburger_menu
-        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, 20)
-        assert_true(self, hamburger_menu_button_exists, 'Hamburger button exists.')
-        click(hamburger_menu_button_pattern)
+        if Settings.get_os() == "osx":
+            type('q', KeyModifier.CMD)
+        else:
+            hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, 20)
+            assert_true(self, hamburger_menu_button_exists, 'Hamburger button exists.')
+            click(hamburger_menu_button_pattern)
 
-        hamburger_menu_quit_item_exists = exists(hamburger_menu_quit_item_pattern, 20)
-        assert_true(self, hamburger_menu_quit_item_exists, 'Hamburger menu exit item exists.')
-        click(hamburger_menu_quit_item_pattern)
+            hamburger_menu_quit_item_exists = exists(hamburger_menu_quit_item_pattern, 20)
+            assert_true(self, hamburger_menu_quit_item_exists, 'Hamburger menu exit item exists.')
+            click(hamburger_menu_quit_item_pattern)
 
         close_firefox(self)
         self.firefox_runner = launch_firefox(
