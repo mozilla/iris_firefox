@@ -16,16 +16,17 @@ class Test(BaseTest):
         firefox_tab_scrolled_pattern = Pattern("firefox_tab_scrolled.png")
         focus_tab_scrolled_pattern = Pattern("focus_tab_scrolled.png")
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
-        if Settings.get_os() != "osx":
+
+        if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png')
 
         change_preference("devtools.chrome.enabled", True)
 
-        # resize
         open_browser_console()
         paste("window.resizeTo(800, 500)")
         type(Key.ENTER)
-        if Settings.get_os() == "osx":
+
+        if Settings.is_mac():
             type('w', KeyModifier.CMD)
         if Settings.is_windows():
             type(Key.TAB, KeyModifier.ALT)
@@ -55,11 +56,13 @@ class Test(BaseTest):
                                            y=(focus_tab_location_before.y + SCREEN_HEIGHT / 10))
 
         drag_drop(focus_tab_location_before, focus_tab_drop_location, duration=0.5)
+
         focus_content_exists = exists(LocalWeb.FOCUS_LOGO)
         assert_true(self, focus_content_exists, 'Focus content is visible.')
-        click(LocalWeb.FOCUS_LOGO)
 
+        click(LocalWeb.FOCUS_LOGO)
         repeat_key_down(5)
+
         focus_tab_scrolled = exists(focus_tab_scrolled_pattern, 20)
         assert_true(self, focus_tab_scrolled, 'Focus tab scrolled.')
 
@@ -71,11 +74,13 @@ class Test(BaseTest):
                                              y=(firefox_tab_location_before.y + SCREEN_HEIGHT / 6))
 
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
+
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, firefox_content_exists, 'Firefox content is visible.')
-        click(LocalWeb.FIREFOX_LOGO)
 
+        click(LocalWeb.FIREFOX_LOGO)
         repeat_key_down(5)
+
         firefox_tab_scrolled = exists(firefox_tab_scrolled_pattern, 20)
         assert_true(self, firefox_tab_scrolled, 'Firefox tab scrolled.')
 
@@ -84,8 +89,7 @@ class Test(BaseTest):
 
         time.sleep(DEFAULT_UI_DELAY)
 
-        # Exit doesn't work from method click_hamburger_menu
-        if Settings.get_os() == "osx":
+        if Settings.is_mac():
             type('q', KeyModifier.CMD)
         else:
             hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, 20)
@@ -96,13 +100,10 @@ class Test(BaseTest):
             assert_true(self, hamburger_menu_quit_item_exists, 'Hamburger menu exit item exists.')
             click(hamburger_menu_quit_item_pattern)
 
-        close_firefox(self)
-        self.firefox_runner = launch_firefox(
-            self.browser.path,
-            self.profile_path,
-            self.base_local_web_url)
-        self.firefox_runner.start()
-        wait_for_firefox_restart()
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        self.base_local_web_url)
 
         if Settings.is_linux():
             click_window_control('maximize')
@@ -110,7 +111,7 @@ class Test(BaseTest):
         click_hamburger_menu_option("Restore Previous Session")
         time.sleep(DEFAULT_SYSTEM_DELAY)
 
-        if Settings.is_linux:
+        if Settings.is_linux():
             type('`', KeyModifier.ALT)
 
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
@@ -134,6 +135,7 @@ class Test(BaseTest):
 
         focus_top_content_not_exists = not exists(LocalWeb.FOCUS_LOGO)
         assert_true(self, focus_top_content_not_exists, 'top content is not on screen, ')
+
         focus_tab_scrolled_content_exists = exists(focus_tab_scrolled_pattern, 20)
         assert_true(self, focus_tab_scrolled_content_exists, 'tab content is scrolled.')
 
