@@ -5,7 +5,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Scroll position is saved in each window"
+        self.meta = 'Scroll position is saved in each window'
         self.test_case_id = '114827'
         self.test_suite_id = '68'
         self.locales = ['en-US']
@@ -65,8 +65,6 @@ class Test(BaseTest):
 
         focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, 20)
         assert_true(self, focus_test_site_tab_exists, 'Focus tab exists after drag-n-drop.')
-        focus_tab_location_after = find(focus_test_site_tab_pattern)
-        focus_tab_location_after_coordinates = (focus_tab_location_after.x, focus_tab_location_after.y)
 
         # Drag-n-drop Firefox tab
         firefox_tab_drop_location = Location(x=firefox_tab_location_before.x,
@@ -74,7 +72,7 @@ class Test(BaseTest):
 
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO)
-        assert_true(self, firefox_content_exists, 'Focus content is visible.')
+        assert_true(self, firefox_content_exists, 'Firefox content is visible.')
         click(LocalWeb.FIREFOX_LOGO)
 
         repeat_key_down(5)
@@ -83,8 +81,6 @@ class Test(BaseTest):
 
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
         assert_true(self, firefox_tab_exists, 'Firefox tab is active.')
-        firefox_tab_location_after = find(firefox_test_site_tab_pattern)
-        firefox_tab_location_after_coordinates = (firefox_tab_location_after.x, firefox_tab_location_after.y)
 
         time.sleep(DEFAULT_UI_DELAY)
 
@@ -112,13 +108,13 @@ class Test(BaseTest):
         time.sleep(DEFAULT_SYSTEM_DELAY)
 
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
-        assert_true(self, firefox_tab_exists, 'Firefox tab is active after restart.')
+        assert_true(self, firefox_tab_exists, 'Firefox tab exists after restart.')
 
-        firefox_tab_location_restarted = find(firefox_test_site_tab_pattern)
-        firefox_tab_location_restarted_coordinates = (firefox_tab_location_restarted.x, firefox_tab_location_restarted.y)
-        assert_equal(self, firefox_tab_location_restarted_coordinates, firefox_tab_location_after_coordinates,
-                     'Restarted Firefox window has same position and ')
+        firefox_tab_restarted = exists(firefox_test_site_tab_pattern)
+        assert_true(self, firefox_tab_restarted, 'Firefox window is restored and ')
 
+        firefox_top_content_not_exists = not exists(LocalWeb.FIREFOX_LOGO)
+        assert_true(self, firefox_top_content_not_exists, 'top content is not on screen,')
         firefox_tab_scrolled_content_exists = exists(firefox_tab_scrolled_pattern, 20)
         assert_true(self, firefox_tab_scrolled_content_exists, 'tab content is scrolled.')
 
@@ -127,11 +123,11 @@ class Test(BaseTest):
         focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, 20)
         assert_true(self, focus_test_site_tab_exists, 'Focus tab exists after restart.')
 
-        focus_tab_location_restarted = find(focus_test_site_tab_pattern)
-        focus_tab_location_restarted_coordinates = (focus_tab_location_restarted.x, focus_tab_location_restarted.y)
-        assert_equal(self, focus_tab_location_after_coordinates, focus_tab_location_restarted_coordinates,
-                     'Restarted Focus window has same position and ')
+        focus_tab_restarted = exists(focus_test_site_tab_pattern)
+        assert_true(self, focus_tab_restarted, 'Focus window is restored and ')
 
+        focus_top_content_not_exists = not exists(LocalWeb.FOCUS_LOGO)
+        assert_true(self, focus_top_content_not_exists, 'top content is not on screen, ')
         focus_tab_scrolled_content_exists = exists(focus_tab_scrolled_pattern, 20)
         assert_true(self, focus_tab_scrolled_content_exists, 'tab content is scrolled.')
 
