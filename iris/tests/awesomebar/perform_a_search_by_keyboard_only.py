@@ -57,6 +57,8 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
+        close_content_blocking_pop_up()
+
         expected = region.exists(google_search_results_moz_pattern_pattern, 10)
         assert_true(self, expected, 'Search results performed with \'Google\' search engine.')
 
