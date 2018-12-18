@@ -22,18 +22,19 @@ class Test(BaseTest):
 
         change_preference("devtools.chrome.enabled", True)
 
+        if not Settings.is_mac():
+            minimize_window()
+
         open_browser_console()
-        time.sleep(DEFAULT_UI_DELAY)
-        paste("window.resizeTo(800, 500)")
+        time.sleep(DEFAULT_SYSTEM_DELAY)
+        paste("window.resizeTo(900, 500)")
+        time.sleep(DEFAULT_SYSTEM_DELAY)
         type(Key.ENTER)
 
-        if Settings.is_mac():
-            type('w', KeyModifier.CMD)
-        if Settings.is_windows():
-            type(Key.TAB, KeyModifier.ALT)
-            type('w', KeyModifier.CTRL)
+        if not Settings.is_mac():
+            click_window_control('close')
         else:
-            type('w', KeyModifier.CTRL)
+            type('w', KeyModifier.CMD)
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
