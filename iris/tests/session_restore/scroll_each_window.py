@@ -21,14 +21,17 @@ class Test(BaseTest):
 
         change_preference("devtools.chrome.enabled", True)
 
-        # minimize_window()
+        # resize
         open_browser_console()
         paste("window.resizeTo(800, 500)")
         type(Key.ENTER)
         if Settings.get_os() == "osx":
             type('w', KeyModifier.CMD)
+        if Settings.is_windows():
+            type(Key.TAB, KeyModifier.ALT)
+            type('w', KeyModifier.CTRL)
         else:
-            click_window_control("close")
+            type('w', KeyModifier.CTRL)
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -67,7 +70,7 @@ class Test(BaseTest):
 
         # Drag-n-drop Firefox tab
         firefox_tab_drop_location = Location(x=firefox_tab_location_before.x,
-                   y=(firefox_tab_location_before.y + SCREEN_HEIGHT / 6))
+                                             y=(firefox_tab_location_before.y + SCREEN_HEIGHT / 6))
 
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO)
@@ -106,7 +109,6 @@ class Test(BaseTest):
         wait_for_firefox_restart()
 
         click_hamburger_menu_option("Restore Previous Session")
-
         time.sleep(DEFAULT_SYSTEM_DELAY)
 
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
