@@ -59,6 +59,4 @@ class Test(BaseTest):
         click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
 
     def teardown(self):
-        # Cleanup.
-        path = IrisCore.get_downloads_dir()
-        downloads_cleanup(path)
+        downloads_cleanup()

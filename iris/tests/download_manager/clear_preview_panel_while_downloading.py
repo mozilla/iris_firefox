@@ -59,6 +59,4 @@ class Test(BaseTest):
         click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
 
     def teardown(self):
-        # Cleanup.
-        path = IrisCore.get_downloads_dir()
-        downloads_cleanup(path)
+        downloads_cleanup()
