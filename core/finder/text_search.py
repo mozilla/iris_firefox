@@ -112,7 +112,6 @@ class TextSearch:
 
     @staticmethod
     def image_to_string(image_processing, region=None, image=None):
-
         if image is None:
             stack_image = ScreenshotImage(region).get_gray_image()
         else:
@@ -134,6 +133,8 @@ class TextSearch:
         dpi_factor = max(1, int(1800 / length_x))
 
         final_data, debug_data = [], []
+        is_uhd = OSHelper.is_high_def_display()
+        uhd_factor = OSHelper.get_display_factor()
 
         for line in processed_data.split('\n'):
             try:
@@ -149,18 +150,29 @@ class TextSearch:
                                     }
                     debug_data.append(virtual_data)
 
+                    left_offset, top_offset = 0, 0
+                    scale_divider = uhd_factor if is_uhd else 1
+
                     if region is not None:
-                        left_offset, top_offset = 0, 0
                         left_offset = region.x
                         top_offset = region.y
 
-                        # Scale down coordinates since actual screen has different dpi
+                    # Scale down coordinates since actual screen has different dpi
+                    if image_processing:
                         screen_data = copy.deepcopy(virtual_data)
-                        screen_data['x'] = screen_data['x'] / dpi_factor / 1 + left_offset
-                        screen_data['y'] = screen_data['y'] / dpi_factor / 1 + top_offset
-                        screen_data['width'] = screen_data['width'] / dpi_factor / 1
-                        screen_data['height'] = screen_data['height'] / dpi_factor / 1
+                        screen_data['x'] = screen_data['x'] / dpi_factor / scale_divider + left_offset
+                        screen_data['y'] = screen_data['y'] / dpi_factor / scale_divider + top_offset
+                        screen_data['width'] = screen_data['width'] / dpi_factor / scale_divider
+                        screen_data['height'] = screen_data['height'] / dpi_factor / scale_divider
                         final_data.append(screen_data)
+                    else:
+                        if scale_divider >= 1:
+                            screen_data = copy.deepcopy(virtual_data)
+                            screen_data['x'] = screen_data['x'] / scale_divider
+                            screen_data['y'] = screen_data['y'] / scale_divider
+                            screen_data['width'] = screen_data['width'] / scale_divider
+                            screen_data['height'] = screen_data['height'] / scale_divider
+                            final_data.append(screen_data)
             except Exception:
                 continue
 

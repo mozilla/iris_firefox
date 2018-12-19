@@ -28,6 +28,13 @@ class OSHelper:
         return False
 
     @staticmethod
+    def get_display_factor():
+        main_display = MONITORS[0]
+        screenshot = mss.mss().grab(main_display)
+        display_factor = screenshot.width / screenshot.height
+        return display_factor
+
+    @staticmethod
     def get_os():
         """Get the type of the operating system your script is running on."""
         if OS_NAME == 'win':
