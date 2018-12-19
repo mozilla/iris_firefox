@@ -23,6 +23,7 @@ class Test(BaseTest):
         console_output_height_400 = Pattern("console_output_height_400.png")
         console_output_width_600 = Pattern("console_output_width_600.png")
         console_output_width_1000 = Pattern("console_output_width_1000.png")
+
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern("hamburger_menu_quit_item.png")
 
@@ -33,6 +34,7 @@ class Test(BaseTest):
         iris_tab_on_start_position = find(iris_pattern)
         drag_drop(iris_tab_on_start_position, default_window_location)
         maximize_window()
+
         change_preference("devtools.chrome.enabled", True)
 
         new_tab()
@@ -50,9 +52,11 @@ class Test(BaseTest):
 
         if not Settings.is_mac():
             minimize_window()
+
         open_browser_console()
         paste('window.resizeTo(1000, 400)')
         type(Key.ENTER)
+
         if not Settings.is_mac():
             click_window_control('close')
         else:
@@ -62,6 +66,7 @@ class Test(BaseTest):
         assert_true(self,
                     tabs_located_after_size_changed,
                     "Tabs located after unmaximizing")
+
         default_tabs_position = find(focus_test_site_tab_pattern)
 
         default_tabs_region = Region(0,
@@ -83,6 +88,7 @@ class Test(BaseTest):
         assert_true(self,
                     tab_two_relocated and active_tab_switched,
                     "Second tab relocated")
+
         tab_one_location = find(firefox_test_site_tab_pattern)
 
         tab_one_drop_location = Location(x=(tab_one_location.x + SCREEN_WIDTH / 5),
@@ -188,6 +194,7 @@ class Test(BaseTest):
         paste("window.innerHeight")
         type(Key.ENTER)
         focus_site_window_height_matched = exists(console_output_height_400)
+
         paste("window.innerWidth")
         type(Key.ENTER)
         focus_site_window_width_matched = exists(console_output_width_600)
@@ -201,12 +208,14 @@ class Test(BaseTest):
         paste("window.innerHeight")
         type(Key.ENTER)
         iris_window_height_matched = exists(console_output_height_400)
+
         paste("window.innerWidth")
         type(Key.ENTER)
         iris_window_width_matched = exists(console_output_width_1000)
         assert_true(self,
                     iris_window_height_matched and iris_window_width_matched,
                     "Iris window size matched")
+
         click_window_control("close")
 
         close_window()
