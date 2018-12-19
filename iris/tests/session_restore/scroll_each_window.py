@@ -16,6 +16,7 @@ class Test(BaseTest):
         firefox_tab_scrolled_pattern = Pattern("firefox_tab_scrolled.png")
         focus_tab_scrolled_pattern = Pattern("focus_tab_scrolled.png")
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
+        restore_previous_session_pattern = Pattern("restore_previous_session_item.png")
 
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png')
@@ -58,11 +59,12 @@ class Test(BaseTest):
                                            y=(SCREEN_HEIGHT / 2))
 
         drag_drop(focus_tab_location_before, focus_tab_drop_location, duration=0.5)
+        time.sleep(DEFAULT_UI_DELAY)
 
         focus_content_exists = exists(LocalWeb.FOCUS_LOGO)
         assert_true(self, focus_content_exists, 'Focus content is visible.')
 
-        click(LocalWeb.FOCUS_LOGO)
+        click(focus_test_site_tab_pattern.target_offset(0, 100))
         repeat_key_down(5)
 
         focus_tab_scrolled = exists(focus_tab_scrolled_pattern, 20)
@@ -76,11 +78,12 @@ class Test(BaseTest):
                                              y=50)
 
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
+        time.sleep(DEFAULT_UI_DELAY)
 
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, firefox_content_exists, 'Firefox content is visible.')
 
-        click(LocalWeb.FIREFOX_LOGO)
+        click(firefox_test_site_tab_pattern.target_offset(0, 100))
         repeat_key_down(5)
 
         firefox_tab_scrolled = exists(firefox_tab_scrolled_pattern, 20)
@@ -110,7 +113,12 @@ class Test(BaseTest):
         if Settings.is_linux():
             click_window_control('maximize')
 
-        click_hamburger_menu_option("Restore Previous Session")
+        click(NavBar.HAMBURGER_MENU)
+        restore_previous_session_exists = exists(restore_previous_session_pattern, 20)
+        assert_true(self, restore_previous_session_exists, "'Restore previous session' item located")
+
+        click(restore_previous_session_pattern)
+
         time.sleep(DEFAULT_SYSTEM_DELAY)
 
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
