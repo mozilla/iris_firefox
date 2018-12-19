@@ -11,24 +11,24 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        firefox_test_site_tab_pattern = Pattern("firefox_test_site_tab.png")
-        focus_test_site_tab_pattern = Pattern("focus_test_site_tab.png")
-        firefox_tab_scrolled_pattern = Pattern("firefox_tab_scrolled.png")
-        focus_tab_scrolled_pattern = Pattern("focus_tab_scrolled.png")
+        firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png')
+        focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png')
+        firefox_tab_scrolled_pattern = Pattern('firefox_tab_scrolled.png')
+        focus_tab_scrolled_pattern = Pattern('focus_tab_scrolled.png')
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
-        restore_previous_session_pattern = Pattern("restore_previous_session_item.png")
+        restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
 
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png')
 
-        change_preference("devtools.chrome.enabled", True)
+        change_preference('devtools.chrome.enabled', True)
 
         if not Settings.is_mac():
             minimize_window()
 
         open_browser_console()
         time.sleep(DEFAULT_SYSTEM_DELAY)
-        paste("window.resizeTo(800, 450)")
+        paste('window.resizeTo(800, 450)')
         time.sleep(DEFAULT_SYSTEM_DELAY)
         type(Key.ENTER)
 
@@ -41,14 +41,14 @@ class Test(BaseTest):
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
         tab_one_loaded = exists(LocalWeb.FIREFOX_LOGO, 20)
-        assert_true(self, tab_one_loaded, "First tab loaded")
+        assert_true(self, tab_one_loaded, 'First tab loaded')
         firefox_tab_location_before = find(firefox_test_site_tab_pattern)
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
         tab_two_loaded = exists(LocalWeb.FOCUS_LOGO, 20)
-        assert_true(self, tab_two_loaded, "Second tab loaded")
+        assert_true(self, tab_two_loaded, 'Second tab loaded')
         focus_tab_location_before = find(focus_test_site_tab_pattern)
 
         focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, 20)
@@ -115,7 +115,7 @@ class Test(BaseTest):
 
         click(NavBar.HAMBURGER_MENU)
         restore_previous_session_exists = exists(restore_previous_session_pattern, 20)
-        assert_true(self, restore_previous_session_exists, "'Restore previous session' item located")
+        assert_true(self, restore_previous_session_exists, '\'Restore previous session\' item located')
 
         click(restore_previous_session_pattern)
 
