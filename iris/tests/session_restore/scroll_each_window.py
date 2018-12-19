@@ -15,7 +15,6 @@ class Test(BaseTest):
         focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png')
         firefox_tab_scrolled_pattern = Pattern('firefox_tab_scrolled.png')
         focus_tab_scrolled_pattern = Pattern('focus_tab_scrolled.png')
-        hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
 
         change_preference('devtools.chrome.enabled', True)
