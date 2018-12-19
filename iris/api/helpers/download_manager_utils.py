@@ -2,10 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import logging
+import shutil
+
 from iris.api.core.errors import FindError, APIHelperError
 from iris.api.core.mouse import click
-from iris.api.core.region import wait, exists, Pattern, logger, shutil
+from iris.api.core.pattern import Pattern
+from iris.api.core.region import wait, exists
+from iris.api.core.util.core_helper import IrisCore
 from iris.api.helpers.keyboard_shortcuts import scroll_down
+
+logger = logging.getLogger(__name__)
 
 
 class DownloadFiles(object):
@@ -64,5 +71,6 @@ def download_file(file_to_download, accept_download):
         raise APIHelperError('The OK button is not found in the page.')
 
 
-def downloads_cleanup(path):
+def downloads_cleanup():
+    path = IrisCore.get_downloads_dir()
     shutil.rmtree(path)

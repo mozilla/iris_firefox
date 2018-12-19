@@ -94,6 +94,4 @@ class Test(BaseTest):
         assert_true(self, expected, 'There are no downloads displayed in the Downloads Panel.')
 
     def teardown(self):
-        # Cleanup.
-        path = IrisCore.get_downloads_dir()
-        downloads_cleanup(path)
+        downloads_cleanup()
