@@ -75,7 +75,7 @@ class Test(BaseTest):
 
         # Drag-n-drop Firefox tab
         firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2),
-                                             y=50)
+                                             y=150)
 
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
         time.sleep(DEFAULT_UI_DELAY)
@@ -93,17 +93,6 @@ class Test(BaseTest):
         assert_true(self, firefox_tab_exists, 'Firefox tab is active.')
 
         time.sleep(DEFAULT_UI_DELAY)
-
-        if Settings.is_mac():
-            type('q', KeyModifier.CMD)
-        else:
-            hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, 20)
-            assert_true(self, hamburger_menu_button_exists, 'Hamburger button exists.')
-            click(hamburger_menu_button_pattern)
-
-            hamburger_menu_quit_item_exists = exists(hamburger_menu_quit_item_pattern, 20)
-            assert_true(self, hamburger_menu_quit_item_exists, 'Hamburger menu exit item exists.')
-            click(hamburger_menu_quit_item_pattern)
 
         restart_firefox(self,
                         self.browser.path,
