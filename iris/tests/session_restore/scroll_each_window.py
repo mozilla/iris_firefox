@@ -27,7 +27,7 @@ class Test(BaseTest):
 
         open_browser_console()
         time.sleep(DEFAULT_SYSTEM_DELAY)
-        paste("window.resizeTo(800, 500)")
+        paste("window.resizeTo(800, 450)")
         time.sleep(DEFAULT_SYSTEM_DELAY)
         type(Key.ENTER)
 
@@ -54,8 +54,8 @@ class Test(BaseTest):
         assert_true(self, focus_test_site_tab_exists, 'Focus site tab is active.')
 
         # Drag-n-drop Focus tab
-        focus_tab_drop_location = Location(x=focus_tab_location_before.x,
-                                           y=(focus_tab_location_before.y + SCREEN_HEIGHT / 10))
+        focus_tab_drop_location = Location(x=50,
+                                           y=(SCREEN_HEIGHT / 2))
 
         drag_drop(focus_tab_location_before, focus_tab_drop_location, duration=0.5)
 
@@ -72,8 +72,8 @@ class Test(BaseTest):
         assert_true(self, focus_test_site_tab_exists, 'Focus tab exists after drag-n-drop.')
 
         # Drag-n-drop Firefox tab
-        firefox_tab_drop_location = Location(x=firefox_tab_location_before.x,
-                                             y=(firefox_tab_location_before.y + SCREEN_HEIGHT / 6))
+        firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2),
+                                             y=50)
 
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
 
@@ -112,9 +112,6 @@ class Test(BaseTest):
 
         click_hamburger_menu_option("Restore Previous Session")
         time.sleep(DEFAULT_SYSTEM_DELAY)
-
-        if Settings.is_linux():
-            type('`', KeyModifier.ALT)
 
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
         assert_true(self, firefox_tab_exists, 'Firefox tab exists after restart.')
