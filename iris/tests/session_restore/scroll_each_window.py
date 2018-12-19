@@ -18,9 +18,6 @@ class Test(BaseTest):
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
 
-        if not Settings.is_mac():
-            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png')
-
         change_preference('devtools.chrome.enabled', True)
 
         if not Settings.is_mac():
@@ -93,6 +90,9 @@ class Test(BaseTest):
         assert_true(self, firefox_tab_exists, 'Firefox tab is active.')
 
         time.sleep(DEFAULT_UI_DELAY)
+
+        if Settings.is_windows():
+            type(text='q', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
         restart_firefox(self,
                         self.browser.path,
