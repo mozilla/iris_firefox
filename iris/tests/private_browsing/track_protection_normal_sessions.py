@@ -43,7 +43,7 @@ class Test(BaseTest):
         if do_not_track_always_selected_displayed:
             click(do_not_track_always_unselected_pattern)
         else:
-            raise FindError('Can not find "Always" option from the Tracking Protection')
+            raise FindError('Can not find "Always" option from the Send websites a “Do Not Track” signal')
 
         if not Settings.is_mac():
             privacy_and_security_tab_displayed = exists(privacy_and_security_tab_pattern, 3)
