@@ -21,6 +21,8 @@ class DownloadManager(object):
     class Downloads(object):
         SHOW_DOWNLOADS_FOLDER = Pattern('appMenu-library-downloads-show-button_show_downloads_folder.png')
         PANEL_HEADER_DOWNLOADS = Pattern('panel_header_downloads.png')
+        FILE_MOVED_OR_MISSING = Pattern('file_moved_or_missing.png')
+        EXTRA_SMALL_FILE_5MB_ZIP = Pattern('5MB_zip.png')
 
     class AboutDownloads(object):
         NO_DOWNLOADS = Pattern('there_are_no_downloads.png')

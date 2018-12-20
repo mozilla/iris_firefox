@@ -219,6 +219,17 @@ def edit_delete():
     type(text=Key.DELETE)
 
 
+def delete_selected_file():
+    """Delete selected file/files inside a folder."""
+    if Settings.get_os() == Platform.MAC:
+        type(text=Key.BACKSPACE, modifier=KeyModifier.CMD)
+    elif Settings.get_os_version() == 'win7':
+        type(text=Key.DELETE)
+        type(text='y')
+    else:
+        type(text=Key.DELETE)
+
+
 def edit_paste():
     """Paste contents of the clipboard to the focused text field."""
     if Settings.get_os() == Platform.MAC:
