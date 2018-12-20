@@ -14,6 +14,8 @@ class Test(BaseTest):
         self.test_case_id = '99481'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
+        self.exclude = Platform.LINUX
+        self.blocked_by = '1513494'
 
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
@@ -38,10 +40,7 @@ class Test(BaseTest):
         expected = exists(DownloadFiles.FOLDER_VIEW_5MB_HIGHLIGHTED, 10)
         assert_true(self, expected, 'Downloaded file is found.')
 
-        # Delete selected file.
-        edit_delete()
-        if Settings.get_os_version() == 'win7':
-            type(text='y')
+        delete_selected_file()
 
         try:
             expected = wait_vanish(DownloadFiles.FOLDER_VIEW_5MB_HIGHLIGHTED, 10)
