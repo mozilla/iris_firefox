@@ -9,9 +9,11 @@ import mozlog
 import mozversion
 from mozdownload import FactoryScraper, errors
 from mozinstall import install, get_binary
+from mozrunner import FirefoxRunner, errors
 
 from applications.firefox.parse_args import parse_args
 from core.enums import Channels
+from core.errors import APIHelperError
 from core.helpers.os_helpers import OSHelper
 from core.helpers.path_manager import PathManager
 
@@ -220,3 +222,39 @@ class FirefoxApp(object):
         """
         new_str = path[path.find('-') + 1: len(path)]
         return new_str[0:new_str.find('-')]
+
+    @staticmethod
+    def launch_firefox(path, profile=None, url=None, args=None, show_crash_reporter=False):
+        """Launch the app with optional args for profile, windows, URI, etc.
+
+        :param path: Firefox path.
+        :param profile: Firefox profile.
+        :param url: URL to be loaded.
+        :param args: Optional list of arguments.
+        :param show_crash_reporter: Enable or disable Firefox Crash Reporting tool.
+        :return: List of Firefox flags.
+        """
+        if args is None:
+            args = []
+
+        if profile is None:
+            raise APIHelperError('No profile name present, aborting run.')
+
+        args.append('-foreground')
+        args.append('-no-remote')
+
+        if url is not None:
+            args.append('-new-tab')
+            args.append(url)
+
+        process_args = {'stream': None}
+        logger.debug('Creating Firefox runner ...')
+        try:
+            runner = FirefoxRunner(binary=path, profile=profile,
+                                   cmdargs=args, process_args=process_args, show_crash_reporter=show_crash_reporter)
+            logger.debug('Firefox runner successfully created.')
+            logger.debug('Running Firefox with command: "%s"' %
+                         ','.join(runner.command))
+            return runner
+        except errors.RunnerNotStartedError:
+            raise APIHelperError('Error creating Firefox runner.')
