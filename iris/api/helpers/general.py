@@ -218,11 +218,13 @@ def close_window_control(window_type):
 
 def close_content_blocking_pop_up():
     """Closes the content blocking pop up"""
-    if exists(ContentBlocking.POP_UP_ENABLED, 10):
+    pop_up_region = Region(0, 100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    if pop_up_region.exists(ContentBlocking.POP_UP_ENABLED, 10):
         try:
-            wait(ContentBlocking.CLOSE_CB_POP_UP, 5)
+            pop_up_region.wait(ContentBlocking.CLOSE_CB_POP_UP, 5)
             logger.debug('Content blocking pop can be closed.')
-            click(ContentBlocking.CLOSE_CB_POP_UP)
+            pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
         except FindError:
             raise FindError('Content blocking pop up can\'t be closed, aborting.')
     else:
