@@ -72,6 +72,6 @@ class LocalWeb(object):
     """CNN Site"""
     CNN_LOGO = Pattern('cnn_logo.png')
     CNN_BLOCKED_CONTENT_ADV = Pattern('cnn_blocked_content.png')
-    CNN_CONTENT_BLOCKING_EXCEPTION = Pattern('cnn_content_blocked_exception.png')
+    # CNN_CONTENT_BLOCKING_EXCEPTION = Pattern('cnn_content_blocked_exception.png')
 
 
