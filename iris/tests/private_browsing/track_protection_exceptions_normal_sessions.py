@@ -10,104 +10,99 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Tracking protection exceptions can be successfully added,' \
+        self.meta = 'Tracking protection exceptions can be successfully added, ' \
                     'remembered and removed from normal browsing session'
         self.test_case_id = '107717'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
 
     def run(self):
-        always_block_trackers_not_selected_pattern = \
+        do_not_track_label_pattern = Pattern('do_not_track_label.png')
+        always_block_tracker_not_selected_pattern = \
             AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
-        privacy_and_security_tab_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
+        privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
+        always_block_tracker_selected_pattern = AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_SELECTED
+        cnn_logo_pattern = LocalWeb.CNN_LOGO
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
-        privacy_prefs_page_pattern = Pattern('about_preferences_privacy_address.png')
-        cnn_site_logo_pattern = LocalWeb.CNN_LOGO
+        tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
+        tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
+        turn_off_blocking_pattern = Pattern('turn_off_blocking_for_this_site.png')
+        manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
+        tracking_protection_panel_pattern = Pattern('tracking_protection_panel_label.png')
+        site_displayed_as_exception_pattern = Pattern('site_displayed_as_exception.png')
+        remove_website_button_pattern = Pattern('remove_website_button.png')
+        save_changes_button_pattern = Pattern('save_changes_button.png')
 
-        # Access the about:preferences#privacy page
         navigate('about:preferences#privacy')
-        privacy_prefs_page_displayed = exists(privacy_prefs_page_pattern, 20)
-        assert_true(self, privacy_prefs_page_displayed, "The privacy preferences page is successfully displayed")
+        navigated_to_preferences = exists(privacy_page_pattern, 10)
+        assert_true(self, navigated_to_preferences, 'The about:preferences#privacy page is successfully displayed.')
+        do_not_track_label_exists = exists(do_not_track_label_pattern, 10)
 
-        # Enable the "Always" option from the Tracking Protection section
-        always_block_trackers_not_selected_displayed = exists(always_block_trackers_not_selected_pattern, 3)
-        if always_block_trackers_not_selected_displayed:
-            click(always_block_trackers_not_selected_pattern)
-        else:
-            raise FindError('Can not find "Always" option from the Tracking Protection')
+        try:
+            click(always_block_tracker_not_selected_pattern, DEFAULT_FX_DELAY)
+            type(Key.TAB)
+            wait(always_block_tracker_selected_pattern, 10)
+        except FindError:
+            raise FindError('Always block is not selected')
+        always_block_tracker_selected_exists = exists(always_block_tracker_selected_pattern, 10)
 
-        privacy_and_security_tab_displayed = exists(privacy_and_security_tab_pattern, 3)
-        if privacy_and_security_tab_displayed:
-            click(privacy_and_security_tab_pattern)
-        else:
-            raise FindError('Can not find "Privacy and Security" tab')
+        if do_not_track_label_exists and always_block_tracker_selected_exists:
+            assert_true(self, always_block_tracker_selected_exists, 'The option is successfully saved.')
 
-        always_block_trackers_selected_displayed = \
-            exists(AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_SELECTED, 3)
-        assert_true(self, always_block_trackers_selected_displayed,
-                    '"Always" option from the Tracking Protection section is enabled')
+        navigate('http://edition.cnn.com/')
+        cnn_logo_exists = exists(cnn_logo_pattern, 80)
+        tracking_protection_shield_exists = exists(tracking_protection_shield_pattern, 20)
 
-        # Access the website
-        new_tab()
-        navigate('https://edition.cnn.com')
+        assert_true(self, cnn_logo_exists,
+                    'The website is successfully displayed.')
+        assert_true(self, tracking_protection_shield_exists,
+                    'The Tracking protection shield is displayed near the address bar.')
 
-        website_displayed = exists(cnn_site_logo_pattern, 30)
-        assert_true(self, website_displayed, 'The Website is successfully displayed')
+        shield_location = find(tracking_protection_shield_pattern)
 
-        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern, 10)
-        assert_true(self, tracking_protection_shield_displayed,
-                    'The Tracking Protection shield is displayed near the address bar')
+        click(shield_location, DEFAULT_FX_DELAY)
+        turn_off_blocking_exists = exists(turn_off_blocking_pattern, 40)
+        if turn_off_blocking_exists:
+            click(turn_off_blocking_pattern, DEFAULT_FX_DELAY)
 
-        # Click the tracking protection shield icon
-        click(tracking_protection_shield_pattern)
-        disable_blocking_button_displayed = exists(SiteInformationPanel.DISABLE_BLOCKING_BUTTON, 5)
-        assert_true(self, disable_blocking_button_displayed, 'The site information panel is displayed')
+        tracking_protection_shield_deactivated_exists = exists(tracking_protection_shield_deactivated_pattern, 40)
+        assert_true(self, tracking_protection_shield_deactivated_exists,
+                    'The tracking protection shield is displayed as deactivated (red strikethrough).')
 
-        # Click the "Disable protection for this session" option
-        click(SiteInformationPanel.DISABLE_BLOCKING_BUTTON)
-        website_displayed = exists(cnn_site_logo_pattern, 30)
-        assert_true(self, website_displayed, 'The website successfully refreshes')
+        hover(tracking_protection_shield_deactivated_pattern, 40)
+        tracking_content_detected_exists = exists(tracking_content_detected_pattern, 40)
+        assert_true(self, tracking_content_detected_exists,
+                    'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message. '
+                    'Websites content that contain tracking elements is displayed on the page.')
 
-        tracking_protection_shield_deactivated_displayed = exists(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED, 5)
-        assert_true(self, tracking_protection_shield_deactivated_displayed,
-                    'The tracking protection shield is displayed as deactivated')
+        navigate('about:preferences#privacy')
+        navigated_to_preferences = exists(privacy_page_pattern, 40)
+        assert_true(self, navigated_to_preferences,
+                    'The about:preferences#privacy page is successfully displayed.')
 
-        mouse_move(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
+        click(manage_exceptions_button_pattern, DEFAULT_FX_DELAY)
+        tracking_protection_panel_exists = exists(tracking_protection_panel_pattern, 40)
+        assert_true(self, tracking_protection_panel_exists,
+                    'The Tracking Protection panel is successfully displayed.')
 
-        tracking_content_detected_message_displayed = exists(LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE, 5)
-        assert_true(self, tracking_content_detected_message_displayed,
-                    'The tracking protection shield displays a "Tracking content detected" tooltip message')
+        site_displayed_as_exception_exists = exists(site_displayed_as_exception_pattern, 40)
+        assert_true(self, site_displayed_as_exception_exists,
+                    'The previously accessed website is displayed as exception inside the panel.')
 
-        cnn_blocked_content_displayed = exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 30)
-        assert_true(self, cnn_blocked_content_displayed,
-                    'Websites content that contain tracking elements are displayed on the page')
+        try:
+            click(remove_website_button_pattern, DEFAULT_FX_DELAY)
+            site_displayed_as_exception_not_exists = wait_vanish(site_displayed_as_exception_pattern, 40)
+            click(save_changes_button_pattern, DEFAULT_FX_DELAY)
+            assert_true(self, site_displayed_as_exception_not_exists,
+                        'The website is successfully removed from the panel.')
+        except FindError:
+            raise FindError('Previous site still exists')
 
-        #  Access the about:preferences#privacy page.
-        previous_tab()
-        privacy_prefs_page_displayed = exists(privacy_prefs_page_pattern, 20)
-        assert_true(self, privacy_prefs_page_displayed, "The privacy preferences page is successfully displayed")
+        navigate('http://edition.cnn.com/')
+        cnn_logo_exists = exists(cnn_logo_pattern, 80)
+        tracking_protection_shield_exists = exists(tracking_protection_shield_pattern, 20)
 
-        #  Click the "Exceptions" button from the Tracking protection section.
-        click(AboutPreferences.Privacy.TRACKING_PROTECTION_EXCEPTIONS_BUTTON)
-        track_protection_panel_displayed = exists(AboutPreferences.Privacy.Exceptions.EXCEPTIONS_CONTENT_BLOCKING_LABEL)
-        assert_true(self, track_protection_panel_displayed, "The Tracking Protection panel is successfully displayed.")
+        assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
 
-        previously_accessed_site_displayed = exists(LocalWeb.CNN_CONTENT_BLOCKING_EXCEPTION)
-        assert_true(self, previously_accessed_site_displayed,
-                    "The previously accessed website is displayed as exception inside the panel.")
-
-        # Click the "Remove Website" button and the "Save Changes"
-        click(AboutPreferences.Privacy.Exceptions.REMOVE_WEBSITE_BUTTON)
-        previously_accessed_site_displayed = exists(LocalWeb.CNN_CONTENT_BLOCKING_EXCEPTION)
-        assert_false(self, previously_accessed_site_displayed, "The website is successfully removed from the panel.")
-
-        click(AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON)
-
-        # Access the removed website again.
-        next_tab()
-        website_displayed = exists(cnn_site_logo_pattern, 30)
-        assert_true(self, website_displayed, 'The Website is successfully displayed')
-
-        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern, 10)
-        assert_true(self, tracking_protection_shield_displayed,
-                    'The Tracking Protection shield is displayed near the address bar')
+        assert_true(self, tracking_protection_shield_exists,
+                    'The Tracking protection shield is displayed near the address bar.')
