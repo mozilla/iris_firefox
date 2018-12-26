@@ -30,8 +30,8 @@ class Test(BaseTest):
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
         tracking_protection_panel_pattern = Pattern('tracking_protection_panel_label.png')
         site_displayed_as_exception_pattern = Pattern('site_displayed_as_exception.png')
-        remove_website_button_pattern = Pattern('remove_website_button.png')
-        save_changes_button_pattern = Pattern('save_changes_button.png')
+        remove_website_button_pattern = AboutPreferences.Privacy.Exceptions.REMOVE_WEBSITE_BUTTON
+        save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON
 
         navigate('about:preferences#privacy')
         navigated_to_preferences = exists(privacy_page_pattern, 10)
@@ -59,7 +59,6 @@ class Test(BaseTest):
                     'The Tracking protection shield is displayed near the address bar.')
 
         shield_location = find(tracking_protection_shield_pattern)
-
         click(shield_location, DEFAULT_FX_DELAY)
         turn_off_blocking_exists = exists(turn_off_blocking_pattern, 40)
         if turn_off_blocking_exists:
