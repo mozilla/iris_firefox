@@ -17,6 +17,9 @@ class DownloadManager(object):
         DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern('downloadCancel_highlighted.png').similar(0.95)
         NO_DOWNLOADS_FOR_THIS_SESSION = Pattern('emptyDownloads.png')
         OPEN_CONTAINING_FOLDER = Pattern('open_containing_folder.png')
+        TIME_LEFT = Pattern('time_left.png')
+        BYTES_SECOND = Pattern('bytes_second.png')
+        OF_1GB = Pattern('of_1gb.png')
 
     class Downloads(object):
         SHOW_DOWNLOADS_FOLDER = Pattern('appMenu-library-downloads-show-button_show_downloads_folder.png')
