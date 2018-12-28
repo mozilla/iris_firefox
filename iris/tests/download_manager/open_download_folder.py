@@ -40,11 +40,11 @@ class Test(BaseTest):
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED, 10)
         assert_true(self, expected, 'Small size file download is completed.')
 
-        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
+        expected = exists(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER, 10)
         assert_true(self, expected, 'Containing folder button is available.')
 
         # Navigate to Downloads folder.
-        click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
+        click(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER)
 
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
         assert_true(self, expected, 'Downloads folder is displayed.')
