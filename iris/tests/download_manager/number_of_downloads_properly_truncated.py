@@ -98,6 +98,6 @@ class Test(BaseTest):
                 break
             expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
 
-        click_window_control('close', 'auxiliary')
+        click_window_control('close')
 
         downloads_cleanup()
