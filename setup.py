@@ -4,7 +4,7 @@
 
 from setuptools import setup, find_packages
 
-PACKAGE_NAME = 'iris'
+PACKAGE_NAME = 'iris2'
 PACKAGE_VERSION = '2.0'
 
 INSTALL_REQUIRES = [

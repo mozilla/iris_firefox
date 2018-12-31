@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+iris = {path = ".", editable = true}
 pyautogui = "==0.9.38"
 coloredlogs = "==10.0"
 python-dateutil = "==2.7.5"
@@ -24,6 +25,7 @@ mss = "==3.3.1"
 pep8 = "*"
 # Platform dependencies
 xlib = {platform_system = "== 'Linux'",version = "==0.21"}
+pytest = "*"
 
 [dev-packages]
 
