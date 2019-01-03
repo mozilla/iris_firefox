@@ -16,9 +16,9 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        soap_label_pattern = Pattern('soap_label.png')
+        soap_label_pattern = LocalWeb.SOAP_WIKI_SOAP_LABEL
 
-        navigate(LocalWeb.WIKI_TEST_SITE)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_label_exists = exists(soap_label_pattern, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
@@ -26,14 +26,16 @@ class Test(BaseTest):
         open_find()
         edit_select_all()
         edit_delete()
+
         find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, 15)
         assert_true(self, find_toolbar_is_opened, 'The find toolbar is opened')
 
         click(NavBar.BACK_BUTTON)
+
         find_toolbar_is_opened_previous_page = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_is_opened_previous_page, 'The find toolbar is present on the previous page')
 
         click(NavBar.FORWARD_BUTTON)
+
         find_toolbar_is_opened_next_page = exists(FindToolbar.FINDBAR_TEXTBOX, 10)
         assert_true(self, find_toolbar_is_opened_next_page, 'The find toolbar is present on the next page')
-

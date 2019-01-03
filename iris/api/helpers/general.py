@@ -8,15 +8,10 @@ import mozversion
 from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
-from iris.api.core.firefox_ui.menus import LibraryMenu
-from iris.api.core.firefox_ui.location_bar import LocationBar
-from iris.api.core.firefox_ui.find_toolbar import FindToolbar
-from iris.api.core.firefox_ui.hamburger import HamburgerMenu
+from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
-from iris.api.core.firefox_ui.library import Library
-from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
-from iris.api.core.firefox_ui.bookmarks import Bookmarks
+from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import Screen
@@ -171,7 +166,7 @@ def click_window_control(button, window_type='auxiliary'):
         full_screen_control(window_type)
     else:
         raise APIHelperError('Button option is not supported.')
-        
+
 
 def close_customize_page():
     """Close the 'Customize...' page by pressing the 'Done' button."""
@@ -198,7 +193,7 @@ def close_firefox(test):
     else:
         logger.debug('Firefox already closed. Skipping ...')
 
-        
+
 def close_window_control(window_type):
     """Click on close window control.
 
@@ -221,6 +216,19 @@ def close_window_control(window_type):
             click(MainWindow.CLOSE_BUTTON)
 
 
+def close_content_blocking_pop_up():
+    """Closes the content blocking pop up"""
+    if exists(ContentBlocking.POP_UP_ENABLED, 10):
+        try:
+            wait(ContentBlocking.CLOSE_CB_POP_UP, 5)
+            logger.debug('Content blocking pop can be closed.')
+            click(ContentBlocking.CLOSE_CB_POP_UP)
+        except FindError:
+            raise FindError('Content blocking pop up can\'t be closed, aborting.')
+    else:
+        raise FindError('Content blocking pop up is not enabled, aborting.')
+
+
 def confirm_close_multiple_tabs():
     """Click confirm 'Close all tabs' for warning popup when multiple tabs are
     opened.
@@ -239,7 +247,6 @@ def confirm_close_multiple_tabs():
 def confirm_firefox_launch(image=None):
     """Waits for firefox to exist by waiting for the iris logo to be present.
 
-    :param app: Instance of FirefoxApp class.
     :param image: Pattern to confirm Firefox launch
     :return: None.
     """
@@ -330,20 +337,21 @@ def create_region_for_hamburger_menu():
     try:
         wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
-        time.sleep(1)
+        time.sleep(0.5)
+        sign_in_to_sync = Pattern('sign_in_to_sync.png')
         if Settings.get_os() == Platform.LINUX:
             quit_menu_pattern = Pattern('quit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                quit_menu_pattern, None,
                                                padding_right=20)
         elif Settings.get_os() == Platform.MAC:
             help_menu_pattern = Pattern('help.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                help_menu_pattern, None,
                                                padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                exit_menu_pattern, None,
                                                padding_right=20)
     except (FindError, ValueError):
@@ -714,13 +722,14 @@ def key_to_one_off_search(highlighted_pattern, direction='left'):
             max_attempts -= 1
 
 
-def launch_firefox(path, profile=None, url=None, args=None):
+def launch_firefox(path, profile=None, url=None, args=None, show_crash_reporter=False):
     """Launch the app with optional args for profile, windows, URI, etc.
 
     :param path: Firefox path.
     :param profile: Firefox profile.
     :param url: URL to be loaded.
     :param args: Optional list of arguments.
+    :param show_crash_reporter: Enable or disable Firefox Crash Reporting tool.
     :return: List of Firefox flags.
     """
     if args is None:
@@ -740,7 +749,7 @@ def launch_firefox(path, profile=None, url=None, args=None):
     logger.debug('Creating Firefox runner ...')
     try:
         runner = FirefoxRunner(binary=path, profile=profile,
-                               cmdargs=args, process_args=process_args)
+                               cmdargs=args, process_args=process_args, show_crash_reporter=show_crash_reporter)
         logger.debug('Firefox runner successfully created.')
         logger.debug('Running Firefox with command: "%s"' %
                      ','.join(runner.command))
@@ -1017,7 +1026,7 @@ def reset_mouse():
     hover(Location(0, 0))
 
 
-def restart_firefox(test, path, profile, url, args=None, image=None):
+def restart_firefox(test, path, profile, url, args=None, image=None, show_crash_reporter=False):
     """Restart the app with optional args for profile.
 
     :param test: current test
@@ -1026,15 +1035,17 @@ def restart_firefox(test, path, profile, url, args=None, image=None):
     :param url: URL to be loaded.
     :param args: Optional list of arguments.
     :param image: Image checked to confirm that Firefox has successfully
+    :param show_crash_reporter: Enable or disable Firefox Crash Reporting tool.
     restarted.
     :return: None.
         """
     logger.debug('Restarting firefox ...')
     close_firefox(test)
-    test.firefox_runner = launch_firefox(path, profile, url, args)
+    test.firefox_runner = launch_firefox(path, profile, url, args, show_crash_reporter)
     test.firefox_runner.start()
     confirm_firefox_launch(image)
     logger.debug('Firefox successfully restarted.')
+
 
 
 def restore_firefox_focus():

@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.api.helpers.download_manager_utils import download_file, DownloadFiles
 from iris.test_case import *
 
 
@@ -15,15 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '99478'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-
-    def setup(self):
-        """Test case setup
-
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
-        """
-        BaseTest.setup(self)
-        self.profile = Profile.BRAND_NEW
-        return
 
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
@@ -42,7 +32,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'The \'X\' button is highlighted properly.')
 
         # Click the 'X' button.
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED)
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, 10)
         assert_true(self, expected, 'The Retry button is highlighted properly.')
 

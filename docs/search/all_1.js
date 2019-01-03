@@ -1,15 +1,30 @@
 var searchData=
 [
+  ['about',['ABOUT',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#aea0badd4630af0de158974e5cbf8d253',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
+  ['aboutdownloads',['AboutDownloads',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_about_downloads.html',1,'iris::api::core::firefox_ui::download_manager::DownloadManager']]],
+  ['aboutpreferences',['AboutPreferences',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences_1_1_about_preferences.html',1,'iris::api::core::firefox_ui::about_preferences']]],
   ['above',['above',['../classiris_1_1api_1_1core_1_1location_1_1_location.html#a378385e2357c2165ebc2cd45e4b3c631',1,'iris::api::core::location::Location']]],
   ['accept',['ACCEPT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a57dff3377373633b4f76e1bd5ae80945',1,'iris::api::core::key::Key']]],
+  ['access_5fand_5fcheck_5fpattern',['access_and_check_pattern',['../namespaceiris_1_1api_1_1helpers_1_1test__utils.html#a3d8b31f9916326c77f2075b7416944da',1,'iris::api::helpers::test_utils']]],
   ['access_5fbookmarking_5ftools',['access_bookmarking_tools',['../namespaceiris_1_1api_1_1helpers_1_1general.html#ab9f11df8e8201449c05b253a0ba5692f',1,'iris::api::helpers::general']]],
+  ['active_5flogins',['ACTIVE_LOGINS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_c_lear_recent_history.html#afa2311a2d8c200eb1b182735ed581a62',1,'iris::api::core::firefox_ui::history::History::CLearRecentHistory']]],
   ['add',['ADD',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae3fef98db6c66fd45a27665baa3501c6',1,'iris::api::core::key::Key']]],
+  ['added',['ADDED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library_1_1_views_1_1_show_columns.html#a1789308b129b734cd5936db55013b4fd',1,'iris::api::core::firefox_ui::library::Library::Views::ShowColumns']]],
   ['addons',['ADDONS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1hamburger_1_1_hamburger_menu.html#a3109984fd2820b7c04a69dc3846675a0',1,'iris::api::core::firefox_ui::hamburger::HamburgerMenu']]],
   ['all',['ALL',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a7e41e5829938704e77e0ee08eba634c1',1,'iris::api::core::platform::Platform']]],
+  ['all_5fbookmarks',['ALL_BOOKMARKS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#a756faa74e9c2c9f8fc62e43181dff5a8',1,'iris::api::core::firefox_ui::library::Library']]],
+  ['all_5fbookmarks_5fname',['ALL_BOOKMARKS_NAME',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#a5f0d73ce1d66c046dc1300412cc2cf94',1,'iris::api::core::firefox_ui::library::Library']]],
   ['alt',['ALT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#af187723033622a13440774a9cb7f26f6',1,'iris.api.core.key.Key.ALT()'],['../classiris_1_1api_1_1core_1_1key_1_1_key_modifier.html#a0b9c2a755943539779c4d3ac5d42ac2d',1,'iris.api.core.key.KeyModifier.ALT()']]],
   ['alt_5fleft',['ALT_LEFT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a44277e5ff9b1f02fe958a40d7674cf5f',1,'iris::api::core::key::Key']]],
   ['alt_5fright',['ALT_RIGHT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a2d84cf65ef9cabdb16ada7aaddb4aa1b',1,'iris::api::core::key::Key']]],
   ['apps',['APPS',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a717f7262c5d34156f15a9268080bd3e9',1,'iris::api::core::key::Key']]],
+  ['april',['APRIL',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_history_sidebar_1_1_timeline.html#a23245bc983f874ebc28c388a0b33d32c',1,'iris::api::core::firefox_ui::sidebar::Sidebar::HistorySidebar::Timeline']]],
   ['at',['at',['../classiris_1_1api_1_1core_1_1mouse_1_1_mouse.html#ae9bf8725da7c8310dbf13aaecc1207cd',1,'iris::api::core::mouse::Mouse']]],
-  ['auto_5fwait_5ftimeout',['auto_wait_timeout',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a3325da3d40be133b17a736155cfd77fa',1,'iris.api.core.settings._IrisSettings.auto_wait_timeout(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a8a5219f908dda753a8e6be53b75cc320',1,'iris.api.core.settings._IrisSettings.auto_wait_timeout(self, value)']]]
+  ['august',['AUGUST',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_history_sidebar_1_1_timeline.html#a644514d9f7a6e83a27c3ce5c3ddec454',1,'iris::api::core::firefox_ui::sidebar::Sidebar::HistorySidebar::Timeline']]],
+  ['auto_5fhide',['AUTO_HIDE',['../classiris_1_1api_1_1helpers_1_1customize__utils_1_1_customize_page.html#ad841a41d9ebf6ee8f49b5abee4bf811b',1,'iris::api::helpers::customize_utils::CustomizePage']]],
+  ['auto_5fhide_5fdownload_5fbutton',['auto_hide_download_button',['../namespaceiris_1_1api_1_1helpers_1_1customize__utils.html#a4e35e1e42b3af248308e99c377b59ccd',1,'iris::api::helpers::customize_utils']]],
+  ['auto_5fwait_5ftimeout',['auto_wait_timeout',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a952275e23bf40f15f43237a5e90f3055',1,'iris::api::core::settings::_IrisSettings']]],
+  ['auxiliary_5fwindow_5fcontrols',['AUXILIARY_WINDOW_CONTROLS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1window__controls_1_1_auxiliary_window.html#aaf48e969c66cdf403278eef67bfdc645',1,'iris::api::core::firefox_ui::window_controls::AuxiliaryWindow']]],
+  ['auxiliarywindow',['AuxiliaryWindow',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1window__controls_1_1_auxiliary_window.html',1,'iris::api::core::firefox_ui::window_controls']]],
+  ['az_5fsort_5forder',['AZ_SORT_ORDER',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library_1_1_views_1_1_sort.html#ad2ace5c89b9c6f8d53104729d2b96ad5',1,'iris::api::core::firefox_ui::library::Library::Views::Sort']]]
 ];

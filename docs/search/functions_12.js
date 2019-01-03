@@ -11,7 +11,6 @@ var searchData=
   ['select_5fzoom_5fmenu_5foption',['select_zoom_menu_option',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a60e9855490fca6ead45a3c815cf6045c',1,'iris::api::helpers::general']]],
   ['show',['show',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a3d08cc250081011eafa02758afe116dd',1,'iris::api::core::region::Region']]],
   ['similar',['similar',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#a3810101b6a3920bee331a647e6e6410a',1,'iris::api::core::pattern::Pattern']]],
-  ['slow_5fmotion_5fdelay',['slow_motion_delay',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a350bf7b3abec2e03f64a7750dd2ab0a9',1,'iris.api.core.settings._IrisSettings.slow_motion_delay(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#ab520ba7a5c67dff866b4ee181a4e3d09',1,'iris.api.core.settings._IrisSettings.slow_motion_delay(self, value)']]],
   ['stop_5fpage_5fload',['stop_page_load',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a8570201ceccb8841439c87fd3a068c53',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['system_5fdelay',['SYSTEM_DELAY',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a918888d02b1e1de5277a045a6a013c47',1,'iris::api::core::settings::_IrisSettings']]]
 ];

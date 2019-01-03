@@ -1,0 +1,4 @@
+var namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences =
+[
+    [ "AboutPreferences", "classiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences_1_1_about_preferences.html", "classiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences_1_1_about_preferences" ]
+];

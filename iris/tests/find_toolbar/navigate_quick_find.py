@@ -14,34 +14,28 @@ class Test(BaseTest):
         self.test_case_id = '127260'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.blocked_by = 'issue 1628'
-        self.exclude = Platform.ALL
+        self.blocked_by = {'id': 'issue_1628', 'platform': Platform.ALL}
 
     def run(self):
-        soap_label_pattern = Pattern('soap_label.png')
-        see_label_selected_pattern = Pattern('cleaning_see_selected_label.png')
-        quick_find_label_pattern = Pattern('quick_find_label.png')
-        see_label_second_pattern = Pattern('see_label.png')
-
         navigate(LocalWeb.WIKI_TEST_SITE)
 
-        soap_label_exists = exists(soap_label_pattern, 20)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
         type('/')
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(quick_find_label_pattern, 10)
+        find_toolbar_opened = exists(FindToolbar.QUICK_FIND_LABEL, 10)
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         type('see', interval=1)
 
-        selected_label_exists = exists(see_label_selected_pattern, 5)
+        selected_label_exists = exists(LocalWeb.SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL, 5)
 
         type(Key.F3)
 
-        changed_selection_exists = exists(see_label_second_pattern)
+        changed_selection_exists = exists(LocalWeb.SOAP_WIKI_SEE_LABEL)
         assert_true(self, selected_label_exists, 'The first one has a green background highlighted.')
         assert_true(self, changed_selection_exists, 'The green box is moved on next.')
         assert_true(self, False,

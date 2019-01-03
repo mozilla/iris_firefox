@@ -12,9 +12,8 @@ class Test(BaseTest):
         self.meta = 'The removal of a bookmarks folder can be undone.'
         self.test_case_id = '4157'
         self.test_suite_id = '75'
-        self.blocked_by = '1385754'
+        self.blocked_by = {'id': '1385754', 'platform': Platform.ALL}
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def setup(self):
         """Test case setup

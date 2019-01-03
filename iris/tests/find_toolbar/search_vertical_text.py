@@ -17,7 +17,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
         word_mozilla_first_selected_pattern = Pattern('word_mozilla_first_selected.png')
         word_mozilla_second_selected_pattern = Pattern('word_mozilla_second_selected.png')
         word_mozilla_second_unselected_pattern = Pattern('word_mozilla_second_unselected.png')
@@ -52,13 +51,13 @@ class Test(BaseTest):
         before_prev_selected_label_y = find(word_mozilla_second_selected_pattern).y
         find_previous()
         after_prev_selected_label_y = find(word_mozilla_first_selected_pattern).y
-        assert_true(self, before_prev_selected_label_y != after_prev_selected_label_y ,
+        assert_true(self, before_prev_selected_label_y != after_prev_selected_label_y,
                     'Selected label moved backward.')
 
         before_scroll_selected_exists = exists(word_mozilla_first_selected_pattern, 5)
 
-        [scroll_down() for _ in range(4)]
-        [scroll_up() for _ in range(4)]
+        repeat_key_down(4)
+        repeat_key_up(4)
 
         after_scroll_selected_exists = exists(word_mozilla_first_selected_pattern, 5)
         assert_true(self, before_scroll_selected_exists and after_scroll_selected_exists,

@@ -44,6 +44,7 @@ def set_image_dpi(file_path=None, image_array=None):
 
 
 def image_smoothing(img):
+    # Apply threshold to get image with only b&w (binarization)
     ret1, th1 = cv2.threshold(img, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY)
     ret2, th2 = cv2.threshold(th1, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     blur = cv2.GaussianBlur(th2, (1, 1), 0)
@@ -54,7 +55,10 @@ def image_smoothing(img):
 def remove_noise_and_smooth(file_name):
     img = cv2.imread(file_name, 0)
     filtered = cv2.adaptiveThreshold(img.astype(np.uint8), 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 41, 3)
+    # Apply dilation and erosion to remove some noise
     kernel = np.ones((1, 1), np.uint8)
+    img = cv2.dilate(img, kernel, iterations=1)
+    img = cv2.erode(img, kernel, iterations=1)
     opening = cv2.morphologyEx(filtered, cv2.MORPH_OPEN, kernel)
     closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
     img = image_smoothing(img)

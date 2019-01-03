@@ -13,9 +13,8 @@ class Test(BaseTest):
         self.meta = 'This test case checks that the Settings gear is displayed and can be accessed.'
         self.test_case_id = '108260'
         self.test_suite_id = '1902'
-        self.blocked_by = '1297382'
+        self.blocked_by = {'id': '1297382', 'platform': Platform.ALL}
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE

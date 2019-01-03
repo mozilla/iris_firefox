@@ -113,6 +113,12 @@ class IrisCore(object):
         return parse_args().workdir
 
     @staticmethod
+    def get_downloads_dir():
+        """Returns the path to the downloads directory."""
+        IrisCore.create_downloads_directory()
+        return os.path.join(IrisCore.get_current_run_dir(), 'downloads')
+
+    @staticmethod
     def get_tests_dir():
         """Returns the directory where tests are located."""
         return os.path.join(IrisCore.get_module_dir(), 'iris', 'tests')
@@ -247,9 +253,22 @@ class IrisCore(object):
         correct_channel = browser.channel in test.channel
         correct_locale = parse_args().locale in test.locale
         correct_platform = get_os() in test.platform
-        blocked_by = True if test.blocked_by and len(test.blocked_by) > 0 else False
-        result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded != blocked_by
+        blocked_by = IrisCore.test_is_blocked(test)
+        result = True == correct_platform == correct_version == correct_channel == correct_locale == not_excluded \
+                 != blocked_by
         return result
+
+    @staticmethod
+    def test_is_blocked(test):
+        if test.blocked_by:
+            blocked_dict = test.blocked_by
+            if all(k in blocked_dict for k in ('id', 'platform')):
+                platform = blocked_dict['platform']
+                if get_os() in platform:
+                    return True
+            else:
+                return False
+        return False
 
     @staticmethod
     def get_git_details():
@@ -390,6 +409,13 @@ class IrisCore(object):
         run_directory = os.path.join(master_run_directory, IrisCore.get_run_id())
         if not os.path.exists(run_directory):
             os.mkdir(run_directory)
+
+    @staticmethod
+    def create_downloads_directory():
+        IrisCore.create_run_directory()
+        downloads_directory = os.path.join(IrisCore.get_current_run_dir(), 'downloads')
+        if not os.path.exists(downloads_directory):
+            os.mkdir(downloads_directory)
 
     @staticmethod
     def create_working_directory():

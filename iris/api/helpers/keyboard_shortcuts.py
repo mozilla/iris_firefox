@@ -6,10 +6,8 @@ import logging
 import time
 
 from iris.api.core.errors import FindError, APIHelperError
-from iris.api.core.firefox_ui.menus import SidebarBookmarks
-
+from iris.api.core.firefox_ui.library_menu import SidebarBookmarks
 from iris.api.core.firefox_ui.location_bar import LocationBar
-from iris.api.core.firefox_ui.bookmarks import Bookmarks
 from iris.api.core.key import Key, KeyModifier, key_down, key_up, type
 from iris.api.core.location import Location
 from iris.api.core.pattern import Pattern
@@ -357,7 +355,7 @@ def open_search_manager():
 # Keyboard shortcuts for Windows & Tabs.
 
 def close_tab():
-    """Close the currently focused tab (Except for app tabs)."""
+    """Close the currently focused tab/window (Except for app tabs)."""
     if Settings.get_os() == Platform.MAC:
         type(text='w', modifier=KeyModifier.CMD)
     else:
@@ -495,9 +493,9 @@ def select_tab(num):
     if Settings.get_os() == Platform.MAC:
         type(text=num, modifier=KeyModifier.CMD)
     elif Settings.get_os() == Platform.WINDOWS:
-        type(text=num, modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
-    else:
         type(text=num, modifier=KeyModifier.CTRL)
+    else:
+        type(text=num, modifier=KeyModifier.ALT)
 
 
 def select_last_tab():
@@ -661,5 +659,15 @@ def open_browser_console():
         type(text="j", modifier=KeyModifier.CMD + KeyModifier.SHIFT)
     else:
         type(text="j", modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
+
+def restart_via_console():
+    """
+     restarts Firefox if web console is opened
+    """
+    if Settings.get_os() == Platform.MAC:
+        type(text='r', modifier=KeyModifier.CMD + KeyModifier.ALT)
+    else:
+        type(text='r', modifier=KeyModifier.CTRL + KeyModifier.ALT)
 
 # End Tools keyboard shortcuts

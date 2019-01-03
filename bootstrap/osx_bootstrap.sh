@@ -15,6 +15,7 @@ echo -e "\n${GREEN}  --->  installing/updating Python 2.7 ${NC} \n"
 
 if command -v python2 &>/dev/null; then
     echo -e "\n${GREEN}  --->  Skipping Python 2.7 install. Already installed. ${NC}\n"
+    brew upgrade python@2
 else
     brew install python@2
     brew link python@2
@@ -24,28 +25,24 @@ fi
 echo -e "\n${GREEN} --->  Installing Tesseract ${NC} \n"
 if command -v tesseract -v >/dev/null 2>&1; then
     echo -e "\n${GREEN}  --->  Skipping Tesseract install. Already installed. ${NC}\n"
-    echo -e "${GREEN}    --->  Checking Tesseract version. ${NC}\n"
-    if [[ $(tesseract -v | grep "tesseract 3.05") ]]; then
-        echo -e "${RED}  --->  You have Tesseract 3, removing and installing Tesseract 4.${NC}\n"
-        brew upgrade tesseract
-    else
-        echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
-    fi
+    brew upgrade tesseract --with-all-languages --with-training-tools --with-serial-num-pack
 else
-    brew install tesseract
+    brew install tesseract --with-all-languages --with-training-tools --with-serial-num-pack
 fi
 
 echo -e "\n${GREEN}  --->  installing/updating p7zip ${NC} \n"
 brew install p7zip
+brew upgrade p7zip
 
 echo -e "\n${GREEN}  --->  installing/updating xquartz ${NC} \n"
 brew cask install xquartz
+brew cask upgrade xquartz
 
 echo -e "\n${GREEN}  --->  installing/upgrading pipenv ${NC}\n"
 if command -v pipenv &>/dev/null; then
-    brew upgrade pipenv
+    pip install --upgrade pipenv
 else
-    brew install pipenv
+    pip install pipenv
 fi
 
 echo -e "\n${GREEN}--->  Installing pyobjc library #####${NC}\n"

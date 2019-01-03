@@ -14,14 +14,14 @@ class Test(BaseTest):
         self.test_case_id = '127254'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.exclude = Platform.MAC, Platform.WINDOWS
+        self.blocked_by = {'id': 'issue_1667', 'platform': Platform.ALL}
 
     def run(self):
 
         find_in_page_bar_contrast_pattern = Pattern('find_in_page_bar_contrast.png').similar(0.6)
         soap_page_loaded_contrast_pattern = Pattern('soap_page_loaded_contrast.png')
         see_label_contrast_pattern = Pattern('see_label_contrast.png')
-        see_label_unhighlited_contrast_pattern = Pattern('see_label_unhighlited_contrast.png')
+        see_label_not_highlighted_contrast_pattern = Pattern('see_label_not_highlighted_contrast.png')
         see_label_zoom_in_contrast_pattern = Pattern('see_label_zoom_in_contrast.png')
         see_label_zoom_out_contrast_pattern = Pattern('see_label_zoom_out_contrast.png')
 
@@ -48,11 +48,13 @@ class Test(BaseTest):
         assert_true(self, os_program_menu_opened, 'System menu opened')
 
         if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
-            type('High contrast settings')
+            type('Change high contrast theme')
         if Settings.get_os_version() == 'win7':
             type('Change the theme')
         if Settings.get_os() == Platform.LINUX:
             type('Appearance')
+
+        time.sleep(DEFAULT_UI_DELAY_LONG)
 
         type(Key.ENTER)
 
@@ -84,11 +86,11 @@ class Test(BaseTest):
 
         # test body
         try:
-            navigate(LocalWeb.WIKI_TEST_SITE)
+            navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
             soap_page_loaded_exists = exists(soap_page_loaded_contrast_pattern, 20)
             assert_true(self, soap_page_loaded_exists, 'The page is successfully loaded.')
 
-            time.sleep(1)
+            time.sleep(DEFAULT_UI_DELAY)
 
             open_find()
             edit_select_all()
@@ -97,11 +99,11 @@ class Test(BaseTest):
             find_toolbar_opened = exists(find_in_page_bar_contrast_pattern, 10)
             assert_true(self, find_toolbar_opened, 'Find Toolbar opened.')
 
-            type('see', interval=1)
+            paste('see')
             type(Key.ENTER)
 
             selected_label_exists = exists(see_label_contrast_pattern, 5)
-            unhighlighted_label_exists = exists(see_label_unhighlited_contrast_pattern, 5)
+            unhighlighted_label_exists = exists(see_label_not_highlighted_contrast_pattern, 5)
 
             assert_true(self, selected_label_exists,
                         'The first one has a green background highlighted.')
@@ -128,7 +130,7 @@ class Test(BaseTest):
 
             #
             # Return back to default contrast theme,
-            # and close themes settings window
+            # and close Themes Settings window
             #
 
             if Settings.is_linux():
@@ -140,13 +142,13 @@ class Test(BaseTest):
             assert_true(self, os_program_menu_opened_in_high_contrast, 'OS program menu opened properly.')
 
             if Settings.get_os() == Platform.WINDOWS and Settings.get_os_version() is not 'win7':
-                type('High contrast settings')
+                type('Change high contrast theme')
             if Settings.get_os_version() == 'win7':
                 type('Change the theme')
             if Settings.get_os() == Platform.LINUX:
                 type('Appearance')
 
-            time.sleep(3)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
             type(Key.ENTER)
             theme_menu_opened_in_high_contrast = exists(high_contrast_black_button_active_pattern, 30)
             assert_true(self, theme_menu_opened_in_high_contrast,

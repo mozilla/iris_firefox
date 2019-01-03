@@ -3,9 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris.api.core.firefox_ui.private_window import PrivateWindow
-from iris.api.helpers.customize_utils import auto_hide_download_button
-from iris.api.helpers.download_manager_utils import download_file, DownloadFiles
 from iris.test_case import *
 
 
@@ -26,6 +23,9 @@ class Test(BaseTest):
         """
         BaseTest.setup(self)
         self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
         return
 
     def run(self):
@@ -42,7 +42,7 @@ class Test(BaseTest):
 
         open_downloads()
 
-        expected = exists(DownloadManager.PrivateDownloadManager.NO_DOWNLOADS, 10)
+        expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
         assert_true(self, expected, 'The downloads category is brought to view and the following message is displayed '
                                     'in the tab: \'There are no downloads\'.')
 
@@ -92,3 +92,6 @@ class Test(BaseTest):
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
         expected = exists(DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, 10)
         assert_true(self, expected, 'There are no downloads displayed in the Downloads Panel.')
+
+    def teardown(self):
+        downloads_cleanup()

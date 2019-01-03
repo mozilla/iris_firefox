@@ -27,3 +27,4 @@ class NavBar(object):
     TOOLBAR = Pattern('toolbar.png')
 
     DOWNLOADS_BUTTON = Pattern('downloads_button.png')
+    DOWNLOADS_BUTTON_BLUE = Pattern('downloads_button_blue.png').similar(0.95)
