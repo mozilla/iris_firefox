@@ -17,6 +17,18 @@ class Test(BaseTest):
         self.exclude = Platform.LINUX
         self.blocked_by = '1513494'
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
+
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
 
@@ -47,5 +59,4 @@ class Test(BaseTest):
         click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
 
     def teardown(self):
-        # Cleanup.
-        downloads_cleanup('5MB.zip')
+        downloads_cleanup()

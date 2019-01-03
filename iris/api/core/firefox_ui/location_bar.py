@@ -25,3 +25,6 @@ class LocationBar(object):
     TRACKING_PROTECTION_SHIELD_ACTIVATED = Pattern('tracking-protection-icon_enabled.png')
     TRACKING_PROTECTION_SHIELD_DEACTIVATED = Pattern('tracking-protection-icon_disabled.png')
 
+    NEW_FIREFOX_CONTENT_BLOCKING_LABEL = Pattern('UITourTooltipTitle_new_in_firefox_content_blocking.png')
+    NEXT_BUTTON_TOUR_FIRST_STEP = Pattern('UITourTooltip_next_button.png')
+

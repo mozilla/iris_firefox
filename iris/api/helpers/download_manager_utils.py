@@ -2,12 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import getpass
+import logging
+import shutil
 
 from iris.api.core.errors import FindError, APIHelperError
 from iris.api.core.mouse import click
-from iris.api.core.region import wait, exists, Pattern, logger, os, Settings, Platform
+from iris.api.core.pattern import Pattern
+from iris.api.core.region import wait, exists
+from iris.api.core.util.core_helper import IrisCore
 from iris.api.helpers.keyboard_shortcuts import scroll_down
+
+logger = logging.getLogger(__name__)
 
 
 class DownloadFiles(object):
@@ -66,21 +71,6 @@ def download_file(file_to_download, accept_download):
         raise APIHelperError('The OK button is not found in the page.')
 
 
-def downloads_cleanup(filename):
-    # username = getpass.getuser()
-    #
-    # if Settings.get_os() == Platform.MAC:
-    #     os.chdir('/Users/' + username + '/Downloads')
-    # elif Settings.get_os() == Platform.LINUX:
-    #     os.chdir('/home/' + username + '/Downloads')
-    # else:
-    #     if Settings.get_os() == Platform.WINDOWS:
-    #         os.chdir('C:\\Users\\' + username + '\\Downloads')
-    #
-    # exist_file = os.path.isfile('%s/%s' % (os.getcwd(), filename))
-    # if exist_file:
-    #     os.remove(filename)
-    #     logger.debug('Removing the ' + filename + ' file.')
-    # else:
-    #     raise APIHelperError(('The ' + filename + ' file does not exist.'))
-    pass
+def downloads_cleanup():
+    path = IrisCore.get_downloads_dir()
+    shutil.rmtree(path)
