@@ -24,7 +24,7 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Downloads\' button found.')
 
         # Check download summary.
-        expected = exists(DownloadFiles.DOWNLOAD_NAME_1GB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
         assert_true(self, expected, 'The 1GB download in progress is properly displayed.')
 
         expected = exists(DownloadManager.DownloadsPanel.TIME_LEFT.similar(0.7), 10)
