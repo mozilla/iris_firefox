@@ -29,6 +29,7 @@ class DownloadFiles(object):
     EXTRA_LARGE_FILE_512MB = Pattern('512MB.png')
     VERY_LARGE_FILE_1GB = Pattern('1GB.png')
     DOWNLOAD_FILE_NAME_1GB = Pattern('download_name_1GB.png')
+    DOWNLOAD_FILE_NAME_512MB = Pattern('download_name_512MB.png')
     DOWNLOAD_FILE_NAME_20MB = Pattern('download_name_20MB.png')
     DOWNLOAD_FILE_NAME_10MB = Pattern('download_name_10MB.png')
     DOWNLOAD_FILE_NAME_5MB = Pattern('download_name_5MB.png')
@@ -52,6 +53,7 @@ class DownloadFiles(object):
     SAVE_FILE = Pattern('save_file.png')
     DOWNLOAD_CANCELED = Pattern('download_canceled.png')
     OK = Pattern('ok.png')
+    CANCEL_ALL_DOWNLOADS_POP_UP = Pattern('cancel_all_downloads.png')
 
 
 def download_file(file_to_download, accept_download):
