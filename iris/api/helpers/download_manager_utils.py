@@ -10,10 +10,10 @@ from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
-from iris.api.core.mouse import click
-from iris.api.core.region import wait, exists, Pattern, logger
+from iris.api.core.mouse import click, scroll
+from iris.api.core.region import wait, exists, Pattern
 from iris.api.core.util.core_helper import IrisCore
-from iris.api.helpers.keyboard_shortcuts import scroll_down
+from iris.api.helpers.keyboard_shortcuts import scroll_down, page_down
 from iris.api.helpers.test_utils import access_and_check_pattern
 
 logger = logging.getLogger(__name__)
@@ -65,13 +65,13 @@ def download_file(file_to_download, accept_download):
         click(file_to_download)
     else:
         while not file_found:
-            scroll_down()
+            scroll_down(5)
             try:
                 click(file_to_download)
                 file_found = True
             except FindError:
                 file_found = False
-            if exists(DownloadFiles.ABOUT, 1):
+            if exists(DownloadFiles.ABOUT, 2):
                 raise APIHelperError('File to be downloaded not found.')
 
     try:

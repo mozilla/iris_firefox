@@ -1,6 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from iris.api.core import mouse
 from iris.test_case import *
 
@@ -15,8 +17,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-
+        """T
         This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
         """
         BaseTest.setup(self)
@@ -28,8 +29,10 @@ class Test(BaseTest):
 
     def run(self):
         file_to_download = DownloadFiles.EXTRA_SMALL_FILE_5MB
+
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(20)
         download_file(file_to_download, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadState.COMPLETED, 10)
