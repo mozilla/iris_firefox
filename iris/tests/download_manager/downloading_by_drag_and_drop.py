@@ -27,7 +27,7 @@ class Test(BaseTest):
         while max_attempts > 0:
             scroll_down(5)
             if exists(DownloadFiles.VERY_LARGE_FILE_1GB, 2):
-                # Wat a oment to ensure button can be grabbed for drag operation
+                # Wait a moment to ensure button can be grabbed for drag operation
                 time.sleep(Settings.UI_DELAY)
                 drag_drop(DownloadFiles.VERY_LARGE_FILE_1GB, NavBar.DOWNLOADS_BUTTON, 2)
                 max_attempts = 0
