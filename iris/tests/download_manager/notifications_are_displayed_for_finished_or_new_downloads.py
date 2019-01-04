@@ -30,6 +30,7 @@ class Test(BaseTest):
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(15)
         if Settings.get_os() == Platform.LINUX:
             download_file(DownloadFiles.MEDIUM_FILE_50MB, DownloadFiles.OK)
         else:

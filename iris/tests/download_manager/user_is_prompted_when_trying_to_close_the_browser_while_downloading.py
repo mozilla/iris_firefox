@@ -20,6 +20,7 @@ class Test(BaseTest):
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(5)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))

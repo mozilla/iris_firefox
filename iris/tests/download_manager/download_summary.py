@@ -18,6 +18,7 @@ class Test(BaseTest):
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(5)
         download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
 
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
