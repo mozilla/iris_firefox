@@ -35,6 +35,7 @@ class Test(BaseTest):
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(5)
         for f in download_files_list:
 
             download_file(f, DownloadFiles.OK)

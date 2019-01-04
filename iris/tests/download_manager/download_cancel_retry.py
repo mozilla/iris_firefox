@@ -31,6 +31,7 @@ class Test(BaseTest):
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(10)
         download_file(file_to_download, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)

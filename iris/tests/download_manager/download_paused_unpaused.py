@@ -30,6 +30,7 @@ class Test(BaseTest):
         file_to_download = DownloadFiles.MEDIUM_FILE_50MB
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(15)
         download_file(file_to_download, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
