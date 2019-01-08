@@ -13,7 +13,7 @@ class DownloadManager(object):
         DOWNLOADS_BUTTON = Pattern('downloads_button_open.png').similar(0.95)
         DOWNLOAD_RETRY = Pattern('downloadRetry.png')
         DOWNLOAD_RETRY_HIGHLIGHTED = Pattern('downloadRetry_highlighted.png').similar(0.95)
-        DOWNLOAD_CANCEL = Pattern('downloadCancel.png').similar(0.95)
+        DOWNLOAD_CANCEL = Pattern('downloadCancel.png')
         DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern('downloadCancel_highlighted.png').similar(0.95)
         NO_DOWNLOADS_FOR_THIS_SESSION = Pattern('emptyDownloads.png')
         OPEN_DOWNLOAD_FOLDER = Pattern('download_button_open_containing_folder.png')
@@ -44,6 +44,7 @@ class DownloadManager(object):
 
     class AboutDownloads(object):
         NO_DOWNLOADS = Pattern('there_are_no_downloads.png')
+        ABOUT_DOWNLOADS = Pattern('about_downloads.png')
 
     # Downloaded files options
     class DownloadsContextMenu(object):

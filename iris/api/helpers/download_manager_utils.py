@@ -112,3 +112,12 @@ def open_clear_recent_history_window_from_library_menu():
                                  DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
         access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
                                  Library.DOWNLOADS, 'click')]
+
+
+def show_all_downloads_from_library_menu_private_window():
+    return [
+        access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.DOWNLOADS, 'click'),
+        access_and_check_pattern(LibraryMenu.DOWNLOADS, '\"Downloads menu\"',
+                                 DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
+        access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
+                                 DownloadManager.AboutDownloads.ABOUT_DOWNLOADS, 'click')]
