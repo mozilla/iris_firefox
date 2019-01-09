@@ -3,11 +3,11 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from core.errors import FindError
-from core.finder.finder import verify, find, find_all, exists, highlight, wait_vanish
-from core.helpers.location import Location
-from core.helpers.rectangle import Rectangle
-from core.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
+from iris2.core.errors import FindError
+from iris2.core.finder.finder import verify, find, find_all, exists, highlight, wait_vanish
+from iris2.core.helpers.location import Location
+from iris2.core.helpers.rectangle import Rectangle
+from iris2.core.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
 
 
 class Region:

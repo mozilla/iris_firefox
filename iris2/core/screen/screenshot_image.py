@@ -7,9 +7,9 @@ import cv2
 import mss
 import numpy as np
 
-from core.errors import ScreenshotError
-from core.helpers.rectangle import Rectangle
-from core.screen.display import Display
+from iris2.core.errors import ScreenshotError
+from iris2.core.helpers.rectangle import Rectangle
+from iris2.core.screen.display import Display
 
 try:
     import Image

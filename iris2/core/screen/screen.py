@@ -5,9 +5,9 @@
 
 import logging
 
-from core.helpers.rectangle import Rectangle
-from core.screen.display import Display
-from core.screen.region import Region
+from iris2.core.helpers.rectangle import Rectangle
+from iris2.core.screen.display import Display
+from iris2.core.screen.region import Region
 
 logger = logging.getLogger(__name__)
 

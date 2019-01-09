@@ -1,6 +1,6 @@
 import logging
-from core.helpers.rectangle import Rectangle
-from core.helpers.os_helpers import MONITORS
+from iris2.core.helpers.rectangle import Rectangle
+from iris2.core.helpers.os_helpers import MONITORS
 
 logger = logging.getLogger(__name__)
 

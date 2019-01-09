@@ -22,6 +22,8 @@ def main():
             pytest_args.append('--ignore={}'.format(excluded))
 
     pytest_args.append('-vs')
-    pytest_args.append('-r s')
+    pytest_args.append('-r ')
+    pytest_args.append('-s')
+
     print(pytest_args)
     pytest.main(pytest_args, plugins=[Plugin()])
