@@ -51,7 +51,7 @@ setup(
     extras_require={'dev': DEV_REQUIRES},  # For `pip install -e .[dev]`
     entry_points={
         'console_scripts': [
-            'iris = __main__:main'
+            'iris = iris2.__main__:main'
         ]
     }
 )

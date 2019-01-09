@@ -23,5 +23,5 @@ def main():
 
     pytest_args.append('-vs')
     pytest_args.append('-r s')
-
+    print(pytest_args)
     pytest.main(pytest_args, plugins=[Plugin()])
