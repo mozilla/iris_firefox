@@ -48,6 +48,9 @@ class DownloadFiles(object):
     TOTAL_DOWNLOAD_SIZE_20MB = Pattern('download_size_of_20MB.png')
     DOWNLOADS_PANEL_5MB_COMPLETED = Pattern('5MB_completed_downloadsPanel.png')
     FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png')
+    MALICIOUS = Pattern('malicious.png')
+    UNCOMMON = Pattern('uncommon.png')
+    POTENTIALLY_UNWANTED = Pattern('potentially_unwanted.png')
 
     ABOUT = Pattern('about.png')
     SAVE_FILE = Pattern('save_file.png')
@@ -84,9 +87,11 @@ def download_file(file_to_download, accept_download):
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
     try:
-        wait(accept_download, 5)
-        logger.debug('The OK button found in the page.')
-        click(accept_download)
+        ok_button = exists(accept_download, 5)
+        if ok_button:
+            wait(accept_download, 5)
+            logger.debug('The OK button found in the page.')
+            click(accept_download)
     except FindError:
         raise APIHelperError('The OK button is not found in the page.')
 
@@ -105,7 +110,7 @@ def open_show_downloads_window_using_download_panel():
         access_and_check_pattern(Library.DOWNLOADS, '\"Downloads library\"')]
 
 
-def open_clear_recent_history_window_from_library_menu():
+def open_show_all_downloads_window_from_library_menu():
     return [
         access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.DOWNLOADS, 'click'),
         access_and_check_pattern(LibraryMenu.DOWNLOADS, '\"Downloads menu\"',
