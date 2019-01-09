@@ -17,7 +17,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        do_not_track_label_pattern = Pattern('do_not_track_label.png')
+        remove_website_button_pattern = AboutPreferences.Privacy.Exceptions.REMOVE_WEBSITE_BUTTON
+        save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON
         always_block_tracker_not_selected_pattern = \
             AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
         privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
@@ -26,12 +27,11 @@ class Test(BaseTest):
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
         tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
         tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
+        do_not_track_label_pattern = Pattern('do_not_track_label.png')
         turn_off_blocking_pattern = Pattern('turn_off_blocking_for_this_site.png')
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
         tracking_protection_panel_pattern = Pattern('tracking_protection_panel_label.png')
         site_displayed_as_exception_pattern = Pattern('site_displayed_as_exception.png')
-        remove_website_button_pattern = AboutPreferences.Privacy.Exceptions.REMOVE_WEBSITE_BUTTON
-        save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON
 
         navigate('about:preferences#privacy')
         navigated_to_preferences = exists(privacy_page_pattern, 10)
@@ -40,10 +40,11 @@ class Test(BaseTest):
 
         try:
             click(always_block_tracker_not_selected_pattern, DEFAULT_FX_DELAY)
-            type(Key.TAB)
+            type(Key.TAB)  # remove highlight of button
             wait(always_block_tracker_selected_pattern, 10)
         except FindError:
             raise FindError('Always block is not selected')
+
         always_block_tracker_selected_exists = exists(always_block_tracker_selected_pattern, 10)
 
         if do_not_track_label_exists and always_block_tracker_selected_exists:
@@ -71,8 +72,11 @@ class Test(BaseTest):
         hover(tracking_protection_shield_deactivated_pattern, 40)
         tracking_content_detected_exists = exists(tracking_content_detected_pattern, 40)
         assert_true(self, tracking_content_detected_exists,
-                    'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message. '
-                    'Websites content that contain tracking elements is displayed on the page.')
+                    'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message.')
+
+        cnn_blocked_content_displayed = exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 30)
+        assert_true(self, cnn_blocked_content_displayed,
+                    'Websites content that contain tracking elements are displayed on the page')
 
         navigate('about:preferences#privacy')
         navigated_to_preferences = exists(privacy_page_pattern, 40)
