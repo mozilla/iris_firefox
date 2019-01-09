@@ -1174,6 +1174,15 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     pyautogui.moveTo(0, 0)
 
 
+def openDirectory(dir):
+    if Settings.get_os() == Platform.WINDOWS:
+        os.startfile(dir)
+    elif Settings.get_os() == Platform.LINUX:
+        os.system('xdg-open \"' + dir + '\"')
+    else:
+        os.system('open \"' + dir + '\"')
+
+
 class Option(object):
     """Class with zoom members."""
 
