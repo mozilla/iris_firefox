@@ -52,10 +52,7 @@ class Test(BaseTest):
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert_true(self, expected, 'The \'X\' button is found.')
         while expected:
-            try:
-                click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            except FindError:
-                break
+            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
             expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
 
         close_tab()
