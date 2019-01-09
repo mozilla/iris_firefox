@@ -47,10 +47,7 @@ class Test(BaseTest):
 
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         while expected:
-            try:
-                click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            except FindError:
-                break
+            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
             expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
 
         click_window_control('close')
