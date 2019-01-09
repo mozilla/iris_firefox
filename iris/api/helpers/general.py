@@ -220,15 +220,13 @@ def close_content_blocking_pop_up():
     """Closes the content blocking pop up"""
     pop_up_region = Region(0, 100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
-    if pop_up_region.exists(ContentBlocking.POP_UP_ENABLED, 10):
-        try:
-            pop_up_region.wait(ContentBlocking.CLOSE_CB_POP_UP, 5)
-            logger.debug('Content blocking pop can be closed.')
-            pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
-        except FindError:
-            raise FindError('Content blocking pop up can\'t be closed, aborting.')
-    else:
-        raise FindError('Content blocking pop up is not enabled, aborting.')
+    try:
+        pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
+        logger.debug('Content blocking is present on the page and can be closed.')
+        pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
+    except FindError:
+        logger.debug('Couldn\'t find the Content blocking pop up.')
+        pass
 
 
 def confirm_close_multiple_tabs():
