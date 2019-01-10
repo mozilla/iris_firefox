@@ -15,6 +15,16 @@ class Test(BaseTest):
         self.test_suite_id = '1826'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        downloads_cleanup()
+
+    def teardown(self):
+        downloads_cleanup()
+
     def run(self):
         first_bytes_label_pattern = Pattern('163_bytes_label.png')
         first_bytes_label_pattern.similar(0.7)
