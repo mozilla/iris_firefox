@@ -24,7 +24,7 @@ class Test(BaseTest):
         click(scroll_side, 1)
         while not remember_history_menu_found:
             remember_history_menu_found = exists(remember_history_pattern, 1)
-            scroll(-500)
+            scroll(-10)
         assert_true(self, remember_history_menu_found, "History menu found")
 
         time.sleep(0.5)
