@@ -41,13 +41,6 @@ class Test(BaseTest):
         type(text=Key.ESC)
 
     def teardown(self):
-        # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
-        for step in open_clear_recent_history_window_from_library_menu():
+        # Cancel all 'in progress' downloads.
+        for step in cancel_in_progress_downloads_from_the_library():
             assert_true(self, step.resolution, step.message)
-
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        while expected:
-            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-
-        click_window_control('close')
