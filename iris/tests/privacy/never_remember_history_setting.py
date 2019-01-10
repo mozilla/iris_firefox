@@ -35,13 +35,15 @@ class Test(BaseTest):
 
         never_remember_item = find(never_remember_pattern)
         click(never_remember_item)
+
         popup_window_opened = exists(restart_firefox_pattern)
         assert_true(self, popup_window_opened, "Restart popup opened")
 
         restart_firefox_button = find(restart_firefox_pattern)
         click(restart_firefox_button)
 
-        time.sleep(1)
+        firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, 5)
+        assert_true(self, firefox_restarted, "Browser restarted")
         restore_firefox_focus()
 
         new_tab()
@@ -77,4 +79,3 @@ class Test(BaseTest):
 
         assert_true(self, firefox_test_site_not_in_history and
                     focus_test_site_not_in_history and pocket_site_not_in_history, "Visited sites not in history")
-        time.sleep(60)
