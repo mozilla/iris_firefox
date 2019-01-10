@@ -10,12 +10,12 @@ from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
-from iris.api.core.mouse import click, scroll
+from iris.api.core.mouse import click
 from iris.api.core.region import wait, exists, Pattern, Region, find
 from iris.api.core.util.core_helper import IrisCore
 from iris.api.helpers.general import click_window_control, close_tab
-from iris.api.helpers.keyboard_shortcuts import scroll_down, page_down
-from iris.api.helpers.test_utils import access_and_check_pattern
+from iris.api.helpers.keyboard_shortcuts import scroll_down
+from iris.api.helpers.test_utils import access_and_check_pattern, Step
 
 logger = logging.getLogger(__name__)
 
@@ -126,16 +126,15 @@ def show_all_downloads_from_library_menu_private_window():
 
 def cancel_in_progress_downloads_from_the_library(private_window=False):
     # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
-
     if private_window:
         steps = show_all_downloads_from_library_menu_private_window()
     else:
         steps = open_clear_recent_history_window_from_library_menu()
-        logger.debug('Creating a region for Non-private Library window')
+        logger.debug('Creating a region for Non-private Library window.')
         try:
             find_library = find(Library.TITLE)
         except FindError:
-            raise FindError('Could not get the x-coordinate of the clear_downloads button.')
+            raise FindError('Could not get the x-coordinate of the library window title.')
 
         try:
             find_clear_downloads = find(Library.CLEAR_DOWNLOADS)
@@ -143,8 +142,10 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
             raise FindError('Could not get the x-coordinate of the clear_downloads button.')
 
         clear_downloads_width, clear_downloads_height = Library.CLEAR_DOWNLOADS.get_size()
-        region = Region(find_library.x - 10, find_library.y, find_clear_downloads.x + clear_downloads_width, 500)
+        region = Region(find_library.x - 10, find_library.y,
+                        (find_clear_downloads.x + clear_downloads_width) - find_library.x, 500)
 
+    # Cancel all 'in progress' downloads.
     steps.append(
         access_and_check_pattern(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, '\"The Cancel Download button\"'))
 
@@ -152,9 +153,10 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
         DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
 
     while expected:
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10) if private_window else region.exists(
-            DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5) if private_window else region.exists(
+            DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
+        if expected:
+            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
 
     if private_window:
         close_tab()
