@@ -19,8 +19,8 @@ class Test(BaseTest):
     def run(self):
         print_preview_content_loaded_pattern = Pattern('print_preview_content_loaded.png')
         scroll_content_pattern = Pattern('soap_wiki_print_mode.png')
-        scroll_bar_button_up_pattern = Pattern('scroll_bar_button_up.png')
-        scroll_bar_button_down_pattern = Pattern('scroll_bar_button_down.png')
+        scroll_bar_button_up_pattern = Pattern('scroll_bar_button_up.png').similar(0.6)
+        scroll_bar_button_down_pattern = Pattern('scroll_bar_button_down.png').similar(0.6)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
@@ -41,10 +41,11 @@ class Test(BaseTest):
         after_scroll_content_pattern = exists(scroll_content_pattern, 10)
         assert_true(self, before_scroll_content_exists and after_scroll_content_pattern, 'Scroll up and down using mouse wheel is successful.')
 
+        scroll_bar_region = Region(x=SCREEN_WIDTH/2, y=0, width=SCREEN_WIDTH/2, height=SCREEN_HEIGHT)
         # Scroll up and down using scroll bar
         before_scroll_content_exists = exists(scroll_content_pattern, 10)
         try:
-            [click(scroll_bar_button_down_pattern, DEFAULT_FX_DELAY) for _ in range(4)]
+            [click(scroll_bar_button_down_pattern, DEFAULT_FX_DELAY, in_region=scroll_bar_region) for _ in range(10)]
             wait_vanish(scroll_content_pattern, 10)
         except FindError:
             raise FindError('Content before scrolling is still on the page')
