@@ -27,7 +27,7 @@ class Test(BaseTest):
         twitter_password = 'qwerty123'
 
         navigate('twitter.com')
-        twitter_tab_favicon_exists = exists(twitter_tab_favicon_pattern, 5)
+        twitter_tab_favicon_exists = exists(twitter_tab_favicon_pattern, 10)
         assert_true(self, twitter_tab_favicon_exists, 'Twitter page successfully opens')
 
         login_field_exists = exists(login_field_pattern, 5)
