@@ -11,7 +11,7 @@ from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.mouse import click
-from iris.api.core.region import wait, exists, Pattern, Region, find
+from iris.api.core.region import wait, exists, Pattern, Region, find, SCREEN_HEIGHT
 from iris.api.core.util.core_helper import IrisCore
 from iris.api.helpers.general import click_window_control, close_tab
 from iris.api.helpers.keyboard_shortcuts import scroll_down
@@ -128,6 +128,19 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
     if private_window:
         steps = show_all_downloads_from_library_menu_private_window()
+        logger.debug('Creating a region for Private Library window.')
+        try:
+            find_back_button = find(NavBar.BACK_BUTTON)
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the nav bar back button.')
+
+        try:
+            find_hamburger_menu = find(NavBar.HAMBURGER_MENU)
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the hamburger menu.')
+
+        region = Region(find_back_button.x - 10, find_back_button.y,
+                        find_hamburger_menu.x - find_back_button.x, SCREEN_HEIGHT)
     else:
         steps = open_clear_recent_history_window_from_library_menu()
         logger.debug('Creating a region for Non-private Library window.')
@@ -146,17 +159,15 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
                         (find_clear_downloads.x + clear_downloads_width) - find_library.x, 500)
 
     # Cancel all 'in progress' downloads.
-    steps.append(
-        access_and_check_pattern(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, '\"The Cancel Download button\"'))
-
-    expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10) if private_window else region.exists(
-        DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+    expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL.similar(0.9), 5)
+    steps.append(Step(expected, 'The Cancel Download button is displayed properly.'))
 
     while expected:
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5) if private_window else region.exists(
-            DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
+        expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL.similar(0.9), 5)
         if expected:
-            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL.similar(0.9))
+
+    steps.append(Step(True, 'All downloads were cancelled.'))
 
     if private_window:
         close_tab()
