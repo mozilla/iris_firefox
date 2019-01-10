@@ -11,6 +11,7 @@ from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
+from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import Screen
@@ -215,6 +216,21 @@ def close_window_control(window_type):
             click(MainWindow.CLOSE_BUTTON)
 
 
+def close_content_blocking_pop_up():
+    """Closes the content blocking pop up"""
+    pop_up_region = Region(0, 100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    if pop_up_region.exists(ContentBlocking.POP_UP_ENABLED, 10):
+        try:
+            pop_up_region.wait(ContentBlocking.CLOSE_CB_POP_UP, 5)
+            logger.debug('Content blocking pop can be closed.')
+            pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
+        except FindError:
+            raise FindError('Content blocking pop up can\'t be closed, aborting.')
+    else:
+        raise FindError('Content blocking pop up is not enabled, aborting.')
+
+
 def confirm_close_multiple_tabs():
     """Click confirm 'Close all tabs' for warning popup when multiple tabs are
     opened.
@@ -323,20 +339,21 @@ def create_region_for_hamburger_menu():
     try:
         wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
-        time.sleep(1)
+        time.sleep(0.5)
+        sign_in_to_sync = Pattern('sign_in_to_sync.png')
         if Settings.get_os() == Platform.LINUX:
             quit_menu_pattern = Pattern('quit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                quit_menu_pattern, None,
                                                padding_right=20)
         elif Settings.get_os() == Platform.MAC:
             help_menu_pattern = Pattern('help.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                help_menu_pattern, None,
                                                padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                exit_menu_pattern, None,
                                                padding_right=20)
     except (FindError, ValueError):

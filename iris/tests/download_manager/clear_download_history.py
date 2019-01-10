@@ -14,12 +14,25 @@ class Test(BaseTest):
         self.test_suite_id = '1827'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
+
     def run(self):
         download_files_list = [DownloadFiles.SMALL_FILE_10MB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
         downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(20)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
@@ -63,7 +76,4 @@ class Test(BaseTest):
         assert_true(self, expected, 'There are no downloads displayed in the \'about:downloads\' page.')
 
     def teardown(self):
-        # Cleanup.
-        cleanup_list = ['5MB.zip', '10MB.zip']
-        for i in range(len(cleanup_list)):
-            downloads_cleanup(cleanup_list[i])
+        downloads_cleanup()

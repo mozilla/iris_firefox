@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from iris.api.helpers.customize_utils import auto_hide_download_button
-from iris.api.helpers.download_manager_utils import DownloadFiles
 from iris.test_case import *
 
 
@@ -27,13 +25,15 @@ class Test(BaseTest):
 
         max_attempts = 10
         while max_attempts > 0:
-            scroll_down()
+            scroll_down(5)
             if exists(DownloadFiles.VERY_LARGE_FILE_1GB, 2):
-                drag_drop(DownloadFiles.VERY_LARGE_FILE_1GB, NavBar.DOWNLOADS_BUTTON)
+                # Wait a moment to ensure button can be grabbed for drag operation
+                time.sleep(Settings.UI_DELAY)
+                drag_drop(DownloadFiles.VERY_LARGE_FILE_1GB, NavBar.DOWNLOADS_BUTTON, 2)
                 max_attempts = 0
             max_attempts -= 1
 
-        expected = exists(DownloadFiles.DOWNLOAD_NAME_1GB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
         assert_true(self, expected, 'The downloaded file name is properly displayed in the Downloads panel.')
 
         # Cancel the download.
