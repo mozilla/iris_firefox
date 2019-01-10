@@ -56,3 +56,5 @@ class Test(BaseTest):
 
         save_credentials_exist = exists(autofill_asterisks_pattern)
         assert_false(self, save_credentials_exist, 'The log in information is not autofilled')
+
+        close_window()
