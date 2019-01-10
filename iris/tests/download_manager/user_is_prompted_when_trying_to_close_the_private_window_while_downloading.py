@@ -45,15 +45,8 @@ class Test(BaseTest):
         type(text=Key.ESC)
 
     def teardown(self):
-        # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
-        for step in show_all_downloads_from_library_menu_private_window():
+        # Cancel all 'in progress' downloads.
+        for step in cancel_in_progress_downloads_from_the_library(True):
             assert_true(self, step.resolution, step.message)
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        assert_true(self, expected, 'The \'X\' button is found.')
-        while expected:
-            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-
-        close_tab()
         close_tab()

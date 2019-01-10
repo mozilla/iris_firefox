@@ -13,6 +13,7 @@ from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.mouse import click, scroll
 from iris.api.core.region import wait, exists, Pattern
 from iris.api.core.util.core_helper import IrisCore
+from iris.api.helpers.general import click_window_control
 from iris.api.helpers.keyboard_shortcuts import scroll_down, page_down
 from iris.api.helpers.test_utils import access_and_check_pattern
 
@@ -121,3 +122,25 @@ def show_all_downloads_from_library_menu_private_window():
                                  DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
         access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
                                  DownloadManager.AboutDownloads.ABOUT_DOWNLOADS, 'click')]
+
+
+def cancel_in_progress_downloads_from_the_library(private_window=False):
+    # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
+
+    if private_window:
+        steps = show_all_downloads_from_library_menu_private_window()
+    else:
+        steps = open_clear_recent_history_window_from_library_menu()
+
+    steps.append(
+        access_and_check_pattern(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, '\"The Cancel Download button\"'))
+
+    expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+    while expected:
+        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
+
+    if not private_window:
+        click_window_control('close')
+
+    return steps
