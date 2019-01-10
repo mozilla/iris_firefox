@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        speaker_icon_active_pattern = Pattern('speaker_icon_active.png')
+        speaker_icon_active_pattern = Pattern('speaker_icon_active.png').similar(0.9)
         blocked_media_icon_pattern = Pattern('blocked_media_icon.png')
         first_label_pattern = Pattern('one_label.png')
         second_label_pattern = Pattern('two_label.png')
