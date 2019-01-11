@@ -94,7 +94,7 @@ def run(master_tests_list, test_list, browser):
             test_log[current_package].append(update_log_object(test_log_object))
         else:
             skipped += 1
-            if current.blocked_by and len(current.blocked_by) > 0:
+            if current.blocked_by.get('id') and len(current.blocked_by.get('id')) > 0:
                 tests_blocked.append(module)
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 
