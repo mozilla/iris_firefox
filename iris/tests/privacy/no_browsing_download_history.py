@@ -20,17 +20,12 @@ class Test(BaseTest):
         restore_firefox_focus()
         new_tab()
         navigate("about:preferences#privacy")
-        remember_history_menu_found = False
-        scroll_side = find(NavBar.LIBRARY_MENU)
-        scroll_side.offset(0, SCREEN_HEIGHT/10)
-        click(scroll_side, 1)
-        while not remember_history_menu_found:
-            remember_history_menu_found = exists(remember_history_pattern, 1)
-            if Settings.is_linux() or Settings.is_mac():
-                scroll(-5)
-            elif Settings.is_windows():
-                scroll(-500)
-            time.sleep(0.5)
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        assert_true(self, preferences_opened, "Preferences tab opened")
+
+        paste("remember")
+        remember_history_menu_found = exists(remember_history_pattern, 1)
+        assert_true(self, remember_history_menu_found, "History menu found")
         assert_true(self, remember_history_menu_found, "History menu found")
 
         click(remember_history_pattern, 0.5)
