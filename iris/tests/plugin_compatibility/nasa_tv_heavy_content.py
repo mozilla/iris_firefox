@@ -43,7 +43,7 @@ class Test(BaseTest):
 
         right_click(video_window)
 
-        video_drop_down_opened = exists(video_drop_down_pattern)
+        video_drop_down_opened = exists(video_drop_down_pattern, 20)
         if not video_drop_down_opened:
             assert_false(self, video_drop_down_opened, 'The video drop down is not opened')
 
