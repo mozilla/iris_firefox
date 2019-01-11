@@ -66,8 +66,9 @@ class Test(BaseTest):
 
         right_click(video_window)
 
+        video_drop_down_opened_second_time = exists(video_drop_down_pattern, 20)
         if not video_drop_down_opened:
-            assert_false(self, video_drop_down_opened, 'The video drop down is not opened')
+            assert_false(self, video_drop_down_opened_second_time, 'The video drop down is not opened')
 
         type(Key.DOWN)
         type(Key.ENTER)
