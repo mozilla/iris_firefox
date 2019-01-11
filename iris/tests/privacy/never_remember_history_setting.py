@@ -18,16 +18,8 @@ class Test(BaseTest):
         restore_firefox_focus()
         new_tab()
         navigate("about:preferences#privacy")
-        remember_history_menu_found = False
-        scroll_side = find(NavBar.LIBRARY_MENU)
-        scroll_side.offset(0, SCREEN_HEIGHT/10)
-        click(scroll_side, 1)
-        while not remember_history_menu_found:
-            remember_history_menu_found = exists(remember_history_pattern, 1)
-            if Settings.is_linux() or Settings.is_mac():
-                scroll(-10)
-            elif Settings.is_windows():
-                scroll(-500)
+        paste("remember")
+        remember_history_menu_found = exists(remember_history_pattern, 1)
         assert_true(self, remember_history_menu_found, "History menu found")
 
         time.sleep(0.5)
@@ -71,11 +63,7 @@ class Test(BaseTest):
         library_dropdown_opened = exists(LibraryMenu.HISTORY_BUTTON)
         assert_true(self, library_dropdown_opened, "Library dropdown opened")
 
-        history_item = find(LibraryMenu.HISTORY_BUTTON)
-        history_item_width, history_item_height = LibraryMenu.HISTORY_BUTTON.get_size()
-        history_item.offset(history_item_width/2, history_item_height/2)
-        click(history_item)
-
+        click(LibraryMenu.HISTORY_BUTTON)
         firefox_test_site_not_in_history = not exists(LocalWeb.FIREFOX_BOOKMARK_SMALL, 1)
         focus_test_site_not_in_history = not exists(LocalWeb.FOCUS_BOOKMARK_SMALL, 1)
         pocket_site_not_in_history = not exists(LocalWeb.POCKET_BOOKMARK_SMALL, 1)
