@@ -17,6 +17,7 @@ class Test(BaseTest):
         download_pdf_pattern = Pattern("download_pdf_button.png")
         save_file_radio_pattern = Pattern("save_file_radio.png")
         ok_button_pattern = Pattern("ok_button.png")
+        pdf_downloaded = Pattern("downloaded_pdf.png")
 
         restore_firefox_focus()
         new_tab()
@@ -27,7 +28,7 @@ class Test(BaseTest):
         click(scroll_side, 1)
         while not remember_history_menu_found:
             remember_history_menu_found = exists(remember_history_pattern, 1)
-            if Settings.is_linux():
+            if Settings.is_linux() or Settings.is_mac():
                 scroll(-5)
             elif Settings.is_windows():
                 scroll(-500)
@@ -44,19 +45,19 @@ class Test(BaseTest):
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        firefox_test_site_opened = exists(LocalWeb.FIREFOX_BOOKMARK_SMALL, 10)
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, firefox_test_site_opened, "Firefox test site opened")
 
         close_tab()
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
-        focus_test_site_opened = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, 10)
+        focus_test_site_opened = exists(LocalWeb.FOCUS_LOGO, 10)
         assert_true(self, focus_test_site_opened, "Focus test site opened")
 
         close_tab()
         new_tab()
         navigate(LocalWeb.POCKET_TEST_SITE)
-        pocket_site_opened = exists(LocalWeb.POCKET_BOOKMARK_SMALL, 10)
+        pocket_site_opened = exists(LocalWeb.POCKET_LOGO, 10)
         assert_true(self, pocket_site_opened, "Pocket site opened")
         close_tab()
         click(NavBar.LIBRARY_MENU, 1)
@@ -65,9 +66,9 @@ class Test(BaseTest):
 
         click(LibraryMenu.HISTORY_BUTTON)
 
-        firefox_test_site_not_in_history = not exists(LocalWeb.FIREFOX_BOOKMARK_SMALL)
-        focus_test_site_not_in_history = not exists(LocalWeb.FOCUS_BOOKMARK_SMALL)
-        pocket_site_not_in_history = not exists(LocalWeb.POCKET_BOOKMARK_SMALL)
+        firefox_test_site_not_in_history = not exists(LocalWeb.FIREFOX_BOOKMARK_SMALL, 1)
+        focus_test_site_not_in_history = not exists(LocalWeb.FOCUS_BOOKMARK_SMALL, 1)
+        pocket_site_not_in_history = not exists(LocalWeb.POCKET_BOOKMARK_SMALL, 1)
 
         assert_true(self, firefox_test_site_not_in_history and
                     focus_test_site_not_in_history and pocket_site_not_in_history, "Visited sites not in history")
@@ -81,4 +82,9 @@ class Test(BaseTest):
         click(download_pdf_pattern, 1)
         click(save_file_radio_pattern, 1)
         click(ok_button_pattern, 1)
+
+        restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
         open_downloads()
+        file_not_in_downloads = not exists(pdf_downloaded, 1)
+        assert_true(self, file_not_in_downloads, "Downloaded file not in downloads history")
+        click_window_control("close")
