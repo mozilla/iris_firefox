@@ -126,6 +126,7 @@ def show_all_downloads_from_library_menu_private_window():
 
 def cancel_in_progress_downloads_from_the_library(private_window=False):
     # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
+    global cancel_downloads
     if private_window:
         steps = show_all_downloads_from_library_menu_private_window()
         logger.debug('Creating a region for Private Library window.')
@@ -160,14 +161,18 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
 
     # Cancel all 'in progress' downloads.
     expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
-    steps.append(Step(expected, 'The Cancel Download button is displayed properly.'))
+    if expected:
+        steps.append(Step(expected, 'The Cancel Download button is displayed properly.'))
+    else:
+        steps.append(Step(True, 'There are no downloads to be cancelled.'))
+        cancel_downloads = True
 
-    while expected:
-        expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
-        if expected:
-            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-
-    steps.append(Step(True, 'All downloads were cancelled.'))
+    if cancel_downloads:
+        while expected:
+            expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
+            if expected:
+                click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        steps.append(Step(True, 'All downloads were cancelled.'))
 
     if private_window:
         close_tab()
