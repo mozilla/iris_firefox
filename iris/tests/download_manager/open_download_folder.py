@@ -52,11 +52,11 @@ class Test(BaseTest):
         expected = exists(DownloadFiles.FOLDER_VIEW_5MB_HIGHLIGHTED, 10)
         assert_true(self, expected, 'Downloaded file is found.')
 
+    def teardown(self):
         # Close download folder window.
         close_tab()
 
         # Switch the focus on firefox browser.
         click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
 
-    def teardown(self):
         downloads_cleanup()
