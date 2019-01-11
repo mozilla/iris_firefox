@@ -163,9 +163,10 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
     if expected:
         steps.append(Step(expected, 'The Cancel Download button is displayed properly.'))
+        cancel_downloads = True
     else:
         steps.append(Step(True, 'There are no downloads to be cancelled.'))
-        cancel_downloads = True
+        cancel_downloads = False
 
     if cancel_downloads:
         while expected:
