@@ -13,7 +13,7 @@ class Test(BaseTest):
     def run(self):
 
         iris_logo_pattern = Pattern('iris_logo.png')
-        new_private_browsing_tab_patten = Pattern('private_browsing.png')
+        new_private_browsing_tab_pattern = Pattern('private_browsing.png')
         nasa_tv_tab_pattern = Pattern('nasa_tv_tab.png')
         speaker_icon_pattern = Pattern('speaker_icon.png')
         page_bottom_marker_pattern = Pattern('page_bottom_marker.png')
@@ -27,7 +27,7 @@ class Test(BaseTest):
 
         new_private_window()
 
-        private_window_opened = exists(new_private_browsing_tab_patten)
+        private_window_opened = exists(new_private_browsing_tab_pattern)
         assert_true(self, private_window_opened, 'A new private window is successfully opened')
 
         navigate('http://www.nasa.gov/multimedia/nasatv/index.html#public')
