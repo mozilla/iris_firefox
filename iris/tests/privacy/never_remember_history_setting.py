@@ -45,7 +45,7 @@ class Test(BaseTest):
         restart_firefox_button = find(restart_firefox_pattern)
         click(restart_firefox_button)
 
-        firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, 5)
+        firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, 20)
         assert_true(self, firefox_restarted, "Browser restarted")
         restore_firefox_focus()
 
