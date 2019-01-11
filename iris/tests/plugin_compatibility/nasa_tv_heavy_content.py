@@ -32,10 +32,10 @@ class Test(BaseTest):
 
         navigate('http://www.nasa.gov/multimedia/nasatv/index.html#public')
 
-        nasa_tv_page_loaded = exists(nasa_tv_tab_pattern, 20)
+        nasa_tv_page_loaded = exists(nasa_tv_tab_pattern, 30)
         assert_true(self, nasa_tv_page_loaded, 'The specified website is successfully loaded.')
 
-        video_playing = exists(speaker_icon_pattern, 20)
+        video_playing = exists(speaker_icon_pattern, 100)
         assert_true(self, video_playing, 'The video is playing and the plug-in icon is displayed')
 
         media_button_location = find(media_button_pattern)
@@ -51,9 +51,9 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         try:
-            speaker_icon_vanised = wait_vanish(speaker_icon_pattern, 20)
+            speaker_icon_vanished = wait_vanish(speaker_icon_pattern, 20)
             play_icon_appeared = exists(s_play_pattern, 20)
-            assert_true(self, speaker_icon_vanised and play_icon_appeared, 'Video is stopped')
+            assert_true(self, speaker_icon_vanished and play_icon_appeared, 'Video is stopped')
         except FindError:
             raise FindError('Video is not stopped')
 
