@@ -73,3 +73,6 @@ class Test(BaseTest):
 
         expected = exists(DownloadManager.Downloads.FILE_MOVED_OR_MISSING, 10)
         assert_true(self, expected, 'Previously downloaded file has status: \'File moved or missing\'.')
+
+    def teardown(self):
+        downloads_cleanup()

@@ -15,6 +15,18 @@ class Test(BaseTest):
         self.test_suite_id = '1827'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
+
     def run(self):
         new_private_window()
         expected = exists(PrivateWindow.private_window_pattern, 10)
@@ -50,3 +62,4 @@ class Test(BaseTest):
             assert_true(self, step.resolution, step.message)
 
         close_tab()
+        downloads_cleanup()
