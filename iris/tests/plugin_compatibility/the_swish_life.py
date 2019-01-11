@@ -40,7 +40,7 @@ class Test(BaseTest):
 
         click(the_home_button_pattern)
 
-        home_page_returning = exists(fashion_page_pattern, 30)
-        assert_true(self, home_page_returning, 'Return to the Swish Life home page. The website and the '
-                                               'browser are stable')
+        home_page_label = exists(fashion_page_pattern, 30)
+        assert_true(self, home_page_label, 'Return to the Swish Life home page. The website and the '
+                                            'browser are stable')
 
