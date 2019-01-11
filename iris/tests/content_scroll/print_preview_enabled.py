@@ -19,11 +19,15 @@ class Test(BaseTest):
     def run(self):
         print_preview_content_loaded_pattern = Pattern('print_preview_content_loaded.png')
         scroll_content_pattern = Pattern('soap_wiki_print_mode.png')
-
         # Scroll bar arrows pattern fo Windows
         if Settings.is_windows():
             scroll_bar_button_up_pattern = Pattern('scroll_bar_button_up.png').similar(0.6)
             scroll_bar_button_down_pattern = Pattern('scroll_bar_button_down.png').similar(0.6)
+
+        if Settings.is_windows():
+            scroll_height = 1600
+        if Settings.is_linux():
+            scroll_height = 10
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
@@ -34,59 +38,40 @@ class Test(BaseTest):
         assert_true(self, print_preview_content_loaded_exists, 'Print-preview mode is successfully enabled.')
 
         # Scroll up and down using mouse wheel
-        # For Linux
-        if Settings.is_linux():
-            before_scroll_content_exists = exists(scroll_content_pattern, 10)
-            try:
-                scroll(-10)
-                wait_vanish(scroll_content_pattern, 10)
-            except FindError:
-                raise FindError('Content before scrolling is still on the page')
-            scroll(10)
-            after_scroll_content_exists = exists(scroll_content_pattern, 10)
-            assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
-                        'Scroll up and down using mouse wheel is successful.')
+        before_scroll_content_exists = exists(scroll_content_pattern, 10)
+        try:
+            scroll(-scroll_height)
+            wait_vanish(scroll_content_pattern, 10)
+        except FindError:
+            raise FindError('Content before scrolling is still on the page')
+        scroll(scroll_height)
 
-        # For Windows
-        if Settings.is_windows():
-            before_scroll_content_exists = exists(scroll_content_pattern, 10)
-            try:
-                scroll(-1600)
-                wait_vanish(scroll_content_pattern, 10)
-            except FindError:
-                raise FindError('Content before scrolling is still on the page')
-            scroll(1600)
-            after_scroll_content_exists = exists(scroll_content_pattern, 10)
-            assert_true(self, before_scroll_content_exists and after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful.')
+        after_scroll_content_exists = exists(scroll_content_pattern, 10)
+        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
+                    'Scroll up and down using mouse wheel is successful.')
 
         # Scroll up and down using scroll bar
-        # For Linux
-        if Settings.is_linux():
-            before_scroll_content_exists = exists(scroll_content_pattern, 10)
-            scroll_bar_location_down = Location(SCREEN_WIDTH-1, SCREEN_HEIGHT/1.2)
-            scroll_bar_location_up = Location(SCREEN_WIDTH-1, SCREEN_HEIGHT/10)
-            try:
+        before_scroll_content_exists = exists(scroll_content_pattern, 10)
+        scroll_bar_location_down = Location(SCREEN_WIDTH-1, SCREEN_HEIGHT/1.2)
+        scroll_bar_location_up = Location(SCREEN_WIDTH-1, SCREEN_HEIGHT/10)
+        scroll_bar_region = Region(x=SCREEN_WIDTH / 2, y=0, width=SCREEN_WIDTH / 2, height=SCREEN_HEIGHT)
+        try:
+            if Settings.is_linux():
                 click(scroll_bar_location_down, DEFAULT_FX_DELAY)
-                wait_vanish(scroll_content_pattern, 10)
-            except FindError:
-                raise FindError('Content before scrolling is still on the page')
-            click(scroll_bar_location_up, DEFAULT_FX_DELAY)
-            after_scroll_content_exists = exists(scroll_content_pattern, 10)
-            assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
-                        'Scroll up and down using scroll bar is successful.')
-
-        # For Windows
-        if Settings.is_windows():
-            scroll_bar_region = Region(x=SCREEN_WIDTH / 2, y=0, width=SCREEN_WIDTH / 2, height=SCREEN_HEIGHT)
-            before_scroll_content_exists = exists(scroll_content_pattern, 10)
-            try:
+            if Settings.is_windows():
                 [click(scroll_bar_button_down_pattern, DEFAULT_FX_DELAY, in_region=scroll_bar_region) for _ in range(10)]
-                wait_vanish(scroll_content_pattern, 10)
-            except FindError:
-                raise FindError('Content before scrolling is still on the page')
+            wait_vanish(scroll_content_pattern, 10)
+        except FindError:
+            raise FindError('Content before scrolling is still on the page')
+
+        if Settings.is_linux():
+            click(scroll_bar_location_up, DEFAULT_FX_DELAY)
+        if Settings.is_windows():
             [click(scroll_bar_button_up_pattern, DEFAULT_FX_DELAY) for _ in range(10)]
-            after_scroll_content_exists = exists(scroll_content_pattern, 10)
-            assert_true(self, before_scroll_content_exists and after_scroll_content_exists, 'Scroll up and down using scroll bar is successful.')
+
+        after_scroll_content_exists = exists(scroll_content_pattern, 10)
+        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
+                    'Scroll up and down using scroll bar is successful.')
 
         # Scroll up and down using arrow keys
         before_scroll_content_exists = exists(scroll_content_pattern, 10)
@@ -97,7 +82,8 @@ class Test(BaseTest):
             raise FindError('Content before scrolling is still on the page')
         repeat_key_up(10)
         after_scroll_content_exists = exists(scroll_content_pattern, 10)
-        assert_true(self, before_scroll_content_exists and after_scroll_content_exists, 'Scroll up and down using arrow keys is successful.')
+        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
+                    'Scroll up and down using arrow keys is successful.')
 
         # Scroll up and down using page up/down keys
         before_scroll_content_exists = exists(scroll_content_pattern, 10)
@@ -108,7 +94,8 @@ class Test(BaseTest):
             raise FindError('Content before scrolling is still on the page')
         [type(Key.PAGE_UP) for _ in range(4)]
         after_scroll_content_exists = exists(scroll_content_pattern, 10)
-        assert_true(self, before_scroll_content_exists and after_scroll_content_exists, 'Scroll up and down using page up/down keys is successful.')
+        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
+                    'Scroll up and down using page up/down keys is successful.')
 
         # Scroll up and down using space bar
         before_scroll_content_exists = exists(scroll_content_pattern, 10)
