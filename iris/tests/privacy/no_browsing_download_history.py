@@ -82,4 +82,3 @@ class Test(BaseTest):
         click(save_file_radio_pattern, 1)
         click(ok_button_pattern, 1)
         open_downloads()
-        
