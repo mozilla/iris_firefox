@@ -11,7 +11,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
         iris_logo_pattern = Pattern('iris_logo.png')
         the_swish_life_tab_pattern = Pattern('the_swish_life_tab.png')
         fashion_tag_pattern = Pattern('fashion_tag.png')
