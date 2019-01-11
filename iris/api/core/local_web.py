@@ -66,5 +66,8 @@ class LocalWeb(object):
     SOAP_WIKI_SOAP_XML_LABEL = Pattern('soap_xml_label.png')
     SOAP_WIKI_TEST_LABEL_PATTERN = Pattern('test_label_pattern.png')
 
+    """Local files samples."""
+    SAMPLE_FILES = 'http://%s:%s/files/' % (_ip_host, _port)
+
 
 
