@@ -21,7 +21,6 @@ class Test(BaseTest):
         login_field_pattern = Pattern('login_field.png')
         password_field_pattern = Pattern('password_field.png')
         save_credentials_button_pattern = Pattern('save_button.png')
-        # private_browsing_tab_favicon_pattern = Pattern('private_browsing_tab_favicon.png')
         autofill_asterisks_pattern = Pattern('autofill_asterisks.png')
 
         twitter_login = 'o7641655@nwytg.net'
