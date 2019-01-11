@@ -156,7 +156,7 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
 
         clear_downloads_width, clear_downloads_height = Library.CLEAR_DOWNLOADS.get_size()
         region = Region(find_library.x - 10, find_library.y,
-                        (find_clear_downloads.x + clear_downloads_width) - find_library.x, 500)
+                        (find_clear_downloads.x + clear_downloads_width + 20) - find_library.x, 500)
 
     # Cancel all 'in progress' downloads.
     expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
