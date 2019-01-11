@@ -11,14 +11,10 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        iris_logo_pattern = Pattern('iris_logo.png')
         the_swish_life_tab_pattern = Pattern('the_swish_life_tab.png')
         fashion_tag_pattern = Pattern('fashion_tag.png')
         fashion_page_pattern = Pattern('fashion_page.png')
         the_home_button_pattern = Pattern('the_home_button.png')
-
-        firefox_started = exists(iris_logo_pattern)
-        assert_true(self, firefox_started, 'Firefox is successfully launched.')
 
         navigate('http://theswishlife.com/')
 
