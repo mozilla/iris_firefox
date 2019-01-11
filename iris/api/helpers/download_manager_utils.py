@@ -10,11 +10,11 @@ from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
-from iris.api.core.mouse import click, scroll
+from iris.api.core.mouse import click
 from iris.api.core.region import wait, exists, Pattern, Region, find, SCREEN_HEIGHT
 from iris.api.core.util.core_helper import IrisCore
 from iris.api.helpers.general import click_window_control, close_tab
-from iris.api.helpers.keyboard_shortcuts import scroll_down, page_down
+from iris.api.helpers.keyboard_shortcuts import scroll_down
 from iris.api.helpers.test_utils import access_and_check_pattern, Step
 
 logger = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ class DownloadFiles(object):
     TOTAL_DOWNLOAD_SIZE_50MB = Pattern('download_size_of_50MB.png')
     TOTAL_DOWNLOAD_SIZE_20MB = Pattern('download_size_of_20MB.png')
     DOWNLOADS_PANEL_5MB_COMPLETED = Pattern('5MB_completed_downloadsPanel.png')
-    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png')
+    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png').similar(0.79)
 
     ABOUT = Pattern('about.png')
     SAVE_FILE = Pattern('save_file.png')
