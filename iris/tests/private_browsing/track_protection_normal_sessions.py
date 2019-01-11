@@ -10,10 +10,12 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Tracking Protection can be activated on Normal sessions as well'
+        self.meta = 'Tracking Protection can be activated on Normal sessions as well ' \
+                    '[The Tracking Protection Shield does not appear on step 4]'
         self.test_case_id = '103329'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def setup(self):
         """Test case setup
