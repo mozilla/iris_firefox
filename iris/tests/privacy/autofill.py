@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '101673'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
+        self.exclude = Platform.ALL
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
@@ -23,8 +24,8 @@ class Test(BaseTest):
         save_credentials_button_pattern = Pattern('save_button.png')
         autofill_asterisks_pattern = Pattern('autofill_asterisks.png')
 
-        twitter_login = 'o7641655@nwytg.net'
-        twitter_password = 'qwerty123'
+        twitter_login = get_config_property('Twitter', 'username')
+        twitter_password = get_config_property('Twitter', 'password')
 
         navigate('twitter.com')
         twitter_tab_favicon_exists = exists(twitter_tab_favicon_pattern, 20)
