@@ -27,7 +27,7 @@ class Test(BaseTest):
 
         new_private_window()
 
-        private_window_opened = exists(new_private_browsing_tab_pattern)
+        private_window_opened = exists(new_private_browsing_tab_pattern, 20)
         assert_true(self, private_window_opened, 'A new private window is successfully opened')
 
         navigate('http://www.nasa.gov/multimedia/nasatv/index.html#public')
