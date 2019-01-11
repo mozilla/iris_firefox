@@ -4,6 +4,7 @@
 
 
 from iris.test_case import *
+import time
 
 
 class Test(BaseTest):
@@ -18,9 +19,16 @@ class Test(BaseTest):
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         submit_button_pattern = Pattern('submit_button.png')
-        input_field_pattern = Pattern('input_field.png')
         save_button_pattern = Pattern('save_button.png')
-        input_text_pattern = Pattern('input_text.png')
+        name_field_pattern = Pattern('name_field.png')
+        organization_field_pattern = Pattern('organization_field.png')
+        address_field_pattern = Pattern('street_address_field.png')
+        address_level_2_pattern = Pattern('address_level_2_field.png')
+        address_level_1_pattern = Pattern('address_level_1_field.png')
+        postal_code_pattern = Pattern('postal_code_field.png')
+        country_code_field_pattern = Pattern('country_code_field.png')
+        telephone_field_pattern = Pattern('telephone_field.png')
+        email_field_pattern = Pattern('email_field.png')
 
         change_preference('extensions.formautofill.available', 'on')
 
@@ -29,24 +37,35 @@ class Test(BaseTest):
         page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern) and exists(submit_button_pattern)
         assert_true(self, page_opened_in_private_browsing_mode, 'Test page is opened in a new private window.')
 
-        input_fields_available = exists(submit_button_pattern)
-        assert_true(self, input_fields_available, 'Input fields available.')
+        input_data = {
+            name_field_pattern: ['Maria V. Griggs', 'Name'],
+            organization_field_pattern: ['Loblaws', 'Organization'],
+            address_field_pattern: ['1223 Rainbow Drive', 'Address'],
+            address_level_2_pattern: ['Youngstown, OH', 'Address level 2'],
+            address_level_1_pattern: ['1223 Rainbow Drive', 'Address level 1'],
+            postal_code_pattern: ['44512', 'Postal code'],
+            country_code_field_pattern: ['US', 'Country code'],
+            telephone_field_pattern: ['9079782386', 'Telephone'],
+            email_field_pattern: ['maria_griggs@gmail.com', 'Email']
+        }
 
-        for field_count in range(9):
-            click(input_field_pattern)
-            type('valid input data')
-            type(Key.TAB)
+        for field in input_data:
+            field_exists = exists(field)
+            assert_true(self, field_exists, "{} field exists".format(input_data[field][1]))
 
-        data_entered_into_every_field = exists(input_text_pattern)
-        assert_true(self, data_entered_into_every_field, 'Valid data successfully entered into every field.')
+            click(field)
+            type(input_data[field][0])
 
         click(submit_button_pattern)
-
         tooltip_displayed = exists(save_button_pattern)
-        assert_false(self, tooltip_displayed, 'The form was successfully submitted but no tooltip was displayed.')
+        assert_false(self, tooltip_displayed, 'The form gets successfully submitted but no "tooltip" to save the input is displayed.')
 
         close_window()
         private_browsing_image_exists = exists(private_browsing_image_pattern)
         assert_false(self, private_browsing_image_exists, 'Normal browsing session is displayed')
+
+        navigate('about:preferences#privacy')
+
+
 
         close_window()
