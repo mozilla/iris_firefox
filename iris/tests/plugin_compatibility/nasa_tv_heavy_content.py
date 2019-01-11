@@ -11,8 +11,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        iris_logo_pattern = Pattern('iris_logo.png')
         new_private_browsing_tab_pattern = Pattern('private_browsing.png')
         nasa_tv_tab_pattern = Pattern('nasa_tv_tab.png')
         speaker_icon_pattern = Pattern('speaker_icon.png')
@@ -21,9 +19,6 @@ class Test(BaseTest):
         s_play_pattern = Pattern.similar(play_icon_pattern, 0.6)
         media_button_pattern = Pattern('media_button.png')
         video_drop_down_pattern = Pattern('video_drop_down.png')
-
-        firefox_started = exists(iris_logo_pattern)
-        assert_true(self, firefox_started, 'Firefox is successfully launched.')
 
         new_private_window()
 
@@ -44,8 +39,7 @@ class Test(BaseTest):
         right_click(video_window)
 
         video_drop_down_opened = exists(video_drop_down_pattern, 20)
-        if not video_drop_down_opened:
-            assert_false(self, video_drop_down_opened, 'The video drop down is not opened')
+        assert_true(self, video_drop_down_opened, 'The video drop down is not opened')
 
         type(Key.DOWN)
         type(Key.ENTER)
@@ -67,8 +61,7 @@ class Test(BaseTest):
         right_click(video_window)
 
         video_drop_down_opened_second_time = exists(video_drop_down_pattern, 20)
-        if not video_drop_down_opened:
-            assert_false(self, video_drop_down_opened_second_time, 'The video drop down is not opened')
+        assert_true(self, video_drop_down_opened_second_time, 'The video drop down is not opened')
 
         type(Key.DOWN)
         type(Key.ENTER)
