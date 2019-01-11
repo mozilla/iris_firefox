@@ -18,11 +18,13 @@ class Test(BaseTest):
         restore_firefox_focus()
         new_tab()
         navigate("about:preferences#privacy")
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        assert_true(self, preferences_opened, "Preferences tab opened")
+
         paste("remember")
         remember_history_menu_found = exists(remember_history_pattern, 1)
         assert_true(self, remember_history_menu_found, "History menu found")
 
-        time.sleep(0.5)
         history_menu = find(remember_history_pattern)
         click(history_menu)
         never_remember_item_found = exists(never_remember_pattern, 3)
