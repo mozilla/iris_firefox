@@ -15,6 +15,18 @@ class Test(BaseTest):
         self.test_suite_id = '1827'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
+
     def run(self):
         download_files_list = [DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.EXTRA_LARGE_FILE_512MB]
 
@@ -41,13 +53,8 @@ class Test(BaseTest):
         type(text=Key.ESC)
 
     def teardown(self):
-        # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
-        for step in open_clear_recent_history_window_from_library_menu():
+        # Cancel all 'in progress' downloads.
+        for step in cancel_in_progress_downloads_from_the_library():
             assert_true(self, step.resolution, step.message)
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        while expected:
-            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-
-        click_window_control('close')
+        downloads_cleanup()

@@ -10,11 +10,12 @@ from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
-from iris.api.core.mouse import click, scroll
-from iris.api.core.region import wait, exists, Pattern
+from iris.api.core.mouse import click
+from iris.api.core.region import wait, exists, Pattern, Region, find, SCREEN_HEIGHT
 from iris.api.core.util.core_helper import IrisCore
-from iris.api.helpers.keyboard_shortcuts import scroll_down, page_down
-from iris.api.helpers.test_utils import access_and_check_pattern
+from iris.api.helpers.general import click_window_control, close_tab
+from iris.api.helpers.keyboard_shortcuts import scroll_down
+from iris.api.helpers.test_utils import access_and_check_pattern, Step
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,7 @@ class DownloadFiles(object):
     TOTAL_DOWNLOAD_SIZE_50MB = Pattern('download_size_of_50MB.png')
     TOTAL_DOWNLOAD_SIZE_20MB = Pattern('download_size_of_20MB.png')
     DOWNLOADS_PANEL_5MB_COMPLETED = Pattern('5MB_completed_downloadsPanel.png')
-    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png')
+    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png').similar(0.79)
 
     ABOUT = Pattern('about.png')
     SAVE_FILE = Pattern('save_file.png')
@@ -121,3 +122,62 @@ def show_all_downloads_from_library_menu_private_window():
                                  DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
         access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
                                  DownloadManager.AboutDownloads.ABOUT_DOWNLOADS, 'click')]
+
+
+def cancel_in_progress_downloads_from_the_library(private_window=False):
+    # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
+    global cancel_downloads
+    if private_window:
+        steps = show_all_downloads_from_library_menu_private_window()
+        logger.debug('Creating a region for Private Library window.')
+        try:
+            find_back_button = find(NavBar.BACK_BUTTON)
+        except FindError:
+            raise FindError('Could not get the coordinates of the nav bar back button.')
+
+        try:
+            find_hamburger_menu = find(NavBar.HAMBURGER_MENU)
+        except FindError:
+            raise FindError('Could not get the coordinates of the hamburger menu.')
+
+        region = Region(find_back_button.x - 10, find_back_button.y,
+                        find_hamburger_menu.x - find_back_button.x, SCREEN_HEIGHT)
+    else:
+        steps = open_clear_recent_history_window_from_library_menu()
+        logger.debug('Creating a region for Non-private Library window.')
+        try:
+            find_library = find(Library.TITLE)
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the library window title.')
+
+        try:
+            find_clear_downloads = find(Library.CLEAR_DOWNLOADS)
+        except FindError:
+            raise FindError('Could not get the x-coordinate of the clear_downloads button.')
+
+        clear_downloads_width, clear_downloads_height = Library.CLEAR_DOWNLOADS.get_size()
+        region = Region(find_library.x - 10, find_library.y,
+                        (find_clear_downloads.x + clear_downloads_width + 20) - find_library.x, 500)
+
+    # Cancel all 'in progress' downloads.
+    expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
+    if expected:
+        steps.append(Step(expected, 'The Cancel Download button is displayed properly.'))
+        cancel_downloads = True
+    else:
+        steps.append(Step(True, 'There are no downloads to be cancelled.'))
+        cancel_downloads = False
+
+    if cancel_downloads:
+        while expected:
+            expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
+            if expected:
+                click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        steps.append(Step(True, 'All downloads were cancelled.'))
+
+    if private_window:
+        close_tab()
+    else:
+        click_window_control('close')
+
+    return steps
