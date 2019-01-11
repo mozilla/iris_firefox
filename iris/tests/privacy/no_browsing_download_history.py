@@ -15,8 +15,6 @@ class Test(BaseTest):
         remember_browsing_download_pattern = Pattern("remember_browsing_history.png")
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
         download_pdf_pattern = Pattern("download_pdf_button.png")
-        save_file_radio_pattern = Pattern("save_file_radio.png")
-        ok_button_pattern = Pattern("ok_button.png")
         pdf_downloaded = Pattern("downloaded_pdf.png")
 
         restore_firefox_focus()
@@ -80,8 +78,16 @@ class Test(BaseTest):
         assert_true(self, pdf_bar_located, "PDF buffered")
 
         click(download_pdf_pattern, 1)
-        click(save_file_radio_pattern, 1)
-        click(ok_button_pattern, 1)
+        # time.sleep(30)
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, 10)
+        assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
+
+        click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
+
+        ok_button_exists = exists(DownloadDialog.OK_BUTTON, 5)
+        assert_true(self, ok_button_exists, 'Button OK exists')
+
+        click(DownloadDialog.OK_BUTTON)
 
         restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
         open_downloads()
