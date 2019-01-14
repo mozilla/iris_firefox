@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-import time
 
 
 class Test(BaseTest):
@@ -29,8 +28,9 @@ class Test(BaseTest):
         country_code_field_pattern = Pattern('country_code_field.png')
         telephone_field_pattern = Pattern('telephone_field.png')
         email_field_pattern = Pattern('email_field.png')
-
-        change_preference('extensions.formautofill.available', 'on')
+        find_in_prefs_field_pattern = Pattern('find_in_prefs_field.png')
+        saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
+        name_in_saved_addresses_pattern = Pattern('name_in_saved_addresses.png')
 
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
@@ -65,7 +65,16 @@ class Test(BaseTest):
         assert_false(self, private_browsing_image_exists, 'Normal browsing session is displayed')
 
         navigate('about:preferences#privacy')
+        find_in_prefs_field_exists = exists(find_in_prefs_field_pattern)
+        assert_true(self, find_in_prefs_field_exists, 'Preferences search field is available')
 
+        click(find_in_prefs_field_pattern)
+        type('Autofill')
+        saved_addresses_button_exists = exists(saved_addresses_button_pattern)
+        assert_true(self, saved_addresses_button_exists, "'Saved addresses' button is available")
 
+        click(saved_addresses_button_pattern)
+        saved_address_exists = exists(name_in_saved_addresses_pattern)
+        assert_false(self, saved_address_exists, 'The submitted information in the private session is not displayed in the saved Addresses panel')
 
         close_window()
