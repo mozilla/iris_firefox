@@ -43,8 +43,11 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Video is not stopped')
 
-        for pd_press in range(3):
+        for page_down_pressing in range(5):
             page_down()
+            another_video_exists = exists(related_video_pattern)
+            if another_video_exists:
+                break
 
         another_video_exists = exists(related_video_pattern, 100)
         assert_true(self, another_video_exists, 'The video is playing and the speaker icon is displayed')
@@ -53,6 +56,7 @@ class Test(BaseTest):
 
         related_video_playing = exists(speaker_icon_pattern, 100)
         assert_true(self, related_video_playing, 'The video is playing and there is no browser crashes')
+
 
 
 
