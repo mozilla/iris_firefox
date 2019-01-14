@@ -25,7 +25,7 @@ class Test(BaseTest):
 
         if Settings.is_windows():
             scroll_height = 1600
-        if Settings.is_linux():
+        if Settings.is_linux() or Settings.is_mac():
             scroll_height = 10
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -62,7 +62,7 @@ class Test(BaseTest):
         scroll_bar_location_up = Location(SCREEN_WIDTH - 1, SCREEN_HEIGHT / 10)
         scroll_bar_region = Region(x=SCREEN_WIDTH / 2, y=0, width=SCREEN_WIDTH / 2, height=SCREEN_HEIGHT)
         try:
-            if Settings.is_linux():
+            if Settings.is_linux() or Settings.is_mac():
                 click(scroll_bar_location_down, DEFAULT_FX_DELAY)
             if Settings.is_windows():
                 [click(scroll_bar_button_down_pattern, DEFAULT_FX_DELAY, in_region=scroll_bar_region) for _ in
@@ -71,7 +71,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Content before scrolling is still on the page')
 
-        if Settings.is_linux():
+        if Settings.is_linux() or Settings.is_mac():
             click(scroll_bar_location_up, DEFAULT_FX_DELAY)
         if Settings.is_windows():
             [click(scroll_bar_button_up_pattern, DEFAULT_FX_DELAY) for _ in range(10)]
