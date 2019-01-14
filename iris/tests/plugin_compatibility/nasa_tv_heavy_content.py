@@ -12,7 +12,7 @@ class Test(BaseTest):
 
     def run(self):
         new_private_browsing_tab_pattern = PrivateWindow.private_window_pattern
-        nasa_tv_page_pattern = Pattern('nasa_tv_public_button.png')
+        nasa_tv_page_pattern = Pattern('nasa_tv_public_button.png').similar(0.6)
         speaker_icon_pattern = Pattern('speaker_icon.png')
         page_bottom_marker_pattern = Pattern('page_bottom_marker.png')
         play_icon_pattern = Pattern('play_icon.png').similar(0.6)
@@ -69,3 +69,5 @@ class Test(BaseTest):
 
         speaker_icon_appear = exists(speaker_icon_pattern, 100)
         assert_true(self, speaker_icon_appear, 'The video is playing and the page is scrolling successfully.')
+
+        close_window()
