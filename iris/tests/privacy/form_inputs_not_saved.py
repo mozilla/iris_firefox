@@ -51,7 +51,7 @@ class Test(BaseTest):
 
         for field in input_data:
             field_exists = exists(field)
-            assert_true(self, field_exists, "{} field exists".format(input_data[field][1]))
+            assert_true(self, field_exists, '{} field exists'.format(input_data[field][1]))
 
             click(field)
             type(input_data[field][0])
@@ -71,7 +71,7 @@ class Test(BaseTest):
         click(find_in_prefs_field_pattern)
         type('Autofill')
         saved_addresses_button_exists = exists(saved_addresses_button_pattern)
-        assert_true(self, saved_addresses_button_exists, "'Saved addresses' button is available")
+        assert_true(self, saved_addresses_button_exists, '\'Saved addresses\' button is available')
 
         click(saved_addresses_button_pattern)
         saved_address_exists = exists(name_in_saved_addresses_pattern)
