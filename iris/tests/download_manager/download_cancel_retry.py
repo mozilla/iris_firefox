@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.test_case_id = '99470'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
+        self.blocked_by = {'id': 'issue_1811', 'platform': [Platform.WINDOWS]}
 
     def setup(self):
         """Test case setup
