@@ -10,6 +10,16 @@ class Test(BaseTest):
         self.test_suite_id = "1956"
         self.locale = ["en-US"]
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        downloads_cleanup()
+
+    def teardown(self):
+        downloads_cleanup()
+
     def run(self):
         remember_history_pattern = Pattern("remember_history.png")
         remember_browsing_download_pattern = Pattern("remember_browsing_history.png")
@@ -69,16 +79,14 @@ class Test(BaseTest):
         restore_firefox_focus()
         new_tab()
         navigate("https://www.stmarys-ca.edu/sites/default/files/attachments/files/Faust.pdf")
-        pdf_bar_located = exists(download_pdf_pattern, 10)
+        pdf_bar_located = exists(download_pdf_pattern, 30)
         assert_true(self, pdf_bar_located, "PDF buffered")
 
         click(download_pdf_pattern, 1)
-        # time.sleep(30)
-        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, 10)
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, 30)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
-
         ok_button_exists = exists(DownloadDialog.OK_BUTTON, 5)
         assert_true(self, ok_button_exists, 'Button OK exists')
 
