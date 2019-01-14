@@ -25,7 +25,7 @@ class Test(BaseTest):
 
         # Navigate to the 'CNN' page using the 'CTRL' + 'ENTER' keys starting from the name of the page.
         select_location_bar()
-        type('cnn')
+        paste('cnn')
 
         key_down(Key.CTRL)
         type(Key.ENTER)
