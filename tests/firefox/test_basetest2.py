@@ -1,7 +1,7 @@
-from src.base.testcase import *
+from src.targets.firefox.fx_testcase import *
 
 
-class Test(BaseTest):
+class Test(FirefoxTest):
 
     def setUp(self):
         self.meta = 'Test_case example2'

@@ -2,7 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+import importlib
+import os
 import pytest
 
 from src.core.api.app_loader import get_app_test_directory
@@ -27,4 +28,27 @@ def main():
     pytest_args.append('-r ')
     pytest_args.append('-s')
 
-    pytest.main(pytest_args, plugins=[Plugin()])
+    # Placeholder - just for demonstration
+
+    # Find out which target has been selected
+    target = os.path.basename(tests_to_execute['running'][0])
+    print('Desired target: %s' % target)
+
+    # Find target module
+    my_module = None
+    try:
+        my_module = importlib.import_module('src.targets.%s.app' % target)
+    except ModuleNotFoundError:
+        print('Module not found')
+
+    # Instantiate target object
+    target_plugin = None
+    try:
+        target_plugin = my_module.Target()
+        print('Found target named %s' % target_plugin.target_name)
+    except NameError:
+        print('Can\'t find default Target class.')
+        return
+
+    # Pass both plugins to pytest
+    pytest.main(pytest_args, plugins=[target_plugin, Plugin()])

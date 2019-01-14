@@ -5,12 +5,13 @@
 import logging
 import os
 
-import mozlog
-import mozversion
-from mozdownload import FactoryScraper, errors
-from mozinstall import install, get_binary
-from mozrunner import FirefoxRunner, errors
+#import mozlog
+#import mozversion
+#from mozdownload import FactoryScraper, errors
+#from mozinstall import install, get_binary
+#from mozrunner import FirefoxRunner, errors
 
+from src.base.target import *
 from src.core.api.enums import Channels
 from src.core.api.errors import APIHelperError
 from src.core.util.os_helpers import OSHelper
@@ -20,18 +21,25 @@ from src.targets.firefox.parse_args import parse_args
 logger = logging.getLogger(__name__)
 
 
-class FirefoxApp(object):
+class Target(BaseTarget):
     def __init__(self):
-        path = self.get_test_candidate()
-        if path is None:
-            raise ValueError
+        BaseTarget.__init__(self)
+        self.target_name = 'Firefox'
 
-        self.path = path
-        self.channel = self.get_firefox_channel(path)
-        self.version = self.get_firefox_version(path)
-        self.build_id = self.get_firefox_build_id(path)
-        self.locale = parse_args().locale
-        self.latest_version = self.get_firefox_latest_version(path)
+        # Disabling for now due to errors
+        """
+            path = self.get_test_candidate()
+            if path is None:
+                raise ValueError
+    
+            self.path = path
+            self.channel = self.get_firefox_channel(path)
+            self.version = self.get_firefox_version(path)
+            self.build_id = self.get_firefox_build_id(path)
+            self.locale = parse_args().locale
+            self.latest_version = self.get_firefox_latest_version(path)
+        """
+
 
     @staticmethod
     def get_local_firefox_path():
@@ -258,3 +266,6 @@ class FirefoxApp(object):
             return runner
         except errors.RunnerNotStartedError:
             raise APIHelperError('Error creating Firefox runner.')
+
+    def pytest_sessionfinish(self, session):
+        print("\n\n** From Firefox: Test session {} complete **\n".format(session.name))

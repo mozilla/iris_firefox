@@ -3,18 +3,20 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-import logging
-import unittest
 
-mylogger = logging.getLogger(__name__)
+from src.base.testcase import *
+from src.targets.firefox.firefox_ui import *
 
-
-class BaseTest(unittest.TestCase):
+class FirefoxTest(BaseTest):
 
     def setup(self):
         "setup method for each test instance"
         self.meta = ''
+        self.fx_version = ''
         self.exclude = []
+        self.test_case_id = ''
+        self.test_suite_id = ''
+        self.configure_firefox()
 
     @classmethod
     def setUpClass(cls):
@@ -27,6 +29,8 @@ class BaseTest(unittest.TestCase):
     def tearDownClass(cls):
         return
 
-    # Open issue: Do we support TestRail for Iris, or just Firefox?
+    def configure_firefox(self):
+        return
+
     def get_testrail_results(self):
         return
