@@ -31,7 +31,7 @@ class Test(BaseTest):
         assert_true(self, nasa_tv_page_loaded, 'The specified website is successfully loaded.')
 
         video_playing = exists(speaker_icon_pattern, 100)
-        assert_true(self, video_playing, 'The video is playing and the plug-in icon is displayed')
+        assert_true(self, video_playing, 'The video is playing and the speaker icon is displayed')
 
         media_button_location = find(media_button_pattern)
         video_window = Location.above(media_button_location, away_y=250)
@@ -39,7 +39,7 @@ class Test(BaseTest):
         right_click(video_window)
 
         video_drop_down_opened = exists(video_drop_down_pattern, 20)
-        assert_true(self, video_drop_down_opened, 'The video drop down is not opened')
+        assert_true(self, video_drop_down_opened, 'The video drop down is opened')
 
         type(Key.DOWN)
         type(Key.ENTER)
@@ -52,19 +52,21 @@ class Test(BaseTest):
             raise FindError('Video is not stopped')
 
         scroll_down(10)
+        page_end()
 
         page_scrolled = exists(page_bottom_marker_pattern, 10)
         assert_true(self, page_scrolled, 'The page is successfully scrolling')
 
         scroll_up(10)
+        page_home()
 
         right_click(video_window)
 
         video_drop_down_opened_second_time = exists(video_drop_down_pattern, 20)
-        assert_true(self, video_drop_down_opened_second_time, 'The video drop down is not opened')
+        assert_true(self, video_drop_down_opened_second_time, 'The video drop down is opened')
 
         type(Key.DOWN)
         type(Key.ENTER)
 
-        plugin_icon_appear = exists(speaker_icon_pattern, 100)
-        assert_true(self, plugin_icon_appear, 'There are no rendering, script issues and no crashes encountered.')
+        speaker_icon_appear = exists(speaker_icon_pattern, 100)
+        assert_true(self, speaker_icon_appear, 'The video is playing and the page is scrolling successfully.')
