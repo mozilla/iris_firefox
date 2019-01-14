@@ -30,16 +30,14 @@ def main():
 
     # Placeholder - just for demonstration
 
-    # Find out which target has been selected
-    target = os.path.basename(tests_to_execute['running'][0])
-    print('Desired target: %s' % target)
-
     # Find target module
+    print('Desired target: %s' % args.application)
     my_module = None
     try:
-        my_module = importlib.import_module('src.targets.%s.app' % target)
+        my_module = importlib.import_module('src.targets.%s.app' % args.application)
     except ModuleNotFoundError:
         print('Module not found')
+        return
 
     # Instantiate target object
     target_plugin = None
