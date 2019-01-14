@@ -86,9 +86,11 @@ def download_file(file_to_download, accept_download):
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
     try:
-        wait(accept_download, 5)
-        logger.debug('The OK button found in the page.')
-        click(accept_download)
+        ok_button = exists(accept_download, 5)
+        if ok_button:
+            wait(accept_download, 5)
+            logger.debug('The OK button found in the page.')
+            click(accept_download)
     except FindError:
         raise APIHelperError('The OK button is not found in the page.')
 
