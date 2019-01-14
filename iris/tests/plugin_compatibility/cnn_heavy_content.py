@@ -16,6 +16,7 @@ class Test(BaseTest):
         speaker_icon_pattern = Pattern('speaker_icon.png')
         play_icon_pattern = Pattern('play_icon.png').similar(0.75)
         related_video_pattern = Pattern('related_video.png')
+        share_button_pattern = Pattern('share_button.png')
 
         new_private_window()
 
@@ -30,7 +31,7 @@ class Test(BaseTest):
         video_playing = exists(speaker_icon_pattern, 100)
         assert_true(self, video_playing, 'The video is playing and the speaker icon is displayed')
 
-        share_button_location = find(cnn_page_downloaded_pattern)
+        share_button_location = find(share_button_pattern)
         video_window = Location.offset(share_button_location, away_x=-350, away_y=250)
 
         click(video_window)
