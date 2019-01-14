@@ -25,7 +25,7 @@ class Test(BaseTest):
 
         navigate('http://www.cnn.com/2016/10/10/us/weather-matthew/index.html')
 
-        cnn_weather_page_loaded = exists(cnn_page_downloaded_pattern, 30)
+        cnn_weather_page_loaded = exists(cnn_page_downloaded_pattern, 100)
         assert_true(self, cnn_weather_page_loaded, 'The specified website is successfully loaded.')
 
         video_playing = exists(speaker_icon_pattern, 100)
@@ -49,7 +49,7 @@ class Test(BaseTest):
             if another_video_exists:
                 break
 
-        another_video_exists = exists(related_video_pattern, 100)
+        another_video_exists = exists(related_video_pattern)
         assert_true(self, another_video_exists, 'The video is playing and the speaker icon is displayed')
 
         click(related_video_pattern)
