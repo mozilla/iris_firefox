@@ -87,7 +87,7 @@ class Test(BaseTest):
         restore_firefox_focus()
         new_tab()
         navigate('https://www.stmarys-ca.edu/sites/default/files/attachments/files/Faust.pdf')
-        pdf_bar_located = exists(download_pdf_pattern, 30)
+        pdf_bar_located = exists(download_pdf_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, pdf_bar_located, 'PDF buffered')
 
         click(download_pdf_pattern)
