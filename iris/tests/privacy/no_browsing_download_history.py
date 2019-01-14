@@ -50,31 +50,31 @@ class Test(BaseTest):
         click(remember_browsing_download_pattern)
         point_unpinned = exists(unticked_browsing_download_pattern)
         assert_true(self, point_unpinned, 'The checkbox is successfully unticked.')
-
         close_tab()
+
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_test_site_opened, 'Firefox test site opened.')
-
         close_tab()
+
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
         focus_test_site_opened = exists(LocalWeb.FOCUS_LOGO, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, focus_test_site_opened, 'Focus test site opened.')
-
         close_tab()
+
         new_tab()
         navigate(LocalWeb.POCKET_TEST_SITE)
         pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, pocket_site_opened, 'Pocket site opened')
         close_tab()
+
         click(NavBar.LIBRARY_MENU)
         library_dropdown_opened = exists(LibraryMenu.HISTORY_BUTTON)
         assert_true(self, library_dropdown_opened, 'Library dropdown opened.')
 
         click(LibraryMenu.HISTORY_BUTTON)
-
         firefox_test_site_not_in_history = not exists(LocalWeb.FIREFOX_BOOKMARK_SMALL)
         focus_test_site_not_in_history = not exists(LocalWeb.FOCUS_BOOKMARK_SMALL)
         pocket_site_not_in_history = not exists(LocalWeb.POCKET_BOOKMARK_SMALL)
