@@ -28,6 +28,7 @@ class Test(BaseTest):
     def run(self):
         remember_history_pattern = Pattern("remember_history.png")
         remember_browsing_download_pattern = Pattern("remember_browsing_history.png")
+        unticked_browsing_download_pattern = Pattern("remember_browsing_unticked.png")
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
         download_pdf_pattern = Pattern("download_pdf_button.png")
         pdf_downloaded = Pattern("downloaded_pdf.png")
@@ -47,8 +48,10 @@ class Test(BaseTest):
 
         click(custom_history_settings_pattern)
         click(remember_browsing_download_pattern)
-        close_tab()
+        point_unpinned = exists(unticked_browsing_download_pattern)
+        assert_true(self, point_unpinned, "\"Remember browsing\" point unpinned ")
 
+        close_tab()
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT)
