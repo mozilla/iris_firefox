@@ -11,12 +11,11 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        new_private_browsing_tab_pattern = Pattern('private_browsing.png')
-        nasa_tv_tab_pattern = Pattern('nasa_tv_tab.png')
+        new_private_browsing_tab_pattern = PrivateWindow.private_window_pattern
+        nasa_tv_page_pattern = Pattern('nasa_tv_public_button.png')
         speaker_icon_pattern = Pattern('speaker_icon.png')
         page_bottom_marker_pattern = Pattern('page_bottom_marker.png')
-        play_icon_pattern = Pattern('play_icon.png')
-        s_play_pattern = Pattern.similar(play_icon_pattern, 0.6)
+        play_icon_pattern = Pattern('play_icon.png').similar(0.6)
         media_button_pattern = Pattern('media_button.png')
         video_drop_down_pattern = Pattern('video_drop_down.png')
 
@@ -27,7 +26,7 @@ class Test(BaseTest):
 
         navigate('http://www.nasa.gov/multimedia/nasatv/index.html#public')
 
-        nasa_tv_page_loaded = exists(nasa_tv_tab_pattern, 30)
+        nasa_tv_page_loaded = exists(nasa_tv_page_pattern, 30)
         assert_true(self, nasa_tv_page_loaded, 'The specified website is successfully loaded.')
 
         video_playing = exists(speaker_icon_pattern, 100)
@@ -46,7 +45,7 @@ class Test(BaseTest):
 
         try:
             speaker_icon_vanished = wait_vanish(speaker_icon_pattern, 20)
-            play_icon_appeared = exists(s_play_pattern, 20)
+            play_icon_appeared = exists(play_icon_pattern, 20)
             assert_true(self, speaker_icon_vanished and play_icon_appeared, 'Video is stopped')
         except FindError:
             raise FindError('Video is not stopped')
