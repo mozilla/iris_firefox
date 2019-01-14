@@ -36,7 +36,7 @@ class Test(BaseTest):
         new_tab()
         navigate("about:preferences#privacy")
         preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
-        assert_true(self, preferences_opened, "Preferences tab opened")
+        assert_true(self, preferences_opened, "The \"about:preferences#privacy\" page is successfully displayed")
 
         paste("remember")
         remember_history_menu_found = exists(remember_history_pattern)
@@ -44,12 +44,12 @@ class Test(BaseTest):
 
         click(remember_history_pattern)
         history_dropdown_opened = exists(custom_history_settings_pattern)
-        assert_true(self, history_dropdown_opened, "History drop-down menu opened")
+        assert_true(self, history_dropdown_opened, "The option is successfully selected and remembered.")
 
         click(custom_history_settings_pattern)
         click(remember_browsing_download_pattern)
         point_unpinned = exists(unticked_browsing_download_pattern)
-        assert_true(self, point_unpinned, "\"Remember browsing\" point unpinned ")
+        assert_true(self, point_unpinned, " The checkbox is successfully unticked.")
 
         close_tab()
         new_tab()
@@ -81,7 +81,8 @@ class Test(BaseTest):
 
         assert_true(self, firefox_test_site_not_in_history, "First site not in history")
         assert_true(self, focus_test_site_not_in_history, "Second site not in history")
-        assert_true(self, pocket_site_not_in_history, "Visited sites not in history")
+        assert_true(self, pocket_site_not_in_history,
+                    "The accessed websites are not remembered in the browser history.")
 
         restore_firefox_focus()
         new_tab()
@@ -97,7 +98,11 @@ class Test(BaseTest):
         ok_button_exists = exists(DownloadDialog.OK_BUTTON, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, ok_button_exists, 'Button OK exists')
 
+        "The pdf document is successfully downloaded."
         click(DownloadDialog.OK_BUTTON)
+
+        download_finished = exists(NavBar.DOWNLOADS_BUTTON)
+        assert_true(self, download_finished, "The pdf document is successfully downloaded.")
 
         restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
         open_downloads()
