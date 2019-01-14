@@ -40,7 +40,6 @@ class Test(BaseTest):
         paste("remember")
         remember_history_menu_found = exists(remember_history_pattern)
         assert_true(self, remember_history_menu_found, "History menu found")
-        assert_true(self, remember_history_menu_found, "History menu found")
 
         click(remember_history_pattern)
         history_dropdown_opened = exists(custom_history_settings_pattern)
@@ -87,7 +86,7 @@ class Test(BaseTest):
         pdf_bar_located = exists(download_pdf_pattern, 30)
         assert_true(self, pdf_bar_located, "PDF buffered")
 
-        click(download_pdf_pattern, 1)
+        click(download_pdf_pattern)
         save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, DEFAULT_FIREFOX_TIMEOUT*3)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
 
