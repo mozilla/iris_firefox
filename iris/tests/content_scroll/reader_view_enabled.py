@@ -43,7 +43,7 @@ class Test(BaseTest):
 
         # Scroll up and down using mouse wheel
         before_scroll_content_exists = exists(reader_view_content_pattern, 10)
-        activate_scroll = Location(0, 500)
+        activate_scroll = Location(500, 500)
         try:
             click(activate_scroll)
             scroll(-scroll_height)
