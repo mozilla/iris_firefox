@@ -36,20 +36,23 @@ class Test(BaseTest):
         new_tab()
         navigate('about:preferences#privacy')
         preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
-        assert_true(self, preferences_opened, 'The "about:preferences#privacy" page is successfully displayed')
+        assert_true(self, preferences_opened,
+                    'The "about:preferences#privacy" page is successfully displayed')
 
         paste('remember')
         remember_history_menu_found = exists(remember_history_pattern)
         assert_true(self, remember_history_menu_found, 'History menu found')
 
         click(remember_history_pattern)
-        history_dropdown_opened = exists(custom_history_settings_pattern)
-        assert_true(self, history_dropdown_opened, 'The option is successfully selected and remembered.')
-
         click(custom_history_settings_pattern)
+        use_custom_settings_selected = exists(custom_history_settings_pattern)
+        assert_true(self, use_custom_settings_selected,
+                    'The "Use custom settings for history" option is successfully selected and remembered.')
+
         click(remember_browsing_download_pattern)
         point_unpinned = exists(unticked_browsing_download_pattern)
-        assert_true(self, point_unpinned, 'The checkbox is successfully unticked.')
+        assert_true(self, point_unpinned,
+                    'The "Remember my browsing and download history" checkbox is successfully unticked.')
         close_tab()
 
         new_tab()
@@ -76,15 +79,17 @@ class Test(BaseTest):
 
         click(LibraryMenu.HISTORY_BUTTON)
         firefox_test_site_not_in_history = not exists(LocalWeb.FIREFOX_BOOKMARK_SMALL)
-        focus_test_site_not_in_history = not exists(LocalWeb.FOCUS_BOOKMARK_SMALL)
-        pocket_site_not_in_history = not exists(LocalWeb.POCKET_BOOKMARK_SMALL)
-
         assert_true(self, firefox_test_site_not_in_history, 'First site not in history.')
+
+        focus_test_site_not_in_history = not exists(LocalWeb.FOCUS_BOOKMARK_SMALL)
         assert_true(self, focus_test_site_not_in_history, 'Second site not in history.')
+
+        pocket_site_not_in_history = not exists(LocalWeb.POCKET_BOOKMARK_SMALL)
         assert_true(self, pocket_site_not_in_history,
                     'The accessed websites are not remembered in the browser history.')
 
         restore_firefox_focus()
+
         new_tab()
         navigate('https://www.stmarys-ca.edu/sites/default/files/attachments/files/Faust.pdf')
         pdf_bar_located = exists(download_pdf_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -104,6 +109,7 @@ class Test(BaseTest):
         assert_true(self, download_finished, 'The pdf document is successfully downloaded.')
 
         restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
+
         open_downloads()
         file_not_in_downloads = not exists(pdf_downloaded)
         assert_true(self, file_not_in_downloads,
