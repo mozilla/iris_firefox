@@ -10,11 +10,9 @@ class Test(BaseTest):
         self.test_case_id = '114826'
         self.test_suite_id = '68'
         self.locales = ['en-US']
-        self.exclude = Platform.MAC
-        self.set_profile_pref({'browser,sessionstore.resume_from_crash':False})
 
     def run(self):
-        hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
+        hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png')
         focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png').similar(0.95)
         iris_pattern = Pattern('iris_tab.png')
@@ -70,7 +68,7 @@ class Test(BaseTest):
                                      width=SCREEN_WIDTH,
                                      height=SCREEN_HEIGHT / 10)
 
-        tab_two_drop_location = Location(x=90,
+        tab_two_drop_location = Location(x=0,
                                          y=(default_tabs_position.y + 2 * SCREEN_HEIGHT / 5))
 
         drag_drop(default_tabs_position, tab_two_drop_location)
@@ -136,7 +134,7 @@ class Test(BaseTest):
 
         firefox_restarted = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_restarted, 'Firefox restarted successfully')
-        click(hamburger_menu_button_pattern)
+        click(hamburger_menu_button_pattern, 1)
 
         restore_previous_session_located = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, restore_previous_session_located, '"Restore previous session" menu item located')
