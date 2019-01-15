@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '99480'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        self.blocked_by = {'id': '1513494,issue_1811', 'platform': [Platform.LINUX, Platform.WINDOWS]}
+        self.blocked_by = {'id': '1513494', 'platform': [Platform.LINUX]}
 
     def setup(self):
         """Test case setup
@@ -57,6 +57,12 @@ class Test(BaseTest):
         close_tab()
 
         # Switch the focus on firefox browser.
-        click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
+        click(NavBar.FORWARD_BUTTON.target_offset(-50, 0))
+
+        # Cancel all 'in progress' downloads.
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
 
         downloads_cleanup()
