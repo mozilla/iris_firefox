@@ -99,7 +99,7 @@ class Test(BaseTest):
         if not Settings.is_mac():
             click(hamburger_menu_button_pattern, 1, in_region=proper_hamburger_menu_region)
             hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, hamburger_menu_quit_displayed, 'Hamburger menu displayed')
+            assert_true(self, hamburger_menu_quit_displayed, 'Hamburger menu quit item displayed.')
             click(hamburger_menu_quit_item_pattern, 1)
         else:
             type('q', KeyModifier.CMD)
@@ -116,14 +116,12 @@ class Test(BaseTest):
             self.base_local_web_url)
         self.firefox_runner.start()
 
-        if Settings.is_linux():
-            click_window_control('maximize')
-
+        time.sleep(DEFAULT_SYSTEM_DELAY)
         click(NavBar.HAMBURGER_MENU)
         restore_previous_session_exists = exists(restore_previous_session_pattern, 20)
         assert_true(self, restore_previous_session_exists, '\'Restore previous session\' item located')
 
-        click(restore_previous_session_pattern)
+        click(restore_previous_session_pattern, 1)
 
         time.sleep(DEFAULT_SYSTEM_DELAY)
 
