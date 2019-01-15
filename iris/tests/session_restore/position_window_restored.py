@@ -114,8 +114,8 @@ class Test(BaseTest):
         assert_true(self, tab_one_moved_twice, 'First tab window moved')
 
         if not Settings.is_mac():
-            click(hamburger_menu_button_pattern, 1)
-            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern)
+            click(hamburger_menu_button_pattern, 1, in_region=tab_one_window_region)
+            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, hamburger_menu_quit_displayed, 'Hamburger menu displayed')
             click(hamburger_menu_quit_item_pattern, 1)
         else:
