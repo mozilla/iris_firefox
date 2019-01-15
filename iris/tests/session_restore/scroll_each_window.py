@@ -11,6 +11,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
+        hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png')
         focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png')
         firefox_tab_scrolled_pattern = Pattern('firefox_tab_scrolled.png')
@@ -72,7 +74,6 @@ class Test(BaseTest):
         # Drag-n-drop Firefox tab
         firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2),
                                              y=150)
-
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
         time.sleep(DEFAULT_UI_DELAY)
 
@@ -90,13 +91,30 @@ class Test(BaseTest):
 
         time.sleep(DEFAULT_UI_DELAY)
 
-        if Settings.is_windows():
-            type(text='q', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        proper_hamburger_menu_region = Region(0,
+                                       0,
+                                       width=SCREEN_WIDTH,
+                                       height=SCREEN_HEIGHT / 5)
 
-        restart_firefox(self,
-                        self.browser.path,
-                        self.profile_path,
-                        self.base_local_web_url)
+        if not Settings.is_mac():
+            click(hamburger_menu_button_pattern, 1, in_region=proper_hamburger_menu_region)
+            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, hamburger_menu_quit_displayed, 'Hamburger menu displayed')
+            click(hamburger_menu_quit_item_pattern, 1)
+        else:
+            type('q', KeyModifier.CMD)
+
+        # firefox_runner = None to prevent automatic restore of previous session
+        status = self.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+        if status is None:
+            self.firefox_runner.stop()
+            self.firefox_runner = None
+
+        self.firefox_runner = launch_firefox(
+            self.browser.path,
+            self.profile_path,
+            self.base_local_web_url)
+        self.firefox_runner.start()
 
         if Settings.is_linux():
             click_window_control('maximize')
