@@ -163,9 +163,7 @@ class Test(BaseTest):
                     'First restored window oriented correctly')
 
         assert_true(self, focus_site_most_left and focus_site_the_lowest,
-                    '{} {} - {} {} {} test'.format(focus_site_restored_position.x, iris_tab_restored_position.x,
-                                        focus_site_restored_position.y, iris_tab_restored_position.y, firefox_test_site_restored_position.y))
-                    #'Second restored window oriented correctly')
+                    'Second restored window oriented correctly')
 
 
         click(firefox_test_site_restored_position, 1)
