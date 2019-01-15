@@ -105,6 +105,26 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
                     'Scroll up and down using page up/down keys is successful.')
 
+        # Scroll up and down using ctrl + up/down keys
+        before_scroll_content_exists = exists(scroll_content_pattern, 10)
+        try:
+            if Settings.is_mac():
+                type(Key.DOWN, modifier=KeyModifier.CMD)
+            else:
+                type(Key.DOWN, modifier=KeyModifier.CTRL)
+            wait_vanish(scroll_content_pattern, 10)
+        except FindError:
+            raise FindError('Content before scrolling is still on the page')
+
+        if Settings.is_mac():
+            type(Key.UP, modifier=KeyModifier.CMD)
+        else:
+            type(Key.UP, modifier=KeyModifier.CTRL)
+
+        after_scroll_content_exists = exists(scroll_content_pattern, 10)
+        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
+                    'Scroll up and down using ctrl + up/down keys is successful.')
+
         # Scroll up and down using space bar
         before_scroll_content_exists = exists(scroll_content_pattern, 10)
         try:
