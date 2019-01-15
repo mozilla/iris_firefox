@@ -30,6 +30,7 @@ class Test(BaseTest):
         assert_true(self, web_page_loaded_exists, 'The website is properly loaded.')
 
         open_browser_console()
+        click(browser_console_opened_pattern)
         paste('window.resizeTo(500, 400)')
         type(Key.ENTER)
 
