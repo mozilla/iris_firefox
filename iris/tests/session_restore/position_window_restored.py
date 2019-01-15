@@ -87,7 +87,7 @@ class Test(BaseTest):
         tab_one_drop_location = Location(x=(tab_one_location.x + SCREEN_WIDTH / 5),
                                          y=(tab_one_location.y + SCREEN_HEIGHT / 10))
 
-        drag_drop(tab_one_location, tab_one_drop_location, duration=0.5)
+        drag_drop(tab_one_location, tab_one_drop_location, 0.5)
 
         open_browser_console()
         paste('window.resizeTo(500, 500)')
@@ -100,7 +100,7 @@ class Test(BaseTest):
         assert_true(self, tab_one_moved, 'First tab\'s first relocation completed')
         tab_one_intermediate_location = find(firefox_test_site_tab_pattern)
 
-        drag_drop(tab_one_intermediate_location, tab_one_drop_location, duration=0.5)
+        drag_drop(tab_one_intermediate_location, tab_one_drop_location, 0.5)
 
         tab_one_relocated = not exists(firefox_test_site_tab_pattern, in_region=default_tabs_region)
         assert_true(self, tab_one_relocated, 'First opened tab relocated')
@@ -119,7 +119,7 @@ class Test(BaseTest):
             hamburger_menu_displayed = exists(hamburger_menu_quit_item_pattern)
             assert_true(self, hamburger_menu_displayed, 'Hamburger menu displayed')
             exit_item = find(hamburger_menu_quit_item_pattern, )
-            click(exit_item, duration=1)
+            click(exit_item, 1)
         else:
             type('q', KeyModifier.CMD)
 
