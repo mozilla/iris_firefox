@@ -23,6 +23,10 @@ class Test(BaseTest):
         search_tab_pattern = Pattern('random_search.png').similar(0.9)
         search_bar_not_empty_pattern = Pattern('search_bar_not_empty.png')
         search_form_suggestion_pattern = Pattern('search_form_suggestion.png')
+        name_form_pattern = Pattern('name_form.png')
+        password_form_pattern = Pattern('password_form.png')
+        autocomplete_pattern = Pattern('word_autocomplete.png')
+        form_address = self.get_asset_path('form.html')
 
         new_tab()
         navigate("about:preferences#privacy")
@@ -59,3 +63,21 @@ class Test(BaseTest):
         paste('r')
         previously_searched_not_saved = not exists(search_form_suggestion_pattern)
         assert_true(self, previously_searched_not_saved, 'The previously searched word is not saved.')
+
+        navigate(form_address)
+        name_form_displayed = exists(name_form_pattern)
+        password_form_displayed = exists(password_form_pattern)
+        assert_true(self, name_form_displayed, "Form displayed.")
+        assert_true(self, password_form_displayed, 'The website is successfully displayed.')
+
+        click(name_form_pattern)
+        paste('random')
+        click(password_form_pattern)
+        paste('Asdf1@3$')
+        type(Key.ENTER)
+
+        navigate(form_address)
+        click(name_form_pattern)
+        type('r')
+        no_autocomplete = not exists(autocomplete_pattern)
+        assert_true(self, no_autocomplete, 'The form history is not saved.')
