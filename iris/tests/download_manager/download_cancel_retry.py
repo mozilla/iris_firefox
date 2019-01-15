@@ -13,7 +13,6 @@ class Test(BaseTest):
         self.test_case_id = '99470'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        self.blocked_by = {'id': 'issue_1811', 'platform': [Platform.WINDOWS]}
 
     def setup(self):
         """Test case setup
@@ -56,9 +55,9 @@ class Test(BaseTest):
         assert_true(self, expected, 'Download was restarted.')
 
     def teardown(self):
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-        mouse.mouse_move(Location(SCREEN_WIDTH / 4 + 100, SCREEN_HEIGHT / 4))
-        expected = exists(DownloadManager.DownloadState.CANCELED, 10)
-        assert_true(self, expected, 'Download was cancelled.')
-
+        # Cancel all 'in progress' downloads.
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
         downloads_cleanup()

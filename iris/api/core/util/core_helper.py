@@ -116,7 +116,7 @@ class IrisCore(object):
     def get_downloads_dir():
         """Returns the path to the downloads directory."""
         IrisCore.create_downloads_directory()
-        return os.path.join(IrisCore.get_current_run_dir(), 'downloads')
+        return os.path.join(IrisCore.get_test_output_directory(), 'downloads')
 
     @staticmethod
     def get_tests_dir():
@@ -145,8 +145,14 @@ class IrisCore(object):
         if not os.path.exists(parent_directory):
             os.makedirs(parent_directory)
         test_directory = os.path.join(parent_directory, test)
-        os.mkdir(test_directory)
+        if not os.path.exists(test_directory):
+            os.mkdir(test_directory)
         return test_directory
+
+    @staticmethod
+    def get_test_output_directory():
+        """Returns the path to the test output directory."""
+        return IrisCore.make_test_output_dir()
 
     @staticmethod
     def get_image_debug_path():
@@ -413,7 +419,7 @@ class IrisCore(object):
     @staticmethod
     def create_downloads_directory():
         IrisCore.create_run_directory()
-        downloads_directory = os.path.join(IrisCore.get_current_run_dir(), 'downloads')
+        downloads_directory = os.path.join(IrisCore.get_test_output_directory(), 'downloads')
         if not os.path.exists(downloads_directory):
             os.mkdir(downloads_directory)
 
