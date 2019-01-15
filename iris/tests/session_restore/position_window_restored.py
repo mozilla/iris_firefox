@@ -121,6 +121,7 @@ class Test(BaseTest):
         else:
             type('q', KeyModifier.CMD)
 
+        #  firefox_runner = None to prevent automatic restore of previous session
         status = self.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
         if status is None:
             self.firefox_runner.stop()
