@@ -16,9 +16,9 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        name_field_pattern = Pattern('name_field.png')
+        name_field_pattern = Pattern('name_field.png').similar(.6)
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
-        saved_profiles_pattern = Pattern('saved_profiles.png')
+        saved_profiles_pattern = Pattern('saved_profiles.png').similar(.6)
 
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
 
