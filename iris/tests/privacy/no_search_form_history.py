@@ -19,6 +19,7 @@ class Test(BaseTest):
         remember_history_pattern = Pattern('remember_history.png')
         custom_history_settings_pattern = Pattern('custom_history_settings.png')
         remember_search_history_pattern = Pattern('remember_search_history.png')
+        search_history_unticked_pattern = Pattern('remember_search_history_unticked.png')
         add_search_bar_pattern = Pattern('add_search_bar.png')
         search_tab_pattern = Pattern('random_search.png').similar(0.9)
         search_bar_not_empty_pattern = Pattern('search_bar_not_empty.png')
@@ -43,6 +44,8 @@ class Test(BaseTest):
 
         click(custom_history_settings_pattern)
         click(remember_search_history_pattern)
+        remember_search_unticked = exists(search_history_unticked_pattern)
+        assert_true(self, remember_search_unticked, 'The checkbox is successfully unticked.')
 
         navigate("about:preferences#search")
         search_preferences_opened = exists(add_search_bar_pattern)
@@ -59,7 +62,10 @@ class Test(BaseTest):
         assert_true(self, search_done, 'The Search is successfully performed.')
 
         new_tab()
-        click(search_bar_not_empty_pattern)
+        if Settings.is_linux():
+            double_click(search_bar_not_empty_pattern)
+        else:
+            click(search_bar_not_empty_pattern)
         paste('r')
         previously_searched_not_saved = not exists(search_form_suggestion_pattern)
         assert_true(self, previously_searched_not_saved, 'The previously searched word is not saved.')
