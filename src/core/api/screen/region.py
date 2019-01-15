@@ -6,8 +6,8 @@
 from src.core.api.errors import FindError
 from src.core.api.finder.finder import verify, find, find_all, exists, highlight, wait_vanish
 from src.core.api.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
-from src.core.util.location import Location
-from src.core.util.rectangle import Rectangle
+from src.core.api.location import Location
+from src.core.api.rectangle import Rectangle
 
 
 class Region:

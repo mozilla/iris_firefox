@@ -6,7 +6,7 @@
 from Xlib import X
 from Xlib.ext.xtest import fake_input
 
-from core.helpers.location import Location
+from core.api.location import Location
 from core.keyboard.Xkeyboard import Xscreen
 
 

@@ -8,7 +8,7 @@ import time
 from pynput.mouse import Controller as MouseController, Button
 
 from src.core.api.settings import Settings
-from src.core.util.location import Location
+from src.core.api.location import Location
 
 
 def _get_point_on_line(x1, y1, x2, y2, n):

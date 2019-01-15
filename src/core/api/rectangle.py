@@ -4,7 +4,7 @@
 
 
 from src.core.api.enums import Alignment
-from src.core.util.location import Location
+from src.core.api.location import Location
 
 
 class Rectangle:

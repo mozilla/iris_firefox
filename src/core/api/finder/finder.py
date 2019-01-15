@@ -15,8 +15,8 @@ from src.core.api.finder.pattern import Pattern
 from src.core.api.finder.text_search import TextSearch
 from src.core.api.highlight.screen_highlight import ScreenHighlight, HighlightRectangle
 from src.core.api.settings import Settings
-from src.core.util.location import Location
-from src.core.util.rectangle import Rectangle
+from src.core.api.location import Location
+from src.core.api.rectangle import Rectangle
 
 
 def highlight(region=None, seconds=None, color=None, pattern=None, location=None):

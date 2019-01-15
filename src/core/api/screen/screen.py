@@ -7,7 +7,7 @@ import logging
 
 from src.core.api.screen.display import Display
 from src.core.api.screen.region import Region
-from src.core.util.rectangle import Rectangle
+from src.core.api.rectangle import Rectangle
 
 logger = logging.getLogger(__name__)
 

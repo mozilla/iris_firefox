@@ -1,4 +1,4 @@
-from src.targets.firefox.fx_testcase import *
+from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):

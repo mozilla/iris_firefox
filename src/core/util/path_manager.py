@@ -10,7 +10,7 @@ import shutil
 import tempfile
 
 from src.core.api.arg_parser import parse_args
-from src.core.util.os_helpers import OSHelper
+from src.core.api.os_helpers import OSHelper
 
 logger = logging.getLogger(__name__)
 

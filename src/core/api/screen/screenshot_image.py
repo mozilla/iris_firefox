@@ -9,7 +9,7 @@ import numpy as np
 
 from src.core.api.errors import ScreenshotError
 from src.core.api.screen.display import Display
-from src.core.util.rectangle import Rectangle
+from src.core.api.rectangle import Rectangle
 
 try:
     import Image

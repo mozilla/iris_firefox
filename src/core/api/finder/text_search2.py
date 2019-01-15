@@ -5,7 +5,7 @@ import pytesseract
 from PIL import ImageEnhance
 
 from src.core.api.screen.screenshot_image import ScreenshotImage
-from src.core.util.rectangle import Rectangle
+from src.core.api.rectangle import Rectangle
 
 
 def text_find(text, img, multiple_search=False):

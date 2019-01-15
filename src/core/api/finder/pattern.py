@@ -13,8 +13,8 @@ import numpy as np
 from src.core.api.arg_parser import parse_args
 from src.core.api.errors import FindError
 from src.core.api.settings import Settings
-from src.core.util.location import Location
-from src.core.util.os_helpers import OSHelper
+from src.core.api.location import Location
+from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
 
 try:

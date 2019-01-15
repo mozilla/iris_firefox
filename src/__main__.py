@@ -6,7 +6,7 @@ import importlib
 import os
 import pytest
 
-from src.core.api.app_loader import get_app_test_directory
+from src.core.util.app_loader import get_app_test_directory
 from src.core.api.arg_parser import parse_args
 from src.iris_pytest_plugin import Plugin
 
@@ -32,9 +32,10 @@ def main():
 
     # Find target module
     print('Desired target: %s' % args.application)
+
     my_module = None
     try:
-        my_module = importlib.import_module('src.targets.%s.app' % args.application)
+        my_module = importlib.import_module('targets.%s.app' % args.application)
     except ModuleNotFoundError:
         print('Module not found')
         return

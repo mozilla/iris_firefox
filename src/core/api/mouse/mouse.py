@@ -8,7 +8,7 @@ from src.core.api.errors import FindError
 from src.core.api.finder.image_search import image_find
 from src.core.api.finder.pattern import Pattern
 from src.core.api.mouse.mouse_controller import Mouse
-from src.core.util.rectangle import Rectangle
+from src.core.api.rectangle import Rectangle
 
 try:
     from src.core.api.mouse.mouse_controller import Button

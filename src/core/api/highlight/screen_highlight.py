@@ -9,7 +9,7 @@ from src.core.api.enums import Color
 from src.core.api.highlight.highlight_circle import HighlightCircle
 from src.core.api.highlight.highlight_rectangle import HighlightRectangle
 from src.core.api.settings import Settings
-from src.core.util.os_helpers import MULTI_MONITOR_AREA, OSHelper
+from src.core.api.os_helpers import MULTI_MONITOR_AREA, OSHelper
 
 
 def _draw_circle(canvas, x, y, r, **kwargs):

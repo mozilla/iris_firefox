@@ -5,7 +5,7 @@
 
 
 from src.base.testcase import *
-from src.targets.firefox.firefox_ui import *
+from targets.firefox.firefox_ui import *
 
 class FirefoxTest(BaseTest):
 

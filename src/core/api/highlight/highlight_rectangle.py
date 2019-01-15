@@ -5,7 +5,7 @@
 
 from src.core.api.enums import Color
 from src.core.api.settings import Settings
-from src.core.util.rectangle import Rectangle
+from src.core.api.rectangle import Rectangle
 
 
 class HighlightRectangle(Rectangle):

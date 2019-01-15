@@ -14,9 +14,9 @@ import os
 from src.base.target import *
 from src.core.api.enums import Channels
 from src.core.api.errors import APIHelperError
-from src.core.util.os_helpers import OSHelper
+from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
-from src.targets.firefox.parse_args import parse_args
+from targets.firefox.parse_args import parse_args
 
 logger = logging.getLogger(__name__)
 

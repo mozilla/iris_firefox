@@ -27,7 +27,7 @@ def parse_args():
         return log_level_int
 
     parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
-    app_dir = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../..'), 'targets')
+    app_dir = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../..'), 'targets')
     app_list = [f.path for f in os.scandir(app_dir) if f.is_dir()]
     for idx, app in enumerate(app_list):
         app_list[idx] = os.path.basename(os.path.normpath(app))

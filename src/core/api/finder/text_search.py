@@ -17,7 +17,7 @@ try:
 except ImportError:
     from PIL import Image
 
-from src.core.util.os_helpers import OSHelper
+from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
 from src.core.api.screen.screenshot_image import ScreenshotImage
 from src.core.api.save_debug_image.save_image import save_debug_image

@@ -5,8 +5,8 @@
 
 import logging
 
-from src.core.util.os_helpers import MONITORS
-from src.core.util.rectangle import Rectangle
+from src.core.api.os_helpers import MONITORS
+from src.core.api.rectangle import Rectangle
 
 logger = logging.getLogger(__name__)
 

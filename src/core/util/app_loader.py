@@ -18,7 +18,7 @@ def load_app(app: str = None):
         logger.warning('No application provided. Launching Firefox application by default')
         app = args.application
 
-    app_dir = os.path.join(PathManager.get_module_dir(), 'src', 'targets', app)
+    app_dir = os.path.join(PathManager.get_module_dir(), 'targets', app)
     if os.path.exists(app_dir):
         logger.debug('%s application module found!' % app)
         return True

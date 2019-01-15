@@ -17,9 +17,9 @@ except ImportError:
 
 from src.core.api.finder.pattern import Pattern
 from src.core.api.settings import Settings
-from src.core.util.location import Location
+from src.core.api.location import Location
 from src.core.api.errors import ScreenshotError
-from src.core.util.rectangle import Rectangle
+from src.core.api.rectangle import Rectangle
 from src.core.api.screen.screenshot_image import ScreenshotImage
 from src.core.api.enums import MatchTemplateType
 from src.core.api.screen.display import Display
