@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '101669'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
+        self.set_profile_pref({'extensions.formautofill.available': 'on'})
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
