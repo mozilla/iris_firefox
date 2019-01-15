@@ -14,6 +14,19 @@ class Test(BaseTest):
         self.test_case_id = '99823'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
+        self.blocked_by = {'id': 'issue_1811', 'platform': [Platform.WINDOWS]}
+
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
 
     def run(self):
         new_private_window()
@@ -45,15 +58,9 @@ class Test(BaseTest):
         type(text=Key.ESC)
 
     def teardown(self):
-        # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
-        for step in show_all_downloads_from_library_menu_private_window():
+        # Cancel all 'in progress' downloads.
+        for step in cancel_in_progress_downloads_from_the_library(True):
             assert_true(self, step.resolution, step.message)
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        assert_true(self, expected, 'The \'X\' button is found.')
-        while expected:
-            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-
         close_tab()
-        close_tab()
+        downloads_cleanup()

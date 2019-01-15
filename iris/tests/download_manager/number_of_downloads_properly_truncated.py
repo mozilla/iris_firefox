@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.test_case_id = '99472'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
+        self.blocked_by = {'id': 'issue_1811', 'platform': [Platform.WINDOWS]}
 
     def setup(self):
         """Test case setup
@@ -88,17 +89,7 @@ class Test(BaseTest):
 
     def teardown(self):
         # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
-        for step in open_clear_recent_history_window_from_library_menu():
+        for step in cancel_in_progress_downloads_from_the_library():
             assert_true(self, step.resolution, step.message)
-
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        while expected:
-            try:
-                click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            except FindError:
-                break
-            expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-
-        click_window_control('close')
 
         downloads_cleanup()

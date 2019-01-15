@@ -14,6 +14,19 @@ class Test(BaseTest):
         self.test_case_id = '99484'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
+        self.blocked_by = {'id': 'issue_1811', 'platform': [Platform.WINDOWS]}
+
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
 
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
@@ -42,3 +55,6 @@ class Test(BaseTest):
         assert_true(self, expected, 'The \'X\' button is found in the Downloads panel.')
 
         click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+
+    def teardown(self):
+        downloads_cleanup()
