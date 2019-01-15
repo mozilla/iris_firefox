@@ -17,61 +17,35 @@ class Test(BaseTest):
 
     def run(self):
         name_field_pattern = Pattern('name_field.png')
-        submit_button_pattern = Pattern('submit_button.png')
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
-        organization_field_pattern = Pattern('organization_field.png')
-        address_field_pattern = Pattern('street_address_field.png')
-        address_level_2_pattern = Pattern('address_level_2_field.png')
-        address_level_1_pattern = Pattern('address_level_1_field.png')
-        postal_code_pattern = Pattern('postal_code_field.png')
-        country_code_field_pattern = Pattern('country_code_field.png')
-        telephone_field_pattern = Pattern('telephone_field.png')
-        email_field_pattern = Pattern('email_field.png')
         saved_profiles_pattern = Pattern('saved_profiles.png')
 
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
 
-        input_data = {
-            name_field_pattern: ['Maria V. Griggs', 'Name'],
-            organization_field_pattern: ['Loblaws', 'Organization'],
-            address_field_pattern: ['1223 Rainbow Drive', 'Address'],
-            address_level_2_pattern: ['Youngstown, OH', 'Address level 2'],
-            address_level_1_pattern: ['1223 Rainbow Drive', 'Address level 1'],
-            postal_code_pattern: ['44512', 'Postal code'],
-            country_code_field_pattern: ['US', 'Country code'],
-            telephone_field_pattern: ['9079782386', 'Telephone'],
-            email_field_pattern: ['maria_griggs@gmail.com', 'Email']
-        }
+        input_data = ['Maria V. Griggs', 'Loblaws', '1223 Rainbow Drive', 'Youngstown, OH', '1223 Rainbow Drive',
+                      '44512', 'US', '9079782387', 'maria_griggs@gmail.com']
+        input_data_2 = ['Second V. Griggs', 'Loblaws_2', '1223 Rainbow Drive_2', 'Youngstown, OH_2',
+                        '1223 Rainbow Drive_2', '44512', 'US', '9079782387', 'second_griggs@gmail.com']
 
-        for field in input_data:
-            field_exists = exists(field)
-            assert_true(self, field_exists, '{} field exists'.format(input_data[field][1]))
+        name_field_exists = exists(name_field_pattern)
+        assert_true(self, name_field_exists, 'The basic forms Autofill demo is opened')
 
-            click(field)
-            type(input_data[field][0])
+        click(name_field_pattern)
 
-        click(submit_button_pattern)
+        for fields in range(9):
+            type(input_data[fields])
+            type('\t')
 
-        input_data = {
-            name_field_pattern: ['Second S. Griggs', 'Name'],
-            organization_field_pattern: ['Loblaws_2', 'Organization'],
-            address_field_pattern: ['1223 Rainbow Drive_2', 'Address'],
-            address_level_2_pattern: ['Youngstown, OH_2', 'Address level 2'],
-            address_level_1_pattern: ['1223 Rainbow Drive_2', 'Address level 1'],
-            postal_code_pattern: ['44512', 'Postal code'],
-            country_code_field_pattern: ['US', 'Country code'],
-            telephone_field_pattern: ['9079782387', 'Telephone'],
-            email_field_pattern: ['second_griggs@gmail.com', 'Email']
-        }
+        type('\n')
 
-        for field in input_data:
-            field_exists = exists(field)
-            assert_true(self, field_exists, '{} field exists'.format(input_data[field][1]))
+        restore_firefox_focus()
+        click(name_field_pattern)
 
-            click(field)
-            type(input_data[field][0])
+        for fields in range(9):
+            type(input_data_2[fields])
+            type('\t')
 
-        click(submit_button_pattern)
+        type('\n')
 
         click(name_field_pattern)
         double_click(name_field_pattern)
@@ -85,6 +59,9 @@ class Test(BaseTest):
         assert_true(self, private_browsing_opened, 'Private browsing window is opened')
 
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
+
+        name_field_exists_private = exists(name_field_pattern)
+        assert_true(self, name_field_exists_private, 'The basic forms Autofill demo is opened')
 
         click(name_field_pattern)
         double_click(name_field_pattern)
