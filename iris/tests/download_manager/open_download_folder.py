@@ -57,6 +57,12 @@ class Test(BaseTest):
         close_tab()
 
         # Switch the focus on firefox browser.
-        click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
+        click(NavBar.FORWARD_BUTTON.target_offset(-50, 0))
+
+        # Cancel all 'in progress' downloads.
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
 
         downloads_cleanup()
