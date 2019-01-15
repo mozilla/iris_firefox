@@ -25,7 +25,7 @@ class Test(BaseTest):
         console_output_width_1000 = Pattern('console_output_width_1000.png')
 
         if not Settings.is_mac():
-            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png')
+            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
             minimize_window()
 
         default_window_location = Location(x=(SCREEN_WIDTH / 20), y=(SCREEN_HEIGHT / 20))
@@ -114,12 +114,10 @@ class Test(BaseTest):
         assert_true(self, tab_one_moved_twice, 'First tab window moved')
 
         if not Settings.is_mac():
-            hamburger_menu = find(hamburger_menu_button_pattern, region=tab_one_window_region)
-            click(hamburger_menu)
-            hamburger_menu_displayed = exists(hamburger_menu_quit_item_pattern)
-            assert_true(self, hamburger_menu_displayed, 'Hamburger menu displayed')
-            exit_item = find(hamburger_menu_quit_item_pattern, )
-            click(exit_item, 1)
+            click(hamburger_menu_button_pattern, 1)
+            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern)
+            assert_true(self, hamburger_menu_quit_displayed, 'Hamburger menu displayed')
+            click(hamburger_menu_quit_item_pattern, 1)
         else:
             type('q', KeyModifier.CMD)
 
