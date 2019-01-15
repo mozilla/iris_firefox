@@ -42,14 +42,8 @@ fi
 
 
 echo -e "\n${GREEN}  --->  Installing 'which' & 'sudo' #####${NC}\n"
-if command -v which &>/dev/null; then
-    echo -e "${GREEN}  --->  Skipping 'which' & 'sudo' install. Already installed. ${NC}\n"
-    powershell -Command "scoop update which"
-    powershell -Command "scoop update sudo"
-else
-    powershell -Command "scoop install which"
-    powershell -Command "scoop install sudo"
-fi
+powershell -Command "scoop install which"
+powershell -Command "scoop install sudo"
 
 
 echo -e "\n${GREEN}--->  Installing/updating 7zip #####${NC}\n"
