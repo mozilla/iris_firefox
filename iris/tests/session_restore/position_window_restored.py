@@ -11,6 +11,7 @@ class Test(BaseTest):
         self.test_suite_id = '68'
         self.locales = ['en-US']
         self.exclude = Platform.MAC
+        self.set_profile_pref({'browser,sessionstore.resume_from_crash':False})
 
     def run(self):
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
@@ -69,7 +70,7 @@ class Test(BaseTest):
                                      width=SCREEN_WIDTH,
                                      height=SCREEN_HEIGHT / 10)
 
-        tab_two_drop_location = Location(x=0,
+        tab_two_drop_location = Location(x=90,
                                          y=(default_tabs_position.y + 2 * SCREEN_HEIGHT / 5))
 
         drag_drop(default_tabs_position, tab_two_drop_location)
@@ -110,6 +111,7 @@ class Test(BaseTest):
                                        width=SCREEN_WIDTH,
                                        height=SCREEN_HEIGHT / 5)
 
+
         tab_one_moved_twice = exists(firefox_test_site_tab_pattern)
         assert_true(self, tab_one_moved_twice, 'First tab window moved')
 
@@ -121,27 +123,28 @@ class Test(BaseTest):
         else:
             type('q', KeyModifier.CMD)
 
-        close_firefox(self)
+        status = self.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+        if status is None:
+            self.firefox_runner.stop()
+            self.firefox_runner = None
+
         self.firefox_runner = launch_firefox(
             self.browser.path,
             self.profile_path,
             self.base_local_web_url)
         self.firefox_runner.start()
-        wait_for_firefox_restart()
 
-        firefox_restarted = exists(hamburger_menu_button_pattern, 5)
-        assert_true(self, firefox_restarted, 'Firefox restarted')
-        hamburger_menu_new_window = find(hamburger_menu_button_pattern)
-        click(hamburger_menu_new_window)
+        firefox_restarted = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, firefox_restarted, 'Firefox restarted successfully')
+        click(hamburger_menu_button_pattern)
 
-        restore_previous_session_located = exists(restore_previous_session_pattern)
-        assert_true(self, restore_previous_session_located, '"Restore previous session" item located')
-        restore_previous_session = find(restore_previous_session_pattern)
-        click(restore_previous_session)
+        restore_previous_session_located = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, restore_previous_session_located, '"Restore previous session" menu item located')
+        click(restore_previous_session_pattern)
 
         focus_site_restored = exists(focus_test_site_tab_pattern, 10)
         firefox_test_site_restored = exists(firefox_test_site_tab_pattern, 20)
-        assert_true(self, focus_site_restored and firefox_test_site_restored, 'Session restored')
+        assert_true(self, focus_site_restored and firefox_test_site_restored, 'Session restored successfully')
 
         firefox_test_site_restored_position = find(firefox_test_site_tab_pattern)
         focus_site_restored_position = find(focus_test_site_tab_pattern)
@@ -162,7 +165,10 @@ class Test(BaseTest):
                     'First restored window oriented correctly')
 
         assert_true(self, focus_site_most_left and focus_site_the_lowest,
-                    'Second restored window oriented correctly')
+                    '{} {} - {} {} {} test'.format(focus_site_restored_position.x, iris_tab_restored_position.x,
+                                        focus_site_restored_position.y, iris_tab_restored_position.y, firefox_test_site_restored_position.y))
+                    #'Second restored window oriented correctly')
+
 
         click(firefox_test_site_restored_position, 1)
         open_browser_console()
