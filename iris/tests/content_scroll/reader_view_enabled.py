@@ -18,10 +18,8 @@ class Test(BaseTest):
     def run(self):
         reader_view_button_pattern = Pattern('reader_view_button.png')
         reader_view_content_pattern = Pattern('reader_view_content.png')
+        scroll_bar_pattern = Pattern('scroll_bar_button.png')
 
-        if Settings.is_windows():
-            scroll_bar_button_up_pattern = Pattern('scroll_bar_button_up.png').similar(0.6)
-            scroll_bar_button_down_pattern = Pattern('scroll_bar_button_down.png').similar(0.6)
 
         if Settings.is_windows():
             scroll_height = 1600
@@ -58,23 +56,19 @@ class Test(BaseTest):
 
         # Scroll up and down using scroll bar
         before_scroll_content_exists = exists(reader_view_content_pattern, 10)
-        scroll_bar_location_down = Location(SCREEN_WIDTH - 1, SCREEN_HEIGHT / 1.2)
-        scroll_bar_location_up = Location(SCREEN_WIDTH - 1, SCREEN_HEIGHT / 10)
-        scroll_bar_region = Region(x=SCREEN_WIDTH / 2, y=0, width=SCREEN_WIDTH / 2, height=SCREEN_HEIGHT)
+        before_scroll_button_location = find(scroll_bar_pattern)
+        after_scroll_button_position = before_scroll_button_location.offset(0, 500)
+
         try:
-            if Settings.is_linux() or Settings.is_mac():
-                click(scroll_bar_location_down, DEFAULT_FX_DELAY)
-            if Settings.is_windows():
-                [click(scroll_bar_button_down_pattern, DEFAULT_FX_DELAY, in_region=scroll_bar_region) for _ in
-                 range(10)]
+            drag_drop(scroll_bar_pattern, after_scroll_button_position)
             wait_vanish(reader_view_content_pattern, 10)
         except FindError:
             raise FindError('Content before scrolling is still on the page')
 
-        if Settings.is_linux() or Settings.is_mac():
-            click(scroll_bar_location_up, DEFAULT_FX_DELAY)
-        if Settings.is_windows():
-            [click(scroll_bar_button_up_pattern, DEFAULT_FX_DELAY) for _ in range(10)]
+        after_scroll_button_position.x += 10
+        after_scroll_button_position.y += 10
+        initial_position = before_scroll_button_location.offset(0, -500)
+        drag_drop(after_scroll_button_position, initial_position)
 
         after_scroll_content_exists = exists(reader_view_content_pattern, 10)
         assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
