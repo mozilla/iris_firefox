@@ -62,6 +62,12 @@ class Library(object):
         EXPORT_BOOKMARKS_FROM_HTML = Pattern('fileExport.png')
         IMPORT_DATA_FROM_ANOTHER_BROWSER = Pattern('browserImport.png')
 
+    class DownloadLibrary(object):
+        DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern('download_button_cancel_icon.png')
+        DOWNLOADS = Pattern('downloads.png')
+        SEARCH_DOWNLOADS = Pattern('searchFilter_downloads.png')
+        CLEAR_DOWNLOADS = Pattern('clearDownloadsButton.png')
+
     HISTORY = Pattern('history.png')
     HISTORY_NAME = Pattern('history_name.png')
     HISTORY_TODAY = Pattern('library_history_today.png')
@@ -69,9 +75,6 @@ class Library(object):
     HISTORY_OLDER_THAN_6_MONTHS = Pattern('history_older_than_6_months.png')
     OLDER_THAN_6_MONTHS_NAME = Pattern('older_than_6_months_name.png')
     SEARCH_HISTORY = Pattern('searchFilter_history.png')
-    DOWNLOADS = Pattern('downloads.png')
-    SEARCH_DOWNLOADS = Pattern('searchFilter_downloads.png')
-    CLEAR_DOWNLOADS = Pattern('clearDownloadsButton.png')
     TAGS = Pattern('tags.png')
     TAGS_NAME = Pattern('tags_name.png')
     ALL_BOOKMARKS = Pattern('all_bookmarks.png')
