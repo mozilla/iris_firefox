@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-import time
 
 
 class Test(BaseTest):
