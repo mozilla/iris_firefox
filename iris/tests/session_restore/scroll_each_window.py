@@ -11,6 +11,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
+        hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png')
         focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png')
         firefox_tab_scrolled_pattern = Pattern('firefox_tab_scrolled.png')
@@ -23,9 +25,7 @@ class Test(BaseTest):
             minimize_window()
 
         open_browser_console()
-        time.sleep(DEFAULT_SYSTEM_DELAY)
         paste('window.resizeTo(800, 450)')
-        time.sleep(DEFAULT_SYSTEM_DELAY)
         type(Key.ENTER)
 
         if not Settings.is_mac():
@@ -36,80 +36,91 @@ class Test(BaseTest):
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        tab_one_loaded = exists(LocalWeb.FIREFOX_LOGO, 20)
+        tab_one_loaded = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, tab_one_loaded, 'First tab loaded')
         firefox_tab_location_before = find(firefox_test_site_tab_pattern)
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        tab_two_loaded = exists(LocalWeb.FOCUS_LOGO, 20)
+        tab_two_loaded = exists(LocalWeb.FOCUS_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, tab_two_loaded, 'Second tab loaded')
         focus_tab_location_before = find(focus_test_site_tab_pattern)
 
-        focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, 20)
+        focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, focus_test_site_tab_exists, 'Focus site tab is active.')
 
         # Drag-n-drop Focus tab
-        focus_tab_drop_location = Location(x=50,
-                                           y=(SCREEN_HEIGHT / 2))
+        focus_tab_drop_location = Location(x=50, y=(SCREEN_HEIGHT / 2))
 
         drag_drop(focus_tab_location_before, focus_tab_drop_location, duration=0.5)
-        time.sleep(DEFAULT_UI_DELAY)
 
-        focus_content_exists = exists(LocalWeb.FOCUS_LOGO)
+        focus_content_exists = exists(LocalWeb.FOCUS_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, focus_content_exists, 'Focus content is visible.')
 
         click(focus_test_site_tab_pattern.target_offset(0, 100))
         repeat_key_down(5)
 
-        focus_tab_scrolled = exists(focus_tab_scrolled_pattern, 20)
+        focus_tab_scrolled = exists(focus_tab_scrolled_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, focus_tab_scrolled, 'Focus tab scrolled.')
 
-        focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, 20)
+        focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, focus_test_site_tab_exists, 'Focus tab exists after drag-n-drop.')
 
         # Drag-n-drop Firefox tab
-        firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2),
-                                             y=150)
-
+        firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2), y=150)
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
-        time.sleep(DEFAULT_UI_DELAY)
 
-        firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO)
+        firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_content_exists, 'Firefox content is visible.')
 
         click(firefox_test_site_tab_pattern.target_offset(0, 100))
         repeat_key_down(5)
 
-        firefox_tab_scrolled = exists(firefox_tab_scrolled_pattern, 20)
+        firefox_tab_scrolled = exists(firefox_tab_scrolled_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_tab_scrolled, 'Firefox tab scrolled.')
 
-        firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
+        firefox_tab_exists = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_tab_exists, 'Firefox tab is active.')
 
-        time.sleep(DEFAULT_UI_DELAY)
+        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
+        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
 
-        if Settings.is_windows():
-            type(text='q', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        proper_hamburger_menu_region = Region(0, 0, width=SCREEN_WIDTH, height=SCREEN_HEIGHT / 5)
 
-        restart_firefox(self,
-                        self.browser.path,
-                        self.profile_path,
-                        self.base_local_web_url)
+        if not Settings.is_mac():
+            click(hamburger_menu_button_pattern, 1, in_region=proper_hamburger_menu_region)
+            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, hamburger_menu_quit_displayed, 'Hamburger menu quit item displayed.')
+            click(hamburger_menu_quit_item_pattern, 1)
+        else:
+            type('q', KeyModifier.CMD)
 
-        if Settings.is_linux():
-            click_window_control('maximize')
+        # firefox_runner = None to prevent automatic restore of previous session
+        status = self.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+        if status is None:
+            self.firefox_runner.stop()
+            self.firefox_runner = None
 
+        self.firefox_runner = launch_firefox(
+            self.browser.path,
+            self.profile_path,
+            self.base_local_web_url)
+        self.firefox_runner.start()
+
+        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
+        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
         click(NavBar.HAMBURGER_MENU)
-        restore_previous_session_exists = exists(restore_previous_session_pattern, 20)
-        assert_true(self, restore_previous_session_exists, '\'Restore previous session\' item located')
 
+        restore_previous_session_exists = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
+        assert_true(self, restore_previous_session_exists, '"Restore previous session" item located')
         click(restore_previous_session_pattern)
 
-        time.sleep(DEFAULT_SYSTEM_DELAY)
+        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
+        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
 
-        firefox_tab_exists = exists(firefox_test_site_tab_pattern, 20)
+        # Firefox tab restored
+        firefox_tab_exists = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_tab_exists, 'Firefox tab exists after restart.')
 
         firefox_tab_restarted = exists(firefox_test_site_tab_pattern)
@@ -117,21 +128,22 @@ class Test(BaseTest):
 
         firefox_top_content_not_exists = not exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, firefox_top_content_not_exists, 'top content is not on screen,')
-        firefox_tab_scrolled_content_exists = exists(firefox_tab_scrolled_pattern, 20)
+        firefox_tab_scrolled_content_exists = exists(firefox_tab_scrolled_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_tab_scrolled_content_exists, 'tab content is scrolled.')
 
         close_tab()
 
-        focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, 20)
+        # Focus tab restored
+        focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, focus_test_site_tab_exists, 'Focus tab exists after restart.')
 
         focus_tab_restarted = exists(focus_test_site_tab_pattern)
         assert_true(self, focus_tab_restarted, 'Focus window is restored and ')
 
         focus_top_content_not_exists = not exists(LocalWeb.FOCUS_LOGO)
-        assert_true(self, focus_top_content_not_exists, 'top content is not on screen, ')
+        assert_true(self, focus_top_content_not_exists, 'top content is not on screen,')
 
-        focus_tab_scrolled_content_exists = exists(focus_tab_scrolled_pattern, 20)
-        assert_true(self, focus_tab_scrolled_content_exists, 'tab content is scrolled.')
+        focus_tab_scrolled_content_exists = exists(focus_tab_scrolled_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
+        assert_true(self, focus_tab_scrolled_content_exists, ' tab content is scrolled.')
 
         close_tab()
