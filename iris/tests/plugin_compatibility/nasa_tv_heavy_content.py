@@ -50,13 +50,11 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Video is not stopped')
 
-        scroll_down(10)
         page_end()
 
         page_scrolled = exists(page_bottom_marker_pattern, 10)
         assert_true(self, page_scrolled, 'The page is successfully scrolling')
 
-        scroll_up(10)
         page_home()
 
         right_click(video_window)
