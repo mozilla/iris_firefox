@@ -141,9 +141,9 @@ class Test(BaseTest):
         assert_true(self, focus_tab_restarted, 'Focus window is restored and ')
 
         focus_top_content_not_exists = not exists(LocalWeb.FOCUS_LOGO)
-        assert_true(self, focus_top_content_not_exists, 'top content is not on screen, ')
+        assert_true(self, focus_top_content_not_exists, 'top content is not on screen,')
 
         focus_tab_scrolled_content_exists = exists(focus_tab_scrolled_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, focus_tab_scrolled_content_exists, 'tab content is scrolled.')
+        assert_true(self, focus_tab_scrolled_content_exists, ' tab content is scrolled.')
 
         close_tab()
