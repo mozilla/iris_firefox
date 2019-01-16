@@ -28,6 +28,8 @@ class Test(BaseTest):
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate('about:config')
+        expected = exists(accept_risk_pattern, 10)
+        assert_true(self, expected, 'Need to accept the risks before continue to next step.')
         click(accept_risk_pattern)
 
         expected = region.exists(default_status_pattern, 10)
