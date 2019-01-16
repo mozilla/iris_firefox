@@ -42,15 +42,13 @@ class Test(BaseTest):
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-
         tab_one_loaded = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, tab_one_loaded, 'First tab loaded')
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
-
         tab_two_loaded = exists(focus_test_site_tab_pattern, 30)
-        assert_true(self, tab_two_loaded, 'Second tab loaded. Several websites opened in different tabs.')
+        assert_true(self, tab_two_loaded, 'Second tab loaded')
 
         if not Settings.is_mac():
             minimize_window()
@@ -65,7 +63,7 @@ class Test(BaseTest):
             type('w', KeyModifier.CMD)
 
         tabs_located_after_size_changed = exists(focus_test_site_tab_pattern)
-        assert_true(self, tabs_located_after_size_changed, 'Tabs located after unmaximize.')
+        assert_true(self, tabs_located_after_size_changed, 'Tabs located after size of main window had changed.')
 
         default_tabs_position = find(focus_test_site_tab_pattern)
         default_tabs_region = Region(0,
@@ -73,8 +71,7 @@ class Test(BaseTest):
                                      width=SCREEN_WIDTH,
                                      height=SCREEN_HEIGHT / 10)
 
-        tab_two_drop_location = Location(x=0,
-                                         y=(default_tabs_position.y + 2 * SCREEN_HEIGHT / 5))
+        tab_two_drop_location = Location(x=0, y=(default_tabs_position.y + 2 * SCREEN_HEIGHT / 5))
 
         drag_drop(default_tabs_position, tab_two_drop_location)
         open_browser_console()
@@ -140,13 +137,13 @@ class Test(BaseTest):
 
         firefox_restarted = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_restarted, 'Firefox restarted successfully')
-        click(hamburger_menu_button_pattern, 1)
 
+        click(hamburger_menu_button_pattern, 1)
         restore_previous_session_located = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, restore_previous_session_located,
                     'The "Hamburger" menu is successfully displayed. "Restore previous session" menu item located')
-        click(restore_previous_session_pattern)
 
+        click(restore_previous_session_pattern)
         focus_site_restored = exists(focus_test_site_tab_pattern, 10)
         firefox_test_site_restored = exists(firefox_test_site_tab_pattern, 20)
         assert_true(self, focus_site_restored and firefox_test_site_restored, 'Session restored successfully')
@@ -167,10 +164,10 @@ class Test(BaseTest):
         focus_site_most_left = focus_site_restored_position.x <= iris_tab_restored_position.x
 
         assert_true(self, firefox_test_site_most_right and firefox_test_site_middle_heigth,
-                    'First restored window oriented correctly')
+                    'First restored window is located in the right position')
 
-        assert_true(self, focus_site_most_left and focus_site_the_lowest, 'Second restored window oriented correctly')
-
+        assert_true(self, focus_site_most_left and focus_site_the_lowest,
+                    'Second restored window is located in the right position')
 
         click(firefox_test_site_restored_position, 1)
         open_browser_console()
