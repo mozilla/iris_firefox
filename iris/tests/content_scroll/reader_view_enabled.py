@@ -18,12 +18,11 @@ class Test(BaseTest):
     def run(self):
         reader_view_button_pattern = Pattern('reader_view_button.png')
         reader_view_content_pattern = Pattern('reader_view_content.png')
-        scroll_bar_pattern = Pattern('scroll_bar_button.png')
 
         if Settings.is_windows():
             scroll_height = 1600
         if Settings.is_linux() or Settings.is_mac():
-            scroll_height = 10
+            scroll_height = 100
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
@@ -36,86 +35,70 @@ class Test(BaseTest):
 
         # Scroll up and down using mouse wheel
         before_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        loc_control = Location(500, 500)
+        assert_true(self, before_scroll_content_exists, 'Content before scrolling is on the page')
 
-        click(loc_control)
+        click(reader_view_content_pattern)
         scroll(-scroll_height)
+        try:
+            wait_vanish(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        except FindError:
+            raise FindError('After scrolling content is still on the page')
         scroll(scroll_height)
 
         after_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
-                    'Scroll up and down using mouse wheel is successful.')
-
-        # Scroll up and down using scroll bar
-        if not Settings.is_mac():
-            before_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-
-            scroll_bar_button_exists = exists(scroll_bar_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, scroll_bar_button_exists, 'Scroll bar button is on the page')
-            try:
-                before_scroll_button_location = find(scroll_bar_pattern)
-            except FindError:
-                raise FindError('Cannot find scroll bar button location')
-            after_scroll_button_position = before_scroll_button_location.offset(0, 500)
-
-            drag_drop(scroll_bar_pattern, after_scroll_button_position)
-
-            before_scroll_button_location.x += 8
-            before_scroll_button_location.y += 8
-            initial_position = before_scroll_button_location.offset(0, -500)
-
-            # Scroll up using click on the scroll bar
-            [click(initial_position) for _ in range(5)]
-
-            after_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
-                        'Scroll up and down using scroll bar is successful.')
+        assert_true(self, after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful.')
 
         # Scroll up and down using arrow keys
         before_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, before_scroll_content_exists, 'Content before scrolling is on the page')
 
         repeat_key_down(10)
+        try:
+            wait_vanish(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        except FindError:
+            raise FindError('After scrolling content is still on the page')
         repeat_key_up(10)
 
         after_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
-                    'Scroll up and down using arrow keys is successful.')
+        assert_true(self, after_scroll_content_exists, 'Scroll up and down using arrow keys is successful.')
 
         # Scroll up and down using page up/down keys
         before_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, before_scroll_content_exists, 'Content before scrolling is on the page')
 
         [type(Key.PAGE_DOWN) for _ in range(4)]
+        try:
+            wait_vanish(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        except FindError:
+            raise FindError('After scrolling content is still on the page')
         [type(Key.PAGE_UP) for _ in range(4)]
 
         after_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
-                    'Scroll up and down using page up/down keys is successful.')
+        assert_true(self, after_scroll_content_exists, 'Scroll up and down using page up/down keys is successful.')
 
         # Scroll up and down using ctrl + up/down keys
         before_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, before_scroll_content_exists, 'Content before scrolling is on the page')
 
-        if Settings.is_mac():
-            type(Key.DOWN, modifier=KeyModifier.CMD)
-        else:
-            type(Key.DOWN, modifier=KeyModifier.CTRL)
-
-        if Settings.is_mac():
-            type(Key.UP, modifier=KeyModifier.CMD)
-        else:
-            type(Key.UP, modifier=KeyModifier.CTRL)
+        type(Key.DOWN, modifier=KeyModifier.CTRL)
+        try:
+            wait_vanish(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        except FindError:
+            raise FindError('After scrolling content is still on the page')
+        type(Key.UP, modifier=KeyModifier.CTRL)
 
         after_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
-                    'Scroll up and down using ctrl + up/down keys is successful.')
+        assert_true(self, after_scroll_content_exists, 'Scroll up and down using ctrl + up/down keys is successful.')
 
         # Scroll up and down using space bar
         before_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, before_scroll_content_exists, 'Content before scrolling is on the page')
+
         try:
             type(Key.SPACE)
             after_scroll_content_disappeared = wait_vanish(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, before_scroll_content_exists and after_scroll_content_disappeared,
-                        'Scroll up and down using space bar is successful.')
+            assert_true(self, after_scroll_content_disappeared, 'Scroll up and down using space bar is successful.')
         except FindError:
             raise FindError('Content before scrolling is still on the page')
 
-    close_window()
+        close_window()
