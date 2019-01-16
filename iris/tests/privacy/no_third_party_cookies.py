@@ -17,18 +17,27 @@ class Test(BaseTest):
 
     def run(self):
         block_all_third_party_cookies_pattern = Pattern('block_all_third_party_cookies.png')
+        clear_data_button_pattern = Pattern('clear_button.png')
+        confirm_clear_data_pattern = Pattern('confirm_clear_data.png')
         cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
         cookies_ticked_pattern = Pattern('block_cookies_ticked.png')
         cookies_unticked_pattern = Pattern('block_cookies_unticked.png')
-        custom_content_blocking_pattern = Pattern('custom_content_blocking_unticked.png')
-        site_tab = Pattern('prosport_tab.png')
+        cookies_window_title_pattern = Pattern('cookies_window_title.png')
+        custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
+        custom_content_blocking_ticked_pattern = Pattern('custom_content_blocking_ticked.png')
+        manage_cookies_data_pattern = Pattern('manage_cookies_data.png')
+        open_clear_data_window_pattern = Pattern('open_clear_data_window.png')
+        site_cookie_one_pattern = Pattern('site_cookie_one.png')
+        site_cookie_two_pattern = Pattern('site_cookie_two.png')
+        site_tab_pattern = Pattern('prosport_tab.png')
+        remove_all_cookies_pattern = Pattern('remove_all_cookies_inactive.png')
 
         new_tab()
         navigate('about:preferences#privacy')
-        preferences_opened = exists(custom_content_blocking_pattern)
-        assert_true(self, preferences_opened, 'The page is successfully displayed.')
+        preferences_opened = exists(custom_content_blocking_unticked_pattern)
+        assert_true(self, preferences_opened, 'The preferences page is successfully displayed.')
 
-        click(custom_content_blocking_pattern)
+        click(custom_content_blocking_unticked_pattern)
         options_displayed = exists(cookies_unticked_pattern)
         assert_true(self, options_displayed, 'The options are properly displayed.')
 
@@ -45,11 +54,47 @@ class Test(BaseTest):
 
         click(block_all_third_party_cookies_pattern)
 
+        reload_page()
+        preferences_opened = exists(custom_content_blocking_ticked_pattern)
+        assert_true(self, preferences_opened, 'The preferences page is successfully displayed.')
+
+        paste('clear data')
+        open_clear_data_button_displayed = exists(open_clear_data_window_pattern)
+        assert_true(self, open_clear_data_button_displayed, '"Clear data" button displayed.')
+
+        click(open_clear_data_window_pattern)
+        clear_data_window_displayed = exists(clear_data_button_pattern)
+        assert_true(self, clear_data_window_displayed, 'Clear data window displayed.')
+
+        click(clear_data_button_pattern)
+        message_window_displayed = exists(confirm_clear_data_pattern)
+        assert_true(self, message_window_displayed, '"Clear data" message window displayed.')
+
+        click(confirm_clear_data_pattern)
         navigate('http://www.prosport.ro/')
-        site_loaded = exists(site_tab, DEFAULT_FIREFOX_TIMEOUT)
+        site_loaded = exists(site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 3)
         assert_true(self, site_loaded, 'The "Prosport" website is successfully displayed.')
 
         navigate('about:preferences#privacy')
-        preferences_opened = exists(custom_content_blocking_pattern)
+        preferences_opened = exists(custom_content_blocking_ticked_pattern)
         assert_true(self, preferences_opened, 'The page is successfully displayed.')
 
+        paste('manage data')
+        cookies_data_button_located = exists(manage_cookies_data_pattern)
+        assert_true(self, cookies_data_button_located, '"Manage cookies data" button displayed.')
+
+        click(manage_cookies_data_pattern)
+        cookies_data_window_opened = exists(cookies_window_title_pattern)
+        assert_true(self, cookies_data_window_opened, 'Cookies data window opened.')
+
+        site_cookie_one_saved = exists(site_cookie_one_pattern)
+        site_cookie_two_saved = exists(site_cookie_two_pattern)
+        assert_true(self, site_cookie_one_saved, 'Target site cookie saved.')
+        assert_true(self, site_cookie_two_saved, 'Other target cookie saved.')
+
+        click(site_cookie_one_pattern)
+        type(Key.DELETE)
+        type(Key.DELETE)
+
+        no_more_cookies = exists(remove_all_cookies_pattern)
+        assert_true(self, no_more_cookies, 'No third-party cookies saved.')
