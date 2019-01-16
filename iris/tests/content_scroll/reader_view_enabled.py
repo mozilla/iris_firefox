@@ -53,10 +53,12 @@ class Test(BaseTest):
 
         drag_drop(scroll_bar_pattern, after_scroll_button_position)
 
-        after_scroll_button_position.x += 6
-        after_scroll_button_position.y += 6
+        before_scroll_button_location.x += 8
+        before_scroll_button_location.y += 8
         initial_position = before_scroll_button_location.offset(0, -500)
-        drag_drop(after_scroll_button_position, initial_position)
+
+        # Scroll up using click on the scroll bar
+        [click(initial_position) for _ in range(5)]
 
         after_scroll_content_exists = exists(reader_view_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
