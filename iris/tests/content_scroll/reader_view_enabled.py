@@ -53,8 +53,8 @@ class Test(BaseTest):
 
         drag_drop(scroll_bar_pattern, after_scroll_button_position)
 
-        after_scroll_button_position.x += 10
-        after_scroll_button_position.y += 10
+        after_scroll_button_position.x += 6
+        after_scroll_button_position.y += 6
         initial_position = before_scroll_button_location.offset(0, -500)
         drag_drop(after_scroll_button_position, initial_position)
 
