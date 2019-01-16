@@ -21,7 +21,7 @@ class Test(BaseTest):
 
         page_region = generate_region_by_markers(top_left_marker, bottom_right_marker)
         page_region.debug()
-        left_half_page_region = Region(page_region.x, page_region.y, page_region.width / 3, page_region.height)
+        left_half_page_region = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
         left_half_page_region.debug()
 
         right_half_page_region = Region(
