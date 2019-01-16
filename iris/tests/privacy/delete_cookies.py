@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Firefox can be set to delete cookies when closed. ."
+        self.meta = "Firefox can be set to delete cookies when closed."
         self.test_case_id = "106157"
         self.test_suite_id = "1956"
         self.locale = ["en-US"]
@@ -52,6 +52,8 @@ class Test(BaseTest):
         self.firefox_runner.start()
 
         wait_for_firefox_restart()
+
+        maximize_window()
 
         manage_data_button_exists = exists(manage_data_button_pattern)
         assert_true(self, manage_data_button_exists, 'The manage data button exists.')
