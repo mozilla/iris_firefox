@@ -3,11 +3,11 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import importlib
-import os
+
 import pytest
 
-from src.core.util.app_loader import get_app_test_directory
 from src.core.api.arg_parser import parse_args
+from src.core.util.app_loader import get_app_test_directory
 from src.iris_pytest_plugin import Plugin
 
 
@@ -28,20 +28,14 @@ def main():
     pytest_args.append('-r ')
     pytest_args.append('-s')
 
-    # Placeholder - just for demonstration
-
-    # Find target module
     print('Desired target: %s' % args.application)
 
-    my_module = None
     try:
         my_module = importlib.import_module('targets.%s.app' % args.application)
     except ModuleNotFoundError:
         print('Module not found')
         return
 
-    # Instantiate target object
-    target_plugin = None
     try:
         target_plugin = my_module.Target()
         print('Found target named %s' % target_plugin.target_name)
@@ -49,5 +43,4 @@ def main():
         print('Can\'t find default Target class.')
         return
 
-    # Pass both plugins to pytest
     pytest.main(pytest_args, plugins=[target_plugin, Plugin()])

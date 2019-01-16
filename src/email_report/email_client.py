@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 
 from src.core.api.errors import EmailError
 from src.core.util.path_manager import PathManager
-from src.core.util.os_helpers import OSHelper
+from src.core.api.os_helpers import OSHelper
 
 from src.configuration.config_parser import get_config_property
 

@@ -8,9 +8,9 @@ from datetime import date
 
 from src.configuration.config_parser import get_config_property, logger
 from src.core.api.errors import TestRailError
-from src.core.util.os_helpers import OSHelper
-from src.test_rail import api_client
-from src.test_rail.test_case_results import TestSuiteMap, TestRailTests
+from src.core.api.os_helpers import OSHelper
+from targets.firefox.test_rail import api_client
+from targets.firefox.test_rail.test_case_results import TestSuiteMap, TestRailTests
 
 
 class TestRail:

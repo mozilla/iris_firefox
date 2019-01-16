@@ -10,7 +10,7 @@ import subprocess
 from src.core.api.enums import OSPlatform
 from src.core.api.keyboard.keyboard_api import shutdown_process
 from src.core.api.settings import Settings
-from src.core.util.os_helpers import OSHelper
+from src.core.api.os_helpers import OSHelper
 
 logger = logging.getLogger(__name__)
 
