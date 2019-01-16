@@ -21,7 +21,8 @@ class Test(BaseTest):
         cookies_ticked_pattern = Pattern('block_cookies_ticked.png')
         cookies_unticked_pattern = Pattern('block_cookies_unticked.png')
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
-        custom_content_blocking_pattern = Pattern('custom_content_blocking.png')
+        custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
+        custom_content_blocking_ticked_patten = Pattern('custom_content_blocking_ticked.png')
         manage_cookies_data_pattern = Pattern('manage_cookies_data.png')
         site_cookies_pattern = Pattern('site_cookies.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
@@ -29,13 +30,13 @@ class Test(BaseTest):
         new_tab()
         navigate('about:preferences#privacy')
 
-        preferences_opened = exists(custom_content_blocking_pattern)
+        preferences_opened = exists(custom_content_blocking_unticked_pattern)
         assert_true(self, preferences_opened, 'The "about:preferences#privacy" page is successfully displayed.')
-        click(custom_content_blocking_pattern)
+        click(custom_content_blocking_unticked_pattern)
 
         options_displayed = exists(cookies_unticked_pattern)
         assert_true(self, options_displayed,
-                    'The cookies options are properly displayed at "Cookies and Site Data" section.')
+                    'The cookies options are properly displayed at "Cookies and Site Data" section')
         click(cookies_unticked_pattern)
 
         checkbox_set_successfully = exists(cookies_ticked_pattern)
@@ -48,7 +49,7 @@ class Test(BaseTest):
         click(cookies_blocking_strictness_menu_pattern)
 
         dropdown_opened = exists(block_all_cookies_pattern)
-        assert_true(self, dropdown_opened, 'Strictness dropdown menu opened.')
+        assert_true(self, dropdown_opened, 'Strictness dropdown menu opened')
         click(block_all_cookies_pattern)
 
         # ### end of steps
@@ -58,12 +59,12 @@ class Test(BaseTest):
         assert_true(self, site_loaded, 'The website is successfully displayed.')
 
         navigate('about:preferences#privacy')
-        preferences_opened = exists(custom_content_blocking_pattern)
+        preferences_opened = exists(custom_content_blocking_ticked_patten)
         assert_true(self, preferences_opened, 'The "about:preferences#privacy" page is successfully displayed.')
 
         paste('manage data')
         cookies_data_button_located = exists(manage_cookies_data_pattern)
-        assert_true(self, cookies_data_button_located, '"Manage cookies data" button displayed.')
+        assert_true(self, cookies_data_button_located, '\"Manage cookies data\" button displayed.')
         click(manage_cookies_data_pattern)
 
         cookies_window_opened = exists(cookies_window_title_pattern)
