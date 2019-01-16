@@ -19,12 +19,9 @@ class Test(BaseTest):
     def run(self):
         print_preview_content_loaded_pattern = Pattern('print_preview_content_loaded.png')
         scroll_content_pattern = Pattern('soap_wiki_print_mode.png')
+        scroll_bar_pattern = Pattern('print_mode_scroll_bar_button.png')
 
         # Scroll bar arrows pattern for Windows
-        if Settings.is_windows():
-            scroll_bar_button_up_pattern = Pattern('scroll_bar_button_up.png').similar(0.6)
-            scroll_bar_button_down_pattern = Pattern('scroll_bar_button_down.png').similar(0.6)
-
         if Settings.is_windows():
             scroll_height = 1600
         if Settings.is_linux():
@@ -40,11 +37,8 @@ class Test(BaseTest):
 
         # Scroll up and down using mouse wheel
         before_scroll_content_exists = exists(scroll_content_pattern, 10)
-        try:
-            scroll(-scroll_height)
-            wait_vanish(scroll_content_pattern, 10)
-        except FindError:
-            raise FindError('Content before scrolling is still on the page')
+
+        scroll(-scroll_height)
         scroll(scroll_height)
 
         after_scroll_content_exists = exists(scroll_content_pattern, 10)
@@ -52,23 +46,17 @@ class Test(BaseTest):
                     'Scroll up and down using mouse wheel is successful.')
 
         # Scroll up and down using scroll bar
-        before_scroll_content_exists = exists(scroll_content_pattern, 10)
-        scroll_bar_location_down = Location(SCREEN_WIDTH-1, SCREEN_HEIGHT/1.2)
-        scroll_bar_location_up = Location(SCREEN_WIDTH-1, SCREEN_HEIGHT/10)
-        scroll_bar_region = Region(x=SCREEN_WIDTH / 2, y=0, width=SCREEN_WIDTH / 2, height=SCREEN_HEIGHT)
-        try:
-            if Settings.is_linux():
-                click(scroll_bar_location_down, DEFAULT_FX_DELAY)
-            if Settings.is_windows():
-                [click(scroll_bar_button_down_pattern, DEFAULT_FX_DELAY, in_region=scroll_bar_region) for _ in range(10)]
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content before scrolling is still on the page')
+        before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        before_scroll_button_location = find(scroll_bar_pattern)
+        after_scroll_button_position = before_scroll_button_location.offset(0, 500)
 
-        if Settings.is_linux():
-            click(scroll_bar_location_up, DEFAULT_FX_DELAY)
-        if Settings.is_windows():
-            [click(scroll_bar_button_up_pattern, DEFAULT_FX_DELAY) for _ in range(10)]
+        drag_drop(scroll_bar_pattern, after_scroll_button_position)
+
+        after_scroll_button_position.x += 10
+        after_scroll_button_position.y += 10
+        initial_position = before_scroll_button_location.offset(0, -500)
+        
+        drag_drop(after_scroll_button_position, initial_position)
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
@@ -76,36 +64,28 @@ class Test(BaseTest):
 
         # Scroll up and down using arrow keys
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        try:
-            repeat_key_down(10)
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content before scrolling is still on the page')
+
+        repeat_key_down(10)
         repeat_key_up(10)
+
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
                     'Scroll up and down using arrow keys is successful.')
 
         # Scroll up and down using page up/down keys
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        try:
-            [type(Key.PAGE_DOWN) for _ in range(4)]
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content before scrolling is still on the page')
+
+        [type(Key.PAGE_DOWN) for _ in range(4)]
         [type(Key.PAGE_UP) for _ in range(4)]
+
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists and after_scroll_content_exists,
                     'Scroll up and down using page up/down keys is successful.')
 
         # Scroll up and down using ctrl + up/down keys
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        try:
-            type(Key.DOWN, modifier=KeyModifier.CTRL)
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content before scrolling is still on the page')
 
+        type(Key.DOWN, modifier=KeyModifier.CTRL)
         type(Key.UP, modifier=KeyModifier.CTRL)
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
