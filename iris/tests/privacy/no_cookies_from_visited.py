@@ -35,7 +35,7 @@ class Test(BaseTest):
 
         options_displayed = exists(cookies_unticked_pattern)
         assert_true(self, options_displayed,
-                    'The cookies options are properly displayed at "Cookies and Site Data" section')
+                    'The cookies options are properly displayed at "Cookies and Site Data" section.')
         click(cookies_unticked_pattern)
 
         checkbox_set_successfully = exists(cookies_ticked_pattern)
@@ -48,7 +48,7 @@ class Test(BaseTest):
         click(cookies_blocking_strictness_menu_pattern)
 
         dropdown_opened = exists(block_all_cookies_pattern)
-        assert_true(self, dropdown_opened, 'Strictness dropdown menu opened')
+        assert_true(self, dropdown_opened, 'Strictness dropdown menu opened.')
         click(block_all_cookies_pattern)
 
         # ### end of steps
@@ -63,7 +63,7 @@ class Test(BaseTest):
 
         paste('manage data')
         cookies_data_button_located = exists(manage_cookies_data_pattern)
-        assert_true(self, cookies_data_button_located, '\"Manage cookies data\" button displayed.')
+        assert_true(self, cookies_data_button_located, '"Manage cookies data" button displayed.')
         click(manage_cookies_data_pattern)
 
         cookies_window_opened = exists(cookies_window_title_pattern)
