@@ -46,7 +46,7 @@ class Test(BaseTest):
         click(block_all_cookies_pattern)
 
         navigate('https://www.youtube.com/')
-        site_loaded = exists(youtube_logo_pattern, DEFAULT_SYSTEM_DELAY)
+        site_loaded = exists(youtube_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, site_loaded, 'The website is successfully displayed.')
 
         navigate('about:preferences#privacy')
