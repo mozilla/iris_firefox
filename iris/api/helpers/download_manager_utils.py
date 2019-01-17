@@ -94,7 +94,7 @@ def download_file(file_to_download, accept_download):
 
 def downloads_cleanup():
     path = IrisCore.get_downloads_dir()
-    shutil.rmtree(path)
+    shutil.rmtree(path, ignore_errors=True)
 
 
 def open_show_downloads_window_using_download_panel():
@@ -102,8 +102,8 @@ def open_show_downloads_window_using_download_panel():
         access_and_check_pattern(NavBar.DOWNLOADS_BUTTON, '\"Downloads panel\"', DownloadManager.SHOW_ALL_DOWNLOADS,
                                  'click'),
         access_and_check_pattern(DownloadManager.SHOW_ALL_DOWNLOADS, '\"Show all downloads\"',
-                                 Library.DOWNLOADS, 'click'),
-        access_and_check_pattern(Library.DOWNLOADS, '\"Downloads library\"')]
+                                 Library.DownloadLibrary.DOWNLOADS, 'click'),
+        access_and_check_pattern(Library.DownloadLibrary.DOWNLOADS, '\"Downloads library\"')]
 
 
 def open_clear_recent_history_window_from_library_menu():
@@ -112,7 +112,7 @@ def open_clear_recent_history_window_from_library_menu():
         access_and_check_pattern(LibraryMenu.DOWNLOADS, '\"Downloads menu\"',
                                  DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
         access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
-                                 Library.DOWNLOADS, 'click')]
+                                 Library.DownloadLibrary.DOWNLOADS, 'click')]
 
 
 def show_all_downloads_from_library_menu_private_window():
@@ -151,28 +151,32 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
             raise FindError('Could not get the x-coordinate of the library window title.')
 
         try:
-            find_clear_downloads = find(Library.CLEAR_DOWNLOADS)
+            find_clear_downloads = find(Library.DownloadLibrary.CLEAR_DOWNLOADS)
         except FindError:
             raise FindError('Could not get the x-coordinate of the clear_downloads button.')
 
-        clear_downloads_width, clear_downloads_height = Library.CLEAR_DOWNLOADS.get_size()
+        clear_downloads_width, clear_downloads_height = Library.DownloadLibrary.CLEAR_DOWNLOADS.get_size()
         region = Region(find_library.x - 10, find_library.y,
                         (find_clear_downloads.x + clear_downloads_width + 20) - find_library.x, 500)
 
     # Cancel all 'in progress' downloads.
     expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
-    if expected:
+    expected_highlighted = region.exists(Library.DownloadLibrary.DOWNLOAD_CANCEL_HIGHLIGHTED)
+    if expected or expected_highlighted:
         steps.append(Step(expected, 'The Cancel Download button is displayed properly.'))
         cancel_downloads = True
+        expected_cancel = True
     else:
         steps.append(Step(True, 'There are no downloads to be cancelled.'))
         cancel_downloads = False
 
+    cancel_pattern = DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL if expected else Library.DownloadLibrary.DOWNLOAD_CANCEL_HIGHLIGHTED
+
     if cancel_downloads:
-        while expected:
-            expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
-            if expected:
-                click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        while expected_cancel:
+            expected_cancel = region.exists(cancel_pattern, 10)
+            if expected_cancel:
+                click(cancel_pattern)
         steps.append(Step(True, 'All downloads were cancelled.'))
 
     if private_window:
@@ -181,3 +185,9 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
         click_window_control('close')
 
     return steps
+
+
+def cancel_and_clear_downloads(private_window=False):
+    logger.info('>>>Downloads Cleanup steps<<<')
+    for step in cancel_in_progress_downloads_from_the_library(private_window):
+        logger.info('Step %s - passed? %s' % (step.message, step.resolution))
