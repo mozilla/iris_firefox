@@ -52,6 +52,7 @@ class Test(BaseTest):
                         image=preferences_privacy_page_pattern
                         )
 
+        time.sleep(DEFAULT_UI_DELAY)
         paste('Delete cookies')
 
         manage_data_button_exists = exists(manage_data_button_pattern)
