@@ -58,11 +58,8 @@ class Test(BaseTest):
             click(google_one_off_button_pattern)
             time.sleep(DEFAULT_UI_DELAY_LONG)
 
-            expected = region.exists(google_search_results_pattern, 10)
-            assert_true(self, expected, 'Google search results are displayed.')
-        else:
-            expected = region.exists(google_search_results_pattern, 10)
-            assert_true(self, expected, 'Google search results are displayed.')
+        expected = region.exists(google_search_results_pattern, 10)
+        assert_true(self, expected, 'Google search results are displayed.')
 
         navigate('about:config')
 
