@@ -21,10 +21,9 @@ class Test(BaseTest):
         soap_wiki_header_mark_pattern = Pattern('soap_wiki_header.png')
         iris_tab_logo_pattern = Pattern('iris_logo_tab.png')
 
+        mouse_wheel_steps = 100
         if Settings.is_windows():
             mouse_wheel_steps = 1600
-        if Settings.is_linux():
-            mouse_wheel_steps = 100
 
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -226,5 +225,7 @@ class Test(BaseTest):
         soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
         assert_true(self, soap_wiki_header_mark, "Initial window: Successfully scrolled from footer to header by "
                                                  "pressing Ctrl+Up or Cmd+Up")
+
+        repeat_key_up_until_image_found()
 
 
