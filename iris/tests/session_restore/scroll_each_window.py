@@ -80,7 +80,7 @@ class Test(BaseTest):
             raise FindError('Focus tab was not dragged out.')
 
         focus_tab_dropped = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
-                                              in_region=focus_tab_region_after)
+                                   in_region=focus_tab_region_after)
         assert_true(self, focus_tab_dropped, 'Focus tab dropped.')
 
         focus_content_exists = exists(LocalWeb.FOCUS_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
@@ -103,7 +103,7 @@ class Test(BaseTest):
             raise FindError('Firefox tab was not dragged out.')
 
         firefox_tab_dropped = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
-                                              in_region=firefox_tab_region_after)
+                                     in_region=firefox_tab_region_after)
         assert_true(self, firefox_tab_dropped, 'Firefox tab dropped.')
 
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
