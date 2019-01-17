@@ -11,6 +11,7 @@ from iris.api.core.environment import Env
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
+from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import Screen
@@ -215,6 +216,19 @@ def close_window_control(window_type):
             click(MainWindow.CLOSE_BUTTON)
 
 
+def close_content_blocking_pop_up():
+    """Closes the content blocking pop up"""
+    pop_up_region = Region(0, 100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    try:
+        pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
+        logger.debug('Content blocking is present on the page and can be closed.')
+        pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
+    except FindError:
+        logger.debug('Couldn\'t find the Content blocking pop up.')
+        pass
+
+
 def confirm_close_multiple_tabs():
     """Click confirm 'Close all tabs' for warning popup when multiple tabs are
     opened.
@@ -323,20 +337,21 @@ def create_region_for_hamburger_menu():
     try:
         wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
-        time.sleep(1)
+        time.sleep(0.5)
+        sign_in_to_sync = Pattern('sign_in_to_sync.png')
         if Settings.get_os() == Platform.LINUX:
             quit_menu_pattern = Pattern('quit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                quit_menu_pattern, None,
                                                padding_right=20)
         elif Settings.get_os() == Platform.MAC:
             help_menu_pattern = Pattern('help.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                help_menu_pattern, None,
                                                padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return create_region_from_patterns(None, hamburger_menu_pattern,
+            return create_region_from_patterns(None, sign_in_to_sync,
                                                exit_menu_pattern, None,
                                                padding_right=20)
     except (FindError, ValueError):
@@ -1185,3 +1200,57 @@ class ZoomType(object):
 
     IN = 300 if Settings.is_windows() else 1
     OUT = -300 if Settings.is_windows() else -1
+
+
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
+    """
+    Press the Key Down button until specified image pattern is found.
+    Raise exception if image pattern wasn't found after specified number of presses of the Key Down button.
+
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_down_presses: Number of presses of the Key Down button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during Key Down button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_down_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.DOWN)
+        time.sleep(delay_between_presses)
+
+    return pattern_found
+
+
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
+    """
+    Press the Key Up button until specified image pattern is found.
+    Raise exception if image pattern wasn't found after specified number of presses of the Key Up button.
+
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_up_presses: Number of presses of the Key Up button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during the Key Up button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_up_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.UP)
+        time.sleep(delay_between_presses)
+
+    return pattern_found

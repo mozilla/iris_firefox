@@ -19,7 +19,7 @@ class CustomHandler(BaseHTTPRequestHandler):
     CONTENT_TYPES = {'htm': 'text/html', 'html': 'text/html', 'css': 'text/css',
                      'js': 'text/javascript', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
                      'png': 'image/png', 'json': 'application/json', 'ico': 'image/x-icon',
-                     'pdf': 'application/pdf'}
+                     'pdf': 'application/pdf', 'zip': 'application/zip'}
 
     def stop_server(self):
         logger.debug('Handler stop_server')

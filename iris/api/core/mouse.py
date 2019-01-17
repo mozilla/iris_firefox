@@ -14,7 +14,7 @@ from settings import Settings, DEFAULT_CLICK_DELAY
 from util.core_helper import INVALID_GENERIC_INPUT
 from util.highlight_circle import HighlightCircle
 from util.image_search import positive_image_search, image_search
-from util.ocr_search import text_search_by
+from util.ocr_search import OCRSearch
 from util.parse_args import parse_args
 from util.screen_highlight import ScreenHighlight
 
@@ -193,7 +193,8 @@ def _mouse_press_release(where=None, action=None, button=None, in_region=None):
                 pyautogui.mouseUp(location.x, location.y, button)
     elif isinstance(where, str):
         mouse = Controller()
-        a_match = text_search_by(where, True, in_region)
+        ocr_search = OCRSearch()
+        a_match = ocr_search.text_search_by(where, True, in_region)
         if a_match is not None:
             location = Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
             mouse.move(location.x, location.y)
@@ -282,7 +283,8 @@ def _general_click(where=None, clicks=None, duration=None, in_region=None, butto
         _click_pattern(where, clicks, duration, in_region, button)
 
     elif isinstance(where, str):
-        a_match = text_search_by(where, True, in_region)
+        ocr_search = OCRSearch()
+        a_match = ocr_search.text_search_by(where, True, in_region)
         if a_match is not None:
             click_location = Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
             _click_at(click_location, clicks, duration, button)
