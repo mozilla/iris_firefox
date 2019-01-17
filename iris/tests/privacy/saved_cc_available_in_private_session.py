@@ -40,6 +40,7 @@ class Test(BaseTest):
         visa_logo_pattern = Pattern('visa_logo.png')
         suggested_card_number_from_dropdown_pattern = Pattern('suggested_cc_number_from_dropdown.png')
 
+
         navigate('about:preferences#privacy')
         search_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, search_field_exists, 'Preferences page is opened')
@@ -50,7 +51,6 @@ class Test(BaseTest):
         assert_true(self, saved_addresses_button_exists,
                     '\'Saved addresses\' button is displayed on the Preferences page')
         click(saved_addresses_button_pattern)
-
         add_button_exists = exists(add_button_pattern)
         assert_true(self, add_button_exists, '\'Add\' button is displayed on the \'Saved addresses\' popup')
         click(add_button_pattern)
@@ -65,13 +65,10 @@ class Test(BaseTest):
         assert_true(self, save_button_exists,
                     '\'Save\' button is displayed on the \'Add new address\' popup')
         click(save_button_pattern)
-
         type(Key.ESC)
-        try:
-            add_button_exists = wait_vanish(add_button_pattern)
-            assert_true(self, add_button_exists, 'Address was successfully saved')
-        except FindError:
-            raise FindError('\'Add new address\' popup wasn\'t closed')
+
+        add_button_dissapeared = not exists(add_button_pattern)
+        assert_true(self, add_button_dissapeared, 'Address list popup dissapeared.')
 
         saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern)
         assert_true(self, saved_credit_cards_button_exists,
@@ -148,10 +145,10 @@ class Test(BaseTest):
 
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists,
-                    'The Credit Card number from the saved profile is displayed in the dropdown')
+                    '\'Card number\' field is displayed on the page')
         double_click(card_number_field_pattern)
 
-        saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern)
+        saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
                     'The Credit Card number from the saved profile is displayed in the dropdown')
 
@@ -164,9 +161,8 @@ class Test(BaseTest):
         assert_true(self, card_number_field_exists, '\'Card Number\' field is displayed on the page')
         double_click(card_number_field_pattern)
 
-        saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern)
+        saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
                     'Saved CC profile is displayed in the suggestions panel.')
 
-        close_window()
         close_window()
