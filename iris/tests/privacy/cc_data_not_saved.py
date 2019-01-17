@@ -52,12 +52,10 @@ class Test(BaseTest):
 
         click(submit_button_pattern)
         try:
-            wait_vanish(entered_csc_pattern)
+            entered_csc_on_page = wait_vanish(entered_csc_pattern)
+            assert_true(self, entered_csc_on_page, 'Credit Card Information is successfully entered and submitted.')
         except FindError:
             raise FindError('Entered data did not vanish after clicking the \'Submit button\'')
-
-        entered_csc_on_page = exists(entered_csc_pattern)
-        assert_false(self, entered_csc_on_page, 'Credit Card Information is successfully entered and submitted.')
 
         close_window()
         private_browsing_image_exists = exists(private_browsing_image_pattern)
@@ -74,4 +72,5 @@ class Test(BaseTest):
         click(saved_credit_cards_button_pattern)
 
         visa_logo_exists = exists(visa_logo_pattern)
-        assert_false(self, visa_logo_exists, 'The submitted credentials in the private session are not displayed inside the Saved CCs panel.')
+        assert_false(self, visa_logo_exists,
+                     'The submitted credentials in the private session are not displayed inside the Saved CCs panel.')
