@@ -109,4 +109,3 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Content is still on the page after scrolling')
 
-        close_window()
