@@ -21,6 +21,11 @@ class Test(BaseTest):
         soap_wiki_header_mark_pattern = Pattern('soap_wiki_header.png')
         iris_tab_logo_pattern = Pattern('iris_logo_tab.png')
 
+        if Settings.is_windows():
+            mouse_wheel_steps = 1600
+        if Settings.is_linux():
+            mouse_wheel_steps = 100
+
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -47,14 +52,14 @@ class Test(BaseTest):
         # Scrolling test in the initial window
         # Scroll by mouse wheel
         for times_scroll_down in range(100):
-            scroll(-20)
+            scroll(-mouse_wheel_steps)
             soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
             if soap_wiki_footer_mark:
                 assert_true(self, soap_wiki_footer_mark, "New window: Successfully scrolled to footer by mouse scroll")
                 break
 
         for times_scroll_up in range(100):
-            scroll(20)
+            scroll(mouse_wheel_steps)
             soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
             if soap_wiki_header_mark:
                 assert_true(self, soap_wiki_header_mark, "New window: Successfully scrolled from footer to "
@@ -144,7 +149,7 @@ class Test(BaseTest):
         # Scrolling test in the initial window
         # Scroll by mouse wheel
         for times_scroll_down in range(100):
-            scroll(-20)
+            scroll(-mouse_wheel_steps)
             soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
             if soap_wiki_footer_mark:
                 assert_true(self, soap_wiki_footer_mark, "Initial window: Successfully scrolled to footer by mouse "
@@ -152,7 +157,7 @@ class Test(BaseTest):
                 break
 
         for times_scroll_up in range(100):
-            scroll(20)
+            scroll(mouse_wheel_steps)
             soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
             if soap_wiki_header_mark:
                 assert_true(self, soap_wiki_header_mark, "Initial window: Successfully scrolled from footer to "
