@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        preferences_privacy_page_pattern = Pattern('preferences_privacy_icon.png')
+        preferences_privacy_page_pattern = Pattern('preferences_privacy_icon.png').similar(.6)
         delete_cookies_after_close_pattern = Pattern('delete_cookies_after_close.png')
         delete_cookies_after_close_marked_pattern = Pattern('delete_cookies_after_close_marked.png')
         prosport_opened_mark_pattern = Pattern('prosport_opened_mark.png')
@@ -26,10 +26,10 @@ class Test(BaseTest):
 
         navigate('about:preferences#privacy')
 
-        preferences_privacy_page_pattern = exists(preferences_privacy_page_pattern, 30)
-        assert_true(self, preferences_privacy_page_pattern, 'The Preferences > Privacy page is successfully displayed')
+        preferences_privacy_page_opened = exists(preferences_privacy_page_pattern, 30)
+        assert_true(self, preferences_privacy_page_opened, 'The Preferences > Privacy page is successfully displayed')
 
-        type('Delete cookies')
+        paste('Delete cookies')
 
         delete_cookies_after_close_checkbox_exists = exists(delete_cookies_after_close_pattern)
         assert_true(self, delete_cookies_after_close_checkbox_exists, '"Delete cookies and site data when Firefox '
@@ -45,42 +45,25 @@ class Test(BaseTest):
         prosport_opened_mark = exists(prosport_opened_mark_pattern, 100)
         assert_true(self, prosport_opened_mark, 'The website is successfully displayed.')
 
-        quit_firefox()
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        'about:preferences#privacy',
+                        image=preferences_privacy_page_pattern
+                        )
 
-        self.firefox_runner = launch_firefox(
-            self.browser.path,
-            self.profile_path,
-            url='about:preferences#privacy')
-        self.firefox_runner.start()
-
-        wait_for_firefox_restart()
-
-        maximize_window()
-        type('Delete cookies')
+        paste('Delete cookies')
 
         manage_data_button_exists = exists(manage_data_button_pattern)
         assert_true(self, manage_data_button_exists, 'The manage data button exists.')
 
         click(manage_data_button_pattern)
 
-        manage_cookies_window_exists= exists(manage_cookies_window_label_pattern)
+        manage_cookies_window_exists = exists(manage_cookies_window_label_pattern)
         assert_true(self, manage_cookies_window_exists, 'The manage data button exists.')
 
-        type('prosport')
+        paste('prosport')
 
         prosport_cookies_is_not_saved = exists(prosport_cookies_pattern)
         assert_true(self, prosport_cookies_is_not_saved, 'No cookies are displayed from the previously accessed '
                                                          'website.')
-
-
-
-
-
-
-
-
-
-
-
-
-
