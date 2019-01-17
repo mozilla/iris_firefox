@@ -69,5 +69,12 @@ class LocalWeb(object):
     """Local files samples."""
     SAMPLE_FILES = 'http://%s:%s/files/' % (_ip_host, _port)
 
+    """about:preferences#privacy"""
+    ABOUT_PREFERENCES_PRIVACY_ADDRESS = Pattern('about_preferences_privacy_address.png')
+
+    """CNN Site"""
+    CNN_LOGO = Pattern('cnn_logo.png')
+    CNN_BLOCKED_CONTENT_ADV = Pattern('cnn_blocked_content.png')
+
 
 
