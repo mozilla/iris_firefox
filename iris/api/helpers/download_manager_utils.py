@@ -35,6 +35,7 @@ class DownloadFiles(object):
     DOWNLOAD_FILE_NAME_10MB = Pattern('download_name_10MB.png')
     DOWNLOAD_FILE_NAME_5MB = Pattern('download_name_5MB.png')
     LIBRARY_DOWNLOADS_5MB = Pattern('5MB_library_downloads.png')
+    LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED = Pattern('5MB_library_downloads_highlighted.png')
     LIBRARY_DOWNLOADS_10MB = Pattern('10MB_library_downloads.png')
     LIBRARY_DOWNLOADS_20MB = Pattern('20MB_library_downloads.png')
     LIBRARY_DOWNLOADS_50MB = Pattern('50MB_library_downloads.png')

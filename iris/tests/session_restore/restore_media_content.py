@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Session restore with media content in the background'
         self.test_case_id = '117045'
         self.test_suite_id = '68'
+        self.blocked_by = {'id': '1520733', 'platform': Platform.WINDOWS}
         self.locales = ['en-US']
 
     def run(self):
