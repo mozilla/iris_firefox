@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        preferences_privacy_page_pattern = Pattern('preferences_privacy_icon.png')
+        preferences_privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         delete_cookies_after_close_pattern = Pattern('delete_cookies_after_close.png')
         delete_cookies_after_close_marked_pattern = Pattern('delete_cookies_after_close_marked.png')
         prosport_opened_mark_pattern = Pattern('prosport_opened_mark.png')
