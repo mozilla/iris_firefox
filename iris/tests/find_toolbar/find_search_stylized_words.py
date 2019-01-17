@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        style_text_url_pattern = Pattern('style_text_url.png')
+        style_text_url_pattern = Pattern('style_text_url.png').similar(0.6)
         style_text_first_not_selected_pattern = Pattern('style_text_first_not_selected.png').similar(0.6)
         style_text_first_selected_pattern = Pattern('style_text_first_selected.png')
         style_text_second_selected_pattern = Pattern('style_text_second_selected.png')
