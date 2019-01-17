@@ -19,7 +19,6 @@ class Test(BaseTest):
         preferences_privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         delete_cookies_after_close_pattern = Pattern('delete_cookies_after_close.png')
         delete_cookies_after_close_marked_pattern = Pattern('delete_cookies_after_close_marked.png')
-        prosport_opened_mark_pattern = Pattern('prosport_opened_mark.png')
         manage_data_button_pattern = Pattern('manage_data_button.png')
         prosport_cookies_pattern = Pattern('prosport_cookies.png')
         manage_cookies_window_label_pattern = Pattern('manage_cookies_window_label.png')
@@ -40,9 +39,9 @@ class Test(BaseTest):
         assert_true(self, delete_cookies_after_close_marked_exists, 'The option is successfully selected and '
                                                                     'remembered.')
 
-        navigate('http://www.prosport.ro/')
+        navigate('https://edition.cnn.com')
 
-        prosport_opened_mark = exists(prosport_opened_mark_pattern, 100)
+        prosport_opened_mark = exists(LocalWeb.CNN_LOGO, 100)
         assert_true(self, prosport_opened_mark, 'The website is successfully displayed.')
 
         restart_firefox(self,
@@ -63,7 +62,7 @@ class Test(BaseTest):
         manage_cookies_window_exists = exists(manage_cookies_window_label_pattern)
         assert_true(self, manage_cookies_window_exists, 'The manage data button exists.')
 
-        paste('prosport')
+        paste('cnn')
 
         prosport_cookies_is_not_saved = exists(prosport_cookies_pattern)
         assert_true(self, prosport_cookies_is_not_saved, 'No cookies are displayed from the previously accessed '
