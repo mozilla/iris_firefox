@@ -25,9 +25,12 @@ class Test(BaseTest):
         manage_cookies_window_label_pattern = Pattern('manage_cookies_window_label.png')
 
         navigate('about:preferences#privacy')
+        time.sleep(6)
 
         preferences_privacy_page_pattern = exists(preferences_privacy_page_pattern, 30)
         assert_true(self, preferences_privacy_page_pattern, 'The Preferences > Privacy page is successfully displayed')
+
+        type('Delete cookies')
 
         delete_cookies_after_close_checkbox_exists = exists(delete_cookies_after_close_pattern)
         assert_true(self, delete_cookies_after_close_checkbox_exists, '"Delete cookies and site data when Firefox '
@@ -54,6 +57,9 @@ class Test(BaseTest):
         wait_for_firefox_restart()
 
         maximize_window()
+        type('closed')
+
+        time.sleep(5)
 
         manage_data_button_exists = exists(manage_data_button_pattern)
         assert_true(self, manage_data_button_exists, 'The manage data button exists.')
@@ -64,8 +70,6 @@ class Test(BaseTest):
         assert_true(self, manage_cookies_window_exists, 'The manage data button exists.')
 
         type('prosport')
-
-        time.sleep(20)
 
         prosport_cookies_is_not_saved = exists(prosport_cookies_pattern)
         assert_true(self, prosport_cookies_is_not_saved, 'No cookies are displayed from the previously accessed '
