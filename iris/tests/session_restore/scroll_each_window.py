@@ -50,6 +50,7 @@ class Test(BaseTest):
 
         firefox_tab_is_active = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_tab_is_active, 'Firefox tab is active.')
+
         firefox_tab_location_before = find(firefox_test_site_tab_pattern)
         firefox_tab_region_before = Region(firefox_tab_location_before.x-50, firefox_tab_location_before.y-520,
                                            width=320, height=120)
@@ -63,6 +64,7 @@ class Test(BaseTest):
 
         focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, focus_test_site_tab_exists, 'Focus site tab is active.')
+
         focus_tab_location_before = find(focus_test_site_tab_pattern)
         focus_tab_region_before = Region(focus_tab_location_before.x-50, focus_tab_location_before.y-250,
                                          width=320, height=120)
