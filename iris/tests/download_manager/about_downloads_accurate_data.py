@@ -53,6 +53,7 @@ class Test(BaseTest):
         click_window_control('close')
 
         # Check that all the downloads are also displayed in the 'about:downloads' page.
+        new_tab()
         navigate('about:downloads')
         for pattern in downloads_library_list:
             expected = exists(pattern, 10)
