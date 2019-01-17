@@ -25,7 +25,6 @@ class Test(BaseTest):
         manage_cookies_window_label_pattern = Pattern('manage_cookies_window_label.png')
 
         navigate('about:preferences#privacy')
-        time.sleep(6)
 
         preferences_privacy_page_pattern = exists(preferences_privacy_page_pattern, 30)
         assert_true(self, preferences_privacy_page_pattern, 'The Preferences > Privacy page is successfully displayed')
@@ -57,9 +56,7 @@ class Test(BaseTest):
         wait_for_firefox_restart()
 
         maximize_window()
-        type('closed')
-
-        time.sleep(5)
+        type('Delete cookies')
 
         manage_data_button_exists = exists(manage_data_button_pattern)
         assert_true(self, manage_data_button_exists, 'The manage data button exists.')
