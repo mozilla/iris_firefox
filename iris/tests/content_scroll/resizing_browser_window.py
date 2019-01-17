@@ -20,7 +20,7 @@ class Test(BaseTest):
         if Settings.is_linux() or Settings.is_mac():
             scroll_height = 200
 
-        change_preference("devtools.chrome.enabled", True)
+        change_preference('devtools.chrome.enabled', True)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
@@ -107,6 +107,7 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar.')
 
         try:
+            type(Key.SPACE)
             type(Key.SPACE)
             after_scroll_content_disappeared = wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, after_scroll_content_disappeared, 'Scroll up and down using space bar is successful.')
