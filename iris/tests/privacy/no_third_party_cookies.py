@@ -97,4 +97,4 @@ class Test(BaseTest):
         type(Key.DELETE)
 
         cookies_list_is_empty = exists(cookies_list_empty_pattern)
-        assert_true(self, cookies_list_is_empty, "empty")
+        assert_true(self, cookies_list_is_empty, "No third-party cookies are saved")
