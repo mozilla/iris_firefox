@@ -68,12 +68,10 @@ class Test(BaseTest):
 
         type(Key.ESC)
         try:
-            wait_vanish(add_button_pattern)
+            add_button_exists = wait_vanish(add_button_pattern)
+            assert_true(self, add_button_exists, 'Address was successfully saved')
         except FindError:
             raise FindError('\'Add new address\' popup wasn\'t closed')
-
-        add_button_exists = exists(add_button_pattern)
-        assert_false(self, add_button_exists, 'Address was successfully saved')
 
         saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern)
         assert_true(self, saved_credit_cards_button_exists,
