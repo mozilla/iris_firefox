@@ -32,10 +32,14 @@ class Test(BaseTest):
         assert_true(self, soap_wiki_test_site_opened, 'The Soap Wiki test site is properly loaded')
 
         # Moving Soap Wiki to a new window
+        key_down_pressing = 2
+        if Settings.is_linux():
+            key_down_pressing = 2
+
         right_click(soap_wiki_tab_pattern)
         repeat_key_down(7)
         type(Key.ENTER)
-        repeat_key_down(2)
+        repeat_key_down(key_down_pressing)
         type(Key.ENTER)
 
         try:
