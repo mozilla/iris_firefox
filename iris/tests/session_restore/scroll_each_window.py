@@ -12,12 +12,16 @@ class Test(BaseTest):
 
     def run(self):
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
-        hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png')
         focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png')
         firefox_tab_scrolled_pattern = Pattern('firefox_tab_scrolled.png')
         focus_tab_scrolled_pattern = Pattern('focus_tab_scrolled.png')
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
+        browser_console_title_pattern = Pattern('browser_console_title.png')
+        browser_console_empty_line_pattern = Pattern('browser_console_empty_line.png')
+
+        if not Settings.is_mac():
+            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
 
         change_preference('devtools.chrome.enabled', True)
 
@@ -25,8 +29,13 @@ class Test(BaseTest):
             minimize_window()
 
         open_browser_console()
+        browser_console_opened = exists(browser_console_title_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, browser_console_opened, 'Browser console opened.')
+
         paste('window.resizeTo(800, 450)')
         type(Key.ENTER)
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, browser_console_empty_line, 'Value entered in browser console.')
 
         if not Settings.is_mac():
             click_window_control('close')
@@ -39,6 +48,7 @@ class Test(BaseTest):
         tab_one_loaded = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, tab_one_loaded, 'First tab loaded')
         firefox_tab_location_before = find(firefox_test_site_tab_pattern)
+        firefox_tab_region = Region(firefox_tab_location_before.x, firefox_tab_location_before.y, 120, 120)
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
@@ -69,7 +79,13 @@ class Test(BaseTest):
 
         # Drag-n-drop Firefox tab
         firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2), y=150)
+
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
+
+        try:
+            wait_vanish(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT, firefox_tab_region)
+        except FindError:
+            raise FindError('Firefox tab was not dragged out.')
 
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_content_exists, 'Firefox content is visible.')
