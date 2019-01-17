@@ -20,6 +20,7 @@ class Test(BaseTest):
         clear_data_button_pattern = Pattern('clear_button.png')
         confirm_clear_data_pattern = Pattern('confirm_clear_data.png')
         cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
+        cookies_list_empty_pattern = Pattern('cookies_list_empty.png')
         cookies_ticked_pattern = Pattern('block_cookies_ticked.png')
         cookies_unticked_pattern = Pattern('block_cookies_unticked.png')
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
@@ -30,7 +31,7 @@ class Test(BaseTest):
         site_cookie_one_pattern = Pattern('site_cookie_one.png')
         site_cookie_two_pattern = Pattern('site_cookie_two.png')
         site_tab_pattern = Pattern('prosport_tab.png')
-        remove_all_cookies_pattern = Pattern('remove_all_cookies_inactive.png')
+
 
         new_tab()
         navigate('about:preferences#privacy')
@@ -71,9 +72,14 @@ class Test(BaseTest):
         assert_true(self, message_window_displayed, '"Clear data" message window displayed.')
 
         click(confirm_clear_data_pattern)
-        navigate('http://www.prosport.ro/')
-        site_loaded = exists(site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 3)
-        assert_true(self, site_loaded, 'The "Prosport" website is successfully displayed.')
+        navigate('http://wikipedia.org/')
+        # site_loaded = exists(site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT*6)
+        # assert_true(self, site_loaded, 'The "Prosport" website is successfully displayed.')
+        time.sleep(10)
+
+        # navigate('youtube.com')
+        # time.sleep(10)
+
 
         navigate('about:preferences#privacy')
         preferences_opened = exists(custom_content_blocking_ticked_pattern)
@@ -96,5 +102,8 @@ class Test(BaseTest):
         type(Key.DELETE)
         type(Key.DELETE)
 
-        no_more_cookies = exists(remove_all_cookies_pattern)
-        assert_true(self, no_more_cookies, 'No third-party cookies saved.')
+        cookies_list_is_empty = exists(cookies_list_empty_pattern)
+        assert_true(self, cookies_list_is_empty, "empty")
+        # time.sleep(60)
+        # no_more_cookies = exists(remove_all_cookies_pattern)
+        # assert_true(self, no_more_cookies, 'No third-party cookies saved.')
