@@ -14,6 +14,8 @@ class Test(BaseTest):
         self.test_case_id = '101668'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
+        self.set_profile_pref({'extensions.formautofill.available': 'on',
+                               'extensions.formautofill.creditCards.available': True})
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
@@ -49,7 +51,11 @@ class Test(BaseTest):
             type(input_data[field][0])
 
         click(submit_button_pattern)
-        wait_vanish(entered_csc_pattern)
+        try:
+            wait_vanish(entered_csc_pattern)
+        except FindError:
+            raise FindError('Entered data did not vanish after clicking the \'Submit button\'')
+
         entered_csc_on_page = exists(entered_csc_pattern)
         assert_false(self, entered_csc_on_page, 'Credit Card Information is successfully entered and submitted.')
 
@@ -60,12 +66,12 @@ class Test(BaseTest):
         navigate('about:preferences#privacy')
         find_in_preferences_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, find_in_preferences_field_exists, 'Preferences search field is available')
-
         click(find_in_preferences_field_pattern)
+
         type('Autofill')
         saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern)
         assert_true(self, saved_credit_cards_button_exists, '\'Saved credit cards\' button is displayed on the page')
-
         click(saved_credit_cards_button_pattern)
+
         visa_logo_exists = exists(visa_logo_pattern)
         assert_false(self, visa_logo_exists, 'The submitted credentials in the private session are not displayed inside the Saved CCs panel.')
