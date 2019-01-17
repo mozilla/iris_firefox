@@ -43,45 +43,48 @@ class Test(BaseTest):
         navigate('about:preferences#privacy')
         search_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, search_field_exists, 'Preferences page is opened')
-
         click(find_in_preferences_field_pattern)
+
         type('Autofill')
         saved_addresses_button_exists = exists(saved_addresses_button_pattern)
         assert_true(self, saved_addresses_button_exists,
                     '\'Saved addresses\' button is displayed on the Preferences page')
-
         click(saved_addresses_button_pattern)
+
         add_button_exists = exists(add_button_pattern)
         assert_true(self, add_button_exists, '\'Add\' button is displayed on the \'Saved addresses\' popup')
-
         click(add_button_pattern)
+
         address_first_name_field_exists = exists(address_first_name_field_pattern)
         assert_true(self, address_first_name_field_exists,
                     '\'First Name\' field is displayed on the \'Add new address\' popup')
-
         click(address_first_name_field_pattern)
+
         type('Maria')
         save_button_exists = exists(save_button_pattern)
         assert_true(self, save_button_exists,
                     '\'Save\' button is displayed on the \'Add new address\' popup')
-
         click(save_button_pattern)
-        type(Key.ESC)
 
-        wait_vanish(add_button_pattern)
+        type(Key.ESC)
+        try:
+            wait_vanish(add_button_pattern)
+        except FindError:
+            raise FindError('\'Add new address\' popup wasn\'t closed')
+
         add_button_exists = exists(add_button_pattern)
         assert_false(self, add_button_exists, 'Address was successfully saved')
 
         saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern)
         assert_true(self, saved_credit_cards_button_exists,
                     '\'Saved credit cards\' button is displayed on the Preferences page')
-
         click(saved_credit_cards_button_pattern)
+
         add_button_exists = exists(add_button_pattern)
         assert_true(self, add_button_exists,
                     '\'Add\' button is displayed on the \'Saved credit cards\' popup')
-
         click(add_button_pattern)
+
         card_type_dropdown_exists = exists(card_type_dropdown_pattern)
         assert_true(self, card_type_dropdown_exists,
                     '\'Card type\' dropdown is displayed on the \'Edit Credit Card\' popup')
@@ -148,8 +151,8 @@ class Test(BaseTest):
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists,
                     'The Credit Card number from the saved profile is displayed in the dropdown')
-
         double_click(card_number_field_pattern)
+
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern)
         assert_true(self, saved_credit_card_number_exists,
                     'The Credit Card number from the saved profile is displayed in the dropdown')
@@ -161,8 +164,8 @@ class Test(BaseTest):
 
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists, '\'Card Number\' field is displayed on the page')
-
         double_click(card_number_field_pattern)
+
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern)
         assert_true(self, saved_credit_card_number_exists,
                     'Saved CC profile is displayed in the suggestions panel.')
