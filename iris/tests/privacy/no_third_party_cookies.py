@@ -35,42 +35,44 @@ class Test(BaseTest):
         new_tab()
         navigate('about:preferences#privacy')
         preferences_opened = exists(custom_content_blocking_unticked_pattern)
-        assert_true(self, preferences_opened, 'The preferences page is successfully displayed.')
-
+        assert_true(self, preferences_opened, 'The privacy preferences page is successfully displayed.')
         click(custom_content_blocking_unticked_pattern)
-        options_displayed = exists(cookies_unticked_pattern)
-        assert_true(self, options_displayed, 'The options are properly displayed.')
 
+        options_displayed = exists(cookies_unticked_pattern)
+        assert_true(self, options_displayed, 'The "Cookies and Site Data" options are properly displayed.')
         click(cookies_unticked_pattern)
+
         checkbox_set_successfully = exists(cookies_ticked_pattern)
-        assert_true(self, checkbox_set_successfully, 'The checkbox is successfully set.')
+        assert_true(self, checkbox_set_successfully, 'The block cookies checkbox is successfully set.')
 
         strictness_menu_appeared = exists(cookies_blocking_strictness_menu_pattern)
-        assert_true(self, strictness_menu_appeared, 'Strictness menu appeared.')
-
+        assert_true(self, strictness_menu_appeared, 'Cookies blocking strictness menu appear.')
         click(cookies_blocking_strictness_menu_pattern)
-        strictness_dropdown_displayed = exists(block_all_third_party_cookies_pattern)
-        assert_true(self, strictness_dropdown_displayed, 'Cookies blocking dropdown menu displayed.')
 
+        strictness_dropdown_displayed = exists(block_all_third_party_cookies_pattern)
+        assert_true(self, strictness_dropdown_displayed, 'Block all third party cookies blocking '
+                                                         'dropdown menu displayed.')
         click(block_all_third_party_cookies_pattern)
 
         reload_page()
+
         preferences_opened = exists(custom_content_blocking_ticked_pattern)
-        assert_true(self, preferences_opened, 'The preferences page is successfully displayed.')
+        assert_true(self, preferences_opened, 'The privacy preferences page is successfully displayed.')
 
         paste('clear data')
+
         open_clear_data_button_displayed = exists(open_clear_data_window_pattern)
         assert_true(self, open_clear_data_button_displayed, '"Clear data" button displayed.')
-
         click(open_clear_data_window_pattern)
+
         clear_data_window_displayed = exists(clear_data_button_pattern)
         assert_true(self, clear_data_window_displayed, 'Clear data window displayed.')
-
         click(clear_data_button_pattern)
+
         message_window_displayed = exists(confirm_clear_data_pattern)
         assert_true(self, message_window_displayed, '"Clear data" message window displayed.')
-
         click(confirm_clear_data_pattern)
+
         navigate('https://www.prosport.ro/')
         site_loaded = exists(site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 6)
         assert_true(self, site_loaded, 'The "Prosport" website is successfully displayed.')
@@ -81,15 +83,16 @@ class Test(BaseTest):
 
         paste('manage data')
         cookies_data_button_located = exists(manage_cookies_data_pattern)
-        assert_true(self, cookies_data_button_located, '"Manage cookies data" button displayed.')
-
+        assert_true(self, cookies_data_button_located, '"Manage Data..." button displayed.')
         click(manage_cookies_data_pattern)
+
         cookies_data_window_opened = exists(cookies_window_title_pattern)
         assert_true(self, cookies_data_window_opened, 'Cookies data window opened.')
 
         site_cookie_one_saved = exists(site_cookie_one_pattern)
-        site_cookie_two_saved = exists(site_cookie_two_pattern)
         assert_true(self, site_cookie_one_saved, 'Target site cookie saved.')
+
+        site_cookie_two_saved = exists(site_cookie_two_pattern)
         assert_true(self, site_cookie_two_saved, 'Other target cookie saved.')
 
         click(site_cookie_one_pattern)
