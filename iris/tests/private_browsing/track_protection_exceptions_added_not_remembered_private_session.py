@@ -21,59 +21,48 @@ class Test(BaseTest):
         tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
         tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
         cnn_logo_pattern = LocalWeb.CNN_LOGO
-        # Access the website
         blocking_turn_off_pattern = Pattern("blocking_turn_off.png")
-        empty_exc_list_pattern = Pattern("empty_exc_list.png")
+        empty_exc_list_pattern = Pattern("empty_exc_list.png").similar(0.95)
         manage_exceptions_button_pattern = Pattern("manage_exceptions_button.png")
         private_browsing_tab_logo_pattern = Pattern("private_browsing_tab_logo.png")
 
         new_private_window()
         private_window_opened = exists(private_browsing_tab_logo_pattern)
-        assert_true(self, private_window_opened,
-                    "Private window opened")
+        assert_true(self, private_window_opened, "Private window opened")
 
         navigate("https://edition.cnn.com/?refresh=1")
 
-        page_loaded = exists(cnn_logo_pattern, timeout=30)
-        assert_true(self, page_loaded,
-                    "The website is successfully displayed. ")
+        page_loaded = exists(cnn_logo_pattern, 90)
+        assert_true(self, page_loaded, "The website is successfully displayed.")
 
-        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern,
-                                                      timeout=5)
-        assert_true(self, tracking_protection_shield_displayed,
-                    "Tracking protection shield displayed")
+        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
+        assert_true(self, tracking_protection_shield_displayed, "Tracking protection shield displayed")
 
-        cnn_blocked_content_not_displayed = not exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 5)
+        repeat_key_down(10)
+
+        cnn_blocked_content_not_displayed = not exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 30)
         assert_true(self, cnn_blocked_content_not_displayed,
                     'Websites content that contain tracking elements are not displayed on the page')
 
-        shield_button = find(tracking_protection_shield_pattern)
-        click(shield_button)
-
-        protection_popup_opened = exists(blocking_turn_off_pattern, 20)
-        assert_true(self, protection_popup_opened,
-                    "The site information panel is displayed.")
+        click(tracking_protection_shield_pattern)
+        protection_popup_opened = exists(blocking_turn_off_pattern)
+        assert_true(self, protection_popup_opened, "The site information panel is displayed.")
 
         click(blocking_turn_off_pattern)
 
-        tracking_protection_shield_deactivated_exists = exists(tracking_protection_shield_deactivated_pattern, 40)
+        page_loaded = exists(cnn_logo_pattern, 90)
+        assert_true(self, page_loaded, "The website is loaded.")
+
+        tracking_protection_shield_deactivated_exists = exists(tracking_protection_shield_deactivated_pattern)
         assert_true(self, tracking_protection_shield_deactivated_exists,
                     'The tracking protection shield is displayed as deactivated (red strikethrough).')
-
-        page_loaded = exists(cnn_logo_pattern, 30)
-        assert_true(self, page_loaded,
-                    "The website is loaded.")
-
-        click_location = Location(x=0, y=300)
-        click(click_location, 0.2)
-        type(Key.PAGE_DOWN)
 
         cnn_blocked_content_displayed = exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 30)
         assert_true(self, cnn_blocked_content_displayed,
                     'Websites content that contain tracking elements are displayed on the page')
 
-        hover(tracking_protection_shield_deactivated_pattern, 40)
-        tracking_content_detected_exists = exists(tracking_content_detected_pattern, 40)
+        mouse_move(tracking_protection_shield_deactivated_pattern, 3)
+        tracking_content_detected_exists = exists(tracking_content_detected_pattern)
         assert_true(self, tracking_content_detected_exists,
                     'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message.')
 
@@ -85,8 +74,7 @@ class Test(BaseTest):
         assert_true(self, privacy_prefs_opened,
                     "The about:preferences#privacy page is successfully displayed.")
 
-        manage_exceptions_button = find(manage_exceptions_button_pattern)
-        click(manage_exceptions_button)
+        click(manage_exceptions_button_pattern)
         exceptions_window_opened = exists(empty_exc_list_pattern)
         assert_true(self, exceptions_window_opened,
                     "The previously accessed website is not displayed inside the Tracking Protection exceptions panel.")
