@@ -49,7 +49,8 @@ class Test(BaseTest):
 
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        # From time to time user is redirected to the Mozilla support page instead of the Google page. If this happens we will repeat the search.
+        # From time to time user is redirected to the Mozilla support page instead of the Google page. If this happens
+        # we will repeat the search.
         expected = region.exists(mozilla_support_url_pattern, 10)
         if expected:
             select_location_bar()
