@@ -22,7 +22,7 @@ class Test(BaseTest):
         # Scroll bar arrows pattern for Windows
         if Settings.is_windows():
             scroll_height = 1600
-        if Settings.is_linux():
+        if Settings.is_linux() or Settings.is_mac():
             scroll_height = 600
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -31,7 +31,6 @@ class Test(BaseTest):
 
         # Scrolling after zoomed in the page
         [zoom_in() for _ in range(2)]
-
         after_zooming_in_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_zooming_in_content_exists, 'Zoom in action works properly')
         click(after_zooming_in_content_pattern)
@@ -82,12 +81,20 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using ctrl + up/down is on the page')
 
-        type(Key.DOWN, modifier=KeyModifier.CTRL)
+        if Settings.is_mac():
+            type(Key.DOWN, modifier=KeyModifier.CMD)
+        else:
+            type(Key.DOWN, modifier=KeyModifier.CTRL)
+
         try:
             wait_vanish(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         except FindError:
             raise FindError('Content is still on the page after scrolling')
-        type(Key.UP, modifier=KeyModifier.CTRL)
+
+        if Settings.is_mac():
+            type(Key.UP, modifier=KeyModifier.CMD)
+        else:
+            type(Key.UP, modifier=KeyModifier.CTRL)
 
         after_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists, 'Scroll up and down using ctrl + up/down keys is successful.')
@@ -157,12 +164,20 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using ctrl + up/down is on the page')
 
-        type(Key.DOWN, modifier=KeyModifier.CTRL)
+        if Settings.is_mac():
+            type(Key.DOWN, modifier=KeyModifier.CMD)
+        else:
+            type(Key.DOWN, modifier=KeyModifier.CTRL)
+
         try:
             wait_vanish(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         except FindError:
             raise FindError('Content is still on the page after scrolling')
-        type(Key.UP, modifier=KeyModifier.CTRL)
+
+        if Settings.is_mac():
+            type(Key.UP, modifier=KeyModifier.CMD)
+        else:
+            type(Key.UP, modifier=KeyModifier.CTRL)
 
         after_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists, 'Scroll up and down using ctrl + up/down keys is successful.')
