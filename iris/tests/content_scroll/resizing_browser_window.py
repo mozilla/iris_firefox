@@ -104,7 +104,7 @@ class Test(BaseTest):
 
         # Scroll up and down using space bar
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar.')
+        assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar is on the page.')
 
         try:
             type(Key.SPACE)
