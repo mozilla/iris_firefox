@@ -18,7 +18,7 @@ class Test(BaseTest):
         if Settings.is_windows():
             scroll_height = 1600
         if Settings.is_linux() or Settings.is_mac():
-            scroll_height = 100
+            scroll_height = 200
 
         change_preference("devtools.chrome.enabled", True)
 
@@ -38,9 +38,9 @@ class Test(BaseTest):
         assert_true(self, resizing_confirmed_exists, 'The browser window is successfully resized.')
 
         # Scroll up and down using mouse wheel
-        click(scroll_content_pattern)
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
+        click(scroll_content_pattern)
 
         scroll(-scroll_height)
         try:
