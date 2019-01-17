@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        preferences_privacy_page_pattern = Pattern('preferences_privacy_icon.png').similar(.6)
+        preferences_privacy_page_pattern = Pattern('preferences_privacy_icon.png')
         delete_cookies_after_close_pattern = Pattern('delete_cookies_after_close.png')
         delete_cookies_after_close_marked_pattern = Pattern('delete_cookies_after_close_marked.png')
         prosport_opened_mark_pattern = Pattern('prosport_opened_mark.png')
@@ -55,7 +55,7 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY)
         paste('Delete cookies')
 
-        manage_data_button_exists = exists(manage_data_button_pattern)
+        manage_data_button_exists = exists(manage_data_button_pattern, 10)
         assert_true(self, manage_data_button_exists, 'The manage data button exists.')
 
         click(manage_data_button_pattern)
