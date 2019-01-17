@@ -102,11 +102,13 @@ class Test(BaseTest):
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists, 'Scroll up and down using ctrl + up/down keys is successful.')
 
+        # Scroll up and down using space bar
+        before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar.')
+
         try:
             type(Key.SPACE)
             after_scroll_content_disappeared = wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, after_scroll_content_disappeared, 'Scroll up and down using space bar is successful.')
         except FindError:
             raise FindError('Content before scrolling is still on the page')
-
-        close_window()
