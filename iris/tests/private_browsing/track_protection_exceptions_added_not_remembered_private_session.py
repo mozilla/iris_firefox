@@ -24,10 +24,10 @@ class Test(BaseTest):
         blocking_turn_off_pattern = Pattern("blocking_turn_off.png")
         empty_exc_list_pattern = Pattern("empty_exc_list.png").similar(0.95)
         manage_exceptions_button_pattern = Pattern("manage_exceptions_button.png")
-        private_browsing_tab_logo_pattern = Pattern("private_browsing_tab_logo.png")
+        private_browsing_tab_logo_pattern = PrivateWindow.private_window_pattern
 
         new_private_window()
-        private_window_opened = exists(private_browsing_tab_logo_pattern)
+        private_window_opened = exists(private_browsing_tab_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, private_window_opened, "Private window opened")
 
         navigate("https://edition.cnn.com/?refresh=1")
