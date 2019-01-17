@@ -10,10 +10,10 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Firefox can be set to never remember browsing history."
-        self.test_case_id = "106156"
-        self.test_suite_id = "1956"
-        self.locale = ["en-US"]
+        self.meta = 'Firefox can be set to no longer accept third-party cookies.'
+        self.test_case_id = '106156'
+        self.test_suite_id = '1956'
+        self.locale = ['en-US']
 
     def run(self):
         block_all_third_party_cookies_pattern = Pattern('block_all_third_party_cookies.png')
@@ -97,4 +97,4 @@ class Test(BaseTest):
         type(Key.DELETE)
 
         cookies_list_is_empty = exists(cookies_list_empty_pattern)
-        assert_true(self, cookies_list_is_empty, "No third-party cookies are saved")
+        assert_true(self, cookies_list_is_empty, 'No third-party cookies are saved')
