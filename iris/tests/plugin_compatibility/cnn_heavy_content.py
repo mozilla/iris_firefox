@@ -31,6 +31,9 @@ class Test(BaseTest):
         video_playing = exists(speaker_icon_pattern, 100)
         assert_true(self, video_playing, 'The video is playing and the speaker icon is displayed')
 
+        share_button_exists = exists(share_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, share_button_exists, 'Share button displayed.')
+
         share_button_location = find(share_button_pattern)
         video_window = Location.offset(share_button_location, away_x=-350, away_y=250)
 
@@ -56,7 +59,3 @@ class Test(BaseTest):
 
         related_video_playing = exists(speaker_icon_pattern, 100)
         assert_true(self, related_video_playing, 'The video is playing and there is no browser crashes')
-
-
-
-
