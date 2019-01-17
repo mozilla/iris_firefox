@@ -46,7 +46,10 @@ class Test(BaseTest):
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
         tab_one_loaded = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, tab_one_loaded, 'First tab loaded')
+        assert_true(self, tab_one_loaded, 'Firefox tab loaded')
+
+        firefox_tab_is_active = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
+        assert_true(self, firefox_tab_is_active, 'Firefox tab is active.')
         firefox_tab_location_before = find(firefox_test_site_tab_pattern)
         firefox_tab_region_before = Region(firefox_tab_location_before.x-50, firefox_tab_location_before.y-520,
                                            width=320, height=120)
@@ -56,55 +59,62 @@ class Test(BaseTest):
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
         tab_two_loaded = exists(LocalWeb.FOCUS_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, tab_two_loaded, 'Second tab loaded')
-        focus_tab_location_before = find(focus_test_site_tab_pattern)
+        assert_true(self, tab_two_loaded, 'Focus tab loaded')
 
         focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, focus_test_site_tab_exists, 'Focus site tab is active.')
+        focus_tab_location_before = find(focus_test_site_tab_pattern)
+        focus_tab_region_before = Region(focus_tab_location_before.x-50, focus_tab_location_before.y-250,
+                                         width=320, height=120)
+        focus_tab_region_after = Region(x=50-100, y=(SCREEN_HEIGHT / 2)-50, width=300, height=300)
 
         # Drag-n-drop Focus tab
         focus_tab_drop_location = Location(x=50, y=(SCREEN_HEIGHT / 2))
+        drag_drop(focus_tab_location_before, focus_tab_drop_location)
 
-        drag_drop(focus_tab_location_before, focus_tab_drop_location, duration=0.5)
+        try:
+            focus_tab_dragged = wait_vanish(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                            focus_tab_region_before)
+            assert_true(self, focus_tab_dragged, 'Focus tab dragged.')
+        except FindError:
+            raise FindError('Focus tab was not dragged out.')
+
+        focus_tab_dropped = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                              in_region=focus_tab_region_after)
+        assert_true(self, focus_tab_dropped, 'Focus tab dropped.')
 
         focus_content_exists = exists(LocalWeb.FOCUS_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, focus_content_exists, 'Focus content is visible.')
-
+        assert_true(self, focus_content_exists, 'Focus content before scrolling is on the page.')
         click(focus_test_site_tab_pattern.target_offset(0, 100))
         repeat_key_down(5)
 
         focus_tab_scrolled = exists(focus_tab_scrolled_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, focus_tab_scrolled, 'Focus tab scrolled.')
-
-        focus_test_site_tab_exists = exists(focus_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, focus_test_site_tab_exists, 'Focus tab exists after drag-n-drop.')
+        assert_true(self, focus_tab_scrolled, 'Focus tab scrolled successful.')
 
         # Drag-n-drop Firefox tab
         firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2), y=150)
-
-        drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
+        drag_drop(firefox_tab_location_before, firefox_tab_drop_location)
 
         try:
-            wait_vanish(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT, firefox_tab_region_before)
+            firefox_test_site_tab_dragged = wait_vanish(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                                        firefox_tab_region_before)
+            assert_true(self, firefox_test_site_tab_dragged, 'Firefox tab dragged.')
         except FindError:
             raise FindError('Firefox tab was not dragged out.')
 
-        firefox_test_site_tab_exists = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
+        firefox_tab_dropped = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                               in_region=firefox_tab_region_after)
-        assert_true(self, firefox_test_site_tab_exists, 'firefox_test_site_tab_exists')
+        assert_true(self, firefox_tab_dropped, 'Firefox tab dropped.')
 
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, firefox_content_exists, 'Firefox content is visible.')
-
+        assert_true(self, firefox_content_exists, 'Firefox content before scrolling is on the page.')
         click(firefox_test_site_tab_pattern.target_offset(0, 100))
         repeat_key_down(5)
 
         firefox_tab_scrolled = exists(firefox_tab_scrolled_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, firefox_tab_scrolled, 'Firefox tab scrolled.')
+        assert_true(self, firefox_tab_scrolled, 'Firefox tab scrolled successful.')
 
-        firefox_tab_exists = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, firefox_tab_exists, 'Firefox tab is active.')
-
+        # Quit via Hamburger menu
         hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
 
@@ -137,9 +147,6 @@ class Test(BaseTest):
         restore_previous_session_exists = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, restore_previous_session_exists, '"Restore previous session" item located')
         click(restore_previous_session_pattern)
-
-        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
-        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
 
         # Firefox tab restored
         firefox_tab_exists = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 2)
