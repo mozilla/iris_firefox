@@ -22,7 +22,7 @@ class Test(BaseTest):
         tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
         cnn_logo_pattern = LocalWeb.CNN_LOGO
         blocking_turn_off_pattern = Pattern("blocking_turn_off.png")
-        empty_exc_list_pattern = Pattern("empty_exc_list.png").similar(0.95)
+        empty_exc_list_pattern = Pattern("empty_exc_list.png")
         manage_exceptions_button_pattern = Pattern("manage_exceptions_button.png")
         private_browsing_tab_logo_pattern = PrivateWindow.private_window_pattern
 
