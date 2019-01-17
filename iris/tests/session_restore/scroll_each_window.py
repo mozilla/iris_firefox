@@ -48,7 +48,9 @@ class Test(BaseTest):
         tab_one_loaded = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, tab_one_loaded, 'First tab loaded')
         firefox_tab_location_before = find(firefox_test_site_tab_pattern)
-        firefox_tab_region = Region(firefox_tab_location_before.x, firefox_tab_location_before.y, 120, 120)
+        firefox_tab_region_before = Region(firefox_tab_location_before.x-50, firefox_tab_location_before.y-520,
+                                           width=320, height=120)
+        firefox_tab_region_after = Region(x=(SCREEN_WIDTH / 2)-100, y=150-50, width=300, height=300)
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
@@ -83,9 +85,13 @@ class Test(BaseTest):
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location, duration=0.5)
 
         try:
-            wait_vanish(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT, firefox_tab_region)
+            wait_vanish(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT, firefox_tab_region_before)
         except FindError:
             raise FindError('Firefox tab was not dragged out.')
+
+        firefox_test_site_tab_exists = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                              in_region=firefox_tab_region_after)
+        assert_true(self, firefox_test_site_tab_exists, 'firefox_test_site_tab_exists')
 
         firefox_content_exists = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_FIREFOX_TIMEOUT * 2)
         assert_true(self, firefox_content_exists, 'Firefox content is visible.')
