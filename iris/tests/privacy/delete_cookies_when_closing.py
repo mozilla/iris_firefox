@@ -41,8 +41,8 @@ class Test(BaseTest):
 
         navigate('https://edition.cnn.com')
 
-        prosport_opened_mark = exists(LocalWeb.CNN_LOGO, 100)
-        assert_true(self, prosport_opened_mark, 'The website is successfully displayed.')
+        website_opened = exists(LocalWeb.CNN_LOGO, 100)
+        assert_true(self, website_opened, 'The website is successfully displayed.')
 
         restart_firefox(self,
                         self.browser.path,
@@ -64,6 +64,6 @@ class Test(BaseTest):
 
         paste('cnn')
 
-        prosport_cookies_is_not_saved = exists(prosport_cookies_pattern)
-        assert_true(self, prosport_cookies_is_not_saved, 'No cookies are displayed from the previously accessed '
-                                                         'website.')
+        cookies_is_not_saved = exists(prosport_cookies_pattern)
+        assert_true(self, cookies_is_not_saved, 'No cookies are displayed from the previously accessed '
+                                                'website.')
