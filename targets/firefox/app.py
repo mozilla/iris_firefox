@@ -5,11 +5,11 @@
 import logging
 import os
 
-#import mozlog
-#import mozversion
-#from mozdownload import FactoryScraper, errors
-#from mozinstall import install, get_binary
-#from mozrunner import FirefoxRunner, errors
+import mozlog
+import mozversion
+from mozdownload import FactoryScraper, errors as download_errors
+from mozinstall import install, get_binary
+from mozrunner import FirefoxRunner, errors as runner_errors
 
 from src.base.target import *
 from src.core.api.enums import Channels
@@ -26,20 +26,16 @@ class Target(BaseTarget):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
 
-        # Disabling for now due to errors
-        """
-            path = self.get_test_candidate()
-            if path is None:
-                raise ValueError
-    
-            self.path = path
-            self.channel = self.get_firefox_channel(path)
-            self.version = self.get_firefox_version(path)
-            self.build_id = self.get_firefox_build_id(path)
-            self.locale = parse_args().locale
-            self.latest_version = self.get_firefox_latest_version(path)
-        """
+        path = self.get_test_candidate()
+        if path is None:
+            raise ValueError
 
+        self.path = path
+        self.channel = self.get_firefox_channel(path)
+        self.version = self.get_firefox_version(path)
+        self.build_id = self.get_firefox_build_id(path)
+        self.locale = parse_args().locale
+        self.latest_version = self.get_firefox_latest_version(path)
 
     @staticmethod
     def get_local_firefox_path():
@@ -73,12 +69,14 @@ class Target(BaseTarget):
         if parse_args().firefox == 'local':
             candidate = self.get_local_firefox_path()
             if candidate is None:
-                logger.critical('Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/')
+                logger.critical(
+                    'Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/')
         else:
             try:
                 locale = 'ja-JP-mac' if parse_args().locale == 'ja' and OSHelper.is_mac() else parse_args().locale
                 type, scraper_details = self.get_scraper_details(parse_args().firefox, Channels,
-                                                                 os.path.join(PathManager.get_working_dir(), 'cache'),
+                                                                 os.path.join(
+                                                                     PathManager.get_working_dir(), 'cache'),
                                                                  locale)
                 scraper = FactoryScraper(type, **scraper_details)
 
@@ -87,8 +85,9 @@ class Target(BaseTarget):
                                          dest=PathManager.get_current_run_dir())
 
                 return get_binary(install_folder, 'Firefox')
-            except errors.NotFoundError:
-                logger.critical('Specified build (%s) has not been found. Closing Iris ...' % parse_args().firefox)
+            except download_errors.NotFoundError:
+                logger.critical(
+                    'Specified build (%s) has not been found. Closing Iris ...' % parse_args().firefox)
         return None
 
     def get_scraper_details(self, version, channels, destination, locale):
@@ -124,7 +123,8 @@ class Target(BaseTarget):
                                      'destination': destination,
                                      'locale': locale}
             else:
-                logger.warning('Version not recognized. Getting latest nightly build ...')
+                logger.warning(
+                    'Version not recognized. Getting latest nightly build ...')
                 return 'daily', {'branch': 'mozilla-central',
                                  'destination': destination,
                                  'locale': locale}
@@ -151,7 +151,8 @@ class Target(BaseTarget):
         if build_path is None:
             return None
 
-        fx_channel = self.get_firefox_info(build_path)['application_repository']
+        fx_channel = self.get_firefox_info(
+            build_path)['application_repository']
         if 'beta' in fx_channel:
             return 'beta'
         elif 'release' in fx_channel:
@@ -205,11 +206,14 @@ class Target(BaseTarget):
             return None
 
         channel = self.get_firefox_channel(binary)
-        latest_type, latest_scraper_details = self.get_latest_scraper_details(channel)
-        latest_path = FactoryScraper(latest_type, **latest_scraper_details).filename
+        latest_type, latest_scraper_details = self.get_latest_scraper_details(
+            channel)
+        latest_path = FactoryScraper(
+            latest_type, **latest_scraper_details).filename
 
         latest_version = self.get_version_from_path(latest_path)
-        logger.info('Latest available version for %s channel is: %s' % (channel, latest_version))
+        logger.info('Latest available version for %s channel is: %s' %
+                    (channel, latest_version))
 
         return latest_version
 
@@ -232,7 +236,7 @@ class Target(BaseTarget):
         return new_str[0:new_str.find('-')]
 
     @staticmethod
-    def launch_firefox(path, profile=None, url=None, args=None, show_crash_reporter=False):
+    def firefox_session(path, profile=None, url=None, args=None, show_crash_reporter=False):
         """Launch the app with optional args for profile, windows, URI, etc.
 
         :param path: Firefox path.
@@ -264,7 +268,7 @@ class Target(BaseTarget):
             logger.debug('Running Firefox with command: "%s"' %
                          ','.join(runner.command))
             return runner
-        except errors.RunnerNotStartedError:
+        except runner_errors.RunnerNotStartedError:
             raise APIHelperError('Error creating Firefox runner.')
 
     def pytest_sessionfinish(self, session):

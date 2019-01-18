@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-iris = {path = ".", editable = true}
+iris = {path = ".",editable = true}
 pyautogui = "==0.9.38"
 coloredlogs = "==10.0"
 python-dateutil = "==2.7.5"
@@ -17,17 +17,21 @@ packaging = "==18.0"
 gitpython = "==2.1.11"
 pynput = "==1.4"
 mozinstall = "==1.16.0"
-mozdownload = "==1.25"
+mozdownload = { git = 'https://github.com/AndreiH/mozdownload.git', ref = 'mozdownload_python3' }
 mozversion = "==1.5"
 mozinfo = "==1.0.0"
 mozrunner = "==7.2.0"
 mss = "==3.3.1"
-pep8 = "*"
-# Platform dependencies
-xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 pytest = "*"
 
+# Platform dependencies
+xlib = {platform_system = "== 'Linux'",version = "==0.21"}
+
+
 [dev-packages]
+pylint = "*"
+pep8 = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.7"
