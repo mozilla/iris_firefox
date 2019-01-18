@@ -19,7 +19,7 @@ class Test(BaseTest):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         soap_wiki_footer_pattern = Pattern('soap_wiki_footer.png')
         soap_wiki_header_mark_pattern = Pattern('soap_wiki_header.png')
-        iris_tab_logo_pattern = Pattern('iris_logo_tab.png')
+        iris_tab_logo_pattern = Pattern('iris_logo_tab.png').similar(0.75)
 
         mouse_wheel_steps = 100
         if Settings.is_windows():
@@ -31,6 +31,10 @@ class Test(BaseTest):
         soap_wiki_test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_wiki_test_site_opened, 'The Soap Wiki test site is properly loaded')
 
+        soap_wiki_test_site_moved_to_initial = exists(soap_wiki_tab_pattern, 20)
+        iris_tab_displayed = exists(iris_tab_logo_pattern, 20)
+        assert_true(self, soap_wiki_test_site_moved_to_initial and iris_tab_displayed, 'The Soap Wiki test site '
+                                                                                       'successfully moved back')
         # Moving Soap Wiki to a new window
         key_down_pressing = 2
         if Settings.is_linux():
@@ -52,7 +56,7 @@ class Test(BaseTest):
 
         click(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
-        # Scrolling test in the initial window
+        # Scrolling test in the new window
         # Scroll by mouse wheel
         for times_scroll_down in range(100):
             scroll(-mouse_wheel_steps)
@@ -116,7 +120,7 @@ class Test(BaseTest):
         # Scroll by pressing Ctrl+Down/Ctrl+Up or Cmd+Down/Cmd+Up
         if Settings.is_mac():
             type(Key.DOWN, modifier=KeyModifier.CMD)
-        if Settings.is_windows():
+        else:
             type(Key.DOWN, modifier=KeyModifier.CTRL)
 
         soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
@@ -125,7 +129,7 @@ class Test(BaseTest):
 
         if Settings.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
-        if Settings.is_windows():
+        else:
             type(Key.UP, modifier=KeyModifier.CTRL)
 
         soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
@@ -134,14 +138,18 @@ class Test(BaseTest):
 
         # Move the tab back into initial window
         soap_wiki_new_window_tab_location = find(soap_wiki_tab_pattern)
-        location_for_new_window_drag = Location.right(soap_wiki_new_window_tab_location, away_x=500)
+        location_for_new_window_drop_to_minimize = Location.below(soap_wiki_new_window_tab_location, away_y=800)
+        location_for_double_click_to_minimize = Location.right(soap_wiki_new_window_tab_location, away_x=500)
 
-        double_click(location_for_new_window_drag)
+        if Settings.is_linux():
+            drag_drop(soap_wiki_tab_pattern, location_for_new_window_drop_to_minimize)
+        else:
+            double_click(location_for_double_click_to_minimize)
 
         soap_wiki_tab_pattern_to_move = find(soap_wiki_tab_pattern)
-        location_to_hover = Location.right(soap_wiki_tab_pattern_to_move, away_x=1200)
+        location_to_drop_into_inital_window = Location.right(soap_wiki_tab_pattern_to_move, away_x=1500)
 
-        drag_drop(soap_wiki_tab_pattern, location_to_hover)
+        drag_drop(soap_wiki_tab_pattern, location_to_drop_into_inital_window)
 
         soap_wiki_test_site_moved_to_initial = exists(soap_wiki_tab_pattern, 20)
         iris_tab_displayed = exists(iris_tab_logo_pattern, 20)
@@ -214,7 +222,7 @@ class Test(BaseTest):
         # Scroll by pressing Ctrl+Down/Ctrl+Up or Cmd+Down/Cmd+Up
         if Settings.is_mac():
             type(Key.DOWN, modifier=KeyModifier.CMD)
-        if Settings.is_windows():
+        else:
             type(Key.DOWN, modifier=KeyModifier.CTRL)
 
         soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
@@ -223,7 +231,7 @@ class Test(BaseTest):
 
         if Settings.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
-        if Settings.is_windows():
+        else:
             type(Key.UP, modifier=KeyModifier.CTRL)
 
         soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
