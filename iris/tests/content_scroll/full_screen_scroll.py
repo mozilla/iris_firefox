@@ -38,12 +38,16 @@ class Test(BaseTest):
         # Mouse scroll
         if Settings.is_windows():
             [scroll(-SCREEN_HEIGHT * 10) for _ in range(2)]
+        else:
+            [scroll(-15) for _ in range(2)]
 
         mouse_scroll_done = exists(image_on_page_pattern)
         assert_true(self, mouse_scroll_done, 'Mouse scroll down done')
 
         if Settings.is_windows():
             [scroll(SCREEN_HEIGHT * 10) for _ in range(2)]
+        else:
+            [scroll(15) for _ in range(2)]
 
         returned_home_mouse_scroll = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_mouse_scroll, 'Returned to page top using mouse scroll.')
