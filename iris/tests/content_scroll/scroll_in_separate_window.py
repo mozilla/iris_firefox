@@ -138,8 +138,9 @@ class Test(BaseTest):
 
         # Move the tab back into initial window
         soap_wiki_new_window_tab_location = find(soap_wiki_tab_pattern)
-        location_for_new_window_drop_to_minimize = Location.below(soap_wiki_new_window_tab_location, away_y=800)
-        location_for_double_click_to_minimize = Location.right(soap_wiki_new_window_tab_location, away_x=500)
+        location_for_new_window_drop_to_minimize = Location.below(soap_wiki_new_window_tab_location, away_y=500)
+        soap_wiki_for_minimize_tab_location = find(soap_wiki_tab_pattern)
+        location_for_double_click_to_minimize = Location.right(soap_wiki_for_minimize_tab_location, away_x=500)
 
         if Settings.is_linux():
             drag_drop(soap_wiki_tab_pattern, location_for_new_window_drop_to_minimize)
@@ -147,9 +148,9 @@ class Test(BaseTest):
             double_click(location_for_double_click_to_minimize)
 
         soap_wiki_tab_pattern_to_move = find(soap_wiki_tab_pattern)
-        location_to_drop_into_inital_window = Location.right(soap_wiki_tab_pattern_to_move, away_x=1500)
+        location_to_drop_into_initial_window = Location.right(soap_wiki_tab_pattern_to_move, away_x=1500)
 
-        drag_drop(soap_wiki_tab_pattern, location_to_drop_into_inital_window)
+        drag_drop(soap_wiki_tab_pattern, location_to_drop_into_initial_window)
 
         soap_wiki_test_site_moved_to_initial = exists(soap_wiki_tab_pattern, 20)
         iris_tab_displayed = exists(iris_tab_logo_pattern, 20)
