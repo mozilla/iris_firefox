@@ -35,7 +35,7 @@ class Test(BaseTest):
         assert_true(self, share_button_exists, 'Share button displayed.')
 
         share_button_location = find(share_button_pattern)
-        video_window = Location.offset(share_button_location, away_x=-350, away_y=250)
+        video_window = Location.offset(share_button_location, -350, 250)
 
         click(video_window)
 
