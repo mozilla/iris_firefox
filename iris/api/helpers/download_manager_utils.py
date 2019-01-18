@@ -88,7 +88,6 @@ def download_file(file_to_download, accept_download):
     try:
         ok_button = exists(accept_download, 5)
         if ok_button:
-            wait(accept_download, 5)
             logger.debug('The OK button found in the page.')
             click(accept_download)
     except FindError:
