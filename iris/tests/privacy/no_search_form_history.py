@@ -25,7 +25,7 @@ class Test(BaseTest):
         search_bar_not_empty_pattern = Pattern('search_bar_not_empty.png')
         search_form_suggestion_pattern = Pattern('search_form_suggestion.png')
         name_form_pattern = Pattern('name_form.png')
-        password_form_pattern = Pattern('password_form.png')
+        password_form_pattern = Pattern('password_form.png').similar(.6)
         autocomplete_pattern = Pattern('word_autocomplete.png')
         form_address = self.get_asset_path('form.html')
 
