@@ -11,36 +11,29 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        iris_logo_pattern = Pattern('iris_logo.png')
         the_swish_life_tab_pattern = Pattern('the_swish_life_tab.png')
         fashion_tag_pattern = Pattern('fashion_tag.png')
         fashion_page_pattern = Pattern('fashion_page.png')
         the_home_button_pattern = Pattern('the_home_button.png')
 
-        firefox_started = exists(iris_logo_pattern)
-        assert_true(self, firefox_started, 'Firefox is successfully launched.')
-
         navigate('http://theswishlife.com/')
 
-        window_opened = exists(the_swish_life_tab_pattern, 30)
+        window_opened = exists(the_swish_life_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 3)
         assert_true(self, window_opened, 'The Swish Life home page opened')
 
         page_end()
 
         fashion_tag_exists = exists(fashion_tag_pattern)
-
         if not fashion_tag_exists:
             assert_false(self, fashion_tag_exists, 'The "Fashion" tag exists')
 
         click(fashion_tag_pattern)
 
-        fashion_page_opened = exists(fashion_page_pattern, 30)
+        fashion_page_opened = exists(fashion_page_pattern, DEFAULT_FIREFOX_TIMEOUT * 3)
         assert_true(self, fashion_page_opened, 'The "Fashion" page is opened')
 
         click(the_home_button_pattern)
 
-        home_page_returning = exists(fashion_page_pattern, 30)
-        assert_true(self, home_page_returning, 'Return to the Swish Life home page. The website and the '
-                                               'browser are stable')
+        home_page_label = exists(fashion_page_pattern, DEFAULT_FIREFOX_TIMEOUT * 3)
+        assert_true(self, home_page_label, 'Return to the Swish Life home page. The website and the browser are stable')
 

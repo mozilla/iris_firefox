@@ -35,6 +35,7 @@ class DownloadFiles(object):
     DOWNLOAD_FILE_NAME_10MB = Pattern('download_name_10MB.png')
     DOWNLOAD_FILE_NAME_5MB = Pattern('download_name_5MB.png')
     LIBRARY_DOWNLOADS_5MB = Pattern('5MB_library_downloads.png')
+    LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED = Pattern('5MB_library_downloads_highlighted.png')
     LIBRARY_DOWNLOADS_10MB = Pattern('10MB_library_downloads.png')
     LIBRARY_DOWNLOADS_20MB = Pattern('20MB_library_downloads.png')
     LIBRARY_DOWNLOADS_50MB = Pattern('50MB_library_downloads.png')
@@ -85,9 +86,10 @@ def download_file(file_to_download, accept_download):
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
     try:
-        wait(accept_download, 5)
-        logger.debug('The OK button found in the page.')
-        click(accept_download)
+        ok_button = exists(accept_download, 5)
+        if ok_button:
+            logger.debug('The OK button found in the page.')
+            click(accept_download)
     except FindError:
         raise APIHelperError('The OK button is not found in the page.')
 
