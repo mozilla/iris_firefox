@@ -4,9 +4,9 @@
 
 
 from src.core.api.errors import FindError
-from src.core.api.finder.finder import verify, find, find_all, exists, highlight, wait_vanish
-from src.core.api.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
+from src.core.api.finder.finder import wait, find, find_all, exists, highlight, wait_vanish
 from src.core.api.location import Location
+from src.core.api.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
 from src.core.api.rectangle import Rectangle
 
 
@@ -93,7 +93,7 @@ class Region:
         :param timeout: Number as maximum waiting time in seconds.
         :return: True or FineError Exception.
         """
-        return verify(ps, timeout, self._area)
+        return wait(ps, timeout, self._area)
 
     def wait_vanish(self, ps=None, timeout=None) -> bool or FindError:
         """Wait for a Pattern or image to disappear.

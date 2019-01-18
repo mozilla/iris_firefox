@@ -12,7 +12,7 @@ from src.core.util.location import Location
 from src.core.util.os_helpers import OSHelper
 from src.core.api.keyboard.key import KeyModifier, Key
 from src.core.api.keyboard.keyboard_api import key_down, key_up
-from src.core.api.screen.region import click, drag_drop, find, verify, wait_vanish
+from src.core.api.screen.region import click, drag_drop, find, wait, wait_vanish
 from src.core.api.settings import Settings
 from src.targets.firefox.firefox_ui.location_bar import LocationBar
 from src.targets.firefox.firefox_ui.menus import SidebarBookmarks
@@ -569,7 +569,7 @@ def bookmark_page():
     else:
         type(text='d', modifier=KeyModifier.CTRL)
     try:
-        verify(LocationBar.STAR_BUTTON_STARRED, 10)
+        wait(LocationBar.STAR_BUTTON_STARRED, 10)
         logger.debug('Page was successfully bookmarked')
     except FindError:
         raise APIHelperError('Page can not be bookmarked')
@@ -585,7 +585,7 @@ def bookmarks_sidebar(option: str):
     bookmark_sidebar_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
     if option == 'open':
         try:
-            verify(bookmark_sidebar_header_pattern, 10)
+            wait(bookmark_sidebar_header_pattern, 10)
             logger.debug('Sidebar is opened.')
         except FindError:
             raise APIHelperError('Sidebar is NOT present on the page, aborting.')
