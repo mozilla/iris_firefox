@@ -46,11 +46,11 @@ class Test(BaseTest):
         for field in input_data:
             field_exists = exists(field)
             assert_true(self, field_exists, '{} field exists'.format(input_data[field][1]))
-
             click(field)
             type(input_data[field][0])
 
         click(submit_button_pattern)
+
         try:
             entered_csc_on_page = wait_vanish(entered_csc_pattern)
             assert_true(self, entered_csc_on_page, 'Credit Card Information is successfully entered and submitted.')
@@ -58,10 +58,12 @@ class Test(BaseTest):
             raise FindError('Entered data did not vanish after clicking the \'Submit button\'')
 
         close_window()
+
         private_browsing_image_exists = exists(private_browsing_image_pattern)
         assert_false(self, private_browsing_image_exists, 'Normal browsing session is displayed')
 
         navigate('about:preferences#privacy')
+
         find_in_preferences_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, find_in_preferences_field_exists, 'Preferences search field is available')
         click(find_in_preferences_field_pattern)
