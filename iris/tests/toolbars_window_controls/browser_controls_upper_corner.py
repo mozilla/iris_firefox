@@ -24,7 +24,6 @@ class Test(BaseTest):
         hover_maximize_control_pattern = Pattern('hover_maximize_control.png')
         window_controls_close_pattern = Pattern('window_controls_close.png')
         hover_close_control_pattern = Pattern('hover_close_control.png')
-        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
@@ -66,7 +65,7 @@ class Test(BaseTest):
         time.sleep(Settings.UI_DELAY)
 
         try:
-            expected = wait_vanish(hamburger_menu_pattern, 10)
+            expected = wait_vanish(LocalWeb.FIREFOX_LOGO, 10)
         except FindError:
             raise FindError('Window not minimized.')
         assert_true(self, expected, 'Window successfully minimized.')
@@ -76,13 +75,13 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS:
             click_window_control('maximize', 'main')
 
-        expected = exists(hamburger_menu_pattern, 10)
+        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Window successfully opened again.')
 
         click_window_control('close', 'main')
 
         try:
-            expected = wait_vanish(hamburger_menu_pattern, 10)
+            expected = wait_vanish(LocalWeb.FIREFOX_LOGO, 10)
             assert_true(self, expected, 'Window successfully closed.')
         except FindError:
             assert_true(self, False, 'Window successfully closed.')

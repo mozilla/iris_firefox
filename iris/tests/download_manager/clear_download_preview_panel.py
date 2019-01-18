@@ -52,4 +52,9 @@ class Test(BaseTest):
         assert_true(self, expected, 'All downloads were cleared.')
 
     def teardown(self):
+        # Cancel all 'in progress' downloads.
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
         downloads_cleanup()

@@ -46,9 +46,9 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Show all downloads\' button found.')
         click(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = exists(Library.DOWNLOADS, 10)
+        expected = exists(Library.DownloadLibrary.DOWNLOADS, 10)
         assert_true(self, expected, 'The Downloads button is displayed in the Library.')
-        click(Library.DOWNLOADS)
+        click(Library.DownloadLibrary.DOWNLOADS)
 
         # Check that all the downloads are successful and displayed in the Downloads category.
         for pattern in downloads_library_list:
