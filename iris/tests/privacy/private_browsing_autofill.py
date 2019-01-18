@@ -10,14 +10,12 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Private Browsing window is not restored after Firefox crash'
+        self.meta = 'Private Browsing window is not restored after Firefox crash [Fails due to known issue]'
         self.test_case_id = '101666'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
-        self.set_profile_pref({'extensions.formautofill.available': 'on'})
-        self.set_profile_pref({'browser.search.region': 'US'})
-        self.set_profile_pref({'extensions.formautofill.addresses.enabled': 'true'})
-        self.set_profile_pref({'extensions.formautofill.loglevel': 'Debug'})
+        self.blocked_by = '1520224'
+        self.exclude = Platform.ALL
 
     def run(self):
         name_field_pattern = Pattern('name_field.png').similar(.6)
