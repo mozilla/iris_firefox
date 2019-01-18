@@ -34,7 +34,7 @@ class Test(BaseTest):
         # Moving Soap Wiki to a new window
         key_down_pressing = 2
         if Settings.is_linux():
-            key_down_pressing = 2
+            key_down_pressing = 1
 
         right_click(soap_wiki_tab_pattern)
         repeat_key_down(7)
@@ -230,6 +230,5 @@ class Test(BaseTest):
         assert_true(self, soap_wiki_header_mark, "Initial window: Successfully scrolled from footer to header by "
                                                  "pressing Ctrl+Up or Cmd+Up")
 
-        repeat_key_up_until_image_found()
 
 
