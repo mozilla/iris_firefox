@@ -53,29 +53,31 @@ class Test(BaseTest):
         for field in input_data:
             field_exists = exists(field)
             assert_true(self, field_exists, '{} field exists'.format(input_data[field][1]))
-
             click(field)
             type(input_data[field][0])
 
         click(submit_button_pattern)
+
         tooltip_displayed = exists(save_button_pattern)
-        assert_false(self, tooltip_displayed, 'The form gets successfully submitted but no "tooltip" to save the input is displayed.')
+        assert_false(self, tooltip_displayed, 'The form gets successfully submitted but no "tooltip" to save the input '
+                                              'is displayed.')
 
         close_window()
+
         private_browsing_image_exists = exists(private_browsing_image_pattern)
         assert_false(self, private_browsing_image_exists, 'Normal browsing session is displayed')
 
         navigate('about:preferences#privacy')
         find_in_prefs_field_exists = exists(find_in_prefs_field_pattern)
         assert_true(self, find_in_prefs_field_exists, 'Preferences search field is available')
-
         click(find_in_prefs_field_pattern)
+
         type('Autofill')
         saved_addresses_button_exists = exists(saved_addresses_button_pattern)
-        assert_true(self, saved_addresses_button_exists, '\'Saved addresses\' button is available')
-
+        assert_true(self, saved_addresses_button_exists, '"Saved addresses" button is available')
         click(saved_addresses_button_pattern)
-        saved_address_exists = exists(name_in_saved_addresses_pattern)
-        assert_false(self, saved_address_exists, 'The submitted information in the private session is not displayed in the saved Addresses panel')
 
+        saved_address_exists = exists(name_in_saved_addresses_pattern)
+        assert_false(self, saved_address_exists, 'The submitted information in the private session '
+                                                 'is not displayed in the saved Addresses panel')
         close_window()
