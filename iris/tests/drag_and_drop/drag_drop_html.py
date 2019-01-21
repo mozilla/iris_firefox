@@ -17,26 +17,58 @@ class Test(BaseTest):
 
     def run(self):
 
-        # iris_tab_pattern = Pattern('eyes.ico')
-        # time.sleep(30)
-        # restore_firefox_focus()
+        drop_html_unfollowed_pattern = Pattern('drop_html_unfollowed.png')
+        drop_html_inactive_pattern = Pattern('drop_html_inactive.png')
+        drop_here_pattern = Pattern('drop_here.png')
+        drop_verified_pattern = Pattern('drop_matching_verified.png')
+        drop_not_matching_pattern = Pattern('drop_not_matching.png')
+        correct_result_pattern = Pattern('correct_result.png').similar(0.9)
+
         change_preference('devtools.chrome.enabled', True)
         minimize_window()
         open_browser_console()
         paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH/2, SCREEN_HEIGHT))
         type(Key.ENTER)
         close_tab()
-        # start_offset = NavBar.HOME_BUTTON.get_size()[0]
-        # start_position = find(NavBar.HOME_BUTTON).offset(start_offset*2, 0)
-        # window_drop_position = Location(10, SCREEN_WIDTH/10)
-        # drag_drop(start_position, window_drop_position)
-        # iris_tab = find(iris_tab_pattern)
-        # drag_drop(iris_tab, Location(0, SCREEN_HEIGHT/2))
+
         navigate('https://mystor.github.io/dragndrop/')
+        drop_page_loaded = exists(drop_html_unfollowed_pattern)
+        assert_true(self, drop_page_loaded, 'Drop page loaded successfully.')
+        click(drop_html_unfollowed_pattern)
+
+        drop_html_activated = exists(drop_html_inactive_pattern)
+        assert_true(self, drop_html_activated,
+                    'The drop-html-data changed color to red which indicates that it has been selected.')
+
+        drop_not_matched = exists(drop_not_matching_pattern)
+        assert_true(self, drop_not_matched, 'No drop to match now.')
+        type(Key.END)
+
         new_window()
         opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED)
         new_window_drop_location = Location(SCREEN_WIDTH/2, SCREEN_HEIGHT/20)
         drag_drop(opened_tab_location, new_window_drop_location)
-        navigate('https://en.wikipedia.org/wiki/Firefox')
-        time.sleep(5)
+
+        drop_position_visible = exists(drop_here_pattern)
+        assert_true(self, drop_position_visible, 'Drop position can be reached.')
+
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        wiki_page_loaded = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SYSTEM_DELAY)
+        assert_true(self, wiki_page_loaded, 'Wiki webpage successfully loaded.')
+
+        # Selecting paragraph by triple click on location (pattern click doesn't select)
+        paragraph = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        [click(paragraph, 0.01) for _ in range(3)]
+        paragraph_x, paragraph_y = LocalWeb.SOAP_WIKI_SOAP_LABEL.get_size()
+        paragraph.offset(paragraph_x/2, paragraph_y/2)
+        drop_position_offset_x, drop_position_offset_y = drop_here_pattern.get_size()
+        drop_html_position = find(drop_here_pattern)
+        drop_html_position.offset(drop_position_offset_x, drop_position_offset_y)
+        drag_drop(paragraph, drop_html_position)
+
+        drop_verified = exists(drop_verified_pattern)
+        assert_true(self, drop_verified, 'Drop verified')
+
+        result_correct = exists(correct_result_pattern)
+        assert_true(self, result_correct, 'Actual and expected drop results are equal.')
         close_window()
