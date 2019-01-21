@@ -6,6 +6,7 @@
 from iris.test_case import *
 from iris.tests.content_scroll.utils import *
 
+
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
@@ -16,6 +17,11 @@ class Test(BaseTest):
 
     def run(self):
         scroll_content_pattern = Pattern('about_us_content.png')
+
+        if Settings.is_windows():
+            value = 10
+        else:
+            value = 1
 
         # Mousewheel scrolling preference is 200
         change_preference('mousewheel.default.delta_multiplier_y', '200')
@@ -34,12 +40,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists,
                     'Content before scrolling using mouse wheel with preference equals 200 is on the page')
 
-        [scroll(-SCREEN_HEIGHT) for _ in range(10)]
+        [scroll(-SCREEN_HEIGHT) for _ in range(value)]
         try:
             wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         except FindError:
             raise FindError('Content is still on the page after scrolling')
-        [scroll(SCREEN_HEIGHT) for _ in range(10)]
+        [scroll(SCREEN_HEIGHT) for _ in range(value)]
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists,
@@ -57,12 +63,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists,
                     'Content before scrolling using mouse wheel with preference equals 50 is on the page')
 
-        [scroll(-SCREEN_HEIGHT) for _ in range(10)]
+        [scroll(-SCREEN_HEIGHT) for _ in range(value)]
         try:
             wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         except FindError:
             raise FindError('Content is still on the page after scrolling')
-        [scroll(SCREEN_HEIGHT) for _ in range(10)]
+        [scroll(SCREEN_HEIGHT) for _ in range(value)]
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists,
