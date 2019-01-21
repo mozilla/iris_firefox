@@ -17,8 +17,10 @@ class Test(BaseTest):
 
     def run(self):
         image_on_page_pattern = Pattern('soap_env_image.png')
-        wiki_logo_pattern = Pattern('wiki_logo.png')
         external_links_pattern = Pattern('external_links.png')
+        wiki_logo_pattern = Pattern('wiki_logo.png')
+        if Settings.is_mac():
+            finder_logo_pattern = Pattern('finder_logo.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         page_loaded = exists(wiki_logo_pattern, DEFAULT_SYSTEM_DELAY)
@@ -26,7 +28,10 @@ class Test(BaseTest):
 
         full_screen()
         try:
-            full_screen_on = wait_vanish(wiki_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            if Settings.is_mac():
+                full_screen_on = wait_vanish(finder_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            else:
+                full_screen_on = wait_vanish(wiki_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, full_screen_on, 'Full screen on')
         except FindError:
             raise FindError('Not entered full screen mode')
@@ -38,8 +43,10 @@ class Test(BaseTest):
         # Mouse scroll
         if Settings.is_windows():
             scroll_length = SCREEN_HEIGHT * 10
-        else:
+        elif Settings.is_linux():
             scroll_length = 15
+        else:
+            scroll_length = 60
 
         [scroll(-scroll_length) for _ in range(2)]
         mouse_scroll_done = exists(image_on_page_pattern)
@@ -49,10 +56,14 @@ class Test(BaseTest):
         assert_true(self, returned_home_mouse_scroll, 'Returned to page top using mouse scroll.')
 
         # arrows scroll
-        scroll_down(30)
+        if Settings.is_mac():
+            arrow_scroll_length = 40
+        else:
+            arrow_scroll_length = 30
+        scroll_down(arrow_scroll_length)
         arrows_scroll_done = exists(image_on_page_pattern)
         assert_true(self, arrows_scroll_done, 'Arrows scroll done')
-        scroll_up(30)
+        scroll_up(arrow_scroll_length)
         returned_home_arrows = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_arrows, 'Returned to page top using arrows.')
 
@@ -73,13 +84,19 @@ class Test(BaseTest):
         assert_true(self, returned_home_page_up, 'Returned to page top using "Page Up".')
 
         # Ctrl(Cmd)+arrow scroll
-        if not Settings.is_mac():
+        if Settings.is_mac():
+            type(Key.DOWN, KeyModifier.CMD)
+
+        else:
             type(Key.DOWN, KeyModifier.CTRL)
 
         page_bottom_reached = exists(external_links_pattern)
         assert_true(self, page_bottom_reached, '"Ctrl+Down" scroll done')
 
-        if not Settings.is_mac():
+        if Settings.is_mac():
+            type(Key.UP, KeyModifier.CMD)
+
+        else:
             type(Key.UP, KeyModifier.CTRL)
         returned_home_ctrl_up = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_ctrl_up, 'Returned to page top using "Ctrl+Up".')
