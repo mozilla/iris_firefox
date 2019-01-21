@@ -66,7 +66,7 @@ class Test(BaseTest):
         expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert_true(self, expected, 'Remove file button is displayed.')
 
-        # Open the uncommon file
+        # Open the uncommon file.
         if Settings.get_os() == Platform.MAC:
             uncommon_file = Pattern('uncommon_file_name.png')
             click(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON)
@@ -106,7 +106,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'There are no downloads displayed in the \'about:downloads\' page.')
 
         # Check that there are no downloads displayed in the downloads folder.
-        openDirectory(IrisCore.get_downloads_dir())
+        open_directory(IrisCore.get_downloads_dir())
         expected = exists(uncommon_file_download_library, 10)
         assert_false(self, expected, 'Uncommon file was deleted from the download folder.')
 
