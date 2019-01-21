@@ -49,7 +49,7 @@ class DownloadFiles(object):
     TOTAL_DOWNLOAD_SIZE_50MB = Pattern('download_size_of_50MB.png')
     TOTAL_DOWNLOAD_SIZE_20MB = Pattern('download_size_of_20MB.png')
     DOWNLOADS_PANEL_5MB_COMPLETED = Pattern('5MB_completed_downloadsPanel.png')
-    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png')
+    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png').similar(0.79)
     MALICIOUS = Pattern('malicious.png')
     UNCOMMON = Pattern('uncommon.png')
     POTENTIALLY_UNWANTED = Pattern('potentially_unwanted.png')
