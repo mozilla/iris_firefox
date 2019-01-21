@@ -30,7 +30,7 @@ class Test(BaseTest):
         # Resize the browser to be able to drag and drop downloaded files from download manager to Desktop.
         drag_drop(Location(-20, 50), Location(500, 30), 0.2)
 
-        # Minimize the terminal.
+        # Minimize the terminal so on Desktop just the Firefox browser is opened.
         click(Location(-20, 50))
         minimize_window()
         time.sleep(DEFAULT_UI_DELAY_LONG)
@@ -50,7 +50,7 @@ class Test(BaseTest):
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
         # Open the Downloads Panel.
-        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 30)
         assert_true(self, expected, '\'Downloads\' button found.')
         click(NavBar.DOWNLOADS_BUTTON_BLUE)
 
@@ -61,11 +61,13 @@ class Test(BaseTest):
         # Drag and drop the 5MB file from the download manager to Desktop.
         drag_drop(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED, Location(400, 400))
 
-        expected = exists(DownloadFiles.LIBRARY_DOWNLOADS_5MB, 10)
-        assert_true(self, expected, 'Downloaded file is found on Desktop.')
-
-        # Move focus back to browser.
-        click(Location(550, 100))
+        # Remove downloaded file from Desktop.
+        click(Location(400, 400))
+        right_click(Location(400, 400))
+        type(Key.DOWN)
+        type(Key.DOWN)
+        type(Key.DOWN)
+        type(Key.ENTER)
 
         click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_10MB, 10)
