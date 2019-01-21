@@ -14,29 +14,25 @@ class Test(BaseTest):
         self.test_case_id = "C4661"
         self.test_suite_id = "102"
         self.locale = ["en-US"]
-        self.set_profile_pref({'browser.search.region': 'US'})
-        self.set_profile_pref({'browser.search.countryCode': 'US'})
 
     def run(self):
         show_more_results_button_pattern = Pattern('show_more_results_button.png')
         google_images_page_mark_pattern = Pattern('google_images_page_mark.png')
         home_button_pattern = Pattern('home_button.png')
+        google_save_button_pattern = Pattern('google_save_button.png')
 
         mouse_wheel_steps = 100
         if Settings.is_windows():
             mouse_wheel_steps = 1600
 
-        change_preference('browser.search.region', 'US')
+        navigate('https://www.google.com/preferences?hl=en#languages')
 
-        restart_firefox(self,
-                        self.browser.path,
-                        self.profile_path,
-                        'https://images.google.com/?gws_rd=ssl',
-                        image=google_images_page_mark_pattern)
+        google_save_button_exists = exists(google_save_button_pattern, 20)
+        assert_true(self, google_save_button_exists, 'The Soap Wiki test site is properly loaded')
 
-        time.sleep(DEFAULT_UI_DELAY)
+        click(google_save_button_pattern)
 
-        #navigate('https://images.google.com/?gws_rd=ssl')
+        navigate('https://images.google.com/')
 
         google_images_page_opened = exists(google_images_page_mark_pattern, 20)
         assert_true(self, google_images_page_opened, 'The Soap Wiki test site is properly loaded')
