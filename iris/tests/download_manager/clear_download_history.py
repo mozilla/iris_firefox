@@ -32,6 +32,7 @@ class Test(BaseTest):
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(20)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
@@ -45,9 +46,9 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Show all downloads\' button found.')
         click(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = exists(Library.DOWNLOADS, 10)
+        expected = exists(Library.DownloadLibrary.DOWNLOADS, 10)
         assert_true(self, expected, 'The Downloads button is displayed in the Library.')
-        click(Library.DOWNLOADS)
+        click(Library.DownloadLibrary.DOWNLOADS)
 
         # Check that all the downloads are successful and displayed in the Downloads category.
         for pattern in downloads_library_list:

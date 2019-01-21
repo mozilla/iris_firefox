@@ -32,6 +32,7 @@ class Test(BaseTest):
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(10)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
@@ -50,7 +51,7 @@ class Test(BaseTest):
         type(text='a')
 
         # Check that the 1GB download in progress is still displayed.
-        expected = exists(DownloadFiles.DOWNLOAD_NAME_1GB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
         assert_true(self, expected, 'The 1GB download in progress is properly displayed.')
 
         # Stop the active download.

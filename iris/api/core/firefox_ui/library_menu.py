@@ -8,6 +8,7 @@ from iris.api.core.pattern import Pattern
 class LibraryMenu(object):
     HISTORY_BUTTON = Pattern('library_history_button.png')
     BOOKMARKS_OPTION = Pattern('library_menu_bookmarks_option.png')
+    DOWNLOADS = Pattern('appmenu_library_downloads_button.png')
 
     class BookmarksOption(object):
         BOOKMARKING_TOOLS = Pattern('bookmarking_tools.png')

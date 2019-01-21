@@ -82,7 +82,11 @@ def run(master_tests_list, test_list, browser):
 
             current.end_time = time.time()
 
-            current.teardown()
+            try:
+                current.teardown()
+            except (FindError, APIHelperError):
+                logger.info('Could not find the necessary patterns during cleanup on test case : %s - %s' % (index, current.meta))
+
             close_firefox(current)
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())
@@ -94,7 +98,7 @@ def run(master_tests_list, test_list, browser):
             test_log[current_package].append(update_log_object(test_log_object))
         else:
             skipped += 1
-            if current.blocked_by and len(current.blocked_by) > 0:
+            if current.blocked_by.get('id') and len(current.blocked_by.get('id')) > 0:
                 tests_blocked.append(module)
             logger.info('Skipping disabled test case: %s - %s' % (index, current.meta))
 

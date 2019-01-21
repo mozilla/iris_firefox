@@ -11,6 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a unit test for keyboard events.'
+        self.blocked_by = {'id': 'issue_1682', 'platform': [Platform.WINDOWS]}
 
     @staticmethod
     def reset_all_modifiers(position):
