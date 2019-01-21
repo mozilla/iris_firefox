@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+from iris.api.core import mouse
 from iris.test_case import *
 
 
@@ -67,7 +67,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Remove file button is displayed.')
 
         # Open the unwanted file
-        if Settings.get_os() == Platform.WINDOWS:
+        if Settings.get_os() == Platform.MAC:
             potentially_unwanted_file = Pattern('potentially_unwanted_file_name.png')
             click(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON)
             expected = exists(potentially_unwanted_file, 10)
@@ -88,6 +88,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Potentially unwanted downloads button is displayed.')
 
         # Remove the file from the download panel.
+        mouse.mouse_move(Location(SCREEN_WIDTH / 4 + 100, SCREEN_HEIGHT / 4))
         click(NavBar.UNWANTED_DOWNLOADS_BUTTON)
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_ARROW)
         click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON)

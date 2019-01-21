@@ -67,7 +67,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'Remove file button is displayed.')
 
         # Open the uncommon file
-        if Settings.get_os() == Platform.WINDOWS:
+        if Settings.get_os() == Platform.MAC:
             uncommon_file = Pattern('uncommon_file_name.png')
             click(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON)
             expected = exists(uncommon_file, 10)
