@@ -15,7 +15,7 @@ class Test(BaseTest):
         self.test_suite_id = "102"
         self.locale = ["en-US"]
         self.set_profile_pref({'browser.search.region': 'US'})
-        self.set_profile_pref({'browser.search.countryCode': 'UA'})
+        self.set_profile_pref({'browser.search.countryCode': 'US'})
 
     def run(self):
         show_more_results_button_pattern = Pattern('show_more_results_button.png')
@@ -26,9 +26,17 @@ class Test(BaseTest):
         if Settings.is_windows():
             mouse_wheel_steps = 1600
 
-        change_preference('browser.search.countryCode', 'US')
+        change_preference('browser.search.region', 'US')
 
-        navigate('https://images.google.com/?gws_rd=ssl')
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        'https://images.google.com/?gws_rd=ssl',
+                        image=google_images_page_mark_pattern)
+
+        time.sleep(DEFAULT_UI_DELAY)
+
+        #navigate('https://images.google.com/?gws_rd=ssl')
 
         google_images_page_opened = exists(google_images_page_mark_pattern, 20)
         assert_true(self, google_images_page_opened, 'The Soap Wiki test site is properly loaded')
