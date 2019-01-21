@@ -10,12 +10,10 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Private Browsing window is not restored after Firefox crash [Fails due to known issue]'
+        self.meta = 'Private Browsing window is not restored after Firefox crash'
         self.test_case_id = '101666'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
-        self.blocked_by = '1520224'
-        self.exclude = Platform.ALL
 
     def run(self):
         name_field_pattern = Pattern('name_field.png').similar(.6)
