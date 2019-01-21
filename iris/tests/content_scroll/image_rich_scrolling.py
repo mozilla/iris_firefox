@@ -28,16 +28,16 @@ class Test(BaseTest):
         navigate('https://www.google.com/preferences?hl=en#languages')
 
         google_save_button_exists = exists(google_save_button_pattern, 20)
-        assert_true(self, google_save_button_exists, 'The Soap Wiki test site is properly loaded')
+        assert_true(self, google_save_button_exists, 'Google language preferences page is opened')
 
         click(google_save_button_pattern)
 
-        navigate('https://images.google.com/')
+        navigate('https://images.google.com/?gws_rd=ssl')
 
         google_images_page_opened = exists(google_images_page_mark_pattern, 20)
-        assert_true(self, google_images_page_opened, 'The Soap Wiki test site is properly loaded')
+        assert_true(self, google_images_page_opened, 'Google images site is properly loaded')
 
-        paste('kittens:3')
+        paste('cute kittens:3')
         type(Key.ENTER)
 
         home_button_location = find(home_button_pattern)
