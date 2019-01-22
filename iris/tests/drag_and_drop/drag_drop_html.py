@@ -39,7 +39,6 @@ class Test(BaseTest):
         console_opened = exists(browser_console_title_pattern)
         assert_true(self, console_opened, 'Browser console opened')
         click(browser_console_title_pattern)
-
         paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.45, SCREEN_HEIGHT*0.9))
         type(Key.ENTER)
         close_tab()
