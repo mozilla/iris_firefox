@@ -39,6 +39,7 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists,
                     'Content before scrolling using mouse wheel with preference equals 200 is on the page')
+        click(scroll_content_pattern)
 
         [scroll(-SCREEN_HEIGHT) for _ in range(value)]
         try:
@@ -62,7 +63,7 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists,
                     'Content before scrolling using mouse wheel with preference equals 50 is on the page')
-
+        click(scroll_content_pattern)
         [scroll(-SCREEN_HEIGHT) for _ in range(value)]
         try:
             wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
