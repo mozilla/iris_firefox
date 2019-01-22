@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Firefox can be set to delete cookies when closed."
+        self.meta = "Drop html data in demopage opened in Private Window"
         self.test_case_id = "165089"
         self.test_suite_id = "102"
         self.locale = ["en-US"]
@@ -47,7 +47,7 @@ class Test(BaseTest):
         drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
 
         soap_wiki_label_location = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
-        paragraph_to_select = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).below(100)
+        paragraph_to_select = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).below(120)
 
         soap_wiki_label_location_to_drag = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).offset(10, 10)
 
