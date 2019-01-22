@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Scrolling works properly while in full screen.'
         self.test_suite_id = '102'
-        self.test_case_id = 'C4658'
+        self.test_case_id = '4658'
         self.locale = ['en-US']
 
     def run(self):
@@ -51,6 +51,7 @@ class Test(BaseTest):
         [scroll(-scroll_length) for _ in range(2)]
         mouse_scroll_done = exists(image_on_page_pattern)
         assert_true(self, mouse_scroll_done, 'Mouse scroll down done')
+
         [scroll(scroll_length) for _ in range(2)]
         returned_home_mouse_scroll = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_mouse_scroll, 'Returned to page top using mouse scroll.')
@@ -63,6 +64,7 @@ class Test(BaseTest):
         scroll_down(arrow_scroll_length)
         arrows_scroll_done = exists(image_on_page_pattern)
         assert_true(self, arrows_scroll_done, 'Arrows scroll done')
+
         scroll_up(arrow_scroll_length)
         returned_home_arrows = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_arrows, 'Returned to page top using arrows.')
@@ -71,6 +73,7 @@ class Test(BaseTest):
         [page_down() for _ in range(2)]
         arrows_scroll_done = exists(image_on_page_pattern)
         assert_true(self, arrows_scroll_done, '"Space" scroll done')
+
         [page_up() for _ in range(2)]
         returned_home_shift_space = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_shift_space, 'Returned to page top using "Shift+Space".')
@@ -79,6 +82,7 @@ class Test(BaseTest):
         [type(Key.PAGE_DOWN) for _ in range(2)]
         page_down_scroll_done = exists(image_on_page_pattern)
         assert_true(self, page_down_scroll_done, '"Space" scroll done')
+
         [type(Key.PAGE_UP) for _ in range(2)]
         returned_home_page_up = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_page_up, 'Returned to page top using "Page Up".')
