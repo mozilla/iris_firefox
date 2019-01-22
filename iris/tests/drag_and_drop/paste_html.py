@@ -1,0 +1,75 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+from iris.test_case import *
+
+
+class Test(BaseTest):
+
+    def __init__(self):
+        BaseTest.__init__(self)
+        self.meta = 'Paste html data in demopage'
+        self.test_case_id = '165100'
+        self.test_suite_id = '102'
+        self.locales = ['en-US']
+
+    def run(self):
+        not_matching_message_pattern = Pattern("not_matching_message.png")
+        copy_image_context_menu_pattern = Pattern('copy_image_option.png')
+        image_from_wiki_article_pattern = Pattern("image_from_wiki.png")
+        matching_message_pattern = Pattern('matching_message.png')
+        phrase_from_wiki_page_pattern = Pattern('wiki_article_header.png')
+        paste_html_data_rabutton_selected_pattern = Pattern('paste_html_data_selected.png')
+        paste_html_data_radiobutton_pattern = Pattern('paste_html_data.png')
+        drop_stuff_here_area_pattern = Pattern('drop_stuff_here_area.png')
+
+        navigate('https://mystor.github.io/dragndrop/')
+        page_opened = exists(paste_html_data_radiobutton_pattern)
+        assert_true(self, page_opened, 'Firefox started and page loaded successfully.')
+
+        click(paste_html_data_radiobutton_pattern)
+        paste_html_data_selected = exists(paste_html_data_rabutton_selected_pattern)
+        assert_true(self, paste_html_data_selected,
+                    'The \'paste-html-data\' changed color to red which indicates that it has been selected.')
+
+        new_tab()
+        select_tab(2)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        page_opened = exists(phrase_from_wiki_page_pattern, 20)
+        assert_true(self, page_opened, 'Web page successfully loads.')
+
+        double_click(phrase_from_wiki_page_pattern)
+        edit_copy()
+        text_copied = Env.get_clipboard() == 'SOAP'
+        assert_true(self, text_copied, 'The text is copied to the clipboard.')
+
+        select_tab(1)
+        drop_stuff_here_area_pattern = exists(drop_stuff_here_area_pattern)
+        assert_true(self, drop_stuff_here_area_pattern, '\'Drop stuff here\' area is displayed on the page')
+
+        edit_paste()
+        matching_message_exists = exists(matching_message_pattern)
+        assert_true(self, matching_message_exists,
+                    '\'Matching\' appears under the \'Drop Stuff Here\' '
+                    'area, the expected result is identical to the result.')
+
+        select_tab(2)
+        mozilla_logo_exists = exists(image_from_wiki_article_pattern)
+        assert_true(self, mozilla_logo_exists, 'Firefox logo is displayed on the Wiki page')
+
+        right_click(image_from_wiki_article_pattern)
+        copy_image_option_available = exists(copy_image_context_menu_pattern)
+        assert_true(self, copy_image_option_available,
+                    '\'Copy Image\' option is available in the context menu after right clicking at the Firefox logo')
+
+        click(copy_image_context_menu_pattern)
+        select_tab(1)
+        edit_paste()
+
+        not_matching_message_displayed = exists(not_matching_message_pattern)
+        assert_true(self, not_matching_message_displayed, '\'Not Matching\' appears under the \'Drop Stuff Here\'' 
+                                                          'area, the expected result is different from the result.')
+
+        close_window()
