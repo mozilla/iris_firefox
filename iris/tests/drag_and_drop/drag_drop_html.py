@@ -28,6 +28,7 @@ class Test(BaseTest):
         browser_console_title_pattern = Pattern('browser_console_title.png')
 
         change_preference('devtools.chrome.enabled', True)
+
         if not Settings.is_mac():
             minimize_window()
             iris_tab_location = find(iris_tab_pattern)
@@ -35,7 +36,10 @@ class Test(BaseTest):
             drag_drop(iris_tab_location, start_position)
 
         open_browser_console()
+        console_opened = exists(browser_console_title_pattern)
+        assert_true(self, console_opened, 'Browser console opened')
         click(browser_console_title_pattern)
+
         paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.45, SCREEN_HEIGHT*0.9))
         type(Key.ENTER)
         close_tab()
