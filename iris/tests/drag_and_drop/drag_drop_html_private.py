@@ -43,8 +43,14 @@ class Test(BaseTest):
 
         point_to_move_wiki_window = find(soap_wiki_tab_pattern).right(400)
         location_to_shift_wiki_window = find(soap_wiki_tab_pattern).right(800)
+        location_to_shift_wiki_window_linux = find(soap_wiki_tab_pattern).right(2000)
 
-        drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
+        if Settings.is_linux():
+            drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window_linux)
+        else:
+            drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
+
+        time.sleep(DEFAULT_UI_DELAY)
 
         soap_wiki_label_location = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         paragraph_to_select = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).below(120)
