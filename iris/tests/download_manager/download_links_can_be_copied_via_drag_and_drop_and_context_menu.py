@@ -27,16 +27,21 @@ class Test(BaseTest):
         return
 
     def run(self):
+        move_to_trash_pattern = Pattern('move_to_trash.png')
+
         # Resize the browser to be able to drag and drop downloaded files from download manager to Desktop.
-        drag_drop(Location(-20, 50), Location(500, 30), 0.2)
+        if Settings.get_os() == Platform.MAC:
+            drag_drop(Location(-20, 50), Location(500, 30), 0.2)
+        else:
+            restore_window_control('main')
 
         # Minimize the terminal so on Desktop just the Firefox browser is opened.
-        click(Location(-20, 50))
+        click(Location(200, 350))
         minimize_window()
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
         # Move focus back to browser.
-        click(Location(550, 100))
+        click(Location(750, 100))
 
         # Perform some downloads.
         download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
@@ -61,15 +66,16 @@ class Test(BaseTest):
         # Drag and drop the 5MB file from the download manager to Desktop.
         drag_drop(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED, Location(400, 400))
 
-        # Remove downloaded file from Desktop.
-        click(Location(400, 400))
+        # Remove downloaded file from Desktop and check that it was successfully removed.
         right_click(Location(400, 400))
-        type(Key.DOWN)
-        type(Key.DOWN)
-        type(Key.DOWN)
-        type(Key.ENTER)
+        click(move_to_trash_pattern)
+        time.sleep(DEFAULT_UI_DELAY)
 
         click(NavBar.DOWNLOADS_BUTTON)
+        expected = exists(DownloadManager.Downloads.FILE_MOVED_OR_MISSING, 10)
+        assert_true(self, expected, 'The 5MB download has changed his status from \'completed\' to \'File moved or '
+                                    'missing\' in Download Panel.')
+
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_10MB, 10)
         assert_true(self, expected, 'The 10MB file found in the download manager.')
 
@@ -90,9 +96,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'The 20MB file found in the download manager.')
 
         right_click(DownloadFiles.DOWNLOAD_FILE_NAME_20MB)
-        type(Key.DOWN)
-        type(Key.DOWN)
-        type(Key.ENTER)
+        click(DownloadManager.DownloadsContextMenu.COPY_DOWNLOAD_LINK)
 
         new_tab()
         select_location_bar()
