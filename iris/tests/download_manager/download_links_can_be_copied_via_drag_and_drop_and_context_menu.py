@@ -51,7 +51,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'The 10MB file found in the download manager.')
 
         # Drag and drop the 10MB file from download manager in to the tab bar.
-        drag_drop(DownloadFiles.DOWNLOAD_FILE_NAME_10MB, Location(40, 0))
+        drag_drop(DownloadFiles.DOWNLOAD_FILE_NAME_10MB, Location(400, 30))
 
         try:
             wait(DownloadFiles.OK, 5)
