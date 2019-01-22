@@ -24,9 +24,15 @@ class Test(BaseTest):
         drop_not_matching_pattern = Pattern('drop_not_matching.png')
         correct_result_pattern = Pattern('correct_result.png').similar(0.98)
         soap_url_selected_pattern = Pattern('soap_url_selected.png')
+        iris_tab_pattern = Pattern('iris_tab.png')
 
         change_preference('devtools.chrome.enabled', True)
         minimize_window()
+
+        iris_tab_location = find(iris_tab_pattern)
+        start_position = Location(SCREEN_WIDTH/25, SCREEN_HEIGHT/25)
+        drag_drop(iris_tab_location, start_position)
+
         open_browser_console()
         paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.45, SCREEN_HEIGHT*0.9))
         type(Key.ENTER)
