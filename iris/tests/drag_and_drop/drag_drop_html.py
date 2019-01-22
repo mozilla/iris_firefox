@@ -22,25 +22,20 @@ class Test(BaseTest):
         drop_here_pattern = Pattern('drop_here.png')
         drop_verified_pattern = Pattern('drop_matching_verified.png')
         drop_not_matching_pattern = Pattern('drop_not_matching.png')
-        correct_result_pattern = Pattern('correct_result.png')#.similar(0.98)
+        correct_result_pattern = Pattern('correct_result.png')
         soap_url_selected_pattern = Pattern('soap_url_selected.png')
         iris_tab_pattern = Pattern('iris_tab.png')
-        if Settings.is_mac():
-            browser_console_title_pattern = Pattern('browser_console_title.png')
+        browser_console_title_pattern = Pattern('browser_console_title.png')
 
         change_preference('devtools.chrome.enabled', True)
         if not Settings.is_mac():
-            click_window_control('restore')
-        # else:
-        #     minimize_window()
-
+            minimize_window()
             iris_tab_location = find(iris_tab_pattern)
             start_position = Location(SCREEN_WIDTH/25, SCREEN_HEIGHT/25)
             drag_drop(iris_tab_location, start_position)
 
         open_browser_console()
-        if Settings.is_mac():
-            click(browser_console_title_pattern)
+        click(browser_console_title_pattern)
         paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.45, SCREEN_HEIGHT*0.9))
         type(Key.ENTER)
         close_tab()
@@ -73,13 +68,6 @@ class Test(BaseTest):
         drag_drop(paragraph, selection_end)
         paragraph_x, paragraph_y = LocalWeb.SOAP_WIKI_SOAP_LABEL.get_size()
         paragraph.offset(paragraph_x / 2, paragraph_y / 2)
-
-
-        # time.sleep(600)
-
-
-        # for _ in range(3):
-        #     click(paragraph, 0.05)
 
         drop_position_offset_x, drop_position_offset_y = drop_here_pattern.get_size()
         drop_html_position = find(drop_here_pattern)
