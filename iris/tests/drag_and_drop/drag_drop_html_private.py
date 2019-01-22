@@ -71,6 +71,9 @@ class Test(BaseTest):
         not_matching_message_displayed = exists(not_matching_message_pattern)
         assert_true(self, not_matching_message_displayed, 'The data is not matching')
 
+        close_window()
+        close_window()
+
 
 
 
