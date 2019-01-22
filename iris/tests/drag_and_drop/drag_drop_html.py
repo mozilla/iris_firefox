@@ -46,9 +46,6 @@ class Test(BaseTest):
         drop_html_activated = exists(drop_html_inactive_pattern)
         assert_true(self, drop_html_activated,
                     'The drop-html-data changed color to red which indicates that it has been selected.')
-
-        drop_not_matched = exists(drop_not_matching_pattern)
-        assert_true(self, drop_not_matched, 'No drop to match now.')
         type(Key.END)
 
         new_window()
