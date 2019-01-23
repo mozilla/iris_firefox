@@ -143,17 +143,16 @@ class Test(BaseTest):
         assert_true(self, credit_card_successfully_saved, 'Credit card was successfully saved')
 
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
-        page_opened = exists(submit_button_pattern)
+        page_opened = exists(submit_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, page_opened, 'Test page is opened.')
 
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists,
                     '\'Card number\' field is displayed on the page')
 
-        if Settings.get_os() == Platform.MAC:
-            click(card_number_field_pattern)
-            time.sleep(DEFAULT_UI_DELAY)
-        double_click(card_number_field_pattern)
+        click(card_number_field_pattern)
+        time.sleep(DEFAULT_UI_DELAY)
+        click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
@@ -161,16 +160,15 @@ class Test(BaseTest):
 
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
-        page_opened_in_private_window = exists(private_browsing_image_pattern, DEFAULT_FIREFOX_TIMEOUT) and exists(submit_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        page_opened_in_private_window = exists(private_browsing_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT) and exists(submit_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, page_opened_in_private_window, 'Test page is opened in a new Private window')
 
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists, '\'Card Number\' field is displayed on the page')
 
-        if Settings.get_os() == Platform.MAC:
-            click(card_number_field_pattern)
-            time.sleep(DEFAULT_UI_DELAY)
-        double_click(card_number_field_pattern)
+        click(card_number_field_pattern)
+        time.sleep(DEFAULT_UI_DELAY)
+        click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
