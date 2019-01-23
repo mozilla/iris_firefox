@@ -21,7 +21,7 @@ class Test(BaseTest):
         image_from_wiki_article_pattern = Pattern("image_from_wiki.png")
         matching_message_pattern = Pattern('matching_message.png')
         phrase_from_wiki_page_pattern = Pattern('wiki_article_header.png')
-        paste_html_data_rabutton_selected_pattern = Pattern('paste_html_data_selected.png')
+        paste_html_data_radiobutton_selected_pattern = Pattern('paste_html_data_selected.png')
         paste_html_data_radiobutton_pattern = Pattern('paste_html_data.png')
         drop_stuff_here_area_pattern = Pattern('drop_stuff_here_area.png')
 
@@ -30,7 +30,7 @@ class Test(BaseTest):
         assert_true(self, page_opened, 'Firefox started and page loaded successfully.')
 
         click(paste_html_data_radiobutton_pattern)
-        paste_html_data_selected = exists(paste_html_data_rabutton_selected_pattern)
+        paste_html_data_selected = exists(paste_html_data_radiobutton_selected_pattern)
         assert_true(self, paste_html_data_selected,
                     'The \'paste-html-data\' changed color to red which indicates that it has been selected.')
 
@@ -62,7 +62,7 @@ class Test(BaseTest):
         right_click(image_from_wiki_article_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
         assert_true(self, copy_image_option_available,
-                    '\'Copy Image\' option is available in the context menu after right clicking at the Firefox logo')
+                    '\'Copy Image\' option is available in the context menu after right clicking at the image')
 
         click(copy_image_context_menu_pattern)
         select_tab(1)
