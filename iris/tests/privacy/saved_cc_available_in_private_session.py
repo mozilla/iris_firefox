@@ -36,7 +36,7 @@ class Test(BaseTest):
         card_type_dropdown_pattern = Pattern('card_type_dropdown.png')
         card_type_dropdown_item_pattern = Pattern('card_type_dd_item.png')
         expiration_month_dropdown_pattern = Pattern('expiration_month_dropdown.png')
-        expiration_month_dropdown_item_pattern  = Pattern('expiration_month_dd_item.png')
+        expiration_month_dropdown_item_pattern = Pattern('expiration_month_dd_item.png')
         expiration_year_dropdown_pattern = Pattern('expiration_year_dropdown.png')
         expiration_year_dropdown_item_pattern = Pattern('expiration_year_dd_item.png')
         popup_card_number_field_pattern = Pattern('popup_card_number_field.png')
@@ -150,9 +150,12 @@ class Test(BaseTest):
         assert_true(self, card_number_field_exists,
                     '\'Card number\' field is displayed on the page')
 
-        click(card_number_field_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
-        click(card_number_field_pattern)
+        if Settings.get_os() == Platform.LINUX:
+            double_click(card_number_field_pattern)
+        else:
+            click(card_number_field_pattern)
+            time.sleep(DEFAULT_UI_DELAY)
+            click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
@@ -160,15 +163,19 @@ class Test(BaseTest):
 
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
-        page_opened_in_private_window = exists(private_browsing_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT) and exists(submit_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        page_opened_in_private_window = exists(private_browsing_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT) and exists(
+            submit_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, page_opened_in_private_window, 'Test page is opened in a new Private window')
 
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists, '\'Card Number\' field is displayed on the page')
 
-        click(card_number_field_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
-        click(card_number_field_pattern)
+        if Settings.get_os() == Platform.LINUX:
+            double_click(card_number_field_pattern)
+        else:
+            click(card_number_field_pattern)
+            time.sleep(DEFAULT_UI_DELAY)
+            click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
