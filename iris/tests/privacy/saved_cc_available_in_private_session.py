@@ -40,7 +40,7 @@ class Test(BaseTest):
         expiration_year_dropdown_pattern = Pattern('expiration_year_dropdown.png')
         expiration_year_dropdown_item_pattern = Pattern('expiration_year_dd_item.png')
         popup_card_number_field_pattern = Pattern('popup_card_number_field.png')
-        popup_name_on_card_field_pattern = Pattern('popup_name_on_card_field.png')
+        popup_name_on_card_field_pattern = Pattern('popup_name_on_card_field.png').similar(.6)
         visa_logo_pattern = Pattern('visa_logo.png')
         suggested_card_number_from_dropdown_pattern = Pattern('suggested_cc_number_from_dropdown.png')
 
@@ -49,7 +49,7 @@ class Test(BaseTest):
         search_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, search_field_exists, 'Preferences page is opened')
 
-        type('Autofill')
+        paste('Autofill')
         saved_addresses_button_exists = exists(saved_addresses_button_pattern)
         assert_true(self, saved_addresses_button_exists,
                     '\'Saved addresses\' button is displayed on the Preferences page')
