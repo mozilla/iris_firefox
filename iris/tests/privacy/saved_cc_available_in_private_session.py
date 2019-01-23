@@ -19,7 +19,6 @@ class Test(BaseTest):
         BaseTest.setup(self)
         self.set_profile_pref({'extensions.formautofill.available': 'on',
                                'extensions.formautofill.creditCards.available': True})
-        self.set_profile_pref({'browser.search.region': 'US'})
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
@@ -45,6 +44,7 @@ class Test(BaseTest):
         suggested_card_number_from_dropdown_pattern = Pattern('suggested_cc_number_from_dropdown.png')
 
 
+        change_preference('browser.search.region', 'US')
         navigate('about:preferences#privacy')
         search_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, search_field_exists, 'Preferences page is opened')
