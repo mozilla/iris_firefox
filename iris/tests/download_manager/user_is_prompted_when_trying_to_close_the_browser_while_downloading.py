@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '99492'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        self.blocked_by = {'id': 'issue_1811', 'platform': [Platform.WINDOWS]}
 
     def setup(self):
         """Test case setup
@@ -55,7 +54,9 @@ class Test(BaseTest):
 
     def teardown(self):
         # Cancel all 'in progress' downloads.
-        for step in cancel_in_progress_downloads_from_the_library():
-            assert_true(self, step.resolution, step.message)
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
 
         downloads_cleanup()

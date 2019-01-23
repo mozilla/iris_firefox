@@ -59,7 +59,7 @@ class Test(BaseTest):
         expected = exists(Library.TITLE, 10)
         assert_true(self, expected, 'Library successfully opened.')
 
-        click(Library.DOWNLOADS)
+        click(Library.DownloadLibrary.DOWNLOADS)
 
         # Check that all the downloads are successful and displayed in the Downloads category.
         for pattern in downloads_library_list:
@@ -75,7 +75,7 @@ class Test(BaseTest):
         expected = exists(Library.TITLE, 10)
         assert_true(self, expected, 'Library successfully opened.')
 
-        click(Library.DOWNLOADS)
+        click(Library.DownloadLibrary.DOWNLOADS)
 
         # Check that downloads from the private window are not displayed in non private window.
         for pattern in downloads_library_list:

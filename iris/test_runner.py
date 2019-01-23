@@ -82,7 +82,11 @@ def run(master_tests_list, test_list, browser):
 
             current.end_time = time.time()
 
-            current.teardown()
+            try:
+                current.teardown()
+            except (FindError, APIHelperError):
+                logger.info('Could not find the necessary patterns during cleanup on test case : %s - %s' % (index, current.meta))
+
             close_firefox(current)
             print_results(module, current)
             test_case_results.append(current.create_collection_test_rail_result())

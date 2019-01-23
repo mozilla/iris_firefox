@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '99481'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        self.blocked_by = {'id': '1513494,issue_1811', 'platform': [Platform.LINUX, Platform.WINDOWS]}
+        self.blocked_by = {'id': '1513494', 'platform': [Platform.LINUX]}
 
     def setup(self):
         """Test case setup
@@ -75,4 +75,10 @@ class Test(BaseTest):
         assert_true(self, expected, 'Previously downloaded file has status: \'File moved or missing\'.')
 
     def teardown(self):
+        # Cancel all 'in progress' downloads.
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
+
         downloads_cleanup()
