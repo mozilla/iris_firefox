@@ -149,8 +149,6 @@ class Test(BaseTest):
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists,
                     '\'Card number\' field is displayed on the page')
-        click(card_number_field_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
         double_click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -165,8 +163,6 @@ class Test(BaseTest):
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists, '\'Card Number\' field is displayed on the page')
 
-        click(card_number_field_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
         double_click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
