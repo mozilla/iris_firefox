@@ -10,7 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Credit Card form inputs that were previously saved in a normal session are remembered in Private Browsing session'
+        self.meta = 'Credit Card form inputs that were previously saved in a normal session are remembered in Private ' \
+                    'Browsing session '
         self.test_case_id = '101667'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
@@ -42,7 +43,6 @@ class Test(BaseTest):
         popup_name_on_card_field_pattern = Pattern('popup_name_on_card_field.png')
         visa_logo_pattern = Pattern('visa_logo.png')
         suggested_card_number_from_dropdown_pattern = Pattern('suggested_cc_number_from_dropdown.png')
-
 
         change_preference('browser.search.region', 'US')
         navigate('about:preferences#privacy')
