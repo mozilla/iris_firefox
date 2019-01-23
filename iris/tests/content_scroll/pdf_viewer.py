@@ -21,7 +21,10 @@ class Test(BaseTest):
         presentation_mode_icon_pattern = Pattern('presentation_mode_icon.png')
         presentation_mode_content = Pattern('presentation_mode_content.png')
 
-        scroll_height = SCREEN_HEIGHT
+        if Settings.is_windows():
+            scroll_height = SCREEN_HEIGHT
+        else:
+            scroll_height = 50
 
         pdf_file = self.get_asset_path('pdf.pdf')
         navigate(pdf_file)
