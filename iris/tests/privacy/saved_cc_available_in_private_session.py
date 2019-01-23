@@ -19,8 +19,8 @@ class Test(BaseTest):
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
-        address_first_name_field_pattern = Pattern('address_first_name_field.png')
         find_in_preferences_field_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
+        address_first_name_field_pattern = Pattern('address_first_name_field.png')
         saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
         add_button_pattern = Pattern('add_button.png')
         save_button_pattern = Pattern('save_button.png')
