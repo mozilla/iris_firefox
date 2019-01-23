@@ -18,7 +18,6 @@ class Test(BaseTest):
     def run(self):
         show_more_results_button_pattern = Pattern('show_more_results_button.png')
         google_images_page_mark_pattern = Pattern('google_images_page_mark.png')
-        home_button_pattern = Pattern('home_button.png')
         google_save_button_pattern = Pattern('google_save_button.png')
 
         mouse_wheel_steps = 100
@@ -39,11 +38,6 @@ class Test(BaseTest):
 
         paste('cute kittens:3')
         type(Key.ENTER)
-
-        home_button_location = find(home_button_pattern)
-        click_inside_the_page_location = Location.below(home_button_location, away_y=50)
-
-        click(click_inside_the_page_location)
 
         # Scroll by mouse wheel
         for times_scroll_down in range(20):
