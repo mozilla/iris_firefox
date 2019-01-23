@@ -18,7 +18,8 @@ class Test(BaseTest):
     def setup(self):
         BaseTest.setup(self)
         self.set_profile_pref({'extensions.formautofill.available': 'on',
-                               'extensions.formautofill.creditCards.available': True})
+                               'extensions.formautofill.creditCards.available': True,
+                               'browser.search.region': 'US'})
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
