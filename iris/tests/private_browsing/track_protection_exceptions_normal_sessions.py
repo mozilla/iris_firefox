@@ -18,94 +18,119 @@ class Test(BaseTest):
 
     def run(self):
         remove_website_button_pattern = AboutPreferences.Privacy.Exceptions.REMOVE_WEBSITE_BUTTON
-        save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON
-        always_block_tracker_not_selected_pattern = \
-            AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
         privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        always_block_tracker_selected_pattern = AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_SELECTED
-        cnn_logo_pattern = LocalWeb.CNN_LOGO
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
         tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
         tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
-        do_not_track_label_pattern = Pattern('do_not_track_label.png')
+        exceptions_content_blocking_panel_pattern = \
+            AboutPreferences.Privacy.Exceptions.EXCEPTIONS_CONTENT_BLOCKING_LABEL
         turn_off_blocking_pattern = Pattern('turn_off_blocking_for_this_site.png')
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
-        tracking_protection_panel_pattern = Pattern('tracking_protection_panel_label.png')
-        site_displayed_as_exception_pattern = Pattern('site_displayed_as_exception.png')
+        privacy_strict_checkbox_unchecked_pattern = Pattern('privacy_strict_checkbox_unchecked.png')
+        privacy_strict_checkbox_checked_pattern = Pattern('privacy_strict_checkbox_checked.png')
+        firefox_tracker_site_logo_pattern = Pattern('firefox_tracker_site_logo.png')
+        third_party_tracker_correctly_blocked_text = Pattern('simulated_third_party_tracker_correctly_blocked_text.png')
+        first_party_tracker_correctly_blocked_text = Pattern('simulated_first_party_tracker_correctly_blocked_text.png')
+        dnt_signal_correctly_sent_text = Pattern('dnt_signal_correctly_sent_text.png')
+        third_party_tracker_incorrectly_loaded_text = \
+            Pattern('simulated_third_party_tracker_incorrectly_loaded_text.png')
+        itstrap_site_exception_selected_pattern = Pattern('itstrap_site_exception_selected.png')
 
         navigate('about:preferences#privacy')
         navigated_to_preferences = exists(privacy_page_pattern, 10)
         assert_true(self, navigated_to_preferences, 'The about:preferences#privacy page is successfully displayed.')
-        do_not_track_label_exists = exists(do_not_track_label_pattern, 10)
 
-        try:
-            click(always_block_tracker_not_selected_pattern, DEFAULT_FX_DELAY)
-            type(Key.TAB)  # remove highlight of button
-            wait(always_block_tracker_selected_pattern, 10)
-        except FindError:
-            raise FindError('Always block is not selected')
+        privacy_strict_checkbox_unchecked_displayed = exists(privacy_strict_checkbox_unchecked_pattern)
+        if privacy_strict_checkbox_unchecked_displayed:
+            click(privacy_strict_checkbox_unchecked_pattern)
+        else:
+            raise FindError('The "Strict" content blocking option was not found')
 
-        always_block_tracker_selected_exists = exists(always_block_tracker_selected_pattern, 10)
+        click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
 
-        if do_not_track_label_exists and always_block_tracker_selected_exists:
-            assert_true(self, always_block_tracker_selected_exists, 'The option is successfully saved.')
+        privacy_strict_checkbox_checked_displayed = exists(privacy_strict_checkbox_checked_pattern)
+        assert_true(self, privacy_strict_checkbox_checked_displayed,
+                    'The "Strict" content blocking option was successfully saved')
 
-        navigate('http://edition.cnn.com/')
-        cnn_logo_exists = exists(cnn_logo_pattern, 80)
-        tracking_protection_shield_exists = exists(tracking_protection_shield_pattern, 20)
+        navigate('https://itisatrap.org/firefox/its-a-tracker.html')
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_logo_pattern)
+        assert_true(self, firefox_tracker_site_logo_displayed, 'The website is successfully displayed.')
 
-        assert_true(self, cnn_logo_exists,
-                    'The website is successfully displayed.')
-        assert_true(self, tracking_protection_shield_exists,
+        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
+        assert_true(self, tracking_protection_shield_displayed,
                     'The Tracking protection shield is displayed near the address bar.')
 
-        shield_location = find(tracking_protection_shield_pattern)
-        click(shield_location, DEFAULT_FX_DELAY)
-        turn_off_blocking_exists = exists(turn_off_blocking_pattern, 40)
-        if turn_off_blocking_exists:
-            click(turn_off_blocking_pattern, DEFAULT_FX_DELAY)
+        third_party_tracker_correctly_blocked_displayed = exists(third_party_tracker_correctly_blocked_text)
+        assert_true(self, third_party_tracker_correctly_blocked_displayed,
+                    'Simulated third-party tracker was correctly blocked is displayed.')
 
-        tracking_protection_shield_deactivated_exists = exists(tracking_protection_shield_deactivated_pattern, 40)
-        assert_true(self, tracking_protection_shield_deactivated_exists,
-                    'The tracking protection shield is displayed as deactivated (red strikethrough).')
+        first_party_tracker_correctly_blocked_displayed = exists(first_party_tracker_correctly_blocked_text)
+        assert_true(self, first_party_tracker_correctly_blocked_displayed,
+                    'Simulated first-party tracker was correctly loaded is displayed.')
 
-        hover(tracking_protection_shield_deactivated_pattern, 40)
-        tracking_content_detected_exists = exists(tracking_content_detected_pattern, 40)
-        assert_true(self, tracking_content_detected_exists,
+        dnt_signal_correctly_sent_displayed = exists(dnt_signal_correctly_sent_text)
+        assert_true(self, dnt_signal_correctly_sent_displayed, 'The DNT signal was correctly sent is displayed.')
+
+        click(tracking_protection_shield_pattern)
+        click(turn_off_blocking_pattern)
+
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, firefox_tracker_site_logo_displayed, 'Site is reloaded after turning off content blocking')
+
+        tracking_protection_shield_deactivated_displayed = exists(tracking_protection_shield_deactivated_pattern)
+        assert_true(self, tracking_protection_shield_deactivated_displayed,
+                    'The tracking protection shield is displayed as deactivated (strikethrough).')
+
+        mouse_move(tracking_protection_shield_deactivated_pattern, 3)
+        tracking_content_detected_pattern_displayed = exists(tracking_content_detected_pattern)
+        assert_true(self, tracking_content_detected_pattern_displayed,
                     'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message.')
 
-        cnn_blocked_content_displayed = exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 30)
-        assert_true(self, cnn_blocked_content_displayed,
-                    'Websites content that contain tracking elements are displayed on the page')
+        third_party_tracker_incorrectly_loaded_displayed = exists(third_party_tracker_incorrectly_loaded_text)
+        assert_true(self, third_party_tracker_incorrectly_loaded_displayed,
+                    'Simulated third-party tracker was incorrectly loaded is displayed.')
+
+        first_party_tracker_correctly_blocked_displayed = exists(first_party_tracker_correctly_blocked_text)
+        assert_true(self, first_party_tracker_correctly_blocked_displayed,
+                    'Simulated first-party tracker was correctly loaded is displayed.')
+
+        dnt_signal_correctly_sent_displayed = exists(dnt_signal_correctly_sent_text)
+        assert_true(self, dnt_signal_correctly_sent_displayed, 'The DNT signal was correctly sent is displayed.')
 
         navigate('about:preferences#privacy')
-        navigated_to_preferences = exists(privacy_page_pattern, 40)
-        assert_true(self, navigated_to_preferences,
-                    'The about:preferences#privacy page is successfully displayed.')
 
-        click(manage_exceptions_button_pattern, DEFAULT_FX_DELAY)
-        tracking_protection_panel_exists = exists(tracking_protection_panel_pattern, 40)
-        assert_true(self, tracking_protection_panel_exists,
-                    'The Tracking Protection panel is successfully displayed.')
+        click(manage_exceptions_button_pattern)
 
-        site_displayed_as_exception_exists = exists(site_displayed_as_exception_pattern, 40)
-        assert_true(self, site_displayed_as_exception_exists,
+        exceptions_content_blocking_panel_displayed = exists(exceptions_content_blocking_panel_pattern)
+        assert_true(self, exceptions_content_blocking_panel_displayed,
+                    'The Exceptions - Content Blocking panel is successfully displayed.')
+
+        itstrap_site_exception_displayed = exists(itstrap_site_exception_selected_pattern)
+        assert_true(self, itstrap_site_exception_displayed,
                     'The previously accessed website is displayed as exception inside the panel.')
 
-        try:
-            click(remove_website_button_pattern, DEFAULT_FX_DELAY)
-            site_displayed_as_exception_not_exists = wait_vanish(site_displayed_as_exception_pattern, 40)
-            click(save_changes_button_pattern, DEFAULT_FX_DELAY)
-            assert_true(self, site_displayed_as_exception_not_exists,
-                        'The website is successfully removed from the panel.')
-        except FindError:
-            raise FindError('Previous site still exists')
+        click(remove_website_button_pattern)
+        click(AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON)
+        click(manage_exceptions_button_pattern)
 
-        navigate('http://edition.cnn.com/')
-        cnn_logo_exists = exists(cnn_logo_pattern, 80)
-        tracking_protection_shield_exists = exists(tracking_protection_shield_pattern, 20)
+        itstrap_site_exception_displayed = exists(itstrap_site_exception_selected_pattern)
+        assert_false(self, itstrap_site_exception_displayed, 'The website is successfully removed from the panel.')
 
-        assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
+        navigate('https://itisatrap.org/firefox/its-a-tracker.html')
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_logo_pattern)
+        assert_true(self, firefox_tracker_site_logo_displayed, 'The website is successfully displayed.')
 
-        assert_true(self, tracking_protection_shield_exists,
+        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
+        assert_true(self, tracking_protection_shield_displayed,
                     'The Tracking protection shield is displayed near the address bar.')
+
+        third_party_tracker_correctly_blocked_displayed = exists(third_party_tracker_correctly_blocked_text)
+        assert_true(self, third_party_tracker_correctly_blocked_displayed,
+                    'Simulated third-party tracker was correctly blocked is displayed.')
+
+        first_party_tracker_correctly_blocked_displayed = exists(first_party_tracker_correctly_blocked_text)
+        assert_true(self, first_party_tracker_correctly_blocked_displayed,
+                    'Simulated first-party tracker was correctly loaded is displayed.')
+
+        dnt_signal_correctly_sent_displayed = exists(dnt_signal_correctly_sent_text)
+        assert_true(self, dnt_signal_correctly_sent_displayed, 'The DNT signal was correctly sent is displayed.')
