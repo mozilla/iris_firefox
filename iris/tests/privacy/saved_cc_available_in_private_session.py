@@ -20,7 +20,7 @@ class Test(BaseTest):
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         address_first_name_field_pattern = Pattern('address_first_name_field.png')
-        find_in_preferences_field_pattern = Pattern('find_in_preferences_field.png')
+        find_in_preferences_field_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
         add_button_pattern = Pattern('add_button.png')
         save_button_pattern = Pattern('save_button.png')
@@ -44,7 +44,6 @@ class Test(BaseTest):
         navigate('about:preferences#privacy')
         search_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, search_field_exists, 'Preferences page is opened')
-        click(find_in_preferences_field_pattern)
 
         type('Autofill')
         saved_addresses_button_exists = exists(saved_addresses_button_pattern)
@@ -146,6 +145,8 @@ class Test(BaseTest):
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists,
                     '\'Card number\' field is displayed on the page')
+        click(card_number_field_pattern)
+        time.sleep(DEFAULT_UI_DELAY)
         double_click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -159,6 +160,9 @@ class Test(BaseTest):
 
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists, '\'Card Number\' field is displayed on the page')
+
+        click(card_number_field_pattern)
+        time.sleep(DEFAULT_UI_DELAY)
         double_click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
