@@ -155,7 +155,7 @@ class Test(BaseTest):
 
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
-        page_opened_in_private_window = exists(private_browsing_image_pattern) and exists(submit_button_pattern)
+        page_opened_in_private_window = exists(private_browsing_image_pattern, DEFAULT_FIREFOX_TIMEOUT) and exists(submit_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, page_opened_in_private_window, 'Test page is opened in a new Private window')
 
         card_number_field_exists = exists(card_number_field_pattern)
