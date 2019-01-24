@@ -22,11 +22,15 @@ class Test(BaseTest):
         """
         BaseTest.setup(self)
         self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
         return
 
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(5)
         download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
@@ -41,15 +45,18 @@ class Test(BaseTest):
         assert_true(self, expected, 'The \'X\' button is highlighted properly.')
 
         # Click the 'X' button.
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED)
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, 10)
         assert_true(self, expected, 'The Retry button is highlighted properly.')
 
-        expected = exists(DownloadFiles.DOWNLOAD_NAME_1GB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
         assert_true(self, expected, 'The downloaded file name is properly displayed.')
 
         # Hover the file name.
-        hover(DownloadFiles.DOWNLOAD_NAME_1GB)
+        hover(DownloadFiles.DOWNLOAD_FILE_NAME_1GB)
         expected = exists(DownloadFiles.DOWNLOAD_CANCELED, 10)
         assert_true(self, expected, 'The status and the source page are properly displayed when hovering the downloaded'
                                     ' file name.')
+
+    def teardown(self):
+        downloads_cleanup()

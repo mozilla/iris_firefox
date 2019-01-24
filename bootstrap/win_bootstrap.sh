@@ -33,20 +33,29 @@ fi
 echo -e "\n${GREEN}  --->  Installing Git #####${NC}\n"
 if command -v git &>/dev/null; then
     echo -e "${GREEN}  --->  Skipping Git install. Already installed. ${NC}\n"
+    powershell -Command "scoop update git"
+    powershell -Command "scoop update openssh"
 else
     powershell -Command "scoop install git"
     powershell -Command "scoop install openssh"
 fi
 
 
-echo -e "\n${GREEN} --->  Installing/updating 'which' & 'sudo' admin package #####${NC}\n"
-powershell -Command "scoop install which"
-powershell -Command "scoop install sudo"
+echo -e "\n${GREEN}  --->  Installing 'which' & 'sudo' #####${NC}\n"
+if command -v which &>/dev/null; then
+    echo -e "${GREEN}  --->  Skipping 'which' & 'sudo' install. Already installed. ${NC}\n"
+    powershell -Command "scoop update which"
+    powershell -Command "scoop update sudo"
+else
+    powershell -Command "scoop install which"
+    powershell -Command "scoop install sudo"
+fi
 
 
 echo -e "\n${GREEN}--->  Installing/updating 7zip #####${NC}\n"
 if [[ $(scoop list | grep 7zip) =~ 7zip ]]; then
     echo -e "${GREEN}  --->  Skipping 7zip install. Already installed. ${NC}\n"
+    powershell -Command "scoop update 7zip"
 else
     powershell -Command "scoop install 7zip"
 fi
@@ -59,18 +68,26 @@ if command -v tesseract &>/dev/null; then
     if [[ $(tesseract -v | grep "tesseract 3.05") ]]; then
         echo -e "${RED}  --->  You have Tesseract 3, removing and installing Tesseract 4.${NC}\n"
         powershell -Command "scoop uninstall tesseract3"
+        powershell -Command "scoop uninstall tesseract"
         powershell -Command "scoop install tesseract"
+        powershell -Command "scoop install tesseract-languages"
+        powershell -Command "scoop reset tesseract-languages"
     else
         echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
+        powershell -Command "scoop update tesseract"
+        powershell -Command "scoop update tesseract-languages"
     fi
 else
     powershell -Command "scoop install tesseract"
+    powershell -Command "scoop install tesseract-languages"
+    powershell -Command "scoop reset tesseract-languages"
 fi
 
 
 echo -e "\n${GREEN}  --->  Installing Python 2.7 #####${NC}\n"
 if command -v python2 &>/dev/null; then
     echo -e "${GREEN}  --->  Skipping Python 2.7 install. Already installed. ${NC}\n"
+    powershell -Command "scoop update python27"
 else
     powershell -Command "scoop install python27" | grep 'bucket already exists.' &> /dev/null
     if [ $? != 0 ]; then

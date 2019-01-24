@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+from iris.api.core import mouse
 from iris.test_case import *
 
 
@@ -14,13 +14,25 @@ class Test(BaseTest):
         self.test_suite_id = '1827'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
+
     def run(self):
         download_files_list = [DownloadFiles.SMALL_FILE_10MB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
         downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
-        cleanup_list = ['5MB.zip', '10MB.zip']
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(20)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
@@ -28,15 +40,16 @@ class Test(BaseTest):
         # Open the Downloads Panel and select Show All Downloads.
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
         assert_true(self, expected, '\'Downloads\' button found.')
+        mouse.mouse_move(Location(SCREEN_WIDTH / 4 + 100, SCREEN_HEIGHT / 4))
         click(NavBar.DOWNLOADS_BUTTON_BLUE)
 
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
         assert_true(self, expected, '\'Show all downloads\' button found.')
         click(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = exists(Library.DOWNLOADS, 10)
+        expected = exists(Library.DownloadLibrary.DOWNLOADS, 10)
         assert_true(self, expected, 'The Downloads button is displayed in the Library.')
-        click(Library.DOWNLOADS)
+        click(Library.DownloadLibrary.DOWNLOADS)
 
         # Check that all the downloads are successful and displayed in the Downloads category.
         for pattern in downloads_library_list:
@@ -64,6 +77,4 @@ class Test(BaseTest):
         assert_true(self, expected, 'There are no downloads displayed in the \'about:downloads\' page.')
 
     def teardown(self):
-        # Cleanup.
-        for i in range(len(cleanup_list)):
-            downloads_cleanup(cleanup_list[i])
+        downloads_cleanup()

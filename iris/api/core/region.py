@@ -76,12 +76,12 @@ class Region(object):
         """Saves input image for debug. """
         save_debug_image(None, self, None)
 
-    def debug_ocr(self, with_image_processing=True):
+    def debug_ocr(self, image_processing=True):
         """
         :param with_image_processing: With extra dpi and contrast image processing.
         :return: Call the text() method.
         """
-        return self.text(with_image_processing, True)
+        return self.text(image_processing, True)
 
     def show(self):
         """Displays the screen region. This method is mainly intended for debugging purposes."""
@@ -149,13 +149,13 @@ class Region(object):
         """
         return click(where, duration, self)
 
-    def text(self, with_image_processing=True, with_debug=False):
+    def text(self, image_processing, with_debug=False):
         """
         :param bool with_image_processing: With extra dpi and contrast image processing.
         :param bool with_debug: Boolean for saving ocr images.
         :return: Call the text() method.
         """
-        return text(with_image_processing, self, with_debug)
+        return text(image_processing, self, with_debug)
 
     def highlight(self, seconds=None, color=None):
         """
@@ -392,7 +392,7 @@ def create_region_from_patterns(top=None, bottom=None, left=None, right=None, pa
     return found_region
 
 
-def text(with_image_processing=True, in_region=None, debug=False):
+def text(image_processing, in_region=None, debug=False):
     """Get all text from a Region or full screen.
 
     :param bool with_image_processing: With extra dpi and contrast image processing.
@@ -400,11 +400,13 @@ def text(with_image_processing=True, in_region=None, debug=False):
     :param debug: Boolean for saving ocr images.
     :return: List of matches.
     """
-    all_text, debug_img, debug_data = text_search_all(with_image_processing, in_region)
+
+    ocr_search = OCRSearch()
+    all_text, debug_img, debug_data = ocr_search.text_search_all(image_processing, in_region)
     if debug and debug_img is not None:
-        save_ocr_debug_image(debug_img, debug_data)
-        logger.debug('> Found message: %s' % ocr_matches_to_string(all_text))
-    return ocr_matches_to_string(all_text)
+        ocr_search.save_ocr_debug_image(debug_img, debug_data)
+        logger.debug('> Found message: %s' % ocr_search.ocr_matches_to_string(all_text))
+    return ocr_search.ocr_matches_to_string(all_text)
 
 
 def hover(where=None, duration=0, in_region=None):
@@ -433,7 +435,8 @@ def hover(where=None, duration=0, in_region=None):
             raise FindError('Unable to find image %s' % where.get_filename())
 
     elif isinstance(where, str):
-        a_match = text_search_by(where, True, in_region)
+        ocr_search = OCRSearch()
+        a_match = ocr_search.text_search_by(where, True, in_region)
         if a_match is not None:
             pyautogui.moveTo(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
         else:
@@ -464,7 +467,8 @@ def find(image_name, region=None):
             raise FindError('Unable to find image %s' % image_name.get_filename())
 
     elif isinstance(image_name, str):
-        a_match = text_search_by(image_name, True, region)
+        ocr_search = OCRSearch()
+        a_match = ocr_search.text_search_by(image_name, True, region)
         if a_match is not None:
             return Location(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
         else:
@@ -485,7 +489,8 @@ def find_all(what, in_region=None):
         return image_search_multiple(what, in_region)
 
     elif isinstance(what, str):
-        all_matches = text_search_by(what, True, in_region, True)
+        ocr_search = OCRSearch()
+        all_matches = ocr_search.text_search_by(what, True, in_region, True)
         list_of_locations = []
         for match in all_matches:
             list_of_locations.append(Location(match['x'] + match['width'] / 2, match['y'] + match['height'] / 2))
@@ -520,7 +525,8 @@ def wait(image_name, timeout=None, region=None):
             raise FindError('Unable to find image %s' % image_name.get_filename())
 
     elif isinstance(image_name, str):
-        a_match = text_search_by(image_name, True, region)
+        ocr_search = OCRSearch()
+        a_match = ocr_search.text_search_by(image_name, True, region)
         if a_match is not None:
             return True
         else:

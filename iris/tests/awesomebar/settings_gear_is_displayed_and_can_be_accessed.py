@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.meta = 'This test case checks that the Settings gear is displayed and can be accessed.'
         self.test_case_id = '108260'
         self.test_suite_id = '1902'
-        self.blocked_by = {'id': '1297382', 'platform': [Platform.ALL]}
+        self.blocked_by = {'id': '1297382', 'platform': Platform.ALL}
         self.locales = ['en-US']
 
     def run(self):

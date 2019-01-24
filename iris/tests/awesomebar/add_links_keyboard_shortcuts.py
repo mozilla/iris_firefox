@@ -25,11 +25,13 @@ class Test(BaseTest):
 
         # Navigate to the 'CNN' page using the 'CTRL' + 'ENTER' keys starting from the name of the page.
         select_location_bar()
-        type('cnn')
+        paste('cnn')
 
         key_down(Key.CTRL)
         type(Key.ENTER)
         key_up(Key.CTRL)
+
+        close_content_blocking_pop_up()
 
         expected = region.exists(cnn_tab_pattern, 15) and region.exists(cnn_icon_pattern, 10)
         assert_true(self, expected, 'CNN page successfully loaded .')

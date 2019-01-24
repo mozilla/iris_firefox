@@ -11,7 +11,6 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a unit test for ocr.'
-        self.exclude = Platform.ALL
 
     def run(self):
         url = self.get_asset_path('ocr.html')
@@ -22,11 +21,11 @@ class Test(BaseTest):
 
         page_region = generate_region_by_markers(top_left_marker, bottom_right_marker)
         page_region.debug()
-        left_half_page_region = Region(page_region.x, page_region.y, page_region.w / 3, page_region.h)
+        left_half_page_region = Region(page_region.x, page_region.y, page_region.width / 3 + 100, page_region.height)
         left_half_page_region.debug()
 
         right_half_page_region = Region(
-            page_region.w - (page_region.w / 2), page_region.y, page_region.w / 2, page_region.h)
+            page_region.width - (page_region.width/ 2), page_region.y, page_region.width / 2, page_region.height)
         right_half_page_region.debug()
 
         assert_true(self, left_half_page_region.exists('Lorem'), 'Word found')
@@ -51,23 +50,35 @@ class Test(BaseTest):
 
         # Change background color to grey
         click(top_left_marker)
-        time.sleep(1)
+        time.sleep(0.5)
         left_half_page_region.debug()
+
         assert_true(self, left_half_page_region.exists('Library'), 'Word found')
         assert_true(self, left_half_page_region.exists('Find in This Page'), 'Phrase found')
         assert_true(self, left_half_page_region.exists('New Private Window'), 'Phrase found')
 
         click(bottom_right_marker)
-        time.sleep(1)
+        time.sleep(0.5)
         left_half_page_region.debug()
+
+        assert_true(self, left_half_page_region.exists('Quisque'), '"Quisque" found')
         assert_true(self, left_half_page_region.exists('Library'), 'Word found')
         assert_true(self, left_half_page_region.exists('Find in This Page'), 'Phrase found')
         assert_true(self, left_half_page_region.exists('New Private Window'), 'Phrase found')
 
         click(NavBar.HAMBURGER_MENU)
-        time.sleep(1)
+        time.sleep(0.5)
 
-        assert_true(self, right_half_page_region.exists('Zoom'), 'Word found')
-        assert_true(self, right_half_page_region.exists('Edit'), 'Word found')
-        assert_true(self, right_half_page_region.exists('Library'), 'Word found')
-        assert_true(self, right_half_page_region.exists('More'), 'Word found')
+        assert_true(self, right_half_page_region.exists('Help'), '"Help" found')
+        assert_true(self, right_half_page_region.exists('Zoom'), '"Zoom" found')
+        assert_true(self, right_half_page_region.exists('Edit'), '"Edit" found')
+        assert_true(self, right_half_page_region.exists('Library'), '"Library" found')
+        assert_true(self, right_half_page_region.exists('More'), '"More" found')
+
+        click(NavBar.HAMBURGER_MENU)
+        time.sleep(0.5)
+
+        hamburger_menu_region = create_region_for_hamburger_menu()
+
+        assert_true(self, hamburger_menu_region.exists('Sign in to Sync'), '"Sign in to Sync" found')
+        assert_true(self, hamburger_menu_region.exists('Content Blocking'), '"Content Blocking" found')
