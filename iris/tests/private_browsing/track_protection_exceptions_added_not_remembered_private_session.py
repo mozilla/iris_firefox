@@ -17,7 +17,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        blocking_turn_off_pattern = Pattern('blocking_turn_off.png')
+        blocking_turn_off_pattern = Pattern('turn_off_blocking_for_site_button.png')
         empty_exc_list_pattern = Pattern('empty_exc_list.png')
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
         firefox_tracker_site_logo_pattern = Pattern('firefox_tracker_site_logo.png')
