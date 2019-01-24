@@ -39,10 +39,10 @@ class Test(BaseTest):
 
         click(pdf_logo_pattern)
 
-        [scroll(-scroll_height) for _ in range(3)]
+        [scroll(-scroll_height) for _ in range(5)]
         after_scroll_down_content_not_exists = exists(content_scroll_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_down_content_not_exists, 'Content after scrolling down is gone')
-        [scroll(scroll_height) for _ in range(3)]
+        [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(content_scroll_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful')
@@ -60,10 +60,10 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists,
                     'Content before scrolling in Presentation Mode is on the page')
 
-        [scroll(-scroll_height) for _ in range(3)]
+        [scroll(-scroll_height) for _ in range(5)]
         after_scroll_down_content_not_exists = exists(presentation_mode_content, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_down_content_not_exists, 'Content after scrolling down is gone')
-        [scroll(scroll_height) for _ in range(3)]
+        [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(presentation_mode_content, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists,
