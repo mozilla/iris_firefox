@@ -32,7 +32,6 @@ class Test(BaseTest):
         site_cookie_two_pattern = Pattern('site_cookie_two.png')
         site_tab_pattern = Pattern('prosport_tab.png')
 
-        new_tab()
         navigate('about:preferences#privacy')
         preferences_opened = exists(custom_content_blocking_unticked_pattern)
         assert_true(self, preferences_opened, 'The privacy preferences page is successfully displayed.')
