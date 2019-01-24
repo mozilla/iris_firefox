@@ -10,15 +10,41 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Private Browsing window is not restored after Firefox crash'
+        self.meta = 'The form inputs that were previously saved in a normal session are remembered in ' \
+                    'Private Browsing session.'
         self.test_case_id = '101666'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
+
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'extensions.formautofill.available': 'on',
+                               'extensions.formautofill.creditCards.available': True})
 
     def run(self):
         name_field_pattern = Pattern('name_field.png').similar(.6)
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         saved_profiles_pattern = Pattern('saved_profiles.png').similar(.6)
+
+        find_in_preferences_field_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
+        saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
+        add_button_pattern = Pattern('add_button.png')
+
+        change_preference('browser.search.region', 'US')
+
+        navigate('about:preferences#privacy')
+        search_field_exists = exists(find_in_preferences_field_pattern)
+        assert_true(self, search_field_exists, 'Preferences page is opened')
+
+        type('Autofill')
+
+        saved_addresses_button_exists = exists(saved_addresses_button_pattern)
+        assert_true(self, saved_addresses_button_exists,
+                    '\'Saved addresses\' button is displayed on the Preferences page')
+        click(saved_addresses_button_pattern)
+        add_button_exists = exists(add_button_pattern)
+        assert_true(self, add_button_exists, '\'Add\' button is displayed on the \'Saved addresses\' popup')
+        click(add_button_pattern)
 
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
 
