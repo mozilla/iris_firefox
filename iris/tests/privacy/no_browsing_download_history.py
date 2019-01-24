@@ -47,7 +47,7 @@ class Test(BaseTest):
         click(custom_history_settings_pattern)
         use_custom_settings_selected = exists(custom_history_settings_pattern)
         assert_true(self, use_custom_settings_selected,
-                    'The "Use custom settings for history" option is successfully selected and remembered.')
+                    'The "Use custom settings for history" option is successfully selected.')
 
         click(remember_browsing_download_pattern)
         point_unpinned = exists(unticked_browsing_download_pattern)
@@ -86,14 +86,14 @@ class Test(BaseTest):
 
         pocket_site_not_in_history = not exists(LocalWeb.POCKET_BOOKMARK_SMALL)
         assert_true(self, pocket_site_not_in_history,
-                    'The accessed websites are not remembered in the browser history.')
+                    'Third site not in history.')
 
         restore_firefox_focus()
 
         new_tab()
         navigate('https://www.stmarys-ca.edu/sites/default/files/attachments/files/Faust.pdf')
         pdf_bar_located = exists(download_pdf_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, pdf_bar_located, 'PDF buffered')
+        assert_true(self, pdf_bar_located, 'PDF loaded')
 
         click(download_pdf_pattern)
         save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, DEFAULT_FIREFOX_TIMEOUT*3)
