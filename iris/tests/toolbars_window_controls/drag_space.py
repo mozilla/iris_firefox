@@ -51,7 +51,7 @@ class Test(BaseTest):
             click_window_control('minimize', 'main')
             time.sleep(DEFAULT_UI_DELAY_LONG)
             try:
-                expected_5 = wait_vanish(hamburger_menu_pattern, 10)
+                expected_5 = wait_vanish(NavBar.HOME_BUTTON.similar(0.9), 10)
                 assert_true(self, expected_5, 'Window successfully minimized')
             except FindError:
                 raise FindError('Window not minimized.')
@@ -80,7 +80,7 @@ class Test(BaseTest):
         if exists(hamburger_menu_pattern, 10):
             click_window_control('close', 'main')
             try:
-                expected_11 = wait_vanish(hamburger_menu_pattern, 10)
+                expected_11 = wait_vanish(NavBar.HOME_BUTTON.similar(0.9), 10)
                 assert_true(self, expected_11, 'Window successfully closed')
             except FindError:
                 raise FindError('Window not closed')

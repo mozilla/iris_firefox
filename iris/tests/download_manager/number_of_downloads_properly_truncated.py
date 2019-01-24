@@ -87,18 +87,9 @@ class Test(BaseTest):
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
     def teardown(self):
-        # Open the 'Show Downloads' window and cancel all 'in progress' downloads.
-        for step in open_clear_recent_history_window_from_library_menu():
-            assert_true(self, step.resolution, step.message)
-
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        while expected:
-            try:
-                click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-            except FindError:
-                break
-            expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-
-        click_window_control('close')
-
+        # Cancel all 'in progress' downloads.
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
         downloads_cleanup()
