@@ -23,7 +23,7 @@ class Test(BaseTest):
         if Settings.is_windows():
             scroll_height = SCREEN_HEIGHT
         else:
-            scroll_height = SCREEN_HEIGHT/2
+            scroll_height = 100
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
@@ -99,7 +99,7 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar is on the page')
 
-        [type(Key.SPACE) for _ in range(2)]
+        [type(Key.SPACE) for _ in range(5)]
         after_scroll_down_content_not_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_down_content_not_exists,
                      'After zooming in and scrolling down using space bar content is gone')
@@ -175,7 +175,7 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar is on the page')
 
-        [type(Key.SPACE) for _ in range(2)]
+        [type(Key.SPACE) for _ in range(5)]
         after_scroll_up_content_not_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_up_content_not_exists,
                      'After zooming out and scrolling up using space bar content is gone')
