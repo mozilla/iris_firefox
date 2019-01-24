@@ -26,7 +26,7 @@ class Test(BaseTest):
         drop_stuff_here_area_pattern = Pattern('drop_stuff_here_area.png')
 
         navigate('https://mystor.github.io/dragndrop/')
-        page_opened = exists(paste_html_data_radiobutton_pattern)
+        page_opened = exists(paste_html_data_radiobutton_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, page_opened, 'Firefox started and page loaded successfully.')
 
         click(paste_html_data_radiobutton_pattern)
@@ -37,7 +37,7 @@ class Test(BaseTest):
         new_tab()
         select_tab(2)
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        page_opened = exists(phrase_from_wiki_page_pattern, 20)
+        page_opened = exists(phrase_from_wiki_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, page_opened, 'Web page successfully loads.')
 
         double_click(phrase_from_wiki_page_pattern)
@@ -56,8 +56,8 @@ class Test(BaseTest):
                     'area, the expected result is identical to the result.')
 
         select_tab(2)
-        mozilla_logo_exists = exists(image_from_wiki_article_pattern)
-        assert_true(self, mozilla_logo_exists, 'Firefox logo is displayed on the Wiki page')
+        image_exists = exists(image_from_wiki_article_pattern)
+        assert_true(self, image_exists, 'Image is displayed on the page')
 
         right_click(image_from_wiki_article_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
