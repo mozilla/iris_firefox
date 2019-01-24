@@ -105,8 +105,10 @@ class Test(BaseTest):
                      'After zooming in and scrolling down using space bar content is gone')
         page_home()
 
+        restore_zoom()
+
         # Scrolling after zoomed out the page
-        [zoom_out() for _ in range(4)]
+        [zoom_out() for _ in range(2)]
 
         after_zooming_out_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_zooming_out_content_exists, 'Zoom out action works properly')
