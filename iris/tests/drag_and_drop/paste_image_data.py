@@ -25,7 +25,7 @@ class Test(BaseTest):
         copy_image_context_menu_pattern = Pattern('copy_image_option.png')
 
         navigate('https://mystor.github.io/dragndrop/')
-        test_page_opened = exists(paste_image_data_radiobutton_pattern)
+        test_page_opened = exists(paste_image_data_radiobutton_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, test_page_opened, 'Firefox started and page loaded successfully.')
 
         click(paste_image_data_radiobutton_pattern)
@@ -36,7 +36,7 @@ class Test(BaseTest):
         new_tab()
         select_tab(2)
         navigate(LocalWeb.POCKET_TEST_SITE)
-        page_with_images_opened = exists(pocket_page_text_pattern, 20)
+        page_with_images_opened = exists(pocket_page_text_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, page_with_images_opened, 'Web page successfully loads.')
 
         two_images_displayed_on_the_page = exists(first_picture_pattern) and exists(second_picture_pattern)
