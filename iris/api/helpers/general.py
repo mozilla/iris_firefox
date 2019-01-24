@@ -1055,7 +1055,6 @@ def restore_firefox_focus():
             target_pattern = NavBar.HOME_BUTTON
         else:
             target_pattern = NavBar.RELOAD_BUTTON
-
         w, h = target_pattern.get_size()
         horizontal_offset = w * 1.7
         click_area = target_pattern.target_offset(horizontal_offset, 0)
