@@ -21,7 +21,31 @@ class DownloadManager(object):
         TIME_LEFT = Pattern('time_left.png')
         BYTES_SECOND = Pattern('bytes_second.png')
         OF_1GB = Pattern('of_1gb.png')
-        OPEN_DOWNLOAD_FOLDER = Pattern('download_button_open_containing_folder.png')
+        ADD_REMOVE_DOWNLOADS_ARROW = Pattern('download_add_remove_file_arrow.png')
+        ADD_REMOVE_DOWNLOADS_RED_ARROW = Pattern('download_add_remove_file_red_arrow.png')
+        ADD_REMOVE_DOWNLOADS_WHITE_ARROW = Pattern('download_add_remove_file_white_arrow.png')
+        BLOCKED_DOWNLOAD_ICON = Pattern('download_blocked_badge.png')
+        UNWANTED_DOWNLOAD_ICON = Pattern('download_unwanted_badge.png')
+        UNCOMMON_DOWNLOAD_ICON = Pattern('download_uncommon_badge.png')
+        VIRUS_OR_MALWARE_DOWNLOAD = Pattern('virus_or_malware_message.png')
+        UNWANTED_DOWNLOAD = Pattern('unwanted_message.png')
+        UNCOMMON_DOWNLOAD = Pattern('uncommon_message.png')
+
+        class DownloadDetails(object):
+            HEADER = Pattern('download_details_header.png')
+            BLOCKED_DOWNLOAD_TITLE = Pattern('downloads_panel_blocked_subview_title.png')
+            UNWANTED_DOWNLOAD_TITLE = Pattern('downloads_panel_unwanted_subview_title.png')
+            UNCOMMON_DOWNLOAD_TITLE = Pattern('downloads_panel_uncommon_subview_title.png')
+            BLOCKED_BADGE = Pattern('downloads_panel_blocked_subview_blocked_badge.png')
+            UNWANTED_BADGE = Pattern('downloads_panel_blocked_subview_unwanted_badge.png')
+            BLOCKED_DETAILS_1 = Pattern('downloads_panel_blocked_subview_details_1.png')
+            UNWANTED_DETAILS_1 = Pattern('downloads_panel_blocked_subview_unwanted_details_1.png')
+            UNCOMMON_DETAILS_1 = Pattern('downloads_panel_blocked_subview_uncommon_details_1.png')
+            BLOCKED_DETAILS_2 = Pattern('downloads_panel_blocked_subview_details_2.png')
+            OPEN_FILE_BUTTON = Pattern('downloads_panel_blocked_subview_open_button.png')
+            REMOVE_FILE_BUTTON = Pattern('downloads_panel_blocked_subview_delete_button.png')
+            BLOCKED_DOWNLOAD = Pattern('download_details_temporary_blocked.png')
+            DOWNLOADS_BACK_ARROW = Pattern('downloads_panel_blocked_subview_back_arrow.png')
 
     # Downloaded files statuses
     class DownloadState(object):
@@ -33,6 +57,7 @@ class DownloadManager(object):
         OPEN_FILE = Pattern('download_details_open_file.png')
         SPEED_PER_SECOND = Pattern('download_details_speed_per_second.png')
         MISSING_FILE = Pattern('download_details_file_moved_or_missing.png')
+        TEMPORARY_BLOCKED = Pattern('download_details_temporary_blocked.png')
 
     # Library Menu Downloads Submenu.
     class Downloads(object):
