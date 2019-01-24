@@ -8,10 +8,10 @@ import mozversion
 from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
+from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
-from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import Screen
@@ -1047,7 +1047,6 @@ def restart_firefox(test, path, profile, url, args=None, image=None, show_crash_
     logger.debug('Firefox successfully restarted.')
 
 
-
 def restore_firefox_focus():
     """Restore Firefox focus by clicking inside the page."""
 
@@ -1174,6 +1173,15 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     pyautogui.moveTo(0, 0)
 
 
+def open_directory(directory):
+    if Settings.get_os() == Platform.WINDOWS:
+        os.startfile(directory)
+    elif Settings.get_os() == Platform.LINUX:
+        os.system('xdg-open \"' + directory + '\"')
+    else:
+        os.system('open \"' + directory + '\"')
+
+
 class Option(object):
     """Class with zoom members."""
 
@@ -1200,3 +1208,57 @@ class ZoomType(object):
 
     IN = 300 if Settings.is_windows() else 1
     OUT = -300 if Settings.is_windows() else -1
+
+
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
+    """
+    Press the Key Down button until specified image pattern is found.
+    Raise exception if image pattern wasn't found after specified number of presses of the Key Down button.
+
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_down_presses: Number of presses of the Key Down button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during Key Down button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_down_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.DOWN)
+        time.sleep(delay_between_presses)
+
+    return pattern_found
+
+
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
+    """
+    Press the Key Up button until specified image pattern is found.
+    Raise exception if image pattern wasn't found after specified number of presses of the Key Up button.
+
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_up_presses: Number of presses of the Key Up button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during the Key Up button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_up_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.UP)
+        time.sleep(delay_between_presses)
+
+    return pattern_found
