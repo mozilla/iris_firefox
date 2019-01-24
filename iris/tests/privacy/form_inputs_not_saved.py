@@ -18,24 +18,25 @@ class Test(BaseTest):
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
-        submit_button_pattern = Pattern('submit_button.png')
-        save_button_pattern = Pattern('save_button.png')
-        name_field_pattern = Pattern('name_field.png')
-        organization_field_pattern = Pattern('organization_field.png')
-        address_field_pattern = Pattern('street_address_field.png')
-        address_level_2_pattern = Pattern('address_level_2_field.png')
-        address_level_1_pattern = Pattern('address_level_1_field.png')
-        postal_code_pattern = Pattern('postal_code_field.png')
-        country_code_field_pattern = Pattern('country_code_field.png')
-        telephone_field_pattern = Pattern('telephone_field.png')
-        email_field_pattern = Pattern('email_field.png')
-        find_in_prefs_field_pattern = Pattern('find_in_prefs_field.png')
-        saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
+        submit_button_pattern = Pattern('submit_button.png').similar(.6)
+        save_button_pattern = Pattern('save_button.png').similar(.6)
+        name_field_pattern = Pattern('name_field.png').similar(.6)
+        organization_field_pattern = Pattern('organization_field.png').similar(.6)
+        address_field_pattern = Pattern('street_address_field.png').similar(.6)
+        address_level_2_pattern = Pattern('address_level_2_field.png').similar(.6)
+        address_level_1_pattern = Pattern('address_level_1_field.png').similar(.6)
+        postal_code_pattern = Pattern('postal_code_field.png').similar(.6)
+        country_code_field_pattern = Pattern('country_code_field.png').similar(.6)
+        telephone_field_pattern = Pattern('telephone_field.png').similar(.6)
+        email_field_pattern = Pattern('email_field.png').similar(.6)
+        find_in_prefs_field_pattern = Pattern('find_in_prefs_field.png').similar(.6)
+        saved_addresses_button_pattern = Pattern('saved_addresses_button.png').similar(.6)
         name_in_saved_addresses_pattern = Pattern('name_in_saved_addresses.png')
 
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
-        page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern) and exists(submit_button_pattern)
+        page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern) \
+                                               and exists(submit_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, page_opened_in_private_browsing_mode, 'Test page is opened in a new private window.')
 
         input_data = {
