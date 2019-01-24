@@ -48,12 +48,11 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
         click(scroll_content_pattern)
 
-        scroll(-scroll_height)
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
-        scroll(scroll_height)
+        [scroll(-scroll_height) for _ in range(5)]
+        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_false(self, after_scroll_down_content_not_exists,
+                     'After scrolling down using mouse wheel without smooth scrolling content is gone')
+        [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful')
@@ -63,10 +62,9 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using arrow keys is on the page')
 
         repeat_key_down(20)
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_false(self, after_scroll_down_content_not_exists,
+                     'After scrolling down using arrow keys without smooth scrolling content is gone')
         repeat_key_up(20)
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -96,12 +94,11 @@ class Test(BaseTest):
                     'Content before scrolling using mouse wheel is on the page after use smooth scrolling is enabled')
         click(scroll_content_pattern)
 
-        scroll(-scroll_height)
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
-        scroll(scroll_height)
+        [scroll(-scroll_height) for _ in range(5)]
+        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_false(self, after_scroll_down_content_not_exists,
+                     'After scrolling down using mouse wheel content is gone')
+        [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists,
@@ -113,10 +110,9 @@ class Test(BaseTest):
                     'Content before scrolling using arrow keys is on the page after use smooth scrolling is enabled')
 
         repeat_key_down(20)
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_false(self, after_scroll_down_content_not_exists,
+                     'After scrolling down using arrow keys content is gone')
         repeat_key_up(20)
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
