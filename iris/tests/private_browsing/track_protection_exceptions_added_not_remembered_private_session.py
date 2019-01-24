@@ -17,64 +17,88 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
-        tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
-        tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
-        cnn_logo_pattern = LocalWeb.CNN_LOGO
-        blocking_turn_off_pattern = Pattern("blocking_turn_off.png")
-        empty_exc_list_pattern = Pattern("empty_exc_list.png")
-        manage_exceptions_button_pattern = Pattern("manage_exceptions_button.png")
-        private_browsing_tab_logo_pattern = PrivateWindow.private_window_pattern
+        blocking_turn_off_pattern = Pattern('blocking_turn_off.png')
+        empty_exc_list_pattern = Pattern('empty_exc_list.png')
+        manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
+        firefox_tracker_site_logo_pattern = Pattern('firefox_tracker_site_logo.png')
+        third_party_tracker_correctly_blocked_pattern = \
+            Pattern('simulated_third_party_tracker_correctly_blocked_text.png')
+        incorrectly_loaded_third_party_tracker_pattern = \
+            Pattern('simulated_third_party_tracker_incorrectly_loaded_text.png')
+        first_party_tracker_correctly_blocked_text_pattern = \
+            Pattern('simulated_first_party_tracker_correctly_blocked_text.png')
+        dnt_signal_correctly_sent_pattern = Pattern('dnt_signal_correctly_sent_text.png')
+        open_trackers_list_pattern = Pattern('open_trackers_list.png')
+        tracker_site_in_list_pattern = Pattern('tracker_site_in_list.png')
 
         new_private_window()
-        private_window_opened = exists(private_browsing_tab_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, private_window_opened, "Private window opened")
+        private_window_opened = exists(PrivateWindow.private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, private_window_opened, 'Private window opened.')
 
-        navigate("https://edition.cnn.com/?refresh=1")
+        navigate('https://itisatrap.org/firefox/its-a-tracker.html')
+        tracked_site_loaded = exists(firefox_tracker_site_logo_pattern)
+        assert_true(self, tracked_site_loaded, 'The website is successfully displayed.')
 
-        page_loaded = exists(cnn_logo_pattern, 90)
-        assert_true(self, page_loaded, "The website is successfully displayed.")
+        tracking_protection_shield_displayed = exists(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
+        assert_true(self, tracking_protection_shield_displayed, 'The tracking protection shield is displayed.')
 
-        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
-        assert_true(self, tracking_protection_shield_displayed, "Tracking protection shield displayed")
+        third_party_trackers_blocked = exists(third_party_tracker_correctly_blocked_pattern)
+        assert_true(self, third_party_trackers_blocked,
+                    'A "simulated third-party tracker was correctly blocked" phrase is displayed.')
 
-        repeat_key_down(10)
+        first_party_tracker_correctly_loaded = exists(first_party_tracker_correctly_blocked_text_pattern)
+        assert_true(self, first_party_tracker_correctly_loaded,
+                    'A "simulated first-party tracker was correctly loaded" phrase is displayed.', )
 
-        cnn_blocked_content_not_displayed = not exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 30)
-        assert_true(self, cnn_blocked_content_not_displayed,
-                    'Websites content that contain tracking elements are not displayed on the page')
+        dnt_sent_correctly = exists(dnt_signal_correctly_sent_pattern)
+        assert_true(self, dnt_sent_correctly, 'The "DNT signal was correctly send" phrase is displayed.', )
 
-        click(tracking_protection_shield_pattern)
+        click(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
         protection_popup_opened = exists(blocking_turn_off_pattern)
         assert_true(self, protection_popup_opened, "The site information panel is displayed.")
 
         click(blocking_turn_off_pattern)
 
-        page_loaded = exists(cnn_logo_pattern, 90)
-        assert_true(self, page_loaded, "The website is loaded.")
-
-        tracking_protection_shield_deactivated_exists = exists(tracking_protection_shield_deactivated_pattern)
+        tracking_protection_shield_deactivated_exists = exists(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
         assert_true(self, tracking_protection_shield_deactivated_exists,
-                    'The tracking protection shield is displayed as deactivated (red strikethrough).')
+                    'The tracking protection shield is displayed as deactivated (strikethrough).')
 
-        cnn_blocked_content_displayed = exists(LocalWeb.CNN_BLOCKED_CONTENT_ADV, 30)
-        assert_true(self, cnn_blocked_content_displayed,
-                    'Websites content that contain tracking elements are displayed on the page')
+        page_loaded = exists(firefox_tracker_site_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, page_loaded, 'The website successfully refreshes.')
+        restore_firefox_focus()
+        hover(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
 
-        mouse_move(tracking_protection_shield_deactivated_pattern, 3)
-        tracking_content_detected_exists = exists(tracking_content_detected_pattern)
-        assert_true(self, tracking_content_detected_exists,
-                    'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message.')
+        tracking_message_appeared = exists(LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE)
+        assert_true(self, tracking_message_appeared, 'A "Tracking content detected" tooltip message displayed.')
+
+        incorrectly_loaded_third_party_tracker = exists(incorrectly_loaded_third_party_tracker_pattern)
+        assert_true(self, incorrectly_loaded_third_party_tracker,
+                    'A "simulated third-party tracker was incorrectly loaded" phrase is displayed.')
+
+        first_party_tracker_correctly_loaded_again = exists(first_party_tracker_correctly_blocked_text_pattern)
+        assert_true(self, first_party_tracker_correctly_loaded_again,
+                    'A "simulated first-party tracker was correctly loaded" phrase is displayed again.')
+
+        dnt_sent_correctly_again = exists(dnt_signal_correctly_sent_pattern)
+        assert_true(self, dnt_sent_correctly_again, 'The "DNT signal was correctly send" phrase is displayed again.')
+
+        restore_firefox_focus()
+        click(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
+
+        tracking_protection_popup_opened = exists(open_trackers_list_pattern)
+        assert_true(self, tracking_protection_popup_opened, 'Tracking protection popup opened.')
+        click(open_trackers_list_pattern)
+
+        trackers_list_opened = exists(tracker_site_in_list_pattern)
+        assert_true(self, trackers_list_opened, 'A list of unblocked trackers is successfully displayed.')
 
         close_window()
 
-        new_tab()
-        navigate("about:preferences#privacy")
-        privacy_prefs_opened = exists(manage_exceptions_button_pattern)
-        assert_true(self, privacy_prefs_opened,
-                    "The about:preferences#privacy page is successfully displayed.")
-
+        navigate('about:preferences#privacy')
+        preferences_opened = exists(manage_exceptions_button_pattern)
+        assert_true(self, preferences_opened, 'The about:preferences#privacy page is successfully displayed.')
         click(manage_exceptions_button_pattern)
-        exceptions_window_opened = exists(empty_exc_list_pattern)
-        assert_true(self, exceptions_window_opened,
-                    "The previously accessed website is not displayed inside the Tracking Protection exceptions panel.")
+
+        exceptions_list_empty = exists(empty_exc_list_pattern)
+        assert_true(self, exceptions_list_empty,
+                    'The previously accessed website is not displayed inside the Tracking Protection exceptions panel.')
