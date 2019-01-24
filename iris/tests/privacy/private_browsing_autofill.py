@@ -18,8 +18,7 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
-        self.set_profile_pref({'extensions.formautofill.available': 'on',
-                               'extensions.formautofill.creditCards.available': True})
+        self.set_profile_pref({'extensions.formautofill.available': 'on'})
 
     def run(self):
         name_field_pattern = Pattern('name_field.png').similar(.6)
@@ -30,7 +29,7 @@ class Test(BaseTest):
         saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
         add_button_pattern = Pattern('add_button.png')
 
-        #change_preference('browser.search.region', 'US')
+        change_preference('browser.search.region', 'US')
 
         navigate('about:preferences#privacy')
         search_field_exists = exists(find_in_preferences_field_pattern)
