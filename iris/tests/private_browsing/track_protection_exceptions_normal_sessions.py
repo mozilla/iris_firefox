@@ -28,13 +28,12 @@ class Test(BaseTest):
         else:
             exceptions_content_blocking_panel_pattern = \
                 AboutPreferences.Privacy.Exceptions.EXCEPTIONS_CONTENT_BLOCKING_LABEL
-        if Settings.is_linux():
-            popup_close_pattern = Pattern('popup_close.png')
+
         turn_off_blocking_pattern = Pattern('turn_off_blocking_for_this_site.png')
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
         privacy_strict_checkbox_unchecked_pattern = Pattern('privacy_strict_checkbox_unchecked.png')
         privacy_strict_checkbox_checked_pattern = Pattern('privacy_strict_checkbox_checked.png')
-        firefox_tracker_site_logo_pattern = Pattern('firefox_tracker_site_logo.png')
+        firefox_tracker_site_content_pattern = Pattern('firefox_tracker_site_content.png')
         third_party_tracker_correctly_blocked_text = Pattern('simulated_third_party_tracker_correctly_blocked_text.png')
         first_party_tracker_correctly_blocked_text = Pattern('simulated_first_party_tracker_correctly_blocked_text.png')
         dnt_signal_correctly_sent_text = Pattern('dnt_signal_correctly_sent_text.png')
@@ -43,7 +42,7 @@ class Test(BaseTest):
         itstrap_site_exception_selected_pattern = Pattern('itstrap_site_exception_selected.png')
 
         navigate('about:preferences#privacy')
-        navigated_to_preferences = exists(privacy_page_pattern, 10)
+        navigated_to_preferences = exists(privacy_page_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, navigated_to_preferences, 'The about:preferences#privacy page is successfully displayed.')
 
         privacy_strict_checkbox_unchecked_displayed = exists(privacy_strict_checkbox_unchecked_pattern)
@@ -59,7 +58,7 @@ class Test(BaseTest):
                     'The "Strict" content blocking option was successfully saved')
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_logo_pattern)
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern)
         assert_true(self, firefox_tracker_site_logo_displayed, 'The website is successfully displayed.')
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
@@ -79,17 +78,15 @@ class Test(BaseTest):
 
         click(tracking_protection_shield_pattern)
         click(turn_off_blocking_pattern)
-        if Settings.is_linux():
-            click(popup_close_pattern)
 
-        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_tracker_site_logo_displayed, 'Site is reloaded after turning off content blocking')
 
         tracking_protection_shield_deactivated_displayed = exists(tracking_protection_shield_deactivated_pattern)
         assert_true(self, tracking_protection_shield_deactivated_displayed,
                     'The tracking protection shield is displayed as deactivated (strikethrough).')
 
-        mouse_move(tracking_protection_shield_deactivated_pattern, 3)
+        mouse_move(tracking_protection_shield_deactivated_pattern)
         tracking_content_detected_pattern_displayed = exists(tracking_content_detected_pattern)
         assert_true(self, tracking_content_detected_pattern_displayed,
                     'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message.')
@@ -125,7 +122,7 @@ class Test(BaseTest):
         assert_false(self, itstrap_site_exception_displayed, 'The website is successfully removed from the panel.')
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_logo_pattern)
+        firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern)
         assert_true(self, firefox_tracker_site_logo_displayed, 'The website is successfully displayed.')
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern)
