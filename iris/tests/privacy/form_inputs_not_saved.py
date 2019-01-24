@@ -19,7 +19,7 @@ class Test(BaseTest):
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         submit_button_pattern = Pattern('submit_button.png').similar(.6)
-        save_button_pattern = Pattern('save_button.png').similar(.6)
+        save_button_pattern = Pattern('save_button.png')
         name_field_pattern = Pattern('name_field.png').similar(.6)
         organization_field_pattern = Pattern('organization_field.png').similar(.6)
         address_field_pattern = Pattern('street_address_field.png').similar(.6)
