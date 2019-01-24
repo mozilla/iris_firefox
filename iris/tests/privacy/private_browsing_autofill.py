@@ -30,7 +30,7 @@ class Test(BaseTest):
         saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
         add_button_pattern = Pattern('add_button.png')
 
-        change_preference('browser.search.region', 'US')
+        #change_preference('browser.search.region', 'US')
 
         navigate('about:preferences#privacy')
         search_field_exists = exists(find_in_preferences_field_pattern)
