@@ -1052,7 +1052,7 @@ def restore_firefox_focus():
 
     try:
         w, h = NavBar.HOME_BUTTON.get_size()
-        horizontal_offset = w * 2
+        horizontal_offset = w * 1.5
         click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
         click(click_area)
     except FindError:
