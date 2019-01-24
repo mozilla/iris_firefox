@@ -30,7 +30,7 @@ class Test(BaseTest):
 
         open_browser_console()
         click(browser_console_opened_pattern)
-        paste('window.resizeTo(600, 600)')
+        paste('window.resizeTo(550, 600)')
         type(Key.ENTER)
 
         restore_firefox_focus()
