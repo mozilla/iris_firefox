@@ -1048,12 +1048,17 @@ def restart_firefox(test, path, profile, url, args=None, image=None, show_crash_
 
 
 def restore_firefox_focus():
-    """Restore Firefox focus by clicking inside the page."""
+    """Restore Firefox focus by clicking the panel near HOME or REFRESH button."""
 
     try:
-        w, h = NavBar.HOME_BUTTON.get_size()
-        horizontal_offset = w * 1.5
-        click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
+        if exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY):
+            target_pattern = NavBar.HOME_BUTTON
+        else:
+            target_pattern = NavBar.RELOAD_BUTTON
+
+        w, h = target_pattern.get_size()
+        horizontal_offset = w * 1.7
+        click_area = target_pattern.target_offset(horizontal_offset, 0)
         click(click_area)
     except FindError:
         raise APIHelperError('Could not restore firefox focus.')
