@@ -19,6 +19,11 @@ class Test(BaseTest):
         scroll_content_pattern = Pattern('about_us_content.png')
         scroll_content_after_zoomed_in_pattern = Pattern('after_zoomed_in_content.png')
 
+        if Settings.is_windows():
+            value = 10
+        else:
+            value = 1
+
         navigate('http://www.eginstill.com/')
         location_to_open = Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         time.sleep(DEFAULT_FIREFOX_TIMEOUT)
@@ -30,19 +35,13 @@ class Test(BaseTest):
                     'Content before scrolling using mouse wheel is on the page')
         click(scroll_content_pattern)
 
-        for _ in range(10):
-            scroll(-SCREEN_HEIGHT)
-            time.sleep(1)
-
+        [scroll(-SCREEN_HEIGHT) for _ in range(value)]
         after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_down_content_not_exists,
                      'Content after scrolling down using mouse wheel is gone')
 
         [zoom_in() for _ in range(2)]
-
-        for _ in range(10):
-            scroll(SCREEN_HEIGHT)
-            time.sleep(1)
+        [scroll(SCREEN_HEIGHT) for _ in range(value)]
 
         after_scroll_content_exists = exists(scroll_content_after_zoomed_in_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists,
