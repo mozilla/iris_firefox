@@ -10,6 +10,10 @@ class Test(BaseTest):
         self.test_suite_id = '102'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'devtools.chrome.enabled': True})
+
     def run(self):
         resizing_confirmed_pattern = Pattern('resizing_confirmed.png')
         browser_console_opened_pattern = Pattern('browser_console_opened.png')
@@ -20,15 +24,13 @@ class Test(BaseTest):
         if Settings.is_linux() or Settings.is_mac():
             scroll_height = 200
 
-        change_preference('devtools.chrome.enabled', True)
-
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, web_page_loaded_exists, 'The website is properly loaded.')
 
         open_browser_console()
         click(browser_console_opened_pattern)
-        paste('window.resizeTo(%s, %s)' % (str(SCREEN_WIDTH/4), str(SCREEN_HEIGHT/3)))
+        paste('window.resizeTo(400, 600)')
         type(Key.ENTER)
 
         click(browser_console_opened_pattern, DEFAULT_FX_DELAY)
@@ -43,10 +45,10 @@ class Test(BaseTest):
         click(scroll_content_pattern)
 
         scroll(-scroll_height)
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        time.sleep(DEFAULT_UI_DELAY)
+        content_exists = exists(scroll_content_pattern)
+        assert_false(self, content_exists, 'Content is still on the page after scrolling')
+
         scroll(scroll_height)
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -57,10 +59,10 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using arrow keys is on the page')
 
         repeat_key_down(10)
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        time.sleep(DEFAULT_UI_DELAY)
+        content_exists = exists(scroll_content_pattern)
+        assert_false(self, content_exists, 'Content is still on the page after scrolling')
+
         repeat_key_up(10)
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -71,10 +73,10 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using page up/down is on the page')
 
         [type(Key.PAGE_DOWN) for _ in range(4)]
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        time.sleep(DEFAULT_UI_DELAY)
+        content_exists = exists(scroll_content_pattern)
+        assert_false(self, content_exists, 'Content is still on the page after scrolling')
+
         [type(Key.PAGE_UP) for _ in range(4)]
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -89,10 +91,9 @@ class Test(BaseTest):
         else:
             type(Key.DOWN, modifier=KeyModifier.CTRL)
 
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        time.sleep(DEFAULT_UI_DELAY)
+        content_exists = exists(scroll_content_pattern)
+        assert_false(self, content_exists, 'Content is still on the page after scrolling')
 
         if Settings.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
@@ -106,10 +107,8 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar is on the page.')
 
-        try:
-            type(Key.SPACE)
-            type(Key.SPACE)
-            after_scroll_content_disappeared = wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, after_scroll_content_disappeared, 'Scroll up and down using space bar is successful.')
-        except FindError:
-            raise FindError('Content before scrolling is still on the page')
+        type(Key.SPACE)
+        type(Key.SPACE)
+        time.sleep(DEFAULT_UI_DELAY)
+        content_exists = exists(scroll_content_pattern)
+        assert_false(self, content_exists, 'Content is still on the page after scrolling')
