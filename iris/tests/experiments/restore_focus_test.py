@@ -16,3 +16,4 @@ class Test(BaseTest):
         navigate('https://github.com/mozilla/iris/pull/1923')
         time.sleep(15)
         restore_firefox_focus()
+        time.sleep(5)
