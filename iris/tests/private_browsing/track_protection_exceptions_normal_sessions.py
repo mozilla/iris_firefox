@@ -23,10 +23,7 @@ class Test(BaseTest):
         tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
         tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
 
-        if Settings.is_mac():
-            exceptions_content_blocking_panel_pattern = Pattern('exceptions_content_blocking_label.png')
-        else:
-            exceptions_content_blocking_panel_pattern = \
+        exceptions_content_blocking_panel_pattern = \
                 AboutPreferences.Privacy.Exceptions.EXCEPTIONS_CONTENT_BLOCKING_LABEL
 
         turn_off_blocking_pattern = Pattern('turn_off_blocking_for_this_site.png')
@@ -87,7 +84,7 @@ class Test(BaseTest):
                     'The tracking protection shield is displayed as deactivated (strikethrough).')
 
         mouse_move(tracking_protection_shield_deactivated_pattern)
-        tracking_content_detected_pattern_displayed = exists(tracking_content_detected_pattern)
+        tracking_content_detected_pattern_displayed = exists(tracking_content_detected_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, tracking_content_detected_pattern_displayed,
                     'On hover, the tracking protection shield displays a "Tracking content detected" tooltip message.')
 
@@ -105,7 +102,6 @@ class Test(BaseTest):
         navigate('about:preferences#privacy')
 
         click(manage_exceptions_button_pattern)
-
         exceptions_content_blocking_panel_displayed = exists(exceptions_content_blocking_panel_pattern)
         assert_true(self, exceptions_content_blocking_panel_displayed,
                     'The Exceptions - Content Blocking panel is successfully displayed.')
