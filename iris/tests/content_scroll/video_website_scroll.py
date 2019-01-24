@@ -19,9 +19,9 @@ class Test(BaseTest):
         show_more_button_pattern = Pattern('show_more_button.png')
         speaker_icon_pattern = Pattern('speaker_icon.png')
         youtube_info_button_pattern = Pattern('youtube_info_button.png')
-        youtube_like_button_pattern = Pattern('youtube_info_button.png')
+        youtube_like_button_pattern = Pattern('subscribe_button.png')
 
-        mouse_wheel_steps = 40
+        mouse_wheel_steps = 20
         if Settings.is_windows():
             mouse_wheel_steps = 1000
 
