@@ -57,8 +57,8 @@ class Test(BaseTest):
                     'area, the expected result is identical to the result.')
 
         select_tab(2)
-        mozilla_logo_exists = exists(image_from_wiki_article_pattern)
-        assert_true(self, mozilla_logo_exists, 'Firefox logo is displayed on the Wiki page')
+        image_exists = exists(image_from_wiki_article_pattern)
+        assert_true(self, image_exists, 'Image is displayed on the page')
 
         right_click(image_from_wiki_article_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
