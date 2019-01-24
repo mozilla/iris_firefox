@@ -22,6 +22,7 @@ class Test(BaseTest):
         search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
         default_status_pattern = Pattern('default_status.png')
         modified_status_pattern = Pattern('modified_status.png')
+        mozilla_support_url_pattern = Pattern('mozilla_support_url.png')
         true_value_pattern = Pattern('true_value.png')
         false_value_pattern = Pattern('false_value.png')
         amazon_logo_pattern = Pattern('amazon_logo.png')
@@ -47,6 +48,16 @@ class Test(BaseTest):
         click(google_one_off_button_pattern)
 
         time.sleep(DEFAULT_UI_DELAY_LONG)
+
+        # From time to time user is redirected to the Mozilla support page instead of the Google page. If this happens
+        # we will repeat the search.
+        expected = region.exists(mozilla_support_url_pattern, 10)
+        if expected:
+            select_location_bar()
+            paste('moz')
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            click(google_one_off_button_pattern)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
 
         expected = region.exists(google_search_results_pattern, 10)
         assert_true(self, expected, 'Google search results are displayed.')
