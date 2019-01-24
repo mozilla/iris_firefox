@@ -33,8 +33,7 @@ class Test(BaseTest):
         paste('window.resizeTo(400, 600)')
         type(Key.ENTER)
 
-        click(browser_console_opened_pattern, DEFAULT_FX_DELAY)
-        close_tab()
+        restore_firefox_focus()
 
         resizing_confirmed_exists = exists(resizing_confirmed_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, resizing_confirmed_exists, 'The browser window is successfully resized.')
