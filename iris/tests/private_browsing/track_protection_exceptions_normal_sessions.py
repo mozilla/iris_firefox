@@ -22,8 +22,14 @@ class Test(BaseTest):
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
         tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
         tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
-        exceptions_content_blocking_panel_pattern = \
-            AboutPreferences.Privacy.Exceptions.EXCEPTIONS_CONTENT_BLOCKING_LABEL
+
+        if Settings.is_mac():
+            exceptions_content_blocking_panel_pattern = Pattern('exceptions_content_blocking_label.png')
+        else:
+            exceptions_content_blocking_panel_pattern = \
+                AboutPreferences.Privacy.Exceptions.EXCEPTIONS_CONTENT_BLOCKING_LABEL
+        if Settings.is_linux():
+            popup_close_pattern = Pattern('popup_close.png')
         turn_off_blocking_pattern = Pattern('turn_off_blocking_for_this_site.png')
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
         privacy_strict_checkbox_unchecked_pattern = Pattern('privacy_strict_checkbox_unchecked.png')
@@ -73,6 +79,8 @@ class Test(BaseTest):
 
         click(tracking_protection_shield_pattern)
         click(turn_off_blocking_pattern)
+        if Settings.is_linux():
+            click(popup_close_pattern)
 
         firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_tracker_site_logo_displayed, 'Site is reloaded after turning off content blocking')
