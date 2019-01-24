@@ -42,10 +42,9 @@ class Test(BaseTest):
         click(scroll_content_pattern)
 
         [scroll(-SCREEN_HEIGHT) for _ in range(value)]
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_false(self, after_scroll_down_content_not_exists,
+                     'Content after scrolling using mouse wheel with preference equals 200 is gone')
         [scroll(SCREEN_HEIGHT) for _ in range(value)]
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -64,11 +63,11 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists,
                     'Content before scrolling using mouse wheel with preference equals 50 is on the page')
         click(scroll_content_pattern)
+
         [scroll(-SCREEN_HEIGHT) for _ in range(value)]
-        try:
-            wait_vanish(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Content is still on the page after scrolling')
+        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_false(self, after_scroll_down_content_not_exists,
+                     'Content after scrolling using mouse wheel with preference equals 50 is gone')
         [scroll(SCREEN_HEIGHT) for _ in range(value)]
 
         after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
