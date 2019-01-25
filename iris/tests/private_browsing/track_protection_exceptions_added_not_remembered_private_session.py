@@ -56,7 +56,6 @@ class Test(BaseTest):
         click(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
         protection_popup_opened = exists(blocking_turn_off_pattern)
         assert_true(self, protection_popup_opened, "The site information panel is displayed.")
-
         click(blocking_turn_off_pattern)
 
         tracking_protection_shield_deactivated_exists = exists(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
