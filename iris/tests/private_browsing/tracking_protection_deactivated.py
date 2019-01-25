@@ -14,7 +14,6 @@ class Test(BaseTest):
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
         privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         cnn_logo_pattern = LocalWeb.CNN_LOGO
-
         custom_privacy_radio_pattern = Pattern('custom_privacy_radio.png')
         trackers_checked_pattern = Pattern('trackers_checked.png')
         trackers_unchecked_pattern = Pattern('trackers_unchecked.png')
@@ -25,7 +24,6 @@ class Test(BaseTest):
         trackers_list_header_pattern = Pattern('trackers_list_header.png')
         list_of_page_trackers_pattern = Pattern('list_of_page_trackers.png')
         to_block_set_to_strict_pattern = Pattern('to_block_set_to_strict.png')
-
 
         new_tab()
         navigate('about:preferences#privacy')
@@ -40,7 +38,7 @@ class Test(BaseTest):
         assert_true(self, custom_protection_popup_opened, 'The Custom panel is unfolded.')
         click(trackers_checked_pattern)
 
-        hover(Location(SCREEN_WIDTH, SCREEN_HEIGHT / 2), duration=DEFAULT_FX_DELAY)
+        hover(Location(SCREEN_WIDTH, SCREEN_HEIGHT / 2), DEFAULT_FX_DELAY)
         content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
 
@@ -61,7 +59,7 @@ class Test(BaseTest):
 
         content_blocking_private_not_displayed = not exists(private_content_blocking_warning_pattern)
         assert_true(self, content_blocking_private_not_displayed,
-                    '\'Some websites use trackers that can monitor your activity\' etc. not displayed')
+                    '"Some websites use trackers that can monitor your activity" etc. not displayed')
 
         navigate('http://edition.cnn.com')
         cnn_logo_exists = exists(cnn_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
