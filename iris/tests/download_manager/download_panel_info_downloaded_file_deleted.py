@@ -15,6 +15,7 @@ class Test(BaseTest):
         self.test_suite_id = '1827'
         self.locales = ['en-US']
         self.blocked_by = {'id': '1513494', 'platform': [Platform.LINUX]}
+        self.blocked_by = {'id': 'issue_1917', 'platform': Platform.MAC}
 
     def setup(self):
         """Test case setup
@@ -55,13 +56,19 @@ class Test(BaseTest):
         delete_selected_file()
 
         try:
+            expected = wait_vanish(DownloadManager.DOWNLOADS_FOLDER, 10)
+            assert_true(self, expected, 'The downloads folder was closed.')
+        except FindError:
+            raise FindError('The downloads folder was not closed.')
+
+        # Close download folder window.
+        click_window_control('close')
+
+        try:
             expected = wait_vanish(DownloadFiles.FOLDER_VIEW_5MB_HIGHLIGHTED, 10)
             assert_true(self, expected, 'The file was successfully deleted.')
         except FindError:
             raise FindError('The file was not deleted.')
-
-        # Close download folder window.
-        close_tab()
 
         # Switch the focus on firefox browser.
         click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
