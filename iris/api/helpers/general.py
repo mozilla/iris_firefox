@@ -1143,7 +1143,7 @@ def restore_window_from_taskbar(option=None):
     time.sleep(Settings.UI_DELAY)
 
 
-def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, num_of_scroll_iterations=10, timeout=5):
+def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, num_of_scroll_iterations=10, timeout=3):
     """
     Scrolls until specified image pattern is found.
 
