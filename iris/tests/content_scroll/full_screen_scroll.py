@@ -16,22 +16,22 @@ class Test(BaseTest):
         self.locale = ['en-US']
 
     def run(self):
-        image_on_page_pattern = Pattern('soap_env_image.png')
         external_links_pattern = Pattern('external_links.png')
         wiki_logo_pattern = Pattern('wiki_logo.png')
-        if Settings.is_mac():
-            finder_logo_pattern = Pattern('finder_logo.png')
+        soap_article_title = Pattern('soap_article_title.png')
+        arrow_scroll_length = 5
+        scroll_length = SCREEN_HEIGHT if Settings.is_windows() else 5
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        page_loaded = exists(wiki_logo_pattern, DEFAULT_SYSTEM_DELAY)
+        page_loaded = exists(wiki_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, page_loaded, 'Page loaded.')
 
         full_screen()
         try:
             if Settings.is_mac():
-                full_screen_on = wait_vanish(finder_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+                full_screen_on = wait_vanish(MainWindow.UNHOVERED_MAIN_RED_CONTROL, DEFAULT_FIREFOX_TIMEOUT)
             else:
-                full_screen_on = wait_vanish(wiki_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+                full_screen_on = wait_vanish(MainWindow.CLOSE_BUTTON, DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, full_screen_on, 'Full screen on')
         except FindError:
             raise FindError('Not entered full screen mode')
@@ -41,72 +41,54 @@ class Test(BaseTest):
         click(find(LocalWeb.SOAP_WIKI_SOAP_LABEL))  # Clicking pattern may cause link clicking
 
         # Mouse scroll
-        if Settings.is_windows():
-            scroll_length = SCREEN_HEIGHT
-        elif Settings.is_linux():
-            scroll_length = 15
-        else:
-            scroll_length = 60
-
-        # [scroll(-scroll_length) for _ in range(2)]
-        mouse_scroll_done = False
-        for _ in range(100):
-            mouse_scroll_done = exists(image_on_page_pattern)
-            if mouse_scroll_done:
-                break
-
+        mouse_scroll_done = scroll_until_pattern_found(external_links_pattern, scroll, (-scroll_length,),
+                                                       timeout=DEFAULT_UI_DELAY)
         assert_true(self, mouse_scroll_done, 'Mouse scroll down done')
 
-        # [scroll(scroll_length) for _ in range(2)]
-
-        returned_home_mouse_scroll = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        returned_home_mouse_scroll = scroll_until_pattern_found(soap_article_title, scroll, (scroll_length,),
+                                                                timeout=DEFAULT_UI_DELAY)
         assert_true(self, returned_home_mouse_scroll, 'Returned to page top using mouse scroll.')
 
         # arrows scroll
-        if Settings.is_mac():
-            arrow_scroll_length = 40
-        else:
-            arrow_scroll_length = 30
-        scroll_down(arrow_scroll_length)
-        arrows_scroll_done = exists(image_on_page_pattern)
+        arrows_scroll_done = scroll_until_pattern_found(external_links_pattern, scroll_down, (arrow_scroll_length,), 30,
+                                                        DEFAULT_UI_DELAY)
         assert_true(self, arrows_scroll_done, 'Arrows scroll done')
 
-        scroll_up(arrow_scroll_length)
-        returned_home_arrows = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        returned_home_arrows = scroll_until_pattern_found(soap_article_title, scroll_up, (arrow_scroll_length,), 30,
+                                                          DEFAULT_UI_DELAY)
         assert_true(self, returned_home_arrows, 'Returned to page top using arrows.')
 
         # space key scroll
-        [page_down() for _ in range(2)]
-        arrows_scroll_done = exists(image_on_page_pattern)
+        arrows_scroll_done = scroll_until_pattern_found(external_links_pattern, type, (Key.SPACE,),
+                                                        timeout=DEFAULT_UI_DELAY)
         assert_true(self, arrows_scroll_done, '"Space" scroll done')
 
-        [page_up() for _ in range(2)]
-        returned_home_shift_space = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        returned_home_shift_space = scroll_until_pattern_found(soap_article_title, type, (Key.SPACE, KeyModifier.SHIFT),
+                                                               timeout=DEFAULT_UI_DELAY)
         assert_true(self, returned_home_shift_space, 'Returned to page top using "Shift+Space".')
 
         # page down/up scroll
-        [type(Key.PAGE_DOWN) for _ in range(2)]
-        page_down_scroll_done = exists(image_on_page_pattern)
+        page_down_scroll_done = scroll_until_pattern_found(external_links_pattern, type, (Key.PAGE_DOWN,),
+                                                           timeout=DEFAULT_UI_DELAY)
         assert_true(self, page_down_scroll_done, '"Space" scroll done')
 
-        [type(Key.PAGE_UP) for _ in range(2)]
-        returned_home_page_up = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        returned_home_page_up = scroll_until_pattern_found(soap_article_title, type, (Key.PAGE_UP,),
+                                                           timeout=DEFAULT_UI_DELAY)
         assert_true(self, returned_home_page_up, 'Returned to page top using "Page Up".')
 
         # Ctrl(Cmd)+arrow scroll
         if Settings.is_mac():
-            type(Key.DOWN, KeyModifier.CMD)
-
+            page_bottom_reached = scroll_until_pattern_found(external_links_pattern, type,
+                                                             (Key.DOWN, KeyModifier.CMD), timeout=DEFAULT_UI_DELAY)
         else:
-            type(Key.DOWN, KeyModifier.CTRL)
-
-        page_bottom_reached = exists(external_links_pattern)
+            page_bottom_reached = scroll_until_pattern_found(external_links_pattern, type,
+                                                             (Key.DOWN, KeyModifier.CTRL), timeout=DEFAULT_UI_DELAY)
         assert_true(self, page_bottom_reached, '"Ctrl+Down" scroll done')
 
         if Settings.is_mac():
-            type(Key.UP, KeyModifier.CMD)
-
+            returned_home_ctrl_up = scroll_until_pattern_found(soap_article_title, type, (Key.UP, KeyModifier.CMD),
+                                                               timeout=DEFAULT_UI_DELAY)
         else:
-            type(Key.UP, KeyModifier.CTRL)
-        returned_home_ctrl_up = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+            returned_home_ctrl_up = scroll_until_pattern_found(soap_article_title, type, (Key.UP, KeyModifier.CTRL),
+                                                               timeout=DEFAULT_UI_DELAY)
         assert_true(self, returned_home_ctrl_up, 'Returned to page top using "Ctrl+Up".')
