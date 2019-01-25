@@ -30,6 +30,9 @@ class Test(BaseTest):
         link_from_page_pattern = Pattern('link.png')
         not_matching_message_pattern = Pattern('drop_not_matching.png')
 
+        close_window()
+        new_private_window()
+
         if not Settings.is_mac():
             minimize_window()
             iris_tab_location = find(iris_tab_favicon_pattern)
