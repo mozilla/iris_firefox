@@ -42,17 +42,23 @@ class Test(BaseTest):
 
         # Mouse scroll
         if Settings.is_windows():
-            scroll_length = SCREEN_HEIGHT * 10
+            scroll_length = SCREEN_HEIGHT
         elif Settings.is_linux():
             scroll_length = 15
         else:
             scroll_length = 60
 
-        [scroll(-scroll_length) for _ in range(2)]
-        mouse_scroll_done = exists(image_on_page_pattern)
+        # [scroll(-scroll_length) for _ in range(2)]
+        mouse_scroll_done = False
+        for _ in range(100):
+            mouse_scroll_done = exists(image_on_page_pattern)
+            if mouse_scroll_done:
+                break
+
         assert_true(self, mouse_scroll_done, 'Mouse scroll down done')
 
-        [scroll(scroll_length) for _ in range(2)]
+        # [scroll(scroll_length) for _ in range(2)]
+
         returned_home_mouse_scroll = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         assert_true(self, returned_home_mouse_scroll, 'Returned to page top using mouse scroll.')
 
