@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '165087'
         self.test_suite_id = '102'
         self.locales = ['en-US']
-        # self.blocked_by = {'id': '1837', 'platform': Platform.ALL}
+        self.blocked_by = {'id': '1837', 'platform': Platform.ALL}
 
     def setup(self):
         BaseTest.setup(self)
@@ -52,9 +52,13 @@ class Test(BaseTest):
         click(drop_image_data_radiobutton_pattern)
         drop_image_data_selected = exists(drop_image_data_radiobutton_selected_pattern)
         assert_true(self, drop_image_data_selected,
-                    'The drop-image-data changed color to red which indicates that it has been selected.')
+                    'The \'drop-image-data\' changed color to red which indicates that it has been selected.')
 
-        type(Key.DOWN)
+        drop_result_message_displayed = scroll_until_pattern_found(not_matching_message_pattern, type, (Key.DOWN,))
+        assert_true(self, drop_result_message_displayed,
+                    'Area where the drop result verification message is supposed '
+                    'to be displayed is present on the page after the scrolling')
+
         new_window()
         opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED)
         new_window_drop_location = Location(SCREEN_WIDTH * 0.55, SCREEN_HEIGHT / 20)
@@ -70,7 +74,7 @@ class Test(BaseTest):
         drag_drop(image_from_page_pattern, drop_here_pattern)
         not_matching_message_appears = exists(not_matching_message_pattern)
         assert_false(self, not_matching_message_appears,
-                     'Matching appears under the Drop Stuff Here area, the expected result is '
+                     '\'Matching\' appears under the \'Drop Stuff Here\' area, the expected result is '
                      'identical to result and the image is displayed lower in the page.')
 
         link_displayed = exists(link_from_page_pattern)
@@ -78,7 +82,7 @@ class Test(BaseTest):
 
         drag_drop(link_from_page_pattern, drop_here_pattern)
         not_matching_message_appears = exists(not_matching_message_pattern)
-        assert_true(self, not_matching_message_appears, 'Not Matching appears under the Drop Stuff Here '
+        assert_true(self, not_matching_message_appears, '\'Not Matching\' appears under the Drop Stuff Here '
                                                         'area, the expected result is different to result.')
 
         close_window()
