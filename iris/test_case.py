@@ -34,7 +34,7 @@ class BaseTest(object):
         self.tags = ''
         self.test_case_id = ''
         self.test_suite_id = ''
-        self.blocked_by = ''
+        self.blocked_by = {'id': '', 'platform': []}
         self.firefox_runner = None
         self.browser = None
         self.base_local_web_url = ''

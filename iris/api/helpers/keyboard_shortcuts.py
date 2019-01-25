@@ -101,14 +101,24 @@ def stop_page_load():
 
 # Keyboard shortcuts for Current Page.
 
-def scroll_down():
-    """Scroll down one increment (equivalent to 3 mousewheel steps)."""
-    type(text=Key.DOWN)
+def scroll_down(num=1):
+    """Scroll down one increment (equivalent to 3 mousewheel steps).
+
+    :param num: The Number of times to scroll down.
+    :return: None.
+    """
+    for x in range(num):
+        type(text=Key.DOWN)
 
 
-def scroll_up():
-    """Scroll up one increment (equivalent to 3 mousewheel steps)."""
-    type(text=Key.UP)
+def scroll_up(num=1):
+    """Scroll up one increment (equivalent to 3 mousewheel steps).
+
+    :param num: The number of times to scroll up.
+    :return: None.
+    """
+    for x in range(num):
+        type(text=Key.UP)
 
 
 def page_down():

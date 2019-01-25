@@ -14,12 +14,24 @@ class Test(BaseTest):
         self.test_case_id = '99481'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        self.exclude = Platform.LINUX
-        self.blocked_by = '1513494'
+        self.blocked_by = {'id': '1513494', 'platform': [Platform.LINUX]}
+
+    def setup(self):
+        """Test case setup
+
+        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+        return
 
     def run(self):
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(20)
         download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
 
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
@@ -28,11 +40,11 @@ class Test(BaseTest):
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED, 10)
         assert_true(self, expected, 'Small size file download is completed.')
 
-        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
+        expected = exists(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER, 10)
         assert_true(self, expected, 'Containing folder button is available.')
 
         # Navigate to Downloads folder.
-        click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
+        click(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER)
 
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
         assert_true(self, expected, 'Downloads folder is displayed.')
@@ -61,3 +73,12 @@ class Test(BaseTest):
 
         expected = exists(DownloadManager.Downloads.FILE_MOVED_OR_MISSING, 10)
         assert_true(self, expected, 'Previously downloaded file has status: \'File moved or missing\'.')
+
+    def teardown(self):
+        # Cancel all 'in progress' downloads.
+        cancel_and_clear_downloads()
+        # Refocus the firefox window.
+        exists(LocationBar.STAR_BUTTON_UNSTARRED, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
+
+        downloads_cleanup()
