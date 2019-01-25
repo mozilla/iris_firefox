@@ -1266,3 +1266,52 @@ def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, del
         time.sleep(delay_between_presses)
 
     return pattern_found
+
+
+def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, num_of_scroll_iterations,
+                               delay_between_scroll_iterations):
+    """
+    Scrolls until specified image pattern is found.
+
+    :param image_pattern: Image Pattern to search.
+    :param scroll_function: Scrolling function (e.g. type, scroll, etc.)
+    :param scroll_params: Tuple of params to pass in the scroll_function (e.g. Key.UP for tuple).
+            Tuple should contains from 1 to 2 items.
+    :param num_of_scroll_iterations: Number of scrolling iterations.
+    :param delay_between_scroll_iterations: Number of seconds to wait between scrolling iterations.
+    :return:
+    """
+
+    scroll_arg, scroll_modifier = None
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not callable(scroll_function):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not isinstance(scroll_params, tuple):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if len(scroll_params) == 2:
+        scroll_arg, scroll_modifier = scroll_params
+    elif len(scroll_params) == 1:
+        scroll_arg, = scroll_params
+    else:
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_scroll_iterations):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        if scroll_modifier is None:
+            scroll_function(scroll_arg)
+        else:
+            scroll_function(scroll_arg, scroll_modifier)
+
+        time.sleep(delay_between_scroll_iterations)
+
+    return pattern_found
