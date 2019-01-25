@@ -1268,17 +1268,17 @@ def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, del
     return pattern_found
 
 
-def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, num_of_scroll_iterations,
-                               delay_between_scroll_iterations):
+def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, num_of_scroll_iterations=10, timeout=5):
     """
     Scrolls until specified image pattern is found.
 
     :param image_pattern: Image Pattern to search.
-    :param scroll_function: Scrolling function (e.g. type, scroll, etc.)
-    :param scroll_params: Tuple of params to pass in the scroll_function (e.g. Key.UP for tuple).
-            Tuple should contains from 1 to 2 items.
+    :param scroll_function: Scrolling function or any callable object (e.g. type, scroll, etc.)
+    :param scroll_params: Tuple of params to pass in the scroll_function
+            (e.g. (Key.UP, ) or (Key.UP, KeyModifier.CTRL) for the type function).
+            NOTE: Tuple should contains from 1 to 2 items.
     :param num_of_scroll_iterations: Number of scrolling iterations.
-    :param delay_between_scroll_iterations: Number of seconds to wait between scrolling iterations.
+    :param timeout: Number of seconds passed to the 'timeout' param of the 'exist' function.
     :return: Boolean. True if image pattern found during scrolling, False otherwise
     """
 
@@ -1304,7 +1304,7 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
     pattern_found = False
 
     for _ in range(num_of_scroll_iterations):
-        pattern_found = exists(image_pattern)
+        pattern_found = exists(image_pattern, timeout)
 
         if pattern_found:
             break
@@ -1313,8 +1313,6 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
             scroll_function(scroll_arg)
         else:
             scroll_function(scroll_arg, scroll_modifier)
-
-        time.sleep(delay_between_scroll_iterations)
 
     return pattern_found
 
