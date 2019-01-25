@@ -1279,10 +1279,11 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
             Tuple should contains from 1 to 2 items.
     :param num_of_scroll_iterations: Number of scrolling iterations.
     :param delay_between_scroll_iterations: Number of seconds to wait between scrolling iterations.
-    :return:
+    :return: Boolean. True if image pattern found during scrolling, False otherwise
     """
 
-    scroll_arg, scroll_modifier = None
+    scroll_arg = None
+    scroll_modifier = None
 
     if not isinstance(image_pattern, Pattern):
         raise ValueError(INVALID_GENERIC_INPUT)
@@ -1304,6 +1305,7 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
 
     for _ in range(num_of_scroll_iterations):
         pattern_found = exists(image_pattern)
+
         if pattern_found:
             break
 
@@ -1315,3 +1317,4 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
         time.sleep(delay_between_scroll_iterations)
 
     return pattern_found
+
