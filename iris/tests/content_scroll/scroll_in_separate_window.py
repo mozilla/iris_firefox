@@ -28,8 +28,11 @@ class Test(BaseTest):
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
+        soap_wiki_test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_test_site_opened, 'The Soap Wiki test site is properly loaded')
+
+        soap_wiki_tab_displayed = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, soap_wiki_tab_displayed, 'The Soap wiki tab is displayed')
 
         initial_wiki_tab_location = find(soap_wiki_tab_pattern)
 
