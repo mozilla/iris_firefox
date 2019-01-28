@@ -51,7 +51,7 @@ class Test(BaseTest):
         assert_true(self, presentation_mode_icon_exists, 'Presentation mode is available')
         click(presentation_mode_icon_pattern)
 
-        presentation_mode_enabled_exists = exists(presentation_mode_enabled_pattern, DEFAULT_UI_DELAY)
+        presentation_mode_enabled_exists = exists(presentation_mode_enabled_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, presentation_mode_enabled_exists, 'Presentation Mode is successfully enabled')
 
         after_scroll_content_exists = \
