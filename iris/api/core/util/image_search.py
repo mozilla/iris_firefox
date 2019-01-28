@@ -99,6 +99,8 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
             else:
                 break
 
+        return points
+
 
 def _match_template_multiple(needle, haystack, threshold=0.99):
     """Search for needle in stack (multiple matches).
