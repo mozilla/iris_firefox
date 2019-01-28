@@ -102,7 +102,7 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
         return points
 
 
-def _match_template_multiple(needle, haystack, threshold=0.99):
+def _match_template_multiple(needle, haystack, threshold=0.999):
     """Search for needle in stack (multiple matches).
 
     :param Pattern needle:  Image details (needle).
