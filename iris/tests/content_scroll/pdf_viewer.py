@@ -54,10 +54,15 @@ class Test(BaseTest):
         presentation_mode_enabled_exists = exists(presentation_mode_enabled_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, presentation_mode_enabled_exists, 'Presentation Mode is successfully enabled')
 
+        if Settings.is_linux():
+            value = DEFAULT_UI_DELAY_LONG
+        else:
+            value = DEFAULT_UI_DELAY
+
         after_scroll_content_exists = \
-            scroll_until_pattern_found(after_scroll_content_presentation_mode_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
+            scroll_until_pattern_found(after_scroll_content_presentation_mode_pattern, scroll, (-value, None), 100, value)
         assert_true(self, after_scroll_content_exists, 'Scroll Down using mouse wheel is successful')
 
         before_scroll_content_exists = \
-            scroll_until_pattern_found(presentation_mode_content_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
+            scroll_until_pattern_found(presentation_mode_content_pattern, scroll, (value, None), 100, value)
         assert_true(self, before_scroll_content_exists, 'Scroll Up using mouse wheel is successful')
