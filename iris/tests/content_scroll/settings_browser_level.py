@@ -20,9 +20,9 @@ class Test(BaseTest):
         after_scroll_content_pattern = Pattern('after_scroll_content.png')
 
         if Settings.is_windows():
-            value = SCREEN_HEIGHT
+            value = SCREEN_HEIGHT/2
         else:
-            value = 25
+            value = 10
 
         # Mousewheel scrolling preference is 200
         change_preference('mousewheel.default.delta_multiplier_y', '200')
