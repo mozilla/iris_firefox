@@ -20,6 +20,11 @@ class Test(BaseTest):
         scroll_content_after_zoomed_in_pattern = Pattern('after_zoomed_in_content.png')
         after_scroll_content_pattern = Pattern('after_scroll_content.png')
 
+        if Settings.is_windows():
+            value = SCREEN_HEIGHT
+        else:
+            value = 50
+
         navigate('http://www.eginstill.com/')
         location_to_open = Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         time.sleep(DEFAULT_FIREFOX_TIMEOUT)
@@ -31,14 +36,14 @@ class Test(BaseTest):
                     'The page content is loaded')
         click(scroll_content_pattern)
 
-        scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-SCREEN_HEIGHT, None), 100, DEFAULT_FX_DELAY)
-        after_scroll_content_exists = exists(after_scroll_content_pattern, DEFAULT_UI_DELAY)
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
                     'Scroll up and down using mouse wheel on the long web page is successful')
 
         [zoom_in() for _ in range(2)]
 
-        scroll_until_pattern_found(scroll_content_after_zoomed_in_pattern, scroll, (SCREEN_HEIGHT, None), 100, DEFAULT_FX_DELAY)
-        after_scroll_content_exists = exists(scroll_content_after_zoomed_in_pattern, 1)
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(scroll_content_after_zoomed_in_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
                     'Scroll up and down using mouse wheel after zooming is successful')
