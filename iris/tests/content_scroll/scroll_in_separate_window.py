@@ -58,64 +58,33 @@ class Test(BaseTest):
 
         # Scrolling test in the new window
         # Scroll by mouse wheel
-        for times_scroll_down in range(100):
-            scroll(-mouse_wheel_steps)
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "New window: Successfully scrolled to footer by mouse scroll")
-                break
+        scroll_by_mouse_wheel_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern,
+                                                                     scroll, (-mouse_wheel_steps,))
+        assert_true(self, scroll_by_mouse_wheel_to_footer, 'Successfully scrolled to footer by mouse scroll')
 
-        for times_scroll_up in range(100):
-            scroll(mouse_wheel_steps)
-            soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-            if soap_wiki_header_mark:
-                assert_true(self, soap_wiki_header_mark, "New window: Successfully scrolled from footer to "
-                                                         "header by mouse scroll")
-                break
+        scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern,
+                                                                     scroll, (mouse_wheel_steps,))
+        assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
         # Scroll by pressing arrows
-        for times_arrow_press in range(100):
-            repeat_key_down(30)
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "New window: Successfully scrolled to footer by pressing "
-                                                         "arrows")
-                break
+        scroll_by_arrows_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, repeat_key_down, (30,))
+        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
 
-        for times_arrow_press in range(100):
-            repeat_key_up(30)
-            soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-            if soap_wiki_header_mark:
-                assert_true(self, soap_wiki_header_mark, "New window: Successfully scrolled from footer to header "
-                                                         "by pressing arrows")
-                break
+        scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern, repeat_key_up, (30,))
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
 
         # Scroll by pressing Page Up/Page Down
-        for times_page_down_press in range(10):
-            page_down()
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "New window: Successfully scrolled to footer by pressing "
-                                                         "Page Down")
-                break
+        scroll_by_page_down_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, page_down, (None,))
+        assert_true(self, scroll_by_page_down_to_footer, 'Successfully scrolled to footer by pressing Page Down')
 
-        for times_page_up_press in range(10):
-            page_up()
-            soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-            if soap_wiki_header_mark:
-                assert_true(self, soap_wiki_header_mark, "New window: Successfully scrolled from footer to header "
-                                                         "by pressing Page Up")
-                break
+        scroll_by_page_up_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern, page_up, (None,))
+        assert_true(self, scroll_by_page_up_to_header, 'Successfully scrolled to header by pressing Page Up')
 
         # Scroll by pressing Space
-        for times_space_press in range(10):
-            type(Key.SPACE)
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "New window: Successfully scrolled to footer by pressing "
-                                                         "Space")
-                page_home()
-                break
+        scroll_by_page_down_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, type, (Key.SPACE,))
+        assert_true(self, scroll_by_page_down_to_footer, 'Successfully scrolled to footer by pressing Space')
+
+        page_home()
 
         # Scroll by pressing Ctrl+Down/Ctrl+Up or Cmd+Down/Cmd+Up
         if Settings.is_mac():
@@ -124,8 +93,7 @@ class Test(BaseTest):
             type(Key.DOWN, modifier=KeyModifier.CTRL)
 
         soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-        assert_true(self, soap_wiki_footer_mark, "New window: Successfully scrolled to footer by pressing "
-                                                 "Ctrl+Down or Cmd+Down")
+        assert_true(self, soap_wiki_footer_mark, 'Successfully scrolled to footer by pressing Ctrl+Down or Cmd+Down')
 
         if Settings.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
@@ -133,8 +101,8 @@ class Test(BaseTest):
             type(Key.UP, modifier=KeyModifier.CTRL)
 
         soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-        assert_true(self, soap_wiki_header_mark, "New window: Successfully scrolled from footer to header by "
-                                                 "pressing Ctrl+Up or Cmd+Up")
+        assert_true(self, soap_wiki_header_mark, 'Successfully scrolled from footer to header by '
+                                                 'pressing Ctrl+Up or Cmd+Up')
 
         # Move the tab back into initial window
         soap_wiki_new_window_tab_location = find(soap_wiki_tab_pattern)
@@ -160,65 +128,33 @@ class Test(BaseTest):
 
         # Scrolling test in the initial window
         # Scroll by mouse wheel
-        for times_scroll_down in range(100):
-            scroll(-mouse_wheel_steps)
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "Initial window: Successfully scrolled to footer by mouse "
-                                                         "scroll")
-                break
+        scroll_by_mouse_wheel_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern,
+                                                                     scroll, (-mouse_wheel_steps,))
+        assert_true(self, scroll_by_mouse_wheel_to_footer, 'Successfully scrolled to footer by mouse scroll')
 
-        for times_scroll_up in range(100):
-            scroll(mouse_wheel_steps)
-            soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-            if soap_wiki_header_mark:
-                assert_true(self, soap_wiki_header_mark, "Initial window: Successfully scrolled from footer to "
-                                                         "header by mouse scroll")
-                break
+        scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern,
+                                                                     scroll, (mouse_wheel_steps,))
+        assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
         # Scroll by pressing arrows
-        for times_arrow_press in range(100):
-            repeat_key_down(30)
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "Initial window: Successfully scrolled to footer by pressing "
-                                                         "arrows")
-                break
+        scroll_by_arrows_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, repeat_key_down, (30,))
+        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
 
-        for times_arrow_press in range(100):
-            repeat_key_up(30)
-            soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-            if soap_wiki_header_mark:
-                assert_true(self, soap_wiki_header_mark, "Initial window: Successfully scrolled from footer to header "
-                                                         "by pressing arrows")
-                break
+        scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern, repeat_key_up, (30,))
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
 
         # Scroll by pressing Page Up/Page Down
-        for times_page_down_press in range(10):
-            page_down()
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "Initial window: Successfully scrolled to footer by pressing "
-                                                         "Page Down")
-                break
+        scroll_by_page_down_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, page_down, (None,))
+        assert_true(self, scroll_by_page_down_to_footer, 'Successfully scrolled to footer by pressing Page Down')
 
-        for times_page_up_press in range(10):
-            page_up()
-            soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-            if soap_wiki_header_mark:
-                assert_true(self, soap_wiki_header_mark, "Initial window: Successfully scrolled from footer to header "
-                                                         "by pressing Page Up")
-                break
+        scroll_by_page_up_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern, page_up, (None,))
+        assert_true(self, scroll_by_page_up_to_header, 'Successfully scrolled to header by pressing Page Up')
 
         # Scroll by pressing Space
-        for times_space_press in range(10):
-            type(Key.SPACE)
-            soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-            if soap_wiki_footer_mark:
-                assert_true(self, soap_wiki_footer_mark, "Initial window: Successfully scrolled to footer by pressing "
-                                                         "Space")
-                page_home()
-                break
+        scroll_by_page_down_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, type, (Key.SPACE,))
+        assert_true(self, scroll_by_page_down_to_footer, 'Successfully scrolled to footer by pressing Space')
+
+        page_home()
 
         # Scroll by pressing Ctrl+Down/Ctrl+Up or Cmd+Down/Cmd+Up
         if Settings.is_mac():
@@ -226,18 +162,15 @@ class Test(BaseTest):
         else:
             type(Key.DOWN, modifier=KeyModifier.CTRL)
 
-        soap_wiki_footer_mark = exists(soap_wiki_footer_pattern)
-        assert_true(self, soap_wiki_footer_mark, "Initial window: Successfully scrolled to footer by pressing "
-                                                 "Ctrl+Down or Cmd+Down")
+        soap_wiki_footer_mark_initial = exists(soap_wiki_footer_pattern)
+        assert_true(self, soap_wiki_footer_mark_initial, 'Successfully scrolled to footer by pressing Ctrl+Down '
+                                                         'or Cmd+Down')
 
         if Settings.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
         else:
             type(Key.UP, modifier=KeyModifier.CTRL)
 
-        soap_wiki_header_mark = exists(soap_wiki_header_mark_pattern)
-        assert_true(self, soap_wiki_header_mark, "Initial window: Successfully scrolled from footer to header by "
-                                                 "pressing Ctrl+Up or Cmd+Up")
-
-
-
+        soap_wiki_header_mark_initial = exists(soap_wiki_header_mark_pattern)
+        assert_true(self, soap_wiki_header_mark_initial, 'Successfully scrolled from footer to header by '
+                                                         'pressing Ctrl+Up or Cmd+Up')
