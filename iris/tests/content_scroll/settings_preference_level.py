@@ -79,7 +79,7 @@ class Test(BaseTest):
 
         enabling_unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern,
                                                                 DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, enabling_unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is disabled')
+        assert_true(self, enabling_unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is enabled')
 
         click(unchecked_use_smooth_scrolling_pattern)
 
