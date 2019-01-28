@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = "Scrolling works properly on a website that has been moved to a different window."
-        self.test_case_id = "C4657"
+        self.test_case_id = "4657"
         self.test_suite_id = "102"
         self.locale = ["en-US"]
 
