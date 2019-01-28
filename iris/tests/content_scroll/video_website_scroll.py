@@ -35,27 +35,19 @@ class Test(BaseTest):
         hover(focusing_inside_the_page)
 
         # Scroll by mouse wheel
-        for times_scroll_down in range(20):
-            scroll(-mouse_wheel_steps)
-            youtube_subscribe_button_displayed = exists(youtube_subscribe_button_pattern)
-            if youtube_subscribe_button_displayed:
-                assert_true(self, youtube_subscribe_button_displayed, 'Successfully scrolled to comment section'
-                                                                      ' by mouse scroll')
-                break
+        youtube_subscribe_button_displayed = scroll_until_pattern_found(youtube_subscribe_button_pattern,
+                                                                        scroll, (-mouse_wheel_steps,))
 
         for times_scroll_down in range(20):
             scroll(-mouse_wheel_steps)
-            youtube_subscribe_button_displayed = exists(youtube_subscribe_button_pattern)
-            if not youtube_subscribe_button_displayed:
-                assert_false(self, youtube_subscribe_button_displayed, 'Successfully scrolled to comment section'
-                                                                       ' by mouse scroll')
+            youtube_subscribe_button_disappeared = exists(youtube_subscribe_button_pattern)
+            if not youtube_subscribe_button_disappeared:
                 break
 
-        for times_scroll_up in range(20):
-            scroll(mouse_wheel_steps)
-            hover(focusing_inside_the_page)
-            top_of_the_page_destinated = exists(youtube_autoplay_switch_pattern)
-            if top_of_the_page_destinated:
-                assert_true(self, top_of_the_page_destinated, 'Successfully scrolled to the top of the page by mouse '
-                                                              'scroll')
-                break
+        youtube_subscribe_button_disappeared = exists(youtube_subscribe_button_pattern)
+        assert_false(self, youtube_subscribe_button_disappeared, 'Successfully scrolled to comment section'
+                                                                 ' by mouse scroll')
+
+        top_of_the_page_destinated = scroll_until_pattern_found(youtube_autoplay_switch_pattern,
+                                                                scroll, (mouse_wheel_steps,))
+        assert_true(self, top_of_the_page_destinated, 'Successfully scrolled to the top of the page by mouse scroll')
