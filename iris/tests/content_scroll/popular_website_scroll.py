@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Scrolling works properly on a website that has been moved to a different window."
-        self.test_case_id = "C4657"
+        self.meta = "Scrolling works properly on popular websites. "
+        self.test_case_id = "C4664"
         self.test_suite_id = "102"
         self.locale = ["en-US"]
 
@@ -29,8 +29,7 @@ class Test(BaseTest):
         soap_wiki_test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_wiki_test_site_opened, 'The Soap Wiki test site is properly loaded')
 
-        location_to_click_inside_the_page = find(soap_wiki_header_mark_pattern).left(10)
-        click(location_to_click_inside_the_page)
+        click(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
         # Scroll by mouse wheel
         scroll_by_mouse_wheel_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern,
