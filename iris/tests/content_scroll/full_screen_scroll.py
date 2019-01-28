@@ -47,11 +47,11 @@ class Test(BaseTest):
         click(find(LocalWeb.SOAP_WIKI_SOAP_LABEL))  # Clicking pattern may cause link clicking
 
         # Mouse scroll
-        mouse_scroll_done = scroll_until_pattern_found(wikimedia_logo_pattern, scroll, (-scroll_length,), 15,
+        mouse_scroll_done = scroll_until_pattern_found(wikimedia_logo_pattern, scroll, (-scroll_length,), 20,
                                                        DEFAULT_UI_DELAY)
         assert_true(self, mouse_scroll_done, 'Mouse scroll down done')
 
-        returned_home_mouse_scroll = scroll_until_pattern_found(soap_article_title, scroll, (scroll_length,), 15,
+        returned_home_mouse_scroll = scroll_until_pattern_found(soap_article_title, scroll, (scroll_length,), 20,
                                                                 DEFAULT_UI_DELAY)
         assert_true(self, returned_home_mouse_scroll, 'Returned to page top using mouse scroll.')
 
