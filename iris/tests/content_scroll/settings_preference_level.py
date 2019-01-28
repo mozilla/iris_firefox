@@ -18,7 +18,8 @@ class Test(BaseTest):
     def run(self):
         checked_use_smooth_scrolling_pattern = Pattern('checked_use_smooth_scrolling.png')
         unchecked_use_smooth_scrolling_pattern = Pattern('unchecked_use_smooth_scrolling.png')
-        scroll_content_pattern = Pattern('soap_wiki_content.png')
+        history_paragraph_pattern = Pattern('history_paragraph.png')
+        soap_wiki_header_pattern = Pattern('soap_wiki_header.png')
 
         if Settings.is_windows():
             scroll_height = SCREEN_HEIGHT*2
@@ -28,93 +29,83 @@ class Test(BaseTest):
         # Use smooth scrolling is disabled
         navigate('about:preferences#general')
 
-        inner_location = Location(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
-        mouse_move(inner_location)
-        type(Key.TAB)
-        page_end()
+        preferences_page_downloaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
+                                             DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, preferences_page_downloaded, 'The Preferences page is downloaded')
 
-        checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is on the page')
+        paste('Use autoscrolling')
+
+        disabling_checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern,
+                                                               DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, disabling_checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is on the page')
 
         click(checked_use_smooth_scrolling_pattern)
 
-        unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is disabled')
+        disabling_unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern,
+                                                                 DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, disabling_unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is disabled')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
-        click(scroll_content_pattern)
+        soap_wiki_test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
+        assert_true(self, soap_wiki_test_site_opened, 'The Soap Wiki test site is properly loaded')
 
-        [scroll(-scroll_height) for _ in range(5)]
-        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After scrolling down using mouse wheel without smooth scrolling content is gone')
-        [scroll(scroll_height) for _ in range(5)]
+        click(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
-        after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful')
+        # Scroll by mouse wheel
+        scroll_by_mouse_wheel_to_footer = scroll_until_pattern_found(history_paragraph_pattern,
+                                                                     scroll, (-scroll_height,))
+        assert_true(self, scroll_by_mouse_wheel_to_footer, 'Successfully scrolled to footer by mouse scroll')
 
-        # Scroll up and down using arrow keys
-        before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists, 'Content before scrolling using arrow keys is on the page')
+        scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(soap_wiki_header_pattern,
+                                                                     scroll, (scroll_height,))
+        assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
-        repeat_key_down(20)
-        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After scrolling down using arrow keys without smooth scrolling content is gone')
-        repeat_key_up(20)
+        # Scroll by pressing arrows
+        scroll_by_arrows_to_footer = scroll_until_pattern_found(history_paragraph_pattern, repeat_key_down, (20,))
+        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
 
-        after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, after_scroll_content_exists, 'Scroll up and down using arrow keys is successful')
+        scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_pattern, repeat_key_up, (20,))
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
 
-        # Use smooth scrolling is enabled
+        # Use smooth scrolling is disabled
         navigate('about:preferences#general')
 
-        inner_location = Location(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
-        mouse_move(inner_location)
-        type(Key.TAB)
-        page_end()
+        preferences_page_downloaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
+                                             DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, preferences_page_downloaded, 'The Preferences page is downloaded')
 
-        unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is on the page')
+        paste('Use autoscrolling')
+
+        enabling_unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern,
+                                                                DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, enabling_unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is disabled')
 
         click(unchecked_use_smooth_scrolling_pattern)
 
-        checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is enabled')
+        enabling_checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern,
+                                                              DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, enabling_checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is on the page')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists,
-                    'Content before scrolling using mouse wheel is on the page after use smooth scrolling is enabled')
-        click(scroll_content_pattern)
+        soap_wiki_test_site_opened_again = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
+        assert_true(self, soap_wiki_test_site_opened_again, 'The Soap Wiki test site is properly loaded')
 
-        [scroll(-scroll_height) for _ in range(5)]
-        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After scrolling down using mouse wheel content is gone')
-        [scroll(scroll_height) for _ in range(5)]
+        click(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
-        after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, after_scroll_content_exists,
-                    'Scroll up and down using mouse wheel is successful after use smooth scrolling is enabled')
+        # Scroll by mouse wheel
+        scroll_by_mouse_wheel_to_footer = scroll_until_pattern_found(history_paragraph_pattern,
+                                                                     scroll, (-scroll_height,))
+        assert_true(self, scroll_by_mouse_wheel_to_footer, 'Successfully scrolled to footer by mouse scroll')
 
-        # Scroll up and down using arrow keys
-        before_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists,
-                    'Content before scrolling using arrow keys is on the page after use smooth scrolling is enabled')
+        scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(soap_wiki_header_pattern,
+                                                                     scroll, (scroll_height,))
+        assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
-        repeat_key_down(20)
-        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After scrolling down using arrow keys content is gone')
-        repeat_key_up(20)
+        # Scroll by pressing arrows
+        scroll_by_arrows_to_footer = scroll_until_pattern_found(history_paragraph_pattern, repeat_key_down, (20,))
+        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
 
-        after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, after_scroll_content_exists,
-                    'Scroll up and down using arrow keys is successful after use smooth scrolling is enabled')
+        scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_pattern, repeat_key_up, (20,))
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
