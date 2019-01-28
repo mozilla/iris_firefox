@@ -1151,7 +1151,7 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
     :param scroll_function: Scrolling function or any callable object (e.g. type, scroll, etc.)
     :param scroll_params: Tuple of params to pass in the scroll_function
             (e.g. (Key.UP, ) or (Key.UP, KeyModifier.CTRL) for the type function).
-            NOTE: Tuple should contains from 1 to 2 items.
+            NOTE: Tuple should contains from 0 (empty tuple) to 2 items.
     :param num_of_scroll_iterations: Number of scrolling iterations.
     :param timeout: Number of seconds passed to the 'timeout' param of the 'exist' function.
     :return: Boolean. True if image pattern found during scrolling, False otherwise
@@ -1173,6 +1173,8 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
         scroll_arg, scroll_modifier = scroll_params
     elif len(scroll_params) == 1:
         scroll_arg, = scroll_params
+    elif len(scroll_params) == 0:
+        pass
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
@@ -1184,7 +1186,9 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
         if pattern_found:
             break
 
-        if scroll_modifier is None:
+        if scroll_modifier is None and scroll_arg is None:
+            scroll_function()
+        elif scroll_modifier is None:
             scroll_function(scroll_arg)
         else:
             scroll_function(scroll_arg, scroll_modifier)
