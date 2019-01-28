@@ -20,7 +20,7 @@ class Test(BaseTest):
         wiki_logo_pattern = Pattern('wiki_logo.png')
         soap_article_title = Pattern('soap_article_title.png')
         arrow_scroll_length = 5
-        # scroll_length = SCREEN_HEIGHT if Settings.is_windows() else 20
+
         if Settings.is_windows():
             scroll_length = SCREEN_HEIGHT
         elif Settings.is_linux():
