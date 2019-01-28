@@ -46,20 +46,11 @@ class Test(BaseTest):
         click(click_inside_the_page_location)
 
         # Scroll by mouse wheel
-        for times_scroll_down in range(20):
-            scroll(-mouse_wheel_steps)
-            show_more_results_button_destinated = exists(show_more_results_button_pattern)
-            if show_more_results_button_destinated:
-                assert_true(self, show_more_results_button_destinated, 'Successfully scrolled to footer by mouse '
-                                                                       'scroll')
-                break
+        show_more_results_button_destinated = scroll_until_pattern_found(show_more_results_button_pattern,
+                                                                         scroll, (-mouse_wheel_steps,), 20)
+        assert_true(self, show_more_results_button_destinated, 'Successfully scrolled to footer by mouse scroll')
 
-        for times_scroll_up in range(20):
-            scroll(mouse_wheel_steps)
-            google_images_page_mark_destinated = exists(google_images_page_mark_pattern)
-            if google_images_page_mark_destinated:
-                assert_true(self, google_images_page_mark_destinated, 'Successfully scrolled from footer to '
-                                                                      'header by mouse scroll')
-                break
-
-
+        google_images_page_mark_destinated = scroll_until_pattern_found(google_images_page_mark_pattern,
+                                                                        scroll, (mouse_wheel_steps,), 20)
+        assert_true(self, google_images_page_mark_destinated, 'Successfully scrolled from footer to '
+                                                              'header by mouse scroll')
