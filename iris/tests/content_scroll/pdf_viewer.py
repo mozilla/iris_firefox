@@ -17,54 +17,47 @@ class Test(BaseTest):
 
     def run(self):
         content_scroll_pattern = Pattern('pdf_content.png')
+        after_scroll_content_pattern = Pattern('pdf_content_normal_mode.png')
         pdf_logo_pattern = Pattern('pdf_logo.png')
         presentation_mode_icon_pattern = Pattern('presentation_mode_icon.png')
-        presentation_mode_content = Pattern('presentation_mode_content.png')
+        presentation_mode_content_pattern = Pattern('presentation_mode_content.png')
         presentation_mode_enabled_pattern = Pattern('presentation_mode_enabled.png')
+        after_scroll_content_presentation_mode_pattern = Pattern('pdf_content_presentation_mode.png')
 
         if Settings.is_windows():
-            scroll_height = SCREEN_HEIGHT
+            value = SCREEN_HEIGHT
         else:
-            scroll_height = 50
+            value = 10
 
         pdf_file = self.get_asset_path('pdf.pdf')
         navigate(pdf_file)
 
+        # Normal mode scrolling
         pdf_logo_exists = exists(pdf_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, pdf_logo_exists, 'PDF url loaded successfully')
-
-        # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(content_scroll_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
-
         click(pdf_logo_pattern)
 
-        [scroll(-scroll_height) for _ in range(5)]
-        after_scroll_down_content_not_exists = exists(content_scroll_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists, 'Content after scrolling down is gone')
-        [scroll(scroll_height) for _ in range(5)]
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
+        assert_true(self, after_scroll_content_exists, 'Scroll Down using mouse wheel is successful')
 
-        after_scroll_content_exists = exists(content_scroll_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful')
+        before_scroll_content_exists = \
+            scroll_until_pattern_found(content_scroll_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
+        assert_true(self, before_scroll_content_exists,
+                    'Scroll Up using mouse wheel is successful')
 
-        # Scrolling using presentation mode
-        presentation_mode_icon_exists = exists(presentation_mode_icon_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, presentation_mode_icon_exists, 'Presentation Mode icon is on the page')
-
+        # Presentation mode scrolling
+        presentation_mode_icon_exists = exists(presentation_mode_icon_pattern, DEFAULT_UI_DELAY)
+        assert_true(self, presentation_mode_icon_exists, 'Presentation mode is available')
         click(presentation_mode_icon_pattern)
 
-        presentation_mode_enabled_exists = exists(presentation_mode_enabled_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        presentation_mode_enabled_exists = exists(presentation_mode_enabled_pattern, DEFAULT_UI_DELAY)
         assert_true(self, presentation_mode_enabled_exists, 'Presentation Mode is successfully enabled')
 
-        before_scroll_content_exists = exists(presentation_mode_content, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, before_scroll_content_exists,
-                    'Content before scrolling in Presentation Mode is on the page')
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(after_scroll_content_presentation_mode_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
+        assert_true(self, after_scroll_content_exists, 'Scroll Down using mouse wheel is successful')
 
-        [scroll(-scroll_height) for _ in range(5)]
-        after_scroll_down_content_not_exists = exists(presentation_mode_content, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists, 'Content after scrolling down is gone')
-        [scroll(scroll_height) for _ in range(5)]
-
-        after_scroll_content_exists = exists(presentation_mode_content, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, after_scroll_content_exists,
-                    'Scroll up and down using mouse wheel is successful in Presentation Mode')
+        before_scroll_content_exists = \
+            scroll_until_pattern_found(presentation_mode_content_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
+        assert_true(self, before_scroll_content_exists, 'Scroll Up using mouse wheel is successful')
