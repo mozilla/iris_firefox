@@ -23,7 +23,7 @@ class Test(BaseTest):
         if Settings.is_windows():
             value = SCREEN_HEIGHT
         else:
-            value = 50
+            value = 10
 
         navigate('http://www.eginstill.com/')
         location_to_open = Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
