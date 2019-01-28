@@ -20,9 +20,9 @@ class Test(BaseTest):
         after_scroll_content_pattern = Pattern('after_scroll_content.png')
 
         if Settings.is_windows():
-            value = 10
+            value = SCREEN_HEIGHT
         else:
-            value = 1
+            value = 10
 
         # Mousewheel scrolling preference is 200
         change_preference('mousewheel.default.delta_multiplier_y', '200')
@@ -42,10 +42,16 @@ class Test(BaseTest):
                     'Content before scrolling using mouse wheel with preference equals 200 is on the page')
         click(scroll_content_pattern)
 
-
-        after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
-                    'Scroll up and down using mouse wheel is successful with mousewheel preference equals 200.')
+                    'Scroll Down using mouse wheel is successful with mousewheel preference equals 200.')
+
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(scroll_content_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
+        assert_true(self, after_scroll_content_exists,
+                    'Scroll Up using mouse wheel is successful with mousewheel preference equals 200.')
+
 
         # Mousewheel scrolling preference is 50
         change_preference('mousewheel.default.delta_multiplier_y', '50')
@@ -60,15 +66,15 @@ class Test(BaseTest):
                     'Content before scrolling using mouse wheel with preference equals 50 is on the page')
         click(scroll_content_pattern)
 
-        [scroll(-SCREEN_HEIGHT) for _ in range(value)]
-        after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'Content after scrolling using mouse wheel with preference equals 50 is gone')
-        [scroll(SCREEN_HEIGHT) for _ in range(value)]
-
-        after_scroll_content_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
-                    'Scroll up and down using mouse wheel is successful with mousewheel preference equals 50.')
+                    'Scroll Down using mouse wheel is successful with mousewheel preference equals 50.')
+
+        after_scroll_content_exists = \
+            scroll_until_pattern_found(scroll_content_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
+        assert_true(self, after_scroll_content_exists,
+                    'Scroll Up using mouse wheel is successful with mousewheel preference equals 50.')
 
         # Set the default params to mousewheel
         change_preference('mousewheel.default.delta_multiplier_y', '100')
