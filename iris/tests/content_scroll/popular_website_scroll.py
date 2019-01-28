@@ -38,21 +38,21 @@ class Test(BaseTest):
 
         scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern,
                                                                      scroll, (mouse_wheel_steps,))
-        assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to footer by mouse scroll')
+        assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
         # Scroll by pressing arrows
         scroll_by_arrows_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, repeat_key_down, (30,))
         assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
 
         scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern, repeat_key_up, (30,))
-        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to footer by pressing arrows')
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
 
         # Scroll by pressing Page Up/Page Down
         scroll_by_page_down_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, page_down, (None,))
         assert_true(self, scroll_by_page_down_to_footer, 'Successfully scrolled to footer by pressing Page Down')
 
         scroll_by_page_up_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern, page_up, (None,))
-        assert_true(self, scroll_by_page_up_to_header, 'Successfully scrolled to footer by pressing Page Up')
+        assert_true(self, scroll_by_page_up_to_header, 'Successfully scrolled to header by pressing Page Up')
 
         # Scroll by pressing Space
         scroll_by_page_down_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, type, (Key.SPACE,))
