@@ -22,7 +22,7 @@ class Test(BaseTest):
         if Settings.is_windows():
             value = SCREEN_HEIGHT
         else:
-            value = 10
+            value = 25
 
         # Mousewheel scrolling preference is 200
         change_preference('mousewheel.default.delta_multiplier_y', '200')
@@ -67,12 +67,12 @@ class Test(BaseTest):
         click(scroll_content_pattern)
 
         after_scroll_content_exists = \
-            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
+            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value*2, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
                     'Scroll Down using mouse wheel is successful with mousewheel preference equals 50.')
 
         after_scroll_content_exists = \
-            scroll_until_pattern_found(scroll_content_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
+            scroll_until_pattern_found(scroll_content_pattern, scroll, (value*2, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
                     'Scroll Up using mouse wheel is successful with mousewheel preference equals 50.')
 
