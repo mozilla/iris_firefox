@@ -18,11 +18,11 @@ class Test(BaseTest):
         # self.exclude = Platform.ALL
 
     def run(self):
+        preferences_privacy_find_field_pattern = Pattern('preferences_privacy_find_field.png')
+        send_websites_do_not_track_data_pattern = Pattern('send_websites_do_not_track_data_option.png')
         do_not_track_unselected_pattern = Pattern('do_not_track_option_always_unselected_radio.png')
         do_not_track_selected_pattern = Pattern('do_not_track_option_always_selected_radio.png')
-        preferences_privacy_find_field_pattern = Pattern('preferences_privacy_find_field.png')
         tracker_website_content_pattern = Pattern('tracker_website_content.png')
-        send_websites_do_not_track_data_pattern = Pattern('send_websites_do_not_track_data_option.png')
         do_not_track_signal_displayed_pattern = Pattern('do_not_track_signal_displayed.png')
 
         navigate('about:preferences#privacy')
