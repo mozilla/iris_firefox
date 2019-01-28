@@ -31,10 +31,6 @@ class Test(BaseTest):
         soap_wiki_test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_wiki_test_site_opened, 'The Soap Wiki test site is properly loaded')
 
-        soap_wiki_test_site_moved_to_initial = exists(soap_wiki_tab_pattern, 20)
-        iris_tab_displayed = exists(iris_tab_logo_pattern, 20)
-        assert_true(self, soap_wiki_test_site_moved_to_initial and iris_tab_displayed, 'The Soap Wiki test site '
-                                                                                       'successfully moved back')
         # Moving Soap Wiki to a new window
         key_down_pressing = 2
         if Settings.is_linux():
