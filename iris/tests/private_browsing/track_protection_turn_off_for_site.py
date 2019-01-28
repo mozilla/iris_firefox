@@ -24,16 +24,16 @@ class Test(BaseTest):
         enable_blocking_button_pattern = Pattern('turn_on_blocking_for_site_button.png')
         tracking_content_detected_message_pattern = Pattern('tracking_content_detected_message.png')
         tracking_attempts_blocked_message_pattern = Pattern('tracking_attempts_blocked_message.png')
-        back_button_pattern = Pattern("back_button.png")
-        trackers_button_pattern = Pattern("trackers_button.png")
+        back_button_pattern = Pattern('back_button.png')
+        trackers_button_pattern = Pattern('trackers_button.png')
         blocked_tracker_label_pattern = Pattern('blocked_label.png')
-        trackers_icon_pattern = Pattern("trackers_icon.png")
+        trackers_icon_pattern = Pattern('trackers_icon.png')
 
         new_private_window()
         private_browsing_tab_logo_displayed = exists(PrivateWindow.private_window_pattern)
         assert_true(self, private_browsing_tab_logo_displayed, 'A new private window is successfully opened')
 
-        navigate("https://edition.cnn.com")
+        navigate('https://edition.cnn.com')
         website_displayed = exists(cnn_site_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, website_displayed, 'The website is successfully displayed')
 
@@ -75,7 +75,7 @@ class Test(BaseTest):
         assert_true(self, tracking_content_detected_message_displayed,
                     'On hover, the tracking protection shield displays a \'Tracking content detected\' tooltip message')
 
-        cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.DOWN,), 20)
+        cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.DOWN,))
         assert_true(self, cnn_blocked_content_displayed,
                     'Websites content that contain tracking elements are displayed on the page')
 
@@ -108,7 +108,7 @@ class Test(BaseTest):
         assert_true(self, tracking_attempts_blocked_message_displayed,
                     'On hover, the tracking protection shield displays a \'Tracking attempts blocked\' tooltip message')
 
-        cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.DOWN,), 20)
+        cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.DOWN,))
         assert_false(self, cnn_blocked_content_displayed,
                      'Websites content that contain tracking elements are not displayed on the page')
 
