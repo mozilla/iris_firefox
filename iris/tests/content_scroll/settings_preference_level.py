@@ -37,15 +37,15 @@ class Test(BaseTest):
 
         paste('Use autoscrolling')
 
-        disabling_checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern,
+        checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern,
                                                                DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, disabling_checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is on the page')
+        assert_true(self, checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is displayed on the page')
 
         click(checked_use_smooth_scrolling_pattern)
 
-        disabling_unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern,
+        unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern,
                                                                  DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, disabling_unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is disabled')
+        assert_true(self, unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is disabled')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -65,10 +65,10 @@ class Test(BaseTest):
 
         # Scroll by pressing arrows
         scroll_by_arrows_to_footer = scroll_until_pattern_found(history_paragraph_pattern, repeat_key_down, (20,))
-        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
+        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing key down button')
 
         scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_pattern, repeat_key_up, (20,))
-        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing key up button')
 
         # Use smooth scrolling is disabled
         navigate('about:preferences#general')
@@ -79,15 +79,15 @@ class Test(BaseTest):
 
         paste('Use autoscrolling')
 
-        enabling_unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern,
+        unchecked_use_smooth_scrolling_exists = exists(unchecked_use_smooth_scrolling_pattern,
                                                                 DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, enabling_unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is enabled')
+        assert_true(self, unchecked_use_smooth_scrolling_exists, 'Use smooth scrolling option is enabled')
 
         click(unchecked_use_smooth_scrolling_pattern)
 
-        enabling_checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern,
+        checked_use_smooth_scrolling_exists = exists(checked_use_smooth_scrolling_pattern,
                                                               DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, enabling_checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is on the page')
+        assert_true(self, checked_use_smooth_scrolling_exists, 'Use smooth scrolling option is displayed on the page')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -107,7 +107,7 @@ class Test(BaseTest):
 
         # Scroll by pressing arrows
         scroll_by_arrows_to_footer = scroll_until_pattern_found(history_paragraph_pattern, repeat_key_down, (20,))
-        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
+        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing key down button')
 
         scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_pattern, repeat_key_up, (20,))
-        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing key up button')
