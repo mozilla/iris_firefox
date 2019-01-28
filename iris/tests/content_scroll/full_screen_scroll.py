@@ -16,9 +16,9 @@ class Test(BaseTest):
         self.locale = ['en-US']
 
     def run(self):
-        external_links_pattern = Pattern('external_links.png')
         wiki_logo_pattern = Pattern('wiki_logo.png')
         soap_article_title = Pattern('soap_article_title.png')
+        wikimedia_logo_pattern = Pattern('wikimedia_logo.png')
         arrow_scroll_length = 5
 
         if Settings.is_windows():
@@ -47,7 +47,7 @@ class Test(BaseTest):
         click(find(LocalWeb.SOAP_WIKI_SOAP_LABEL))  # Clicking pattern may cause link clicking
 
         # Mouse scroll
-        mouse_scroll_done = scroll_until_pattern_found(external_links_pattern, scroll, (-scroll_length,), 15,
+        mouse_scroll_done = scroll_until_pattern_found(wikimedia_logo_pattern, scroll, (-scroll_length,), 15,
                                                        DEFAULT_UI_DELAY)
         assert_true(self, mouse_scroll_done, 'Mouse scroll down done')
 
@@ -56,7 +56,7 @@ class Test(BaseTest):
         assert_true(self, returned_home_mouse_scroll, 'Returned to page top using mouse scroll.')
 
         # arrows scroll
-        arrows_scroll_done = scroll_until_pattern_found(external_links_pattern, scroll_down, (arrow_scroll_length,), 30,
+        arrows_scroll_done = scroll_until_pattern_found(wikimedia_logo_pattern, scroll_down, (arrow_scroll_length,), 30,
                                                         DEFAULT_UI_DELAY)
         assert_true(self, arrows_scroll_done, 'Arrows scroll done')
 
@@ -65,7 +65,7 @@ class Test(BaseTest):
         assert_true(self, returned_home_arrows, 'Returned to page top using arrows.')
 
         # space key scroll
-        arrows_scroll_done = scroll_until_pattern_found(external_links_pattern, type, (Key.SPACE,),
+        arrows_scroll_done = scroll_until_pattern_found(wikimedia_logo_pattern, type, (Key.SPACE,),
                                                         timeout=DEFAULT_UI_DELAY)
         assert_true(self, arrows_scroll_done, '"Space" scroll done')
 
@@ -74,7 +74,7 @@ class Test(BaseTest):
         assert_true(self, returned_home_shift_space, 'Returned to page top using "Shift+Space".')
 
         # page down/up scroll
-        page_down_scroll_done = scroll_until_pattern_found(external_links_pattern, type, (Key.PAGE_DOWN,),
+        page_down_scroll_done = scroll_until_pattern_found(wikimedia_logo_pattern, type, (Key.PAGE_DOWN,),
                                                            timeout=DEFAULT_UI_DELAY)
         assert_true(self, page_down_scroll_done, '"Space" scroll done')
 
@@ -84,10 +84,10 @@ class Test(BaseTest):
 
         # Ctrl(Cmd)+arrow scroll
         if Settings.is_mac():
-            page_bottom_reached = scroll_until_pattern_found(external_links_pattern, type,
+            page_bottom_reached = scroll_until_pattern_found(wikimedia_logo_pattern, type,
                                                              (Key.DOWN, KeyModifier.CMD), timeout=DEFAULT_UI_DELAY)
         else:
-            page_bottom_reached = scroll_until_pattern_found(external_links_pattern, type,
+            page_bottom_reached = scroll_until_pattern_found(wikimedia_logo_pattern, type,
                                                              (Key.DOWN, KeyModifier.CTRL), timeout=DEFAULT_UI_DELAY)
         assert_true(self, page_bottom_reached, '"Ctrl+Down" scroll done')
 
