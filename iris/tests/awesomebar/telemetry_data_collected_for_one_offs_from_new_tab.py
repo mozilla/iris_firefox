@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '108274'
         self.test_suite_id = '1902'
         self.locales = ['en-US']
-        self.blocked_by = {'id': 'issue_1966', 'platform': Platform.ALL}
+        self.blocked_by = {'id': 'issue_1968', 'platform': Platform.ALL}
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
