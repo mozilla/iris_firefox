@@ -40,14 +40,14 @@ class Test(BaseTest):
                                                                      scroll, (mouse_wheel_steps,))
         assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
-        # Scroll by pressing Key Up / Key Down buttons
+        # Scroll by pressing arrows
         scroll_by_arrows_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, repeat_key_down, (30,))
-        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing Key Down')
+        assert_true(self, scroll_by_arrows_to_footer, 'Successfully scrolled to footer by pressing arrows')
 
         scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_mark_pattern, repeat_key_up, (30,))
-        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing Key Up')
+        assert_true(self, scroll_by_arrows_to_header, 'Successfully scrolled to header by pressing arrows')
 
-        # Scroll by pressing Page Up/Page Down buttons
+        # Scroll by pressing Page Up/Page Down
         scroll_by_page_down_to_footer = scroll_until_pattern_found(soap_wiki_footer_pattern, page_down, (None,))
         assert_true(self, scroll_by_page_down_to_footer, 'Successfully scrolled to footer by pressing Page Down')
 
