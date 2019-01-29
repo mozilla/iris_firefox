@@ -68,10 +68,10 @@ def print_error(error):
     for line in lines:
         if len(line) > max_len:
             max_len = len(line)
-    result = result + '-' * (max_len + 4) + '\n'
+    result = result + '-' * (max_len + 6) + '\n'
     for line in lines:
         result = result + '>> ' + line + ' ' * (max_len - len(line)) + ' <<' + '\n'
-    result = result + '-' * (max_len + 4) + '\n'
+    result = result + '-' * (max_len + 6) + '\n'
     return result
 
 
