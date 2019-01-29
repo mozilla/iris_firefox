@@ -26,7 +26,7 @@ class Test(BaseTest):
         tracking_attempts_blocked_message_pattern = Pattern('tracking_attempts_blocked_message.png')
         trackers_back_button_pattern = Pattern('trackers_back_button.png')
         trackers_button_pattern = Pattern('trackers_button.png')
-        blocked_tracker_label_pattern = Pattern('blocked_label.png')
+        blocked_tracker_label_pattern = Pattern('blocked_tracker_label.png')
         trackers_icon_pattern = Pattern('trackers_icon.png')
 
         new_private_window()
@@ -133,7 +133,7 @@ class Test(BaseTest):
         assert_true(self, site_information_panel_displayed, 'The \'Site information\' panel is displayed')
         click(trackers_button_pattern)
 
-        successfully_blocked_trackers_displayed = not exists(trackers_icon_pattern) and \
+        successfully_blocked_trackers_displayed = not exists(trackers_icon_pattern.similar(0.9)) and \
             exists(blocked_tracker_label_pattern)
         assert_true(self, successfully_blocked_trackers_displayed,
                     'A list of successfully blocked trackers is displayed.')
