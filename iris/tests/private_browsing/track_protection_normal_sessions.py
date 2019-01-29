@@ -19,7 +19,7 @@ class Test(BaseTest):
 
     def run(self):
         preferences_privacy_find_field_pattern = Pattern('preferences_privacy_find_field.png')
-        send_websites_do_not_track_data_pattern = Pattern('send_websites_do_not_track_data_option.png')
+        send_track_data_pattern = Pattern('send_websites_do_not_track_data_option.png')
         do_not_track_unselected_pattern = Pattern('do_not_track_option_always_unselected_radio.png')
         do_not_track_selected_pattern = Pattern('do_not_track_option_always_selected_radio.png')
         tracker_website_content_pattern = Pattern('tracker_website_content.png')
@@ -31,17 +31,14 @@ class Test(BaseTest):
 
         click(preferences_privacy_find_field_pattern)
         paste('Send websites a')
-        send_websites_do_not_track_data_found = scroll_until_pattern_found(send_websites_do_not_track_data_pattern,
-                                                                           type,
-                                                                           (Key.DOWN,))
-        assert_true(self, send_websites_do_not_track_data_found, 'Send websites option found')
+        send_track_data_found = scroll_until_pattern_found(send_track_data_pattern, type, (Key.DOWN,))
+        assert_true(self, send_track_data_found, 'Send websites option found')
+        send_track_data_pattern_width, send_track_data_pattern_height = send_track_data_pattern.get_size()
 
-        send_websites_do_not_track_data_pattern_width, send_websites_do_not_track_data_pattern_height = \
-            send_websites_do_not_track_data_pattern.get_size()
-        send_websites_option_position = find(send_websites_do_not_track_data_pattern)
-        send_websites_option_region = Region(send_websites_option_position.x-100, send_websites_option_position.y,
-                                             width=send_websites_do_not_track_data_pattern_width+100,
-                                             height=send_websites_do_not_track_data_pattern_height+100)
+        send_websites_option_position = find(send_track_data_pattern)
+        send_websites_option_region = \
+            Region(send_websites_option_position.x-100, send_websites_option_position.y,
+                   width=send_track_data_pattern_width+100, height=send_track_data_pattern_height+100)
         send_websites_option_unchecked = exists(do_not_track_unselected_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                                 in_region=send_websites_option_region)
         assert_true(self, send_websites_option_unchecked, 'Do not track "Always" option unchecked')
