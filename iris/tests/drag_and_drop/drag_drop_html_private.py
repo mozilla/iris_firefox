@@ -35,6 +35,9 @@ class Test(BaseTest):
         drop_html_data_selected_button_displayed = exists(drop_html_data_selected_button_pattern)
         assert_true(self, drop_html_data_selected_button_displayed, 'Button is selected')
 
+        dropping_area_displayed = scroll_until_pattern_found(not_matching_message_pattern, repeat_key_down, (5,))
+        assert_true(self, dropping_area_displayed, 'The dropping are is displayed')
+
         new_private_window()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
