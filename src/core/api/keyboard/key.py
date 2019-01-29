@@ -8,9 +8,9 @@ import logging
 import subprocess
 
 from src.core.api.enums import OSPlatform
-from src.core.api.keyboard.keyboard_api import shutdown_process
 from src.core.api.settings import Settings
 from src.core.api.os_helpers import OSHelper
+from src.core.util.system import shutdown_process
 
 logger = logging.getLogger(__name__)
 
@@ -173,7 +173,7 @@ class Key(object):
         :param keyboard_key: Keyboard key(CAPS LOCK, NUM LOCK or SCROLL LOCK).
         :return: TRUE if keyboard_key state is ON or FALSE if keyboard_key state is OFF.
         """
-        if Settings.get_os() == OSPlatform.WINDOWS:
+        if OSHelper.get_os() == OSPlatform.WINDOWS:
             hll_dll = ctypes.WinDLL("User32.dll")
             keyboard_code = 0
             if keyboard_key == Key.CAPS_LOCK:
@@ -190,7 +190,7 @@ class Key(object):
                 return True
             else:
                 return False
-        elif Settings.get_os() == OSPlatform.LINUX or Settings.get_os() == OSPlatform.MAC:
+        elif OSHelper.get_os() == OSPlatform.LINUX or OSHelper.get_os() == OSPlatform.MAC:
             try:
                 cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
                 shutdown_process('Xquartz')
