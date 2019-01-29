@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '108274'
         self.test_suite_id = '1902'
         self.locales = ['en-US']
-        self.blocked_by = {'id': 'issue_1968', 'platform': Platform.ALL}
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -49,7 +48,7 @@ class Test(BaseTest):
         expected = exists(bing_search_results_moz_pattern, 10)
         assert_true(self, expected, 'Search results performed with \'Bing\' search engine.')
 
-        info = get_telemetry_info()['payload']['keyedHistograms']['SEARCH_COUNTS']
+        info = get_telemetry_info()['payload']['stores']['main']['parent']['keyedHistograms']['SEARCH_COUNTS']
 
         assert_equal(self, str(info['bing.newtab']['range']), '[1, 2]', 'Range is correct.')
         assert_equal(self, str(info['bing.newtab']['bucket_count']), '3', 'Bucket count is correct.')
