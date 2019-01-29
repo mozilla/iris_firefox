@@ -32,7 +32,7 @@ def parse_args():
     for idx, app in enumerate(app_list):
         app_list[idx] = os.path.basename(os.path.normpath(app))
 
-    parser.add_argument('application', action='store', type=str, help='Application name', choices=app_list)
+    parser.add_argument('application', nargs='?', action='store', type=str, help='Application name', choices=app_list)
     parser.add_argument('test_path', action='store', type=str, help='Path to tests module or directory', nargs='?')
 
     parser.add_argument('-a', '--rerun',

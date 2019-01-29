@@ -9,10 +9,12 @@ import pytest
 from src.core.api.arg_parser import parse_args
 from src.core.util.app_loader import get_app_test_directory
 from src.iris_pytest_plugin import Plugin
+from src.core.util.path_manager import PathManager
 
 
 def main():
     args = parse_args()
+    PathManager.create_target_directory()
     tests_to_execute = get_app_test_directory(args.application)
     pytest_args = []
 

@@ -29,6 +29,7 @@ def __create_tempdir():
 _tmp_dir = __create_tempdir()
 _run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
 _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
+args = parse_args()
 
 
 class PathManager:
@@ -59,12 +60,6 @@ class PathManager:
         return os.path.realpath(os.path.split(__file__)[0] + '/../../..')
 
     @staticmethod
-    def get_working_dir():
-        """Returns the path to the root of the directory where local data is stored."""
-        PathManager.create_working_directory()
-        return parse_args().workdir
-
-    @staticmethod
     def get_tests_dir():
         """Returns the directory where tests are located."""
         return os.path.join(PathManager.get_module_dir(), 'tests')
@@ -73,7 +68,7 @@ class PathManager:
     def get_current_run_dir():
         """Returns the directory inside the working directory of the active run."""
         PathManager.create_run_directory()
-        return os.path.join(parse_args().workdir, 'runs', PathManager.get_run_id())
+        return os.path.join(args.workdir, 'runs', PathManager.get_run_id())
 
     @staticmethod
     def get_log_file_path():
@@ -98,7 +93,7 @@ class PathManager:
     def get_image_debug_path():
         """Returns the root directory where a test's debug images are located."""
         parent, test = PathManager.parse_module_path()
-        path = os.path.join(parse_args().workdir, 'runs', PathManager.get_run_id(), parent, test, 'debug_images')
+        path = os.path.join(args.workdir, 'runs', PathManager.get_run_id(), parent, test, 'debug_images')
         return path
 
     @staticmethod
@@ -119,33 +114,22 @@ class PathManager:
     @staticmethod
     def delete_run_directory():
         """Removes run directory."""
-        master_run_directory = os.path.join(parse_args().workdir, 'runs')
+        master_run_directory = os.path.join(args.workdir, 'runs')
         run_directory = os.path.join(master_run_directory, PathManager.get_run_id())
         if os.path.exists(run_directory):
             shutil.rmtree(run_directory, ignore_errors=True)
 
     @staticmethod
-    def create_run_directory():
-        """Creates run directory."""
-        PathManager.create_working_directory()
-        master_run_directory = os.path.join(parse_args().workdir, 'runs')
-        if not os.path.exists(master_run_directory):
-            os.mkdir(master_run_directory)
-        run_directory = os.path.join(master_run_directory, PathManager.get_run_id())
-        if not os.path.exists(run_directory):
-            os.mkdir(run_directory)
-
-    @staticmethod
     def create_working_directory():
         """Creates working directory."""
-        work_dir = parse_args().workdir
+        work_dir = args.workdir
         if not os.path.exists(work_dir):
             logger.debug('Creating working directory %s' % work_dir)
             os.makedirs(work_dir)
         if not os.path.exists(os.path.join(work_dir, 'data')):
             os.makedirs(os.path.join(work_dir, 'data'))
 
-        if parse_args().clear:
+        if args.clear:
             master_run_directory = os.path.join(work_dir, 'runs')
             if os.path.exists(master_run_directory):
                 shutil.rmtree(master_run_directory, ignore_errors=True)
@@ -155,3 +139,41 @@ class PathManager:
             cache_builds_directory = os.path.join(work_dir, 'cache')
             if os.path.exists(cache_builds_directory):
                 shutil.rmtree(cache_builds_directory, ignore_errors=True)
+
+    @staticmethod
+    def get_working_dir():
+        """Returns the path to the root of the directory where local data is stored."""
+        PathManager.create_working_directory()
+        return args.workdir
+
+    @staticmethod
+    def create_run_directory():
+        """Creates run directory."""
+        PathManager.create_working_directory()
+        master_run_directory = os.path.join(PathManager.get_working_dir(), 'runs')
+        if not os.path.exists(master_run_directory):
+            os.mkdir(master_run_directory)
+        run_directory = os.path.join(master_run_directory, PathManager.get_run_id())
+        if not os.path.exists(run_directory):
+            os.mkdir(run_directory)
+
+    @staticmethod
+    def get_run_directory():
+        """Returns the path to the run directory."""
+        PathManager.create_run_directory()
+        return os.path.join(PathManager.get_working_dir(), 'runs')
+
+    @staticmethod
+    def create_target_directory():
+        """Creates target directory."""
+        PathManager.get_current_run_dir()
+        target_directory = os.path.join(PathManager.get_current_run_dir(), args.application)
+        if not os.path.exists(target_directory):
+            logger.debug('Creating target directory %s' % target_directory)
+            os.makedirs(target_directory)
+
+    @staticmethod
+    def get_target_directory():
+        """Returns the path to the target directory."""
+        PathManager.create_target_directory()
+        return os.path.join(PathManager.get_current_run_dir(), args.application)
