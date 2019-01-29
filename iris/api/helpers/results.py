@@ -70,7 +70,7 @@ def print_error(error):
             max_len = len(line)
     result = result + '-' * (max_len + 4) + '\n'
     for line in lines:
-        result = result + '» ' + line + ' ' * (max_len - len(line)) + ' «' + '\n'
+        result = result + '>> ' + line + ' ' * (max_len - len(line)) + ' <<' + '\n'
     result = result + '-' * (max_len + 4) + '\n'
     return result
 
