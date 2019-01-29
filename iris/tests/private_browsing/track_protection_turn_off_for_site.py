@@ -59,6 +59,14 @@ class Test(BaseTest):
                     '\'Trackers\' button is displayed on the \'Site information\' panel')
         click(trackers_button_pattern)
 
+        #  wait_vanish for Linux
+        try:
+            tracker_button_dissapeared = wait_vanish(trackers_button_pattern)
+            assert_true(self, tracker_button_dissapeared, 'Trackers button vanished of screen.')
+        except FindError:
+            raise FindError('Tracker button did not dissapear.')
+
+
         successfully_blocked_trackers_displayed = exists(trackers_icon_pattern, DEFAULT_FIREFOX_TIMEOUT) and \
             exists(blocked_tracker_label_pattern)
         assert_true(self, successfully_blocked_trackers_displayed,
@@ -90,7 +98,7 @@ class Test(BaseTest):
         click(Location(100, 150))
 
         cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,),
-                                                                   timeout=1)
+                                                                   timeout=DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, cnn_blocked_content_displayed,
                     'Websites content that contain tracking elements are displayed on the page')
 
@@ -103,6 +111,12 @@ class Test(BaseTest):
         assert_true(self, trackers_button_available,
                     '\'Trackers\' button is displayed on the \'Site information\' panel')
         click(trackers_button_pattern)
+
+        try:
+            tracker_button_dissapeared = wait_vanish(trackers_button_pattern)
+            assert_true(self, tracker_button_dissapeared, 'Trackers button vanished of screen.')
+        except FindError:
+            raise FindError('Tracker button did not dissapear.')
 
         list_of_active_trackers_displayed = exists(trackers_icon_pattern, DEFAULT_FIREFOX_TIMEOUT) and not \
             exists(blocked_tracker_label_pattern)
@@ -133,8 +147,14 @@ class Test(BaseTest):
         assert_true(self, site_information_panel_displayed, 'The \'Site information\' panel is displayed')
         click(trackers_button_pattern)
 
-        successfully_blocked_trackers_displayed = not exists(trackers_icon_pattern.similar(0.9)) and \
-            exists(blocked_tracker_label_pattern)
+        try:
+            tracker_button_dissapeared = wait_vanish(trackers_button_pattern)
+            assert_true(self, tracker_button_dissapeared, 'Trackers button vanished of screen.')
+        except FindError:
+            raise FindError('Tracker button did not dissapear.')
+
+        successfully_blocked_trackers_displayed = exists(blocked_tracker_label_pattern, DEFAULT_FIREFOX_TIMEOUT) and \
+                                                  not exists(trackers_icon_pattern.similar(0.9))
         assert_true(self, successfully_blocked_trackers_displayed,
                     'A list of successfully blocked trackers is displayed.')
 
