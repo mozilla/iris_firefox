@@ -39,11 +39,11 @@ class Test(BaseTest):
         after_scroll_content_exists = \
             scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
-                    'Scroll up and down using mouse wheel on the long web page is successful')
+                    'Scroll down using mouse wheel on the long web page is successful')
 
         [zoom_in() for _ in range(2)]
 
         after_scroll_content_exists = \
             scroll_until_pattern_found(scroll_content_after_zoomed_in_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists,
-                    'Scroll up and down using mouse wheel after zooming is successful')
+                    'Scroll up using mouse wheel after zooming is successful')
