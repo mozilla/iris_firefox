@@ -140,12 +140,12 @@ def paste(text: str):
     pyperclip.copy('')
 
 
-def check_keyboard_state():
+def check_keyboard_state(disable=False):
     """Check Keyboard state.
 
     Iris cannot run in case Key.CAPS_LOCK, Key.NUM_LOCK or Key.SCROLL_LOCK are pressed.
     """
-    if parse_args().no_check:
+    if disable:
         return True
 
     key_on = False
@@ -155,24 +155,3 @@ def check_keyboard_state():
             logger.error('Cannot run Iris because %s is on. Please turn it off to continue.' % str(key).upper())
             key_on = True
     return not key_on
-
-
-def shutdown_process(process_name: str):
-    """Checks if the process name exists in the process list and close it .
-
-    """
-
-    if Settings.get_os() == OSPlatform.WINDOWS:
-        command_str = 'taskkill /IM ' + process_name + '.exe'
-        try:
-            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            logger.error('Command  failed: "%s"' % command_str)
-            raise Exception('Unable to run Command.')
-    elif Settings.get_os() == OSPlatform.MAC or Settings.get_os() == OSPlatform.LINUX:
-        command_str = 'pkill ' + process_name
-        try:
-            subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError:
-            logger.error('Command  failed: "%s"' % command_str)
-            raise Exception('Unable to run Command.')
