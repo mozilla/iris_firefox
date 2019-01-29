@@ -15,7 +15,7 @@ class Test(BaseTest):
         self.test_case_id = '103329'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
-        # self.exclude = Platform.ALL
+        self.exclude = Platform.ALL
 
     def run(self):
         preferences_privacy_find_field_pattern = Pattern('preferences_privacy_find_field.png')
@@ -31,26 +31,28 @@ class Test(BaseTest):
 
         click(preferences_privacy_find_field_pattern)
         paste('Send websites a')
-
-        send_websites_do_not_track_data_found = exists(send_websites_do_not_track_data_pattern)
+        send_websites_do_not_track_data_found = scroll_until_pattern_found(send_websites_do_not_track_data_pattern,
+                                                                           type,
+                                                                           (Key.DOWN,))
         assert_true(self, send_websites_do_not_track_data_found, 'Send websites option found')
 
+        send_websites_do_not_track_data_pattern_width, send_websites_do_not_track_data_pattern_height = \
+            send_websites_do_not_track_data_pattern.get_size()
         send_websites_option_position = find(send_websites_do_not_track_data_pattern)
         send_websites_option_region = Region(send_websites_option_position.x-100, send_websites_option_position.y,
-                                             width=SCREEN_WIDTH, height=SCREEN_HEIGHT - send_websites_option_position.y)
-
+                                             width=send_websites_do_not_track_data_pattern_width+100,
+                                             height=send_websites_do_not_track_data_pattern_height+100)
         send_websites_option_unchecked = exists(do_not_track_unselected_pattern, DEFAULT_FIREFOX_TIMEOUT,
-                                             in_region=send_websites_option_region)
+                                                in_region=send_websites_option_region)
         assert_true(self, send_websites_option_unchecked, 'Do not track "Always" option unchecked')
-        click(do_not_track_unselected_pattern, in_region=send_websites_option_region)
 
+        click(do_not_track_unselected_pattern, in_region=send_websites_option_region)
         do_not_track_selected = exists(do_not_track_selected_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                        in_region=send_websites_option_region)
         assert_true(self, do_not_track_selected, 'Do not track "Always" option checked')
 
         new_tab()
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-
         website_loaded = exists(tracker_website_content_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, website_loaded, 'The Website is successfully loaded')
 
