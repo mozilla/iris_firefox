@@ -57,6 +57,7 @@ class Test(BaseTest):
 
         if Settings.is_linux():
             value = DEFAULT_UI_DELAY_LONG
+            screen_height = 1
         else:
             value = DEFAULT_UI_DELAY
 
