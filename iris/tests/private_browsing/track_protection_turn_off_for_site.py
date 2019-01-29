@@ -34,7 +34,7 @@ class Test(BaseTest):
         assert_true(self, private_browsing_window_loaded, 'A new private window is successfully opened')
 
         navigate('https://edition.cnn.com/?refresh=1')
-        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, website_displayed, 'The website is successfully displayed')
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -74,7 +74,7 @@ class Test(BaseTest):
         assert_true(self, disable_blocking_button_displayed, 'The \'Site information\' panel is displayed')
         click(disable_blocking_button_pattern)
 
-        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, website_displayed, 'The website successfully refreshes')
 
         tracking_protection_shield_deactivated_displayed = exists(tracking_protection_shield_deactivated_pattern)
@@ -87,10 +87,10 @@ class Test(BaseTest):
         assert_true(self, tracking_content_detected_message_displayed,
                     'On hover, the tracking protection shield displays a \'Tracking content detected\' tooltip message')
 
-        click(Location(100, 100))
+        click(Location(100, 150))
 
         cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,),
-                                                                   timeout=DEFAULT_FX_DELAY)
+                                                                   timeout=1)
         assert_true(self, cnn_blocked_content_displayed,
                     'Websites content that contain tracking elements are displayed on the page')
 
@@ -115,7 +115,7 @@ class Test(BaseTest):
         click(trackers_back_button_pattern, in_region=button_trackers_back_region)
 
         click(enable_blocking_button_pattern)
-        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, website_displayed, 'The website successfully refreshes')
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern, DEFAULT_SYSTEM_DELAY)
@@ -133,7 +133,7 @@ class Test(BaseTest):
         assert_true(self, site_information_panel_displayed, 'The \'Site information\' panel is displayed')
         click(trackers_button_pattern)
 
-        successfully_blocked_trackers_displayed = exists(trackers_icon_pattern) and \
+        successfully_blocked_trackers_displayed = not exists(trackers_icon_pattern) and \
             exists(blocked_tracker_label_pattern)
         assert_true(self, successfully_blocked_trackers_displayed,
                     'A list of successfully blocked trackers is displayed.')
