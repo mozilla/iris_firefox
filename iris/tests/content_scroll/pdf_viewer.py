@@ -16,6 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+
         content_scroll_pattern = Pattern('pdf_content.png')
         after_scroll_content_pattern = Pattern('pdf_content_normal_mode.png')
         pdf_logo_pattern = Pattern('pdf_logo.png')
@@ -25,9 +26,9 @@ class Test(BaseTest):
         after_scroll_content_presentation_mode_pattern = Pattern('pdf_content_presentation_mode.png')
 
         if Settings.is_windows():
-            value = SCREEN_HEIGHT
+            screen_height = SCREEN_HEIGHT
         else:
-            value = 10
+            screen_height = 10
 
         pdf_file = self.get_asset_path('pdf.pdf')
         navigate(pdf_file)
@@ -38,11 +39,11 @@ class Test(BaseTest):
         click(pdf_logo_pattern)
 
         after_scroll_content_exists = \
-            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-value, None), 100, DEFAULT_UI_DELAY)
+            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-screen_height, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists, 'Scroll Down using mouse wheel is successful')
 
         before_scroll_content_exists = \
-            scroll_until_pattern_found(content_scroll_pattern, scroll, (value, None), 100, DEFAULT_UI_DELAY)
+            scroll_until_pattern_found(content_scroll_pattern, scroll, (screen_height, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, before_scroll_content_exists,
                     'Scroll Up using mouse wheel is successful')
 
@@ -60,9 +61,9 @@ class Test(BaseTest):
             value = DEFAULT_UI_DELAY
 
         after_scroll_content_exists = \
-            scroll_until_pattern_found(after_scroll_content_presentation_mode_pattern, scroll, (-value, None), 100, value)
+            scroll_until_pattern_found(after_scroll_content_presentation_mode_pattern, scroll, (-screen_height, None), 100, value)
         assert_true(self, after_scroll_content_exists, 'Scroll Down using mouse wheel is successful')
 
         before_scroll_content_exists = \
-            scroll_until_pattern_found(presentation_mode_content_pattern, scroll, (value, None), 100, value)
+            scroll_until_pattern_found(presentation_mode_content_pattern, scroll, (screen_height, None), 100, value)
         assert_true(self, before_scroll_content_exists, 'Scroll Up using mouse wheel is successful')
