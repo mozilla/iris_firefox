@@ -17,7 +17,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        ebay_one_off_pattern = Pattern('ebay_one_off_button.png')
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
         search_with_wikipedia_one_off_string_pattern = Pattern('search_with_Wikipedia_one_off_string.png')
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
@@ -43,21 +42,20 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Wikipedia\' is the first one-off in focus when navigating with \'ALT\' and '
                                     'arrow UP keys.')
 
-        if exists(ebay_one_off_pattern, 3):
-            count = 8
-        else:
-            count = 7
-
-        for i in range(count):
-            key_down(Key.ALT)
-            type(Key.UP)
-            key_up(Key.ALT)
-
         expected = not region.exists(settings_gear_highlighted_pattern, 5)
         assert_true(self, expected, 'Settings gear icon is not in focus.')
 
-        expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)
-        assert_true(self, expected, '\'Wikipedia\' is the one-off in focus.')
+        max_attempts = 10
+
+        while max_attempts > 0:
+            if region.exists(search_with_wikipedia_one_off_string_pattern, 1):
+                assert_true(self, expected, '\'Wikipedia\' is the one-off in focus.')
+                max_attempts = 0
+            else:
+                key_down(Key.ALT)
+                type(Key.UP)
+                key_up(Key.ALT)
+                max_attempts += 1
 
         new_tab()
         select_location_bar()
@@ -77,16 +75,20 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Google\' is the first one-off in focus when navigating with \'ALT\' and arrow '
                                     'DOWN keys.')
 
-        for i in range(count):
-            key_down(Key.ALT)
-            type(Key.DOWN)
-            key_up(Key.ALT)
-
         expected = not region.exists(settings_gear_highlighted_pattern, 5)
         assert_true(self, expected, 'Settings gear icon is not in focus.')
 
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert_true(self, expected, '\'Google\' is the one-off in focus.')
+        max_attempts = 10
+
+        while max_attempts > 0:
+            if region.exists(search_with_google_one_off_string_pattern, 1):
+                assert_true(self, expected, '\'Google\' is the one-off in focus.')
+                max_attempts = 0
+            else:
+                key_down(Key.ALT)
+                type(Key.DOWN)
+                key_up(Key.ALT)
+                max_attempts += 1
 
         select_location_bar()
         paste('moz')
@@ -109,13 +111,17 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Google\' is the first one-off in focus when navigating with \'ALT\' and arrow '
                                     'DOWN keys.')
 
-        for i in range(count):
-            key_down(Key.ALT)
-            type(Key.DOWN)
-            key_up(Key.ALT)
+        max_attempts = 10
 
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert_true(self, expected, '\'Google\' is the one-off in focus.')
+        while max_attempts > 0:
+            if region.exists(search_with_google_one_off_string_pattern, 1):
+                assert_true(self, expected, '\'Google\' is the one-off in focus.')
+                max_attempts = 0
+            else:
+                key_down(Key.ALT)
+                type(Key.DOWN)
+                key_up(Key.ALT)
+                max_attempts += 1
 
         # Start cycling through the one-off buttons in reverse order than above; 2 times to get the wikipedia one-off
         # in focus.

@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+from iris.api.core import mouse
 from iris.test_case import *
 
 
@@ -32,6 +32,7 @@ class Test(BaseTest):
 
         navigate('https://www.thinkbroadband.com/download')
 
+        scroll_down(20)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
@@ -39,15 +40,16 @@ class Test(BaseTest):
         # Open the Downloads Panel and select Show All Downloads.
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
         assert_true(self, expected, '\'Downloads\' button found.')
+        mouse.mouse_move(Location(SCREEN_WIDTH / 4 + 100, SCREEN_HEIGHT / 4))
         click(NavBar.DOWNLOADS_BUTTON_BLUE)
 
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
         assert_true(self, expected, '\'Show all downloads\' button found.')
         click(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = exists(Library.DOWNLOADS, 10)
+        expected = exists(Library.DownloadLibrary.DOWNLOADS, 10)
         assert_true(self, expected, 'The Downloads button is displayed in the Library.')
-        click(Library.DOWNLOADS)
+        click(Library.DownloadLibrary.DOWNLOADS)
 
         # Check that all the downloads are successful and displayed in the Downloads category.
         for pattern in downloads_library_list:

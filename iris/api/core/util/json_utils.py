@@ -176,7 +176,7 @@ def create_master_test_list():
             test_object['tags'] = current_test.tags
             test_object['test_case_id'] = current_test.test_case_id
             test_object['test_suite_id'] = current_test.test_suite_id
-            test_object['blocked_by'] = current_test.blocked_by
+            test_object['blocked_by'] = current_test.blocked_by.get('id')
             master_test_list[current_package].append(test_object)
         except TypeError as e:
             logger.warning('Error in test - %s: %s' % (module, e.message))

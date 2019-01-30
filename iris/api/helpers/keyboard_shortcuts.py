@@ -101,14 +101,24 @@ def stop_page_load():
 
 # Keyboard shortcuts for Current Page.
 
-def scroll_down():
-    """Scroll down one increment (equivalent to 3 mousewheel steps)."""
-    type(text=Key.DOWN)
+def scroll_down(num=1):
+    """Scroll down one increment (equivalent to 3 mousewheel steps).
+
+    :param num: The Number of times to scroll down.
+    :return: None.
+    """
+    for x in range(num):
+        type(text=Key.DOWN)
 
 
-def scroll_up():
-    """Scroll up one increment (equivalent to 3 mousewheel steps)."""
-    type(text=Key.UP)
+def scroll_up(num=1):
+    """Scroll up one increment (equivalent to 3 mousewheel steps).
+
+    :param num: The number of times to scroll up.
+    :return: None.
+    """
+    for x in range(num):
+        type(text=Key.UP)
 
 
 def page_down():
@@ -217,6 +227,17 @@ def edit_delete():
     If nothing is selected, delete previous character.
     """
     type(text=Key.DELETE)
+
+
+def delete_selected_file():
+    """Delete selected file/files inside a folder."""
+    if Settings.get_os() == Platform.MAC:
+        type(text=Key.BACKSPACE, modifier=KeyModifier.CMD)
+    elif Settings.get_os_version() == 'win7':
+        type(text=Key.DELETE)
+        type(text='y')
+    else:
+        type(text=Key.DELETE)
 
 
 def edit_paste():

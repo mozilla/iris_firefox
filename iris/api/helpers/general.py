@@ -8,10 +8,10 @@ import mozversion
 from mozrunner import FirefoxRunner, errors
 
 from iris.api.core.environment import Env
+from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
-from iris.api.core.firefox_ui.content_blocking import ContentBlocking
 from iris.api.core.key import *
 from iris.api.core.region import *
 from iris.api.core.screen import Screen
@@ -218,15 +218,15 @@ def close_window_control(window_type):
 
 def close_content_blocking_pop_up():
     """Closes the content blocking pop up"""
-    if exists(ContentBlocking.POP_UP_ENABLED, 10):
-        try:
-            wait(ContentBlocking.CLOSE_CB_POP_UP, 5)
-            logger.debug('Content blocking pop can be closed.')
-            click(ContentBlocking.CLOSE_CB_POP_UP)
-        except FindError:
-            raise FindError('Content blocking pop up can\'t be closed, aborting.')
-    else:
-        raise FindError('Content blocking pop up is not enabled, aborting.')
+    pop_up_region = Region(0, 100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    try:
+        pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
+        logger.debug('Content blocking is present on the page and can be closed.')
+        pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
+    except FindError:
+        logger.debug('Couldn\'t find the Content blocking pop up.')
+        pass
 
 
 def confirm_close_multiple_tabs():
@@ -1011,6 +1011,32 @@ def repeat_key_down(num):
         type(Key.DOWN)
 
 
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
+    """
+    Press the Key Down button until specified image pattern is found.
+
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_down_presses: Number of presses of the Key Down button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during Key Down button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_down_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.DOWN)
+        time.sleep(delay_between_presses)
+
+    return pattern_found
+
+
 def repeat_key_up(num):
     """Repeat UP keystroke a given number of times.
 
@@ -1019,6 +1045,32 @@ def repeat_key_up(num):
     """
     for i in range(num):
         type(Key.UP)
+
+
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
+    """
+    Press the Key Up button until specified image pattern is found.
+
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_up_presses: Number of presses of the Key Up button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during the Key Up button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_up_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.UP)
+        time.sleep(delay_between_presses)
+
+    return pattern_found
 
 
 def reset_mouse():
@@ -1047,14 +1099,17 @@ def restart_firefox(test, path, profile, url, args=None, image=None, show_crash_
     logger.debug('Firefox successfully restarted.')
 
 
-
 def restore_firefox_focus():
-    """Restore Firefox focus by clicking inside the page."""
+    """Restore Firefox focus by clicking the panel near HOME or REFRESH button."""
 
     try:
-        w, h = NavBar.HOME_BUTTON.get_size()
-        horizontal_offset = w * 2
-        click_area = NavBar.HOME_BUTTON.target_offset(horizontal_offset, 0)
+        if exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY):
+            target_pattern = NavBar.HOME_BUTTON
+        else:
+            target_pattern = NavBar.RELOAD_BUTTON
+        w, h = target_pattern.get_size()
+        horizontal_offset = w * 1.7
+        click_area = target_pattern.target_offset(horizontal_offset, 0)
         click(click_area)
     except FindError:
         raise APIHelperError('Could not restore firefox focus.')
@@ -1086,6 +1141,59 @@ def restore_window_from_taskbar(option=None):
         if Settings.get_os() == Platform.LINUX:
             hover(Location(0, 50))
     time.sleep(Settings.UI_DELAY)
+
+
+def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, num_of_scroll_iterations=10, timeout=3):
+    """
+    Scrolls until specified image pattern is found.
+
+    :param image_pattern: Image Pattern to search.
+    :param scroll_function: Scrolling function or any callable object (e.g. type, scroll, etc.)
+    :param scroll_params: Tuple of params to pass in the scroll_function
+            (e.g. (Key.UP, ) or (Key.UP, KeyModifier.CTRL) for the type function).
+            NOTE: Tuple should contains from 0 (empty tuple) to 2 items.
+    :param num_of_scroll_iterations: Number of scrolling iterations.
+    :param timeout: Number of seconds passed to the 'timeout' param of the 'exist' function.
+    :return: Boolean. True if image pattern found during scrolling, False otherwise
+    """
+
+    scroll_arg = None
+    scroll_modifier = None
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not callable(scroll_function):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not isinstance(scroll_params, tuple):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if len(scroll_params) == 2:
+        scroll_arg, scroll_modifier = scroll_params
+    elif len(scroll_params) == 1:
+        scroll_arg, = scroll_params
+    elif len(scroll_params) == 0:
+        pass
+    else:
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_scroll_iterations):
+        pattern_found = exists(image_pattern, timeout)
+
+        if pattern_found:
+            break
+
+        if scroll_modifier is None and scroll_arg is None:
+            scroll_function()
+        elif scroll_modifier is None:
+            scroll_function(scroll_arg)
+        else:
+            scroll_function(scroll_arg, scroll_modifier)
+
+    return pattern_found
 
 
 def select_location_bar_option(option_number):
@@ -1174,6 +1282,15 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     pyautogui.moveTo(0, 0)
 
 
+def open_directory(directory):
+    if Settings.get_os() == Platform.WINDOWS:
+        os.startfile(directory)
+    elif Settings.get_os() == Platform.LINUX:
+        os.system('xdg-open \"' + directory + '\"')
+    else:
+        os.system('open \"' + directory + '\"')
+
+
 class Option(object):
     """Class with zoom members."""
 
@@ -1200,3 +1317,4 @@ class ZoomType(object):
 
     IN = 300 if Settings.is_windows() else 1
     OUT = -300 if Settings.is_windows() else -1
+
