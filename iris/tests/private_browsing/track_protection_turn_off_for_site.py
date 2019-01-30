@@ -46,7 +46,6 @@ class Test(BaseTest):
                                        timeout=DEFAULT_FX_DELAY)
         assert_false(self, cnn_blocked_content_displayed,
                      'Websites content that contain tracking elements are not displayed on the page')
-
         page_home()
 
         click(tracking_protection_shield_pattern)
@@ -66,7 +65,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Tracker button did not disappear.')
 
-        successfully_blocked_trackers_displayed = exists(trackers_icon_pattern, DEFAULT_FIREFOX_TIMEOUT) and \
+        successfully_blocked_trackers_displayed = not exists(trackers_icon_pattern.similar(0.9), DEFAULT_FIREFOX_TIMEOUT) and \
             exists(blocked_tracker_label_pattern)
         assert_true(self, successfully_blocked_trackers_displayed,
                     'A list of successfully blocked trackers is displayed.')
