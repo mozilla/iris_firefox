@@ -14,6 +14,7 @@ from src.core.api.enums import OSPlatform
 from src.core.api.os_helpers import OSHelper
 
 logger = logging.getLogger(__name__)
+restore_terminal_encoding = None
 
 
 def check_7zip():
@@ -89,3 +90,53 @@ def shutdown_process(process_name: str):
         except subprocess.CalledProcessError:
             logger.error('Command  failed: "%s"' % command_str)
             raise Exception('Unable to run Command.')
+
+
+def fix_terminal_encoding():
+    """Helper function to set terminal to platform-specific UTF encoding."""
+    global restore_terminal_encoding
+    restore_terminal_encoding = get_terminal_encoding()
+    if restore_terminal_encoding is None:
+        return
+    if os.path.exists('C:\\'):
+        platform_utf_encoding = '65001'
+    else:
+        platform_utf_encoding = None
+    if restore_terminal_encoding != platform_utf_encoding:
+        set_terminal_encoding(platform_utf_encoding)
+
+
+def reset_terminal_encoding():
+    global restore_terminal_encoding
+    if restore_terminal_encoding is not None:
+        set_terminal_encoding(restore_terminal_encoding)
+
+
+def get_terminal_encoding():
+    """Helper function to get current terminal encoding."""
+    if OSHelper.get_os() == OSPlatform.WINDOWS:
+        logger.debug('Running "chcp" shell command')
+        chcp_output = os.popen('chcp').read().strip()
+        logger.debug('chcp output: "%s"' % chcp_output)
+        if chcp_output.startswith('Active code page:'):
+            codepage = chcp_output.split(': ')[1]
+            logger.debug('Active codepage is "%s"' % codepage)
+            return codepage
+        else:
+            logger.warning('There was an error detecting the active codepage')
+            return None
+    else:
+        logger.debug('Platform does not require switching terminal encoding')
+        return None
+
+
+def set_terminal_encoding(encoding):
+    """Helper function to set terminal encoding."""
+    if os.path.exists('C:\\'):
+        logger.debug('Running "chcp" shell command, setting codepage to "%s"', encoding)
+        chcp_output = os.popen('chcp %s' % encoding).read().strip()
+        logger.debug('chcp output: "%s"' % chcp_output)
+        if chcp_output == 'Active code page: %s' % encoding:
+            logger.debug('Successfully set codepage to "%s"' % encoding)
+        else:
+            logger.warning('Can\'t set codepage for terminal')
