@@ -120,36 +120,35 @@ class PathManager:
             shutil.rmtree(run_directory, ignore_errors=True)
 
     @staticmethod
-    def create_working_directory():
+    def create_working_directory(path):
         """Creates working directory."""
-        work_dir = args.workdir
-        if not os.path.exists(work_dir):
-            logger.debug('Creating working directory %s' % work_dir)
-            os.makedirs(work_dir)
-        if not os.path.exists(os.path.join(work_dir, 'data')):
-            os.makedirs(os.path.join(work_dir, 'data'))
+        if not os.path.exists(path):
+            logger.debug('Creating working directory %s' % path)
+            os.makedirs(path)
+        if not os.path.exists(os.path.join(path, 'data')):
+            os.makedirs(os.path.join(path, 'data'))
 
         if args.clear:
-            master_run_directory = os.path.join(work_dir, 'runs')
+            master_run_directory = os.path.join(path, 'runs')
             if os.path.exists(master_run_directory):
                 shutil.rmtree(master_run_directory, ignore_errors=True)
-            run_file = os.path.join(work_dir, 'data', 'all_runs.json')
+            run_file = os.path.join(path, 'data', 'all_runs.json')
             if os.path.exists(run_file):
                 os.remove(run_file)
-            cache_builds_directory = os.path.join(work_dir, 'cache')
+            cache_builds_directory = os.path.join(path, 'cache')
             if os.path.exists(cache_builds_directory):
                 shutil.rmtree(cache_builds_directory, ignore_errors=True)
 
     @staticmethod
     def get_working_dir():
         """Returns the path to the root of the directory where local data is stored."""
-        PathManager.create_working_directory()
+        PathManager.create_working_directory(args.workdir)
         return args.workdir
 
     @staticmethod
     def create_run_directory():
         """Creates run directory."""
-        PathManager.create_working_directory()
+        PathManager.create_working_directory(args.workdir)
         master_run_directory = os.path.join(PathManager.get_working_dir(), 'runs')
         if not os.path.exists(master_run_directory):
             os.mkdir(master_run_directory)
