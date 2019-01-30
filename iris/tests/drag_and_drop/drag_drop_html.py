@@ -36,7 +36,7 @@ class Test(BaseTest):
 
         open_browser_console()
         console_opened = exists(browser_console_title_pattern)
-        assert_true(self, console_opened, 'Browser console opened')
+        assert_true(self, console_opened, 'Browser console is opened')
         click(browser_console_title_pattern)
         paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.5, SCREEN_HEIGHT*0.9))
         type(Key.ENTER)
@@ -44,7 +44,7 @@ class Test(BaseTest):
 
         navigate('https://mystor.github.io/dragndrop/')
         drop_page_loaded = exists(drop_html_unfollowed_pattern)
-        assert_true(self, drop_page_loaded, 'Drop page loaded successfully.')
+        assert_true(self, drop_page_loaded, 'Drop page is loaded successfully.')
         click(drop_html_unfollowed_pattern)
 
         drop_html_activated = exists(drop_html_inactive_pattern)
@@ -59,7 +59,7 @@ class Test(BaseTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         wiki_page_loaded = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, wiki_page_loaded, 'Wiki webpage successfully loaded.')
+        assert_true(self, wiki_page_loaded, 'Wiki webpage successfully is loaded.')
 
         # Selecting paragraph by triple click on location (pattern click doesn't select)
         paragraph = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
@@ -80,8 +80,8 @@ class Test(BaseTest):
         result_region = Region(result_region_location.x, 0, SCREEN_WIDTH/2,
                                SCREEN_HEIGHT)
 
-        result_correct = exists(correct_result_pattern, in_region=result_region)
-        assert_true(self, result_correct, 'Actual and expected drop results are equal.')
+        correct_result_displayed = exists(correct_result_pattern, in_region=result_region)
+        assert_true(self, correct_result_displayed, 'Actual and expected drop results are equal.')
         select_location_bar()
 
         link_selected = exists(soap_url_selected_pattern)
@@ -90,7 +90,7 @@ class Test(BaseTest):
         drag_drop(url_location, drop_html_position)
 
         drop_not_matched = exists(drop_not_matching_pattern)
-        assert_true(self, drop_not_matched, '"Not matched" appeared')
+        assert_true(self, drop_not_matched, '"Not matching" phrase is appeared')
 
         wrong_result = not exists(correct_result_pattern, in_region=result_region)
         assert_true(self, wrong_result, 'The expected result is different to result.')
