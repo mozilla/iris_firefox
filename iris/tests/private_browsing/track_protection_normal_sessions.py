@@ -15,7 +15,6 @@ class Test(BaseTest):
         self.test_case_id = '103329'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
 
     def run(self):
         preferences_privacy_find_field_pattern = Pattern('preferences_privacy_find_field.png')
