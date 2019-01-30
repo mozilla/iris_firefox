@@ -19,7 +19,6 @@ class Test(BaseTest):
 
         drop_html_unfollowed_pattern = Pattern('drop_html_unfollowed.png')
         drop_html_inactive_pattern = Pattern('drop_html_inactive.png')
-        drop_here_pattern = Pattern('drop_here.png')
         drop_verified_pattern = Pattern('drop_matching_verified.png')
         drop_not_matching_pattern = Pattern('drop_not_matching.png')
         correct_result_pattern = Pattern('correct_result.png')
@@ -39,7 +38,7 @@ class Test(BaseTest):
         console_opened = exists(browser_console_title_pattern)
         assert_true(self, console_opened, 'Browser console opened')
         click(browser_console_title_pattern)
-        paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.45, SCREEN_HEIGHT*0.9))
+        paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.5, SCREEN_HEIGHT*0.9))
         type(Key.ENTER)
         close_tab()
 
@@ -55,11 +54,8 @@ class Test(BaseTest):
 
         new_window()
         opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED)
-        new_window_drop_location = Location(SCREEN_WIDTH*0.55, SCREEN_HEIGHT/20)
+        new_window_drop_location = Location(SCREEN_WIDTH*0.53, SCREEN_HEIGHT/20)
         drag_drop(opened_tab_location, new_window_drop_location)
-
-        drop_position_visible = exists(drop_here_pattern)
-        assert_true(self, drop_position_visible, 'Drop position can be reached.')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         wiki_page_loaded = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
@@ -72,17 +68,17 @@ class Test(BaseTest):
         paragraph_x, paragraph_y = LocalWeb.SOAP_WIKI_SOAP_LABEL.get_size()
         paragraph.offset(paragraph_x / 2, paragraph_y / 2)
 
-        drop_position_offset_x, drop_position_offset_y = drop_here_pattern.get_size()
-        drop_html_position = find(drop_here_pattern)
-        drop_html_position.offset(drop_position_offset_x*2, drop_position_offset_y*2)
+        drop_position_offset_x, drop_position_offset_y = drop_not_matching_pattern.get_size()
+        drop_html_position = find(drop_not_matching_pattern)
+        drop_html_position.offset(drop_position_offset_x*2, -drop_position_offset_y*5)
         drag_drop(paragraph, drop_html_position)
 
         drop_verified = exists(drop_verified_pattern)
         assert_true(self, drop_verified, '"Matching" appears under the "Drop Stuff Here" area.')
         matched_size_x, matched_size_y = drop_verified_pattern.get_size()
-        result_region_location = find(drop_verified_pattern).offset(matched_size_x, matched_size_y)
-        result_region = Region(result_region_location.x, result_region_location.y, SCREEN_WIDTH/2,
-                               (SCREEN_HEIGHT-result_region_location.y))
+        result_region_location = find(drop_verified_pattern).offset(matched_size_x/2, matched_size_y)
+        result_region = Region(result_region_location.x, 0, SCREEN_WIDTH/2,
+                               SCREEN_HEIGHT)
 
         result_correct = exists(correct_result_pattern, in_region=result_region)
         assert_true(self, result_correct, 'Actual and expected drop results are equal.')
