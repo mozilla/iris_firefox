@@ -11,13 +11,12 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Scrolling works properly on websites providing video content.'
-        self.test_case_id = 'C4662'
+        self.test_case_id = '4662'
         self.test_suite_id = '102'
         self.locales = ['en-US']
 
     def run(self):
         speaker_icon_pattern = Pattern('speaker_icon.png')
-        youtube_info_button_pattern = Pattern('youtube_info_button.png')
         youtube_subscribe_button_pattern = Pattern('subscribe_button.png')
         youtube_autoplay_switch_pattern = Pattern('youtube_autoplay_switch.png')
 
@@ -25,11 +24,15 @@ class Test(BaseTest):
         if Settings.is_windows():
             mouse_wheel_steps = 1000
 
+        change_preference('media.autoplay.default', '0')
+
         navigate('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
+        youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        assert_true(self, youtube_page_is_downloaded, 'Youtube is properly loaded')
+
         speaker_icon_displayed = exists(speaker_icon_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
-        youtube_page_is_downloaded = exists(youtube_info_button_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
-        assert_true(self, youtube_page_is_downloaded and speaker_icon_displayed, 'Youtube is properly loaded')
+        assert_true(self, speaker_icon_displayed, 'The video content is playing')
 
         focusing_inside_the_page = find(NavBar.HOME_BUTTON).offset(300, 300)
         hover(focusing_inside_the_page)
@@ -37,6 +40,7 @@ class Test(BaseTest):
         # Scroll by mouse wheel
         youtube_subscribe_button_displayed = scroll_until_pattern_found(youtube_subscribe_button_pattern,
                                                                         scroll, (-mouse_wheel_steps,))
+        assert_true(self, youtube_subscribe_button_displayed, 'The Youtube subscribe button is displayed')
 
         for times_scroll_down in range(20):
             scroll(-mouse_wheel_steps)
