@@ -5,11 +5,11 @@
 import logging
 import os
 
-import mozlog
-import mozversion
-from mozdownload import FactoryScraper, errors as download_errors
-from mozinstall import install, get_binary
-from mozrunner import FirefoxRunner, errors as runner_errors
+# import mozlog
+# import mozversion
+# from mozdownload import FactoryScraper, errors as download_errors
+# from mozinstall import install, get_binary
+# from mozrunner import FirefoxRunner, errors as runner_errors
 
 from src.base.target import *
 from src.core.api.enums import Channels
@@ -26,16 +26,16 @@ class Target(BaseTarget):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
 
-        path = self.get_test_candidate()
-        if path is None:
-            raise ValueError
-
-        self.path = path
-        self.channel = self.get_firefox_channel(path)
-        self.version = self.get_firefox_version(path)
-        self.build_id = self.get_firefox_build_id(path)
-        self.locale = parse_args().locale
-        self.latest_version = self.get_firefox_latest_version(path)
+        # path = self.get_test_candidate()
+        # if path is None:
+        #     raise ValueError
+        #
+        # self.path = path
+        # self.channel = self.get_firefox_channel(path)
+        # self.version = self.get_firefox_version(path)
+        # self.build_id = self.get_firefox_build_id(path)
+        # self.locale = parse_args().locale
+        # self.latest_version = self.get_firefox_latest_version(path)
 
     @staticmethod
     def get_local_firefox_path():

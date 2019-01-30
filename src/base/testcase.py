@@ -9,24 +9,23 @@ import unittest
 mylogger = logging.getLogger(__name__)
 
 
-class BaseTest(unittest.TestCase):
+class BaseTest():
 
     def setup(self):
         "setup method for each test instance"
-        self.meta = ''
-        self.exclude = []
-
-    @classmethod
-    def setUpClass(cls):
-        return
-
-    def tearDown(self):
         return
 
     @classmethod
-    def tearDownClass(cls):
+    def setup_class(cls):
         return
 
-    # Open issue: Do we support TestRail for Iris, or just Firefox?
-    def get_testrail_results(self):
+    @classmethod
+    def teardown_class(cls):
+        return
+
+    def setup_method(self, method):
+        return
+
+
+    def teardown_method(self, method):
         return

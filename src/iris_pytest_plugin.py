@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+import pytest
 
 from src.core.api.arg_parser import parse_args
 
@@ -34,6 +34,24 @@ class Plugin:
 
     def pytest_runtest_logfinish(self, nodeid, location):
         pass
+
+    @pytest.fixture
+    def option(self,pytestconfig):
+        """
+        fixture for ovewriting values in pytest.ini file
+
+        :return: Option Object
+        """
+
+        new_value = {}
+
+        class Options:
+
+            def get(self, name):
+                return new_value.get(name, pytestconfig.getini(name))
+
+
+        return Options()
 
 
 def reason_for_failure(report):
