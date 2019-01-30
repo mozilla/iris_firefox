@@ -5,10 +5,10 @@
 
 import ctypes
 import logging
+import re
 import subprocess
 
 from src.core.api.enums import OSPlatform
-from src.core.api.settings import Settings
 from src.core.api.os_helpers import OSHelper
 from src.core.util.system import shutdown_process
 
@@ -173,7 +173,7 @@ class Key(object):
         :param keyboard_key: Keyboard key(CAPS LOCK, NUM LOCK or SCROLL LOCK).
         :return: TRUE if keyboard_key state is ON or FALSE if keyboard_key state is OFF.
         """
-        if OSHelper.get_os() == OSPlatform.WINDOWS:
+        if OSHelper.is_windows():
             hll_dll = ctypes.WinDLL("User32.dll")
             keyboard_code = 0
             if keyboard_key == Key.CAPS_LOCK:
@@ -190,7 +190,8 @@ class Key(object):
                 return True
             else:
                 return False
-        elif OSHelper.get_os() == OSPlatform.LINUX or OSHelper.get_os() == OSPlatform.MAC:
+
+        elif OSHelper.is_linux() or OSHelper.is_mac():
             try:
                 cmd = subprocess.Popen('xset q', shell=True, stdout=subprocess.PIPE)
                 shutdown_process('Xquartz')
@@ -207,26 +208,13 @@ class Key(object):
                     processed_lock_key = 'Scroll'
 
                 for line in cmd.stdout:
+                    line = line.decode("utf-8")
                     if processed_lock_key in line:
-                        value = ' '.join(line.split())
-                        if processed_lock_key in value[0:len(value) / 3]:
-                            button = value[0:len(value) / 3]
-                            if "off" in button:
+                        values = re.findall('\d*\D+', ' '.join(line.split()))
+                        for val in values:
+                            if processed_lock_key in val and 'off' in val:
                                 return False
-                            else:
-                                return True
-                        elif processed_lock_key in value[len(value) / 3:len(value) / 3 + len(value) / 3]:
-                            button = value[len(value) / 3:len(value) / 3 + len(value) / 3]
-                            if "off" in button:
-                                return False
-                            else:
-                                return True
-                        else:
-                            button = value[len(value) / 3 * 2:len(value)]
-                            if "off" in button:
-                                return False
-                            else:
-                                return True
+            return True
 
 
 class KeyModifier(object):
