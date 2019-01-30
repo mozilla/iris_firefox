@@ -61,11 +61,10 @@ class Test(BaseTest):
 
         #  wait_vanish for Linux
         try:
-            tracker_button_dissapeared = wait_vanish(trackers_button_pattern)
-            assert_true(self, tracker_button_dissapeared, 'Trackers button vanished of screen.')
+            tracker_button_disappeared = wait_vanish(trackers_button_pattern)
+            assert_true(self, tracker_button_disappeared, 'Trackers button vanished of screen.')
         except FindError:
-            raise FindError('Tracker button did not dissapear.')
-
+            raise FindError('Tracker button did not disappear.')
 
         successfully_blocked_trackers_displayed = exists(trackers_icon_pattern, DEFAULT_FIREFOX_TIMEOUT) and \
             exists(blocked_tracker_label_pattern)
@@ -113,10 +112,10 @@ class Test(BaseTest):
         click(trackers_button_pattern)
 
         try:
-            tracker_button_dissapeared = wait_vanish(trackers_button_pattern)
-            assert_true(self, tracker_button_dissapeared, 'Trackers button vanished of screen.')
+            tracker_button_disappeared = wait_vanish(trackers_button_pattern)
+            assert_true(self, tracker_button_disappeared, 'Trackers button vanished of screen.')
         except FindError:
-            raise FindError('Tracker button did not dissapear.')
+            raise FindError('Tracker button did not disappear.')
 
         list_of_active_trackers_displayed = exists(trackers_icon_pattern, DEFAULT_FIREFOX_TIMEOUT) and not \
             exists(blocked_tracker_label_pattern)
@@ -148,13 +147,13 @@ class Test(BaseTest):
         click(trackers_button_pattern)
 
         try:
-            tracker_button_dissapeared = wait_vanish(trackers_button_pattern)
-            assert_true(self, tracker_button_dissapeared, 'Trackers button vanished of screen.')
+            tracker_button_disappeared = wait_vanish(trackers_button_pattern)
+            assert_true(self, tracker_button_disappeared, 'Trackers button vanished of screen.')
         except FindError:
-            raise FindError('Tracker button did not dissapear.')
+            raise FindError('Tracker button did not disappear.')
 
         successfully_blocked_trackers_displayed = exists(blocked_tracker_label_pattern, DEFAULT_FIREFOX_TIMEOUT) and \
-                                                  not exists(trackers_icon_pattern.similar(0.9))
+            not exists(trackers_icon_pattern.similar(0.9))
         assert_true(self, successfully_blocked_trackers_displayed,
                     'A list of successfully blocked trackers is displayed.')
 
