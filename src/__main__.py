@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
 import importlib
 
 import pytest
@@ -9,9 +10,9 @@ import pytest
 from src.core.api.arg_parser import parse_args
 from src.core.api.keyboard.keyboard_api import check_keyboard_state
 from src.core.util.app_loader import get_app_test_directory
+from src.core.util.path_manager import PathManager
 from src.core.util.system import check_7zip, init_tesseract_path
 from src.iris_pytest_plugin import Plugin
-from src.core.util.path_manager import PathManager
 
 
 def main():
@@ -70,22 +71,9 @@ def get_test_params(target):
 def verify_config(args):
     """Checks keyboard state is correct or if Tesseract and 7zip are installed."""
 
-    # Disabling until we fix these methods
-    """
     try:
         if not all([check_keyboard_state(args.no_check), init_tesseract_path(), check_7zip()]):
             exit(1)
     except KeyboardInterrupt:
         exit(1)
-    return True
-    """
-
-    # The check_keyboard_state function has this error (Mac):
-    """
-      File "/iris2/src/core/api/keyboard/key.py", line 210, in is_lock_on
-        if processed_lock_key in line:
-      TypeError: a bytes-like object is required, not 'str'
-    """
-
-    # Return True until fixed
     return True

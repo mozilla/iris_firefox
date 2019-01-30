@@ -167,7 +167,7 @@ class Key(object):
     YEN = _IrisKey('yen', None)
 
     @staticmethod
-    def is_lock_on(keyboard_key: type):
+    def is_lock_on(keyboard_key):
         """Static method which determines if a keyboard key(CAPS LOCK, NUM LOCK or SCROLL LOCK) is ON.
 
         :param keyboard_key: Keyboard key(CAPS LOCK, NUM LOCK or SCROLL LOCK).

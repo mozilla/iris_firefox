@@ -2,18 +2,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import os
 
 import logging
-import pytesseract
+import os
 import subprocess
 from distutils.spawn import find_executable
 
+import pytesseract
+
 from src.core.api.enums import OSPlatform
 from src.core.api.os_helpers import OSHelper
-
-
-
 
 logger = logging.getLogger(__name__)
 
@@ -32,10 +30,10 @@ def init_tesseract_path():
     """Initialize Tesseract path."""
 
     which_tesseract = subprocess.Popen('which tesseract', stdout=subprocess.PIPE, shell=True).communicate()[
-        0].rstrip()
+        0].rstrip().decode("utf-8")
     path_not_found = False
 
-    if OSHelper.get_os() == 'win':
+    if OSHelper.is_windows():
         win_default_tesseract_path = 'C:\\Program Files (x86)\\Tesseract-OCR'
 
         if '/c/' in str(which_tesseract):
@@ -50,7 +48,7 @@ def init_tesseract_path():
         else:
             path_not_found = True
 
-    elif OSHelper.get_os() == 'linux' or OSHelper.get_os() == 'osx':
+    elif OSHelper.is_linux() or OSHelper.is_mac():
         if _check_path(which_tesseract):
             pytesseract.pytesseract.tesseract_cmd = which_tesseract
         else:
@@ -75,9 +73,7 @@ def _check_path(dir_path):
 
 
 def shutdown_process(process_name: str):
-    """Checks if the process name exists in the process list and close it .
-
-    """
+    """Checks if the process name exists in the process list and close it ."""
 
     if OSHelper.get_os() == OSPlatform.WINDOWS:
         command_str = 'taskkill /IM ' + process_name + '.exe'
