@@ -30,7 +30,7 @@ class Test(BaseTest):
         assert_true(self, about_preferences_search_opened, 'About preferences search page is successfully opened')
 
         search_engine_is_default = exists(default_search_engine_pattern)
-        assert_true(self, search_engine_is_default, 'Teh default search engine is not changed')
+        assert_true(self, search_engine_is_default, 'The default search engine is not changed')
 
         navigate('about:preferences#home')
 
@@ -48,8 +48,8 @@ class Test(BaseTest):
 
         paste('text')
 
-        search_sugesstions_displays = exists(search_suggestions_default_pattern)
-        assert_true(self, search_sugesstions_displays, 'The search suggestions dropdwon is displayed, '
+        search_suggestions_displays = exists(search_suggestions_default_pattern)
+        assert_true(self, search_suggestions_displays, 'The search suggestions dropdwon is displayed, '
                                                        'no extra search engines are added.')
 
         type(Key.ENTER)
