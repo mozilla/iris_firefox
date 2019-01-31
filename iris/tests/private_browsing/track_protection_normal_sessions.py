@@ -39,7 +39,7 @@ class Test(BaseTest):
                    width=send_track_data_pattern_width+100, height=send_track_data_pattern_height+100)
         send_websites_option_unchecked = exists(do_not_track_unselected_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                                 in_region=send_websites_option_region)
-        assert_true(self, send_websites_option_unchecked, 'Do not track "Always" option unchecked')
+        assert_true(self, send_websites_option_unchecked, 'Do not track "Always" option is displayed unchecked')
 
         click(do_not_track_unselected_pattern, in_region=send_websites_option_region)
         do_not_track_selected = exists(do_not_track_selected_pattern, DEFAULT_FIREFOX_TIMEOUT,
