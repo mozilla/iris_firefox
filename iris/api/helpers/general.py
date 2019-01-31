@@ -218,7 +218,7 @@ def close_window_control(window_type):
 
 def close_content_blocking_pop_up():
     """Closes the content blocking pop up"""
-    pop_up_region = Region(0, 100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    pop_up_region = Region(0, 50, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     try:
         pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
