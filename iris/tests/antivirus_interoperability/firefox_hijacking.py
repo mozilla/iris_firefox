@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Firefox hijacking'
         self.test_case_id = '217858'
-        self.test_suite_id = '1971'
+        self.test_suite_id = '3063'
         self.locales = ['en-US']
 
     def run(self):
