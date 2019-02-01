@@ -15,8 +15,11 @@ class Test(BaseTest):
         self.test_suite_id = '102'
         self.locale = ['en-US']
 
-    def run(self):
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'devtools.chrome.enabled': True})
 
+    def run(self):
         drop_html_unfollowed_pattern = Pattern('drop_html_unfollowed.png')
         drop_html_inactive_pattern = Pattern('drop_html_inactive.png')
         drop_verified_pattern = Pattern('drop_matching_verified.png')
@@ -25,8 +28,6 @@ class Test(BaseTest):
         soap_url_selected_pattern = Pattern('soap_url_selected.png')
         iris_tab_pattern = Pattern('iris_tab.png')
         browser_console_title_pattern = Pattern('browser_console_title.png')
-
-        change_preference('devtools.chrome.enabled', True)
 
         if not Settings.is_mac():
             minimize_window()
