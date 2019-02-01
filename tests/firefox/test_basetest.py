@@ -21,9 +21,6 @@ class Test(FirefoxTest):
 
 
 
-    # @pytest.mark.skipif(sys.platform == "darwin",
-    #                    reason="Skip experimend:)")
-
     def test_fixture_object(self,option):
         value = option.get('log_cli')
         assert_true(self,  value,"Log cli is true ")

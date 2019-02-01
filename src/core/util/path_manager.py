@@ -8,7 +8,7 @@ import logging
 import os
 import shutil
 import tempfile
-
+import git
 from src.core.api.arg_parser import parse_args
 from src.core.api.os_helpers import OSHelper
 
@@ -176,3 +176,15 @@ class PathManager:
         """Returns the path to the target directory."""
         PathManager.create_target_directory()
         return os.path.join(PathManager.get_current_run_dir(), args.application)
+
+
+
+    @staticmethod
+    def get_git_details():
+        repo_details = {}
+        repo = git.Repo()
+        repo_details['iris_version'] = 0.1
+        repo_details['iris_repo'] = repo.working_tree_dir
+        repo_details['iris_branch'] = repo.active_branch.name
+        repo_details['iris_branch_head'] = repo.head.object.hexsha
+        return repo_details

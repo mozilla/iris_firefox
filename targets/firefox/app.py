@@ -10,6 +10,7 @@ import os
 # from mozdownload import FactoryScraper, errors as download_errors
 # from mozinstall import install, get_binary
 # from mozrunner import FirefoxRunner, errors as runner_errors
+import pytest
 
 from src.base.target import *
 from src.core.api.enums import Channels
@@ -17,14 +18,21 @@ from src.core.api.errors import APIHelperError
 from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
 from targets.firefox.parse_args import parse_args
+from targets.firefox.testrail.testcase_results import TestRailTests
 
 logger = logging.getLogger(__name__)
 
 
 class Target(BaseTarget):
+
+    test_run_object_list = []
+
     def __init__(self):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
+
+
+
 
         # path = self.get_test_candidate()
         # if path is None:
@@ -271,5 +279,41 @@ class Target(BaseTarget):
         except runner_errors.RunnerNotStartedError:
             raise APIHelperError('Error creating Firefox runner.')
 
-    def pytest_sessionfinish(self, session):
-        print("\n\n** From Firefox: Test session {} complete **\n".format(session.name))
+
+    def pytest_sessionstart(self, session):
+        session.results = dict()
+        print('\n\n** Firefox testing session {} started **\n'.format(session.name))
+
+    @pytest.hookimpl(tryfirst=True, hookwrapper=True)
+    def pytest_runtest_makereport(self, item, call):
+
+        outcome = yield
+        report = outcome.get_result()
+
+        if report.when == "call":
+            test_case_instance = item.instance
+
+
+            test_object_result = TestRailTests(test_case_instance.meta,
+                                               test_case_instance.test_suite_id, test_case_instance.test_case_id,
+                                               test_case_instance.blocked_by, test_case_instance.test_results)
+
+            self.test_run_object_list.append(test_object_result)
+
+
+        item.session.results[item] = report
+
+    def pytest_sessionfinish(self, session, exitstatus):
+        """ called after whole test run finished, right before returning the exit status to the system.
+            :param _pytest.main.Session session: the pytest session object
+            :param int exitstatus: the status which pytest will return to the system
+        """
+        print("\n\n** Firefox App: Test session {} complete **\n".format(session.name))
+
+        # print_result_footer(session, exitstatus)
+
+        # if parse_args().email:
+        #     submit_email_report(self.test_run_object_list)
+        #
+        # if parse_args().report:
+        #     report_test_results(self.test_run_object_list)

@@ -11,8 +11,10 @@ from targets.firefox.test_assert import *
 
 
 class FirefoxTest(BaseTest):
+
     outcome = ''
     test_results = []
+
 
     @classmethod
     def setup_class(cls):
@@ -25,6 +27,7 @@ class FirefoxTest(BaseTest):
     def setup_method(self, method):
         self.test_results = []
         self.outcome = ''
+        self.blocked_by=''
 
     def setup(self):
         "setup method for each test instance"
@@ -52,4 +55,5 @@ class FirefoxTest(BaseTest):
             logger.info('>>> PASSED <<< Step %s: %s' % (len(self.test_results), result.message))
 
         self.outcome = result.outcome
+
 

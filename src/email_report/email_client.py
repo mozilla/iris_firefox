@@ -16,6 +16,7 @@ from src.core.util.path_manager import PathManager
 from src.core.api.os_helpers import OSHelper
 
 from src.configuration.config_parser import get_config_property
+from src.core.util.report_utils import Color
 
 logger = logging.getLogger(__name__)
 
@@ -85,3 +86,16 @@ class EmailClient:
             else:
                 server.quit()
                 logger.info('Email successfully sent to %s' % self.targets)
+
+
+def submit_email_report(test_results):
+
+    """ PLACEHOLDER FOR EMAIL REPORT
+        :param test_results: TEST RESULT SESSION
+        need to update with appliications and git object
+    """
+
+    logger.info(' --------------------------------------------------------- '+Color.BLUE+'Starting Email report:'+Color.END+' ----------------------------------------------------------\n')
+    email_report = EmailClient()
+    email_report.send_email_report("65", str(test_results), PathManager.get_git_details())
+

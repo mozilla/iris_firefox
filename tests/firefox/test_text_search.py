@@ -1,3 +1,5 @@
+import sys
+
 from src.core.api.screen.region import Region
 from targets.firefox.fx_testcase import *
 
@@ -9,6 +11,11 @@ class Test(FirefoxTest):
         self.meta = 'Image search test'
         self.test_case_id = '119484'
         self.test_suite_id = '1902'
+
+
+
+    @pytest.mark.skipif(sys.platform == "darwin",
+                        reason="Skip experimend:)")
 
     def test_run(self):
         region = Region(0, 40, 200, 100)

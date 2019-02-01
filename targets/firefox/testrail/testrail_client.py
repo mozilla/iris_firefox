@@ -9,8 +9,9 @@ from datetime import date
 from src.configuration.config_parser import get_config_property, logger
 from src.core.api.errors import TestRailError
 from src.core.api.os_helpers import OSHelper
+from src.core.util.report_utils import Color
 from targets.firefox.test_rail import api_client
-from targets.firefox.test_rail.test_case_results import TestSuiteMap, TestRailTests
+from targets.firefox.test_rail.testcase_results import TestSuiteMap, TestRailTests
 
 
 class TestRail:
@@ -261,3 +262,18 @@ class TestRail:
                 test_suite_array.append(test_suite_object)
 
         return test_suite_array
+
+
+
+def report_test_results(test_case_results):
+    """ PLACEHOLDER FOR Test Rail REPORT
+           :param test_case_results: TEST RESULT SESSION
+
+           need to update method with the app details
+       """
+
+    logger.info(
+        ' --------------------------------------------------------- ' + Color.BLUE + 'Starting Test Rail report:' + Color.END + ' ----------------------------------------------------------\n')
+
+    test_rail_report = TestRail()
+    test_rail_report.create_test_plan("build_id", "version", test_case_results)
