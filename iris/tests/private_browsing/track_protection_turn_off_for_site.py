@@ -24,7 +24,7 @@ class Test(BaseTest):
         enable_blocking_button_pattern = Pattern('turn_on_blocking_for_site_button.png')
         tracking_content_detected_message_pattern = Pattern('tracking_content_detected_message.png')
         tracking_attempts_blocked_message_pattern = Pattern('tracking_attempts_blocked_message.png')
-        trackers_popup_displayed_pattern = Pattern('trackers_popup_displayed.png')
+        trackers_popup_displayed_pattern = Pattern('trackers_popup_title.png')
         cnn_restore_focus_pattern = Pattern('cnn_restore_focus.png')
         trackers_button_pattern = Pattern('trackers_button.png')
         blocked_tracker_label_pattern = Pattern('blocked_tracker_label.png')
