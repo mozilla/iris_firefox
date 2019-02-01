@@ -61,7 +61,13 @@ class Test(BaseTest):
             raise FindError('The file was not deleted.')
 
         # Close download folder window.
-        close_tab()
+        click_window_control('close')
+
+        try:
+            expected = wait_vanish(DownloadManager.DOWNLOADS_FOLDER, 10)
+            assert_true(self, expected, 'The downloads folder was closed.')
+        except FindError:
+            raise FindError('The downloads folder was not closed.')
 
         # Switch the focus on firefox browser.
         click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
