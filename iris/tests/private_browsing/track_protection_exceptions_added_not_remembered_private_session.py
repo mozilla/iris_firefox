@@ -54,8 +54,10 @@ class Test(BaseTest):
         assert_true(self, dnt_sent_correctly, 'The "DNT signal was correctly send" phrase is displayed.', )
 
         click(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
+
         protection_popup_opened = exists(blocking_turn_off_pattern)
         assert_true(self, protection_popup_opened, "The site information panel is displayed.")
+
         click(blocking_turn_off_pattern)
 
         tracking_protection_shield_deactivated_exists = exists(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
@@ -64,6 +66,7 @@ class Test(BaseTest):
 
         page_loaded = exists(firefox_tracker_site_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, page_loaded, 'The website successfully refreshes.')
+
         restore_firefox_focus()
         hover(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
 
@@ -86,18 +89,21 @@ class Test(BaseTest):
 
         tracking_protection_popup_opened = exists(open_trackers_list_pattern)
         assert_true(self, tracking_protection_popup_opened, 'Tracking protection popup opened.')
+
         click(open_trackers_list_pattern)
 
         trackers_list_opened = exists(tracker_site_in_list_pattern)
         assert_true(self, trackers_list_opened, 'A list of unblocked trackers is successfully displayed.')
 
-        close_window()
-
         navigate('about:preferences#privacy')
         preferences_opened = exists(manage_exceptions_button_pattern)
         assert_true(self, preferences_opened, 'The about:preferences#privacy page is successfully displayed.')
+
         click(manage_exceptions_button_pattern)
 
         exceptions_list_empty = exists(empty_exc_list_pattern)
         assert_true(self, exceptions_list_empty,
                     'The previously accessed website is not displayed inside the Tracking Protection exceptions panel.')
+
+        close_window()
+
