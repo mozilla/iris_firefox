@@ -145,6 +145,7 @@ class Test(BaseTest):
         assert_true(self, site_information_panel_displayed, 'The \'Site information\' panel is displayed')
 
         click(trackers_button_pattern)
+
         trackers_popup_displayed = exists(trackers_popup_displayed_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, trackers_popup_displayed, 'Popup window with trackers is displayed on screen')
 
