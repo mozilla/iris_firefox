@@ -36,7 +36,7 @@ class Test(BaseTest):
         assert_true(self, private_window_opened, 'Private window opened.')
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-        tracked_site_loaded = exists(firefox_tracker_site_logo_pattern)
+        tracked_site_loaded = exists(firefox_tracker_site_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, tracked_site_loaded, 'The website is successfully displayed.')
 
         tracking_protection_shield_displayed = exists(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
@@ -96,7 +96,7 @@ class Test(BaseTest):
         assert_true(self, trackers_list_opened, 'A list of unblocked trackers is successfully displayed.')
 
         navigate('about:preferences#privacy')
-        preferences_opened = exists(manage_exceptions_button_pattern)
+        preferences_opened = exists(manage_exceptions_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, preferences_opened, 'The about:preferences#privacy page is successfully displayed.')
 
         click(manage_exceptions_button_pattern)
