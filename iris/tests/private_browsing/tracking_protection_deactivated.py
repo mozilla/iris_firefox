@@ -32,19 +32,21 @@ class Test(BaseTest):
 
         custom_radio_found = exists(custom_privacy_radio_pattern)
         assert_true(self, custom_radio_found, 'Custom" radio button from the "Content Blocking" section is displayed .')
+
         click(custom_privacy_radio_pattern)
 
         custom_protection_popup_opened = exists(trackers_checked_pattern)
         assert_true(self, custom_protection_popup_opened, 'The Custom panel is unfolded.')
-        click(trackers_checked_pattern)
 
+        click(trackers_checked_pattern)
         hover(Location(SCREEN_WIDTH, SCREEN_HEIGHT / 2), DEFAULT_FX_DELAY)
+
         content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
 
         close_tab()
-
         new_tab()
+
         navigate('http://edition.cnn.com')
         cnn_logo_exists = exists(cnn_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
@@ -71,15 +73,18 @@ class Test(BaseTest):
 
         info_button_located = exists(info_button_pattern)
         assert_true(self, info_button_located, 'The "i button" (Info button) is located near the address bar')
+
         click(info_button_pattern)
 
         open_trackers_list_button_located = exists(open_trackers_list_pattern)
         assert_true(self, open_trackers_list_button_located, 'The site information panel is displayed.')
+
         click(open_trackers_list_pattern)
         hover(Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
 
         trackers_list_header_located = exists(trackers_list_header_pattern)
         assert_true(self, trackers_list_header_located, 'The trackers are not blocked.')
+
         click(trackers_list_header_located, DEFAULT_UI_DELAY)
 
         list_of_page_trackers_located = exists(list_of_page_trackers_pattern, DEFAULT_FIREFOX_TIMEOUT)
