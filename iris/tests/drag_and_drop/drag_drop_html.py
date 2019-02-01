@@ -54,6 +54,8 @@ class Test(BaseTest):
         type(Key.END)
 
         new_window()
+        new_window_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED)
+        assert_true(self, new_window_opened, 'New window opened')
         opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED)
         new_window_drop_location = Location(SCREEN_WIDTH*0.53, SCREEN_HEIGHT/20)
         drag_drop(opened_tab_location, new_window_drop_location)
