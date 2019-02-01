@@ -24,7 +24,8 @@ class Test(BaseTest):
         enable_blocking_button_pattern = Pattern('turn_on_blocking_for_site_button.png')
         tracking_content_detected_message_pattern = Pattern('tracking_content_detected_message.png')
         tracking_attempts_blocked_message_pattern = Pattern('tracking_attempts_blocked_message.png')
-        trackers_back_button_pattern = Pattern('trackers_back_button.png')
+        trackers_popup_displayed_pattern = Pattern('trackers_popup_displayed.png')
+        cnn_restore_focus_pattern = Pattern('cnn_restore_focus.png')
         trackers_button_pattern = Pattern('trackers_button.png')
         blocked_tracker_label_pattern = Pattern('blocked_tracker_label.png')
         trackers_icon_pattern = Pattern('trackers_icon.png')
@@ -49,39 +50,34 @@ class Test(BaseTest):
         page_home()
 
         click(tracking_protection_shield_pattern)
-
         disable_blocking_button_displayed = exists(disable_blocking_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, disable_blocking_button_displayed, 'The \'Site information\' panel is displayed')
 
         trackers_button_available = exists(trackers_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, trackers_button_available,
                     '\'Trackers\' button is displayed on the \'Site information\' panel')
+
         click(trackers_button_pattern)
 
-        #  wait_vanish for Linux
-        try:
-            tracker_button_disappeared = wait_vanish(trackers_button_pattern)
-            assert_true(self, tracker_button_disappeared, 'Trackers button vanished of screen.')
-        except FindError:
-            raise FindError('Tracker button did not disappear.')
+        trackers_popup_displayed = exists(trackers_popup_displayed_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, trackers_popup_displayed, 'Popup window with trackers is displayed on screen')
 
-        successfully_blocked_trackers_displayed = not exists(trackers_icon_pattern.similar(0.9), DEFAULT_FIREFOX_TIMEOUT) and \
-            exists(blocked_tracker_label_pattern)
+        successfully_blocked_trackers_displayed = exists(blocked_tracker_label_pattern)
         assert_true(self, successfully_blocked_trackers_displayed,
                     'A list of successfully blocked trackers is displayed.')
 
-        button_trackers_back_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 5)
-        trackers_back_button_displayed = exists(trackers_back_button_pattern, in_region=button_trackers_back_region)
-        assert_true(self, trackers_back_button_displayed,
-                    '\'Back\' button is displayed on the \'Site information panel\'')
-        click(trackers_back_button_pattern, in_region=button_trackers_back_region)
+        type(Key.ESC)
+        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, tracking_protection_shield_displayed, 'The tracking protection shield is displayed')
 
+        click(tracking_protection_shield_pattern)
         disable_blocking_button_displayed = exists(disable_blocking_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, disable_blocking_button_displayed, 'The \'Site information\' panel is displayed')
+
         click(disable_blocking_button_pattern)
 
-        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
-        assert_true(self, website_displayed, 'The website successfully refreshes')
+        website_refreshes = exists(cnn_site_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        assert_true(self, website_refreshes, 'The website successfully refreshes')
 
         tracking_protection_shield_deactivated_displayed = exists(tracking_protection_shield_deactivated_pattern)
         assert_true(self, tracking_protection_shield_deactivated_displayed,
@@ -93,66 +89,66 @@ class Test(BaseTest):
         assert_true(self, tracking_content_detected_message_displayed,
                     'On hover, the tracking protection shield displays a \'Tracking content detected\' tooltip message')
 
-        click(Location(100, 150))
+        #  click on focus pattern as method restore_firefox_focus() doesn't work as expected
+        cnn_restore_focus_pattern_exists = exists(cnn_restore_focus_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, cnn_restore_focus_pattern_exists, 'Restore focus patter displayed')
 
+        click(cnn_restore_focus_pattern)
         cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,),
                                                                    timeout=DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, cnn_blocked_content_displayed,
                     'Websites content that contain tracking elements are displayed on the page')
 
         click(tracking_protection_shield_deactivated_pattern)
-
         enable_blocking_button_displayed = exists(enable_blocking_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, enable_blocking_button_displayed, 'The \'Site information\' panel is displayed')
 
         trackers_button_available = exists(trackers_button_pattern)
         assert_true(self, trackers_button_available,
                     '\'Trackers\' button is displayed on the \'Site information\' panel')
+
         click(trackers_button_pattern)
 
-        try:
-            tracker_button_disappeared = wait_vanish(trackers_button_pattern)
-            assert_true(self, tracker_button_disappeared, 'Trackers button vanished of screen.')
-        except FindError:
-            raise FindError('Tracker button did not disappear.')
+        trackers_popup_displayed = exists(trackers_popup_displayed_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, trackers_popup_displayed, 'Popup window with trackers is displayed on screen')
 
-        list_of_active_trackers_displayed = exists(trackers_icon_pattern, DEFAULT_FIREFOX_TIMEOUT) and not \
-            exists(blocked_tracker_label_pattern)
+        list_of_active_trackers_displayed = exists(trackers_icon_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, list_of_active_trackers_displayed, 'A list of active trackers is successfully displayed.')
 
-        button_trackers_back_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 5)
-        trackers_back_button_displayed = exists(trackers_back_button_pattern, in_region=button_trackers_back_region)
-        assert_true(self, trackers_back_button_displayed,
-                    '\'Back\' button is displayed on the \'Site information panel\'')
-        click(trackers_back_button_pattern, in_region=button_trackers_back_region)
+        type(Key.ESC)
+        tracking_protection_shield_deactivated_displayed = exists(tracking_protection_shield_deactivated_pattern,
+                                                                  DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, tracking_protection_shield_deactivated_displayed,
+                    'The tracking protection shield is displayed')
+
+        click(tracking_protection_shield_deactivated_pattern)
+        enable_blocking_button_displayed = exists(enable_blocking_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, enable_blocking_button_displayed, 'The \'Site information\' panel is displayed')
 
         click(enable_blocking_button_pattern)
-        website_displayed = exists(cnn_site_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
-        assert_true(self, website_displayed, 'The website successfully refreshes')
+
+        website_refreshes = exists(cnn_site_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        assert_true(self, website_refreshes, 'The website successfully refreshes')
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, tracking_protection_shield_displayed,
                     'The tracking protection shield is displayed as active')
 
         mouse_move(tracking_protection_shield_pattern)
+
         tracking_attempts_blocked_message_displayed = exists(tracking_attempts_blocked_message_pattern)
         assert_true(self, tracking_attempts_blocked_message_displayed,
                     'On hover, the tracking protection shield displays a \'Tracking attempts blocked\' tooltip message')
 
         click(tracking_protection_shield_pattern, DEFAULT_UI_DELAY)
-
         site_information_panel_displayed = exists(trackers_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, site_information_panel_displayed, 'The \'Site information\' panel is displayed')
+
         click(trackers_button_pattern)
+        trackers_popup_displayed = exists(trackers_popup_displayed_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, trackers_popup_displayed, 'Popup window with trackers is displayed on screen')
 
-        try:
-            tracker_button_disappeared = wait_vanish(trackers_button_pattern)
-            assert_true(self, tracker_button_disappeared, 'Trackers button vanished of screen.')
-        except FindError:
-            raise FindError('Tracker button did not disappear.')
-
-        successfully_blocked_trackers_displayed = exists(blocked_tracker_label_pattern, DEFAULT_FIREFOX_TIMEOUT) and \
-            not exists(trackers_icon_pattern.similar(0.9))
+        successfully_blocked_trackers_displayed = exists(blocked_tracker_label_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, successfully_blocked_trackers_displayed,
                     'A list of successfully blocked trackers is displayed.')
 
