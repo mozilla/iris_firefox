@@ -22,7 +22,7 @@ class Test(BaseTest):
         default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
         add_search_bar_in_toolbar_pattern = Pattern('add_search_bar_in_toolbar.png')
         search_bar_pattern = Pattern('search_bar.png').similar(0.9)
-        client_search_code_pattern = Pattern('client_search_code.png')
+        client_search_code_pattern = Pattern('client_search_code.png').similar(0.9)
         search_google_for_pattern = Pattern('search_google_for.png')
 
         # Channel: release, Locale: ['en-US', 'de', 'fr', 'pl', 'it', 'pt-BR', 'ja', 'es-ES', 'en-GB', 'ru']
@@ -38,7 +38,6 @@ class Test(BaseTest):
 
         expected = exists(default_search_engine_google_pattern, 10)
         assert_true(self, expected, 'Google is the default search engine.')
-        time.sleep(50)
 
         expected = exists(add_search_bar_in_toolbar_pattern, 10)
         assert_true(self, expected, 'Option is visible in the page.')
