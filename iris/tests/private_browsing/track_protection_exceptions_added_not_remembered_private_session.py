@@ -48,10 +48,10 @@ class Test(BaseTest):
 
         first_party_tracker_correctly_loaded = exists(first_party_tracker_correctly_blocked_text_pattern)
         assert_true(self, first_party_tracker_correctly_loaded,
-                    'A "simulated first-party tracker was correctly loaded" phrase is displayed.', )
+                    'A "simulated first-party tracker was correctly loaded" phrase is displayed.')
 
         dnt_sent_correctly = exists(dnt_signal_correctly_sent_pattern)
-        assert_true(self, dnt_sent_correctly, 'The "DNT signal was correctly send" phrase is displayed.', )
+        assert_true(self, dnt_sent_correctly, 'The "DNT signal was correctly send" phrase is displayed.')
 
         click(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
 
@@ -106,4 +106,3 @@ class Test(BaseTest):
                     'The previously accessed website is not displayed inside the Tracking Protection exceptions panel.')
 
         close_window()
-
