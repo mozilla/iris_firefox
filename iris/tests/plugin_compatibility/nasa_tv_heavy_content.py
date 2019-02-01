@@ -19,6 +19,8 @@ class Test(BaseTest):
         media_button_pattern = Pattern('media_button.png')
         video_drop_down_pattern = Pattern('video_drop_down.png')
 
+        change_preference('media.autoplay.default', '0')
+
         new_private_window()
 
         private_window_opened = exists(new_private_browsing_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
