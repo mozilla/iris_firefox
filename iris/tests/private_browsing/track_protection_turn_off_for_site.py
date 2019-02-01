@@ -99,6 +99,8 @@ class Test(BaseTest):
         assert_true(self, cnn_blocked_content_displayed,
                     'Websites content that contain tracking elements are displayed on the page')
 
+        page_home()
+
         click(tracking_protection_shield_deactivated_pattern)
         enable_blocking_button_displayed = exists(enable_blocking_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, enable_blocking_button_displayed, 'The \'Site information\' panel is displayed')
@@ -108,7 +110,6 @@ class Test(BaseTest):
                     '\'Trackers\' button is displayed on the \'Site information\' panel')
 
         click(trackers_button_pattern)
-
         trackers_popup_displayed = exists(trackers_popup_displayed_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, trackers_popup_displayed, 'Popup window with trackers is displayed on screen')
 
@@ -139,6 +140,17 @@ class Test(BaseTest):
         tracking_attempts_blocked_message_displayed = exists(tracking_attempts_blocked_message_pattern)
         assert_true(self, tracking_attempts_blocked_message_displayed,
                     'On hover, the tracking protection shield displays a \'Tracking attempts blocked\' tooltip message')
+
+        #  click on focus pattern as method restore_firefox_focus() doesn't work as expected
+        cnn_restore_focus_pattern_exists = exists(cnn_restore_focus_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, cnn_restore_focus_pattern_exists, 'Restore focus patter displayed')
+
+        click(cnn_restore_focus_pattern)
+
+        cnn_blocked_content_not_displayed = \
+            scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,), 10)
+        assert_false(self, cnn_blocked_content_not_displayed,
+                     'Websites content that contain tracking elements are not displayed on the page')
 
         click(tracking_protection_shield_pattern, DEFAULT_UI_DELAY)
         site_information_panel_displayed = exists(trackers_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
