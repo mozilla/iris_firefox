@@ -32,4 +32,7 @@ class Test(BaseTest):
         tab_closed = not exists(LocalWeb.MOZILLA_LOGO)
         assert_true(self, tab_closed, 'Tab is closed successfully')
 
+        other_tab_displayed = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        assert_true(self, other_tab_displayed, 'First tab displayed, no "BSOD" occurred')
+
         close_window()
