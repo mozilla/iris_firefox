@@ -35,6 +35,8 @@ class Test(BaseTest):
 
         navigate('https://www.facebook.com/')
 
+        close_content_blocking_pop_up()
+
         facebook_logo_displayed = exists(facebook_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, facebook_logo_displayed, 'Facebook page is successfully downloaded')
 
