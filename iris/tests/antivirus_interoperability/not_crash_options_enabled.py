@@ -15,6 +15,10 @@ class Test(BaseTest):
         self.test_suite_id = '3063'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'media.autoplay.default': 0})
+
     def run(self):
         soundcloud_logo_pattern = Pattern('soundcloud_logo.png')
         sound_on_pattern = Pattern('sound_on.png').similar(0.9)
@@ -26,7 +30,6 @@ class Test(BaseTest):
         if Settings.is_windows():
             mouse_wheel_steps = SCREEN_HEIGHT
 
-        change_preference('media.autoplay.default', '0')
         navigate('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
         youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
@@ -55,9 +58,10 @@ class Test(BaseTest):
 
         mouse_move(google_images_page_mark_pattern)
 
-        show_more_results_button_exists = scroll_until_pattern_found(
-            show_more_results_button_pattern, scroll, (-mouse_wheel_steps, None), 100, DEFAULT_FX_DELAY)
+        show_more_results_button_exists = scroll_until_pattern_found(show_more_results_button_pattern, scroll,
+                                                                     (-mouse_wheel_steps,), 100, DEFAULT_UI_DELAY)
         assert_true(self, show_more_results_button_exists, 'The images are properly displayed.')
+
 
 
 
