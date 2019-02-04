@@ -64,16 +64,18 @@ class Test(BaseTest):
         open_browser_console()
         restart_via_console()
 
+        browser_console_opened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, browser_console_opened, 'Browser console displayed')
         click(browser_console_pattern)
         close_window_control('auxiliary')
 
-        all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
 
-        all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
 
-        history_are_restored = exists(history_updated_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        history_are_restored = exists(history_updated_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, history_are_restored, 'The history is successfully restored')
 
 
