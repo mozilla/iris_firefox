@@ -17,7 +17,7 @@ class Test(BaseTest):
 
     def run(self):
         cnn_page_downloaded_pattern = Pattern('cnn_page_downloaded.png')
-        history_updated_pattern = Pattern('history_updated.png')
+        history_updated_pattern = Pattern('history_updated.png').similar(0.6)
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         tabs_restored_pattern = Pattern('tabs_restored.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
@@ -40,7 +40,7 @@ class Test(BaseTest):
         close_content_blocking_pop_up()
 
         history_sidebar()
-        click(Library.HISTORY_TODAY)
+        click(Library.HISTORY_TODAY.similar(0.6))
 
         history_updated = exists(history_updated_pattern)
         assert_true(self, history_updated, 'History updated')
@@ -65,8 +65,8 @@ class Test(BaseTest):
             type(Key.ENTER)
         else:
             bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            click(SidebarBookmarks.OTHER_BOOKMARKS.similar(0.6))
+            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU.similar(0.6))
             type(Key.ENTER)
 
             previous_tab()
