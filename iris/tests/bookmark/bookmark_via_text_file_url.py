@@ -59,5 +59,7 @@ class Test(BaseTest):
 
         click(toolbar_bookmarked_link)
 
+        close_content_blocking_pop_up()
+
         link_page_assert = exists(link_page, 10)
         assert_true(self, link_page_assert, 'The page has been successfully loaded.')
