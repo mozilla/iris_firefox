@@ -18,7 +18,7 @@ class Test(BaseTest):
     def run(self):
         block_all_cookies_pattern = Pattern('block_all_cookies.png')
         cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
-        cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.95)
+        cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.85)
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
         custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
         custom_content_blocking_ticked_patten = Pattern('custom_content_blocking_ticked.png')
@@ -46,7 +46,7 @@ class Test(BaseTest):
         click(block_all_cookies_pattern)
 
         navigate('https://www.youtube.com/')
-        site_loaded = exists(youtube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        site_loaded = exists(youtube_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT*2)
         assert_true(self, site_loaded, 'The website is successfully displayed.')
 
         navigate('about:preferences#privacy')
