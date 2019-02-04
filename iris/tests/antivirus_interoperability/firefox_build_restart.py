@@ -36,6 +36,8 @@ class Test(BaseTest):
         firefox_is_restarted = exists(browser_console_opened_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_is_restarted, 'Firefox is restarted')
 
+        close_window_control('auxiliary')
+
         restore_firefox_focus()
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
