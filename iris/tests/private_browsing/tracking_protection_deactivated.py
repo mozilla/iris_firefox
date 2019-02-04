@@ -20,9 +20,10 @@ class Test(BaseTest):
         private_browsing_tab_pattern = Pattern('private_browsing_tab_logo.png')
         private_content_blocking_warning_pattern = Pattern('private_window_content_blocking_warning.png')
         info_button_pattern = Pattern('info_button.png')
-        open_trackers_list_pattern = Pattern('trackers_button.png')
-        trackers_list_header_pattern = Pattern('trackers_list_header.png')
-        list_of_page_trackers_pattern = Pattern('list_of_page_trackers.png')
+        trackers_button_pattern = Pattern('trackers_button.png')
+        trackers_popup_title_pattern = Pattern('trackers_popup_title.png')
+        blocked_tracker_pattern = Pattern('blocked_tracker_label.png')
+        trackers_icon_pattern = Pattern('trackers_icon.png')
         to_block_set_to_strict_pattern = Pattern('to_block_set_to_strict.png')
 
         new_tab()
@@ -31,22 +32,19 @@ class Test(BaseTest):
         assert_true(self, navigated_to_preferences, 'The about:preferences#privacy page is successfully displayed.')
 
         custom_radio_found = exists(custom_privacy_radio_pattern)
-        assert_true(self, custom_radio_found, 'Custom" radio button from the "Content Blocking" section is displayed .')
+        assert_true(self, custom_radio_found, 'Custom" radio button from the "Content Blocking" section is displayed.')
 
         click(custom_privacy_radio_pattern)
-
         custom_protection_popup_opened = exists(trackers_checked_pattern)
-        assert_true(self, custom_protection_popup_opened, 'The Custom panel is unfolded.')
+        assert_true(self, custom_protection_popup_opened, 'The Custom panel is displayed.')
 
         click(trackers_checked_pattern)
-        hover(Location(SCREEN_WIDTH, SCREEN_HEIGHT / 2), DEFAULT_FX_DELAY)
-
         content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
 
         close_tab()
-        new_tab()
 
+        new_tab()
         navigate('http://edition.cnn.com')
         cnn_logo_exists = exists(cnn_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
@@ -69,26 +67,24 @@ class Test(BaseTest):
 
         tracking_protection_shield_private_window = exists(tracking_protection_shield_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, tracking_protection_shield_private_window,
-                    'The Content blocking shield is displayed near the address bar in private window')
+                    'The Content blocking shield is displayed near the address bar')
 
         info_button_located = exists(info_button_pattern)
         assert_true(self, info_button_located, 'The "i button" (Info button) is located near the address bar')
 
         click(info_button_pattern)
-
-        open_trackers_list_button_located = exists(open_trackers_list_pattern)
+        open_trackers_list_button_located = exists(trackers_button_pattern)
         assert_true(self, open_trackers_list_button_located, 'The site information panel is displayed.')
 
-        click(open_trackers_list_pattern)
-        hover(Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        click(trackers_button_pattern)
+        trackers_popup_displayed = exists(trackers_popup_title_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, trackers_popup_displayed, 'Trackers popup window is displayed on screen')
 
-        trackers_list_header_located = exists(trackers_list_header_pattern)
-        assert_true(self, trackers_list_header_located, 'The trackers are not blocked.')
+        list_of_active_trackers_displayed = exists(trackers_icon_pattern)
+        assert_true(self, list_of_active_trackers_displayed, 'A list of active trackers is successfully displayed.')
 
-        click(trackers_list_header_located, DEFAULT_UI_DELAY)
-
-        list_of_page_trackers_located = exists(list_of_page_trackers_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, list_of_page_trackers_located, 'The list of all page trackers is displayed.')
+        trackers_not_blocked = not exists(blocked_tracker_pattern)
+        assert_true(self, trackers_not_blocked, 'The trackers are not blocked.')
 
         to_block_set_to_strict_located = exists(to_block_set_to_strict_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, to_block_set_to_strict_located,
