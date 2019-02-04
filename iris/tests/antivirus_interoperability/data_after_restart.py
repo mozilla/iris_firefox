@@ -22,6 +22,8 @@ class Test(BaseTest):
         tabs_restored_pattern = Pattern('tabs_restored.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
         browser_console_pattern = Pattern('browser_console_opened.png')
+        folder_other_bookmarks = Pattern('editBMPanel_folderMenuList_default_Other_Bookmarks.png')
+        folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -49,24 +51,42 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY)
         click(toolbar_bookmarks_toolbar_pattern)
 
-        bookmark_page()
-        click(SidebarBookmarks.OTHER_BOOKMARKS)
-        click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
-        type(Key.ENTER)
+        if Settings.is_linux():
+            bookmark_page()
+            click(folder_other_bookmarks)
+            click(folder_toolbar_menu)
+            type(Key.ENTER)
         
-        previous_tab()
+            previous_tab()
         
-        bookmark_page()
-        click(SidebarBookmarks.OTHER_BOOKMARKS)
-        click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
-        type(Key.ENTER)
+            bookmark_page()
+            click(folder_other_bookmarks)
+            click(folder_toolbar_menu)
+            type(Key.ENTER)
+        else:
+            bookmark_page()
+            click(SidebarBookmarks.OTHER_BOOKMARKS)
+            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            type(Key.ENTER)
+
+            previous_tab()
+
+            bookmark_page()
+            click(SidebarBookmarks.OTHER_BOOKMARKS)
+            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            type(Key.ENTER)
+
+        bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
 
         open_browser_console()
+        time.sleep(DEFAULT_UI_DELAY_LONG)
         restart_via_console()
 
         browser_console_opened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, browser_console_opened, 'Browser console displayed')
         click(browser_console_pattern)
+        time.sleep(DEFAULT_UI_DELAY)
         close_window_control('auxiliary')
 
         all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
