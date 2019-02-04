@@ -68,7 +68,7 @@ class Test(BaseTest):
         click(confirm_clear_data_pattern)
 
         navigate('https://www.prosport.ro/')
-        site_loaded = exists(site_tab_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        site_loaded = exists(site_tab_pattern, 120)
         assert_true(self, site_loaded, 'The "Prosport" website is successfully displayed.')
 
         navigate('about:preferences#privacy')
