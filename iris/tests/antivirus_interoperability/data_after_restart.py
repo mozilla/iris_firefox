@@ -17,11 +17,18 @@ class Test(BaseTest):
 
     def run(self):
         cnn_page_downloaded_pattern = Pattern('cnn_page_downloaded.png')
+        history_updated_pattern = Pattern('history_updated.png')
+        toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
+        tabs_restored_pattern = Pattern('tabs_restored.png')
+        bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
+        browser_console_pattern = Pattern('browser_console_opened.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'SOAP Wiki site successfully opened')
+
+        new_tab()
 
         navigate('https://edition.cnn.com')
 
@@ -33,4 +40,44 @@ class Test(BaseTest):
         history_sidebar()
         click(Library.HISTORY_TODAY)
 
-        time.sleep(5)
+        history_updated = exists(history_updated_pattern)
+        assert_true(self, history_updated, 'History updated')
+
+        location_for_click = find(NavBar.HOME_BUTTON).right(100)
+
+        right_click(location_for_click)
+        time.sleep(DEFAULT_UI_DELAY)
+        click(toolbar_bookmarks_toolbar_pattern)
+
+        bookmark_page()
+        click(SidebarBookmarks.OTHER_BOOKMARKS)
+        click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+        type(Key.ENTER)
+        
+        previous_tab()
+        
+        bookmark_page()
+        click(SidebarBookmarks.OTHER_BOOKMARKS)
+        click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+        type(Key.ENTER)
+
+        open_browser_console()
+        restart_via_console()
+
+        click(browser_console_pattern)
+        close_window_control('auxiliary')
+
+        all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
+
+        all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
+
+        history_are_restored = exists(history_updated_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        assert_true(self, history_are_restored, 'The history is successfully restored')
+
+
+
+
+
+
