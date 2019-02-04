@@ -119,7 +119,7 @@ def double_click(ps: Pattern or str = None, duration: int = None, region: Rectan
     Mouse().general_click(click_location, duration, Button.left, 2)
 
 
-def drag_drop(drag_from: Pattern or str, drop_to: Pattern or str, region: Rectangle = None, duration: int = None,
+def drag_drop(drag_from: Pattern or str, drop_to: Pattern or str, region: Rectangle = None, duration: float = None,
               align: Alignment = None):
     """Mouse drag and drop.
 

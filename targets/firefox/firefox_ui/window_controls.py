@@ -3,13 +3,12 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris2.src.core.api.enums import OSPlatform
-from iris2.src.core.api.finder.pattern import Pattern
-from iris2.src.core.util.os_helpers import OSHelper
+from src.core.api.finder.pattern import Pattern
+from src.core.api.os_helpers import OSHelper
 
 
 class AuxiliaryWindow(object):
-    if OSHelper.get_os() == OSPlatform.MAC:
+    if OSHelper.is_mac():
         AUXILIARY_WINDOW_CONTROLS = Pattern(
             'auxiliary_window_controls.png')
         RED_BUTTON_PATTERN = Pattern('unhovered_red_control.png').similar(0.9)
@@ -22,7 +21,7 @@ class AuxiliaryWindow(object):
 
 
 class MainWindow(object):
-    if OSHelper.get_os() == OSPlatform.MAC:
+    if OSHelper.is_mac():
         MAIN_WINDOW_CONTROLS = Pattern('main_window_controls.png')
         UNHOVERED_MAIN_RED_CONTROL = Pattern('unhovered_main_red_control.png')
         HOVERED_MAIN_RED_CONTROL = Pattern('hovered_red_main_control.png')

@@ -10,7 +10,6 @@ from distutils.spawn import find_executable
 
 import pytesseract
 
-from src.core.api.enums import OSPlatform
 from src.core.api.os_helpers import OSHelper
 
 logger = logging.getLogger(__name__)
@@ -76,14 +75,14 @@ def _check_path(dir_path):
 def shutdown_process(process_name: str):
     """Checks if the process name exists in the process list and close it ."""
 
-    if OSHelper.get_os() == OSPlatform.WINDOWS:
+    if OSHelper.is_windows():
         command_str = 'taskkill /IM ' + process_name + '.exe'
         try:
             subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
         except subprocess.CalledProcessError:
             logger.error('Command  failed: "%s"' % command_str)
             raise Exception('Unable to run Command.')
-    elif OSHelper.get_os() == OSPlatform.MAC or OSHelper.get_os() == OSPlatform.LINUX:
+    elif OSHelper.is_mac() or OSHelper.is_linux():
         command_str = 'pkill ' + process_name
         try:
             subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE)
@@ -114,7 +113,7 @@ def reset_terminal_encoding():
 
 def get_terminal_encoding():
     """Helper function to get current terminal encoding."""
-    if OSHelper.get_os() == OSPlatform.WINDOWS:
+    if OSHelper.is_windows():
         logger.debug('Running "chcp" shell command')
         chcp_output = os.popen('chcp').read().strip()
         logger.debug('chcp output: "%s"' % chcp_output)
