@@ -66,6 +66,9 @@ class Test(BaseTest):
         expected = exists(client_search_code_pattern, 10)
         assert_true(self, expected, 'Client search code is correct for searches from search bar.')
 
+        select_location_bar()
+        type(Key.DELETE)
+
         close_content_blocking_pop_up()
 
         double_click(test_pattern)
