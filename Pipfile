@@ -17,16 +17,16 @@ packaging = "==18.0"
 gitpython = "==2.1.11"
 pynput = "==1.4"
 mozinstall = "==1.16.0"
-mozdownload = { git = 'https://github.com/AndreiH/mozdownload.git', ref = 'mozdownload_python3' }
+mozdownload = {git = 'https://github.com/AndreiH/mozdownload.git',ref = 'mozdownload_python3'}
 mozversion = "==1.5"
 mozinfo = "==1.0.0"
 mozrunner = "==7.2.0"
 mss = "==3.3.1"
 pytest = "*"
-
 # Platform dependencies
 xlib = {platform_system = "== 'Linux'",version = "==0.21"}
-
+pygithub = "*"
+bugzilla = "*"
 
 [dev-packages]
 pylint = "*"

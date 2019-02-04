@@ -39,7 +39,14 @@ class EmailError(Exception):
 
 
 class ScreenshotError(Exception):
-    """Exception raised when an email error occurs."""
+    """Exception raised when an screenshot error occurs."""
+    def __init__(self, message):
+        """Create an instance of an exception."""
+        Exception.__init__(self, message)
+
+
+class BugManagerError(Exception):
+    """Exception raised when an bug_manager error occurs."""
     def __init__(self, message):
         """Create an instance of an exception."""
         Exception.__init__(self, message)
