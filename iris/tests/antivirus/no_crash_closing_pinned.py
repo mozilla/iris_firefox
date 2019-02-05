@@ -26,6 +26,7 @@ class Test(BaseTest):
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
+
         firefox_tab_opened = exists(firefox_tab_pattern)
         assert_true(self, firefox_tab_opened, 'Second webpage is opened')
         right_click(firefox_tab_pattern)
@@ -70,9 +71,6 @@ class Test(BaseTest):
         assert_true(self, pinned_dropdown_opened, 'Right-click menu for pinned displayed')
         click(close_tab_pattern)
 
-        try:
-            click(NavBar.HAMBURGER_MENU)
-            hamburger_menu_opened = exists(HamburgerMenu.ADDONS)
-            assert_true(self, hamburger_menu_opened, 'Hamburger menu is opened, Firefox didn\'t crash.')
-        except FindError:
-            raise FindError('Unable to interact with hamburger menu')
+        new_tab()
+        new_tab_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED)
+        assert_true(self, new_tab_opened, 'New tab is opened, Firefox didn\'t crash.')
