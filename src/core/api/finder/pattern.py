@@ -259,7 +259,11 @@ def _get_image_path(caller, image: str, application: str) -> str:
     else:
         os_version = OSHelper.get_os().value
     paths = []
-    current_locale = parse_args().locale
+    current_locale = ''
+    try:
+        current_locale = parse_args().locale
+    except AttributeError:
+        pass
 
     platform_directory = os.path.join(module_directory, 'images', os_version)
     platform_locale_directory = os.path.join(platform_directory, current_locale)
