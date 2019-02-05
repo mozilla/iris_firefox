@@ -1,6 +1,4 @@
-import sys
 
-from src.core.api.screen.region import Region
 from targets.firefox.fx_testcase import *
 
 
@@ -14,7 +12,7 @@ class Test(FirefoxTest):
 
 
 
-    @pytest.mark.skipif(sys.platform == "darwin",
+    @pytest.mark.skipif(sys.platform == "linux",
                         reason="Skip experimend:)")
 
     def test_run(self):

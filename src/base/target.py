@@ -4,7 +4,7 @@
 
 import pytest
 
-from src.core.api.arg_parser import parse_args
+from src.core.util.arg_parser import parse_args
 
 
 class BaseTarget(object):

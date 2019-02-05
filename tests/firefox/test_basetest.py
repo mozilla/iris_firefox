@@ -1,7 +1,4 @@
-import os
-import sys
 
-import pytest
 
 from targets.firefox.fx_testcase import *
 

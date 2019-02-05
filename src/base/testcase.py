@@ -6,6 +6,23 @@
 import logging
 import unittest
 
+import pytest
+
+from src.core.api.finder.finder import *
+from src.core.api.finder.pattern import Pattern
+from src.core.api.keyboard.key import *
+from src.core.api.keyboard.keyboard_api import *
+from src.core.api.mouse.mouse import *
+from src.core.api.mouse.mouse import Mouse
+from src.core.api.screen.region import *
+from src.core.api.screen.screen import *
+from src.core.api.enums import *
+from src.core.api.errors import *
+from src.core.api.location import *
+from src.core.api.os_helpers import *
+from src.core.api.rectangle import *
+from src.core.api.settings import Settings
+
 mylogger = logging.getLogger(__name__)
 
 

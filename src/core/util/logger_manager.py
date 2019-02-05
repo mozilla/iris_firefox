@@ -2,12 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import coloredlogs
 import logging
 
-from src.core.api.arg_parser import parse_args
-from src.core.util.path_manager import PathManager
+import coloredlogs
 
+from src.core.util.arg_parser import parse_args
+from src.core.util.path_manager import PathManager
 
 LOG_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
 

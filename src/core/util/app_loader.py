@@ -6,7 +6,7 @@
 import logging
 import os
 
-from src.core.api.arg_parser import parse_args
+from src.core.util.arg_parser import parse_args
 from src.core.util.path_manager import PathManager
 
 logger = logging.getLogger(__name__)
