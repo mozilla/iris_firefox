@@ -83,11 +83,11 @@ class Region(object):
     def upper_right_corner(self):
         return Region.screen_regions(self, 'UPPER_RIGHT_CORNER')
 
-    def bottom_left_corner(self):
-        return Region.screen_regions(self, 'BOTTOM_LEFT_CORNER')
+    def lower_left_corner(self):
+        return Region.screen_regions(self, 'LOWER_LEFT_CORNER')
 
-    def bottom_right_corner(self):
-        return Region.screen_regions(self, 'BOTTOM_RIGHT_CORNER')
+    def lower_right_corner(self):
+        return Region.screen_regions(self, 'LOWER_RIGHT_CORNER')
 
     def get_center(self):
         """Returns a Location object for the center of te screen."""
@@ -349,8 +349,8 @@ class Region(object):
 
             'UPPER_LEFT_CORNER': Region.get_matrix(2, 2, region)[0][0],
             'UPPER_RIGHT_CORNER': Region.get_matrix(2, 2, region)[0][1],
-            'BOTTOM_LEFT_CORNER': Region.get_matrix(2, 2, region)[1][0],
-            'BOTTOM_RIGHT_CORNER': Region.get_matrix(2, 2, region)[1][1],
+            'LOWER_LEFT_CORNER': Region.get_matrix(2, 2, region)[1][0],
+            'LOWER_RIGHT_CORNER': Region.get_matrix(2, 2, region)[1][1],
         }
         return captions.get(caption)
 
