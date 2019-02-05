@@ -17,14 +17,14 @@ class Test(BaseTest):
 
     def run(self):
         cnn_page_downloaded_pattern = Pattern('cnn_page_downloaded.png')
-        history_updated_pattern = Pattern('history_updated.png').similar(0.6)
+        history_updated_pattern = Pattern('history_updated.png')
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         tabs_restored_pattern = Pattern('tabs_restored.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
         browser_console_pattern = Pattern('browser_console_opened.png')
         folder_other_bookmarks = Pattern('other_bookmarks.png')
         folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
-
+        history_today_pattern = Pattern('history_today.png')
         history_region = Region(0, 0, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 3)
         add_bookmark_region = Region(SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.2, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 2)
 
@@ -43,7 +43,10 @@ class Test(BaseTest):
         close_content_blocking_pop_up()
 
         history_sidebar()
-        click(Library.HISTORY_TODAY.similar(0.6), 0, history_region)
+        if Settings.is_mac():
+            click(history_today_pattern, 0, history_region)
+        else:
+            click(Library.HISTORY_TODAY, 0, history_region)
 
         history_updated = exists(history_updated_pattern, None, history_region)
         assert_true(self, history_updated, 'History updated')
