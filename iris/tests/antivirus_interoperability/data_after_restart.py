@@ -22,7 +22,7 @@ class Test(BaseTest):
         tabs_restored_pattern = Pattern('tabs_restored.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
         browser_console_pattern = Pattern('browser_console_opened.png')
-        folder_other_bookmarks = Pattern('editBMPanel_folderMenuList_default_Other_Bookmarks.png')
+        folder_other_bookmarks = Pattern('other_bookmarks.png')
         folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -40,7 +40,7 @@ class Test(BaseTest):
         close_content_blocking_pop_up()
 
         history_sidebar()
-        click(Library.HISTORY_TODAY.similar(0.6))
+        click(Library.HISTORY_TODAY)
 
         history_updated = exists(history_updated_pattern)
         assert_true(self, history_updated, 'History updated')
@@ -51,10 +51,11 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY)
         click(toolbar_bookmarks_toolbar_pattern)
 
-        if Settings.is_linux():
+        if Settings.is_linux() or Settings.is_mac():
             bookmark_page()
             click(folder_other_bookmarks)
             click(folder_toolbar_menu)
+            time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
         
             previous_tab()
@@ -62,11 +63,13 @@ class Test(BaseTest):
             bookmark_page()
             click(folder_other_bookmarks)
             click(folder_toolbar_menu)
+            time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
         else:
             bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS.similar(0.6))
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU.similar(0.6))
+            click(SidebarBookmarks.OTHER_BOOKMARKS)
+            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
 
             previous_tab()
@@ -74,6 +77,7 @@ class Test(BaseTest):
             bookmark_page()
             click(SidebarBookmarks.OTHER_BOOKMARKS)
             click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
 
         bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
