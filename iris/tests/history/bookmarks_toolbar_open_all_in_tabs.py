@@ -35,6 +35,8 @@ class Test(BaseTest):
         next_tab()
         navigate(privacy_url)
 
+        close_content_blocking_pop_up()
+
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
         expected_2 = exists(bookmarks_toolbar_most_visited_pattern, 10)
