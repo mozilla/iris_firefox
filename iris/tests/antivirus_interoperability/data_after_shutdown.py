@@ -97,15 +97,15 @@ class Test(BaseTest):
 
         time.sleep(DEFAULT_UI_DELAY)
 
-        all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
-
         all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
 
         click(NavBar.HAMBURGER_MENU)
         time.sleep(DEFAULT_UI_DELAY)
         click(restore_previous_session_pattern)
+
+        all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
 
         history_are_restored = exists(history_are_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT, history_region)
         assert_true(self, history_are_restored, 'The history is successfully restored')
