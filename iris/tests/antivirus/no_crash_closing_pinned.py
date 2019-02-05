@@ -17,40 +17,18 @@ class Test(BaseTest):
     def run(self):
         close_tab_pattern = Pattern('close_tab_item.png')
         pin_tab_pattern = Pattern('pin_tab_item.png')
+        mozilla_tab_pattern = Pattern('mozilla_tab.png')
         mozilla_pinned_tab_pattern = Pattern('mozilla_pinned_tab.png')
+        firefox_tab_pattern = Pattern('firefox_tab.png')
         firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
+        focus_tab_pattern = Pattern('focus_tab.png')
         focus_pinned_tab_pattern = Pattern('focus_pinned_tab.png')
 
         new_tab()
-        navigate(LocalWeb.MOZILLA_TEST_SITE)
-        first_webpage_loaded = exists(LocalWeb.MOZILLA_BOOKMARK, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, first_webpage_loaded, 'First webpage is loaded.')
-        right_click(LocalWeb.MOZILLA_BOOKMARK)
-
-        unpinned_dropdown_opened = exists(pin_tab_pattern)
-        assert_true(self, unpinned_dropdown_opened, 'Right-click menu for unpinned displayed')
-        click(pin_tab_pattern)
-
-
-        # time.sleep(60)
-
-
-        first_tab_pinned = exists(mozilla_pinned_tab_pattern)
-        assert_true(self, first_tab_pinned, 'First tab is pinned')
-        right_click(mozilla_pinned_tab_pattern)
-
-        pinned_dropdown_opened = exists(close_tab_pattern)
-        assert_true(self, pinned_dropdown_opened, 'Right-click menu for pinned displayed')
-        click(close_tab_pattern)
-
-        window_displayed = exists(NavBar.HOME_BUTTON)
-        assert_true(self, window_displayed, 'Browser window still displays')
-
-        new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        second_tab_opened = exists(LocalWeb.FIREFOX_BOOKMARK)
-        assert_true(self, second_tab_opened, 'Second webpage is opened')
-        right_click(LocalWeb.FIREFOX_BOOKMARK)
+        firefox_tab_opened = exists(firefox_tab_pattern)
+        assert_true(self, firefox_tab_opened, 'Second webpage is opened')
+        right_click(firefox_tab_pattern)
         try:
             click(pin_tab_pattern)
         except FindError:
@@ -61,9 +39,14 @@ class Test(BaseTest):
         new_tab()
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
-        third_tab_opened = exists(LocalWeb.FOCUS_BOOKMARK)
-        assert_true(self, third_tab_opened, 'Third tab is opened')
-        right_click(LocalWeb.FOCUS_BOOKMARK)
+
+
+        # time.sleep(300)
+
+
+        focus_tab_opened = exists(focus_tab_pattern)
+        assert_true(self, focus_tab_opened, 'Third tab is opened')
+        right_click(focus_tab_pattern)
         try:
             click(pin_tab_pattern)
         except FindError:
@@ -72,11 +55,32 @@ class Test(BaseTest):
         third_tab_pinned = exists(focus_pinned_tab_pattern)
         assert_true(self, third_tab_pinned, 'Third tab is pinned')
 
-        right_click(focus_pinned_tab_pattern)
-        try:
-            click(close_tab_pattern)
-        except FindError:
-            FindError('No "Close Tab" item found')
+        new_tab()
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
+        first_webpage_loaded = exists(mozilla_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+
+
+        # time.sleep(60)
+
+
+        assert_true(self, first_webpage_loaded, 'First webpage is loaded.')
+        right_click(mozilla_tab_pattern)
+
+        unpinned_dropdown_opened = exists(pin_tab_pattern)
+
+
+        # time.sleep(60)
+
+
+        assert_true(self, unpinned_dropdown_opened, 'Right-click menu for unpinned displayed')
+        click(pin_tab_pattern)
+
+        first_tab_pinned = exists(mozilla_pinned_tab_pattern)
+        assert_true(self, first_tab_pinned, 'First tab is pinned')
+        right_click(mozilla_pinned_tab_pattern)
+        pinned_dropdown_opened = exists(close_tab_pattern)
+        assert_true(self, pinned_dropdown_opened, 'Right-click menu for pinned displayed')
+        click(close_tab_pattern)
 
         try:
             click(NavBar.HAMBURGER_MENU)
