@@ -6,7 +6,6 @@
 import time
 from typing import List
 
-from src.core.api.arg_parser import parse_args
 from src.core.api.enums import Color
 from src.core.api.enums import MatchTemplateType
 from src.core.api.errors import FindError
@@ -17,6 +16,7 @@ from src.core.api.highlight.screen_highlight import ScreenHighlight, HighlightRe
 from src.core.api.location import Location
 from src.core.api.rectangle import Rectangle
 from src.core.api.settings import Settings
+from src.core.util.arg_parser import parse_args
 
 
 def highlight(region=None, seconds=None, color=None, ps=None, location=None, text_location=None):

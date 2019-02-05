@@ -24,13 +24,6 @@ class APIHelperError(Exception):
         Exception.__init__(self, message)
 
 
-class TestRailError(Exception):
-    """Exception raised when TestRail Api returns an error."""
-    def __init__(self, message):
-        """Create an instance of an exception."""
-        Exception.__init__(self, message)
-
-
 class EmailError(Exception):
     """Exception raised when an email error occurs."""
     def __init__(self, message):
