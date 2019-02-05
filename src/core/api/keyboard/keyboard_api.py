@@ -205,7 +205,7 @@ def is_lock_on(key):
             logger.error('Command  failed: %s' % repr(e.cmd))
             raise Exception('Unable to run Command.')
         else:
-            processed_lock_key = key.label
+            processed_lock_key = key.value.label
             if 'caps' in processed_lock_key:
                 processed_lock_key = 'Caps'
             elif 'num' in processed_lock_key:
