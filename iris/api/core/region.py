@@ -549,8 +549,10 @@ def find(image_name, region=None):
     :param region: Region object in order to minimize the area.
     :return: Location object.
     """
-    if isinstance(image_name, Pattern):
+    if parse_args().highlight:
+        highlight(region=region)
 
+    if isinstance(image_name, Pattern):
         image_found = image_search(image_name, region)
         if (image_found.x != -1) & (image_found.y != -1):
             if parse_args().highlight:
@@ -604,6 +606,9 @@ def wait(image_name, timeout=None, region=None):
     :param region: Region object in order to minimize the area.
     :return: True if found.
     """
+    if parse_args().highlight:
+        highlight(region=region)
+
     if isinstance(image_name, Pattern):
         if timeout is None:
             timeout = Settings.auto_wait_timeout
