@@ -21,10 +21,12 @@ class Test(BaseTest):
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         tabs_restored_pattern = Pattern('tabs_restored.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
-        browser_console_pattern = Pattern('browser_console_opened.png')
         folder_other_bookmarks = Pattern('other_bookmarks.png')
         folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
         history_today_pattern = Pattern('history_today.png')
+        restore_previous_session_pattern = Pattern('restore_previous_session.png')
+        history_are_restored_pattern = Pattern('history_are_restored.png')
+
         history_region = Region(0, 0, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 3)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -88,15 +90,12 @@ class Test(BaseTest):
         bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
 
-        open_browser_console()
-        time.sleep(DEFAULT_UI_DELAY_LONG)
-        restart_via_console()
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        self.base_local_web_url)
 
-        browser_console_opened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, browser_console_opened, 'Browser console displayed')
-        click(browser_console_pattern)
         time.sleep(DEFAULT_UI_DELAY)
-        close_window_control('auxiliary')
 
         all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
@@ -104,7 +103,13 @@ class Test(BaseTest):
         all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
 
-        history_are_restored = exists(history_updated_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        click(NavBar.HAMBURGER_MENU)
+        time.sleep(DEFAULT_UI_DELAY)
+        click(restore_previous_session_pattern)
+
+        time.sleep(30)
+
+        history_are_restored = exists(history_are_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT, history_region)
         assert_true(self, history_are_restored, 'The history is successfully restored')
 
 
