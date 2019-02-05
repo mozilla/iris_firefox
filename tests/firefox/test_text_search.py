@@ -12,7 +12,7 @@ class Test(FirefoxTest):
 
 
 
-    @pytest.mark.skipif(sys.platform == "linux",
+    @pytest.mark.skipif(sys.platform == "darwin",
                         reason="Skip experimend:)")
 
     def test_run(self):
