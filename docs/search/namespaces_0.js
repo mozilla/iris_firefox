@@ -3,6 +3,8 @@ var searchData=
   ['about_5fpreferences',['about_preferences',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences.html',1,'iris::api::core::firefox_ui']]],
   ['api',['api',['../namespaceiris_1_1api.html',1,'iris']]],
   ['bookmarks',['bookmarks',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1bookmarks.html',1,'iris::api::core::firefox_ui']]],
+  ['content_5fblocking',['content_blocking',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking.html',1,'iris::api::core::firefox_ui']]],
+  ['content_5fblocking_5ftour',['content_blocking_tour',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking__tour.html',1,'iris::api::core::firefox_ui']]],
   ['core',['core',['../namespaceiris_1_1api_1_1core.html',1,'iris::api']]],
   ['customize_5futils',['customize_utils',['../namespaceiris_1_1api_1_1helpers_1_1customize__utils.html',1,'iris::api::helpers']]],
   ['docker',['docker',['../namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1docker.html',1,'iris::api::core::firefox_ui']]],
