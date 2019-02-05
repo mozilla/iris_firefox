@@ -107,8 +107,6 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY)
         click(restore_previous_session_pattern)
 
-        time.sleep(30)
-
         history_are_restored = exists(history_are_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT, history_region)
         assert_true(self, history_are_restored, 'The history is successfully restored')
 
