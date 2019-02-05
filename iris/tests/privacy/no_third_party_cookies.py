@@ -90,8 +90,8 @@ class Test(BaseTest):
         assert_true(self, site_cookie_two_saved, 'Other target cookie saved.')
 
         click(site_cookie_one_pattern)
-        type(Key.DELETE)
-        type(Key.DELETE)
+        type(Key.DELETE)  # There are two cookies must be left after visiting prosport.ro
+        type(Key.DELETE)  # So it's needed to press "Delete" key twice to remove this site's cookies from list
 
         cookies_list_is_empty = exists(cookies_list_empty_pattern)
         assert_true(self, cookies_list_is_empty, 'No third-party cookies are saved')
