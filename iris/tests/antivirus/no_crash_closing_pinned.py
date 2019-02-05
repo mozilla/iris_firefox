@@ -40,10 +40,6 @@ class Test(BaseTest):
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-
-        # time.sleep(300)
-
-
         focus_tab_opened = exists(focus_tab_pattern)
         assert_true(self, focus_tab_opened, 'Third tab is opened')
         right_click(focus_tab_pattern)
@@ -52,25 +48,17 @@ class Test(BaseTest):
         except FindError:
             raise FindError('No "Pin Tab" item found')
 
-        third_tab_pinned = exists(focus_pinned_tab_pattern)
-        assert_true(self, third_tab_pinned, 'Third tab is pinned')
+        focus_tab_pinned = exists(focus_pinned_tab_pattern)
+        assert_true(self, focus_tab_pinned, 'Third tab is pinned')
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        first_webpage_loaded = exists(mozilla_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        mozilla_webpage_loaded = exists(mozilla_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
 
-
-        # time.sleep(60)
-
-
-        assert_true(self, first_webpage_loaded, 'First webpage is loaded.')
+        assert_true(self, mozilla_webpage_loaded, 'First webpage is loaded.')
         right_click(mozilla_tab_pattern)
 
         unpinned_dropdown_opened = exists(pin_tab_pattern)
-
-
-        # time.sleep(60)
-
 
         assert_true(self, unpinned_dropdown_opened, 'Right-click menu for unpinned displayed')
         click(pin_tab_pattern)
@@ -88,4 +76,3 @@ class Test(BaseTest):
             assert_true(self, hamburger_menu_opened, 'Hamburger menu is opened, Firefox didn\'t crash.')
         except FindError:
             raise FindError('Unable to interact with hamburger menu')
-        # time.sleep(60)
