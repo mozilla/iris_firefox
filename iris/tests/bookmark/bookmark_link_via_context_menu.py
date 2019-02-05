@@ -61,5 +61,7 @@ class Test(BaseTest):
 
         click(bookmarked_link)
 
+        close_content_blocking_pop_up()
+
         page_load_assert = exists(moz_page, 10)
         assert_true(self, page_load_assert, 'The page has been successfully loaded.')
