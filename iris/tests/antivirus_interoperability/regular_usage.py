@@ -23,7 +23,7 @@ class Test(BaseTest):
         addon_file_icon_pattern = Pattern('addon_file_icon.png')
         theme_file_icon_pattern = Pattern('theme_file_icon.png')
         home_icon_with_applied_theme_pattern = Pattern('home_icon_theme_applied.png')
-        open_button_pattern = Pattern('popup_open_button_disabled.png')  # TODO dry
+        open_button_pattern = Pattern('popup_open_button_active.png')  # TODO dry
         adblock_icon_pattern = Pattern('adblock_icon.png')
         new_tab_highlighted_with_theme_applied_pattern = Pattern('new_tab_highlighted_theme_applied.png')
 
@@ -105,7 +105,44 @@ class Test(BaseTest):
             addon_installed = exists(adblock_icon_pattern, DEFAULT_SYSTEM_DELAY)
             assert_true(self, addon_installed, 'Addon successfully installed.')
         elif Settings.is_windows():
-            pass
+            path_to_test_assets = '{}{}'.format(os.path.dirname(os.path.realpath(__file__)),
+                                                '\\assets\\regular_usage\\')
+
+            popup_opened = exists(popup_open_button_disabled_pattern, DEFAULT_SYSTEM_DELAY)
+            assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened')
+
+            type(text='l', modifier=KeyModifier.CTRL)
+
+            paste(path_to_test_assets)
+            type(Key.ENTER)
+            theme_file_is_available = exists(theme_file_icon_pattern, DEFAULT_UI_DELAY)
+            assert_true(self, theme_file_is_available, 'Theme file is available.')
+
+            click(theme_file_icon_pattern)
+            open_button_exists = exists(open_button_pattern, DEFAULT_UI_DELAY)
+            assert_true(self, open_button_exists, 'Open button available.')
+
+            click(open_button_pattern)
+            theme_applied = exists(home_icon_with_applied_theme_pattern, DEFAULT_SYSTEM_DELAY)
+            assert_true(self, theme_applied, 'Theme successfully applied.')
+
+            click(load_temporary_addon_button_pattern)
+            popup_opened = exists(popup_open_button_disabled_pattern, DEFAULT_SYSTEM_DELAY)
+            assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened.')
+
+            type(text='l', modifier=KeyModifier.CTRL)
+            paste(path_to_test_assets)
+            type(Key.ENTER)
+            addon_file_is_available = exists(addon_file_icon_pattern, DEFAULT_UI_DELAY)
+            assert_true(self, addon_file_is_available, 'Addon file is available.')
+
+            click(addon_file_icon_pattern)
+            open_button_exists = exists(open_button_pattern, DEFAULT_UI_DELAY)
+            assert_true(self, open_button_exists, 'Open button available.')
+
+            click(open_button_pattern)
+            addon_installed = exists(adblock_icon_pattern, DEFAULT_SYSTEM_DELAY)
+            assert_true(self, addon_installed, 'Addon successfully installed.')
 
         click(home_icon_with_applied_theme_pattern)
         new_tab_opened = exists(new_tab_highlighted_with_theme_applied_pattern, DEFAULT_UI_DELAY)
