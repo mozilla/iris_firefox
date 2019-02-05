@@ -25,6 +25,9 @@ class Test(BaseTest):
         folder_other_bookmarks = Pattern('other_bookmarks.png')
         folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
 
+        history_region = Region(0, 0, SCREEN_WIDTH / 5, SCREEN_HEIGHT / 3)
+        add_bookmark_region = Region(SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.2, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 2)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -40,9 +43,9 @@ class Test(BaseTest):
         close_content_blocking_pop_up()
 
         history_sidebar()
-        click(Library.HISTORY_TODAY)
+        click(Library.HISTORY_TODAY.similar(0.6), 0, history_region)
 
-        history_updated = exists(history_updated_pattern)
+        history_updated = exists(history_updated_pattern, None, history_region)
         assert_true(self, history_updated, 'History updated')
 
         location_for_click = find(NavBar.HOME_BUTTON).right(100)
@@ -53,30 +56,30 @@ class Test(BaseTest):
 
         if Settings.is_linux() or Settings.is_mac():
             bookmark_page()
-            click(folder_other_bookmarks)
-            click(folder_toolbar_menu)
+            click(folder_other_bookmarks, 0, add_bookmark_region)
+            click(folder_toolbar_menu, 0, add_bookmark_region)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
         
             previous_tab()
         
             bookmark_page()
-            click(folder_other_bookmarks)
-            click(folder_toolbar_menu)
+            click(folder_other_bookmarks, 0, add_bookmark_region)
+            click(folder_toolbar_menu, 0, add_bookmark_region)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
         else:
             bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            click(SidebarBookmarks.OTHER_BOOKMARKS, 0, add_bookmark_region)
+            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, 0, add_bookmark_region)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
 
             previous_tab()
 
             bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            click(SidebarBookmarks.OTHER_BOOKMARKS, 0, add_bookmark_region)
+            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, 0, add_bookmark_region)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
 
