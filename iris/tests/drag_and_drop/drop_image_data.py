@@ -14,7 +14,8 @@ class Test(BaseTest):
         self.test_case_id = '165086'
         self.test_suite_id = '102'
         self.locales = ['en-US']
-        self.blocked_by = {'id': '1836', 'platform': Platform.ALL}
+        self.blocked_by = '1836'
+        self.exclude = Platform.ALL
 
     def setup(self):
         BaseTest.setup(self)
