@@ -21,12 +21,10 @@ class Test(BaseTest):
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta':
             default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
-            client_search_code_pattern = Pattern('client_search_code.png').similar(0.9)
-            non_us_client_search_code_pattern = Pattern('non_us_client_search_code.png')
         elif get_firefox_channel(self.browser.path) == 'esr':
             default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png')
-            client_search_code_pattern = Pattern('client_search_code_esr_build.png').similar(0.9)
-            non_us_client_search_code_pattern = Pattern('non_us_client_search_code_esr_build.png')
+
+        region = create_region_for_awesome_bar()
 
         regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de'], 'fr': ['fr'], 'pl': ['pl'], 'it': ['it'],
                               'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB']}
@@ -50,13 +48,16 @@ class Test(BaseTest):
             select_location_bar()
             paste('test')
             type(Key.ENTER)
+            time.sleep(DEFAULT_UI_DELAY)
 
             if value != 'US':
-                expected = exists(non_us_client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct for searches from awesome bar.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-d',
+                                'Client search code is correct for searches from awesome bar.')
             else:
-                expected = exists(client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct for searches from awesome bar.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-1-d',
+                                'Client search code is correct for searches from awesome bar.')
 
             select_location_bar()
             type(Key.DELETE)
@@ -65,13 +66,16 @@ class Test(BaseTest):
             select_search_bar()
             paste('test')
             type(Key.ENTER)
+            time.sleep(DEFAULT_UI_DELAY)
 
             if value != 'US':
-                expected = exists(non_us_client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct for searches from search bar.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-d',
+                                'Client search code is correct for searches from search bar.')
             else:
-                expected = exists(client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct for searches from search bar.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-1-d',
+                                'Client search code is correct for searches from search bar.')
 
             navigate(url)
             expected = exists(text_pattern, 10)
@@ -86,22 +90,27 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY)
 
             if value != 'US':
-                expected = exists(non_us_client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-d',
+                                'Client search code is correct.')
             else:
-                expected = exists(client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-1-d',
+                                'Client search code is correct.')
 
             new_tab()
             paste('test')
             type(Key.ENTER)
+            time.sleep(DEFAULT_UI_DELAY)
 
             if value != 'US':
-                expected = exists(non_us_client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct for searches from about:newtab page.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-d',
+                                'Client search code is correct for searches from about:newtab page.')
             else:
-                expected = exists(client_search_code_pattern, 10)
-                assert_true(self, expected, 'Client search code is correct for searches from about:newtab page.')
+                assert_contains(self, region.text(image_processing=False),
+                                'client=firefox-b-1-d',
+                                'Client search code is correct for searches from about:newtab page.')
 
     def teardown(self):
         if self.browser.locale == 'en-US':
