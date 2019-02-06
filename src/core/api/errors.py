@@ -36,10 +36,3 @@ class ScreenshotError(Exception):
     def __init__(self, message):
         """Create an exception instance."""
         Exception.__init__(self, message)
-
-
-class BugManagerError(Exception):
-    """Exception raised when an bug_manager error occurs."""
-    def __init__(self, message):
-        """Create an exception instance."""
-        Exception.__init__(self, message)

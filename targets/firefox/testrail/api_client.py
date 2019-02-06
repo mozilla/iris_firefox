@@ -7,7 +7,7 @@ import base64
 import json
 from urllib import request, error
 
-from src.core.api.errors import TestRailError
+from targets.firefox.errors import TestRailError
 
 
 class APIClient:
