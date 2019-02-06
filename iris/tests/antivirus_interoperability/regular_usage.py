@@ -16,8 +16,7 @@ class Test(BaseTest):
         self.test_suite_id = '3063'
         self.locales = ['en-US']
 
-    @staticmethod
-    def open_test_case_assets_folder_in_file_manager():
+    def open_test_case_assets_folder_in_file_manager(self):
         test_script_name = os.path.basename(__file__)[:-3]
         if Settings.is_linux():
             path_to_test_assets = '{}/assets/{}/'.format(os.path.dirname(os.path.realpath(__file__)),
