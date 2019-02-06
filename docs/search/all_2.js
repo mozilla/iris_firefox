@@ -8,6 +8,12 @@ var searchData=
   ['below',['below',['../classiris_1_1api_1_1core_1_1location_1_1_location.html#ae42af5e8300053030fd68cd2ea40d604',1,'iris::api::core::location::Location']]],
   ['blank_5fpage',['BLANK_PAGE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a1f9fdf7aa8d9e311d852cfffe3de9648',1,'iris::api::core::local_web::LocalWeb']]],
   ['blank_5fpage_5f2',['BLANK_PAGE_2',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#adcd35eaf133df253e0c39d2b23068279',1,'iris::api::core::local_web::LocalWeb']]],
+  ['blocked_5fbadge',['BLOCKED_BADGE',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel_1_1_download_details.html#a8e6384f103f751b4d62d257ceba5d2bc',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel::DownloadDetails']]],
+  ['blocked_5fdetails_5f1',['BLOCKED_DETAILS_1',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel_1_1_download_details.html#a301cab5dfbeb7b12b12025f5a28cdd29',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel::DownloadDetails']]],
+  ['blocked_5fdetails_5f2',['BLOCKED_DETAILS_2',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel_1_1_download_details.html#a24ac4a9dd9763124b8a22189b4c116e2',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel::DownloadDetails']]],
+  ['blocked_5fdownload',['BLOCKED_DOWNLOAD',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel_1_1_download_details.html#a2c17f61af8727aa55d6b715a5dc35632',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel::DownloadDetails']]],
+  ['blocked_5fdownload_5ficon',['BLOCKED_DOWNLOAD_ICON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel.html#ae7db2c76845f8b4450f2554564990550',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel']]],
+  ['blocked_5fdownload_5ftitle',['BLOCKED_DOWNLOAD_TITLE',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel_1_1_download_details.html#aed350ee873acf4915d3a042670622123',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel::DownloadDetails']]],
   ['bookmark_5fall_5ftabs',['bookmark_all_tabs',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a5ffcb14e489875242188c755a7afe10d',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['bookmark_5foptions',['bookmark_options',['../namespaceiris_1_1api_1_1helpers_1_1general.html#acb9dd276585028481b2b25e2f386a7d1',1,'iris::api::helpers::general']]],
   ['bookmark_5fpage',['bookmark_page',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#adaf24b3050494b7eb2c116a7883e107b',1,'iris::api::helpers::keyboard_shortcuts']]],
@@ -26,6 +32,10 @@ var searchData=
   ['bookmarksoption',['BookmarksOption',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library__menu_1_1_library_menu_1_1_bookmarks_option.html',1,'iris::api::core::firefox_ui::library_menu::LibraryMenu']]],
   ['bookmarkssidebar',['BookmarksSidebar',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_bookmarks_sidebar.html',1,'iris::api::core::firefox_ui::sidebar::Sidebar']]],
   ['bookmarkstoolbar',['BookmarksToolbar',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library__menu_1_1_sidebar_bookmarks_1_1_bookmarks_toolbar.html',1,'iris::api::core::firefox_ui::library_menu::SidebarBookmarks']]],
+  ['bottom_5fhalf',['bottom_half',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#ad53f040759987688f52051c8cfe7581b',1,'iris::api::core::region::Region']]],
+  ['bottom_5fleft_5fcorner',['bottom_left_corner',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#aa4cb0542aa1830603faede377c5094f8',1,'iris::api::core::region::Region']]],
+  ['bottom_5fright_5fcorner',['bottom_right_corner',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a5692f146a4c71d1ee04e26ef1fe892e9',1,'iris::api::core::region::Region']]],
+  ['bottom_5fthird',['bottom_third',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a4ec33fd97cb7038f55b8f59553fc2802',1,'iris::api::core::region::Region']]],
   ['browser_5fback',['BROWSER_BACK',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#adf53daccab092f721f8b7727b1fd0fe1',1,'iris::api::core::key::Key']]],
   ['browser_5ffavorites',['BROWSER_FAVORITES',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a59a0b644974e9a3cd87b605d2d55d092',1,'iris::api::core::key::Key']]],
   ['browser_5fforward',['BROWSER_FORWARD',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a76cfea6e3d655e5e0620b27ce9c80063',1,'iris::api::core::key::Key']]],
@@ -33,5 +43,6 @@ var searchData=
   ['browser_5frefresh',['BROWSER_REFRESH',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a88c44a97c6ed1704149a022d2f2b043f',1,'iris::api::core::key::Key']]],
   ['browser_5fsearch',['BROWSER_SEARCH',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a704a5736aa576cfc0962bb195c03db33',1,'iris::api::core::key::Key']]],
   ['browser_5fstop',['BROWSER_STOP',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a2e293640f7a0fba1e4803f490544ae5d',1,'iris::api::core::key::Key']]],
-  ['browsing_5fand_5fdownload_5fhistory',['BROWSING_AND_DOWNLOAD_HISTORY',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_c_lear_recent_history.html#a37a64e3373a0fb2f23d539252d2702ac',1,'iris::api::core::firefox_ui::history::History::CLearRecentHistory']]]
+  ['browsing_5fand_5fdownload_5fhistory',['BROWSING_AND_DOWNLOAD_HISTORY',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_c_lear_recent_history.html#a37a64e3373a0fb2f23d539252d2702ac',1,'iris::api::core::firefox_ui::history::History::CLearRecentHistory']]],
+  ['bytes_5fsecond',['BYTES_SECOND',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel.html#acf58cfbf9604cd22b9d11454a5d5e7a3',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel']]]
 ];

@@ -1,9 +1,14 @@
 var searchData=
 [
   ['about',['ABOUT',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#aea0badd4630af0de158974e5cbf8d253',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
+  ['about_5fdownloads',['ABOUT_DOWNLOADS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_about_downloads.html#ab933c51ddbd63a6c274f59c3027b18ac',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::AboutDownloads']]],
+  ['about_5fpreferences_5fprivacy_5faddress',['ABOUT_PREFERENCES_PRIVACY_ADDRESS',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#ab33447a7d4d44cf7d1ad061cd911563e',1,'iris::api::core::local_web::LocalWeb']]],
   ['accept',['ACCEPT',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a57dff3377373633b4f76e1bd5ae80945',1,'iris::api::core::key::Key']]],
   ['active_5flogins',['ACTIVE_LOGINS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_c_lear_recent_history.html#afa2311a2d8c200eb1b182735ed581a62',1,'iris::api::core::firefox_ui::history::History::CLearRecentHistory']]],
   ['add',['ADD',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae3fef98db6c66fd45a27665baa3501c6',1,'iris::api::core::key::Key']]],
+  ['add_5fremove_5fdownloads_5farrow',['ADD_REMOVE_DOWNLOADS_ARROW',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel.html#ab5d8435b346e220f84657a289b80b10f',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel']]],
+  ['add_5fremove_5fdownloads_5fred_5farrow',['ADD_REMOVE_DOWNLOADS_RED_ARROW',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel.html#ae19ca94446206fd1fada0e660d3952d2',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel']]],
+  ['add_5fremove_5fdownloads_5fwhite_5farrow',['ADD_REMOVE_DOWNLOADS_WHITE_ARROW',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel.html#a113c3c12f582222dfef9d0164403dc1b',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel']]],
   ['added',['ADDED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library_1_1_views_1_1_show_columns.html#a1789308b129b734cd5936db55013b4fd',1,'iris::api::core::firefox_ui::library::Library::Views::ShowColumns']]],
   ['addons',['ADDONS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1hamburger_1_1_hamburger_menu.html#a3109984fd2820b7c04a69dc3846675a0',1,'iris::api::core::firefox_ui::hamburger::HamburgerMenu']]],
   ['all',['ALL',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a7e41e5829938704e77e0ee08eba634c1',1,'iris::api::core::platform::Platform']]],

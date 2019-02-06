@@ -3,7 +3,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import logging
+
 import mss
+import pyautogui
 
 from region import Region
 
@@ -16,6 +18,28 @@ class Screen(Region):
         self._screen_id = screen_id
         self._screen_list = [item for item in mss.mss().monitors[1:]]
         Region.__init__(self, get_screen_details(self._screen_list, self._screen_id))
+
+    SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
+    screen_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+
+    TOP_HALF = Region.screen_regions(screen_region, 'TOP_HALF')
+    BOTTOM_HALF = Region.screen_regions(screen_region, 'BOTTOM_HALF')
+
+    LEFT_HALF = Region.screen_regions(screen_region, 'LEFT_HALF')
+    RIGHT_HALF = Region.screen_regions(screen_region, 'RIGHT_HALF')
+
+    TOP_THIRD = Region.screen_regions(screen_region, 'TOP_THIRD')
+    MIDDLE_THIRD_HORIZONTAL = Region.screen_regions(screen_region, 'MIDDLE_THIRD_HORIZONTAL')
+    BOTTOM_THIRD = Region.screen_regions(screen_region, 'BOTTOM_THIRD')
+
+    LEFT_THIRD = Region.screen_regions(screen_region, 'LEFT_THIRD')
+    MIDDLE_THIRD_VERTICAL = Region.screen_regions(screen_region, 'MIDDLE_THIRD_VERTICAL')
+    RIGHT_THIRD = Region.screen_regions(screen_region, 'RIGHT_THIRD')
+
+    UPPER_LEFT_CORNER = Region.screen_regions(screen_region, 'UPPER_LEFT_CORNER')
+    UPPER_RIGHT_CORNER = Region.screen_regions(screen_region, 'UPPER_RIGHT_CORNER')
+    BOTTOM_LEFT_CORNER = Region.screen_regions(screen_region, 'BOTTOM_LEFT_CORNER')
+    BOTTOM_RIGHT_CORNER = Region.screen_regions(screen_region, 'BOTTOM_RIGHT_CORNER')
 
     def get_number_screens(self):
         """Returns the number of screens."""
