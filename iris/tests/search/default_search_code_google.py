@@ -24,8 +24,6 @@ class Test(BaseTest):
         elif get_firefox_channel(self.browser.path) == 'esr':
             default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png')
 
-        region = create_region_for_awesome_bar()
-
         regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de'], 'fr': ['fr'], 'pl': ['pl'], 'it': ['it'],
                               'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB']}
 
@@ -48,16 +46,19 @@ class Test(BaseTest):
             select_location_bar()
             paste('test')
             type(Key.ENTER)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
             time.sleep(DEFAULT_UI_DELAY)
+            edit_copy()
+            time.sleep(DEFAULT_UI_DELAY)
+            url_text = Env.get_clipboard()
 
             if value != 'US':
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-d',
-                                'Client search code is correct for searches from awesome bar.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=test',
+                            'Client search code is correct for searches from awesome bar.')
             else:
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-1-d',
-                                'Client search code is correct for searches from awesome bar.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=test',
+                            'Client search code is correct for searches from awesome bar.')
 
             select_location_bar()
             type(Key.DELETE)
@@ -66,16 +67,19 @@ class Test(BaseTest):
             select_search_bar()
             paste('test')
             type(Key.ENTER)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
             time.sleep(DEFAULT_UI_DELAY)
+            edit_copy()
+            time.sleep(DEFAULT_UI_DELAY)
+            url_text = Env.get_clipboard()
 
             if value != 'US':
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-d',
-                                'Client search code is correct for searches from search bar.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=test',
+                            'Client search code is correct for searches from awesome bar.')
             else:
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-1-d',
-                                'Client search code is correct for searches from search bar.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=test',
+                            'Client search code is correct for searches from awesome bar.')
 
             navigate(url)
             expected = exists(text_pattern, 10)
@@ -83,34 +87,40 @@ class Test(BaseTest):
 
             double_click(text_pattern)
             right_click(text_pattern)
-
-            for i in range(3):
-                type(Key.DOWN)
+            time.sleep(DEFAULT_FX_DELAY)
+            repeat_key_down(3)
             type(Key.ENTER)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
             time.sleep(DEFAULT_UI_DELAY)
+            edit_copy()
+            time.sleep(DEFAULT_UI_DELAY)
+            url_text = Env.get_clipboard()
 
             if value != 'US':
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-d',
-                                'Client search code is correct.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=Focus',
+                            'Client search code is correct for searches from awesome bar.')
             else:
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-1-d',
-                                'Client search code is correct.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=Focus',
+                            'Client search code is correct for searches from awesome bar.')
 
             new_tab()
-            paste('test')
+            # Ioana, please add code here to find and click the "G" logo. Then continue on with paste.
+            paste('beats')
             type(Key.ENTER)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
             time.sleep(DEFAULT_UI_DELAY)
+            edit_copy()
+            time.sleep(DEFAULT_UI_DELAY)
+            url_text = Env.get_clipboard()
 
             if value != 'US':
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-d',
-                                'Client search code is correct for searches from about:newtab page.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=beats',
+                            'Client search code is correct for searches from awesome bar.')
             else:
-                assert_contains(self, region.text(image_processing=False),
-                                'client=firefox-b-1-d',
-                                'Client search code is correct for searches from about:newtab page.')
+                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=beats',
+                            'Client search code is correct for searches from awesome bar.')
 
     def teardown(self):
         if self.browser.locale == 'en-US':
