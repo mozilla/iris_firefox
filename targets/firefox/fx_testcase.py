@@ -1,7 +1,9 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-import pytest
+
+import os
+import sys
 
 from src.base.testcase import *
 from src.configuration.config_parser import logger
@@ -14,7 +16,6 @@ class FirefoxTest(BaseTest):
 
     outcome = ''
     test_results = []
-
 
     @classmethod
     def setup_class(cls):
@@ -55,5 +56,3 @@ class FirefoxTest(BaseTest):
             logger.info('>>> PASSED <<< Step %s: %s' % (len(self.test_results), result.message))
 
         self.outcome = result.outcome
-
-

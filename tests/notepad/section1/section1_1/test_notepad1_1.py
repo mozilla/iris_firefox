@@ -1,8 +1,11 @@
+from src.base.testcase import BaseTest
+from src.core.api.finder.pattern import Pattern
+from src.core.api.screen.region import find
+from src.core.api.screen.screen import Rectangle
 
-def test_notepad1_1():
-    assert 1 == 1
-    assert 2 == 2
 
+class Test(BaseTest):
 
-def test_notepad1_2():
-    assert 1 == 1
+    def test_run(self):
+        find(Pattern('test.png'), Rectangle(0, 0, 100, 100))
+        assert 1 == 1

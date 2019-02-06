@@ -1,6 +1,4 @@
-import sys
 
-from src.core.api.screen.region import Region
 from targets.firefox.fx_testcase import *
 
 

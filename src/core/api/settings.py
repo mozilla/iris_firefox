@@ -3,8 +3,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.arg_parser import parse_args
 from src.core.api.enums import Color
+from src.core.util.arg_parser import parse_args
 
 
 class _Settings:

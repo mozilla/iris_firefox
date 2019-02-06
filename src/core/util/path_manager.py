@@ -8,9 +8,11 @@ import logging
 import os
 import shutil
 import tempfile
+
 import git
-from src.core.api.arg_parser import parse_args
+
 from src.core.api.os_helpers import OSHelper
+from src.core.util.arg_parser import parse_args
 
 logger = logging.getLogger(__name__)
 
@@ -88,13 +90,6 @@ class PathManager:
         test_directory = os.path.join(parent_directory, test)
         os.mkdir(test_directory)
         return test_directory
-
-    @staticmethod
-    def get_image_debug_path():
-        """Returns the root directory where a test's debug images are located."""
-        parent, test = PathManager.parse_module_path()
-        path = os.path.join(args.workdir, 'runs', PathManager.get_run_id(), parent, test, 'debug_images')
-        return path
 
     @staticmethod
     def get_tempdir():
@@ -177,7 +172,12 @@ class PathManager:
         PathManager.create_target_directory()
         return os.path.join(PathManager.get_current_run_dir(), args.application)
 
-
+    @staticmethod
+    def get_debug_image_directory():
+        from pathlib import Path
+        test_path = os.environ.get('PYTEST_CURRENT_TEST').split(':')[0]
+        return os.path.join(PathManager.get_target_directory(),
+                            os.path.splitext(os.path.join(*Path(test_path).parts[2:]))[0], 'debug_images')
 
     @staticmethod
     def get_git_details():

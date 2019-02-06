@@ -5,10 +5,13 @@
 
 import datetime
 import logging
+import os
 import re
 
 import cv2
 import numpy as np
+
+from src.core.util.path_manager import PathManager
 
 try:
     import Image
@@ -28,8 +31,19 @@ def save_debug_image(needle, haystack, locations):
     """
 
     w, h = needle.get_size()
-    temp_f = re.sub('[ :.-]', '_', str(datetime.datetime.now())) + ('_not_found' if len(locations) == 0 else '_found')
-    file_name = '%s.jpg' % temp_f
+
+    path = PathManager.get_debug_image_directory()
+
+    timestamp_str = re.sub('[ :.-]', '_', str(datetime.datetime.now()))
+    resolution_str = '_not_found' if len(locations) == 0 else '_found'
+
+    temp_f = timestamp_str + resolution_str
+
+    file_name = '%s.jpg' % os.path.join(path, temp_f)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+
     not_found_txt = ' <<< Pattern not found!'
 
     if len(locations) > 0:
@@ -58,11 +72,18 @@ def save_debug_ocr_image(text, haystack, text_occurrences):
     :param List[Location] || Location text_occurrences: Location or list of Location as coordinates.
     :return: None.
     """
+    path = PathManager.get_debug_image_directory()
 
-    temp_f = re.sub('[ :.-]', '_',
-                    str(datetime.datetime.now())) + ('_not_found' if len(text_occurrences) == 0 else '_found')
+    timestamp_str = re.sub('[ :.-]', '_', str(datetime.datetime.now()))
+    resolution_str = '_not_found' if len(text_occurrences) == 0 else '_found'
 
-    file_name = '%s.jpg' % temp_f
+    temp_f = timestamp_str + resolution_str
+
+    file_name = '%s.jpg' % os.path.join(path, temp_f)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+
     not_found_txt = ' \'{}\' not found!'.format(text)
 
     if text_occurrences and len(text_occurrences) > 0:

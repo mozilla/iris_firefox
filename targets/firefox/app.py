@@ -279,10 +279,10 @@ class Target(BaseTarget):
         except runner_errors.RunnerNotStartedError:
             raise APIHelperError('Error creating Firefox runner.')
 
-
-    def pytest_sessionstart(self, session):
-        session.results = dict()
-        print('\n\n** Firefox testing session {} started **\n'.format(session.name))
+    #
+    # def pytest_sessionstart(self, session):
+    #     session.results = dict()
+    #     print('\n\n** Firefox testing session {} started **\n'.format(session.name))
 
     @pytest.hookimpl(tryfirst=True, hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
@@ -301,7 +301,7 @@ class Target(BaseTarget):
             self.test_run_object_list.append(test_object_result)
 
 
-        item.session.results[item] = report
+        # item.session.results[item] = report
 
     def pytest_sessionfinish(self, session, exitstatus):
         """ called after whole test run finished, right before returning the exit status to the system.
@@ -317,3 +317,4 @@ class Target(BaseTarget):
         #
         # if parse_args().report:
         #     report_test_results(self.test_run_object_list)
+

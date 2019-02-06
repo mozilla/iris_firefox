@@ -12,11 +12,11 @@ from typing import List
 import pyautogui
 import pyperclip
 
-from src.core.api.arg_parser import logger
 from src.core.api.errors import FindError
 from src.core.api.keyboard.key import KeyModifier, Key
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
+from src.core.util.arg_parser import logger
 from src.core.util.system import shutdown_process
 
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
@@ -205,7 +205,7 @@ def is_lock_on(key):
             logger.error('Command  failed: %s' % repr(e.cmd))
             raise Exception('Unable to run Command.')
         else:
-            processed_lock_key = key.label
+            processed_lock_key = key.value.label
             if 'caps' in processed_lock_key:
                 processed_lock_key = 'Caps'
             elif 'num' in processed_lock_key:

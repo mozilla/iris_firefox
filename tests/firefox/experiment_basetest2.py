@@ -10,4 +10,6 @@ class Test(FirefoxTest):
 
     def test_run(self):
 
-        assert_true(self,1 == 1,"Assert_message for experiment 2")
+        assert_true(self,1 == 1,"Assert_message 1for experiment 2")
+        assert_true(self,1 == 1,"Assert_message 2for experiment 2")
+

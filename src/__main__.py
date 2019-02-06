@@ -8,14 +8,13 @@ import logging
 
 import pytest
 
-from src.core.api.arg_parser import parse_args
 from src.core.api.keyboard.keyboard_api import check_keyboard_state
-from src.core.util.app_loader import get_app_test_directory
 from src.core.util import cleanup
+from src.core.util.app_loader import get_app_test_directory
+from src.core.util.arg_parser import parse_args
 from src.core.util.logger_manager import initialize_logger
 from src.core.util.path_manager import PathManager
 from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding
-from src.iris_pytest_plugin import Plugin
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,7 @@ def main():
         target_plugin = get_target(args.application)
         pytest_args = get_test_params(args.application)
         initialize_platform(args)
-        pytest.main(pytest_args, plugins=[target_plugin, Plugin()])
+        pytest.main(pytest_args, plugins=[target_plugin])
     else:
         logger.error('Failed platform verification.')
         exit(1)
