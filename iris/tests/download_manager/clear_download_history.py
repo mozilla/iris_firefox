@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+from iris.api.core import mouse
 from iris.test_case import *
 
 
@@ -40,6 +40,7 @@ class Test(BaseTest):
         # Open the Downloads Panel and select Show All Downloads.
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
         assert_true(self, expected, '\'Downloads\' button found.')
+        mouse.mouse_move(Location(SCREEN_WIDTH / 4 + 100, SCREEN_HEIGHT / 4))
         click(NavBar.DOWNLOADS_BUTTON_BLUE)
 
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)

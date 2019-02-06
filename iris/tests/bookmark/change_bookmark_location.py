@@ -64,6 +64,8 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Can\'t find the bookmark in Bookmark sidebar, aborting.')
 
+        close_content_blocking_pop_up()
+
         bookmark_location_assert = exists(moz_page, 10)
         assert_true(self, bookmark_location_assert, 'The URL of the bookmark is successfully modified.')
 

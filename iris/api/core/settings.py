@@ -27,9 +27,13 @@ DEFAULT_UI_DELAY = 1
 DEFAULT_UI_DELAY_LONG = 2.5
 DEFAULT_SYSTEM_DELAY = 5
 DEFAULT_FIREFOX_TIMEOUT = 10
+DEFAULT_SITE_LOAD_TIMEOUT = 30
+DEFAULT_HEAVY_SITE_LOAD_TIMEOUT = 90
+
 
 CHANNELS = ('beta', 'release', 'nightly', 'esr', 'dev')
-LOCALES = ('en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja')
+LOCALES = ('en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi',
+           'pl', 'tr', 'ro', 'ja' ,'it', 'pt-BR', 'in', 'en-GB', 'id', 'ca')
 
 
 class _IrisSettings(object):
