@@ -52,7 +52,7 @@ class Test(BaseTest):
         click(copy_image_context_menu_pattern)
         select_tab(1)
         edit_paste()
-        matching_message_appears = exists(matching_message_pattern)
+        matching_message_appears = scroll_until_pattern_found(matching_message_pattern, type, (Key.DOWN,))
         assert_true(self, matching_message_appears,
                     '\'Matching\' appears under the \'Drop Stuff Here\' area,'
                     ' the expected result is identical to the result.')
