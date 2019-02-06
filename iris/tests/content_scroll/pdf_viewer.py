@@ -21,9 +21,9 @@ class Test(BaseTest):
         after_scroll_content_pattern = Pattern('pdf_content_normal_mode.png')
         pdf_logo_pattern = Pattern('pdf_logo.png')
         presentation_mode_icon_pattern = Pattern('presentation_mode_icon.png')
-        presentation_mode_content_pattern = Pattern('presentation_mode_content.png')
+        presentation_mode_content_pattern = Pattern('presentation_mode_content.png').similar(0.6)
         presentation_mode_enabled_pattern = Pattern('presentation_mode_enabled.png')
-        after_scroll_content_presentation_mode_pattern = Pattern('pdf_content_presentation_mode.png')
+        after_scroll_content_presentation_mode_pattern = Pattern('pdf_content_presentation_mode.png').similar(0.6)
 
         if Settings.is_windows():
             screen_height = SCREEN_HEIGHT
@@ -39,7 +39,8 @@ class Test(BaseTest):
         click(pdf_logo_pattern)
 
         after_scroll_content_exists = \
-            scroll_until_pattern_found(after_scroll_content_pattern, scroll, (-screen_height, None), 100, DEFAULT_UI_DELAY)
+            scroll_until_pattern_found(after_scroll_content_pattern, scroll,
+                                       (-screen_height, None), 100, DEFAULT_UI_DELAY)
         assert_true(self, after_scroll_content_exists, 'Scroll Down using mouse wheel is successful')
 
         before_scroll_content_exists = \
@@ -62,7 +63,8 @@ class Test(BaseTest):
             value = DEFAULT_UI_DELAY
 
         after_scroll_content_exists = \
-            scroll_until_pattern_found(after_scroll_content_presentation_mode_pattern, scroll, (-screen_height, None), 100, value)
+            scroll_until_pattern_found(after_scroll_content_presentation_mode_pattern, scroll,
+                                       (-screen_height, None), 100, value)
         assert_true(self, after_scroll_content_exists, 'Scroll Down using mouse wheel is successful')
 
         before_scroll_content_exists = \
