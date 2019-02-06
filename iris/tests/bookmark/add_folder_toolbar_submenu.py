@@ -14,9 +14,10 @@ class Test(BaseTest):
         self.test_case_id = '171637'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
+        self.exclude = [Platform.MAC, Platform.LINUX]
 
     def run(self):
-        if Settings.is_linux:
+        if Settings.is_linux():
             library_bookmarks_pattern = Pattern('bookmarks_toolbar_top_menu.png')
         else:
             library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
@@ -24,7 +25,7 @@ class Test(BaseTest):
         folder_added_to_bookmarks_icons_pattern = Pattern('folder_added_to_bookmarks_icons.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
 
-        if Settings.is_linux:
+        if Settings.is_linux():
             key_down(Key.ALT)
             time.sleep(DEFAULT_FX_DELAY)
             key_up(Key.ALT)
@@ -47,7 +48,7 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        if Settings.is_linux:
+        if Settings.is_linux():
             key_down(Key.ALT)
             time.sleep(DEFAULT_FX_DELAY)
             key_up(Key.ALT)
@@ -63,6 +64,6 @@ class Test(BaseTest):
         click(library_bookmarks_pattern)
 
         folder_added = exists(folder_added_to_bookmarks_icons_pattern)
-        assert_true(self, folder_added, 'A new folder is correctly created in the Bookmarks Toolbar,' \
-                            ' in front of the selected file.')
+        assert_true(self, folder_added, 'A new folder is correctly created in the Bookmarks Toolbar,'
+                                        ' in front of the selected file.')
 
