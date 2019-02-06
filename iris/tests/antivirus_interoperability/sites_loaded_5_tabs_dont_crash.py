@@ -27,19 +27,19 @@ class Test(BaseTest):
         new_tab()
 
         navigate('https://www.youtube.com/')
-        youtube_logo_exists = exists(youtube_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        youtube_logo_exists = exists(youtube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, youtube_logo_exists, 'YouTube is properly loaded in new tab, no display issues.')
 
         new_tab()
 
         navigate('https://www.google.com/')
-        google_logo_exists = exists(google_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        google_logo_exists = exists(google_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, google_logo_exists, 'Google is properly loaded in new tab, no display issues.')
 
         new_tab()
 
         navigate('www.blogger.com/')
-        blogspot_logo_exists = exists(blogspot_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        blogspot_logo_exists = exists(blogspot_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, blogspot_logo_exists, 'Blogspot is properly loaded in new tab, no display issues.')
 
         new_tab()
