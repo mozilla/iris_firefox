@@ -50,7 +50,7 @@ class Test(BaseTest):
         assert_true(self, drop_stuff_here_area_pattern, '\'Drop stuff here\' area is displayed on the page')
 
         edit_paste()
-        matching_message_exists = exists(matching_message_pattern)
+        matching_message_exists = scroll_until_pattern_found(matching_message_pattern, type, (Key.DOWN,))
         assert_true(self, matching_message_exists,
                     '\'Matching\' appears under the \'Drop Stuff Here\' '
                     'area, the expected result is identical to the result.')
@@ -68,7 +68,7 @@ class Test(BaseTest):
         select_tab(1)
         edit_paste()
 
-        not_matching_message_displayed = exists(not_matching_message_pattern)
+        not_matching_message_displayed = scroll_until_pattern_found(not_matching_message_pattern, type, (Key.DOWN,))
         assert_true(self, not_matching_message_displayed, '\'Not Matching\' appears under the \'Drop Stuff Here\'' 
                                                           'area, the expected result is different from the result.')
 
