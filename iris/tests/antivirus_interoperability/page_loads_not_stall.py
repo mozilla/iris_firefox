@@ -20,8 +20,8 @@ class Test(BaseTest):
         site_content_pattern = Pattern('kitely_content.png')
 
         navigate('https://www.kitely.com/')
-        site_logo_exists = exists(site_logo_pattern, DEFAULT_SYSTEM_DELAY)
+        site_logo_exists = exists(site_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, site_logo_exists, 'Logo is loaded properly')
 
-        site_content_exists = exists(site_content_pattern, DEFAULT_SYSTEM_DELAY)
+        site_content_exists = exists(site_content_pattern)
         assert_true(self, site_content_exists, 'Page loads properly, there\'s no obvious stall')
