@@ -15,27 +15,25 @@ class Test(BaseTest):
         self.test_suite_id = '83'
 
     def run(self):
+        url = LocalWeb.FOCUS_TEST_SITE
+        text_pattern = Pattern('focus_text.png')
+
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta':
-            test_pattern = Pattern('test.png')
             default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
-            add_search_bar_in_toolbar_pattern = Pattern('add_search_bar_in_toolbar.png')
-            search_bar_pattern = Pattern('search_bar.png').similar(0.9)
             client_search_code_pattern = Pattern('client_search_code.png').similar(0.9)
-            search_google_for_pattern = Pattern('search_google_for.png')
             non_us_client_search_code_pattern = Pattern('non_us_client_search_code.png')
         elif get_firefox_channel(self.browser.path) == 'esr':
-            test_pattern = Pattern('test_esr_build.png')
             default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png')
-            add_search_bar_in_toolbar_pattern = Pattern('add_search_bar_in_toolbar_esr_build.png')
-            search_bar_pattern = Pattern('search_bar_esr_build.png').similar(0.9)
             client_search_code_pattern = Pattern('client_search_code_esr_build.png').similar(0.9)
-            search_google_for_pattern = Pattern('search_google_for_esr_build.png')
             non_us_client_search_code_pattern = Pattern('non_us_client_search_code_esr_build.png')
 
         regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de'], 'fr': ['fr'], 'pl': ['pl'], 'it': ['it'],
                               'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB']}
 
+        change_preference('browser.search.widget.inNavBar', True)
+
+        # Detect the locale.
         for value in regions_by_locales.get(self.browser.locale):
             change_preference('browser.search.region', value)
             restart_firefox(self,
@@ -47,14 +45,6 @@ class Test(BaseTest):
             navigate('about:preferences#search')
             expected = exists(default_search_engine_google_pattern, 10)
             assert_true(self, expected, 'Google is the default search engine.')
-
-            expected = exists(add_search_bar_in_toolbar_pattern, 10)
-            assert_true(self, expected, 'Option is visible in the page.')
-
-            click(add_search_bar_in_toolbar_pattern)
-
-            expected = exists(search_bar_pattern, 10)
-            assert_true(self, expected, 'The search bar is properly enabled in toolbar.')
 
             # Perform a search using the awesome bar and then clear the content from it.
             select_location_bar()
@@ -72,7 +62,7 @@ class Test(BaseTest):
             type(Key.DELETE)
 
             # Perform a search using the search bar.
-            click(search_bar_pattern)
+            select_search_bar()
             paste('test')
             type(Key.ENTER)
 
@@ -83,18 +73,16 @@ class Test(BaseTest):
                 expected = exists(client_search_code_pattern, 10)
                 assert_true(self, expected, 'Client search code is correct for searches from search bar.')
 
-            select_location_bar()
-            type(Key.DELETE)
+            navigate(url)
+            expected = exists(text_pattern, 10)
+            assert_true(self, expected, 'Page successfully loaded, focus text found.')
 
-            close_content_blocking_pop_up()
+            double_click(text_pattern)
+            right_click(text_pattern)
 
-            double_click(test_pattern)
-            right_click(test_pattern)
-
-            expected = exists(search_google_for_pattern, 10)
-            assert_true(self, expected, 'Option is visible.')
-
-            click(search_google_for_pattern)
+            for i in range(3):
+                type(Key.DOWN)
+            type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY)
 
             if value != 'US':
@@ -114,3 +102,7 @@ class Test(BaseTest):
             else:
                 expected = exists(client_search_code_pattern, 10)
                 assert_true(self, expected, 'Client search code is correct for searches from about:newtab page.')
+
+    def teardown(self):
+        if self.browser.locale == 'en-US':
+            change_preference('browser.search.region', 'US')
