@@ -16,12 +16,20 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+        if Settings.is_linux:
+            library_bookmarks_pattern = Pattern('bookmarks_toolbar_top_menu.png')
+        else:
+            library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
         mozilla_bookmark_icon_pattern = Pattern('mozilla_bookmark_icon.png')
         folder_added_to_bookmarks_icons_pattern = Pattern('folder_added_to_bookmarks_icons.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
 
-        type(Key.ALT)
+        if Settings.is_linux:
+            key_down(Key.ALT)
+            time.sleep(DEFAULT_FX_DELAY)
+            key_up(Key.ALT)
+        else:
+            type(Key.ALT)
 
         bookmarks_top_menu = exists(bookmarks_top_menu_pattern)
         assert_true(self, bookmarks_top_menu, 'Bookmarks top menu displayed')
@@ -37,17 +45,22 @@ class Test(BaseTest):
         right_click(mozilla_bookmark_icon_pattern)
         type('f', interval=DEFAULT_FX_DELAY)
 
-        type(Key.ENTER, interval=DEFAULT)
+        type(Key.ENTER)
 
-        type(Key.ALT, interval=DEFAULT)
+        if Settings.is_linux:
+            key_down(Key.ALT)
+            time.sleep(DEFAULT_FX_DELAY)
+            key_up(Key.ALT)
+        else:
+            type(Key.ALT)
 
         bookmarks_top_menu = exists(bookmarks_top_menu_pattern)
         assert_true(self, bookmarks_top_menu, 'Bookmarks top menu displayed')
         click(bookmarks_top_menu_pattern)
 
-        library_bookmarks = exists(Library.BOOKMARKS_TOOLBAR)
+        library_bookmarks = exists(library_bookmarks_pattern)
         assert_true(self, library_bookmarks, 'Library bookmarks button displayed')
-        click(Library.BOOKMARKS_TOOLBAR)
+        click(library_bookmarks_pattern)
 
         folder_added = exists(folder_added_to_bookmarks_icons_pattern)
         assert_true(self, folder_added, 'A new folder is correctly created in the Bookmarks Toolbar,' \
