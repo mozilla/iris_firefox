@@ -7,7 +7,6 @@ import sys
 
 from src.base.testcase import *
 from src.configuration.config_parser import logger
-#from targets.firefox.errors import TestRailError
 from targets.firefox.firefox_ui import *
 from targets.firefox.test_assert import *
 
