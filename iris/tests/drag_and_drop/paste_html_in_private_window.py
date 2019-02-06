@@ -47,7 +47,7 @@ class Test(BaseTest):
         assert_true(self, text_copied, 'The text is copied to the clipboard.')
 
         select_tab(1)
-        drop_stuff_here_area_pattern = exists(drop_stuff_here_area_pattern)
+        drop_stuff_here_area_pattern = scroll_until_pattern_found(not_matching_message_pattern, type, (Key.PAGE_DOWN,))
         assert_true(self, drop_stuff_here_area_pattern, '\'Drop stuff here\' area is displayed on the page')
 
         edit_paste()
@@ -69,7 +69,8 @@ class Test(BaseTest):
         select_tab(1)
         edit_paste()
 
-        not_matching_message_displayed = scroll_until_pattern_found(not_matching_message_pattern, type, (Key.PAGE_DOWN,))
+        not_matching_message_displayed = scroll_until_pattern_found(not_matching_message_pattern, type,
+                                                                    (Key.PAGE_DOWN,))
         assert_true(self, not_matching_message_displayed, '\'Not Matching\' appears under the \'Drop Stuff Here\'' 
                                                           'area, the expected result is different from the result.')
 
