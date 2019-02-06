@@ -18,7 +18,6 @@ class Test(BaseTest):
     def run(self):
         paste_image_data_radiobutton_pattern = Pattern('paste_image_data.png')
         paste_image_data_radiobutton_selected_pattern = Pattern('paste_image_data_selected.png')
-        pocket_page_text_pattern = Pattern("pocket_page_text.png")
         matching_message_pattern = Pattern('matching_message.png')
         first_picture_pattern = Pattern("first_pocket_image.png")
         second_picture_pattern = Pattern("second_pocket_image.png")
@@ -36,11 +35,8 @@ class Test(BaseTest):
         new_tab()
         select_tab(2)
         navigate(LocalWeb.POCKET_TEST_SITE)
-        page_with_images_opened = exists(pocket_page_text_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, page_with_images_opened, 'Web page successfully loads.')
-
         two_images_displayed_on_the_page = exists(first_picture_pattern) and exists(second_picture_pattern)
-        assert_true(self, two_images_displayed_on_the_page, 'Two images are displayed on the page.')
+        assert_true(self, two_images_displayed_on_the_page, 'Web page successfully loads.')
 
         right_click(first_picture_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
@@ -50,7 +46,7 @@ class Test(BaseTest):
         click(copy_image_context_menu_pattern)
         select_tab(1)
         edit_paste()
-        matching_message_appears = exists(matching_message_pattern)
+        matching_message_appears = scroll_until_pattern_found(matching_message_pattern, type, (Key.PAGE_DOWN,))
         assert_true(self, matching_message_appears,
                     '\'Matching\' appears under the \'Drop Stuff Here\' area,'
                     ' the expected result is identical to the result.')
