@@ -18,8 +18,7 @@ class Test(BaseTest):
     def run(self):
         block_all_cookies_pattern = Pattern('block_all_cookies.png')
         cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
-        cookies_ticked_pattern = Pattern('block_cookies_ticked.png')
-        cookies_unticked_pattern = Pattern('block_cookies_unticked.png')
+        cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.85)
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
         custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
         custom_content_blocking_ticked_patten = Pattern('custom_content_blocking_ticked.png')
@@ -33,13 +32,9 @@ class Test(BaseTest):
         assert_true(self, preferences_opened, 'The "about:preferences#privacy" page is successfully displayed.')
 
         click(custom_content_blocking_unticked_pattern)
-        options_displayed = exists(cookies_unticked_pattern)
+        options_displayed = exists(cookies_ticked_pattern)
         assert_true(self, options_displayed,
                     'The cookies options are properly displayed at "Cookies and Site Data" section')
-        click(cookies_unticked_pattern)
-
-        checkbox_set_successfully = exists(cookies_ticked_pattern)
-        assert_true(self, checkbox_set_successfully, 'The "Block cookies and site data" checkbox is successfully set.')
 
         strictness_menu_appeared = exists(cookies_blocking_strictness_menu_pattern)
         assert_true(self, strictness_menu_appeared, 'Strictness menu appeared.')
@@ -51,7 +46,7 @@ class Test(BaseTest):
         click(block_all_cookies_pattern)
 
         navigate('https://www.youtube.com/')
-        site_loaded = exists(youtube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        site_loaded = exists(youtube_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT*2)
         assert_true(self, site_loaded, 'The website is successfully displayed.')
 
         navigate('about:preferences#privacy')
