@@ -26,6 +26,8 @@ class Test(BaseTest):
 
         navigate(moz_article)
 
+        close_content_blocking_pop_up()
+
         moz_article_assert = exists(moz_page, 10)
         assert_true(self, moz_article_assert, 'The Moz article page has been successfully loaded.')
 
