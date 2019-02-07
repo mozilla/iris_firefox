@@ -11,6 +11,9 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Cut a bookmark from the Bookmarks toolbar submenu.'
+        self.test_case_id = '171638'
+        self.test_suite_id = '2525'
+        self.locale = ['en-US']
         self.exclude = [Platform.MAC, Platform.LINUX]
 
     def run(self):
