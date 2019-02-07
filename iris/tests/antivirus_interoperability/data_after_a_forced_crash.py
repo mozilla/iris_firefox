@@ -19,7 +19,6 @@ class Test(BaseTest):
         cnn_page_downloaded_pattern = Pattern('cnn_page_downloaded.png')
         history_updated_pattern = Pattern('history_updated.png')
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
-        tabs_restored_pattern = Pattern('tabs_restored.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
         folder_other_bookmarks = Pattern('other_bookmarks.png')
         folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
@@ -113,8 +112,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Crash report is not dismissed')
 
-        all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
+        restore_firefox_focus()
 
         all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
