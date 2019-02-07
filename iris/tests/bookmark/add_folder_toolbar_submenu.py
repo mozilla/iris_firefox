@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Tags can be added to bookmarks using the star-shaped button.'
+        self.meta = 'Add a new folder from the Bookmarks Toolbar submenu'
         self.test_case_id = '171637'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
@@ -34,12 +34,12 @@ class Test(BaseTest):
 
         bookmarks_top_menu = exists(bookmarks_top_menu_pattern)
         assert_true(self, bookmarks_top_menu, 'Bookmarks top menu displayed')
-        click(bookmarks_top_menu_pattern)
 
+        click(bookmarks_top_menu_pattern)
         library_bookmarks = exists(library_bookmarks_pattern)
         assert_true(self, library_bookmarks, 'Library bookmarks button displayed')
-        click(library_bookmarks_pattern)
 
+        click(library_bookmarks_pattern)
         mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern)
         assert_true(self, mozilla_bookmark_icon, 'Mozilla bookmark icon displayed')
 
@@ -57,12 +57,12 @@ class Test(BaseTest):
 
         bookmarks_top_menu = exists(bookmarks_top_menu_pattern)
         assert_true(self, bookmarks_top_menu, 'Bookmarks top menu displayed')
-        click(bookmarks_top_menu_pattern)
 
+        click(bookmarks_top_menu_pattern)
         library_bookmarks = exists(library_bookmarks_pattern)
         assert_true(self, library_bookmarks, 'Library bookmarks button displayed')
-        click(library_bookmarks_pattern)
 
+        click(library_bookmarks_pattern)
         folder_added = exists(folder_added_to_bookmarks_icons_pattern)
         assert_true(self, folder_added, 'A new folder is correctly created in the Bookmarks Toolbar,'
                                         ' in front of the selected file.')
