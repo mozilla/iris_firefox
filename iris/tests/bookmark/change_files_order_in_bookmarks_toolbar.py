@@ -49,9 +49,9 @@ class Test(BaseTest):
                     'Most Visited section and the Folders and websites from the Bookmark Toolbar are displayed')
 
         drop_from_location = find(mozilla_bookmark_icon_pattern)
-        drom_to_location = find(bookmarks_most_visited)
+        drop_to_location = find(bookmarks_most_visited)
 
-        drag_drop(drop_from_location, drom_to_location)
+        drag_drop(drop_from_location, drop_to_location)
 
         bookmark_dropped = exists(bookmark_after_drag_and_drop_pattern)
         assert_true(self, bookmark_dropped, 'The order of files is changed successfully.')
