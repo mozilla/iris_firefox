@@ -17,6 +17,7 @@ class Test(BaseTest):
 
     def run(self):
         about_preferences_search_pattern = Pattern('about_preferences_search.png')
+        default_search_engines_list_pattern_for_small_screens = Pattern('default_search_engines_list_small.png')
         default_search_engines_list_pattern = Pattern('default_search_engines_list.png')
         one_click_search_engines_pattern = Pattern('one_click_search_engines.png')
         picker_pattern = Pattern('close_arrow.png')
@@ -29,7 +30,9 @@ class Test(BaseTest):
         click(picker_pattern)
 
         search_engine_list_is_default = exists(default_search_engines_list_pattern)
-        assert_true(self, search_engine_list_is_default, 'The default search engine list is not changed')
+        search_engine_list_is_default_small_screens = exists(default_search_engines_list_pattern_for_small_screens)
+        assert_true(self, search_engine_list_is_default or search_engine_list_is_default_small_screens,
+                    'The default search engine list is not changed')
 
         restore_firefox_focus()
         open_find()
@@ -51,8 +54,11 @@ class Test(BaseTest):
         click(picker_pattern)
 
         search_engine_list_is_default_with_antivirus = exists(default_search_engines_list_pattern)
-        assert_true(self, search_engine_list_is_default_with_antivirus, 'The default search engine list is not changed'
-                                                                        'after antivirus was installed')
+        search_engine_list_is_default_small_screens_with_antivirus = \
+            exists(default_search_engines_list_pattern_for_small_screens)
+        assert_true(self, search_engine_list_is_default_with_antivirus or
+                    search_engine_list_is_default_small_screens_with_antivirus,
+                    'The default search engine list is not changed after antivirus was installed')
 
         restore_firefox_focus()
         open_find()
