@@ -9,7 +9,7 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'The items from the Bookmarks Toolbar can be sorted by name.'
+        self.meta = 'Change the files order in the Bookmarks Toolbar section from Firefox menu.'
         self.test_case_id = '171635'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
