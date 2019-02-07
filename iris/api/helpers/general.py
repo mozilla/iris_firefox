@@ -109,6 +109,39 @@ def change_preference(pref_name, value):
             'Could not set value: %s to preference: %s' % (value, pref_name))
 
 
+def check_preference(pref_name, value):
+    """Check the value for a specific preference.
+
+    :param pref_name: Preference to be searched.
+    :param value: Preference's value to be checked.
+    :return: None.
+    """
+    new_tab()
+    select_location_bar()
+    paste('about:config')
+    type(Key.ENTER)
+    time.sleep(Settings.UI_DELAY)
+
+    type(Key.SPACE)
+    time.sleep(Settings.UI_DELAY)
+
+    paste(pref_name)
+    time.sleep(Settings.UI_DELAY_LONG)
+    type(Key.TAB)
+    time.sleep(Settings.UI_DELAY_LONG)
+
+    try:
+        retrieved_value = copy_to_clipboard().split(';'[0])[1]
+
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+
+    if retrieved_value == value:
+        return True
+    else:
+        return False
+
+
 def click_cancel_button():
     """Click cancel button."""
     cancel_button_pattern = Pattern('cancel_button.png')
