@@ -21,9 +21,11 @@ class Test(BaseTest):
         trigger_update_button_pattern = Pattern('trigger_update_button.png')
         success_status_pattern = Pattern('success_status.png')
         desktop_download_warning_title_pattern = Pattern('desktop_download_warning_title.png')
-        first_test_label_pattern = Pattern('first_test_label.png')
-        link_pattern = Pattern('link_image.png')
-        download_completed_pattern = Pattern('download_completed.png')
+        first_test_label_pattern = Pattern('first_test_label.png').similar(0.6)
+        link_pattern = Pattern('link_image.png').similar(0.6)
+        google_row_pattern = Pattern('google_row.png')
+        mozilla_row_pattern = Pattern('mozilla_row.png')
+        save_file_button_pattern = Pattern('save_file_button.png')
 
         navigate('about:url-classifier')
 
@@ -33,21 +35,30 @@ class Test(BaseTest):
         open_find()
         paste('Provider')
 
+        time.sleep(DEFAULT_UI_DELAY_LONG)
+
         google4_row_location = find(google4_row_pattern)
+        google_row_location = find(google_row_pattern)
+        mozilla_row_location = find(mozilla_row_pattern)
         google4_row_width, google4_row_height = google4_row_pattern.get_size()
 
-        coordinate_y = google4_row_location.y
+        google4_row_region = Region(google4_row_location.x, google4_row_location.y, SCREEN_WIDTH, google4_row_height)
+        click(trigger_update_button_pattern, 0, google4_row_region)
 
-        for trigger_update in range(3):
-            region_to_click = Region(google4_row_location.x, coordinate_y, SCREEN_WIDTH, google4_row_height)
-            print(region_to_click)
-            click(trigger_update_button_pattern, 0, region_to_click)
-            success_status_displaying = exists(success_status_pattern, None, region_to_click)
-            if trigger_update == 2:
-                assert_false(self, success_status_displaying, 'Nothing changed')
-            else:
-                assert_true(self, success_status_displaying, 'The last update status changed to success')
-            coordinate_y += google4_row_height
+        google4_success_status_displaying = exists(success_status_pattern, None, google4_row_region)
+        assert_true(self, google4_success_status_displaying, 'The last google4 update status is changed to success.')
+
+        google_row_region = Region(google_row_location.x, google_row_location.y, SCREEN_WIDTH, google4_row_height)
+        click(trigger_update_button_pattern, 0, google_row_region)
+
+        google_success_status_displaying = exists(success_status_pattern, None, google_row_region)
+        assert_false(self, google_success_status_displaying, 'Nothing changes in the google update status.')
+
+        mozilla_row_region = Region(mozilla_row_location.x, mozilla_row_location.y, SCREEN_WIDTH, google4_row_height)
+        click(trigger_update_button_pattern, 0, mozilla_row_region)
+
+        mozilla_success_status_displaying = exists(success_status_pattern, None, mozilla_row_region)
+        assert_true(self, mozilla_success_status_displaying, 'The last mozilla update status is changed to success.')
 
         navigate('http://testsafebrowsing.appspot.com/')
 
@@ -73,12 +84,18 @@ class Test(BaseTest):
             region_to_click = Region(first_test_label_location.x, coordinate_y, SCREEN_WIDTH, first_test_label_height)
             print(region_to_click)
             click(link_pattern, 0, region_to_click)
-            download_dialog_opened = exists(DownloadDialog.OK_BUTTON)
-            assert_true(self, download_dialog_opened, 'Download dialog opened')
-            click(DownloadDialog.OK_BUTTON)
+
+            if Settings.is_windows():
+                download_dialog_opened = exists(save_file_button_pattern, DEFAULT_SYSTEM_DELAY)
+                assert_true(self, download_dialog_opened, 'Download dialog opened')
+                click(save_file_button_pattern)
+            else:
+                download_dialog_opened = exists(DownloadDialog.OK_BUTTON, DEFAULT_SYSTEM_DELAY)
+                assert_true(self, download_dialog_opened, 'Download dialog opened')
+                click(DownloadDialog.OK_BUTTON)
             coordinate_y += first_test_label_height
 
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
         time.sleep(DEFAULT_UI_DELAY)
-        no_successful_downloads = exists(download_completed_pattern)
+        no_successful_downloads = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
         assert_false(self, no_successful_downloads, 'None of the download initiated are successful')
