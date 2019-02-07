@@ -106,6 +106,9 @@ class Test(BaseTest):
 
         click(restart_firefox_button_pattern)
 
+        firefox_is_restarted = exists(NavBar.HOME_BUTTON)
+        assert_true(self, firefox_is_restarted, 'Firefox is successfully restarted')
+
         restore_firefox_focus()
 
         all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
