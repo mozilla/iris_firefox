@@ -29,9 +29,12 @@ class Test(BaseTest):
         digicert_logo_pattern = Pattern('digicert_logo.png')
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
 
-        mouse_wheel_steps = 5
         if Settings.is_windows():
             mouse_wheel_steps = 500
+        elif Settings.is_linux():
+            mouse_wheel_steps = 1
+        else:
+            mouse_wheel_steps = 5
 
         change_preference('security.enterprise_roots.enabled', 'True')
 
