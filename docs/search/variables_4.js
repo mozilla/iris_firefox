@@ -14,5 +14,7 @@ var searchData=
   ['execute',['EXECUTE',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a9096a1519aff2a555f3916d5383b8ba6',1,'iris::api::core::key::Key']]],
   ['explored_5fhistory_5ficon',['EXPLORED_HISTORY_ICON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_history_sidebar.html#a5a6d374a756142cc430b3da9fc0a3193',1,'iris::api::core::firefox_ui::sidebar::Sidebar::HistorySidebar']]],
   ['export_5fbookmarks_5ffrom_5fhtml',['EXPORT_BOOKMARKS_FROM_HTML',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library_1_1_import_and_backup.html#a5f09e29f6f4f5d09a91c912b199786d8',1,'iris::api::core::firefox_ui::library::Library::ImportAndBackup']]],
-  ['extra_5fsmall_5ffile_5f5mb',['EXTRA_SMALL_FILE_5MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#ab2326374a72be279f35fa3fd5992610a',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]]
+  ['extra_5flarge_5ffile_5f512mb',['EXTRA_LARGE_FILE_512MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#a3a8fefa63552c12671d25cf67b47bc5a',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
+  ['extra_5fsmall_5ffile_5f5mb',['EXTRA_SMALL_FILE_5MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#ab2326374a72be279f35fa3fd5992610a',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
+  ['extra_5fsmall_5ffile_5f5mb_5fzip',['EXTRA_SMALL_FILE_5MB_ZIP',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads.html#abdbbf080e3412cfb5a34c36a78340c2d',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::Downloads']]]
 ];
