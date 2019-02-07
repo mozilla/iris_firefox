@@ -46,8 +46,8 @@ class Test(BaseTest):
         else:
             click(Library.HISTORY_TODAY, 0, history_region)
 
-        """history_updated = exists(history_updated_pattern, None, history_region)
-        assert_true(self, history_updated, 'History updated')"""
+        history_updated = exists(history_updated_pattern, None, history_region)
+        assert_true(self, history_updated, 'History updated')
 
         location_for_click = find(NavBar.HOME_BUTTON).right(100)
 
@@ -106,13 +106,10 @@ class Test(BaseTest):
 
         click(restart_firefox_button_pattern)
 
-        try:
-            crash_report_dismissed = wait_vanish(restart_firefox_button_pattern, 180)
-            assert_true(self, crash_report_dismissed, 'Crash report dismissed')
-        except FindError:
-            raise FindError('Crash report is not dismissed')
-
         restore_firefox_focus()
+
+        all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
 
         history_are_restored = exists(history_updated_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, history_are_restored, 'The history is successfully restored')
