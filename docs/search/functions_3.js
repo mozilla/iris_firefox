@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['cancel_5fand_5fclear_5fdownloads',['cancel_and_clear_downloads',['../namespaceiris_1_1api_1_1helpers_1_1download__manager__utils.html#a07978a07446823edd902a6780fee139b',1,'iris::api::helpers::download_manager_utils']]],
+  ['cancel_5fin_5fprogress_5fdownloads_5ffrom_5fthe_5flibrary',['cancel_in_progress_downloads_from_the_library',['../namespaceiris_1_1api_1_1helpers_1_1download__manager__utils.html#ae4d5bea7d8f38364b9ef8564c31ba7da',1,'iris::api::helpers::download_manager_utils']]],
   ['change_5fpreference',['change_preference',['../namespaceiris_1_1api_1_1helpers_1_1general.html#af0197713936bda9dc0a02edc8bd11c55',1,'iris::api::helpers::general']]],
   ['change_5fsearch_5fnext',['change_search_next',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#ab9e509bc36cf32702dd5d97b9c1b4921',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['change_5fsearch_5fprevious',['change_search_previous',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a9936dbf3cccd8d2ca3c3017fc8239476',1,'iris::api::helpers::keyboard_shortcuts']]],
@@ -12,6 +14,7 @@ var searchData=
   ['click_5fdelay',['click_delay',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a98a15c4dea81107b2382f428ebd74435',1,'iris.api.core.settings._IrisSettings.click_delay(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a5b28d2e379e0821507b7e9a4110acd78',1,'iris.api.core.settings._IrisSettings.click_delay(self, value)']]],
   ['click_5fhamburger_5fmenu_5foption',['click_hamburger_menu_option',['../namespaceiris_1_1api_1_1helpers_1_1general.html#ac664ee408d49f6af9d320c512f0e28b6',1,'iris::api::helpers::general']]],
   ['click_5fwindow_5fcontrol',['click_window_control',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a5fd87ef29ddbd225a5f7a13b29030d0e',1,'iris::api::helpers::general']]],
+  ['close_5fcontent_5fblocking_5fpop_5fup',['close_content_blocking_pop_up',['../namespaceiris_1_1api_1_1helpers_1_1general.html#ae8066bc159789094e813f421f3677448',1,'iris::api::helpers::general']]],
   ['close_5fcustomize_5fpage',['close_customize_page',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a1a6d8457ab3bcdf1cd98cef48a9f30b9',1,'iris::api::helpers::general']]],
   ['close_5ffind',['close_find',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a38823fa1848503264cfd7b4a1ab6ff93',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['close_5ffirefox',['close_firefox',['../namespaceiris_1_1api_1_1helpers_1_1general.html#adeb20885cbcbd710dec63816dae77505',1,'iris::api::helpers::general']]],
