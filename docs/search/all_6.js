@@ -25,6 +25,7 @@ var searchData=
   ['f8',['F8',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a62cd4af8e5cb43af3976eceede4ec6b6',1,'iris::api::core::key::Key']]],
   ['f9',['F9',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a387f2578e17bcc3e6b0c29265e71d9d3',1,'iris::api::core::key::Key']]],
   ['february',['FEBRUARY',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_history_sidebar_1_1_timeline.html#a1f77a7c09c5fbee4088f4e34affd631a',1,'iris::api::core::firefox_ui::sidebar::Sidebar::HistorySidebar::Timeline']]],
+  ['file_5fmoved_5for_5fmissing',['FILE_MOVED_OR_MISSING',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads.html#a556c0f0e936e08681be95b535b3d0df7',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::Downloads']]],
   ['final',['FINAL',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a8d4c2449a18fb28b6c3c8f84119ddc71',1,'iris::api::core::key::Key']]],
   ['find',['find',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a67cc4c1bb95c9a1a3c8014434c722a7f',1,'iris.api.core.region.Region.find()'],['../namespaceiris_1_1api_1_1core_1_1region.html#ace63ef58a93324e195ed207f5dc53a6d',1,'iris.api.core.region.find()']]],
   ['find_5fall',['find_all',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#ad71409b18e56261b1c8975bad620a65e',1,'iris.api.core.region.Region.find_all()'],['../namespaceiris_1_1api_1_1core_1_1region.html#a47b01f8770ae3f9f25a0a059c8eba7a6',1,'iris.api.core.region.find_all()']]],
@@ -44,7 +45,7 @@ var searchData=
   ['firefox_5flogo',['FIREFOX_LOGO',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a2c97b6553a5427fceffa8c42861812d1',1,'iris::api::core::local_web::LocalWeb']]],
   ['firefox_5ftest_5fsite',['FIREFOX_TEST_SITE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a7a44cd541fa27394868ffe617a0fd24b',1,'iris::api::core::local_web::LocalWeb']]],
   ['firefox_5ftest_5fsite_5f2',['FIREFOX_TEST_SITE_2',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a3877c132044be1ac98f38f915059b229',1,'iris::api::core::local_web::LocalWeb']]],
-  ['firefox_5ftimeout',['FIREFOX_TIMEOUT',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#af3e129c676da5197b56ee25d028aa489',1,'iris.api.core.settings._IrisSettings.FIREFOX_TIMEOUT(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#aebd1846755e8cfc8c2a77f2e3cdc43d7',1,'iris.api.core.settings._IrisSettings.firefox_timeout()']]],
+  ['firefox_5ftimeout',['firefox_timeout',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#aebd1846755e8cfc8c2a77f2e3cdc43d7',1,'iris.api.core.settings._IrisSettings.firefox_timeout()'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#af3e129c676da5197b56ee25d028aa489',1,'iris.api.core.settings._IrisSettings.FIREFOX_TIMEOUT(self)']]],
   ['fn',['FN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae85973d189af88fb2a2bf50b171f7d26',1,'iris::api::core::key::Key']]],
   ['focus_5fbookmark',['FOCUS_BOOKMARK',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a2be496e8f5c95e7c7b07f1834333e6d9',1,'iris::api::core::local_web::LocalWeb']]],
   ['focus_5fbookmark_5fsmall',['FOCUS_BOOKMARK_SMALL',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a450eb3a4e3e66ceb3ce6d30181f7cb76',1,'iris::api::core::local_web::LocalWeb']]],
@@ -54,6 +55,7 @@ var searchData=
   ['focus_5fprevious_5fitem',['focus_previous_item',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a5690497094e7c10ad97083550ea20ad3',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['focus_5ftest_5fsite',['FOCUS_TEST_SITE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a2bab95c88614364fe203f6e8c218f0b8',1,'iris::api::core::local_web::LocalWeb']]],
   ['focus_5ftest_5fsite_5f2',['FOCUS_TEST_SITE_2',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#aaaea1671e60bb2250542ac64ebbf27f4',1,'iris::api::core::local_web::LocalWeb']]],
+  ['folder_5fview_5f5mb_5fhighlighted',['FOLDER_VIEW_5MB_HIGHLIGHTED',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#adbf35264b337654d97e7c6343695a224',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['force_5fclose',['force_close',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a52ceae73048b10879cab147ea6bf6c77',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['force_5freload_5fpage',['force_reload_page',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a5f204f451ec067207844cbe4323bbd72',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['forget_5fbutton',['FORGET_BUTTON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_forget_last.html#a695d87c3f949bd1babe6ff88a91125cf',1,'iris::api::core::firefox_ui::history::History::ForgetLast']]],
@@ -67,5 +69,5 @@ var searchData=
   ['forward_5fbutton_5fenabled',['FORWARD_BUTTON_ENABLED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#a349178b67975d92e8d0b8d684a136498',1,'iris::api::core::firefox_ui::library::Library']]],
   ['full_5fscreen',['full_screen',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a504b0b300e913ac2e43c4456c49a8d99',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['full_5fscreen_5fcontrol',['full_screen_control',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a22b551e00ad119d2cf17c31b15032a4b',1,'iris::api::helpers::general']]],
-  ['fx_5fdelay',['FX_DELAY',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a9339d97d34413d8382a205656ef4254e',1,'iris.api.core.settings._IrisSettings.FX_DELAY(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a6bf9193c9c7d5c01b362fd3731132507',1,'iris.api.core.settings._IrisSettings.fx_delay()']]]
+  ['fx_5fdelay',['fx_delay',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a6bf9193c9c7d5c01b362fd3731132507',1,'iris.api.core.settings._IrisSettings.fx_delay()'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a9339d97d34413d8382a205656ef4254e',1,'iris.api.core.settings._IrisSettings.FX_DELAY(self)']]]
 ];

@@ -41,8 +41,10 @@ class Test(BaseTest):
         assert_true(self, saved_addresses_button_exists,
                     '\'Saved addresses\' button is displayed on the Preferences page')
         click(saved_addresses_button_pattern)
+
         add_button_exists = exists(add_button_pattern)
         assert_true(self, add_button_exists, '\'Add\' button is displayed on the \'Saved addresses\' popup')
+
         click(add_button_pattern)
 
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')

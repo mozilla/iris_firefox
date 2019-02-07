@@ -19,6 +19,7 @@ var searchData=
   ['viewby',['ViewBy',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_history_sidebar_1_1_view_by.html',1,'iris::api::core::firefox_ui::sidebar::Sidebar::HistorySidebar']]],
   ['views',['Views',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library_1_1_views.html',1,'iris::api::core::firefox_ui::library::Library']]],
   ['views_5fbutton',['VIEWS_BUTTON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library.html#a5835e8a5f723a898a84f83bbe6a99fd2',1,'iris::api::core::firefox_ui::library::Library']]],
+  ['virus_5for_5fmalware_5fdownload',['VIRUS_OR_MALWARE_DOWNLOAD',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_panel.html#a473f9f0d8be71cdb46d2fbb14f592b34',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsPanel']]],
   ['visit_5fcount',['VISIT_COUNT',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1library_1_1_library_1_1_views_1_1_show_columns.html#a78d765a35c62349f0847cebf5106d2b6',1,'iris::api::core::firefox_ui::library::Library::Views::ShowColumns']]],
   ['volume_5fdown',['VOLUME_DOWN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#aae24429a23e1c181052183f8b80c0425',1,'iris::api::core::key::Key']]],
   ['volume_5fmute',['VOLUME_MUTE',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a16d4241e3c5508b5ccafd6e0141ef3a3',1,'iris::api::core::key::Key']]],

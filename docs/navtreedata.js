@@ -45,7 +45,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1location__bar.html"
+"functions_w.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

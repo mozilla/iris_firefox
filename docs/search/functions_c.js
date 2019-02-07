@@ -2,6 +2,8 @@ var searchData=
 [
   ['maximize_5fwindow',['maximize_window',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a35b697682ef177a1529c4afa69b59dd3',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['maximize_5fwindow_5fcontrol',['maximize_window_control',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a4e83e88d76e8d1ca4356a5dee58fbc30',1,'iris::api::helpers::general']]],
+  ['middle_5fthird_5fhorizontal',['middle_third_horizontal',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a91aa891a24910a70be1565705ac81e1e',1,'iris::api::core::region::Region']]],
+  ['middle_5fthird_5fvertical',['middle_third_vertical',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a8e24bbb41db718be24d08ff1a241bb18',1,'iris::api::core::region::Region']]],
   ['min_5fsimilarity',['min_similarity',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a7f3632446e594e55edbfaaa72e30b11c',1,'iris.api.core.settings._IrisSettings.min_similarity(self)'],['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a4166d9dee8b1953d267947ed0263e378',1,'iris.api.core.settings._IrisSettings.min_similarity(self, value)']]],
   ['minimize_5fwindow',['minimize_window',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a0174fb4520c9cdee352258584f3123a0',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['minimize_5fwindow_5fcontrol',['minimize_window_control',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a3e9a61083da24a2e22835d9450cf76de',1,'iris::api::helpers::general']]],

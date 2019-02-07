@@ -1,8 +1,10 @@
 var searchData=
 [
+  ['screen_5fregions',['screen_regions',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#adfef56ef313bffa50daa64c0833a76b4',1,'iris::api::core::region::Region']]],
   ['scroll',['scroll',['../namespaceiris_1_1api_1_1core_1_1mouse.html#a14c738ef16fffed17698f2c72bcbb9e3',1,'iris::api::core::mouse']]],
-  ['scroll_5fdown',['scroll_down',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a9316ba47fa6196d619a685fc0a58f7af',1,'iris::api::helpers::keyboard_shortcuts']]],
-  ['scroll_5fup',['scroll_up',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a958deaf8692085872df687938b6bbb65',1,'iris::api::helpers::keyboard_shortcuts']]],
+  ['scroll_5fdown',['scroll_down',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a1624d05256fc1f679b61b57aefd02824',1,'iris::api::helpers::keyboard_shortcuts']]],
+  ['scroll_5funtil_5fpattern_5ffound',['scroll_until_pattern_found',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a6ca596f8a9c5048284513e35230b10db',1,'iris::api::helpers::general']]],
+  ['scroll_5fup',['scroll_up',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a8de123247f90634736e2f2f1f9593f8f',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['select_5flast_5ftab',['select_last_tab',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a5ec47ffb06d59dc503e0c0ae417325e6',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['select_5flocation_5fbar',['select_location_bar',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#add7516e44e13f84dde0b11e81abbc2ea',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['select_5flocation_5fbar_5foption',['select_location_bar_option',['../namespaceiris_1_1api_1_1helpers_1_1general.html#af99fb71fcf6ddb01976cc3def606eddf',1,'iris::api::helpers::general']]],
@@ -10,6 +12,7 @@ var searchData=
   ['select_5ftab',['select_tab',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a819a3e94735b14e46320a90bde6946b0',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['select_5fzoom_5fmenu_5foption',['select_zoom_menu_option',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a60e9855490fca6ead45a3c815cf6045c',1,'iris::api::helpers::general']]],
   ['show',['show',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a3d08cc250081011eafa02758afe116dd',1,'iris::api::core::region::Region']]],
+  ['show_5fall_5fdownloads_5ffrom_5flibrary_5fmenu_5fprivate_5fwindow',['show_all_downloads_from_library_menu_private_window',['../namespaceiris_1_1api_1_1helpers_1_1download__manager__utils.html#a72c07c75b8d72ce821a14feaffb19676',1,'iris::api::helpers::download_manager_utils']]],
   ['similar',['similar',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#a3810101b6a3920bee331a647e6e6410a',1,'iris::api::core::pattern::Pattern']]],
   ['stop_5fpage_5fload',['stop_page_load',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a8570201ceccb8841439c87fd3a068c53',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['system_5fdelay',['SYSTEM_DELAY',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a918888d02b1e1de5277a045a6a013c47',1,'iris::api::core::settings::_IrisSettings']]]
