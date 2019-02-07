@@ -95,7 +95,10 @@ class Test(BaseTest):
                 click(DownloadDialog.OK_BUTTON)
             coordinate_y += first_test_label_height
 
+        downloads_location = find(NavBar.SEVERE_DOWNLOADS_BUTTON)
+        downloads_region = Region(downloads_location.x - SCREEN_WIDTH / 2, downloads_location.y, SCREEN_WIDTH / 2,
+                                  SCREEN_HEIGHT / 2)
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
         time.sleep(DEFAULT_UI_DELAY)
-        no_successful_downloads = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
+        no_successful_downloads = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, None, downloads_region)
         assert_false(self, no_successful_downloads, 'None of the download initiated are successful')
