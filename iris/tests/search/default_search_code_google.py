@@ -19,10 +19,12 @@ class Test(BaseTest):
         text_pattern = Pattern('focus_text.png')
 
         # Detect the build.
-        if get_firefox_channel(self.browser.path) == 'beta':
+        if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
             default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
+            google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
         elif get_firefox_channel(self.browser.path) == 'esr':
             default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png')
+            google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field_esr_build.png')
 
         regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de'], 'fr': ['fr'], 'pl': ['pl'], 'it': ['it'],
                               'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB']}
@@ -53,12 +55,22 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
 
-            if value != 'US':
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=test',
-                            'Client search code is correct for searches from awesome bar.')
-            else:
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=test',
-                            'Client search code is correct for searches from awesome bar.')
+            if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
+                if value != 'US':
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=test',
+                                 'Client search code is correct for searches from awesome bar, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=test',
+                                 'Client search code is correct for searches from awesome bar, region ' + value + '.')
+            elif get_firefox_channel(self.browser.path) == 'esr':
+                if value != 'US':
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=test&ie=utf-8&oe=utf-8&client=firefox-b-e',
+                                 'Client search code is correct for searches from awesome bar, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=test&ie=utf-8&oe=utf-8&client=firefox-b-1-e',
+                                 'Client search code is correct for searches from awesome bar, region ' + value + '.')
 
             select_location_bar()
             type(Key.DELETE)
@@ -74,13 +86,24 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
 
-            if value != 'US':
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=test',
-                            'Client search code is correct for searches from awesome bar.')
-            else:
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=test',
-                            'Client search code is correct for searches from awesome bar.')
+            if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
+                if value != 'US':
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=test',
+                                 'Client search code is correct for searches from search bar, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=test',
+                                 'Client search code is correct for searches from search bar, region ' + value + '.')
+            elif get_firefox_channel(self.browser.path) == 'esr':
+                if value != 'US':
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=test&ie=utf-8&oe=utf-8&client=firefox-b-e',
+                                 'Client search code is correct for searches from search bar, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=test&ie=utf-8&oe=utf-8&client=firefox-b-1-e',
+                                 'Client search code is correct for searches from search bar, region ' + value + '.')
 
+            # Highlight some text and right click it.
             navigate(url)
             expected = exists(text_pattern, 10)
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
@@ -97,15 +120,28 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
 
-            if value != 'US':
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=Focus',
-                            'Client search code is correct for searches from awesome bar.')
-            else:
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=Focus',
-                            'Client search code is correct for searches from awesome bar.')
+            if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
+                if value != 'US':
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=Focus',
+                                 'Client search code is correct, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=Focus',
+                                 'Client search code is correct, region ' + value + '.')
+            elif get_firefox_channel(self.browser.path) == 'esr':
+                if value != 'US':
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=Focus&ie=utf-8&oe=utf-8&client=firefox-b-e',
+                                 'Client search code is correct, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=Focus&ie=utf-8&oe=utf-8&client=firefox-b-1-e',
+                                 'Client search code is correct, region ' + value + '.')
 
+            # Perform a search from about:newtab page, content search field.
             new_tab()
-            # Ioana, please add code here to find and click the "G" logo. Then continue on with paste.
+            expected = exists(google_logo_content_search_field_pattern, 10)
+            assert_true(self, expected, 'Google logo from content search field found.')
+            click(google_logo_content_search_field_pattern)
             paste('beats')
             type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY_LONG)
@@ -115,12 +151,26 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
 
-            if value != 'US':
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=beats',
-                            'Client search code is correct for searches from awesome bar.')
-            else:
-                assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=beats',
-                            'Client search code is correct for searches from awesome bar.')
+            if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
+                if value != 'US':
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-d&q=beats',
+                                 'Client search code is correct for searches from about:newtab page, content search '
+                                 'field, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text, 'https://www.google.com/search?client=firefox-b-1-d&q=beats',
+                                 'Client search code is correct for searches from about:newtab page, content search '
+                                 'field, region ' + value + '.')
+            elif get_firefox_channel(self.browser.path) == 'esr':
+                if value != 'US':
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=beats&ie=utf-8&oe=utf-8&client=firefox-b-e',
+                                 'Client search code is correct for searches from about:newtab page, content search '
+                                 'field, region ' + value + '.')
+                else:
+                    assert_equal(self, url_text,
+                                 'https://www.google.com/search?q=beats&ie=utf-8&oe=utf-8&client=firefox-b-1-e',
+                                 'Client search code is correct for searches from about:newtab page, content search '
+                                 'field, region ' + value + '.')
 
     def teardown(self):
         if self.browser.locale == 'en-US':
