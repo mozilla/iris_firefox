@@ -556,10 +556,10 @@ def get_firefox_channel(build_path):
     fx_channel = get_firefox_info(build_path)['application_repository']
     if 'beta' in fx_channel:
         return 'beta'
-    elif 'release' in fx_channel:
-        return 'release'
     elif 'esr' in fx_channel:
         return 'esr'
+    elif 'release' in fx_channel:
+        return 'release'
     else:
         return 'nightly'
 
