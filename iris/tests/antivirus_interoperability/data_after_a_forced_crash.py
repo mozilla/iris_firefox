@@ -88,12 +88,30 @@ class Test(BaseTest):
         bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
 
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        self.base_local_web_url,
+                        show_crash_reporter=True)
+
         navigate('about:crashparent')
 
-        restart_firefox_window_displayed = exists(restart_firefox_button_pattern, DEFAULT_SYSTEM_DELAY)
-        assert_true(self, restart_firefox_window_displayed, 'Restart Firefox window is displayed')
+        if Settings.is_windows():
+            crash_reporter_icon_pattern = Pattern('crash_reporter_icon.png')
+            crash_reporter_icon_exists = exists(crash_reporter_icon_pattern, 180)
+            assert_true(self, crash_reporter_icon_exists, 'Crash Reporter icon exists')
+            click(crash_reporter_icon_pattern)
+
+        firefox_crashed = exists(restart_firefox_button_pattern, 10)
+        assert_true(self, firefox_crashed, 'Firefox crashed.')
 
         click(restart_firefox_button_pattern)
+
+        try:
+            crash_report_dismissed = wait_vanish(restart_firefox_button_pattern, 180)
+            assert_true(self, crash_report_dismissed, 'Crash report dismissed')
+        except FindError:
+            raise FindError('Crash report is not dismissed')
 
         all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
