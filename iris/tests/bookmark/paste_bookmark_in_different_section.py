@@ -27,10 +27,14 @@ class Test(BaseTest):
         wiki_favicon_bookmark_pattern = Pattern('moz_library_bookmark.png')
         bookmarks_folder_pasted_pattern = Pattern('bookmarks_folder_pasted.png')
 
-        type(text='b', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        if Settings.is_mac():
+            type(text='b', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+        elif Settings.is_windows():
+            type(text='b', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+
         other_bookmarks_button_available = exists(other_bookmarks_button_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, other_bookmarks_button_available,
-                    '\'Other bookmarks\' button is available in \'Bookmarks sidebar\'.')
+                    '\'Other bookmarks\' button is available in \'Bookmarks Library\' menu.')
 
         click(other_bookmarks_button_pattern)
         bookmarks_displayed = exists(wiki_favicon_bookmark_pattern, DEFAULT_SYSTEM_DELAY)
@@ -39,7 +43,7 @@ class Test(BaseTest):
 
         bookmarks_menu_available = exists(bookmarks_menu_button_pattern, DEFAULT_UI_DELAY)
         assert_true(self, bookmarks_menu_available,
-                    '\'Bookmarks menu\' button is available in \'Bookmarks sidebar\'.')
+                    '\'Bookmarks menu\' button is available in \'Bookmarks Library\' menu.')
 
         right_click(bookmarks_menu_button_pattern)
         copy_option_available = exists(copy_option_pattern, DEFAULT_UI_DELAY)
@@ -55,3 +59,5 @@ class Test(BaseTest):
         click(paste_option_pattern)
         folder_pasted = exists(bookmarks_folder_pasted_pattern)
         assert_true(self, folder_pasted, 'The file/folder is correctly pasted in the \'Other Bookmarks\' section.')
+
+        force_close()
