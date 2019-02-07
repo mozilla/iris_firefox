@@ -1,6 +1,7 @@
 var searchData=
 [
   ['label',['label',['../classiris_1_1api_1_1core_1_1key_1_1___iris_key.html#ac4c0c38f807086e97345dfa070eb1ea2',1,'iris::api::core::key::_IrisKey']]],
+  ['large_5ffile_5f200mb',['LARGE_FILE_200MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#a800229d768418cb24e23ff38531e9f85',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['last_5f24_5fhours',['LAST_24_HOURS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_forget_last.html#ab3f8d3ca6c4047b35361d06750285741',1,'iris::api::core::firefox_ui::history::History::ForgetLast']]],
   ['last_5f24_5fhours_5fselected',['LAST_24_HOURS_SELECTED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1history_1_1_history_1_1_forget_last.html#a5e1a469e555ed19225272ba169744777',1,'iris::api::core::firefox_ui::history::History::ForgetLast']]],
   ['last_5f7_5fdays',['LAST_7_DAYS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1sidebar_1_1_sidebar_1_1_history_sidebar_1_1_timeline.html#a5a1d9aae87fe6681c6ade47babf05d32',1,'iris::api::core::firefox_ui::sidebar::Sidebar::HistorySidebar::Timeline']]],
@@ -19,9 +20,12 @@ var searchData=
   ['library_5fback_5fbutton',['LIBRARY_BACK_BUTTON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1utils_1_1_utils.html#aae574b4453151307250eef013c1635df',1,'iris::api::core::firefox_ui::utils::Utils']]],
   ['library_5fdownloads_5f100mb',['LIBRARY_DOWNLOADS_100MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#ad52b664e93b40025f21c660df0ae11db',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['library_5fdownloads_5f10mb',['LIBRARY_DOWNLOADS_10MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#a964df518f7b2fd878827a0f15e36ecdc',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
+  ['library_5fdownloads_5f200mb',['LIBRARY_DOWNLOADS_200MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#a52980da137d7be2bd576ed1b1fab06ac',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['library_5fdownloads_5f20mb',['LIBRARY_DOWNLOADS_20MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#a81241568b28bcbfdc5a26cd259de6af6',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['library_5fdownloads_5f50mb',['LIBRARY_DOWNLOADS_50MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#ac70540f4e6684241bd5baae6a4e98145',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
+  ['library_5fdownloads_5f512mb',['LIBRARY_DOWNLOADS_512MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#ac8570abc2724daa131fdf5f4a380d78a',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['library_5fdownloads_5f5mb',['LIBRARY_DOWNLOADS_5MB',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#a1c558e49dd62de8efa4ee892ff98fd29',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
+  ['library_5fdownloads_5f5mb_5fhighlighted',['LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#ab2ad96ae5811dae417b2d9219655d920',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['library_5fmenu',['LIBRARY_MENU',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1nav__bar_1_1_nav_bar.html#ac9a7a40366d4982a54699a1e2e9cf88c',1,'iris::api::core::firefox_ui::nav_bar::NavBar']]],
   ['linux',['LINUX',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a053573e063fc3580f1d31bca82d50a17',1,'iris::api::core::platform::Platform']]],
   ['locales',['locales',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#aa642bbe01be4665c8955b21c6e643574',1,'iris.api.core.settings._IrisSettings.locales()'],['../namespaceiris_1_1api_1_1core_1_1settings.html#a3eb40b117c7bac264e175c1cba6cc948',1,'iris.api.core.settings.LOCALES()']]],
