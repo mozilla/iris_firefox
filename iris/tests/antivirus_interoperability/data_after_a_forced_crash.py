@@ -21,10 +21,10 @@ class Test(BaseTest):
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         tabs_restored_pattern = Pattern('tabs_restored.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
-        browser_console_pattern = Pattern('browser_console_opened.png')
         folder_other_bookmarks = Pattern('other_bookmarks.png')
         folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
         history_today_pattern = Pattern('history_today.png')
+        restart_firefox_button_pattern = Pattern('restart_firefox_button.png')
         history_region = Region(0, 0, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 3)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -88,15 +88,12 @@ class Test(BaseTest):
         bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
 
-        open_browser_console()
-        time.sleep(DEFAULT_UI_DELAY_LONG)
-        restart_via_console()
+        navigate('about:crashparent')
 
-        browser_console_opened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, browser_console_opened, 'Browser console displayed')
-        click(browser_console_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
-        close_window_control('auxiliary')
+        restart_firefox_window_displayed = exists(restart_firefox_button_pattern, DEFAULT_SYSTEM_DELAY)
+        assert_true(self, restart_firefox_window_displayed, 'Restart Firefox window is displayed')
+
+        click(restart_firefox_button_pattern)
 
         all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
