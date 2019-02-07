@@ -2,8 +2,8 @@ var searchData=
 [
   ['generate_5fregion_5fby_5fmarkers',['generate_region_by_markers',['../namespaceiris_1_1api_1_1core_1_1region.html#af5aa4b2a21df6362979910ef5bf9789a',1,'iris::api::core::region']]],
   ['get_5factive_5fmodifiers',['get_active_modifiers',['../classiris_1_1api_1_1core_1_1key_1_1_key_modifier.html#a15c68f9617f10d34f19082e2a6d8f396',1,'iris::api::core::key::KeyModifier']]],
-  ['get_5fbottom_5fleft',['get_bottom_left',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a70ca1d05e728303800fd6b04764431d8',1,'iris::api::core::region::Region']]],
-  ['get_5fbottom_5fright',['get_bottom_right',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a67f9c95a02623916f2bc984383ca5532',1,'iris::api::core::region::Region']]],
+  ['get_5fbottom_5fleft_5fcoordinates',['get_bottom_left_coordinates',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a8acd2262cc8c72e6bfec46c866fcebfe',1,'iris::api::core::region::Region']]],
+  ['get_5fbottom_5fright_5fcoordinates',['get_bottom_right_coordinates',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a1454ec93e326772a75ca20fd438380ec',1,'iris::api::core::region::Region']]],
   ['get_5fcenter',['get_center',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#aaed04b0ac433b80fc9641d79d18fabb7',1,'iris::api::core::region::Region']]],
   ['get_5fcolor_5fimage',['get_color_image',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#a39c1025e38dfab055d1cfee89f2d0993',1,'iris::api::core::pattern::Pattern']]],
   ['get_5fduration',['get_duration',['../namespaceiris_1_1api_1_1helpers_1_1results.html#aaac50ff85e6d8591dacb35fdbb909334',1,'iris::api::helpers::results']]],
@@ -20,6 +20,7 @@ var searchData=
   ['get_5ffirefox_5fversion_5ffrom_5fabout_5fconfig',['get_firefox_version_from_about_config',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a1a0706a43d6980e65b2b1428b8e0a319',1,'iris::api::helpers::general']]],
   ['get_5fgray_5fimage',['get_gray_image',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#ab67127d677eb568f80f7b430fb208835',1,'iris::api::core::pattern::Pattern']]],
   ['get_5fmain_5fmodifier',['get_main_modifier',['../namespaceiris_1_1api_1_1helpers_1_1general.html#af808469e2759d245307a9d92ebcd2ac5',1,'iris::api::helpers::general']]],
+  ['get_5fmatrix',['get_matrix',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#ac4ff04316c5303a9e6c9a2cb093671e6',1,'iris::api::core::region::Region']]],
   ['get_5fmenu_5fmodifier',['get_menu_modifier',['../namespaceiris_1_1api_1_1helpers_1_1general.html#a2fc8e5e353b5c732704f6320f0443741',1,'iris::api::helpers::general']]],
   ['get_5fmessage',['get_message',['../classiris_1_1api_1_1helpers_1_1test__utils_1_1_step.html#ae9a5126b9018485f99a79273d21d4972',1,'iris::api::helpers::test_utils::Step']]],
   ['get_5fos',['get_os',['../classiris_1_1api_1_1core_1_1settings_1_1___iris_settings.html#a5085856b0b946e4d86dc22045fbfeaed',1,'iris::api::core::settings::_IrisSettings']]],
@@ -34,7 +35,9 @@ var searchData=
   ['get_5ftarget',['get_target',['../classiris_1_1api_1_1core_1_1match_1_1_match.html#ad0cb0b87ec56dbdc5517cadd9253cf49',1,'iris::api::core::match::Match']]],
   ['get_5ftarget_5foffset',['get_target_offset',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#a4e0882f6fd5135ad80e840a02029a8bf',1,'iris::api::core::pattern::Pattern']]],
   ['get_5ftelemetry_5finfo',['get_telemetry_info',['../namespaceiris_1_1api_1_1helpers_1_1general.html#ac22ed30816c59095d4f7ed5cdc918221',1,'iris::api::helpers::general']]],
-  ['get_5ftop_5fleft',['get_top_left',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a166033f7a8742dd98d2861e3724a417e',1,'iris::api::core::region::Region']]],
-  ['get_5ftop_5fright',['get_top_right',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#ab1ee7735bbf3e4fc9d3a7630f4eb702f',1,'iris::api::core::region::Region']]],
+  ['get_5ftop_5fleft_5fcoordinates',['get_top_left_coordinates',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a06b87d5c1167a091607460500376040c',1,'iris::api::core::region::Region']]],
+  ['get_5ftop_5fright_5fcoordinates',['get_top_right_coordinates',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a90f51d09f6454111a2b6ebc2cb0c3fac',1,'iris::api::core::region::Region']]],
+  ['go_5fto_5fdownload_5fpage',['GO_TO_DOWNLOAD_PAGE',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_context_menu.html#a9e3f4a1e290446492a911053b0d19f4c',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadsContextMenu']]],
+  ['got_5fit_5fbutton',['GOT_IT_BUTTON',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking__tour_1_1_content_blocking_tour.html#a181137d6062861ce39902471d5958978',1,'iris::api::core::firefox_ui::content_blocking_tour::ContentBlockingTour']]],
   ['gray_5fimage',['gray_image',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html#a8193852a134fa0867e9606e6ce9152be',1,'iris::api::core::pattern::Pattern']]]
 ];

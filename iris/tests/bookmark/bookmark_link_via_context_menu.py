@@ -26,6 +26,8 @@ class Test(BaseTest):
 
         navigate(moz_article)
 
+        close_content_blocking_pop_up()
+
         moz_article_assert = exists(moz_page, 10)
         assert_true(self, moz_article_assert, 'The Moz article page has been successfully loaded.')
 
@@ -60,6 +62,8 @@ class Test(BaseTest):
         assert_true(self, bookmarked_link_assert, 'The link has been successfully bookmarked.')
 
         click(bookmarked_link)
+
+        close_content_blocking_pop_up()
 
         page_load_assert = exists(moz_page, 10)
         assert_true(self, page_load_assert, 'The page has been successfully loaded.')

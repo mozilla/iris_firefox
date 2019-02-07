@@ -17,7 +17,8 @@ var searchData=
   ['paste',['paste',['../classiris_1_1api_1_1core_1_1region_1_1_region.html#a7000017237db685f9b702f5c635e5bfb',1,'iris.api.core.region.Region.paste()'],['../classiris_1_1api_1_1helpers_1_1general_1_1_right_click_location_bar.html#a967aaca6c195d08967ed7eea9aa505b1',1,'iris.api.helpers.general.RightClickLocationBar.PASTE()'],['../namespaceiris_1_1api_1_1core_1_1key.html#a278ca1f7c65aa481f1c7d06d002219a4',1,'iris.api.core.key.paste()']]],
   ['paste_5fgo',['PASTE_GO',['../classiris_1_1api_1_1helpers_1_1general_1_1_right_click_location_bar.html#ab49bbdef03834d01ef913491169e46a0',1,'iris::api::helpers::general::RightClickLocationBar']]],
   ['pattern',['Pattern',['../classiris_1_1api_1_1core_1_1pattern_1_1_pattern.html',1,'iris::api::core::pattern']]],
-  ['pause',['PAUSE',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ac78405a3a813c56eb4a29dc29cbd61e4',1,'iris::api::core::key::Key']]],
+  ['pause',['PAUSE',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_downloads_context_menu.html#aab29d7cda13e253691c326e2ff241251',1,'iris.api.core.firefox_ui.download_manager.DownloadManager.DownloadsContextMenu.PAUSE()'],['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ac78405a3a813c56eb4a29dc29cbd61e4',1,'iris.api.core.key.Key.PAUSE()']]],
+  ['paused',['PAUSED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_download_state.html#a2aabee0281cd61bdc3d26533e7dc78ae',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadState']]],
   ['pgdn',['PGDN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae8bb429bb786f1f38eb75e62482762a9',1,'iris::api::core::key::Key']]],
   ['pgup',['PGUP',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ae5236a29c1dd0ce1855b258954d2e6f8',1,'iris::api::core::key::Key']]],
   ['platform',['Platform',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html',1,'iris::api::core::platform']]],
@@ -29,6 +30,8 @@ var searchData=
   ['pocket_5flogo',['POCKET_LOGO',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#a9821ec7ec64bf63bf5f7eea0a2d3f5d3',1,'iris::api::core::local_web::LocalWeb']]],
   ['pocket_5ftest_5fsite',['POCKET_TEST_SITE',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#ae832f33b925641c3bfaf4e480d6058e9',1,'iris::api::core::local_web::LocalWeb']]],
   ['pocket_5ftest_5fsite_5f2',['POCKET_TEST_SITE_2',['../classiris_1_1api_1_1core_1_1local__web_1_1_local_web.html#abae78ceffa12c305f9986dcab4372a86',1,'iris::api::core::local_web::LocalWeb']]],
+  ['pop_5fup_5fenabled',['POP_UP_ENABLED',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking_1_1_content_blocking.html#a2779f548eb07fc32fbd0548f557ad95a',1,'iris::api::core::firefox_ui::content_blocking::ContentBlocking']]],
+  ['potentially_5funwanted',['POTENTIALLY_UNWANTED',['../classiris_1_1api_1_1helpers_1_1download__manager__utils_1_1_download_files.html#a1a9d9f0d2a8ddcc8edc4c8bcee2bec03',1,'iris::api::helpers::download_manager_utils::DownloadFiles']]],
   ['prev_5ftrack',['PREV_TRACK',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#afdb1a080066c8de4e6c038618a58a856',1,'iris::api::core::key::Key']]],
   ['previous_5fframe',['previous_frame',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a5dcdaeb4f450d98fd5e442b6938fde7d',1,'iris::api::helpers::keyboard_shortcuts']]],
   ['previous_5ftab',['previous_tab',['../namespaceiris_1_1api_1_1helpers_1_1keyboard__shortcuts.html#a518269adbcaba5f5790830309d949e07',1,'iris::api::helpers::keyboard_shortcuts']]],
@@ -45,6 +48,7 @@ var searchData=
   ['privatewindow',['PrivateWindow',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1private__window_1_1_private_window.html',1,'iris::api::core::firefox_ui::private_window']]],
   ['prnt_5fscrn',['PRNT_SCRN',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a8b5dfee9202a7a836b1c84e4e52eb2e9',1,'iris::api::core::key::Key']]],
   ['processor',['PROCESSOR',['../classiris_1_1api_1_1core_1_1platform_1_1_platform.html#a9a76e29d063c60b36575f8a55e8d1a65',1,'iris::api::core::platform::Platform']]],
+  ['progress',['PROGRESS',['../classiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager_1_1_download_manager_1_1_download_state.html#ad0e97fc0955ac57bab6bb5617546e57a',1,'iris::api::core::firefox_ui::download_manager::DownloadManager::DownloadState']]],
   ['prtsc',['PRTSC',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#ab6b85a3b02e3d8dcd30d8d9476004344',1,'iris::api::core::key::Key']]],
   ['prtscr',['PRTSCR',['../classiris_1_1api_1_1core_1_1key_1_1_key.html#a461e3d6cd825401d0f015114516662ed',1,'iris::api::core::key::Key']]]
 ];
