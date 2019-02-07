@@ -24,13 +24,15 @@ class Test(BaseTest):
         bookmarks_menu_button_pattern = Library.BOOKMARKS_MENU
         copy_option_pattern = Pattern('copy_option.png')
         paste_option_pattern = Pattern('paste_option.png')
-        wiki_favicon_bookmark_pattern = Pattern('moz_library_bookmark.png')
+        wiki_favicon_bookmark_pattern = Pattern('wiki_bookmark_favicon.png')
         bookmarks_folder_pasted_pattern = Pattern('bookmarks_folder_pasted.png')
 
         if Settings.is_mac():
             type(text='b', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
         elif Settings.is_windows():
             type(text='b', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
+        elif Settings.is_linux():
+            type(text='o', modifier=KeyModifier.CTRL + KeyModifier.SHIFT)
 
         other_bookmarks_button_available = exists(other_bookmarks_button_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, other_bookmarks_button_available,
@@ -60,4 +62,5 @@ class Test(BaseTest):
         folder_pasted = exists(bookmarks_folder_pasted_pattern)
         assert_true(self, folder_pasted, 'The file/folder is correctly pasted in the \'Other Bookmarks\' section.')
 
-        force_close()
+        close_tab()
+        close_window()
