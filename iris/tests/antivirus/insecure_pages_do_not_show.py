@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Check browser doesn\'t show insecure webpage erros'
+        self.meta = 'Check browser doesn\'t show insecure webpage errors'
         self.test_case_id = '225143'
         self.test_suite_id = '3063'
         self.locale = ['en-US']
@@ -18,7 +18,7 @@ class Test(BaseTest):
     def run(self):
         insecure_connection_pattern = Pattern('https_insecure_sign.png')
         twitter_logo_pattern = Pattern('twitter_logo.png')
-        tracker_site_pattern = Pattern('firefox_tracker_site_logo.png')
+        tracker_site_pattern = Pattern('firefox_download.png')
 
         change_preference('security.enterprise_roots.enabled', 'false')
 
