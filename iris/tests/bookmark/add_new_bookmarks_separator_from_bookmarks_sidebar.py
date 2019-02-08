@@ -20,7 +20,12 @@ class Test(BaseTest):
         bookmark_site_pattern = Pattern('bookmark_site.png')
         mozilla_bookmark_pattern = Pattern('mozilla_bookmark.png')
         new_separator_pattern = Library.Organize.NEW_SEPARATOR
-        bookmark_menu_pattern = Library.BOOKMARKS_MENU
+
+        if not Settings.is_mac():
+            bookmark_menu_pattern = Library.BOOKMARKS_MENU
+        else:
+            bookmark_menu_pattern = Pattern('bookmarks_menu.png')
+
 
         bookmarks_sidebar('open')
 
