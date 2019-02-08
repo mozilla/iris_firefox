@@ -21,9 +21,10 @@ class Test(BaseTest):
         return
 
     def run(self):
+        pocket_logo_pattern = LocalWeb.POCKET_LOGO
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
-        toolbar_bookmark_pattern = Pattern('toolbar_bookmark_icon.png')
-        mozilla_support_logo_pattern = Pattern('mozilla_support_logo.png')
+        most_visited_toolbar_bookmarks_folder_pattern = Pattern('drag_area.png')
+        pocket_bookmark_pattern = Pattern('pocket_toolbar_bookmark.png')
         iris_tab_pattern = Pattern('iris_tab.png')
 
         area_to_click = find(iris_tab_pattern)
@@ -36,10 +37,15 @@ class Test(BaseTest):
                     '\'Bookmarks Toolbar\' option is available in context menu')
 
         click(bookmarks_toolbar_menu_option_pattern)
-        bookmark_available_in_toolbar = exists(toolbar_bookmark_pattern, DEFAULT_UI_DELAY)
-        assert_true(self, bookmark_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
+        bookmarks_folder_available_in_toolbar = exists(most_visited_toolbar_bookmarks_folder_pattern, DEFAULT_UI_DELAY)
+        assert_true(self, bookmarks_folder_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
-        drag_drop(toolbar_bookmark_pattern, area_to_click)
+        click(most_visited_toolbar_bookmarks_folder_pattern)
+        bookmark_available_in_folder = exists(pocket_bookmark_pattern, DEFAULT_UI_DELAY)
+        assert_true(self, bookmark_available_in_folder,
+                    '\'Pocket\' bookmark is displayed in \'Most visited\' bookmarks folder in toolbar')
+
+        drag_drop(pocket_bookmark_pattern, area_to_click)
         select_tab(2)
-        bookmarked_website_loaded = exists(mozilla_support_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        bookmarked_website_loaded = exists(pocket_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmarked_website_loaded, 'The selected website is correctly opened.')
