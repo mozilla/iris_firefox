@@ -39,6 +39,7 @@ class Test(BaseTest):
                             self.profile_path,
                             LocalWeb.FIREFOX_TEST_SITE,
                             image=LocalWeb.FIREFOX_LOGO)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
 
             navigate('about:preferences#search')
             expected = exists(default_search_engine_google_pattern, 10)
@@ -104,6 +105,7 @@ class Test(BaseTest):
                                  'Client search code is correct for searches from search bar, region ' + value + '.')
 
             # Highlight some text and right click it.
+            new_tab()
             navigate(url)
             expected = exists(text_pattern, 10)
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
