@@ -26,7 +26,6 @@ class Test(BaseTest):
         else:
             bookmark_menu_pattern = Pattern('bookmarks_menu.png')
 
-
         bookmarks_sidebar('open')
 
         bookmark_menu_exists = exists(bookmark_menu_pattern, DEFAULT_UI_DELAY)
