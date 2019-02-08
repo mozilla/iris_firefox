@@ -24,21 +24,21 @@ def create_result_object(assert_instance: tuple, start_time, end_time):
     :return: Test_Result object
     """
 
-    if assert_instance.__getitem__(1) == "FAILED":
+    if assert_instance.__getitem__(1) == 'FAILED':
         assert_object = assert_instance.__getitem__(0)
         assert_info = normalize_assert(assert_object)
 
         result = TestResult(assert_info.get('node_name'), assert_instance.__getitem__(1), assert_info.get('message'),
                             assert_info.get('actual'), assert_info.get('expected'),
-                            assert_info.get("error"), assert_info.get("line"), end_time - start_time)
-    elif assert_instance.__getitem__(1) == "PASSED":
+                            assert_info.get('error'), assert_info.get('line'), end_time - start_time)
+    elif assert_instance.__getitem__(1) == 'PASSED':
 
         test_item = assert_instance.__getitem__(0).__dict__
 
         result = TestResult(test_item.get('fspath'), assert_instance.__getitem__(1), None,
                             None, None,
                             None, None, end_time - start_time)
-    elif assert_instance.__getitem__(1) == "SKIPPED":
+    elif assert_instance.__getitem__(1) == 'SKIPPED':
         test_item = assert_instance.__getitem__(0).__dict__
 
         result = TestResult(test_item.get('fspath'), assert_instance.__getitem__(1), None,
@@ -55,7 +55,7 @@ def normalize_assert(assert_object):
 
     """
 
-    keys = ['node_name', "line", "error", "message"]
+    keys = ['node_name', 'line', 'error', 'message']
     values = str(assert_object).split(':')
 
     result_map = {k: v for k, v in zip(keys, values)}

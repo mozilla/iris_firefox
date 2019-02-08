@@ -286,6 +286,7 @@ class Target(BaseTarget):
 
     @pytest.hookimpl(tryfirst=True, hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
+        BaseTarget.pytest_runtest_makereport(self, item, call)
 
         outcome = yield
         report = outcome.get_result()
@@ -300,8 +301,7 @@ class Target(BaseTarget):
 
             self.test_run_object_list.append(test_object_result)
 
-
-        # item.session.results[item] = report
+            # item.session.results[item] = report
 
     def pytest_sessionfinish(self, session, exitstatus):
         """ called after whole test run finished, right before returning the exit status to the system.

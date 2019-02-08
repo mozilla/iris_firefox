@@ -5,12 +5,12 @@
 import pytest
 
 from src.core.util.arg_parser import parse_args
-from targets.test_assert import create_result_object
+from src.core.util.test_assert import create_result_object
 
 
 class BaseTarget(object):
 
-    runned_test_collection = []
+    completed_tests = []
 
     def __init__(self):
         self.target_name = 'Default target'
@@ -87,7 +87,7 @@ class BaseTarget(object):
 
             test_result = create_result_object(assert_object, call.start, call.stop)
 
-            self.runned_test_collection.append(test_result)
+            self.completed_tests.append(test_result)
 
 
         elif call.when == "call" and call.excinfo is None:
@@ -96,7 +96,7 @@ class BaseTarget(object):
 
             test_result = create_result_object(test_instance, call.start, call.stop)
 
-            self.runned_test_collection.append(test_result)
+            self.completed_tests.append(test_result)
 
 
         elif call.when == "call" and item._skipped_by_mark == True:
@@ -105,9 +105,9 @@ class BaseTarget(object):
 
             test_result = create_result_object(test_instance, call.start, call.stop)
 
-            self.runned_test_collection.append(test_result)
+            self.completed_tests.append(test_result)
 
-        # print("test collection:", self.runned_test_collection)
+        #print("test collection:", self.completed_tests)
 
 
 def reason_for_failure(report):
