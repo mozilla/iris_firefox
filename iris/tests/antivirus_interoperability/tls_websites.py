@@ -41,9 +41,11 @@ class Test(BaseTest):
         assert_true(self, facebook_logo_displayed, 'Facebook page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        time.sleep(DEFAULT_UI_DELAY)
+        fb_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        assert_true(self, fb_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
+        fb_more_info_button_exists = exists(more_information_button_pattern)
+        assert_true(self, fb_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
 
         facebook_page_info_opened = exists(page_info_window_pattern)
@@ -71,9 +73,11 @@ class Test(BaseTest):
         assert_true(self, cloudflare_logo_displayed, 'Cloudflare page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        time.sleep(DEFAULT_UI_DELAY)
+        cloudflare_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        assert_true(self, cloudflare_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
+        cloudflare_more_info_button_exists = exists(more_information_button_pattern)
+        assert_true(self, cloudflare_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
 
         cloudflare_page_info_opened = exists(page_info_window_pattern)
@@ -100,9 +104,11 @@ class Test(BaseTest):
         assert_true(self, theregister_logo_displayed, 'The Register page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        time.sleep(DEFAULT_UI_DELAY)
+        theregister_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        assert_true(self, theregister_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
+        theregister_more_info_button_exists = exists(more_information_button_pattern)
+        assert_true(self, theregister_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
 
         the_register_logo_displayed_page_info_opened = exists(page_info_window_pattern)
@@ -129,9 +135,11 @@ class Test(BaseTest):
         assert_true(self, cdn77_logo_displayed, 'CDN77 page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        time.sleep(DEFAULT_UI_DELAY)
+        cdn77_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        assert_true(self, cdn77_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
+        cdn77_more_info_button_exists = exists(more_information_button_pattern)
+        assert_true(self, cdn77_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
 
         cdn77_logo_displayed_page_info_opened = exists(page_info_window_pattern)
