@@ -55,3 +55,5 @@ class Test(BaseTest):
 
         bookmark_dropped = exists(bookmark_after_drag_and_drop_pattern)
         assert_true(self, bookmark_dropped, 'The order of files is changed successfully.')
+
+        restore_firefox_focus()
