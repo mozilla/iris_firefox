@@ -42,6 +42,8 @@ class Test(BaseTest):
 
         close_content_blocking_pop_up()
 
+        restore_firefox_focus()
+
         digicert_site_opened = exists(digicert_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, digicert_site_opened, 'DigiCert site is successfully opened')
 
