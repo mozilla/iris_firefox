@@ -5,9 +5,12 @@
 import pytest
 
 from src.core.util.arg_parser import parse_args
+from targets.test_assert import create_result_object
 
 
 class BaseTarget(object):
+
+    runned_test_collection = []
 
     def __init__(self):
         self.target_name = 'Default target'
@@ -51,7 +54,7 @@ class BaseTarget(object):
         pass
 
     @pytest.fixture
-    def option(self,pytestconfig):
+    def option(self, pytestconfig):
         """
         fixture for ovewriting values in pytest.ini file
 
@@ -68,7 +71,8 @@ class BaseTarget(object):
         return Options()
 
     @pytest.hookimpl(tryfirst=True)
-    def pytest_runtest_makereport(self, item, call,):
+    def pytest_runtest_makereport(self, item, call):
+
         """ return a :py:class:`_pytest.runner.TestReport` object
             for the given :py:class:`pytest.Item <_pytest.main.Item>` and
             :py:class:`_pytest.runner.CallInfo`.
@@ -77,17 +81,34 @@ class BaseTarget(object):
             """
 
         if call.when == "call" and call.excinfo is not None:
-            outcome = "Failed"
-            assert_info = call.excinfo
-            # print ('Assertion that fails is :',assert_info)
 
-            object=(item.instance,assert_info)
+            outcome = "FAILED"
+            assert_object = (call.excinfo, outcome)
 
-            self.failed_tests.append(object)
+            test_result = create_result_object(assert_object, call.start, call.stop)
 
-        elif call.when == "call" and call.excinfo is  None:
-            outcome='Passed'
-            pass
+            self.runned_test_collection.append(test_result)
+
+
+        elif call.when == "call" and call.excinfo is None:
+            outcome = 'PASSED'
+            test_instance = (item, outcome)
+
+            test_result = create_result_object(test_instance, call.start, call.stop)
+
+            self.runned_test_collection.append(test_result)
+
+
+        elif call.when == "call" and item._skipped_by_mark == True:
+            outcome = 'SKIPPED'
+            test_instance = (item, outcome)
+
+            test_result = create_result_object(test_instance, call.start, call.stop)
+
+            self.runned_test_collection.append(test_result)
+
+        # print("test collection:", self.runned_test_collection)
+
 
 def reason_for_failure(report):
     if report.outcome == 'passed':
