@@ -28,23 +28,23 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        bookmark_menu_exists = exists(bookmark_menu_pattern, DEFAULT_UI_DELAY)
+        bookmark_menu_exists = exists(bookmark_menu_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_menu_exists, 'Bookmarks Sidebar is correctly displayed')
         click(bookmark_menu_pattern)
 
-        mozilla_bookmark_exists = exists(mozilla_bookmark_pattern, DEFAULT_UI_DELAY)
+        mozilla_bookmark_exists = exists(mozilla_bookmark_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_bookmark_exists, 'Mozilla bookmarks button exists')
         click(mozilla_bookmark_pattern)
 
-        bookmark_site_exists = exists(bookmark_site_pattern, DEFAULT_UI_DELAY)
+        bookmark_site_exists = exists(bookmark_site_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_site_exists, 'Website bookmark exists')
         right_click(bookmark_site_pattern)
 
-        new_separator_exists = exists(new_separator_pattern, DEFAULT_UI_DELAY)
+        new_separator_exists = exists(new_separator_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_separator_exists, 'Separator button exists')
         click(new_separator_pattern)
 
-        separator_line_exists = exists(separator_line_pattern, DEFAULT_UI_DELAY)
+        separator_line_exists = exists(separator_line_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, separator_line_exists, 'A new separator is displayed above the selected bookmark.')
 
 
