@@ -21,6 +21,7 @@ class Test(BaseTest):
         return
 
     def run(self):
+
         pocket_logo_pattern = LocalWeb.POCKET_LOGO
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         most_visited_toolbar_bookmarks_folder_pattern = Pattern('drag_area.png')
