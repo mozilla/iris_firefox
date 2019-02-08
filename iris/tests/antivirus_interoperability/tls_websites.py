@@ -55,6 +55,9 @@ class Test(BaseTest):
 
         close_window_control('auxiliary')
 
+        facebook_login_button_exists = exists(facebook_login_button_pattern)
+        assert_true(self, facebook_login_button_exists, 'Facebook login button exists')
+
         click(facebook_login_button_pattern)
 
         facebook_create_new_account_button_exists = exists(facebook_create_new_account_button_pattern,
@@ -82,6 +85,9 @@ class Test(BaseTest):
 
         close_window_control('auxiliary')
 
+        cloudflare_support_button_exists = exists(cloudflare_support_button_pattern)
+        assert_true(self, cloudflare_support_button_exists, 'Cloudflare support login button exists')
+
         click(cloudflare_support_button_pattern)
 
         cloudflare_support_page_displayed = exists(cloudflare_support_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
@@ -108,6 +114,9 @@ class Test(BaseTest):
 
         close_window_control('auxiliary')
 
+        the_register_log_in_button_exists = exists(the_regiter_log_in_button_pattern)
+        assert_true(self, the_register_log_in_button_exists, 'The Register Log In button exists')
+
         click(the_regiter_log_in_button_pattern)
 
         the_register_log_in_page_displayed = exists(the_register_log_in_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
@@ -133,6 +142,9 @@ class Test(BaseTest):
                                                             'connection is encrypted via TLS 1.3')
 
         close_window_control('auxiliary')
+
+        cdn77_support_button_exists = exists(cdn77_support_button_pattern)
+        assert_true(self, cdn77_support_button_exists, 'The Register Log In button exists')
 
         click(cdn77_support_button_pattern)
 
