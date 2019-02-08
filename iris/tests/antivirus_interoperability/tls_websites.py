@@ -30,7 +30,7 @@ class Test(BaseTest):
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
         the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png')
         the_register_log_in_page_pattern = Pattern('the_register_log_in_page.png')
-        cdn77_support_button_pattern = Pattern('cdn77_support_button.png')
+        cdn77_support_button_pattern = Pattern('cdn77_support_button.png').similar(.6)
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
 
         navigate('https://www.facebook.com/')
