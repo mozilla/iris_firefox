@@ -41,6 +41,10 @@ class Test(BaseTest):
         close_content_blocking_pop_up()
 
         history_sidebar()
+
+        history_sidebar_opened = exists(history_today_pattern)
+        assert_true(self, history_sidebar_opened, 'History sidebar opened')
+
         if Settings.is_mac():
             click(history_today_pattern, 0, history_region)
         else:
@@ -52,12 +56,17 @@ class Test(BaseTest):
         location_for_click = find(NavBar.HOME_BUTTON).right(100)
 
         right_click(location_for_click)
-        time.sleep(DEFAULT_UI_DELAY)
+        toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
+        assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
         click(toolbar_bookmarks_toolbar_pattern)
 
         if Settings.is_linux() or Settings.is_mac():
             bookmark_page()
+            first_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
+            assert_true(self, first_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
             click(folder_other_bookmarks, 0)
+            first_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
+            assert_true(self, first_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
             click(folder_toolbar_menu, 0)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
@@ -65,7 +74,11 @@ class Test(BaseTest):
             previous_tab()
         
             bookmark_page()
+            second_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
+            assert_true(self, second_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
             click(folder_other_bookmarks, 0)
+            second_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
+            assert_true(self, second_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
             click(folder_toolbar_menu, 0)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
