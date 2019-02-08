@@ -17,13 +17,15 @@ class Test(BaseTest):
 
     def run(self):
         show_all_bookmarks_button_pattern = Pattern('show_all_bookmarks_button.png')  # Should be added to library_menu
+        ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
+        firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
 
         open_library()
 
         library_opened_vis_shortcut = exists(Library.TITLE)
         assert_true(self, library_opened_vis_shortcut, 'Library opened via CMD/CTRL+Shift+B')
 
-        other_bookmarks_is_default_shortcut = exists(Library.OTHER_BOOKMARKS_NAME)
+        other_bookmarks_is_default_shortcut = exists(Library.OTHER_BOOKMARKS)
         assert_true(self, other_bookmarks_is_default_shortcut, 'Other Bookmarks is set as default')
 
         close_window_control('auxiliary')
@@ -37,22 +39,26 @@ class Test(BaseTest):
         library_opened_from_menu = exists(Library.TITLE)
         assert_true(self, library_opened_from_menu, 'Library opened from View History, saved bookmarks and more')
 
-        other_bookmarks_is_default_menu = exists(Library.OTHER_BOOKMARKS_NAME)
+        other_bookmarks_is_default_menu = exists(Library.OTHER_BOOKMARKS)
         assert_true(self, other_bookmarks_is_default_menu, 'Other Bookmarks is set as default')
 
         close_window_control('auxiliary')
 
-        location_to_hover = Location(0, 0)
+        location_to_hover = Location(0,100)
 
         if Settings.is_linux() or Settings.is_mac():
-            hover(location_to_hover, 5)
-            click()
-            click()
+            hover(location_to_hover)
+            key_down(Key.ALT)
+            time.sleep(0.5)
+            key_up(Key.ALT)
+            click(firefox_menu_bookmarks_pattern)
+            time.sleep(DEFAULT_UI_DELAY)
+            click(ff_menu_show_all_bookmarks_pattern)
 
             library_opened_from_ff_menu = exists(Library.TITLE)
             assert_true(self, library_opened_from_ff_menu, 'Library opened from View History, saved bookmarks and more')
 
-            other_bookmarks_is_default_menu = exists(Library.OTHER_BOOKMARKS_NAME)
+            other_bookmarks_is_default_menu = exists(Library.OTHER_BOOKMARKS)
             assert_true(self, other_bookmarks_is_default_menu, 'Other Bookmarks is set as default')
 
             close_window_control('auxiliary')
