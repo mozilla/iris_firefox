@@ -63,5 +63,5 @@ class Test(BaseTest):
         click(bookmarks_folder_pattern)
 
         bookmark_in_folder = exists(getting_started_bookmark_pattern)
-        assert_true(self, bookmark_in_folder, '')
+        assert_true(self, bookmark_in_folder, 'Bookmark placed in folder now')
         restore_firefox_focus()
