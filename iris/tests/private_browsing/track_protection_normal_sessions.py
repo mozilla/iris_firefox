@@ -10,62 +10,47 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Tracking Protection can be activated on Normal sessions as well ' \
-                    '[The Tracking Protection Shield does not appear on step 4]'
+        self.meta = 'Tracking Protection can be activated on Normal sessions as well'
         self.test_case_id = '103329'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
-
-    def setup(self):
-        """Test case setup
-
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
-        """
-        BaseTest.setup(self)
-        self.profile = Profile.BRAND_NEW
-        return
 
     def run(self):
-        do_not_track_always_selected_pattern = Pattern('do_not_track_option_always_selected_radio.png')
-        do_not_track_always_unselected_pattern = Pattern('do_not_track_option_always_unselected_radio.png')
+        preferences_privacy_find_field_pattern = Pattern('preferences_privacy_find_field.png')
+        send_track_data_pattern = Pattern('send_websites_do_not_track_data_option.png')
+        do_not_track_unselected_pattern = Pattern('do_not_track_option_always_unselected_radio.png')
+        do_not_track_selected_pattern = Pattern('do_not_track_option_always_selected_radio.png')
+        tracker_website_content_pattern = Pattern('tracker_website_content.png')
+        do_not_track_signal_displayed_pattern = Pattern('do_not_track_signal_displayed.png')
 
-        privacy_and_security_tab_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
-        privacy_prefs_page_pattern = Pattern('about_preferences_privacy_address.png')
-        cnn_site_logo_pattern = Pattern('cnn_logo.png')
-
-        # Access the about:preferences#privacy page
         navigate('about:preferences#privacy')
-        privacy_prefs_page_displayed = exists(privacy_prefs_page_pattern, 20)
-        assert_true(self, privacy_prefs_page_displayed, "The privacy preferences page is successfully displayed")
+        privacy_preferences_page_displayed = exists(preferences_privacy_find_field_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, privacy_preferences_page_displayed, 'The privacy preferences page is successfully displayed')
 
-        # Enable the "Always" option from the Tracking Protection section
-        do_not_track_always_selected_displayed = exists(do_not_track_always_selected_pattern, 3)
-        if do_not_track_always_selected_displayed:
-            click(do_not_track_always_unselected_pattern)
-        else:
-            raise FindError('Can not find "Always" option from the Send websites a Do Not Track signal')
+        click(preferences_privacy_find_field_pattern)
+        paste('Send websites a')
+        send_track_data_found = scroll_until_pattern_found(send_track_data_pattern, type, (Key.DOWN,))
+        assert_true(self, send_track_data_found, 'Send websites option found')
+        send_track_data_pattern_width, send_track_data_pattern_height = send_track_data_pattern.get_size()
 
-        if not Settings.is_mac():
-            privacy_and_security_tab_displayed = exists(privacy_and_security_tab_pattern, 3)
-            if privacy_and_security_tab_displayed:
-                click(privacy_and_security_tab_pattern)
-            else:
-                raise FindError('Can not find "Privacy and Security" tab')
+        send_websites_option_position = find(send_track_data_pattern)
+        send_websites_option_region = \
+            Region(send_websites_option_position.x-100, send_websites_option_position.y,
+                   width=send_track_data_pattern_width+100, height=send_track_data_pattern_height+100)
+        send_websites_option_unchecked = exists(do_not_track_unselected_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                                in_region=send_websites_option_region)
+        assert_true(self, send_websites_option_unchecked, 'Do not track "Always" option is displayed unchecked')
 
-        always_block_trackers_selected_displayed = \
-            exists(AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_SELECTED, 3)
-        assert_true(self, always_block_trackers_selected_displayed,
-                    '"Always" option from the Tracking Protection section is enabled')
+        click(do_not_track_unselected_pattern, in_region=send_websites_option_region)
+        do_not_track_selected = exists(do_not_track_selected_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                       in_region=send_websites_option_region)
+        assert_true(self, do_not_track_selected, 'Do not track "Always" option checked')
 
-        # Access the website
         new_tab()
-        navigate('https://edition.cnn.com')
+        navigate('https://itisatrap.org/firefox/its-a-tracker.html')
+        website_loaded = exists(tracker_website_content_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, website_loaded, 'The Website is successfully loaded')
 
-        website_displayed = exists(cnn_site_logo_pattern, 60)
-        assert_true(self, website_displayed, 'The Website is successfully displayed')
-
-        tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern, 10)
-        assert_true(self, tracking_protection_shield_displayed,
-                    'The Tracking Protection shield is displayed near the address bar')
+        do_not_track_signal_displayed = exists(do_not_track_signal_displayed_pattern)
+        assert_true(self, do_not_track_signal_displayed,
+                    'The DNT (Do not track) signal is displayed as correctly sent.')

@@ -10,8 +10,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Bookmarks can be exported to a HTML file.'
-        self.test_case_id = '4153'
-        self.test_suite_id = '75'
+        self.test_case_id = '169272'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):

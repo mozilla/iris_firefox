@@ -10,8 +10,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Cut context menu option works properly.'
-        self.test_case_id = '4152'
-        self.test_suite_id = '75'
+        self.test_case_id = '168936'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):
