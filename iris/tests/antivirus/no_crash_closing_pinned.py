@@ -31,12 +31,9 @@ class Test(BaseTest):
         assert_true(self, firefox_tab_opened, 'Second webpage is opened')
         right_click(firefox_tab_pattern)
 
-        unpinned_dropdown_opened_second_time = exists(pin_tab_pattern)
-        assert_true(self, unpinned_dropdown_opened_second_time, '')
-        try:
-            click(pin_tab_pattern)
-        except FindError:
-            raise FindError('No "Pin Tab" item found')
+        unpinned_dropdown_opened = exists(pin_tab_pattern)
+        assert_true(self, unpinned_dropdown_opened, 'Dropdown for common tab opened')
+        click(pin_tab_pattern)
 
         second_tab_pinned = exists(firefox_pinned_tab_pattern)
         assert_true(self, second_tab_pinned, 'Second tab is pinned')
