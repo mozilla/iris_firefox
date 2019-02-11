@@ -30,6 +30,9 @@ class Test(BaseTest):
         firefox_tab_opened = exists(firefox_tab_pattern)
         assert_true(self, firefox_tab_opened, 'Second webpage is opened')
         right_click(firefox_tab_pattern)
+
+        unpinned_dropdown_opened_second_time = exists(pin_tab_pattern)
+        assert_true(self, unpinned_dropdown_opened_second_time, '')
         try:
             click(pin_tab_pattern)
         except FindError:
@@ -44,10 +47,7 @@ class Test(BaseTest):
         focus_tab_opened = exists(focus_tab_pattern)
         assert_true(self, focus_tab_opened, 'Third tab is opened')
         right_click(focus_tab_pattern)
-        try:
-            click(pin_tab_pattern)
-        except FindError:
-            raise FindError('No "Pin Tab" item found')
+        click(pin_tab_pattern)
 
         focus_tab_pinned = exists(focus_pinned_tab_pattern)
         assert_true(self, focus_tab_pinned, 'Third tab is pinned')
@@ -59,9 +59,9 @@ class Test(BaseTest):
         assert_true(self, mozilla_webpage_loaded, 'First webpage is loaded.')
         right_click(mozilla_tab_pattern)
 
-        unpinned_dropdown_opened = exists(pin_tab_pattern)
+        unpinned_dropdown_opened_second_time = exists(pin_tab_pattern)
 
-        assert_true(self, unpinned_dropdown_opened, 'Right-click menu for unpinned displayed')
+        assert_true(self, unpinned_dropdown_opened_second_time, 'Right-click menu for unpinned displayed')
         click(pin_tab_pattern)
 
         first_tab_pinned = exists(mozilla_pinned_tab_pattern)
