@@ -45,7 +45,7 @@ class Test(BaseTest):
         new_tab()
 
         navigate('https://edition.cnn.com/')
-        cnn_logo_exists = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        cnn_logo_exists = exists(LocalWeb.CNN_LOGO, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_logo_exists, 'CNN is properly loaded in new tab, no display issues.')
 
 
