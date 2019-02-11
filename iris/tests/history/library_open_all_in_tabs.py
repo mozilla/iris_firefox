@@ -78,9 +78,8 @@ class Test(BaseTest):
         if close_auxiliary_window:
             library_toolbar_icon = Pattern('library_icon.png')
             firefox_toolbar_icon = Pattern('firefox_icon.png')
-            exists(firefox_toolbar_icon, 10)
             click(firefox_toolbar_icon)
-            exists(library_toolbar_icon, 10)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
             click(library_toolbar_icon)
 
             click_window_control('close')
