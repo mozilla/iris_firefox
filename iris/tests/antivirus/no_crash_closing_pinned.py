@@ -37,8 +37,8 @@ class Test(BaseTest):
 
         second_tab_pinned = exists(firefox_pinned_tab_pattern)
         assert_true(self, second_tab_pinned, 'Second tab is pinned')
-        new_tab()
 
+        new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
         focus_tab_opened = exists(focus_tab_pattern)
@@ -64,6 +64,7 @@ class Test(BaseTest):
         first_tab_pinned = exists(mozilla_pinned_tab_pattern)
         assert_true(self, first_tab_pinned, 'First tab is pinned')
         right_click(mozilla_pinned_tab_pattern)
+
         pinned_dropdown_opened = exists(close_tab_pattern)
         assert_true(self, pinned_dropdown_opened, 'Right-click menu for pinned displayed')
         click(close_tab_pattern)
