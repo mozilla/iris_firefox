@@ -50,7 +50,7 @@ class Test(BaseTest):
         else:
             click(Library.HISTORY_TODAY, 0, history_region)
 
-        history_updated = exists(history_updated_pattern, None, history_region)
+        history_updated = exists(history_updated_pattern)
         assert_true(self, history_updated, 'History updated')
 
         location_for_click = find(NavBar.HOME_BUTTON).right(100)
