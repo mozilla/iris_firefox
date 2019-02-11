@@ -65,6 +65,8 @@ class Test(BaseTest):
 
         bookmarks_sidebar('close')
 
+        time.sleep(DEFAULT_UI_DELAY)
+
         bookmarks_sidebar('open')
 
         paste('iris')
