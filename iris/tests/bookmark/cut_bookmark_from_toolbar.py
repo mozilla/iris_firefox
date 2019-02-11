@@ -14,14 +14,14 @@ class Test(BaseTest):
         self.test_case_id = '164371'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
-        self.exclude = [Platform.LINUX]
+        # self.exclude = [Platform.LINUX]
 
     def setup(self):
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        bookmark_cut_pattern = Pattern('bookmark_cut.png').similar(0.95)
+        bookmark_cut_pattern = Pattern('bookmark_cut.png').similar(0.9)
         open_bookmark_toolbar_pattern = Pattern('open_bookmark_toolbar.png')
         most_visited_pattern = Pattern('drag_area.png')
         new_folder_pattern = Pattern('new_folder.png')
