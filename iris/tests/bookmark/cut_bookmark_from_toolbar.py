@@ -41,7 +41,7 @@ class Test(BaseTest):
 
         right_click(most_visited_pattern)
         click(new_folder_pattern)
-        time.sleep(0.5)
+        time.sleep(0.5)  # Required for prompt window activating after rendering
         paste('folder')
         type(Key.ENTER)
         right_click(getting_started_bookmark_pattern)
