@@ -19,8 +19,6 @@ class Test(BaseTest):
         history_updated_pattern = Pattern('history_updated.png')
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
-        folder_other_bookmarks = Pattern('other_bookmarks.png')
-        folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
         history_today_pattern = Pattern('history_today.png')
         restart_firefox_button_pattern = Pattern('restart_firefox_button.png')
         history_region = Region(0, 0, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 3)
@@ -41,7 +39,7 @@ class Test(BaseTest):
 
         history_sidebar()
 
-        history_sidebar_opened = exists(History.CLearRecentHistory.TimeRange.TODAY)
+        history_sidebar_opened = exists(Library.HISTORY_TODAY)
         assert_true(self, history_sidebar_opened, 'History sidebar opened')
 
         if Settings.is_mac():
@@ -59,38 +57,17 @@ class Test(BaseTest):
         assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
         click(toolbar_bookmarks_toolbar_pattern)
 
-        if Settings.is_linux() or Settings.is_mac():
-            bookmark_page()
-            first_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
-            assert_true(self, first_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
-            click(folder_other_bookmarks)
-            first_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
-            assert_true(self, first_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
-            click(folder_toolbar_menu)
-            click(Bookmarks.StarDialog.DONE)
+        bookmark_page()
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION, 0)
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+        click(Bookmarks.StarDialog.DONE)
 
-            previous_tab()
-        
-            bookmark_page()
-            second_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
-            assert_true(self, second_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
-            click(folder_other_bookmarks)
-            second_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
-            assert_true(self, second_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
-            click(folder_toolbar_menu)
-            click(Bookmarks.StarDialog.DONE)
-        else:
-            bookmark_page()
-            click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
-            click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
-            click(Bookmarks.StarDialog.DONE)
+        previous_tab()
 
-            previous_tab()
-
-            bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
-            click(Bookmarks.StarDialog.DONE)
+        bookmark_page()
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION, 0)
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+        click(Bookmarks.StarDialog.DONE)
 
         bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
