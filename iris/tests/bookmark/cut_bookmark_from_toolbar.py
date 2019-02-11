@@ -14,14 +14,14 @@ class Test(BaseTest):
         self.test_case_id = '164371'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
-        self.exclude = [Platform.MAC, Platform.LINUX]
+        self.exclude = [Platform.LINUX]
 
     def setup(self):
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        bookmark_cut_pattern = Pattern('bookmark_cut.png').similar(0.98)
+        bookmark_cut_pattern = Pattern('bookmark_cut.png').similar(0.95)
         open_bookmark_toolbar_pattern = Pattern('open_bookmark_toolbar.png')
         most_visited_pattern = Pattern('drag_area.png')
         new_folder_pattern = Pattern('new_folder.png')
@@ -29,6 +29,7 @@ class Test(BaseTest):
         cut_item_pattern = Pattern('cut_bookmark.png')
         paste_item_pattern = Pattern('paste_bookmark.png')
         getting_started_bookmark_pattern = Pattern('getting_started_bookmark.png')
+        getting_started_bookmark_in_folder_pattern = Pattern('getting_started_bookmark_folder.png')
 
         navbar_offset, _ = NavBar.HOME_BUTTON.get_size()
         navbar_offset *= 1.5
@@ -40,6 +41,7 @@ class Test(BaseTest):
 
         right_click(most_visited_pattern)
         click(new_folder_pattern)
+        time.sleep(0.5)
         paste('folder')
         type(Key.ENTER)
         right_click(getting_started_bookmark_pattern)
@@ -62,6 +64,6 @@ class Test(BaseTest):
 
         click(bookmarks_folder_pattern)
 
-        bookmark_in_folder = exists(getting_started_bookmark_pattern)
+        bookmark_in_folder = exists(getting_started_bookmark_in_folder_pattern)
         assert_true(self, bookmark_in_folder, 'Bookmark placed in folder now')
         restore_firefox_focus()
