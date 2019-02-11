@@ -58,15 +58,23 @@ class Test(BaseTest):
 
         if Settings.is_linux() or Settings.is_mac():
             bookmark_page()
+            first_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
+            assert_true(self, first_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
             click(folder_other_bookmarks, 0)
+            first_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
+            assert_true(self, first_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
             click(folder_toolbar_menu, 0)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
-        
+
             previous_tab()
-        
+
             bookmark_page()
+            second_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
+            assert_true(self, second_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
             click(folder_other_bookmarks, 0)
+            second_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
+            assert_true(self, second_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
             click(folder_toolbar_menu, 0)
             time.sleep(DEFAULT_UI_DELAY)
             type(Key.ENTER)
