@@ -20,7 +20,7 @@ mozinstall = "==2.0.0"
 mozdownload = {git = 'https://github.com/AndreiH/mozdownload.git',ref = 'mozdownload_python3'}
 mozversion = "==2.1.0"
 mozinfo = "==1.0.0"
-mozlog = "4.0"
+mozlog = "==4.0"
 #mozrunner = "==7.2.0"   # not supports Python 3 and install fails
 mss = "==4.0.1"
 pytest = "*"
