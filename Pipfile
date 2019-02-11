@@ -8,7 +8,7 @@ iris = {path = ".",editable = true}
 pyautogui = "==0.9.41"
 coloredlogs = "==10.0"
 python-dateutil = "==2.8.0"
-opencv-python = "==4.0.0.21"
+opencv-python = "==3.4.1.15"  #version needed for Windows 7
 pytesseract = "==0.2.6"
 numpy = "==1.16.1"
 image = "==1.5.27"
