@@ -19,6 +19,8 @@ class Test(BaseTest):
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         restart_firefox_button_pattern = Pattern('restart_firefox_button.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
+        youtube_logo_pattern = Pattern('youtube_logo.png')
+        twitter_logo_pattern = Pattern('twitter_favicon.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -36,12 +38,18 @@ class Test(BaseTest):
 
         history_sidebar()
 
+        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        assert_true(self, history_sidebar_opened, 'History sidebar opened')
+
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
         history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
         history_sidebar_region = Region(history_sidebar_location.x,
                                         history_sidebar_location.y,
                                         history_width,
                                         SCREEN_HEIGHT/2)
+
+        today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY)
+        assert_true(self, today_timeline_exists, 'The Today timeline displayed')
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
@@ -63,15 +71,15 @@ class Test(BaseTest):
         bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height*3)
 
         bookmark_page()
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION, 0)
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
         click(Bookmarks.StarDialog.DONE)
 
         previous_tab()
 
         bookmark_page()
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION, 0)
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
         click(Bookmarks.StarDialog.DONE)
 
         cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
@@ -79,6 +87,20 @@ class Test(BaseTest):
 
         wiki_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
+
+        new_tab()
+
+        navigate('https://www.youtube.com/')
+
+        youtube_opened = exists(youtube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, youtube_opened, 'The Youtube site successfully opened')
+
+        new_tab()
+
+        navigate('https://twitter.com/')
+
+        twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
         restart_firefox(self,
                         self.browser.path,
@@ -99,7 +121,7 @@ class Test(BaseTest):
 
         click(restart_firefox_button_pattern)
 
-        firefox_is_restarted = exists(NavBar.HOME_BUTTON)
+        firefox_is_restarted = exists(NavBar.HOME_BUTTON, 180)
         assert_true(self, firefox_is_restarted, 'Firefox is successfully restarted')
 
         restore_firefox_focus()
@@ -116,12 +138,8 @@ class Test(BaseTest):
         history_restored_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_restored_wiki, 'The Wikipedia site is added to history')
 
+        history_restored_youtube = exists(youtube_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_restored_youtube, 'The Youtube site is added to history')
 
-
-
-
-
-
-
-
-
+        history_restored_twitter = exists(twitter_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_restored_twitter, 'The Twitter site is added to history')
