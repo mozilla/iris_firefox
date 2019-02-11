@@ -25,10 +25,13 @@ class Test(BaseTest):
     def run(self):
         wikipedia_sidebar_logo_pattern = Pattern('wiki_logo.png')
         open_option_pattern = Pattern('open_option.png')
-        new_tab_is_opened_pattern = Pattern('new_tab_opened.png')
+        new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.95)
         wikipedia_main_page_content_pattern = Pattern('wikipedia_main_page.png')
-        other_bookmarks_pattern = Library.OTHER_BOOKMARKS
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
+        if Settings.is_mac():
+            other_bookmarks_pattern = Pattern('other_bookmarks.png')
+        else:
+            other_bookmarks_pattern = Library.OTHER_BOOKMARKS
 
         bookmarks_sidebar('open')
 
