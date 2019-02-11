@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        cnn_page_downloaded_pattern = Pattern('cnn_page_downloaded.png')
         history_updated_pattern = Pattern('history_updated.png')
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
@@ -35,20 +34,20 @@ class Test(BaseTest):
 
         navigate('https://edition.cnn.com')
 
-        cnn_page_opened = exists(cnn_page_downloaded_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cnn_page_opened = exists(LocalWeb.CNN_LOGO, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_page_opened, 'The CNN site successfully opened')
 
         close_content_blocking_pop_up()
 
         history_sidebar()
 
-        history_sidebar_opened = exists(history_today_pattern)
+        history_sidebar_opened = exists(History.CLearRecentHistory.TimeRange.TODAY)
         assert_true(self, history_sidebar_opened, 'History sidebar opened')
 
         if Settings.is_mac():
-            click(history_today_pattern, 0, history_region)
+            click(history_today_pattern, in_region=history_region)
         else:
-            click(Library.HISTORY_TODAY, 0, history_region)
+            click(Library.HISTORY_TODAY, in_region=history_region)
 
         history_updated = exists(history_updated_pattern)
         assert_true(self, history_updated, 'History updated')
@@ -64,38 +63,34 @@ class Test(BaseTest):
             bookmark_page()
             first_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
             assert_true(self, first_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
-            click(folder_other_bookmarks, 0)
+            click(folder_other_bookmarks)
             first_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
             assert_true(self, first_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
-            click(folder_toolbar_menu, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
-        
+            click(folder_toolbar_menu)
+            click(Bookmarks.StarDialog.DONE)
+
             previous_tab()
         
             bookmark_page()
             second_tab_folder_other_bookmarks_exists = exists(folder_other_bookmarks)
             assert_true(self, second_tab_folder_other_bookmarks_exists, 'Other Bookmarks Folder button displayed')
-            click(folder_other_bookmarks, 0)
+            click(folder_other_bookmarks)
             second_tab_folder_toolbar_menu_exists = exists(folder_toolbar_menu)
             assert_true(self, second_tab_folder_toolbar_menu_exists, 'Toolbar Bookmarks Folder button displayed')
-            click(folder_toolbar_menu, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
+            click(folder_toolbar_menu)
+            click(Bookmarks.StarDialog.DONE)
         else:
             bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS, 0)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
+            click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
+            click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+            click(Bookmarks.StarDialog.DONE)
 
             previous_tab()
 
             bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS, 0)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
+            click(SidebarBookmarks.OTHER_BOOKMARKS)
+            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU)
+            click(Bookmarks.StarDialog.DONE)
 
         bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
