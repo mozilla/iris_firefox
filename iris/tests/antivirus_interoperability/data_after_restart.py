@@ -21,6 +21,8 @@ class Test(BaseTest):
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
         twitter_logo_pattern = Pattern('twitter_favicon.png')
+        cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
+        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -138,13 +140,13 @@ class Test(BaseTest):
         history_restored_twitter = exists(twitter_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_restored_twitter, 'The Twitter site is added to history')
 
-        tab_restored_cnn = exists(LocalWeb.CNN_LOGO, in_region=tabs_region)
+        tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_cnn, 'The CNN tab is restored')
 
         tab_restored_wiki = exists(wikipedia_logo_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_wiki, 'The Wikipedia tab is restored')
 
-        tab_restored_youtube = exists(youtube_logo_pattern, in_region=tabs_region)
+        tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_youtube, 'The Youtube tab is restored')
 
         tab_restored_twitter = exists(twitter_logo_pattern, in_region=tabs_region)
