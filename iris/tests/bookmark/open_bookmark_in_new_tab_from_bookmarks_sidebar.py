@@ -9,8 +9,8 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a bookmark using \'Open\' option from the contextual menu'
-        self.test_case_id = '168926'
+        self.meta = 'Open a bookmark in a New Tab from Bookmarks Sidebar'
+        self.test_case_id = '168927'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -24,7 +24,7 @@ class Test(BaseTest):
     def run(self):
         wikipedia_sidebar_logo_pattern = Pattern('wiki_logo.png')
         open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
-        new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.95)
+        new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.90)
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         if Settings.is_mac():
             other_bookmarks_pattern = Pattern('other_bookmarks.png')
