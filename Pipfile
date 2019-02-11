@@ -5,28 +5,29 @@ name = "pypi"
 
 [packages]
 iris = {path = ".",editable = true}
-pyautogui = "==0.9.38"
+pyautogui = "==0.9.41"
 coloredlogs = "==10.0"
-python-dateutil = "==2.7.5"
-opencv-python = "==3.4.3.18"
-pytesseract = "==0.2.5"
-numpy = "==1.15.4"
+python-dateutil = "==2.8.0"
+opencv-python = "==4.0.0.21" #"==3.4.3.18"
+pytesseract = "==0.2.6"
+numpy = "==1.16.1"
 image = "==1.5.27"
 pyperclip = "==1.7.0"
-packaging = "==18.0"
+packaging = "==19.0"
 gitpython = "==2.1.11"
 pynput = "==1.4"
-mozinstall = "==1.16.0"
+mozinstall = "==2.0.0"
 mozdownload = {git = 'https://github.com/AndreiH/mozdownload.git',ref = 'mozdownload_python3'}
-mozversion = "==1.5"
+mozversion = "==2.1.0"
 mozinfo = "==1.0.0"
-mozrunner = "==7.2.0"
-mss = "==3.3.1"
+mozlog = "4.0"
+#mozrunner = "==7.2.0"   # not supports Python 3 and install fails
+mss = "==4.0.1"
 pytest = "*"
-# Platform dependencies
-xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 pygithub = "*"
 bugzilla = "*"
+# Platform dependencies
+xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 
 [dev-packages]
 pylint = "*"
