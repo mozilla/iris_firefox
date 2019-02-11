@@ -16,12 +16,9 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        history_updated_pattern = Pattern('history_updated.png')
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
-        bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
-        history_today_pattern = Pattern('history_today.png')
         restart_firefox_button_pattern = Pattern('restart_firefox_button.png')
-        history_region = Region(0, 0, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 3)
+        wikipedia_logo_pattern = Pattern('wiki_logo.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -39,16 +36,20 @@ class Test(BaseTest):
 
         history_sidebar()
 
-        history_sidebar_opened = exists(Library.HISTORY_TODAY)
-        assert_true(self, history_sidebar_opened, 'History sidebar opened')
+        history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
+        history_sidebar_region = Region(history_sidebar_location.x,
+                                        history_sidebar_location.y,
+                                        history_width,
+                                        SCREEN_HEIGHT/2)
 
-        if Settings.is_mac():
-            click(history_today_pattern, in_region=history_region)
-        else:
-            click(Library.HISTORY_TODAY, in_region=history_region)
+        click(Sidebar.HistorySidebar.Timeline.TODAY)
 
-        history_updated = exists(history_updated_pattern)
-        assert_true(self, history_updated, 'History updated')
+        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
+        assert_true(self, history_updated_cnn, 'The CNN site is added to history')
+
+        history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_updated_wiki, 'The Wikipedia site is added to history')
 
         location_for_click = find(NavBar.HOME_BUTTON).right(100)
 
@@ -56,6 +57,10 @@ class Test(BaseTest):
         toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
         assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
         click(toolbar_bookmarks_toolbar_pattern)
+
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
+        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height*3)
 
         bookmark_page()
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION, 0)
@@ -69,8 +74,11 @@ class Test(BaseTest):
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
         click(Bookmarks.StarDialog.DONE)
 
-        bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
+        cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, cnn_bookmark_added, 'The CNN bookmark is successfully added')
+
+        wiki_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
         restart_firefox(self,
                         self.browser.path,
@@ -96,11 +104,21 @@ class Test(BaseTest):
 
         restore_firefox_focus()
 
-        all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
+        cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
 
-        history_are_restored = exists(history_updated_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, history_are_restored, 'The history is successfully restored')
+        wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored')
+
+        history_restored_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
+        assert_true(self, history_restored_cnn, 'The CNN site is added to history')
+
+        history_restored_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_restored_wiki, 'The Wikipedia site is added to history')
+
+
+
+
 
 
 
