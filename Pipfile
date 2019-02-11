@@ -5,15 +5,15 @@ name = "pypi"
 
 [packages]
 iris = {path = ".",editable = true}
-pyautogui = "==0.9.38"
+pyautogui = "==0.9.41"
 coloredlogs = "==10.0"
-python-dateutil = "==2.7.5"
-opencv-python = "==3.4.1.15"
-pytesseract = "==0.2.5"
-numpy = "==1.15.4"
+python-dateutil = "==2.8.0"
+opencv-python = "==4.0.0.21"
+pytesseract = "==0.2.6"
+numpy = "==1.16.1"
 image = "==1.5.27"
 pyperclip = "==1.7.0"
-packaging = "==18.0"
+packaging = "==19.0"
 gitpython = "==2.1.11"
 pynput = "==1.4"
 mozinstall = "==1.16.0"
@@ -21,12 +21,13 @@ mozdownload = "==1.25"
 mozversion = "==1.5"
 mozinfo = "==1.0.0"
 mozrunner = "==7.2.0"
-mss = "==3.3.1"
-pep8 = "*"
+mss = "==4.0.1"
 # Platform dependencies
 xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 
 [dev-packages]
+pep8 = "*"
+pylint = "*"
 
 [requires]
 python_version = "2.7"
