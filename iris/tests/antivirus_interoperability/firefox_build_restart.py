@@ -16,15 +16,9 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        web_console_button_pattern = Pattern('browser_console_button.png')
-        web_developer_menu = Pattern('web_developer_menu.png')
         browser_console_opened_pattern = Pattern('browser_console_opened.png')
 
-        click(NavBar.HAMBURGER_MENU)
-        time.sleep(DEFAULT_UI_DELAY)
-        click(web_developer_menu)
-        time.sleep(DEFAULT_UI_DELAY)
-        click(web_console_button_pattern)
+        open_browser_console()
 
         browser_console_opened = exists(browser_console_opened_pattern)
         assert_true(self, browser_console_opened, 'Browser console is opened')
