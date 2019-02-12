@@ -54,7 +54,7 @@ class Test(BaseTest):
             time.sleep(1)
             wikipedia_sidebar_logo_exists = exists(wikipedia_sidebar_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
             assert_false(self, wikipedia_sidebar_logo_exists, 'Open in a New Private Window option exists')
-            type('n')
+            type('p')
 
         wikipedia_main_page_content_exists = exists(wikipedia_main_page_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, wikipedia_main_page_content_exists, 'The page is correctly opened')
