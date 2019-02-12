@@ -21,8 +21,16 @@ class Test(BaseTest):
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
         twitter_logo_pattern = Pattern('twitter_favicon.png')
-        cnn_logo_unactive_tab_pattern = ('cnn_logo_unactive_tab.png')
-        youtube_logo_unactive_tab_pattern = ('cnn_logo_unactive_tab.png')
+        cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
+        youtube_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
+        twitter_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
+        wiki_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
+
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        self.base_local_web_url,
+                        show_crash_reporter=True)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -105,11 +113,7 @@ class Test(BaseTest):
         twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
-        restart_firefox(self,
-                        self.browser.path,
-                        self.profile_path,
-                        self.base_local_web_url,
-                        show_crash_reporter=True)
+        new_tab()
 
         navigate('about:crashparent')
 
@@ -129,6 +133,16 @@ class Test(BaseTest):
 
         restore_firefox_focus()
 
+        history_sidebar_opened_restart = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        assert_true(self, history_sidebar_opened_restart, 'History sidebar opened')
+
+        click(Sidebar.HistorySidebar.Timeline.TODAY)
+
+        right_click(location_for_click)
+        toolbar_bookmarks_button_displayed_restart = exists(toolbar_bookmarks_toolbar_pattern)
+        assert_true(self, toolbar_bookmarks_button_displayed_restart, 'Bookmarks toolbar button displayed')
+        click(toolbar_bookmarks_toolbar_pattern)
+
         cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
 
@@ -144,17 +158,15 @@ class Test(BaseTest):
         history_restored_youtube = exists(youtube_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_restored_youtube, 'The Youtube site is added to history')
 
-        history_restored_twitter = exists(twitter_logo_pattern, in_region=history_sidebar_region)
+        history_restored_twitter = exists(twitter_logo_unactive_tab_pattern, in_region=history_sidebar_region)
         assert_true(self, history_restored_twitter, 'The Twitter site is added to history')
 
         tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_cnn, 'The CNN tab is restored')
 
-        tab_restored_wiki = exists(wikipedia_logo_pattern, in_region=tabs_region)
+        tab_restored_wiki = exists(wiki_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_wiki, 'The Wikipedia tab is restored')
 
         tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_youtube, 'The Youtube tab is restored')
 
-        tab_restored_twitter = exists(twitter_logo_pattern, in_region=tabs_region)
-        assert_true(self, tab_restored_twitter, 'The Twitter tab is restored')
