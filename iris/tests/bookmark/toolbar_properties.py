@@ -94,3 +94,5 @@ class Test(BaseTest):
 
         assert_true(self, keyword_edited, '\'Keyword\' value persists modified after restarting Firefox.')
         assert_true(self, tags_edited, '\'Tags\' value persists modified after restarting Firefox.')
+        
+        type(Key.ESC)
