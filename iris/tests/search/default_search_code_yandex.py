@@ -13,6 +13,11 @@ class Test(BaseTest):
         self.meta = 'Default Search Code: Yandex: Russia.'
         self.test_case_id = '218336'
         self.test_suite_id = '83'
+        self.exclude = Platform.ALL
+
+    def setup(self):
+        BaseTest.setup(self)
+        self.profile = Profile.BRAND_NEW
 
     def run(self):
         url = LocalWeb.FOCUS_TEST_SITE
@@ -20,8 +25,8 @@ class Test(BaseTest):
 
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
-             default_search_engine_yandex_pattern = Pattern('default_search_engine_yandex.png')
-             yandex_logo_content_search_field_pattern = Pattern('yandex_logo_content_search_field.png')
+            default_search_engine_yandex_pattern = Pattern('default_search_engine_yandex.png')
+            yandex_logo_content_search_field_pattern = Pattern('yandex_logo_content_search_field.png')
         elif get_firefox_channel(self.browser.path) == 'esr':
             default_search_engine_yandex_pattern = Pattern('default_search_engine_yandex_esr_build.png')
             yandex_logo_content_search_field_pattern = Pattern('yandex_logo_content_search_field_esr_build.png')
