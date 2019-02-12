@@ -64,7 +64,8 @@ class Test(BaseTest):
         click(DownloadDialog.OK_BUTTON)
 
         navigate('about:preferences#privacy')
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        assert_true(self, preferences_privacy_opened, 'Preferences opened')
         paste('Certificates')
 
         view_certificates_button_exists = exists(view_certificates_button_pattern)
@@ -87,6 +88,9 @@ class Test(BaseTest):
         cdn77_logo_displayed = exists(cdn77_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cdn77_logo_displayed, 'CDN77 page is successfully downloaded')
 
+        cdn77_support_button_displayed = exists(cdn77_support_button_pattern)
+        assert_true(self, cdn77_support_button_displayed, 'CDN77 Support button is displayed')
+
         click(cdn77_support_button_pattern)
 
         cdn77_support_page_displayed = exists(cdn77_support_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
@@ -97,6 +101,9 @@ class Test(BaseTest):
 
         cloudflare_logo_displayed = exists(cloudflare_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cloudflare_logo_displayed, 'Cloudflare page is successfully downloaded')
+
+        cloudflare_support_button_displayed = exists(cloudflare_support_button_pattern)
+        assert_true(self, cloudflare_support_button_displayed, 'Cloudflare Support button is displayed')
 
         click(cloudflare_support_button_pattern)
 
