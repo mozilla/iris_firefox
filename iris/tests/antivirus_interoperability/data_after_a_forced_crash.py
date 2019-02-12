@@ -114,6 +114,7 @@ class Test(BaseTest):
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
         new_tab()
+        new_tab()
 
         navigate('about:crashparent')
 
@@ -133,7 +134,7 @@ class Test(BaseTest):
 
         restore_firefox_focus()
 
-        history_sidebar_opened_restart = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        """history_sidebar_opened_restart = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
         assert_true(self, history_sidebar_opened_restart, 'History sidebar opened')
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
@@ -141,7 +142,7 @@ class Test(BaseTest):
         right_click(location_for_click)
         toolbar_bookmarks_button_displayed_restart = exists(toolbar_bookmarks_toolbar_pattern)
         assert_true(self, toolbar_bookmarks_button_displayed_restart, 'Bookmarks toolbar button displayed')
-        click(toolbar_bookmarks_toolbar_pattern)
+        click(toolbar_bookmarks_toolbar_pattern)"""
 
         cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
@@ -158,7 +159,7 @@ class Test(BaseTest):
         history_restored_youtube = exists(youtube_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_restored_youtube, 'The Youtube site is added to history')
 
-        history_restored_twitter = exists(twitter_logo_unactive_tab_pattern, in_region=history_sidebar_region)
+        history_restored_twitter = exists(twitter_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_restored_twitter, 'The Twitter site is added to history')
 
         tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern, in_region=tabs_region)
@@ -170,3 +171,5 @@ class Test(BaseTest):
         tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_youtube, 'The Youtube tab is restored')
 
+        tab_restored_twitter = exists(twitter_logo_unactive_tab_pattern, in_region=tabs_region)
+        assert_true(self, tab_restored_twitter, 'The Twitter tab is restored')
