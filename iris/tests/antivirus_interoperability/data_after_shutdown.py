@@ -17,13 +17,14 @@ class Test(BaseTest):
 
     def run(self):
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
-        browser_console_pattern = Pattern('browser_console_opened.png')
+        restore_previous_session_button_pattern = Pattern('restore_previous_session.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
         twitter_logo_pattern = Pattern('twitter_favicon.png')
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
         youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
+        twitter_logo_unactive_tab_pattern = Pattern('twitter_logo_unactive_tab.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -106,17 +107,10 @@ class Test(BaseTest):
         twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
-        open_browser_console()
-
-        browser_console_opened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, browser_console_opened, 'Browser console displayed')
-
-        restart_via_console()
-
-        browser_console_reopened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, browser_console_reopened, 'Browser console reopened')
-        click(browser_console_pattern)
-        close_window_control('auxiliary')
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        self.base_local_web_url)
 
         firefox_is_restarted = exists(NavBar.HOME_BUTTON, 180)
         assert_true(self, firefox_is_restarted, 'Firefox is successfully restarted')
@@ -128,6 +122,12 @@ class Test(BaseTest):
 
         wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored')
+
+        click(NavBar.HAMBURGER_MENU)
+        restore_previous_session_button_displayed = exists(restore_previous_session_button_pattern)
+        assert_true(self, restore_previous_session_button_displayed, 'Restore previous session button displayed')
+
+        click(restore_previous_session_button_pattern)
 
         history_restored_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
         assert_true(self, history_restored_cnn, 'The CNN site is added to history')
@@ -150,5 +150,5 @@ class Test(BaseTest):
         tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_youtube, 'The Youtube tab is restored')
 
-        tab_restored_twitter = exists(twitter_logo_pattern, in_region=tabs_region)
+        tab_restored_twitter = exists(twitter_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_twitter, 'The Twitter tab is restored')
