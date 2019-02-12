@@ -23,7 +23,8 @@ class Test(BaseTest):
 
     def run(self):
         wikipedia_sidebar_logo_pattern = Pattern('wiki_logo.png')
-        open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
+        if not Settings.is_linux():
+            open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
         new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.90)
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         if Settings.is_mac():
@@ -44,10 +45,15 @@ class Test(BaseTest):
         assert_true(self, wikipedia_sidebar_logo_exists, 'Wikipedia bookmark exists')
         right_click(wikipedia_sidebar_logo_pattern)
 
-        open_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, open_option_exists, 'Open option exists')
-        click(open_in_new_tab_option_pattern)
+        if not Settings.is_linux():
+            open_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, open_option_exists, 'Open in new tab option exists')
+            click(open_in_new_tab_option_pattern)
+        else:
+            wikipedia_sidebar_logo_exists = exists(wikipedia_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_false(self, wikipedia_sidebar_logo_exists, 'Open in new tab option exists')
+            type('w')
 
-        new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_UI_DELAY_LONG)
+        new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_tab_is_opened_not_exists, 'The web page is opened at the new tab')
 
