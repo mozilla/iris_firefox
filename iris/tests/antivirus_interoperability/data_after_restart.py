@@ -72,7 +72,7 @@ class Test(BaseTest):
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
         bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 3)
-        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 2)
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
         bookmark_page()
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
@@ -141,7 +141,7 @@ class Test(BaseTest):
         history_restored_twitter = exists(twitter_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_restored_twitter, 'The Twitter site is added to history')
 
-        tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern, in_region=tabs_region)
+        tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern.similar(.6), in_region=tabs_region)
         assert_true(self, tab_restored_cnn, 'The CNN tab is restored')
 
         tab_restored_wiki = exists(wiki_logo_unactive_tab_pattern, in_region=tabs_region)
