@@ -26,8 +26,9 @@ class Test(BaseTest):
             default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png')
             google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field_esr_build.png')
 
-        regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de'], 'fr': ['fr'], 'pl': ['pl'], 'it': ['it'],
-                              'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB']}
+        regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de', 'ru'], 'fr': ['fr'], 'pl': ['pl'],
+                              'it': ['it'], 'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB'],
+                              'ru': ['de']}
 
         change_preference('browser.search.widget.inNavBar', True)
 
@@ -112,7 +113,7 @@ class Test(BaseTest):
 
             double_click(text_pattern)
             right_click(text_pattern)
-            time.sleep(DEFAULT_FX_DELAY)
+            time.sleep(DEFAULT_UI_DELAY)
             repeat_key_down(3)
             type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY_LONG)
