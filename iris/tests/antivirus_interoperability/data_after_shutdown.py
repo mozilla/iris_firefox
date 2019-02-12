@@ -10,24 +10,20 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "No data loss after a shutdown (Ffx)"
-        self.test_case_id = "217880"
+        self.meta = "No data loss after forced restart"
+        self.test_case_id = "217874"
         self.test_suite_id = "3036"
         self.locale = ["en-US"]
 
     def run(self):
-        cnn_page_downloaded_pattern = Pattern('cnn_page_downloaded.png')
-        history_updated_pattern = Pattern('history_updated.png')
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
-        tabs_restored_pattern = Pattern('tabs_restored.png')
-        bookmarks_restored_pattern = Pattern('bookmarks_restored.png')
-        folder_other_bookmarks = Pattern('other_bookmarks.png')
-        folder_toolbar_menu = Pattern('editBMPanel_chooseFolderMenuItem_Bookmarks_Toolbar.png')
-        history_today_pattern = Pattern('history_today.png')
-        restore_previous_session_pattern = Pattern('restore_previous_session.png')
-        history_are_restored_pattern = Pattern('history_are_restored.png')
-
-        history_region = Region(0, 0, SCREEN_WIDTH / 6, SCREEN_HEIGHT / 3)
+        browser_console_pattern = Pattern('browser_console_opened.png')
+        wikipedia_logo_pattern = Pattern('wiki_logo.png')
+        youtube_logo_pattern = Pattern('youtube_logo.png')
+        twitter_logo_pattern = Pattern('twitter_favicon.png')
+        cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
+        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
+        wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -38,80 +34,121 @@ class Test(BaseTest):
 
         navigate('https://edition.cnn.com')
 
-        cnn_page_opened = exists(cnn_page_downloaded_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cnn_page_opened = exists(LocalWeb.CNN_LOGO, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_page_opened, 'The CNN site successfully opened')
 
         close_content_blocking_pop_up()
 
         history_sidebar()
-        if Settings.is_mac():
-            click(history_today_pattern, 0, history_region)
-        else:
-            click(Library.HISTORY_TODAY, 0, history_region)
 
-        history_updated = exists(history_updated_pattern, None, history_region)
-        assert_true(self, history_updated, 'History updated')
+        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        assert_true(self, history_sidebar_opened, 'History sidebar opened')
+
+        history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
+        history_sidebar_region = Region(history_sidebar_location.x,
+                                        history_sidebar_location.y,
+                                        history_width,
+                                        SCREEN_HEIGHT / 2)
+
+        today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY)
+        assert_true(self, today_timeline_exists, 'The Today timeline displayed')
+
+        click(Sidebar.HistorySidebar.Timeline.TODAY)
+
+        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
+        assert_true(self, history_updated_cnn, 'The CNN site is added to history')
+
+        history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_updated_wiki, 'The Wikipedia site is added to history')
 
         location_for_click = find(NavBar.HOME_BUTTON).right(100)
 
         right_click(location_for_click)
-        time.sleep(DEFAULT_UI_DELAY)
+        toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
+        assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
         click(toolbar_bookmarks_toolbar_pattern)
 
-        if Settings.is_linux() or Settings.is_mac():
-            bookmark_page()
-            click(folder_other_bookmarks, 0)
-            click(folder_toolbar_menu, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
-        
-            previous_tab()
-        
-            bookmark_page()
-            click(folder_other_bookmarks, 0)
-            click(folder_toolbar_menu, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
-        else:
-            bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS, 0)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
+        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 3)
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
-            previous_tab()
+        bookmark_page()
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.DONE)
 
-            bookmark_page()
-            click(SidebarBookmarks.OTHER_BOOKMARKS, 0)
-            click(SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, 0)
-            time.sleep(DEFAULT_UI_DELAY)
-            type(Key.ENTER)
+        previous_tab()
 
-        bookmarks_added = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, bookmarks_added, 'The bookmarks are successfully added')
+        bookmark_page()
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.DONE)
 
-        restart_firefox(self,
-                        self.browser.path,
-                        self.profile_path,
-                        self.base_local_web_url)
+        cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, cnn_bookmark_added, 'The CNN bookmark is successfully added')
 
-        time.sleep(DEFAULT_UI_DELAY)
+        wiki_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
-        all_bookmarks_are_restored = exists(bookmarks_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, all_bookmarks_are_restored, 'The bookmarks are successfully restored')
+        new_tab()
 
-        click(NavBar.HAMBURGER_MENU)
-        time.sleep(DEFAULT_UI_DELAY)
-        click(restore_previous_session_pattern)
+        navigate('https://www.youtube.com/')
 
-        all_tabs_are_restored = exists(tabs_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, all_tabs_are_restored, 'The tabs are successfully restored')
+        youtube_opened = exists(youtube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, youtube_opened, 'The Youtube site successfully opened')
 
-        history_are_restored = exists(history_are_restored_pattern, DEFAULT_SITE_LOAD_TIMEOUT, history_region)
-        assert_true(self, history_are_restored, 'The history is successfully restored')
+        new_tab()
 
+        navigate('https://twitter.com/')
 
+        twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
+        open_browser_console()
 
+        browser_console_opened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, browser_console_opened, 'Browser console displayed')
 
+        restart_via_console()
 
+        browser_console_reopened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, browser_console_reopened, 'Browser console reopened')
+        click(browser_console_pattern)
+        close_window_control('auxiliary')
+
+        firefox_is_restarted = exists(NavBar.HOME_BUTTON, 180)
+        assert_true(self, firefox_is_restarted, 'Firefox is successfully restarted')
+
+        restore_firefox_focus()
+
+        cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
+
+        wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored')
+
+        history_restored_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
+        assert_true(self, history_restored_cnn, 'The CNN site is added to history')
+
+        history_restored_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_restored_wiki, 'The Wikipedia site is added to history')
+
+        history_restored_youtube = exists(youtube_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_restored_youtube, 'The Youtube site is added to history')
+
+        history_restored_twitter = exists(twitter_logo_pattern, in_region=history_sidebar_region)
+        assert_true(self, history_restored_twitter, 'The Twitter site is added to history')
+
+        tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern.similar(.6), in_region=tabs_region)
+        assert_true(self, tab_restored_cnn, 'The CNN tab is restored')
+
+        tab_restored_wiki = exists(wiki_logo_unactive_tab_pattern, in_region=tabs_region)
+        assert_true(self, tab_restored_wiki, 'The Wikipedia tab is restored')
+
+        tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern, in_region=tabs_region)
+        assert_true(self, tab_restored_youtube, 'The Youtube tab is restored')
+
+        tab_restored_twitter = exists(twitter_logo_pattern, in_region=tabs_region)
+        assert_true(self, tab_restored_twitter, 'The Twitter tab is restored')
