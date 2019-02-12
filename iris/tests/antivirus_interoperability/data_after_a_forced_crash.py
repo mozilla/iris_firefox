@@ -25,12 +25,7 @@ class Test(BaseTest):
         youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
         twitter_logo_unactive_tab_pattern = Pattern('twitter_logo_unactive_tab.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
-
-        restart_firefox(self,
-                        self.browser.path,
-                        self.profile_path,
-                        self.base_local_web_url,
-                        show_crash_reporter=True)
+        restore_previous_session_button_pattern = Pattern('restore_previous_session.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -112,6 +107,18 @@ class Test(BaseTest):
 
         twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
+
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        self.base_local_web_url,
+                        show_crash_reporter=True)
+
+        click(NavBar.HAMBURGER_MENU)
+        restore_previous_session_button_displayed = exists(restore_previous_session_button_pattern)
+        assert_true(self, restore_previous_session_button_displayed, 'Restore previous session button displayed')
+
+        click(restore_previous_session_button_pattern)
 
         new_tab()
 
