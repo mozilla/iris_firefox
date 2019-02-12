@@ -133,16 +133,6 @@ class Test(BaseTest):
 
         restore_firefox_focus()
 
-        history_sidebar_opened_restart = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
-        assert_true(self, history_sidebar_opened_restart, 'History sidebar opened')
-
-        click(Sidebar.HistorySidebar.Timeline.TODAY)
-
-        right_click(location_for_click)
-        toolbar_bookmarks_button_displayed_restart = exists(toolbar_bookmarks_toolbar_pattern)
-        assert_true(self, toolbar_bookmarks_button_displayed_restart, 'Bookmarks toolbar button displayed')
-        click(toolbar_bookmarks_toolbar_pattern)
-
         cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
 
