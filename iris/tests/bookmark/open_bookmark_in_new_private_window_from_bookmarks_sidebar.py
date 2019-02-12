@@ -48,12 +48,12 @@ class Test(BaseTest):
 
         if not Settings.is_linux():
             open_option_exists = exists(open_in_new_window_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, open_option_exists, 'Open in New Window option exists')
+            assert_true(self, open_option_exists, 'Open in New Private Window option exists')
             click(open_in_new_window_option_pattern)
         else:
             time.sleep(1)
             wikipedia_sidebar_logo_exists = exists(wikipedia_sidebar_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_false(self, wikipedia_sidebar_logo_exists, 'Open in a New Window option exists')
+            assert_false(self, wikipedia_sidebar_logo_exists, 'Open in a New Private Window option exists')
             type('n')
 
         wikipedia_main_page_content_exists = exists(wikipedia_main_page_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
