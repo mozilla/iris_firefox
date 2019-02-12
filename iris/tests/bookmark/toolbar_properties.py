@@ -85,16 +85,12 @@ class Test(BaseTest):
                         self.base_local_web_url)
 
         bookmark_renamed = exists(renamed_toolbar_bookmark_pattern, DEFAULT_SYSTEM_DELAY)
-        assert_true(self, bookmark_renamed, 'The bookmark name persists modified.')
+        assert_true(self, bookmark_renamed, 'The bookmark name persists modified after restarting Firefox.')
 
         right_click(renamed_toolbar_bookmark_pattern)
-        properties_option_available = exists(bookmark_properties_option, DEFAULT_SYSTEM_DELAY)
-        assert_true(self, properties_option_available,
-                    '\'Properties\' option in available in context menu after right-click at the bookmark in toolbar.')
-
         click(bookmark_properties_option)
         properties_opened = exists(properties_popup_save_button_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, properties_opened, 'Properties for \'Getting Started\' window is opened.')
 
-        assert_true(self, keyword_edited, '\'Keyword\' value persists modified.')
-        assert_true(self, tags_edited, '\'Tags\' value persists modified.')
+        assert_true(self, keyword_edited, '\'Keyword\' value persists modified after restarting Firefox.')
+        assert_true(self, tags_edited, '\'Tags\' value persists modified after restarting Firefox.')
