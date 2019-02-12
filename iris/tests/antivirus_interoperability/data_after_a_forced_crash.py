@@ -22,9 +22,9 @@ class Test(BaseTest):
         youtube_logo_pattern = Pattern('youtube_logo.png')
         twitter_logo_pattern = Pattern('twitter_favicon.png')
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        youtube_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        twitter_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        wiki_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
+        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
+        twitter_logo_unactive_tab_pattern = Pattern('twitter_logo_unactive_tab.png')
+        wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
 
         restart_firefox(self,
                         self.browser.path,
@@ -114,7 +114,6 @@ class Test(BaseTest):
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
         new_tab()
-        new_tab()
 
         navigate('about:crashparent')
 
@@ -134,7 +133,7 @@ class Test(BaseTest):
 
         restore_firefox_focus()
 
-        """history_sidebar_opened_restart = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        history_sidebar_opened_restart = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
         assert_true(self, history_sidebar_opened_restart, 'History sidebar opened')
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
@@ -142,12 +141,12 @@ class Test(BaseTest):
         right_click(location_for_click)
         toolbar_bookmarks_button_displayed_restart = exists(toolbar_bookmarks_toolbar_pattern)
         assert_true(self, toolbar_bookmarks_button_displayed_restart, 'Bookmarks toolbar button displayed')
-        click(toolbar_bookmarks_toolbar_pattern)"""
+        click(toolbar_bookmarks_toolbar_pattern)
 
         cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
 
-        wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        wiki_bookmark_restored = exists(wikipedia_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored')
 
         history_restored_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
