@@ -23,7 +23,7 @@ class Test(BaseTest):
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         iris_tab_pattern = Pattern('iris_tab.png')
         getting_started_toolbar_bookmark_pattern = Pattern('toolbar_bookmark_icon.png')
-        bookmark_delete_option = Pattern('delete_option.png')
+        bookmark_delete_option = Pattern('delete_bookmark.png')
 
         area_to_click = find(iris_tab_pattern)
         area_to_click.x += 300
