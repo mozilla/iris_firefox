@@ -33,6 +33,7 @@ class Test(BaseTest):
         assert_true(self, import_button_available, '"Import bookmarks from HTML" button available')
 
         click(library_import_bookmarks_from_html_pattern)
+        time.sleep(1234)
         import_bookmarks_from_html_dropdown = exists(import_bookmarks_from_html_dropdown_pattern,
                                                      DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, import_bookmarks_from_html_dropdown,
