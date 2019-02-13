@@ -16,16 +16,13 @@ class Test(BaseTest):
 
     def run(self):
         new_folder_created_pattern = Pattern('new_folder_created.png')
+        new_folder_panel_pattern = Pattern('new_folder_panel.png')
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         new_folder_option_pattern = Library.Organize.NEW_FOLDER
         if not Settings.is_mac():
             bookmarks_menu_pattern = Library.BOOKMARKS_MENU
         else:
             bookmarks_menu_pattern = Pattern('bookmark_menu_section.png')
-        if Settings.is_windows():
-            new_folder_panel_pattern = Bookmarks.StarDialog.NEW_FOLDER
-        else:
-            new_folder_panel_pattern = Pattern('new_folder_panel.png')
 
         bookmarks_sidebar('open')
 
