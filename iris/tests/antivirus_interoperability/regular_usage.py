@@ -43,7 +43,7 @@ class Test(BaseTest):
         load_temporary_addon_button_pattern = Pattern('load_temporary_addon_button.png')
 
         navigate('about:debugging')
-        debugging_page_loaded = exists(load_temporary_addon_button_pattern, DEFAULT_UI_DELAY)
+        debugging_page_loaded = exists(load_temporary_addon_button_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, debugging_page_loaded,
                     'Debugging page is successfully loaded and contains \'Load temporary addon\' button.')
 
@@ -64,7 +64,7 @@ class Test(BaseTest):
         popup_opened = exists(popup_open_button_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened.')
 
-        addon_file_is_available = exists(addon_file_icon_pattern, DEFAULT_UI_DELAY)
+        addon_file_is_available = exists(addon_file_icon_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, addon_file_is_available, 'Addon file is available.')
 
         click(addon_file_icon_pattern)
@@ -73,7 +73,7 @@ class Test(BaseTest):
         assert_true(self, addon_installed, 'Addon successfully installed.')
 
         click(home_icon_with_applied_theme_pattern)
-        new_tab_opened = exists(new_tab_highlighted_with_theme_applied_pattern, DEFAULT_UI_DELAY)
+        new_tab_opened = exists(new_tab_highlighted_with_theme_applied_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, new_tab_opened, 'The \'about:newtab\' page is opened.')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
