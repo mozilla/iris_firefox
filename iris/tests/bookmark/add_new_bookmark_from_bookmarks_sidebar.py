@@ -18,8 +18,11 @@ class Test(BaseTest):
         new_bookmark_created_pattern = Pattern('new_bookmark_created.png')
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         new_bookmark_option_pattern = Library.Organize.NEW_BOOKMARK
-        bookmarks_menu_pattern = Library.BOOKMARKS_MENU
-        if not Settings.is_linux():
+        if not Settings.is_mac():
+            bookmarks_menu_pattern = Library.BOOKMARKS_MENU
+        else:
+            bookmarks_menu_pattern = Pattern('bookmark_menu_section.png')
+        if Settings.is_windows():
             new_bookmark_panel_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         else:
             new_bookmark_panel_pattern = Pattern('new_bookmark_panel.png')
@@ -46,7 +49,10 @@ class Test(BaseTest):
         type(Key.TAB)
         paste('search, media')
 
-        [type(Key.TAB) for _ in range(2)]
+        if not Settings.is_mac():
+            [type(Key.TAB) for _ in range(2)]
+        else:
+            type(Key.TAB)
         paste('search')
 
         type(Key.ENTER)
