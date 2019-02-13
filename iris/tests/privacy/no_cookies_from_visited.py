@@ -18,9 +18,9 @@ class Test(BaseTest):
     def run(self):
         block_all_cookies_pattern = Pattern('block_all_cookies.png')
         cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
-        cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.85)
+        cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.9)
+        custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png').similar(0.9)
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
-        custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
         custom_content_blocking_ticked_patten = Pattern('custom_content_blocking_ticked.png')
         manage_cookies_data_pattern = Pattern('manage_cookies_data.png')
         site_cookies_pattern = Pattern('site_cookies.png')
