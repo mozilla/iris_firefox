@@ -11,7 +11,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'The location of a bookmark can be changed.'
         self.test_case_id = '4149'
-        self.test_suite_id = '75'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):
@@ -63,6 +63,8 @@ class Test(BaseTest):
             click(sidebar_bookmark_location_changed_pattern)
         except FindError:
             raise FindError('Can\'t find the bookmark in Bookmark sidebar, aborting.')
+
+        close_content_blocking_pop_up()
 
         bookmark_location_assert = exists(moz_page, 10)
         assert_true(self, bookmark_location_assert, 'The URL of the bookmark is successfully modified.')

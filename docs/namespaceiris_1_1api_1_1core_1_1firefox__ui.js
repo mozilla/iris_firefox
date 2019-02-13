@@ -2,6 +2,8 @@ var namespaceiris_1_1api_1_1core_1_1firefox__ui =
 [
     [ "about_preferences", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences.html", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1about__preferences" ],
     [ "bookmarks", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1bookmarks.html", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1bookmarks" ],
+    [ "content_blocking", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking.html", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking" ],
+    [ "content_blocking_tour", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking__tour.html", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1content__blocking__tour" ],
     [ "docker", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1docker.html", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1docker" ],
     [ "download_dialog", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1download__dialog.html", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1download__dialog" ],
     [ "download_manager", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager.html", "namespaceiris_1_1api_1_1core_1_1firefox__ui_1_1download__manager" ],

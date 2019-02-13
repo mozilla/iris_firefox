@@ -109,6 +109,39 @@ def change_preference(pref_name, value):
             'Could not set value: %s to preference: %s' % (value, pref_name))
 
 
+def check_preference(pref_name, value):
+    """Check the value for a specific preference.
+
+    :param pref_name: Preference to be searched.
+    :param value: Preference's value to be checked.
+    :return: None.
+    """
+    new_tab()
+    select_location_bar()
+    paste('about:config')
+    type(Key.ENTER)
+    time.sleep(Settings.UI_DELAY)
+
+    type(Key.SPACE)
+    time.sleep(Settings.UI_DELAY)
+
+    paste(pref_name)
+    time.sleep(Settings.UI_DELAY_LONG)
+    type(Key.TAB)
+    time.sleep(Settings.UI_DELAY_LONG)
+
+    try:
+        retrieved_value = copy_to_clipboard().split(';'[0])[1]
+
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+
+    if retrieved_value == value:
+        return True
+    else:
+        return False
+
+
 def click_cancel_button():
     """Click cancel button."""
     cancel_button_pattern = Pattern('cancel_button.png')
@@ -218,7 +251,7 @@ def close_window_control(window_type):
 
 def close_content_blocking_pop_up():
     """Closes the content blocking pop up"""
-    pop_up_region = Region(0, 100, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    pop_up_region = Region(0, 50, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     try:
         pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
@@ -374,6 +407,18 @@ def create_region_for_url_bar():
         raise APIHelperError('Could not create region for URL bar.')
 
 
+def create_region_for_awesome_bar():
+    """Create region for the awesome bar."""
+
+    try:
+        identity_icon_pattern = LocationBar.IDENTITY_ICON
+        page_action_pattern = LocationBar.PAGE_ACTION_BUTTON
+        return create_region_from_patterns(left=page_action_pattern,
+                                           right=identity_icon_pattern)
+    except FindError:
+        raise APIHelperError('Could not create region for awesome bar.')
+
+
 def create_region_from_image(image):
     """Create region starting from a pattern.
 
@@ -511,10 +556,10 @@ def get_firefox_channel(build_path):
     fx_channel = get_firefox_info(build_path)['application_repository']
     if 'beta' in fx_channel:
         return 'beta'
-    elif 'release' in fx_channel:
-        return 'release'
     elif 'esr' in fx_channel:
         return 'esr'
+    elif 'release' in fx_channel:
+        return 'release'
     else:
         return 'nightly'
 
@@ -1151,7 +1196,7 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
     :param scroll_function: Scrolling function or any callable object (e.g. type, scroll, etc.)
     :param scroll_params: Tuple of params to pass in the scroll_function
             (e.g. (Key.UP, ) or (Key.UP, KeyModifier.CTRL) for the type function).
-            NOTE: Tuple should contains from 1 to 2 items.
+            NOTE: Tuple should contains from 0 (empty tuple) to 2 items.
     :param num_of_scroll_iterations: Number of scrolling iterations.
     :param timeout: Number of seconds passed to the 'timeout' param of the 'exist' function.
     :return: Boolean. True if image pattern found during scrolling, False otherwise
@@ -1173,6 +1218,8 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
         scroll_arg, scroll_modifier = scroll_params
     elif len(scroll_params) == 1:
         scroll_arg, = scroll_params
+    elif len(scroll_params) == 0:
+        pass
     else:
         raise ValueError(INVALID_GENERIC_INPUT)
 
@@ -1184,7 +1231,9 @@ def scroll_until_pattern_found(image_pattern, scroll_function, scroll_params, nu
         if pattern_found:
             break
 
-        if scroll_modifier is None:
+        if scroll_modifier is None and scroll_arg is None:
+            scroll_function()
+        elif scroll_modifier is None:
             scroll_function(scroll_arg)
         else:
             scroll_function(scroll_arg, scroll_modifier)
@@ -1313,4 +1362,3 @@ class ZoomType(object):
 
     IN = 300 if Settings.is_windows() else 1
     OUT = -300 if Settings.is_windows() else -1
-

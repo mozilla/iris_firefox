@@ -18,6 +18,8 @@ class Test(BaseTest):
         related_video_pattern = Pattern('related_video.png')
         share_button_pattern = Pattern('share_button.png')
 
+        change_preference('media.autoplay.default', '0')
+
         new_private_window()
 
         private_window_opened = exists(new_private_browsing_tab_pattern, 20)
@@ -59,3 +61,5 @@ class Test(BaseTest):
 
         related_video_playing = exists(speaker_icon_pattern, 100)
         assert_true(self, related_video_playing, 'The video is playing and there is no browser crashes')
+
+        close_window()
