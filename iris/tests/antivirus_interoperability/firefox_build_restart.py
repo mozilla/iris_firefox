@@ -20,7 +20,7 @@ class Test(BaseTest):
 
         open_browser_console()
 
-        browser_console_opened = exists(browser_console_opened_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        browser_console_opened = exists(browser_console_opened_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, browser_console_opened, 'Browser console is opened')
 
         click(browser_console_opened_pattern)
