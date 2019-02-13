@@ -36,5 +36,5 @@ class Test(BaseTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'The page is properly loaded. No crashes occur')
