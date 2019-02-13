@@ -39,19 +39,15 @@ class Test(BaseTest):
         click(NavBar.DOWNLOADS_BUTTON)
         click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
 
-        if Settings.get_os() == Platform.LINUX:
-           click(Pattern('linux_folder_icon.png'))
-
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
         assert_true(self, expected, 'Downloads folder is displayed.')
 
         # Delete the downloads folder
         force_delete_folder(IrisCore.get_downloads_dir())
-        click_window_control('close')
 
         click(NavBar.DOWNLOADS_BUTTON)
 
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        time.sleep(DEFAULT_UI_DELAY)
         downloads_button = find(NavBar.DOWNLOADS_BUTTON)
 
         file_20_mb = find(DownloadFiles.DOWNLOAD_FILE_NAME_20MB)
@@ -79,13 +75,9 @@ class Test(BaseTest):
         click(NavBar.DOWNLOADS_BUTTON)
         click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
 
-        if Settings.get_os() == Platform.LINUX:
-           click(Pattern('linux_folder_icon.png'))
-
         # Assert the newly created downloads folder
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
         assert_true(self, expected, 'Downloads folder was recreated.')
-        click_window_control('close')
 
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
