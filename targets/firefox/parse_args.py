@@ -6,6 +6,8 @@ import argparse
 import logging
 import os
 
+from src.core.util.arg_parser import parse_args as global_args
+
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +30,8 @@ def parse_args():
         return log_level_int
 
     parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
+    parser.add_argument('application', nargs='?', action='store', default=global_args().application)
+    parser.add_argument('test_path', nargs='?', action='store', default=global_args().test_path)
     parser.add_argument('-a', '--rerun',
                         help='Rerun last failed tests',
                         action='store_true')
@@ -86,9 +90,6 @@ def parse_args():
     parser.add_argument('-r', '--report',
                         help='Report tests to TestRail',
                         action='store_true')
-    parser.add_argument('-t', '--test',
-                        help='List of test names or path to a file containing a custom list of tests',
-                        metavar='test_name.py')
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,

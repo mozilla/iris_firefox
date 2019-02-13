@@ -88,7 +88,8 @@ class PathManager:
         if not os.path.exists(parent_directory):
             os.makedirs(parent_directory)
         test_directory = os.path.join(parent_directory, test)
-        os.mkdir(test_directory)
+        if not os.path.exists(test_directory):
+            os.mkdir(test_directory)
         return test_directory
 
     @staticmethod
