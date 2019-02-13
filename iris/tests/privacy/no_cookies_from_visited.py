@@ -17,12 +17,12 @@ class Test(BaseTest):
 
     def run(self):
         block_all_cookies_pattern = Pattern('block_all_cookies.png')
-        cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png').similar(0.95)
-        block_cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.95)
-        block_cookies_unticked_pattern = Pattern('block_cookies_unticked.png').similar(0.95)
+        cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
+        block_cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.9)
+        block_cookies_unticked_pattern = Pattern('block_cookies_unticked.png').similar(0.9)
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
-        custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png').similar(0.95)
-        custom_content_blocking_ticked_patten = Pattern('custom_content_blocking_ticked.png').similar(0.95)
+        custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
+        custom_content_blocking_ticked_patten = Pattern('custom_content_blocking_ticked.png').similar(0.9)
         manage_cookies_data_pattern = Pattern('manage_cookies_data.png')
         site_cookies_pattern = Pattern('site_cookies.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
