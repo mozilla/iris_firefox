@@ -17,22 +17,17 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def open_test_case_assets_folder_in_file_manager(self):
-        test_script_name = os.path.basename(__file__)[:-3]
+        path_to_test_assets = self.get_asset_path('')
+
         if Settings.is_linux():
-            path_to_test_assets = '{}/assets/{}/'.format(os.path.dirname(os.path.realpath(__file__)),
-                                                         test_script_name)
             type(text='l', modifier=KeyModifier.CTRL)
             paste(path_to_test_assets)
             type(Key.ENTER)
         elif Settings.is_mac():
-            path_to_test_assets = '{}/assets/{}/'.format(os.path.dirname(os.path.realpath(__file__)),
-                                                         test_script_name)
             type(text='g', modifier=KeyModifier.SHIFT + KeyModifier.CMD)
             paste(path_to_test_assets)
             type(Key.ENTER)
         elif Settings.is_windows():
-            path_to_test_assets = '{}\\assets\\{}\\'.format(os.path.dirname(os.path.realpath(__file__)),
-                                                            test_script_name)
             type(text='l', modifier=KeyModifier.CTRL)
             paste(path_to_test_assets)
             type(Key.ENTER)
@@ -84,3 +79,5 @@ class Test(BaseTest):
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         page_loaded = exists(soap_wiki_page_article_header_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, page_loaded, 'The website is loaded without any issue.')
+
+        close_window()
