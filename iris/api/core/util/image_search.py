@@ -77,7 +77,7 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
         if precision > threshold:
             precision = threshold
 
-        w, h = needle.shape[::-1]
+        w, h = needle.size
         points = []
         while True:
             min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
@@ -86,7 +86,7 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
             else:
                 top_left = max_loc
 
-            if threshold > max_val > precision:
+            if max_val > precision:
                 sx, sy = top_left
                 for x in range(sx - w / 2, sx + w / 2):
                     for y in range(sy - h / 2, sy + h / 2):
@@ -102,7 +102,7 @@ def iris_image_match_template(needle, haystack, precision, threshold=None):
         return points
 
 
-def _match_template_multiple(needle, haystack, threshold=0.999):
+def _match_template_multiple(needle, haystack, threshold=0.99):
     """Search for needle in stack (multiple matches).
 
     :param Pattern needle:  Image details (needle).
