@@ -15,11 +15,14 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        new_bookmark_created_pattern = Pattern('new_bookmark_created.png')
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         new_bookmark_option_pattern = Library.Organize.NEW_BOOKMARK
-        new_bookmark_panel_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         bookmarks_menu_pattern = Library.BOOKMARKS_MENU
-        new_bookmark_created_pattern = Pattern('new_bookmark_created.png')
+        if not Settings.is_linux():
+            new_bookmark_panel_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
+        else:
+            new_bookmark_panel_pattern = Pattern('new_bookmark_panel.png')
 
         bookmarks_sidebar('open')
 
