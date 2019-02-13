@@ -19,13 +19,26 @@ class Test(BaseTest):
         show_all_bookmarks_button_pattern = Pattern('show_all_bookmarks_button.png')  # Should be added to library_menu
         ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
+        wiki_bookmark_logo_pattern = Pattern('wiki_bookmark_logo.png')
+
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+
+        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, soap_wiki_opened, 'The Wiki page is opened')
+
+        bookmark_page()
+        click(Bookmarks.StarDialog.DONE)
+
+        new_tab()
 
         open_library()
 
         library_opened_vis_shortcut = exists(Library.TITLE)
         assert_true(self, library_opened_vis_shortcut, 'Library opened via CMD/CTRL+Shift+B')
 
-        other_bookmarks_is_default_shortcut = exists(Library.OTHER_BOOKMARKS)
+        click(Library.OTHER_BOOKMARKS)
+
+        other_bookmarks_is_default_shortcut = exists(wiki_bookmark_logo_pattern)
         assert_true(self, other_bookmarks_is_default_shortcut, 'Other Bookmarks is set as default')
 
         close_window_control('auxiliary')
@@ -39,31 +52,29 @@ class Test(BaseTest):
         library_opened_from_menu = exists(Library.TITLE)
         assert_true(self, library_opened_from_menu, 'Library opened from View History, saved bookmarks and more')
 
-        other_bookmarks_is_default_menu = exists(Library.OTHER_BOOKMARKS)
-        assert_true(self, other_bookmarks_is_default_menu, 'Other Bookmarks is set as default')
+        click(Library.OTHER_BOOKMARKS)
+
+        other_bookmarks_is_default_shortcut = exists(wiki_bookmark_logo_pattern)
+        assert_true(self, other_bookmarks_is_default_shortcut, 'Other Bookmarks is set as default')
 
         close_window_control('auxiliary')
 
-        location_to_hover = Location(0,100)
+        location_to_hover = Location(0, 100)
 
-        if Settings.is_linux() or Settings.is_mac():
-            hover(location_to_hover)
-            key_down(Key.ALT)
-            time.sleep(0.5)
-            key_up(Key.ALT)
-            click(firefox_menu_bookmarks_pattern)
-            time.sleep(DEFAULT_UI_DELAY)
-            click(ff_menu_show_all_bookmarks_pattern)
+        hover(location_to_hover)
+        key_down(Key.ALT)
+        time.sleep(0.5)
+        key_up(Key.ALT)
+        click(firefox_menu_bookmarks_pattern)
+        time.sleep(DEFAULT_UI_DELAY)
+        click(ff_menu_show_all_bookmarks_pattern)
 
-            library_opened_from_ff_menu = exists(Library.TITLE)
-            assert_true(self, library_opened_from_ff_menu, 'Library opened from View History, saved bookmarks and more')
+        library_opened_from_ff_menu = exists(Library.TITLE)
+        assert_true(self, library_opened_from_ff_menu, 'Library opened from View History, saved bookmarks and more')
 
-            other_bookmarks_is_default_menu = exists(Library.OTHER_BOOKMARKS)
-            assert_true(self, other_bookmarks_is_default_menu, 'Other Bookmarks is set as default')
+        click(Library.OTHER_BOOKMARKS)
 
-            close_window_control('auxiliary')
+        other_bookmarks_is_default_shortcut = exists(wiki_bookmark_logo_pattern)
+        assert_true(self, other_bookmarks_is_default_shortcut, 'Other Bookmarks is set as default')
 
-
-
-
-
+        close_window_control('auxiliary')
