@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = "Firefox Bulid Restart"
         self.test_case_id = "217866"
-        self.test_suite_id = "3036"
+        self.test_suite_id = "3063"
         self.locale = ["en-US"]
 
     def run(self):
@@ -20,7 +20,7 @@ class Test(BaseTest):
 
         open_browser_console()
 
-        browser_console_opened = exists(browser_console_opened_pattern)
+        browser_console_opened = exists(browser_console_opened_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, browser_console_opened, 'Browser console is opened')
 
         click(browser_console_opened_pattern)
