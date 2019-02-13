@@ -49,4 +49,4 @@ class Test(BaseTest):
         assert_true(self, test_bookmark_imported,
                     'The bookmarks are successfully imported and displayed in the Library.')
 
-        close_window()
+        close_tab()
