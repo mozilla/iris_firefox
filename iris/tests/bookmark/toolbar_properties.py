@@ -21,7 +21,7 @@ class Test(BaseTest):
         return
 
     def run(self):
-        bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png').similar(.6)
+        bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         iris_tab_pattern = Pattern('iris_tab.png')
         getting_started_toolbar_bookmark_pattern = Pattern('toolbar_bookmark_icon.png')
         bookmark_properties_option = Pattern('properties_option.png')
