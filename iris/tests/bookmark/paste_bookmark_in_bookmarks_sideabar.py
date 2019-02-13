@@ -43,6 +43,7 @@ class Test(BaseTest):
         assert_true(self, copy_option_exists, 'Copy option exists')
         click(copy_option_pattern)
 
+        time.sleep(1)
         bookmarks_is_copied = exists(copy_option_pattern, DEFAULT_UI_DELAY_LONG)
         assert_false(self, bookmarks_is_copied, 'The bookmark is correctly copied.')
 
