@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = "No data loss after forced restart"
         self.test_case_id = "217874"
-        self.test_suite_id = "3036"
+        self.test_suite_id = "3063"
         self.locale = ["en-US"]
 
     def run(self):
@@ -67,6 +67,7 @@ class Test(BaseTest):
         right_click(location_for_click)
         toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
         assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
+
         click(toolbar_bookmarks_toolbar_pattern)
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
@@ -115,6 +116,7 @@ class Test(BaseTest):
 
         browser_console_reopened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, browser_console_reopened, 'Browser console reopened')
+
         click(browser_console_pattern)
         close_window_control('auxiliary')
 
