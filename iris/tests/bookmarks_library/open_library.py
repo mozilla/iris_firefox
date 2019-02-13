@@ -17,7 +17,6 @@ class Test(BaseTest):
 
     def run(self):
         show_all_bookmarks_button_pattern = Pattern('show_all_bookmarks_button.png')  # Should be added to library_menu
-        ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
         wiki_bookmark_logo_pattern = Pattern('wiki_bookmark_logo.png')
 
@@ -65,9 +64,18 @@ class Test(BaseTest):
         key_down(Key.ALT)
         time.sleep(DEFAULT_FX_DELAY)
         key_up(Key.ALT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern)
+        assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
         click(firefox_menu_bookmarks_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
-        click(ff_menu_show_all_bookmarks_pattern)
+        if Settings.is_linux():
+            ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
+            ff_menu_show_all_bookmarks_exists = exists(ff_menu_show_all_bookmarks_pattern)
+            assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
+            click(ff_menu_show_all_bookmarks_pattern)
+        else:
+            ff_menu_show_all_bookmarks_exists = exists(show_all_bookmarks_button_pattern)
+            assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
+            click(show_all_bookmarks_button_pattern)
 
         library_opened_from_ff_menu = exists(Library.TITLE)
         assert_true(self, library_opened_from_ff_menu, 'Library opened from View History, saved bookmarks and more')
