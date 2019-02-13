@@ -48,7 +48,7 @@ class Test(BaseTest):
         load_temporary_addon_button_pattern = Pattern('load_temporary_addon_button.png')
 
         navigate('about:debugging')
-        debugging_page_loaded = exists(load_temporary_addon_button_pattern, DEFAULT_UI_DELAY)
+        debugging_page_loaded = exists(load_temporary_addon_button_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, debugging_page_loaded,
                     'Debugging page is successfully loaded and contains \'Load temporary addon\' button.')
 
