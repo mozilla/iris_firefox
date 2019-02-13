@@ -62,7 +62,9 @@ class Test(BaseTest):
         location_to_hover = Location(0, 100)
 
         hover(location_to_hover)
-        type(Key.ALT)
+        key_down(Key.ALT)
+        time.sleep(DEFAULT_FX_DELAY)
+        key_up(Key.ALT)
         click(firefox_menu_bookmarks_pattern)
         time.sleep(DEFAULT_UI_DELAY)
         click(ff_menu_show_all_bookmarks_pattern)
