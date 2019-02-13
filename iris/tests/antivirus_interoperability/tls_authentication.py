@@ -10,9 +10,9 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Websites using TLS 1.3 "
-        self.test_case_id = "217857"
-        self.test_suite_id = "3036"
+        self.meta = " Check security.enterprise_roots.enabled set to true doesn't break TLS Client Authentication."
+        self.test_case_id = "225144"
+        self.test_suite_id = "3063"
         self.locale = ["en-US"]
 
     def run(self):
@@ -48,6 +48,7 @@ class Test(BaseTest):
         assert_true(self, digicert_site_opened, 'DigiCert site is successfully opened')
 
         open_find()
+
         paste('DigiCert Assured ID TLS CA')
 
         tls_certificate_exists = exists(tls_certificate_name_highlighted_pattern)
@@ -56,7 +57,7 @@ class Test(BaseTest):
         tls_certificate_location = find(tls_certificate_name_highlighted_pattern)
         tls_certificate_region = Region(tls_certificate_location.x, tls_certificate_location.y, SCREEN_WIDTH / 3,
                                         SCREEN_HEIGHT / 10)
-        click(download_button_pattern, 0, tls_certificate_region)
+        click(download_button_pattern, in_region=tls_certificate_region)
 
         certificate_trust_dialog_opened = exists(DownloadDialog.OK_BUTTON)
         assert_true(self, certificate_trust_dialog_opened, 'Certificate trust dialog opened')
@@ -64,8 +65,10 @@ class Test(BaseTest):
         click(DownloadDialog.OK_BUTTON)
 
         navigate('about:preferences#privacy')
+
         preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert_true(self, preferences_privacy_opened, 'Preferences opened')
+
         paste('Certificates')
 
         view_certificates_button_exists = exists(view_certificates_button_pattern)
