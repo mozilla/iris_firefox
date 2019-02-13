@@ -64,10 +64,13 @@ class Test(BaseTest):
         key_down(Key.ALT)
         time.sleep(DEFAULT_FX_DELAY)
         key_up(Key.ALT)
+
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
+
         click(firefox_menu_bookmarks_pattern)
-        if Settings.is_linux():
+
+        if Settings.is_linux() or Settings.is_mac():
             ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
             ff_menu_show_all_bookmarks_exists = exists(ff_menu_show_all_bookmarks_pattern)
             assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
