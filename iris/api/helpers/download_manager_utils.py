@@ -196,3 +196,7 @@ def cancel_and_clear_downloads(private_window=False):
     logger.info('>>>Downloads Cleanup steps<<<')
     for step in cancel_in_progress_downloads_from_the_library(private_window):
         logger.info('Step %s - passed? %s' % (step.message, step.resolution))
+
+
+def force_delete_folder(path):
+    shutil.rmtree(path, ignore_errors=True)
