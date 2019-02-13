@@ -33,14 +33,24 @@ class Test(BaseTest):
         assert_true(self, import_button_available, '"Import bookmarks from HTML" button available')
 
         click(library_import_bookmarks_from_html_pattern)
-        time.sleep(1234)
-        import_bookmarks_from_html_dropdown = exists(import_bookmarks_from_html_dropdown_pattern,
-                                                     DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, import_bookmarks_from_html_dropdown,
-                    'The user is asked to open the *.html file containing the bookmarks.')
 
-        paste(test_bookmarks_path)
-        type(Key.ENTER)
+        if Settings.is_mac():
+            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+            paste(test_bookmarks_path)
+            type(Key.ENTER)
+
+            open_bookmark_file = exists(import_bookmarks_from_html_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, open_bookmark_file, 'The user is asked to open the *.html file containing the bookmarks.')
+
+            click(import_bookmarks_from_html_dropdown_pattern)
+        else:
+            import_bookmarks_from_html_dropdown = exists(import_bookmarks_from_html_dropdown_pattern,
+                                                         DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, import_bookmarks_from_html_dropdown,
+                        'The user is asked to open the *.html file containing the bookmarks.')
+
+            paste(test_bookmarks_path)
+            type(Key.ENTER)
 
         sidebar_bookmarks_button = exists(sidebar_bookmarks_menu_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, sidebar_bookmarks_button, 'Sidebar bookmarks button available')
