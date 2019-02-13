@@ -9,8 +9,8 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Add a New Bookmark from Bookmarks Sidebar '
-        self.test_case_id = '168930'
+        self.meta = 'Add a new folder from the Bookmarks Sidebar '
+        self.test_case_id = '168931'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -25,7 +25,7 @@ class Test(BaseTest):
         if Settings.is_windows():
             new_folder_panel_pattern = Bookmarks.StarDialog.NEW_FOLDER
         else:
-            new_folder_panel_pattern = Pattern('new_bookmark_panel.png')
+            new_folder_panel_pattern = Pattern('new_folder_panel.png')
 
         bookmarks_sidebar('open')
 
