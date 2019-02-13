@@ -35,7 +35,8 @@ class Test(BaseTest):
         open_find()
         paste('Provider')
 
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        providers_displays = exists(google4_row_pattern)
+        assert_true(self, providers_displays, 'The providers are displayed')
 
         google4_row_location = find(google4_row_pattern)
         google_row_location = find(google_row_pattern)
@@ -99,6 +100,7 @@ class Test(BaseTest):
         downloads_region = Region(downloads_location.x - SCREEN_WIDTH / 2, downloads_location.y, SCREEN_WIDTH / 2,
                                   SCREEN_HEIGHT / 2)
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
-        time.sleep(DEFAULT_UI_DELAY)
+        downloads_opened = exists(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS)
+        assert_true(self, downloads_opened, 'Downloads opened')
         no_successful_downloads = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, None, downloads_region)
         assert_false(self, no_successful_downloads, 'None of the download initiated are successful')
