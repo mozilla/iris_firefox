@@ -29,6 +29,7 @@ class Test(BaseTest):
         yotube_logo_pattern = Pattern('youtube_logo.png')
         twitter_logo_pattern = Pattern('twitter_favicon.png')
         personal_label_pattern = Pattern('personal_label.png')
+        multi_account_logo_small_pattern = Pattern('multi_account_logo_small.png')
 
         navigate('https://addons.mozilla.org/en-US/firefox/')
 
@@ -41,6 +42,8 @@ class Test(BaseTest):
         click(find_addons_pattern)
 
         paste('Multi-account')
+        multi_account_suggest = exists(multi_account_logo_small_pattern)
+        assert_true(self, multi_account_suggest, 'Multi-account add-on displayed in suggestions')
         type(Key.DOWN)
         type(Key.ENTER)
 
