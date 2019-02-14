@@ -21,19 +21,34 @@ class Test(BaseTest):
         context_menu_bookmarks_toolbar_pattern = Pattern('bookmarks_toolbar_navbar_context_menu.png')
 
         home_button_displayed = exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY)
+        add_new_bookmark_pattern = Library.Organize.NEW_BOOKMARK
         assert_true(self, home_button_displayed, 'Home button displayed')
 
         #  open Bookmark toolbar from bookmark section of Firefox menu
         home_button = NavBar.HOME_BUTTON
         w, h = home_button.get_size()
         horizontal_offset = w * 1.7
+        vertical_offset = h * 2.1
         navbar_context_menu = home_button.target_offset(horizontal_offset, 0)
+        navbar_add_bookmark_context_menu = home_button.target_offset(0, vertical_offset)
 
         right_click(navbar_context_menu)
 
         context_menu_bookmarks_toolbar = exists(context_menu_bookmarks_toolbar_pattern)
         assert_true(self, context_menu_bookmarks_toolbar, 'Context menu bookmarks toolbar option exists')
         click(context_menu_bookmarks_toolbar_pattern)
+
+        right_click(navbar_add_bookmark_context_menu)
+
+        add_new_bookmark = exists(add_new_bookmark_pattern)
+        assert_true(self, add_new_bookmark, '"Add new bookmark" option exists')
+        click(add_new_bookmark_pattern)
+
+        # Fill in field and add bookmark
+        type(Key.TAB, interval=DEFAULT_FX_DELAY)
+        paste('https://www.mozilla.org/en-US/firefox/central/')
+        type(Key.TAB, interval=DEFAULT_FX_DELAY)
+        type(Key.ENTER, interval=DEFAULT_FX_DELAY)
 
         mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern)
         assert_true(self, mozilla_bookmark_icon, 'Mozilla bookmark icon displayed')
