@@ -16,12 +16,13 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        home_button_displayed = exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY)
+        add_new_bookmark_pattern = Library.Organize.NEW_BOOKMARK
+        add_bookmark_panel_name_pattern = Bookmarks.StarDialog.NAME_FIELD
         folder_in_bookmarks_pattern = Pattern('folder_in_bookmarks_toolbar.png')
         mozilla_bookmark_icon_pattern = Pattern('mozilla_bookmark_icon.png')
         context_menu_bookmarks_toolbar_pattern = Pattern('bookmarks_toolbar_navbar_context_menu.png')
 
-        home_button_displayed = exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY)
-        add_new_bookmark_pattern = Library.Organize.NEW_BOOKMARK
         assert_true(self, home_button_displayed, 'Home button displayed')
 
         #  open Bookmark toolbar from bookmark section of Firefox menu
@@ -43,6 +44,9 @@ class Test(BaseTest):
         add_new_bookmark = exists(add_new_bookmark_pattern)
         assert_true(self, add_new_bookmark, '"Add new bookmark" option exists')
         click(add_new_bookmark_pattern)
+
+        add_bookmark_popup = exists(add_bookmark_panel_name_pattern)
+        assert_true(self, add_bookmark_popup, 'Add bookmark popup loaded')
 
         # Fill in field and add bookmark
         type(Key.TAB, interval=DEFAULT_FX_DELAY)
