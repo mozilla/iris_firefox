@@ -44,5 +44,5 @@ class Test(BaseTest):
                     '\'Delete\' option in available in context menu after right-click at the bookmark in toolbar.')
 
         click(bookmark_delete_option)
-        bookmark_deleted = exists(getting_started_toolbar_bookmark_pattern, DEFAULT_SYSTEM_DELAY)
+        bookmark_deleted = exists(getting_started_toolbar_bookmark_pattern, DEFAULT_UI_DELAY)
         assert_false(self, bookmark_deleted, 'The bookmark is deleted from the \'Bookmarks Toolbar\' section.')
