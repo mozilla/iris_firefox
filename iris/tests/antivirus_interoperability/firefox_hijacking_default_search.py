@@ -16,15 +16,18 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        picker_pattern = Pattern('search_engines_picker.png')
         about_preferences_search_pattern = Pattern('about_preferences_search.png')
         default_search_engines_list_pattern = Pattern('default_search_engines_list.png')
         one_click_search_engines_pattern = Pattern('one_click_search_engines.png')
-        picker_pattern = Pattern('close_arrow.png')
 
         navigate('about:preferences#search')
 
-        about_preferences_search_opened = exists(about_preferences_search_pattern)
+        about_preferences_search_opened = exists(about_preferences_search_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, about_preferences_search_opened, 'About preferences search page is successfully opened')
+
+        picker_exists = exists(picker_pattern)
+        assert_true(self, picker_exists, 'Picker displayed')
 
         click(picker_pattern)
 
