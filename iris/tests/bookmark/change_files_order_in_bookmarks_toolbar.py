@@ -24,10 +24,7 @@ class Test(BaseTest):
         bookmarks_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         add_new_bookmark_pattern = Library.Organize.NEW_BOOKMARK
         add_bookmark_panel_name_pattern = Bookmarks.StarDialog.NAME_FIELD
-        if Settings.is_linux():
-            library_bookmarks_pattern = Pattern('bookmarks_toolbar_top_menu.png')
-        else:
-            library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
         mozilla_bookmark_icon_pattern = Pattern('mozilla_bookmark_icon.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         bookmark_after_drag_and_drop_pattern = Pattern('bookmark_after_drag_and_drop.png')
