@@ -45,6 +45,8 @@ class Test(BaseTest):
         click(add_new_bookmark_pattern)
 
         # Fill in field and add bookmark
+        if Settings.is_linux():
+            type(Key.TAB, interval=DEFAULT_FX_DELAY)
         type(Key.TAB, interval=DEFAULT_FX_DELAY)
         paste('https://www.mozilla.org/en-US/firefox/central/')
         type(Key.TAB, interval=DEFAULT_FX_DELAY)
