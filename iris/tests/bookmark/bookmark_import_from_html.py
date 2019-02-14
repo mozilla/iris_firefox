@@ -40,14 +40,14 @@ class Test(BaseTest):
             type(Key.ENTER)
 
             open_bookmark_file = exists(import_bookmarks_from_html_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, open_bookmark_file, 'The user is asked to open the *.html file containing the bookmarks.')
+            assert_true(self, open_bookmark_file, 'Import bookmark menu is displayed')
 
             click(import_bookmarks_from_html_dropdown_pattern)
         else:
             import_bookmarks_from_html_dropdown = exists(import_bookmarks_from_html_dropdown_pattern,
                                                          DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, import_bookmarks_from_html_dropdown,
-                        'The user is asked to open the *.html file containing the bookmarks.')
+                        'Import bookmark menu is displayed')
 
             paste(test_bookmarks_path)
             type(Key.ENTER)
