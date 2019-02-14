@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = "Warnings are displayed if unsafe websites are accessed or downloads initiated."
-        self.test_case_id = "219583"
-        self.test_suite_id = "3036"
+        self.test_case_id = "219580"
+        self.test_suite_id = "3063"
         self.locale = ["en-US"]
 
     def run(self):
@@ -44,21 +44,21 @@ class Test(BaseTest):
         google4_row_width, google4_row_height = google4_row_pattern.get_size()
 
         google4_row_region = Region(google4_row_location.x, google4_row_location.y, SCREEN_WIDTH, google4_row_height)
-        click(trigger_update_button_pattern, 0, google4_row_region)
+        click(trigger_update_button_pattern,in_region=google4_row_region)
 
-        google4_success_status_displaying = exists(success_status_pattern, None, google4_row_region)
+        google4_success_status_displaying = exists(success_status_pattern, in_region=google4_row_region)
         assert_true(self, google4_success_status_displaying, 'The last google4 update status is changed to success.')
 
         google_row_region = Region(google_row_location.x, google_row_location.y, SCREEN_WIDTH, google4_row_height)
-        click(trigger_update_button_pattern, 0, google_row_region)
+        click(trigger_update_button_pattern, in_region=google_row_region)
 
-        google_success_status_displaying = exists(success_status_pattern, None, google_row_region)
+        google_success_status_displaying = exists(success_status_pattern, in_region=google_row_region)
         assert_false(self, google_success_status_displaying, 'Nothing changes in the google update status.')
 
         mozilla_row_region = Region(mozilla_row_location.x, mozilla_row_location.y, SCREEN_WIDTH, google4_row_height)
-        click(trigger_update_button_pattern, 0, mozilla_row_region)
+        click(trigger_update_button_pattern, in_region=mozilla_row_region)
 
-        mozilla_success_status_displaying = exists(success_status_pattern, None, mozilla_row_region)
+        mozilla_success_status_displaying = exists(success_status_pattern, in_region=mozilla_row_region)
         assert_true(self, mozilla_success_status_displaying, 'The last mozilla update status is changed to success.')
 
         navigate('http://testsafebrowsing.appspot.com/')
@@ -76,15 +76,15 @@ class Test(BaseTest):
                                                  desktop_download_warning_height)
 
         first_test_label_width, first_test_label_height = first_test_label_pattern.get_size()
-        print(first_test_label_height)
         first_test_label_location = find(first_test_label_pattern, desktop_download_warning_region)
+
+        download_button = find(NavBar.LIBRARY_MENU).left(15)
 
         coordinate_y = first_test_label_location.y
 
         for download_tests in range(6):
             region_to_click = Region(first_test_label_location.x, coordinate_y, SCREEN_WIDTH, first_test_label_height)
-            print(region_to_click)
-            click(link_pattern, 0, region_to_click)
+            click(link_pattern, in_region=region_to_click)
 
             if Settings.is_windows():
                 download_dialog_opened = exists(save_file_button_pattern, DEFAULT_SYSTEM_DELAY)
@@ -95,12 +95,10 @@ class Test(BaseTest):
                 assert_true(self, download_dialog_opened, 'Download dialog opened')
                 click(DownloadDialog.OK_BUTTON)
             coordinate_y += first_test_label_height
+            click(download_button)
 
-        downloads_location = find(NavBar.SEVERE_DOWNLOADS_BUTTON)
-        downloads_region = Region(downloads_location.x - SCREEN_WIDTH / 2, downloads_location.y, SCREEN_WIDTH / 2,
-                                  SCREEN_HEIGHT / 2)
-        click(NavBar.SEVERE_DOWNLOADS_BUTTON)
-        downloads_opened = exists(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS)
-        assert_true(self, downloads_opened, 'Downloads opened')
-        no_successful_downloads = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, None, downloads_region)
-        assert_false(self, no_successful_downloads, 'None of the download initiated are successful')
+            downloads_opened = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
+            assert_true(self, downloads_opened, 'Downloads opened')
+
+            download_completed = exists(DownloadManager.DownloadState.COMPLETED)
+            assert_false(self, download_completed, 'Download is not successfull')
