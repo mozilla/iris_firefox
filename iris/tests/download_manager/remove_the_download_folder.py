@@ -83,6 +83,7 @@ class Test(BaseTest):
         download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
 
         click(NavBar.DOWNLOADS_BUTTON)
+
         expected = exists(missing_20mb_file_pattern, 10)
         assert_true(self, expected, 'Missing 20 MB file is displayed.')
         expected = exists(missing_10mb_file_pattern, 10)
