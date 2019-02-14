@@ -15,9 +15,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        bookmark_getting_started_pattern = Pattern('toolbar_bookmark_icon.png')
         properties_option_pattern = Pattern('properties_option.png')
-        properties_window_pattern = Pattern('properties_window.png')
         new_modified_bookmark_pattern = Pattern('bookmark_modified.png')
         name_before_pattern = Pattern('name_field.png')
         location_before_pattern = Pattern('location_field.png')
@@ -29,9 +27,12 @@ class Test(BaseTest):
         keyword_after_pattern = Pattern('keyword_saved.png')
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         if Settings.is_mac():
-            other_bookmarks_pattern = Pattern('other_bookmarks.png')
+            other_bookmarks_pattern = Pattern('bookmarks_toolbar.png')
+            bookmark_getting_started_pattern = Pattern('bookmark_from_sidebar.png')
         else:
             other_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+            properties_window_pattern = Pattern('properties_window.png')
+            bookmark_getting_started_pattern = Pattern('toolbar_bookmark_icon.png')
 
         bookmarks_sidebar('open')
 
@@ -50,8 +51,12 @@ class Test(BaseTest):
         assert_true(self, properties_option_exists, 'Properties option exists')
         click(properties_option_pattern)
 
-        properties_window_exists = exists(properties_window_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, properties_window_exists, 'Properties for "Getting Started" window is opened')
+        if not Settings.is_mac():
+            properties_window_exists = exists(properties_window_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, properties_window_exists, 'Properties for "Getting Started" window is opened')
+        else:
+            properties_window_exists = exists(name_before_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, properties_window_exists, 'Properties for "Getting Started" window is opened')
 
         name_before_exists = exists(name_before_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, name_before_exists, 'Name field exists')
@@ -72,7 +77,10 @@ class Test(BaseTest):
         type(Key.TAB)
 
         paste('Tag')
-        [type(Key.TAB) for _ in range(2)]
+        if Settings.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         paste('test')
 
@@ -99,7 +107,10 @@ class Test(BaseTest):
         tags_after_exists = exists(tags_after_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, tags_after_exists, 'Tags field changes are correctly saved')
 
-        [type(Key.TAB) for _ in range(2)]
+        if Settings.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         keyword_after_exists = exists(keyword_after_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, keyword_after_exists, 'Keyword field changes are correctly saved')
