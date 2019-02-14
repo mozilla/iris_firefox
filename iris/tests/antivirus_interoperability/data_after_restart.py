@@ -72,7 +72,7 @@ class Test(BaseTest):
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
-        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 3)
+        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 4)
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
         bookmark_page()
