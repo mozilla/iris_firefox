@@ -33,16 +33,17 @@ class Test(BaseTest):
         area_to_click.y += 5
         right_click(area_to_click)
 
-        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern, DEFAULT_UI_DELAY)
+        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, bookmarks_toolbar_menu_option_available,
                     '\'Bookmarks Toolbar\' option is available in context menu')
 
         click(bookmarks_toolbar_menu_option_pattern)
-        bookmarks_folder_available_in_toolbar = exists(most_visited_toolbar_bookmarks_folder_pattern, DEFAULT_UI_DELAY)
+        bookmarks_folder_available_in_toolbar = exists(most_visited_toolbar_bookmarks_folder_pattern,
+                                                       DEFAULT_SYSTEM_DELAY)
         assert_true(self, bookmarks_folder_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         click(most_visited_toolbar_bookmarks_folder_pattern)
-        bookmark_available_in_folder = exists(pocket_bookmark_pattern, DEFAULT_UI_DELAY)
+        bookmark_available_in_folder = exists(pocket_bookmark_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, bookmark_available_in_folder,
                     '\'Pocket\' bookmark is displayed in \'Most visited\' bookmarks folder in toolbar')
 
