@@ -35,7 +35,7 @@ class Test(BaseTest):
         click(library_import_bookmarks_from_html_pattern)
 
         if Settings.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # go to folder
             paste(test_bookmarks_path)
             type(Key.ENTER)
 
