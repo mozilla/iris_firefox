@@ -31,8 +31,15 @@ class Test(BaseTest):
 
         click(picker_pattern)
 
-        search_engine_list_is_default = exists(default_search_engines_list_pattern)
-        assert_true(self, search_engine_list_is_default, 'The default search engine list is not changed')
+        if Settings.is_mac():
+            default_search_engine_list_hi_res_pattern = Pattern('default_search_engine_list_hi_res.png')
+            search_engine_list_is_default = exists(default_search_engines_list_pattern)
+            search_engine_list_is_default_hi_res = exists(default_search_engine_list_hi_res_pattern)
+            assert_true(self, search_engine_list_is_default or search_engine_list_is_default_hi_res,
+                        'The default search engine list is not changed')
+        else:
+            search_engine_list_is_default = exists(default_search_engines_list_pattern)
+            assert_true(self, search_engine_list_is_default, 'The default search engine list is not changed')
 
         restore_firefox_focus()
         open_find()
@@ -53,9 +60,17 @@ class Test(BaseTest):
 
         click(picker_pattern)
 
-        search_engine_list_is_default_with_antivirus = exists(default_search_engines_list_pattern)
-        assert_true(self, search_engine_list_is_default_with_antivirus, 'The default search engine list is not changed'
-                                                                        'after antivirus was installed')
+        if Settings.is_mac():
+            default_search_engine_list_hi_res_pattern = Pattern('default_search_engine_list_hi_res.png')
+            search_engine_list_is_default_with_antivirus = exists(default_search_engines_list_pattern)
+            search_engine_list_is_default_hi_res_with_antivirus = exists(default_search_engine_list_hi_res_pattern)
+            assert_true(self, search_engine_list_is_default_with_antivirus or
+                        search_engine_list_is_default_hi_res_with_antivirus,
+                        'The default search engine list is not changed after antivirus was installed')
+        else:
+            search_engine_list_is_default_with_antivirus = exists(default_search_engines_list_pattern)
+            assert_true(self, search_engine_list_is_default_with_antivirus,
+                        'The default search engine list is not changed after antivirus was installed')
 
         restore_firefox_focus()
         open_find()
