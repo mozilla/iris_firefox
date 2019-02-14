@@ -27,6 +27,12 @@ class Test(BaseTest):
         return
 
     def run(self):
+
+        completed_5mb_file_pattern = Pattern('completed_5mb_file.png')
+        missing_5mb_file_pattern = Pattern('moved_missing_5mb_file.png')
+        missing_10mb_file_pattern = Pattern('moved_missing_10mb_file.png')
+        missing_20mb_file_pattern = Pattern('moved_missing_20mb_file.png')
+
         navigate('https://www.thinkbroadband.com/download')
         download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
                                DownloadFiles.EXTRA_SMALL_FILE_5MB]
@@ -40,7 +46,7 @@ class Test(BaseTest):
         click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
 
         if Settings.get_os() == Platform.LINUX:
-           click(Pattern('linux_folder_icon.png'))
+            click(Pattern('linux_folder_icon.png'))
 
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
         assert_true(self, expected, 'Downloads folder is displayed.')
@@ -77,10 +83,21 @@ class Test(BaseTest):
         download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
 
         click(NavBar.DOWNLOADS_BUTTON)
+        expected = exists(missing_20mb_file_pattern, 10)
+        assert_true(self, expected, 'Missing 20 MB file is displayed.')
+        expected = exists(missing_10mb_file_pattern, 10)
+        assert_true(self, expected, 'Missing 10 MB file is displayed.')
+        expected = exists(completed_5mb_file_pattern, 10)
+        assert_true(self, expected, 'Completed 5 MB file is displayed.')
+        expected = exists(missing_5mb_file_pattern, 10)
+        assert_true(self, expected, 'Missing 5 MB file is displayed.')
+
         click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
+        expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
+        assert_true(self, expected, 'Downloads folder was recreated.')
 
         if Settings.get_os() == Platform.LINUX:
-           click(Pattern('linux_folder_icon.png'))
+            click(Pattern('linux_folder_icon.png'))
 
         # Assert the newly created downloads folder
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
