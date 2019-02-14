@@ -42,7 +42,7 @@ class Test(BaseTest):
             file_index = download_files_list.index(f)
 
             if file_index != 0:
-                click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
+                click(NavBar.DOWNLOADS_BUTTON)
 
             expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
             assert_true(self, expected, 'Progress information is displayed.')
@@ -69,11 +69,11 @@ class Test(BaseTest):
                 expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_20MB, 10)
                 assert_true(self, expected, 'Total size information is displayed for 20 MB file.')
 
-            click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
+            click(NavBar.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
         download_file(file_to_download, DownloadFiles.OK)
 
-        click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
+        click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_5MB, 10)
         assert_true(self, expected, '5MB file was downloaded.')
 
@@ -84,7 +84,7 @@ class Test(BaseTest):
         assert_false(self, expected, '1GB file was removed from the download panel.')
 
         # Close download panel.
-        click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
+        click(NavBar.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
     def teardown(self):
         # Cancel all 'in progress' downloads.

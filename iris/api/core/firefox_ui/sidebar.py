@@ -38,7 +38,7 @@ class Sidebar(object):
         class Timeline(object):
             TODAY = Pattern('history_today.png')
             YESTERDAY = Pattern('history_yesterday.png')
-            LAST_7_DAYS = Pattern('history_yesterday.png')
+            LAST_7_DAYS = Pattern('history_last_7_days.png')
             JANUARY = Pattern('history_january.png')
             FEBRUARY = Pattern('history_february.png')
             MARCH = Pattern('history_march.png')
