@@ -30,8 +30,7 @@ class Target(BaseTarget):
     def __init__(self):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
-
-
+        self.local_web_root = os.path.join(PathManager.get_target_directory(), 'local_web')
 
 
         # path = self.get_test_candidate()
