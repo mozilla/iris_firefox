@@ -15,14 +15,21 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        home_button_displayed = exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY)
         add_new_bookmark_pattern = Library.Organize.NEW_BOOKMARK
         add_bookmark_panel_name_pattern = Bookmarks.StarDialog.NAME_FIELD
         folder_in_bookmarks_pattern = Pattern('folder_in_bookmarks_toolbar.png')
         mozilla_bookmark_icon_pattern = Pattern('mozilla_bookmark_icon.png')
         context_menu_bookmarks_toolbar_pattern = Pattern('bookmarks_toolbar_navbar_context_menu.png')
+        add_bookmark_location_field_pattern = Pattern('add_bookmark_location_field.png')
+        add_bookmark_popup_button_pattern = Pattern('add_bookmark_popup_button.png')
 
+        home_button_displayed = exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY)
         assert_true(self, home_button_displayed, 'Home button displayed')
 
         #  open Bookmark toolbar from bookmark section of Firefox menu
@@ -48,11 +55,16 @@ class Test(BaseTest):
         add_bookmark_popup = exists(add_bookmark_panel_name_pattern)
         assert_true(self, add_bookmark_popup, 'Add bookmark popup loaded')
 
+        add_bookmark_location_field = exists(add_bookmark_location_field_pattern)
+        assert_true(self, add_bookmark_location_field, '"Add bookmark" popup loaded, and location field available')
+
         # Fill in field and add bookmark
-        type(Key.TAB, interval=DEFAULT_FX_DELAY)
+        click(add_bookmark_location_field_pattern)
         paste('https://www.mozilla.org/en-US/firefox/central/')
-        type(Key.TAB, interval=DEFAULT_FX_DELAY)
-        type(Key.ENTER, interval=DEFAULT_FX_DELAY)
+
+        add_bookmark_popup_button = exists(add_bookmark_popup_button_pattern)
+        assert_true(self, add_bookmark_popup_button, '"Add" button available')
+        click(add_bookmark_popup_button_pattern)
 
         mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern)
         assert_true(self, mozilla_bookmark_icon, 'Mozilla bookmark icon displayed')
