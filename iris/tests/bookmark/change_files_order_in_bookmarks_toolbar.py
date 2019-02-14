@@ -15,6 +15,11 @@ class Test(BaseTest):
         self.locales = ['en-US']
         self.exclude = [Platform.MAC, Platform.LINUX]
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
         bookmarks_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         add_new_bookmark_pattern = Library.Organize.NEW_BOOKMARK
