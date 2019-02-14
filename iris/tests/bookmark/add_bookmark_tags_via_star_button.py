@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Tags can be added to bookmarks using the star-shaped button.'
-        self.test_case_id = '4145'
-        self.test_suite_id = '75'
+        self.test_case_id = '163405'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):
