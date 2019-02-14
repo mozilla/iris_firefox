@@ -55,6 +55,7 @@ class Test(BaseTest):
 
         area_to_paste = find(getting_started_toolbar_bookmark_pattern)
         area_to_paste.x += 150
+        area_to_paste.y += 5
         right_click(area_to_paste)
         paste_option_available = exists(paste_option_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, paste_option_available, '\'Paste\' option is available after right click at the toolbar')
