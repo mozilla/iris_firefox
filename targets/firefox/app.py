@@ -12,7 +12,7 @@ import os
 # from mozrunner import FirefoxRunner, errors as runner_errors
 import pytest
 
-from src.base.target import *
+from src.base.target import BaseTarget
 from src.core.api.enums import Channels
 from src.core.api.errors import APIHelperError
 from src.core.api.os_helpers import OSHelper
@@ -31,6 +31,21 @@ class Target(BaseTarget):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
         self.local_web_root = os.path.join(PathManager.get_target_directory(), 'local_web')
+
+        # Create values to display in the Control Center settings pane
+        # TODO: update with list of all supported locales
+
+        self.cc_settings = [
+            {'name': 'firefox', 'type': 'list', 'label': 'Firefox',
+             'value': ['local', 'latest', 'latest-esr', 'latest-beta', 'nightly'], 'default': 'beta'},
+            {'name': 'locale', 'type': 'list', 'label': 'Locale', 'value': ['en-US'], 'default': 'en-US'},
+            {'name': 'mouse', 'type': 'list', 'label': 'Mouse speed', 'value': ['0.0', '0.5', '1.0', '2.0'],
+             'default': '0.5'},
+            {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting', 'value': False},
+            {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests', 'value': False},
+            {'name': 'email', 'type': 'checkbox', 'label': 'Email results', 'value': False},
+            {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report', 'value': False}
+        ]
 
 
         # path = self.get_test_candidate()

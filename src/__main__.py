@@ -5,13 +5,14 @@
 
 import importlib
 import logging
-
+import os
 import pytest
 
 from src.core.api.keyboard.keyboard_api import check_keyboard_state
 from src.core.util import cleanup
 from src.core.util.app_loader import get_app_test_directory
 from src.core.util.arg_parser import parse_args
+from src.core.util.json_utils import create_target_json
 from src.core.util.logger_manager import initialize_logger
 from src.core.util.path_manager import PathManager
 from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding
@@ -23,6 +24,7 @@ def main():
     args = parse_args()
     initialize_logger()
     if verify_config(args):
+        setup_control_center()
         target_plugin = get_target(args.application)
         pytest_args = get_test_params(args.application)
         initialize_platform(args)
@@ -53,7 +55,6 @@ def initialize_platform(args):
     fix_terminal_encoding()
     PathManager.create_working_directory(args.workdir)
     PathManager.create_run_directory()
-    PathManager.create_target_directory()
 
 
 def get_test_params(target):
@@ -82,6 +83,11 @@ def verify_config(args):
     except KeyboardInterrupt:
         exit(1)
     return True
+
+
+def setup_control_center():
+    create_target_json()
+    # TODO: move icons to working directory image folder
 
 
 class ShutdownTasks(cleanup.CleanUp):

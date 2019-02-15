@@ -158,21 +158,6 @@ class PathManager:
         return os.path.join(PathManager.get_working_dir(), 'runs')
 
     @staticmethod
-    def create_target_directory():
-        """Creates target directory."""
-        PathManager.get_current_run_dir()
-        target_directory = os.path.join(PathManager.get_current_run_dir(), args.application)
-        if not os.path.exists(target_directory):
-            logger.debug('Creating target directory %s' % target_directory)
-            os.makedirs(target_directory)
-
-    @staticmethod
-    def get_target_working_directory():
-        """Returns the path to the target directory within the working directory."""
-        PathManager.create_target_directory()
-        return os.path.join(PathManager.get_current_run_dir(), args.application)
-
-    @staticmethod
     def get_target_directory():
         """Returns the path to the target directory."""
         return os.path.join(PathManager.get_module_dir(), 'targets', args.application)
@@ -181,7 +166,7 @@ class PathManager:
     def get_debug_image_directory():
         from pathlib import Path
         test_path = os.environ.get('PYTEST_CURRENT_TEST').split(':')[0]
-        return os.path.join(PathManager.get_target_working_directory(),
+        return os.path.join(PathManager.get_current_run_dir(),
                             os.path.splitext(os.path.join(*Path(test_path).parts[2:]))[0], 'debug_images')
 
     @staticmethod

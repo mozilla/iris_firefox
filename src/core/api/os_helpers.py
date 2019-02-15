@@ -13,6 +13,9 @@ from src.core.api.errors import APIHelperError
 
 OS_NAME = mozinfo.os
 OS_VERSION = mozinfo.os_version
+OS_BITS = mozinfo.bits
+PROCESSOR = mozinfo.processor
+
 MONITORS = mss.mss().monitors[1:]
 MULTI_MONITOR_AREA = mss.mss().monitors[0]
 
@@ -81,6 +84,14 @@ class OSHelper:
             return 'osx_%s' % 'retina ' if OSHelper.is_high_def_display() else 'non_retina'
         else:
             return current_os
+
+    @staticmethod
+    def get_os_bits():
+        return mozinfo.bits
+
+    @staticmethod
+    def get_processor():
+        return mozinfo.processor
 
     @staticmethod
     def use_multiprocessing():

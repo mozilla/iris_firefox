@@ -14,7 +14,7 @@ class BaseTarget(object):
 
     def __init__(self):
         self.target_name = 'Default target'
-        self.cc_settings = {}
+        self.cc_settings = []
 
     def pytest_sessionstart(self, session):
         """ called after the ``Session`` object has been created and before performing collection
