@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Websites can be bookmarked via URL drag & drop onto the Bookmarks Sidebar.'
-        self.test_case_id = '4092'
-        self.test_suite_id = '75'
+        self.test_case_id = '168923'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):

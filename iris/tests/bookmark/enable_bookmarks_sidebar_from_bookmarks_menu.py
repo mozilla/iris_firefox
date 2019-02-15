@@ -10,8 +10,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Bookmarks Sidebar can be enabled from the Bookmarks Menu.'
-        self.test_case_id = '4091'
-        self.test_suite_id = '75'
+        self.test_case_id = '168920'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):
