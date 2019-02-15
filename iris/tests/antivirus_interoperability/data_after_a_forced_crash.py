@@ -25,7 +25,14 @@ class Test(BaseTest):
         youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
         twitter_logo_unactive_tab_pattern = Pattern('twitter_logo_unactive_tab.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
-        restore_previous_session_button_pattern = Pattern('restore_previous_session.png')
+        restore_previous_session_checkbox_pattern = Pattern('restore_previous_session_checkbox.png')
+
+        navigate('about:preferences#general')
+
+        restore_previous_session_checkbox_displayed = exists(restore_previous_session_checkbox_pattern)
+        assert_true(self, restore_previous_session_checkbox_displayed, 'Restore previous session button displayed')
+
+        click(restore_previous_session_checkbox_pattern)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -58,12 +65,6 @@ class Test(BaseTest):
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
-        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
-        assert_true(self, history_updated_cnn, 'The CNN site is added to history')
-
-        history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
-        assert_true(self, history_updated_wiki, 'The Wikipedia site is added to history')
-
         location_for_click = find(NavBar.HOME_BUTTON).right(100)
 
         right_click(location_for_click)
@@ -74,7 +75,7 @@ class Test(BaseTest):
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
         bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height*3)
-        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 2)
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
         bookmark_page()
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
@@ -113,14 +114,6 @@ class Test(BaseTest):
                         self.profile_path,
                         self.base_local_web_url,
                         show_crash_reporter=True)
-
-        click(NavBar.HAMBURGER_MENU)
-        restore_previous_session_button_displayed = exists(restore_previous_session_button_pattern)
-        assert_true(self, restore_previous_session_button_displayed, 'Restore previous session button displayed')
-
-        click(restore_previous_session_button_pattern)
-
-        new_tab()
 
         navigate('about:crashparent')
 
