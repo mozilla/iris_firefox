@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Add a new bookmarks separator from Bookmarks Sidebar'
-        self.test_case_id = '171650'
+        self.test_case_id = '168932'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
