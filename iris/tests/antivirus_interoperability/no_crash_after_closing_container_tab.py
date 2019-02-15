@@ -99,7 +99,7 @@ class Test(BaseTest):
 
         select_tab(2)
 
-        yotube_opened = exists(yotube_logo_pattern)
+        yotube_opened = exists(yotube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, yotube_opened, 'Youtube site is successfully loaded')
 
         yotube_opened_in_container_tab = exists(personal_label_pattern)
@@ -107,7 +107,7 @@ class Test(BaseTest):
 
         select_tab(3)
 
-        twitter_opened = exists(twitter_logo_pattern)
+        twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'Twitter site is successfully loaded')
 
         twitter_opened_in_container_tab = exists(personal_label_pattern)
@@ -123,5 +123,5 @@ class Test(BaseTest):
 
         reload_page()
 
-        no_crashes_occured = exists(yotube_logo_pattern)
+        no_crashes_occured = exists(yotube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, no_crashes_occured, 'No crash or bluescreen after closing a container tab.')
