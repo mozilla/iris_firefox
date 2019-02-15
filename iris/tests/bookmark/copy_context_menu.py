@@ -10,8 +10,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'The Copy context menu option works properly.'
-        self.test_case_id = '4102'
-        self.test_suite_id = '75'
+        self.test_case_id = '168934'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):

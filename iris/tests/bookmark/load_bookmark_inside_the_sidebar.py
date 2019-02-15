@@ -13,7 +13,7 @@ class Test(BaseTest):
         # This feature was removed from Firefox 63 and beyond in bug 1452645.
         self.fx_version = '<=62'
         self.test_case_id = '4162'
-        self.test_suite_id = '75'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):

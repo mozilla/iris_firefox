@@ -83,11 +83,11 @@ class Region(object):
     def upper_right_corner(self):
         return Region.screen_regions(self, 'UPPER_RIGHT_CORNER')
 
-    def bottom_left_corner(self):
-        return Region.screen_regions(self, 'BOTTOM_LEFT_CORNER')
+    def lower_left_corner(self):
+        return Region.screen_regions(self, 'LOWER_LEFT_CORNER')
 
-    def bottom_right_corner(self):
-        return Region.screen_regions(self, 'BOTTOM_RIGHT_CORNER')
+    def lower_right_corner(self):
+        return Region.screen_regions(self, 'LOWER_RIGHT_CORNER')
 
     def get_center(self):
         """Returns a Location object for the center of te screen."""
@@ -349,8 +349,8 @@ class Region(object):
 
             'UPPER_LEFT_CORNER': Region.get_matrix(2, 2, region)[0][0],
             'UPPER_RIGHT_CORNER': Region.get_matrix(2, 2, region)[0][1],
-            'BOTTOM_LEFT_CORNER': Region.get_matrix(2, 2, region)[1][0],
-            'BOTTOM_RIGHT_CORNER': Region.get_matrix(2, 2, region)[1][1],
+            'LOWER_LEFT_CORNER': Region.get_matrix(2, 2, region)[1][0],
+            'LOWER_RIGHT_CORNER': Region.get_matrix(2, 2, region)[1][1],
         }
         return captions.get(caption)
 
@@ -549,8 +549,10 @@ def find(image_name, region=None):
     :param region: Region object in order to minimize the area.
     :return: Location object.
     """
-    if isinstance(image_name, Pattern):
+    if parse_args().highlight:
+        highlight(region=region)
 
+    if isinstance(image_name, Pattern):
         image_found = image_search(image_name, region)
         if (image_found.x != -1) & (image_found.y != -1):
             if parse_args().highlight:
@@ -604,6 +606,9 @@ def wait(image_name, timeout=None, region=None):
     :param region: Region object in order to minimize the area.
     :return: True if found.
     """
+    if parse_args().highlight:
+        highlight(region=region)
+
     if isinstance(image_name, Pattern):
         if timeout is None:
             timeout = Settings.auto_wait_timeout

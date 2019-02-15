@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Links can be bookmarked via context menu.'
         self.test_case_id = '4143'
-        self.test_suite_id = '75'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):
@@ -25,6 +25,8 @@ class Test(BaseTest):
         bookmarked_link = Pattern('bookmarked_link.png')
 
         navigate(moz_article)
+
+        close_content_blocking_pop_up()
 
         moz_article_assert = exists(moz_page, 10)
         assert_true(self, moz_article_assert, 'The Moz article page has been successfully loaded.')
