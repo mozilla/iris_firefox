@@ -54,8 +54,12 @@ class Test(BaseTest):
         right_click(history_today_pattern)
         type(text='o')
 
-        click_window_control('close')
-        time.sleep(DEFAULT_UI_DELAY)
+        close_auxiliary_window = False
+        if Settings.get_os() == Platform.MAC:
+            click_window_control('close')
+            time.sleep(DEFAULT_UI_DELAY)
+        else:
+            close_auxiliary_window = True
 
         # Make sure that all the pages from the selected history time range are opened in the current window.
         expected = exists(iris_tab_icon, 10)
@@ -69,3 +73,16 @@ class Test(BaseTest):
 
         expected = exists(new_tab_pattern, 10)
         assert_true(self, expected, 'about:newtab page loaded successfully.')
+
+        # Close potentially existing background library window
+        if close_auxiliary_window:
+            library_toolbar_icon = Pattern('library_icon.png')
+            firefox_toolbar_icon = Pattern('firefox_icon.png')
+            click(firefox_toolbar_icon)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            click(library_toolbar_icon)
+
+            click_window_control('close')
+            time.sleep(DEFAULT_UI_DELAY)
+
+            click(firefox_privacy_logo_pattern)
