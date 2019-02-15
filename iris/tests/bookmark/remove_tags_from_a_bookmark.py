@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Specific tags can be removed from a bookmark'
         self.test_case_id = '4150'
-        self.test_suite_id = '75'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):
@@ -64,6 +64,8 @@ class Test(BaseTest):
         click(save_pattern)
 
         bookmarks_sidebar('close')
+
+        time.sleep(DEFAULT_UI_DELAY)
 
         bookmarks_sidebar('open')
 
