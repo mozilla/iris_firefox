@@ -9,21 +9,18 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'The items from the Bookmarks Toolbar can be sorted by name.'
-        self.test_case_id = '171635'
+        self.meta = 'Change the files order in the Bookmarks Toolbar section from Firefox menu'
+        self.test_case_id = '163482'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
         self.exclude = [Platform.MAC, Platform.LINUX]
 
     def run(self):
-        if Settings.is_linux():
-            library_bookmarks_pattern = Pattern('bookmarks_toolbar_top_menu.png')
-        else:
-            library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+        bookmarks_most_visited = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         mozilla_bookmark_icon_pattern = Pattern('mozilla_bookmark_icon.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         bookmark_after_drag_and_drop_pattern = Pattern('bookmark_after_drag_and_drop.png')
-        bookmarks_most_visited = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
 
         #  open Bookmark toolbar from bookmark section of Firefox menu
         if Settings.is_linux():
@@ -39,6 +36,8 @@ class Test(BaseTest):
         click(bookmarks_top_menu_pattern)
         library_bookmarks = exists(library_bookmarks_pattern)
         assert_true(self, library_bookmarks, 'Library bookmarks button displayed')
+        library_location_x = find(library_bookmarks_pattern).x
+        find_drop_region = Region(library_location_x, 0, width=SCREEN_WIDTH/2, height=SCREEN_HEIGHT)
 
         click(library_bookmarks_pattern)
         mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern)
@@ -49,9 +48,9 @@ class Test(BaseTest):
                     'Most Visited section and the Folders and websites from the Bookmark Toolbar are displayed')
 
         drop_from_location = find(mozilla_bookmark_icon_pattern)
-        drom_to_location = find(bookmarks_most_visited)
+        drop_to_location = find(bookmarks_most_visited, find_drop_region)
 
-        drag_drop(drop_from_location, drom_to_location)
+        drag_drop(drop_from_location, drop_to_location)
 
         bookmark_dropped = exists(bookmark_after_drag_and_drop_pattern)
         assert_true(self, bookmark_dropped, 'The order of files is changed successfully.')
