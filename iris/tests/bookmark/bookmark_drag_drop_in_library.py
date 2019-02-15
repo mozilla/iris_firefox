@@ -17,11 +17,11 @@ class Test(BaseTest):
 
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
-        wiki_bookmark_logo_pattern = Pattern('soap_wiki_tab.png')
+        wiki_bookmark_logo_pattern = Pattern('wiki_bookmark_logo.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
         point_to_move_wiki_window = find(soap_wiki_tab_pattern).right(400)
