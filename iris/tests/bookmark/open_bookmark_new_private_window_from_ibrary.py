@@ -26,25 +26,23 @@ class Test(BaseTest):
 
         library_is_displayed = exists(bookmark_menu_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_is_displayed, 'Library is correctly open')
+
         click(bookmark_menu_pattern)
 
         mozilla_bookmark_exists = exists(mozilla_bookmark_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_bookmark_exists, 'Mozilla bookmark exists')
+
         double_click(mozilla_bookmark_pattern)
 
         bookmark_site_exists = exists(bookmark_site_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_site_exists, 'Website bookmark exists')
+
         right_click(bookmark_site_pattern)
 
         open_new_private_window_exists = exists(open_new_private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, open_new_private_window_exists, 'Open new private window button exists')
+
         click(open_new_private_window_pattern)
 
         private_window_exists = exists(private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, private_window_exists, 'The selected bookmark page is opened in a new private window.')
-
-
-
-
-
-
