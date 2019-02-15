@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'Default Search Code: Google.'
         self.test_case_id = '218333'
         self.test_suite_id = '83'
+        self.locale = ['en-US', 'de', 'fr', 'pl', 'it', 'pt-BR', 'ja', 'es-ES', 'en-GB', 'ru']
 
     def run(self):
         url = LocalWeb.FOCUS_TEST_SITE

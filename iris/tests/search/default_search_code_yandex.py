@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.meta = 'Default Search Code: Yandex: Russia.'
         self.test_case_id = '218336'
         self.test_suite_id = '83'
-        self.exclude = Platform.ALL
+        self.locale = ['ru', 'be', 'kk', 'tr']
 
     def setup(self):
         BaseTest.setup(self)
