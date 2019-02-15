@@ -24,11 +24,8 @@ class Test(BaseTest):
         bookmarks_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         add_new_bookmark_pattern = Library.Organize.NEW_BOOKMARK
         add_bookmark_panel_name_pattern = Bookmarks.StarDialog.NAME_FIELD
-        if Settings.is_linux():
-            library_bookmarks_pattern = Pattern('bookmarks_toolbar_top_menu.png')
-        else:
-            library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
-        mozilla_bookmark_icon_pattern = Pattern('mozilla_bookmark_icon.png')
+        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+        mozilla_test_bookmark_patten = Pattern('mozilla_test_bookmark.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         bookmark_after_drag_and_drop_pattern = Pattern('bookmark_after_drag_and_drop.png')
         context_menu_bookmarks_toolbar_pattern = Pattern('bookmarks_toolbar_navbar_context_menu.png')
@@ -62,6 +59,9 @@ class Test(BaseTest):
         add_bookmark_popup = exists(add_bookmark_panel_name_pattern)
         assert_true(self, add_bookmark_popup, 'Add bookmark popup loaded')
 
+        click(add_bookmark_panel_name_pattern)
+        paste('Test bookmark')
+
         add_bookmark_location_field = exists(add_bookmark_location_field_pattern)
         assert_true(self, add_bookmark_location_field, '"Add bookmark" popup loaded, and location field available')
 
@@ -90,17 +90,20 @@ class Test(BaseTest):
         find_drop_region = Region(library_location_x, 0, width=SCREEN_WIDTH/2, height=SCREEN_HEIGHT)
 
         click(library_bookmarks_pattern)
-        mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern)
-        assert_true(self, mozilla_bookmark_icon, 'Mozilla bookmark icon displayed.')
+        mozilla_test_bookmark = exists(mozilla_test_bookmark_patten)
+        assert_true(self, mozilla_test_bookmark, 'Mozilla bookmark icon displayed.')
 
         bookmarks_most_visited_exists = exists(bookmarks_most_visited_pattern)
         assert_true(self, bookmarks_most_visited_exists,
                     'Most Visited section and the Folders and websites from the Bookmark Toolbar are displayed')
 
-        drop_from_location = find(mozilla_bookmark_icon_pattern)
+        drop_from_location = find(mozilla_test_bookmark_patten)
         drop_to_location = find(bookmarks_most_visited_pattern, find_drop_region)
 
         drag_drop(drop_from_location, drop_to_location)
 
         bookmark_dropped = exists(bookmark_after_drag_and_drop_pattern)
         assert_true(self, bookmark_dropped, 'The order of files is changed successfully.')
+
+        type(Key.ESC)  # Close context menu
+        type(Key.ESC)
