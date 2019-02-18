@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Websites can be bookmarked from a private window.'
         self.test_case_id = '4176'
-        self.test_suite_id = '75'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):
