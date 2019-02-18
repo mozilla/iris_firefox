@@ -33,7 +33,8 @@ DEFAULT_HEAVY_SITE_LOAD_TIMEOUT = 90
 
 CHANNELS = ('beta', 'release', 'nightly', 'esr', 'dev')
 LOCALES = ('en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi',
-           'pl', 'tr', 'ro', 'ja' ,'it', 'pt-BR', 'in', 'en-GB', 'id', 'ca')
+           'pl', 'tr', 'ro', 'ja' ,'it', 'pt-BR', 'in', 'en-GB', 'id', 'ca', 'be',
+           'kk')
 
 
 class _IrisSettings(object):

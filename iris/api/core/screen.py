@@ -38,8 +38,8 @@ class Screen(Region):
 
     UPPER_LEFT_CORNER = Region.screen_regions(screen_region, 'UPPER_LEFT_CORNER')
     UPPER_RIGHT_CORNER = Region.screen_regions(screen_region, 'UPPER_RIGHT_CORNER')
-    BOTTOM_LEFT_CORNER = Region.screen_regions(screen_region, 'BOTTOM_LEFT_CORNER')
-    BOTTOM_RIGHT_CORNER = Region.screen_regions(screen_region, 'BOTTOM_RIGHT_CORNER')
+    LOWER_LEFT_CORNER = Region.screen_regions(screen_region, 'LOWER_LEFT_CORNER')
+    LOWER_RIGHT_CORNER = Region.screen_regions(screen_region, 'LOWER_RIGHT_CORNER')
 
     def get_number_screens(self):
         """Returns the number of screens."""
