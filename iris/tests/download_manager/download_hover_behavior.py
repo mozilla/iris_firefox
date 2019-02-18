@@ -33,7 +33,7 @@ class Test(BaseTest):
         scroll_down(5)
         download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert_true(self, expected, 'Downloads button found.')
 
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
