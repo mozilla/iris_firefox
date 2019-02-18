@@ -109,7 +109,7 @@ class Test(BaseTest):
             # Highlight some text and right click it.
             new_tab()
             navigate(url)
-            expected = exists(text_pattern, 10)
+            expected = exists(text_pattern, 20)
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
 
             double_click(text_pattern)
