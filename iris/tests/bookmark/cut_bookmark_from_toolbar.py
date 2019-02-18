@@ -70,9 +70,8 @@ class Test(BaseTest):
         assert_true(self, bookmark_in_folder, 'Bookmark placed in folder now')
         restore_firefox_focus()
 
-        if not Settings.is_linux():
-            if Settings.is_windows():
-                type(Key.ALT)
+        if Settings.is_windows():
+            type(Key.ALT)
 
             click(bookmarks_top_menu_pattern)
 
@@ -83,5 +82,12 @@ class Test(BaseTest):
             bookmark_displayed_in_top_menu = exists(getting_started_top_menu_pattern)
             assert_true(self, bookmark_displayed_in_top_menu, 'Bookmark is displayed in top menu')
 
+            right_click(getting_started_top_menu_pattern)
+            click(cut_item_pattern)
             click(NavBar.HAMBURGER_MENU)
             restore_firefox_focus()
+
+            right_click(most_visited_pattern)
+            click(paste_item_pattern)
+            bookmark_displayed_in_toolbar = exists(getting_started_bookmark_pattern)
+            assert_true(self, bookmark_displayed_in_toolbar, 'Bookmark is displayed in toolbar again')
