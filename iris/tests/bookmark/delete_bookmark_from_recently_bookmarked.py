@@ -23,14 +23,17 @@ class Test(BaseTest):
 
         bookmark_options_exists = exists(LibraryMenu.BOOKMARKS_OPTION)
         assert_true(self, bookmark_options_exists, 'Bookmark option is on display')
+
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         bookmark_menu_exists = exists(getting_started_bookmark_pattern)
         assert_true(self, bookmark_menu_exists, 'The Bookmarks menu is correctly displayed')
+
         right_click(getting_started_bookmark_pattern)
 
         delete_bookmark_button_exists = exists(delete_bookmark_button_pattern)
         assert_true(self, delete_bookmark_button_exists, 'Delete button is displayed')
+
         click(delete_bookmark_button_pattern)
 
         website_not_exists = exists(getting_started_bookmark_pattern)
