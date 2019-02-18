@@ -43,6 +43,7 @@ class Test(BaseTest):
         click(new_folder_pattern)
         time.sleep(0.5)  # Required for prompt window activating after rendering
         click(name_bookmark_field_pattern)
+        edit_select_all()
         paste('folder')
         type(Key.ENTER)
         right_click(getting_started_bookmark_pattern)
