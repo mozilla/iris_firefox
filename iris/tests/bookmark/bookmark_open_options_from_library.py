@@ -54,7 +54,7 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
-        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with drag and drop from Library')
+        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with \'Open\' option from Library')
 
         open_library()
 
