@@ -14,14 +14,15 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.test_case_id = '163206'
         self.locale = ['en-US']
-        self.exclude = [Platform.LINUX, Platform.MAC]
+        self.exclude = [Platform.LINUX, ]
 
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         empty_folder_stub_pattern = Pattern('empty_folder.png')
         other_bookmarks_item_pattern = Pattern('other_bookmarks.png')
 
-        type(Key.ALT)
+        if Settings.is_windows():
+            type(Key.ALT)
 
         top_menu_displayed = exists(bookmarks_top_menu_pattern)
         assert_true(self, top_menu_displayed, 'Firefox menu is properly displayed')
