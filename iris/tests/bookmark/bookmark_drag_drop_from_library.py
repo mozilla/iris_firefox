@@ -48,7 +48,7 @@ class Test(BaseTest):
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with drag and drop from Library')
 
-        close_window()
+        open_library()
 
         click(Library.TITLE)
         close_window_control('auxiliary')
