@@ -28,6 +28,7 @@ class Test(BaseTest):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         bookmark_toolbar_top_menu_pattern = Pattern('bookmark_toolbar_top_menu.png')
         folder_bookmarks_top_menu_pattern = Pattern('folder_bookmarks_top_menu.png')
+        getting_started_top_menu_pattern = Pattern('getting_started_top_menu.png')
 
         navbar_offset, _ = NavBar.HOME_BUTTON.get_size()
         navbar_offset *= 1.5
@@ -74,7 +75,7 @@ class Test(BaseTest):
 
         click(folder_bookmarks_top_menu_pattern)
 
-        bookmark_displayed_in_top_menu = exists(getting_started_bookmark_pattern)
+        bookmark_displayed_in_top_menu = exists(getting_started_top_menu_pattern)
         assert_true(self, bookmark_displayed_in_top_menu, 'Bookmark is displayed in top menu')
 
         click(NavBar.HAMBURGER_MENU)
