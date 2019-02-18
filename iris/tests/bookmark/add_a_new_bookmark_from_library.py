@@ -29,10 +29,10 @@ class Test(BaseTest):
 
         right_click(location_for_right_click)
 
-        new_bookmark_option_exists = exists(new_bookmark_option_pattern)
+        new_bookmark_option_exists = exists(Library.Organize.NEW_BOOKMARK)
         assert_true(self, new_bookmark_option_exists, 'New Bookmark option exists')
 
-        click(new_bookmark_option_pattern)
+        click(Library.Organize.NEW_BOOKMARK)
 
         new_bookmark_window_opened = exists(new_bookmark_window_pattern)
         assert_true(self, new_bookmark_window_opened, 'New Bookmark window opened')
@@ -42,7 +42,11 @@ class Test(BaseTest):
         paste(LocalWeb.SOAP_WIKI_TEST_SITE)
         type(Key.TAB)
         paste('SOAP')
-        type(Key.TAB)
+        if Settings.is_mac():
+            type(Key.TAB)
+        else:
+            type(Key.TAB)
+            type(Key.TAB)
         paste('SOAP')
         type(Key.ENTER)
 
@@ -51,6 +55,3 @@ class Test(BaseTest):
 
         click(Library.TITLE)
         close_window_control('auxiliary')
-
-        close_window()
-
