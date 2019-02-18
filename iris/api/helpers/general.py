@@ -407,6 +407,18 @@ def create_region_for_url_bar():
         raise APIHelperError('Could not create region for URL bar.')
 
 
+def create_region_for_awesome_bar():
+    """Create region for the awesome bar."""
+
+    try:
+        identity_icon_pattern = LocationBar.IDENTITY_ICON
+        page_action_pattern = LocationBar.PAGE_ACTION_BUTTON
+        return create_region_from_patterns(left=page_action_pattern,
+                                           right=identity_icon_pattern)
+    except FindError:
+        raise APIHelperError('Could not create region for awesome bar.')
+
+
 def create_region_from_image(image):
     """Create region starting from a pattern.
 
@@ -544,10 +556,10 @@ def get_firefox_channel(build_path):
     fx_channel = get_firefox_info(build_path)['application_repository']
     if 'beta' in fx_channel:
         return 'beta'
-    elif 'release' in fx_channel:
-        return 'release'
     elif 'esr' in fx_channel:
         return 'esr'
+    elif 'release' in fx_channel:
+        return 'release'
     else:
         return 'nightly'
 
@@ -1350,4 +1362,3 @@ class ZoomType(object):
 
     IN = 300 if Settings.is_windows() else 1
     OUT = -300 if Settings.is_windows() else -1
-

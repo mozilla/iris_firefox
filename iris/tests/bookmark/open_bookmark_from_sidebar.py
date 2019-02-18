@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Bookmarks can be opened from the Bookmarks Sidebar.'
-        self.test_case_id = '4094'
-        self.test_suite_id = '75'
+        self.test_case_id = '168924'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):
