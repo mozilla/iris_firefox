@@ -19,6 +19,9 @@ class Test(BaseTest):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         wiki_bookmark_logo_pattern = Pattern('wiki_bookmark_logo.png')
 
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -26,8 +29,10 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        bookmark_added = exists(LocationBar.STAR_BUTTON_STARRED, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_added, 'Bookmark added')
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, stardialog_displayed, 'Bookmark added')
+
+        click(Bookmarks.StarDialog.DONE)
 
         new_tab()
         select_tab(1)
@@ -45,7 +50,7 @@ class Test(BaseTest):
 
         drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR)
 
-        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with drag and drop from Library')
 
         open_library()
