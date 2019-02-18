@@ -32,8 +32,13 @@ class Test(BaseTest):
 
         click(Library.Organize.NEW_FOLDER)
 
-        new_bookmark_window_opened = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED)
-        assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
+        if Settings.is_linux():
+            new_folder_bookmark_bookmark = Pattern('new_folder_bookmark.png')
+            new_bookmark_window_opened = exists(new_folder_bookmark_bookmark)
+            assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
+        else:
+            new_bookmark_window_opened = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED)
+            assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
 
         paste('Iris New Folder')
         type(Key.ENTER)
