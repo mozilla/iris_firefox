@@ -70,16 +70,18 @@ class Test(BaseTest):
         assert_true(self, bookmark_in_folder, 'Bookmark placed in folder now')
         restore_firefox_focus()
 
-        type(Key.ALT)
+        if not Settings.is_linux():
+            if Settings.is_windows():
+                type(Key.ALT)
 
-        click(bookmarks_top_menu_pattern)
+            click(bookmarks_top_menu_pattern)
 
-        click(bookmark_toolbar_top_menu_pattern)
+            click(bookmark_toolbar_top_menu_pattern)
 
-        click(folder_bookmarks_top_menu_pattern)
+            click(folder_bookmarks_top_menu_pattern)
 
-        bookmark_displayed_in_top_menu = exists(getting_started_top_menu_pattern)
-        assert_true(self, bookmark_displayed_in_top_menu, 'Bookmark is displayed in top menu')
+            bookmark_displayed_in_top_menu = exists(getting_started_top_menu_pattern)
+            assert_true(self, bookmark_displayed_in_top_menu, 'Bookmark is displayed in top menu')
 
-        click(NavBar.HAMBURGER_MENU)
-        restore_firefox_focus()
+            click(NavBar.HAMBURGER_MENU)
+            restore_firefox_focus()
