@@ -28,12 +28,12 @@ class Test(BaseTest):
         edit_bookmark_folder_after_pattern = Pattern('edit_bookmark_folder_modified.png')
         edit_bookmark_tags_before_pattern = Pattern('tags_before.png')
         edit_bookmark_tags_after_pattern = Pattern('edit_bookmark_tags_modified.png')
-        if not Settings.is_windows():
+        if not Settings.is_windows() or not Settings.is_mac():
             edit_this_bookmark_pattern = Pattern('edit_this_bookmark.png')
         else:
             edit_this_bookmark_pattern = Bookmarks.StarDialog.EDIT_THIS_BOOKMARK
 
-        if Settings.is_linux():
+        if Settings.is_linux() or Settings.is_mac():
             edit_bookmark_folder_option = Pattern('bookmark_menu_folder_option.png')
 
         navigate('wikipedia.org')
@@ -56,9 +56,14 @@ class Test(BaseTest):
 
         click(edit_this_bookmark_pattern)
 
-        edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, edit_this_bookmark_menu_exists,
-                    'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
+        if not Settings.is_mac():
+            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, edit_this_bookmark_menu_exists,
+                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
+        else:
+            edit_bookmark_name_before_exists = exists(edit_bookmark_name_before_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, edit_bookmark_name_before_exists,
+                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
 
         edit_bookmark_name_before_exists = exists(edit_bookmark_name_before_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, edit_bookmark_name_before_exists, 'Name field exists')
@@ -75,7 +80,7 @@ class Test(BaseTest):
 
         click(edit_bookmark_folder_before_pattern)
 
-        if Settings.is_linux():
+        if Settings.is_linux() or Settings.is_mac():
             edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_option, DEFAULT_UI_DELAY_LONG)
             assert_true(self, edit_bookmark_folder_after_exists, 'Needed option from folder field exists')
             click(edit_bookmark_folder_option)
@@ -84,7 +89,10 @@ class Test(BaseTest):
             assert_true(self, edit_bookmark_folder_after_exists, 'Needed option from folder field exists')
             click(edit_bookmark_folder_after_pattern)
 
-        [type(Key.TAB) for _ in range(2)]
+        if not Settings.is_mac():
+            [type(Key.TAB) for _ in range(2)]
+        else:
+            type(Key.TAB)
 
         paste('tags, test')
 
@@ -105,9 +113,14 @@ class Test(BaseTest):
 
         click(edit_this_bookmark_pattern)
 
-        edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, edit_this_bookmark_menu_exists,
-                    'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
+        if not Settings.is_mac():
+            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, edit_this_bookmark_menu_exists,
+                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
+        else:
+            edit_bookmark_name_before_exists = exists(edit_bookmark_name_after_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, edit_bookmark_name_before_exists,
+                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
 
         edit_bookmark_name_after_exists = exists(edit_bookmark_name_after_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, edit_bookmark_name_after_exists, 'Name field was correctly saved')
