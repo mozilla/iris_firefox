@@ -17,7 +17,6 @@ class Test(BaseTest):
 
     def run(self):
         soap_bookmark_pattern = Pattern('soap_bookmark.png')
-        new_bookmark_option_pattern = Pattern('new_bookmark_option.png')
         new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
 
         open_library()
@@ -35,7 +34,7 @@ class Test(BaseTest):
         click(Library.Organize.NEW_BOOKMARK)
 
         new_bookmark_window_opened = exists(new_bookmark_window_pattern)
-        assert_true(self, new_bookmark_window_opened, 'New Bookmark window opened')
+        assert_true(self, new_bookmark_window_opened, 'New Bookmark window is displayed')
 
         paste('SOAP')
         type(Key.TAB)
@@ -51,7 +50,7 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         bookmark_exists = exists(soap_bookmark_pattern)
-        assert_true(self, bookmark_exists, 'Bookmark exists')
+        assert_true(self, bookmark_exists, 'The new bookmark is added in thr selected section')
 
         click(Library.TITLE)
         close_window_control('auxiliary')
