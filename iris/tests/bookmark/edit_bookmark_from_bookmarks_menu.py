@@ -28,7 +28,7 @@ class Test(BaseTest):
         edit_bookmark_folder_after_pattern = Pattern('edit_bookmark_folder_modified.png')
         edit_bookmark_tags_before_pattern = Pattern('tags_before.png')
         edit_bookmark_tags_after_pattern = Pattern('edit_bookmark_tags_modified.png')
-        if not Settings.is_windows() or not Settings.is_mac():
+        if not Settings.is_windows():
             edit_this_bookmark_pattern = Pattern('edit_this_bookmark.png')
         else:
             edit_this_bookmark_pattern = Bookmarks.StarDialog.EDIT_THIS_BOOKMARK
