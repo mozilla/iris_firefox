@@ -51,10 +51,14 @@ class Test(BaseTest):
         right_click(soap_wiki_tab_pattern)
 
         type(Key.DOWN)
+        type(Key.DOWN)
         type(Key.ENTER)
 
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
-        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with drag and drop from Library')
+        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with Open in a New Tab from Library')
+
+        new_tab_exists = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
+        assert_true(self, new_tab_exists, 'New tab displayed')
 
         open_library()
 
