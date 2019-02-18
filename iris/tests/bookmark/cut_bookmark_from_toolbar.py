@@ -29,6 +29,7 @@ class Test(BaseTest):
         bookmark_toolbar_top_menu_pattern = Pattern('bookmark_toolbar_top_menu.png')
         folder_bookmarks_top_menu_pattern = Pattern('folder_bookmarks_top_menu.png')
         getting_started_top_menu_pattern = Pattern('getting_started_top_menu.png')
+        name_bookmark_field_pattern = Pattern('name_bookmark_field.png')
 
         navbar_offset, _ = NavBar.HOME_BUTTON.get_size()
         navbar_offset *= 1.5
@@ -41,6 +42,7 @@ class Test(BaseTest):
         right_click(most_visited_pattern)
         click(new_folder_pattern)
         time.sleep(0.5)  # Required for prompt window activating after rendering
+        click(name_bookmark_field_pattern)
         paste('folder')
         type(Key.ENTER)
         right_click(getting_started_bookmark_pattern)
