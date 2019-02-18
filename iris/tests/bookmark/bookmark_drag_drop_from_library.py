@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Bookmark a page by drag&drop in Library.'
-        self.test_case_id = '169274'
+        self.meta = 'Open a bookmark with drag&drop from Library'
+        self.test_case_id = '169271'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -24,22 +24,31 @@ class Test(BaseTest):
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
-        point_to_move_wiki_window = find(soap_wiki_tab_pattern).right(400)
-        location_to_shift_wiki_window = find(soap_wiki_tab_pattern).right(SCREEN_WIDTH)
+        bookmark_page()
 
-        drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
+        bookmark_added = exists(LocationBar.STAR_BUTTON_STARRED, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmark_added, 'Bookmark added')
+
+        new_tab()
+        select_tab(1)
+        close_tab()
 
         open_library()
 
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
-        lib_loc = find(Library.OTHER_BOOKMARKS).right(300)
+        click(Library.OTHER_BOOKMARKS)
 
-        drag_drop(soap_wiki_tab_pattern, lib_loc)
+        bookmark_exists = exists(wiki_bookmark_logo_pattern)
+        assert_true(self, bookmark_exists, 'Bookmark exists')
 
-        bookmark_added = exists(wiki_bookmark_logo_pattern)
-        assert_true(self, bookmark_added, 'Bookmark added')
+        drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR)
+
+        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with drag and drop from Library')
+
+        close_window()
 
         click(Library.TITLE)
         close_window_control('auxiliary')
