@@ -21,7 +21,6 @@ class Test(BaseTest):
     def run(self):
         library_button_pattern = NavBar.LIBRARY_MENU
         bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
-        edit_this_bookmark_pattern = Bookmarks.StarDialog.EDIT_THIS_BOOKMARK
         wiki_logo_pattern = Pattern('wiki_logo.png')
         edit_bookmark_name_before_pattern = Pattern('edit_bookmark_name.png')
         edit_bookmark_name_after_pattern = Pattern('edit_bookmark_name_modified.png')
@@ -29,6 +28,13 @@ class Test(BaseTest):
         edit_bookmark_folder_after_pattern = Pattern('edit_bookmark_folder_modified.png')
         edit_bookmark_tags_before_pattern = Pattern('tags_before.png')
         edit_bookmark_tags_after_pattern = Pattern('edit_bookmark_tags_modified.png')
+        if not Settings.is_windows():
+            edit_this_bookmark_pattern = Pattern('edit_this_bookmark.png')
+        else:
+            edit_this_bookmark_pattern = Bookmarks.StarDialog.EDIT_THIS_BOOKMARK
+
+        if Settings.is_linux():
+            edit_bookmark_folder_option = Pattern('bookmark_menu_folder_option.png')
 
         navigate('wikipedia.org')
 
@@ -69,10 +75,14 @@ class Test(BaseTest):
 
         click(edit_bookmark_folder_before_pattern)
 
-        edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_after_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, edit_bookmark_folder_after_exists, 'Needed option from folder field exists')
-
-        click(edit_bookmark_folder_after_pattern)
+        if Settings.is_linux():
+            edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_option, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, edit_bookmark_folder_after_exists, 'Needed option from folder field exists')
+            click(edit_bookmark_folder_option)
+        else:
+            edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_after_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, edit_bookmark_folder_after_exists, 'Needed option from folder field exists')
+            click(edit_bookmark_folder_after_pattern)
 
         [type(Key.TAB) for _ in range(2)]
 
