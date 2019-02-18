@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a bookmark using \'Open\' option from Library'
-        self.test_case_id = '169257'
+        self.meta = 'Open a bookmark in a New Window from Library'
+        self.test_case_id = '169259'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -52,16 +52,20 @@ class Test(BaseTest):
 
         type(Key.DOWN)
         type(Key.DOWN)
+        type(Key.DOWN)
         type(Key.ENTER)
 
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
-        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with Open in a New Tab from Library')
+        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with Open in a New Window from '
+                                                           'Library')
 
         new_tab_exists = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
-        assert_true(self, new_tab_exists, 'New tab displayed')
+        assert_false(self, new_tab_exists, 'New tab is not displayed')
 
         open_library()
 
         click(Library.TITLE)
         close_window_control('auxiliary')
+
+        close_window()
 
