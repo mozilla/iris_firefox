@@ -16,8 +16,13 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        mozilla_bookmark_pattern = Pattern('mozilla_bookmark.png')
-        bookmark_site_pattern = Pattern('bookmark_site.png')
+        if not Settings.is_mac():
+            mozilla_bookmark_pattern = Pattern('mozilla_bookmark.png')
+            bookmark_site_pattern = Pattern('bookmark_site.png')
+        else:
+            mozilla_bookmark_pattern = Pattern('mozilla_firefox_bookmark.png')
+            bookmark_site_pattern = Pattern('website_bookmark_from_library.png')
+
         open_new_private_window_pattern = Pattern('open_in_private_window.png')
         bookmark_menu_pattern = Library.BOOKMARKS_MENU
         private_window_pattern = PrivateWindow.private_window_pattern
