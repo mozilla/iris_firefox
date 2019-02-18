@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a bookmark with drag&drop from Library'
-        self.test_case_id = '169271'
+        self.meta = 'Open a bookmark using \'Open\' option from Library'
+        self.test_case_id = '169257'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -48,7 +48,10 @@ class Test(BaseTest):
         bookmark_exists = exists(wiki_bookmark_logo_pattern)
         assert_true(self, bookmark_exists, 'Bookmark exists')
 
-        drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR)
+        right_click(wiki_bookmark_logo_pattern)
+
+        type(Key.DOWN)
+        type(Key.ENTER)
 
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with drag and drop from Library')
