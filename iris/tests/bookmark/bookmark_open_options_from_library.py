@@ -48,7 +48,7 @@ class Test(BaseTest):
         bookmark_exists = exists(wiki_bookmark_logo_pattern)
         assert_true(self, bookmark_exists, 'Bookmark exists')
 
-        right_click(wiki_bookmark_logo_pattern)
+        right_click(soap_wiki_tab_pattern)
 
         type(Key.DOWN)
         type(Key.ENTER)
