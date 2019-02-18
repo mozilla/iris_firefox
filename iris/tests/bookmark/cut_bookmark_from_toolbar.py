@@ -14,11 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '164371'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
-        # self.exclude = [Platform.LINUX]
-
-    def setup(self):
-        BaseTest.setup(self)
-        self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
         bookmark_cut_pattern = Pattern('bookmark_cut.png').similar(0.9)
@@ -30,6 +25,9 @@ class Test(BaseTest):
         paste_item_pattern = Pattern('paste_bookmark.png')
         getting_started_bookmark_pattern = Pattern('getting_started_bookmark.png')
         getting_started_bookmark_in_folder_pattern = Pattern('getting_started_bookmark_folder.png')
+        bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
+        bookmark_toolbar_top_menu_pattern = Pattern('bookmark_toolbar_top_menu.png')
+        folder_bookmarks_top_menu_pattern = Pattern('folder_bookmarks_top_menu.png')
 
         navbar_offset, _ = NavBar.HOME_BUTTON.get_size()
         navbar_offset *= 1.5
@@ -66,4 +64,18 @@ class Test(BaseTest):
 
         bookmark_in_folder = exists(getting_started_bookmark_in_folder_pattern)
         assert_true(self, bookmark_in_folder, 'Bookmark placed in folder now')
+        restore_firefox_focus()
+
+        type(Key.ALT)
+
+        click(bookmarks_top_menu_pattern)
+
+        click(bookmark_toolbar_top_menu_pattern)
+
+        click(folder_bookmarks_top_menu_pattern)
+
+        bookmark_displayed_in_top_menu = exists(getting_started_bookmark_pattern)
+        assert_true(self, bookmark_displayed_in_top_menu, 'Bookmark is displayed in top menu')
+
+        click(NavBar.HAMBURGER_MENU)
         restore_firefox_focus()
