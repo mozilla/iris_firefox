@@ -9,8 +9,8 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Bookmarks Sidebar can be enabled from the Bookmarks Menu.'
-        self.test_case_id = '168920'
+        self.meta = ' Edit a bookmark from the bookmarks menu'
+        self.test_case_id = '165475'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
