@@ -100,4 +100,10 @@ class Test(BaseTest):
                     'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
 
         edit_bookmark_name_after_exists = exists(edit_bookmark_name_after_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, edit_bookmark_name_after_exists, 'Name field was correctly ')
+        assert_true(self, edit_bookmark_name_after_exists, 'Name field was correctly saved')
+
+        edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_after_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_true(self, edit_bookmark_folder_after_exists, 'Folder field was correctly saved')
+
+        edit_bookmark_tags_after_exists = exists(edit_bookmark_tags_after_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_true(self , edit_bookmark_tags_after_exists, 'Tags field was correctly saved')
