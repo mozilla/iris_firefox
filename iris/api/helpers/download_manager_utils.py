@@ -11,7 +11,7 @@ from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
 from iris.api.core.mouse import click
-from iris.api.core.region import wait, exists, Pattern, Region, find, SCREEN_HEIGHT
+from iris.api.core.region import wait, exists, Pattern, Region, find, SCREEN_HEIGHT, SCREEN_WIDTH
 from iris.api.core.util.core_helper import IrisCore
 from iris.api.helpers.general import click_window_control, close_tab
 from iris.api.helpers.keyboard_shortcuts import scroll_down
@@ -146,7 +146,7 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
             raise FindError('Could not get the coordinates of the hamburger menu.')
 
         region = Region(find_back_button.x - 10, find_back_button.y,
-                        find_hamburger_menu.x - find_back_button.x, SCREEN_HEIGHT)
+                        SCREEN_WIDTH, SCREEN_HEIGHT)
     else:
         steps = open_show_all_downloads_window_from_library_menu()
         logger.debug('Creating a region for Non-private Library window.')
