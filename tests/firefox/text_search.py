@@ -22,5 +22,5 @@ class Test(FirefoxTest):
         # print(region.exists('Project', 'Word found'))
         result=region.exists('Search a very')
 
-        assert_true(self,result ,"Assert_message for Image search test ")
+        assert result ,"Assert_message for Image search test "
 

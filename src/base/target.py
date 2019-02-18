@@ -6,6 +6,7 @@ import pytest
 
 from src.core.util.arg_parser import parse_args
 from src.core.util.test_assert import create_result_object
+from src.core.util.run_report import create_footer
 
 
 class BaseTarget(object):
@@ -37,7 +38,12 @@ class BaseTarget(object):
            :param _pytest.main.Session session: the pytest session object
            :param int exitstatus: the status which pytest will return to the system
         """
+
+        footer = create_footer(self)
+        footer.print_report_footer()
+
         print("\n\n** Test session {} complete **\n".format(session.name))
+
 
     def pytest_runtestloop(self, session):
         pass
@@ -78,7 +84,7 @@ class BaseTarget(object):
             :py:class:`_pytest.runner.CallInfo`.
 
             Stops at first non-None result
-            """
+        """
 
         if call.when == "call" and call.excinfo is not None:
 
@@ -99,7 +105,7 @@ class BaseTarget(object):
             self.completed_tests.append(test_result)
 
 
-        elif call.when == "call" and item._skipped_by_mark == True:
+        elif call.when == "setup" and item._skipped_by_mark == True:
             outcome = 'SKIPPED'
             test_instance = (item, outcome)
 

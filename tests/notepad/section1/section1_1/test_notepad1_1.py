@@ -9,6 +9,9 @@ from src.core.api.screen.screen import Rectangle
 
 
 class Test(BaseTest):
+    blocked_by=12323
+
+
 
     @pytest.mark.skipif(sys.platform == "darwin",
                         reason="Skip experimend:)")

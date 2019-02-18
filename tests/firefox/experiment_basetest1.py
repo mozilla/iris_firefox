@@ -20,6 +20,6 @@ class Test(FirefoxTest):
 
     def test_fixture_object(self,option):
         value = option.get('log_cli')
-        assert_true(self,  value,"Log cli is true ")
+        assert   value,"Log cli is false "
 
 

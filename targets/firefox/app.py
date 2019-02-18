@@ -18,6 +18,7 @@ from src.core.api.errors import APIHelperError
 from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
 from targets.firefox.parse_args import parse_args
+from src.core.util.run_report import create_footer
 from targets.firefox.testrail.testcase_results import TestRailTests
 
 logger = logging.getLogger(__name__)
@@ -31,6 +32,9 @@ class Target(BaseTarget):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
         self.local_web_root = os.path.join(PathManager.get_target_directory(), 'local_web')
+        #Mocks
+        self.version='63'
+        self.build='123123122112323'
 
         # Create values to display in the Control Center settings pane
         # TODO: update with list of all supported locales
@@ -322,13 +326,12 @@ class Target(BaseTarget):
             :param _pytest.main.Session session: the pytest session object
             :param int exitstatus: the status which pytest will return to the system
         """
-        print("\n\n** Firefox App: Test session {} complete **\n".format(session.name))
 
-        # print_result_footer(session, exitstatus)
+        footer = create_footer(self)
+        report = footer.print_report_footer()
 
         # if parse_args().email:
-        #     submit_email_report(self.test_run_object_list)
         #
-        # if parse_args().report:
-        #     report_test_results(self.test_run_object_list)
+        #     submit_email_report(report)
 
+        print("\n\n** Firefox App: Test session {} complete **\n".format(session.name))
