@@ -43,7 +43,7 @@ class Test(BaseTest):
         open_library()
 
         # drag library window
-        library_popup_open = exists(library_import_backup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        library_popup_open = exists(library_import_backup_pattern.similar(0.6), DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_popup_open, 'Library is correctly opened.')
 
         library_popup_tab_before = find(library_popup_pattern)
@@ -66,7 +66,7 @@ class Test(BaseTest):
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
-        drag_drop(select_bookmark_popup_before, select_bookmark_popup_after)
+        drag_drop(select_bookmark_popup_before.right(30), select_bookmark_popup_after)
 
         if Settings.is_mac():
             type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # go to folder
@@ -99,7 +99,8 @@ class Test(BaseTest):
         not_matching_message_displayed = exists(not_matching_message_pattern)
         assert_true(self, not_matching_message_displayed, 'The data is not matching')
 
-        close_window()
+        type(Key.ESC)
+        close_tab()
 
     def teardown(self):
         test_bookmarks_path = self.get_asset_path('testfile_bak.txt')
