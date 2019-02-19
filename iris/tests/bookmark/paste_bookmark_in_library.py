@@ -19,33 +19,33 @@ class Test(BaseTest):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         copy_option_pattern = Pattern('copy_option.png')
         paste_option_pattern = Pattern('paste_option.png')
-        bookmark_pasted_pattern = Pattern('bookmark_pasted.png')
+        toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
+        location_for_click = find(NavBar.HOME_BUTTON).right(100)
+
+        right_click(location_for_click)
+        toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
+        assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
+        click(toolbar_bookmarks_toolbar_pattern)
+
         bookmark_page()
-
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
-
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
         click(Bookmarks.StarDialog.DONE)
+
+        wiki_bookmark_added = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
         new_tab()
         select_tab(1)
         close_tab()
-
-        open_library()
-
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, library_opened, 'Library opened')
-
-        click(Library.OTHER_BOOKMARKS)
-
-        bookmark_exists = exists(soap_wiki_tab_pattern)
-        assert_true(self, bookmark_exists, 'Bookmark exists')
 
         right_click(soap_wiki_tab_pattern)
 
@@ -54,7 +54,15 @@ class Test(BaseTest):
 
         click(copy_option_pattern)
 
-        click(Library.BOOKMARKS_TOOLBAR)
+        right_click(location_for_click)
+        toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
+        assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
+        click(toolbar_bookmarks_toolbar_pattern)
+
+        open_library()
+
+        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, library_opened, 'Library opened')
 
         location_to_paste = find(Library.OTHER_BOOKMARKS).right(200)
 
@@ -65,14 +73,10 @@ class Test(BaseTest):
 
         click(paste_option_pattern)
 
-        bookmark_pasted = exists(bookmark_pasted_pattern)
-        assert_true(self, bookmark_pasted, 'The file from the previous step is pasted in the selected section')
-
         click(Library.OTHER_BOOKMARKS)
 
-        bookmark_not_deleted = exists(soap_wiki_tab_pattern)
-        assert_true(self, bookmark_not_deleted, 'The file from the previous step is pasted in the selected section '
-                                                'without being deleted from the previous one')
+        bookmark_pasted = exists(soap_wiki_tab_pattern)
+        assert_true(self, bookmark_pasted, 'Bookmark exists')
 
         click(Library.TITLE)
         close_window_control('auxiliary')
