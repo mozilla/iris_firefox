@@ -70,7 +70,11 @@ class Test(BaseTest):
         separator_added = exists(separator_added_pattern)
         assert_true(self, separator_added, 'A new separator is displayed above the selected bookmark.')
 
-        right_click(separator_pattern)
+        if Settings.is_mac():
+            separator_pattern_osx = Pattern('separator_osx.png')
+            right_click(separator_pattern_osx)
+        else:
+            right_click(separator_pattern)
 
         delete_option_displayed = exists(delete_option_pattern)
         assert_true(self, delete_option_displayed, 'Delete option displayed')
