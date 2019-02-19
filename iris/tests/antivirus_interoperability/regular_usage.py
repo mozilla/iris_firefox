@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-import os
 
 
 class Test(BaseTest):
@@ -52,7 +51,7 @@ class Test(BaseTest):
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened')
 
         self.open_test_case_assets_folder_in_file_manager()
-        theme_file_is_available = exists(theme_file_icon_pattern, DEFAULT_UI_DELAY)
+        theme_file_is_available = exists(theme_file_icon_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, theme_file_is_available, 'Theme file is available.')
 
         click(theme_file_icon_pattern)
