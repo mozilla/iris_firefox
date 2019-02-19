@@ -50,7 +50,9 @@ class Test(BaseTest):
 
         click(view_bookmarks_sidebar_pattern)
 
+        bookmarking_tools_not_exists = exists(view_bookmarks_sidebar_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_false(self, bookmarking_tools_not_exists, 'Bookmarking Tools window is dismissed')
+
         bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, bookmarks_sidebar_menu_exists, 'The window is dismissed and '
-                                                         'the Bookmarks Sidebar is correctly displayed '
+        assert_true(self, bookmarks_sidebar_menu_exists, 'the Bookmarks Sidebar is correctly displayed '
                                                          'inside the FF window, on the left side.')
