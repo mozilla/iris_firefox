@@ -10,9 +10,9 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "No data loss after forced restart"
-        self.test_case_id = "217874"
-        self.test_suite_id = "3036"
+        self.meta = "No data loss after a shutdown (Ffx)"
+        self.test_case_id = "217880"
+        self.test_suite_id = "3063"
         self.locale = ["en-US"]
 
     def run(self):
