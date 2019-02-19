@@ -26,7 +26,6 @@ class Test(BaseTest):
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         iris_tab_pattern = Pattern('iris_tab.png')
         most_visited_toolbar_bookmark_pattern = Pattern('drag_area.png')
-        # pocket_bookmark_icon_pattern = LocalWeb.POCKET_BOOKMARK
         pocket_bookmark_icon_pattern = Pattern('pocket_bookmark_icon.png')
         open_in_private_window_option_pattern = Pattern('open_in_private_window_option.png')
 
