@@ -21,6 +21,7 @@ class Test(BaseTest):
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
+        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
 
         if Settings.is_windows():
             type(Key.ALT)
@@ -33,9 +34,9 @@ class Test(BaseTest):
         assert_true(self, dropdown_displayed, 'Bookmark dropdown menu is displayed')
 
         click(other_bookmarks_pattern)
-        bookmark_found = exists(LocalWeb.FIREFOX_BOOKMARK)
+        bookmark_found = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, bookmark_found, 'Needed bookmark is located in other bookmarks')
 
-        click(LocalWeb.FIREFOX_BOOKMARK)
+        click(firefox_bookmark_top_menu_pattern)
         webpage_loaded = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_loaded, 'Needed webpage is loaded')
