@@ -9,6 +9,8 @@ from src.core.api.screen.display import Display
 from src.core.api.screen.region import Region
 from src.core.api.rectangle import Rectangle
 
+import pyautogui
+
 logger = logging.getLogger(__name__)
 
 
@@ -23,6 +25,28 @@ class Screen(Region):
         self.screen_list = Display(screen_id).screen_list
         self._bounds = Display(screen_id).bounds
         Region.__init__(self, self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
+
+    SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
+    screen_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+
+    TOP_HALF = Region.screen_regions(screen_region, 'TOP_HALF')
+    BOTTOM_HALF = Region.screen_regions(screen_region, 'BOTTOM_HALF')
+
+    LEFT_HALF = Region.screen_regions(screen_region, 'LEFT_HALF')
+    RIGHT_HALF = Region.screen_regions(screen_region, 'RIGHT_HALF')
+
+    TOP_THIRD = Region.screen_regions(screen_region, 'TOP_THIRD')
+    MIDDLE_THIRD_HORIZONTAL = Region.screen_regions(screen_region, 'MIDDLE_THIRD_HORIZONTAL')
+    BOTTOM_THIRD = Region.screen_regions(screen_region, 'BOTTOM_THIRD')
+
+    LEFT_THIRD = Region.screen_regions(screen_region, 'LEFT_THIRD')
+    MIDDLE_THIRD_VERTICAL = Region.screen_regions(screen_region, 'MIDDLE_THIRD_VERTICAL')
+    RIGHT_THIRD = Region.screen_regions(screen_region, 'RIGHT_THIRD')
+
+    UPPER_LEFT_CORNER = Region.screen_regions(screen_region, 'UPPER_LEFT_CORNER')
+    UPPER_RIGHT_CORNER = Region.screen_regions(screen_region, 'UPPER_RIGHT_CORNER')
+    LOWER_LEFT_CORNER = Region.screen_regions(screen_region, 'LOWER_LEFT_CORNER')
+    LOWER_RIGHT_CORNER = Region.screen_regions(screen_region, 'LOWER_RIGHT_CORNER')
 
     def __repr__(self):
         return '%s(x: %r, y: %r, size: %r x %r)' % (self.__class__.__name__, self._bounds.x, self.y, self._bounds.width,
