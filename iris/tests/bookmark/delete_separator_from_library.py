@@ -18,7 +18,7 @@ class Test(BaseTest):
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         separator_added_pattern = Pattern('separator_added.png')
-        separator_pattern = Pattern('separator.png')
+        separator_pattern = Pattern('separator_highlighted.png')
         separator_deleted_pattern = Pattern('separator_deleted.png')
         delete_option_pattern = Pattern('delete_bookmark.png')
 
