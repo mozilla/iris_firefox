@@ -10,14 +10,17 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Add a new bookmarks separator from Library '
-        self.test_case_id = '169263'
+        self.meta = 'Delete bookmarks separator from Librabry'
+        self.test_case_id = '171421'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         separator_added_pattern = Pattern('separator_added.png')
+        separator_pattern = Pattern('separator_osx.png')
+        separator_deleted_pattern = Pattern('separator_deleted.png')
+        delete_option_pattern = Pattern('delete_bookmark.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -66,6 +69,16 @@ class Test(BaseTest):
 
         separator_added = exists(separator_added_pattern)
         assert_true(self, separator_added, 'A new separator is displayed above the selected bookmark.')
+
+        right_click(separator_pattern)
+
+        delete_option_displayed = exists(delete_option_pattern)
+        assert_true(self, delete_option_displayed, 'Delete option displayed')
+
+        click(delete_option_pattern)
+
+        separator_deleted = exists(separator_deleted_pattern)
+        assert_true(self, separator_deleted, 'The separator is correctly deleted.')
 
         click(Library.TITLE)
         close_window_control('auxiliary')
