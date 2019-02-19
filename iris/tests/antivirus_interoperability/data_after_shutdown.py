@@ -77,6 +77,8 @@ class Test(BaseTest):
 
         bookmark_page()
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        cnn_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert_true(self, cnn_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
         click(Bookmarks.StarDialog.DONE)
 
@@ -84,6 +86,8 @@ class Test(BaseTest):
 
         bookmark_page()
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
         click(Bookmarks.StarDialog.DONE)
 
