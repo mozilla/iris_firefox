@@ -23,7 +23,7 @@ class Test(BaseTest):
         bookmarks_folder_pattern = Pattern('bookmarks_folder.png')
         cut_item_pattern = Pattern('cut_bookmark.png')
         paste_item_pattern = Pattern('paste_bookmark.png')
-        getting_started_bookmark_pattern = Pattern('getting_started_bookmark.png')
+        getting_started_bookmark_pattern = Pattern('getting_started_in_toolbar.png')
         getting_started_bookmark_in_folder_pattern = Pattern('getting_started_bookmark_folder.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         bookmark_toolbar_top_menu_pattern = Pattern('bookmark_toolbar_top_menu.png')
