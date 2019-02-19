@@ -34,5 +34,6 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
+        time.sleep(DEFAULT_UI_DELAY)
         expected = exists(google_search_no_input_pattern, 10)
         assert_true(self, expected, 'The search engine page is opened with no searches performed.')
