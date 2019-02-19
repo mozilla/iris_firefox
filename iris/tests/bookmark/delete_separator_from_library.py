@@ -24,8 +24,8 @@ class Test(BaseTest):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        soap_wiki_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Firefox Test page opened')
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_test_site_opened, 'Firefox Test page opened')
 
         bookmark_page()
 
