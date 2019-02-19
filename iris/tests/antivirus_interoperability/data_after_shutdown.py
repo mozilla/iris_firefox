@@ -90,7 +90,7 @@ class Test(BaseTest):
         cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_added, 'The CNN bookmark is successfully added')
 
-        wiki_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        wiki_bookmark_added = exists(wikipedia_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
         new_tab()
@@ -120,7 +120,7 @@ class Test(BaseTest):
         cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
 
-        wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        wiki_bookmark_restored = exists(wikipedia_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored')
 
         click(NavBar.HAMBURGER_MENU)
@@ -152,3 +152,10 @@ class Test(BaseTest):
 
         tab_restored_twitter = exists(twitter_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_twitter, 'The Twitter tab is restored')
+
+        cnn_bookmark_still_displayed = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        assert_true(self, cnn_bookmark_still_displayed, 'The CNN bookmark is still displayed')
+
+        wiki_bookmark_still_displayed = exists(wikipedia_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT,
+                                               bookmarks_toolbar_region)
+        assert_true(self, wiki_bookmark_still_displayed, 'The Wikipedia bookmark is still displayed')
