@@ -21,8 +21,7 @@ class Test(BaseTest):
         confirm_clear_data_pattern = Pattern('confirm_clear_data.png')
         cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
         cookies_list_empty_pattern = Pattern('cookies_list_empty.png')
-        cookies_ticked_pattern = Pattern('block_cookies_ticked.png')
-        cookies_unticked_pattern = Pattern('block_cookies_unticked.png')
+        cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.85)
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
         custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
         custom_content_blocking_ticked_pattern = Pattern('custom_content_blocking_ticked.png')
@@ -37,12 +36,8 @@ class Test(BaseTest):
         assert_true(self, preferences_opened, 'The privacy preferences page is successfully displayed.')
         click(custom_content_blocking_unticked_pattern)
 
-        options_displayed = exists(cookies_unticked_pattern)
+        options_displayed = exists(cookies_ticked_pattern)
         assert_true(self, options_displayed, 'The "Cookies and Site Data" options are properly displayed.')
-        click(cookies_unticked_pattern)
-
-        checkbox_set_successfully = exists(cookies_ticked_pattern)
-        assert_true(self, checkbox_set_successfully, 'The block cookies checkbox is successfully set.')
 
         strictness_menu_appeared = exists(cookies_blocking_strictness_menu_pattern)
         assert_true(self, strictness_menu_appeared, 'Cookies blocking strictness menu appear.')
@@ -73,7 +68,7 @@ class Test(BaseTest):
         click(confirm_clear_data_pattern)
 
         navigate('https://www.prosport.ro/')
-        site_loaded = exists(site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT * 6)
+        site_loaded = exists(site_tab_pattern, 120)
         assert_true(self, site_loaded, 'The "Prosport" website is successfully displayed.')
 
         navigate('about:preferences#privacy')
@@ -95,8 +90,8 @@ class Test(BaseTest):
         assert_true(self, site_cookie_two_saved, 'Other target cookie saved.')
 
         click(site_cookie_one_pattern)
-        type(Key.DELETE)
-        type(Key.DELETE)
+        type(Key.DELETE)  # There are two cookies must be left after visiting prosport.ro
+        type(Key.DELETE)  # So it's needed to press "Delete" key twice to remove this site's cookies from list
 
         cookies_list_is_empty = exists(cookies_list_empty_pattern)
         assert_true(self, cookies_list_is_empty, 'No third-party cookies are saved')
