@@ -41,11 +41,11 @@ class Test(BaseTest):
         new_window()
         new_window_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED)
         assert_true(self, new_window_opened, 'New window opened')
-        _, offset = Tabs.NEW_TAB_HIGHLIGHTED.get_size()
+        offset = SCREEN_WIDTH // 6
         if not Settings.is_mac():
             minimize_window()
-            new_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(-offset, 0)
-            start_position = Location(SCREEN_WIDTH/25, SCREEN_HEIGHT/25)
+            new_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(offset, 0)
+            start_position = Location(SCREEN_WIDTH//5, SCREEN_HEIGHT/25)
             drag_drop(new_tab_location, start_position)
 
         open_browser_console()
@@ -56,8 +56,8 @@ class Test(BaseTest):
         type(Key.ENTER)
         close_tab()
 
-        opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(-offset, 0)
-        new_window_drop_location = Location(SCREEN_WIDTH*0.53, SCREEN_HEIGHT/20)
+        opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(offset, 0)
+        new_window_drop_location = Location(SCREEN_WIDTH*0.65, SCREEN_HEIGHT/20)
         drag_drop(opened_tab_location, new_window_drop_location)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -65,10 +65,10 @@ class Test(BaseTest):
         assert_true(self, wiki_page_loaded, 'Wiki webpage successfully is loaded.')
 
         # Selecting paragraph by triple click on location (pattern click doesn't select)
-        paragraph = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
-        selection_end = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).offset(0, SCREEN_HEIGHT/10)
-        drag_drop(paragraph, selection_end)
         paragraph_x, paragraph_y = LocalWeb.SOAP_WIKI_SOAP_LABEL.get_size()
+        paragraph = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        selection_end = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).offset(0, paragraph_y*2)
+        drag_drop(paragraph, selection_end)
         paragraph.offset(paragraph_x / 2, paragraph_y / 2)
 
         drop_position_offset_x, drop_position_offset_y = drop_not_matching_pattern.get_size()
