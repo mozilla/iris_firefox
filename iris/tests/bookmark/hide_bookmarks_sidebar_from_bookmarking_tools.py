@@ -86,6 +86,8 @@ class Test(BaseTest):
 
         click(hide_bookmarks_sidebar_pattern)
 
+        time.sleep(1)
+
         bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_pattern, DEFAULT_UI_DELAY_LONG)
         assert_false(self, bookmarks_sidebar_menu_exists, 'The bookmarks sidebar is dismissed')
 
