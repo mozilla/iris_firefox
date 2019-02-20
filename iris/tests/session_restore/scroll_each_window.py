@@ -101,7 +101,7 @@ class Test(BaseTest):
         assert_true(self, focus_tab_scrolled, 'Focus tab scrolled successful.')
 
         # Drag-n-drop Firefox tab
-        firefox_tab_drop_location = Location(x=SCREEN_WIDTH/2, y=firefox_tab_location_before.y)
+        firefox_tab_drop_location = Location(x=SCREEN_WIDTH/2, y=tab_height*2)
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location)
 
         try:
