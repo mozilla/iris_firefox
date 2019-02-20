@@ -101,7 +101,7 @@ class Test(BaseTest):
         assert_true(self, focus_tab_scrolled, 'Focus tab scrolled successful.')
 
         # Drag-n-drop Firefox tab
-        firefox_tab_drop_location = Location(x=SCREEN_WIDTH/2, y=tab_height*1)
+        firefox_tab_drop_location = Location(x=SCREEN_WIDTH/2, y=firefox_tab_location_before.y)
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location)
 
         try:
@@ -146,6 +146,10 @@ class Test(BaseTest):
         self.firefox_runner = launch_firefox(self.browser.path, self.profile_path, self.base_local_web_url)
         self.firefox_runner.start()
 
+        iris_tab_logo = exists(iris_tab_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, iris_tab_logo, 'Iris tab available')
+        iris_tab_logo_location = find(iris_tab_logo_pattern)
+        proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, width=SCREEN_WIDTH, height=200)
 
         hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                               in_region=proper_hamburger_menu_region)
