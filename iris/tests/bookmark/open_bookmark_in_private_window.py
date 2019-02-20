@@ -58,3 +58,5 @@ class Test(BaseTest):
                                             pocket_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmark_opened_in_private_window,
                     'The selected website is correctly opened in a new private window.')
+
+        close_window()
