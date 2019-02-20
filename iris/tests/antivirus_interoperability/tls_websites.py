@@ -41,10 +41,10 @@ class Test(BaseTest):
         assert_true(self, facebook_logo_displayed, 'Facebook page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        fb_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        fb_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, fb_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
-        fb_more_info_button_exists = exists(more_information_button_pattern)
+        fb_more_info_button_exists = exists(more_information_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, fb_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
 
@@ -73,9 +73,9 @@ class Test(BaseTest):
         assert_true(self, cloudflare_logo_displayed, 'Cloudflare page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        cloudflare_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        cloudflare_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, cloudflare_show_connection_details_exists, 'Show Connection Details button displayed')
-        click(show_connection_details_button_pattern)
+        click(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         cloudflare_more_info_button_exists = exists(more_information_button_pattern)
         assert_true(self, cloudflare_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
@@ -104,10 +104,10 @@ class Test(BaseTest):
         assert_true(self, theregister_logo_displayed, 'The Register page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        theregister_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        theregister_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, theregister_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
-        theregister_more_info_button_exists = exists(more_information_button_pattern)
+        theregister_more_info_button_exists = exists(more_information_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, theregister_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
 
@@ -135,10 +135,10 @@ class Test(BaseTest):
         assert_true(self, cdn77_logo_displayed, 'CDN77 page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        cdn77_show_connection_details_exists = exists(show_connection_details_button_pattern)
+        cdn77_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, cdn77_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
-        cdn77_more_info_button_exists = exists(more_information_button_pattern)
+        cdn77_more_info_button_exists = exists(more_information_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, cdn77_more_info_button_exists, 'More information button displayed')
         click(more_information_button_pattern)
 
