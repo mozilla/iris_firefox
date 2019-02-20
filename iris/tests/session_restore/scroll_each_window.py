@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from iris.test_case import *
 
 
@@ -27,7 +32,7 @@ class Test(BaseTest):
         iris_tab_logo = exists(iris_tab_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, iris_tab_logo, 'Iris tab available')
         iris_tab_logo_location = find(iris_tab_logo_pattern)
-        proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, width=SCREEN_WIDTH, height=200)
+        proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, width=SCREEN_WIDTH, height=SCREEN_HEIGHT/4)
 
         change_preference('devtools.chrome.enabled', True)
 
@@ -75,7 +80,7 @@ class Test(BaseTest):
         focus_tab_location_before = find(focus_test_site_tab_pattern)
         focus_tab_region_before = Region(0, focus_tab_location_before.y-(tab_height/2),
                                          width=SCREEN_WIDTH, height=tab_height*2)
-        focus_tab_region_after = Region(0, (SCREEN_HEIGHT/2)-tab_height, width=SCREEN_WIDTH, height=tab_height*3)
+        focus_tab_region_after = Region(0, (SCREEN_HEIGHT/2)-tab_height*5, width=SCREEN_WIDTH, height=tab_height*10)
 
         # Drag-n-drop Focus tab
         focus_tab_drop_location = Location(x=50, y=(SCREEN_HEIGHT / 2))
@@ -101,7 +106,7 @@ class Test(BaseTest):
         assert_true(self, focus_tab_scrolled, 'Focus tab scrolled successful.')
 
         # Drag-n-drop Firefox tab
-        firefox_tab_drop_location = Location(x=SCREEN_WIDTH/2, y=tab_height*2)
+        firefox_tab_drop_location = Location(x=SCREEN_WIDTH/2, y=tab_height*4)
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location)
 
         try:
@@ -157,6 +162,7 @@ class Test(BaseTest):
         click(NavBar.HAMBURGER_MENU)
 
         restore_previous_session_exists = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
         assert_true(self, restore_previous_session_exists, '"Restore previous session" item located')
         click(restore_previous_session_pattern)
 
