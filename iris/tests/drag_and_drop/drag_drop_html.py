@@ -24,24 +24,9 @@ class Test(BaseTest):
         drop_html_inactive_pattern = Pattern('drop_html_inactive.png')
         drop_verified_pattern = Pattern('drop_matching_verified.png')
         drop_not_matching_pattern = Pattern('drop_not_matching.png')
-        correct_result_pattern = Pattern('correct_result.png')
+        correct_result_pattern = Pattern('correct_result.png').similar(0.6)
         soap_url_selected_pattern = Pattern('soap_url_selected.png')
-        iris_tab_pattern = Pattern('iris_tab.png')
         browser_console_title_pattern = Pattern('browser_console_title.png')
-
-        if not Settings.is_mac():
-            minimize_window()
-            iris_tab_location = find(iris_tab_pattern)
-            start_position = Location(SCREEN_WIDTH/25, SCREEN_HEIGHT/25)
-            drag_drop(iris_tab_location, start_position)
-
-        open_browser_console()
-        console_opened = exists(browser_console_title_pattern)
-        assert_true(self, console_opened, 'Browser console is opened')
-        click(browser_console_title_pattern)
-        paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.5, SCREEN_HEIGHT*0.9))
-        type(Key.ENTER)
-        close_tab()
 
         navigate('https://mystor.github.io/dragndrop/')
         drop_page_loaded = exists(drop_html_unfollowed_pattern)
@@ -56,8 +41,23 @@ class Test(BaseTest):
         new_window()
         new_window_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED)
         assert_true(self, new_window_opened, 'New window opened')
-        opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED)
-        new_window_drop_location = Location(SCREEN_WIDTH*0.53, SCREEN_HEIGHT/20)
+        offset = SCREEN_WIDTH // 6
+        if not Settings.is_mac():
+            minimize_window()
+            new_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(offset, 0)
+            start_position = Location(SCREEN_WIDTH//5, SCREEN_HEIGHT/18)
+            drag_drop(new_tab_location, start_position)
+
+        open_browser_console()
+        console_opened = exists(browser_console_title_pattern)
+        assert_true(self, console_opened, 'Browser console is opened')
+        click(browser_console_title_pattern)
+        paste('window.resizeTo({0}, {1})'.format(SCREEN_WIDTH*0.5, SCREEN_HEIGHT*0.9))
+        type(Key.ENTER)
+        close_tab()
+
+        opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(offset, 0)
+        new_window_drop_location = Location(SCREEN_WIDTH*0.65, SCREEN_HEIGHT/20)
         drag_drop(opened_tab_location, new_window_drop_location)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -65,10 +65,10 @@ class Test(BaseTest):
         assert_true(self, wiki_page_loaded, 'Wiki webpage successfully is loaded.')
 
         # Selecting paragraph by triple click on location (pattern click doesn't select)
-        paragraph = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
-        selection_end = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).offset(0, SCREEN_HEIGHT/10)
-        drag_drop(paragraph, selection_end)
         paragraph_x, paragraph_y = LocalWeb.SOAP_WIKI_SOAP_LABEL.get_size()
+        paragraph = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        selection_end = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).offset(0, paragraph_y*2)
+        drag_drop(paragraph, selection_end)
         paragraph.offset(paragraph_x / 2, paragraph_y / 2)
 
         drop_position_offset_x, drop_position_offset_y = drop_not_matching_pattern.get_size()
