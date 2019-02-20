@@ -158,8 +158,8 @@ class Test(BaseTest):
 
         hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                               in_region=proper_hamburger_menu_region)
-        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
-        click(NavBar.HAMBURGER_MENU)
+        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.', )
+        click(NavBar.HAMBURGER_MENU, in_region=proper_hamburger_menu_region)
 
         restore_previous_session_exists = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
 
