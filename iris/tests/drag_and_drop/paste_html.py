@@ -23,7 +23,6 @@ class Test(BaseTest):
         phrase_from_wiki_page_pattern = Pattern('wiki_article_header.png')
         paste_html_data_radiobutton_selected_pattern = Pattern('paste_html_data_selected.png')
         paste_html_data_radiobutton_pattern = Pattern('paste_html_data.png')
-        drop_stuff_here_area_pattern = Pattern('drop_stuff_here_area.png')
 
         navigate('https://mystor.github.io/dragndrop/')
         page_opened = exists(paste_html_data_radiobutton_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -46,8 +45,9 @@ class Test(BaseTest):
         assert_true(self, text_copied, 'The text is copied to the clipboard.')
 
         select_tab(1)
-        drop_stuff_here_area_pattern = exists(drop_stuff_here_area_pattern)
-        assert_true(self, drop_stuff_here_area_pattern, '\'Drop stuff here\' area is displayed on the page')
+        drop_stuff_here_area_available = scroll_until_pattern_found(not_matching_message_pattern,
+                                                                    type, (Key.PAGE_DOWN,))
+        assert_true(self, drop_stuff_here_area_available, '\'Drop stuff here\' area is displayed on the page')
 
         edit_paste()
         matching_message_exists = scroll_until_pattern_found(matching_message_pattern, type, (Key.DOWN,))
