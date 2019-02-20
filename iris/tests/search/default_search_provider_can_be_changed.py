@@ -40,7 +40,7 @@ class Test(BaseTest):
 
         select_search_bar()
         type(Key.ENTER)
-        time.sleep(DEFAULT_UI_DELAY)
+        time.sleep(DEFAULT_UI_DELAY_LONG)
 
         select_location_bar()
         time.sleep(DEFAULT_UI_DELAY)
