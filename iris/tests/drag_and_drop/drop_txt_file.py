@@ -41,6 +41,7 @@ class Test(BaseTest):
         shutil.copy(original_jpgfile_path, backup_jpgfile_path)
 
         navigate('https://mystor.github.io/dragndrop/')
+
         drop_html_data_button_displayed = exists(drop_txt_file_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, drop_html_data_button_displayed, 'Site downloaded')
 
@@ -104,7 +105,6 @@ class Test(BaseTest):
 
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
-
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
 
         matching_message_displayed = exists(matching_message_pattern)
