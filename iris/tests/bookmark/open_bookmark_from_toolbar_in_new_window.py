@@ -57,3 +57,5 @@ class Test(BaseTest):
         click(open_in_new_window_option_pattern)
         website_loaded = exists(pocket_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, website_loaded, 'The selected website is correctly opened in a new window.')
+
+        close_window()
