@@ -26,12 +26,20 @@ class Test(BaseTest):
         drop_here_pattern = Pattern('drop_here.png')
         matching_message_pattern = Pattern('matching_message.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
+        file_type_all_files_pattern = Pattern('file_type_all_files.png')
+        file_type_json_pattern = Pattern('file_type_json.png')
+        jpg_bak_file_pattern = Pattern('jpg_bak_file.png')
+        txt_bak_file_pattern = Pattern('txt_bak_file.png')
 
         filepath = self.get_asset_path('')
-        test_bookmarks_path = self.get_asset_path('testfile_bak.txt')
-        testfile_bookmarks_path = self.get_asset_path('testfile.txt')
+        original_txtfile_path = self.get_asset_path('testfile.txt')
+        backup_txtfile_path = self.get_asset_path('testfile_bak.txt')
 
-        shutil.copy(testfile_bookmarks_path, test_bookmarks_path)
+        original_jpgfile_path = self.get_asset_path('jpgimage.jpg')
+        backup_jpgfile_path = self.get_asset_path('jpgimage_bak.jpg')
+
+        shutil.copy(original_txtfile_path, backup_txtfile_path)
+        shutil.copy(original_jpgfile_path, backup_jpgfile_path)
 
         navigate('https://mystor.github.io/dragndrop/')
 
@@ -47,9 +55,14 @@ class Test(BaseTest):
         assert_true(self, library_popup_open, 'Library is correctly opened.')
 
         library_popup_tab_before = find(library_popup_pattern)
+        library_title_width, library_title_height = library_popup_pattern.get_size()
+        library_tab_region_before = Region(library_popup_tab_before.x,
+                                           library_popup_tab_before.y,
+                                           library_title_width, library_title_height)
         library_popup_tab_after = Location(SCREEN_WIDTH/2, library_popup_tab_before.y)
 
-        drag_drop(library_popup_tab_before, library_popup_tab_after)
+        drag_drop(library_popup_tab_before, library_popup_tab_after, DEFAULT_DELAY_BEFORE_DROP)
+        wait_vanish(library_popup_pattern, in_region=library_tab_region_before)
 
         click(library_import_backup_pattern)
 
@@ -62,39 +75,45 @@ class Test(BaseTest):
         click(Library.ImportAndBackup.Restore.CHOOSE_FILE)
 
         select_bookmark_popup = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup, 'select_bookmark_popup')
+        assert_true(self, select_bookmark_popup, 'Select bookmark window available')
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
-        select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
-        drag_drop(select_bookmark_popup_before.right(30), select_bookmark_popup_after)
 
         if Settings.is_mac():
             type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # go to folder
-            paste(test_bookmarks_path)
+            paste(original_txtfile_path)
             type(Key.ENTER)
         else:
             paste(filepath )
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
-        type('*')
-        type(Key.ENTER, interval=DEFAULT_UI_DELAY)
+        if Settings.is_linux():
+            json = exists(file_type_json_pattern)
+            click(file_type_json_pattern)
+            all_files = exists(file_type_all_files_pattern)
+            click(file_type_all_files_pattern)
+        else:
+            type('*')
+            type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
-        test_file_txt = exists(test_file_txt_pattern)
-        assert_true(self, test_file_txt, 'txt test file is available')
+        select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
+        drag_drop(select_bookmark_popup_before.right(30), select_bookmark_popup_after)
+
+        test_file_txt = exists(txt_bak_file_pattern)
+        assert_true(self, test_file_txt, 'Txt test file is available')
 
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
 
-        drag_drop(test_file_txt_pattern, drop_here_pattern)
+        drag_drop(txt_bak_file_pattern, drop_here_pattern)
 
         matching_message_displayed = exists(matching_message_pattern)
         assert_true(self, matching_message_displayed, 'The data is matching')
 
-        jpgimage_title = exists(jpgimage_title_pattern)
-        assert_true(self, jpgimage_title, 'jpgimage_title')
-        find(jpgimage_title_pattern)
+        test_file_jpg = exists(jpg_bak_file_pattern)
+        assert_true(self, test_file_jpg, 'Jpg test file is available')
 
-        drag_drop(jpgimage_title_pattern, drop_here_pattern)
+        drag_drop(jpg_bak_file_pattern, drop_here_pattern)
 
         not_matching_message_displayed = exists(not_matching_message_pattern)
         assert_true(self, not_matching_message_displayed, 'The data is not matching')
@@ -103,5 +122,7 @@ class Test(BaseTest):
         close_tab()
 
     def teardown(self):
-        test_bookmarks_path = self.get_asset_path('testfile_bak.txt')
-        os.remove(test_bookmarks_path)
+        jpg_backup_path = self.get_asset_path('jpgimage_bak.jpg')
+        os.remove(jpg_backup_path)
+        txt_backup_path = self.get_asset_path('testfile_bak.txt')
+        os.remove(txt_backup_path)
