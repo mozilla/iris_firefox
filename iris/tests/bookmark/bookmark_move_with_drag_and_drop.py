@@ -10,14 +10,15 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Add a new bookmarks separator from Library '
-        self.test_case_id = '169263'
+        self.meta = 'Move a bookmark to another section with drag&drop in Library'
+        self.test_case_id = '169270'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
-        separator_added_pattern = Pattern('separator_added.png')
+        bookmarks_highlighted_pattern = Pattern('bookmarks_highlighted.png')
+        bookmarks_moved_pattern = Pattern('bookmarks_moved.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -27,7 +28,7 @@ class Test(BaseTest):
         bookmark_page()
 
         stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
+        assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -39,7 +40,7 @@ class Test(BaseTest):
         bookmark_page()
 
         stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
+        assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -55,17 +56,21 @@ class Test(BaseTest):
         click(Library.OTHER_BOOKMARKS)
 
         bookmark_exists = exists(soap_wiki_tab_pattern)
-        assert_true(self, bookmark_exists, 'Bookmark exists')
+        assert_true(self, bookmark_exists, 'Bookmarks added')
 
-        right_click(soap_wiki_tab_pattern)
+        click(soap_wiki_tab_pattern)
+        type('a', KeyModifier.CMD)
 
-        new_bookmark_option_exists = exists(Library.Organize.NEW_SEPARATOR)
-        assert_true(self, new_bookmark_option_exists, 'New Separator option exists')
+        bookmarks_highlighted = exists(bookmarks_highlighted_pattern)
+        assert_true(self, bookmarks_highlighted, 'Bookmarks are highlighted')
 
-        click(Library.Organize.NEW_SEPARATOR)
+        drag_drop(bookmarks_highlighted_pattern, Library.BOOKMARKS_TOOLBAR)
 
-        separator_added = exists(separator_added_pattern)
-        assert_true(self, separator_added, 'A new separator is displayed above the selected bookmark.')
+        click(Library.OTHER_BOOKMARKS)
+        click(Library.BOOKMARKS_TOOLBAR)
+
+        bookmarks_moved = exists(bookmarks_moved_pattern)
+        assert_true(self, bookmarks_moved, 'The bookmark is correctly moved in the selected section.')
 
         click(Library.TITLE)
         close_window_control('auxiliary')
