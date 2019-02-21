@@ -23,10 +23,8 @@ class Test(BaseTest):
 
         if Settings.is_windows():
             scroll_height = SCREEN_HEIGHT*2
-        elif Settings.is_linux():
+        elif Settings.is_linux() or Settings.is_mac():
             scroll_height = SCREEN_HEIGHT/100
-        else:
-            scroll_height = SCREEN_HEIGHT
 
         # Use smooth scrolling is disabled
         navigate('about:preferences#general')
@@ -56,11 +54,11 @@ class Test(BaseTest):
 
         # Scroll by mouse wheel
         scroll_by_mouse_wheel_to_footer = scroll_until_pattern_found(history_paragraph_pattern,
-                                                                     scroll, (-scroll_height,))
+                                                                     scroll, (-scroll_height,), 20, DEFAULT_UI_DELAY)
         assert_true(self, scroll_by_mouse_wheel_to_footer, 'Successfully scrolled to footer by mouse scroll')
 
         scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(soap_wiki_header_pattern,
-                                                                     scroll, (scroll_height,))
+                                                                     scroll, (scroll_height,), 20, DEFAULT_UI_DELAY)
         assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
         # Scroll by pressing arrows
@@ -98,11 +96,11 @@ class Test(BaseTest):
 
         # Scroll by mouse wheel
         scroll_by_mouse_wheel_to_footer = scroll_until_pattern_found(history_paragraph_pattern,
-                                                                     scroll, (-scroll_height,))
+                                                                     scroll, (-scroll_height,), 20, DEFAULT_UI_DELAY)
         assert_true(self, scroll_by_mouse_wheel_to_footer, 'Successfully scrolled to footer by mouse scroll')
 
         scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(soap_wiki_header_pattern,
-                                                                     scroll, (scroll_height,))
+                                                                     scroll, (scroll_height,), 20, DEFAULT_UI_DELAY)
         assert_true(self, scroll_by_mouse_wheel_to_header, 'Successfully scrolled to header by mouse scroll')
 
         # Scroll by pressing arrows

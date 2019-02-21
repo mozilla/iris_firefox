@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-from iris.tests.content_scroll.utils import *
 
 
 class Test(BaseTest):

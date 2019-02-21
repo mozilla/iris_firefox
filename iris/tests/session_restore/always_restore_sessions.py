@@ -20,6 +20,7 @@ class Test(BaseTest):
         url_second = LocalWeb.FIREFOX_TEST_SITE_2
         restore_previous_session_checked_pattern = Pattern('restore_previous_session_checked.png')
         restore_previous_session_unchecked_pattern = Pattern('restore_previous_session_unchecked.png')
+        iris_icon_title_pattern = Pattern('iris_tab.png')
 
         navigate('about:preferences')
         restore_previous_session_checkbox_available = exists(restore_previous_session_unchecked_pattern, 20)
@@ -43,10 +44,12 @@ class Test(BaseTest):
         restart_firefox(self,
                         self.browser.path,
                         self.profile_path,
-                        self.base_local_web_url)
+                        self.base_local_web_url,
+                        image=iris_icon_title_pattern)
 
         next_tab()
-        checkbox_restore_previous_session_checked = exists(restore_previous_session_checked_pattern)
+        checkbox_restore_previous_session_checked = exists(restore_previous_session_checked_pattern.similar(0.6),
+                                                           timeout=DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, checkbox_restore_previous_session_checked, '"Restore previous session" checked.')
 
         click(restore_previous_session_checked_pattern)
