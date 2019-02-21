@@ -40,12 +40,12 @@ class Test(BaseTest):
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
         click(Bookmarks.StarDialog.DONE)
 
-        wiki_bookmark_added = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
-
         new_tab()
         select_tab(1)
         close_tab()
+
+        wiki_bookmark_added = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
         right_click(soap_wiki_tab_pattern)
 
