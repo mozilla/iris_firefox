@@ -76,7 +76,7 @@ class Test(BaseTest):
         click(Library.OTHER_BOOKMARKS)
 
         bookmark_pasted = exists(soap_wiki_tab_pattern)
-        assert_true(self, bookmark_pasted, 'Bookmark exists')
+        assert_true(self, bookmark_pasted, 'Bookmark is correctly copied in the selected session')
 
         click(Library.TITLE)
         close_window_control('auxiliary')
