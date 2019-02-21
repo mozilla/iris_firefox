@@ -25,6 +25,8 @@ class Test(BaseTest):
         paste('test')
         key_down(Key.ALT)
         type(Key.ENTER)
+        time.sleep(DEFAULT_UI_DELAY_LONG)
+        key_up(Key.ALT)
 
         expected = exists(iris_logo_tab_pattern, 10)
         assert_true(self, expected, 'Iris tab is not in focus.')
