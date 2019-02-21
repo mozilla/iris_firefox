@@ -19,19 +19,18 @@ class Test(BaseTest):
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
         drop_txt_file_button_pattern = Pattern('drop_txt_file_button.png')
-        test_file_txt_pattern = Pattern('textfile_txt.png')
-        jpgimage_title_pattern = Pattern('jpgimage_title.png')
         library_popup_pattern = Pattern('library_popup.png')
         select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
         drop_here_pattern = Pattern('drop_here.png')
         matching_message_pattern = Pattern('matching_message.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
-        file_type_all_files_pattern = Pattern('file_type_all_files.png')
-        file_type_json_pattern = Pattern('file_type_json.png')
         jpg_bak_file_pattern = Pattern('jpg_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
+        if Settings.is_linux():
+            file_type_all_files_pattern = Pattern('file_type_all_files.png')
+            file_type_json_pattern = Pattern('file_type_json.png')
 
-        filepath = self.get_asset_path('')
+        folderpath = self.get_asset_path('')
         original_txtfile_path = self.get_asset_path('testfile.txt')
         backup_txtfile_path = self.get_asset_path('testfile_bak.txt')
 
@@ -42,7 +41,6 @@ class Test(BaseTest):
         shutil.copy(original_jpgfile_path, backup_jpgfile_path)
 
         navigate('https://mystor.github.io/dragndrop/')
-
         drop_html_data_button_displayed = exists(drop_txt_file_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, drop_html_data_button_displayed, 'Site downloaded')
 
@@ -84,13 +82,15 @@ class Test(BaseTest):
             paste(original_txtfile_path)
             type(Key.ENTER)
         else:
-            paste(filepath )
+            paste(folderpath)
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         if Settings.is_linux():
             json = exists(file_type_json_pattern)
+            assert_true(self, json, 'file_type_json_pattern')
             click(file_type_json_pattern)
             all_files = exists(file_type_all_files_pattern)
+            assert_true(self, all_files, 'all_files exists')
             click(file_type_all_files_pattern)
         else:
             type('*')
