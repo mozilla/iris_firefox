@@ -42,7 +42,7 @@ class Test(BaseTest):
         click(find_addons_pattern)
 
         paste('Multi-account')
-        multi_account_suggest = exists(multi_account_logo_small_pattern)
+        multi_account_suggest = exists(multi_account_logo_small_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, multi_account_suggest, 'Multi-account add-on displayed in suggestions')
         type(Key.DOWN)
         type(Key.ENTER)
@@ -60,7 +60,7 @@ class Test(BaseTest):
 
         click(add_addon_button_pattern)
 
-        addon_has_been_added = exists(ok_addon_button_pattern)
+        addon_has_been_added = exists(ok_addon_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, addon_has_been_added, 'Firefox Multi-Account Containers has been added to Firefox')
 
         click(ok_addon_button_pattern)
@@ -116,8 +116,8 @@ class Test(BaseTest):
         close_tab()
 
         try:
-            twiiter_tab_closed = wait_vanish(twitter_logo_pattern, 180)
-            assert_true(self, twiiter_tab_closed, 'The container tab is closed.')
+            twitter_tab_closed = wait_vanish(twitter_logo_pattern, 180)
+            assert_true(self, twitter_tab_closed, 'The container tab is closed.')
         except FindError:
             raise FindError('The container tab is not closed.')
 
