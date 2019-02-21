@@ -59,7 +59,10 @@ class Test(BaseTest):
         assert_true(self, bookmark_exists, 'Bookmarks added')
 
         click(soap_wiki_tab_pattern)
-        type('a', KeyModifier.CMD)
+        if Settings.is_mac():
+            type('a', KeyModifier.CMD)
+        else:
+            type('a', KeyModifier.CTRL)
 
         bookmarks_highlighted = exists(bookmarks_highlighted_pattern)
         assert_true(self, bookmarks_highlighted, 'Bookmarks are highlighted')
