@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.test_case_id = '163207'
         self.locale = ['en-US']
+        self.exclude = [Platform.LINUX]
 
     def setup(self):
         BaseTest.setup(self)
