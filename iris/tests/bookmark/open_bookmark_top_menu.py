@@ -9,8 +9,7 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a bookmark in a New Tab using contextual menu '\
-                    'from \'Other Bookmarks\' section from Bookmarks menu'
+        self.meta = 'Open a bookmark using contextual menu from \'Other Bookmarks\' section from Bookmarks menu'
         self.test_suite_id = '2525'
         self.test_case_id = '163208'
         self.locale = ['en-US']
