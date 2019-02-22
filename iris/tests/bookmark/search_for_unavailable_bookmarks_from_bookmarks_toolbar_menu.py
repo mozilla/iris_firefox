@@ -47,7 +47,7 @@ class Test(BaseTest):
         bookmarks_menu_not_exists = exists(search_bookmarks_pattern, DEFAULT_UI_DELAY)
         assert_false(self, bookmarks_menu_not_exists, 'The menu is dismissed')
 
-        type('Telegram')
+        paste('Telegram')
 
         search_with_default_engine_exists = exists(search_with_default_engine_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, search_with_default_engine_exists, ' No bookmarks are displayed under the URL bar '
