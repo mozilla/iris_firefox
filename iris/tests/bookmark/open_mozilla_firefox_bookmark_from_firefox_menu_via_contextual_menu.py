@@ -10,10 +10,11 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Open a bookmark from 'Mozilla Firefox' section"
-        self.test_case_id = "163230"
+        self.meta = "Open a bookmark using 'Open' option from the contextual menu "
+        self.test_case_id = "165437"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
+        self.exclude = [Platform.MAC]
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
@@ -43,7 +44,9 @@ class Test(BaseTest):
         assert_true(self, mozilla_firefox_predefined_bookmarks_exists, 'Predefined Mozilla Firefox related bookmarks '
                                                                        'displayed')
 
-        click(mozilla_about_us_bookmark_pattern)
+        right_click(mozilla_about_us_bookmark_pattern)
+        type(Key.DOWN)
+        type(Key.ENTER)
 
         mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, mozilla_about_us_page_displayed, 'Mozilla about us page are displayed')
