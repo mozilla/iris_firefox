@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Mozilla Firefox section from Bookmarks menu"
-        self.test_case_id = "163229"
+        self.meta = "Open a bookmark from 'Mozilla Firefox' section"
+        self.test_case_id = "163230"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
 
@@ -20,6 +20,8 @@ class Test(BaseTest):
         mozilla_firefox_predefined_bookmarks_pattern = Pattern('mozilla_firefox_predefined_bookmarks.png')
         open_all_in_tabs_pattern = Pattern('open_all_in_tabs.png')
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
+        mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
+        mozilla_about_us_page_pattern = Pattern('mozilla_about_us_page.png')
 
         location_to_hover = Location(0, 100)
 
@@ -42,5 +44,7 @@ class Test(BaseTest):
         assert_true(self, mozilla_firefox_predefined_bookmarks_exists, 'Predefined Mozilla Firefox related bookmarks '
                                                                        'displayed')
 
-        open_all_in_tabs_button_displayed = exists(open_all_in_tabs_pattern)
-        assert_true(self, open_all_in_tabs_button_displayed, 'Open All in Tabs button are displayed')
+        click(mozilla_about_us_bookmark_pattern)
+
+        mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, mozilla_about_us_page_displayed, 'Mozilla about us page are displayed')
