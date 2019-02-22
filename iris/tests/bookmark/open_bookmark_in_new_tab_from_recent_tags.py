@@ -39,15 +39,16 @@ class Test(BaseTest):
 
         firefox_menu_opened = exists(bookmarks_top_menu_pattern)
         assert_true(self, firefox_menu_opened, 'Firefox top menu is displayed')
-        click(bookmarks_top_menu_pattern)
 
+        click(bookmarks_top_menu_pattern)
         click(recent_tags_top_menu_pattern)
 
         tagged_bookmark_saved = exists(tag_item_pattern)
-        assert_true(self, tagged_bookmark_saved, 'Tagged bookmark located')
+        assert_true(self, tagged_bookmark_saved, 'Tagged bookmark are displayed')
+
         click(tag_item_pattern)
         right_click(LocalWeb.POCKET_BOOKMARK)
         click(open_in_new_tab_pattern)
 
         page_opened = exists(LocalWeb.POCKET_LOGO)
-        assert_true(self, page_opened, 'Webpage opened')
+        assert_true(self, page_opened, 'Webpage is opened')
