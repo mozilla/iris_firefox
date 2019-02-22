@@ -25,8 +25,7 @@ class Test(BaseTest):
         open_bookmark_pattern = Pattern('open_bookmark_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
 
-        if Settings.is_windows():
-            type(Key.ALT)
+        type(Key.ALT)
 
         top_menu_located = exists(bookmarks_top_menu_pattern)
         assert_true(self, top_menu_located, 'Firefox menu is located')
