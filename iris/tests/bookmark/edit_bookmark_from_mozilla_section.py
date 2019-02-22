@@ -28,14 +28,12 @@ class Test(BaseTest):
             bookmarks_menu_pattern = Pattern('bookmarks_menu.png')
 
         if Settings.is_windows():
-
             type(Key.ALT)
             top_menu_displayed = exists(bookmarks_top_menu_pattern)
             assert_true(self, top_menu_displayed, 'Firefox menu is displayed')
             click(bookmarks_top_menu_pattern)
 
         else:
-
             open_library()
             library_opened = exists(bookmarks_menu_pattern)
             assert_true(self, library_opened, 'Library is opened')
@@ -46,6 +44,7 @@ class Test(BaseTest):
 
         bookmarks_folder_located = exists(firefox_bookmarks_folder_pattern)
         assert_true(self, bookmarks_folder_located, 'Mozilla Firefox bookmarks folder is found')
+
         click(firefox_bookmarks_folder_pattern)
 
         default_bookmarks_displayed = exists(customize_firefox_bookmark_pattern)
@@ -61,6 +60,7 @@ class Test(BaseTest):
 
         bookmark_properties_displayed = exists(name_bookmark_field_pattern)
         assert_true(self, bookmark_properties_displayed, 'Bookmark properties are displayed')
+
         click(name_bookmark_field_pattern)
         edit_select_all()
         paste('qwert')
