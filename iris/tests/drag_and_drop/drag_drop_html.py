@@ -45,7 +45,8 @@ class Test(BaseTest):
         if not Settings.is_mac():
             minimize_window()
             new_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(offset, 0)
-            start_position = Location(SCREEN_WIDTH // 5, SCREEN_HEIGHT / 18)
+            start_x = SCREEN_WIDTH // 5 if Settings.is_windows() else SCREEN_WIDTH // 4
+            start_position = Location(start_x, SCREEN_HEIGHT // 18)
             drag_drop(new_tab_location, start_position)
 
         open_browser_console()
