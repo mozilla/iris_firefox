@@ -4,8 +4,7 @@
 
 
 from iris.test_case import *
-from os import system
-from shutil import copyfile
+
 
 class Test(BaseTest):
 
@@ -90,11 +89,11 @@ class Test(BaseTest):
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         if Settings.is_linux():
-            json = exists(file_type_json_pattern)
-            assert_true(self, json, 'file_type_json_pattern')
+            json_option = exists(file_type_json_pattern)
+            assert_true(self, json_option, 'file_type_json_pattern')
             click(file_type_json_pattern)
-            all_files = exists(file_type_all_files_pattern)
-            assert_true(self, all_files, 'all_files exists')
+            all_files_option = exists(file_type_all_files_pattern)
+            assert_true(self, all_files_option, 'all_files exists')
             click(file_type_all_files_pattern)
         else:
             type('*')
