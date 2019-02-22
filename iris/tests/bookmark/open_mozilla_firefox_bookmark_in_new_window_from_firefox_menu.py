@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Open a bookmark in a New Tab from 'Mozilla Firefox' section"
-        self.test_case_id = "163231"
+        self.meta = "Open a bookmark in a New Window from 'Mozilla Firefox' section"
+        self.test_case_id = "163232"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
         self.exclude = [Platform.MAC]
@@ -47,8 +47,13 @@ class Test(BaseTest):
         right_click(mozilla_about_us_bookmark_pattern)
         type(Key.DOWN)
         type(Key.DOWN)
+        type(Key.DOWN)
         type(Key.ENTER)
-        select_tab(2)
 
         mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, mozilla_about_us_page_displayed, 'Mozilla about us page are displayed')
+
+        close_window()
+
+        bookmark_has_been_opened_in_new_window = exists(NavBar.HOME_BUTTON, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, bookmark_has_been_opened_in_new_window, 'The bookmark has been opened in new window')
