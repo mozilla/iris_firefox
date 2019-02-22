@@ -14,6 +14,7 @@ from targets.firefox.test_assert import *
 
 class FirefoxTest(BaseTest):
 
+
     outcome = ''
     test_results = []
 
@@ -26,9 +27,7 @@ class FirefoxTest(BaseTest):
         return
 
     def setup_method(self, method):
-        self.test_results = []
-        self.outcome = ''
-        self.blocked_by=''
+      pass
 
     def setup(self):
         "setup method for each test instance"

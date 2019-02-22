@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+import inspect
 import os
 import sys
 
@@ -11,10 +11,10 @@ import json
 import logging
 import shutil
 
-
 from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import parse_args
 from src.core.util.path_manager import PathManager
+from src.core.util.test_loader import scan_all_tests
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +134,9 @@ def create_arg_json():
 
 def create_target_json():
     master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
-    target_list = next(os.walk(master_target_dir))[1]
+    target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__')]
+
+    master_test_list = create_master_test_list(target_list)
 
     targets = []
     for item in target_list:
@@ -142,14 +144,15 @@ def create_target_json():
             target_module = importlib.import_module('targets.%s.app' % item)
             try:
                 target = target_module.Target()
-                targets.append({ 'name': target.target_name, 'tests': [], 'icon': '%s.png' % item,
-                                 'settings': target.cc_settings})
+                targets.append({'name': target.target_name, 'tests': [], 'icon': '%s.png' % item,
+                                'settings': target.cc_settings})
             except NameError:
                 logger.error('Can\'t find default Target class.')
         except ModuleNotFoundError:
             logger.error('Problems importing module.')
 
-    target_json = { 'targets': targets}
+    target_json = {'targets': targets}
+    # print('Target Json is :',target_json)
     target_json_file = os.path.join(parse_args().workdir, 'data', 'targets.json')
     with open(target_json_file, 'w') as f:
         json.dump(target_json, f, sort_keys=True, indent=True)
@@ -171,40 +174,52 @@ def filter_list(original_list, exclude_list):
     return new_list
 
 
-def create_master_test_list():
+def create_master_test_list(target_list):
     all_tests, all_packages = scan_all_tests()
     master_test_list = {}
+    app = {}
     for package in all_packages:
         master_test_list[os.path.basename(package)] = []
 
-    for index, module in enumerate(all_tests, start=1):
-        try:
-            current_module = importlib.import_module(module)
-            current_test = current_module.Test()
+    for target in target_list:
+        testlist = []
+        app[target] = testlist
+        for index, module in enumerate(all_tests, start=1):
+            try:
+                current_module = importlib.import_module(module)
+                current_test = current_module.Test()
 
-            current_package = os.path.basename(os.path.dirname(current_module.__file__))
-            test_object = {'name': module, 'module': current_module.__file__, 'meta': current_test.meta,
-                           'package': current_package}
+                current_package = os.path.basename(os.path.dirname(current_module.__file__))
 
-            if current_test.fx_version is '':
-                test_object['fx_version'] = 'all'
-            else:
-                test_object['fx_version'] = current_test.fx_version
+                test_object = {'name': module, 'module': current_module.__file__,
+                               'description': current_test.description,
+                               'package': current_package}
+                if target == 'firefox':
+                    if current_test.fx_version is '':
+                        test_object['fx_version'] = 'all'
+                    else:
+                        test_object['fx_version'] = current_test.fx_version
 
-            test_object['platform'] = filter_list(current_test.platform, current_test.exclude)
-            test_object['channel'] = filter_list(current_test.channel, current_test.exclude)
-            test_object['locale'] = filter_list(current_test.locale, current_test.exclude)
-            test_object['enabled'] = OSHelper.get_os() in filter_list(current_test.platform, current_test.exclude)
-            test_object['tags'] = current_test.tags
-            test_object['test_case_id'] = current_test.test_case_id
-            test_object['test_suite_id'] = current_test.test_suite_id
-            test_object['blocked_by'] = current_test.blocked_by.get('id')
-            master_test_list[current_package].append(test_object)
-        except TypeError as e:
-            logger.warning('Error in test - %s: %s' % (module, e.message))
-        except AttributeError:
-            logger.warning('[%s] is not a test file. Skipping...', module)
-    return master_test_list
+                    # test_object['platform'] = filter_list(current_test.platform, current_test.exclude)
+                    # test_object['channel'] = filter_list(current_test.channel, current_test.exclude)
+                    # test_object['locale'] = filter_list(current_test.locale, current_test.exclude)
+                    # test_object['enabled'] = OSHelper.get_os() in filter_list(current_test.platform, current_test.exclude)
+                    # test_object['tags'] = current_test.tags
+                    test_object['test_case_id'] = current_test.test_case_id
+                    test_object['test_suite_id'] = current_test.test_suite_id
+                    test_object['blocked_by'] = current_test.blocked_by
+
+                if str(os.path.join(PathManager.get_tests_dir(), target)) in str(current_module.__file__):
+                    testlist.append(test_object)
+
+
+            except TypeError as e:
+                logger.warning('Error in test - %s: %s' % (module, e.message))
+            except AttributeError:
+                logger.warning('[%s] is not a test file. Skipping...', module)
+    return app
+
+
 
 
 def create_log_object(module, current, fx_args):
@@ -251,4 +266,3 @@ def append_logs(browser, test_list, master_test_list, passed, failed, skipped, e
             'start_time': int(start_time), 'end_time': int(end_time),
             'total_time': int(round(end_time - start_time, 2)), 'tests': tests}
     update_run_log(browser, data)
-

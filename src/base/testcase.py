@@ -22,6 +22,8 @@ from src.core.api.location import *
 from src.core.api.os_helpers import *
 from src.core.api.rectangle import *
 from src.core.api.settings import Settings
+from funcy import compose
+
 
 mylogger = logging.getLogger(__name__)
 

@@ -302,22 +302,22 @@ class Target(BaseTarget):
     #     session.results = dict()
     #     print('\n\n** Firefox testing session {} started **\n'.format(session.name))
 
-    @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-    def pytest_runtest_makereport(self, item, call):
-        BaseTarget.pytest_runtest_makereport(self, item, call)
-
-        outcome = yield
-        report = outcome.get_result()
-
-        if report.when == "call":
-            test_case_instance = item.instance
-
-
-            test_object_result = TestRailTests(test_case_instance.meta,
-                                               test_case_instance.test_suite_id, test_case_instance.test_case_id,
-                                               test_case_instance.blocked_by, test_case_instance.test_results)
-
-            self.test_run_object_list.append(test_object_result)
+    # @pytest.hookimpl(tryfirst=True, hookwrapper=True)
+    # def pytest_runtest_makereport(self, item, call):
+    #     BaseTarget.pytest_runtest_makereport(self, item, call)
+    #
+    #     outcome = yield
+    #     report = outcome.get_result()
+    #
+    #     if report.when == "call":
+    #         test_case_instance = item.instance
+    #
+    #
+    #         test_object_result = TestRailTests(test_case_instance.meta,
+    #                                            test_case_instance.test_suite_id, test_case_instance.test_case_id,
+    #                                            test_case_instance.blocked_by, test_case_instance.test_results)
+    #
+    #         self.test_run_object_list.append(test_object_result)
 
             # item.session.results[item] = report
 

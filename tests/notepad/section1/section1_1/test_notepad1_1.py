@@ -9,12 +9,15 @@ from src.core.api.screen.screen import Rectangle
 
 
 class Test(BaseTest):
-    blocked_by=12323
+    name = "Test experiment"
+    description = "This test is just an experiment."
+    fx_version = "63"
+    locale = "en-US, zh-CN, es-ES, de"
+    chanel = "beta"
+    test_case_id = "435344"
+    test_suite_id = "345444"
+    blocked_by = ""
 
-
-
-    @pytest.mark.skipif(sys.platform == "darwin",
-                        reason="Skip experimend:)")
     def test_run(self):
         find(Pattern('test.png'), Rectangle(0, 0, 100, 100))
         assert True == True,'Assert message failed'
