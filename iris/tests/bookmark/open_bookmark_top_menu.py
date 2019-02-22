@@ -23,7 +23,7 @@ class Test(BaseTest):
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
-        open_in_new_tab_pattern = Pattern('open_in_new_tab.png')
+        open_bookmark_pattern = Pattern('open_bookmark_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
 
         if Settings.is_windows():
@@ -41,6 +41,6 @@ class Test(BaseTest):
         assert_true(self, firefox_bookmark_top_menu_located, 'Bookmarks are displayed in top menu')
 
         right_click(firefox_bookmark_top_menu_pattern)
-        click(open_in_new_tab_pattern)
+        click(open_bookmark_pattern)
         webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_opened, 'Webpage is opened')
