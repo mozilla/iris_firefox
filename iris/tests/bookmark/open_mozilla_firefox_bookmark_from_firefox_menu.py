@@ -18,7 +18,6 @@ class Test(BaseTest):
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
         mozilla_firefox_predefined_bookmarks_pattern = Pattern('mozilla_firefox_predefined_bookmarks.png')
-        open_all_in_tabs_pattern = Pattern('open_all_in_tabs.png')
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
         mozilla_about_us_page_pattern = Pattern('mozilla_about_us_page.png')
