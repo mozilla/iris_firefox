@@ -47,6 +47,9 @@ class Test(BaseTest):
 
         click(drop_txt_file_button_pattern)
 
+        matching_block_available = scroll_until_pattern_found(matching_message_pattern, scroll, (-25,), 20,
+                                                       DEFAULT_UI_DELAY)
+        assert_true(self, matching_block_available, 'Matching block available')
         open_library()
 
         # drag library window
