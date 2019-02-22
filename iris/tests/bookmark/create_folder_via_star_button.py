@@ -21,7 +21,7 @@ class Test(BaseTest):
         new_folder_button_pattern = Bookmarks.StarDialog.NEW_FOLDER
         new_folder_created_pattern = Bookmarks.StarDialog.NEW_FOLDER_CREATED
         done_button_pattern = Bookmarks.StarDialog.DONE
-        bookmark_folder_pattern = Pattern('moz_bookmark_folder.png')
+        bookmark_folder_pattern = Pattern('moz_bookmark_folder.png').similar(0.7)
 
         if Settings.get_os() == Platform.LINUX:
             new_folder_created_pattern = Pattern('new_folder_created.png')
