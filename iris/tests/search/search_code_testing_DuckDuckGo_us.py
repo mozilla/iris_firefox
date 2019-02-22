@@ -37,6 +37,7 @@ class Test(BaseTest):
 
         expected = exists(test_search_duckduckgo_pattern, 10)
         assert_true(self, expected, 'The search is performed with the DuckDuckGo engine.')
+        time.sleep(DEFAULT_UI_DELAY_LONG)
 
         select_location_bar()
         time.sleep(DEFAULT_UI_DELAY)
