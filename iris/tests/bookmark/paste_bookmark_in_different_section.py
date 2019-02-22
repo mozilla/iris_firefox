@@ -55,3 +55,5 @@ class Test(BaseTest):
         click(paste_option_pattern)
         folder_pasted = exists(getting_started_bookmark_pattern, DEFAULT_SYSTEM_DELAY)
         assert_true(self, folder_pasted, 'The file/folder is correctly pasted in the \'Other Bookmarks\' section.')
+
+        close_tab()
