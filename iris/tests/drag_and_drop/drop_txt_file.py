@@ -15,6 +15,17 @@ class Test(BaseTest):
         self.test_suite_id = '1828'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        original_txtfile_path = self.get_asset_path('testfile.txt')
+        backup_txtfile_path = self.get_asset_path('testfile_bak.txt')
+
+        original_jpgfile_path = self.get_asset_path('jpgimage.jpg')
+        backup_jpgfile_path = self.get_asset_path('jpgimage_bak.jpg')
+
+        shutil.copy(original_txtfile_path, backup_txtfile_path)
+        shutil.copy(original_jpgfile_path, backup_jpgfile_path)
+
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
         drop_txt_file_button_pattern = Pattern('drop_txt_file_button.png')
@@ -31,13 +42,6 @@ class Test(BaseTest):
 
         folderpath = self.get_asset_path('')
         original_txtfile_path = self.get_asset_path('testfile.txt')
-        backup_txtfile_path = self.get_asset_path('testfile_bak.txt')
-
-        original_jpgfile_path = self.get_asset_path('jpgimage.jpg')
-        backup_jpgfile_path = self.get_asset_path('jpgimage_bak.jpg')
-
-        shutil.copy(original_txtfile_path, backup_txtfile_path)
-        shutil.copy(original_jpgfile_path, backup_jpgfile_path)
 
         navigate('https://mystor.github.io/dragndrop/')
 
