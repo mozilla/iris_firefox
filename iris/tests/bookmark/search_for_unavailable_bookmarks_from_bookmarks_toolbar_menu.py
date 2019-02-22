@@ -24,6 +24,7 @@ class Test(BaseTest):
         bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
         search_bookmarks_pattern = LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS
         focused_search_field_pattern = Pattern('focused_search_field.png')
+        search_with_default_engine_pattern = Pattern('search_with_default_engine.png')
 
         library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
@@ -47,6 +48,11 @@ class Test(BaseTest):
         assert_false(self, bookmarks_menu_not_exists, 'The menu is dismissed')
 
         type('Telegram')
+
+        search_with_default_engine_exists = exists(search_with_default_engine_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_true(self, search_with_default_engine_exists, ' No bookmarks are displayed under the URL bar '
+                                                             'and Telegram - Search with default search engine '
+                                                             'is text is displayed')
 
 
 
