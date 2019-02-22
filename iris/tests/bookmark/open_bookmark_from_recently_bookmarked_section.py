@@ -23,7 +23,7 @@ class Test(BaseTest):
         library_button_pattern = NavBar.LIBRARY_MENU
         bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
         recently_wikipedia_bookmark_pattern = Pattern('recently_wikipedia_bookmark.png')
-        new_tab_is_opened_pattern = Pattern('opened_in_new_tab.png')
+        new_tab_is_opened_pattern = Pattern('opened_in_new_tab.png').similar(0.95)
         wikipedia_content_pattern = Pattern('wikipedia_content.png')
 
         library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
@@ -41,7 +41,7 @@ class Test(BaseTest):
 
         click(recently_wikipedia_bookmark_pattern)
 
-        wikipedia_content_exists = exists(wikipedia_content_pattern, DEFAULT_UI_DELAY_LONG)
+        wikipedia_content_exists = exists(wikipedia_content_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, wikipedia_content_exists, 'Wikipedia content exists')
 
         new_tab_is_not_opened_exists = exists(new_tab_is_opened_pattern, DEFAULT_UI_DELAY_LONG)
