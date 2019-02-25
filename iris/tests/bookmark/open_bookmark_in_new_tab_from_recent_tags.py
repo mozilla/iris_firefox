@@ -14,18 +14,29 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.test_case_id = '171649'
         self.locale = ['en-US']
-        self.exclude = [Platform.LINUX, Platform.MAC]
+        self.exclude = [Platform.MAC]
 
     def setup(self):
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
+
+
+        # new_tab()
+        # navigate(LocalWeb.POCKET_TEST_SITE)
+        # bookmark_page()
+        # time.sleep(300)
+
+
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
+        pocket_bookmark_top_menu_pattern = Pattern('pocket_bookmark_top_menu.png')
         recent_tags_top_menu_pattern = Pattern('recent_tags_top_menu.png')
         tag_field_pattern = Pattern('tag_field.png')
         tag_item_pattern = Pattern('tag_item.png')
-        open_in_new_tab_pattern = Pattern('open_bookmark_in_new_tab.png')
+
+        if Settings.is_windows():
+            open_in_new_tab_pattern = Pattern('open_bookmark_in_new_tab.png')
 
         new_tab()
         navigate(LocalWeb.POCKET_TEST_SITE)
@@ -35,7 +46,12 @@ class Test(BaseTest):
         type(Key.ENTER)
         close_tab()
 
-        type(Key.ALT)
+        if Settings.is_windows():
+            type(Key.ALT)
+        elif Settings.is_linux():
+            key_down(Key.ALT)
+            time.sleep(0.3)
+            key_up(Key.ALT)
 
         firefox_menu_opened = exists(bookmarks_top_menu_pattern)
         assert_true(self, firefox_menu_opened, 'Firefox top menu is displayed')
@@ -47,8 +63,13 @@ class Test(BaseTest):
         assert_true(self, tagged_bookmark_saved, 'Tagged bookmark are displayed')
 
         click(tag_item_pattern)
-        right_click(LocalWeb.POCKET_BOOKMARK)
-        click(open_in_new_tab_pattern)
+        if Settings.is_windows():
+            right_click(LocalWeb.POCKET_BOOKMARK)
+        else:
+            click(pocket_bookmark_top_menu_pattern)
+
+        if Settings.is_windows():
+            click(open_in_new_tab_pattern)
 
         page_opened = exists(LocalWeb.POCKET_LOGO)
         assert_true(self, page_opened, 'Webpage is opened')
