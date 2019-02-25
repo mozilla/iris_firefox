@@ -82,7 +82,7 @@ class Test(BaseTest):
         click(Library.ImportAndBackup.RESTORE)
 
         choose_file = exists(Library.ImportAndBackup.Restore.CHOOSE_FILE)
-        assert_true(self, choose_file, '')
+        assert_true(self, choose_file, 'Choose file option from context menu available')
 
         click(Library.ImportAndBackup.Restore.CHOOSE_FILE)
 
@@ -119,14 +119,17 @@ class Test(BaseTest):
         drag_drop(select_bookmark_popup_before.right(30), select_bookmark_popup_after)
 
         test_file_txt = exists(txt_bak_file_pattern)
-        assert_true(self, test_file_txt, 'TXT test file is available')
 
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
 
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
+        assert_true(self, test_file_txt, 'TXT test file is available')
 
-        matching_message_displayed = exists(not_matching_message_pattern)
+        backup_file_after_drop = exists(txt_bak_file_pattern)
+        assert_true(self, backup_file_after_drop, 'TXT backup test file is available after drag and drop')
+
+        matching_message_displayed = exists(not_matching_message_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
                                                       'result is identical to result.')
 
