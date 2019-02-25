@@ -48,7 +48,7 @@ class Test(BaseTest):
         click(recent_tags_top_menu_pattern)
 
         tagged_bookmark_saved = exists(tag_item_pattern)
-        assert_true(self, tagged_bookmark_saved, 'Tagged bookmark are displayed')
+        assert_true(self, tagged_bookmark_saved, 'Bookmarked webpage marked with that specific tag is displayed.')
 
         click(tag_item_pattern)
         if Settings.is_windows():
@@ -58,4 +58,4 @@ class Test(BaseTest):
             click(pocket_bookmark_top_menu_pattern)
 
         page_opened = exists(LocalWeb.POCKET_LOGO)
-        assert_true(self, page_opened, 'Webpage is opened')
+        assert_true(self, page_opened, 'The selected website is correctly opened')
