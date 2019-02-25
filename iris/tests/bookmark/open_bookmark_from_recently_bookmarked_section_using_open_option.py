@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a bookmark from the Recently Bookmarked section'
-        self.test_case_id = '165484'
+        self.meta = 'Open a bookmark from the Recently Bookmarked section using Open option'
+        self.test_case_id = '165485'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
