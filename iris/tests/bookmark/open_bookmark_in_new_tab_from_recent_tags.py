@@ -22,9 +22,7 @@ class Test(BaseTest):
         recent_tags_top_menu_pattern = Pattern('recent_tags_top_menu.png')
         tag_field_pattern = Pattern('tag_field.png')
         tag_item_pattern = Pattern('tag_item.png')
-
-        if Settings.is_windows():
-            open_in_new_tab_pattern = Pattern('open_bookmark_in_new_tab.png')
+        open_in_new_tab_pattern = Pattern('open_bookmark_in_new_tab.png')
 
         new_tab()
         navigate(LocalWeb.POCKET_TEST_SITE)
@@ -51,11 +49,8 @@ class Test(BaseTest):
         assert_true(self, tagged_bookmark_saved, 'Bookmarked webpage marked with that specific tag is displayed.')
 
         click(tag_item_pattern)
-        if Settings.is_windows():
-            right_click(pocket_bookmark_top_menu_pattern)
-            click(open_in_new_tab_pattern)
-        else:
-            click(pocket_bookmark_top_menu_pattern)
+        right_click(pocket_bookmark_top_menu_pattern)
+        click(open_in_new_tab_pattern)
 
         page_opened = exists(LocalWeb.POCKET_LOGO)
         assert_true(self, page_opened, 'The selected website is correctly opened')
