@@ -47,14 +47,14 @@ class Test(BaseTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        new_bookmark_option_exists = exists(Library.Organize.NEW_SEPARATOR)
-        assert_true(self, new_bookmark_option_exists, 'New Folder option exists')
+        new_separator_option_exists = exists(Library.Organize.NEW_SEPARATOR)
+        assert_true(self, new_separator_option_exists, 'New Folder option exists')
 
         click(Library.Organize.NEW_SEPARATOR)
 
         hover(open_all_in_tabs_pattern)
 
         separator_added = exists(separator_added_pattern)
-        assert_true(self, separator_added, 'A new folder is added in Mozilla Firefox section.')
+        assert_true(self, separator_added, 'A new Separator is added in Mozilla Firefox section.')
 
         close_window()
