@@ -22,6 +22,7 @@ class Test(BaseTest):
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
         mozilla_about_us_page_pattern = Pattern('mozilla_about_us_page.png')
+        context_menu_open_pattern = Pattern('context_menu_open.png')
 
         location_to_hover = Location(0, 100)
 
@@ -45,8 +46,12 @@ class Test(BaseTest):
                                                                        'displayed')
 
         right_click(mozilla_about_us_bookmark_pattern)
-        type(Key.DOWN)
-        type(Key.ENTER)
+
+        context_menu_open_option_displayed = exists(context_menu_open_pattern)
+        assert_true(self, context_menu_open_option_displayed, 'Context menu Open option is displayed')
+
+        click(context_menu_open_pattern)
 
         mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, mozilla_about_us_page_displayed, 'Mozilla about us page are displayed')
+        assert_true(self, mozilla_about_us_page_displayed, 'The website related to the selected bookmark is opened in '
+                                                           'the current tab')
