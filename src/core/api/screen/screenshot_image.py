@@ -6,8 +6,12 @@
 import cv2
 import mss
 import numpy as np
+import logging
+
+import pyautogui as pyautogui
 
 from src.core.api.errors import ScreenshotError
+from src.core.api.os_helpers import OSHelper
 from src.core.api.screen.display import Display
 from src.core.api.rectangle import Rectangle
 
@@ -15,6 +19,8 @@ try:
     import Image
 except ImportError:
     from PIL import Image
+
+logger = logging.getLogger(__name__)
 
 
 class ScreenshotImage:
@@ -24,7 +30,10 @@ class ScreenshotImage:
         if region is None:
             region = Display(screen_id).bounds
 
-        screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
+        if OSHelper.get_os().value == "linux":
+            screen_region=region
+        else:
+            screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
 
         self._color_image = _region_to_image(screen_region)
         self._rgb_array = np.array(self._color_image)
@@ -55,8 +64,21 @@ class ScreenshotImage:
 
 
 def _region_to_image(region) -> Image or ScreenshotError:
+    if OSHelper.get_os().value == 'linux':
+        grabbed_area = _mss_screenshot(region)
+    else:
+        try:
+            grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
+        except (IOError, OSError):
+            logger.debug('Call to pyautogui.screnshot failed, using mss instead.')
+            grabbed_area = _mss_screenshot(region)
+    return grabbed_area
+
+
+
+def _mss_screenshot(region):
     try:
         image = np.array(mss.mss().grab(region))
-        return Image.fromarray(image, mode='RGBA')
     except Exception:
         raise ScreenshotError('Unable to take screenshot.')
+    return Image.fromarray(image, mode='RGBA')
