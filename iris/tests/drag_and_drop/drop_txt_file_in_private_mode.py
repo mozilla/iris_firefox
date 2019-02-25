@@ -34,7 +34,7 @@ class Test(BaseTest):
         select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
         drop_here_pattern = Pattern('drop_here.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
-        matching_message_pattern = Pattern('matching_message.png')
+        matching_message_pattern = Pattern('drop_matching_verified.png')
         jpg_bak_file_pattern = Pattern('jpg_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
         if Settings.is_linux():
@@ -42,7 +42,6 @@ class Test(BaseTest):
             file_type_json_pattern = Pattern('file_type_json.png')
 
         folderpath = self.get_asset_path('')
-        original_txtfile_path = self.get_asset_path('testfile.txt')
 
         new_private_window()
 
@@ -63,6 +62,10 @@ class Test(BaseTest):
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
                                                               DEFAULT_UI_DELAY)
         assert_true(self, matching_block_available, 'The drop result verification area is present on the page')
+        not_matching_message_location = find(not_matching_message_pattern)
+        not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
+        not_matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
+                                     width=not_matching_message_width, height=not_matching_message_height)
 
         open_library()
 
@@ -130,18 +133,22 @@ class Test(BaseTest):
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
 
+        matching_message_width, matching_message_height = matching_message_pattern.get_size()
+        matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
+                                 width=matching_message_width, height=matching_message_height*2)
+
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
 
-        matching_message_displayed = exists(matching_message_pattern)
+        matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
-                                                      'result is identical to result.')
+                                                      'result is identical to result. {} '.format(matching_region))
 
         test_file_jpg = exists(jpg_bak_file_pattern)
         assert_true(self, test_file_jpg, 'JPG test file is available')
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern)
 
-        not_matching_message_displayed = exists(not_matching_message_pattern)
+        not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
                                                           'expected result is different from result.')
 
