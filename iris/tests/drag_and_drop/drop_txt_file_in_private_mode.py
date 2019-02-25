@@ -10,9 +10,9 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Drop .txt File in demopage'
-        self.test_case_id = '165078'
-        self.test_suite_id = '1828'
+        self.meta = 'Drop single and multiple .txt files in demopage opened in Private Window.'
+        self.test_case_id = '165079'
+        self.test_suite_id = '102'
         self.locales = ['en-US']
 
     def setup(self):
@@ -29,11 +29,12 @@ class Test(BaseTest):
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
         drop_txt_file_button_pattern = Pattern('drop_txt_file_button.png')
+        drop_txt_file_selected_button_pattern = Pattern('drop_txt_file_selected_button.png')
         library_popup_pattern = Pattern('library_popup.png')
         select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
         drop_here_pattern = Pattern('drop_here.png')
-        matching_message_pattern = Pattern('matching_message.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
+        matching_message_pattern = Pattern('matching_message.png')
         jpg_bak_file_pattern = Pattern('jpg_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
         if Settings.is_linux():
@@ -44,25 +45,30 @@ class Test(BaseTest):
         original_txtfile_path = self.get_asset_path('testfile.txt')
 
         new_private_window()
-        private_window_is_loaded = exists(PrivateWindow.private_window_pattern, 20)
-        assert_true(self, private_window_is_loaded,
-                    'Private windows is loaded')
+
+        private_window_opened = exists(PrivateWindow.private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, private_window_opened, 'A new private window is successfully loaded.')
 
         navigate('https://mystor.github.io/dragndrop/')
 
         drop_html_data_button_displayed = exists(drop_txt_file_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, drop_html_data_button_displayed, 'Site downloaded')
+        assert_true(self, drop_html_data_button_displayed, 'The demo website loaded successfully')
 
         click(drop_txt_file_button_pattern)
 
-        matching_block_available = scroll_until_pattern_found(matching_message_pattern, scroll, (-25,), 20,
-                                                       DEFAULT_UI_DELAY)
-        assert_true(self, matching_block_available, 'Matching block available')
+        drop_txt_option_selected = exists(drop_txt_file_selected_button_pattern)
+        assert_true(self, drop_txt_option_selected, 'The drop-txt-file changed color to red which indicates that it '
+                                                    'has been selected.')
+
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
+                                                              DEFAULT_UI_DELAY)
+        assert_true(self, matching_block_available, 'The drop result verification area is present on the page')
+
         open_library()
 
-        # drag library window
+        # open and drag library window
         library_popup_open = exists(library_import_backup_pattern.similar(0.6), DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, library_popup_open, 'Library is correctly opened.')
+        assert_true(self, library_popup_open, 'Library popup window is correctly opened.')
 
         library_popup_tab_before = find(library_popup_pattern)
         library_title_width, library_title_height = library_popup_pattern.get_size()
@@ -77,21 +83,23 @@ class Test(BaseTest):
         click(library_import_backup_pattern)
 
         restore_context = exists(Library.ImportAndBackup.RESTORE)
-        assert_true(self, restore_context, 'Restore context button available' )
+        assert_true(self, restore_context, '\'Restore\' option from \'Import and Backup\'context menu available')
+
         click(Library.ImportAndBackup.RESTORE)
 
         choose_file = exists(Library.ImportAndBackup.Restore.CHOOSE_FILE)
-        assert_true(self, choose_file, 'Choose file option available')
+        assert_true(self, choose_file, 'Choose file option from context menu available')
+
         click(Library.ImportAndBackup.Restore.CHOOSE_FILE)
 
         select_bookmark_popup = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup, 'Select bookmark window available')
+        assert_true(self, select_bookmark_popup, '\'Select a bookmark backup\' window available')
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
         if Settings.is_mac():
             type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # go to folder
-            paste(original_txtfile_path)
+            paste(folderpath)
             type(Key.ENTER)
         else:
             paste(folderpath)
@@ -99,35 +107,43 @@ class Test(BaseTest):
 
         if Settings.is_linux():
             json_option = exists(file_type_json_pattern)
-            assert_true(self, json_option, 'file_type_json_pattern')
+            assert_true(self, json_option, '\'File type JSON\' option in file picker window available')
+
             click(file_type_json_pattern)
-            all_files = exists(file_type_all_files_pattern)
-            assert_true(self, all_files, 'all_files exists')
+
+            all_files_option = exists(file_type_all_files_pattern)
+            assert_true(self, all_files_option, '\'All Files\' option in file picker window available')
+
             click(file_type_all_files_pattern)
+
         else:
             type('*')
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
+
         drag_drop(select_bookmark_popup_before.right(30), select_bookmark_popup_after)
 
         test_file_txt = exists(txt_bak_file_pattern)
-        assert_true(self, test_file_txt, 'Txt test file is available')
+        assert_true(self, test_file_txt, 'TXT test file is available')
 
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
+
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
 
         matching_message_displayed = exists(matching_message_pattern)
-        assert_true(self, matching_message_displayed, 'The data is matching')
+        assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
+                                                      'result is identical to result.')
 
         test_file_jpg = exists(jpg_bak_file_pattern)
-        assert_true(self, test_file_jpg, 'Jpg test file is available')
+        assert_true(self, test_file_jpg, 'JPG test file is available')
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern)
 
         not_matching_message_displayed = exists(not_matching_message_pattern)
-        assert_true(self, not_matching_message_displayed, 'The data is not matching')
+        assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
+                                                          'expected result is different from result.')
 
         type(Key.ESC)
         close_tab()
