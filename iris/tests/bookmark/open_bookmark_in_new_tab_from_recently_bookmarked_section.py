@@ -23,7 +23,7 @@ class Test(BaseTest):
         library_button_pattern = NavBar.LIBRARY_MENU
         bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
         recently_wikipedia_bookmark_pattern = Pattern('recently_wikipedia_bookmark.png')
-        new_tab_is_opened_pattern = Pattern('opened_in_new_tab.png').similar(0.95)
+        new_tab_is_opened_pattern = Pattern('opened_in_new_tab.png')
         wikipedia_content_pattern = Pattern('wikipedia_content.png')
         open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
 
