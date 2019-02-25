@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = "163232"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
-        self.exclude = [Platform.MAC]
+        self.exclude = [Platform.MAC, Platform.LINUX]
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
