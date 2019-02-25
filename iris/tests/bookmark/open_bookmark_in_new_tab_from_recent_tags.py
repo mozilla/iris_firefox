@@ -16,19 +16,7 @@ class Test(BaseTest):
         self.locale = ['en-US']
         self.exclude = [Platform.MAC]
 
-    def setup(self):
-        BaseTest.setup(self)
-        self.profile = Profile.TEN_BOOKMARKS
-
     def run(self):
-
-
-        # new_tab()
-        # navigate(LocalWeb.POCKET_TEST_SITE)
-        # bookmark_page()
-        # time.sleep(300)
-
-
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         pocket_bookmark_top_menu_pattern = Pattern('pocket_bookmark_top_menu.png')
         recent_tags_top_menu_pattern = Pattern('recent_tags_top_menu.png')
@@ -64,12 +52,10 @@ class Test(BaseTest):
 
         click(tag_item_pattern)
         if Settings.is_windows():
-            right_click(LocalWeb.POCKET_BOOKMARK)
+            right_click(pocket_bookmark_top_menu_pattern)
+            click(open_in_new_tab_pattern)
         else:
             click(pocket_bookmark_top_menu_pattern)
-
-        if Settings.is_windows():
-            click(open_in_new_tab_pattern)
 
         page_opened = exists(LocalWeb.POCKET_LOGO)
         assert_true(self, page_opened, 'Webpage is opened')
