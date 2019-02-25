@@ -693,6 +693,9 @@ def restart_via_console():
 
 
 def open_firefox_menu():
+    """
+    Opens Firefox top menu
+    """
     if Settings.is_linux():
         key_down(Key.ALT)
         time.sleep(0.5)
