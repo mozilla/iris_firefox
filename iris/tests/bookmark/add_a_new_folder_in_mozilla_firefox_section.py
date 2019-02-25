@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Add a new bookmark in 'Mozilla Firefox' section "
-        self.test_case_id = "163373"
+        self.meta = "Add a new Folder in 'Mozilla Firefox' section "
+        self.test_case_id = "163374"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
         self.exclude = [Platform.MAC]
@@ -21,9 +21,7 @@ class Test(BaseTest):
         mozilla_firefox_predefined_bookmarks_pattern = Pattern('mozilla_firefox_predefined_bookmarks.png')
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
-        context_menu_new_bookmark_pattern = Pattern('context_menu_new_bookmark.png')
-        new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
-        new_soap_bookmark_pattern = Pattern('new_soap_bookmark.png')
+        iris_new_folder_pattern = Pattern('iris_new_folder.png')
 
         location_to_hover = Location(0, 100)
 
@@ -48,22 +46,20 @@ class Test(BaseTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        context_menu_new_bookmark_pattern_displayed = exists(context_menu_new_bookmark_pattern)
-        assert_true(self, context_menu_new_bookmark_pattern_displayed, 'Context menu New Bookmark option is displayed')
+        new_bookmark_option_exists = exists(Library.Organize.NEW_FOLDER)
+        assert_true(self, new_bookmark_option_exists, 'New Folder option exists')
 
-        click(context_menu_new_bookmark_pattern)
+        click(Library.Organize.NEW_FOLDER)
 
-        new_bookmark_window_opened = exists(new_bookmark_window_pattern)
-        assert_true(self, new_bookmark_window_opened, 'New Bookmark window is displayed')
+        if Settings.is_linux():
+            new_folder_bookmark_bookmark = Pattern('new_folder_bookmark.png')
+            new_bookmark_window_opened = exists(new_folder_bookmark_bookmark)
+            assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
+        else:
+            new_bookmark_window_opened = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED)
+            assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
 
-        paste('SOAP')
-        type(Key.TAB)
-        paste(LocalWeb.SOAP_WIKI_TEST_SITE)
-        type(Key.TAB)
-        paste('SOAP')
-        type(Key.TAB)
-        type(Key.TAB)
-        paste('SOAP')
+        paste('Iris New Folder')
         type(Key.ENTER)
 
         hover(location_to_hover)
@@ -81,7 +77,7 @@ class Test(BaseTest):
                                                                           'bookmarks folder exists')
         click(mozilla_firefox_bookmarks_folder_pattern)
 
-        bookmark_exists = exists(new_soap_bookmark_pattern)
-        assert_true(self, bookmark_exists, 'A new bookmark is added in Mozilla Firefox section.')
+        folder_exists = exists(iris_new_folder_pattern)
+        assert_true(self, folder_exists, 'A new folder is added in Mozilla Firefox section.')
 
         close_window()
