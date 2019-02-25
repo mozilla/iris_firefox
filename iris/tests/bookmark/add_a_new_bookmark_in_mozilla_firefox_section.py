@@ -21,7 +21,6 @@ class Test(BaseTest):
         mozilla_firefox_predefined_bookmarks_pattern = Pattern('mozilla_firefox_predefined_bookmarks.png')
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
-        context_menu_new_bookmark_pattern = Pattern('context_menu_new_bookmark.png')
         new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
         new_soap_bookmark_pattern = Pattern('new_soap_bookmark.png')
 
@@ -48,10 +47,10 @@ class Test(BaseTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        context_menu_new_bookmark_pattern_displayed = exists(context_menu_new_bookmark_pattern)
+        context_menu_new_bookmark_pattern_displayed = exists(Library.Organize.NEW_BOOKMARK)
         assert_true(self, context_menu_new_bookmark_pattern_displayed, 'Context menu New Bookmark option is displayed')
 
-        click(context_menu_new_bookmark_pattern)
+        click(Library.Organize.NEW_BOOKMARK)
 
         new_bookmark_window_opened = exists(new_bookmark_window_pattern)
         assert_true(self, new_bookmark_window_opened, 'New Bookmark window is displayed')
