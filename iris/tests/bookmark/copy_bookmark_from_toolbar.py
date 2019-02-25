@@ -19,7 +19,7 @@ class Test(BaseTest):
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         bookmark_in_other_bookmarks_folder_pattern = Pattern('bookmark_in_folder.png')
         other_bookmarks_folder_pattern = Pattern('other_bookmarks_library_folder.png')
-        getting_started_bookmark_pattern = Pattern('getting_started.png')
+        getting_started_bookmark_pattern = Pattern('getting_started_bookmark.png')
         paste_option_pattern = Pattern('paste_option.png')
         copy_option_pattern = Pattern('copy_option.png')
         iris_tab_pattern = Pattern('iris_tab.png')
