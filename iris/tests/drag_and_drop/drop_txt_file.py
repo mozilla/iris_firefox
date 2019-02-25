@@ -119,19 +119,22 @@ class Test(BaseTest):
         drag_drop(select_bookmark_popup_before.right(30), select_bookmark_popup_after)
 
         test_file_txt = exists(txt_bak_file_pattern)
+        assert_true(self, test_file_txt, 'TXT test file is available')
 
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
 
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
-        assert_true(self, test_file_txt, 'TXT test file is available')
 
-        backup_file_after_drop = exists(txt_bak_file_pattern)
-        assert_true(self, backup_file_after_drop, 'TXT backup test file is available after drag and drop')
+        # backup_file_after_drop = exists(txt_bak_file_pattern)
+        # assert_true(self, backup_file_after_drop, 'TXT backup test file is available after drag and drop')
 
-        matching_message_displayed = exists(not_matching_message_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
-                                                      'result is identical to result.')
+        try:
+            matching_message_displayed = wait_vanish(not_matching_message_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and '
+                                                           'expected result is identical to result.')
+        except FindError:
+            raise FindError('Window not minimized.')
 
         test_file_jpg = exists(jpg_bak_file_pattern)
         assert_true(self, test_file_jpg, 'JPG test file is available')
