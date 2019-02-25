@@ -46,13 +46,13 @@ class Test(BaseTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        new_bookmark_option_exists = exists(Library.Organize.NEW_FOLDER)
-        assert_true(self, new_bookmark_option_exists, 'New Folder option exists')
+        new_folder_option_exists = exists(Library.Organize.NEW_FOLDER)
+        assert_true(self, new_folder_option_exists, 'New Folder option exists')
 
         click(Library.Organize.NEW_FOLDER)
 
-        new_bookmark_window_opened = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED)
-        assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
+        new_folder_window_opened = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED)
+        assert_true(self, new_folder_window_opened, 'New Folder window is displayed')
 
         paste('Iris New Folder')
         type(Key.ENTER)
@@ -62,8 +62,8 @@ class Test(BaseTest):
         time.sleep(DEFAULT_FX_DELAY)
         key_up(Key.ALT)
 
-        firefox_menu_bookmarks__second_exists = exists(firefox_menu_bookmarks_pattern)
-        assert_true(self, firefox_menu_bookmarks__second_exists, 'Firefox menu > Bookmarks exists')
+        firefox_menu_bookmarks_second_exists = exists(firefox_menu_bookmarks_pattern)
+        assert_true(self, firefox_menu_bookmarks_second_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
