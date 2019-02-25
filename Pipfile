@@ -21,8 +21,8 @@ mozdownload = {git = 'https://github.com/AndreiH/mozdownload.git',ref = 'mozdown
 mozversion = "==2.1.0"
 mozinfo = "==1.0.0"
 mozlog = "==4.0"
-#mozrunner = "==7.2.0"   # not supports Python 3 and install fails
-mss = "==4.0.1"
+mozrunner = "==7.4.0"
+mss = "==4.0.2"
 pytest = "*"
 pygithub = "*"
 bugzilla = "*"
@@ -32,7 +32,6 @@ xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 [dev-packages]
 pylint = "*"
 pep8 = "*"
-autopep8 = "*"
 
 [requires]
 python_version = "3.7"
