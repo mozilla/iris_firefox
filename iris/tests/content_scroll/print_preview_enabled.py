@@ -91,6 +91,8 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar is on the page')
 
         [type(Key.SPACE) for _ in range(3)]
+
+        time.sleep(1)
         after_scroll_down_content_not_exists = exists(scroll_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_down_content_not_exists,
                      'Content is gone after scrolling down using space bar in preview mode')

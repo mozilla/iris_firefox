@@ -23,6 +23,10 @@ class Test(BaseTest):
 
         if Settings.is_windows():
             type(Key.ALT)
+        elif Settings.is_linux():
+            key_down(Key.ALT)
+            time.sleep(0.5)
+            key_up(Key.ALT)
 
         top_menu_displayed = exists(bookmarks_top_menu_pattern)
         assert_true(self, top_menu_displayed, 'Firefox menu is properly displayed')
