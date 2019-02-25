@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.test_case_id = '163206'
         self.locale = ['en-US']
-        self.exclude = [Platform.LINUX, ]
 
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
