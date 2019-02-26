@@ -34,9 +34,17 @@ class Test(BaseTest):
         bookmarks_dropdown_opened = exists(other_bookmarks_pattern)
         assert_true(self, bookmarks_dropdown_opened, 'Bookmarks dropdown firefox menu is opened')
 
+        other_bookmarks_item_location = find(other_bookmarks_pattern)
+
         click(other_bookmarks_pattern)
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, firefox_bookmark_top_menu_located, 'Bookmarks are displayed in top menu')
+
+
+        firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
+
+        hover(Location(SCREEN_WIDTH, other_bookmarks_item_location.y))
+        hover(Location(SCREEN_WIDTH, firefox_bookmark_item_location.y))
 
         right_click(firefox_bookmark_top_menu_pattern)
         click(open_bookmark_pattern)
