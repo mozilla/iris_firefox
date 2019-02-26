@@ -154,7 +154,7 @@ def create_target_json():
             logger.error('Problems importing module.')
 
     target_json = {'targets': targets}
-    print('Target Json is :',target_json)
+    # print('Target Json is :',target_json)
     target_json_file = os.path.join(parse_args().workdir, 'data', 'targets.json')
     with open(target_json_file, 'w') as f:
         json.dump(target_json, f, sort_keys=True, indent=True)

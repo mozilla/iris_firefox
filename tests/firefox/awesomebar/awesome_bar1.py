@@ -14,6 +14,11 @@ class Test(FirefoxTest):
                                        chanel="beta",
                                        test_case_id="12332", test_suite_id="77777", blocked_by="")
 
+
+
+
+
+
     @test_details
     def test_run(self):
         # value = option.get('log_cli')
