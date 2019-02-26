@@ -75,7 +75,7 @@ class Test(BaseTest):
         bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 3)
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
-        stardialog_region = Region(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT * 0.75)
+        stardialog_region = Region(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT)
 
         bookmark_page()
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
