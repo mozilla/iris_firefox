@@ -23,17 +23,19 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        mozilla_firefox_bookmarks_folder_exists = exists(mozilla_firefox_bookmarks_folder_pattern)
+        mozilla_firefox_bookmarks_folder_exists = exists(mozilla_firefox_bookmarks_folder_pattern,
+                                                         DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_firefox_bookmarks_folder_exists, 'Firefox menu > Bookmarks > Mozilla Firefox '
                                                                    'bookmarks folder exists')
         click(mozilla_firefox_bookmarks_folder_pattern)
 
-        mozilla_firefox_predefined_bookmarks_exists = exists(mozilla_firefox_predefined_bookmarks_pattern)
+        mozilla_firefox_predefined_bookmarks_exists = exists(mozilla_firefox_predefined_bookmarks_pattern,
+                                                             DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_firefox_predefined_bookmarks_exists, 'Predefined Mozilla Firefox related bookmarks '
                                                                        'displayed')
 
