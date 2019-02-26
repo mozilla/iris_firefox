@@ -51,7 +51,7 @@ class Test(BaseTest):
 
         click(view_bookmarks_toolbar_pattern)
 
-        time.sleep(1)
+        time.sleep(DEFAULT_UI_DELAY)
 
         bookmarking_tools_not_exists = exists(view_bookmarks_toolbar_pattern, DEFAULT_UI_DELAY)
         assert_false(self, bookmarking_tools_not_exists, 'Bookmarking Tools window is dismissed')
@@ -85,7 +85,7 @@ class Test(BaseTest):
 
         click(hide_bookmarks_toolbar_pattern)
 
-        time.sleep(1)
+        time.sleep(DEFAULT_UI_DELAY)
 
         bookmarks_toolbar_menu_exists = exists(bookmarks_toolbar_pattern, DEFAULT_UI_DELAY_LONG)
         assert_false(self, bookmarks_toolbar_menu_exists, 'The bookmarks toolbar is dismissed')
