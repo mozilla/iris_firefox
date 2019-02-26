@@ -41,9 +41,11 @@ class Test(BaseTest):
 
         click(find_addons_pattern)
 
-        paste('Multi-account')
+        type('Multi-account', interval=0.5)
+
         multi_account_suggest = exists(multi_account_logo_small_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, multi_account_suggest, 'Multi-account add-on displayed in suggestions')
+
         type(Key.DOWN)
         type(Key.ENTER)
 
