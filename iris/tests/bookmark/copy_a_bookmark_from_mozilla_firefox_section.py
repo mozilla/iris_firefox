@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Cut a bookmark from 'Mozilla Firefox' section"
-        self.test_case_id = "163376"
+        self.meta = "Copy a bookmark from 'Mozilla Firefox' section "
+        self.test_case_id = "163377"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
         self.exclude = [Platform.MAC, Platform.LINUX]
@@ -21,7 +21,7 @@ class Test(BaseTest):
         mozilla_firefox_predefined_bookmarks_pattern = Pattern('mozilla_firefox_predefined_bookmarks.png')
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
-        cut_option_pattern = Pattern('cut_option.png')
+        copy_option_pattern = Pattern('copy_option.png')
         paste_option_pattern = Pattern('paste_option.png')
         other_bookmarks_empty_label_pattern = Pattern('other_bookmarks_empty_label.png')
 
@@ -48,10 +48,10 @@ class Test(BaseTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        cut_option_exists = exists(cut_option_pattern)
-        assert_true(self, cut_option_exists, 'The Cut option exists')
+        cut_option_exists = exists(copy_option_pattern)
+        assert_true(self, cut_option_exists, 'The Copy option exists')
 
-        click(cut_option_pattern)
+        click(copy_option_pattern)
 
         click(Library.OTHER_BOOKMARKS)
 
@@ -70,5 +70,6 @@ class Test(BaseTest):
 
         click(mozilla_firefox_bookmarks_folder_pattern)
 
-        bookmark_deleted = exists(mozilla_about_us_bookmark_pattern)
-        assert_false(self, bookmark_deleted, 'Bookmark is correctly deleted from previous section')
+        bookmark_not_deleted = exists(mozilla_about_us_bookmark_pattern)
+        assert_true(self, bookmark_not_deleted, 'Bookmark pasted in selected section without being deleted from the '
+                                                'previous one.')
