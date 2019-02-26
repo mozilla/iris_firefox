@@ -113,6 +113,7 @@ class Test(BaseTest):
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
 
             double_click(text_pattern)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
             right_click(text_pattern)
             time.sleep(DEFAULT_UI_DELAY)
             repeat_key_down(3)
