@@ -33,9 +33,9 @@ class Test(BaseTest):
         assert_true(self, url_classifier_page_opened, 'URL Classifier page is successfully opened')
 
         open_find()
-        paste('Provider')
+        paste('Cache')
 
-        providers_displays = exists(google4_row_pattern)
+        providers_displays = exists(google4_row_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, providers_displays, 'The providers are displayed')
 
         google4_row_location = find(google4_row_pattern)
@@ -44,21 +44,24 @@ class Test(BaseTest):
         google4_row_width, google4_row_height = google4_row_pattern.get_size()
 
         google4_row_region = Region(google4_row_location.x, google4_row_location.y, SCREEN_WIDTH, google4_row_height)
-        click(trigger_update_button_pattern,in_region=google4_row_region)
+        click(trigger_update_button_pattern, in_region=google4_row_region)
 
-        google4_success_status_displaying = exists(success_status_pattern, in_region=google4_row_region)
+        google4_success_status_displaying = exists(success_status_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                                   in_region=google4_row_region)
         assert_true(self, google4_success_status_displaying, 'The last google4 update status is changed to success.')
 
         google_row_region = Region(google_row_location.x, google_row_location.y, SCREEN_WIDTH, google4_row_height)
         click(trigger_update_button_pattern, in_region=google_row_region)
 
-        google_success_status_displaying = exists(success_status_pattern, in_region=google_row_region)
+        google_success_status_displaying = exists(success_status_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                                  in_region=google_row_region)
         assert_false(self, google_success_status_displaying, 'Nothing changes in the google update status.')
 
         mozilla_row_region = Region(mozilla_row_location.x, mozilla_row_location.y, SCREEN_WIDTH, google4_row_height)
         click(trigger_update_button_pattern, in_region=mozilla_row_region)
 
-        mozilla_success_status_displaying = exists(success_status_pattern, in_region=mozilla_row_region)
+        mozilla_success_status_displaying = exists(success_status_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                                   in_region=mozilla_row_region)
         assert_true(self, mozilla_success_status_displaying, 'The last mozilla update status is changed to success.')
 
         navigate('http://testsafebrowsing.appspot.com/')
