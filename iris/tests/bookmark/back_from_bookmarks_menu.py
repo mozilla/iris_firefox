@@ -23,10 +23,12 @@ class Test(BaseTest):
 
         library_icon_exists = exists(library_icon_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_icon_exists, ' View history, saved bookmarks and more section button exists')
+
         click(library_icon_pattern)
 
         bookmarks_option_exists = exists(bookmarks_option_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, bookmarks_option_exists, 'The Bookmarks option exists')
+
         click(bookmarks_option_pattern)
 
         bookmark_menu_exists = exists(bookmarking_tools_pattern, DEFAULT_UI_DELAY_LONG)
@@ -34,6 +36,7 @@ class Test(BaseTest):
 
         library_back_button_exists = exists(library_back_button_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_back_button_exists, 'Button back exists')
+
         click(library_back_button_pattern)
 
         menu_exists = exists(bookmarks_option_pattern, DEFAULT_UI_DELAY_LONG)
