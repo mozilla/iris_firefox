@@ -23,12 +23,7 @@ class Test(BaseTest):
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
         delete_option_pattern = Pattern('delete_bookmark.png')
 
-        location_to_hover = Location(0, 100)
-
-        hover(location_to_hover)
-        key_down(Key.ALT)
-        time.sleep(DEFAULT_FX_DELAY)
-        key_up(Key.ALT)
+        open_firefox_menu()
 
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
@@ -55,3 +50,5 @@ class Test(BaseTest):
 
         bookmark_deleted = exists(mozilla_about_us_bookmark_pattern)
         assert_false(self, bookmark_deleted, 'Bookmark is correctly deleted from selected section')
+
+        restore_firefox_focus()
