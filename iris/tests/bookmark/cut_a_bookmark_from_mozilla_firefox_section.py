@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Add a new Separator in 'Mozilla Firefox' section"
-        self.test_case_id = "163375"
+        self.meta = "Cut a bookmark from 'Mozilla Firefox' section"
+        self.test_case_id = "163376"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
         self.exclude = [Platform.MAC, Platform.LINUX]
@@ -21,8 +21,9 @@ class Test(BaseTest):
         mozilla_firefox_predefined_bookmarks_pattern = Pattern('mozilla_firefox_predefined_bookmarks.png')
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
-        separator_added_pattern = Pattern('separator_added.png')
-        open_all_in_tabs_pattern = Pattern('open_all_in_tabs.png')
+        cut_option_pattern = Pattern('cut_option.png')
+        paste_option_pattern = Pattern('paste_option.png')
+        other_bookmarks_empty_label_pattern = Pattern('other_bookmarks_empty_label.png')
 
         location_to_hover = Location(0, 100)
 
@@ -47,14 +48,27 @@ class Test(BaseTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        new_separator_option_exists = exists(Library.Organize.NEW_SEPARATOR)
-        assert_true(self, new_separator_option_exists, 'New Folder option exists')
+        cut_option_exists = exists(cut_option_pattern)
+        assert_true(self, cut_option_exists, 'The Cut option exists')
 
-        click(Library.Organize.NEW_SEPARATOR)
+        click(cut_option_pattern)
 
-        hover(open_all_in_tabs_pattern)
+        click(Library.OTHER_BOOKMARKS)
 
-        separator_added = exists(separator_added_pattern)
-        assert_true(self, separator_added, 'A new Separator is added in Mozilla Firefox section.')
+        other_bookmarks_empty_label_exists = exists(other_bookmarks_empty_label_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, other_bookmarks_empty_label_exists, 'Other Bookmarks empty label exists')
 
-        close_window()
+        right_click(other_bookmarks_empty_label_pattern)
+
+        paste_option_exists = exists(paste_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, paste_option_exists, 'Paste option exists')
+
+        click(paste_option_pattern)
+
+        bookmark_pasted = exists(mozilla_about_us_bookmark_pattern)
+        assert_true(self, bookmark_pasted, 'Bookmark is correctly pasted in selected section')
+
+        click(mozilla_firefox_bookmarks_folder_pattern)
+
+        bookmark_deleted = exists(mozilla_about_us_bookmark_pattern)
+        assert_false(self, bookmark_deleted, 'Bookmark is correctly deleted from previous section')
