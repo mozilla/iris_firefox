@@ -4,12 +4,16 @@
 
 import pytest
 
-from src.core.util.arg_parser import parse_args
+from targets.firefox.parse_args import parse_args
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
+from targets.firefox.firefox_app.fx_collection import FX_Collection
+from targets.firefox.firefox_app.fx_browser import FirefoxApp
+
+args = parse_args()
 
 
-class BaseTarget(object):
+class BaseTarget:
 
     completed_tests = []
 
@@ -17,16 +21,33 @@ class BaseTarget(object):
         self.target_name = 'Default target'
         self.cc_settings = []
 
-    def pytest_sessionstart(self, session):
-        """ called after the ``Session`` object has been created and before performing collection
-           and entering the run test loop.
+    @pytest.fixture(scope="class", autouse=True)
+    def run_iris(self, request):
+        fx = args.firefox
+        locale = args.locale
 
-           :param _pytest.main.Session session: the pytest session object
+        browser = FX_Collection.get(fx, locale)
+        if not browser:
+            FX_Collection.add(fx, locale)
+            browser = FX_Collection.get(fx, locale)
+        browser.start()
+
+        def teardown():
+            if browser.runner:
+                browser.runner.stop()
+
+        request.addfinalizer(teardown)
+
+    def pytest_sessionstart(self, session):
+        """Called after the 'Session' object has been created and before performing test collection.
+
+        :param _pytest.main.Session session: the pytest session object.
         """
         print('\n\n** Test session {} started **\n'.format(session.name))
         print('\nIris settings: \n')
+
         settings_list = []
-        args = parse_args()
+
         for arg in vars(args):
             settings_list.append('{}: {}'.format(arg, getattr(args, arg)))
         print(', '.join(settings_list))
@@ -35,85 +56,78 @@ class BaseTarget(object):
     def pytest_sessionfinish(self, session):
         """ called after whole test run finished, right before returning the exit status to the system.
 
-           :param _pytest.main.Session session: the pytest session object
-           :param int exitstatus: the status which pytest will return to the system
+        :param _pytest.main.Session session: the pytest session object.
+        :param int exitstatus: the status which pytest will return to the system.
         """
 
-        footer = create_footer(self)
-        footer.print_report_footer()
+        # footer = create_footer(self)
+        # footer.print_report_footer()
 
         print("\n\n** Test session {} complete **\n".format(session.name))
 
-
     def pytest_runtestloop(self, session):
         pass
-        # print('RUN TEST LOOP')
 
     def pytest_runtest_logstart(self, nodeid, location):
         pass
 
     def pytest_runtest_call(self, item):
         pass
-        # print('Executing: [{}]'.format(item.parent.parent.name))
 
     def pytest_runtest_logfinish(self, nodeid, location):
         pass
 
-    @pytest.fixture
-    def option(self, pytestconfig):
-        """
-        fixture for ovewriting values in pytest.ini file
+    # @pytest.fixture
+    # def option(self, pytestconfig):
+    #     """
+    #     fixture for ovewriting values in pytest.ini file
+    #
+    #     :return: Option Object
+    #     """
+    #
+    #     new_value = {}
+    #
+    #     class Options:
+    #
+    #         def get(self, name):
+    #             return new_value.get(name, pytestconfig.getini(name))
+    #
+    #     return Options()
 
-        :return: Option Object
-        """
-
-        new_value = {}
-
-        class Options:
-
-            def get(self, name):
-                return new_value.get(name, pytestconfig.getini(name))
-
-        return Options()
-
-    @pytest.hookimpl(tryfirst=True)
-    def pytest_runtest_makereport(self, item, call):
-
-        """ return a :py:class:`_pytest.runner.TestReport` object
-            for the given :py:class:`pytest.Item <_pytest.main.Item>` and
-            :py:class:`_pytest.runner.CallInfo`.
-
-            Stops at first non-None result
-        """
-
-        if call.when == "call" and call.excinfo is not None:
-
-            outcome = "FAILED"
-            assert_object = (call.excinfo, outcome)
-
-            test_result = create_result_object(assert_object, call.start, call.stop)
-
-            self.completed_tests.append(test_result)
-
-
-        elif call.when == "call" and call.excinfo is None:
-            outcome = 'PASSED'
-            test_instance = (item, outcome)
-
-            test_result = create_result_object(test_instance, call.start, call.stop)
-
-            self.completed_tests.append(test_result)
-
-
-        elif call.when == "setup" and item._skipped_by_mark == True:
-            outcome = 'SKIPPED'
-            test_instance = (item, outcome)
-
-            test_result = create_result_object(test_instance, call.start, call.stop)
-
-            self.completed_tests.append(test_result)
-
-        #print("test collection:", self.completed_tests)
+    # @pytest.hookimpl(tryfirst=True)
+    # def pytest_runtest_makereport(self, item, call):
+    #
+    #     """ return a :py:class:`_pytest.runner.TestReport` object
+    #         for the given :py:class:`pytest.Item <_pytest.main.Item>` and
+    #         :py:class:`_pytest.runner.CallInfo`.
+    #
+    #         Stops at first non-None result
+    #         """
+    #
+    #     if call.when == "call" and call.excinfo is not None:
+    #
+    #         outcome = "FAILED"
+    #         assert_object = (call.excinfo, outcome)
+    #
+    #         test_result = create_result_object(assert_object, call.start, call.stop)
+    #
+    #         self.completed_tests.append(test_result)
+    #
+    #     elif call.when == "call" and call.excinfo is None:
+    #         outcome = 'PASSED'
+    #         test_instance = (item, outcome)
+    #
+    #         test_result = create_result_object(test_instance, call.start, call.stop)
+    #
+    #         self.completed_tests.append(test_result)
+    #
+    #     elif call.when == "setup" and item._skipped_by_mark:
+    #         outcome = 'SKIPPED'
+    #         test_instance = (item, outcome)
+    #
+    #         test_result = create_result_object(test_instance, call.start, call.stop)
+    #
+    #         self.completed_tests.append(test_result)
 
 
 def reason_for_failure(report):
