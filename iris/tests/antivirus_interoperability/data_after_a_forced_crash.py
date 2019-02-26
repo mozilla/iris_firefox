@@ -55,7 +55,7 @@ class Test(BaseTest):
 
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
         history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
-        history_sidebar_region = Region(history_sidebar_location.x,
+        history_sidebar_region = Region(history_sidebar_location.x - 10,
                                         history_sidebar_location.y,
                                         history_width,
                                         SCREEN_HEIGHT/2)
