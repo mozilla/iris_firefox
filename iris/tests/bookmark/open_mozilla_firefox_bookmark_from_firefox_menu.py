@@ -22,12 +22,7 @@ class Test(BaseTest):
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
         mozilla_about_us_page_pattern = Pattern('mozilla_about_us_page.png')
 
-        location_to_hover = Location(0, 100)
-
-        hover(location_to_hover)
-        key_down(Key.ALT)
-        time.sleep(DEFAULT_FX_DELAY)
-        key_up(Key.ALT)
+        open_firefox_menu()
 
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
@@ -46,4 +41,4 @@ class Test(BaseTest):
         click(mozilla_about_us_bookmark_pattern)
 
         mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, mozilla_about_us_page_displayed, 'Mozilla about us page are displayed')
+        assert_true(self, mozilla_about_us_page_displayed, 'Mozilla about us page is displayed')
