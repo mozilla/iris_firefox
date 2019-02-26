@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.meta = 'Drop single and multiple .txt files in demopage opened in Private Window.'
         self.test_case_id = '165079'
         self.test_suite_id = '102'
-        self.locales = ['en-US']
+        self.locales = [ 'en-US' ]
 
     def setup(self):
         BaseTest.setup(self)
@@ -69,7 +69,7 @@ class Test(BaseTest):
 
         matching_message_width, matching_message_height = matching_message_pattern.get_size()
         matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
-                                 width=matching_message_width*1.1, height=matching_message_height*2)
+                                 width=matching_message_width + 10, height=matching_message_height * 2)
 
         open_library()
 
@@ -79,10 +79,10 @@ class Test(BaseTest):
 
         library_popup_tab_before = find(library_popup_pattern)
         library_title_width, library_title_height = library_popup_pattern.get_size()
-        library_tab_region_after = Region(x = SCREEN_WIDTH/2 - library_title_width/2,
-                                          y = library_popup_tab_before.y - library_title_height/2,
-                                          width=library_title_width*2, height=library_title_height*3)
-        library_popup_tab_after = Location(SCREEN_WIDTH/2, library_popup_tab_before.y)
+        library_tab_region_after = Region(x=SCREEN_WIDTH / 2 - library_title_width / 2,
+                                          y=library_popup_tab_before.y - library_title_height / 2,
+                                          width=library_title_width * 2, height=library_title_height * 3)
+        library_popup_tab_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
 
         drag_drop(library_popup_tab_before, library_popup_tab_after, DEFAULT_DELAY_BEFORE_DROP)
 
