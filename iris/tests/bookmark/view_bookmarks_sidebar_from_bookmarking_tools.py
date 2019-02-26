@@ -50,7 +50,7 @@ class Test(BaseTest):
 
         click(view_bookmarks_sidebar_pattern)
 
-        time.sleep(1)
+        time.sleep(DEFAULT_UI_DELAY)
         bookmarking_tools_not_exists = exists(view_bookmarks_sidebar_pattern, DEFAULT_UI_DELAY)
         assert_false(self, bookmarking_tools_not_exists, 'Bookmarking Tools window is dismissed')
 
