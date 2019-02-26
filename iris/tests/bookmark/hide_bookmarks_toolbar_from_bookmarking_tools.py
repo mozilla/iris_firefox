@@ -10,7 +10,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Hide Bookmarks Sidebar\' from Bookmarking Tools '
-        self.test_case_id = '165479'
+        self.test_case_id = '165481'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
