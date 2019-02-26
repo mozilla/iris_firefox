@@ -14,30 +14,25 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
-    def setup(self):
-        BaseTest.setup(self)
-        self.profile = Profile.TEN_BOOKMARKS
-        return
-
     def run(self):
-        global_menu_bookmarks_option_pattern = Pattern('global_menu_bookmarks_option.png')
-        recent_tags_option_pattern = Pattern('recent_tags_option.png')
         empty_string_pattern = Pattern('empty.png')
+        recent_tags_option_pattern = Pattern('recent_tags_option.png')
+        top_menu_bookmarks_option_pattern = Pattern('bookmarks_top_menu.png')
 
-        if Settings.is_windows():
-            type(Key.ALT)
-        elif Settings.is_linux():
-            type(Key.F10)
+        open_firefox_menu()
+        bookmarks_option_is_available_in_top_menu = exists(top_menu_bookmarks_option_pattern)
+        assert_true(self, bookmarks_option_is_available_in_top_menu,
+                    '\'Bookmarks\' option is available in Firefox top menu')
 
-        bookmarks_option_is_available_in_global_menu = exists(global_menu_bookmarks_option_pattern)
-        assert_true(self, bookmarks_option_is_available_in_global_menu,
-                    '\'Bookmarks\' option is available in global Firefox menu')
-
-        click(global_menu_bookmarks_option_pattern)
+        click(top_menu_bookmarks_option_pattern)
         recent_tags_option_available = exists(recent_tags_option_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, recent_tags_option_available,
-                    '\'Recent tags\' option available after clicking at \'Bookmarks option\' in global Firefox menu')
+                    '\'Recent tags\' option available after clicking at \'Bookmarks option\' in Firefox top menu')
 
         mouse_move(recent_tags_option_pattern)
         empty_string_displayed = exists(empty_string_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, empty_string_displayed, 'Only the \'(Empty)\' string is displayed.')
+
+        # to close context menus and prevent firefox force quit
+        for _ in range(2):
+            type(Key.ESC)
