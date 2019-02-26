@@ -67,6 +67,10 @@ class Test(BaseTest):
         not_matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
                                      width=not_matching_message_width, height=not_matching_message_height)
 
+        matching_message_width, matching_message_height = matching_message_pattern.get_size()
+        matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
+                                 width=matching_message_width*1.1, height=matching_message_height*2)
+
         open_library()
 
         # open and drag library window
@@ -135,15 +139,11 @@ class Test(BaseTest):
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
 
-        matching_message_width, matching_message_height = matching_message_pattern.get_size()
-        matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
-                                 width=matching_message_width*1.1, height=matching_message_height*2)
-
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
-                                                      'result is identical to result. {} '.format(matching_region))
+                                                      'result is identical to result. ')
 
         test_file_jpg = exists(jpg_bak_file_pattern)
         assert_true(self, test_file_jpg, 'JPG test file is available')
