@@ -136,15 +136,17 @@ def create_target_json():
     master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
     target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__')]
 
-    master_test_list = create_master_test_list(target_list)
+    master_test_list = scan_all_tests()
+    tests=master_test_list['tests']
 
     targets = []
     for item in target_list:
         try:
+            app_tests=tests[item]
             target_module = importlib.import_module('targets.%s.app' % item)
             try:
                 target = target_module.Target()
-                targets.append({'name': target.target_name, 'tests': [], 'icon': '%s.png' % item,
+                targets.append({'name': target.target_name, 'tests': app_tests, 'icon': '%s.png' % item,
                                 'settings': target.cc_settings})
             except NameError:
                 logger.error('Can\'t find default Target class.')
@@ -152,12 +154,11 @@ def create_target_json():
             logger.error('Problems importing module.')
 
     target_json = {'targets': targets}
-    # print('Target Json is :',target_json)
+    print('Target Json is :',target_json)
     target_json_file = os.path.join(parse_args().workdir, 'data', 'targets.json')
     with open(target_json_file, 'w') as f:
         json.dump(target_json, f, sort_keys=True, indent=True)
 
-    # TODO: scan test folders
 
 
 def create_test_json(master_test_list):
@@ -172,53 +173,6 @@ def filter_list(original_list, exclude_list):
         if item not in exclude_list:
             new_list.append(item)
     return new_list
-
-
-def create_master_test_list(target_list):
-    all_tests, all_packages = scan_all_tests()
-    master_test_list = {}
-    app = {}
-    for package in all_packages:
-        master_test_list[os.path.basename(package)] = []
-
-    for target in target_list:
-        testlist = []
-        app[target] = testlist
-        for index, module in enumerate(all_tests, start=1):
-            try:
-                current_module = importlib.import_module(module)
-                current_test = current_module.Test()
-
-                current_package = os.path.basename(os.path.dirname(current_module.__file__))
-
-                test_object = {'name': module, 'module': current_module.__file__,
-                               'description': current_test.description,
-                               'package': current_package}
-                if target == 'firefox':
-                    if current_test.fx_version is '':
-                        test_object['fx_version'] = 'all'
-                    else:
-                        test_object['fx_version'] = current_test.fx_version
-
-                    # test_object['platform'] = filter_list(current_test.platform, current_test.exclude)
-                    # test_object['channel'] = filter_list(current_test.channel, current_test.exclude)
-                    # test_object['locale'] = filter_list(current_test.locale, current_test.exclude)
-                    # test_object['enabled'] = OSHelper.get_os() in filter_list(current_test.platform, current_test.exclude)
-                    # test_object['tags'] = current_test.tags
-                    test_object['test_case_id'] = current_test.test_case_id
-                    test_object['test_suite_id'] = current_test.test_suite_id
-                    test_object['blocked_by'] = current_test.blocked_by
-
-                if str(os.path.join(PathManager.get_tests_dir(), target)) in str(current_module.__file__):
-                    testlist.append(test_object)
-
-
-            except TypeError as e:
-                logger.warning('Error in test - %s: %s' % (module, e.message))
-            except AttributeError:
-                logger.warning('[%s] is not a test file. Skipping...', module)
-    return app
-
 
 
 

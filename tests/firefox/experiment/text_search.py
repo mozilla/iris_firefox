@@ -6,18 +6,15 @@
 from targets.firefox.fx_testcase import *
 
 
-
 class Test(FirefoxTest):
-    name = "Test experiment"
-    description = "This test is just an experiment."
-    fx_version = "63"
-    locale = "en-US, zh-CN, es-ES, de"
-    chanel = "beta"
-    test_case_id = "435344"
-    test_suite_id = "345444"
-    blocked_by = ""
+    test_details = pytest.mark.DETAILS(meta="Test experiment_root",
+                                       description="Empty",
+                                       fx_version="63",
+                                       locale="en-US, zh-CN, es-ES, de, fr, ru, ar, ko, pt-PT, vi, pl, tr, ro, ja, zh-CN, es-ES, de",
+                                       chanel="beta",
+                                       test_case_id="1111", test_suite_id="888666", blocked_by="123333111")
 
-
+    @test_details
     @pytest.mark.skip
     def test_run(self):
         # region = Region(0, 40, 200, 100)
@@ -28,5 +25,3 @@ class Test(FirefoxTest):
 
         # assert result==True ,"Assert_message for Image search test "
         assert 1 == 1, "Assert_message 2for experiment 2"
-
-
