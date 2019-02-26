@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.test_case_id = '163208'
         self.locale = ['en-US']
-        self.exclude = [Platform.LINUX, Platform.MAC]
+        self.exclude = [Platform.MAC]
 
     def setup(self):
         BaseTest.setup(self)
@@ -25,7 +25,7 @@ class Test(BaseTest):
         open_bookmark_pattern = Pattern('open_bookmark_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
 
-        type(Key.ALT)
+        open_firefox_menu()
 
         top_menu_located = exists(bookmarks_top_menu_pattern)
         assert_true(self, top_menu_located, 'Firefox menu is located')
