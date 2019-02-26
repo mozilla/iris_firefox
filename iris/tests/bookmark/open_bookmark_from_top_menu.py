@@ -13,7 +13,6 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.test_case_id = '163207'
         self.locale = ['en-US']
-        self.exclude = [Platform.LINUX]
 
     def setup(self):
         BaseTest.setup(self)
@@ -22,10 +21,9 @@ class Test(BaseTest):
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
-        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
+        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png').similar(0.95)
 
-        if Settings.is_windows():
-            type(Key.ALT)
+        open_firefox_menu()
 
         top_menu_displayed = exists(bookmarks_top_menu_pattern)
         assert_true(self, top_menu_displayed, 'Top menu is displayed')
@@ -38,6 +36,11 @@ class Test(BaseTest):
         bookmark_found = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, bookmark_found, 'Needed bookmark is located in other bookmarks')
 
+        type(Key.RIGHT)
+        while exists(firefox_bookmark_top_menu_pattern, DEFAULT_FX_DELAY):
+            type(Key.DOWN)
+            reset_mouse()
+        type(Key.UP)
         click(firefox_bookmark_top_menu_pattern)
         webpage_loaded = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_loaded, 'Needed webpage is loaded')
