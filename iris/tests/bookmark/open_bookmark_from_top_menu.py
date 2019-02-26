@@ -37,10 +37,7 @@ class Test(BaseTest):
         assert_true(self, bookmark_found, 'Needed bookmark is located in other bookmarks')
 
         type(Key.RIGHT)
-        while exists(firefox_bookmark_top_menu_pattern, DEFAULT_FX_DELAY):
-            type(Key.DOWN)
-            reset_mouse()
-        type(Key.UP)
+
         click(firefox_bookmark_top_menu_pattern)
         webpage_loaded = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_loaded, 'Needed webpage is loaded')
