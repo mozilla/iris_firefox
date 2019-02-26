@@ -34,6 +34,7 @@ class Test(BaseTest):
         select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
         drop_here_pattern = Pattern('drop_here.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
+        matching_message_pattern = Pattern('drop_matching_verified.png')
         jpg_bak_file_pattern = Pattern('jpg_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
         if Settings.is_linux():
@@ -41,7 +42,6 @@ class Test(BaseTest):
             file_type_json_pattern = Pattern('file_type_json.png')
 
         folderpath = self.get_asset_path('')
-        original_txtfile_path = self.get_asset_path('testfile.txt')
 
         navigate('https://mystor.github.io/dragndrop/')
 
@@ -57,6 +57,14 @@ class Test(BaseTest):
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
                                                               DEFAULT_UI_DELAY)
         assert_true(self, matching_block_available, 'The drop result verification area is present on the page')
+        not_matching_message_location = find(not_matching_message_pattern)
+        not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
+        not_matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
+                                     width=not_matching_message_width, height=not_matching_message_height)
+
+        matching_message_width, matching_message_height = matching_message_pattern.get_size()
+        matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
+                                 width=matching_message_width + 10, height=matching_message_height * 2)
 
         open_library()
 
@@ -66,13 +74,15 @@ class Test(BaseTest):
 
         library_popup_tab_before = find(library_popup_pattern)
         library_title_width, library_title_height = library_popup_pattern.get_size()
-        library_tab_region_before = Region(library_popup_tab_before.x,
-                                           library_popup_tab_before.y,
-                                           library_title_width, library_title_height)
-        library_popup_tab_after = Location(SCREEN_WIDTH/2, library_popup_tab_before.y)
+        library_tab_region_after = Region(x=SCREEN_WIDTH / 2 - library_title_width / 2,
+                                          y=library_popup_tab_before.y - library_title_height / 2,
+                                          width=library_title_width * 2, height=library_title_height * 3)
+        library_popup_tab_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
 
         drag_drop(library_popup_tab_before, library_popup_tab_after, DEFAULT_DELAY_BEFORE_DROP)
-        wait_vanish(library_popup_pattern, in_region=library_tab_region_before)
+
+        library_popup_dropped = exists(library_popup_pattern, in_region=library_tab_region_after)
+        assert_true(self, library_popup_dropped, 'Library popup dropped to right half of screen successfully')
 
         click(library_import_backup_pattern)
 
@@ -92,8 +102,8 @@ class Test(BaseTest):
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
         if Settings.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # go to folder
-            paste(original_txtfile_path)
+            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in file picker
+            paste(folderpath)
             type(Key.ENTER)
         else:
             paste(folderpath)
@@ -115,8 +125,8 @@ class Test(BaseTest):
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
-
-        drag_drop(select_bookmark_popup_before.right(30), select_bookmark_popup_after)
+        #  drag-n-drop right to prevent fails on osx
+        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
 
         test_file_txt = exists(txt_bak_file_pattern)
         assert_true(self, test_file_txt, 'TXT test file is available')
@@ -126,19 +136,16 @@ class Test(BaseTest):
 
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
 
-        backup_file_after_drop = exists(txt_bak_file_pattern)
-        assert_true(self, backup_file_after_drop, 'TXT backup test file is available after drag and drop')
-
-        matching_message_displayed = exists(not_matching_message_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and '
-                                                      'expected result is identical to result.')
+        matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
+        assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
+                                                      'result is identical to result. ')
 
         test_file_jpg = exists(jpg_bak_file_pattern)
         assert_true(self, test_file_jpg, 'JPG test file is available')
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern)
 
-        not_matching_message_displayed = exists(not_matching_message_pattern)
+        not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
                                                           'expected result is different from result.')
 
