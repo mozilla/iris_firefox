@@ -25,31 +25,28 @@ class Test(BaseTest):
         paste_option_pattern = Pattern('paste_option.png')
         other_bookmarks_empty_label_pattern = Pattern('other_bookmarks_empty_label.png')
 
-        location_to_hover = Location(0, 100)
+        open_firefox_menu()
 
-        hover(location_to_hover)
-        key_down(Key.ALT)
-        time.sleep(DEFAULT_FX_DELAY)
-        key_up(Key.ALT)
-
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        mozilla_firefox_bookmarks_folder_exists = exists(mozilla_firefox_bookmarks_folder_pattern)
+        mozilla_firefox_bookmarks_folder_exists = exists(mozilla_firefox_bookmarks_folder_pattern,
+                                                         DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_firefox_bookmarks_folder_exists, 'Firefox menu > Bookmarks > Mozilla Firefox '
                                                                    'bookmarks folder exists')
         click(mozilla_firefox_bookmarks_folder_pattern)
 
-        mozilla_firefox_predefined_bookmarks_exists = exists(mozilla_firefox_predefined_bookmarks_pattern)
+        mozilla_firefox_predefined_bookmarks_exists = exists(mozilla_firefox_predefined_bookmarks_pattern,
+                                                             DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_firefox_predefined_bookmarks_exists, 'Predefined Mozilla Firefox related bookmarks '
                                                                        'displayed')
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        cut_option_exists = exists(copy_option_pattern)
-        assert_true(self, cut_option_exists, 'The Copy option exists')
+        copy_option_exists = exists(copy_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, copy_option_exists, 'The Copy option exists')
 
         click(copy_option_pattern)
 
@@ -65,11 +62,12 @@ class Test(BaseTest):
 
         click(paste_option_pattern)
 
-        bookmark_pasted = exists(mozilla_about_us_bookmark_pattern)
+        bookmark_pasted = exists(mozilla_about_us_bookmark_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_pasted, 'Bookmark is correctly pasted in selected section')
 
         click(mozilla_firefox_bookmarks_folder_pattern)
 
-        bookmark_not_deleted = exists(mozilla_about_us_bookmark_pattern)
+        bookmark_not_deleted = exists(mozilla_about_us_bookmark_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_not_deleted, 'Bookmark pasted in selected section without being deleted from the '
                                                 'previous one.')
+        restore_firefox_focus()
