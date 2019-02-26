@@ -26,6 +26,7 @@ mss = "==4.0.2"
 pytest = "*"
 pygithub = "*"
 bugzilla = "*"
+funcy = "==1.11"
 # Platform dependencies
 xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 
