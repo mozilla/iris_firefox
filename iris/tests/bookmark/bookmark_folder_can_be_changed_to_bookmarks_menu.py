@@ -63,7 +63,7 @@ class Test(BaseTest):
 
         click(SidebarBookmarks.BOOKMARKS_MENU, in_region=bookmarks_sidebar_region)
 
-        wiki_bookmark_moved = exists(soap_wiki_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        wiki_bookmark_moved = exists(soap_wiki_tab_pattern, DEFAULT_FIREFOX_TIMEOUT, bookmarks_sidebar_region)
         assert_true(self, wiki_bookmark_moved, 'The pop up is dismissed and the bookmark is correctly saved in '
                                                'Bookmarks menu.')
 
