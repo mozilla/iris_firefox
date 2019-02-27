@@ -48,11 +48,24 @@ class Test(BaseTest):
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6), in_region=stardialog_region)
         click(Bookmarks.StarDialog.DONE)
 
-        click(LocationBar.STAR_BUTTON_STARRED, in_region=stardialog_region)
+        bookmarks_sidebar('open')
 
-        soap_wiki_bookmark_folder_changed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6),
-                                                   DEFAULT_FIREFOX_TIMEOUT, in_region=stardialog_region)
-        assert_true(self, soap_wiki_bookmark_folder_changed, 'The pop up is dismissed and the bookmark is correctly '
-                                                             'saved in Bookmarks menu.')
-        restore_firefox_focus()
+        bookmarks_sidebar_location = find(Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_TITLE)
+        bookmarks_width, bookmarks_height = Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_TITLE.get_size()
+        bookmarks_sidebar_region = Region(0,
+                                          bookmarks_sidebar_location.y,
+                                          bookmarks_width * 2,
+                                          SCREEN_HEIGHT / 2)
+
+        bookmarks_menu_folder_exists = exists(SidebarBookmarks.BOOKMARKS_MENU, DEFAULT_FIREFOX_TIMEOUT,
+                                              bookmarks_sidebar_region)
+        assert_true(self, bookmarks_menu_folder_exists, 'Bookmarks menu folder exists')
+
+        click(SidebarBookmarks.BOOKMARKS_MENU, in_region=bookmarks_sidebar_region)
+
+        wiki_bookmark_moved = exists(soap_wiki_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, wiki_bookmark_moved, 'The pop up is dismissed and the bookmark is correctly saved in '
+                                               'Bookmarks menu.')
+
+
 
