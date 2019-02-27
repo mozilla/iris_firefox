@@ -23,7 +23,7 @@ class Test(BaseTest):
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
-        open_bookmark_new_tab_pattern = Pattern('open_in_new_tab.png')
+        open_bookmark_new_tab_pattern = Pattern('open_bookmark_in_new_tab.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
 
         type(Key.ALT)
