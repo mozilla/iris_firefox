@@ -31,6 +31,23 @@ class Target(BaseTarget):
             {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report', 'value': False}
         ]
 
+    @pytest.fixture(scope="class", autouse=True)
+    def use_firefox(self, request):
+        fx = args.firefox
+        locale = args.locale
+
+        browser = FX_Collection.get(fx, locale)
+        if not browser:
+            FX_Collection.add(fx, locale)
+            browser = FX_Collection.get(fx, locale)
+        browser.start()
+
+        def teardown():
+            if browser.runner:
+                browser.runner.stop()
+
+        request.addfinalizer(teardown)
+
     # @pytest.hookimpl(tryfirst=True, hookwrapper=True)
     # def pytest_runtest_makereport(self, item, call):
     #     BaseTarget.pytest_runtest_makereport(self, item, call)

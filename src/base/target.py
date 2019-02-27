@@ -21,23 +21,6 @@ class BaseTarget:
         self.target_name = 'Default target'
         self.cc_settings = []
 
-    @pytest.fixture(scope="class", autouse=True)
-    def run_iris(self, request):
-        fx = args.firefox
-        locale = args.locale
-
-        browser = FX_Collection.get(fx, locale)
-        if not browser:
-            FX_Collection.add(fx, locale)
-            browser = FX_Collection.get(fx, locale)
-        browser.start()
-
-        def teardown():
-            if browser.runner:
-                browser.runner.stop()
-
-        request.addfinalizer(teardown)
-
     def pytest_sessionstart(self, session):
         """Called after the 'Session' object has been created and before performing test collection.
 
