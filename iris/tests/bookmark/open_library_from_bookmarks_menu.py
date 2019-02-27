@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Open Library from Bookmarks menu "
+        self.meta = "Open Library from Bookmarks menu"
         self.test_case_id = "163193"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
