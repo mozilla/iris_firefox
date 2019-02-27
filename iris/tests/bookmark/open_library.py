@@ -58,12 +58,7 @@ class Test(BaseTest):
 
         close_window_control('auxiliary')
 
-        location_to_hover = Location(0, 100)
-
-        hover(location_to_hover)
-        key_down(Key.ALT)
-        time.sleep(DEFAULT_FX_DELAY)
-        key_up(Key.ALT)
+        open_firefox_menu()
 
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
