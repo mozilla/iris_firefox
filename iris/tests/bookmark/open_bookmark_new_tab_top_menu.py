@@ -15,6 +15,7 @@ class Test(BaseTest):
         self.test_case_id = '163209'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
+        self.exclude = [Platform.MAC]
 
     def setup(self):
         BaseTest.setup(self)
@@ -26,7 +27,7 @@ class Test(BaseTest):
         open_bookmark_new_tab_pattern = Pattern('open_bookmark_in_new_tab.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
 
-        type(Key.ALT)
+        open_firefox_menu()
 
         top_menu_located = exists(bookmarks_top_menu_pattern)
         assert_true(self, top_menu_located, 'Firefox menu is located')
@@ -35,11 +36,17 @@ class Test(BaseTest):
         bookmarks_dropdown_opened = exists(other_bookmarks_pattern)
         assert_true(self, bookmarks_dropdown_opened, 'Bookmarks dropdown firefox menu is opened')
 
+        other_bookmarks_location = find(other_bookmarks_pattern)
+
         click(other_bookmarks_pattern)
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, firefox_bookmark_top_menu_located, 'Bookmarks are displayed in top menu')
 
+        firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)    # Required to guarantee bookmarks
+        hover(Location(SCREEN_WIDTH, other_bookmarks_location.y))                   # list will not disappear
+        hover(Location(SCREEN_WIDTH, firefox_bookmark_item_location.y))
         right_click(firefox_bookmark_top_menu_pattern)
         click(open_bookmark_new_tab_pattern)
+
         webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_opened, 'Webpage is opened')
