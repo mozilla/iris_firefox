@@ -38,8 +38,8 @@ def scan_all_tests():
     test_list = {}
     rootdir = tests_directory.rstrip(os.sep)
     start = rootdir.rfind(os.sep) + 1
-    exclude_dirs = set(['images', '.pytest_cache', '__pycache__'])
-    exclude_files = set(['__init__.py', 'pytest.ini'])
+    exclude_dirs = {'images', '.pytest_cache', '__pycache__'}
+    exclude_files = {'__init__.py', 'pytest.ini', '.DS_Store'}
 
     for path, dirs, files in sorted_walk(rootdir):
         [dirs.remove(d) for d in list(dirs) if d in exclude_dirs]
