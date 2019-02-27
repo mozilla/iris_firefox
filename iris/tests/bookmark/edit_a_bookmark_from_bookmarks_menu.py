@@ -32,6 +32,8 @@ class Test(BaseTest):
 
         click(Bookmarks.StarDialog.DONE)
 
+        restore_firefox_focus()
+
         open_firefox_menu()
 
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
