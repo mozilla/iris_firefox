@@ -31,9 +31,9 @@ class ReportFooter(object):
                 failure_str += '\n'
 
         if self.app.target_name == 'Firefox':
-            app_details = 'Application: %s,Platform: %s, Firefox Version: %s, Firefox Build: %s' % (
+            app_details = 'Application: %s,Platform: %s' % (
             self.app.target_name,
-            self.platform, self.app.version, self.app.build)
+            self.platform)
 
         else:
             app_details = 'Application: %s,Platform: %s' % (self.app.target_name,

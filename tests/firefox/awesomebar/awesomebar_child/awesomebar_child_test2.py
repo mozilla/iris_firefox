@@ -7,14 +7,14 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    test_details = pytest.mark.DETAILS(meta="Awesomebar_child_test2",
+    details = pytest.mark.DETAILS(meta="Awesomebar_child_test2",
                                        description="test_child2",
                                        fx_version="63",
                                        locale="en-US, zh-CN, es-ES, de, fr, ru, ar, ko, pt-PT, vi, pl, tr, ro, ja, zh-CN, es-ES, de",
                                        chanel="beta",
                                        test_case_id="444", test_suite_id="232122", blocked_by="")
 
-    @test_details
+    @details
     def test_run(self):
         assert 1 == 1, "Assert_message 1for experiment 2"
         assert 1 == 1, "Assert_message 2for experiment 2"

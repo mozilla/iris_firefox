@@ -7,14 +7,14 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    test_details = pytest.mark.DETAILS(meta="Awesomebar_child_test1",
+    details = pytest.mark.DETAILS(meta="Awesomebar_child_test1",
                                        description="test_child",
                                        fx_version="63",
                                        locale="en-US, zh-CN, es-ES, de, fr, ru, ar, ko, pt-PT, vi, pl, tr, ro, ja, zh-CN, es-ES, de",
                                        chanel="beta",
                                        test_case_id="22222", test_suite_id="33333", blocked_by="")
 
-    @test_details
+    @details
     def test_run(self):
         # value = option.get('log_cli')
         # assert value==False,"Log cli is false "

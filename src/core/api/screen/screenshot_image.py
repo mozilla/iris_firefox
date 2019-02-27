@@ -64,7 +64,7 @@ class ScreenshotImage:
 
 
 def _region_to_image(region) -> Image or ScreenshotError:
-    if OSHelper.get_os().value == 'linux':
+    if OSHelper.get_os().value != 'linux':
         grabbed_area = _mss_screenshot(region)
     else:
         try:

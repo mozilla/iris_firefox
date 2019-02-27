@@ -7,15 +7,14 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    test_details = pytest.mark.DETAILS(meta="Test experiment_root",
+    details = pytest.mark.DETAILS(meta="Test experiment_root",
                                        description="Empty",
                                        fx_version="63",
                                        locale="en-US, zh-CN, es-ES, de, fr, ru, ar, ko, pt-PT, vi, pl, tr, ro, ja, zh-CN, es-ES, de",
                                        chanel="beta",
                                        test_case_id="1111", test_suite_id="888666", blocked_by="123333111")
 
-    @test_details
-    @pytest.mark.skip
+    @details
     def test_run(self):
         # region = Region(0, 40, 200, 100)
         # region.highlight()

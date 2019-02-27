@@ -60,7 +60,7 @@ def scan_all_tests():
                 sys.path.append(module_path)
                 current_module = importlib.import_module(module_name.split('.')[0])
 
-                current_test = current_module.Test().test_details.kwargs
+                current_test = current_module.Test().details.kwargs
 
                 test_object = {'name': module, 'module': current_module.__file__,
                                'description': current_test.get('description'),

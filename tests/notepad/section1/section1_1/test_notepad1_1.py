@@ -9,11 +9,11 @@ from src.core.api.screen.screen import Rectangle
 
 
 class Test(BaseTest):
-    test_details = pytest.mark.DETAILS(meta="Notepad Test experiment",
+    details = pytest.mark.DETAILS(meta="Notepad Test experiment",
                                        description="This test is just an experiment for Notepad",
                                        blocked_by="232111")
 
-    @test_details
+    @details
     def test_run(self):
         find(Pattern('test.png'), Rectangle(0, 0, 100, 100))
         assert True == True, 'Assert message failed'
