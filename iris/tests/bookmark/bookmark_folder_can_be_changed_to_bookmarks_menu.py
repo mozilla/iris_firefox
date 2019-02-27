@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Bookmark folders can be changed in Bookmarks Toolbar'
-        self.test_case_id = '163401'
+        self.meta = 'Bookmark folders can be changed in Bookmarks Menu'
+        self.test_case_id = '163402'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -42,18 +42,17 @@ class Test(BaseTest):
                                                      'icon.')
 
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
-        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
-                                                        in_region=stardialog_region)
-        assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6), in_region=stardialog_region)
+        wiki_bookmark_menu_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6),
+                                                     in_region=stardialog_region)
+        assert_true(self, wiki_bookmark_menu_folder_displayed, 'Bookmark toolbar folder displayed')
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6), in_region=stardialog_region)
         click(Bookmarks.StarDialog.DONE)
 
-        home_width, home_height = NavBar.HOME_BUTTON.get_size()
-        bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
-        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 3)
+        click(LocationBar.STAR_BUTTON_STARRED, in_region=stardialog_region)
 
-        soap_wiki_bookmark_folder_changed = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT,
-                                                   bookmarks_toolbar_region)
-        assert_true(self, soap_wiki_bookmark_folder_changed, 'The Bookmarks Toolbar is enabled and the saved bookmark '
-                                                             'is correctly displayed.')
+        soap_wiki_bookmark_folder_changed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6),
+                                                   DEFAULT_FIREFOX_TIMEOUT, in_region=stardialog_region)
+        assert_true(self, soap_wiki_bookmark_folder_changed, 'The pop up is dismissed and the bookmark is correctly '
+                                                             'saved in Bookmarks menu.')
+        restore_firefox_focus()
 
