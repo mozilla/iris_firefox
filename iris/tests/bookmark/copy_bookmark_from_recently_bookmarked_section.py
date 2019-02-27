@@ -49,8 +49,11 @@ class Test(BaseTest):
 
         click(copy_option_pattern)
 
-        copy_option_exists = exists(copy_option_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_false(self, copy_option_exists, 'The selected website is correctly copied')
+        try:
+            menu_disappeared = wait_vanish(copy_option_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, menu_disappeared, 'The selected website is correctly copied')
+        except FindError:
+            raise FindError('The selected website isn\'t correctly copied')
 
         bookmarks_sidebar('open')
 
@@ -67,8 +70,11 @@ class Test(BaseTest):
 
         click(paste_option_pattern)
 
-        paste_option_exists = exists(paste_option_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_false(self, paste_option_exists, 'Paste option disappear')
+        try:
+            paste_option_disappeared = wait_vanish(paste_option_pattern, DEFAULT_UI_DELAY_LONG)
+            assert_true(self, paste_option_disappeared, 'Paste option is gone')
+        except FindError:
+            raise FindError('Paste still exists')
 
         click(sidebar_bookmarks_toolbar_pattern)
 
