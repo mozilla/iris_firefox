@@ -67,6 +67,9 @@ class Test(BaseTest):
 
         click(paste_option_pattern)
 
+        paste_option_exists = exists(paste_option_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_false(self, paste_option_exists, 'Paste option disappear')
+
         click(sidebar_bookmarks_toolbar_pattern)
 
         wiki_sidebar_bookmark_exists = exists(wiki_sidebar_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
