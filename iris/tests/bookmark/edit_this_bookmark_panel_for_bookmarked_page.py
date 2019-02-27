@@ -17,8 +17,6 @@ class Test(BaseTest):
 
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
-        firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
-        edit_this_bookmark_option_pattern = Pattern('edit_this_bookmark_option.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
