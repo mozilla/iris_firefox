@@ -44,7 +44,7 @@ class Test(BaseTest):
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
         wiki_bookmark_menu_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6),
                                                      in_region=stardialog_region)
-        assert_true(self, wiki_bookmark_menu_folder_displayed, 'Bookmark toolbar folder displayed')
+        assert_true(self, wiki_bookmark_menu_folder_displayed, 'Bookmark menu folder displayed')
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6), in_region=stardialog_region)
         click(Bookmarks.StarDialog.DONE)
 
