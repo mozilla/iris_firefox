@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Edit a Bookmark from Bookmarks menu'
-        self.test_case_id = '163195'
+        self.meta = '"Edit this bookmark"panel appears after a page is already bookmarked'
+        self.test_case_id = '163399'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -34,17 +34,7 @@ class Test(BaseTest):
 
         restore_firefox_focus()
 
-        open_firefox_menu()
-
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
-
-        click(firefox_menu_bookmarks_pattern)
-
-        edit_this_bookmark_option_exists = exists(edit_this_bookmark_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, edit_this_bookmark_option_exists, 'Edit This Bookmark option exists')
-
-        click(edit_this_bookmark_option_pattern)
+        click(LocationBar.STAR_BUTTON_STARRED)
 
         edit_stardialog_displayed = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, edit_stardialog_displayed, 'The Edit This Bookmark popup is displayed under the star-shaped '
