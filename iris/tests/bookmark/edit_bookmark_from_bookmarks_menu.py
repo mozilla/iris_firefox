@@ -43,6 +43,7 @@ class Test(BaseTest):
         assert_true(self, star_button_exists, 'Star button exists')
 
         click(star_button_pattern)
+        click(wiki_logo_pattern)
 
         library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
