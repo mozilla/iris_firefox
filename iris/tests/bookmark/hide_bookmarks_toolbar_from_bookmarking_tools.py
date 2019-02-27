@@ -51,10 +51,11 @@ class Test(BaseTest):
 
         click(view_bookmarks_toolbar_pattern)
 
-        time.sleep(DEFAULT_UI_DELAY)
-
-        bookmarking_tools_not_exists = exists(view_bookmarks_toolbar_pattern, DEFAULT_UI_DELAY)
-        assert_false(self, bookmarking_tools_not_exists, 'Bookmarking Tools window is dismissed')
+        try:
+            bookmarking_tools_not_exists = wait_vanish(view_bookmarks_toolbar_pattern)
+            assert_true(self, bookmarking_tools_not_exists, 'Bookmarking Tools window is dismissed')
+        except FindError:
+            raise FindError('Bookmarking Tools window is not dismissed')
 
         bookmarks_toolbar_exists = exists(bookmarks_toolbar_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, bookmarks_toolbar_exists, 'Bookmarks Toolbar is correctly displayed under the URL bar')
@@ -85,10 +86,11 @@ class Test(BaseTest):
 
         click(hide_bookmarks_toolbar_pattern)
 
-        time.sleep(DEFAULT_UI_DELAY)
-
-        bookmarks_toolbar_menu_exists = exists(bookmarks_toolbar_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_false(self, bookmarks_toolbar_menu_exists, 'The bookmarks toolbar is dismissed')
+        try:
+            bookmarking_toolbar_not_exists = wait_vanish(bookmarks_toolbar_pattern)
+            assert_true(self, bookmarking_toolbar_not_exists, 'The bookmarks toolbar is dismissed')
+        except FindError:
+            raise FindError('The bookmarks toolbar is not dismissed')
 
         library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
