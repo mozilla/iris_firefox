@@ -11,7 +11,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'The location of a bookmark can be changed.'
         self.test_case_id = '4149'
-        self.test_suite_id = '75'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def setup(self):
