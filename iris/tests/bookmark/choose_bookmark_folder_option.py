@@ -52,8 +52,6 @@ class Test(BaseTest):
         assert_true(self, destination_folders_displayed, 'Edit This Bookmark panel is displayed with all the '
                                                          'destination folders.')
 
-        time.sleep(20)
-
 
 
 
