@@ -34,13 +34,15 @@ class Test(BaseTest):
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
-        lib_loc = find(Library.OTHER_BOOKMARKS).right(300)
+        other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
+        assert_true(self, other_bookmarks_folder_exists, 'Other bookmarks folder exists')
 
-        drag_drop(soap_wiki_tab_pattern, lib_loc)
+        other_bookmarks_location = find(Library.OTHER_BOOKMARKS).right(300)
+
+        drag_drop(soap_wiki_tab_pattern, other_bookmarks_location)
 
         bookmark_added = exists(wiki_bookmark_logo_pattern)
         assert_true(self, bookmark_added, 'Bookmark added')
 
         click(Library.TITLE)
         close_window_control('auxiliary')
-
