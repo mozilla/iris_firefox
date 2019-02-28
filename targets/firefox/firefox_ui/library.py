@@ -3,9 +3,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from iris2.src.core.api.enums import OSPlatform
-from iris2.src.core.api.finder.pattern import Pattern
-from iris2.src.core.util.os_helpers import OSHelper
+from src.core.api.enums import OSPlatform
+from src.core.api.finder.pattern import Pattern
+from src.core.api.os_helpers import OSHelper
 
 
 class Library(object):

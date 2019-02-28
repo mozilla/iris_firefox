@@ -476,7 +476,7 @@ def quit_firefox():
     """Quit the browser."""
 
     # Wait before quiting Firefox to avoid concurrency.
-    time.sleep(Settings.FX_DELAY)
+    time.sleep(1)
     if OSHelper.is_mac():
         type(text='q', modifier=KeyModifier.CMD)
     elif OSHelper.is_windows():
