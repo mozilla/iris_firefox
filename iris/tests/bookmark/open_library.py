@@ -26,6 +26,9 @@ class Test(BaseTest):
         assert_true(self, soap_wiki_opened, 'The Wiki page is opened')
 
         bookmark_page()
+
+        star_dialog_opened = exists(Bookmarks.StarDialog.DONE)
+        assert_true(self, star_dialog_opened, 'StarDialog opened')
         click(Bookmarks.StarDialog.DONE)
 
         new_tab()
@@ -35,6 +38,9 @@ class Test(BaseTest):
         library_opened_vis_shortcut = exists(Library.TITLE)
         assert_true(self, library_opened_vis_shortcut, 'Library opened via CMD/CTRL+Shift+B')
 
+        other_bookmarks_folder_displayed = exists(Library.OTHER_BOOKMARKS)
+        assert_true(self, other_bookmarks_folder_displayed, 'Other Bookmarks folder displayed')
+
         click(Library.OTHER_BOOKMARKS)
 
         other_bookmarks_is_default_shortcut = exists(wiki_bookmark_logo_pattern)
@@ -42,10 +48,19 @@ class Test(BaseTest):
 
         close_window_control('auxiliary')
 
+        library_menu_button_displayed = exists(NavBar.LIBRARY_MENU)
+        assert_true(self, library_menu_button_displayed, 'Library menu button displayed')
+
         click(NavBar.LIBRARY_MENU)
-        time.sleep(DEFAULT_UI_DELAY)
+
+        bookmarks_option_displayed = exists(LibraryMenu.BOOKMARKS_OPTION)
+        assert_true(self, bookmarks_option_displayed, 'Bookmarks option displayed')
+
         click(LibraryMenu.BOOKMARKS_OPTION)
-        time.sleep(DEFAULT_UI_DELAY)
+
+        show_all_bookmarks_buuton_displayed = exists(show_all_bookmarks_button_pattern)
+        assert_true(self, show_all_bookmarks_buuton_displayed, 'Bookmarks option displayed')
+
         click(show_all_bookmarks_button_pattern)
 
         library_opened_from_menu = exists(Library.TITLE)
