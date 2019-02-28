@@ -33,15 +33,6 @@ class Test(BaseTest):
         test_site_opened = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, test_site_opened, 'Mozilla test page opened')
 
-        bookmark_page()
-
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
-
-        click(Bookmarks.StarDialog.DONE)
-
-        restore_firefox_focus()
-
         open_firefox_menu()
 
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
