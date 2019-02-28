@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = '"Edit this bookmark"panel appears after a page is already bookmarked'
+        self.meta = '"Edit this bookmark" panel appears after a page is already bookmarked'
         self.test_case_id = '163399'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
@@ -38,4 +38,3 @@ class Test(BaseTest):
         edit_stardialog_displayed = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, edit_stardialog_displayed, 'The Edit This Bookmark popup is displayed under the star-shaped '
                                                      'icon.')
-
