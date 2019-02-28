@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.meta = 'Drop single and multiple .txt files in demopage opened in Private Window.'
         self.test_case_id = '165079'
         self.test_suite_id = '102'
-        self.locales = [ 'en-US' ]
+        self.locales = ['en-US']
 
     def setup(self):
         BaseTest.setup(self)
@@ -61,7 +61,8 @@ class Test(BaseTest):
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
                                                               DEFAULT_UI_DELAY)
-        assert_true(self, matching_block_available, 'The drop result verification area is present on the page')
+        assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
+
         not_matching_message_location = find(not_matching_message_pattern)
         not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
         not_matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
@@ -130,6 +131,7 @@ class Test(BaseTest):
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
+
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
 
