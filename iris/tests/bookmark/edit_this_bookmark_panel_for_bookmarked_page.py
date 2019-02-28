@@ -15,22 +15,23 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+
+        Override the setup method to use a pre-canned bookmarks profile..
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        test_site_opened = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, test_site_opened, 'Mozilla test page opened')
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
-
-        bookmark_page()
-
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
-
-        click(Bookmarks.StarDialog.DONE)
-
-        restore_firefox_focus()
+        star_button_exists = exists(LocationBar.STAR_BUTTON_STARRED)
+        assert_true(self, star_button_exists, 'Star button is displayed')
 
         click(LocationBar.STAR_BUTTON_STARRED)
 
