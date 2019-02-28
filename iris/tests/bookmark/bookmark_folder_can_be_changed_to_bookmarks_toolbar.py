@@ -24,7 +24,7 @@ class Test(BaseTest):
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
         test_site_opened = exists(LocalWeb.FOCUS_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, test_site_opened, 'Mozilla test page opened')
+        assert_true(self, test_site_opened, 'Focus test page opened')
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
 
