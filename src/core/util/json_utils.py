@@ -134,7 +134,7 @@ def create_arg_json():
 
 def create_target_json():
     master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
-    target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__')]
+    target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
 
     master_test_list = scan_all_tests()
     tests=master_test_list['tests']

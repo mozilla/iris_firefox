@@ -11,7 +11,7 @@ class Test(FirefoxTest):
                                        description="This test case does something",
                                        fx_version="63",
                                        locale="en-US, zh-CN, es-ES, de, fr, ru, ar, ko, pt-PT, vi, pl, tr, ro, ja, zh-CN, es-ES, de",
-                                       chanel="beta",
+                                       channel="beta",
                                        test_case_id="5555555", test_suite_id="999999", blocked_by="")
 
     @details

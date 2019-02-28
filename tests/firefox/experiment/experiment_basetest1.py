@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     details = pytest.mark.DETAILS(meta="Test experiment_base_test1",
                                        description="This test is just an experiment.",
-                                       fx_version="63", locale="en-US, zh-CN, es-ES, de", chanel="beta",
+                                       fx_version="63", locale="en-US, zh-CN, es-ES, de", channel="beta",
                                        test_case_id="435344", test_suite_id="345444", blocked_by="")
 
     @details

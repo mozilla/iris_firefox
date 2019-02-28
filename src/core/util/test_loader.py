@@ -68,7 +68,7 @@ def scan_all_tests():
                 if "firefox" in module_path:
                     test_object['test_case_id'] = current_test.get('test_case_id')
                     test_object['test_suite_id'] = current_test.get('test_suite_id')
-                    test_object['chanel'] = current_test.get('chanel')
+                    test_object['channel'] = current_test.get('channel')
                     test_object['locale'] = current_test.get('locale')
                     test_object['fx_version'] = current_test.get('fx_version')
                     test_object['blocked_by'] = current_test.get('blocked_by')
