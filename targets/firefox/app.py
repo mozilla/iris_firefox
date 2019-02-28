@@ -43,8 +43,10 @@ class Target(BaseTarget):
         browser.start()
 
         def teardown():
-            if browser.runner:
-                browser.runner.stop()
+            if browser.runner and browser.runner.process_handler:
+                status = browser.runner.process_handler.wait(Se)
+                if status is None:
+                    browser.runner.stop()
 
         request.addfinalizer(teardown)
 
