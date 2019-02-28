@@ -11,8 +11,8 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Websites can be bookmarked by dragging a URL from a *.txt file.'
-        self.test_case_id = '4144'
-        self.test_suite_id = '75'
+        self.test_case_id = '165205'
+        self.test_suite_id = '2525'
         self.locales = ['en-US']
 
     def run(self):
@@ -58,6 +58,8 @@ class Test(BaseTest):
         assert_true(self, toolbar_link_assert, 'The link has been successfully bookmarked.')
 
         click(toolbar_bookmarked_link)
+
+        close_content_blocking_pop_up()
 
         link_page_assert = exists(link_page, 10)
         assert_true(self, link_page_assert, 'The page has been successfully loaded.')

@@ -35,9 +35,9 @@ class Test(BaseTest):
         scroll_down(5)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
-            click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
+            click(NavBar.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
-        click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
+        click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_1GB, 10)
         assert_true(self, expected, 'The 1GB download is in progress.')
 
