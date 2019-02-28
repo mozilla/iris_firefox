@@ -31,14 +31,8 @@ class Test(BaseTest):
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
 
-        bookmark_page()
-
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT, stardialog_region)
-        assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
-
-        click(Bookmarks.StarDialog.DONE, in_region=stardialog_region)
-
-        restore_firefox_focus()
+        star_button_exists = exists(LocationBar.STAR_BUTTON_STARRED)
+        assert_true(self, star_button_exists, 'Star button is displayed')
 
         click(LocationBar.STAR_BUTTON_STARRED, in_region=stardialog_region)
 
@@ -48,11 +42,20 @@ class Test(BaseTest):
                                                      'icon.')
 
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
+
         wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
                                                         in_region=stardialog_region)
         assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
+
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6), in_region=stardialog_region)
+
+        stardialog_done_button_displayed = exists(Bookmarks.StarDialog.DONE, in_region=stardialog_region)
+        assert_true(self, stardialog_done_button_displayed, 'Stardialog Done button is displayed')
+
         click(Bookmarks.StarDialog.DONE)
+
+        home_button_displayed = exists(NavBar.HOME_BUTTON)
+        assert_true(self, home_button_displayed, 'Home button is displayed')
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
