@@ -38,7 +38,11 @@ class Test(BaseTest):
         assert_true(self, edit_stardialog_displayed, 'The Edit This Bookmark popup is displayed under the star-shaped '
                                                      'icon.')
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
+        panel_folder_default_option_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6),
+                                                    in_region=stardialog_region)
+        assert_true(self, panel_folder_default_option_exists, 'Panel folder default option exists')
+
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), in_region=stardialog_region)
 
         bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
                                                    in_region=stardialog_region)
