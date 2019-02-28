@@ -25,6 +25,7 @@ class Test(BaseTest):
         search_bookmarks_pattern = LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS
         focused_search_field_pattern = Pattern('focused_search_field.png')
         search_with_default_engine_pattern = Pattern('search_with_default_engine.png')
+        bookmarked_site_icon_under_url_pattern = Pattern('bookmarked_site_icon.png')
 
         NOT_BOOKMARKED_WEBSITE_NAME = 'Telegram'
 
@@ -44,17 +45,23 @@ class Test(BaseTest):
         click(search_bookmarks_pattern)
 
         try:
-            bookmarking_menu_not_exists = wait_vanish(search_bookmarks_pattern, DEFAULT_UI_DELAY)
+            bookmarking_menu_not_exists = wait_vanish(search_bookmarks_pattern, DEFAULT_UI_DELAY_LONG)
             assert_true(self, bookmarking_menu_not_exists, 'Bookmarks menu is dismissed')
         except FindError:
             raise FindError('Bookmarks menu is not dismissed')
 
         focused_search_field_exists = exists(focused_search_field_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, focused_search_field_exists, ' the focus is in the URL address bar after a \'* \'.')
+        assert_true(self, focused_search_field_exists, 'The focus is in the URL address bar after a \'* \'.')
 
         paste(NOT_BOOKMARKED_WEBSITE_NAME)
 
+        try:
+            bookmarked_site_icon_under_url_not_exists = wait_vanish(bookmarked_site_icon_under_url_pattern,
+                                                                    DEFAULT_UI_DELAY_LONG)
+            assert_true(self, bookmarked_site_icon_under_url_not_exists, 'No bookmarks are displayed under the URL bar')
+        except FindError:
+            raise FindError('Bookmark exists under the URL bar')
+
         search_with_default_engine_exists = exists(search_with_default_engine_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, search_with_default_engine_exists, ' No bookmarks are displayed under the URL bar '
-                                                             'and Telegram - Search with default search engine '
+        assert_true(self, search_with_default_engine_exists, 'Telegram - Search with default search engine '
                                                              'is text is displayed')
