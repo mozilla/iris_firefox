@@ -15,13 +15,19 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+        Override the setup method to use a pre-canned bookmarks profile..
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
+        test_site_opened = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, test_site_opened, 'Mozilla test page opened')
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
 
@@ -50,10 +56,10 @@ class Test(BaseTest):
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
-        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 3)
+        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 4)
 
-        soap_wiki_bookmark_folder_changed = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT,
-                                                   bookmarks_toolbar_region)
-        assert_true(self, soap_wiki_bookmark_folder_changed, 'The Bookmarks Toolbar is enabled and the saved bookmark '
-                                                             'is correctly displayed.')
+        test_bookmark_folder_changed = exists(LocalWeb.MOZILLA_BOOKMARK, DEFAULT_SITE_LOAD_TIMEOUT,
+                                              bookmarks_toolbar_region)
+        assert_true(self, test_bookmark_folder_changed, 'The Bookmarks Toolbar is enabled and the saved bookmark '
+                                                        'is correctly displayed.')
 
