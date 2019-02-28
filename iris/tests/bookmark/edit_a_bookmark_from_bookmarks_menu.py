@@ -15,15 +15,23 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
+    def setup(self):
+        """Test case setup
+
+        Override the setup method to use a pre-canned bookmarks profile..
+        """
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
         edit_this_bookmark_option_pattern = Pattern('edit_this_bookmark_option.png')
 
-        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
+        test_site_opened = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, test_site_opened, 'Mozilla test page opened')
 
         bookmark_page()
 
