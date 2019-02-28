@@ -16,8 +16,11 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        show_all_bookmarks_button_pattern = Pattern('show_all_bookmarks_button.png')  # Should be added to library_menu
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
+        if Settings.is_linux() or Settings.is_mac():
+            ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
+        else:
+            ff_menu_show_all_bookmarks_pattern = Pattern('show_all_bookmarks_button.png')
 
         open_firefox_menu()
 
@@ -26,15 +29,10 @@ class Test(BaseTest):
 
         click(firefox_menu_bookmarks_pattern)
 
-        if Settings.is_linux() or Settings.is_mac():
-            ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
-            ff_menu_show_all_bookmarks_exists = exists(ff_menu_show_all_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
-            click(ff_menu_show_all_bookmarks_pattern)
-        else:
-            ff_menu_show_all_bookmarks_exists = exists(show_all_bookmarks_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
-            click(show_all_bookmarks_button_pattern)
+        ff_menu_show_all_bookmarks_exists = exists(ff_menu_show_all_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
+
+        click(ff_menu_show_all_bookmarks_pattern)
 
         library_opened_from_ff_menu = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened_from_ff_menu, 'Library opened from View History, saved bookmarks and more')
