@@ -34,7 +34,7 @@ class Test(BaseTest):
         select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
         drop_here_pattern = Pattern('drop_here.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
-        matching_message_pattern = Pattern('drop_matching_verified.png')
+        matching_message_pattern = Pattern('matching_message_precise.png')
         jpg_bak_file_pattern = Pattern('jpg_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
         if Settings.is_linux():
