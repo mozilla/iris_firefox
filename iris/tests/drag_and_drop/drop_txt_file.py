@@ -56,7 +56,7 @@ class Test(BaseTest):
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
                                                               DEFAULT_UI_DELAY)
-        assert_true(self, matching_block_available, 'The drop result verification area is present on the page')
+        assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
         not_matching_message_location = find(not_matching_message_pattern)
         not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
         not_matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
