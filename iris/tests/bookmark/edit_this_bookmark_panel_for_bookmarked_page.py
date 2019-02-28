@@ -16,10 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-
-        Override the setup method to use a pre-canned bookmarks profile..
-        """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
         return
