@@ -15,18 +15,13 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-
-        Override the setup method to use a pre-canned bookmarks profile.
-        """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        wikipedia_sidebar_logo_pattern = Pattern('wiki_logo.png')
+        firefox_sidebar_logo_pattern = Pattern('firefox_bookmark.png')
         open_option_pattern = Pattern('open_option.png')
         new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.95)
-        wikipedia_main_page_content_pattern = Pattern('wikipedia_main_page.png')
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         if Settings.is_mac():
             other_bookmarks_pattern = Pattern('other_bookmarks.png')
@@ -42,19 +37,18 @@ class Test(BaseTest):
         assert_true(self, other_bookmarks_exists, 'Other bookmarks exists')
         click(other_bookmarks_pattern)
 
-        wikipedia_sidebar_logo_exists = exists(wikipedia_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, wikipedia_sidebar_logo_exists, 'Wikipedia bookmark exists')
-        right_click(wikipedia_sidebar_logo_pattern)
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_true(self, firefox_sidebar_logo_exists, 'Wikipedia bookmark exists')
+
+        right_click(firefox_sidebar_logo_pattern)
 
         open_option_exists = exists(open_option_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, open_option_exists, 'Open option exists')
         click(open_option_pattern)
 
         new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_false(self, new_tab_is_opened_not_exists, 'The webpage isn\'t opened at the new tab')
+        assert_false(self, new_tab_is_opened_not_exists, 'The page is correctly opened in the current tab.')
 
-        wikipedia_main_page_content_exists = exists(wikipedia_main_page_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, wikipedia_main_page_content_exists, 'The page is correctly opened in the current tab.')
 
 
 
