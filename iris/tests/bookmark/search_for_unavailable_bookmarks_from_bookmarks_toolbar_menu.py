@@ -26,6 +26,8 @@ class Test(BaseTest):
         focused_search_field_pattern = Pattern('focused_search_field.png')
         search_with_default_engine_pattern = Pattern('search_with_default_engine.png')
 
+        NOT_BOOKMARKED_WEBSITE_NAME = 'Telegram'
+
         library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
@@ -41,18 +43,18 @@ class Test(BaseTest):
 
         click(search_bookmarks_pattern)
 
+        try:
+            bookmarking_menu_not_exists = wait_vanish(search_bookmarks_pattern, DEFAULT_UI_DELAY)
+            assert_true(self, bookmarking_menu_not_exists, 'Bookmarks menu is dismissed')
+        except FindError:
+            raise FindError('Bookmarks menu is not dismissed')
+
         focused_search_field_exists = exists(focused_search_field_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, focused_search_field_exists, ' the focus is in the URL address bar after a \'* \'.')
 
-        bookmarks_menu_not_exists = exists(search_bookmarks_pattern, DEFAULT_UI_DELAY)
-        assert_false(self, bookmarks_menu_not_exists, 'The menu is dismissed')
-
-        paste('Telegram')
+        paste(NOT_BOOKMARKED_WEBSITE_NAME)
 
         search_with_default_engine_exists = exists(search_with_default_engine_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, search_with_default_engine_exists, ' No bookmarks are displayed under the URL bar '
                                                              'and Telegram - Search with default search engine '
                                                              'is text is displayed')
-
-
-
