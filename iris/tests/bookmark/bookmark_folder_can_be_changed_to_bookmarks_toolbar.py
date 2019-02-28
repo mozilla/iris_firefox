@@ -16,17 +16,14 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-        Override the setup method to use a pre-canned bookmarks profile..
-        """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
         return
 
     def run(self):
-        navigate(LocalWeb.MOZILLA_TEST_SITE)
+        navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        test_site_opened = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        test_site_opened = exists(LocalWeb.FOCUS_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, test_site_opened, 'Mozilla test page opened')
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
@@ -43,9 +40,9 @@ class Test(BaseTest):
 
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
 
-        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
-                                                        in_region=stardialog_region)
-        assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
+        bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
+                                                   in_region=stardialog_region)
+        assert_true(self, bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
 
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6), in_region=stardialog_region)
 
@@ -61,7 +58,7 @@ class Test(BaseTest):
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
         bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 4)
 
-        test_bookmark_folder_changed = exists(LocalWeb.MOZILLA_BOOKMARK, DEFAULT_SITE_LOAD_TIMEOUT,
+        test_bookmark_folder_changed = exists(LocalWeb.FOCUS_BOOKMARK.similar(0.6), DEFAULT_SITE_LOAD_TIMEOUT,
                                               bookmarks_toolbar_region)
         assert_true(self, test_bookmark_folder_changed, 'The Bookmarks Toolbar is enabled and the saved bookmark '
                                                         'is correctly displayed.')
