@@ -62,10 +62,7 @@ class Test(BaseTest):
 
         bookmarks_sidebar_location = find(Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_TITLE)
         bookmarks_width, bookmarks_height = Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_TITLE.get_size()
-        bookmarks_sidebar_region = Region(0,
-                                          bookmarks_sidebar_location.y,
-                                          bookmarks_width * 2,
-                                          SCREEN_HEIGHT / 2)
+        bookmarks_sidebar_region = Region(0, bookmarks_sidebar_location.y, bookmarks_width * 2, SCREEN_HEIGHT / 2)
 
         bookmarks_menu_folder_exists = exists(SidebarBookmarks.BOOKMARKS_MENU, DEFAULT_FIREFOX_TIMEOUT,
                                               bookmarks_sidebar_region)
