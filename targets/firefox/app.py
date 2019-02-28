@@ -44,7 +44,7 @@ class Target(BaseTarget):
 
         def teardown():
             if browser.runner and browser.runner.process_handler:
-                status = browser.runner.process_handler.wait(Se)
+                status = browser.runner.process_handler.wait(5)
                 if status is None:
                     browser.runner.stop()
 
