@@ -21,7 +21,7 @@ class Test(BaseTest):
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
-        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png').similar(0.95)
+        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png').similar(0.9)
 
         open_firefox_menu()
 
@@ -40,10 +40,9 @@ class Test(BaseTest):
 
         firefox_bookmark_location = find(firefox_bookmark_top_menu_pattern)
 
-        hover(Location(SCREEN_WIDTH, other_bookmarks_item_location.y))
-
-        hover(Location(SCREEN_WIDTH, firefox_bookmark_location.y))
-
+        hover(Location(SCREEN_WIDTH, other_bookmarks_item_location.y))  # Required to guarantee bookmarks
+        hover(Location(SCREEN_WIDTH, firefox_bookmark_location.y))      # list will not disappear
         click(firefox_bookmark_top_menu_pattern)
+
         webpage_loaded = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_loaded, 'Needed webpage is loaded')
