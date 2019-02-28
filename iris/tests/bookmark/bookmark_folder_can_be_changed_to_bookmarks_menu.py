@@ -15,24 +15,21 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
+        navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
+        test_site_opened = exists(LocalWeb.FOCUS_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, test_site_opened, 'Focus test page opened')
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
 
-        bookmark_page()
-
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT, stardialog_region)
-        assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
-
-        click(Bookmarks.StarDialog.DONE, in_region=stardialog_region)
-
-        restore_firefox_focus()
+        star_button_exists = exists(LocationBar.STAR_BUTTON_STARRED)
+        assert_true(self, star_button_exists, 'Star button is displayed')
 
         click(LocationBar.STAR_BUTTON_STARRED, in_region=stardialog_region)
 
@@ -41,12 +38,25 @@ class Test(BaseTest):
         assert_true(self, edit_stardialog_displayed, 'The Edit This Bookmark popup is displayed under the star-shaped '
                                                      'icon.')
 
+        panel_folder_default_option_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6),
+                                                    in_region=stardialog_region)
+        assert_true(self, panel_folder_default_option_exists, 'Panel folder default option exists')
+
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
-        wiki_bookmark_menu_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6),
-                                                     in_region=stardialog_region)
-        assert_true(self, wiki_bookmark_menu_folder_displayed, 'Bookmark menu folder displayed')
+
+        bookmark_menu_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6),
+                                                in_region=stardialog_region)
+        assert_true(self, bookmark_menu_folder_displayed, 'Bookmark menu folder displayed')
+
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6), in_region=stardialog_region)
+
+        stardialog_done_button_displayed = exists(Bookmarks.StarDialog.DONE, in_region=stardialog_region)
+        assert_true(self, stardialog_done_button_displayed, 'Stardialog Done button is displayed')
+
         click(Bookmarks.StarDialog.DONE)
+
+        home_button_displayed = exists(NavBar.HOME_BUTTON)
+        assert_true(self, home_button_displayed, 'Home button is displayed')
 
         bookmarks_sidebar('open')
 
@@ -63,9 +73,9 @@ class Test(BaseTest):
 
         click(SidebarBookmarks.BOOKMARKS_MENU, in_region=bookmarks_sidebar_region)
 
-        wiki_bookmark_moved = exists(soap_wiki_tab_pattern, DEFAULT_FIREFOX_TIMEOUT, bookmarks_sidebar_region)
-        assert_true(self, wiki_bookmark_moved, 'The pop up is dismissed and the bookmark is correctly saved in '
-                                               'Bookmarks menu.')
+        bookmark_moved = exists(LocalWeb.FOCUS_BOOKMARK, DEFAULT_FIREFOX_TIMEOUT, bookmarks_sidebar_region)
+        assert_true(self, bookmark_moved, 'The pop up is dismissed and the bookmark is correctly saved in '
+                                          'Bookmarks menu.')
 
 
 
