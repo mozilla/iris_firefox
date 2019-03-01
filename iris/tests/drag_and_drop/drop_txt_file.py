@@ -25,6 +25,7 @@ class Test(BaseTest):
 
         shutil.copy(original_txtfile_path, backup_txtfile_path)
         shutil.copy(original_jpgfile_path, backup_jpgfile_path)
+        return
 
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -105,6 +106,7 @@ class Test(BaseTest):
             type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in file picker
             paste(folderpath)
             type(Key.ENTER)
+            type('1', KeyModifier.CMD)
         else:
             paste(folderpath)
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
