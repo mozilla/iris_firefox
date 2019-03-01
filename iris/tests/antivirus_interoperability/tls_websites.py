@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        facebook_logo_pattern = Pattern('facebook_logo.png')
         page_info_window_pattern = Pattern('technical_details.png')
         tls_check_pattern = Pattern('tls_check.png')
         show_connection_details_button_pattern = Pattern('show_connection_details_button.png')
@@ -24,8 +23,6 @@ class Test(BaseTest):
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
         theregister_logo_pattern = Pattern('theregister_logo.png')
         cdn77_logo_pattern = Pattern('cdn77_logo.png')
-        facebook_create_new_account_button_pattern = Pattern('facebook_create_new_account_button.png')
-        facebook_login_button_pattern = Pattern('facebook_login_button.png')
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
         the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png')
@@ -33,47 +30,14 @@ class Test(BaseTest):
         cdn77_support_button_pattern = Pattern('cdn77_support_button.png').similar(.6)
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
 
-        navigate('https://www.facebook.com/')
-
-        close_content_blocking_pop_up()
-
-        facebook_logo_displayed = exists(facebook_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
-        assert_true(self, facebook_logo_displayed, 'Facebook page is successfully downloaded')
-
-        click(LocationBar.IDENTITY_ICON)
-        fb_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, fb_show_connection_details_exists, 'Show Connection Details button displayed')
-        click(show_connection_details_button_pattern)
-        fb_more_info_button_exists = exists(more_information_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, fb_more_info_button_exists, 'More information button displayed')
-        click(more_information_button_pattern)
-
-        facebook_page_info_opened = exists(page_info_window_pattern)
-        assert_true(self, facebook_page_info_opened, 'Facebook page info window is opened')
-
-        facebook_tls_check_pattern_matching = exists(tls_check_pattern)
-        assert_true(self, facebook_tls_check_pattern_matching, 'The Technical Details section states that the '
-                                                               'connection is encrypted via TLS 1.3')
-
-        close_window_control('auxiliary')
-
-        facebook_login_button_exists = exists(facebook_login_button_pattern)
-        assert_true(self, facebook_login_button_exists, 'Facebook login button exists')
-
-        click(facebook_login_button_pattern)
-
-        facebook_create_new_account_button_exists = exists(facebook_create_new_account_button_pattern,
-                                                           DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
-        assert_true(self, facebook_create_new_account_button_exists, 'There are no issues, crashes while navigating'
-                                                                     'on the website')
-
         navigate('https://www.cloudflare.com/')
 
         cloudflare_logo_displayed = exists(cloudflare_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cloudflare_logo_displayed, 'Cloudflare page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        cloudflare_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        cloudflare_show_connection_details_exists = exists(show_connection_details_button_pattern,
+                                                           DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, cloudflare_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         cloudflare_more_info_button_exists = exists(more_information_button_pattern)
@@ -104,7 +68,8 @@ class Test(BaseTest):
         assert_true(self, theregister_logo_displayed, 'The Register page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        theregister_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        theregister_show_connection_details_exists = exists(show_connection_details_button_pattern,
+                                                            DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, theregister_show_connection_details_exists, 'Show Connection Details button displayed')
         click(show_connection_details_button_pattern)
         theregister_more_info_button_exists = exists(more_information_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
