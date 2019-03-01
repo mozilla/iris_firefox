@@ -32,7 +32,7 @@ class Test(BaseTest):
         change_preference('browser.search.region', 'US')
 
         navigate('about:preferences#privacy')
-        search_field_exists = exists(find_in_preferences_field_pattern)
+        search_field_exists = exists(find_in_preferences_field_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, search_field_exists, 'Preferences page is opened')
 
         type('Autofill')
@@ -54,7 +54,7 @@ class Test(BaseTest):
         input_data_2 = ['Second V. Griggs', 'Loblaws_2', '1223 Rainbow Drive_2', 'Youngstown, OH_2',
                         '1223 Rainbow Drive_2', '44512', 'US', '9079782387', 'second_griggs@gmail.com']
 
-        name_field_exists = exists(name_field_pattern)
+        name_field_exists = exists(name_field_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, name_field_exists, 'The basic forms Autofill demo is opened')
 
         click(name_field_pattern)
@@ -77,23 +77,23 @@ class Test(BaseTest):
         click(name_field_pattern)
         double_click(name_field_pattern)
 
-        saved_profiles_exists = exists(saved_profiles_pattern)
+        saved_profiles_exists = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_profiles_exists, 'The Name from the saved profile is displayed in the drop down')
 
         new_private_window()
 
-        private_browsing_opened = exists(private_browsing_image_pattern)
+        private_browsing_opened = exists(private_browsing_image_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, private_browsing_opened, 'Private browsing window is opened')
 
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
 
-        name_field_exists_private = exists(name_field_pattern)
+        name_field_exists_private = exists(name_field_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, name_field_exists_private, 'The basic forms Autofill demo is opened')
 
         click(name_field_pattern)
         double_click(name_field_pattern)
 
-        saved_profiles_exists_private = exists(saved_profiles_pattern)
+        saved_profiles_exists_private = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_profiles_exists_private, 'The Name from the saved profile is displayed in the drop down'
                                                          'in Private browsing')
 
