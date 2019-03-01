@@ -104,4 +104,4 @@ class Test(BaseTest):
             assert_true(self, downloads_opened, 'Downloads opened')
 
             download_completed = exists(DownloadManager.DownloadState.COMPLETED)
-            assert_false(self, download_completed, 'Download is not successfull')
+            assert_false(self, download_completed, 'File was not downloaded successfully')
