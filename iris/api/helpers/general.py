@@ -109,6 +109,40 @@ def change_preference(pref_name, value):
             'Could not set value: %s to preference: %s' % (value, pref_name))
 
 
+def check_preference(pref_name, value):
+    """Check the value for a specific preference.
+
+    :param pref_name: Preference to be searched.
+    :param value: Preference's value to be checked.
+    :return: None.
+    """
+    new_tab()
+    select_location_bar()
+    paste('about:config')
+    time.sleep(Settings.UI_DELAY)
+    type(Key.ENTER)
+    time.sleep(Settings.UI_DELAY)
+
+    type(Key.SPACE)
+    time.sleep(Settings.UI_DELAY)
+
+    paste(pref_name)
+    time.sleep(Settings.UI_DELAY_LONG)
+    type(Key.TAB)
+    time.sleep(Settings.UI_DELAY_LONG)
+
+    try:
+        retrieved_value = copy_to_clipboard().split(';'[0])[1]
+
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+
+    if retrieved_value == value:
+        return True
+    else:
+        return False
+
+
 def click_cancel_button():
     """Click cancel button."""
     cancel_button_pattern = Pattern('cancel_button.png')
@@ -374,6 +408,18 @@ def create_region_for_url_bar():
         raise APIHelperError('Could not create region for URL bar.')
 
 
+def create_region_for_awesome_bar():
+    """Create region for the awesome bar."""
+
+    try:
+        identity_icon_pattern = LocationBar.IDENTITY_ICON
+        page_action_pattern = LocationBar.PAGE_ACTION_BUTTON
+        return create_region_from_patterns(left=page_action_pattern,
+                                           right=identity_icon_pattern)
+    except FindError:
+        raise APIHelperError('Could not create region for awesome bar.')
+
+
 def create_region_from_image(image):
     """Create region starting from a pattern.
 
@@ -511,10 +557,10 @@ def get_firefox_channel(build_path):
     fx_channel = get_firefox_info(build_path)['application_repository']
     if 'beta' in fx_channel:
         return 'beta'
-    elif 'release' in fx_channel:
-        return 'release'
     elif 'esr' in fx_channel:
         return 'esr'
+    elif 'release' in fx_channel:
+        return 'release'
     else:
         return 'nightly'
 
@@ -1317,4 +1363,3 @@ class ZoomType(object):
 
     IN = 300 if Settings.is_windows() else 1
     OUT = -300 if Settings.is_windows() else -1
-

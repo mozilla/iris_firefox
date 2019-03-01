@@ -11,7 +11,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'The removal of a bookmark can be undone.'
         self.test_case_id = '4156'
-        self.test_suite_id = '75'
+        self.test_suite_id = '2525'
         self.blocked_by = {'id': '1385754', 'platform': Platform.ALL}
         self.locales = ['en-US']
 
