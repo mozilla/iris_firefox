@@ -13,7 +13,7 @@ class Test(BaseTest):
     def run(self):
         new_private_browsing_tab_pattern = PrivateWindow.private_window_pattern
         speaker_icon_pattern = Pattern('speaker_icon.png')
-        play_icon_pattern = Pattern('play_icon.png')
+        play_icon_pattern = Pattern('play_icon.png').similar(.75)
         related_video_pattern = Pattern('related_video.png')
         north_text_mark_pattern = Pattern('north_text_mark.png')
         cnn_weather_page_tab_pattern = Pattern('cnn_logo_tab.png')
@@ -33,7 +33,8 @@ class Test(BaseTest):
         video_playing = exists(speaker_icon_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, video_playing, 'The video is playing and the speaker icon is displayed')
 
-        # scroll_until_found north_text_mark_pattern
+        first_video_centred = scroll_until_pattern_found(north_text_mark_pattern, type, (Key.DOWN,), 20)
+        assert_true(self, first_video_centred, 'First video is centred among the page')
 
         video_window = find(north_text_mark_pattern).above(100)
 
