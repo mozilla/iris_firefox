@@ -28,7 +28,7 @@ class Test(BaseTest):
         assert_true(self, firefox_menu_opened, 'Firefox menu is opened')
 
         click(bookmarks_top_menu_pattern)
-        bookmarks_menu_displayed  = exists(other_bookmarks_item_pattern)
+        bookmarks_menu_displayed = exists(other_bookmarks_item_pattern)
         assert_true(self, bookmarks_menu_displayed, 'Bookmarks menu is displayed')
 
         click(other_bookmarks_item_pattern)
