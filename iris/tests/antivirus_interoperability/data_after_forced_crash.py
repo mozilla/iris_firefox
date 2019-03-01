@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = "No data loss after a forced crash "
         self.test_case_id = "219582"
-        self.test_suite_id = "3036"
+        self.test_suite_id = "3063"
         self.locale = ["en-US"]
 
     def run(self):
