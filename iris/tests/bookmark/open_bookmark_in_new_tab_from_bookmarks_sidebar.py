@@ -19,14 +19,14 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
+        open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
         firefox_sidebar_logo_pattern = Pattern('firefox_bookmark.png')
         new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.90)
+
         if Settings.is_mac():
             other_bookmarks_pattern = Pattern('other_bookmarks.png')
         else:
             other_bookmarks_pattern = Library.OTHER_BOOKMARKS
-        if not Settings.is_linux():
-            open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
 
         bookmarks_sidebar('open')
 
@@ -43,14 +43,9 @@ class Test(BaseTest):
 
         right_click(firefox_sidebar_logo_pattern)
 
-        if not Settings.is_linux():
-            open_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, open_option_exists, 'Open in new tab option exists')
-            click(open_in_new_tab_option_pattern)
-        else:
-            firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
-            assert_false(self, firefox_sidebar_logo_exists, 'Open in new tab option exists')
-            type('w')
+        open_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_true(self, open_option_exists, 'Open in new tab option exists')
+        click(open_in_new_tab_option_pattern)
 
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_full_logo_exists, 'Firefox content exists')
