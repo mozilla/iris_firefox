@@ -20,7 +20,7 @@ class Test(BaseTest):
         restore_previous_session_button_pattern = Pattern('restore_previous_session.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
-        twitter_logo_pattern = Pattern('twitter_favicon.png')
+        twitter_logo_pattern = Pattern('twitter_favicon.png').similar(0.75)
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
         youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
