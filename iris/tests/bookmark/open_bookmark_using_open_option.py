@@ -19,10 +19,11 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
+        bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         firefox_sidebar_logo_pattern = Pattern('firefox_bookmark.png')
         open_option_pattern = Pattern('open_option.png')
         new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.95)
-        bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
+
         if Settings.is_mac():
             other_bookmarks_pattern = Pattern('other_bookmarks.png')
         else:
@@ -35,6 +36,7 @@ class Test(BaseTest):
 
         other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, other_bookmarks_exists, 'Other bookmarks exists')
+
         click(other_bookmarks_pattern)
 
         firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
@@ -44,16 +46,8 @@ class Test(BaseTest):
 
         open_option_exists = exists(open_option_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, open_option_exists, 'Open option exists')
+
         click(open_option_pattern)
 
         new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_UI_DELAY_LONG)
         assert_false(self, new_tab_is_opened_not_exists, 'The page is correctly opened in the current tab.')
-
-
-
-
-
-
-
-
-
