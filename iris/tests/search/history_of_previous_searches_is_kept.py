@@ -38,11 +38,12 @@ class Test(BaseTest):
             paste(text_list[i])
             time.sleep(DEFAULT_UI_DELAY)
 
+            region = Screen.RIGHT_THIRD
             if i == 0:
-                expected = exists(search_button_pattern, 10)
+                expected = region.exists(search_button_pattern, 10)
                 assert_true(self, expected, 'Search button found in the page.')
 
-            click(search_button_pattern)
+            region.click(search_button_pattern)
             time.sleep(DEFAULT_UI_DELAY)
 
         # Make history from the search bar field.
