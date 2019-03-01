@@ -25,7 +25,7 @@ class Test(BaseTest):
         search_bookmarks_pattern = LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS
         focused_search_field_pattern = Pattern('focused_search_field.png')
         search_with_default_engine_pattern = Pattern('search_with_default_engine.png')
-        bookmarked_site_icon_under_url_pattern = Pattern('bookmarked_site_icon.png')
+        bookmarked_site_icon_under_url_pattern = Pattern('bookmarked_site_icon.png').similar(0.9)
 
         NOT_BOOKMARKED_WEBSITE_NAME = 'Telegram'
 
