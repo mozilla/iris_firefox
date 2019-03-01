@@ -15,25 +15,23 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
     def run(self):
-        soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         destination_folders_pattern = Pattern('destination_folders.png')
 
-        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
+        test_site_opened = exists(LocalWeb.FOCUS_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, test_site_opened, 'Previously bookmarked Focus website is opened')
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
 
-        bookmark_page()
-
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT, stardialog_region)
-        assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
-
-        click(Bookmarks.StarDialog.DONE, in_region=stardialog_region)
-
-        restore_firefox_focus()
+        star_button_exists = exists(LocationBar.STAR_BUTTON_STARRED)
+        assert_true(self, star_button_exists, 'Star button is displayed')
 
         click(LocationBar.STAR_BUTTON_STARRED, in_region=stardialog_region)
 
@@ -43,9 +41,11 @@ class Test(BaseTest):
                                                      'icon.')
 
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
+
         choose_option_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(.6),
                                          in_region=stardialog_region)
         assert_true(self, choose_option_displayed, 'Bookmark toolbar folder displayed')
+
         click(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(.6), in_region=stardialog_region)
 
         destination_folders_displayed = exists(destination_folders_pattern, DEFAULT_FIREFOX_TIMEOUT)
