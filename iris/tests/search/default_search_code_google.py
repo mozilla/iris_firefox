@@ -13,10 +13,12 @@ class Test(BaseTest):
         self.meta = 'Default Search Code: Google.'
         self.test_case_id = '218333'
         self.test_suite_id = '83'
+        self.locale = ['en-US', 'de', 'fr', 'pl', 'it', 'pt-BR', 'ja', 'es-ES', 'en-GB', 'ru']
 
     def run(self):
         url = LocalWeb.FOCUS_TEST_SITE
         text_pattern = Pattern('focus_text.png')
+        text_pattern_selected = Pattern('focus_text_selected.png')
 
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
@@ -26,8 +28,9 @@ class Test(BaseTest):
             default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png')
             google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field_esr_build.png')
 
-        regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de'], 'fr': ['fr'], 'pl': ['pl'], 'it': ['it'],
-                              'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB']}
+        regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de', 'ru'], 'fr': ['fr'], 'pl': ['pl'],
+                              'it': ['it'], 'pt-BR': ['BR'], 'ja': ['ja'], 'es-ES': ['ES'], 'en-GB': ['GB'],
+                              'ru': ['de']}
 
         change_preference('browser.search.widget.inNavBar', True)
 
@@ -107,12 +110,13 @@ class Test(BaseTest):
             # Highlight some text and right click it.
             new_tab()
             navigate(url)
-            expected = exists(text_pattern, 10)
+            expected = exists(text_pattern, 50)
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
 
             double_click(text_pattern)
-            right_click(text_pattern)
-            time.sleep(DEFAULT_FX_DELAY)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            right_click(text_pattern_selected)
+            time.sleep(DEFAULT_UI_DELAY)
             repeat_key_down(3)
             type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY_LONG)
