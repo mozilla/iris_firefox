@@ -31,23 +31,23 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_header_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_header_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed.')
 
-        other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_UI_DELAY_LONG)
+        other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, other_bookmarks_exists, 'Other bookmarks exists')
 
         click(other_bookmarks_pattern)
 
-        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_sidebar_logo_exists, 'Wikipedia bookmark exists')
 
         right_click(firefox_sidebar_logo_pattern)
 
-        open_option_exists = exists(open_option_pattern, DEFAULT_UI_DELAY_LONG)
+        open_option_exists = exists(open_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_option_exists, 'Open option exists')
 
         click(open_option_pattern)
 
-        new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_UI_DELAY_LONG)
+        new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_false(self, new_tab_is_opened_not_exists, 'The page is correctly opened in the current tab.')
