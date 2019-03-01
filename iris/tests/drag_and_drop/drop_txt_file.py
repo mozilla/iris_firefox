@@ -25,7 +25,6 @@ class Test(BaseTest):
 
         shutil.copy(original_txtfile_path, backup_txtfile_path)
         shutil.copy(original_jpgfile_path, backup_jpgfile_path)
-        return
 
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -38,6 +37,7 @@ class Test(BaseTest):
         matching_message_pattern = Pattern('matching_message_precise.png')
         jpg_bak_file_pattern = Pattern('jpg_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
+
         if Settings.is_linux():
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
@@ -58,6 +58,7 @@ class Test(BaseTest):
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
                                                               DEFAULT_UI_DELAY)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
+
         not_matching_message_location = find(not_matching_message_pattern)
         not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
         not_matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
