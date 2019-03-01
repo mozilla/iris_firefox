@@ -55,7 +55,7 @@ class Test(BaseTest):
         type(text='o')
 
         close_auxiliary_window = False
-        if Settings.get_os() == Platform.MAC:
+        if Settings.get_os() == Platform.MAC or exists(Library.TITLE, 10):
             click_window_control('close')
             time.sleep(DEFAULT_UI_DELAY)
         else:

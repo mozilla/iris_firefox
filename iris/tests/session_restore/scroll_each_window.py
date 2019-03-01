@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from iris.test_case import *
 
 
@@ -19,9 +24,15 @@ class Test(BaseTest):
         focus_tab_scrolled_pattern = Pattern('focus_tab_scrolled.png')
         browser_console_title_pattern = Pattern('browser_console_title.png')
         browser_console_empty_line_pattern = Pattern('browser_console_empty_line.png')
+        iris_tab_logo_pattern = Pattern('iris_tab.png')
 
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_exit.png')
+
+        iris_tab_logo = exists(iris_tab_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, iris_tab_logo, 'Iris tab available')
+        iris_tab_logo_location = find(iris_tab_logo_pattern)
+        proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, width=SCREEN_WIDTH, height=SCREEN_HEIGHT/4)
 
         change_preference('devtools.chrome.enabled', True)
 
@@ -45,23 +56,17 @@ class Test(BaseTest):
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
-        hamburger_menu_initial_position = find(hamburger_menu_button_pattern)
-        proper_hamburger_menu_region = \
-            Region(hamburger_menu_initial_position.x - 10, hamburger_menu_initial_position.y - 10,
-                   width=SCREEN_WIDTH, height=200)
-
         tab_one_loaded = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, tab_one_loaded, 'Firefox tab loaded')
 
         firefox_tab_is_active = exists(firefox_test_site_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_tab_is_active, 'Firefox tab is active.')
 
+        tab_width, tab_height = firefox_test_site_tab_pattern.get_size()
         firefox_tab_location_before = find(firefox_test_site_tab_pattern)
-        firefox_tab_region_before = Region(firefox_tab_location_before.x-50, firefox_tab_location_before.y-520,
-                                           width=320, height=120)
-        firefox_tab_region_after = Region(x=(SCREEN_WIDTH / 2)-100, y=100, width=300, height=300)
+        firefox_tab_region_before = Region(firefox_tab_location_before.x-tab_width, 0,
+                                           width=tab_width*3, height=SCREEN_HEIGHT)
+        firefox_tab_region_after = Region((SCREEN_WIDTH/2)-tab_width, 0, width=tab_width*3, height=SCREEN_HEIGHT)
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
@@ -73,9 +78,9 @@ class Test(BaseTest):
         assert_true(self, focus_test_site_tab_exists, 'Focus site tab is active.')
 
         focus_tab_location_before = find(focus_test_site_tab_pattern)
-        focus_tab_region_before = Region(focus_tab_location_before.x-50, focus_tab_location_before.y-250,
-                                         width=320, height=120)
-        focus_tab_region_after = Region(x=0, y=(SCREEN_HEIGHT / 2)-100, width=300, height=300)
+        focus_tab_region_before = Region(0, focus_tab_location_before.y-(tab_height/2),
+                                         width=SCREEN_WIDTH, height=tab_height*2)
+        focus_tab_region_after = Region(0, (SCREEN_HEIGHT/2)-tab_height*5, width=SCREEN_WIDTH, height=tab_height*10)
 
         # Drag-n-drop Focus tab
         focus_tab_drop_location = Location(x=50, y=(SCREEN_HEIGHT / 2))
@@ -101,7 +106,7 @@ class Test(BaseTest):
         assert_true(self, focus_tab_scrolled, 'Focus tab scrolled successful.')
 
         # Drag-n-drop Firefox tab
-        firefox_tab_drop_location = Location(x=(SCREEN_WIDTH / 2), y=150)
+        firefox_tab_drop_location = Location(x=SCREEN_WIDTH/2, y=tab_height*4)
         drag_drop(firefox_tab_location_before, firefox_tab_drop_location)
 
         try:
@@ -124,8 +129,6 @@ class Test(BaseTest):
         assert_true(self, firefox_tab_scrolled, 'Firefox tab scrolled successful.')
 
         # Quit via Hamburger menu
-        # proper_hamburger_menu_region = Region(0, 0, width=SCREEN_WIDTH / 2, height=SCREEN_HEIGHT / 5)
-
         hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                               in_region=proper_hamburger_menu_region)
         assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
@@ -148,11 +151,18 @@ class Test(BaseTest):
         self.firefox_runner = launch_firefox(self.browser.path, self.profile_path, self.base_local_web_url)
         self.firefox_runner.start()
 
-        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
-        click(NavBar.HAMBURGER_MENU)
+        iris_tab_logo = exists(iris_tab_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, iris_tab_logo, 'Iris tab available')
+        iris_tab_logo_location = find(iris_tab_logo_pattern)
+        proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, width=SCREEN_WIDTH, height=200)
+
+        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT,
+                                              in_region=proper_hamburger_menu_region)
+        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.', )
+        click(NavBar.HAMBURGER_MENU, in_region=proper_hamburger_menu_region)
 
         restore_previous_session_exists = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
         assert_true(self, restore_previous_session_exists, '"Restore previous session" item located')
         click(restore_previous_session_pattern)
 
