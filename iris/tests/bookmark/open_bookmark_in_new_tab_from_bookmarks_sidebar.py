@@ -30,21 +30,22 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, DEFAULT_UI_DELAY_LONG)
+        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed.')
 
-        other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_UI_DELAY_LONG)
+        other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, other_bookmarks_exists, 'Other bookmarks exists')
 
         click(other_bookmarks_pattern)
 
-        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_sidebar_logo_exists, 'Firefox bookmark exists')
 
         right_click(firefox_sidebar_logo_pattern)
 
-        open_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_UI_DELAY_LONG)
+        open_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_option_exists, 'Open in new tab option exists')
+
         click(open_in_new_tab_option_pattern)
 
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -52,4 +53,3 @@ class Test(BaseTest):
 
         new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_tab_is_opened_not_exists, 'The web page is opened at the new tab')
-
