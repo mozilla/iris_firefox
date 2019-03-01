@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '163212'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
+        self.exclude = [Platform.MAC]
 
     def run(self):
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
@@ -66,6 +67,6 @@ class Test(BaseTest):
         try:
             click(NavBar.HAMBURGER_MENU)
         except FindError:
-            raise FindError('No Hamburger menu item found')
+            raise FindError('No Hamburger menu button found')
 
         restore_firefox_focus()
