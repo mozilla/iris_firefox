@@ -27,7 +27,7 @@ class Test(BaseTest):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         test_site_opened = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, test_site_opened, 'Mozilla test page opened')
+        assert_true(self, test_site_opened, 'Previously bookmarked Mozilla website is opened')
 
         open_firefox_menu()
 
