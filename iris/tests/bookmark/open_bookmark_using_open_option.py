@@ -40,7 +40,7 @@ class Test(BaseTest):
         click(other_bookmarks_pattern)
 
         firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, firefox_sidebar_logo_exists, 'Wikipedia bookmark exists')
+        assert_true(self, firefox_sidebar_logo_exists, 'Firefox bookmark exists')
 
         right_click(firefox_sidebar_logo_pattern)
 
@@ -49,7 +49,7 @@ class Test(BaseTest):
 
         click(open_option_pattern)
 
-        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_full_logo_exists, 'Firefox content exists')
 
         new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
