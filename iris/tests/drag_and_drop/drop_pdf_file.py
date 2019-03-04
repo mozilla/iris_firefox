@@ -136,6 +136,9 @@ class Test(BaseTest):
         test_file_pdf = exists(pdf_bak_file_pattern)
         assert_true(self, test_file_pdf, 'PDF test file is available')
 
+        drop_here = exists(drop_here_pattern)
+        assert_true(self, drop_here, '"Drop here" pattern available')
+
         drag_drop(pdf_bak_file_pattern, drop_here_pattern)
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
