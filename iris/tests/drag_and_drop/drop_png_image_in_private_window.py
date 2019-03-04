@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Drop single and multiple .png images in demopage opened in Private Window.'
+        self.meta = 'Drop single and multiple .png images in demopage opened in Private Window'
         self.test_case_id = '165083'
         self.test_suite_id = '102'
         self.locales = ['en-US']
