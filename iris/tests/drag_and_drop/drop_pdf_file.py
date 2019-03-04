@@ -48,8 +48,8 @@ class Test(BaseTest):
 
         navigate('https://mystor.github.io/dragndrop/')
 
-        drop_pdf_file_button_dusplayed = exists(drop_pdf_file_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, drop_pdf_file_button_dusplayed, 'The demo website loaded successfully')
+        drop_pdf_file_button_displayed = exists(drop_pdf_file_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, drop_pdf_file_button_displayed, 'The demo website loaded successfully')
 
         click(drop_pdf_file_button_pattern)
 
@@ -106,10 +106,10 @@ class Test(BaseTest):
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
         if Settings.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in file picker
+            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
             paste(folderpath)
             type(Key.ENTER)
-            type('1', KeyModifier.CMD)
+            type('1', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
@@ -126,7 +126,7 @@ class Test(BaseTest):
             click(file_type_all_files_pattern)
 
         else:
-            type('*')
+            type('*')  # Show all files in Windows Explorer
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
