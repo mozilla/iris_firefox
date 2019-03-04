@@ -151,6 +151,9 @@ class Test(BaseTest):
         test_file_jpg = exists(jpg_bak_file_pattern)
         assert_true(self, test_file_jpg, 'JPG test file is available')
 
+        drop_here = exists(drop_here_pattern)
+        assert_true(self, drop_here, '"Drop here" pattern available')
+
         drag_drop(jpg_bak_file_pattern, drop_here_pattern)
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
