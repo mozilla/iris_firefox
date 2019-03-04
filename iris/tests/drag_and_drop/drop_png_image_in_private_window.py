@@ -28,6 +28,8 @@ class Test(BaseTest):
 
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
+        library_import_restore_submenu_pattern = Library.ImportAndBackup.RESTORE
+        library_import_choose_file_submenu_pattern = Library.ImportAndBackup.Restore.CHOOSE_FILE
         drop_png_file_button_pattern = Pattern('drop_png_file_button.png')
         drop_png_file_selected_button_pattern = Pattern('drop_png_file_selected_button.png')
         library_popup_pattern = Pattern('library_popup.png')
@@ -93,54 +95,55 @@ class Test(BaseTest):
 
         click(library_import_backup_pattern)
 
-        restore_context = exists(Library.ImportAndBackup.RESTORE)
-        assert_true(self, restore_context, '\'Restore\' option from \'Import and Backup\'context menu available')
+        restore_context_available = exists(library_import_restore_submenu_pattern)
+        assert_true(self, restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu '
+                                                     'available')
 
-        click(Library.ImportAndBackup.RESTORE)
+        click(library_import_restore_submenu_pattern)
 
-        choose_file = exists(Library.ImportAndBackup.Restore.CHOOSE_FILE)
-        assert_true(self, choose_file, 'Choose file option from context menu available')
+        choose_file_available = exists(library_import_choose_file_submenu_pattern)
+        assert_true(self, choose_file_available, 'Choose file option from context menu available')
 
-        click(Library.ImportAndBackup.Restore.CHOOSE_FILE)
+        click(library_import_choose_file_submenu_pattern)
 
-        select_bookmark_popup = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup, '\'Select a bookmark backup\' window available')
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
         if Settings.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in file picker
+            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
             paste(folderpath)
             type(Key.ENTER)
-            type('1', KeyModifier.CMD)
+            type('1', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         if Settings.is_linux():
-            json_option = exists(file_type_json_pattern)
-            assert_true(self, json_option, '\'File type JSON\' option in file picker window available')
+            json_option_available = exists(file_type_json_pattern)
+            assert_true(self, json_option_available, '\'File type JSON\' option in file picker window available')
 
             click(file_type_json_pattern)
 
-            all_files_option = exists(file_type_all_files_pattern)
-            assert_true(self, all_files_option, '\'All Files\' option in file picker window available')
+            all_files_option_available = exists(file_type_all_files_pattern)
+            assert_true(self, all_files_option_available , '\'All Files\' option in file picker window available')
 
             click(file_type_all_files_pattern)
 
         else:
-            type('*')
+            type('*')  # Show all files in Windows Explorer
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
 
-        test_file_png = exists(png_bak_file_pattern)
-        assert_true(self, test_file_png, 'PNG test file is available')
+        test_file_png_located = exists(png_bak_file_pattern)
+        assert_true(self, test_file_png_located, 'PNG test file is available')
 
-        drop_here = exists(drop_here_pattern)
-        assert_true(self, drop_here, '"Drop here" pattern available')
+        drop_here_available = exists(drop_here_pattern)
+        assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         drag_drop(png_bak_file_pattern, drop_here_pattern)
 
@@ -148,11 +151,11 @@ class Test(BaseTest):
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
                                                       'result is identical to result. ')
 
-        test_file_jpg = exists(jpg_bak_file_pattern)
-        assert_true(self, test_file_jpg, 'JPG test file is available')
+        test_file_jpg_located = exists(jpg_bak_file_pattern)
+        assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
-        drop_here = exists(drop_here_pattern)
-        assert_true(self, drop_here, '"Drop here" pattern available')
+        drop_here_available = exists(drop_here_pattern)
+        assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern)
 
