@@ -78,7 +78,7 @@ class Test(BaseTest):
 
         click(LocationBar.STAR_BUTTON_STARRED)
 
-        folder_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER, DEFAULT_FIREFOX_TIMEOUT)
+        folder_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6), DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, folder_expander_exists, 'Folder expander exists')
 
         click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
