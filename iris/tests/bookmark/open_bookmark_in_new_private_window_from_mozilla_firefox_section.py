@@ -10,10 +10,10 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Open a bookmark in a New Private Window from 'Mozilla Firefox' section"
-        self.test_case_id = "163233"
-        self.test_suite_id = "2525"
-        self.locale = ["en-US"]
+        self.meta = 'Open a bookmark in a New Private Window from \'Mozilla Firefox\' section'
+        self.test_case_id = '163233'
+        self.test_suite_id = '2525'
+        self.locale = ['en-US']
         self.exclude = [Platform.MAC]
 
     def run(self):
@@ -51,10 +51,11 @@ class Test(BaseTest):
 
         click(context_menu_open_in_a_new_private_window_pattern)
 
-        private_window_image_displayed = exists(PrivateWindow.private_window_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, mozilla_about_us_page_displayed and
-                    private_window_image_displayed, 'The website related to the selected bookmark is opened in a new '
-                                                    'private window.')
+        assert_true(self, mozilla_about_us_page_displayed, 'The website related to the selected bookmark is loaded')
+
+        private_window_image_displayed = exists(PrivateWindow.private_window_pattern)
+        assert_true(self, private_window_image_displayed, 'The website related to the selected bookmark is opened in '
+                                                          'a new private window.')
 
         close_window()
