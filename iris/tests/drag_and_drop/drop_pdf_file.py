@@ -51,8 +51,8 @@ class Test(BaseTest):
 
         click(drop_pdf_file_button_pattern)
 
-        drop_txt_option_selected = exists(drop_pdf_file_selected_button_pattern)
-        assert_true(self, drop_txt_option_selected, 'The drop-txt-file changed color to red which indicates that it '
+        drop_pdf_option_selected = exists(drop_pdf_file_selected_button_pattern)
+        assert_true(self, drop_pdf_option_selected, 'The drop-pdf-file changed color to red which indicates that it '
                                                     'has been selected.')
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
@@ -156,7 +156,7 @@ class Test(BaseTest):
         close_tab()
 
     def teardown(self):
-        txt_backup_path = self.get_asset_path('testfile_bak.txt')
-        os.remove(txt_backup_path)
         pdf_backup_path = self.get_asset_path('pdffile_bak.pdf')
         os.remove(pdf_backup_path)
+        txt_backup_path = self.get_asset_path('testfile_bak.txt')
+        os.remove(txt_backup_path)
