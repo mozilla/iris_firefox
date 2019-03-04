@@ -33,7 +33,7 @@ class Test(BaseTest):
         assert_true(self, bookmarks_menu_displayed, 'Bookmarks menu is displayed')
 
         click(other_bookmarks_item_pattern)
-        other_bookmarks_empty = exists(other_bookmarks_item_pattern)
+        other_bookmarks_empty = exists(empty_folder_stub_pattern)
         assert_true(self, other_bookmarks_empty, 'No bookmarks are saved in \'Other bookmarks\'')
 
         right_click(empty_folder_stub_pattern)
@@ -48,6 +48,11 @@ class Test(BaseTest):
         paste('FIREFOX_TEST_SITE')
         type(Key.TAB)
         paste(LocalWeb.FIREFOX_TEST_SITE)
+        type(Key.TAB)
+        paste('tag')
+        type(Key.TAB)
+        type(Key.TAB)
+        paste('kw')
         type(Key.ENTER)
 
         restore_firefox_focus()
