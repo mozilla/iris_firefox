@@ -18,6 +18,7 @@ class Test(BaseTest):
     def run(self):
         url = LocalWeb.FOCUS_TEST_SITE
         text_pattern = Pattern('focus_text.png')
+        text_pattern_selected = Pattern('focus_text_selected.png')
 
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
@@ -109,11 +110,12 @@ class Test(BaseTest):
             # Highlight some text and right click it.
             new_tab()
             navigate(url)
-            expected = exists(text_pattern, 20)
+            expected = exists(text_pattern, 50)
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
 
             double_click(text_pattern)
-            right_click(text_pattern)
+            time.sleep(DEFAULT_UI_DELAY_LONG)
+            right_click(text_pattern_selected)
             time.sleep(DEFAULT_UI_DELAY)
             repeat_key_down(3)
             type(Key.ENTER)
