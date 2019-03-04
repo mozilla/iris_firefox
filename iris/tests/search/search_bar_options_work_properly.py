@@ -97,7 +97,8 @@ class Test(BaseTest):
         # Perform a search from about:newtab page, content search field.
         new_tab()
 
-        region = Screen.RIGHT_THIRD
+        region_int = Screen.RIGHT_THIRD
+        region = region_int.left_third()
         expected = region.exists(search_button_pattern, 10)
         assert_true(self, expected, 'Search button found.')
 
