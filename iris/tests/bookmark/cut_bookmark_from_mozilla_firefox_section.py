@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = "163376"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
-        self.exclude = [Platform.MAC, Platform.LINUX]
+        self.exclude = [Platform.MAC]
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
@@ -23,7 +23,12 @@ class Test(BaseTest):
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
         cut_option_pattern = Pattern('cut_option.png')
         paste_option_pattern = Pattern('paste_option.png')
+        open_all_in_tabs_pattern = Pattern('open_all_in_tabs.png')
         other_bookmarks_empty_label_pattern = Pattern('other_bookmarks_empty_label.png')
+        if Settings.is_linux():
+            firefox_menu_other_bookmarks_pattern = Pattern('firefox_menu_other_bookmarks.png')
+        else:
+            firefox_menu_other_bookmarks_pattern = Library.OTHER_BOOKMARKS
 
         open_firefox_menu()
 
@@ -50,7 +55,10 @@ class Test(BaseTest):
 
         click(cut_option_pattern)
 
-        click(Library.OTHER_BOOKMARKS)
+        firefox_menu_other_bookmarks_exists = exists(firefox_menu_other_bookmarks_pattern)
+        assert_true(self, firefox_menu_other_bookmarks_exists, 'Firefox menu > Bookmarks > Other bookmarks exists')
+
+        click(firefox_menu_other_bookmarks_pattern)
 
         other_bookmarks_empty_label_exists = exists(other_bookmarks_empty_label_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, other_bookmarks_empty_label_exists, 'Other Bookmarks empty label exists')
@@ -66,6 +74,9 @@ class Test(BaseTest):
         assert_true(self, bookmark_pasted, 'Bookmark is correctly pasted in selected section')
 
         click(mozilla_firefox_bookmarks_folder_pattern)
+
+        open_all_in_tabs_exists = exists(open_all_in_tabs_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, open_all_in_tabs_exists, 'Bookmarks from Other bookmarks folder displayed')
 
         bookmark_deleted = exists(mozilla_about_us_bookmark_pattern)
         assert_false(self, bookmark_deleted, 'Bookmark is correctly deleted from previous section')
