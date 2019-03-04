@@ -23,6 +23,10 @@ class Test(BaseTest):
     def run(self):
         destination_folders_pattern = Pattern('destination_folders.png')
         new_folder_added_pattern = Pattern('new_folder_added.png')
+        if Settings.is_mac():
+            folder_expander_pattern = Pattern('folder_expander_closed.png')
+        else:
+            folder_expander_pattern = Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6)
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
@@ -78,10 +82,10 @@ class Test(BaseTest):
 
         click(LocationBar.STAR_BUTTON_STARRED)
 
-        folder_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6), DEFAULT_FIREFOX_TIMEOUT)
+        folder_expander_exists = exists(folder_expander_pattern, DEFAULT_FIREFOX_TIMEOUT, in_region=stardialog_region)
         assert_true(self, folder_expander_exists, 'Folder expander exists')
 
-        click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
+        click(folder_expander_pattern)
 
         new_folder_added = exists(new_folder_added_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_folder_added, 'The folder is correctly saved and displayed in Bookmarks Menu.')
