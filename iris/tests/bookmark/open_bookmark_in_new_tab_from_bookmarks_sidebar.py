@@ -21,7 +21,7 @@ class Test(BaseTest):
     def run(self):
         open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
         firefox_sidebar_logo_pattern = Pattern('firefox_bookmark.png')
-        new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.90)
+        iris_tab_pattern = Pattern('iris_tab.png')
 
         if Settings.is_mac():
             other_bookmarks_pattern = Pattern('other_bookmarks.png')
@@ -48,8 +48,10 @@ class Test(BaseTest):
 
         click(open_in_new_tab_option_pattern)
 
-        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, firefox_full_logo_exists, 'Firefox content exists')
+        select_tab(1)
+        iris_tab_available = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, iris_tab_available, '\'Iris\' tab available after opening bookmark in new tab Firefox')
 
-        new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, new_tab_is_opened_not_exists, 'The web page is opened at the new tab')
+        select_tab(2)
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_full_logo_exists, 'The web page is opened at the new tab')
