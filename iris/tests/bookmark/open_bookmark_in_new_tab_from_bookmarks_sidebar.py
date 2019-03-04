@@ -49,10 +49,11 @@ class Test(BaseTest):
 
         click(open_in_new_tab_option_pattern)
 
-        select_tab(1)
-        iris_tab_available = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, iris_tab_available, '\'Iris\' tab available after opening Firefox bookmark in new tab.')
-
         select_tab(2)
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, firefox_full_logo_exists, 'The page is correctly opened in a new tab.')
+        assert_true(self, firefox_full_logo_exists, 'The web page is opened in the new tab')
+
+        select_tab(1)
+        iris_tab_available = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, iris_tab_available, 'Initial tab exists after opening bookmarked page in new tab')
+
