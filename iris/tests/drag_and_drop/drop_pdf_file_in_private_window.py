@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Drop .pdf File in demopage'
+        self.meta = 'Drop single and multiple .pdf files in demopage opened in Private Window'
         self.test_case_id = '165081'
         self.test_suite_id = '102'
         self.locales = ['en-US']
@@ -28,6 +28,8 @@ class Test(BaseTest):
 
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
+        library_import_restore_submenu_pattern = Library.ImportAndBackup.RESTORE
+        library_import_choose_file_submenu_pattern = Library.ImportAndBackup.Restore.CHOOSE_FILE
         drop_pdf_file_button_pattern = Pattern('drop_pdf_file_button.png')
         drop_pdf_file_selected_button_pattern = Pattern('drop_pdf_file_selected_button.png')
         library_popup_pattern = Pattern('library_popup.png')
@@ -57,7 +59,7 @@ class Test(BaseTest):
         click(drop_pdf_file_button_pattern)
 
         drop_pdf_option_selected = exists(drop_pdf_file_selected_button_pattern)
-        assert_true(self, drop_pdf_option_selected, 'The drop-txt-file changed color to red which indicates that it '
+        assert_true(self, drop_pdf_option_selected, 'The drop-pdf-file changed color to red which indicates that it '
                                                     'has been selected.')
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
@@ -93,15 +95,15 @@ class Test(BaseTest):
 
         click(library_import_backup_pattern)
 
-        restore_context = exists(Library.ImportAndBackup.RESTORE)
+        restore_context = exists(library_import_restore_submenu_pattern)
         assert_true(self, restore_context, '\'Restore\' option from \'Import and Backup\'context menu available')
 
-        click(Library.ImportAndBackup.RESTORE)
+        click(library_import_restore_submenu_pattern)
 
-        choose_file = exists(Library.ImportAndBackup.Restore.CHOOSE_FILE)
+        choose_file = exists(library_import_choose_file_submenu_pattern)
         assert_true(self, choose_file, 'Choose file option from context menu available')
 
-        click(Library.ImportAndBackup.Restore.CHOOSE_FILE)
+        click(library_import_choose_file_submenu_pattern)
 
         select_bookmark_popup = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, select_bookmark_popup, '\'Select a bookmark backup\' window available')
