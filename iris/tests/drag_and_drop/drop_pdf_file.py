@@ -90,18 +90,19 @@ class Test(BaseTest):
 
         click(library_import_backup_pattern)
 
-        restore_context = exists(library_import_restore_submenu_pattern)
-        assert_true(self, restore_context, '\'Restore\' option from \'Import and Backup\'context menu available')
+        restore_context_available = exists(library_import_restore_submenu_pattern)
+        assert_true(self, restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu '
+                                                     'available')
 
         click(library_import_restore_submenu_pattern)
 
-        choose_file = exists(library_import_choose_file_submenu_pattern)
-        assert_true(self, choose_file, 'Choose file option from context menu available')
+        choose_file_available = exists(library_import_choose_file_submenu_pattern)
+        assert_true(self, choose_file_available, 'Choose file option from context menu available')
 
         click(library_import_choose_file_submenu_pattern)
 
-        select_bookmark_popup = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup, '\'Select a bookmark backup\' window available')
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
@@ -115,13 +116,13 @@ class Test(BaseTest):
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         if Settings.is_linux():
-            json_option = exists(file_type_json_pattern)
-            assert_true(self, json_option, '\'File type JSON\' option in file picker window available')
+            json_option_available = exists(file_type_json_pattern)
+            assert_true(self, json_option_available, '\'File type JSON\' option in file picker window available')
 
             click(file_type_json_pattern)
 
-            all_files_option = exists(file_type_all_files_pattern)
-            assert_true(self, all_files_option, '\'All Files\' option in file picker window available')
+            all_files_option_available = exists(file_type_all_files_pattern)
+            assert_true(self, all_files_option_available , '\'All Files\' option in file picker window available')
 
             click(file_type_all_files_pattern)
 
@@ -133,11 +134,11 @@ class Test(BaseTest):
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
 
-        test_file_pdf = exists(pdf_bak_file_pattern)
-        assert_true(self, test_file_pdf, 'PDF test file is available')
+        test_file_pdf_located = exists(pdf_bak_file_pattern)
+        assert_true(self, test_file_pdf_located, 'PDF test file is available')
 
-        drop_here = exists(drop_here_pattern)
-        assert_true(self, drop_here, '"Drop here" pattern available')
+        drop_here_available = exists(drop_here_pattern)
+        assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         drag_drop(pdf_bak_file_pattern, drop_here_pattern)
 
@@ -145,11 +146,11 @@ class Test(BaseTest):
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
                                                       'result is identical to result. ')
 
-        test_file_txt = exists(txt_bak_file_pattern)
-        assert_true(self, test_file_txt, 'TXT test file is available')
+        test_file_txt_located = exists(txt_bak_file_pattern)
+        assert_true(self, test_file_txt_located, 'TXT test file is available')
 
-        drop_here = exists(drop_here_pattern)
-        assert_true(self, drop_here, '"Drop here" pattern available')
+        drop_here_available = exists(drop_here_pattern)
+        assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         drag_drop(txt_bak_file_pattern, drop_here_pattern)
 
