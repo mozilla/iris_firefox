@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = "163375"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
-        self.exclude = [Platform.MAC, Platform.LINUX]
+        self.exclude = [Platform.MAC]
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
@@ -48,6 +48,9 @@ class Test(BaseTest):
         assert_true(self, new_separator_option_exists, 'New Folder option exists')
 
         click(Library.Organize.NEW_SEPARATOR)
+
+        open_all_in_tabs_exists = exists(open_all_in_tabs_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, open_all_in_tabs_exists, 'Open all in tabs option exists')
 
         hover(open_all_in_tabs_pattern)
 
