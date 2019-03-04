@@ -35,10 +35,10 @@ class Test(BaseTest):
         assert_true(self, iris_tab_available, '\'Iris\' tab is opened after launching Firefox')
 
         bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_header_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed.')
+        assert_true(self, bookmarks_sidebar_menu_exists, '\'Bookmarks Sidebar\' is correctly displayed.')
 
         other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, other_bookmarks_exists, 'Other bookmarks exists')
+        assert_true(self, other_bookmarks_exists, '\'Other bookmarks\' folder is available on the sidebar')
 
         click(other_bookmarks_pattern)
 
@@ -48,12 +48,14 @@ class Test(BaseTest):
         right_click(firefox_sidebar_logo_pattern)
 
         open_option_exists = exists(open_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, open_option_exists, 'Open option exists')
+        assert_true(self, open_option_exists,
+                    '\'Open\' option displayed after right click on the bookmark from the Sidebar')
 
         click(open_option_pattern)
 
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, firefox_full_logo_exists, 'The page is correctly opened.')
+        assert_true(self, firefox_full_logo_exists, 'Bookmark is correctly opened in the current tab.')
 
         bookmark_opened_in_current_tab = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_false(self, bookmark_opened_in_current_tab, 'The page is correctly opened in the current tab.')
+        assert_false(self, bookmark_opened_in_current_tab,
+                     'The page that was previously displayed in the current tab is no longer displayed')
