@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = "163374"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
-        self.exclude = [Platform.MAC, Platform.LINUX]
+        self.exclude = [Platform.MAC]
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
@@ -22,6 +22,10 @@ class Test(BaseTest):
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
         iris_new_folder_pattern = Pattern('iris_new_folder.png')
+        if Settings.is_linux():
+            new_folder_window_pattern = Pattern('new_folder_window.png')
+        else:
+            new_folder_window_pattern = Bookmarks.StarDialog.NEW_FOLDER_CREATED
 
         open_firefox_menu()
 
@@ -48,7 +52,7 @@ class Test(BaseTest):
 
         click(Library.Organize.NEW_FOLDER)
 
-        new_folder_window_opened = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED, DEFAULT_FIREFOX_TIMEOUT)
+        new_folder_window_opened = exists(new_folder_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_folder_window_opened, 'New Folder window is displayed')
 
         paste('Iris New Folder')
