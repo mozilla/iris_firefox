@@ -31,7 +31,7 @@ class Test(BaseTest):
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
 
-        star_button_exists = exists(LocationBar.STAR_BUTTON_STARRED)
+        star_button_exists = exists(LocationBar.STAR_BUTTON_STARRED, in_region=stardialog_region)
         assert_true(self, star_button_exists, 'Star button is displayed')
 
         click(LocationBar.STAR_BUTTON_STARRED, in_region=stardialog_region)
@@ -41,11 +41,15 @@ class Test(BaseTest):
         assert_true(self, edit_stardialog_displayed, 'The Edit This Bookmark popup is displayed under the star-shaped '
                                                      'icon.')
 
+        other_bookmarks_default_option_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6),
+                                                       in_region=stardialog_region)
+        assert_true(self, other_bookmarks_default_option_exists, 'The Other Bookmarks default folder option exists')
+
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
 
-        choose_option_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(.6),
+        choose_option_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(.6), DEFAULT_FIREFOX_TIMEOUT,
                                          in_region=stardialog_region)
-        assert_true(self, choose_option_displayed, 'Bookmark toolbar folder displayed')
+        assert_true(self, choose_option_displayed, 'The \'Choose..\' option is displayed')
 
         click(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(.6), in_region=stardialog_region)
 
@@ -53,32 +57,33 @@ class Test(BaseTest):
         assert_true(self, destination_folders_displayed, 'Edit This Bookmark panel is displayed with all the '
                                                          'destination folders.')
 
-        bookmarks_toolbar_folder_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
-        assert_true(self, bookmarks_toolbar_folder_exists,'bookmarks_toolbar_folder_exists')
+        bookmarks_toolbar_folder_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR,
+                                                 in_region=stardialog_region)
+        assert_true(self, bookmarks_toolbar_folder_exists,'The Bookmarks toolbar folder exists')
 
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
 
         new_folder_button_exists = exists(Bookmarks.StarDialog.NEW_FOLDER)
-        assert_true(self, new_folder_button_exists, 'new_folder_button_exists')
+        assert_true(self, new_folder_button_exists, 'New folder button exists')
 
         click(Bookmarks.StarDialog.NEW_FOLDER)
 
         new_folder_created = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED)
-        assert_true(self, new_folder_created, 'new_folder_created')
+        assert_true(self, new_folder_created, 'New folder created')
 
         done_button_exists = exists(Bookmarks.StarDialog.DONE)
-        assert_true(self, done_button_exists, 'done_button_exists')
+        assert_true(self, done_button_exists, 'The Done button exists')
 
         click(Bookmarks.StarDialog.DONE)
 
         click(LocationBar.STAR_BUTTON_STARRED)
 
-        folder_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
-        assert_true(self, folder_expander_exists, 'folder_expander_exists')
+        folder_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, folder_expander_exists, 'Folder expander exists')
 
         click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
 
         new_folder_added = exists(new_folder_added_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, new_folder_added, 'new_folder_added')
+        assert_true(self, new_folder_added, 'The folder is correctly saved and displayed in Bookmarks Menu.')
 
         restore_firefox_focus()
