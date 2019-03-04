@@ -31,27 +31,28 @@ class Test(BaseTest):
         bookmarks_sidebar('open')
 
         bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed.')
+        assert_true(self, bookmarks_sidebar_menu_exists, '\'Bookmarks Sidebar\' is correctly displayed.')
 
         other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, other_bookmarks_exists, 'Other bookmarks exists')
+        assert_true(self, other_bookmarks_exists, '\'Other bookmarks\' folder exists on the sidebar.')
 
         click(other_bookmarks_pattern)
 
         firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, firefox_sidebar_logo_exists, 'Firefox bookmark exists')
+        assert_true(self, firefox_sidebar_logo_exists, '\'Firefox\' bookmark exists in the \'Other bookmarks\' folder')
 
         right_click(firefox_sidebar_logo_pattern)
 
         open_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, open_option_exists, 'Open in new tab option exists')
+        assert_true(self, open_option_exists,
+                    '\'Open in new tab\' option is displayed after right-click at the Firefox bookmark icon')
 
         click(open_in_new_tab_option_pattern)
 
         select_tab(1)
         iris_tab_available = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, iris_tab_available, '\'Iris\' tab available after opening bookmark in new tab Firefox')
+        assert_true(self, iris_tab_available, '\'Iris\' tab available after opening Firefox bookmark in new tab.')
 
         select_tab(2)
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, firefox_full_logo_exists, 'The web page is opened at the new tab')
+        assert_true(self, firefox_full_logo_exists, 'The page is correctly opened in a new tab.')
