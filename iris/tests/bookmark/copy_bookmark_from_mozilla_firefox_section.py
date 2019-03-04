@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = "163377"
         self.test_suite_id = "2525"
         self.locale = ["en-US"]
-        self.exclude = [Platform.MAC, Platform.LINUX]
+        self.exclude = [Platform.MAC]
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
@@ -24,6 +24,10 @@ class Test(BaseTest):
         copy_option_pattern = Pattern('copy_option.png')
         paste_option_pattern = Pattern('paste_option.png')
         other_bookmarks_empty_label_pattern = Pattern('other_bookmarks_empty_label.png')
+        if Settings.is_linux():
+            firefox_menu_other_bookmarks_pattern = Pattern('firefox_menu_other_bookmarks.png')
+        else:
+            firefox_menu_other_bookmarks_pattern = Library.OTHER_BOOKMARKS
 
         open_firefox_menu()
 
@@ -50,7 +54,10 @@ class Test(BaseTest):
 
         click(copy_option_pattern)
 
-        click(Library.OTHER_BOOKMARKS)
+        firefox_menu_other_bookmarks_exists = exists(firefox_menu_other_bookmarks_pattern)
+        assert_true(self, firefox_menu_other_bookmarks_exists, 'Firefox menu > Bookmarks > Other bookmarks exists')
+
+        click(firefox_menu_other_bookmarks_pattern)
 
         other_bookmarks_empty_label_exists = exists(other_bookmarks_empty_label_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, other_bookmarks_empty_label_exists, 'Other Bookmarks empty label exists')
@@ -67,7 +74,7 @@ class Test(BaseTest):
 
         click(mozilla_firefox_bookmarks_folder_pattern)
 
-        bookmark_not_deleted = exists(mozilla_about_us_bookmark_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        bookmark_not_deleted = exists(mozilla_firefox_predefined_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_not_deleted, 'Bookmark pasted in selected section without being deleted from the '
                                                 'previous one.')
         restore_firefox_focus()
