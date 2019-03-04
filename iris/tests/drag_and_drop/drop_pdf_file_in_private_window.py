@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Drop .pdf File in demopage'
-        self.test_case_id = '165080'
+        self.test_case_id = '165081'
         self.test_suite_id = '102'
         self.locales = ['en-US']
 
