@@ -20,6 +20,7 @@ from src.core.util.arg_parser import logger
 from src.core.util.system import shutdown_process
 
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
+pyautogui.FAILSAFE = False
 
 
 def key_down(key):

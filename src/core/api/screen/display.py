@@ -15,6 +15,7 @@ class Display:
     def __init__(self, screen_id: int = 0):
         self.screen_id = screen_id
         self.screen_list = [item for item in MONITORS]
+        self.scale = _get_scale(self.screen_id)
         self.bounds = _get_screen_details(self.screen_list, self.screen_id)
 
     def __repr__(self):
@@ -47,3 +48,11 @@ def _get_available_monitors(screen_list: list) -> list:
     for screen in screen_list:
         res.append('Screen(%s)' % screen_list.index(screen))
     return res
+
+
+def _get_scale(screen_id):
+    import mss
+    display = MONITORS[screen_id]
+    display_width = display['width']
+    screenshot = mss.mss().grab(display)
+    return screenshot.width / display_width
