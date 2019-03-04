@@ -51,8 +51,3 @@ class Test(BaseTest):
         destination_folders_displayed = exists(destination_folders_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, destination_folders_displayed, 'Edit This Bookmark panel is displayed with all the '
                                                          'destination folders.')
-
-
-
-
-
