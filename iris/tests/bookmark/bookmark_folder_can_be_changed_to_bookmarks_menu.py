@@ -73,6 +73,3 @@ class Test(BaseTest):
         bookmark_moved = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, DEFAULT_FIREFOX_TIMEOUT, bookmarks_sidebar_region)
         assert_true(self, bookmark_moved, 'The pop up is dismissed and the bookmark is correctly saved in '
                                           'Bookmarks menu.')
-
-
-
