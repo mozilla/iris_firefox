@@ -5,7 +5,7 @@
 
 import logging
 
-from src.core.api.screen.display import Display
+from src.core.api.screen.display import DisplayCollection
 from src.core.api.screen.region import Region
 from src.core.api.rectangle import Rectangle
 
@@ -22,8 +22,8 @@ class Screen(Region):
 
     def __init__(self, screen_id: int = 0):
         self.screen_id = screen_id
-        self.screen_list = Display(screen_id).screen_list
-        self._bounds = Display(screen_id).bounds
+        self.screen_list = DisplayCollection[screen_id].screen_list
+        self._bounds = DisplayCollection[screen_id].bounds
         Region.__init__(self, self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
 
     SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()

@@ -12,7 +12,7 @@ import pyautogui as pyautogui
 
 from src.core.api.errors import ScreenshotError
 from src.core.api.os_helpers import OSHelper
-from src.core.api.screen.display import Display
+from src.core.api.screen.display import DisplayCollection
 from src.core.api.rectangle import Rectangle
 
 try:
@@ -28,10 +28,10 @@ class ScreenshotImage:
 
     def __init__(self, region: Rectangle = None, screen_id: int = 0):
         if region is None:
-            region = Display(screen_id).bounds
+            region = DisplayCollection[screen_id].bounds
 
-        if OSHelper.get_os().value == "linux":
-            screen_region=region
+        if OSHelper.is_linux():
+            screen_region = region
         else:
             screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
 

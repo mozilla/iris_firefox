@@ -22,7 +22,7 @@ from src.core.api.errors import ScreenshotError
 from src.core.api.rectangle import Rectangle
 from src.core.api.screen.screenshot_image import ScreenshotImage
 from src.core.api.enums import MatchTemplateType
-from src.core.api.screen.display import Display
+from src.core.api.screen.display import DisplayCollection
 
 from src.core.api.save_debug_image.save_image import save_debug_image
 
@@ -57,7 +57,7 @@ def match_template(pattern: Pattern, region: Rectangle = None,
     :return: Location.
     """
     if region is None:
-        region = Display(0).bounds
+        region = DisplayCollection[0].bounds
 
     locations_list = []
     save_img_location_list = []
