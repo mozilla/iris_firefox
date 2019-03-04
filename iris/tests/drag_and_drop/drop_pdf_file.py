@@ -45,6 +45,7 @@ class Test(BaseTest):
         folderpath = self.get_asset_path('')
 
         navigate('https://mystor.github.io/dragndrop/')
+
         drop_html_data_button_displayed = exists(drop_pdf_file_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, drop_html_data_button_displayed, 'The demo website loaded successfully')
 
