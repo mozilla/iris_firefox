@@ -165,6 +165,7 @@ class Test(BaseTest):
 
         type(Key.ESC)
         close_tab()
+        close_tab()
 
     def teardown(self):
         png_backup_path = self.get_asset_path('pngimage_bak.png')
