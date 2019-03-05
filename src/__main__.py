@@ -2,11 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+from distutils.dir_util import copy_tree
 import importlib
 import logging
 import os
 import pytest
+import shutil
 
 from src.core.api.keyboard.keyboard_api import check_keyboard_state
 from src.core.util import cleanup
@@ -16,6 +17,7 @@ from src.core.util.json_utils import create_target_json
 from src.core.util.logger_manager import initialize_logger
 from src.core.util.path_manager import PathManager
 from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding
+from src.core.util.test_loader import sorted_walk
 
 logger = logging.getLogger(__name__)
 
@@ -24,10 +26,10 @@ def main():
     args = parse_args()
     initialize_logger()
     if verify_config(args):
-        setup_control_center()
         target_plugin = get_target(args.application)
         pytest_args = get_test_params(args.application)
         initialize_platform(args)
+        setup_control_center()
         pytest.main(pytest_args, plugins=[target_plugin])
     else:
         logger.error('Failed platform verification.')
@@ -86,9 +88,18 @@ def verify_config(args):
 
 
 def setup_control_center():
+    copy_tree(os.path.join(PathManager.get_module_dir(), 'src', 'control_center', 'assets'), parse_args().workdir)
+    targets_dir = os.path.join(PathManager.get_module_dir(), 'targets')
+    for path, dirs, files in sorted_walk(targets_dir):
+        for target in dirs:
+            src = os.path.join(targets_dir, target, 'icon.png')
+            dest = os.path.join(parse_args().workdir, 'images', '%s.png' % target)
+            try:
+                shutil.copyfile(src, dest)
+            except FileNotFoundError:
+                logger.warning('Could not find icon file for target: %s' % target)
+        break
     create_target_json()
-
-    # TODO: move target icons
 
 
 class ShutdownTasks(cleanup.CleanUp):
