@@ -17,10 +17,12 @@ class Test(BaseTest):
     def run(self):
         new_bookmark_option_pattern = Library.Organize.NEW_BOOKMARK
         new_bookmark_created_pattern = Pattern('new_bookmark_created.png')
+
         if not Settings.is_mac():
             bookmarks_menu_pattern = Library.BOOKMARKS_MENU
         else:
             bookmarks_menu_pattern = Pattern('bookmark_menu_section.png')
+
         if Settings.is_windows():
             new_bookmark_panel_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         else:
@@ -63,10 +65,3 @@ class Test(BaseTest):
 
         new_bookmark_created_exists = exists(new_bookmark_created_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_created_exists, 'The new bookmark is added in the selected section.')
-
-
-
-
-
-
-
