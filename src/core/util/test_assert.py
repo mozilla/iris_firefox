@@ -59,13 +59,22 @@ def normalize_assert(assert_object):
     values = str(assert_object).split(':')
 
     result_map = {k: v for k, v in zip(keys, values)}
-    if assert_object.__dict__.get('_excinfo')[1] is not None:
-        extra_assert_info = assert_object.__dict__.get('_excinfo')[1]
+    try:
 
-        expected = {'expected': str(extra_assert_info).split('-')[1].split('\n')[0]}
-        actual = {'actual': str(extra_assert_info).split('-')[1].split('+')[1]}
+        if result_map.get('error') == AssertionError:
 
-        result_map.update(actual)
-        result_map.update(expected)
+            if assert_object.__dict__.get('_excinfo')[1] is not None:
+                extra_assert_info = assert_object.__dict__.get('_excinfo')[1]
+
+            expected = {'expected': str(extra_assert_info).split('-')[1].split('\n')[0]}
+            actual = {'actual': str(extra_assert_info).split('-')[1].split('+')[1]}
+
+            result_map.update(actual)
+            result_map.update(expected)
+
+
+    except AssertionError as e:
+        raise e
+
 
     return result_map
