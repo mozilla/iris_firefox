@@ -140,7 +140,8 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        drag_drop(png_bak_file_pattern, drop_here_pattern)
+        drop_here_location = find(drop_here_pattern)
+        drag_drop(png_bak_file_pattern, drop_here_location.below(library_title_height*4))
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
@@ -152,7 +153,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern is available')
 
-        drag_drop(jpg_bak_file_pattern, drop_here_pattern)
+        drag_drop(jpg_bak_file_pattern, drop_here_location.below(library_title_height))
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
