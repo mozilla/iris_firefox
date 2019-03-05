@@ -181,3 +181,25 @@ class PathManager:
         repo_details['iris_branch'] = repo.active_branch.name
         repo_details['iris_branch_head'] = repo.head.object.hexsha
         return repo_details
+
+    @staticmethod
+    def get_local_firefox_path() -> str or None:
+        """Checks if Firefox is installed on your machine."""
+        paths = {
+            'osx': ['/Applications/Firefox.app/Contents/MacOS/firefox',
+                    '/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox',
+                    '/Applications/Firefox Nightly.app/Contents/MacOS/firefox'],
+            'win': ['C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe',
+                    'C:\\Program Files (x86)\\Firefox Developer Edition\\firefox.exe',
+                    'C:\\Program Files (x86)\\Nightly\\firefox.exe',
+                    'C:\\Program Files\\Mozilla Firefox\\firefox.exe',
+                    'C:\\Program Files\\Firefox Developer Edition\\firefox.exe',
+                    'C:\\Program Files\\Nightly\\firefox.exe'],
+            'linux': ['/usr/bin/firefox',
+                      '/usr/lib/firefox/firefox']
+        }
+
+        for path in paths[OSHelper.get_os().value]:
+            if os.path.exists(path):
+                return path
+        return None

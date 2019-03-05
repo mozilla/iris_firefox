@@ -252,27 +252,6 @@ class FirefoxApp:
         self.runner.start()
 
 
-def get_local_firefox_path() -> str or None:
-    """Checks if Firefox is installed on your machine."""
-    paths = {
-        'osx': ['/Applications/Firefox.app/Contents/MacOS/firefox',
-                '/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox',
-                '/Applications/Firefox Nightly.app/Contents/MacOS/firefox'],
-        'win': ['C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe',
-                'C:\\Program Files (x86)\\Firefox Developer Edition\\firefox.exe',
-                'C:\\Program Files (x86)\\Nightly\\firefox.exe',
-                'C:\\Program Files\\Mozilla Firefox\\firefox.exe',
-                'C:\\Program Files\\Firefox Developer Edition\\firefox.exe',
-                'C:\\Program Files\\Nightly\\firefox.exe'],
-        'linux': ['/usr/bin/firefox',
-                  '/usr/lib/firefox/firefox']
-    }
-    for path in paths[OSHelper.get_os()]:
-        if os.path.exists(path):
-            return path
-    return None
-
-
 def get_test_candidate(version: str, locale: str) -> str or None:
     """Download and extract a build candidate.
 
@@ -282,7 +261,7 @@ def get_test_candidate(version: str, locale: str) -> str or None:
     """
 
     if version == 'local':
-        candidate = get_local_firefox_path()
+        candidate = PathManager.get_local_firefox_path()
         if candidate is None:
             logger.critical('Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/')
     else:

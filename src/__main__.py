@@ -5,6 +5,7 @@
 from distutils.dir_util import copy_tree
 import importlib
 import logging
+from mozrunner import FirefoxRunner, errors
 import os
 import pytest
 import shutil
@@ -14,6 +15,7 @@ from src.core.util import cleanup
 from src.core.util.app_loader import get_app_test_directory
 from src.core.util.arg_parser import parse_args
 from src.core.util.json_utils import create_target_json
+from src.core.util.local_web_server import LocalWebServer
 from src.core.util.logger_manager import initialize_logger
 from src.core.util.path_manager import PathManager
 from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding
@@ -30,6 +32,8 @@ def main():
         pytest_args = get_test_params(args.application)
         initialize_platform(args)
         setup_control_center()
+        if args.control:
+            launch_control_center()
         pytest.main(pytest_args, plugins=[target_plugin])
     else:
         logger.error('Failed platform verification.')
@@ -100,6 +104,31 @@ def setup_control_center():
                 logger.warning('Could not find icon file for target: %s' % target)
         break
     create_target_json()
+
+
+def launch_control_center():
+    profile_path = os.path.join(parse_args().workdir, 'cc_profile')
+    fx_path = PathManager.get_local_firefox_path()
+    if fx_path is None:
+        logger.error('Can\'t find local Firefox installation, aborting Iris run.')
+        return False, None
+
+    args = []
+    args.append('-new-tab')
+    args.append('http://127.0.0.1:%s' % parse_args().port)
+    process_args = {'stream': None}
+    fx_runner = FirefoxRunner(binary=fx_path, profile=profile_path,
+                           cmdargs=args, process_args=process_args)
+    fx_runner.start()
+    server = LocalWebServer(parse_args().workdir, parse_args().port)
+
+    # TODO: implement auto-quit detection
+    # TODO: pass parameters from Control Center to active target
+    #quit_firefox()
+    #status = fx_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
+    #if status is None:
+    #    logger.debug('Firefox did not quit. Executing force quit.')
+    #    fx_runner.stop()
 
 
 class ShutdownTasks(cleanup.CleanUp):
