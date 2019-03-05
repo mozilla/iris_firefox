@@ -115,7 +115,7 @@ class Test(BaseTest):
             type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
             paste(folderpath)
             type(Key.ENTER)
-            type('1', KeyModifier.CMD)  # change view of finder
+            type('2', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
             type(Key.ENTER, interval=DEFAULT_UI_DELAY)
