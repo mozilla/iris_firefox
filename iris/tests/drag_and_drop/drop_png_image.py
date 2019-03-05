@@ -91,18 +91,18 @@ class Test(BaseTest):
         click(library_import_backup_pattern)
 
         restore_context_available = exists(library_import_restore_submenu_pattern)
-        assert_true(self, restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu '
+        assert_true(self, restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu is '
                                                      'available')
 
         click(library_import_restore_submenu_pattern)
 
         choose_file_available = exists(library_import_choose_file_submenu_pattern)
-        assert_true(self, choose_file_available, 'Choose file option from context menu available')
+        assert_true(self, choose_file_available, 'Choose file option from context menu is available')
 
         click(library_import_choose_file_submenu_pattern)
 
         select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
+        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window is available')
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
@@ -117,12 +117,12 @@ class Test(BaseTest):
 
         if Settings.is_linux():
             json_option_available = exists(file_type_json_pattern)
-            assert_true(self, json_option_available, '\'File type JSON\' option in file picker window available')
+            assert_true(self, json_option_available, '\'File type JSON\' option in file picker window is available')
 
             click(file_type_json_pattern)
 
             all_files_option_available = exists(file_type_all_files_pattern)
-            assert_true(self, all_files_option_available , '\'All Files\' option in file picker window available')
+            assert_true(self, all_files_option_available , '\'All Files\' option in file picker window is available')
 
             click(file_type_all_files_pattern)
 
@@ -150,7 +150,7 @@ class Test(BaseTest):
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
         drop_here_available = exists(drop_here_pattern)
-        assert_true(self, drop_here_available, '"Drop here" pattern available')
+        assert_true(self, drop_here_available, '"Drop here" pattern is available')
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern)
 
