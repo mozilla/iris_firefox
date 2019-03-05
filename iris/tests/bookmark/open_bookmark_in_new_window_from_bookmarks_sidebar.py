@@ -53,6 +53,6 @@ class Test(BaseTest):
         assert_true(self, firefox_full_logo_exists, 'Firefox content exists')
 
         new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_false(self, new_tab_is_opened_not_exists, 'The page is correctly opened in the current tab.')
+        assert_false(self, new_tab_is_opened_not_exists, 'The page is correctly opened in a new window')
 
         close_window()
