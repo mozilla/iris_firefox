@@ -165,6 +165,7 @@ class Test(BaseTest):
 
         type(Key.ESC)
         close_tab()
+        close_tab()
 
     def teardown(self):
         pdf_backup_path = self.get_asset_path('pdffile_bak.pdf')
