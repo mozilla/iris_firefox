@@ -10,10 +10,10 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Open a bookmark in a New Window from 'Mozilla Firefox' section"
-        self.test_case_id = "163232"
-        self.test_suite_id = "2525"
-        self.locale = ["en-US"]
+        self.meta = 'Open a bookmark in a New Window from \'Mozilla Firefox\' section'
+        self.test_case_id = '163232'
+        self.test_suite_id = '2525'
+        self.locale = ['en-US']
         self.exclude = [Platform.MAC]
 
     def run(self):
