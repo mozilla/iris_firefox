@@ -25,32 +25,45 @@ class Test(BaseTest):
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         most_visited_folder_pattern = Pattern('most_visited_bookmarks.png')
         pocket_bookmark_pattern = Pattern('pocket_bookmark_icon.png')
-        iris_tab_pattern = Pattern('iris_tab.png')
         open_option_pattern = Pattern('open_option.png')
+        iris_tab_pattern = Pattern('iris_tab.png')
+
+        iris_tab_available = exists(iris_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, iris_tab_available, '\'Iris\' tab available after launching Firefox')
 
         area_to_click = find(iris_tab_pattern)
         area_to_click.x += 300
         area_to_click.y += 5
+
         right_click(area_to_click)
 
-        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern)
+        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern,
+                                                         DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_menu_option_available,
                     '\'Bookmarks Toolbar\' option is available in context menu')
 
         click(bookmarks_toolbar_menu_option_pattern)
-        bookmarks_folder_available_in_toolbar = exists(most_visited_folder_pattern, DEFAULT_UI_DELAY_LONG)
+
+        bookmarks_folder_available_in_toolbar = exists(most_visited_folder_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_folder_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         click(most_visited_folder_pattern)
-        pocket_bookmark_available = exists(pocket_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
+
+        pocket_bookmark_available = exists(pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, pocket_bookmark_available,
                     '\'Pocket\' bookmark is available in the \'Most visited\' folder from the toolbar')
 
         right_click(pocket_bookmark_pattern)
-        open_option_available = exists(open_option_pattern, DEFAULT_UI_DELAY_LONG)
+
+        open_option_available = exists(open_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_option_available,
                     '\'Open\' option is available in context menu after right-click at the bookmark')
 
         click(open_option_pattern)
-        website_opened_in_current_tab = exists(pocket_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+
+        website_opened_in_current_tab = exists(pocket_image_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, website_opened_in_current_tab, 'The website is correctly opened in the current tab.')
+
+        bookmark_opened_in_current_tab = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_false(self, bookmark_opened_in_current_tab,
+                     'The page that was previously displayed in the current tab is no longer displayed')
