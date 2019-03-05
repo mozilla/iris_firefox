@@ -20,8 +20,7 @@ class Test(BaseTest):
                                'app.update.badgeWaitTime': 10,
                                'app.update.lastUpdateTime.background-update-timer': 1,
                                'app.update.promptWaitTime': 30,
-                               'app.update.timerMinimumDelay': 10,
-                               'app.update.channel': '%s-cdntest' % self.browser.channel})
+                               'app.update.timerMinimumDelay': 10})
         self.maximize_window = False
 
     def run(self):

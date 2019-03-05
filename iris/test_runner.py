@@ -50,6 +50,9 @@ def run(master_tests_list, test_list, browser):
                 profile = Profile.make_profile(current.profile)
                 current.profile_path = profile
                 profile.set_preferences(current.prefs)
+                if parse_args().update_channel:
+                    update_pref = {'app.update.channel': '%s' % parse_args().update_channel}
+                    profile.set_preferences(update_pref)
             except ValueError:
                 logger.error('Error creating profile')
 

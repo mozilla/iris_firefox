@@ -6,7 +6,6 @@ import argparse
 import logging
 import os
 
-
 logger = logging.getLogger(__name__)
 
 iris_args = None
@@ -92,6 +91,10 @@ def parse_args():
     parser.add_argument('-t', '--test',
                         help='List of test names or path to a file containing a custom list of tests',
                         metavar='test_name.py')
+    parser.add_argument('-u', '--update_channel',
+                        help='Update channel profile preference',
+                        action='store',
+                        choices=_get_update_channel())
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,
@@ -111,3 +114,25 @@ def parse_args():
 
 def _get_module_dir():
     return os.path.realpath(os.path.split(__file__)[0] + '/../../../..')
+
+
+def _get_update_channel():
+    """Returns the 'update_channel' config property from the 'Update' section."""
+    import ast
+    from ConfigParser import ConfigParser
+    from iris.api.core.errors import ConfigError
+    config = ConfigParser()
+    config_file = os.path.join(_get_module_dir(), 'config.ini')
+    section = 'Update'
+
+    if os.path.isfile(config_file):
+        try:
+            config.read(config_file)
+            if config.has_section(section):
+                return ast.literal_eval(config.get(section, 'update_channels'))
+            else:
+                raise ConfigError('Section %s not found' % section)
+        except EOFError:
+            raise ConfigError('Config file error.')
+    else:
+        raise ConfigError('Config file not found.')
