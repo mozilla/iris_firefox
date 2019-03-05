@@ -101,7 +101,7 @@ class Test(BaseTest):
 
         click(manage_exceptions_button_pattern)
 
-        exceptions_list_empty = exists(empty_exc_list_pattern)
+        exceptions_list_empty = exists(empty_exc_list_pattern.similar(0.6))
         assert_true(self, exceptions_list_empty,
                     'The previously accessed website is not displayed inside the Tracking Protection exceptions panel.')
 

@@ -119,6 +119,7 @@ def check_preference(pref_name, value):
     new_tab()
     select_location_bar()
     paste('about:config')
+    time.sleep(Settings.UI_DELAY)
     type(Key.ENTER)
     time.sleep(Settings.UI_DELAY)
 
