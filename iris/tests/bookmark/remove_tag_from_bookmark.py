@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = '"Create" a new folder using star-shaped button '
-        self.test_case_id = '163404'
+        self.meta = 'Remove a tag from a bookmark'
+        self.test_case_id = '163406'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
@@ -48,6 +48,8 @@ class Test(BaseTest):
                                            in_region=stardialog_region)
         assert_true(self, edit_stardialog_displayed, 'The Edit This Bookmark popup is displayed under the star-shaped '
                                                      'icon.')
+
+        time.sleep(60)
 
         other_bookmarks_default_option_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6),
                                                        in_region=stardialog_region)
