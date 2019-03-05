@@ -52,10 +52,9 @@ class Test(BaseTest):
         click(context_menu_open_in_a_new_window_pattern)
 
         mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, mozilla_about_us_page_displayed, 'The website related to the selected bookmark is opened '
-                                                           'in a new window.')
+        assert_true(self, mozilla_about_us_page_displayed, 'The website related to the selected bookmark is opened')
 
         close_window()
 
-        bookmark_has_been_opened_in_new_window = exists(NavBar.HOME_BUTTON, DEFAULT_SITE_LOAD_TIMEOUT)
+        bookmark_has_been_opened_in_new_window = exists(LocalWeb.IRIS_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmark_has_been_opened_in_new_window, 'The bookmark has been opened in new window')
