@@ -27,6 +27,10 @@ class Test(BaseTest):
             folder_expander_pattern = Pattern('folder_expander_closed.png')
         else:
             folder_expander_pattern = Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6)
+        if Settings.is_linux():
+            new_folder_created_pattern = Pattern('new_folder_created.png')
+        else:
+            new_folder_created_pattern = Bookmarks.StarDialog.NEW_FOLDER_CREATED
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
@@ -61,18 +65,17 @@ class Test(BaseTest):
         assert_true(self, destination_folders_displayed, 'Edit This Bookmark panel is displayed with all the '
                                                          'destination folders.')
 
-        bookmarks_toolbar_folder_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR,
-                                                 in_region=stardialog_region)
+        bookmarks_toolbar_folder_exists = exists(Library.BOOKMARKS_TOOLBAR, in_region=stardialog_region)
         assert_true(self, bookmarks_toolbar_folder_exists,'The Bookmarks toolbar folder exists')
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+        click(Library.BOOKMARKS_TOOLBAR)
 
         new_folder_button_exists = exists(Bookmarks.StarDialog.NEW_FOLDER)
         assert_true(self, new_folder_button_exists, 'New folder button exists')
 
         click(Bookmarks.StarDialog.NEW_FOLDER)
 
-        new_folder_created = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED)
+        new_folder_created = exists(new_folder_created_pattern)
         assert_true(self, new_folder_created, 'New folder created')
 
         done_button_exists = exists(Bookmarks.StarDialog.DONE)
