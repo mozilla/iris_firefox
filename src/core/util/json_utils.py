@@ -19,27 +19,31 @@ from src.core.util.test_loader import scan_all_tests
 logger = logging.getLogger(__name__)
 
 
-def update_run_index(fx_app, new_data=None):
-    current_run = {'id': PathManager.get_run_id(),
-                   'version': fx_app.version,
-                   'build': fx_app.build_id,
-                   'channel': fx_app.channel,
-                   'locale': fx_app.locale}
+def update_run_index(app, finished=False):
+    if finished:
+        failed = 0
+        total_duration = 0
 
-    if new_data is None:
-        logger.debug('Updating runs.json with initial run data.')
-        current_run['total'] = '*'
-        current_run['failed'] = '*'
+        for test in app.completed_tests:
+            if test.outcome == 'FAILED':
+                failed = failed + 1
+            total_duration = total_duration + test.test_duration
+
+        current_run = {'duration': total_duration,
+                       'failed': failed,
+                       'id': PathManager.get_run_id(),
+                       'locale': app.locale,
+                       'target': parse_args().application,
+                       'total': len(app.completed_tests)}
     else:
-        logger.debug('Updating runs.json with completed run data.')
-        current_run['total'] = new_data['total']
-        current_run['failed'] = new_data['failed']
+        current_run = {'duration': '-1',
+                       'failed': '-1',
+                       'id': PathManager.get_run_id(),
+                       'locale': app.locale,
+                       'target': parse_args().application,
+                       'total': '-1'}
 
-    old_js_folder = os.path.join(parse_args().workdir, 'js')
-    if os.path.exists(old_js_folder):
-        shutil.rmtree(old_js_folder, ignore_errors=True)
-
-    run_file = os.path.join(parse_args().workdir, 'data', 'all_runs.json')
+    run_file = os.path.join(parse_args().workdir, 'data', 'runs.json')
 
     if os.path.exists(run_file):
         logger.debug('Updating run file: %s' % run_file)

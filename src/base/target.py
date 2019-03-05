@@ -5,6 +5,7 @@
 import pytest
 
 from targets.firefox.parse_args import parse_args
+from src.core.util.json_utils import update_run_index
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
 from targets.firefox.firefox_app.fx_collection import FX_Collection
@@ -20,6 +21,7 @@ class BaseTarget:
     def __init__(self):
         self.target_name = 'Default target'
         self.cc_settings = []
+        self.locale = args.locale
 
     def pytest_sessionstart(self, session):
         """Called after the 'Session' object has been created and before performing test collection.
@@ -35,6 +37,8 @@ class BaseTarget:
             settings_list.append('{}: {}'.format(arg, getattr(args, arg)))
         print(', '.join(settings_list))
         print('\n')
+        update_run_index(self, False)
+
 
     def pytest_sessionfinish(self, session):
         """ called after whole test run finished, right before returning the exit status to the system.
@@ -43,6 +47,7 @@ class BaseTarget:
         :param int exitstatus: the status which pytest will return to the system.
         """
 
+        update_run_index(self, True)
         footer = create_footer(self)
         footer.print_report_footer()
 

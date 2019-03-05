@@ -9,10 +9,10 @@ from src.core.util.test_assert import TestResult
 
 class ReportFooter(object):
 
-    def __init__(self, app, total_tests_runned, passed_tests, failed_tests, skipped_tests, total_duration, failures):
+    def __init__(self, app, total_tests_run, passed_tests, failed_tests, skipped_tests, total_duration, failures):
         self.platform = OSHelper.get_os().value
         self.app = app
-        self.total_tests_runned = total_tests_runned
+        self.total_tests_run = total_tests_run
         self.failed_tests = failed_tests
         self.passed_tests = passed_tests
         self.skipped_tests = skipped_tests
@@ -56,7 +56,7 @@ def create_footer(app):
     :param app: Target Application Ex:Notepad,Firefox
     :return: ReportFooter object
     """
-    skiped = 0
+    skipped = 0
     failed = 0
     passed = 0
     total_duration = 0
@@ -71,8 +71,8 @@ def create_footer(app):
         elif test.outcome == 'PASSED':
             passed = passed + 1
         elif test.outcome == 'SKIPPED':
-            skiped = skiped + 1
+            skipped = skipped + 1
 
         total_duration = total_duration + test.test_duration
 
-    return ReportFooter(app, passed + skiped + failed, passed, failed, skiped, total_duration, failed_tests)
+    return ReportFooter(app, passed + skipped + failed, passed, failed, skipped, total_duration, failed_tests)
