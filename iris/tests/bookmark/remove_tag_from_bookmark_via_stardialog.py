@@ -22,6 +22,10 @@ class Test(BaseTest):
 
     def run(self):
         iris_tag_pattern = Pattern('iris_tag.png')
+        if Settings.is_mac():
+            tags_expander_closed_pattern = Pattern('tags_expander_closed.png')
+        else:
+            tags_expander_closed_pattern = Bookmarks.StarDialog.PANEL_TAGS_EXPANDER
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
@@ -54,11 +58,11 @@ class Test(BaseTest):
 
         click(LocationBar.STAR_BUTTON_STARRED)
 
-        tags_expander_exists = exists(Bookmarks.StarDialog.PANEL_TAGS_EXPANDER, DEFAULT_FIREFOX_TIMEOUT,
+        tags_expander_exists = exists(tags_expander_closed_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                       in_region=stardialog_region)
         assert_true(self, tags_expander_exists, 'Tags expander exists')
 
-        click(Bookmarks.StarDialog.PANEL_TAGS_EXPANDER)
+        click(tags_expander_closed_pattern)
 
         iris_tag_exists = exists(iris_tag_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, iris_tag_exists, 'The Iris tag exists')
@@ -69,11 +73,11 @@ class Test(BaseTest):
 
         click(LocationBar.STAR_BUTTON_STARRED)
 
-        tags_expander_exists_second = exists(Bookmarks.StarDialog.PANEL_TAGS_EXPANDER, DEFAULT_FIREFOX_TIMEOUT,
+        tags_expander_exists_second = exists(tags_expander_closed_pattern, DEFAULT_FIREFOX_TIMEOUT,
                                              in_region=stardialog_region)
         assert_true(self, tags_expander_exists_second, 'Tags expander exists')
 
-        click(Bookmarks.StarDialog.PANEL_TAGS_EXPANDER)
+        click(tags_expander_closed_pattern)
 
         iris_tag_removed = exists(iris_tag_pattern)
         assert_false(self, iris_tag_removed, 'The tag is successfully removed from that bookmark.')
