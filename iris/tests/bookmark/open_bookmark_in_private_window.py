@@ -24,31 +24,40 @@ class Test(BaseTest):
         private_window_icon_pattern = PrivateWindow.private_window_pattern
         pocket_image_pattern = LocalWeb.POCKET_IMAGE
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
-        iris_tab_pattern = Pattern('iris_tab.png')
-        most_visited_toolbar_bookmark_pattern = Pattern('drag_area.png')
-        pocket_bookmark_icon_pattern = Pattern('pocket_bookmark_icon.png')
         open_in_private_window_option_pattern = Pattern('open_in_private_window_option.png')
+        pocket_bookmark_icon_pattern = Pattern('pocket_bookmark_icon.png')
+        most_visited_toolbar_bookmark_pattern = Pattern('drag_area.png')
+        iris_tab_pattern = Pattern('iris_tab.png')
+
+        iris_tab_available = exists(iris_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, iris_tab_available, '\'Iris\' tab available after launching Firefox')
 
         area_to_click = find(iris_tab_pattern)
         area_to_click.x += 300
         area_to_click.y += 5
+
         right_click(area_to_click)
 
-        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern,
+                                                         DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_menu_option_available,
                     '\'Bookmarks Toolbar\' option is available in context menu')
 
         click(bookmarks_toolbar_menu_option_pattern)
-        bookmark_available_in_toolbar = exists(most_visited_toolbar_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
+
+        bookmark_available_in_toolbar = exists(most_visited_toolbar_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         click(most_visited_toolbar_bookmark_pattern)
-        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, DEFAULT_UI_DELAY_LONG)
+
+        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, pocket_bookmark_available,
                     '\'Pocket\' bookmark is available in \'Most visited\' folder in toolbar')
 
         right_click(pocket_bookmark_icon_pattern)
-        open_in_private_window_option_available = exists(open_in_private_window_option_pattern, DEFAULT_UI_DELAY_LONG)
+
+        open_in_private_window_option_available = exists(open_in_private_window_option_pattern,
+                                                         DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_in_private_window_option_available,
                     '\'Open in Private window\' option is available in context menu after right-click at the bookmark')
 
