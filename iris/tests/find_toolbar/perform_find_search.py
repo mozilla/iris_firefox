@@ -32,7 +32,7 @@ class Test(BaseTest):
         assert_true(self, find_toolbar_opened, 'Find Toolbar is opened.')
 
         # Enter a search term and press ENTER
-        type('From Wikipedia')
+        paste('From Wikipedia')
         type(Key.ENTER)
-        selected_label_exists = exists(from_wikipedia_label_pattern, 5)
+        selected_label_exists = exists(from_wikipedia_label_pattern.similar(0.6), DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, selected_label_exists, 'All the matching words/characters are found.')
