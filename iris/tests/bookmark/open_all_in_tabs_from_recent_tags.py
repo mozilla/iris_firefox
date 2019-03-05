@@ -97,4 +97,4 @@ class Test(BaseTest):
         next_tab()
         focus_page_opened = exists(image_in_focus_page_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_page_opened and focus_page_opened,
-                    'Al the bookmarks that contain that specific tag are opened in separate tabs.')
+                    'All the bookmarks that contain that specific tag are opened in separate tabs.')
