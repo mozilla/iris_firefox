@@ -82,40 +82,40 @@ class BaseTarget:
 
         return Options()
 
-    @pytest.hookimpl(tryfirst=True)
-    def pytest_runtest_makereport(self, item, call):
-
-        """ return a :py:class:`_pytest.runner.TestReport` object
-            for the given :py:class:`pytest.Item <_pytest.main.Item>` and
-            :py:class:`_pytest.runner.CallInfo`.
-
-            Stops at first non-None result
-            """
-
-        if call.when == "call" and call.excinfo is not None:
-
-            outcome = "FAILED"
-            assert_object = (call.excinfo, outcome)
-
-            test_result = create_result_object(assert_object, call.start, call.stop)
-
-            self.completed_tests.append(test_result)
-
-        elif call.when == "call" and call.excinfo is None:
-            outcome = 'PASSED'
-            test_instance = (item, outcome)
-
-            test_result = create_result_object(test_instance, call.start, call.stop)
-
-            self.completed_tests.append(test_result)
-
-        elif call.when == "setup" and item._skipped_by_mark:
-            outcome = 'SKIPPED'
-            test_instance = (item, outcome)
-
-            test_result = create_result_object(test_instance, call.start, call.stop)
-
-            self.completed_tests.append(test_result)
+    # @pytest.hookimpl(tryfirst=True)
+    # def pytest_runtest_makereport(self, item, call):
+    #
+    #     """ return a :py:class:`_pytest.runner.TestReport` object
+    #         for the given :py:class:`pytest.Item <_pytest.main.Item>` and
+    #         :py:class:`_pytest.runner.CallInfo`.
+    #
+    #         Stops at first non-None result
+    #         """
+    #
+    #     if call.when == "call" and call.excinfo is not None:
+    #
+    #         outcome = "FAILED"
+    #         assert_object = (call.excinfo, outcome)
+    #
+    #         test_result = create_result_object(assert_object, call.start, call.stop)
+    #
+    #         self.completed_tests.append(test_result)
+    #
+    #     elif call.when == "call" and call.excinfo is None:
+    #         outcome = 'PASSED'
+    #         test_instance = (item, outcome)
+    #
+    #         test_result = create_result_object(test_instance, call.start, call.stop)
+    #
+    #         self.completed_tests.append(test_result)
+    #
+    #     elif call.when == "setup" and item._skipped_by_mark:
+    #         outcome = 'SKIPPED'
+    #         test_instance = (item, outcome)
+    #
+    #         test_result = create_result_object(test_instance, call.start, call.stop)
+    #
+    #         self.completed_tests.append(test_result)
 
 
 def reason_for_failure(report):

@@ -22,7 +22,7 @@ class Screen(Region):
 
     def __init__(self, screen_id: int = 0):
         self.screen_id = screen_id
-        self.screen_list = DisplayCollection[screen_id].screen_list
+        self.screen_list = DisplayCollection[screen_id]
         self._bounds = DisplayCollection[screen_id].bounds
         Region.__init__(self, self._bounds.x, self._bounds.y, self._bounds.width, self._bounds.height)
 

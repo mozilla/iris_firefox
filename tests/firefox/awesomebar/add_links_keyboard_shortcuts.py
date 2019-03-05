@@ -1,12 +1,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.firefox.fx_testcase import *
 
 
 
 class Test(FirefoxTest):
-    extra = pytest.mark.EXTRINFO(
+    fx_values = pytest.mark.VALUES(
         channel='beta',
         # exclude='osx',
         # profile='new',
@@ -15,10 +16,10 @@ class Test(FirefoxTest):
         test_suite_id="1902",
     )
 
-    details = pytest.mark.VALUES(
+    details = pytest.mark.DETAILS(
         description="This test case adds links using \'CTRL\' + \'ENTER\' keys",
         locale='[en-US]',
-        values=extra
+        values=fx_values
     )
 
 
@@ -27,10 +28,9 @@ class Test(FirefoxTest):
         cnn_icon_pattern = Pattern('cnn_icon@2x.png')
         facebook_tab_pattern = Pattern('facebook_tab.png')
 
-        # maximize_window()
-        screen=Screen().screen_region
 
-        region = Region(0, 0, screen.width/2, screen.height / 3)
+        region = Region(0, 0, Screen().width/2, Screen().height / 3)
+
 
         # Navigate to the 'CNN' page using the 'CTRL' + 'ENTER' keys starting from the name of the page.
         select_location_bar()
@@ -38,16 +38,14 @@ class Test(FirefoxTest):
 
         key_down(Key.CTRL)
         type(Key.ENTER)
-        # key_up(Key.CTRL)
+        key_up(Key.CTRL)
 
 
         # close_content_blocking_pop_up()
 
         expected = region.exists(cnn_icon_pattern, 10)
-        print ('EXPECTED IS',expected)
         assert  expected, 'CNN page successfully loaded .'
 
-        print('URAAAA')
 
         # In a new tab, navigate to the 'Facebook' page using the 'CTRL' + 'ENTER' keys starting from the name of
         # the page.

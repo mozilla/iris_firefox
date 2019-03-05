@@ -65,15 +65,12 @@ def scan_all_tests():
                 test_object = {'name': module, 'module': current_module.__file__,
                                'description': current_test.get('description'),
                                'package': module_path}
-                if "firefox" in module_path:
-                    test_object['test_case_id'] = current_test.get('test_case_id')
-                    test_object['test_suite_id'] = current_test.get('test_suite_id')
-                    test_object['channel'] = current_test.get('channel')
-                    test_object['locale'] = current_test.get('locale')
-                    test_object['fx_version'] = current_test.get('fx_version')
-                    test_object['blocked_by'] = current_test.get('blocked_by')
+                if not current_test.get('values').kwargs :
+                    pass
+
                 else:
-                    test_object['blocked_by'] = current_test.get('blocked_by')
+                    for value in current_test.get('values').kwargs:
+                        test_object[value]=current_test.get('values').kwargs[value]
 
                 subdir[module] = test_object
 
@@ -82,7 +79,5 @@ def scan_all_tests():
             except AttributeError:
                 logger.warning('[%s] is not a test file. Skipping...', module)
 
-    # pp = pprint.PrettyPrinter(indent=1)
-    # pp.pprint(test_list)
 
     return test_list

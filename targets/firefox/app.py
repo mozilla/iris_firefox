@@ -41,14 +41,14 @@ class Target(BaseTarget):
             FX_Collection.add(fx, locale)
             browser = FX_Collection.get(fx, locale)
         browser.start()
-        from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
-        maximize_window()
+        # from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
+        # maximize_window()
 
         def teardown():
             if browser.runner and browser.runner.process_handler:
                 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
                 quit_firefox()
-                status = browser.runner.process_handler.wait(5)
+                status = browser.runner.process_handler.wait(15)
                 if status is None:
                     browser.runner.stop()
 
