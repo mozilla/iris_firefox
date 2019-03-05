@@ -22,7 +22,6 @@ class Test(BaseTest):
         bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         firefox_sidebar_logo_pattern = Pattern('firefox_bookmark.png')
         open_in_new_window_option_pattern = Pattern('open_in_new_window.png')
-        new_tab_is_opened_pattern = Pattern('new_tab_opened.png').similar(0.95)
 
         if Settings.is_mac():
             other_bookmarks_pattern = Pattern('other_bookmarks.png')
@@ -52,7 +51,7 @@ class Test(BaseTest):
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_full_logo_exists, 'Firefox content exists')
 
-        new_tab_is_opened_not_exists = exists(new_tab_is_opened_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_false(self, new_tab_is_opened_not_exists, 'The page is correctly opened in a new window')
-
         close_window()
+
+        iris_logo_exists = exists(LocalWeb.IRIS_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, iris_logo_exists, 'The page is correctly opened in a new window.')
