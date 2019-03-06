@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locale = ['en-US']
 
     def run(self):
-        search_bar_pattern = Pattern('search_bar.png').similar(0.7)
+        search_bar_pattern = Pattern('search_bar.png').similar(0.6)
         search_using_google_pattern = Pattern('search_using_google.png')
         duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png')
         search_duckduckgo_pattern = Pattern('search_duckduckgo.png')
