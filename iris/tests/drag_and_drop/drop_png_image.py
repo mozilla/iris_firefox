@@ -138,7 +138,7 @@ class Test(BaseTest):
         assert_true(self, test_file_png_located, 'PNG test file is available')
 
         drop_here_available = exists(drop_here_pattern)
-        assert_true(self, drop_here_available, '"Drop here" pattern available')
+        assert_true(self, drop_here_available, '"Drop here" pattern is available')
 
         drag_drop(png_bak_file_pattern, drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
 
