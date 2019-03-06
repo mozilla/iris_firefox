@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         values=fx_values
     )
 
-
+    @details
     def test_run(self):
         cnn_tab_pattern = Pattern('cnn_tab.png')
         cnn_icon_pattern = Pattern('cnn_icon@2x.png')

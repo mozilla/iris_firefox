@@ -11,6 +11,7 @@ from targets.firefox.parse_args import parse_args
 logger = logging.getLogger(__name__)
 
 
+
 class Target(BaseTarget):
 
     test_run_object_list = []
@@ -53,6 +54,13 @@ class Target(BaseTarget):
                     browser.runner.stop()
 
         request.addfinalizer(teardown)
+
+    def pytest_runtest_call(self,item):
+
+        """ called to execute the test ``item``. """
+
+        logger.info('Executing: - [%s]: %s' % ( item._nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
+
 
     # @pytest.hookimpl(tryfirst=True, hookwrapper=True)
     # def pytest_runtest_makereport(self, item, call):

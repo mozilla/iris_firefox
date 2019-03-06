@@ -7,20 +7,23 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    details = pytest.mark.DETAILS(meta="Test experiment_root",
-                                       description="Empty",
-                                       fx_version="63",
-                                       locale="en-US, zh-CN, es-ES, de, fr, ru, ar, ko, pt-PT, vi, pl, tr, ro, ja, zh-CN, es-ES, de",
-                                       channel="beta",
-                                       test_case_id="1111", test_suite_id="888666", blocked_by="123333111")
+    fx_values = pytest.mark.VALUES(
+        channel='beta',
+        # exclude='osx',
+        # profile='new',
+        # fx_version="63",
+        test_case_id="119484",
+        test_suite_id="1902",
+    )
 
+    details = pytest.mark.DETAILS(
+        description="This is a test experiment for text search ",
+        locale='[en-US]',
+        values=fx_values
+    )
     @details
     def test_run(self):
-        # region = Region(0, 40, 200, 100)
-        # region.highlight()
-        # print(region.double_click(Pattern('test.png', application='firefox')))
-        # print(region.exists('Project', 'Word found'))
-        # result=region.exists('Search a very')
+        region = Region(0, 40, 200, 100)
+        result=region.exists('Search a very')
 
-        # assert result==True ,"Assert_message for Image search test "
-        assert 1 == 1, "Assert_message 2for experiment 2"
+        assert result ,"Assert_message for text search test "
