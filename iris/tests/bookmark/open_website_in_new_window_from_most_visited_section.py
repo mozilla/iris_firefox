@@ -51,8 +51,8 @@ class Test(BaseTest):
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        open_in_new_tab_option_exists = exists(open_in_a_new_window_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, open_in_new_tab_option_exists, 'Open in a New Tab option exists')
+        open_in_new_window_option_exists = exists(open_in_a_new_window_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, open_in_new_window_option_exists, 'Open in a New Window option exists')
 
         click(open_in_a_new_window_pattern)
 
