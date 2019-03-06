@@ -39,11 +39,11 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
 
-        [scroll(-scroll_height) for _ in range(3)]
+        [scroll(-scroll_height) for _ in range(2)]
         after_scroll_down_content_not_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_down_content_not_exists,
                      'After zooming in and scrolling down using mouse wheel content is gone')
-        [scroll(scroll_height) for _ in range(3)]
+        [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful.')
@@ -117,11 +117,11 @@ class Test(BaseTest):
         before_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
 
-        [scroll(-scroll_height) for _ in range(3)]
+        [scroll(-scroll_height) for _ in range(2)]
         after_scroll_up_content_not_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_false(self, after_scroll_up_content_not_exists,
                      'After zooming out and scrolling up using mouse wheel content is gone')
-        [scroll(scroll_height) for _ in range(3)]
+        [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, after_scroll_content_exists, 'Scroll up and down using mouse wheel is successful.')

@@ -51,7 +51,7 @@ class Test(BaseTest):
             click_window_control('minimize', 'main')
             time.sleep(DEFAULT_UI_DELAY_LONG)
             try:
-                expected_5 = wait_vanish(NavBar.HOME_BUTTON.similar(0.9), 10)
+                expected_5 = wait_vanish(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 10)
                 assert_true(self, expected_5, 'Window successfully minimized')
             except FindError:
                 raise FindError('Window not minimized.')

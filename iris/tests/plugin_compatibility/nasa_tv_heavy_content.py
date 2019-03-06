@@ -23,15 +23,15 @@ class Test(BaseTest):
 
         new_private_window()
 
-        private_window_opened = exists(new_private_browsing_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        private_window_opened = exists(new_private_browsing_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, private_window_opened, 'A new private window is successfully opened')
 
         navigate('http://www.nasa.gov/multimedia/nasatv/index.html#public')
 
-        nasa_tv_page_loaded = exists(nasa_tv_page_pattern, DEFAULT_FIREFOX_TIMEOUT * 3)
+        nasa_tv_page_loaded = exists(nasa_tv_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, nasa_tv_page_loaded, 'The specified website is successfully loaded.')
 
-        video_playing = exists(speaker_icon_pattern, 100)
+        video_playing = exists(speaker_icon_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, video_playing, 'The video is playing and the speaker icon is displayed')
 
         media_button_location = find(media_button_pattern)
@@ -47,8 +47,8 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         try:
-            speaker_icon_vanished = wait_vanish(speaker_icon_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            play_icon_appeared = exists(play_icon_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            speaker_icon_vanished = wait_vanish(speaker_icon_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+            play_icon_appeared = exists(play_icon_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
             assert_true(self, speaker_icon_vanished and play_icon_appeared, 'Video is stopped')
         except FindError:
             raise FindError('Video is not stopped')
@@ -69,7 +69,7 @@ class Test(BaseTest):
         type(Key.DOWN)
         type(Key.ENTER)
 
-        speaker_icon_appear = exists(speaker_icon_pattern, 100)
+        speaker_icon_appear = exists(speaker_icon_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, speaker_icon_appear, 'The video is playing and the page is scrolling successfully.')
 
         close_window()
