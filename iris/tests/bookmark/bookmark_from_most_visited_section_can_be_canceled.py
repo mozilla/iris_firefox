@@ -28,6 +28,10 @@ class Test(BaseTest):
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
         bookmark_page_option_pattern = Pattern('context_menu_bookmark_page_option.png')
+        if Settings.is_linux():
+            new_window_pattern = Pattern('new_bookmark_popup.png')
+        else:
+            new_window_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
 
         open_firefox_menu()
 
@@ -57,12 +61,16 @@ class Test(BaseTest):
 
         click(bookmark_page_option_pattern)
 
-        new_bookmark_window_exists = exists(Bookmarks.StarDialog.NEW_BOOKMARK)
+        new_bookmark_window_exists = exists(new_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
 
         click_cancel_button()
 
-        new_bookmark_window_dismissed = exists(Bookmarks.StarDialog.NEW_BOOKMARK)
-        assert_false(self, new_bookmark_window_dismissed, 'The popup is dismissed and the page is not bookmarked.')
+        try:
+            new_bookmark_window_dismissed = wait_vanish(new_window_pattern)
+            assert_true(self, new_bookmark_window_dismissed, 'The popup is dismissed and the page is not bookmarked.')
+        except FindError:
+            raise FindError('The popup is not dismissed.')
+
 
 
