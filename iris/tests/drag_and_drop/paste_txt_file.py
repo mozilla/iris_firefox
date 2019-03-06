@@ -138,6 +138,8 @@ class Test(BaseTest):
         click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         edit_paste()
 
+        change_window_view()
+
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
                                                       'result is identical to result. ')
@@ -157,6 +159,8 @@ class Test(BaseTest):
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
                                                           'expected result is different from result.')
+
+        change_window_view()
 
         type(Key.ESC)
         close_tab()
