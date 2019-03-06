@@ -26,25 +26,25 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, DEFAULT_UI_DELAY_LONG)
+        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed.')
 
-        bookmarks_menu_exists = exists(bookmarks_menu_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_exists = exists(bookmarks_menu_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_exists, 'Bookmarks menu section exists')
 
         right_click(bookmarks_menu_pattern)
 
-        new_folder_option_exists = exists(new_folder_option_pattern, DEFAULT_UI_DELAY_LONG)
+        new_folder_option_exists = exists(new_folder_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_folder_option_exists, 'New Folder option exists')
 
         click(new_folder_option_pattern)
 
-        new_folder_panel_exists = exists(new_folder_panel_pattern, DEFAULT_UI_DELAY_LONG)
+        new_folder_panel_exists = exists(new_folder_panel_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_folder_panel_exists, 'The New Folder window is opened')
 
         type(Key.ENTER)
 
         click(bookmarks_menu_pattern)
 
-        new_folder_created_exists = exists(new_folder_created_pattern, DEFAULT_UI_DELAY_LONG)
+        new_folder_created_exists = exists(new_folder_created_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_folder_created_exists, 'The New Folder is correctly created in the selected section.')
