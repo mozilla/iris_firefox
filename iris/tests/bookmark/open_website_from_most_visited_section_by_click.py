@@ -10,10 +10,10 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Open a bookmark from 'Mozilla Firefox' section"
-        self.test_case_id = "163230"
-        self.test_suite_id = "2525"
-        self.locale = ["en-US"]
+        self.meta = 'Open a website from Most Visited section by click'
+        self.test_case_id = '163197'
+        self.test_suite_id = '2525'
+        self.locale = ['en-US']
 
     def setup(self):
         BaseTest.setup(self)
@@ -51,5 +51,3 @@ class Test(BaseTest):
 
         firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_pocket_site_opened, 'The website is correctly opened in the current tab.')
-
-        restore_firefox_focus()
