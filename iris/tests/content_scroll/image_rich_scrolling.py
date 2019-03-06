@@ -26,14 +26,14 @@ class Test(BaseTest):
 
         navigate('https://www.google.com/preferences?hl=en#languages')
 
-        google_save_button_exists = exists(google_save_button_pattern, 20)
+        google_save_button_exists = exists(google_save_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, google_save_button_exists, 'Google language preferences page is opened')
 
         click(google_save_button_pattern)
 
         navigate('https://images.google.com/?gws_rd=ssl')
 
-        google_images_page_opened = exists(google_images_page_mark_pattern, 20)
+        google_images_page_opened = exists(google_images_page_mark_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, google_images_page_opened, 'Google images site is properly loaded')
 
         paste('cute kittens:3')
@@ -41,10 +41,10 @@ class Test(BaseTest):
 
         # Scroll by mouse wheel
         show_more_results_button_destinated = scroll_until_pattern_found(show_more_results_button_pattern,
-                                                                         scroll, (-mouse_wheel_steps,), 20)
+                                                                         scroll, (-mouse_wheel_steps,), 100)
         assert_true(self, show_more_results_button_destinated, 'Successfully scrolled to footer by mouse scroll')
 
         google_images_page_mark_destinated = scroll_until_pattern_found(google_images_page_mark_pattern,
-                                                                        scroll, (mouse_wheel_steps,), 20)
+                                                                        scroll, (mouse_wheel_steps,), 100)
         assert_true(self, google_images_page_mark_destinated, 'Successfully scrolled from footer to '
                                                               'header by mouse scroll')

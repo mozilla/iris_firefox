@@ -12,32 +12,31 @@ class Test(BaseTest):
 
     def run(self):
         new_private_browsing_tab_pattern = PrivateWindow.private_window_pattern
-        cnn_page_downloaded_pattern = Pattern('cnn_page_downloaded.png')
         speaker_icon_pattern = Pattern('speaker_icon.png')
-        play_icon_pattern = Pattern('play_icon.png').similar(0.75)
+        play_icon_pattern = Pattern('play_icon.png').similar(.75)
         related_video_pattern = Pattern('related_video.png')
-        share_button_pattern = Pattern('share_button.png')
+        north_text_mark_pattern = Pattern('north_text_mark.png')
+        cnn_weather_page_tab_pattern = Pattern('cnn_logo_tab.png')
 
         change_preference('media.autoplay.default', '0')
 
         new_private_window()
 
-        private_window_opened = exists(new_private_browsing_tab_pattern, 20)
+        private_window_opened = exists(new_private_browsing_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, private_window_opened, 'A new private window is successfully opened')
 
         navigate('http://www.cnn.com/2016/10/10/us/weather-matthew/index.html')
 
-        cnn_weather_page_loaded = exists(cnn_page_downloaded_pattern, 100)
+        cnn_weather_page_loaded = exists(cnn_weather_page_tab_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_weather_page_loaded, 'The specified website is successfully loaded.')
 
-        video_playing = exists(speaker_icon_pattern, 100)
+        video_playing = exists(speaker_icon_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, video_playing, 'The video is playing and the speaker icon is displayed')
 
-        share_button_exists = exists(share_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, share_button_exists, 'Share button displayed.')
+        first_video_centred = scroll_until_pattern_found(north_text_mark_pattern, type, (Key.DOWN,), 20)
+        assert_true(self, first_video_centred, 'First video is centred among the page')
 
-        share_button_location = find(share_button_pattern)
-        video_window = Location.offset(share_button_location, -350, 250)
+        video_window = find(north_text_mark_pattern).above(100)
 
         click(video_window)
 
@@ -48,18 +47,12 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Video is not stopped')
 
-        for page_down_pressing in range(5):
-            page_down()
-            another_video_exists = exists(related_video_pattern)
-            if another_video_exists:
-                break
-
-        another_video_exists = exists(related_video_pattern)
+        another_video_exists = scroll_until_pattern_found(related_video_pattern, page_down, (None,), 20)
         assert_true(self, another_video_exists, 'The video is playing and the speaker icon is displayed')
 
         click(related_video_pattern)
 
-        related_video_playing = exists(speaker_icon_pattern, 100)
+        related_video_playing = exists(speaker_icon_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, related_video_playing, 'The video is playing and there is no browser crashes')
 
         close_window()
