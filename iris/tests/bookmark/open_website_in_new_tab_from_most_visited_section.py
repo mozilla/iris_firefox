@@ -59,5 +59,5 @@ class Test(BaseTest):
         firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_pocket_site_opened, 'The website is opened')
 
-        site_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
-        assert_true(self, site_opened_in_current_tab, 'The selected website is opened in a new tab.')
+        site_opened_in_new_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
+        assert_true(self, site_opened_in_new_tab, 'The selected website is opened in a new tab.')
