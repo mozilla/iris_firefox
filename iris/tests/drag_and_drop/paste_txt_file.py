@@ -20,14 +20,14 @@ class Test(BaseTest):
         library_import_restore_submenu_pattern = Library.ImportAndBackup.RESTORE
         library_import_choose_file_submenu_pattern = Library.ImportAndBackup.Restore.CHOOSE_FILE
         paste_txt_button_pattern = Pattern('paste_txt_file_button.png')
-        paste_txt_file_selected_button_pattern = Pattern('drop_pdf_file_selected_button.png')
+        paste_txt_file_selected_button_pattern = Pattern('paste_txt_file_selected_button.png')
         library_popup_pattern = Pattern('library_popup.png')
         select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
         drop_here_pattern = Pattern('drop_here.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
         matching_message_pattern = Pattern('matching_message_precise.png')
-        pdf_bak_file_pattern = Pattern('pdf_bak_file.png')
-        txt_bak_file_pattern = Pattern('txt_bak_file.png')
+        txt_file_pattern = Pattern('txt_file.png')
+        jpg_file_pattern = Pattern('jpg_file.png')
 
         if Settings.is_linux():
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
@@ -37,14 +37,14 @@ class Test(BaseTest):
 
         navigate('https://mystor.github.io/dragndrop/')
 
-        drop_pdf_file_button_displayed = exists(paste_txt_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, drop_pdf_file_button_displayed, 'The demo website loaded successfully')
+        paste_txt_file_button_displayed = exists(paste_txt_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, paste_txt_file_button_displayed, 'The demo website loaded successfully')
 
         click(paste_txt_button_pattern)
 
-        drop_pdf_option_selected = exists(paste_txt_file_selected_button_pattern)
-        assert_true(self, drop_pdf_option_selected, 'The drop-pdf-file changed color to red which indicates that it '
-                                                    'has been selected.')
+        paste_txt_option_selected = exists(paste_txt_file_selected_button_pattern)
+        assert_true(self, paste_txt_option_selected, 'The paste-txt-file changed color to red which indicates that it '
+                                                     'has been selected.')
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
                                                               DEFAULT_UI_DELAY)
@@ -111,7 +111,7 @@ class Test(BaseTest):
             click(file_type_json_pattern)
 
             all_files_option_available = exists(file_type_all_files_pattern)
-            assert_true(self, all_files_option_available , '\'All Files\' option in file picker window available')
+            assert_true(self, all_files_option_available, '\'All Files\' option in file picker window available')
 
             click(file_type_all_files_pattern)
 
@@ -123,25 +123,33 @@ class Test(BaseTest):
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
 
-        test_file_pdf_located = exists(pdf_bak_file_pattern)
-        assert_true(self, test_file_pdf_located, 'PDF test file is available')
+        test_file_txt_located = exists(txt_file_pattern)
+        assert_true(self, test_file_txt_located, 'TXT test file is available')
+
+        click(txt_file_pattern, 1)
+        edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        drag_drop(pdf_bak_file_pattern, drop_here_pattern)
+        click(drop_here_pattern, 1)
+        edit_paste()
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
                                                       'result is identical to result. ')
 
-        test_file_txt_located = exists(txt_bak_file_pattern)
-        assert_true(self, test_file_txt_located, 'TXT test file is available')
+        test_file_jpg_located = exists(jpg_file_pattern)
+        assert_true(self, test_file_jpg_located, 'JPG test file is available')
+
+        click(jpg_file_pattern, 1)
+        edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        drag_drop(txt_bak_file_pattern, drop_here_pattern)
+        click(drop_here_pattern, 1)
+        edit_paste()
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
@@ -149,9 +157,3 @@ class Test(BaseTest):
 
         type(Key.ESC)
         close_tab()
-
-    def teardown(self):
-        pdf_backup_path = self.get_asset_path('pdffile_bak.pdf')
-        os.remove(pdf_backup_path)
-        txt_backup_path = self.get_asset_path('testfile_bak.txt')
-        os.remove(txt_backup_path)
