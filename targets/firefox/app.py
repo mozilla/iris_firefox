@@ -55,11 +55,31 @@ class Target(BaseTarget):
 
         request.addfinalizer(teardown)
 
-    def pytest_runtest_call(self,item):
 
+    def _disable_catchlog(self,item):
+        logger = logging.getLogger()
+        if item.catch_log_handler in logger.handlers:
+            logger.handlers.remove(item.catch_log_handler)
+
+    @pytest.hookimpl(hookwrapper=True, trylast=True)
+    def pytest_runtest_setup(self,item):
+        self._disable_catchlog(item)
+        yield
+
+    @pytest.hookimpl(hookwrapper=True, trylast=True)
+    def pytest_runtest_call(self,item):
         """ called to execute the test ``item``. """
 
-        logger.info('Executing: - [%s]: %s' % ( item._nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
+        logger.info(
+            'Executing: - [%s]: %s' % (item._nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
+
+        self._disable_catchlog(item)
+        yield
+
+    @pytest.hookimpl(hookwrapper=True, trylast=True)
+    def pytest_runtest_teardown(self,item):
+        self._disable_catchlog(item)
+        yield
 
 
     # @pytest.hookimpl(tryfirst=True, hookwrapper=True)
