@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a website in a New Tab from \'Most Visited\' section using contextual menu'
-        self.test_case_id = '163199'
+        self.meta = 'Open a website in a New Window from \'Most Visited\' section using contextual menu '
+        self.test_case_id = '163200'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
         self.exclude = [Platform.MAC]
@@ -26,7 +26,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
-        open_in_new_tab_pattern = Pattern('open_in_new_tab.png')
+        open_in_a_new_window_pattern = Pattern('context_menu_open_in_a_new_window.png')
 
         open_firefox_menu()
 
@@ -51,13 +51,15 @@ class Test(BaseTest):
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        open_in_new_tab_option_exists = exists(open_in_new_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        open_in_new_tab_option_exists = exists(open_in_a_new_window_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_in_new_tab_option_exists, 'Open in a New Tab option exists')
 
-        click(open_in_new_tab_pattern)
+        click(open_in_a_new_window_pattern)
 
         firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_pocket_site_opened, 'The website is opened')
 
-        site_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
-        assert_true(self, site_opened_in_current_tab, 'The selected website is opened in a new tab.')
+        close_window()
+
+        site_opened_in_new_window = exists(LocalWeb.IRIS_LOGO)
+        assert_true(self, site_opened_in_new_window, 'The selected website is correctly opened in a new window.')
