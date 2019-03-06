@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a website from Most Visited section by click'
-        self.test_case_id = '163197'
+        self.meta = 'Open a website from \'Most Visited\' section using contextual menu'
+        self.test_case_id = '163198'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
 
@@ -25,6 +25,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
+        context_menu_open_pattern = Pattern('open_option.png')
 
         open_firefox_menu()
 
@@ -47,7 +48,13 @@ class Test(BaseTest):
         firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
 
-        click(firefox_pocket_bookmark_pattern, 0)
+        right_click(firefox_pocket_bookmark_pattern, 0)
+
+        open_option_exists = exists(context_menu_open_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, open_option_exists, 'Open option exists')
 
         firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, firefox_pocket_site_opened, 'The website is correctly opened in the current tab.')
+        assert_true(self, firefox_pocket_site_opened, 'The website is opened')
+
+        site_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
+        assert_false(self, site_opened_in_current_tab, 'The selected website is opened in the current tab.')
