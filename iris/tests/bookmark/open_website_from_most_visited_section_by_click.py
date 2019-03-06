@@ -50,4 +50,7 @@ class Test(BaseTest):
         click(firefox_pocket_bookmark_pattern, 0)
 
         firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, firefox_pocket_site_opened, 'The website is correctly opened in the current tab.')
+        assert_true(self, firefox_pocket_site_opened, 'The website is opened')
+
+        site_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
+        assert_false(self, site_opened_in_current_tab, 'The selected website is opened in the current tab.')
