@@ -36,16 +36,16 @@ if [[ -n "$LOCALES" ]] && [[ -n "$VERSIONS" ]]; then
 
             echo -e "LOCALE = $locale"
             echo -e "FIREFOX VERSION = $version"
-            echo -e "CHANNELS = $CHANNEL\n\n"
-            pipenv run iris -l ${locale} -f ${version} -e ${CHANNEL} -t manual_update,default_search_code_google,default_search_code_yandex -o
+            echo -e "CHANNEL = $CHANNEL\n\n"
+            pipenv run iris -l ${locale} -f ${version} -u ${CHANNEL} -t manual_update -o
 
             echo -e "\n\n${GREEN}Starting BACKGROUND update test: ${NC}\n"
 
             echo -e "LOCALE = $locale"
             echo -e "FIREFOX VERSION = $version"
-            echo -e "CHANNELS = $CHANNEL\n\n"
+            echo -e "CHANNEL = $CHANNEL\n\n"
 
-            pipenv run iris -l ${locale} -f ${version} -e ${CHANNEL} -t background_update,default_search_code_google,default_search_code_yandex -o
+            pipenv run iris -l ${locale} -f ${version} -u ${CHANNEL} -t background_update -o
         fi
     done
 else
