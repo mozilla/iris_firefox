@@ -1,0 +1,55 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
+from iris.test_case import *
+
+
+class Test(BaseTest):
+
+    def __init__(self):
+        BaseTest.__init__(self)
+        self.meta = "Open a bookmark from 'Mozilla Firefox' section"
+        self.test_case_id = "163230"
+        self.test_suite_id = "2525"
+        self.locale = ["en-US"]
+
+    def setup(self):
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
+        return
+
+    def run(self):
+        firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
+        firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
+        firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
+        firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
+
+        open_firefox_menu()
+
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
+
+        click(firefox_menu_bookmarks_pattern)
+
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
+
+        click(firefox_menu_bookmarks_toolbar_pattern)
+
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
+                                                      'folder exists')
+
+        click(firefox_menu_most_visited_pattern)
+
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
+
+        click(firefox_pocket_bookmark_pattern, 0)
+
+        firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_pocket_site_opened, 'The website is correctly opened in the current tab.')
+
+        restore_firefox_focus()
