@@ -14,6 +14,9 @@ class Test(BaseTest):
         self.test_case_id = '165090'
         self.test_suite_id = '102'
         self.locales = ['en-US']
+        self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
+        #  File picker doesn't support copy/paste functionality on OSx and Linux
+        self.exclude = [Platform.MAC, Platform.LINUX]
 
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -126,13 +129,13 @@ class Test(BaseTest):
         test_file_txt_located = exists(txt_file_pattern)
         assert_true(self, test_file_txt_located, 'TXT test file is available')
 
-        click(txt_file_pattern, 1)
+        click(txt_file_pattern)
         edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, 1)
+        click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         edit_paste()
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
@@ -142,13 +145,13 @@ class Test(BaseTest):
         test_file_jpg_located = exists(jpg_file_pattern)
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
-        click(jpg_file_pattern, 1)
+        click(jpg_file_pattern)
         edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, 1)
+        click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         edit_paste()
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
