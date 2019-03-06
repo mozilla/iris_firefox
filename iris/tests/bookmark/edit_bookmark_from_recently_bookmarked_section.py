@@ -20,27 +20,29 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        library_button_pattern = NavBar.LIBRARY_MENU
-        bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
-        recently_wikipedia_bookmark_pattern = Pattern('recently_wikipedia_bookmark.png')
         properties_option_pattern = Pattern('properties_option.png')
+        properties_for_firefox_pattern = Pattern('properties_for_firefox.png')
+        firefox_sidebar_logo_pattern = Pattern('firefox_bookmark.png')
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
-        click(library_button_pattern)
+        click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, DEFAULT_UI_DELAY_LONG)
         assert_true(self, bookmarks_menu_option_exists, 'The Bookmarks menu is correctly displayed')
 
-        click(bookmarks_menu_option_pattern)
+        click(LibraryMenu.BOOKMARKS_OPTION)
 
-        recently_wikipedia_bookmark_exists = exists(recently_wikipedia_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, recently_wikipedia_bookmark_exists, 'Wikipedia bookmarks exists')
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_UI_DELAY_LONG)
+        assert_true(self, firefox_sidebar_logo_exists, 'Firefox bookmarks exists')
 
-        right_click(recently_wikipedia_bookmark_pattern)
+        right_click(firefox_sidebar_logo_pattern)
 
         properties_option_exists = exists(properties_option_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, properties_option_exists, 'Properties option exists')
 
         click(properties_option_pattern)
+
+        properties_for_firefox_exists = exists(properties_for_firefox_pattern)
+        assert_true(self, properties_for_firefox_exists, '')
