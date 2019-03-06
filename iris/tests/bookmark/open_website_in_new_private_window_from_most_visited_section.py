@@ -53,7 +53,7 @@ class Test(BaseTest):
 
         open_in_new_private_window_option_exists = exists(open_in_a_new_private_window_pattern,
                                                           DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, open_in_new_private_window_option_exists, 'Open in a New Tab option exists')
+        assert_true(self, open_in_new_private_window_option_exists, 'Open in a New Private Window option exists')
 
         click(open_in_a_new_private_window_pattern)
 
