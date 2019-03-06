@@ -20,7 +20,7 @@ mozinstall = "==1.16.0"
 mozdownload = "==1.25"
 mozversion = "==1.5"
 mozinfo = "==1.0.0"
-mozrunner = "==7.2.0"
+mozrunner = "==7.3.0"
 mss = "==4.0.1"
 # Platform dependencies
 xlib = {platform_system = "== 'Linux'",version = "==0.21"}
