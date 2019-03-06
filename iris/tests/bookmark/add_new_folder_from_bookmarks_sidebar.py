@@ -15,10 +15,10 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        new_folder_created_pattern = Pattern('new_folder_created.png')
-        new_folder_panel_pattern = Pattern('new_folder_panel.png')
-        bookmarks_sidebar_menu_header_pattern = SidebarBookmarks.BOOKMARKS_HEADER
         new_folder_option_pattern = Library.Organize.NEW_FOLDER
+        new_folder_created_pattern = Pattern('new_folder_is_created.png')
+        new_folder_panel_pattern = Pattern('new_folder_panel.png')
+
         if not Settings.is_mac():
             bookmarks_menu_pattern = Library.BOOKMARKS_MENU
         else:
@@ -26,15 +26,17 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_header_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, DEFAULT_UI_DELAY_LONG)
         assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed.')
 
         bookmarks_menu_exists = exists(bookmarks_menu_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, bookmarks_menu_exists, 'Bookmarks menu section exists')
+
         right_click(bookmarks_menu_pattern)
 
         new_folder_option_exists = exists(new_folder_option_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, new_folder_option_exists, 'New Folder option exists')
+
         click(new_folder_option_pattern)
 
         new_folder_panel_exists = exists(new_folder_panel_pattern, DEFAULT_UI_DELAY_LONG)
