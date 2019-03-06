@@ -14,6 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '163198'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
+        self.exclude = [Platform.MAC]
 
     def setup(self):
         BaseTest.setup(self)
@@ -52,6 +53,8 @@ class Test(BaseTest):
 
         open_option_exists = exists(context_menu_open_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_option_exists, 'Open option exists')
+
+        click(context_menu_open_pattern)
 
         firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_pocket_site_opened, 'The website is opened')
