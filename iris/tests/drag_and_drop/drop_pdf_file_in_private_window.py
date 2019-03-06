@@ -40,6 +40,8 @@ class Test(BaseTest):
         pdf_bak_file_pattern = Pattern('pdf_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
 
+        DRAG_AND_DROP_DURATION = 3
+
         if Settings.is_linux():
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
@@ -88,7 +90,7 @@ class Test(BaseTest):
                                           width=library_title_width * 2, height=library_title_height * 3)
         library_popup_tab_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
 
-        drag_drop(library_popup_tab_before, library_popup_tab_after, DEFAULT_DELAY_BEFORE_DROP)
+        drag_drop(library_popup_tab_before, library_popup_tab_after, DRAG_AND_DROP_DURATION)
 
         library_popup_dropped = exists(library_popup_pattern, in_region=library_tab_region_after)
         assert_true(self, library_popup_dropped, 'Library popup dropped to right half of screen successfully')
@@ -145,7 +147,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern is available')
 
-        drag_drop(pdf_bak_file_pattern, drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        drag_drop(pdf_bak_file_pattern, drop_here_pattern, DRAG_AND_DROP_DURATION)
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
@@ -157,7 +159,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern is available')
 
-        drag_drop(txt_bak_file_pattern, drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        drag_drop(txt_bak_file_pattern, drop_here_pattern, DRAG_AND_DROP_DURATION)
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
