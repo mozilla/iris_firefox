@@ -9,7 +9,7 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Paste a bookmark in Bookmarks Sideabar'
+        self.meta = 'Paste a bookmark in Bookmarks Sidebar'
         self.test_case_id = '168935'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
