@@ -94,7 +94,10 @@ def verify_config(args):
 def setup_control_center():
     copy_tree(os.path.join(PathManager.get_module_dir(), 'src', 'control_center', 'assets'), parse_args().workdir)
     targets_dir = os.path.join(PathManager.get_module_dir(), 'targets')
+
+    exclude_dirs = {'__pycache__'}
     for path, dirs, files in sorted_walk(targets_dir):
+        [dirs.remove(d) for d in list(dirs) if d in exclude_dirs]
         for target in dirs:
             src = os.path.join(targets_dir, target, 'icon.png')
             dest = os.path.join(parse_args().workdir, 'images', '%s.png' % target)

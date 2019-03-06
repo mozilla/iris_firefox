@@ -65,7 +65,7 @@ def scan_all_tests():
                 test_object = {'name': module, 'module': current_module.__file__,
                                'description': current_test.get('description'),
                                'package': module_path}
-                if not current_test.get('values').kwargs :
+                if not current_test.get('values') :
                     pass
 
                 else:
@@ -78,6 +78,5 @@ def scan_all_tests():
                 logger.warning('Error in test - %s: %s' % (module, e.message))
             except AttributeError:
                 logger.warning('[%s] is not a test file. Skipping...', module)
-
 
     return test_list
