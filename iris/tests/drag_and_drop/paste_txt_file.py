@@ -139,7 +139,8 @@ class Test(BaseTest):
         click(drop_here_pattern, DRAG_AND_DROP_DURATION)
         edit_paste()
 
-        change_window_view()
+        if Settings.is_windows():
+            change_window_view()
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
@@ -161,7 +162,8 @@ class Test(BaseTest):
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
                                                           'expected result is different from result.')
 
-        change_window_view()
+        if Settings.is_windows():
+            change_window_view()
 
         type(Key.ESC)
         close_tab()
