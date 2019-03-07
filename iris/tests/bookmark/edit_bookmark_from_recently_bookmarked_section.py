@@ -32,12 +32,10 @@ class Test(BaseTest):
         keyword_after_editing_pattern = Pattern('keyword_saved.png')
 
         if Settings.is_mac():
-            other_bookmarks_pattern = Pattern('bookmarks_toolbar.png')
             bookmark_getting_started_pattern = Pattern('bookmark_from_sidebar.png')
         else:
             properties_window_pattern = Pattern('properties_window.png')
             bookmark_getting_started_pattern = Pattern('toolbar_bookmark_icon.png')
-
 
         library_button_exists = exists(NavBar.LIBRARY_MENU, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
