@@ -40,8 +40,6 @@ class Test(BaseTest):
         other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
         other_bookmarks_location = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 3)
 
-        print(other_bookmarks_width, other_bookmarks_height)
-
         drag_drop(soap_wiki_tab_pattern, other_bookmarks_location)
 
         bookmark_added = exists(wiki_bookmark_logo_pattern)
