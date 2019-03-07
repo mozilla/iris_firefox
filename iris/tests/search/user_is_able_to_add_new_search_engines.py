@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+from iris.api.core import mouse
 from iris.test_case import *
 
 
@@ -49,6 +49,7 @@ class Test(BaseTest):
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             type(Key.SPACE)
+            mouse.scroll(-10)
         else:
             type(Key.TAB)
 
@@ -94,7 +95,7 @@ class Test(BaseTest):
         select_search_bar()
         type(Key.DOWN)
         expected = exists(add_google_play_pattern, 10)
-        assert_true(self, expected, 'The \'Add \'Google Play\'\' button is found in the page.')
+        assert_true(self, expected, 'The \'Add \'Google Play\' button is found in the page.')
 
         click(add_google_play_pattern)
         expected = exists(google_play_search_engine_pattern, 10)
@@ -106,7 +107,7 @@ class Test(BaseTest):
 
         click(google_play_search_engine_pattern)
 
-        expected = exists(test_search_google_play_pattern, 10)
+        expected = exists(test_search_google_play_pattern.similar(0.7), 10)
         assert_true(self, expected, 'Search performed using the search bar works properly.')
 
         navigate('about:newtab')
