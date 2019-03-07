@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Paste .txt File in demopage'
-        self.test_case_id = '165090'
+        self.meta = 'Paste .txt File in demopage opened in Private Window'
+        self.test_case_id = '165091'
         self.test_suite_id = '102'
         self.locales = ['en-US']
         self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
