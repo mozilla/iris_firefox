@@ -37,7 +37,10 @@ class Test(BaseTest):
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
         assert_true(self, other_bookmarks_folder_exists, 'Other bookmarks folder exists')
 
-        other_bookmarks_location = find(Library.OTHER_BOOKMARKS).right(300)
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
+        other_bookmarks_location = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 3)
+
+        print(other_bookmarks_width, other_bookmarks_height)
 
         drag_drop(soap_wiki_tab_pattern, other_bookmarks_location)
 
