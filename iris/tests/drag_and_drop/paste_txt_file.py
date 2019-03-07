@@ -103,12 +103,14 @@ class Test(BaseTest):
         assert_true(self, test_file_txt_located, 'TXT test file is available')
 
         click(txt_file_pattern)
+
         edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+
         edit_paste()
 
         change_window_view()
@@ -124,12 +126,14 @@ class Test(BaseTest):
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
         click(jpg_file_pattern)
+
         edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+
         edit_paste()
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
