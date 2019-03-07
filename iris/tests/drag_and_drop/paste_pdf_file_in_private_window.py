@@ -32,10 +32,6 @@ class Test(BaseTest):
         pdf_file_pattern = Pattern('pdf_file.png')
         jpg_file_pattern = Pattern('jpg_file.png')
 
-        if Settings.is_linux():
-            file_type_all_files_pattern = Pattern('file_type_all_files.png')
-            file_type_json_pattern = Pattern('file_type_json.png')
-
         DRAG_AND_DROP_DURATION = 3
         folderpath = self.get_asset_path('')
 
@@ -102,31 +98,11 @@ class Test(BaseTest):
         select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
 
-        select_bookmark_popup_before = find(select_bookmark_popup_pattern)
+        paste(folderpath)
+        type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
-        if Settings.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
-            paste(folderpath)
-            type(Key.ENTER)
-            type('2', KeyModifier.CMD)  # change view of finder
-        else:
-            paste(folderpath)
-            type(Key.ENTER, interval=DEFAULT_UI_DELAY)
-
-        if Settings.is_linux():
-            json_option_available = exists(file_type_json_pattern)
-            assert_true(self, json_option_available, '\'File type JSON\' option in file picker window available')
-
-            click(file_type_json_pattern)
-
-            all_files_option_available = exists(file_type_all_files_pattern)
-            assert_true(self, all_files_option_available, '\'All Files\' option in file picker window available')
-
-            click(file_type_all_files_pattern)
-
-        else:
-            type('*')  # Show all files in Windows Explorer
-            type(Key.ENTER, interval=DEFAULT_UI_DELAY)
+        type('*')  # Show all files in Windows Explorer
+        type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
@@ -136,19 +112,20 @@ class Test(BaseTest):
         assert_true(self, test_file_pdf_located, 'PDF test file is available')
 
         click(pdf_file_pattern)
+
         edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+
         edit_paste()
 
-        if Settings.is_windows() or Settings.is_linux():
-            change_window_view()
+        change_window_view()
 
-            select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
@@ -158,23 +135,24 @@ class Test(BaseTest):
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
         click(jpg_file_pattern)
+
         edit_copy()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
         click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+
         edit_paste()
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
                                                           'expected result is different from result.')
 
-        if Settings.is_windows() or Settings.is_linux():
-            change_window_view()
+        change_window_view()
 
-            select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
 
         type(Key.ESC)
 
