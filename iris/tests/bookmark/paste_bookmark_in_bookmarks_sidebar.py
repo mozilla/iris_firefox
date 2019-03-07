@@ -68,7 +68,7 @@ class Test(BaseTest):
 
         try:
             paste_option_not_exists = wait_vanish(paste_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, paste_option_not_exists, 'Paste option disappear')
+            assert_true(self, paste_option_not_exists, 'Paste option disappeared')
         except FindError:
             raise FindError('Paste option still exists')
 
