@@ -139,8 +139,11 @@ class Test(BaseTest):
         click(drop_here_pattern, DRAG_AND_DROP_DURATION)
         edit_paste()
 
-        if Settings.is_windows():
+        if Settings.is_windows() or Settings.is_linux():
             change_window_view()
+
+            select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
@@ -162,8 +165,13 @@ class Test(BaseTest):
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
                                                           'expected result is different from result.')
 
-        if Settings.is_windows():
+        if Settings.is_windows() or Settings.is_linux():
             change_window_view()
 
+            select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
+
         type(Key.ESC)
+
+        open_library()  # restore Library focus
         close_tab()
