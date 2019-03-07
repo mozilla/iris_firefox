@@ -104,10 +104,6 @@ class Test(BaseTest):
         type('*')  # Show all files in Windows Explorer
         type(Key.ENTER, interval=DEFAULT_UI_DELAY)
 
-        select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
-        #  drag-n-drop right to prevent fails on osx
-        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
-
         test_file_pdf_located = exists(pdf_file_pattern)
         assert_true(self, test_file_pdf_located, 'PDF test file is available')
 
