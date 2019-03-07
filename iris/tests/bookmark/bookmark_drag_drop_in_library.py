@@ -24,7 +24,7 @@ class Test(BaseTest):
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
-        point_to_move_wiki_window = find(soap_wiki_tab_pattern).right(400)
+        point_to_move_wiki_window = find(soap_wiki_tab_pattern).right(SCREEN_WIDTH/3)
         location_to_shift_wiki_window = find(soap_wiki_tab_pattern).right(SCREEN_WIDTH)
 
         drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
