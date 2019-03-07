@@ -10,9 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Bookmark a page from the \'Most Visited\' section using the option from the contextual menu can ' \
-                    'be canceled'
-        self.test_case_id = '163397'
+        self.meta = 'Bookmark a page from the \'Most Visited\' section using the option from the contextual menu'
+        self.test_case_id = '163202'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
         self.exclude = [Platform.MAC]
@@ -64,13 +63,8 @@ class Test(BaseTest):
         new_bookmark_window_exists = exists(new_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
 
-        click_cancel_button()
+        time.sleep(60)
 
-        try:
-            new_bookmark_window_dismissed = wait_vanish(new_window_pattern)
-            assert_true(self, new_bookmark_window_dismissed, 'The popup is dismissed and the page is not bookmarked.')
-        except FindError:
-            raise FindError('The popup is not dismissed.')
 
 
 
