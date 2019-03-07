@@ -19,6 +19,8 @@ class Test(BaseTest):
         show_all_bookmarks_button_pattern = Pattern('show_all_bookmarks_button.png')  # Should be added to library_menu
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
         wiki_bookmark_logo_pattern = Pattern('wiki_bookmark_logo.png')
+        if Settings.is_linux() or Settings.is_mac():
+            ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -29,6 +31,7 @@ class Test(BaseTest):
 
         star_dialog_opened = exists(Bookmarks.StarDialog.DONE)
         assert_true(self, star_dialog_opened, 'StarDialog opened')
+
         click(Bookmarks.StarDialog.DONE)
 
         new_tab()
@@ -58,8 +61,8 @@ class Test(BaseTest):
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        show_all_bookmarks_buuton_displayed = exists(show_all_bookmarks_button_pattern)
-        assert_true(self, show_all_bookmarks_buuton_displayed, 'Bookmarks option displayed')
+        show_all_bookmarks_button_displayed = exists(show_all_bookmarks_button_pattern)
+        assert_true(self, show_all_bookmarks_button_displayed, 'Bookmarks option displayed')
 
         click(show_all_bookmarks_button_pattern)
 
@@ -81,13 +84,14 @@ class Test(BaseTest):
         click(firefox_menu_bookmarks_pattern)
 
         if Settings.is_linux() or Settings.is_mac():
-            ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
             ff_menu_show_all_bookmarks_exists = exists(ff_menu_show_all_bookmarks_pattern)
             assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
+
             click(ff_menu_show_all_bookmarks_pattern)
         else:
             ff_menu_show_all_bookmarks_exists = exists(show_all_bookmarks_button_pattern)
             assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
+
             click(show_all_bookmarks_button_pattern)
 
         library_opened_from_ff_menu = exists(Library.TITLE)
