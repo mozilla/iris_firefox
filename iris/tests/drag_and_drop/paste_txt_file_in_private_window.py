@@ -35,6 +35,11 @@ class Test(BaseTest):
         DRAG_AND_DROP_DURATION = 3
         folderpath = self.get_asset_path('')
 
+        new_private_window()
+
+        private_window_opened = exists(PrivateWindow.private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, private_window_opened, 'A new private window is successfully loaded.')
+
         navigate('https://mystor.github.io/dragndrop/')
 
         paste_txt_file_button_displayed = exists(paste_txt_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
