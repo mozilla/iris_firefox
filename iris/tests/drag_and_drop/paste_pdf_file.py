@@ -14,9 +14,9 @@ class Test(BaseTest):
         self.test_case_id = '165092'
         self.test_suite_id = '102'
         self.locales = ['en-US']
-        # self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
-        # #  File picker doesn't support copy/paste functionality on OSx and Linux
-        # self.exclude = [Platform.MAC, Platform.LINUX]
+        self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
+        #  File picker doesn't support copy/paste functionality on OSx and Linux
+        self.exclude = [Platform.MAC, Platform.LINUX]
 
     def run(self):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -144,10 +144,10 @@ class Test(BaseTest):
 
             select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
-        #
-        # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
-        # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
-        #                                               'result is identical to result. ')
+
+        matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
+        assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
+                                                      'result is identical to result. ')
 
         test_file_jpg_located = exists(jpg_file_pattern)
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
@@ -161,9 +161,9 @@ class Test(BaseTest):
         click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         edit_paste()
 
-        # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
-        # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
-        #                                                   'expected result is different from result.')
+        not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
+        assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
+                                                          'expected result is different from result.')
 
         if Settings.is_windows() or Settings.is_linux():
             change_window_view()
