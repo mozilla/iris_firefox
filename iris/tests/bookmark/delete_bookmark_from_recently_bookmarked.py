@@ -36,7 +36,8 @@ class Test(BaseTest):
 
         click(delete_bookmark_button_pattern)
 
-        website_not_exists = exists(getting_started_bookmark_pattern)
-        assert_false(self, website_not_exists, 'The selected website is correctly deleted.')
-
-
+        try:
+            website_bookmark_not_exists = wait_vanish(getting_started_bookmark_pattern)
+            assert_true(self, website_bookmark_not_exists, 'The selected website is correctly deleted.')
+        except FindError:
+            raise FindError('The selected website is not deleted')
