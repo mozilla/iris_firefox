@@ -28,16 +28,34 @@ def main():
     args = parse_args()
     initialize_logger()
     if verify_config(args):
-        target_plugin = get_target(args.application)
-        pytest_args = get_test_params(args.application)
-        initialize_platform(args)
-        setup_control_center()
-        if args.control:
-            launch_control_center()
-        pytest.main(pytest_args, plugins=[target_plugin])
+        init_control_center()
+        user_result = None
+        if show_control_center():
+            user_result = launch_control_center()
+            # TODO:
+            # parse user_result to extract desired target and parameters,
+            # and pass parameters to target
+        if user_result is not 'cancel':
+            target_plugin = get_target(args.application)
+            pytest_args = get_test_params(args.application)
+            initialize_platform(args)
+            pytest.main(pytest_args, plugins=[target_plugin])
+        else:
+            # If we get 'cancel' we will shut down Iris
+            pass
     else:
         logger.error('Failed platform verification.')
         exit(1)
+
+
+def show_control_center():
+    # TODO
+    # expand logic to display Control Center only when no target specified,
+    # or if -k argument is explicitly used
+    if parse_args().control:
+        return True
+    else:
+        return False
 
 
 def get_target(target_name):
@@ -91,7 +109,7 @@ def verify_config(args):
     return True
 
 
-def setup_control_center():
+def init_control_center():
     copy_tree(os.path.join(PathManager.get_module_dir(), 'src', 'control_center', 'assets'), parse_args().workdir)
     targets_dir = os.path.join(PathManager.get_module_dir(), 'targets')
 
@@ -124,14 +142,8 @@ def launch_control_center():
                            cmdargs=args, process_args=process_args)
     fx_runner.start()
     server = LocalWebServer(parse_args().workdir, parse_args().port)
-
-    # TODO: implement auto-quit detection
-    # TODO: pass parameters from Control Center to active target
-    #quit_firefox()
-    #status = fx_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
-    #if status is None:
-    #    logger.debug('Firefox did not quit. Executing force quit.')
-    #    fx_runner.stop()
+    fx_runner.stop()
+    return server.result
 
 
 class ShutdownTasks(cleanup.CleanUp):
