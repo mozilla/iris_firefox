@@ -47,7 +47,6 @@ class Test(BaseTest):
         # Type in some random text in the Search Bar and content search field.
         select_search_bar()
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
         expected = exists(search_suggestions_are_disabled_search_bar_pattern, 10)
         assert_true(self, expected, 'Search suggestions are not shown for the input in question.')
 
@@ -56,7 +55,6 @@ class Test(BaseTest):
         assert_true(self, expected, 'Google logo from content search field found.')
         click(google_logo_content_search_field_pattern)
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
         expected = exists(search_suggestions_are_disabled_content_search_pattern, 10)
         assert_true(self, expected, 'Search suggestions are not shown for the input in question.')
 
@@ -68,8 +66,7 @@ class Test(BaseTest):
         # Type in some random text in the Search Bar and content search field.
         select_search_bar()
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
-        expected = exists(search_suggestions_are_disabled_search_bar_pattern, 3)
+        expected = exists(search_suggestions_are_disabled_search_bar_pattern, 10)
         assert_false(self, expected, 'Search suggestions are shown for the input in question.')
 
         new_tab()
@@ -77,6 +74,5 @@ class Test(BaseTest):
         assert_true(self, expected, 'Google logo from content search field found.')
         click(google_logo_content_search_field_pattern)
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
-        expected = exists(search_suggestions_are_disabled_content_search_pattern, 3)
+        expected = exists(search_suggestions_are_disabled_content_search_pattern, 10)
         assert_false(self, expected, 'Search suggestions are shown for the input in question.')

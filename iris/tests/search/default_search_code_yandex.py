@@ -66,6 +66,7 @@ class Test(BaseTest):
         edit_copy()
         time.sleep(DEFAULT_UI_DELAY)
         url_text = Env.get_clipboard()
+        time.sleep(DEFAULT_UI_DELAY)
 
         assert_contains(self, url_text, 'search/?clid=2186621',
                         'Client search code is correct for searches from awesome bar, region ' + value + '.')
@@ -83,6 +84,7 @@ class Test(BaseTest):
         edit_copy()
         time.sleep(DEFAULT_UI_DELAY)
         url_text = Env.get_clipboard()
+        time.sleep(DEFAULT_UI_DELAY)
 
         assert_contains(self, url_text, 'search/?clid=2186618',
                         'Client search code is correct for searches from search bar, region ' + value + '.')
@@ -104,6 +106,7 @@ class Test(BaseTest):
         edit_copy()
         time.sleep(DEFAULT_UI_DELAY)
         url_text = Env.get_clipboard()
+        time.sleep(DEFAULT_UI_DELAY)
 
         assert_contains(self, url_text, 'search/?clid=2186623',
                         'Client search code is correct for searches with context menu, region ' + value + '.')
@@ -121,6 +124,7 @@ class Test(BaseTest):
         edit_copy()
         time.sleep(DEFAULT_UI_DELAY)
         url_text = Env.get_clipboard()
+        time.sleep(DEFAULT_UI_DELAY)
 
         assert_contains(self, url_text, 'search/?clid=2186620',
                         'Client search code is correct for searches from about:newtab page, content search '

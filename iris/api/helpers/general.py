@@ -71,10 +71,13 @@ def change_preference(pref_name, value):
     """
     try:
         new_tab()
-        select_location_bar()
-        paste('about:config')
-        type(Key.ENTER)
         time.sleep(Settings.UI_DELAY)
+        select_location_bar()
+        time.sleep(Settings.UI_DELAY)
+        paste('about:config')
+        time.sleep(Settings.UI_DELAY)
+        type(Key.ENTER)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         type(Key.SPACE)
         time.sleep(Settings.UI_DELAY)

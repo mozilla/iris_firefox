@@ -44,5 +44,6 @@ class Test(BaseTest):
         edit_copy()
         time.sleep(DEFAULT_UI_DELAY)
         url_text = Env.get_clipboard()
+        time.sleep(DEFAULT_UI_DELAY)
 
         assert_contains(self, url_text, 't=ffab', 'The resulted URL contains the \'t=ffab\' string.')

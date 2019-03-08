@@ -45,7 +45,6 @@ class Test(BaseTest):
 
         # Change the default search engine.
         select_search_bar()
-        time.sleep(DEFAULT_UI_DELAY)
         expected = exists(change_search_settings_pattern, 10)
         assert_true(self, expected, 'The \'Change Search Settings\' button found in the page.')
 
@@ -137,5 +136,6 @@ class Test(BaseTest):
         edit_copy()
         time.sleep(DEFAULT_UI_DELAY_LONG)
         url_text = Env.get_clipboard()
+        time.sleep(DEFAULT_UI_DELAY)
 
         assert_equal(self, url_text, 'https://www.amazon.com/', 'The default search provider is kept after restart.')

@@ -58,6 +58,7 @@ class Test(BaseTest):
             edit_copy()
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
+            time.sleep(DEFAULT_UI_DELAY)
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
@@ -89,6 +90,7 @@ class Test(BaseTest):
             edit_copy()
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
+            time.sleep(DEFAULT_UI_DELAY)
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
@@ -125,6 +127,7 @@ class Test(BaseTest):
             edit_copy()
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
+            time.sleep(DEFAULT_UI_DELAY)
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
@@ -156,6 +159,7 @@ class Test(BaseTest):
             edit_copy()
             time.sleep(DEFAULT_UI_DELAY)
             url_text = Env.get_clipboard()
+            time.sleep(DEFAULT_UI_DELAY)
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
