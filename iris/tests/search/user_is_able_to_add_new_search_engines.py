@@ -66,7 +66,6 @@ class Test(BaseTest):
             raise FindError('Find add-ons field is NOT present on the page, aborting.')
 
         paste('startpage')
-        time.sleep(DEFAULT_UI_DELAY)
 
         expected = exists(add_startpage_https_privacy_search_engine_pattern, 10)
         assert_true(self, expected, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.')
@@ -111,7 +110,6 @@ class Test(BaseTest):
         assert_true(self, expected, 'Search performed using the search bar works properly.')
 
         navigate('about:newtab')
-        time.sleep(DEFAULT_UI_DELAY)
 
         expected = exists(google_logo_content_search_field_pattern, 10)
         assert_true(self, expected, 'Google logo from the content search found.')
