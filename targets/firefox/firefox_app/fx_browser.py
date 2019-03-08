@@ -452,3 +452,18 @@ def get_firefox_build_id(build_path: str) -> str or None:
         return None
 
     return get_firefox_info(build_path)['platform_buildid']
+
+
+def set_update_channel_pref(path, channel_name):
+    base_path = os.path.dirname(path)
+    if OSHelper.is_mac():
+        base_path = os.path.normpath(os.path.join(base_path, '../Resources/'))
+    pref_file = os.path.join(base_path, 'defaults', 'pref', 'channel-prefs.js')
+    file_data = 'pref("app.update.channel", "%s");' % channel_name
+    if os.path.exists(pref_file):
+        logger.debug('Updating Firefox channel-prefs.js file for channel: %s' % channel_name)
+        with open(pref_file, 'w') as f:
+            f.write(file_data)
+            f.close()
+    else:
+        logger.error('Can\'t find Firefox channel-prefs.js file')

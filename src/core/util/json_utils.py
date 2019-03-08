@@ -62,28 +62,49 @@ def update_run_index(app, finished=False):
         json.dump(run_file_data, f, sort_keys=True, indent=True)
 
 
-def update_run_log(fx_app, new_data=None):
+def update_run_log(app, new_data=None):
     meta = {'run_id': PathManager.get_run_id(),
-            'fx_version': fx_app.version,
-            'fx_build_id': fx_app.build_id,
-            'platform': OSHelper.get_os(),
-            'config': '%s, %s-bit, %s' % (OSHelper.get_os, OSHelper.get_os_bits(),
+            'platform': OSHelper.get_os().value,
+            'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
                                           OSHelper.get_processor()),
-            'channel': fx_app.channel,
-            'locale': fx_app.locale,
+            'locale': app.locale,
             'args': ' '.join(sys.argv),
             'params': vars(parse_args()),
             'log': os.path.join(PathManager.get_current_run_dir(), 'iris_log.log')}
+    values = {}
+    for i in app.values:
+        values[i] = app.values[i]
+    meta['values'] = values
 
     repo = git.Repo(PathManager.get_module_dir())
     meta['iris_version'] = 1.0
     meta['iris_repo'] = repo.working_tree_dir
-    if parse_args().headless_run:
-        pass
-    else:
-        meta['iris_branch'] = repo.active_branch.name
-        meta['iris_branch_head'] = repo.head.object.hexsha
+    meta['iris_branch'] = repo.active_branch.name
+    meta['iris_branch_head'] = repo.head.object.hexsha
 
+    failed = 0
+    passed = 0
+    skipped = 0
+    total_duration = 0
+
+    for test in app.completed_tests:
+        if test.outcome == 'FAILED':
+            failed = failed + 1
+        if test.outcome == 'PASSED':
+            passed = passed + 1
+        if test.outcome == 'SKIPPED':
+            skipped = skipped + 1
+
+        total_duration = total_duration + test.test_duration
+
+    current_run = {'duration': total_duration,
+                   'failed': failed,
+                   'id': PathManager.get_run_id(),
+                   'locale': app.locale,
+                   'target': parse_args().application,
+                   'total': len(app.completed_tests)}
+
+    """
     if new_data is None:
         logger.debug('Updating run.json with initial run data.')
         meta['total'] = 0
@@ -96,17 +117,17 @@ def update_run_log(fx_app, new_data=None):
         meta['total_time'] = 0
         tests = []
     else:
-        logger.debug('Updating runs.json with completed run data.')
-        meta['total'] = new_data['total']
-        meta['passed'] = new_data['passed']
-        meta['failed'] = new_data['failed']
-        meta['failed_tests'] = new_data['failed_tests']
-        meta['skipped'] = new_data['skipped']
-        meta['errors'] = new_data['errors']
-        meta['start_time'] = new_data['start_time']
-        meta['end_time'] = new_data['end_time']
-        meta['total_time'] = new_data['total_time']
-        tests = new_data['tests']
+    """
+    logger.debug('Updating runs.json with completed run data.')
+    meta['total'] = len(app.completed_tests)
+    meta['passed'] = passed
+    meta['failed'] = failed
+    meta['skipped'] = skipped
+    meta['errors'] = 'UNKNOWN'
+    meta['start_time'] = app.start_time
+    meta['end_time'] = app.end_time
+    meta['total_time'] = app.end_time - app.start_time
+    tests = {}
 
     run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
     run_file_data = {'meta': meta, 'tests': tests}

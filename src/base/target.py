@@ -2,10 +2,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import time
+
 import pytest
 
 from targets.firefox.parse_args import parse_args
-from src.core.util.json_utils import update_run_index
+from src.core.util.json_utils import update_run_index, update_run_log
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
 from targets.firefox.firefox_app.fx_collection import FX_Collection
@@ -22,12 +24,14 @@ class BaseTarget:
         self.target_name = 'Default target'
         self.cc_settings = []
         self.locale = args.locale
+        self.values = {}
 
     def pytest_sessionstart(self, session):
         """Called after the 'Session' object has been created and before performing test collection.
 
         :param _pytest.main.Session session: the pytest session object.
         """
+        self.start_time = int(time.time())
         print('\n\n** Test session {} started **\n'.format(session.name))
         print('\nIris settings: \n')
 
@@ -46,10 +50,12 @@ class BaseTarget:
         :param _pytest.main.Session session: the pytest session object.
         :param int exitstatus: the status which pytest will return to the system.
         """
+        self.end_time = int(time.time())
 
         update_run_index(self, True)
         footer = create_footer(self)
         footer.print_report_footer()
+        update_run_log(self)
 
         print("\n\n** Test session {} complete **\n".format(session.name))
 

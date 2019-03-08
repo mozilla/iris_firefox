@@ -16,9 +16,12 @@ class Target(BaseTarget):
 
     test_run_object_list = []
 
+
+
     def __init__(self):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
+        self.values = {'fx_version': 0, 'fx_build_id': 0, 'channel': '0'}
 
         self.cc_settings = [
             {'name': 'firefox', 'type': 'list', 'label': 'Firefox',
@@ -34,27 +37,29 @@ class Target(BaseTarget):
 
     @pytest.fixture(scope="class", autouse=True)
     def use_firefox(self, request):
+
         fx = args.firefox
         locale = args.locale
 
-        browser = FX_Collection.get(fx, locale)
-        if not browser:
+        self.browser = FX_Collection.get(fx, locale)
+        if not self.browser:
             FX_Collection.add(fx, locale)
-            browser = FX_Collection.get(fx, locale)
-        browser.start()
+            self.browser = FX_Collection.get(fx, locale)
+        self.browser.start()
+        self.values = {'fx_version': self.browser.version, 'fx_build_id': self.browser.build_id,
+                       'channel': self.browser.channel}
         # from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
         # maximize_window()
 
         def teardown():
-            if browser.runner and browser.runner.process_handler:
+            if self.browser.runner and self.browser.runner.process_handler:
                 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
                 quit_firefox()
-                status = browser.runner.process_handler.wait(15)
+                status = self.browser.runner.process_handler.wait(15)
                 if status is None:
-                    browser.runner.stop()
+                    self.browser.runner.stop()
 
         request.addfinalizer(teardown)
-
 
     def _disable_catchlog(self,item):
         logger = logging.getLogger()
