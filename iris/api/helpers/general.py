@@ -298,9 +298,13 @@ def confirm_firefox_launch(image=None):
 
 def copy_to_clipboard():
     """Return the value copied to clipboard."""
+    time.sleep(DEFAULT_UI_DELAY)
     edit_select_all()
+    time.sleep(DEFAULT_UI_DELAY)
     edit_copy()
+    time.sleep(DEFAULT_UI_DELAY)
     value = Env.get_clipboard().strip()
+    time.sleep(DEFAULT_UI_DELAY)
     logger.debug("Copied to clipboard: %s" % value)
     return value
 

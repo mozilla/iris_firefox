@@ -47,32 +47,15 @@ class Test(BaseTest):
 
         # While the cursor is on the search toolbar, select the arrow DOWN and then the arrow UP keys.
         type(Key.DOWN)
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_select_all()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY)
-        searchbar_text = Env.get_clipboard()
-        time.sleep(DEFAULT_UI_DELAY)
+        searchbar_text = copy_to_clipboard()
         assert_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow DOWN key will slide in the search menu.')
 
         type(Key.DOWN)
-        edit_select_all()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY)
-        searchbar_text = Env.get_clipboard()
-        time.sleep(DEFAULT_UI_DELAY)
+        searchbar_text = copy_to_clipboard()
         assert_not_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow DOWN key will slide in the search menu.')
 
         type(Key.UP)
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_select_all()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY)
-        searchbar_text = Env.get_clipboard()
-        time.sleep(DEFAULT_UI_DELAY)
+        searchbar_text = copy_to_clipboard()
         assert_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow UP key will slide in the search menu.')
 
         # Use the tab key to navigate.

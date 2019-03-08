@@ -42,11 +42,7 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
         select_location_bar()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY_LONG)
-        url_text = Env.get_clipboard()
-        time.sleep(DEFAULT_UI_DELAY)
+        url_text = copy_to_clipboard()
 
         assert_contains(self, url_text, 'https://www.amazon.com/',
                         'Search results are displayed for the newly set default search provider.')
