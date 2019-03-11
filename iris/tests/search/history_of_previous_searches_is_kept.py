@@ -36,7 +36,6 @@ class Test(BaseTest):
 
             click(google_logo_content_search_field_pattern)
             paste(text_list[i])
-            time.sleep(DEFAULT_UI_DELAY)
 
             region = Screen.RIGHT_THIRD
             if i == 0:
@@ -50,7 +49,6 @@ class Test(BaseTest):
         for i in range(text_list.__len__() / 2):
             select_search_bar()
             paste(text_list[i + 2])
-            time.sleep(DEFAULT_UI_DELAY)
 
             region = Screen.UPPER_RIGHT_CORNER
             if i == 0:
