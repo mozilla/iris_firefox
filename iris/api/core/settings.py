@@ -26,6 +26,7 @@ DEFAULT_FX_DELAY = 0.5
 DEFAULT_UI_DELAY = 1
 DEFAULT_UI_DELAY_LONG = 2.5
 DEFAULT_SYSTEM_DELAY = 5
+DEFAULT_SHORT_FIREFOX_TIMEOUT = 5
 DEFAULT_FIREFOX_TIMEOUT = 10
 DEFAULT_SITE_LOAD_TIMEOUT = 30
 DEFAULT_HEAVY_SITE_LOAD_TIMEOUT = 90
@@ -71,6 +72,10 @@ class _IrisSettings(object):
     channels                    -   A list of channels supported by Iris.
     locales                     -   A list of Firefox locales supported by Iris.
     firefox_timeout             -   Maximum time to wait until closing the Firefox.
+    firefox_short_timeout       -   Standard time to wait until closing the Firefox.
+    site_load_timeout           -   Standard time to wait for web site loading.
+    heavy_site_load_timeout     -   Maximum time to wait for web site loading.
+
     """
 
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
@@ -87,7 +92,10 @@ class _IrisSettings(object):
                  highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS,
                  fx_delay=DEFAULT_FX_DELAY, ui_delay=DEFAULT_UI_DELAY,
                  ui_delay_long=DEFAULT_UI_DELAY_LONG, system_delay=DEFAULT_SYSTEM_DELAY,
-                 channels=CHANNELS, locales=LOCALES, firefox_timeout=DEFAULT_FIREFOX_TIMEOUT):
+                 channels=CHANNELS, locales=LOCALES, firefox_timeout=DEFAULT_FIREFOX_TIMEOUT,
+                 short_firefox_timeout=DEFAULT_SHORT_FIREFOX_TIMEOUT,
+                 site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT,
+                 heavy_site_load_timeout=DEFAULT_HEAVY_SITE_LOAD_TIMEOUT):
 
         self.wait_scan_rate = wait_scan_rate
         self._type_delay = type_delay
@@ -111,6 +119,9 @@ class _IrisSettings(object):
         self.channels = channels
         self.locales = locales
         self.firefox_timeout = firefox_timeout
+        self.short_firefox_timeout = short_firefox_timeout
+        self.site_load_timeout = site_load_timeout
+        self.heavy_site_load_timeout = heavy_site_load_timeout
 
     @property
     def FX_DELAY(self):
@@ -139,6 +150,18 @@ class _IrisSettings(object):
     @property
     def FIREFOX_TIMEOUT(self):
         return self.firefox_timeout
+
+    @property
+    def SHORT_FIREFOX_TIMEOUT(self):
+        return self.short_firefox_timeout
+
+    @property
+    def SITE_LOAD_TIMEOUT(self):
+        return self.site_load_timeout
+
+    @property
+    def HEAVY_SITE_LOAD_TIMEOUT(self):
+        return self.heavy_site_load_timeout
 
     @property
     def type_delay(self):
