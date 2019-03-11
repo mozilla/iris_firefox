@@ -27,10 +27,6 @@ class Test(BaseTest):
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
         bookmark_page_option_pattern = Pattern('context_menu_bookmark_page_option.png')
-        if Settings.is_linux():
-            new_window_pattern = Pattern('new_bookmark_popup.png')
-        else:
-            new_window_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
 
         open_firefox_menu()
 
@@ -56,14 +52,37 @@ class Test(BaseTest):
         right_click(firefox_pocket_bookmark_pattern, 0)
 
         bookmark_page_option_exists = exists(bookmark_page_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_page_option_exists, 'Open in a New Private Window option exists')
+        assert_true(self, bookmark_page_option_exists, 'Bookmark page option exists')
 
         click(bookmark_page_option_pattern)
 
-        new_bookmark_window_exists = exists(new_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        new_bookmark_window_exists = exists(Bookmarks.StarDialog.NAME_FIELD, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
 
-        time.sleep(60)
+        paste('Focus')
+
+        folders_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, folders_expander_exists, 'Folders expander is displayed')
+
+        click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
+
+        bookmarks_toolbar_option_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR,
+                                                 DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmarks_toolbar_option_exists, 'Bookmark toolbar folder option is displayed')
+
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+
+        tags_field_exists = exists(Bookmarks.StarDialog.TAGS_FIELD, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, tags_field_exists, 'Tags field exists')
+
+        click(Bookmarks.StarDialog.TAGS_FIELD)
+
+        type('tag')
+
+        type(Key.ENTER)
+
+        bookmark_added_to_toolbar = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmark_added_to_toolbar, 'The bookmark is correctly added to Bookmarks Toolbar.')
 
 
 
