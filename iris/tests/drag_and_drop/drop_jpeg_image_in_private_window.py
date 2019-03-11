@@ -136,9 +136,9 @@ class Test(BaseTest):
             type('*')  # Show all files in Windows Explorer
             type(Key.ENTER, interval=PASTE_DELAY)
 
-        select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
+        select_bookmark_popup_location_final = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
-        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
+        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
         test_file_jpg_located = exists(jpg_bak_file_pattern)
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
