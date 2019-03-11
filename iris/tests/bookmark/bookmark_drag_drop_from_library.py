@@ -51,7 +51,7 @@ class Test(BaseTest):
         drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR)
 
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
-        assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with drag and drop from Library')
+        assert_true(self, soap_wiki_opened_from_bookmarks, 'The test page is opened with drag and drop from Library')
 
         open_library()
 
