@@ -24,6 +24,9 @@ class Test(BaseTest):
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
+        other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
+        assert_true(self, other_bookmarks_folder_exists, 'Other Bookmarks folder exists')
+
         location_for_right_click = find(Library.OTHER_BOOKMARKS).right(200)
 
         right_click(location_for_right_click)
@@ -50,7 +53,7 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         bookmark_exists = exists(soap_bookmark_pattern)
-        assert_true(self, bookmark_exists, 'The new bookmark is added in thr selected section')
+        assert_true(self, bookmark_exists, 'The new bookmark is added in the selected section')
 
         click(Library.TITLE)
         close_window_control('auxiliary')
