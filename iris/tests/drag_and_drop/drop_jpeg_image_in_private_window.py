@@ -128,7 +128,7 @@ class Test(BaseTest):
             click(file_type_json_pattern)
 
             all_files_option_available = exists(file_type_all_files_pattern)
-            assert_true(self, all_files_option_available , '\'All Files\' option in file picker window is available')
+            assert_true(self, all_files_option_available, '\'All Files\' option in file picker window is available')
 
             click(file_type_all_files_pattern)
 
