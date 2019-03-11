@@ -62,7 +62,7 @@ def update_run_index(app, finished=False):
         json.dump(run_file_data, f, sort_keys=True, indent=True)
 
 
-def update_run_log(app, new_data=None):
+def update_run_log(app):
     meta = {'run_id': PathManager.get_run_id(),
             'platform': OSHelper.get_os().value,
             'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
@@ -104,20 +104,6 @@ def update_run_log(app, new_data=None):
                    'target': parse_args().application,
                    'total': len(app.completed_tests)}
 
-    """
-    if new_data is None:
-        logger.debug('Updating run.json with initial run data.')
-        meta['total'] = 0
-        meta['passed'] = 0
-        meta['failed'] = 0
-        meta['skipped'] = 0
-        meta['errors'] = 0
-        meta['start_time'] = 0
-        meta['end_time'] = 0
-        meta['total_time'] = 0
-        tests = []
-    else:
-    """
     logger.debug('Updating runs.json with completed run data.')
     meta['total'] = len(app.completed_tests)
     meta['passed'] = passed
@@ -127,7 +113,47 @@ def update_run_log(app, new_data=None):
     meta['start_time'] = app.start_time
     meta['end_time'] = app.end_time
     meta['total_time'] = app.end_time - app.start_time
+
     tests = {}
+    all_tests = []
+    test_root = os.path.join(PathManager.get_module_dir(), 'tests')
+
+    for test in app.completed_tests:
+        target_root = test.node_name.split(test_root)[1]
+        target = target_root.split('/')[1]
+        test_path = target_root.split('/%s/' % target)[1]
+        parent = all_tests
+        for module in test_path.split('/'):
+            test_obj = {}
+            test_obj['name'] = module
+            if 'py' not in module:
+                module_exists = False
+                for objects in parent:
+                    if objects['name'] == module:
+                        parent = objects['children']
+                        module_exists = True
+                        break
+                if not module_exists:
+                    new_parent = test_obj['children'] = []
+                    parent.append(test_obj)
+                    parent = new_parent
+            else:
+                test_obj['result'] = test.outcome
+                test_obj['time'] = test.test_duration
+                debug_image_directory = os.path.join(PathManager.get_current_run_dir(), test_path.split('.py')[0], 'debug_images')
+                test_obj['debug_image_directory'] = debug_image_directory
+                test_obj['debug_images'] = []
+                test_obj['description'] = ''
+                test_obj['values'] = {}
+                parent.append(test_obj)
+                parent = all_tests
+
+    tests['all_tests'] = all_tests
+
+    # TODO:
+    # create failed_tests object
+    # get list of debug images
+    # get test case description, errors, and values
 
     run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
     run_file_data = {'meta': meta, 'tests': tests}
@@ -135,39 +161,17 @@ def update_run_log(app, new_data=None):
         json.dump(run_file_data, f, sort_keys=True, indent=True)
 
 
-def create_arg_json():
-    arg_data = {'email': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false', 'label': 'Email results'},
-                'firefox': {'type': 'str', 'value': ['local', 'latest', 'latest-esr', 'latest-beta', 'nightly'],
-                            'default': 'latest-beta', 'label': 'Firefox'},
-                'highlight': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
-                              'label': 'Debug using highlighting'},
-                'locale': {'type': 'str', 'value': 'en-US', 'default': 'en-US', 'label': 'Locale'},
-                'mouse': {'type': 'float', 'value': ['0.0', '0.5', '1.0', '2.0'], 'default': '0.5',
-                          'label': 'Mouse speed'},
-                'override': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
-                             'label': 'Run disabled tests'},
-                'port': {'type': 'int', 'value': ['2000'], 'default': '2000', 'label': 'Local web server port'},
-                'report': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
-                           'label': 'Create TestRail report'},
-                'save': {'type': 'bool', 'value': ['true', 'false'], 'default': 'false',
-                         'label': 'Save profiles to disk'}}
-
-    arg_log_file = os.path.join(parse_args().workdir, 'data', 'all_args.json')
-    with open(arg_log_file, 'w') as f:
-        json.dump(arg_data, f, sort_keys=True, indent=True)
-
-
 def create_target_json():
     master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
     target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
 
     master_test_list = scan_all_tests()
-    tests=master_test_list['tests']
+    tests = master_test_list['tests']
 
     targets = []
     for item in target_list:
         try:
-            app_tests=tests[item]
+            app_tests = tests[item]
             target_module = importlib.import_module('targets.%s.app' % item)
             try:
                 target = target_module.Target()
@@ -179,11 +183,9 @@ def create_target_json():
             logger.error('Problems importing module.')
 
     target_json = {'targets': targets}
-    # print('Target Json is :',target_json)
     target_json_file = os.path.join(parse_args().workdir, 'data', 'targets.json')
     with open(target_json_file, 'w') as f:
         json.dump(target_json, f, sort_keys=True, indent=True)
-
 
 
 def create_test_json(master_test_list):
@@ -198,7 +200,6 @@ def filter_list(original_list, exclude_list):
         if item not in exclude_list:
             new_list.append(item)
     return new_list
-
 
 
 def create_log_object(module, current, fx_args):

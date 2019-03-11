@@ -165,12 +165,8 @@ class PathManager:
 
     @staticmethod
     def get_debug_image_directory():
-        from pathlib import Path
         test_path = os.environ.get('PYTEST_CURRENT_TEST').split(':')[0]
-        parts_count = len(Path(test_path).parts)
-
-        return os.path.join(PathManager.get_current_run_dir(),
-                            os.path.splitext(os.path.join(*Path(test_path).parts[parts_count - 1:]))[0], 'debug_images')
+        return os.path.join(PathManager.get_current_run_dir(), test_path.split('.py')[0], 'debug_images')
 
     @staticmethod
     def get_git_details():
