@@ -93,6 +93,10 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
+        click(NavBar.LIBRARY_MENU)
+
+        click(LibraryMenu.BOOKMARKS_OPTION)
+
         new_modified_bookmark_exists = exists(new_modified_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_modified_bookmark_exists, 'New modified bookmark exists')
 
