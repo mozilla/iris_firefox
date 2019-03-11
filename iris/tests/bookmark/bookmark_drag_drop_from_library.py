@@ -24,13 +24,13 @@ class Test(BaseTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
+        assert_true(self, soap_wiki_opened, 'The test page is opened')
 
         bookmark_page()
 
         stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
+        assert_true(self, stardialog_displayed, 'StarDialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -46,7 +46,7 @@ class Test(BaseTest):
         click(Library.OTHER_BOOKMARKS)
 
         bookmark_exists = exists(wiki_bookmark_logo_pattern)
-        assert_true(self, bookmark_exists, 'Bookmark exists')
+        assert_true(self, bookmark_exists, 'Previously added bookmark exists in Library')
 
         drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR)
 
