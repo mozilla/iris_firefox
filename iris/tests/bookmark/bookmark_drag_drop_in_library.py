@@ -19,13 +19,19 @@ class Test(BaseTest):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         wiki_bookmark_logo_pattern = Pattern('wiki_bookmark_logo.png')
 
+        home_button_exists = exists(NavBar.HOME_BUTTON)
+        assert_true(self, home_button_exists, 'Home button exists')
+
+        home_height, home_width = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
-        point_to_move_wiki_window = find(soap_wiki_tab_pattern).right(SCREEN_WIDTH/3)
-        location_to_shift_wiki_window = find(soap_wiki_tab_pattern).right(SCREEN_WIDTH)
+        point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH/5)
+        location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH)
 
         drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
 
