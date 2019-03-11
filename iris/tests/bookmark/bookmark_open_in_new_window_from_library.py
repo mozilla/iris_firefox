@@ -18,6 +18,7 @@ class Test(BaseTest):
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         wiki_bookmark_logo_pattern = Pattern('wiki_bookmark_logo.png')
+        open_in_new_window_pattern = Pattern('open_in_new_window.png')
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
@@ -30,7 +31,7 @@ class Test(BaseTest):
         bookmark_page()
 
         stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
+        assert_true(self, stardialog_displayed, 'StarDialog opened')
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -46,14 +47,14 @@ class Test(BaseTest):
         click(Library.OTHER_BOOKMARKS)
 
         bookmark_exists = exists(wiki_bookmark_logo_pattern)
-        assert_true(self, bookmark_exists, 'Bookmark exists')
+        assert_true(self, bookmark_exists, 'Previously added bookmark exists in Library')
 
         right_click(soap_wiki_tab_pattern)
 
-        type(Key.DOWN)
-        type(Key.DOWN)
-        type(Key.DOWN)
-        type(Key.ENTER)
+        open_in_new_window_option_exists = exists(open_in_new_window_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, open_in_new_window_option_exists, 'Open in New Window option exists')
+
+        click(open_in_new_window_pattern)
 
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened_from_bookmarks, 'Soap wiki page opened with Open in a New Window from '
