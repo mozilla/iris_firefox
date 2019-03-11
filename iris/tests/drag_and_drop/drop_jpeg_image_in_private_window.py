@@ -45,7 +45,7 @@ class Test(BaseTest):
             file_type_json_pattern = Pattern('file_type_json.png')
 
         DRAG_AND_DROP_DURATION = 3
-        SCROLL_DELAY = 0.5
+        PASTE_DELAY = 0.5
         folderpath = self.get_asset_path('')
 
         new_private_window()
@@ -64,8 +64,7 @@ class Test(BaseTest):
         assert_true(self, drop_jpg_option_selected, 'The drop-jpeg-file changed color to red which indicates that it '
                                                     'has been selected.')
 
-        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
-                                                              SCROLL_DELAY)
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20, 0.5)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
 
         not_matching_message_location = find(not_matching_message_pattern)
@@ -120,7 +119,7 @@ class Test(BaseTest):
             type('2', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
-            type(Key.ENTER, interval=SCROLL_DELAY)
+            type(Key.ENTER, interval=PASTE_DELAY)
 
         if Settings.is_linux():
             json_option_available = exists(file_type_json_pattern)
@@ -135,7 +134,7 @@ class Test(BaseTest):
 
         else:
             type('*')  # Show all files in Windows Explorer
-            type(Key.ENTER, interval=SCROLL_DELAY)
+            type(Key.ENTER, interval=PASTE_DELAY)
 
         select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
