@@ -26,12 +26,11 @@ class Test(BaseTest):
         most_visited_folder_pattern = Pattern('most_visited_bookmarks.png')
         pocket_bookmark_pattern = Pattern('pocket_bookmark_icon.png')
         open_option_pattern = Pattern('open_option.png')
-        iris_tab_pattern = Pattern('iris_tab.png')
 
-        iris_tab_available = exists(iris_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        iris_tab_available = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, iris_tab_available, '\'Iris\' tab available after launching Firefox')
 
-        area_to_click = find(iris_tab_pattern)
+        area_to_click = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         area_to_click.x += 300
         area_to_click.y += 5
 
@@ -64,6 +63,6 @@ class Test(BaseTest):
         website_opened_in_current_tab = exists(pocket_image_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, website_opened_in_current_tab, 'The website is correctly opened in the current tab.')
 
-        bookmark_opened_in_current_tab = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmark_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_false(self, bookmark_opened_in_current_tab,
                      'The page that was previously displayed in the current tab is no longer displayed')
