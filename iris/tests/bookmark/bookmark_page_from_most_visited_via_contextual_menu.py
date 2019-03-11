@@ -61,7 +61,8 @@ class Test(BaseTest):
 
         paste('Focus')
 
-        folders_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER, DEFAULT_FIREFOX_TIMEOUT)
+        folders_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6),
+                                         DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, folders_expander_exists, 'Folders expander is displayed')
 
         click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
