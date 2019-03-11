@@ -57,4 +57,3 @@ class Test(BaseTest):
 
         click(Library.TITLE)
         close_window_control('auxiliary')
-
