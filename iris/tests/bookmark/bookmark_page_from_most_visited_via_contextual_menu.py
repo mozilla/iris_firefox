@@ -66,18 +66,18 @@ class Test(BaseTest):
 
         click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
 
-        bookmarks_toolbar_option_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR,
+        bookmarks_toolbar_option_exists = exists(Library.BOOKMARKS_TOOLBAR,
                                                  DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_option_exists, 'Bookmark toolbar folder option is displayed')
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR)
+        click(Library.BOOKMARKS_TOOLBAR)
 
         tags_field_exists = exists(Bookmarks.StarDialog.TAGS_FIELD, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, tags_field_exists, 'Tags field exists')
 
         click(Bookmarks.StarDialog.TAGS_FIELD)
 
-        type('tag')
+        paste('tag')
 
         type(Key.ENTER)
 
