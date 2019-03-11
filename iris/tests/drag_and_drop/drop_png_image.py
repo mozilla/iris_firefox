@@ -59,8 +59,7 @@ class Test(BaseTest):
         assert_true(self, drop_png_option_selected, 'The drop-png-file changed color to red which indicates that it '
                                                     'has been selected.')
 
-        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, type,
-                                                              (Key.DOWN, KeyModifier.CMD), 20, 1)
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll_down, (5,), 30, 1)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
 
         not_matching_message_location = find(not_matching_message_pattern)
