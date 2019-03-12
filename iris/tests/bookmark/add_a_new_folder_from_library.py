@@ -26,7 +26,8 @@ class Test(BaseTest):
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
         assert_true(self, other_bookmarks_folder_exists, 'Other Bookmarks folder exists')
 
-        location_for_right_click = find(Library.OTHER_BOOKMARKS).right(200)
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
+        location_for_right_click = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 2)
 
         right_click(location_for_right_click)
 
@@ -44,6 +45,7 @@ class Test(BaseTest):
             assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
 
         paste('Iris New Folder')
+
         type(Key.ENTER)
 
         bookmark_exists = exists(iris_new_folder_pattern)
