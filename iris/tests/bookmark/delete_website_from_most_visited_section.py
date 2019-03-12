@@ -51,8 +51,8 @@ class Test(BaseTest):
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        bookmark_page_option_exists = exists(delete_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_page_option_exists, 'Delete option exists')
+        delete_option_exists = exists(delete_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, delete_option_exists, 'Delete option exists')
 
         click(delete_option_pattern)
 
