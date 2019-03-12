@@ -56,7 +56,7 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        bookmark_exists = exists(soap_bookmark_pattern)
+        bookmark_exists = exists(soap_bookmark_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_exists, 'The new bookmark is added in the selected section')
 
         click(Library.TITLE)
