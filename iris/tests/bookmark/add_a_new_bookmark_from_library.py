@@ -16,7 +16,7 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        soap_bookmark_pattern = Pattern('soap_bookmark.png')
+        soap_bookmark_pattern = Pattern('soap_bookmark.png').similar(.6)
         new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
 
         open_library()
