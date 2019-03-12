@@ -28,6 +28,23 @@ class Test(BaseTest):
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
         forget_about_this_site_option_pattern = Pattern('forget_about_this_site_option.png')
 
+        history_sidebar()
+
+        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        assert_true(self, history_sidebar_opened, 'History sidebar opened')
+
+        history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
+        history_sidebar_region = Region(0, history_sidebar_location.y, history_width * 3, SCREEN_HEIGHT / 2)
+
+        today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY)
+        assert_true(self, today_timeline_exists, 'The Today timeline displayed')
+
+        click(Sidebar.HistorySidebar.Timeline.TODAY)
+
+        iris_logo_exists_in_history = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, in_region=history_sidebar_region)
+        assert_true(self, iris_logo_exists_in_history, 'iris_logo_exists_in_history')
+
         open_firefox_menu()
 
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
@@ -52,15 +69,21 @@ class Test(BaseTest):
         right_click(firefox_pocket_bookmark_pattern, 0)
 
         delete_option_exists = exists(forget_about_this_site_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, delete_option_exists, 'Delete option exists')
+        assert_true(self, delete_option_exists, 'Foreget About This Site option exists')
 
         click(forget_about_this_site_option_pattern)
 
+        # Here Iris Logo checked for vanishing from history because of all LocalWeb sites have the same URL
+        # ((_ip_host, _port) + /something) And when the Pocket site forgotten  all LocalWeb will be forgotten also
+
         try:
-            bookmark_forgotten = wait_vanish(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, bookmark_forgotten, ' The website is deleted from the list.')
+            iris_logo_exists_in_history = wait_vanish(LocalWeb.IRIS_LOGO_ACTIVE_TAB, in_region=history_sidebar_region)
+            assert_true(self, iris_logo_exists_in_history, 'The website is removed from the history.')
         except FindError:
-            raise FindError(' The website is not deleted from the list.')
+            raise FindError('The website is not removed from the history.')
+
+        bookmark_forgotten = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_false(self, bookmark_forgotten, 'The website is removed from the Most Visited list.')
 
         restore_firefox_focus()
 
