@@ -4,7 +4,6 @@
 
 
 import difflib
-from typing import List
 
 import pytesseract
 from PIL import ImageEnhance
@@ -24,7 +23,7 @@ cutoffs = {'string': {'min_cutoff': 0.7, 'max_cutoff': 0.9, 'step': 0.1},
 digit_chars = ['.', '%', ',']
 
 
-def _is_similar_result(result_list: List[Rectangle], x: int, y: int, pixels: int):
+def _is_similar_result(result_list, x: int, y: int, pixels: int):
     """Checks if current result is similar to previous results based on pixel proximity."""
     if len(result_list) == 0:
         return False

@@ -5,7 +5,6 @@
 
 import datetime
 import logging
-from typing import List
 
 import cv2
 import numpy as np
@@ -48,7 +47,7 @@ def is_pattern_size_correct(pattern, region):
 
 
 def match_template(pattern: Pattern, region: Rectangle = None,
-                   match_type: MatchTemplateType = MatchTemplateType.SINGLE) -> List[Location]:
+                   match_type: MatchTemplateType = MatchTemplateType.SINGLE):
     """Find a pattern in a Region or full screen
 
     :param Pattern pattern: Image details

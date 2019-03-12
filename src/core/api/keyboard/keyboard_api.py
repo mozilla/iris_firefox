@@ -7,7 +7,6 @@ import ctypes
 import re
 import subprocess
 import time
-from typing import List
 
 import pyautogui
 import pyperclip
@@ -57,7 +56,7 @@ def key_up(key):
         raise ValueError("Unsupported Key input.")
 
 
-def type(text: Key or str = None, modifier: Key or List[Key] = None, interval: int = None):
+def type(text: Key or str = None, modifier=None, interval: int = None):
     """
     :param str || list text: If a string, then the characters to be pressed. If a list, then the key names of the keys
                              to press in order.

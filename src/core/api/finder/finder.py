@@ -4,7 +4,6 @@
 
 
 import time
-from typing import List
 
 from src.core.api.enums import Color
 from src.core.api.enums import MatchTemplateType
@@ -85,7 +84,7 @@ def find(ps: Pattern or str, region: Rectangle = None) -> Location or FindError:
             raise FindError('Unable to find text %s' % ps)
 
 
-def find_all(ps: Pattern or str, region: Rectangle = None) -> List[Location] or FindError:
+def find_all(ps: Pattern or str, region: Rectangle = None):
     """Look for all matches of a Pattern or image.
 
     :param ps: Pattern or String.

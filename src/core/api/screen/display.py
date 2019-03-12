@@ -4,7 +4,6 @@
 
 
 import logging
-from typing import List
 
 import mss
 
@@ -42,7 +41,7 @@ def _get_screen_details(screen_id: int) -> Rectangle:
     return Rectangle()
 
 
-def _get_available_monitors(screen_list: List) -> List:
+def _get_available_monitors(screen_list):
     """Return a list with all the available monitors."""
     res = []
     for screen in screen_list:
