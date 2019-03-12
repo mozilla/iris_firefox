@@ -27,7 +27,8 @@ class Test(BaseTest):
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
         assert_true(self, other_bookmarks_folder_exists, 'Other Bookmarks folder exists')
 
-        location_for_right_click = find(Library.OTHER_BOOKMARKS).right(200)
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
+        location_for_right_click = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 2)
 
         right_click(location_for_right_click)
 
@@ -41,8 +42,10 @@ class Test(BaseTest):
 
         paste('SOAP')
         type(Key.TAB)
+
         paste(LocalWeb.SOAP_WIKI_TEST_SITE)
         type(Key.TAB)
+
         paste('SOAP')
         if Settings.is_mac():
             type(Key.TAB)
@@ -50,6 +53,7 @@ class Test(BaseTest):
             type(Key.TAB)
             type(Key.TAB)
         paste('SOAP')
+
         type(Key.ENTER)
 
         bookmark_exists = exists(soap_bookmark_pattern)
