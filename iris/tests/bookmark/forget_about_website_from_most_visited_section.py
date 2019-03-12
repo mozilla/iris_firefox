@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = ' Delete a website from \'Most Visited\' section'
+        self.meta = 'Forget About a site from \'Most Visited\' section'
         self.test_case_id = '163204'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
@@ -26,7 +26,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
-        delete_option_pattern = Pattern('delete_bookmark.png')
+        forget_about_this_site_option_pattern = Pattern('forget_about_this_site_option.png')
 
         open_firefox_menu()
 
@@ -51,14 +51,14 @@ class Test(BaseTest):
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        delete_option_exists = exists(delete_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        delete_option_exists = exists(forget_about_this_site_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, delete_option_exists, 'Delete option exists')
 
-        click(delete_option_pattern)
+        click(forget_about_this_site_option_pattern)
 
         try:
-            bookmark_deleted = wait_vanish(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, bookmark_deleted, ' The website is deleted from the list.')
+            bookmark_forgotten = wait_vanish(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+            assert_true(self, bookmark_forgotten, ' The website is deleted from the list.')
         except FindError:
             raise FindError(' The website is not deleted from the list.')
 
