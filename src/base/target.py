@@ -7,7 +7,7 @@ import time
 import pytest
 
 from targets.firefox.parse_args import parse_args
-from src.core.util.json_utils import update_run_index, update_run_log
+from src.core.util.json_utils import update_run_index, create_run_log
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
 from targets.firefox.firefox_app.fx_collection import FX_Collection
@@ -55,7 +55,7 @@ class BaseTarget:
         update_run_index(self, True)
         footer = create_footer(self)
         footer.print_report_footer()
-        update_run_log(self)
+        create_run_log(self)
 
         print("\n\n** Test session {} complete **\n".format(session.name))
 

@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-import inspect
+
 import os
 import sys
 
@@ -9,7 +9,6 @@ import git
 import importlib
 import json
 import logging
-import shutil
 
 from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import parse_args
@@ -17,6 +16,33 @@ from src.core.util.path_manager import PathManager
 from src.core.util.test_loader import scan_all_tests
 
 logger = logging.getLogger(__name__)
+
+
+def create_target_json():
+    master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
+    target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
+
+    master_test_list = scan_all_tests()
+    tests = master_test_list['tests']
+
+    targets = []
+    for item in target_list:
+        try:
+            app_tests = tests[item]
+            target_module = importlib.import_module('targets.%s.app' % item)
+            try:
+                target = target_module.Target()
+                targets.append({'name': target.target_name, 'tests': app_tests, 'icon': '%s.png' % item,
+                                'settings': target.cc_settings})
+            except NameError:
+                logger.error('Can\'t find default Target class.')
+        except ModuleNotFoundError:
+            logger.error('Problems importing module.')
+
+    target_json = {'targets': targets}
+    target_json_file = os.path.join(parse_args().workdir, 'data', 'targets.json')
+    with open(target_json_file, 'w') as f:
+        json.dump(target_json, f, sort_keys=True, indent=True)
 
 
 def update_run_index(app, finished=False):
@@ -62,7 +88,7 @@ def update_run_index(app, finished=False):
         json.dump(run_file_data, f, sort_keys=True, indent=True)
 
 
-def update_run_log(app):
+def create_run_log(app):
 
     # TODO:
     # get total number of skipped tests
@@ -129,7 +155,6 @@ def convert_test_list(list, only_failures=False):
     '''
 
     # TODO:
-    # get list of debug images
     # get test case description, errors, and values
 
     test_root = os.path.join(PathManager.get_module_dir(), 'tests')
@@ -159,7 +184,7 @@ def convert_test_list(list, only_failures=False):
                 test_obj['time'] = test.test_duration
                 debug_image_directory = os.path.join(PathManager.get_current_run_dir(), test_path.split('.py')[0], 'debug_images')
                 test_obj['debug_image_directory'] = debug_image_directory
-                test_obj['debug_images'] = []
+                test_obj['debug_images'] = get_list_of_image_names(debug_image_directory)
                 test_obj['description'] = ''
                 test_obj['values'] = {}
                 if only_failures and test.outcome == 'FAILED':
@@ -170,88 +195,10 @@ def convert_test_list(list, only_failures=False):
     return tests
 
 
-def create_target_json():
-    master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
-    target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
-
-    master_test_list = scan_all_tests()
-    tests = master_test_list['tests']
-
-    targets = []
-    for item in target_list:
-        try:
-            app_tests = tests[item]
-            target_module = importlib.import_module('targets.%s.app' % item)
-            try:
-                target = target_module.Target()
-                targets.append({'name': target.target_name, 'tests': app_tests, 'icon': '%s.png' % item,
-                                'settings': target.cc_settings})
-            except NameError:
-                logger.error('Can\'t find default Target class.')
-        except ModuleNotFoundError:
-            logger.error('Problems importing module.')
-
-    target_json = {'targets': targets}
-    target_json_file = os.path.join(parse_args().workdir, 'data', 'targets.json')
-    with open(target_json_file, 'w') as f:
-        json.dump(target_json, f, sort_keys=True, indent=True)
-
-
-def create_test_json(master_test_list):
-    test_log_file = os.path.join(parse_args().workdir, 'data', 'all_tests.json')
-    with open(test_log_file, 'w') as f:
-        json.dump(master_test_list, f, sort_keys=True, indent=True)
-
-
-def filter_list(original_list, exclude_list):
-    new_list = []
-    for item in original_list:
-        if item not in exclude_list:
-            new_list.append(item)
-    return new_list
-
-
-def create_log_object(module, current, fx_args):
-    run_obj = {'name': module.__name__, 'meta': current.meta, 'profile': current.profile, 'module': module.__file__,
-               'profile_path': current.profile_path.profile, 'fx_args': fx_args, 'prefs': current.prefs,
-               'time': int(current.end_time - current.start_time), 'asserts': []}
-
-    outcome = 'PASSED'
-    for result in current.results:
-        if result.outcome is 'FAILED':
-            outcome = result.outcome
-        run_obj['asserts'].append({'outcome': result.outcome, 'message': result.message,
-                                   'expected': result.expected, 'actual': result.actual,
-                                   'error': result.error})
-        run_obj['result'] = outcome
-    return run_obj
-
-
-def update_log_object(run_obj):
-    if os.path.exists(PathManager.get_debug_image_directory()):
-        debug_images = []
-        for root, dirs, files in os.walk(PathManager.get_debug_image_directory()):
+def get_list_of_image_names(path):
+    images = []
+    if os.path.exists(path):
+        for root, dirs, files in os.walk(path):
             for file_name in files:
-                debug_images.append(file_name)
-        run_obj['debug_images'] = sorted(debug_images)
-        run_obj['debug_image_directory'] = PathManager.get_debug_image_directory()
-    return run_obj
-
-
-def append_logs(browser, test_list, master_test_list, passed, failed, skipped, errors, start_time, end_time, tests):
-    update_run_index(browser, {'total': len(test_list), 'failed': len(failed)})
-    failed_tests = {}
-    if len(failed) > 0:
-        for item in failed:
-            for package in master_test_list:
-                for test in master_test_list[package]:
-                    if test["name"] == item:
-                        if failed_tests.get(package) is None:
-                            failed_tests[package] = []
-                        failed_tests[package].append(item)
-
-    data = {'total': len(test_list), 'passed': passed, 'failed': len(failed),
-            'failed_tests': failed_tests, 'skipped': skipped, 'errors': errors,
-            'start_time': int(start_time), 'end_time': int(end_time),
-            'total_time': int(round(end_time - start_time, 2)), 'tests': tests}
-    update_run_log(browser, data)
+                images.append(file_name)
+    return images
