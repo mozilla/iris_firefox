@@ -64,8 +64,8 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        bookmark_added_to_toolbar = exists(LocalWeb.POCKET_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_added_to_toolbar, 'The copied URL is correctly pasted.')
+        url_pasted = exists(LocalWeb.POCKET_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, url_pasted, 'The copied URL is correctly pasted.')
 
 
 
