@@ -63,6 +63,10 @@ def update_run_index(app, finished=False):
 
 
 def update_run_log(app):
+
+    # TODO:
+    # get total number of skipped tests
+
     meta = {'run_id': PathManager.get_run_id(),
             'platform': OSHelper.get_os().value,
             'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
@@ -77,7 +81,7 @@ def update_run_log(app):
     meta['values'] = values
 
     repo = git.Repo(PathManager.get_module_dir())
-    meta['iris_version'] = 1.0
+    meta['iris_version'] = 2.0
     meta['iris_repo'] = repo.working_tree_dir
     meta['iris_branch'] = repo.active_branch.name
     meta['iris_branch_head'] = repo.head.object.hexsha
@@ -85,7 +89,6 @@ def update_run_log(app):
     failed = 0
     passed = 0
     skipped = 0
-    total_duration = 0
 
     for test in app.completed_tests:
         if test.outcome == 'FAILED':
@@ -94,15 +97,6 @@ def update_run_log(app):
             passed = passed + 1
         if test.outcome == 'SKIPPED':
             skipped = skipped + 1
-
-        total_duration = total_duration + test.test_duration
-
-    current_run = {'duration': total_duration,
-                   'failed': failed,
-                   'id': PathManager.get_run_id(),
-                   'locale': app.locale,
-                   'target': parse_args().application,
-                   'total': len(app.completed_tests)}
 
     logger.debug('Updating runs.json with completed run data.')
     meta['total'] = len(app.completed_tests)
@@ -115,14 +109,37 @@ def update_run_log(app):
     meta['total_time'] = app.end_time - app.start_time
 
     tests = {}
-    all_tests = []
-    test_root = os.path.join(PathManager.get_module_dir(), 'tests')
+    tests['all_tests'] = convert_test_list(app.completed_tests)
+    tests['failed_tests'] = convert_test_list(app.completed_tests, only_failures=True)
 
-    for test in app.completed_tests:
-        target_root = test.node_name.split(test_root)[1]
+    run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
+    run_file_data = {'meta': meta, 'tests': tests}
+    with open(run_file, 'w') as f:
+        json.dump(run_file_data, f, sort_keys=True, indent=True)
+
+
+def convert_test_list(list, only_failures=False):
+    '''
+    Takes a flat list of test objects and paths and converts to an
+    object that can be serialized as JSON.
+
+    :param list: List of completed tests
+    :param only_failures: If True, only return failed tests
+    :return:
+    '''
+
+    # TODO:
+    # get list of debug images
+    # get test case description, errors, and values
+
+    test_root = os.path.join(PathManager.get_module_dir(), 'tests')
+    tests = []
+    for test in list:
+        original_path = str(test.node_name)
+        target_root = original_path.split(test_root)[1]
         target = target_root.split('/')[1]
         test_path = target_root.split('/%s/' % target)[1]
-        parent = all_tests
+        parent = tests
         for module in test_path.split('/'):
             test_obj = {}
             test_obj['name'] = module
@@ -145,20 +162,12 @@ def update_run_log(app):
                 test_obj['debug_images'] = []
                 test_obj['description'] = ''
                 test_obj['values'] = {}
-                parent.append(test_obj)
-                parent = all_tests
-
-    tests['all_tests'] = all_tests
-
-    # TODO:
-    # create failed_tests object
-    # get list of debug images
-    # get test case description, errors, and values
-
-    run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
-    run_file_data = {'meta': meta, 'tests': tests}
-    with open(run_file, 'w') as f:
-        json.dump(run_file_data, f, sort_keys=True, indent=True)
+                if only_failures and test.outcome == 'FAILED':
+                    parent.append(test_obj)
+                elif not only_failures:
+                    parent.append(test_obj)
+                parent = tests
+    return tests
 
 
 def create_target_json():
