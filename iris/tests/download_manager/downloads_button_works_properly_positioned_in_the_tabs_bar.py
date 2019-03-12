@@ -63,7 +63,7 @@ class Test(BaseTest):
         for pattern in downloads_library_list:
             expected = exists(pattern, 50)
             assert_true(self, expected, '%s file found in the Library, Downloads section.'
-                        % str(pattern.get_filename()).replace('_library_downloads.png', ''))
+                        % str(pattern.get_filename()).split('_')[0])
 
         click_window_control('close')
         close_window()
