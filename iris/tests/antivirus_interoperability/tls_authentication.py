@@ -59,24 +59,25 @@ class Test(BaseTest):
                                         SCREEN_HEIGHT / 10)
         click(download_button_pattern, in_region=tls_certificate_region)
 
-        certificate_trust_dialog_opened = exists(DownloadDialog.OK_BUTTON)
+        certificate_trust_dialog_opened = exists(DownloadDialog.OK_BUTTON, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, certificate_trust_dialog_opened, 'Certificate trust dialog opened')
 
         click(DownloadDialog.OK_BUTTON)
 
         navigate('about:preferences#privacy')
 
-        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+                                            DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, preferences_privacy_opened, 'Preferences opened')
 
         paste('Certificates')
 
-        view_certificates_button_exists = exists(view_certificates_button_pattern)
+        view_certificates_button_exists = exists(view_certificates_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, view_certificates_button_exists, 'View Certificates button displayed')
 
         click(view_certificates_button_pattern)
 
-        certificate_manager_window_opened = exists(certificate_manager_window_title_pattern)
+        certificate_manager_window_opened = exists(certificate_manager_window_title_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, certificate_manager_window_opened, 'View Certificates window displayed')
 
         certificate_manager_window_location = find(certificate_manager_window_title_pattern).below(200)
