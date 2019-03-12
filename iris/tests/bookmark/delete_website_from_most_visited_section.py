@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Copy a website URL from \'Most Visited\' section '
-        self.test_case_id = '163203'
+        self.meta = ' Delete a website from \'Most Visited\' section'
+        self.test_case_id = '163204'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
         self.exclude = [Platform.MAC]
@@ -26,7 +26,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
-        copy_option_pattern = Pattern('copy_option.png')
+        delete_option_pattern = Pattern('delete_bookmark.png')
 
         open_firefox_menu()
 
@@ -51,21 +51,18 @@ class Test(BaseTest):
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        bookmark_page_option_exists = exists(copy_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_page_option_exists, 'Copy option exists')
+        bookmark_page_option_exists = exists(delete_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmark_page_option_exists, 'Delete option exists')
 
-        click(copy_option_pattern)
+        click(delete_option_pattern)
+
+        try:
+            bookmark_deleted = wait_vanish(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+            assert_true(self, bookmark_deleted, ' The website is deleted from the list.')
+        except FindError:
+            raise FindError(' The website is not deleted from the list.')
 
         restore_firefox_focus()
-
-        select_location_bar()
-
-        edit_paste()
-
-        type(Key.ENTER)
-
-        bookmark_added_to_toolbar = exists(LocalWeb.POCKET_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_added_to_toolbar, 'The copied URL is correctly pasted.')
 
 
 
