@@ -443,7 +443,7 @@ def new_tab():
         type(text='t', modifier=KeyModifier.CMD)
     else:
         type(text='t', modifier=KeyModifier.CTRL)
-    time.sleep(Settings.FX_DELAY)
+    time.sleep(Settings.UI_DELAY)
 
 
 def new_window():

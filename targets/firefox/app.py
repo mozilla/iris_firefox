@@ -5,6 +5,8 @@
 import logging
 
 from src.base.target import *
+from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
 from targets.firefox.parse_args import parse_args
 # from targets.firefox.testrail.testcase_results import TestRailTests
 
@@ -48,8 +50,8 @@ class Target(BaseTarget):
         self.browser.start()
         self.values = {'fx_version': self.browser.version, 'fx_build_id': self.browser.build_id,
                        'channel': self.browser.channel}
-        # from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
-        # maximize_window()
+        confirm_firefox_launch()
+        maximize_window()
 
         def teardown():
             if self.browser.runner and self.browser.runner.process_handler:

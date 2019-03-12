@@ -24,7 +24,7 @@ class Region:
      """
 
     def __init__(self, x_start: int = 0, y_start: int = 0, width: int = 0, height: int = 0):
-        self._area: Rectangle = Rectangle(x_start, y_start, width, height)
+        self._area = Rectangle(x_start, y_start, width, height)
         self.x = x_start
         self.y = y_start
         self.width = width

@@ -93,7 +93,7 @@ def find_all(ps: Pattern or str, region: Rectangle = None) -> List[Location] or 
     :return: Location object or FindError.
     """
     if isinstance(ps, Pattern):
-        images_found: List[Location] = match_template(ps, region, MatchTemplateType.MULTIPLE)
+        images_found = match_template(ps, region, MatchTemplateType.MULTIPLE)
         if len(images_found) > 0:
             if parse_args().highlight:
                 highlight(region=region, ps=ps, location=images_found)
@@ -113,7 +113,7 @@ def find_all(ps: Pattern or str, region: Rectangle = None) -> List[Location] or 
             raise FindError('Unable to find text %s' % ps)
 
 
-def wait(ps: Pattern or str, timeout: float = None, region: Rectangle = None) -> bool or FindError:
+def wait(ps, timeout = None, region = None) -> bool or FindError:
     """Verify that a Pattern or str appears.
 
     :param ps: String or Pattern.

@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 
-def is_pattern_size_correct(pattern: Pattern, region: Rectangle):
+def is_pattern_size_correct(pattern, region):
     """validates that the pattern is inside the region."""
     p_width, p_height = pattern.get_size()
     r_width = region.width
@@ -95,7 +95,7 @@ def match_template(pattern: Pattern, region: Rectangle = None,
     return locations_list
 
 
-def image_find(pattern: Pattern, timeout: float = None, region: Rectangle = None) -> None or Location:
+def image_find(pattern, timeout = None, region = None):
     """ Search for an image in a Region or full screen.
 
     :param Pattern pattern: Name of the searched image.
@@ -103,8 +103,8 @@ def image_find(pattern: Pattern, timeout: float = None, region: Rectangle = None
     :param Region region: Region object.
     :return: Location.
     """
-    if not is_pattern_size_correct(pattern, region):
-        return None
+    # if not is_pattern_size_correct(pattern, region):
+    #     return None
 
     if timeout is None:
         timeout = Settings.auto_wait_timeout

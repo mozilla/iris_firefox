@@ -8,10 +8,6 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     fx_values = pytest.mark.VALUES(
-        channel='beta',
-        # exclude='osx',
-        # profile='new',
-        # fx_version="63",
         test_case_id="119484",
         test_suite_id="1902",
     )
@@ -25,7 +21,7 @@ class Test(FirefoxTest):
     @details
     def test_run(self):
         cnn_tab_pattern = Pattern('cnn_tab.png')
-        cnn_icon_pattern = Pattern('cnn_icon@2x.png')
+        cnn_icon_pattern = Pattern('cnn_icon.png')
         facebook_tab_pattern = Pattern('facebook_tab.png')
 
 
