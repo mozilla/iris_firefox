@@ -51,8 +51,8 @@ class Test(BaseTest):
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        bookmark_page_option_exists = exists(copy_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_page_option_exists, 'Copy option exists')
+        copy_option_exists = exists(copy_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, copy_option_exists, 'Copy option exists')
 
         click(copy_option_pattern)
 
@@ -66,7 +66,3 @@ class Test(BaseTest):
 
         url_pasted = exists(LocalWeb.POCKET_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, url_pasted, 'The copied URL is correctly pasted.')
-
-
-
-
