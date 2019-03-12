@@ -10,8 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Bookmark a page from the \'Most Visited\' section using the option from the contextual menu'
-        self.test_case_id = '163202'
+        self.meta = 'Copy a website URL from \'Most Visited\' section '
+        self.test_case_id = '163203'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
         self.exclude = [Platform.MAC]
@@ -26,7 +26,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
-        bookmark_page_option_pattern = Pattern('context_menu_bookmark_page_option.png')
+        copy_option_pattern = Pattern('copy_option.png')
 
         open_firefox_menu()
 
@@ -51,39 +51,21 @@ class Test(BaseTest):
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        bookmark_page_option_exists = exists(bookmark_page_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_page_option_exists, 'Bookmark page option exists')
+        bookmark_page_option_exists = exists(copy_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmark_page_option_exists, 'Copy option exists')
 
-        click(bookmark_page_option_pattern)
+        click(copy_option_pattern)
 
-        new_bookmark_window_exists = exists(Bookmarks.StarDialog.NAME_FIELD, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
+        restore_firefox_focus()
 
-        paste('Focus')
+        select_location_bar()
 
-        folders_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6),
-                                         DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, folders_expander_exists, 'Folders expander is displayed')
-
-        click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
-
-        bookmarks_toolbar_option_exists = exists(Library.BOOKMARKS_TOOLBAR,
-                                                 DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmarks_toolbar_option_exists, 'Bookmark toolbar folder option is displayed')
-
-        click(Library.BOOKMARKS_TOOLBAR)
-
-        tags_field_exists = exists(Bookmarks.StarDialog.TAGS_FIELD, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, tags_field_exists, 'Tags field exists')
-
-        click(Bookmarks.StarDialog.TAGS_FIELD)
-
-        paste('tag')
+        edit_paste()
 
         type(Key.ENTER)
 
-        bookmark_added_to_toolbar = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_added_to_toolbar, 'The bookmark is correctly added to Bookmarks Toolbar.')
+        bookmark_added_to_toolbar = exists(LocalWeb.POCKET_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmark_added_to_toolbar, 'The copied URL is correctly pasted.')
 
 
 
