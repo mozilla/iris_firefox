@@ -9,7 +9,7 @@ class LocationBar(object):
     IDENTITY_ICON = Pattern('identity_icon.png')
 
     HISTORY_DROPMARKER = Pattern('historydropmarker.png')
-    PAGE_ACTION_BUTTON = Pattern('pageActionButton.png')
+    PAGE_ACTION_BUTTON = Pattern('pageactionbutton.png')
     POCKET_BUTTON = Pattern('pocket_button.png')
     STAR_BUTTON_UNSTARRED = Pattern('star_button_unstarred.png')
     STAR_BUTTON_STARRED = Pattern('star_button_starred.png')
@@ -24,11 +24,11 @@ class LocationBar(object):
 
     TRACKING_PROTECTION_SHIELD_ACTIVATED = Pattern('tracking-protection-icon_enabled.png')
     TRACKING_PROTECTION_SHIELD_DEACTIVATED = Pattern('tracking-protection-icon_disabled.png')
-    NEW_FIREFOX_CONTENT_BLOCKING_LABEL = Pattern('UITourTooltipTitle_new_in_firefox_content_blocking.png')
-    NEXT_BUTTON_TOUR_FIRST_STEP = Pattern('UITourTooltip_next_button.png')
+    NEW_FIREFOX_CONTENT_BLOCKING_LABEL = Pattern('uitourtooltiptitle_new_in_firefox_content_blocking.png')
+    NEXT_BUTTON_TOUR_FIRST_STEP = Pattern('uitourtooltip_next_button.png')
     TRACKING_ATTEMPTS_BLOCKED_MESSAGE = Pattern('tracking_attempts_blocked_message.png')
     TRACKING_CONTENT_DETECTED_MESSAGE = Pattern('tracking_content_detected_message.png')
 
-    NEW_FIREFOX_CONTENT_BLOCKING_LABEL = Pattern('UITourTooltipTitle_new_in_firefox_content_blocking.png')
-    NEXT_BUTTON_TOUR_FIRST_STEP = Pattern('UITourTooltip_next_button.png')
+    NEW_FIREFOX_CONTENT_BLOCKING_LABEL = Pattern('uitourtooltiptitle_new_in_firefox_content_blocking.png')
+    NEXT_BUTTON_TOUR_FIRST_STEP = Pattern('uitourtooltip_next_button.png')
 
