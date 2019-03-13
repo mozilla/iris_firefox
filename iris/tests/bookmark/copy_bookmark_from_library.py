@@ -24,12 +24,12 @@ class Test(BaseTest):
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
+        assert_true(self, soap_wiki_opened, 'The test page is opened')
 
         bookmark_page()
 
         stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
+        assert_true(self, stardialog_displayed, 'Stardialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -39,13 +39,13 @@ class Test(BaseTest):
 
         open_library()
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.OTHER_BOOKMARKS, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
         click(Library.OTHER_BOOKMARKS)
 
         bookmark_exists = exists(soap_wiki_tab_pattern)
-        assert_true(self, bookmark_exists, 'Bookmark exists')
+        assert_true(self, bookmark_exists, 'Previously added bookmarks are displayed')
 
         right_click(soap_wiki_tab_pattern)
 
@@ -54,9 +54,13 @@ class Test(BaseTest):
 
         click(copy_option_pattern)
 
+        bookmarks_toolbar_folder_exists = exists(Library.BOOKMARKS_TOOLBAR)
+        assert_true(self, bookmarks_toolbar_folder_exists, 'Bookmarks toolbar folder exists')
+
         click(Library.BOOKMARKS_TOOLBAR)
 
-        location_to_paste = find(Library.OTHER_BOOKMARKS).right(200)
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
+        location_to_paste = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 2)
 
         right_click(location_to_paste)
 
