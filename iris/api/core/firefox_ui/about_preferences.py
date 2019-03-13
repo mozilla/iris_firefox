@@ -12,9 +12,9 @@ class AboutPreferences(object):
 
     class Privacy(object):
         CONTENT_TRACKING_TRACKERS_CHECKBOX_SELECTED = \
-            Pattern('contentBlockingTrackingProtectionCheckbox_checkbox_selected.png')
+            Pattern('contentblockingtrackingprotectioncheckbox_checkbox_selected.png')
         CONTENT_TRACKING_TRACKERS_CHECKBOX_NOT_SELECTED = \
-            Pattern('contentBlockingTrackingProtectionCheckbox_checkbox_not_selected.png')
+            Pattern('contentblockingtrackingprotectioncheckbox_checkbox_not_selected.png')
         CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_SELECTED = \
             Pattern('content-blocking-tracking-protection-option-always_radio_selected.png')
         CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED \
@@ -24,12 +24,12 @@ class AboutPreferences(object):
         CONTENT_TRACKING_TRACKERS_ONLY_PRIVATE_WINDOWS_RADIO_NOT_SELECTED = \
             Pattern('content-blocking-tracking-protection-option-private_radio_not_selected.png')
 
-        TRACKING_PROTECTION_EXCEPTIONS_BUTTON = Pattern('trackingProtectionExceptions_button.png')
+        TRACKING_PROTECTION_EXCEPTIONS_BUTTON = Pattern('trackingprotectionexceptions_button.png')
 
         class Exceptions(object):
             EXCEPTIONS_CONTENT_BLOCKING_LABEL = Pattern('exceptions_content_blocking_label.png')
-            REMOVE_WEBSITE_BUTTON = Pattern('remove_website_removePermission_button.png')
-            SAVE_CHANGES_BUTTON = Pattern('save_changes_btnApplyChanges_button.png')
+            REMOVE_WEBSITE_BUTTON = Pattern('remove_website_removepermission_button.png')
+            SAVE_CHANGES_BUTTON = Pattern('save_changes_btnapplychanges_button.png')
 
 
 
