@@ -19,6 +19,8 @@ class Test(BaseTest):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         copy_option_pattern = Pattern('copy_option.png')
         paste_option_pattern = Pattern('paste_option.png')
+        other_bookmarks_option_pattern = Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6)
+        bookmarks_toolbar_option = Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -27,15 +29,15 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        other_bookmarks_option_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        other_bookmarks_option_exists = exists(other_bookmarks_option_pattern)
         assert_true(self, other_bookmarks_option_exists, 'Other Bookmarks option exists')
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+        click(other_bookmarks_option_pattern, 0)
 
-        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        wiki_bookmark_toolbar_folder_displayed = exists(bookmarks_toolbar_option)
         assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(bookmarks_toolbar_option)
 
         done_button_exists = exists(Bookmarks.StarDialog.DONE)
         assert_true(self, done_button_exists, 'Done button exists')
@@ -58,7 +60,7 @@ class Test(BaseTest):
 
         open_library()
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.OTHER_BOOKMARKS, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
         maximize_window()
@@ -77,7 +79,5 @@ class Test(BaseTest):
 
         bookmark_pasted = exists(soap_wiki_tab_pattern)
         assert_true(self, bookmark_pasted, 'Bookmark is correctly copied in the selected session')
-
-        click(Library.TITLE)
 
         close_window_control('auxiliary')
