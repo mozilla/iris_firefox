@@ -19,6 +19,8 @@ class Test(BaseTest):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         delete_bookmark_pattern = Pattern('delete_bookmark.png')
 
+        stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -26,10 +28,10 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT, stardialog_region)
         assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
 
-        click(Bookmarks.StarDialog.DONE)
+        click(Bookmarks.StarDialog.DONE, 0, stardialog_region)
 
         new_tab()
         select_tab(1)
