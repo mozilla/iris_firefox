@@ -63,7 +63,7 @@ class Test(BaseTest):
         library_opened = exists(Library.OTHER_BOOKMARKS, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
-        maximize_window()
+        maximize_window_control('auxiliary')
 
         other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
         location_to_paste = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 2)
