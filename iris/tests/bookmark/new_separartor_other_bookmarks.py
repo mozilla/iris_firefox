@@ -51,8 +51,6 @@ class Test(BaseTest):
 
         click(new_separator_option_pattern)
 
-        hover(firefox_bookmark_top_menu_pattern, DEFAULT_SYSTEM_DELAY)
-
         separator_in_front_bookmark = exists(separator_in_front_bookmark_pattern)
         assert_true(self, separator_in_front_bookmark, 'Separator is properly displayed in front of selected bookmark')
 
