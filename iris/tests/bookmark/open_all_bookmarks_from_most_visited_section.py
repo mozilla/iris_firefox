@@ -26,23 +26,13 @@ class Test(BaseTest):
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
         open_all_in_tabs_option_pattern = Pattern('open_all_in_tabs.png')
+        yahoo_logo_pattern = Pattern('yahoo_logo.png')
+        google_logo_pattern = Pattern('google_logo.png')
+        el_pais_logo_pattern = Pattern('el_pais_logo.png')
 
-        # history_sidebar()
-        #
-        # history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
-        # assert_true(self, history_sidebar_opened, 'History sidebar opened')
-        #
-        # history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
-        # history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
-        # history_sidebar_region = Region(0, history_sidebar_location.y, history_width * 3, SCREEN_HEIGHT / 2)
-        #
-        # today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY)
-        # assert_true(self, today_timeline_exists, 'The Today timeline displayed')
-        #
-        # click(Sidebar.HistorySidebar.Timeline.TODAY)
-        #
-        # iris_logo_exists_in_history = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, in_region=history_sidebar_region)
-        # assert_true(self, iris_logo_exists_in_history, 'iris_logo_exists_in_history')
+        tabs = [google_logo_pattern, LocalWeb.IRIS_LOGO_ACTIVE_TAB, LocalWeb.POCKET_LOGO,
+                LocalWeb.MOZILLA_LOGO, LocalWeb.FOCUS_LOGO, LocalWeb.FIREFOX_LOGO, LocalWeb.IRIS_LOGO_ACTIVE_TAB,
+                el_pais_logo_pattern, el_pais_logo_pattern, yahoo_logo_pattern]
 
         open_firefox_menu()
 
@@ -62,31 +52,27 @@ class Test(BaseTest):
 
         click(firefox_menu_most_visited_pattern)
 
-        # firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        # assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
-        #
-        # right_click(firefox_pocket_bookmark_pattern, 0)
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
 
         open_all_in_tabs_option_exists = exists(open_all_in_tabs_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_all_in_tabs_option_exists, 'Open All in Tabs option exists')
 
         click(open_all_in_tabs_option_pattern)
 
-        # Here Iris Logo checked for vanishing from history because of all LocalWeb sites have the same URL
-        # ((_ip_host, _port) + /something) And when the Pocket site forgotten  all LocalWeb will be forgotten also
+        select_tab(2)
 
-        # try:
-        #     iris_logo_exists_in_history = wait_vanish(LocalWeb.IRIS_LOGO_ACTIVE_TAB, in_region=history_sidebar_region)
-        #     assert_true(self, iris_logo_exists_in_history, 'The website is removed from the history.')
-        # except FindError:
-        #     raise FindError('The website is not removed from the history.')
-        #
-        # bookmark_forgotten = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        # assert_false(self, bookmark_forgotten, 'The website is removed from the Most Visited list.')
+        for tab in tabs:
+            num = tabs.index(tab) + 1
+            site_from_list_opened = exists(tab, DEFAULT_SITE_LOAD_TIMEOUT)
+            assert_true(self, site_from_list_opened, 'The website #' + str(num) + ' from \'Most Visited\' '
+                                                                                  'section is opened')
+            next_tab()
 
-        time.sleep(60)
+        all_websites_are_opened = exists(LocalWeb.IRIS_LOGO)
+        assert_true(self, all_websites_are_opened, 'All the websites from the Most visited section are opened in '
+                                                   'separate tabs, in the same window.')
 
-        restore_firefox_focus()
 
 
 
