@@ -57,7 +57,7 @@ class BaseTarget:
         update_run_index(self, True)
         footer = create_footer(self)
         footer.print_report_footer()
-        create_run_log(self)
+        # create_run_log(self)
 
         logger.info("** Test session {} complete **".format(session.name))
 

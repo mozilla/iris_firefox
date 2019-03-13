@@ -50,6 +50,7 @@ class _Settings:
     DEFAULT_HIGHLIGHT_THICKNESS = 2
     DEFAULT_MOUSE_SCROLL_STEP = 100
     UI_DELAY = 1
+    DEFAULT_UI_DELAY_LONG = 2.5
 
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
                  move_mouse_delay=DEFAULT_MOVE_MOUSE_DELAY, click_delay=DEFAULT_CLICK_DELAY,
