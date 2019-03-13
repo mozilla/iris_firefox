@@ -25,7 +25,7 @@ class Test(BaseTest):
         pocket_logo_pattern = LocalWeb.POCKET_LOGO
         bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         most_visited_toolbar_bookmarks_folder_pattern = Pattern('drag_area.png')
-        pocket_bookmark_pattern = Pattern('pocket_toolbar_bookmark.png')
+        pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
         iris_tab_pattern = Pattern('iris_tab.png')
 
         area_to_click = find(iris_tab_pattern)
