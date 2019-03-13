@@ -32,10 +32,12 @@ class Test(BaseTest):
         assert_true(self, firefox_menu_opened, 'Firefox menu is opened')
 
         click(bookmarks_firefox_menu_pattern)
+
         bookmarks_menu_opened = exists(other_bookmarks_pattern)
         assert_true(self, bookmarks_menu_opened, 'Bookmarks menu is opened')
 
         click(other_bookmarks_pattern)
+
         other_bookmarks_displayed = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, other_bookmarks_displayed, 'Other bookmarks list is displayed')
 
@@ -46,6 +48,7 @@ class Test(BaseTest):
         hover(Location(SCREEN_WIDTH, firefox_bookmark_item_y))
 
         right_click(firefox_bookmark_top_menu_pattern)
+
         context_menu_opened = exists(new_separator_option_pattern)
         assert_true(self, context_menu_opened, 'Bookmark context menu is displayed')
 
