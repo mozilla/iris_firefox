@@ -25,7 +25,7 @@ class Test(BaseTest):
         amazon_bing_location_bar_pattern = Pattern('amazon_bing_location_bar.png')
         amazon_bing_content_search_pattern = Pattern('amazon_bing_content_search.png')
         google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
-        amazon_bing_search_bar_pattern = Pattern('amazon_bing_search_bar.png')
+        amazon_bing_search_bar_pattern = Pattern('amazon_bing_search_bar.png').similar(0.6)
 
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
@@ -43,6 +43,7 @@ class Test(BaseTest):
 
         # Select a search engine from the One-click search engines list and and move its position up in the list via
         # drag & drop.
+        time.sleep(DEFAULT_UI_DELAY)
         paste('one-click')
 
         expected = exists(search_engine_pattern, 10)
