@@ -50,6 +50,23 @@ def assert_contains(test_case, actual, expected, message):
         raise AssertionError
 
 
+def assert_not_equal(test_case, actual, expected, message):
+    """
+    :param test_case: Instance of BaseTest class.
+    :param actual: Actual result.
+    :param expected: Expected result.
+    :param message: Text message.
+    :return: None.
+    """
+    try:
+        assert actual != expected
+        test_case.add_results(Result('PASSED', message, actual, expected, None))
+    except AssertionError:
+        test_case.add_results(
+            Result('FAILED', message, actual, expected, print_error(format_stack(traceback.extract_stack()))))
+        raise AssertionError
+
+
 def assert_true(test_case, actual, message):
     """Call the assert_equal() method with expected result TRUE.
 
