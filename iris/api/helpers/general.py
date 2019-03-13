@@ -941,6 +941,24 @@ def open_about_firefox():
         type(Key.ENTER)
 
 
+def open_bookmarks_toolbar():
+    """ Open the Bookmarks Toolbar using the context menu from the navigation bar """
+
+    home_button = NavBar.HOME_BUTTON
+    w, h = home_button.get_size()
+    horizontal_offset = w * 1.7
+    navbar_context_menu = home_button.target_offset(horizontal_offset, 0)
+
+    try:
+        right_click(navbar_context_menu)
+        click(NavBar.ContextMenu.BOOKMARKS_TOOLBAR)
+        logger.debug('Click is performed successfully on Bookmarks Toolbar option from navigation bar context menu.')
+    except FindError:
+        raise APIHelperError('Could not open the Bookmarks Toolbar using context menu from the navigation bar.')
+
+    restore_firefox_focus()
+
+
 def open_library_menu(option):
     """Open the Library menu with an option as argument.
 

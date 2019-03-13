@@ -33,3 +33,6 @@ class NavBar(object):
     CUSTOM_DOWNLOADS_BUTTON = Pattern('custom_downloads_button.png')
     CUSTOM_DOWNLOADS_BUTTON_BLUE = Pattern('custom_downloads_button_blue.png')
     BAR = Pattern('new_place.png')
+
+    class ContextMenu(object):
+        BOOKMARKS_TOOLBAR = Pattern('navbar_context_menu_bookmarks_toolbar.png')
