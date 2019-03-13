@@ -32,47 +32,52 @@ class Test(BaseTest):
             type(Key.ENTER)
 
     def run(self):
-        soap_wiki_page_article_header_pattern = Pattern('wiki_article_header.png')
         new_tab_highlighted_with_theme_applied_pattern = Pattern('new_tab_highlighted_theme_applied.png')
-        adblock_icon_pattern = Pattern('adblock_icon.png')
-        addon_file_icon_pattern = Pattern('addon_file_icon.png')
-        home_icon_with_applied_theme_pattern = Pattern('home_icon_theme_applied.png')
-        theme_file_icon_pattern = Pattern('theme_file_icon.png')
-        popup_open_button_pattern = Pattern('popup_open_button.png')
         load_temporary_addon_button_pattern = Pattern('load_temporary_addon_button.png')
+        home_icon_with_applied_theme_pattern = Pattern('home_icon_theme_applied.png')
+        soap_wiki_page_article_header_pattern = Pattern('wiki_article_header.png')
+        popup_open_button_pattern = Pattern('popup_open_button.png')
+        addon_file_icon_pattern = Pattern('addon_file_icon.png')
+        theme_file_icon_pattern = Pattern('theme_file_icon.png')
+        adblock_icon_pattern = Pattern('adblock_icon.png')
 
         navigate('about:debugging')
-        debugging_page_loaded = exists(load_temporary_addon_button_pattern, DEFAULT_SYSTEM_DELAY)
+        debugging_page_loaded = exists(load_temporary_addon_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, debugging_page_loaded,
-                    'Debugging page is successfully loaded and contains \'Load temporary addon\' button.')
+                    'Debugging page is successfully loaded and contains \'Load temporary add-on\' button.')
 
         click(load_temporary_addon_button_pattern)
-        popup_opened = exists(popup_open_button_pattern, DEFAULT_SYSTEM_DELAY)
+
+        popup_opened = exists(popup_open_button_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened')
 
         self.open_test_case_assets_folder_in_file_manager()
-        theme_file_is_available = exists(theme_file_icon_pattern, DEFAULT_SYSTEM_DELAY)
+        theme_file_is_available = exists(theme_file_icon_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, theme_file_is_available, 'Theme file is available.')
 
         click(theme_file_icon_pattern)
+
         type(Key.ENTER)
-        theme_applied = exists(home_icon_with_applied_theme_pattern, DEFAULT_SYSTEM_DELAY)
+        theme_applied = exists(home_icon_with_applied_theme_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, theme_applied, 'Theme successfully applied.')
 
         click(load_temporary_addon_button_pattern)
-        popup_opened = exists(popup_open_button_pattern, DEFAULT_SYSTEM_DELAY)
+
+        popup_opened = exists(popup_open_button_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened.')
 
-        addon_file_is_available = exists(addon_file_icon_pattern, DEFAULT_SYSTEM_DELAY)
-        assert_true(self, addon_file_is_available, 'Addon file is available.')
+        addon_file_is_available = exists(addon_file_icon_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, addon_file_is_available, 'Add-on file is available.')
 
         click(addon_file_icon_pattern)
+
         type(Key.ENTER)
-        addon_installed = exists(adblock_icon_pattern, DEFAULT_SYSTEM_DELAY)
-        assert_true(self, addon_installed, 'Addon successfully installed.')
+        addon_installed = exists(adblock_icon_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, addon_installed, 'Add-on successfully installed.')
 
         click(home_icon_with_applied_theme_pattern)
-        new_tab_opened = exists(new_tab_highlighted_with_theme_applied_pattern, DEFAULT_SYSTEM_DELAY)
+
+        new_tab_opened = exists(new_tab_highlighted_with_theme_applied_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_tab_opened, 'The \'about:newtab\' page is opened.')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
