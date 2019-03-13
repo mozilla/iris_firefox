@@ -58,7 +58,7 @@ class Test(BaseTest):
         open_all_in_tabs_option_exists = exists(open_all_in_tabs_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_all_in_tabs_option_exists, 'Open All in Tabs option exists')
 
-        click(open_all_in_tabs_option_pattern)
+        click(open_all_in_tabs_option_pattern, 0)
 
         select_tab(2)
 
