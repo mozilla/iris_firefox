@@ -18,7 +18,6 @@ class Test(BaseTest):
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         separator_added_pattern = Pattern('separator_added.png')
-        separator_pattern = Pattern('separator_highlighted.png')
         separator_deleted_pattern = Pattern('separator_deleted.png')
         delete_option_pattern = Pattern('delete_bookmark.png')
 
@@ -70,7 +69,7 @@ class Test(BaseTest):
         separator_added = exists(separator_added_pattern)
         assert_true(self, separator_added, 'A new separator is displayed above the selected bookmark.')
 
-        right_click(separator_pattern)
+        right_click(separator_added_pattern)
 
         delete_option_displayed = exists(delete_option_pattern)
         assert_true(self, delete_option_displayed, 'Delete option displayed')
