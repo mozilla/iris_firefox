@@ -5,7 +5,8 @@
 
 class TestResult(object):
 
-    def __init__(self, node_name, outcome, message, actual, expected, error, line, test_duration):
+    def __init__(self, item, node_name, outcome, message, actual, expected, error, line, traceback, test_duration):
+        self.item = item
         self.node_name = node_name
         self.outcome = outcome
         self.message = message
@@ -13,6 +14,7 @@ class TestResult(object):
         self.actual = actual
         self.error = error
         self.line = line
+        self.traceback = traceback
         self.test_duration = test_duration
 
 
@@ -23,28 +25,27 @@ def create_result_object(assert_instance: tuple, start_time, end_time):
     :param end_time:Test End Time
     :return: Test_Result object
     """
+    result = None
 
     if assert_instance.__getitem__(1) == 'FAILED':
-        assert_object = assert_instance.__getitem__(0)
+        assert_object = assert_instance.__getitem__(2)
         assert_info = normalize_assert(assert_object)
-
-        result = TestResult(assert_info.get('node_name'), assert_instance.__getitem__(1), assert_info.get('message'),
-                            assert_info.get('actual'), assert_info.get('expected'),
-                            assert_info.get('error'), assert_info.get('line'), end_time - start_time)
+        result = TestResult(assert_instance.__getitem__(0), assert_info.get('node_name'), assert_instance.__getitem__(1),
+                            assert_info.get('message'), assert_info.get('actual'), assert_info.get('expected'),
+                            assert_info.get('error'), assert_info.get('line'),
+                            '\n  '.join(map(str, ['Traceback (most recent call last):'] + assert_object.traceback
+                                            + ['%s: %s' % (assert_info.get('error'), assert_info.get('message'))])),
+                            end_time - start_time)
     elif assert_instance.__getitem__(1) == 'PASSED':
-
         test_item = assert_instance.__getitem__(0).__dict__
-
-        result = TestResult(test_item.get('fspath'), assert_instance.__getitem__(1), None,
-                            None, None,
-                            None, None, end_time - start_time)
+        result = TestResult(assert_instance.__getitem__(0), test_item.get('fspath'),
+                            assert_instance.__getitem__(1), None, None, None,
+                            None, None, None, end_time - start_time)
     elif assert_instance.__getitem__(1) == 'SKIPPED':
         test_item = assert_instance.__getitem__(0).__dict__
-
-        result = TestResult(test_item.get('fspath'), assert_instance.__getitem__(1), None,
-                            None, None,
-                            None, None, end_time - start_time)
-
+        result = TestResult(assert_instance.__getitem__(0), test_item.get('fspath'),
+                            assert_instance.__getitem__(1), None, None, None,
+                            None, None, None, end_time - start_time)
     return result
 
 
@@ -54,7 +55,6 @@ def normalize_assert(assert_object):
     :return:result_map  ict
 
     """
-
     keys = ['node_name', 'line', 'error', 'message']
     values = str(assert_object).split(':')
 
@@ -72,9 +72,7 @@ def normalize_assert(assert_object):
             result_map.update(actual)
             result_map.update(expected)
 
-
     except AssertionError as e:
         raise e
-
 
     return result_map

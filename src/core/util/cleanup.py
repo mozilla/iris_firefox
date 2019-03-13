@@ -28,7 +28,6 @@ def init():
 
 def cleanup_handler():
     """The cleanup handler that runs when process terminates."""
-    # print "Cleanup handler called"
     global __cleanup_done
     if not __cleanup_done:
         __cleanup_done = True

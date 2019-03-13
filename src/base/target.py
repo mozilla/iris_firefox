@@ -6,6 +6,7 @@ import time
 
 import pytest
 
+import logging
 from targets.firefox.parse_args import parse_args
 from src.core.util.json_utils import update_run_index, create_run_log
 from src.core.util.test_assert import create_result_object
@@ -14,6 +15,7 @@ from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.firefox_app.fx_browser import FirefoxApp
 
 args = parse_args()
+logger = logging.getLogger(__name__)
 
 
 class BaseTarget:
@@ -32,15 +34,15 @@ class BaseTarget:
         :param _pytest.main.Session session: the pytest session object.
         """
         self.start_time = int(time.time())
-        print('\n\n** Test session {} started **\n'.format(session.name))
-        print('\nIris settings: \n')
+        logger.info('** Test session {} started **'.format(session.name))
+        logger.info('Iris settings:')
 
         settings_list = []
 
         for arg in vars(args):
             settings_list.append('{}: {}'.format(arg, getattr(args, arg)))
-        print(', '.join(settings_list))
-        print('\n')
+        logger.info(', '.join(settings_list))
+        logger.info('\n')
         update_run_index(self, False)
 
 
@@ -57,7 +59,7 @@ class BaseTarget:
         footer.print_report_footer()
         create_run_log(self)
 
-        print("\n\n** Test session {} complete **\n".format(session.name))
+        logger.info("** Test session {} complete **".format(session.name))
 
     def pytest_runtestloop(self, session):
         pass
@@ -101,7 +103,7 @@ class BaseTarget:
         if call.when == "call" and call.excinfo is not None:
 
             outcome = "FAILED"
-            assert_object = (call.excinfo, outcome)
+            assert_object = (item, outcome, call.excinfo)
 
             test_result = create_result_object(assert_object, call.start, call.stop)
 
@@ -109,7 +111,7 @@ class BaseTarget:
 
         elif call.when == "call" and call.excinfo is None:
             outcome = 'PASSED'
-            test_instance = (item, outcome)
+            test_instance = (item, outcome, None)
 
             test_result = create_result_object(test_instance, call.start, call.stop)
 
@@ -117,7 +119,7 @@ class BaseTarget:
 
         elif call.when == "setup" and item._skipped_by_mark:
             outcome = 'SKIPPED'
-            test_instance = (item, outcome)
+            test_instance = (item, outcome, None)
 
             test_result = create_result_object(test_instance, call.start, call.stop)
 

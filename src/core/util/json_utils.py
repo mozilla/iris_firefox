@@ -153,10 +153,6 @@ def convert_test_list(list, only_failures=False):
     :param only_failures: If True, only return failed tests
     :return:
     '''
-
-    # TODO:
-    # get test case description, errors, and values
-
     test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     tests = []
     for test in list:
@@ -165,9 +161,10 @@ def convert_test_list(list, only_failures=False):
         target = target_root.split('/')[1]
         test_path = target_root.split('/%s/' % target)[1]
         parent = tests
+        details, values = get_test_markers(test.item)
         for module in test_path.split('/'):
             test_obj = {}
-            test_obj['name'] = module
+            test_obj['name'] = module.split('.py')[0]
             if 'py' not in module:
                 module_exists = False
                 for objects in parent:
@@ -177,16 +174,25 @@ def convert_test_list(list, only_failures=False):
                         break
                 if not module_exists:
                     new_parent = test_obj['children'] = []
-                    parent.append(test_obj)
+                    if only_failures and test.outcome == 'FAILED':
+                        parent.append(test_obj)
+                    elif not only_failures:
+                        parent.append(test_obj)
                     parent = new_parent
             else:
+                if test.outcome == 'FAILED':
+                    test_assert = {
+                        'error': test.error.lstrip(), 'message': test.message.lstrip(), 'call_stack': test.traceback,
+                        'actual': test.actual, 'expected': test.expected, 'code': get_failing_code(test.node_name, int(test.line))
+                    }
+                    test_obj['assert'] = test_assert
                 test_obj['result'] = test.outcome
                 test_obj['time'] = test.test_duration
                 debug_image_directory = os.path.join(PathManager.get_current_run_dir(), test_path.split('.py')[0], 'debug_images')
                 test_obj['debug_image_directory'] = debug_image_directory
                 test_obj['debug_images'] = get_list_of_image_names(debug_image_directory)
-                test_obj['description'] = ''
-                test_obj['values'] = {}
+                test_obj['description'] = details.get('description')
+                test_obj['values'] = values
                 if only_failures and test.outcome == 'FAILED':
                     parent.append(test_obj)
                 elif not only_failures:
@@ -202,3 +208,29 @@ def get_list_of_image_names(path):
             for file_name in files:
                 images.append(file_name)
     return images
+
+
+def get_failing_code(file, line):
+    f = open(file, 'r').readlines()
+    lines = []
+    num_lines = 10
+    if len(f) < num_lines:
+        num_lines = len(f)
+    for x in range(int(line)-1, int(line)-(num_lines+1), -1):
+        lines.append('%s: %s' % (x+1, f[x]))
+    lines.reverse()
+    return ''.join(lines)
+
+
+def get_test_markers(item):
+    details = {}
+    values = {}
+    for marker in item.iter_markers(name="DETAILS"):
+        for arg in marker.kwargs:
+            if arg == 'values':
+                for arg2 in marker.kwargs[arg].kwargs:
+                    values[arg2] = marker.kwargs[arg].kwargs[arg2]
+            else:
+                details[arg] = marker.kwargs[arg]
+    markers = (details, values)
+    return markers
