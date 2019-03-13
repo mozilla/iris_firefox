@@ -10,9 +10,8 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Bookmark a page from the \'Most Visited\' section using the option from the contextual menu can ' \
-                    'be canceled'
-        self.test_case_id = '163397'
+        self.meta = 'Adding a new bookmark from the Bookmarks Toolbar can be canceled'
+        self.test_case_id = '163813'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
         self.exclude = [Platform.MAC]
@@ -49,15 +48,10 @@ class Test(BaseTest):
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
-        click(firefox_menu_most_visited_pattern)
+        right_click(firefox_menu_most_visited_pattern)
 
-        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
-
-        right_click(firefox_pocket_bookmark_pattern, 0)
-
-        bookmark_page_option_exists = exists(bookmark_page_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_page_option_exists, 'Open in a New Private Window option exists')
+        new_bookmark_option_exists = exists(bookmark_page_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, new_bookmark_option_exists, 'Open in a New Private Window option exists')
 
         click(bookmark_page_option_pattern)
 
@@ -65,6 +59,8 @@ class Test(BaseTest):
         assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
 
         click_cancel_button()
+
+        time.sleep(180)
 
         try:
             new_bookmark_window_dismissed = wait_vanish(new_window_pattern)
