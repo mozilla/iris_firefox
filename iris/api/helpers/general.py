@@ -71,10 +71,13 @@ def change_preference(pref_name, value):
     """
     try:
         new_tab()
-        select_location_bar()
-        paste('about:config')
-        type(Key.ENTER)
         time.sleep(Settings.UI_DELAY)
+        select_location_bar()
+        time.sleep(Settings.UI_DELAY)
+        paste('about:config')
+        time.sleep(Settings.UI_DELAY)
+        type(Key.ENTER)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         type(Key.SPACE)
         time.sleep(Settings.UI_DELAY)
@@ -119,6 +122,7 @@ def check_preference(pref_name, value):
     new_tab()
     select_location_bar()
     paste('about:config')
+    time.sleep(Settings.UI_DELAY)
     type(Key.ENTER)
     time.sleep(Settings.UI_DELAY)
 
@@ -294,9 +298,13 @@ def confirm_firefox_launch(image=None):
 
 def copy_to_clipboard():
     """Return the value copied to clipboard."""
+    time.sleep(DEFAULT_UI_DELAY)
     edit_select_all()
+    time.sleep(DEFAULT_UI_DELAY)
     edit_copy()
+    time.sleep(DEFAULT_UI_DELAY)
     value = Env.get_clipboard().strip()
+    time.sleep(DEFAULT_UI_DELAY)
     logger.debug("Copied to clipboard: %s" % value)
     return value
 
