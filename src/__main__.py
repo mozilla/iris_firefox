@@ -142,6 +142,7 @@ def launch_control_center():
                            cmdargs=args, process_args=process_args)
     fx_runner.start()
     server = LocalWebServer(parse_args().workdir, parse_args().port)
+    server.stop()
     fx_runner.stop()
     return server.result
 

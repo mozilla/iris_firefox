@@ -3,11 +3,18 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import logging
+from multiprocessing import Process
+import os
+
 
 from src.base.target import *
+from src.core.util.local_web_server import LocalWebServer
+from src.core.util.path_manager import PathManager
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
 from targets.firefox.parse_args import parse_args
+
+
 # from targets.firefox.testrail.testcase_results import TestRailTests
 
 logger = logging.getLogger(__name__)
@@ -17,8 +24,6 @@ logger = logging.getLogger(__name__)
 class Target(BaseTarget):
 
     test_run_object_list = []
-
-
 
     def __init__(self):
         BaseTarget.__init__(self)
@@ -36,6 +41,7 @@ class Target(BaseTarget):
             {'name': 'email', 'type': 'checkbox', 'label': 'Email results', 'value': False},
             {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report', 'value': False}
         ]
+        self.local_web_root = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'local_web')
 
     @pytest.fixture(scope="class", autouse=True)
     def use_firefox(self, request):
@@ -67,6 +73,28 @@ class Target(BaseTarget):
         logger = logging.getLogger()
         if item.catch_log_handler in logger.handlers:
             logger.handlers.remove(item.catch_log_handler)
+
+    def pytest_sessionstart(self, session):
+        BaseTarget.pytest_sessionstart(self, session)
+        try:
+            port = parse_args().port
+            self.process_list = []
+            logger.info('Starting local web server on port %s for directory %s' % (port, self.local_web_root))
+            web_server_process = Process(target=LocalWebServer, args=(self.local_web_root, port,))
+            self.process_list.append(web_server_process)
+            web_server_process.start()
+        except IOError:
+            logger.critical('Unable to launch local web server, aborting Iris.')
+            # TODO: abort Iris
+
+
+    def pytest_sessionfinish(self, session):
+        BaseTarget.pytest_sessionfinish(self, session)
+        for process in self.process_list:
+            logger.info('Terminating process.')
+            process.terminate()
+            process.join()
+        logger.debug('Finishing Firefox session')
 
     @pytest.hookimpl(hookwrapper=True, trylast=True)
     def pytest_runtest_setup(self,item):

@@ -150,7 +150,7 @@ class LocalWebServer(object):
             raise IOError('Unable to open port %s on %s' % (self.port, self.host))
         except TypeError as e:
             # Ignore intermittent error message during process shutdown.
-            error_string = 'cleanup_handler() takes no arguments (2 given)'
+            error_string = 'cleanup_handler() takes 0 positional arguments but 2 were given'
             if error_string in e.args:
                 logger.debug('Unable to call server cleanup handler')
             else:
