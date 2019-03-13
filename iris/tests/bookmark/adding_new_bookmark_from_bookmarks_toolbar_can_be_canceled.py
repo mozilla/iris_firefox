@@ -25,8 +25,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
-        firefox_pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
-        bookmark_page_option_pattern = Pattern('context_menu_bookmark_page_option.png')
+        new_bookmark_pattern = Pattern('new_bookmark_created.png')
         if Settings.is_linux():
             new_window_pattern = Pattern('new_bookmark_popup.png')
         else:
@@ -50,23 +49,26 @@ class Test(BaseTest):
 
         right_click(firefox_menu_most_visited_pattern)
 
-        new_bookmark_option_exists = exists(bookmark_page_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        new_bookmark_option_exists = exists(Library.Organize.NEW_BOOKMARK, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_option_exists, 'Open in a New Private Window option exists')
 
-        click(bookmark_page_option_pattern)
+        click(Library.Organize.NEW_BOOKMARK)
 
         new_bookmark_window_exists = exists(new_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
 
         click_cancel_button()
 
-        time.sleep(180)
-
         try:
             new_bookmark_window_dismissed = wait_vanish(new_window_pattern)
-            assert_true(self, new_bookmark_window_dismissed, 'The popup is dismissed and the page is not bookmarked.')
+            assert_true(self, new_bookmark_window_dismissed, 'The popup is dismissed')
         except FindError:
             raise FindError('The popup is not dismissed.')
+
+        open_bookmarks_toolbar()
+
+        new_bookmark_not_added = exists(new_bookmark_pattern)
+        assert_false(self, new_bookmark_not_added, 'The New Bookmark window is dismissed and no bookmark is created.')
 
 
 
