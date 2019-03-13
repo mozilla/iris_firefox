@@ -40,6 +40,9 @@ class Test(BaseTest):
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
+        other_bookmarks_exists = exists(Library.OTHER_BOOKMARKS)
+        assert_true(self, other_bookmarks_exists, 'The Other Bookmarks folder exists')
+
         click(Library.OTHER_BOOKMARKS)
 
         wiki_bookmark_added = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -52,8 +55,12 @@ class Test(BaseTest):
 
         click(delete_bookmark_pattern)
 
-        bookmark_deleted = exists(soap_wiki_tab_pattern)
-        assert_false(self, bookmark_deleted, 'The bookmark is correctly deleted.')
+        try:
+            bookmark_deleted = wait_vanish(soap_wiki_tab_pattern)
+            assert_true(self, bookmark_deleted, 'The bookmark is correctly deleted.')
+        except FindError:
+            raise FindError('The bookmark is not deleted.')
 
         click(Library.TITLE)
+
         close_window_control('auxiliary')
