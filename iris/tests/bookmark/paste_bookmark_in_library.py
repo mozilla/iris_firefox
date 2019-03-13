@@ -29,6 +29,13 @@ class Test(BaseTest):
 
         bookmark_page()
 
+        done_button_exists = exists(Bookmarks.StarDialog.DONE)
+        assert_true(self, done_button_exists, 'StarDialog is opened')
+
+        click(Bookmarks.StarDialog.DONE, 0)
+
+        bookmark_page()
+
         other_bookmarks_option_exists = exists(other_bookmarks_option_pattern)
         assert_true(self, other_bookmarks_option_exists, 'Other Bookmarks option exists')
 
@@ -38,9 +45,6 @@ class Test(BaseTest):
         assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
 
         click(bookmarks_toolbar_option)
-
-        done_button_exists = exists(Bookmarks.StarDialog.DONE)
-        assert_true(self, done_button_exists, 'Done button exists')
 
         click(Bookmarks.StarDialog.DONE)
 
