@@ -30,7 +30,7 @@ class Test(BaseTest):
         bookmark_page()
 
         stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
+        assert_true(self, stardialog_displayed, 'StarDialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -42,7 +42,7 @@ class Test(BaseTest):
         bookmark_page()
 
         stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, stardialog_displayed, 'Bookmark added')
+        assert_true(self, stardialog_displayed, 'StarDialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -53,12 +53,12 @@ class Test(BaseTest):
         open_library()
 
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, library_opened, 'Library opened')
+        assert_true(self, library_opened, 'The Library is opened')
 
         click(Library.OTHER_BOOKMARKS)
 
         bookmark_exists = exists(soap_wiki_tab_pattern)
-        assert_true(self, bookmark_exists, 'Bookmark exists')
+        assert_true(self, bookmark_exists, 'Previously added bookmarks are displayed')
 
         right_click(soap_wiki_tab_pattern)
 
