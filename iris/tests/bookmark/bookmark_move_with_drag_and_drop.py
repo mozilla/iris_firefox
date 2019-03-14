@@ -35,7 +35,7 @@ class Test(BaseTest):
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
+        assert_true(self, soap_wiki_opened, 'The test page is opened')
 
         bookmark_page()
 
@@ -53,12 +53,16 @@ class Test(BaseTest):
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
+        other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
+        assert_true(self, other_bookmarks_folder_exists, 'Other Bookmarks folder exists')
+
         click(Library.OTHER_BOOKMARKS)
 
         bookmark_exists = exists(soap_wiki_tab_pattern)
-        assert_true(self, bookmark_exists, 'Bookmarks added')
+        assert_true(self, bookmark_exists, 'The Wikipedia bookmark is successfully added')
 
         click(soap_wiki_tab_pattern)
+
         if Settings.is_mac():
             type('a', KeyModifier.CMD)
         else:
@@ -67,13 +71,18 @@ class Test(BaseTest):
         bookmarks_highlighted = exists(bookmarks_highlighted_pattern)
         assert_true(self, bookmarks_highlighted, 'Bookmarks are highlighted')
 
+        bookmarks_toolbar_folder_exists = exists(Library.BOOKMARKS_TOOLBAR)
+        assert_true(self, bookmarks_toolbar_folder_exists, 'Bookmarks toolbar folder exists')
+
         drag_drop(bookmarks_highlighted_pattern, Library.BOOKMARKS_TOOLBAR)
 
         click(Library.OTHER_BOOKMARKS)
+
         click(Library.BOOKMARKS_TOOLBAR)
 
         bookmarks_moved = exists(bookmarks_moved_pattern)
         assert_true(self, bookmarks_moved, 'The bookmark is correctly moved in the selected section.')
 
         click(Library.TITLE)
+
         close_window_control('auxiliary')
