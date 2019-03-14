@@ -34,10 +34,12 @@ class Test(BaseTest):
         assert_true(self, firefox_menu_opened, 'Firefox menu is displayed')
 
         click(bookmarks_top_menu_pattern)
+
         bookmarks_menu_opened = exists(other_bookmarks_top_menu_pattern)
         assert_true(self, bookmarks_menu_opened, 'Bookmarks top menu is displayed')
 
         click(other_bookmarks_top_menu_pattern)
+
         bookmarks_displayed = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, bookmarks_displayed, 'Previously saved bookmarks are saved')
 
@@ -48,10 +50,12 @@ class Test(BaseTest):
         hover(Location(SCREEN_WIDTH, firefox_bookmark_item_y))
 
         right_click(firefox_bookmark_top_menu_pattern)
+
         context_menu_displayed = exists(new_folder_pattern)
         assert_true(self, context_menu_displayed, 'Context menu for bookmarks is displayed')
 
         click(new_folder_pattern)
+
         form_window_displayed = exists(name_bookmark_field_pattern)
         assert_true(self, form_window_displayed, 'Folder creation form properly displayed.')
         add_button_displayed = exists(add_button_pattern)
@@ -63,6 +67,7 @@ class Test(BaseTest):
 
         add_button_displayed = exists(add_button_pattern)
         assert_true(self, add_button_displayed, '"Add" button displayed')
+
         click(add_button_pattern)
 
         open_firefox_menu()
@@ -70,6 +75,7 @@ class Test(BaseTest):
         assert_true(self, firefox_menu_opened, 'Firefox menu is displayed')
 
         click(bookmarks_top_menu_pattern)
+
         bookmarks_menu_opened = exists(other_bookmarks_top_menu_pattern)
         assert_true(self, bookmarks_menu_opened, 'Bookmarks top menu is displayed')
 
@@ -79,4 +85,5 @@ class Test(BaseTest):
         assert_true(self, folder_saved, 'The new folder is available in the Other Bookmarks section.')
 
         click(NavBar.HAMBURGER_MENU)
+
         restore_firefox_focus()
