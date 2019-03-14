@@ -31,19 +31,26 @@ class Test(BaseTest):
         assert_true(self, top_menu_located, 'Firefox menu is located')
 
         click(bookmarks_top_menu_pattern)
+
         bookmarks_dropdown_opened = exists(other_bookmarks_pattern)
         assert_true(self, bookmarks_dropdown_opened, 'Bookmarks dropdown firefox menu is opened')
 
         other_bookmarks_item_location = find(other_bookmarks_pattern)
 
         click(other_bookmarks_pattern)
+
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, firefox_bookmark_top_menu_located, 'Bookmarks are displayed in top menu')
 
         firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
         hover(Location(SCREEN_WIDTH, other_bookmarks_item_location.y))   # Required to guarantee bookmarks
         hover(Location(SCREEN_WIDTH, firefox_bookmark_item_location.y))  # list will not disappear
+
         right_click(firefox_bookmark_top_menu_pattern)
+
+        context_menu_opened = exists(open_bookmark_pattern)
+        assert_true(self, context_menu_opened, 'Bookmark context menu is opened')
+
         click(open_bookmark_pattern)
 
         webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
