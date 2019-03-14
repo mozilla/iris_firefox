@@ -21,50 +21,32 @@ class Test(BaseTest):
         return
 
     def run(self):
-        private_window_icon_pattern = PrivateWindow.private_window_pattern
-        pocket_image_pattern = LocalWeb.POCKET_IMAGE
-        bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
         open_in_private_window_option_pattern = Pattern('open_in_private_window_option.png')
         pocket_bookmark_icon_pattern = Pattern('pocket_bookmark_icon.png')
         most_visited_toolbar_bookmark_pattern = Pattern('drag_area.png')
-        iris_tab_pattern = Pattern('iris_tab.png')
 
-        iris_tab_available = exists(iris_tab_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, iris_tab_available, '\'Iris\' tab available after launching Firefox')
+        open_bookmarks_toolbar()
 
-        area_to_click = find(iris_tab_pattern)
-        area_to_click.x += 300
-        area_to_click.y += 5
-
-        right_click(area_to_click)
-
-        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern,
-                                                         DEFAULT_SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmarks_toolbar_menu_option_available,
-                    '\'Bookmarks Toolbar\' option is available in context menu')
-
-        click(bookmarks_toolbar_menu_option_pattern)
-
-        bookmark_available_in_toolbar = exists(most_visited_toolbar_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmark_available_in_toolbar = exists(most_visited_toolbar_bookmark_pattern, Settings.short_firefox_timeout)
         assert_true(self, bookmark_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         click(most_visited_toolbar_bookmark_pattern)
 
-        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, Settings.short_firefox_timeout)
         assert_true(self, pocket_bookmark_available,
                     '\'Pocket\' bookmark is available in \'Most visited\' folder in toolbar')
 
         right_click(pocket_bookmark_icon_pattern)
 
         open_in_private_window_option_available = exists(open_in_private_window_option_pattern,
-                                                         DEFAULT_SHORT_FIREFOX_TIMEOUT)
+                                                         Settings.short_firefox_timeout)
         assert_true(self, open_in_private_window_option_available,
                     '\'Open in Private window\' option is available in context menu after right-click at the bookmark')
 
         click(open_in_private_window_option_pattern)
 
-        bookmark_opened_in_private_window = exists(private_window_icon_pattern) and exists(
-                                            pocket_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        bookmark_opened_in_private_window = exists(PrivateWindow.private_window_pattern) and exists(
+                                                   LocalWeb.POCKET_IMAGE, Settings.site_load_timeout)
         assert_true(self, bookmark_opened_in_private_window,
                     'The selected website is correctly opened in a new private window.')
 
