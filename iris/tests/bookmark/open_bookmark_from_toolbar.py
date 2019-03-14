@@ -25,9 +25,6 @@ class Test(BaseTest):
         pocket_bookmark_pattern = Pattern('pocket_bookmark_icon.png')
         open_option_pattern = Pattern('open_option.png')
 
-        iris_tab_available = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, iris_tab_available, '\'Iris\' tab available after launching Firefox')
-
         open_bookmarks_toolbar()
 
         bookmarks_folder_available_in_toolbar = exists(most_visited_folder_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
