@@ -29,32 +29,32 @@ class Test(BaseTest):
 
         open_bookmarks_toolbar()
 
-        bookmark_available_in_toolbar = exists(getting_started_toolbar_bookmark_pattern, Settings.short_firefox_timeout)
+        bookmark_available_in_toolbar = exists(getting_started_toolbar_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         right_click(getting_started_toolbar_bookmark_pattern)
 
-        new_bookmark_option_available = exists(new_bookmark_option_pattern, Settings.short_firefox_timeout)
+        new_bookmark_option_available = exists(new_bookmark_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_option_available,
                     '\'New bookmark\' option is available in context menu after right click at the bookmark')
 
         click(new_bookmark_option_pattern)
 
-        location_field_available = exists(location_field_pattern, Settings.short_firefox_timeout)
+        location_field_available = exists(location_field_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, location_field_available, 'A new bookmark window is opened.')
 
         click(location_field_pattern)
 
         paste('test')
 
-        tags_field_available = exists(tags_field_pattern, Settings.short_firefox_timeout)
+        tags_field_available = exists(tags_field_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, tags_field_available, '\'Tags\' field is available on the \'New bookmark\' window')
 
         click(tags_field_pattern)
 
         paste('test')
 
-        keyword_field_available = exists(keyword_field_pattern, Settings.short_firefox_timeout)
+        keyword_field_available = exists(keyword_field_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, keyword_field_available, '\'Keyword\' field is available on the \'New bookmark\' window')
 
         click(keyword_field_pattern)
@@ -63,5 +63,5 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        bookmark_added = exists(new_bookmark_pattern, Settings.short_firefox_timeout)
+        bookmark_added = exists(new_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_added, 'The new bookmark is displayed in the \'Bookmarks Toolbar\' menu.')
