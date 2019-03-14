@@ -51,3 +51,6 @@ class Test(BaseTest):
         assert_true(self, website_loaded, 'The selected website is correctly opened in a new window.')
 
         close_window()
+
+        iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, DEFAULT_TINY_FIREFOX_TIMEOUT)
+        assert_true(self, iris_tab_displayed, '\'Iris\' tab remains available in the non-private window')
