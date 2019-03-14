@@ -24,10 +24,10 @@ class Test(BaseTest):
         matching_message_pattern = Pattern('matching_message_precise.png')
         txt_file_pattern = Pattern('txt_file.png')
         jpg_file_pattern = Pattern('jpg_file.png')
-
-        if Settings.is_linux():
-            file_type_all_files_pattern = Pattern('file_type_all_files.png')
-            file_type_json_pattern = Pattern('file_type_json.png')
+        if Settings.is_windows():
+            library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
+            library_popup_pattern = Pattern('library_popup.png')
+            select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
 
         DRAG_AND_DROP_DURATION = 3
         PASTE_DELAY = 0.5
@@ -57,80 +57,167 @@ class Test(BaseTest):
         matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
                                  width=matching_message_width + 10, height=matching_message_height * 2)
 
-        open_directory(folderpath)
+        if Settings.is_windows():
+            #  open Library file picker
+            finder_window_after = Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 10)
 
-        finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
-        assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
-
-        if Settings.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
+            open_file_picker()
             paste(folderpath)
             type(Key.ENTER)
-            type('2', KeyModifier.CMD)  # change view of finder
-        else:
+
+            # finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
+            # assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
+
+            test_file_txt_located = exists(txt_file_pattern)
+            assert_true(self, test_file_txt_located, 'TXT test file is available')
+
+            click(txt_file_pattern)
+
+            edit_copy()
+            type(Key.ESC, interval=Settings)
+
+            drop_here_available = exists(drop_here_pattern)
+            assert_true(self, drop_here_available, '"Drop here" pattern available')
+
+            click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+
+            edit_paste()
+
+            # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
+            # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
+            #                                               'result is identical to result. ')
+
+            open_file_picker()
             paste(folderpath)
-            type(Key.ENTER, interval=PASTE_DELAY)
+            type(Key.ENTER)
 
-        if Settings.is_linux():
-            json_option_available = exists(file_type_json_pattern)
-            assert_true(self, json_option_available, '\'File type JSON\' option in file picker window available')
+            test_file_jpg_located = exists(jpg_file_pattern)
+            assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
-            click(file_type_json_pattern)
+            click(jpg_file_pattern)
 
-            all_files_option_available = exists(file_type_all_files_pattern)
-            assert_true(self, all_files_option_available, '\'All Files\' option in file picker window available')
+            edit_copy()
+            type(Key.ESC)
 
-            click(file_type_all_files_pattern)
+            drop_here_available = exists(drop_here_pattern)
+            assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        elif Settings.is_windows():
-            type('*')  # Show all files in Windows Explorer
-            type(Key.ENTER, interval=PASTE_DELAY)
+            click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
 
-        finder_window_location = find(MainWindow.MAIN_WINDOW_CONTROLS)
-        finder_window_before = Location(finder_window_location.x + 10, finder_window_location.y)
-        finder_window_after = Location(SCREEN_WIDTH / 2, finder_window_location.y)
+            edit_paste()
 
-        drag_drop(finder_window_before, finder_window_after)
+            # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
+            # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
+            #                                                   'expected result is different from result.')
 
-        test_file_txt_located = exists(txt_file_pattern)
-        assert_true(self, test_file_txt_located, 'TXT test file is available')
+        if Settings.is_mac() or Settings.is_linux():
+            open_directory(folderpath)
 
-        click(txt_file_pattern)
+            if Settings.is_mac():
+                finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
+                assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
 
-        edit_copy()
+                type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
+                paste(folderpath)
+                type(Key.ENTER)
+                type('2', KeyModifier.CMD)  # change view of finder
 
-        drop_here_available = exists(drop_here_pattern)
-        assert_true(self, drop_here_available, '"Drop here" pattern available')
+                finder_window_location = find(MainWindow.MAIN_WINDOW_CONTROLS)
+                finder_window_before = Location(finder_window_location.x + 10, finder_window_location.y)
+                finder_window_after = Location(SCREEN_WIDTH / 2, finder_window_location.y)
 
-        click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+                drag_drop(finder_window_before, finder_window_after)
 
-        edit_paste()
+                test_file_txt_located = exists(txt_file_pattern)
+                assert_true(self, test_file_txt_located, 'TXT test file is available')
 
-        change_window_view()
+                click(txt_file_pattern)
 
-        # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
-        # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
-        #                                               'result is identical to result. ')
+                edit_copy()
 
-        test_file_jpg_located = exists(jpg_file_pattern)
-        assert_true(self, test_file_jpg_located, 'JPG test file is available')
+                drop_here_available = exists(drop_here_pattern)
+                assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(jpg_file_pattern)
+                click(drop_here_pattern, DRAG_AND_DROP_DURATION)
 
-        edit_copy()
+                edit_paste()
 
-        drop_here_available = exists(drop_here_pattern)
-        assert_true(self, drop_here_available, '"Drop here" pattern available')
+                change_window_view()
 
-        click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+                # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
+                # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
+                #                                               'result is identical to result. ')
 
-        edit_paste()
+                test_file_jpg_located = exists(jpg_file_pattern)
+                assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
-        # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
-        # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
-        #                                                   'expected result is different from result.')
+                click(jpg_file_pattern)
 
-        type(Key.ESC)
+                edit_copy()
 
-        change_window_view()
+                drop_here_available = exists(drop_here_pattern)
+                assert_true(self, drop_here_available, '"Drop here" pattern available')
+
+                click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+
+                edit_paste()
+
+                # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
+                # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
+                #                                                   'expected result is different from result.')
+
+                type(Key.ESC)
+
+            else:
+                finder_window_after = Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 10)
+
+                finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
+                assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
+
+                type(' ', KeyModifier.ALT, PASTE_DELAY)
+                type('m', interval=PASTE_DELAY)
+                # click(duration=PASTE_DELAY)
+
+                ## add drag drop file picker here
+
+                test_file_txt_located = exists(txt_file_pattern)
+                assert_true(self, test_file_txt_located, 'TXT test file is available')
+
+                click(txt_file_pattern)
+
+                edit_copy()
+
+                drop_here_available = exists(drop_here_pattern)
+                assert_true(self, drop_here_available, '"Drop here" pattern available')
+
+                click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+
+                edit_paste()
+
+                change_window_view()
+
+                # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
+                # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
+                #                                               'result is identical to result. ')
+
+                test_file_jpg_located = exists(jpg_file_pattern)
+                assert_true(self, test_file_jpg_located, 'JPG test file is available')
+
+                click(jpg_file_pattern)
+
+                edit_copy()
+
+                drop_here_available = exists(drop_here_pattern)
+                assert_true(self, drop_here_available, '"Drop here" pattern available')
+
+                click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+
+                edit_paste()
+
+                # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
+                # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
+                #                                                   'expected result is different from result.')
+
+                type(Key.ESC)
+
         close_tab()
