@@ -36,10 +36,10 @@ class Test(BaseTest):
 
         for i in range(one_click_engines_list.__len__()):
             select_search_bar()
+            time.sleep(DEFAULT_UI_DELAY)
 
             if i == 0:
                 paste('test')
-                time.sleep(DEFAULT_UI_DELAY)
                 expected = exists(test_bold_pattern, 10)
                 assert_true(self, expected, 'Search suggestions are shown for the input in question.')
 
