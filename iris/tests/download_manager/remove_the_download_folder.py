@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.test_case_id = '99491'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
+        self.blocked_by = {'id': '1535006', 'platform': [Platform.ALL]}
 
     def setup(self):
         """Test case setup
@@ -43,7 +44,9 @@ class Test(BaseTest):
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
         click(NavBar.DOWNLOADS_BUTTON)
-        click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
+        time.sleep(DEFAULT_UI_DELAY_LONG)
+
+        click(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER)
 
         if Settings.get_os() == Platform.LINUX:
             click(Pattern('linux_folder_icon.png'))
@@ -55,9 +58,9 @@ class Test(BaseTest):
         force_delete_folder(IrisCore.get_downloads_dir())
         click_window_control('close')
 
+        time.sleep(DEFAULT_UI_DELAY_LONG)
         click(NavBar.DOWNLOADS_BUTTON)
 
-        time.sleep(DEFAULT_UI_DELAY_LONG)
         downloads_button = find(NavBar.DOWNLOADS_BUTTON)
 
         file_20_mb = find(DownloadFiles.DOWNLOAD_FILE_NAME_20MB)
