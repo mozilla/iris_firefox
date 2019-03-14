@@ -21,7 +21,7 @@ class Test(BaseTest):
         bookmark_toolbar_top_menu_pattern = Pattern('bookmark_toolbar_top_menu.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         cut_option_pattern = Pattern('cut_option.png')
-        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
+        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png').similar(0.9)
         most_visited_bookmarks_pattern = Pattern('firefox_menu_most_visited_bookmarks.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
         paste_bookmark_pattern = Pattern('paste_bookmark.png')
@@ -37,6 +37,13 @@ class Test(BaseTest):
 
         other_bookmarks_displayed = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, other_bookmarks_displayed, '"Other bookmarks" section is displayed')
+
+        other_bookmarks_location_y = find(other_bookmarks_pattern).y
+        firefox_bookmark_item_y = find(firefox_bookmark_top_menu_pattern).y
+
+        hover(Location(SCREEN_WIDTH, other_bookmarks_location_y))
+
+        hover(Location(SCREEN_WIDTH, firefox_bookmark_item_y))
 
         right_click(firefox_bookmark_top_menu_pattern)
 
