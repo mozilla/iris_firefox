@@ -58,4 +58,5 @@ class Test(BaseTest):
         assert_true(self, separator_in_front_bookmark, 'Separator is properly displayed in front of selected bookmark')
 
         click(NavBar.HAMBURGER_MENU)
+
         restore_firefox_focus()
