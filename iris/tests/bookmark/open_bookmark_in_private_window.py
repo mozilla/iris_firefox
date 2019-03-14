@@ -45,8 +45,8 @@ class Test(BaseTest):
 
         click(open_in_private_window_option_pattern)
 
-        bookmark_opened_in_private_window = exists(PrivateWindow.private_window_pattern) and \
-                                            exists(LocalWeb.POCKET_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
+        bookmark_opened_in_private_window = exists(PrivateWindow.private_window_pattern) and exists(
+            LocalWeb.POCKET_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmark_opened_in_private_window,
                     'The selected website is correctly opened in a new private window.')
 
