@@ -11,11 +11,11 @@ case $i in
     LOCALES="${i#*=}"
     shift # past argument=value
     ;;
-    -v=*|--version=*)
+    -v=*|--versions=*)
     VERSIONS="${i#*=}"
     shift # past argument=value
     ;;
-    -c=*|--channel=*)
+    -u=*|--channel=*)
     CHANNEL="${i#*=}"
     shift # past argument=value
     ;;
