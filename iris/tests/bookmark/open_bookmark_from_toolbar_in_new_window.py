@@ -21,41 +21,33 @@ class Test(BaseTest):
         return
 
     def run(self):
-        pocket_image_pattern = LocalWeb.POCKET_IMAGE
-        bookmarks_toolbar_menu_option_pattern = Pattern('bookmarks_toolbar_menu_option.png')
-        iris_tab_pattern = Pattern('iris_tab.png')
+        open_in_new_window_option_pattern = Pattern('open_in_new_window_option.png')
         most_visited_toolbar_bookmarks_folder_pattern = Pattern('drag_area.png')
         pocket_bookmark_icon_pattern = Pattern('pocket_bookmark_icon.png')
-        open_in_new_window_option_pattern = Pattern('open_in_new_window_option.png')
 
-        area_to_click = find(iris_tab_pattern)
-        area_to_click.x += 300
-        area_to_click.y += 5
-        right_click(area_to_click)
+        open_bookmarks_toolbar()
 
-        bookmarks_toolbar_menu_option_available = exists(bookmarks_toolbar_menu_option_pattern, DEFAULT_SYSTEM_DELAY)
-        assert_true(self, bookmarks_toolbar_menu_option_available,
-                    '\'Bookmarks Toolbar\' option is available in context menu')
-
-        click(bookmarks_toolbar_menu_option_pattern)
         bookmarks_folder_available_in_toolbar = exists(most_visited_toolbar_bookmarks_folder_pattern,
-                                                       DEFAULT_SYSTEM_DELAY)
+                                                       Settings.short_firefox_timeout)
         assert_true(self, bookmarks_folder_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         click(most_visited_toolbar_bookmarks_folder_pattern)
-        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern)
+
+        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, Settings.tiny_firefox_timeout)
         assert_true(self, pocket_bookmark_available,
                     '\'Pocket\' bookmark is available in the \'Most visited\' folder in toolbar')
 
         right_click(pocket_bookmark_icon_pattern)
-        open_in_new_window_option_available = exists(open_in_new_window_option_pattern)
+
+        open_in_new_window_option_available = exists(open_in_new_window_option_pattern, Settings.tiny_firefox_timeout)
 
         assert_true(self, open_in_new_window_option_available,
                     '\'Open in new window\' option in available in context '
                     'menu after right-click at the bookmark in toolbar.')
 
         click(open_in_new_window_option_pattern)
-        website_loaded = exists(pocket_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+
+        website_loaded = exists(LocalWeb.POCKET_IMAGE, Settings.site_load_timeout)
         assert_true(self, website_loaded, 'The selected website is correctly opened in a new window.')
 
         close_window()
