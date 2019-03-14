@@ -28,18 +28,18 @@ class Test(BaseTest):
         open_bookmarks_toolbar()
 
         bookmarks_folder_available_in_toolbar = exists(most_visited_toolbar_bookmarks_folder_pattern,
-                                                       Settings.short_firefox_timeout)
+                                                       DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_folder_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         click(most_visited_toolbar_bookmarks_folder_pattern)
 
-        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, Settings.tiny_firefox_timeout)
+        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, DEFAULT_TINY_FIREFOX_TIMEOUT)
         assert_true(self, pocket_bookmark_available,
                     '\'Pocket\' bookmark is available in the \'Most visited\' folder in toolbar')
 
         right_click(pocket_bookmark_icon_pattern)
 
-        open_in_new_window_option_available = exists(open_in_new_window_option_pattern, Settings.tiny_firefox_timeout)
+        open_in_new_window_option_available = exists(open_in_new_window_option_pattern, DEFAULT_TINY_FIREFOX_TIMEOUT)
 
         assert_true(self, open_in_new_window_option_available,
                     '\'Open in new window\' option in available in context '
@@ -47,7 +47,7 @@ class Test(BaseTest):
 
         click(open_in_new_window_option_pattern)
 
-        website_loaded = exists(LocalWeb.POCKET_IMAGE, Settings.site_load_timeout)
+        website_loaded = exists(LocalWeb.POCKET_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, website_loaded, 'The selected website is correctly opened in a new window.')
 
         close_window()
