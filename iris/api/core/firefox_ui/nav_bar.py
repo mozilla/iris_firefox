@@ -30,3 +30,9 @@ class NavBar(object):
     DOWNLOADS_BUTTON_BLUE = Pattern('downloads_button_blue.png').similar(0.95)
     SEVERE_DOWNLOADS_BUTTON = Pattern('downloads_button_severe.png')
     UNWANTED_DOWNLOADS_BUTTON = Pattern('downloads_button_warning.png')
+    CUSTOM_DOWNLOADS_BUTTON = Pattern('custom_downloads_button.png')
+    CUSTOM_DOWNLOADS_BUTTON_BLUE = Pattern('custom_downloads_button_blue.png')
+    BAR = Pattern('new_place.png')
+
+    class ContextMenu(object):
+        BOOKMARKS_TOOLBAR = Pattern('navbar_context_menu_bookmarks_toolbar.png')

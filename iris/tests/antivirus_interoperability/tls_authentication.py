@@ -51,7 +51,7 @@ class Test(BaseTest):
 
         paste('DigiCert Assured ID TLS CA')
 
-        tls_certificate_exists = exists(tls_certificate_name_highlighted_pattern)
+        tls_certificate_exists = exists(tls_certificate_name_highlighted_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, tls_certificate_exists, 'The TLS Certificate is available to download')
 
         tls_certificate_location = find(tls_certificate_name_highlighted_pattern)
