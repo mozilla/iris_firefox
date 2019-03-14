@@ -16,26 +16,22 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-
-        bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
-        private_browsing_pattern = Pattern('private_browsing.png')
-
         new_private_window()
 
-        expected_1 = exists(private_browsing_pattern, 10)
-        assert_true(self, expected_1, 'Find private browsing image')
+        private_window_displayed = exists(PrivateWindow.private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, private_window_displayed, 'Private browsing window is displayed on the screen')
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_page_assert, 'Mozilla page loaded successfully.')
 
-        try:
-            wait(bookmark_button_pattern, 10)
-            logger.debug('Bookmark star is present on the page.')
-            click(bookmark_button_pattern)
-        except FindError:
-            raise FindError('Bookmark star is not present on the page, aborting.')
+        star_button_unstarred_displayed = exists(LocationBar.STAR_BUTTON_UNSTARRED, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, star_button_unstarred_displayed, 'Bookmark star is present on the page.')
 
-        page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, 10)
+        click(LocationBar.STAR_BUTTON_UNSTARRED)
+
+        page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, page_bookmarked_assert, 'The page was successfully bookmarked from a private window.')
+
+        close_window()
