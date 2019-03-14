@@ -25,7 +25,6 @@ class Test(BaseTest):
         location_field_pattern = Pattern('bookmark_location_field.png')
         keyword_field_pattern = Pattern('keyword_field.png')
         new_bookmark_pattern = Pattern('new_bookmark.png')
-        tags_field_pattern = Pattern('tags_field.png')
 
         open_bookmarks_toolbar()
 
@@ -47,10 +46,10 @@ class Test(BaseTest):
 
         paste('test')
 
-        tags_field_available = exists(tags_field_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        tags_field_available = exists(Bookmarks.StarDialog.TAGS_FIELD, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, tags_field_available, '\'Tags\' field is available on the \'New bookmark\' window')
 
-        click(tags_field_pattern)
+        click(Bookmarks.StarDialog.TAGS_FIELD)
 
         paste('test')
 
