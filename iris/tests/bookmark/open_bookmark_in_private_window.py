@@ -27,26 +27,26 @@ class Test(BaseTest):
 
         open_bookmarks_toolbar()
 
-        bookmark_available_in_toolbar = exists(most_visited_toolbar_bookmark_pattern, Settings.short_firefox_timeout)
+        bookmark_available_in_toolbar = exists(most_visited_toolbar_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         click(most_visited_toolbar_bookmark_pattern)
 
-        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, Settings.short_firefox_timeout)
+        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, pocket_bookmark_available,
                     '\'Pocket\' bookmark is available in \'Most visited\' folder in toolbar')
 
         right_click(pocket_bookmark_icon_pattern)
 
         open_in_private_window_option_available = exists(open_in_private_window_option_pattern,
-                                                         Settings.short_firefox_timeout)
+                                                         DEFAULT_SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_in_private_window_option_available,
                     '\'Open in Private window\' option is available in context menu after right-click at the bookmark')
 
         click(open_in_private_window_option_pattern)
 
-        bookmark_opened_in_private_window = exists(PrivateWindow.private_window_pattern) and exists(
-                                                   LocalWeb.POCKET_IMAGE, Settings.site_load_timeout)
+        bookmark_opened_in_private_window = exists(PrivateWindow.private_window_pattern) and \
+                                            exists(LocalWeb.POCKET_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, bookmark_opened_in_private_window,
                     'The selected website is correctly opened in a new private window.')
 
