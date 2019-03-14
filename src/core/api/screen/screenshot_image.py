@@ -30,7 +30,7 @@ class ScreenshotImage:
         if region is None:
             region = DisplayCollection[screen_id].bounds
 
-        if not OSHelper.is_linux():
+        if OSHelper.is_linux():
             screen_region = region
         else:
             screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
@@ -64,7 +64,7 @@ class ScreenshotImage:
 
 
 def _region_to_image(region) -> Image or ScreenshotError:
-    if OSHelper.get_os().value == 'linux':
+    if OSHelper.get_os().value != 'linux':
         grabbed_area = _mss_screenshot(region)
     else:
         try:
