@@ -92,6 +92,9 @@ def parse_args():
     parser.add_argument('-t', '--test',
                         help='List of test names or path to a file containing a custom list of tests',
                         metavar='test_name.py')
+    parser.add_argument('-u', '--update_channel',
+                        help='Update channel profile preference',
+                        action='store')
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,

@@ -24,7 +24,6 @@ class Test(BaseTest):
 
         select_search_bar()
         paste('testing')
-        time.sleep(DEFAULT_UI_DELAY)
 
         expected = exists(change_search_settings_pattern, 10)
         assert_true(self, expected, 'The \'Change Search Settings\' button found in the page.')
@@ -43,13 +42,10 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
         select_location_bar()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY_LONG)
-        url_text = Env.get_clipboard()
+        url_text = copy_to_clipboard()
 
         assert_contains(self, url_text, 'https://www.amazon.com/',
-                        'Search results are displayed the newly set default search provider.')
+                        'Search results are displayed for the newly set default search provider.')
 
         assert_contains(self, url_text, 'testing',
                         'Search results are displayed for that search term.')

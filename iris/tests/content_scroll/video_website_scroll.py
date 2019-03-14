@@ -20,7 +20,7 @@ class Test(BaseTest):
         youtube_subscribe_button_pattern = Pattern('subscribe_button.png')
         youtube_autoplay_switch_pattern = Pattern('youtube_autoplay_switch.png')
 
-        mouse_wheel_steps = 20
+        mouse_wheel_steps = 5
         if Settings.is_windows():
             mouse_wheel_steps = 1000
 
