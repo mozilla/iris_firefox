@@ -30,33 +30,33 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
         click(firefox_menu_most_visited_pattern)
 
-        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        open_option_exists = exists(context_menu_open_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        open_option_exists = exists(context_menu_open_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_option_exists, 'Open option exists')
 
         click(context_menu_open_pattern)
 
-        firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_pocket_site_opened, 'The website is opened')
 
         site_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
