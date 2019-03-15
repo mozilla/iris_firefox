@@ -158,7 +158,8 @@ def convert_test_list(list, only_failures=False):
     test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     tests = []
     for test in list:
-        original_path = str(test.node_name)
+        #original_path = str(test.node_name)
+        original_path = str(test.item.__dict__.get('fspath'))
         target_root = original_path.split(test_root)[1]
         target = target_root.split(delimiter)[1]
         test_path = target_root.split('%s%s%s' % (delimiter, target, delimiter))[1]
