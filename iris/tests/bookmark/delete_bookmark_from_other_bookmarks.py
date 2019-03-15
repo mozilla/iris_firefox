@@ -21,13 +21,10 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        bookmark_toolbar_top_menu_pattern = Pattern('bookmark_toolbar_top_menu.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         delete_option_pattern = Pattern('delete_bookmark.png')
         firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png').similar(0.9)
-        most_visited_bookmarks_pattern = Pattern('firefox_menu_most_visited_bookmarks.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
-        paste_bookmark_pattern = Pattern('paste_bookmark.png')
 
         open_firefox_menu()
 
