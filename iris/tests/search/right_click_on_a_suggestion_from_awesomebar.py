@@ -51,10 +51,13 @@ class Test(BaseTest):
         expected = exists(wikipedia_search_bar_pattern, 10)
         assert_true(self, expected, 'Wikipedia one off is successfully displayed.')
 
-        expected = exists(test_bold_pattern, 10)
+        region_int = Screen.UPPER_RIGHT_CORNER
+        region = region_int.middle_third_horizontal()
+
+        expected = region.exists(test_bold_pattern, 10)
         assert_true(self, expected, 'Search suggestions are shown for the input in question.')
 
-        right_click(test_bold_pattern)
+        region.right_click(test_bold_pattern, 1)
 
         expected = exists(wikipedia_search_bar_pattern, 10)
         assert_true(self, expected, 'The dropdown stays open after right clicking on a suggestion from search bar.')
