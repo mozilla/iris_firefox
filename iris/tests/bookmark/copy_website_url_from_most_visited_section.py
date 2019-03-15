@@ -30,28 +30,28 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
         click(firefox_menu_most_visited_pattern)
 
-        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        copy_option_exists = exists(copy_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        copy_option_exists = exists(copy_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, copy_option_exists, 'Copy option exists')
 
         click(copy_option_pattern)
@@ -64,5 +64,5 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        url_pasted = exists(LocalWeb.POCKET_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        url_pasted = exists(LocalWeb.POCKET_LOGO, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, url_pasted, 'The copied URL is correctly pasted.')
