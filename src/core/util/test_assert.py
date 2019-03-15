@@ -2,6 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import logging
+
+
+logger = logging.getLogger(__name__)
+
 
 class TestResult(object):
 
@@ -30,6 +35,16 @@ def create_result_object(assert_instance: tuple, start_time, end_time):
     if assert_instance.__getitem__(1) == 'FAILED':
         assert_object = assert_instance.__getitem__(2)
         assert_info = normalize_assert(assert_object)
+
+        logger.debug('Inspecting result object for failed test:')
+        logger.debug('node_name: %s' % assert_info.get('node_name'))
+        logger.debug('message: %s' % assert_info.get('message'))
+        logger.debug('error: %s' % assert_info.get('error'))
+        logger.debug('line: %s' % assert_info.get('line'))
+        logger.debug('actual: %s' % assert_info.get('actual'))
+        logger.debug('expected: %s' % assert_info.get('expected'))
+        logger.debug('File name: %s' % assert_instance.__getitem__(0).__dict__.get('fspath'))
+
         result = TestResult(assert_instance.__getitem__(0), assert_info.get('node_name'), assert_instance.__getitem__(1),
                             assert_info.get('message'), assert_info.get('actual'), assert_info.get('expected'),
                             assert_info.get('error'), assert_info.get('line'),

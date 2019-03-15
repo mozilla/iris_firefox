@@ -140,8 +140,12 @@ def create_run_log(app):
 
     run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
     run_file_data = {'meta': meta, 'tests': tests}
+
+    # temporarily disabled due to issues on Windows
+    """
     with open(run_file, 'w') as f:
         json.dump(run_file_data, f, sort_keys=True, indent=True)
+    """
 
 
 def convert_test_list(list, only_failures=False):
