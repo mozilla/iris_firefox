@@ -103,8 +103,10 @@ class BaseTarget:
         if call.when == "call" and call.excinfo is not None:
 
             if str(item.__dict__.get('fspath')) in str(call.excinfo):
+                logger.debug('Test failed with assert')
                 outcome = "FAILED"
             else:
+                logger.debug('Test failed with error')
                 outcome = "ERROR"
 
             assert_object = (item, outcome, call.excinfo)
