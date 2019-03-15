@@ -11,7 +11,8 @@ class Test(FirefoxTest):
         description="This test will verify if Pyautogui mouse is working properly in a framebuffer environment.",
     )
 
-    def run(self):
+    @details
+    def test_run(self):
 
         navigate('https://www.google.ro')
 

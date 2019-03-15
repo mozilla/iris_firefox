@@ -18,7 +18,7 @@ class Test(FirefoxTest):
     )
 
     @details
-    def run(self):
+    def test_run(self):
 
         # Image sccreenshot with pyautogui
         try:
@@ -47,7 +47,7 @@ class Test(FirefoxTest):
         # Image search in full screen with MSS
         try:
             sct = mss.mss()
-            monitor = {"top": 0, "left": 0, "width": Screen().width, "height": Screen().height}
+            monitor = {"top": 0, "left": 0, "width": int(Screen().width), "height": int(Screen().height)}
             image = sct.grab(monitor)
         except:
             raise Exception('Error occured while taking screenshot with MSS!!!!')
@@ -61,8 +61,8 @@ class Test(FirefoxTest):
         # Image search in a specific screen region with MSS
         try:
             sct = mss.mss()
-            monitor = {"top": Screen().height / 2, "left": Screen().width / 2, "width": Screen().width / 2,
-                       "height": Screen().height / 2}
+            monitor = {"top": int(Screen().height / 2), "left": int(Screen().width / 2), "width": int(Screen().width / 2),
+                       "height": int(Screen().height / 2)}
             image = sct.grab(monitor)
         except:
             raise Exception('Error occured while taking screenshot with MSS!!!!')
@@ -73,13 +73,13 @@ class Test(FirefoxTest):
                 logger.error('MSS Screenshot created on specific region FAILED!!!!')
                 exit(1)
 
-                # Image search in full screen with Pyautogui
-
-                # navigate(LocalWeb.MOZILLA_TEST_SITE)
-                #
-                # expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-                # if expected_1:
-                #     logger.info('Image search in full screen screenshot succeed ')
-                # else:
-                #     logger.error('Image search in full screen screenshot failed!!!')
-                #     exit(1)
+        # Image search in full screen with Pyautogui
+        #
+        # navigate(LocalWeb.MOZILLA_TEST_SITE)
+        #
+        # expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        # if expected_1:
+        #         logger.info('Image search in full screen screenshot succeed ')
+        # else:
+        #         logger.error('Image search in full screen screenshot failed!!!')
+        #         exit(1)

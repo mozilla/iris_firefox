@@ -26,8 +26,6 @@ class Test(FirefoxTest):
 
         region = Region(0, 0, Screen().width / 2, Screen().height / 2)
 
-        region.highlight(4)
-
         new_tab()
         select_location_bar()
         paste('moz')

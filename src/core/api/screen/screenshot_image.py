@@ -5,6 +5,7 @@
 
 import cv2
 import mss
+import numpy
 import numpy as np
 import logging
 
@@ -23,6 +24,8 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
+
+_mss = mss.mss()
 class ScreenshotImage:
     """This class represents the visual representation of a region/screen."""
 
@@ -33,7 +36,7 @@ class ScreenshotImage:
         if OSHelper.is_linux():
             screen_region = region
         else:
-            screen_region = {'top': region.y, 'left': region.x, 'width': region.width, 'height': region.height}
+            screen_region = {'top': region.y, 'left': region.x, 'width': int(region.width), 'height': int(region.height)}
 
         self._color_image = _region_to_image(screen_region)
         self._rgb_array = np.array(self._color_image)
@@ -72,13 +75,13 @@ def _region_to_image(region) -> Image or ScreenshotError:
         except (IOError, OSError):
             logger.debug('Call to pyautogui.screnshot failed, using mss instead.')
             grabbed_area = _mss_screenshot(region)
-    return grabbed_area
+    return Image.fromarray(grabbed_area, mode='RGBA')
 
 
 
 def _mss_screenshot(region):
     try:
-        image = np.array(mss.mss().grab(region))
+        image = np.array(_mss.grab(region))
     except Exception:
         raise ScreenshotError('Unable to take screenshot.')
-    return Image.fromarray(image, mode='RGBA')
+    return image
