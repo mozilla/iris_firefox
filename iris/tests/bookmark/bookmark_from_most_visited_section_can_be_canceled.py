@@ -68,9 +68,22 @@ class Test(BaseTest):
 
         try:
             new_bookmark_window_dismissed = wait_vanish(new_window_pattern)
-            assert_true(self, new_bookmark_window_dismissed, 'The popup is dismissed and the page is not bookmarked.')
+            assert_true(self, new_bookmark_window_dismissed, 'The popup is dismissed')
         except FindError:
             raise FindError('The popup is not dismissed.')
+
+        bookmarks_sidebar('open')
+
+        bookmark_menu_folder_exists = exists(SidebarBookmarks.BOOKMARKS_MENU, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, bookmark_menu_folder_exists, 'Bookmarks Menu folder exists')
+
+        click(SidebarBookmarks.BOOKMARKS_MENU)
+
+        bookmark_menu_folder_opened = exists(SidebarBookmarks.BOOKMARKS_MENU_SELECTED)
+        assert_true(self, bookmark_menu_folder_opened, 'Bookmarks Menu folder exists')
+
+        bookmark_not_added = exists(LocalWeb.POCKET_BOOKMARK_SMALL)
+        assert_true(self, bookmark_not_added, 'The page is not bookmarked.')
 
 
 
