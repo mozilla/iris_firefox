@@ -69,7 +69,7 @@ class Test(BaseTest):
         right_click(firefox_pocket_bookmark_pattern, 0)
 
         delete_option_exists = exists(forget_about_this_site_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, delete_option_exists, 'Foreget About This Site option exists')
+        assert_true(self, delete_option_exists, 'Forget About This Site option exists')
 
         click(forget_about_this_site_option_pattern)
 
