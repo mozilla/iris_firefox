@@ -63,13 +63,6 @@ class Test(BaseTest):
         history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_updated_wiki, 'The Wikipedia site is added to history')
 
-        location_for_click = find(NavBar.HOME_BUTTON).right(100)
-
-        right_click(location_for_click)
-        toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
-        assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
-        click(toolbar_bookmarks_toolbar_pattern)
-
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
         bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, SCREEN_WIDTH, home_height * 3)
