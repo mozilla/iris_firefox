@@ -69,13 +69,14 @@ else
 fi
 
 
-echo -e "\n${GREEN}  --->  Installing Python 3 #####${NC}\n"
+echo -e "\n${GREEN}  --->  Installing Python 3.5 #####${NC}\n"
+# Installing Python 3.5 because of Python BUG: https://bugs.python.org/issue32745
 if command -v python3 &>/dev/null; then
     echo -e "${GREEN}  --->  Skipping Python 3 install. Already installed. ${NC}\n"
 else
-    powershell -Command "scoop install python" | grep 'bucket already exists.' &> /dev/null
+    powershell -Command "scoop install python35" | grep 'bucket already exists.' &> /dev/null
     if [ $? != 0 ]; then
-       echo -e "\n${RED} --->  Python 3 now installed. You need to restart the terminal 2nd time and run the bootstrap.sh again to complete the install.${NC}\n"
+       echo -e "\n${RED} --->  Python 3.5 now installed. You need to restart the terminal 2nd time and run the bootstrap.sh again to complete the install.${NC}\n"
        sleep 20
        exit
     fi
