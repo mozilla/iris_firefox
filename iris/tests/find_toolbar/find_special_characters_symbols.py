@@ -15,7 +15,7 @@ class Test(BaseTest):
         self.test_case_id = '127277'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         first_symbols_highlighted_pattern = Pattern('first_symbols_highlighted.png')
