@@ -72,7 +72,9 @@ def normalize_assert(assert_object):
 
     """
     keys = ['node_name', 'line', 'error', 'message']
-    values = str(assert_object).split(':')
+    # Split error string using colon AND space, because part of the string contains
+    # a file path; on Windows, it may contain 'C:', which must be ignored.
+    values = str(assert_object).split(': ')
 
     result_map = {k: v for k, v in zip(keys, values)}
     try:
