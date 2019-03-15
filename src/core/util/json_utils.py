@@ -115,6 +115,7 @@ def create_run_log(app):
     failed = 0
     passed = 0
     skipped = 0
+    errors = 0
 
     for test in app.completed_tests:
         if test.outcome == 'FAILED':
@@ -123,13 +124,15 @@ def create_run_log(app):
             passed = passed + 1
         if test.outcome == 'SKIPPED':
             skipped = skipped + 1
+        if test.outcome == 'ERROR':
+            errors = errors + 1
 
     logger.debug('Updating runs.json with completed run data.')
     meta['total'] = len(app.completed_tests)
     meta['passed'] = passed
     meta['failed'] = failed
     meta['skipped'] = skipped
-    meta['errors'] = 'UNKNOWN'
+    meta['errors'] = errors
     meta['start_time'] = app.start_time
     meta['end_time'] = app.end_time
     meta['total_time'] = app.end_time - app.start_time
@@ -158,6 +161,7 @@ def convert_test_list(list, only_failures=False):
     test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     tests = []
     for test in list:
+        test_failed = True if 'FAILED' in test.outcome or 'ERROR' in test.outcome else False
         #original_path = str(test.node_name)
         original_path = str(test.item.__dict__.get('fspath'))
         target_root = original_path.split(test_root)[1]
@@ -177,13 +181,13 @@ def convert_test_list(list, only_failures=False):
                         break
                 if not module_exists:
                     new_parent = test_obj['children'] = []
-                    if only_failures and test.outcome == 'FAILED':
+                    if only_failures and test_failed:
                         parent.append(test_obj)
                     elif not only_failures:
                         parent.append(test_obj)
                     parent = new_parent
             else:
-                if test.outcome == 'FAILED':
+                if test_failed:
                     test_assert = {
                         'error': test.error.lstrip(), 'message': test.message.lstrip(), 'call_stack': test.traceback,
                         'actual': test.actual, 'expected': test.expected, 'code': get_failing_code(test.node_name, int(test.line))
@@ -196,7 +200,7 @@ def convert_test_list(list, only_failures=False):
                 test_obj['debug_images'] = get_list_of_image_names(debug_image_directory)
                 test_obj['description'] = details.get('description')
                 test_obj['values'] = values
-                if only_failures and test.outcome == 'FAILED':
+                if only_failures and test_failed:
                     parent.append(test_obj)
                 elif not only_failures:
                     parent.append(test_obj)

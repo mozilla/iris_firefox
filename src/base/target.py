@@ -102,7 +102,11 @@ class BaseTarget:
 
         if call.when == "call" and call.excinfo is not None:
 
-            outcome = "FAILED"
+            if str(item.__dict__.get('fspath')) in str(call.excinfo):
+                outcome = "FAILED"
+            else:
+                outcome = "ERROR"
+
             assert_object = (item, outcome, call.excinfo)
 
             test_result = create_result_object(assert_object, call.start, call.stop)
