@@ -44,9 +44,9 @@ class Test(BaseTest):
 
         click(open_option_pattern)
 
-        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_full_logo_exists, 'Bookmark is correctly opened in the current tab.')
 
-        bookmark_opened_in_current_tab = exists(iris_tab_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmark_opened_in_current_tab = exists(iris_tab_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, bookmark_opened_in_current_tab,
                      'The page that was previously displayed in the current tab is no longer displayed')
