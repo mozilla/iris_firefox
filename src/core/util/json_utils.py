@@ -134,19 +134,15 @@ def create_run_log(app):
     meta['end_time'] = app.end_time
     meta['total_time'] = app.end_time - app.start_time
 
-    # temporarily disabled due to issues with tests that fail because of core code
-    """
     tests = {}
     tests['all_tests'] = convert_test_list(app.completed_tests)
     tests['failed_tests'] = convert_test_list(app.completed_tests, only_failures=True)
     
     run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
     run_file_data = {'meta': meta, 'tests': tests}
-    
-    
+
     with open(run_file, 'w') as f:
         json.dump(run_file_data, f, sort_keys=True, indent=True)
-    """
 
 
 def convert_test_list(list, only_failures=False):
