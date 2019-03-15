@@ -15,7 +15,7 @@ class Test(BaseTest):
         self.test_case_id = '108269'
         self.test_suite_id = '1902'
         # Images used in this test case work for a Firefox upgrade from 61.0b9 version to the latest version.
-        self.exclude = Platform.ALL
+        self.enabled = False
         self.locales = ['en-US']
 
     def setup(self):

@@ -10,7 +10,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a test case that restarts the browser.'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def setup(self):
         """ Test case setup
