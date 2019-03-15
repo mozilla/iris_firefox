@@ -50,7 +50,7 @@ def update_run_index(app, finished=False):
         failed = 0
         total_duration = 0
         for test in app.completed_tests:
-            if test.outcome == 'FAILED':
+            if test.outcome == 'FAILED' or test.outcome == 'ERROR':
                 failed = failed + 1
             total_duration = total_duration + test.test_duration
 
@@ -88,9 +88,6 @@ def update_run_index(app, finished=False):
 
 
 def create_run_log(app):
-
-    # TODO:
-    # get total number of skipped tests
 
     meta = {'run_id': PathManager.get_run_id(),
             'platform': OSHelper.get_os().value,
