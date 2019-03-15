@@ -153,16 +153,17 @@ def convert_test_list(list, only_failures=False):
     :param only_failures: If True, only return failed tests
     :return:
     '''
+    delimiter = '\\' if '\\' in PathManager.get_current_module() else '/'
     test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     tests = []
     for test in list:
         original_path = str(test.node_name)
         target_root = original_path.split(test_root)[1]
-        target = target_root.split('/')[1]
-        test_path = target_root.split('/%s/' % target)[1]
+        target = target_root.split(delimiter)[1]
+        test_path = target_root.split('%s%s%s' % (delimiter, target, delimiter))[1]
         parent = tests
         details, values = get_test_markers(test.item)
-        for module in test_path.split('/'):
+        for module in test_path.split(delimiter):
             test_obj = {}
             test_obj['name'] = module.split('.py')[0]
             if 'py' not in module:
