@@ -33,28 +33,28 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
         right_click(firefox_menu_most_visited_pattern)
 
-        new_bookmark_option_exists = exists(Library.Organize.NEW_BOOKMARK, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        new_bookmark_option_exists = exists(Library.Organize.NEW_BOOKMARK, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_option_exists, 'Open in a New Private Window option exists')
 
         click(Library.Organize.NEW_BOOKMARK)
 
-        new_bookmark_window_exists = exists(new_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        new_bookmark_window_exists = exists(new_window_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
 
         click_cancel_button()
