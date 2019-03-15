@@ -37,6 +37,7 @@ def create_result_object(assert_instance: tuple, start_time, end_time):
         assert_info = normalize_assert(assert_object)
 
         logger.debug('Inspecting result object for failed test:')
+        logger.debug('Raw excinfo: %s' % assert_object)
         logger.debug('node_name: %s' % assert_info.get('node_name'))
         logger.debug('message: %s' % assert_info.get('message'))
         logger.debug('error: %s' % assert_info.get('error'))
