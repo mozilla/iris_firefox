@@ -76,7 +76,7 @@ def normalize_assert(assert_object):
     keys = ['node_name', 'line', 'error', 'message']
 
     # The assert string can be split using a colon, but on Windows, it can be a problem,
-    # since file names begin with 'C:'. To work around this, we can split the string
+    # since file paths can begin with 'C:'. To work around this, we can split the string
     # using a colon AND a space.
     # However, we want to separate the line number from the file name, which has a colon,
     # but no space.

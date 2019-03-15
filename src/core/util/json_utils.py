@@ -158,7 +158,6 @@ def convert_test_list(list, only_failures=False):
     tests = []
     for test in list:
         test_failed = True if 'FAILED' in test.outcome or 'ERROR' in test.outcome else False
-        #original_path = str(test.node_name)
         original_path = str(test.item.__dict__.get('fspath'))
         target_root = original_path.split(test_root)[1]
         target = target_root.split(delimiter)[1]
