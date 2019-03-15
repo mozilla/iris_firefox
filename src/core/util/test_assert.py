@@ -32,7 +32,9 @@ def create_result_object(assert_instance: tuple, start_time, end_time):
     """
     result = None
 
-    if assert_instance.__getitem__(1) == 'FAILED':
+    outcome = assert_instance.__getitem__(1)
+
+    if outcome == 'FAILED' or outcome == 'ERROR':
         assert_object = assert_instance.__getitem__(2)
         assert_info = normalize_assert(assert_object)
 
@@ -52,12 +54,12 @@ def create_result_object(assert_instance: tuple, start_time, end_time):
                             '\n  '.join(map(str, ['Traceback (most recent call last):'] + assert_object.traceback
                                             + ['%s: %s' % (assert_info.get('error'), assert_info.get('message'))])),
                             end_time - start_time)
-    elif assert_instance.__getitem__(1) == 'PASSED':
+    elif outcome == 'PASSED':
         test_item = assert_instance.__getitem__(0).__dict__
         result = TestResult(assert_instance.__getitem__(0), test_item.get('fspath'),
                             assert_instance.__getitem__(1), None, None, None,
                             None, None, None, end_time - start_time)
-    elif assert_instance.__getitem__(1) == 'SKIPPED':
+    elif outcome == 'SKIPPED':
         test_item = assert_instance.__getitem__(0).__dict__
         result = TestResult(assert_instance.__getitem__(0), test_item.get('fspath'),
                             assert_instance.__getitem__(1), None, None, None,

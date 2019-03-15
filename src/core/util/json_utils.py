@@ -49,7 +49,6 @@ def update_run_index(app, finished=False):
     if finished:
         failed = 0
         total_duration = 0
-        logger.debug('Number of tests: %s' % len(app.completed_tests))
         for test in app.completed_tests:
             if test.outcome == 'FAILED':
                 failed = failed + 1

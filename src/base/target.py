@@ -112,7 +112,6 @@ class BaseTarget:
             assert_object = (item, outcome, call.excinfo)
 
             test_result = create_result_object(assert_object, call.start, call.stop)
-            logger.debug('Created test result object: %s' % str(test_result))
 
             self.completed_tests.append(test_result)
 
