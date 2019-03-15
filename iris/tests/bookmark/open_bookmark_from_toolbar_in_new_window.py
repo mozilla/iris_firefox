@@ -40,7 +40,6 @@ class Test(BaseTest):
         right_click(pocket_bookmark_icon_pattern)
 
         open_in_new_window_option_available = exists(open_in_new_window_option_pattern, DEFAULT_TINY_FIREFOX_TIMEOUT)
-
         assert_true(self, open_in_new_window_option_available,
                     '\'Open in new window\' option in available in context '
                     'menu after right-click at the bookmark in toolbar.')
