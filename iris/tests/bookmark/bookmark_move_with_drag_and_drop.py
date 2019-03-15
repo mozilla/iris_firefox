@@ -81,7 +81,7 @@ class Test(BaseTest):
         click(Library.BOOKMARKS_TOOLBAR)
 
         bookmarks_moved = exists(bookmarks_moved_pattern)
-        assert_true(self, bookmarks_moved, 'The bookmark is correctly moved in the selected section.')
+        assert_true(self, bookmarks_moved, 'Bookmarks are correctly moved in the selected section.')
 
         click(Library.TITLE)
 
