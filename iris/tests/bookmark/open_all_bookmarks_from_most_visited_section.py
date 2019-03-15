@@ -36,26 +36,26 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
         click(firefox_menu_most_visited_pattern)
 
-        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
 
-        open_all_in_tabs_option_exists = exists(open_all_in_tabs_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        open_all_in_tabs_option_exists = exists(open_all_in_tabs_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_all_in_tabs_option_exists, 'Open All in Tabs option exists')
 
         click(open_all_in_tabs_option_pattern, 0)
@@ -64,7 +64,7 @@ class Test(BaseTest):
 
         for tab in tabs:
             num = tabs.index(tab) + 1
-            site_from_list_opened = exists(tab, DEFAULT_SITE_LOAD_TIMEOUT)
+            site_from_list_opened = exists(tab, Settings.SITE_LOAD_TIMEOUT)
             assert_true(self, site_from_list_opened, 'The website #' + str(num) + ' from \'Most Visited\' '
                                                                                   'section is opened')
             next_tab()
