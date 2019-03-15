@@ -72,9 +72,16 @@ def normalize_assert(assert_object):
 
     """
     keys = ['node_name', 'line', 'error', 'message']
-    # Split error string using colon AND space, because part of the string contains
-    # a file path; on Windows, it may contain 'C:', which must be ignored.
-    values = str(assert_object).split(': ')
+
+    # The assert string can be split using a colon, but on Windows, it can be a problem,
+    # since file names begin with 'C:'. To work around this, we can split the string
+    # using a colon AND a space.
+    # However, we want to separate the line number from the file name, which has a colon,
+    # but no space.
+    # The solution is to insert a space after the file extension, and then split by colon/space.
+
+    assert_object = str(assert_object).replace('.py:', '.py: ')
+    values = assert_object.split(': ')
 
     result_map = {k: v for k, v in zip(keys, values)}
     try:
