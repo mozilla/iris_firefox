@@ -22,14 +22,13 @@ mozversion = "==2.1.0"
 mozinfo = "==1.0.0"
 mozlog = "==4.0"
 mozrunner = "==7.4.0"
-mss = "==4.0.2"
+mss = "==4.0.1"
 pytest = "*"
 pygithub = "*"
 bugzilla = "*"
 funcy = "==1.11"
 # Platform dependencies
 xlib = {platform_system = "== 'Linux'",version = "==0.21"}
-"iris2" = {path = ".", editable = true}
 
 [dev-packages]
 pylint = "*"
