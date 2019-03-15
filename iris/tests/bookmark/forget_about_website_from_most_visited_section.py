@@ -43,7 +43,7 @@ class Test(BaseTest):
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
         iris_logo_exists_in_history = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, in_region=history_sidebar_region)
-        assert_true(self, iris_logo_exists_in_history, 'iris_logo_exists_in_history')
+        assert_true(self, iris_logo_exists_in_history, 'Iris logo exists in history')
 
         open_firefox_menu()
 
