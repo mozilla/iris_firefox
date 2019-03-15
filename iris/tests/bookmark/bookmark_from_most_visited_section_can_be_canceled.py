@@ -83,7 +83,7 @@ class Test(BaseTest):
         assert_true(self, bookmark_menu_folder_opened, 'Bookmarks Menu folder exists')
 
         bookmark_not_added = exists(LocalWeb.POCKET_BOOKMARK_SMALL)
-        assert_true(self, bookmark_not_added, 'The page is not bookmarked.')
+        assert_false(self, bookmark_not_added, 'The page is not bookmarked.')
 
 
 
