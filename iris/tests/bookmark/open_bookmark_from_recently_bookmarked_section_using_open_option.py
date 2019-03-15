@@ -20,8 +20,6 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        firefox_logo_pattern = Pattern('firefox_bookmark.png')
-        iris_tab_pattern = Pattern('iris_tab.png')
         open_option_pattern = Pattern('open_option.png')
 
         library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
@@ -34,10 +32,10 @@ class Test(BaseTest):
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        recently_firefox_bookmark_exists = exists(firefox_logo_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        recently_firefox_bookmark_exists = exists(LocalWeb.FIREFOX_BOOKMARK, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, recently_firefox_bookmark_exists, 'Firefox bookmark exists in recently bookmarked section')
 
-        right_click(firefox_logo_pattern)
+        right_click(LocalWeb.FIREFOX_BOOKMARK)
 
         open_option_exists = exists(open_option_pattern, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, open_option_exists, 'Open option exists')
@@ -47,6 +45,6 @@ class Test(BaseTest):
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_full_logo_exists, 'Bookmark is correctly opened in the current tab.')
 
-        bookmark_opened_in_current_tab = exists(iris_tab_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        bookmark_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, bookmark_opened_in_current_tab,
                      'The page that was previously displayed in the current tab is no longer displayed')
