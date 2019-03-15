@@ -30,23 +30,23 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
         click(firefox_menu_most_visited_pattern)
 
-        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
 
         right_click(firefox_pocket_bookmark_pattern, 0)
@@ -56,24 +56,24 @@ class Test(BaseTest):
 
         click(bookmark_page_option_pattern)
 
-        new_bookmark_window_exists = exists(Bookmarks.StarDialog.NAME_FIELD, DEFAULT_FIREFOX_TIMEOUT)
+        new_bookmark_window_exists = exists(Bookmarks.StarDialog.NAME_FIELD, Settings.FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_window_exists, 'New Bookmark window is displayed')
 
         paste('Focus')
 
         folders_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6),
-                                         DEFAULT_FIREFOX_TIMEOUT)
+                                         Settings.FIREFOX_TIMEOUT)
         assert_true(self, folders_expander_exists, 'Folders expander is displayed')
 
         click(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER)
 
         bookmarks_toolbar_option_exists = exists(Library.BOOKMARKS_TOOLBAR,
-                                                 DEFAULT_FIREFOX_TIMEOUT)
+                                                 Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_option_exists, 'Bookmark toolbar folder option is displayed')
 
         click(Library.BOOKMARKS_TOOLBAR)
 
-        tags_field_exists = exists(Bookmarks.StarDialog.TAGS_FIELD, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        tags_field_exists = exists(Bookmarks.StarDialog.TAGS_FIELD, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, tags_field_exists, 'Tags field exists')
 
         click(Bookmarks.StarDialog.TAGS_FIELD)
@@ -82,7 +82,7 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        bookmark_added_to_toolbar = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmark_added_to_toolbar = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_added_to_toolbar, 'The bookmark is correctly added to Bookmarks Toolbar.')
 
 
