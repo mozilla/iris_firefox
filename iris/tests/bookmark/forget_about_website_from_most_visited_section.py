@@ -47,28 +47,28 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
         click(firefox_menu_most_visited_pattern)
 
-        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_pocket_bookmark_exists, 'Most visited websites are displayed.')
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        delete_option_exists = exists(forget_about_this_site_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        delete_option_exists = exists(forget_about_this_site_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, delete_option_exists, 'Foreget About This Site option exists')
 
         click(forget_about_this_site_option_pattern)
@@ -82,7 +82,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('The website is not removed from the history.')
 
-        bookmark_forgotten = exists(firefox_pocket_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmark_forgotten = exists(firefox_pocket_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, bookmark_forgotten, 'The website is removed from the Most Visited list.')
 
         restore_firefox_focus()
