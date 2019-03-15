@@ -16,6 +16,7 @@ from targets.firefox.parse_args import parse_args
 
 
 # from targets.firefox.testrail.testcase_results import TestRailTests
+from targets.firefox.bug_manager import *
 
 logger = logging.getLogger(__name__)
 
@@ -105,8 +106,25 @@ class Target(BaseTarget):
     def pytest_runtest_call(self,item):
         """ called to execute the test ``item``. """
 
-        logger.info(
-            'Executing: - [%s]: %s' % (item._nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
+        if item.name == 'test_run':
+            if 'values' in item.own_markers[0].kwargs:
+                values = item.own_markers[0].kwargs.get('values')
+                if 'exclude' in values.kwargs and OSHelper.get_os().value == values.kwargs.get('exclude'):
+                    logger.info(
+                        'Test excluded: - [%s]: %s' % (
+                            item._nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
+                    pytest.skip(item)
+                elif 'blocked_by' in values.kwargs:
+                    bug_id = values.kwargs.get('blocked_by')
+                    if is_blocked(bug_id):
+                        logger.info(
+                            'Test skipped: - [%s]: %s' % (
+                                item._nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
+                        pytest.skip(item)
+                else:
+                    logger.info(
+                        'Executing: - [%s]: %s' % (
+                            item._nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
 
         self._disable_catchlog(item)
         yield
