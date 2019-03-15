@@ -26,6 +26,7 @@ DEFAULT_FX_DELAY = 0.5
 DEFAULT_UI_DELAY = 1
 DEFAULT_UI_DELAY_LONG = 2.5
 DEFAULT_SYSTEM_DELAY = 5
+DEFAULT_TINY_FIREFOX_TIMEOUT = 3
 DEFAULT_SHORT_FIREFOX_TIMEOUT = 5
 DEFAULT_FIREFOX_TIMEOUT = 10
 DEFAULT_SITE_LOAD_TIMEOUT = 30
@@ -72,6 +73,7 @@ class _IrisSettings(object):
     channels                    -   A list of channels supported by Iris.
     locales                     -   A list of Firefox locales supported by Iris.
     firefox_timeout             -   Maximum time to wait until closing the Firefox.
+    firefox_tiny_timeout        -   Minimum time to wait until closing the Firefox.
     firefox_short_timeout       -   Standard time to wait until closing the Firefox.
     site_load_timeout           -   Standard time to wait for web site loading.
     heavy_site_load_timeout     -   Maximum time to wait for web site loading.
@@ -93,6 +95,7 @@ class _IrisSettings(object):
                  fx_delay=DEFAULT_FX_DELAY, ui_delay=DEFAULT_UI_DELAY,
                  ui_delay_long=DEFAULT_UI_DELAY_LONG, system_delay=DEFAULT_SYSTEM_DELAY,
                  channels=CHANNELS, locales=LOCALES, firefox_timeout=DEFAULT_FIREFOX_TIMEOUT,
+                 tiny_firefox_timeout=DEFAULT_TINY_FIREFOX_TIMEOUT,
                  short_firefox_timeout=DEFAULT_SHORT_FIREFOX_TIMEOUT,
                  site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT,
                  heavy_site_load_timeout=DEFAULT_HEAVY_SITE_LOAD_TIMEOUT):
@@ -119,6 +122,7 @@ class _IrisSettings(object):
         self.channels = channels
         self.locales = locales
         self.firefox_timeout = firefox_timeout
+        self.tiny_firefox_timeout = tiny_firefox_timeout
         self.short_firefox_timeout = short_firefox_timeout
         self.site_load_timeout = site_load_timeout
         self.heavy_site_load_timeout = heavy_site_load_timeout
@@ -150,6 +154,10 @@ class _IrisSettings(object):
     @property
     def FIREFOX_TIMEOUT(self):
         return self.firefox_timeout
+
+    @property
+    def TINY_FIREFOX_TIMEOUT(self):
+        return self.tiny_firefox_timeout
 
     @property
     def SHORT_FIREFOX_TIMEOUT(self):
