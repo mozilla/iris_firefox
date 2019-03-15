@@ -20,7 +20,6 @@ class Test(BaseTest):
         mozilla_suggestion_pattern = Pattern('mozilla_suggestion.png')
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        time.sleep(DEFAULT_UI_DELAY_LONG)
 
         expected = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert_true(self, expected, 'Mozilla page loaded successfully.')
