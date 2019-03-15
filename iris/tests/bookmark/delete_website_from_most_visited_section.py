@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = ' Delete a website from \'Most Visited\' section'
+        self.meta = 'Delete a website from \'Most Visited\' section'
         self.test_case_id = '163204'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
@@ -58,7 +58,7 @@ class Test(BaseTest):
 
         try:
             bookmark_deleted = wait_vanish(firefox_pocket_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, bookmark_deleted, ' The website is deleted from the list.')
+            assert_true(self, bookmark_deleted, 'The website is deleted from the list.')
         except FindError:
             raise FindError(' The website is not deleted from the list.')
 
