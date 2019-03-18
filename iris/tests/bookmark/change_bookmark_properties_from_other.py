@@ -29,6 +29,8 @@ class Test(BaseTest):
         tags_field_pattern = Pattern('tags_field.png')
         keyword_field_pattern = Pattern('keyword_field.png')
         pocket_bookmark_name_pattern = Pattern('pocket_bookmark_name.png')
+        tag = 'Tag'
+        keyword = 'test'
 
         open_firefox_menu()
 
@@ -68,8 +70,8 @@ class Test(BaseTest):
         edit_select_all()
         paste('Pocket')
 
-        location_field_reachable = exists(bookmark_location_field_pattern)
-        assert_true(self, location_field_reachable, 'Location field is reachable')
+        tags_field_reachable = exists(bookmark_location_field_pattern)
+        assert_true(self, tags_field_reachable, 'Location field is reachable')
 
         click(bookmark_location_field_pattern)
 
@@ -82,15 +84,15 @@ class Test(BaseTest):
         click(tags_field_pattern)
 
         edit_select_all()
-        paste('Tag')
+        paste(tag)
 
-        keyword_field_reachable = exists(keyword_field_pattern)
-        assert_true(self, keyword_field_reachable, 'Keywords field is reachable')
+        keywords_field_reachable = exists(keyword_field_pattern)
+        assert_true(self, keywords_field_reachable, 'Keywords field is reachable')
 
         click(keyword_field_pattern)
 
         edit_select_all()
-        paste('test')
+        paste(keyword)
 
         type(Key.ENTER)
 
@@ -113,5 +115,28 @@ class Test(BaseTest):
         right_click(pocket_bookmark_name_pattern, in_region=bookmark_region)
 
         click(bookmark_properties_item_pattern)
+
+        location_field_reachable = exists(bookmark_location_field_pattern)
+        assert_true(self, location_field_reachable, 'Location field is reachable')
+        location_field_location = find(bookmark_location_field_pattern)
+        location_region = Region(location_field_location.x, location_field_location.y,
+                                 SCREEN_WIDTH // 10, SCREEN_HEIGHT // 10)
+        tags_edited = exists(LocalWeb.POCKET_TEST_SITE, Settings.SITE_LOAD_TIMEOUT, location_region)
+        assert_true(self, tags_edited, 'Location is changed')
+
+        tags_field_reachable = exists(tags_field_pattern)
+        assert_true(self, tags_field_reachable, 'Tags field is reachable')
+        tags_field_location = find(tags_field_pattern)
+        tags_region = Region(tags_field_location.x, tags_field_location.y, SCREEN_WIDTH // 10, SCREEN_HEIGHT // 10)
+        tags_edited = exists(tag, Settings.SITE_LOAD_TIMEOUT, tags_region)
+        assert_true(self, tags_edited, 'Tags are edited')
+
+        keywords_field_reachable = exists(keyword_field_pattern)
+        assert_true(self, keywords_field_reachable, 'Keywords field is reachable')
+        keywords_field_location = find(keyword_field_pattern)
+        keywords_region = Region(keywords_field_location.x, keywords_field_location.y,
+                                 SCREEN_WIDTH // 10, SCREEN_HEIGHT // 10)
+        keywords_edited = exists(keyword, Settings.SITE_LOAD_TIMEOUT, keywords_region)
+        assert_true(self, keywords_edited, 'Keywords are edited')
 
         type(Key.ESC)
