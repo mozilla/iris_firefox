@@ -37,7 +37,8 @@ class Test(BaseTest):
 
         right_click(LocalWeb.FIREFOX_BOOKMARK)
 
-        open_in_new_window_option_exists = exists(open_in_new_private_window_option_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        open_in_new_window_option_exists = exists(open_in_new_private_window_option_pattern,
+                                                  Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, open_in_new_window_option_exists, '\'Open in New Private Window\' option exists')
 
         click(open_in_new_private_window_option_pattern)
@@ -45,7 +46,7 @@ class Test(BaseTest):
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_full_logo_exists, 'Bookmark is correctly opened.')
 
-        new_private_window_pattern_exists = exists(PrivateWindow.private_window_pattern, DEFAULT_UI_DELAY_LONG)
+        new_private_window_pattern_exists = exists(PrivateWindow.private_window_pattern, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, new_private_window_pattern_exists, 'The selected website is opened in a new private window.')
 
         close_window()
