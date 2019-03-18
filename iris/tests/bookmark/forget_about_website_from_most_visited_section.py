@@ -86,7 +86,3 @@ class Test(BaseTest):
         assert_false(self, bookmark_forgotten, 'The website is removed from the Most Visited list.')
 
         restore_firefox_focus()
-
-
-
-
