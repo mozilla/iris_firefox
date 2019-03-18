@@ -21,6 +21,8 @@ class Test(BaseTest):
 
     def run(self):
         cut_option_pattern = Pattern('cut_option.png')
+        paste_option_pattern = Pattern('paste_option.png')
+        firefox_bookmark_cut_pattern = Pattern('firefox_bookmark_cut.png')
 
         library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
@@ -42,7 +44,24 @@ class Test(BaseTest):
 
         click(cut_option_pattern)
 
+        firefox_bookmark_cut_exists = exists(firefox_bookmark_cut_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, firefox_bookmark_cut_exists, 'The selected bookmark is grayed out')
 
+        open_library()
 
+        library_exists = exists(Library.TITLE, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, library_exists, 'Library bookmark menu is opened')
 
+        bookmarks_toolbar_exists = exists(Library.BOOKMARKS_TOOLBAR, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, bookmarks_toolbar_exists, 'Bookmarks toolbar section exists')
 
+        right_click(Library.BOOKMARKS_TOOLBAR)
+
+        paste_option_exists = exists(paste_option_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, paste_option_exists, 'Paste option exists')
+
+        click(paste_option_pattern)
+
+        firefox_bookmark_cut_exists = exists(LocalWeb.FIREFOX_BOOKMARK, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, firefox_bookmark_cut_exists,
+                    'The bookmark is correctly added in the selected section and deleted from the previous one.')
