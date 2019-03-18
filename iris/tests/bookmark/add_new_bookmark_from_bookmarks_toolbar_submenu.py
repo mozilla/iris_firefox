@@ -49,7 +49,7 @@ class Test(BaseTest):
         right_click(firefox_menu_most_visited_pattern)
 
         new_bookmark_option_exists = exists(Library.Organize.NEW_BOOKMARK, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, new_bookmark_option_exists, 'Open in a New Bookmark option exists')
+        assert_true(self, new_bookmark_option_exists, 'New Bookmark option exists')
 
         click(Library.Organize.NEW_BOOKMARK)
 
@@ -79,5 +79,5 @@ class Test(BaseTest):
 
         open_bookmarks_toolbar()
 
-        new_bookmark_not_added = exists(new_bookmark_pattern)
-        assert_true(self, new_bookmark_not_added, 'The bookmark is correctly added in the Bookmark Toolbar.')
+        new_bookmark_added = exists(new_bookmark_pattern)
+        assert_true(self, new_bookmark_added, 'The bookmark is correctly added in the Bookmark Toolbar.')
