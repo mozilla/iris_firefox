@@ -18,7 +18,7 @@ bugzilla_api_key = get_config_property('Bugzilla', 'api_key')
 base_url = get_config_property('Bugzilla', 'bugzilla_url')
 github_api_key = Github(get_config_property('GitHub', 'github_key'))
 
-bugzilla_os = {'win': 'Windows 10', 'win7': 'Windows 7', 'linux': 'Linux', 'mac': 'macOS'}
+bugzilla_os = {'win': 'Windows 10', 'win7': 'Windows 7', 'linux': 'Linux', 'osx': 'macOS'}
 
 
 def get_github_issue(id):
@@ -52,11 +52,10 @@ def is_blocked(id):
                 return False
         else:
             bug = get_bugzilla_bug(id)
-            print(bug.status, bug.platform)
             if bug.status in ['CLOSED', 'RESOLVED']:
                 return False
             else:
-                if bugzilla_os[OSHelper.get_os()] == bug.platform or bug.platform in ['All', 'Unspecified']:
+                if bugzilla_os[OSHelper.get_os().value] == bug.op_sys or bug.platform in ['All', 'Unspecified']:
                     return True
                 return False
     except BugManagerError as e:

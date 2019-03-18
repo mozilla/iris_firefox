@@ -9,6 +9,8 @@ class Test(FirefoxTest):
     fx_values = pytest.mark.VALUES(
         test_case_id="119484",
         test_suite_id="1902",
+        #exclude=OSPlatform.MAC.value,
+        blocked_by='1520795'
     )
 
     details = pytest.mark.DETAILS(
