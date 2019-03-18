@@ -15,11 +15,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        library_button_pattern = NavBar.LIBRARY_MENU
-        bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
-        wikipedia_soap_pattern = LocalWeb.SOAP_WIKI_TEST_SITE
-        wiki_logo_pattern = LocalWeb.SOAP_WIKI_SOAP_LABEL
-        star_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
         edit_bookmark_name_before_pattern = Pattern('edit_bookmark_name.png')
         edit_bookmark_name_after_pattern = Pattern('edit_bookmark_name_modified.png')
         edit_bookmark_folder_before_pattern = Pattern('edit_bookmark_folder.png')
@@ -34,27 +29,19 @@ class Test(BaseTest):
         if Settings.is_linux() or Settings.is_mac():
             edit_bookmark_folder_option = Pattern('bookmark_menu_folder_option.png')
 
-        navigate(wikipedia_soap_pattern)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        wiki_logo_exists = exists(wiki_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, wiki_logo_exists, 'Website is properly loaded')
+        bookmark_page()
 
-        star_button_exists = exists(star_button_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, star_button_exists, 'Star button exists')
-
-        click(star_button_pattern)
-        if Settings.is_linux():
-            click(wiki_logo_pattern)
-
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
-        click(library_button_pattern)
+        click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, DEFAULT_UI_DELAY_LONG)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
 
-        click(bookmarks_menu_option_pattern)
+        click(LibraryMenu.BOOKMARKS_OPTION)
 
         edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, edit_this_bookmark_exists, 'The Bookmarks menu is correctly displayed')
@@ -103,15 +90,15 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, DEFAULT_UI_DELAY_LONG)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
-        click(library_button_pattern)
+        click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, DEFAULT_UI_DELAY_LONG)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
 
-        click(bookmarks_menu_option_pattern)
+        click(LibraryMenu.BOOKMARKS_OPTION)
 
         edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
         assert_true(self, edit_this_bookmark_exists, 'The Bookmarks menu is correctly displayed')
