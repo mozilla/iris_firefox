@@ -11,11 +11,11 @@ class DownloadManager(object):
 
     class DownloadsPanel(object):
         DOWNLOADS_BUTTON = Pattern('downloads_button_open.png').similar(0.95)
-        DOWNLOAD_RETRY = Pattern('downloadretry.png')
-        DOWNLOAD_RETRY_HIGHLIGHTED = Pattern('downloadretry_highlighted.png').similar(0.95)
-        DOWNLOAD_CANCEL = Pattern('downloadcancel.png')
-        DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern('downloadcancel_highlighted.png').similar(0.95)
-        NO_DOWNLOADS_FOR_THIS_SESSION = Pattern('emptydownloads.png')
+        DOWNLOAD_RETRY = Pattern('download_retry.png')
+        DOWNLOAD_RETRY_HIGHLIGHTED = Pattern('download_retry_highlighted.png').similar(0.95)
+        DOWNLOAD_CANCEL = Pattern('download_cancel.png')
+        DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern('download_cancel_highlighted.png').similar(0.95)
+        NO_DOWNLOADS_FOR_THIS_SESSION = Pattern('empty_downloads.png')
         OPEN_DOWNLOAD_FOLDER = Pattern('download_button_open_containing_folder.png')
         OPEN_CONTAINING_FOLDER = Pattern('open_containing_folder.png')
         TIME_LEFT = Pattern('time_left.png')
