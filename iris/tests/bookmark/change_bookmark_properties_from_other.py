@@ -20,7 +20,7 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        bookmark_location_field_pattern = Pattern('location_field_label.png.png')
+        bookmark_location_field_pattern = Pattern('location_field_label.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
         firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
@@ -53,7 +53,7 @@ class Test(BaseTest):
 
         bookmark_width, bookmark_height = firefox_bookmark_top_menu_pattern.get_size()
         bookmark_location = find(firefox_bookmark_top_menu_pattern)
-        bookmark_region = Region(bookmark_location.x, bookmark_location.y, bookmark_width, bookmark_height)
+        bookmark_region = Region(bookmark_location.x, bookmark_location.y, bookmark_width*2, bookmark_height*2)
 
         other_bookmarks_location_y = find(other_bookmarks_pattern).y
         bookmark_location_y = find(firefox_bookmark_top_menu_pattern).y
