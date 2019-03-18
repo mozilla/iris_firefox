@@ -20,14 +20,14 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        bookmark_location_field_pattern = Pattern('add_bookmark_location_field.png')
+        bookmark_location_field_pattern = Pattern('location_field_label.png.png')
         bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
         other_bookmarks_pattern = Pattern('other_bookmarks.png')
         firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
         bookmark_properties_item_pattern = Pattern('bookmark_properties_button.png')
         name_bookmark_field_pattern = Pattern('name_bookmark_field.png')
-        tags_field_pattern = Pattern('tags_field.png')
-        keyword_field_pattern = Pattern('keyword_field.png')
+        tags_field_pattern = Pattern('tags_field_label.png')
+        keyword_field_pattern = Pattern('keyword_field_label.png')
         pocket_bookmark_name_pattern = Pattern('pocket_bookmark_name.png')
         tag = 'Tag'
         keyword = 'test'
