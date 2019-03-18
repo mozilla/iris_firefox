@@ -84,7 +84,3 @@ class Test(BaseTest):
 
         bookmark_added_to_toolbar = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_added_to_toolbar, 'The bookmark is correctly added to Bookmarks Toolbar.')
-
-
-
-
