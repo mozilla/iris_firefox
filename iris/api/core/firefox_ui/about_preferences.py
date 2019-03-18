@@ -28,10 +28,5 @@ class AboutPreferences(object):
 
         class Exceptions(object):
             EXCEPTIONS_CONTENT_BLOCKING_LABEL = Pattern('exceptions_content_blocking_label.png')
-            REMOVE_WEBSITE_BUTTON = Pattern('remove_website_removepermission_button.png')
-            SAVE_CHANGES_BUTTON = Pattern('save_changes_btnapplychanges_button.png')
-
-
-
-
-
+            REMOVE_WEBSITE_BUTTON = Pattern('remove_website_permission_button.png')
+            SAVE_CHANGES_BUTTON = Pattern('save_changes_btn_apply_changes_button.png')
