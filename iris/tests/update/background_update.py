@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a test for Firefox background update.'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def setup(self):
         BaseTest.setup(self)

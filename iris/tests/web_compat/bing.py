@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.assets = os.path.join(os.path.split(__file__)[0], 'assets')
         self.meta = 'Web compatibility test for bing.com'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         url = 'www.bing.com'

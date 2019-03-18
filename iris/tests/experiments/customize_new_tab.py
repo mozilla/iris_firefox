@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a test of new tab preferences search'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         url = 'about:home'
