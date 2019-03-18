@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Awesomebar results don\'\t show the correct search engine when searching with search engine ' \
+        self.meta = 'Awesomebar results don\'t show the correct search engine when searching with search engine ' \
                     'keywords.'
         self.test_case_id = '111378'
         self.test_suite_id = '83'
