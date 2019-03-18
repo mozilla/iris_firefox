@@ -19,7 +19,7 @@ class BaseTest(object):
     def __init__(self):
         self.meta = ''
         self.fx_version = ''
-        self.exclude = []
+        self.enabled = True
         self.test_title = ''
         self.exclude = []
         self.results = []

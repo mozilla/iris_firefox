@@ -48,7 +48,10 @@ class DownloadFiles(object):
     TOTAL_DOWNLOAD_SIZE_100MB = Pattern('download_size_of_100MB.png')
     TOTAL_DOWNLOAD_SIZE_50MB = Pattern('download_size_of_50MB.png')
     TOTAL_DOWNLOAD_SIZE_20MB = Pattern('download_size_of_20MB.png')
-    DOWNLOADS_PANEL_5MB_COMPLETED = Pattern('5MB_completed_downloadsPanel.png')
+    DOWNLOADS_PANEL_5MB_COMPLETED = Pattern('completed_5mb_file.png')
+    DOWNLOADS_PANEL_5MB_MISSING = Pattern('moved_missing_5mb_file.png')
+    DOWNLOADS_PANEL_10MB_MISSING = Pattern('moved_missing_10mb_file.png')
+    DOWNLOADS_PANEL_20MB_MISSING = Pattern('moved_missing_20mb_file.png')
     FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png').similar(0.79)
     MALICIOUS = Pattern('malicious.png')
     UNCOMMON = Pattern('uncommon.png')
@@ -196,3 +199,7 @@ def cancel_and_clear_downloads(private_window=False):
     logger.info('>>>Downloads Cleanup steps<<<')
     for step in cancel_in_progress_downloads_from_the_library(private_window):
         logger.info('Step %s - passed? %s' % (step.message, step.resolution))
+
+
+def force_delete_folder(path):
+    shutil.rmtree(path, ignore_errors=True)
