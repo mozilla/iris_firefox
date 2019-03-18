@@ -55,6 +55,13 @@ class Test(BaseTest):
         bookmark_location = find(firefox_bookmark_top_menu_pattern)
         bookmark_region = Region(bookmark_location.x, bookmark_location.y, bookmark_width, bookmark_height)
 
+        other_bookmarks_location_y = find(other_bookmarks_pattern).y
+        bookmark_location_y = find(firefox_bookmark_top_menu_pattern).y
+
+        hover(Location(other_bookmarks_location_y, SCREEN_WIDTH))
+
+        hover(Location(bookmark_location_y, SCREEN_WIDTH))
+
         right_click(firefox_bookmark_top_menu_pattern)
 
         bookmark_context_menu_opened = exists(bookmark_properties_item_pattern)
