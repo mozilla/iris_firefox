@@ -53,7 +53,7 @@ class Test(BaseTest):
 
         bookmark_width, bookmark_height = firefox_bookmark_top_menu_pattern.get_size()
         bookmark_location = find(firefox_bookmark_top_menu_pattern)
-        bookmark_region = Region(bookmark_location.x, bookmark_location.y, bookmark_width*2, bookmark_height*2)
+        bookmark_region = Region(bookmark_location.x, bookmark_location.y, bookmark_width * 2, bookmark_height * 2)
 
         other_bookmarks_location_y = find(other_bookmarks_pattern).y
         bookmark_location_y = find(firefox_bookmark_top_menu_pattern).y
