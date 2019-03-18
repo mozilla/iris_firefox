@@ -49,7 +49,7 @@ class Test(BaseTest):
 
         click(Library.Organize.NEW_FOLDER)
 
-        new_folder_window_exists = exists(Bookmarks.StarDialog.NEW_FOLDER, Settings.FIREFOX_TIMEOUT)
+        new_folder_window_exists = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED, Settings.FIREFOX_TIMEOUT)
         assert_true(self, new_folder_window_exists, 'New Folder window is displayed')
 
         type(Key.ENTER)
