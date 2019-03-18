@@ -50,7 +50,7 @@ class Test(BaseTest):
         right_click(firefox_menu_most_visited_pattern)
 
         new_bookmark_option_exists = exists(Library.Organize.NEW_BOOKMARK, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, new_bookmark_option_exists, 'Open in a New Private Window option exists')
+        assert_true(self, new_bookmark_option_exists, 'Open in a New Bookmark option exists')
 
         click(Library.Organize.NEW_BOOKMARK)
 
