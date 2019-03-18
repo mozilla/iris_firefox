@@ -25,6 +25,10 @@ class Test(BaseTest):
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         new_folder_pattern = Pattern('folder_in_bookmarks_toolbar.png')
+        if Settings.is_linux():
+            new_folder_window_pattern = Pattern('new_folder_bookmark.png')
+        else:
+            new_folder_window_pattern = Bookmarks.StarDialog.NEW_FOLDER_CREATED
 
         open_firefox_menu()
 
@@ -49,13 +53,13 @@ class Test(BaseTest):
 
         click(Library.Organize.NEW_FOLDER)
 
-        new_folder_window_exists = exists(Bookmarks.StarDialog.NEW_FOLDER_CREATED, Settings.FIREFOX_TIMEOUT)
+        new_folder_window_exists = exists(new_folder_window_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, new_folder_window_exists, 'New Folder window is displayed')
 
         type(Key.ENTER)
 
         try:
-            new_folder_window_dismissed = wait_vanish(Bookmarks.StarDialog.NEW_FOLDER)
+            new_folder_window_dismissed = wait_vanish(new_folder_window_pattern)
             assert_true(self, new_folder_window_dismissed, 'The popup is dismissed')
         except FindError:
             raise FindError('The popup is not dismissed.')
