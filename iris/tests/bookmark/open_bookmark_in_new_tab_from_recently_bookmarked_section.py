@@ -20,35 +20,31 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        library_button_pattern = NavBar.LIBRARY_MENU
-        bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
-        recently_wikipedia_bookmark_pattern = Pattern('recently_wikipedia_bookmark.png')
-        new_tab_is_opened_pattern = Pattern('opened_in_new_tab.png')
-        wikipedia_content_pattern = Pattern('wikipedia_content.png')
         open_in_new_tab_option_pattern = Pattern('open_in_new_tab.png')
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
-        click(library_button_pattern)
+        click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'The Bookmarks menu is correctly displayed')
 
-        click(bookmarks_menu_option_pattern)
+        click(LibraryMenu.BOOKMARKS_OPTION)
 
-        recently_wikipedia_bookmark_exists = exists(recently_wikipedia_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, recently_wikipedia_bookmark_exists, 'Wikipedia bookmark exists in recently bookmarked section')
+        recently_firefox_bookmark_exists = exists(LocalWeb.FIREFOX_BOOKMARK, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, recently_firefox_bookmark_exists, 'Firefox bookmark exists in recently bookmarked section')
 
-        right_click(recently_wikipedia_bookmark_pattern)
+        right_click(LocalWeb.FIREFOX_BOOKMARK)
 
-        open_in_new_tab_option_exists = exists(open_in_new_tab_option_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, open_in_new_tab_option_exists, 'Open in new tab option exists')
+        open_in_new_tab_option_exists = exists(open_in_new_tab_option_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, open_in_new_tab_option_exists, '\'Open in New Tab\' option exists')
 
         click(open_in_new_tab_option_pattern)
 
-        wikipedia_content_exists = exists(wikipedia_content_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, wikipedia_content_exists, 'Wikipedia content exists')
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_full_logo_exists, 'Bookmark is correctly opened in the current tab.')
 
-        new_tab_is_not_opened_exists = exists(new_tab_is_opened_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, new_tab_is_not_opened_exists, 'The selected website is opened in a new tab.')
+        bookmark_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_false(self, bookmark_opened_in_current_tab,
+                     'The page that was previously displayed in the current tab is no longer displayed')
