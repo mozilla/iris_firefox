@@ -30,6 +30,8 @@ class Test(BaseTest):
         paste_bookmark_pattern = Pattern('paste_bookmark.png')
 
         open_firefox_menu()
+        firefox_menu_opened = exists(bookmarks_top_menu_pattern)
+        assert_true(self, firefox_menu_opened, 'Firefox menu is opened')
 
         click(bookmarks_top_menu_pattern)
 
@@ -78,8 +80,8 @@ class Test(BaseTest):
 
         click(other_bookmarks_pattern)
 
-        bookmark_cut_off = exists(firefox_bookmark_top_menu_pattern)
-        assert_true(self, bookmark_cut_off, 'Bookmark is properly cut off')
+        bookmark_not_disappeared = exists(firefox_bookmark_top_menu_pattern)
+        assert_true(self, bookmark_not_disappeared, 'Bookmark didn\'t disappear')
 
         click(NavBar.HAMBURGER_MENU)
 
