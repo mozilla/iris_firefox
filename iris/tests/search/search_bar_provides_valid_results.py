@@ -23,14 +23,12 @@ class Test(BaseTest):
 
         select_search_bar()
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
 
         region = Screen.UPPER_RIGHT_CORNER
         expected = region.exists(search_button_pattern, 10)
         assert_true(self, expected, 'Search button found in the page.')
 
         region.click(search_button_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
 
         region = Screen.UPPER_LEFT_CORNER
         expected = region.exists(test_pattern, 10)

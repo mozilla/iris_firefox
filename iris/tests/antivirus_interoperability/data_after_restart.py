@@ -16,11 +16,10 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         browser_console_pattern = Pattern('browser_console_opened.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
-        twitter_logo_pattern = Pattern('twitter_favicon.png')
+        twitter_logo_pattern = Pattern('twitter_favicon.png').similar(.75)
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
         youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
@@ -46,10 +45,7 @@ class Test(BaseTest):
 
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
         history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
-        history_sidebar_region = Region(history_sidebar_location.x,
-                                        history_sidebar_location.y,
-                                        history_width,
-                                        SCREEN_HEIGHT / 2)
+        history_sidebar_region = Region(0, history_sidebar_location.y, history_width * 3, SCREEN_HEIGHT / 2)
 
         today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY)
         assert_true(self, today_timeline_exists, 'The Today timeline displayed')
@@ -61,14 +57,6 @@ class Test(BaseTest):
 
         history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_updated_wiki, 'The Wikipedia site is added to history')
-
-        location_for_click = find(NavBar.HOME_BUTTON).right(100)
-
-        right_click(location_for_click)
-        toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
-        assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
-
-        click(toolbar_bookmarks_toolbar_pattern)
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
