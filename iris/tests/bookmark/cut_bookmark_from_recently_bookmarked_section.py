@@ -20,33 +20,29 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        library_button_pattern = NavBar.LIBRARY_MENU
-        bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
-        recently_wikipedia_bookmark_pattern = Pattern('recently_wikipedia_bookmark.png')
-        wiki_bookmark_cut_pattern = Pattern('wiki_bookmark_cut.png')
         cut_option_pattern = Pattern('cut_option.png')
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
-        click(library_button_pattern)
+        click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'The Bookmarks menu is correctly displayed')
 
-        click(bookmarks_menu_option_pattern)
+        click(LibraryMenu.BOOKMARKS_OPTION)
 
-        recently_wikipedia_bookmark_exists = exists(recently_wikipedia_bookmark_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, recently_wikipedia_bookmark_exists, 'Wikipedia bookmarks exists')
+        recently_firefox_bookmark_exists = exists(LocalWeb.FIREFOX_BOOKMARK, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, recently_firefox_bookmark_exists, 'Firefox bookmark exists in recently bookmarked section')
 
-        right_click(recently_wikipedia_bookmark_pattern)
+        right_click(LocalWeb.FIREFOX_BOOKMARK)
 
-        cut_option_exists = exists(cut_option_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, cut_option_exists, 'Cut option exists')
+        cut_option_exists = exists(cut_option_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, cut_option_exists, '\'Cut\' option exists')
 
         click(cut_option_pattern)
 
-        wiki_bookmark_cut_exists = exists(wiki_bookmark_cut_pattern, DEFAULT_UI_DELAY_LONG)
-        assert_true(self, wiki_bookmark_cut_exists, 'Cut option is grayed out.')
+
+
 
 
