@@ -92,6 +92,21 @@ def right_click(where=None, duration=None, in_region=None):
     _general_click(where, 1, duration, in_region, 'right')
 
 
+def middle_click(where=None, duration=None, in_region=None):
+    """Mouse middle click. Wrapper over _general_click.
+
+    :param where: Location , image name or Pattern.
+    :param duration: Speed of hovering from current location to target.
+    :param in_region: Region object in order to minimize the area.
+    :return: None.
+    """
+
+    if duration is None:
+        duration = Settings.move_mouse_delay
+
+    _general_click(where, 1, duration, in_region, 'middle')
+
+
 def double_click(where=None, duration=None, in_region=None):
     """Mouse double click. Wrapper over _general_click.
 

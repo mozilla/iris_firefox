@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a test of sending messages on Yahoo web messenger'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         yahoo_login_pattern = Pattern('yahoo_login.png')

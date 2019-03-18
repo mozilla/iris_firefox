@@ -28,6 +28,9 @@ class FirefoxApp(object):
         self.build_id = get_firefox_build_id(path)
         self.locale = parse_args().locale
         self.latest_version = get_firefox_latest_version(path)
+        if parse_args().update_channel:
+            self.update_channel = parse_args().update_channel
+            set_update_channel_pref(self.path, self.update_channel)
 
 
 def get_local_firefox_path():
@@ -185,3 +188,18 @@ def get_firefox_latest_version(binary):
     latest_version = get_version_from_path(latest_path)
     logger.info('Latest available version for %s channel is: %s' % (channel, latest_version))
     return latest_version
+
+
+def set_update_channel_pref(path, channel_name):
+    base_path = os.path.dirname(path)
+    if Settings.is_mac():
+        base_path = os.path.normpath(os.path.join(base_path, '../Resources/'))
+    pref_file = os.path.join(base_path, 'defaults', 'pref', 'channel-prefs.js')
+    file_data = 'pref("app.update.channel", "%s");' % channel_name
+    if os.path.exists(pref_file):
+        logger.debug('Updating Firefox channel-prefs.js file for channel: %s' % channel_name)
+        with open(pref_file, 'w') as f:
+            f.write(file_data)
+            f.close()
+    else:
+        logger.error('Can\'t find Firefox channel-prefs.js file')

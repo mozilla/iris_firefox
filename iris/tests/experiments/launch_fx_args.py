@@ -14,7 +14,7 @@ class Test(BaseTest):
 
         # Disabling test. Due to our new profile handling, it will be hard to support the
         # use case of multiple Fx instances, such as this test.
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         amazon_pattern = Pattern('amazon.png')
