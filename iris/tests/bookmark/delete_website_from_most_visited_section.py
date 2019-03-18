@@ -63,7 +63,3 @@ class Test(BaseTest):
             raise FindError(' The website is not deleted from the list.')
 
         restore_firefox_focus()
-
-
-
-
