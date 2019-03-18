@@ -414,7 +414,7 @@ def maximize_window():
         drag_drop(drag_start, drag_end, duration=0.1)
 
         # Alt key changes maximize button from full screen to maximize window.
-        maximize_button = window_controls_pattern.target_offset(width - 3, height / 2)
+        maximize_button = window_controls_pattern.target_offset(width / 2 - 3, 0)
         key_down(Key.ALT)
         click(maximize_button)
         key_up(Key.ALT)

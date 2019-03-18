@@ -112,7 +112,7 @@ def find_all(ps: Pattern or str, region: Rectangle = None):
             raise FindError('Unable to find text %s' % ps)
 
 
-def wait(ps, timeout = None, region = None) -> bool or FindError:
+def wait(ps, timeout=None, region=None) -> bool or FindError:
     """Verify that a Pattern or str appears.
 
     :param ps: String or Pattern.
@@ -127,7 +127,7 @@ def wait(ps, timeout = None, region = None) -> bool or FindError:
         image_found = image_find(ps, timeout, region)
         if image_found is not None:
             if parse_args().highlight:
-                highlight(region=region, ps=ps, location=image_found)
+                highlight(region=region, ps=ps, location=[image_found])
             return True
         else:
             raise FindError('Unable to find image %s' % ps.get_filename())

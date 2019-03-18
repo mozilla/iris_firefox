@@ -5,11 +5,10 @@
 
 import cv2
 import mss
-import numpy
 import numpy as np
 import logging
 
-import pyautogui as pyautogui
+from pyautogui import screenshot
 
 from src.core.api.errors import ScreenshotError
 from src.core.api.os_helpers import OSHelper
@@ -22,66 +21,65 @@ except ImportError:
     from PIL import Image
 
 logger = logging.getLogger(__name__)
-
-
-
 _mss = mss.mss()
+
+
 class ScreenshotImage:
     """This class represents the visual representation of a region/screen."""
 
-    def __init__(self, region: Rectangle = None, screen_id: int = 0):
+    def __init__(self, region: Rectangle = None, screen_id: int = None):
+        if screen_id is None:
+            screen_id = 0
+
         if region is None:
             region = DisplayCollection[screen_id].bounds
 
         if OSHelper.is_linux():
             screen_region = region
         else:
-            screen_region = {'top': region.y, 'left': region.x, 'width': int(region.width), 'height': int(region.height)}
+            screen_region = {'top': int(region.y), 'left': int(region.x),
+                             'width': int(region.width), 'height': int(region.height)}
 
-        self._color_image = _region_to_image(screen_region)
-        self._rgb_array = np.array(self._color_image)
-        self._gray_image = self._color_image.convert('L')
-        self._gray_array = np.array(self._gray_image)
+        self._gray_array = _region_to_image(screen_region)
         height, width = self._gray_array.shape
         self.width = width
         self.height = height
 
-    def get_rgb_array(self):
-        """Getter for the RGB array of image."""
-        return self._rgb_array
+        scale = DisplayCollection[screen_id].scale
 
-    def get_color_image(self):
-        """Getter for the color_image property."""
-        return self._color_image
-
-    def get_gray_image(self):
-        """Getter for the gray_image property."""
-        return self._gray_image
+        if scale != 1:
+            self.width = int(width / scale)
+            self.height = int(height / scale)
+            self._gray_array = cv2.resize(self._gray_array,
+                                          dsize=(self.width, self.height),
+                                          interpolation=cv2.INTER_CUBIC)
 
     def get_gray_array(self):
         """Getter for the gray_array property."""
         return self._gray_array
+
+    def get_gray_image(self):
+        """Getter for the gray_image property."""
+        return Image.fromarray(self._gray_array)
 
     def binarize(self):
         return cv2.threshold(self._gray_array, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
 
 def _region_to_image(region) -> Image or ScreenshotError:
-    if OSHelper.get_os().value != 'linux':
+    if not OSHelper.is_linux():
         grabbed_area = _mss_screenshot(region)
     else:
         try:
-            grabbed_area = pyautogui.screenshot(region=(region.x, region.y, region.width, region.height))
+            grabbed_area = np.array(screenshot(region=(region.x, region.y, region.width, region.height)))
         except (IOError, OSError):
             logger.debug('Call to pyautogui.screnshot failed, using mss instead.')
             grabbed_area = _mss_screenshot(region)
-    return Image.fromarray(grabbed_area, mode='RGBA')
-
+    return cv2.cvtColor(grabbed_area, cv2.COLOR_BGR2GRAY)
 
 
 def _mss_screenshot(region):
     try:
-        image = np.array(_mss.grab(region))
+        return np.array(_mss.grab(region))
     except Exception:
         raise ScreenshotError('Unable to take screenshot.')
-    return image

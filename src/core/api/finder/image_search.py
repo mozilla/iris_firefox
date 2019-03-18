@@ -14,23 +14,23 @@ try:
 except ImportError:
     from PIL import Image
 
-from src.core.api.finder.pattern import Pattern
-from src.core.api.settings import Settings
-from src.core.api.location import Location
-from src.core.api.errors import ScreenshotError
-from src.core.api.rectangle import Rectangle
-from src.core.api.screen.screenshot_image import ScreenshotImage
 from src.core.api.enums import MatchTemplateType
-from src.core.api.screen.display import DisplayCollection
-
+from src.core.api.errors import ScreenshotError
+from src.core.api.finder.pattern import Pattern
+from src.core.api.location import Location
+from src.core.api.rectangle import Rectangle
 from src.core.api.save_debug_image.save_image import save_debug_image
+from src.core.api.screen.display import DisplayCollection
+from src.core.api.screen.screenshot_image import ScreenshotImage
+from src.core.api.settings import Settings
+
 
 logger = logging.getLogger(__name__)
 
 FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 
-def is_pattern_size_correct(pattern, region):
+def _is_pattern_size_correct(pattern, region):
     """validates that the pattern is inside the region."""
     p_width, p_height = pattern.get_size()
     r_width = region.width
@@ -65,13 +65,10 @@ def match_template(pattern: Pattern, region: Rectangle = None,
         logger.warning('%s should be an instance of `%s`' % (match_type, MatchTemplateType))
         return []
     try:
-        stack_image = ScreenshotImage(region=region)
+        stack_image = ScreenshotImage(region=region, screen_id=_region_in_display_list(region))
         precision = pattern.similarity
 
-        needle = pattern.get_color_image() if precision == 0.99 else pattern.get_gray_image()
-        haystack = stack_image.get_color_image() if precision == 0.99 else stack_image.get_gray_image()
-
-        res = cv2.matchTemplate(np.array(haystack), np.array(needle), FIND_METHOD)
+        res = cv2.matchTemplate(stack_image.get_gray_array(), pattern.get_gray_array(), FIND_METHOD)
         if match_type is MatchTemplateType.SINGLE:
             min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
             if max_val >= precision:
@@ -94,7 +91,23 @@ def match_template(pattern: Pattern, region: Rectangle = None,
     return locations_list
 
 
-def image_find(pattern, timeout = None, region = None):
+def _region_in_display_list(region=None):
+    r_x = region.x
+    r_y = region.y
+    r_w = region.width
+    r_h = region.height
+
+    for index, display in enumerate(DisplayCollection):
+        d_x = display.bounds.x
+        d_y = display.bounds.y
+        d_w = display.bounds.width
+        d_h = display.bounds.height
+
+        if r_x >= d_x and r_x - d_x + r_w <= d_w and r_y >= d_y and r_y - d_y + r_h <= d_h:
+            return index
+
+
+def image_find(pattern, timeout=None, region=None):
     """ Search for an image in a Region or full screen.
 
     :param Pattern pattern: Name of the searched image.
@@ -102,7 +115,7 @@ def image_find(pattern, timeout = None, region = None):
     :param Region region: Region object.
     :return: Location.
     """
-    # if not is_pattern_size_correct(pattern, region):
+    # if not _is_pattern_size_correct(pattern, region):
     #     return None
 
     if timeout is None:
@@ -130,7 +143,7 @@ def image_vanish(pattern: Pattern, timeout: float = None, region: Rectangle = No
     :param Region region: Region object.
     :return: Location.
     """
-    if not is_pattern_size_correct(pattern, region):
+    if not _is_pattern_size_correct(pattern, region):
         return None
 
     pattern_found = True
