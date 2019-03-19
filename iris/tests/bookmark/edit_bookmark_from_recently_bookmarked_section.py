@@ -21,7 +21,7 @@ class Test(BaseTest):
 
     def run(self):
         properties_option_pattern = Pattern('properties_option.png')
-        new_modified_bookmark_pattern = Pattern('bookmark_modified.png')
+        new_modified_bookmark_pattern = Pattern('wiki_new_name_bookmark.png')
         name_before_editing_pattern = Pattern('name_field.png')
         location_before_editing_pattern = Pattern('location_field.png')
         tags_before_editing_pattern = Pattern('tags_field.png')
