@@ -70,7 +70,7 @@ class Test(BaseTest):
 
         click(paste_option_pattern)
 
-        hover(getting_started_pattern)
+        click(firefox_menu_bookmarks_toolbar_pattern)
 
         mozilla_about_us_bookmark_exists = exists(mozilla_about_us_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, mozilla_about_us_bookmark_exists, 'Mozilla About Us bookmark is displayed in Firefox menu > '
