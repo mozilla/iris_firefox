@@ -69,6 +69,3 @@ class Test(BaseTest):
 
         new_bookmark_not_added = exists(new_bookmark_pattern)
         assert_false(self, new_bookmark_not_added, 'The New Bookmark window is dismissed and no bookmark is created.')
-
-
-
