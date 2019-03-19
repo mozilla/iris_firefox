@@ -49,4 +49,5 @@ class Test(BaseTest):
 
         iris_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, iris_opened_in_current_tab,
-                    'The page that was previously displayed in the current tab is opened again')
+                    'The page that was previously displayed in the current tab is opened again '
+                    'after new window closing')
