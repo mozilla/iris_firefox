@@ -54,10 +54,7 @@ class Test(BaseTest):
             type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY_LONG)
             select_location_bar()
-            time.sleep(DEFAULT_UI_DELAY)
-            edit_copy()
-            time.sleep(DEFAULT_UI_DELAY)
-            url_text = Env.get_clipboard()
+            url_text = copy_to_clipboard()
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
@@ -85,10 +82,7 @@ class Test(BaseTest):
             type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY_LONG)
             select_location_bar()
-            time.sleep(DEFAULT_UI_DELAY)
-            edit_copy()
-            time.sleep(DEFAULT_UI_DELAY)
-            url_text = Env.get_clipboard()
+            url_text = copy_to_clipboard()
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
@@ -121,10 +115,7 @@ class Test(BaseTest):
             type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY_LONG)
             select_location_bar()
-            time.sleep(DEFAULT_UI_DELAY)
-            edit_copy()
-            time.sleep(DEFAULT_UI_DELAY)
-            url_text = Env.get_clipboard()
+            url_text = copy_to_clipboard()
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
@@ -152,10 +143,7 @@ class Test(BaseTest):
             type(Key.ENTER)
             time.sleep(DEFAULT_UI_DELAY_LONG)
             select_location_bar()
-            time.sleep(DEFAULT_UI_DELAY)
-            edit_copy()
-            time.sleep(DEFAULT_UI_DELAY)
-            url_text = Env.get_clipboard()
+            url_text = copy_to_clipboard()
 
             if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
                 if value != 'US':
