@@ -8,15 +8,11 @@ import logging
 import bugzilla
 from github import Github
 
-from src.configuration.config_parser import get_config_property
+from src.configuration.config_parser import get_config_property, ConfigError
 from targets.firefox.errors import BugManagerError
 from src.core.api.os_helpers import OSHelper
 
 logger = logging.getLogger(__name__)
-
-bugzilla_api_key = get_config_property('Bugzilla', 'api_key')
-base_url = get_config_property('Bugzilla', 'bugzilla_url')
-github_api_key = Github(get_config_property('GitHub', 'github_key'))
 
 bugzilla_os = {'win': 'Windows 10', 'win7': 'Windows 7', 'linux': 'Linux', 'osx': 'macOS'}
 
@@ -24,19 +20,31 @@ bugzilla_os = {'win': 'Windows 10', 'win7': 'Windows 7', 'linux': 'Linux', 'osx'
 def get_github_issue(id):
     """Get Github issues details."""
     try:
+        github_api_key = Github(get_config_property('GitHub', 'github_key'))
+    except ConfigError:
+        logger.warning('Github section missing from config.ini')
+        github_api_key = ''
+    try:
         repo = [x for x in github_api_key.get_user().get_repos() if x.name == 'iris2']
         return repo[0].get_issue(id)
-    except Exception as e:
-        raise BugManagerError('Github API call failed: {}'.format(str(e)))
+    except Exception:
+        return None
 
 
 def get_bugzilla_bug(id):
     """Get Bugzilla bug details."""
     try:
+        bugzilla_api_key = get_config_property('Bugzilla', 'api_key')
+        base_url = get_config_property('Bugzilla', 'bugzilla_url')
+    except ConfigError:
+        logger.warning('Bugzilla section missing from config.ini')
+        bugzilla_api_key = ''
+        base_url = ''
+    try:
         b = bugzilla.Bugzilla(url=base_url, api_key=bugzilla_api_key)
         return b.get_bug(id)
-    except Exception as e:
-        raise BugManagerError('Bugzilla API call failed: {}'.format(str(e)))
+    except Exception:
+        return None
 
 
 def is_blocked(id):
@@ -44,6 +52,8 @@ def is_blocked(id):
     try:
         if 'issue_' in id:
             bug = get_github_issue(id).state
+            if bug is None:
+                return True
             if bug.state == 'closed':
                 return False
             else:
@@ -52,6 +62,8 @@ def is_blocked(id):
                 return False
         else:
             bug = get_bugzilla_bug(id)
+            if bug is None:
+                return True
             if bug.status in ['CLOSED', 'RESOLVED']:
                 return False
             else:
