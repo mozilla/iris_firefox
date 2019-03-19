@@ -30,26 +30,33 @@ class Test(BaseTest):
         open_firefox_menu()
 
         top_menu_located = exists(bookmarks_top_menu_pattern)
-        assert_true(self, top_menu_located, 'Firefox menu is located')
+        assert_true(self, top_menu_located, 'Firefox menu is opened')
 
         click(bookmarks_top_menu_pattern)
+
         bookmarks_dropdown_opened = exists(other_bookmarks_pattern)
-        assert_true(self, bookmarks_dropdown_opened, 'Bookmarks dropdown firefox menu is opened')
+        assert_true(self, bookmarks_dropdown_opened, 'Bookmarks menu is opened')
 
         other_bookmarks_location = find(other_bookmarks_pattern)
 
         click(other_bookmarks_pattern)
+
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, firefox_bookmark_top_menu_located, 'Bookmarks are displayed in top menu')
 
         firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)    # Required to guarantee bookmarks
         hover(Location(SCREEN_WIDTH, other_bookmarks_location.y))                   # list will not disappear
         hover(Location(SCREEN_WIDTH, firefox_bookmark_item_location.y))
+
         right_click(firefox_bookmark_top_menu_pattern)
+
+        context_menu_opened = exists(open_bookmark_in_private_pattern)
+        assert_true(self, context_menu_opened, 'Bookmark context menu is opened')
+
         click(open_bookmark_in_private_pattern)
 
         webpage_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, webpage_opened, 'Webpage is properly displayed')
+        assert_true(self, webpage_opened, 'Expected webpage is properly displayed')
 
         window_is_private = exists(PrivateWindow.private_window_pattern)
         assert_true(self, window_is_private, 'Webpage is opened in private window')
