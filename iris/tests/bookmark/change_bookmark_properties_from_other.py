@@ -104,7 +104,13 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
+        firefox_menu_opened = exists(bookmarks_top_menu_pattern)
+        assert_true(self, firefox_menu_opened, 'Firefox menu is opened')
+
         click(bookmarks_top_menu_pattern)
+
+        bookmarks_menu_opened = exists(other_bookmarks_pattern)
+        assert_true(self, bookmarks_menu_opened, 'Bookmarks menu is opened')
 
         click(other_bookmarks_pattern)
 
@@ -119,6 +125,9 @@ class Test(BaseTest):
         hover(Location(SCREEN_WIDTH, bookmark_location_y))
 
         right_click(pocket_bookmark_name_pattern, in_region=bookmark_region)
+
+        bookmark_context_menu_opened = exists(bookmark_properties_item_pattern)
+        assert_true(self, bookmark_context_menu_opened, 'Bookmark context menu is properly displayed')
 
         click(bookmark_properties_item_pattern)
 
