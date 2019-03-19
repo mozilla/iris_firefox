@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Search Links only [NOTE: Fails on step 3 because pink background does not appear]'
+        self.meta = 'Search Links only'
         self.test_case_id = '127252'
         self.test_suite_id = '2085'
         self.locales = ['en-US']

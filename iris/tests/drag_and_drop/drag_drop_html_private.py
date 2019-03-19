@@ -25,6 +25,7 @@ class Test(BaseTest):
         not_matching_message_pattern = Pattern('not_matching_message.png')
 
         new_private_window()
+
         navigate('https://mystor.github.io/dragndrop/')
 
         drop_html_data_button_displayed = exists(drop_html_data_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -39,21 +40,25 @@ class Test(BaseTest):
         assert_true(self, dropping_area_displayed, 'The dropping are is displayed')
 
         new_private_window()
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
+        home_button_exists = exists(NavBar.HOME_BUTTON)
+        assert_true(self, home_button_exists, 'Home button exists')
+
+        home_height, home_width = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
+
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
-        point_to_move_wiki_window = find(soap_wiki_tab_pattern).right(400)
-        location_to_shift_wiki_window = find(soap_wiki_tab_pattern).right(800)
-        location_to_shift_wiki_window_linux = find(soap_wiki_tab_pattern).right(2000)
+        point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH/5)
+        location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH)
 
-        if Settings.is_linux():
-            drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window_linux)
-        else:
-            drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
+        drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
 
-        time.sleep(DEFAULT_UI_DELAY)
+        soap_wiki_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        assert_true(self, soap_wiki_label_exists, 'Paragraph to drag and drop is displayed')
 
         soap_wiki_label_location = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         paragraph_to_select = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).below(120)

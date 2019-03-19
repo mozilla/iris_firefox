@@ -25,9 +25,9 @@ fi
 echo -e "\n${GREEN} --->  Installing Tesseract ${NC} \n"
 if command -v tesseract -v >/dev/null 2>&1; then
     echo -e "\n${GREEN}  --->  Skipping Tesseract install. Already installed. ${NC}\n"
-    brew upgrade tesseract --with-all-languages --with-training-tools --with-serial-num-pack
+    brew upgrade tesseract
 else
-    brew install tesseract --with-all-languages --with-training-tools --with-serial-num-pack
+    brew install tesseract
 fi
 
 echo -e "\n${GREEN}  --->  installing/updating p7zip ${NC} \n"
