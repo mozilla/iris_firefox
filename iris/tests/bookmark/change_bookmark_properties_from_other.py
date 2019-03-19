@@ -46,7 +46,7 @@ class Test(BaseTest):
 
         pocket_bookmarks_list = find_all(pocket_bookmark_name_pattern)
         pocket_bookmark_unique = len(pocket_bookmarks_list) == 1
-        assert_true(self, pocket_bookmark_unique, 'Only one pocket bookmark is displayed')
+        assert_true(self, pocket_bookmark_unique, 'Only one pocket bookmark is displayed, %d' % len(pocket_bookmarks_list))
 
         firefox_bookmark_displayed = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, firefox_bookmark_displayed, 'Firefox bookmark is properly displayed')
@@ -58,9 +58,9 @@ class Test(BaseTest):
         other_bookmarks_location_y = find(other_bookmarks_pattern).y
         bookmark_location_y = find(firefox_bookmark_top_menu_pattern).y
 
-        hover(Location(other_bookmarks_location_y, SCREEN_WIDTH))
+        hover(Location(SCREEN_WIDTH, other_bookmarks_location_y))
 
-        hover(Location(bookmark_location_y, SCREEN_WIDTH))
+        hover(Location(SCREEN_WIDTH, bookmark_location_y))
 
         right_click(firefox_bookmark_top_menu_pattern)
 
