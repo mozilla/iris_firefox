@@ -49,6 +49,8 @@ class Test(BaseTest):
 
         click(Library.Organize.NEW_SEPARATOR)
 
+        restore_firefox_focus()
+
         open_bookmarks_toolbar()
 
         new_separator_added = exists(separator_added_pattern)
