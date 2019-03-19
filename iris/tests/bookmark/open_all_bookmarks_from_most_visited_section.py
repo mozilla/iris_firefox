@@ -72,8 +72,3 @@ class Test(BaseTest):
         all_websites_are_opened = exists(LocalWeb.IRIS_LOGO)
         assert_true(self, all_websites_are_opened, 'All the websites from the Most visited section are opened in '
                                                    'separate tabs, in the same window.')
-
-
-
-
-
