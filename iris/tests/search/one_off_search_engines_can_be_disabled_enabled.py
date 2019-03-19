@@ -100,9 +100,9 @@ class Test(BaseTest):
 
         type(Key.TAB)
 
-        click(amazon_search_bar_pattern.target_offset(-10, 0))
-        click(bing_search_bar_pattern.target_offset(-10, 0))
-        click(duckduckgo_search_bar_pattern.target_offset(-10, 0))
+        click(amazon_search_bar_pattern.target_offset(-10, 5))
+        click(bing_search_bar_pattern.target_offset(-10, 5))
+        click(duckduckgo_search_bar_pattern.target_offset(-10, 5))
 
         # Repeat the above steps to see that the search engines are restored.
         region = Screen.UPPER_RIGHT_CORNER

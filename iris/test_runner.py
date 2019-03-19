@@ -39,7 +39,7 @@ def run(master_tests_list, test_list, browser):
             return
         logger.info('\n' + '-' * 120)
 
-        if IrisCore.verify_test_compat(current, browser) or parse_args().override:
+        if IrisCore.verify_test_compat(current, browser) and IrisCore.is_enabled(current):
             logger.info('Executing: %s - [%s]: %s' % (index, module, current.meta))
             current.start_time = time.time()
 
