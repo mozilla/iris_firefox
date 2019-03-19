@@ -33,7 +33,9 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
         click(NavBar.LIBRARY_MENU)
@@ -49,11 +51,11 @@ class Test(BaseTest):
         click(edit_this_bookmark_pattern)
 
         if not Settings.is_mac():
-            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, edit_this_bookmark_menu_exists,
                         'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
         else:
-            edit_bookmark_name_before_exists = exists(edit_bookmark_name_before_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+            edit_bookmark_name_before_exists = exists(edit_bookmark_name_before_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, edit_bookmark_name_before_exists,
                         'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
 
@@ -108,11 +110,11 @@ class Test(BaseTest):
         click(edit_this_bookmark_pattern)
 
         if not Settings.is_mac():
-            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, edit_this_bookmark_menu_exists,
                         'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
         else:
-            edit_bookmark_name_before_exists = exists(edit_bookmark_name_after_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+            edit_bookmark_name_before_exists = exists(edit_bookmark_name_after_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, edit_bookmark_name_before_exists,
                         'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
 
