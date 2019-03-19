@@ -6,7 +6,7 @@ from iris.api.core.pattern import Pattern
 
 
 class DownloadManager(object):
-    SHOW_ALL_DOWNLOADS = Pattern('downloadshistory_show_all_downloads.png')
+    SHOW_ALL_DOWNLOADS = Pattern('downloads_history_show_all_downloads.png')
     DOWNLOADS_FOLDER = Pattern('downloads_folder.png')
 
     class DownloadsPanel(object):
@@ -61,7 +61,7 @@ class DownloadManager(object):
 
     # Library Menu Downloads Submenu.
     class Downloads(object):
-        SHOW_DOWNLOADS_FOLDER = Pattern('appmenu-library-downloads-show-button_show_downloads_folder.png')
+        SHOW_DOWNLOADS_FOLDER = Pattern('appmenu_library_downloads_show_button_show_downloads_folder.png')
         PANEL_HEADER_DOWNLOADS = Pattern('panel_header_downloads.png')
         SHOW_ALL_DOWNLOADS = Pattern('library_menu_downloads_more.png')
         FILE_MOVED_OR_MISSING = Pattern('file_moved_or_missing.png')
