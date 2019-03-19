@@ -56,17 +56,17 @@ class History(object):
         RESTORE_ALL_WINDOWS = Pattern('closed_windows_restore_all_items.png')
 
     class ForgetLast(object):
-        FORGET_TIMEFRAME_TITLE = Pattern('panel_ui_panic_button_success_icon.png')
+        FORGET_TIMEFRAME_TITLE = Pattern('panelui_panic_button_success_icon.png')
 
-        LAST_FIVE_MINUTES = Pattern('panel_ui_panic_5min.png')
-        LAST_TWO_HOURS = Pattern('panel_ui_panic_2_hr.png')
-        LAST_24_HOURS = Pattern('panel_ui_panic_day.png')
+        LAST_FIVE_MINUTES = Pattern('panelui_panic_5min.png')
+        LAST_TWO_HOURS = Pattern('panelui_panic_2hr.png')
+        LAST_24_HOURS = Pattern('panelui_panic_day.png')
 
         # Selected items
-        LAST_FIVE_MINUTES_SELECTED = Pattern('panel_ui_panic_5min_selected.png')
-        LAST_TWO_HOURS_SELECTED = Pattern('panel_ui_panic_2hr_selected.png')
-        LAST_24_HOURS_SELECTED = Pattern('panel_ui_panic_day_selected.png')
+        LAST_FIVE_MINUTES_SELECTED = Pattern('panelui_panic_5min_selected.png')
+        LAST_TWO_HOURS_SELECTED = Pattern('panelui_panic_2hr_selected.png')
+        LAST_24_HOURS_SELECTED = Pattern('panelui_panic_day_selected.png')
 
-        FORGET_BUTTON = Pattern('panel_ui_panic_view_button.png')
-        SUCCESS_FORGET_MSG = Pattern('panel_ui_panic_button_success_msg.png')
-        CLOSE_FORGET_PANEL_BUTTON = Pattern('panel_ui_panic_success_close_button.png')
+        FORGET_BUTTON = Pattern('panelui_panic_view_button.png')
+        SUCCESS_FORGET_MSG = Pattern('panelui_panic_button_success_msg.png')
+        CLOSE_FORGET_PANEL_BUTTON = Pattern('panelui_panic_success_close_button.png')
