@@ -12,61 +12,61 @@ class Library(object):
     FORWARD_BUTTON_DISABLED = Pattern('forward_button_disabled.png')
     BACK_BUTTON_ENABLED = Pattern('back_button_enabled.png')
     FORWARD_BUTTON_ENABLED = Pattern('forward_button_enabled.png')
-    ORGANIZE_BUTTON = Pattern('organizebutton.png')
+    ORGANIZE_BUTTON = Pattern('organize_button.png')
 
     class Organize(object):
         NEW_BOOKMARK = Pattern('newbookmark.png')
         NEW_FOLDER = Pattern('newfolder.png')
         NEW_SEPARATOR = Pattern('newseparator.png')
         if Settings.get_os() != Platform.MAC:
-            CLOSE = Pattern('orgclose.png')
+            CLOSE = Pattern('org_close.png')
 
-    VIEWS_BUTTON = Pattern('viewmenu.png')
+    VIEWS_BUTTON = Pattern('view_menu.png')
 
     class Views(object):
-        SHOW_COLUMNS = Pattern('viewcolumns.png')
+        SHOW_COLUMNS = Pattern('view_menu.png')
 
         class ShowColumns(object):
-            NAME = Pattern('menucol_placescontenttitle.png')
-            TAGS = Pattern('menucol_placescontenttags.png')
-            LOCATION = Pattern('menucol_placescontenturl.png')
-            MOST_RECENT_VISIT = Pattern('menucol_placescontentdate.png')
-            VISIT_COUNT = Pattern('menucol_placescontentvisitcount.png')
-            ADDED = Pattern('menucol_placescontentdateadded.png')
-            LAST_MODIFIED = Pattern('menucol_placescontentlastmodified.png')
+            NAME = Pattern('menucol_places_content_title.png')
+            TAGS = Pattern('menucol_places_content_tags.png')
+            LOCATION = Pattern('menucol_places_content_url.png')
+            MOST_RECENT_VISIT = Pattern('menucol_places_content_date.png')
+            VISIT_COUNT = Pattern('menucol_places_content_visit_count.png')
+            ADDED = Pattern('menucol_places_content_date_added.png')
+            LAST_MODIFIED = Pattern('menucol_places_content_last_modified.png')
 
-        SORT = Pattern('viewsort.png')
+        SORT = Pattern('view_sort.png')
 
         class Sort(object):
-            UNSORTED = Pattern('viewunsorted.png')
-            SORT_BY_NAME = Pattern('sort_by_menucol_placescontenttitle.png')
-            SORT_BY_TAGS = Pattern('sort_by_menucol_placescontenttags.png')
-            SORT_BY_LOCATION = Pattern('sort_by_menucol_placescontenturl.png')
-            SORT_BY_MOST_RECENT_VISIT = Pattern('sort_by_menucol_placescontentdate.png')
-            SORT_BY_VISIT_COUNT = Pattern('sort_by_menucol_placescontentvisitcount.png')
-            SORT_BY_ADDED = Pattern('sort_by_menucol_placescontentdateadded.png')
-            SORT_BY_LAST_MODIFIED = Pattern('sort_by_menucol_placescontentlastmodified.png')
-            AZ_SORT_ORDER = Pattern('viewsortascending.png')
-            ZA_SORT_ORDER = Pattern('viewsortdescending.png')
+            UNSORTED = Pattern('view_unsorted.png')
+            SORT_BY_NAME = Pattern('sort_by_menucol_places_content_title.png')
+            SORT_BY_TAGS = Pattern('sort_by_menucol_places_content_tags.png')
+            SORT_BY_LOCATION = Pattern('sort_by_menucol_places_content_url.png')
+            SORT_BY_MOST_RECENT_VISIT = Pattern('sort_by_menucol_places_content_date.png')
+            SORT_BY_VISIT_COUNT = Pattern('sort_by_menucol_places_content_visit_count.png')
+            SORT_BY_ADDED = Pattern('sort_by_menucol_places_content_date_added.png')
+            SORT_BY_LAST_MODIFIED = Pattern('sort_by_menucol_places_content_last_modified.png')
+            AZ_SORT_ORDER = Pattern('view_sort_ascending.png')
+            ZA_SORT_ORDER = Pattern('view_sort_descending.png')
 
-    IMPORT_AND_BACKUP_BUTTON = Pattern('maintenancebutton.png')
+    IMPORT_AND_BACKUP_BUTTON = Pattern('maintenance_button.png')
 
     class ImportAndBackup(object):
-        BACKUP = Pattern('backupbookmarks.png')
-        RESTORE = Pattern('filerestoremenu.png')
+        BACKUP = Pattern('backup_bookmarks.png')
+        RESTORE = Pattern('file_restore_menu.png')
 
         class Restore(object):
-            CHOOSE_FILE = Pattern('restorefromfile.png')
+            CHOOSE_FILE = Pattern('restore_from_file.png')
 
-        IMPORT_BOOKMARKS_FROM_HTML = Pattern('fileimport.png')
-        EXPORT_BOOKMARKS_FROM_HTML = Pattern('fileexport.png')
-        IMPORT_DATA_FROM_ANOTHER_BROWSER = Pattern('browserimport.png')
+        IMPORT_BOOKMARKS_FROM_HTML = Pattern('file_import.png')
+        EXPORT_BOOKMARKS_FROM_HTML = Pattern('file_export.png')
+        IMPORT_DATA_FROM_ANOTHER_BROWSER = Pattern('browser_import.png')
 
     class DownloadLibrary(object):
         DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern('download_button_cancel_icon.png')
         DOWNLOADS = Pattern('downloads.png')
         SEARCH_DOWNLOADS = Pattern('searchfilter_downloads.png')
-        CLEAR_DOWNLOADS = Pattern('cleardownloadsbutton.png')
+        CLEAR_DOWNLOADS = Pattern('clear_downloads_button.png')
 
     HISTORY = Pattern('history.png')
     HISTORY_NAME = Pattern('history_name.png')
@@ -86,6 +86,6 @@ class Library(object):
     OTHER_BOOKMARKS = Pattern('other_bookmarks.png')
     OTHER_BOOKMARKS_NAME = Pattern('other_bookmarks_name.png')
     SEARCH_BOOKMARKS = Pattern('searchfilter_bookmarks.png')
-    NAME_COLUMN = Pattern('placescontenttitle.png')
-    TAGS_COLUMN = Pattern('placescontenttags.png')
-    LOCATION_COLUMN = Pattern('placescontenturl.png')
+    NAME_COLUMN = Pattern('places_content_title.png')
+    TAGS_COLUMN = Pattern('places_content_tags.png')
+    LOCATION_COLUMN = Pattern('places_content_url.png')
