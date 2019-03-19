@@ -25,6 +25,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         getting_started_pattern = Pattern('getting_started_top_menu.png')
+        getting_started_toolbar_pattern = Pattern('getting_started_in_toolbar.png')
         cut_option_pattern = Pattern('cut_option.png')
         paste_option_pattern = Pattern('paste_option.png')
 
@@ -79,6 +80,6 @@ class Test(BaseTest):
 
         open_bookmarks_toolbar()
 
-        bookmark_removed_from_toolbar = exists(getting_started_pattern)
+        bookmark_removed_from_toolbar = exists(getting_started_toolbar_pattern)
         assert_false(self, bookmark_removed_from_toolbar, 'The file/folder from the previous step is pasted in the '
                                                           'selected section and deleted from the previous one.')
