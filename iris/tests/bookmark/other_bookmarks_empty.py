@@ -24,14 +24,17 @@ class Test(BaseTest):
 
         top_menu_displayed = exists(bookmarks_top_menu_pattern)
         assert_true(self, top_menu_displayed, 'Firefox menu is properly displayed')
+
         click(bookmarks_top_menu_pattern)
 
         bookmarks_dropdown_displayed = exists(other_bookmarks_item_pattern)
         assert_true(self, bookmarks_dropdown_displayed, 'Bookmarks menu is properly displayed')
+
         click(other_bookmarks_item_pattern)
 
         no_other_bookmarks = exists(empty_folder_stub_pattern)
         assert_true(self, no_other_bookmarks, '"Other Bookmarks" section is empty')
 
         click(NavBar.HAMBURGER_MENU)
+
         restore_firefox_focus()
