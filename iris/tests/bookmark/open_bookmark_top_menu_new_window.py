@@ -60,3 +60,6 @@ class Test(BaseTest):
         assert_true(self, webpage_opened, 'Expected webpage is properly displayed')
 
         close_window()
+
+        previous_window_opened = exists(LocalWeb.IRIS_LOGO)
+        assert_true(self, previous_window_opened, 'Start window is opened')
