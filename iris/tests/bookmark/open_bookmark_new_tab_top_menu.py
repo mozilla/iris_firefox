@@ -59,3 +59,6 @@ class Test(BaseTest):
 
         webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_opened, 'Expected webpage is opened')
+
+        opened_in_new_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
+        assert_true(self, opened_in_new_tab, 'Webpage is opened in new tab of start window')
