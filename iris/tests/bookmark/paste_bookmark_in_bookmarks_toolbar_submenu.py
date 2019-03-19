@@ -83,4 +83,3 @@ class Test(BaseTest):
         bookmark_exists_in_toolbar = exists(mozilla_about_us_bookmark_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_exists_in_toolbar, 'The copied file/folder is correctly pasted in the '
                                                       '**Bookmarks Toolbar** section.')
-
