@@ -65,8 +65,3 @@ class Test(BaseTest):
                                                                      scroll, (-mouse_wheel_steps,), 100,
                                                                      Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, show_more_results_button_exists, 'The images are properly displayed.')
-
-
-
-
-
