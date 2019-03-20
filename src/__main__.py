@@ -96,6 +96,8 @@ def get_test_params(target):
     pytest_args.append('-vs')
     pytest_args.append('-r ')
     pytest_args.append('-s')
+    pytest_args.append('-p')
+    pytest_args.append('no:terminal')
     return pytest_args
 
 

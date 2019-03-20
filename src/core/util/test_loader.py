@@ -2,11 +2,14 @@ import importlib
 import logging
 import os
 import pprint
+import pytest
 import sys
 from functools import reduce
 
-logger = logging.getLogger(__name__)
 from src.core.util.path_manager import PathManager
+#from src.core.util.test_collector import *
+
+logger = logging.getLogger(__name__)
 
 
 def sorted_walk(directory, topdown=True, onerror=None):
@@ -46,37 +49,46 @@ def scan_all_tests():
         [files.remove(d) for d in list(files) if d in exclude_files]
 
         folders = path[start:].split(os.sep)
-
         subdir = dict.fromkeys(files)
-
         parent = reduce(dict.get, folders[:-1], test_list)
         parent[folders[-1]] = subdir
 
-        for module in files:
+        if len(files) > 0:
+            if os.path.isdir(path):
+                my_plugin = TestCollector()
+                pytest.main(['--collect-only', '-p', 'no:terminal', path], plugins=[my_plugin])
+                for module in my_plugin.get_collected_items():
+                    try:
+                        module_path = str(module.fspath)
+                        module_name = os.path.basename(module_path)
+                        temp = module_path.split('%stests%s' % (os.sep, os.sep))[1].split(module_name)[0]
+                        package = os.path.join('tests', temp)
+                        current_test = module.own_markers[0].kwargs
+                        test_object = {'name': module_name, 'module': module_path,
+                                       'description': current_test.get('description'),
+                                       'package': package}
+                        if not current_test.get('values'):
+                            pass
+                        else:
+                            for value in current_test.get('values').kwargs:
+                                test_object[value] = current_test.get('values').kwargs[value]
+                        subdir[module_name] = test_object
 
-            try:
-                module_path = os.path.relpath(path)
-                module_name = module
-                sys.path.append(module_path)
-                current_module = importlib.import_module(module_name.split('.')[0])
-
-                current_test = current_module.Test().details.kwargs
-
-                test_object = {'name': module, 'module': current_module.__file__,
-                               'description': current_test.get('description'),
-                               'package': module_path}
-                if not current_test.get('values') :
-                    pass
-
-                else:
-                    for value in current_test.get('values').kwargs:
-                        test_object[value]=current_test.get('values').kwargs[value]
-
-                subdir[module] = test_object
-
-            except TypeError as e:
-                logger.warning('Error in test - %s: %s' % (module, e.message))
-            except AttributeError:
-                logger.warning('[%s] is not a test file. Skipping...', module)
-
+                    except TypeError as e:
+                        logger.warning('Error in test - %s: %s' % (module, e.message))
+                    except AttributeError:
+                        logger.warning('[%s] is not a test file. Skipping...', module)
     return test_list
+
+
+class TestCollector:
+
+    def __init__(self):
+        self.collected = []
+
+    def pytest_collection_modifyitems(self, items):
+        for item in items:
+            self.collected.append(item)
+
+    def get_collected_items(self):
+        return self.collected

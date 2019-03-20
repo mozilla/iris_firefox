@@ -153,18 +153,17 @@ def convert_test_list(list, only_failures=False):
     :param only_failures: If True, only return failed tests
     :return:
     '''
-    delimiter = '\\' if '\\' in PathManager.get_current_module() else '/'
     test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     tests = []
     for test in list:
         test_failed = True if 'FAILED' in test.outcome or 'ERROR' in test.outcome else False
         original_path = str(test.item.__dict__.get('fspath'))
         target_root = original_path.split(test_root)[1]
-        target = target_root.split(delimiter)[1]
-        test_path = target_root.split('%s%s%s' % (delimiter, target, delimiter))[1]
+        target = target_root.split(os.sep)[1]
+        test_path = target_root.split('%s%s%s' % (os.sep, target, os.sep))[1]
         parent = tests
         details, values = get_test_markers(test.item)
-        for module in test_path.split(delimiter):
+        for module in test_path.split(os.sep):
             test_obj = {}
             test_obj['name'] = module.split('.py')[0]
             if 'py' not in module:

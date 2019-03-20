@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     fx_values = pytest.mark.VALUES(
         test_case_id="108255",
-        test_suite_id="1902",
+        test_suite_id="1902"
     )
 
     details = pytest.mark.DETAILS(
@@ -17,6 +17,10 @@ class Test(FirefoxTest):
         locale='[en-US]',
         values=fx_values
     )
+
+    @details
+    def test_run(self):
+        pass
 
     # ----------------------------------
     # need to implement local server

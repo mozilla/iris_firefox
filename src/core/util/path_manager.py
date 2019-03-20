@@ -44,8 +44,7 @@ class PathManager:
     @staticmethod
     def parse_module_path():
         """Returns the parent directory and module name of the calling file."""
-        delimiter = '\\' if '\\' in PathManager.get_current_module() else '/'
-        temp = PathManager.get_current_module().split(delimiter)
+        temp = PathManager.get_current_module().split(os.sep)
         parent = temp[len(temp) - 2]
         test = temp[len(temp) - 1].split('.py')[0]
         return parent, test
