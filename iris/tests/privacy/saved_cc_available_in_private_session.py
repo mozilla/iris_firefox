@@ -158,8 +158,7 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY)
             click(card_number_field_pattern)
 
-        saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern.similar(0.6),
-                                                 DEFAULT_FIREFOX_TIMEOUT)
+        saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
                     'The Credit Card number from the saved profile is displayed in the dropdown')
 
