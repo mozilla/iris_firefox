@@ -29,22 +29,27 @@ class Test(BaseTest):
         assert_true(self, firefox_menu_opened, 'Firefox menu is opened')
 
         click(bookmarks_top_menu_pattern)
+
         bookmarks_menu_displayed = exists(other_bookmarks_item_pattern)
         assert_true(self, bookmarks_menu_displayed, 'Bookmarks menu is displayed')
 
         click(other_bookmarks_item_pattern)
+
         other_bookmarks_empty = exists(empty_folder_stub_pattern)
         assert_true(self, other_bookmarks_empty, 'No bookmarks are saved in \'Other bookmarks\'')
 
         right_click(empty_folder_stub_pattern)
+
         context_menu_displayed = exists(new_bookmark_item_top_menu_pattern)
         assert_true(self, context_menu_displayed, 'Context menu for bookmark top menu item is displayed')
 
         click(new_bookmark_item_top_menu_pattern)
+
         form_appeared = exists(name_bookmark_field_pattern)
         assert_true(self, form_appeared, 'Bookamrk creation form is opened')
 
         click(name_bookmark_field_pattern)
+
         paste('FIREFOX_TEST_SITE')
         type(Key.TAB)
         paste(LocalWeb.FIREFOX_TEST_SITE)
@@ -62,10 +67,12 @@ class Test(BaseTest):
         assert_true(self, firefox_menu_reopened, 'Firefox menu is reopened')
 
         click(bookmarks_top_menu_pattern)
+
         bookmarks_menu_displayed_again = exists(other_bookmarks_item_pattern)
         assert_true(self, bookmarks_menu_displayed_again, 'Bookmarks menu is displayed second time')
 
         click(other_bookmarks_item_pattern)
+
         bookmark_saved = exists(added_bookmark_pattern)
         assert_true(self, bookmark_saved, 'Manually added bookmark is saved')
 
