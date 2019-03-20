@@ -33,39 +33,34 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(Settings.SHORT_FIREFOX_TIMEOUT)
 
         library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_this_bookmark_exists, 'The Bookmarks menu is correctly displayed')
 
         click(edit_this_bookmark_pattern)
 
-        if not Settings.is_mac():
-            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, edit_this_bookmark_menu_exists,
-                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
-        else:
-            edit_bookmark_name_before_exists = exists(edit_bookmark_name_before_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, edit_bookmark_name_before_exists,
-                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
+        edit_bookmark_title_exists = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, edit_bookmark_title_exists,
+                    'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
 
-        edit_bookmark_name_before_exists = exists(edit_bookmark_name_before_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_bookmark_name_before_exists = exists(edit_bookmark_name_before_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_bookmark_name_before_exists, 'Name field exists')
 
-        edit_bookmark_folder_before_exists = exists(edit_bookmark_folder_before_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_bookmark_folder_before_exists = exists(edit_bookmark_folder_before_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_bookmark_folder_before_exists, 'Folder field exists')
 
-        edit_bookmark_tags_before_exists = exists(edit_bookmark_tags_before_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_bookmark_tags_before_exists = exists(edit_bookmark_tags_before_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_bookmark_tags_before_exists, 'Tags field exists')
 
         paste('New Name')
@@ -75,12 +70,12 @@ class Test(BaseTest):
         click(edit_bookmark_folder_before_pattern)
 
         if Settings.is_linux() or Settings.is_mac():
-            edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_option, Settings.TINY_FIREFOX_TIMEOUT)
+            edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_option, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, edit_bookmark_folder_after_exists, 'Needed option from folder field exists')
 
             click(edit_bookmark_folder_option)
         else:
-            edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_after_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+            edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_after_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, edit_bookmark_folder_after_exists, 'Needed option from folder field exists')
 
             click(edit_bookmark_folder_after_pattern)
@@ -94,35 +89,30 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_this_bookmark_exists, 'The Bookmarks menu is correctly displayed')
 
         click(edit_this_bookmark_pattern)
 
-        if not Settings.is_mac():
-            edit_this_bookmark_menu_exists = exists(edit_this_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, edit_this_bookmark_menu_exists,
-                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
-        else:
-            edit_bookmark_name_before_exists = exists(edit_bookmark_name_after_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-            assert_true(self, edit_bookmark_name_before_exists,
-                        'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
+        edit_bookmark_title_exists = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, edit_bookmark_title_exists,
+                    'Edit This Bookmark window is displayed under the star-shaped button from the URL bar')
 
-        edit_bookmark_name_after_exists = exists(edit_bookmark_name_after_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_bookmark_name_after_exists = exists(edit_bookmark_name_after_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_bookmark_name_after_exists, 'Name field was correctly saved')
 
-        edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_after_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_bookmark_folder_after_exists = exists(edit_bookmark_folder_after_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_bookmark_folder_after_exists, 'Folder field was correctly saved')
 
-        edit_bookmark_tags_after_exists = exists(edit_bookmark_tags_after_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        edit_bookmark_tags_after_exists = exists(edit_bookmark_tags_after_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, edit_bookmark_tags_after_exists, 'Tags field was correctly saved')
