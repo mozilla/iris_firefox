@@ -162,7 +162,7 @@ def convert_test_list(list, only_failures=False):
         target = target_root.split(os.sep)[1]
         test_path = target_root.split('%s%s%s' % (os.sep, target, os.sep))[1]
         parent = tests
-        details, values = get_test_markers(test.item)
+        details = get_test_markers(test.item)
         for module in test_path.split(os.sep):
             test_obj = {}
             test_obj['name'] = module.split('.py')[0]
@@ -193,7 +193,7 @@ def convert_test_list(list, only_failures=False):
                 test_obj['debug_image_directory'] = debug_image_directory
                 test_obj['debug_images'] = get_list_of_image_names(debug_image_directory)
                 test_obj['description'] = details.get('description')
-                test_obj['values'] = values
+                test_obj['values'] = {} # TODO: update
                 if only_failures and test_failed:
                     parent.append(test_obj)
                 elif not only_failures:
@@ -225,13 +225,7 @@ def get_failing_code(file, line):
 
 def get_test_markers(item):
     details = {}
-    values = {}
     for marker in item.iter_markers(name="DETAILS"):
         for arg in marker.kwargs:
-            if arg == 'values':
-                for arg2 in marker.kwargs[arg].kwargs:
-                    values[arg2] = marker.kwargs[arg].kwargs[arg2]
-            else:
-                details[arg] = marker.kwargs[arg]
-    markers = (details, values)
-    return markers
+            details[arg] = marker.kwargs[arg]
+    return details
