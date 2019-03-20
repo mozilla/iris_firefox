@@ -5,19 +5,14 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    fx_values = pytest.mark.VALUES(
-        blocked_by={'id': '1488708', 'platform': ["linux"]},
-        test_case_id="108278",
-        test_suite_id="1902",
-    )
 
-    details = pytest.mark.DETAILS(
+    @pytest.mark.DETAILS(
         description="Alt+UP/DOWN Keys - in the Awesome Bar.",
         locale='[en-US]',
-        values=fx_values
+        blocked_by={'id': '1488708', 'platform': ["linux"]},
+        test_case_id="108278",
+        test_suite_id="1902"
     )
-
-    @details
     def test_run(self):
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
         search_with_wikipedia_one_off_string_pattern = Pattern('search_with_Wikipedia_one_off_string.png')

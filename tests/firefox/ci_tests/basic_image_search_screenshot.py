@@ -6,18 +6,13 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    fx_values = pytest.mark.VALUES(
-        blocked_by={'id': '1488708', 'platform': ["windows", "osx"]},
-    )
 
-    details = pytest.mark.DETAILS(
+    @pytest.mark.DETAILS(
         description="This test verifies if Pyautogui/MSS screenshot and image search are working properly in a ' \
                     'framebuffer environment..",
         locale='[en-US]',
-        values=fx_values
+        blocked_by={'id': '1488708', 'platform': ["windows", "osx"]}
     )
-
-    @details
     def test_run(self):
 
         # Image sccreenshot with pyautogui

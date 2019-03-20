@@ -7,18 +7,13 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    fx_values = pytest.mark.VALUES(
+
+    @pytest.mark.DETAILS(
+        description="This test case checks the awesomebar search after user input.",
+        locale='[en-US]',
         test_case_id="108255",
         test_suite_id="1902"
     )
-
-    details = pytest.mark.DETAILS(
-        description="This test case checks the awesomebar search after user input.",
-        locale='[en-US]',
-        values=fx_values
-    )
-
-    @details
     def test_run(self):
         pass
 

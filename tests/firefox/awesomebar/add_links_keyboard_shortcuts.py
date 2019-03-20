@@ -6,20 +6,15 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    fx_values = pytest.mark.VALUES(
+
+    @pytest.mark.DETAILS(
+        description="This test case adds links using \'CTRL\' + \'ENTER\' keys",
+        locale='[en-US]',
         test_case_id="119484",
         test_suite_id="1902"
         #exclude=OSPlatform.MAC.value,
         # blocked_by='1520795'
     )
-
-    details = pytest.mark.DETAILS(
-        description="This test case adds links using \'CTRL\' + \'ENTER\' keys",
-        locale='[en-US]',
-        values=fx_values
-    )
-
-    @details
     def test_run(self):
         cnn_tab_pattern = Pattern('cnn_tab.png')
         cnn_icon_pattern = Pattern('cnn_icon.png')
