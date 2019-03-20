@@ -193,7 +193,12 @@ def convert_test_list(list, only_failures=False):
                 test_obj['debug_image_directory'] = debug_image_directory
                 test_obj['debug_images'] = get_list_of_image_names(debug_image_directory)
                 test_obj['description'] = details.get('description')
-                test_obj['values'] = {} # TODO: update
+
+                values = {}
+                for i in details:
+                    if i != 'description':
+                        values[i] = details.get(i)
+                test_obj['values'] = values
                 if only_failures and test_failed:
                     parent.append(test_obj)
                 elif not only_failures:

@@ -9,18 +9,19 @@ from src.core.util.test_assert import TestResult
 
 class ReportFooter(object):
 
-    def __init__(self, app, total_tests_run, passed_tests, failed_tests, skipped_tests, total_duration, failures):
+    def __init__(self, app, total_tests_run, passed_tests, failed_tests, skipped_tests, error_tests, total_duration, failures):
         self.platform = OSHelper.get_os().value
         self.app = app
         self.total_tests_run = total_tests_run
         self.failed_tests = failed_tests
         self.passed_tests = passed_tests
         self.skipped_tests = skipped_tests
+        self.error_tests = error_tests
         self.total_duration = total_duration
         self.failures = failures
 
     def print_report_footer(self):
-        total = self.passed_tests + self.failed_tests + self.skipped_tests
+        total = self.passed_tests + self.failed_tests + self.skipped_tests + self.error_tests
         separator = '\n' + '-' * 120 + '\n'
         failure_str = ''
 
@@ -30,16 +31,9 @@ class ReportFooter(object):
                 failure_str += failed_tests + '\n'
                 failure_str += '\n'
 
-        if self.app.target_name == 'Firefox':
-            app_details = 'Application: %s,Platform: %s' % (
-            self.app.target_name,
-            self.platform)
-
-        else:
-            app_details = 'Application: %s,Platform: %s' % (self.app.target_name,
-                                                             self.platform)
-        test_results_str = 'Passed: %s, Failed: %s, Skipped: %s   -- Total: %s' \
-                           % (self.passed_tests, self.failed_tests, self.skipped_tests, total)
+        app_details = 'Application: %s,Platform: %s' % (self.app.target_name, self.platform)
+        test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors %s   -- Total: %s' \
+                           % (self.passed_tests, self.failed_tests, self.skipped_tests, self.error_tests, total)
         total_time_str = 'Total time: %s second(s)' % self.total_duration
 
         test_results = (separator + app_details + '\n' + test_results_str + ' ' *
@@ -59,6 +53,7 @@ def create_footer(app):
     skipped = 0
     failed = 0
     passed = 0
+    errors = 0
     total_duration = 0
 
     failed_tests = []
@@ -67,12 +62,15 @@ def create_footer(app):
 
         if test.outcome == 'FAILED':
             failed = failed + 1
-            failed_tests.append(test.node_name)
+            failed_tests.append(test.file_name)
         elif test.outcome == 'PASSED':
             passed = passed + 1
         elif test.outcome == 'SKIPPED':
             skipped = skipped + 1
+        elif test.outcome == 'ERROR':
+            failed_tests.append(test.file_name)
+            errors = errors + 1
 
         total_duration = total_duration + test.test_duration
 
-    return ReportFooter(app, passed + skipped + failed, passed, failed, skipped, total_duration, failed_tests)
+    return ReportFooter(app, passed + skipped + failed + errors, passed, failed, skipped, errors, total_duration, failed_tests)

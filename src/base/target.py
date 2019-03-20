@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
 import time
 
 import pytest
@@ -60,6 +61,9 @@ class BaseTarget:
         create_run_log(self)
 
         logger.info("** Test session {} complete **".format(session.name))
+
+    def pytest_runtest_setup(self, item):
+        os.environ['CURRENT_TEST'] = str(item.__dict__.get('fspath'))
 
     def pytest_runtestloop(self, session):
         pass
