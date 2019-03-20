@@ -28,12 +28,9 @@ class Test(BaseTest):
         return
 
     def run(self):
-        download_files_list = [DownloadFiles.FIREFOX_INSTALLER.similar(0.85)]
-
         navigate('https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/')
 
-        for pattern in download_files_list:
-            download_file(pattern, DownloadFiles.OK)
+        download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.85), DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadState.COMPLETED, 50)
         assert_true(self, expected, 'Firefox installer download is completed.')
