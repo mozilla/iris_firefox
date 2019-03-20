@@ -59,7 +59,7 @@ class Test(BaseTest):
         paste('text')
 
         google_search_suggestion_exists = exists(google_search_suggestion_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, google_search_suggestion_exists, 'google_search_suggestion_exists')
+        assert_true(self, google_search_suggestion_exists, 'Search suggestion drop-down displayed')
 
         google_search_suggestion_location = find(google_search_suggestion_pattern)
         google_search_suggestion_width, google_search_suggestion_height = google_search_suggestion_pattern.get_size()
