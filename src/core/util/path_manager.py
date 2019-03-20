@@ -200,3 +200,25 @@ class PathManager:
             if os.path.exists(path):
                 return path
         return None
+
+    @staticmethod
+    def sorted_walk(directory, topdown=True, onerror=None):
+        names = os.listdir(directory)
+        names.sort()
+        dirs, nondirs = [], []
+
+        for name in names:
+            if os.path.isdir(os.path.join(directory, name)):
+                dirs.append(name)
+            else:
+                nondirs.append(name)
+
+        if topdown:
+            yield directory, dirs, nondirs
+        for name in dirs:
+            path = os.path.join(directory, name)
+            if not os.path.islink(path):
+                for x in PathManager.sorted_walk(path, topdown, onerror):
+                    yield x
+        if not topdown:
+            yield directory, dirs, nondirs

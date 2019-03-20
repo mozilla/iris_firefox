@@ -7,31 +7,8 @@ import sys
 from functools import reduce
 
 from src.core.util.path_manager import PathManager
-#from src.core.util.test_collector import *
 
 logger = logging.getLogger(__name__)
-
-
-def sorted_walk(directory, topdown=True, onerror=None):
-    names = os.listdir(directory)
-    names.sort()
-    dirs, nondirs = [], []
-
-    for name in names:
-        if os.path.isdir(os.path.join(directory, name)):
-            dirs.append(name)
-        else:
-            nondirs.append(name)
-
-    if topdown:
-        yield directory, dirs, nondirs
-    for name in dirs:
-        path = os.path.join(directory, name)
-        if not os.path.islink(path):
-            for x in sorted_walk(path, topdown, onerror):
-                yield x
-    if not topdown:
-        yield directory, dirs, nondirs
 
 
 def scan_all_tests():
@@ -44,7 +21,7 @@ def scan_all_tests():
     exclude_dirs = {'images', '.pytest_cache', '__pycache__'}
     exclude_files = {'__init__.py', 'pytest.ini', '.DS_Store'}
 
-    for path, dirs, files in sorted_walk(rootdir):
+    for path, dirs, files in PathManager.sorted_walk(rootdir):
         [dirs.remove(d) for d in list(dirs) if d in exclude_dirs]
         [files.remove(d) for d in list(files) if d in exclude_files]
 

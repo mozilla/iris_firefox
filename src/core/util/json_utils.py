@@ -9,11 +9,11 @@ import git
 import importlib
 import json
 import logging
+import pytest
 
 from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import parse_args
 from src.core.util.path_manager import PathManager
-from src.core.util.test_loader import scan_all_tests
 
 logger = logging.getLogger(__name__)
 
@@ -22,13 +22,10 @@ def create_target_json():
     master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
     target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
 
-    master_test_list = scan_all_tests()
-    tests = master_test_list['tests']
-
     targets = []
     for item in target_list:
         try:
-            app_tests = tests[item]
+            app_tests = scan_all_tests(item)
             target_module = importlib.import_module('targets.%s.app' % item)
             try:
                 target = target_module.Target()
@@ -191,7 +188,7 @@ def convert_test_list(list, only_failures=False):
                 test_obj['time'] = test.test_duration
                 debug_image_directory = os.path.join(PathManager.get_current_run_dir(), test_path.split('.py')[0], 'debug_images')
                 test_obj['debug_image_directory'] = debug_image_directory
-                test_obj['debug_images'] = get_list_of_image_names(debug_image_directory)
+                test_obj['debug_images'] = get_image_names(debug_image_directory)
                 test_obj['description'] = details.get('description')
 
                 values = {}
@@ -207,7 +204,7 @@ def convert_test_list(list, only_failures=False):
     return tests
 
 
-def get_list_of_image_names(path):
+def get_image_names(path):
     images = []
     if os.path.exists(path):
         for root, dirs, files in os.walk(path):
@@ -234,3 +231,62 @@ def get_test_markers(item):
         for arg in marker.kwargs:
             details[arg] = marker.kwargs[arg]
     return details
+
+
+def scan_all_tests(target):
+    master_test_root = os.path.join(PathManager.get_module_dir(), 'tests')
+    test_root = os.path.join(master_test_root, target)
+    base_props = ['description', 'platform', 'tags']
+    tests = []
+
+    my_plugin = TestCollector()
+    pytest.main(['--collect-only', '-p', 'no:terminal', test_root], plugins=[my_plugin])
+
+    for test in my_plugin.get_collected_items():
+        original_path = str(test.__dict__.get('fspath'))
+        target_root = original_path.split(master_test_root)[1]
+        test_path = target_root.split('%s%s%s' % (os.sep, target, os.sep))[1]
+        parent = tests
+        details = get_test_markers(test)
+        for module in test_path.split(os.sep):
+            test_obj = {}
+            test_obj['name'] = module.split('.py')[0]
+            if 'py' not in module:
+                module_exists = False
+                for objects in parent:
+                    if objects['name'] == module:
+                        parent = objects['children']
+                        module_exists = True
+                        break
+                if not module_exists:
+                    new_parent = test_obj['children'] = []
+                    parent.append(test_obj)
+                    parent = new_parent
+            else:
+                for prop in base_props:
+                    if details.get(prop) is not None:
+                        test_obj[prop] = details.get(prop)
+                    else:
+                        test_obj[prop] = ''
+                test_obj['file'] = original_path
+                values = {}
+                for i in details:
+                    if i not in base_props:
+                        values[i] = details.get(i)
+                test_obj['values'] = values
+                parent.append(test_obj)
+                parent = tests
+    return tests
+
+
+class TestCollector:
+
+    def __init__(self):
+        self.collected = []
+
+    def pytest_collection_modifyitems(self, items):
+        for item in items:
+            self.collected.append(item)
+
+    def get_collected_items(self):
+        return self.collected
