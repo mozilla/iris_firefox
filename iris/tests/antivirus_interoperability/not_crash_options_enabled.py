@@ -32,25 +32,28 @@ class Test(BaseTest):
 
         navigate('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
-        youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, youtube_page_is_downloaded, 'Youtube is properly loaded')
 
-        sound_video_played = exists(sound_on_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        sound_video_played = exists(sound_on_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, sound_video_played, 'The video is properly loaded and displayed.')
 
         navigate('https://soundcloud.com/')
 
-        soundcloud_logo_exists = exists(soundcloud_logo_pattern, DEFAULT_FIREFOX_TIMEOUT*10)
+        soundcloud_logo_exists = exists(soundcloud_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, soundcloud_logo_exists, 'Soundcloud is properly loaded')
+
+        sound_on_not_exists = exists(sound_on_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_false(self, sound_on_not_exists, 'The sound icon doesn\'t exists.')
 
         type(Key.SPACE)
 
-        sound_on_exists = exists(sound_on_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        sound_on_exists = exists(sound_on_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, sound_on_exists, 'The sound is properly loaded and played.')
 
         navigate('https://images.google.com/?gws_rd=ssl&hl=en')
 
-        google_images_page_opened = exists(google_images_page_mark_pattern, 20)
+        google_images_page_opened = exists(google_images_page_mark_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, google_images_page_opened, 'Google images site is properly loaded')
 
         paste('cute kittens:3')
@@ -58,8 +61,9 @@ class Test(BaseTest):
 
         mouse_move(google_images_page_mark_pattern)
 
-        show_more_results_button_exists = scroll_until_pattern_found(show_more_results_button_pattern, scroll,
-                                                                     (-mouse_wheel_steps,), 100, DEFAULT_UI_DELAY)
+        show_more_results_button_exists = scroll_until_pattern_found(show_more_results_button_pattern,
+                                                                     scroll, (-mouse_wheel_steps,), 100,
+                                                                     Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, show_more_results_button_exists, 'The images are properly displayed.')
 
 
