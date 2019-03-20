@@ -33,7 +33,7 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        time.sleep(Settings.SHORT_FIREFOX_TIMEOUT)
+        time.sleep(Settings.FIREFOX_TIMEOUT)
 
         library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
