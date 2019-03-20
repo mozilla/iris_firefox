@@ -42,8 +42,9 @@ class Test(BaseTest):
         except FindError:
             raise FindError('Not entered full screen mode')
 
-        page_content_displayed = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        page_content_displayed = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, page_content_displayed, 'Page content displayed.')
+
         click(find(LocalWeb.SOAP_WIKI_SOAP_LABEL))  # Clicking pattern may cause link clicking
 
         # Mouse scroll
