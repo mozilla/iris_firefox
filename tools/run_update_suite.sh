@@ -12,14 +12,6 @@ BACKGROUND_UPDATE_TESTS='background_update,'$SEARCH_CODE_TESTS
 for i in "$@"
 do
 case $i in
-    -l=*|--locales=*)
-    LOCALES="${i#*=}"
-    shift # past argument=value
-    ;;
-    -v=*|--versions=*)
-    VERSIONS="${i#*=}"
-    shift # past argument=value
-    ;;
     -u=*|--channel=*)
     CHANNEL="${i#*=}"
     shift # past argument=value
@@ -28,17 +20,24 @@ case $i in
     TESTS="${i#*=}"
     shift # past argument=value
     ;;
+    -b=*|--builds=*)
+    BUILDS="${i#*=}"
+    shift # past argument=value
+    ;;
     *)
           # unknown option
     ;;
 esac
 done
 
-if [[ -n "$LOCALES" ]] && [[ -n "$VERSIONS" ]]; then
-    for (( i = 1; i <= 20; i++ ));
+if [[ -n "$BUILDS" ]]; then
+    COUNT=$(grep -o "," <<<"$BUILDS" | wc -l)
+
+    for (( i = 1; i <= $((COUNT + 1)); i++ ));
     do
-        locale=$(echo -e ${LOCALES} | sed "s/,/ /g" | awk "{print $"${i}"}")
-        version=$(echo -e ${VERSIONS} | sed "s/,/ /g" | awk "{print $"${i}"}")
+        build=$(echo -e ${BUILDS} | sed "s/,/ /g" | awk "{print $"${i}"}")
+        version=$(echo -e ${build} | sed "s/_/ /g" | awk "{print $"1"}")
+        locale=$(echo -e ${build} | sed "s/_/ /g" | awk "{print $"2"}")
         tests=$(echo -e ${TESTS} | sed "s/,/ /g" | awk "{print $"${i}"}")
 
         if [[ -n "$locale" ]] && [[ -n "$version" ]]; then
@@ -64,5 +63,5 @@ if [[ -n "$LOCALES" ]] && [[ -n "$VERSIONS" ]]; then
         fi
     done
 else
-    echo -e "\n\n${RED}The Firefox version and locale has not been specified. ${NC}\n"
+    echo -e "\n\n${RED}A Firefox build has not been specified. ${NC}\n"
 fi
