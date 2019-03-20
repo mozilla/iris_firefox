@@ -19,14 +19,14 @@ class Test(BaseTest):
         wiki_logo_pattern = Pattern('wiki_logo.png')
         soap_article_title = Pattern('soap_article_title.png')
         wikimedia_logo_pattern = Pattern('wikimedia_logo.png')
-        arrow_scroll_length = 5
+        arrow_scroll_length = 10
 
         if Settings.is_windows():
             scroll_length = SCREEN_HEIGHT
         elif Settings.is_linux():
-            scroll_length = 10
+            scroll_length = 20
         else:
-            scroll_length = 30
+            scroll_length = 60
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         page_loaded = exists(wiki_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
