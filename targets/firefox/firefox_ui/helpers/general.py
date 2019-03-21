@@ -1,10 +1,11 @@
-from datetime import time
+import time
 
 from src.core.api.errors import APIHelperError
 from src.core.api.finder.finder import wait, exists
 from src.core.api.finder.pattern import Pattern
 from src.core.api.keyboard.key import Key
 from src.core.api.keyboard.keyboard_api import paste
+from src.core.api.keyboard.keyboard_api import type
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.firefox.firefox_ui.nav_bar import NavBar
 
