@@ -30,6 +30,8 @@ class Test(BaseTest):
         paste_bookmark_pattern = Pattern('paste_bookmark.png')
 
         open_firefox_menu()
+        firefox_menu_opened = exists(bookmarks_top_menu_pattern)
+        assert_true(self, firefox_menu_opened, 'Firefox menu was opened')
 
         click(bookmarks_top_menu_pattern)
 
