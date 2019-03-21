@@ -10,6 +10,7 @@ from src.configuration.config_parser import logger
 from targets.firefox.firefox_ui import *
 from targets.firefox.test_assert import *
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import *
+from targets.firefox.firefox_ui.web_links.local_web import LocalWeb
 
 
 
