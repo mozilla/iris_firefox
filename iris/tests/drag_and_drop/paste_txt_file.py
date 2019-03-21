@@ -28,10 +28,11 @@ class Test(BaseTest):
         DRAG_AND_DROP_DURATION = 3
         PASTE_DELAY = 0.5
         folderpath = self.get_asset_path('')
-        time.sleep(3)
-        navigate('https://mystor.github.io/dragndrop/')
 
-        paste_txt_file_button_displayed = exists(paste_txt_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        navigate('https://mystor.github.io/dragndrop/')
+        time.sleep(3)
+
+        paste_txt_file_button_displayed = exists(paste_txt_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, paste_txt_file_button_displayed, 'The demo website loaded successfully')
 
         click(paste_txt_button_pattern)
@@ -40,8 +41,7 @@ class Test(BaseTest):
         assert_true(self, paste_txt_option_selected, 'The paste-txt-file changed color to red which indicates that it '
                                                      'has been selected.')
 
-        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
-                                                              DEFAULT_UI_DELAY)
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20, 1)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
 
         not_matching_message_location = find(not_matching_message_pattern)
@@ -54,12 +54,9 @@ class Test(BaseTest):
                                  width=matching_message_width + 10, height=matching_message_height * 2)
 
         if Settings.is_windows():
-            #  open Library file picker
-            finder_window_after = Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 10)
-
             open_file_picker()
-            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
+            finder_window_loaded = exists(AuxiliaryWindow.CLOSE_BUTTON)
+            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
 
             paste(folderpath)
             type(Key.ENTER)
@@ -67,9 +64,10 @@ class Test(BaseTest):
         if Settings.is_mac():
             open_directory(folderpath)
             finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
-            assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
+            assert_true(self, finder_window_loaded, 'Finder window successfully loaded')
 
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
+            # open folder in Finder
+            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
             paste(folderpath)
             type(Key.ENTER)
             type('2', KeyModifier.CMD)  # change view of finder
@@ -82,10 +80,9 @@ class Test(BaseTest):
 
         elif Settings.is_linux():
             open_directory(folderpath)
-            finder_window_after = Location(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 10)
 
             finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
+            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
 
             finder_window_location = find(MainWindow.CLOSE_BUTTON)
             finder_window_after = Location(SCREEN_WIDTH / 2, finder_window_location.y)
@@ -120,7 +117,7 @@ class Test(BaseTest):
             change_window_view()
         else:
             open_file_picker()
-            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
+            finder_window_loaded = exists(AuxiliaryWindow.CLOSE_BUTTON)
             assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
 
             paste(folderpath)
@@ -138,7 +135,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        click(drop_here_pattern, Settings.TINY_FIREFOX_TIMEOUT)
 
         edit_paste()
 
