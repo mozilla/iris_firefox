@@ -30,6 +30,11 @@ class Test(BaseTest):
         saved_credit_cards_button_pattern = Pattern('saved_credit_cards_button.png').similar(.6)
         name_field_pattern = Pattern('name_field.png').similar(.6)
 
+        change_preference('browser.search.region', 'US')
+
+        restart_firefox(self, self.browser.path, self.profile_path, LocalWeb.FIREFOX_TEST_SITE,
+                        image=LocalWeb.FIREFOX_LOGO)
+
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
         page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern, DEFAULT_FIREFOX_TIMEOUT) \
@@ -52,8 +57,9 @@ class Test(BaseTest):
 
         click(submit_button_pattern)
 
+        left_half_region = Region(0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT)
         try:
-            entered_csc_on_page = wait_vanish(entered_csc_pattern)
+            entered_csc_on_page = wait_vanish(entered_csc_pattern, in_region=left_half_region)
             assert_true(self, entered_csc_on_page, 'Credit Card Information is successfully entered and submitted.')
         except FindError:
             raise FindError('Entered data did not vanish after clicking the \'Submit button\'')
