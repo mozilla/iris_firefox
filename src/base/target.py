@@ -46,7 +46,6 @@ class BaseTarget:
         logger.info('\n')
         update_run_index(self, False)
 
-
     def pytest_sessionfinish(self, session):
         """ called after whole test run finished, right before returning the exit status to the system.
 
@@ -64,6 +63,9 @@ class BaseTarget:
 
     def pytest_runtest_setup(self, item):
         os.environ['CURRENT_TEST'] = str(item.__dict__.get('fspath'))
+
+    def pytest_runtest_teardown(self, item):
+        pass
 
     def pytest_runtestloop(self, session):
         pass

@@ -156,17 +156,13 @@ def make_profile(profile_type: Profiles = None, preferences: dict = None):
         else:
             preferences = {}
 
-    test_directory = PathManager.create_test_output_dir()
+    test_root = PathManager.get_current_tests_directory()
+    current_test = os.environ.get('CURRENT_TEST')
+    test_path = current_test.split(test_root)[1].split('.py')[0][1:]
+    profile_path = os.path.join(PathManager.get_current_run_dir(), test_path, 'profile')
 
-    # if parse_args().save:
-    profile_path = os.path.join(test_directory, 'profile')
     if not os.path.exists(profile_path):
-        os.mkdir(profile_path)
-    # else:
-    #     profile_temp = PathManager.get_tempdir()
-    #     parent, test = PathManager.parse_module_path()
-    #     profile_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
-    #     os.mkdir(profile_path)
+        os.makedirs(profile_path)
 
     if profile_type is Profiles.BRAND_NEW:
         logger.debug('Creating brand new profile: %s' % profile_path)
@@ -175,9 +171,6 @@ def make_profile(profile_type: Profiles = None, preferences: dict = None):
         profile_path = _get_staged_profile(profile_type, profile_path)
     else:
         raise ValueError('No profile found: %s' % profile_type.value)
-
-    # if not parse_args().save:
-    #     self._manage_profile_cache(profile_path)
 
     return MozProfile(profile=profile_path, preferences=preferences)
 
@@ -194,13 +187,10 @@ def _manage_profile_cache(path: str):
 
 
 class FirefoxApp:
-    def __init__(self, version: str, locale: str, profile: FirefoxProfile = None):
+    def __init__(self, version: str, locale: str):
         path = get_test_candidate(version, locale)
         if path is None:
             raise ValueError
-
-        if profile is None:
-            profile = FirefoxProfile()
 
         self.path = path
         self.channel = get_firefox_channel(path)
@@ -208,16 +198,27 @@ class FirefoxApp:
         self.latest_version = get_firefox_latest_version(path)
         self.build_id = get_firefox_build_id(path)
         self.locale = locale
+
+    def __str__(self):
+        return '(path: {}, channel: {}, version: {}, build: {}, locale: {})'.format(self.path,
+                                                                                    self.channel,
+                                                                                    self.version,
+                                                                                    self.build_id,
+                                                                                    self.locale)
+
+
+class FXRunner:
+    def __init__(self, app: FirefoxApp, profile: FirefoxProfile = None):
+
+        if profile is None:
+            profile = FirefoxProfile()
+
+        self.application = app
         self.profile = profile.details.profile
         self.runner = self._launch()
 
     def __str__(self):
-        return '(path: {}, channel: {}, version: {}, build: {}, locale: {}, profile: {})'.format(self.path,
-                                                                                                 self.channel,
-                                                                                                 self.version,
-                                                                                                 self.build_id,
-                                                                                                 self.locale,
-                                                                                                 self.profile)
+        return '(profile: {}, runner: {})'.format(self.profile, self.runner)
 
     def _launch(self, url: str=None, args=None):
         """Launch the app with optional args for profile, windows, URI, etc.
@@ -239,7 +240,7 @@ class FirefoxApp:
         process_args = {'stream': None}
         logger.debug('Creating Firefox runner ...')
         try:
-            runner = FirefoxRunner(binary=self.path, profile=self.profile,
+            runner = FirefoxRunner(binary=self.application.path, profile=self.profile,
                                    cmdargs=args, process_args=process_args)
             logger.debug('Firefox runner successfully created.')
             logger.debug('Running Firefox with command: "%s"' %

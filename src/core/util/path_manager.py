@@ -163,6 +163,10 @@ class PathManager:
         return os.path.join(PathManager.get_module_dir(), 'targets', args.application)
 
     @staticmethod
+    def get_current_tests_directory():
+        return os.path.join('tests', args.application)
+
+    @staticmethod
     def get_debug_image_directory():
         test_root = os.path.join('tests', args.application)
         current_test = os.environ.get('CURRENT_TEST')
