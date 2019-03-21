@@ -24,15 +24,11 @@ class Test(BaseTest):
         matching_message_pattern = Pattern('matching_message_precise.png')
         txt_file_pattern = Pattern('txt_file.png')
         jpg_file_pattern = Pattern('jpg_file.png')
-        if Settings.is_windows():
-            library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
-            library_popup_pattern = Pattern('library_popup.png')
-            select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
 
         DRAG_AND_DROP_DURATION = 3
         PASTE_DELAY = 0.5
         folderpath = self.get_asset_path('')
-
+        time.sleep(3)
         navigate('https://mystor.github.io/dragndrop/')
 
         paste_txt_file_button_displayed = exists(paste_txt_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -67,51 +63,6 @@ class Test(BaseTest):
 
             paste(folderpath)
             type(Key.ENTER)
-
-            test_file_txt_located = exists(txt_file_pattern)
-            assert_true(self, test_file_txt_located, 'TXT test file is available')
-
-            click(txt_file_pattern)
-
-            edit_copy()
-            type(Key.ESC, interval=1)
-
-            drop_here_available = exists(drop_here_pattern)
-            assert_true(self, drop_here_available, '"Drop here" pattern available')
-
-            click(drop_here_pattern, DRAG_AND_DROP_DURATION)
-
-            edit_paste()
-
-            # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
-            # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
-            #                                               'result is identical to result. ')
-            open_file_picker()
-            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
-
-            paste(folderpath)
-            type(Key.ENTER)
-
-            test_file_jpg_located = exists(jpg_file_pattern)
-            assert_true(self, test_file_jpg_located, 'JPG test file is available')
-
-            click(jpg_file_pattern)
-
-            edit_copy()
-            type(Key.ESC)
-
-            drop_here_available = exists(drop_here_pattern)
-            assert_true(self, drop_here_available, '"Drop here" pattern available')
-
-            click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
-
-            edit_paste()
-
-            # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
-            # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
-            #                                                   'expected result is different from result.')
-            time.sleep(12354)
 
         if Settings.is_mac():
             open_directory(folderpath)
@@ -161,11 +112,19 @@ class Test(BaseTest):
 
         edit_paste()
 
-        change_window_view()
-
         # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
         #                                               'result is identical to result. ')
+
+        if not Settings.is_windows():
+            change_window_view()
+        else:
+            open_file_picker()
+            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
+            assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
+
+            paste(folderpath)
+            type(Key.ENTER)
 
         test_file_jpg_located = exists(jpg_file_pattern)
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
@@ -173,6 +132,8 @@ class Test(BaseTest):
         click(jpg_file_pattern)
 
         edit_copy()
+        if Settings.is_windows():
+            type(Key.ESC, interval=1)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
