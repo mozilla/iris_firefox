@@ -33,6 +33,11 @@ class Test(BaseTest):
         saved_addresses_button_pattern = Pattern('saved_addresses_button.png').similar(.6)
         name_in_saved_addresses_pattern = Pattern('name_in_saved_addresses.png')
 
+        change_preference('browser.search.region', 'US')
+
+        restart_firefox(self, self.browser.path, self.profile_path, LocalWeb.FIREFOX_TEST_SITE,
+                        image=LocalWeb.FIREFOX_LOGO)
+
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
         page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern) \
