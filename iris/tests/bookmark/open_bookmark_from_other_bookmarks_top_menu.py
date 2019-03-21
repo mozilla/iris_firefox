@@ -53,5 +53,5 @@ class Test(BaseTest):
 
         click(open_bookmark_pattern)
 
-        webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
+        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, webpage_opened, 'Webpage is opened')
