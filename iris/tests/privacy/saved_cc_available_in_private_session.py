@@ -45,6 +45,9 @@ class Test(BaseTest):
         visa_logo_pattern = Pattern('visa_logo.png')
 
         change_preference('browser.search.region', 'US')
+        restart_firefox(self, self.browser.path, self.profile_path, LocalWeb.FIREFOX_TEST_SITE,
+                        image=LocalWeb.FIREFOX_LOGO)
+
         navigate('about:preferences#privacy')
         search_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, search_field_exists, 'Preferences page is opened')
