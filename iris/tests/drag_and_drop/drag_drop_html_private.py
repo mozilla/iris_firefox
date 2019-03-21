@@ -53,7 +53,10 @@ class Test(BaseTest):
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
         point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH/5)
-        location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH)
+        if Settings.is_mac():
+            location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH/2)
+        else:
+            location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH)
 
         drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
 
