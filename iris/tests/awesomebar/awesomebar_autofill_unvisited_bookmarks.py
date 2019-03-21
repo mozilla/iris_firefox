@@ -41,6 +41,8 @@ class Test(BaseTest):
         expected = exists(Bookmarks.StarDialog.NEW_BOOKMARK, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, expected, 'The page was successfully bookmarked.')
 
+        click(LocationBar.HISTORY_DROPMARKER)
+
         # From Library delete the history.
         open_library()
 
