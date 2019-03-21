@@ -37,8 +37,8 @@ class Test(BaseTest):
 
         new_private_window()
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
-        page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern, DEFAULT_FIREFOX_TIMEOUT) \
-                                               and exists(submit_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern, Settings.SITE_LOAD_TIMEOUT) \
+                                               and exists(submit_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, page_opened_in_private_browsing_mode, 'Test page is opened in a new private window.')
 
         input_data = {
@@ -73,11 +73,14 @@ class Test(BaseTest):
 
         find_in_preferences_field_exists = exists(find_in_preferences_field_pattern)
         assert_true(self, find_in_preferences_field_exists, 'Preferences search field is available')
+
         click(find_in_preferences_field_pattern)
 
         type('Autofill')
+
         saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern)
         assert_true(self, saved_credit_cards_button_exists, '\'Saved credit cards\' button is displayed on the page')
+
         click(saved_credit_cards_button_pattern)
 
         visa_logo_exists = exists(visa_logo_pattern)
