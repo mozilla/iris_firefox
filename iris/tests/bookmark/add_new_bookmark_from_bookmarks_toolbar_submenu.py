@@ -25,6 +25,7 @@ class Test(BaseTest):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
+        getting_started_pattern = Pattern('getting_started_top_menu.png')
         new_bookmark_pattern = Pattern('new_bookmark_created.png')
         if Settings.is_linux():
             new_window_pattern = Pattern('new_bookmark_popup.png')
@@ -46,6 +47,10 @@ class Test(BaseTest):
         most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
+
+        getting_started_exists = exists(getting_started_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, getting_started_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Getting Started '
+                                                  'bookmark exists')
 
         right_click(firefox_menu_most_visited_pattern)
 
