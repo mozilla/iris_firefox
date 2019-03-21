@@ -164,7 +164,9 @@ class BaseTest(object):
         self.window_size = None
 
         """Temporary code used to write a pref file, not used otherwise."""
-        self.set_profile_pref({'iris.enabled': True})
+        self.set_profile_pref({'iris.enabled': True}),
+        self.set_profile_pref({'extensions.privatebrowsing.notification': True}),
+        self.set_profile_pref({'browser.contentblocking.introCount': 20})
 
         return
 
