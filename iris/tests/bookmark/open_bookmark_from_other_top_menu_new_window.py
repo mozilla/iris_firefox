@@ -59,6 +59,9 @@ class Test(BaseTest):
         webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_opened, 'Expected webpage is properly displayed')
 
+        iris_tab_not_visible = not exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.UI_DELAY)
+        assert_true(self, iris_tab_not_visible, 'Previous tab isn\'t visible')
+
         close_window()
 
         previous_window_opened = exists(LocalWeb.IRIS_LOGO)
