@@ -26,7 +26,6 @@ class Test(BaseTest):
         firefox_menu_bookmarks_toolbar_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
         firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
         getting_started_pattern = Pattern('getting_started_top_menu.png')
-        getting_started_toolbar_pattern = Pattern('getting_started_in_toolbar.png')
         properties_option_pattern = Pattern('properties_option.png')
         name_field_pattern = Pattern('name_field.png')
 
@@ -58,7 +57,7 @@ class Test(BaseTest):
         click(properties_option_pattern)
 
         bookmark_properties_opened = exists(name_field_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, bookmark_properties_opened, 'bookmark_properties_opened')
+        assert_true(self, bookmark_properties_opened, 'Bookmark properties window is opened')
 
         paste('Focus')
         type(Key.TAB)
@@ -78,6 +77,5 @@ class Test(BaseTest):
 
         open_bookmarks_toolbar()
 
-        bookmark_removed_from_toolbar = exists(getting_started_toolbar_pattern)
-        assert_false(self, bookmark_removed_from_toolbar, 'The selected file is deleted from the **Bookmarks Toolbar**'
-                                                          ' section.')
+        bookmark_edited = exists(LocalWeb.FOCUS_BOOKMARK_SMALL)
+        assert_true(self, bookmark_edited, 'The window is dismissed and all the changes are correctly saved')
