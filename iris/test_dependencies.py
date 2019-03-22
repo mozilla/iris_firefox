@@ -27,3 +27,5 @@ from iris.api.helpers.download_manager_utils import *
 from iris.api.helpers.history_utils import open_clear_recent_history_window
 
 from iris.api.core.mouse import scroll
+
+from iris.external_web.external_web import ExternalWeb
