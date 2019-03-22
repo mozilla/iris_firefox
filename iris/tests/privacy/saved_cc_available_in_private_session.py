@@ -165,12 +165,12 @@ class Test(BaseTest):
 
         click(save_button_pattern)
 
-        credit_card_successfully_saved = exists(visa_logo_pattern, Settings.DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        credit_card_successfully_saved = exists(visa_logo_pattern.similar(0.6), Settings.FIREFOX_TIMEOUT)
         assert_true(self, credit_card_successfully_saved, 'Credit card was successfully saved')
 
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
 
-        page_opened = exists(submit_button_pattern, Settings.DEFAULT_SITE_LOAD_TIMEOUT)
+        page_opened = exists(submit_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, page_opened, 'Test page is opened.')
 
         card_number_field_exists = exists(card_number_field_pattern)
@@ -192,7 +192,7 @@ class Test(BaseTest):
             click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern.similar(0.6),
-                                                 Settings.DEFAULT_FIREFOX_TIMEOUT)
+                                                 Settings.FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
                     'The Credit Card number from the saved profile is displayed in the dropdown')
 
@@ -200,7 +200,7 @@ class Test(BaseTest):
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
 
         page_opened_in_private_window = exists(private_browsing_image_pattern, DEFAULT_SITE_LOAD_TIMEOUT) and exists(
-            submit_button_pattern,  Settings.DEFAULT_FIREFOX_TIMEOUT)
+            submit_button_pattern,  Settings.FIREFOX_TIMEOUT)
         assert_true(self, page_opened_in_private_window, 'Test page is opened in a new Private window')
 
         card_number_field_exists = exists(card_number_field_pattern)
@@ -225,7 +225,7 @@ class Test(BaseTest):
             click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern,
-                                                 Settings.DEFAULT_FIREFOX_TIMEOUT)
+                                                 Settings.FIREFOX_TIMEOUT)
         assert_true(self, saved_credit_card_number_exists,
                     'Saved CC profile is displayed in the suggestions panel.')
 
