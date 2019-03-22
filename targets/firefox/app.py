@@ -75,7 +75,7 @@ class Target(BaseTarget):
         BaseTarget.pytest_runtest_setup(self, item)
         if item.name == 'test_run':
             values = item.own_markers[0].kwargs
-            if 'exclude' in values and OSHelper.get_os().value == values.get('exclude'):
+            if 'exclude' in values and OSHelper.get_os() == values.get('exclude'):
                 logger.info(
                     'Test excluded: - [%s]: %s' % (
                         item.nodeid.split(':')[0], values.get('description')))
@@ -103,9 +103,11 @@ class Target(BaseTarget):
         logger.info(
             'Executing: - [%s]: %s' % (
                 item.nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
-        # profile_type = item.own_markers[0].kwargs.get('profile')
-        # profile = FirefoxProfile(profile_type)
-        item.browser = FXRunner(item.session.browser, None)
+
+        profile_type = item.own_markers[0].kwargs.get('profile')
+        preferences = item.own_markers[0].kwargs.get('preferences')
+        profile = FirefoxProfile(profile_type, preferences)
+        item.browser = FXRunner(item.session.browser, profile)
         item.browser.start()
         confirm_firefox_launch()
         maximize_window()
@@ -119,6 +121,8 @@ class Target(BaseTarget):
                 status = item.browser.runner.process_handler.wait(10)
                 if status is None:
                     item.browser.runner.stop()
+                import shutil
+                shutil.rmtree(item.browser.profile)
         except AttributeError:
             pass
 

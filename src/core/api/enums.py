@@ -188,7 +188,7 @@ class MatchTemplateType(Enum):
     MULTIPLE = 1
 
 
-class OSPlatform(Enum):
+class OSPlatform(str, Enum):
     WINDOWS = 'win'
     LINUX = 'linux'
     MAC = 'osx'

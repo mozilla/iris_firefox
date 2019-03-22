@@ -66,7 +66,7 @@ default_preferences = {  # Don't automatically update the application
     }
 
 
-class Profiles(Enum):
+class Profiles(str, Enum):
     """Profile types.
 
     BRAND_NEW       -   A completely new profile from scratch.

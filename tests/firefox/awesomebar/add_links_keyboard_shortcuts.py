@@ -12,8 +12,8 @@ class Test(FirefoxTest):
         description="This test case adds links using \'CTRL\' + \'ENTER\' keys",
         locale='[en-US]',
         test_case_id="119484",
-        test_suite_id="1902"
-        # exclude=OSPlatform.MAC.value
+        test_suite_id="1902",
+        # exclude=OSPlatform.WINDOWS,
         # blocked_by='1520795'
     )
     def test_run(self):
