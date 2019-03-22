@@ -44,6 +44,7 @@ class Test(BaseTest):
         click(show_connection_details_button_pattern)
 
         cloudflare_more_info_button_exists = exists(more_information_button_pattern, Settings.FIREFOX_TIMEOUT)
+
         assert_true(self, cloudflare_more_info_button_exists, 'More information button displayed')
 
         click(more_information_button_pattern)
