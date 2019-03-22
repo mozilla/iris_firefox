@@ -13,55 +13,46 @@ class Test(BaseTest):
         self.meta = 'Bookmark a page from the bookmarks menu.'
         self.test_case_id = '165474'
         self.test_suite_id = '2525'
-        self.exclude = Platform.ALL
         self.locales = ['en-US']
 
     def run(self):
         bookmark_this_page_pattern = Pattern('bookmark_this_page.png')
         blogger_logo_pattern = Pattern('blogger_logo.png')
-        library_button_pattern = NavBar.LIBRARY_MENU
-        bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
-        star_button_unstarred_pattern = LocationBar.STAR_BUTTON_UNSTARRED
-        star_button_starred_pattern = LocationBar.STAR_BUTTON_STARRED
-        star_panel_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
 
         navigate('www.blogger.com/')
 
-        blogger_logo_exists = exists(blogger_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        blogger_logo_exists = exists(blogger_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, blogger_logo_exists, 'Website is properly loaded')
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
-        click(library_button_pattern)
+        click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
-        click(bookmarks_menu_option_pattern)
+        click(LibraryMenu.BOOKMARKS_OPTION)
 
-        star_button_unstarred_exists = exists(star_button_unstarred_pattern, DEFAULT_UI_DELAY_LONG)
+        star_button_unstarred_exists = exists(LocationBar.STAR_BUTTON_UNSTARRED, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, star_button_unstarred_exists, 'Unstarred star-shaped button exists')
 
-        bookmark_menu_is_displayed = exists(bookmark_this_page_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmark_menu_is_displayed = exists(bookmark_this_page_pattern, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_menu_is_displayed, 'The Bookmarks menu is correctly displayed')
         click(bookmark_this_page_pattern)
 
-        star_button_starred_exists = exists(star_button_starred_pattern, DEFAULT_UI_DELAY_LONG)
+        star_button_starred_exists = exists(LocationBar.STAR_BUTTON_STARRED, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, star_button_starred_exists, 'Star-shaped button changed its color to blue')
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
         assert_false(self, bookmarks_menu_option_exists, 'Bookmarks menu is dismissed')
 
-        star_panel_exists = exists(star_panel_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        star_panel_exists = exists(Bookmarks.StarDialog.NEW_BOOKMARK, Settings.FIREFOX_TIMEOUT)
         assert_true(self, star_panel_exists, 'Page Bookmarked menu is displayed under the star-shaped button.')
 
-        star_panel_not_exists = exists(star_panel_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_false(self, star_panel_not_exists, 'Page Bookmarked menu is auto dismissed if no action is taken.')
+        mouse_move(LocationBar.STAR_BUTTON_STARRED)
 
-
-
-
-
-
-
-
-
+        try:
+            star_panel_not_exists = wait_vanish(Bookmarks.StarDialog.NEW_BOOKMARK, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, star_panel_not_exists, 'Page Bookmarked menu is auto dismissed if no action is taken '
+                                                     'and if the cursor outside the star-panel. ')
+        except FindError:
+            raise FindError('Page Bookmarked menu isn\'t auto dismissed')
