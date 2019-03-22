@@ -47,6 +47,7 @@ class Test(BaseTest):
         change_preference('browser.search.region', 'US')
         restart_firefox(self, self.browser.path, self.profile_path, LocalWeb.FIREFOX_TEST_SITE,
                         image=LocalWeb.FIREFOX_LOGO)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         navigate('about:preferences#privacy')
 
@@ -177,19 +178,11 @@ class Test(BaseTest):
         assert_true(self, card_number_field_exists,
                     '\'Card number\' field is displayed on the page')
 
-        if Settings.is_linux():
-            click(card_number_field_pattern)
+        click(card_number_field_pattern)
 
-            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
-            click(card_number_field_pattern)
-
-        else:
-            click(card_number_field_pattern)
-
-            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
-
-            click(card_number_field_pattern)
+        click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern.similar(0.6),
                                                  Settings.FIREFOX_TIMEOUT)
@@ -206,23 +199,11 @@ class Test(BaseTest):
         card_number_field_exists = exists(card_number_field_pattern)
         assert_true(self, card_number_field_exists, '\'Card Number\' field is displayed on the page')
 
-        # click(card_number_field_pattern)
-        # card_number_activated = exists(card_number_field_after_click_pattern, DEFAULT_UI_DELAY_LONG)
-        # assert_true(self, card_number_activated, '\'Card number\' field focused after click.')
+        click(card_number_field_pattern)
 
-        if Settings.is_linux():
-            click(card_number_field_pattern)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT + 1)
 
-            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
-
-            click(card_number_field_pattern)
-
-        else:
-            click(card_number_field_pattern)
-
-            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
-
-            click(card_number_field_pattern)
+        click(card_number_field_pattern)
 
         saved_credit_card_number_exists = exists(suggested_card_number_from_dropdown_pattern,
                                                  Settings.FIREFOX_TIMEOUT)
