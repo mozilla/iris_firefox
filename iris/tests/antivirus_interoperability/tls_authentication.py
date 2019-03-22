@@ -40,8 +40,6 @@ class Test(BaseTest):
 
         navigate('https://www.digicert.com/digicert-root-certificates.htm')
 
-        close_content_blocking_pop_up()
-
         restore_firefox_focus()
 
         digicert_site_opened = exists(digicert_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
