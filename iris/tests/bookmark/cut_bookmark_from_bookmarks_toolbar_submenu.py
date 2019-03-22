@@ -28,6 +28,7 @@ class Test(BaseTest):
         getting_started_toolbar_pattern = Pattern('getting_started_in_toolbar.png')
         cut_option_pattern = Pattern('cut_option.png')
         paste_option_pattern = Pattern('paste_option.png')
+        firefox_menu_most_visited_pattern = Pattern('firefox_menu_most_visited.png')
 
         open_firefox_menu()
 
@@ -40,6 +41,10 @@ class Test(BaseTest):
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
+
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
+                                                      'folder exists')
 
         getting_started_exists = exists(getting_started_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, getting_started_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Getting Started '
