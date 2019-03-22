@@ -18,13 +18,12 @@ class Test(BaseTest):
     def setup(self):
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
-        return
 
     def run(self):
-        other_bookmarks_pattern = SidebarBookmarks.OTHER_BOOKMARKS.similar(0.4)
         reordered_sidebar_bookmarks_pattern = Pattern('sidebar_bookmarks_reordered.png')
         pocket_bookmark_pattern = Pattern('pocket_sidebar_bookmark.png')
         mozilla_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
+        other_bookmarks_pattern = Pattern('other_bookmarks.png')
 
         bookmarks_sidebar("open")
 
@@ -42,7 +41,6 @@ class Test(BaseTest):
                     '\'Mozilla\' bookmark is available in \'Other bookmarks\' folder in \'Bookmarks sidebar\'')
 
         mozilla_bookmark_location = find(mozilla_bookmark_pattern)
-        mozilla_bookmark_location.y -= 5
 
         drag_drop(pocket_bookmark_pattern, mozilla_bookmark_location)
 
