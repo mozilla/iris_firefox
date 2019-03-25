@@ -93,97 +93,94 @@ class FirefoxProfile:
 
     _profiles = []
 
-    def __init__(self, profile_type=None, preferences=None):
-        self.details = make_profile(profile_type, preferences)
+    @staticmethod
+    def _get_staged_profile(profile_name, path):
+        """
+        Internal-only method used to extract a given profile.
+        :param profile_name:
+        :param path:
+        :return:
+        """
+        staged_profiles = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'firefox_app', 'profiles')
 
+        sz_bin = find_executable('7z')
+        logger.debug('Using 7zip executable at "%s"' % sz_bin)
 
-def _get_staged_profile(profile_name, path):
-    """
-    Internal-only method used to extract a given profile.
-    :param profile_name:
-    :param path:
-    :return:
-    """
-    staged_profiles = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'firefox_app', 'profiles')
+        zipped_profile = os.path.join(staged_profiles, '%s.zip' % profile_name.value)
 
-    sz_bin = find_executable('7z')
-    logger.debug('Using 7zip executable at "%s"' % sz_bin)
-
-    zipped_profile = os.path.join(staged_profiles, '%s.zip' % profile_name.value)
-
-    cmd = [sz_bin, 'x', '-y', '-bd', '-o%s' % staged_profiles, zipped_profile]
-    logger.debug('Unzipping profile with command "%s"' % ' '.join(cmd))
-    try:
-        output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
-        logger.error('7zip failed: %s' % repr(e.output))
-        raise Exception('Unable to unzip profile.')
-    logger.debug('7zip succeeded: %s' % repr(output))
-
-    from_directory = os.path.join(staged_profiles, profile_name.value)
-    to_directory = path
-    logger.debug('Creating new profile: %s' % to_directory)
-
-    dir_util.copy_tree(from_directory, to_directory)
-
-    try:
-        shutil.rmtree(from_directory)
-    except WindowsError:
-        logger.debug('Error, can\'t remove orphaned directory, leaving in place.')
-
-    resource_fork_folder = os.path.join(staged_profiles, '__MACOSX')
-    if os.path.exists(resource_fork_folder):
+        cmd = [sz_bin, 'x', '-y', '-bd', '-o%s' % staged_profiles, zipped_profile]
+        logger.debug('Unzipping profile with command "%s"' % ' '.join(cmd))
         try:
-            shutil.rmtree(resource_fork_folder)
+            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            logger.error('7zip failed: %s' % repr(e.output))
+            raise Exception('Unable to unzip profile.')
+        logger.debug('7zip succeeded: %s' % repr(output))
+
+        from_directory = os.path.join(staged_profiles, profile_name.value)
+        to_directory = path
+        logger.debug('Creating new profile: %s' % to_directory)
+
+        dir_util.copy_tree(from_directory, to_directory)
+
+        try:
+            shutil.rmtree(from_directory)
         except WindowsError:
             logger.debug('Error, can\'t remove orphaned directory, leaving in place.')
 
-    return to_directory
+        resource_fork_folder = os.path.join(staged_profiles, '__MACOSX')
+        if os.path.exists(resource_fork_folder):
+            try:
+                shutil.rmtree(resource_fork_folder)
+            except WindowsError:
+                logger.debug('Error, can\'t remove orphaned directory, leaving in place.')
 
+        return to_directory
 
-def make_profile(profile_type: Profiles = None, preferences: dict = None):
-    """Internal-only method used to create profiles on disk.
+    @staticmethod
+    def make_profile(profile_type: Profiles = None, preferences: dict = None):
+        """Internal-only method used to create profiles on disk.
 
-    :param profile_type: Profile Type (Profiles.BRAND_NEW, Profiles.LIKE_NEW, Profiles.TEN_BOOKMARKS, Profiles.DEFAULT)
-    :param preferences: A dictionary containing profile preferences
-    """
-    if profile_type is None:
-        profile_type = Profiles.DEFAULT
+        :param profile_type: Profile Type (Profiles.BRAND_NEW, Profiles.LIKE_NEW, Profiles.TEN_BOOKMARKS, Profiles.DEFAULT)
+        :param preferences: A dictionary containing profile preferences
+        """
+        if profile_type is None:
+            profile_type = Profiles.DEFAULT
 
-    if preferences is None:
+        if preferences is None:
+            if profile_type is Profiles.BRAND_NEW:
+                preferences = default_preferences
+            else:
+                preferences = {}
+
+        test_root = PathManager.get_current_tests_directory()
+        current_test = os.environ.get('CURRENT_TEST')
+        test_path = current_test.split(test_root)[1].split('.py')[0][1:]
+        profile_path = os.path.join(PathManager.get_current_run_dir(), test_path, 'profile')
+
+        if not os.path.exists(profile_path):
+            os.makedirs(profile_path)
+
         if profile_type is Profiles.BRAND_NEW:
-            preferences = default_preferences
+            logger.debug('Creating brand new profile: %s' % profile_path)
+        elif profile_type in (Profiles.LIKE_NEW, Profiles.TEN_BOOKMARKS):
+            logger.debug('Creating new profile from %s staged profile.' % profile_type.value.upper())
+            profile_path = FirefoxProfile._get_staged_profile(profile_type, profile_path)
         else:
-            preferences = {}
+            raise ValueError('No profile found: %s' % profile_type.value)
 
-    test_root = PathManager.get_current_tests_directory()
-    current_test = os.environ.get('CURRENT_TEST')
-    test_path = current_test.split(test_root)[1].split('.py')[0][1:]
-    profile_path = os.path.join(PathManager.get_current_run_dir(), test_path, 'profile')
+        return MozProfile(profile=profile_path, preferences=preferences)
 
-    if not os.path.exists(profile_path):
-        os.makedirs(profile_path)
-
-    if profile_type is Profiles.BRAND_NEW:
-        logger.debug('Creating brand new profile: %s' % profile_path)
-    elif profile_type in (Profiles.LIKE_NEW, Profiles.TEN_BOOKMARKS):
-        logger.debug('Creating new profile from %s staged profile.' % profile_type.value.upper())
-        profile_path = _get_staged_profile(profile_type, profile_path)
-    else:
-        raise ValueError('No profile found: %s' % profile_type.value)
-
-    return MozProfile(profile=profile_path, preferences=preferences)
-
-
-def _manage_profile_cache(path: str):
-    """
-    Internal-only method used to delete old profiles that are not in use.
-    :param path:
-    :return:
-    """
-    FirefoxProfile._profiles.append(path)
-    if len(FirefoxProfile._profiles) > 1:
-        shutil.rmtree(FirefoxProfile._profiles.pop(0), ignore_errors=True)
+    @staticmethod
+    def _manage_profile_cache(path: str):
+        """
+        Internal-only method used to delete old profiles that are not in use.
+        :param path:
+        :return:
+        """
+        FirefoxProfile._profiles.append(path)
+        if len(FirefoxProfile._profiles) > 1:
+            shutil.rmtree(FirefoxProfile._profiles.pop(0), ignore_errors=True)
 
 
 class FirefoxApp:
@@ -211,10 +208,10 @@ class FXRunner:
     def __init__(self, app: FirefoxApp, profile: FirefoxProfile = None):
 
         if profile is None:
-            profile = FirefoxProfile()
+            profile = FirefoxProfile.make_profile()
 
         self.application = app
-        self.profile = profile.details.profile
+        self.profile = profile
         self.runner = self._launch()
 
     def __str__(self):

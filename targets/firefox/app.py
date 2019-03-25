@@ -106,7 +106,7 @@ class Target(BaseTarget):
 
         profile_type = item.own_markers[0].kwargs.get('profile')
         preferences = item.own_markers[0].kwargs.get('preferences')
-        profile = FirefoxProfile(profile_type, preferences)
+        profile = FirefoxProfile.make_profile(profile_type, preferences).profile
         item.browser = FXRunner(item.session.browser, profile)
         item.browser.start()
         confirm_firefox_launch()
@@ -121,8 +121,8 @@ class Target(BaseTarget):
                 status = item.browser.runner.process_handler.wait(10)
                 if status is None:
                     item.browser.runner.stop()
-                import shutil
-                shutil.rmtree(item.browser.profile)
+                # import shutil
+                # shutil.rmtree(item.browser.profile)
         except AttributeError:
             pass
 
