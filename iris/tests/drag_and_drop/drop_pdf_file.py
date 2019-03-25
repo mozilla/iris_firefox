@@ -40,12 +40,12 @@ class Test(BaseTest):
         pdf_bak_file_pattern = Pattern('pdf_bak_file.png')
         txt_bak_file_pattern = Pattern('txt_bak_file.png')
 
-        DRAG_AND_DROP_DURATION = 3
-
         if Settings.is_linux():
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
 
+        DRAG_AND_DROP_DURATION = 3
+        PASTE_DELAY = 0.5
         folderpath = self.get_asset_path('')
 
         navigate('https://mystor.github.io/dragndrop/')
@@ -59,8 +59,7 @@ class Test(BaseTest):
         assert_true(self, drop_pdf_option_selected, 'The drop-pdf-file changed color to red which indicates that it '
                                                     'has been selected.')
 
-        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
-                                                              DEFAULT_UI_DELAY)
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll_down, (5,), 30, 1)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
 
         not_matching_message_location = find(not_matching_message_pattern)
@@ -115,7 +114,7 @@ class Test(BaseTest):
             type('2', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
-            type(Key.ENTER, interval=DEFAULT_UI_DELAY)
+            type(Key.ENTER, interval=PASTE_DELAY)
 
         if Settings.is_linux():
             json_option_available = exists(file_type_json_pattern)
@@ -130,11 +129,11 @@ class Test(BaseTest):
 
         else:
             type('*')  # Show all files in Windows Explorer
-            type(Key.ENTER, interval=DEFAULT_UI_DELAY)
+            type(Key.ENTER, interval=PASTE_DELAY)
 
-        select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
+        select_bookmark_popup_location_final = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
-        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
+        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
         test_file_pdf_located = exists(pdf_bak_file_pattern)
         assert_true(self, test_file_pdf_located, 'PDF test file is available')
