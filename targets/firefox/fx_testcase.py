@@ -12,6 +12,8 @@ from targets.firefox.test_assert import *
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import *
 from targets.firefox.firefox_ui.web_links.local_web import LocalWeb
 from targets.firefox.firefox_app.fx_browser import Profiles
+from src.core.api.settings import _Settings
+from targets.firefox.firefox_ui.bookmarks import *
 
 
 

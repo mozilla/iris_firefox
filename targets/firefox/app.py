@@ -46,6 +46,39 @@ class Target(BaseTarget):
         ]
         self.local_web_root = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'local_web')
 
+
+    @pytest.fixture(scope="class", autouse=True)
+    def use_firefox(self, request):
+
+        fx = args.firefox
+        locale = args.locale
+
+        self.browser = FX_Collection.get(fx, locale)
+
+        if not self.browser:
+            FX_Collection.add(fx, locale)
+            self.browser = FX_Collection.get(fx, locale)
+        self.browser.start()
+        self.values = {'fx_version': self.browser.version, 'fx_build_id': self.browser.build_id,
+                       'channel': self.browser.channel}
+        confirm_firefox_launch()
+        maximize_window()
+
+        def teardown():
+            if self.browser.runner and self.browser.runner.process_handler:
+                from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
+                quit_firefox()
+                status = self.browser.runner.process_handler.wait(15)
+                if status is None:
+                    self.browser.runner.stop()
+
+        request.addfinalizer(teardown)
+
+    # def _disable_catchlog(self,item):
+    #     logger = logging.getLogger()
+    #     if item.catch_log_handler in logger.handlers:
+    #         logger.handlers.remove(item.catch_log_handler)
+
     def pytest_sessionstart(self, session):
         BaseTarget.pytest_sessionstart(self, session)
         try:
