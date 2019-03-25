@@ -183,7 +183,7 @@ class Test(BaseTest):
 
         click(card_number_field_pattern)
 
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT+1)
 
         click(card_number_field_pattern)
 
