@@ -38,6 +38,7 @@ def main():
             target_plugin = get_target(args.application)
             pytest_args = get_test_params(args.application)
             initialize_platform(args)
+            logger.info(pytest_args)
             pytest.main(pytest_args, plugins=[target_plugin])
         else:
             # If we get 'cancel' we will shut down Iris
@@ -95,8 +96,9 @@ def get_test_params(target):
     pytest_args.append('-vs')
     pytest_args.append('-r ')
     pytest_args.append('-s')
-    pytest_args.append('-p')
-    pytest_args.append('no:terminal')
+    if parse_args().level > 10:
+        pytest_args.append('-p')
+        pytest_args.append('no:terminal')
     return pytest_args
 
 
