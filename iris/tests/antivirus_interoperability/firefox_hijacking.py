@@ -84,5 +84,5 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        search_result_is_default = exists(search_result_default_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        search_result_is_default = exists(search_result_default_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, search_result_is_default, 'Search results displayed, with the known/selected search-engine.')
