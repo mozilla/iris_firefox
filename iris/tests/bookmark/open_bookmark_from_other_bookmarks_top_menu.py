@@ -42,9 +42,10 @@ class Test(BaseTest):
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, firefox_bookmark_top_menu_located, 'Bookmarks are displayed in top menu')
 
+        # Required to guarantee bookmarks list will not disappear
         firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
-        hover(Location(SCREEN_WIDTH, other_bookmarks_item_location.y))   # Required to guarantee bookmarks
-        hover(Location(SCREEN_WIDTH, firefox_bookmark_item_location.y))  # list will not disappear
+        hover(Location(SCREEN_WIDTH, other_bookmarks_item_location.y))
+        hover(Location(SCREEN_WIDTH, firefox_bookmark_item_location.y))
 
         right_click(firefox_bookmark_top_menu_pattern)
 
