@@ -55,3 +55,6 @@ class Test(BaseTest):
 
         webpage_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, webpage_opened, 'Webpage is opened')
+
+        webpage_opened_in_current_tab = not exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.UI_DELAY)
+        assert_true(self, webpage_opened_in_current_tab, 'Expected was opened in current tab')
