@@ -64,8 +64,6 @@ class Test(BaseTest):
         google_search_suggestion_location = find(google_search_suggestion_pattern)
         google_search_suggestion_width, google_search_suggestion_height = google_search_suggestion_pattern.get_size()
 
-        print(google_search_suggestion_height, google_search_suggestion_width)
-
         coordinate_x = google_search_suggestion_location.x
 
         for search_engine in search_suggestions:
