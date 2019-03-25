@@ -174,6 +174,11 @@ def get_active_modifiers(key):
     return active_modifiers
 
 
+def get_clipboard():
+    """Return the content copied to clipboard."""
+    return pyperclip.paste()
+
+
 def is_lock_on(key):
     """Determines if a keyboard key(CAPS LOCK, NUM LOCK or SCROLL LOCK) is ON.
 

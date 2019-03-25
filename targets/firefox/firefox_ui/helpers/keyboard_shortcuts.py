@@ -149,6 +149,16 @@ def next_frame():
     type(text=Key.F6)
 
 
+def new_tab():
+    """Open a new browser tab."""
+    if OSHelper.is_mac():
+        type(text='t', modifier=KeyModifier.CMD)
+    else:
+        type(text='t', modifier=KeyModifier.CTRL)
+    # Wait to allow new tab to be opened.
+    time.sleep(Settings.FX_DELAY)
+
+
 def previous_frame():
     """Move to the previous frame (can be in content or in chrome)."""
     type(text=Key.F6, modifier=KeyModifier.SHIFT)

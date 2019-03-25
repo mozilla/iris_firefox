@@ -1,22 +1,134 @@
 import time
 
-from src.core.api.errors import APIHelperError, FindError
 from src.core.api.finder.finder import wait, exists, find
-from src.core.api.finder.pattern import Pattern
 from src.core.api.keyboard.key import *
-from src.core.api.keyboard.keyboard_api  import type
-from src.core.api.keyboard.keyboard_api import paste
+
+from src.core.api.errors import APIHelperError
+from src.core.api.errors import FindError
+from src.core.api.finder.finder import wait, exists
+from src.core.api.finder.image_search import image_find
+from src.core.api.finder.pattern import Pattern
 from src.core.api.mouse.mouse import click
 from src.core.api.screen.region import Region
+from targets.firefox.firefox_ui.content_blocking import ContentBlocking
+from src.core.api.keyboard.key import Key
 from src.core.api.screen.screen import Screen
+from src.core.util.logger_manager import logger
+from src.core.api.keyboard.keyboard_api import paste
+from src.core.api.keyboard.keyboard_api import type
+from src.core.api.keyboard.keyboard_api import get_clipboard
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
 from src.core.api.settings import Settings
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.firefox.firefox_ui.nav_bar import NavBar
 
 
-
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
+
+
+def change_preference(pref_name, value):
+    """Change the value for a specific preference.
+
+    :param pref_name: Preference to be changed.
+    :param value: Preference's value after the change.
+    :return: None.
+    """
+    try:
+        new_tab()
+        navigate('about:config')
+        time.sleep(Settings.UI_DELAY)
+
+        type(Key.SPACE)
+        time.sleep(Settings.UI_DELAY)
+
+        type(Key.ENTER)
+        time.sleep(Settings.UI_DELAY)
+
+        paste(pref_name)
+        time.sleep(Settings.UI_DELAY)
+        type(Key.TAB)
+        time.sleep(Settings.UI_DELAY)
+        type(Key.TAB)
+        time.sleep(Settings.UI_DELAY)
+
+        try:
+            retrieved_value = copy_to_clipboard()
+        except Exception:
+            raise APIHelperError(
+                'Failed to retrieve preference value.')
+
+        if retrieved_value == value:
+            logger.debug('Flag is already set to value:' + value)
+            return None
+        else:
+            type(Key.ENTER)
+            dialog_box_pattern = Pattern('preference_dialog_icon.png')
+            try:
+                wait(dialog_box_pattern, 3)
+                paste(value)
+                type(Key.ENTER)
+            except FindError:
+                pass
+
+        close_tab()
+    except Exception:
+        raise APIHelperError(
+            'Could not set value: %s to preference: %s' % (value, pref_name))
+
+
+def copy_to_clipboard():
+    """Return the value copied to clipboard."""
+    time.sleep(Settings.UI_DELAY)
+    edit_select_all()
+    time.sleep(Settings.UI_DELAY)
+    edit_copy()
+    time.sleep(Settings.UI_DELAY)
+    value = get_clipboard()
+    time.sleep(Settings.UI_DELAY)
+    logger.debug("Copied to clipboard: %s" % value)
+    return value
+
+
+def close_content_blocking_pop_up():
+    """Closes the content blocking pop up"""
+
+    pop_up_region = Screen().new_region(0, 50, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
+
+    try:
+        pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
+        logger.debug('Content blocking is present on the page and can be closed.')
+        pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
+    except FindError:
+        logger.debug('Couldn\'t find the Content blocking pop up.')
+        pass
+
+
+def click_hamburger_menu_option(option):
+    """Click on a specific option from the hamburger menu.
+
+    :param option: Hamburger menu option to be clicked.
+    :return: The region created starting from the hamburger menu pattern.
+    """
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    try:
+        wait(hamburger_menu_pattern, 10)
+        region = create_region_from_image(hamburger_menu_pattern)
+        logger.debug('Hamburger menu found.')
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the "hamburger menu" in the page, aborting test.')
+    else:
+        click(hamburger_menu_pattern)
+        time.sleep(Settings.UI_DELAY)
+        try:
+            region.wait(option, 10)
+            logger.debug('Option found.')
+            region.click(option)
+            return region
+        except FindError:
+            raise APIHelperError(
+                'Can\'t find the option in the page, aborting test.')
 
 
 def confirm_firefox_launch(image=None):
@@ -31,6 +143,30 @@ def confirm_firefox_launch(image=None):
         wait(image, 60)
     except Exception:
         raise APIHelperError('Can\'t launch Firefox - aborting test run.')
+
+
+def create_region_from_image(image):
+    """Create region starting from a pattern.
+
+    :param image: Pattern used to create a region.
+    :return: None.
+    """
+    try:
+        m = image_find(image)
+        if m:
+            hamburger_pop_up_menu_weight = 285
+            hamburger_pop_up_menu_height = 655
+            logger.debug('Creating a region for Hamburger menu pop up.')
+            region = Region(m.x - hamburger_pop_up_menu_weight, m.y,
+                            hamburger_pop_up_menu_weight,
+                            hamburger_pop_up_menu_height)
+            return region
+        else:
+            raise APIHelperError('No matching found.')
+    except FindError:
+        raise APIHelperError('Image not present.')
+
+
 def repeat_key_down(num):
     """Repeat DOWN keystroke a given number of times.
 

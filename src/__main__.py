@@ -27,7 +27,7 @@ def main():
     args = parse_args()
     initialize_logger()
     if verify_config(args):
-        init_control_center()
+        #init_control_center()
         user_result = None
         if show_control_center():
             user_result = launch_control_center()
