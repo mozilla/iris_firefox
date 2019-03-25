@@ -126,4 +126,4 @@ class Test(BaseTest):
         reload_page()
 
         no_crashes_occurred = exists(yotube_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, no_crashes_occurred, 'No crash or bluescreen after closing a container tab.')
+        assert_true(self, no_crashes_occurred, 'No crash or blue screen after closing a container tab.')
