@@ -26,10 +26,12 @@ class Test(BaseTest):
 
         library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
+
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
+
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         star_button_unstarred_exists = exists(LocationBar.STAR_BUTTON_UNSTARRED, Settings.TINY_FIREFOX_TIMEOUT)
@@ -37,6 +39,7 @@ class Test(BaseTest):
 
         bookmark_menu_is_displayed = exists(bookmark_this_page_pattern, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_menu_is_displayed, 'The Bookmarks menu is correctly displayed')
+
         click(bookmark_this_page_pattern)
 
         star_button_starred_exists = exists(LocationBar.STAR_BUTTON_STARRED, Settings.TINY_FIREFOX_TIMEOUT)
