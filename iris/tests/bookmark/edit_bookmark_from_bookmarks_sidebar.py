@@ -36,41 +36,41 @@ class Test(BaseTest):
 
         bookmarks_sidebar('open')
 
-        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed')
 
-        other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        other_bookmarks_exists = exists(other_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, other_bookmarks_exists, 'Other bookmarks section exists')
 
         click(other_bookmarks_pattern)
 
-        bookmark_getting_started_exists = exists(bookmark_getting_started_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmark_getting_started_exists = exists(bookmark_getting_started_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_getting_started_exists, 'Getting started bookmark exists')
 
         right_click(bookmark_getting_started_pattern)
 
-        properties_option_exists = exists(properties_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        properties_option_exists = exists(properties_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, properties_option_exists, 'Properties option exists')
 
         click(properties_option_pattern)
 
         if not Settings.is_mac():
-            properties_window_exists = exists(properties_window_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+            properties_window_exists = exists(properties_window_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, properties_window_exists, 'Properties for "Getting Started" window is opened')
         else:
-            properties_window_exists = exists(name_before_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+            properties_window_exists = exists(name_before_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, properties_window_exists, 'Properties for "Getting Started" window is opened')
 
-        name_before_exists = exists(name_before_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        name_before_exists = exists(name_before_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, name_before_exists, 'Name field exists')
 
-        location_before_exists = exists(location_before_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        location_before_exists = exists(location_before_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, location_before_exists, 'Location field exists')
 
-        tags_before_exists = exists(tags_before_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        tags_before_exists = exists(tags_before_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, tags_before_exists, 'Tags field exists')
 
-        keyword_before_exists = exists(keyword_before_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        keyword_before_exists = exists(keyword_before_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, keyword_before_exists, 'Keyword field exists')
 
         paste('New Name')
@@ -90,27 +90,27 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        new_modified_bookmark_exists = exists(new_modified_bookmark_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        new_modified_bookmark_exists = exists(new_modified_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_modified_bookmark_exists, 'New modified bookmark exists')
 
         right_click(new_modified_bookmark_pattern)
 
-        properties_option_exists = exists(properties_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        properties_option_exists = exists(properties_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, properties_option_exists, 'Properties option exists')
 
         click(properties_option_pattern)
 
-        name_after_exists = exists(name_after_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        name_after_exists = exists(name_after_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, name_after_exists, 'Name field changes are correctly saved')
 
         type(Key.TAB)
 
-        location_after_exists = exists(location_after_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        location_after_exists = exists(location_after_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, location_after_exists, 'Location field changes are correctly saved')
 
         type(Key.TAB)
 
-        tags_after_exists = exists(tags_after_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        tags_after_exists = exists(tags_after_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, tags_after_exists, 'Tags field changes are correctly saved')
 
         if Settings.is_mac():
@@ -118,7 +118,7 @@ class Test(BaseTest):
         else:
             [type(Key.TAB) for _ in range(2)]
 
-        keyword_after_exists = exists(keyword_after_editing_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        keyword_after_exists = exists(keyword_after_editing_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, keyword_after_exists, 'Keyword field changes are correctly saved')
 
         type(Key.ENTER)
