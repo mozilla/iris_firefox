@@ -61,7 +61,7 @@ class Test(BaseTest):
             paste(folderpath)
             type(Key.ENTER)
 
-        if Settings.is_mac():
+        elif Settings.is_mac():
             open_directory(folderpath)
             finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
             assert_true(self, finder_window_loaded, 'Finder window successfully loaded')
@@ -93,6 +93,7 @@ class Test(BaseTest):
             mouse_move(finder_window_after)
             click(finder_window_after)
 
+
         test_file_txt_located = exists(txt_file_pattern)
         assert_true(self, test_file_txt_located, 'TXT test file is available')
 
@@ -101,6 +102,8 @@ class Test(BaseTest):
         edit_copy()
         if Settings.is_windows():
             type(Key.ESC, interval=1)
+        elif Settings.is_linux():
+            change_window_view()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
@@ -113,15 +116,16 @@ class Test(BaseTest):
         # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
         #                                               'result is identical to result. ')
 
-        if not Settings.is_windows():
-            change_window_view()
-        else:
+        if Settings.is_windows():
             open_file_picker()
             finder_window_loaded = exists(AuxiliaryWindow.CLOSE_BUTTON)
             assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
 
             paste(folderpath)
             type(Key.ENTER)
+
+        else:
+            change_window_view()
 
         test_file_jpg_located = exists(jpg_file_pattern)
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
@@ -131,6 +135,8 @@ class Test(BaseTest):
         edit_copy()
         if Settings.is_windows():
             type(Key.ESC, interval=1)
+        elif Settings.is_linux():
+            change_window_view()
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
