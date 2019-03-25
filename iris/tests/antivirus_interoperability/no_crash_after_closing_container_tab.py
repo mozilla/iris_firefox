@@ -33,7 +33,7 @@ class Test(BaseTest):
 
         navigate('https://addons.mozilla.org/en-US/firefox/')
 
-        addons_page_opened = exists(addons_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        addons_page_opened = exists(addons_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, addons_page_opened, 'Firefox Add-ons page opened')
 
         find_addons_field_displayed = exists(find_addons_pattern)
@@ -49,7 +49,7 @@ class Test(BaseTest):
         type(Key.DOWN)
         type(Key.ENTER)
 
-        multi_account_page_opened = exists(multi_account_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        multi_account_page_opened = exists(multi_account_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, multi_account_page_opened, 'Firefox Multi-Account Containers page opened')
 
         add_to_firefox_button_displayed = exists(add_to_firefox_button_pattern)
@@ -57,19 +57,19 @@ class Test(BaseTest):
 
         click(add_to_firefox_button_pattern)
 
-        add_addon_popup_displayed = exists(add_addon_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        add_addon_popup_displayed = exists(add_addon_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, add_addon_popup_displayed, 'Add Firefox Multi-Account Containers? pop-up displayed')
 
         click(add_addon_button_pattern)
 
-        addon_has_been_added = exists(ok_addon_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        addon_has_been_added = exists(ok_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, addon_has_been_added, 'Firefox Multi-Account Containers has been added to Firefox')
 
         click(ok_addon_button_pattern)
 
         navigate('about:newtab')
 
-        youtube_top_sites_logo_exists = exists(youtube_top_sites_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        youtube_top_sites_logo_exists = exists(youtube_top_sites_logo_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, youtube_top_sites_logo_exists, 'Youtube top sites logo exists')
 
         right_click(youtube_top_sites_logo_pattern)
@@ -84,7 +84,7 @@ class Test(BaseTest):
 
         click(personal_option_pattern)
 
-        twitter_top_sites_logo_exists = exists(twitter_top_sites_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        twitter_top_sites_logo_exists = exists(twitter_top_sites_logo_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, twitter_top_sites_logo_exists, 'Twitter top sites logo exists')
 
         right_click(twitter_top_sites_logo_pattern)
@@ -101,15 +101,15 @@ class Test(BaseTest):
 
         select_tab(2)
 
-        yotube_opened = exists(yotube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, yotube_opened, 'Youtube site is successfully loaded')
+        youtube_opened = exists(yotube_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, youtube_opened, 'Youtube site is successfully loaded')
 
-        yotube_opened_in_container_tab = exists(personal_label_pattern)
-        assert_true(self, yotube_opened_in_container_tab, 'Youtube site is opened in container tab')
+        youtube_opened_in_container_tab = exists(personal_label_pattern)
+        assert_true(self, youtube_opened_in_container_tab, 'Youtube site is opened in container tab')
 
         select_tab(3)
 
-        twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        twitter_opened = exists(twitter_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'Twitter site is successfully loaded')
 
         twitter_opened_in_container_tab = exists(personal_label_pattern)
@@ -118,12 +118,12 @@ class Test(BaseTest):
         close_tab()
 
         try:
-            twitter_tab_closed = wait_vanish(twitter_logo_pattern, 180)
+            twitter_tab_closed = wait_vanish(twitter_logo_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, twitter_tab_closed, 'The container tab is closed.')
         except FindError:
             raise FindError('The container tab is not closed.')
 
         reload_page()
 
-        no_crashes_occured = exists(yotube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, no_crashes_occured, 'No crash or bluescreen after closing a container tab.')
+        no_crashes_occurred = exists(yotube_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, no_crashes_occurred, 'No crash or bluescreen after closing a container tab.')
