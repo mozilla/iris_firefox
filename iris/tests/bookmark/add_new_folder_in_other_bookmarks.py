@@ -30,6 +30,7 @@ class Test(BaseTest):
         new_folder_pattern = Pattern('new_folder.png')
 
         open_firefox_menu()
+
         firefox_menu_opened = exists(bookmarks_top_menu_pattern)
         assert_true(self, firefox_menu_opened, 'Firefox menu is displayed')
 
@@ -58,6 +59,7 @@ class Test(BaseTest):
 
         form_window_displayed = exists(name_bookmark_field_pattern)
         assert_true(self, form_window_displayed, 'Folder creation form properly displayed.')
+
         add_button_displayed = exists(add_button_pattern)
         assert_true(self, add_button_displayed, '"Add" button displayed')
 
@@ -71,6 +73,7 @@ class Test(BaseTest):
         click(add_button_pattern)
 
         open_firefox_menu()
+
         firefox_menu_opened = exists(bookmarks_top_menu_pattern)
         assert_true(self, firefox_menu_opened, 'Firefox menu is displayed')
 
