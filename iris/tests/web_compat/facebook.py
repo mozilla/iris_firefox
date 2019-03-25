@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'Web compatibility test for facebook.com'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         url = 'www.facebook.com'
