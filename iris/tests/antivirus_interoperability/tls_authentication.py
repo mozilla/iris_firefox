@@ -40,18 +40,16 @@ class Test(BaseTest):
 
         navigate('https://www.digicert.com/digicert-root-certificates.htm')
 
-        close_content_blocking_pop_up()
-
         restore_firefox_focus()
 
-        digicert_site_opened = exists(digicert_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        digicert_site_opened = exists(digicert_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, digicert_site_opened, 'DigiCert site is successfully opened')
 
         open_find()
 
         paste('DigiCert Assured ID TLS CA')
 
-        tls_certificate_exists = exists(tls_certificate_name_highlighted_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        tls_certificate_exists = exists(tls_certificate_name_highlighted_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, tls_certificate_exists, 'The TLS Certificate is available to download')
 
         tls_certificate_location = find(tls_certificate_name_highlighted_pattern)
@@ -59,24 +57,25 @@ class Test(BaseTest):
                                         SCREEN_HEIGHT / 10)
         click(download_button_pattern, in_region=tls_certificate_region)
 
-        certificate_trust_dialog_opened = exists(DownloadDialog.OK_BUTTON)
+        certificate_trust_dialog_opened = exists(DownloadDialog.OK_BUTTON, Settings.FIREFOX_TIMEOUT)
         assert_true(self, certificate_trust_dialog_opened, 'Certificate trust dialog opened')
 
         click(DownloadDialog.OK_BUTTON)
 
         navigate('about:preferences#privacy')
 
-        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+                                            Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, preferences_privacy_opened, 'Preferences opened')
 
         paste('Certificates')
 
-        view_certificates_button_exists = exists(view_certificates_button_pattern)
+        view_certificates_button_exists = exists(view_certificates_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, view_certificates_button_exists, 'View Certificates button displayed')
 
         click(view_certificates_button_pattern)
 
-        certificate_manager_window_opened = exists(certificate_manager_window_title_pattern)
+        certificate_manager_window_opened = exists(certificate_manager_window_title_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, certificate_manager_window_opened, 'View Certificates window displayed')
 
         certificate_manager_window_location = find(certificate_manager_window_title_pattern).below(200)
@@ -88,7 +87,7 @@ class Test(BaseTest):
 
         navigate('https://www.cdn77.com/')
 
-        cdn77_logo_displayed = exists(cdn77_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cdn77_logo_displayed = exists(cdn77_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cdn77_logo_displayed, 'CDN77 page is successfully downloaded')
 
         cdn77_support_button_displayed = exists(cdn77_support_button_pattern)
@@ -96,13 +95,13 @@ class Test(BaseTest):
 
         click(cdn77_support_button_pattern)
 
-        cdn77_support_page_displayed = exists(cdn77_support_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cdn77_support_page_displayed = exists(cdn77_support_page_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cdn77_support_page_displayed, 'TLS client certificate authentication mechanism will not '
                                                         'be broken. No errors occur')
 
         navigate('https://www.cloudflare.com/')
 
-        cloudflare_logo_displayed = exists(cloudflare_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cloudflare_logo_displayed = exists(cloudflare_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cloudflare_logo_displayed, 'Cloudflare page is successfully downloaded')
 
         cloudflare_support_button_displayed = exists(cloudflare_support_button_pattern)
@@ -110,6 +109,6 @@ class Test(BaseTest):
 
         click(cloudflare_support_button_pattern)
 
-        cloudflare_support_page_displayed = exists(cloudflare_support_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cloudflare_support_page_displayed = exists(cloudflare_support_page_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cloudflare_support_page_displayed, 'TLS client certificate authentication mechanism will not '
                                                              'be broken. No errors occur')
