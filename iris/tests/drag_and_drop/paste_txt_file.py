@@ -136,7 +136,9 @@ class Test(BaseTest):
         if Settings.is_windows():
             type(Key.ESC, interval=1)
         elif Settings.is_linux():
-            change_window_view()
+            type('q', KeyModifier.CTRL)
+        elif Settings.is_mac():
+            type('w', KeyModifier.CMD)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
