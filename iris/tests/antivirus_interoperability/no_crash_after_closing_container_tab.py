@@ -62,8 +62,6 @@ class Test(BaseTest):
 
         click(add_addon_button_pattern)
 
-        time.sleep(30)
-
         addon_has_been_added = exists(ok_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, addon_has_been_added, 'Firefox Multi-Account Containers has been added to Firefox')
 
