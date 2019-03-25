@@ -17,12 +17,11 @@ class Test(BaseTest):
 
     def run(self):
         bookmark_this_page_pattern = Pattern('bookmark_this_page.png')
-        blogger_logo_pattern = Pattern('blogger_logo.png')
 
-        navigate('www.blogger.com/')
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        blogger_logo_exists = exists(blogger_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, blogger_logo_exists, 'Website is properly loaded')
+        firefox_logo_exists = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_logo_exists, 'Website is properly loaded')
 
         library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
