@@ -43,8 +43,9 @@ class Test(BaseTest):
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
         assert_true(self, firefox_bookmark_top_menu_located, 'Bookmarks are displayed in top menu')
 
-        firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)    # Required to guarantee bookmarks
-                                                                                    # list will not disappear
+        # Required to guarantee bookmarks list will not disappear
+        firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
+
         hover(Location(SCREEN_WIDTH, other_bookmarks_location.y))
 
         hover(Location(SCREEN_WIDTH, firefox_bookmark_item_location.y))
@@ -65,4 +66,4 @@ class Test(BaseTest):
         close_window()
 
         previous_window_opened = exists(LocalWeb.IRIS_LOGO)
-        assert_true(self, previous_window_opened, 'Start window is opened, tab was opened in new tab')
+        assert_true(self, previous_window_opened, 'Start window is opened, bookmarked tab was opened in new tab')
