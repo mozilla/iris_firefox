@@ -30,7 +30,6 @@ class Test(BaseTest):
         folderpath = self.get_asset_path('')
 
         navigate('https://mystor.github.io/dragndrop/')
-        time.sleep(3)
 
         paste_txt_file_button_displayed = exists(paste_txt_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, paste_txt_file_button_displayed, 'The demo website loaded successfully')
@@ -61,6 +60,15 @@ class Test(BaseTest):
             paste(folderpath)
             type(Key.ENTER)
 
+        elif Settings.is_linux():
+            open_directory(folderpath)
+
+            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
+            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
+
+            type(' ', KeyModifier.ALT, PASTE_DELAY)
+            type('m', interval=PASTE_DELAY)
+
         elif Settings.is_mac():
             open_directory(folderpath)
             finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
@@ -72,38 +80,20 @@ class Test(BaseTest):
             type(Key.ENTER)
             type('2', KeyModifier.CMD)  # change view of finder
 
-            finder_window_location = find(MainWindow.MAIN_WINDOW_CONTROLS)
-            finder_window_before = Location(finder_window_location.x + 10, finder_window_location.y)
-            finder_window_after = Location(SCREEN_WIDTH / 2, finder_window_location.y)
-
-            drag_drop(finder_window_before, finder_window_after)
-
-        elif Settings.is_linux():
-            open_directory(folderpath)
-
-            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
-
-            finder_window_location = find(MainWindow.CLOSE_BUTTON)
-            finder_window_after = Location(SCREEN_WIDTH / 2, finder_window_location.y)
-
-            type(' ', KeyModifier.ALT, PASTE_DELAY)
-            type('m', interval=PASTE_DELAY)
-
-            mouse_move(finder_window_after)
-            click(finder_window_after)
-
-
         test_file_txt_located = exists(txt_file_pattern)
         assert_true(self, test_file_txt_located, 'TXT test file is available')
 
         click(txt_file_pattern)
 
         edit_copy()
+
+        # closing File picker (Explorer) window
         if Settings.is_windows():
             type(Key.ESC, interval=1)
         elif Settings.is_linux():
-            change_window_view()
+            type('q', KeyModifier.CTRL)
+        elif Settings.is_mac():
+            type('w', KeyModifier.CMD+KeyModifier.ALT)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
@@ -124,8 +114,25 @@ class Test(BaseTest):
             paste(folderpath)
             type(Key.ENTER)
 
-        else:
-            change_window_view()
+        elif Settings.is_linux():
+            open_directory(folderpath)
+
+            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
+            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
+
+            type(' ', KeyModifier.ALT, PASTE_DELAY)
+            type('m', interval=PASTE_DELAY)
+
+        elif Settings.is_mac():
+            open_directory(folderpath)
+            finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
+            assert_true(self, finder_window_loaded, 'Finder window successfully loaded')
+
+            # open folder in Finder
+            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
+            paste(folderpath)
+            type(Key.ENTER)
+            type('2', KeyModifier.CMD)  # change view of Finder
 
         test_file_jpg_located = exists(jpg_file_pattern)
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
@@ -133,12 +140,14 @@ class Test(BaseTest):
         click(jpg_file_pattern)
 
         edit_copy()
+
+        # closing File picker (Explorer) window
         if Settings.is_windows():
             type(Key.ESC, interval=1)
         elif Settings.is_linux():
             type('q', KeyModifier.CTRL)
         elif Settings.is_mac():
-            type('w', KeyModifier.CMD)
+            type('w', KeyModifier.CMD+KeyModifier.ALT)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
