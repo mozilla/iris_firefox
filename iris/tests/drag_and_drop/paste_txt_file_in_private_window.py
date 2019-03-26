@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '165091'
         self.test_suite_id = '102'
         self.locales = ['en-US']
-        # self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
+        self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
 
     def run(self):
         paste_txt_button_pattern = Pattern('paste_txt_file_button.png')
