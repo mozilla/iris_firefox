@@ -55,11 +55,16 @@ class Test(BaseTest):
         open_directory(folderpath)
 
         if Settings.is_mac():
-            time.sleep(Settings.FIREFOX_TIMEOUT)
-            type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
-
-        test_file_txt_located = exists(txt_file_pattern)
-        assert_true(self, test_file_txt_located, 'TXT test file is available')
+            for i in range(3):
+                time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+                type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
+                test_file_jpg_located = exists(jpg_file_pattern)
+                if test_file_jpg_located:
+                    assert_true(self, test_file_jpg_located, 'JPG test file is available')
+                    break
+        else:
+            test_file_jpg_located = exists(jpg_file_pattern)
+            assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
         click(txt_file_pattern)
 
@@ -87,11 +92,16 @@ class Test(BaseTest):
         open_directory(folderpath)
 
         if Settings.is_mac():
-            time.sleep(Settings.FIREFOX_TIMEOUT)
-            type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
-
-        test_file_jpg_located = exists(jpg_file_pattern)
-        assert_true(self, test_file_jpg_located, 'JPG test file is available')
+            for i in range(3):
+                time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+                type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
+                test_file_jpg_located = exists(jpg_file_pattern)
+                if test_file_jpg_located:
+                    assert_true(self, test_file_jpg_located, 'JPG test file is available')
+                    break
+        else:
+            test_file_jpg_located = exists(jpg_file_pattern)
+            assert_true(self, test_file_jpg_located, 'JPG test file is available')
 
         click(jpg_file_pattern)
 
