@@ -24,7 +24,7 @@ class Test(BaseTest):
         assert_true(self, firefox_logo_exists, 'Website is properly loaded')
 
         library_button_exists = exists(NavBar.LIBRARY_MENU)
-        assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
+        assert_true(self, library_button_exists, '\'View history, saved bookmarks and more\' button exists')
 
         click(NavBar.LIBRARY_MENU)
 
