@@ -99,7 +99,7 @@ class Test(BaseTest):
             click(finder_window_after)
 
         test_file_pdf_located = exists(pdf_file_pattern)
-        assert_true(self, test_file_pdf_located, 'pdf test file is available')
+        assert_true(self, test_file_pdf_located, 'PDF test file is available')
 
         click(pdf_file_pattern)
 
