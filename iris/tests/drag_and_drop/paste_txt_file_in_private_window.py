@@ -42,9 +42,8 @@ class Test(BaseTest):
         click(paste_txt_button_pattern)
 
         paste_txt_option_selected = exists(paste_txt_file_selected_button_pattern)
-        assert_true(self, paste_txt_option_selected,
-                    'The paste-txt-file changed color to red which indicates that it '
-                    'has been selected.')
+        assert_true(self, paste_txt_option_selected, 'The paste-txt-file changed color to red which indicates that it '
+                                                     'has been selected.')
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20, 1)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
@@ -58,33 +57,11 @@ class Test(BaseTest):
         matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
                                  width=matching_message_width + 10, height=matching_message_height * 2)
 
-        if Settings.is_windows():
-            open_file_picker()
-            finder_window_loaded = exists(AuxiliaryWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
+        open_directory(folderpath)
 
-            paste(folderpath)
-            type(Key.ENTER)
-
-        elif Settings.is_linux():
-            open_directory(folderpath)
-
-            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
-
-            type(' ', KeyModifier.ALT, PASTE_DELAY)
-            type('m', interval=PASTE_DELAY)
-
-        elif Settings.is_mac():
-            open_directory(folderpath)
-            finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
-            assert_true(self, finder_window_loaded, 'Finder window successfully loaded')
-
-            # open folder in Finder
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-            paste(folderpath)
-            type(Key.ENTER)
-            type('2', KeyModifier.CMD)  # change view of finder
+        if Settings.is_mac():
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+            type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
 
         test_file_txt_located = exists(txt_file_pattern)
         assert_true(self, test_file_txt_located, 'TXT test file is available')
@@ -95,7 +72,7 @@ class Test(BaseTest):
 
         # closing File picker (Explorer) window
         if Settings.is_windows():
-            type(Key.ESC, interval=1)
+            type(Key.F4, KeyModifier.ALT)
         elif Settings.is_linux():
             type('q', KeyModifier.CTRL)
         elif Settings.is_mac():
@@ -112,33 +89,11 @@ class Test(BaseTest):
         # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
         #                                               'result is identical to result. ')
 
-        if Settings.is_windows():
-            open_file_picker()
-            finder_window_loaded = exists(AuxiliaryWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Finder/Explorer window successfully loaded')
+        open_directory(folderpath)
 
-            paste(folderpath)
-            type(Key.ENTER)
-
-        elif Settings.is_linux():
-            open_directory(folderpath)
-
-            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
-
-            type(' ', KeyModifier.ALT, PASTE_DELAY)
-            type('m', interval=PASTE_DELAY)
-
-        elif Settings.is_mac():
-            open_directory(folderpath)
-            finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
-            assert_true(self, finder_window_loaded, 'Finder window successfully loaded')
-
-            # open folder in Finder
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-            paste(folderpath)
-            type(Key.ENTER)
-            type('2', KeyModifier.CMD)  # change view of Finder
+        if Settings.is_mac():
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+            type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
 
         test_file_jpg_located = exists(jpg_file_pattern)
         assert_true(self, test_file_jpg_located, 'JPG test file is available')
@@ -149,7 +104,7 @@ class Test(BaseTest):
 
         # closing File picker (Explorer) window
         if Settings.is_windows():
-            type(Key.ESC, interval=1)
+            type(Key.F4, KeyModifier.ALT)
         elif Settings.is_linux():
             type('q', KeyModifier.CTRL)
         elif Settings.is_mac():
