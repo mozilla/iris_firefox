@@ -28,6 +28,10 @@ class Test(BaseTest):
         getting_started_pattern = Pattern('getting_started_top_menu.png')
         properties_option_pattern = Pattern('properties_option.png')
         name_field_pattern = Pattern('name_field.png')
+        keyword_edited_pattern = Pattern('keyword_edited.png')
+        location_edited_pattern = Pattern('location_edited.png')
+        name_edited_pattern = Pattern('name_edited.png')
+        tags_edited_pattern = Pattern('tags_edited.png')
 
         open_firefox_menu()
 
@@ -51,8 +55,8 @@ class Test(BaseTest):
 
         right_click(getting_started_pattern)
 
-        delete_option_exists = exists(properties_option_pattern)
-        assert_true(self, delete_option_exists, 'Delete option exists')
+        properties_option_exists = exists(properties_option_pattern)
+        assert_true(self, properties_option_exists, 'Properties option exists')
 
         click(properties_option_pattern)
 
@@ -79,3 +83,24 @@ class Test(BaseTest):
 
         bookmark_edited = exists(LocalWeb.FOCUS_BOOKMARK_SMALL)
         assert_true(self, bookmark_edited, 'The window is dismissed and all the changes are correctly saved')
+
+        right_click(LocalWeb.FOCUS_BOOKMARK_SMALL)
+
+        properties_option_exists = exists(properties_option_pattern)
+        assert_true(self, properties_option_exists, 'Properties option exists')
+
+        click(properties_option_pattern)
+
+        name_edited = exists(name_edited_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, name_edited, 'Name is edited')
+
+        location_edited = exists(location_edited_pattern)
+        assert_true(self, location_edited, 'Location is edited')
+
+        tags_edited = exists(tags_edited_pattern)
+        assert_true(self, tags_edited, 'Tags are edited')
+
+        keyword_edited = exists(keyword_edited_pattern)
+        assert_true(self, keyword_edited, 'Tags are edited')
+
+        type(Key.ESC)
