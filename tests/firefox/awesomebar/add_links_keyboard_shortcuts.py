@@ -8,7 +8,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
-    @pytest.mark.DETAILS(
+    @pytest.mark.details(
         description="This test case adds links using \'CTRL\' + \'ENTER\' keys",
         locale='[en-US]',
         test_case_id="119484",
@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         # exclude=OSPlatform.WINDOWS,
         # blocked_by='1520795'
     )
-    def test_run(self):
+    def test_run(self, firefox):
         cnn_tab_pattern = Pattern('cnn_tab.png')
         cnn_icon_pattern = Pattern('cnn_icon.png')
         facebook_tab_pattern = Pattern('facebook_tab.png')

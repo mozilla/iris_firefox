@@ -2,20 +2,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
 from targets.firefox.firefox_ui.private_window import PrivateWindow
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
-    @pytest.mark.DETAILS(
+    @pytest.mark.details(
         description='Test case: No crash or bluescreen after closing a tab while in private browsing mode.',
         locale='[en-US]',
         test_case_id='219584',
         test_suite_id='3063'
         #exclude=OSPlatform.MAC, OSPlatform.WINDOWS, OSPlatform.LINUX
     )
-    def test_run(self):
+    def test_run(self, firefox):
         click_hamburger_menu_option('New Private Window')
 
         private_window_opened = exists(PrivateWindow.private_window_pattern)

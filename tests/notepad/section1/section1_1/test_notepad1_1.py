@@ -10,7 +10,7 @@ from src.core.api.screen.screen import Rectangle
 
 class Test(BaseTest):
 
-    @pytest.mark.DETAILS(meta="Notepad Test experiment",
+    @pytest.mark.details(meta="Notepad Test experiment",
                                        description="This test is just an experiment for Notepad",
                                        blocked_by="232111")
     def test_run(self):

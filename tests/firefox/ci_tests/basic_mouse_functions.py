@@ -8,14 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
-    @pytest.mark.DETAILS(
+    @pytest.mark.details(
         description="This test will verify if Pyautogui mouse is working properly in a framebuffer environment.",
         blocked_by={'id': '1488708', 'platform': ["windows", "osx"]}
     )
     def test_run(self):
-
-        navigate('https://www.google.ro')
-
         # Check mouse movement in a full screen environment
         try:
             pyautogui.moveTo(300, 300)

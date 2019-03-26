@@ -1,20 +1,20 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
-
-
-    @pytest.mark.DETAILS(
+    @pytest.mark.details(
             description="This test case deletes history from the URL bar completion list.",
             locale='[en-US]',
             test_case_id="117530",
             test_suite_id="1902"
         )
-    def test_run(self):
+    def test_run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png')
         search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')
@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert  expected, 'Mozilla page loaded successfully.'
+        assert expected, 'Mozilla page loaded successfully.'
 
         bookmark_page()
 
@@ -57,10 +57,10 @@ class Test(FirefoxTest):
         paste('f')
 
         expected = region.exists(search_suggestion_history_pattern, 10)
-        assert  expected, 'Web pages from personal browsing history found between search suggestions.'
+        assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
         expected = region.exists(popular_search_suggestion_pattern, 10)
-        assert expected,'Popular search suggestions from the default search engine found between search suggestions.'
+        assert expected, 'Popular search suggestions from the default search engine found between search suggestions.'
 
         open_library_menu('History')
 
@@ -97,7 +97,7 @@ class Test(FirefoxTest):
 
         try:
             expected = region.wait_vanish(search_suggestion_history_pattern, 10)
-            assert  expected, 'Focus page is removed from the list.'
+            assert expected, 'Focus page is removed from the list.'
         except FindError:
             raise FindError('Focus page is not removed from the list.')
 
@@ -105,6 +105,6 @@ class Test(FirefoxTest):
 
         try:
             expected = region.wait_vanish(focus_history_menu_pattern, 10)
-            assert  expected, 'Focus page successfully removed from the history menu.'
+            assert expected, 'Focus page successfully removed from the history menu.'
         except FindError:
             raise FindError('Focus page is still displayed in history menu.')

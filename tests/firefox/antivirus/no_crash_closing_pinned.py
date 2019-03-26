@@ -8,14 +8,13 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
-    @pytest.mark.DETAILS(
+    @pytest.mark.details(
         description='[Kaspersky] No crash or bluescreen after closing a pinned tab',
         locale='[en-US]',
         test_case_id='219585',
         test_suite_id='3063'
-
     )
-    def test_run(self):
+    def test_run(self, firefox):
         close_tab_pattern = Pattern('close_tab_item.png')
         pin_tab_pattern = Pattern('pin_tab_item.png')
         mozilla_tab_pattern = Pattern('mozilla_tab.png')

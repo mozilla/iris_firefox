@@ -227,7 +227,7 @@ def get_failing_code(file, line):
 
 def get_test_markers(item):
     details = {}
-    for marker in item.iter_markers(name="DETAILS"):
+    for marker in item.iter_markers(name="details"):
         for arg in marker.kwargs:
             details[arg] = marker.kwargs[arg]
     return details

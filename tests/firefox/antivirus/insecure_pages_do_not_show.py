@@ -8,14 +8,13 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
-    @pytest.mark.DETAILS(
+    @pytest.mark.details(
         description='Check browser doesn\'t show insecure webpage errors',
         locale='[en-US]',
         test_case_id='225143',
         test_suite_id='3063'
-
     )
-    def test_run(self):
+    def test_run(self, firefox):
         insecure_connection_pattern = Pattern('https_insecure_sign.png')
         twitter_logo_pattern = Pattern('twitter_logo.png')
         tracker_site_pattern = Pattern('firefox_download.png')

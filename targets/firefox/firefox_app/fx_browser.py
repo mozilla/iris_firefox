@@ -19,11 +19,14 @@ from mozprofile import Profile as MozProfile
 
 from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
+from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
 
 from src.core.api.errors import APIHelperError
 
 logger = logging.getLogger(__name__)
 CHANNELS = ('beta', 'release', 'nightly', 'esr', 'dev')
+DEFAULT_FIREFOX_TIMEOUT = 10
 
 default_preferences = {  # Don't automatically update the application
         'app.update.disabledForTesting': True,
@@ -246,8 +249,23 @@ class FXRunner:
         except run_errors.RunnerNotStartedError:
             raise APIHelperError('Error creating Firefox runner.')
 
-    def start(self):
+    def start(self, image=None):
         self.runner.start()
+        confirm_firefox_launch(image)
+        maximize_window()
+
+    def stop(self):
+        if self.runner and self.runner.process_handler:
+            from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
+            quit_firefox()
+            status = self.runner.process_handler.wait(DEFAULT_FIREFOX_TIMEOUT)
+            if status is None:
+                self.runner.stop()
+                self.runner = None
+
+    def restart(self, image=None):
+        self.stop()
+        self.start(image)
 
 
 def get_test_candidate(version: str, locale: str) -> str or None:

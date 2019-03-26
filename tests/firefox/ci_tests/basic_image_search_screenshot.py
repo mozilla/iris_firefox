@@ -7,7 +7,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
-    @pytest.mark.DETAILS(
+    @pytest.mark.details(
         description="This test verifies if Pyautogui/MSS screenshot and image search are working properly in a ' \
                     'framebuffer environment..",
         locale='[en-US]',
