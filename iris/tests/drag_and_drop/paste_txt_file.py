@@ -161,5 +161,3 @@ class Test(BaseTest):
         #                                                   'expected result is different from result.')
 
         type(Key.ESC)
-
-        close_tab()
