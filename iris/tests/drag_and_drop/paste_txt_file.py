@@ -152,7 +152,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        click(drop_here_pattern, DRAG_AND_DROP_DURATION)
 
         edit_paste()
 
