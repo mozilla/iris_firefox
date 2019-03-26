@@ -86,5 +86,3 @@ class Test(BaseTest):
         click(NavBar.HAMBURGER_MENU)
 
         restore_firefox_focus()
-
-
