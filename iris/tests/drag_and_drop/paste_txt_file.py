@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '165090'
         self.test_suite_id = '102'
         self.locales = ['en-US']
-        # self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
+        self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
 
     def run(self):
         paste_txt_button_pattern = Pattern('paste_txt_file_button.png')
@@ -55,7 +55,7 @@ class Test(BaseTest):
         open_directory(folderpath)
 
         if Settings.is_mac():
-            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+            time.sleep(Settings.DEFAULT_FIREFOX_TIMEOUT)
             type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
 
         test_file_txt_located = exists(txt_file_pattern)
@@ -80,14 +80,14 @@ class Test(BaseTest):
 
         edit_paste()
 
-        # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
-        # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
-        #                                               'result is identical to result. ')
+        matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
+        assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
+                                                      'result is identical to result. ')
 
         open_directory(folderpath)
 
         if Settings.is_mac():
-            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+            time.sleep(Settings.DEFAULT_FIREFOX_TIMEOUT)
             type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
 
         test_file_jpg_located = exists(jpg_file_pattern)
@@ -112,8 +112,8 @@ class Test(BaseTest):
 
         edit_paste()
 
-        # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
-        # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
-        #                                                   'expected result is different from result.')
+        not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
+        assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
+                                                          'expected result is different from result.')
 
         type(Key.ESC)
