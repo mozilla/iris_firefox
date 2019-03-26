@@ -55,7 +55,7 @@ class Test(BaseTest):
         open_directory(folderpath)
 
         if Settings.is_mac():
-            time.sleep(Settings.DEFAULT_FIREFOX_TIMEOUT)
+            time.sleep(Settings.SITE_LOAD_TIMEOUT)
             type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
 
         test_file_txt_located = exists(txt_file_pattern)
@@ -87,7 +87,7 @@ class Test(BaseTest):
         open_directory(folderpath)
 
         if Settings.is_mac():
-            time.sleep(Settings.DEFAULT_FIREFOX_TIMEOUT)
+            time.sleep(Settings.SITE_LOAD_TIMEOUT)
             type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
 
         test_file_jpg_located = exists(jpg_file_pattern)
