@@ -249,10 +249,11 @@ class FXRunner:
         except run_errors.RunnerNotStartedError:
             raise APIHelperError('Error creating Firefox runner.')
 
-    def start(self, image=None):
+    def start(self, image=None, maximize=True):
         self.runner.start()
         confirm_firefox_launch(image)
-        maximize_window()
+        if maximize:
+            maximize_window()
 
     def stop(self):
         if self.runner and self.runner.process_handler:
@@ -261,11 +262,10 @@ class FXRunner:
             status = self.runner.process_handler.wait(DEFAULT_FIREFOX_TIMEOUT)
             if status is None:
                 self.runner.stop()
-                self.runner = None
 
     def restart(self, image=None):
         self.stop()
-        self.start(image)
+        self.start(image, False)
 
 
 def get_test_candidate(version: str, locale: str) -> str or None:
