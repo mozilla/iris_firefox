@@ -236,7 +236,7 @@ def get_test_markers(item):
 def scan_all_tests(target):
     master_test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     test_root = os.path.join(master_test_root, target)
-    base_props = ['description', 'platform', 'tags']
+    base_props = ['description']
     tests = []
 
     my_plugin = TestCollector()
