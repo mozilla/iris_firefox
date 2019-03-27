@@ -44,9 +44,9 @@ class Test(FirefoxTest):
         navigate(LocalWeb.FOCUS_TEST_SITE)
         expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
         assert expected, 'Focus page loaded successfully.'
-
         firefox.restart()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
+
         new_tab()
 
         select_location_bar()
