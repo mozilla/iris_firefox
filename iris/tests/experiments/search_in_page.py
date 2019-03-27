@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This is a test for text search in page'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         google_search_pattern = Pattern('google_search.png')
