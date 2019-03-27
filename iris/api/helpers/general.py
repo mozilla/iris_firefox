@@ -1385,20 +1385,19 @@ def select_file_in_folder(directory, filename_pattern, file_option):
 
     open_directory(directory)
 
-    file_located = False
-
     try:
-        for _ in range(3):
+        for attempt in range(1, 5):
             file_located = exists(filename_pattern)
 
             if file_located:
-                logger.debug('File is available')
-                break
-            elif _ == 2 and not file_located:
-                logger.debug('File is not available')
+                logger.debug('File {} in directory {} is available'.format(filename_pattern, directory))
                 break
             else:
-                time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+                if attempt == 4:
+                    logger.debug('File {} is not available after attempt {}'.format(filename_pattern, attempt))
+                    raise Exception
+
+                time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
                 if Settings.get_os() == Platform.MAC:
                     type('2', KeyModifier.CMD, type_delay)  # change view of finder
 
@@ -1406,7 +1405,7 @@ def select_file_in_folder(directory, filename_pattern, file_option):
 
         file_option()
 
-    except FindError:
+    except Exception:
         raise APIHelperError('Could not find file in folder.')
     finally:
         if Settings.is_windows():
