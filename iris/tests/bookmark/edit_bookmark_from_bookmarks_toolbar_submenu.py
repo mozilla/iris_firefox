@@ -101,6 +101,6 @@ class Test(BaseTest):
         assert_true(self, tags_edited, 'Tags are edited')
 
         keyword_edited = exists(keyword_edited_pattern)
-        assert_true(self, keyword_edited, 'Tags are edited')
+        assert_true(self, keyword_edited, 'Keyword are edited')
 
         type(Key.ESC)
