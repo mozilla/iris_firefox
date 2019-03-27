@@ -55,24 +55,24 @@ class Test(BaseTest):
         assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
 
         tracking_protection_shield_common_window = exists(tracking_protection_shield_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, tracking_protection_shield_common_window,
-                    'The Content blocking shield is displayed near the address bar.')
+        assert_false(self, tracking_protection_shield_common_window,
+                     'The Content blocking shield is not displayed near the address bar.')
 
         new_private_window()
         private_window_opened = exists(private_browsing_tab_pattern)
         assert_true(self, private_window_opened, 'Private browsing window opened')
 
-        content_blocking_private_not_displayed = not exists(private_content_blocking_warning_pattern)
-        assert_true(self, content_blocking_private_not_displayed,
-                    '"Some websites use trackers that can monitor your activity" etc. not displayed')
+        content_blocking_private_displayed = exists(private_content_blocking_warning_pattern)
+        assert_false(self, content_blocking_private_displayed,
+                     '"Some websites use trackers that can monitor your activity" etc. not displayed')
 
         navigate('http://edition.cnn.com')
         cnn_logo_exists = exists(cnn_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
 
         tracking_protection_shield_private_window = exists(tracking_protection_shield_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, tracking_protection_shield_private_window,
-                    'The Content blocking shield is displayed near the address bar')
+        assert_false(self, tracking_protection_shield_private_window,
+                     'The Content blocking shield is not displayed near the address bar')
 
         info_button_located = exists(info_button_pattern)
         assert_true(self, info_button_located, 'The "i button" (Info button) is located near the address bar')
@@ -88,8 +88,8 @@ class Test(BaseTest):
         list_of_active_trackers_displayed = exists(trackers_icon_pattern)
         assert_true(self, list_of_active_trackers_displayed, 'A list of active trackers is successfully displayed.')
 
-        trackers_not_blocked = not exists(blocked_tracker_pattern)
-        assert_true(self, trackers_not_blocked, 'The trackers are not blocked.')
+        trackers_blocked = exists(blocked_tracker_pattern)
+        assert_false(self, trackers_blocked, 'The trackers are not blocked.')
 
         to_block_set_to_strict_located = exists(to_block_set_to_strict_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, to_block_set_to_strict_located,

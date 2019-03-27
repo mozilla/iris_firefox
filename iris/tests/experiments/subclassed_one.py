@@ -15,7 +15,7 @@ class Test(BasicUrl):
         # As always, call the superclass constructor first.
         BasicUrl.__init__(self)
         self.meta = "This is a subclassed test from basic_url"
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def setup(self):
         # As above, call the superclass constructor.
