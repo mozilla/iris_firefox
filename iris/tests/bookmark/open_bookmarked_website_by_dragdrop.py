@@ -21,10 +21,8 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-
+        most_visited_bookmarks_folder_pattern = Pattern('most_visited_top_menu_bookmarks_folder.png')
         bookmarks_top_menu_toolbar_menu_item_pattern = Pattern('firefox_menu_bookmarks_toolbar.png')
-        getting_started_toolbar_bookmark_pattern = Pattern('mozilla_bookmark_icon.png')
-        most_visited_bookmarks_folder_pattern = Pattern('most_visited_bookmarks.png')
         bookmarks_top_menu_option = Pattern('firefox_menu_bookmarks.png')
         pocket_bookmark_pattern = Pattern('pocket_most_visited.png')
 
@@ -45,10 +43,6 @@ class Test(BaseTest):
         most_visited_bookmarks_folder_available = exists(most_visited_bookmarks_folder_pattern)
         assert_true(self, most_visited_bookmarks_folder_available,
                     '\'Most visited\' folder is available on the bookmarks toolbar')
-
-        getting_started_bookmark_available = exists(getting_started_toolbar_bookmark_pattern)
-        assert_true(self, getting_started_bookmark_available,
-                    '\'Getting started\' bookmark is available on the bookmarks toolbar')
 
         mouse_move(most_visited_bookmarks_folder_pattern)
 
