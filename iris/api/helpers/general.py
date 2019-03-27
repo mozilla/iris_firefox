@@ -1362,6 +1362,64 @@ def open_directory(directory):
         os.system('open \"' + directory + '\"')
 
 
+def select_file_in_folder(directory, filename_pattern, file_option):
+    """
+    Opens directory, selects file in opened directory, and provides action with it (e.g. copy, cut, delete),
+    and closes opened directory.
+
+    :param directory: Folder on hard drive to open.
+    :param filename_pattern: File Pattern to select.
+    :param file_option: Copy file hot key function or any other file iteration function (e.g. edit_cut, edit_delete).
+    """
+
+    type_delay = 0.5
+
+    if not isinstance(directory, basestring):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not isinstance(filename_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not callable(file_option):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    open_directory(directory)
+
+    file_located = False
+
+    if Settings.get_os() == Platform.MAC:
+        for _ in range(3):
+            file_located = exists(filename_pattern)
+
+            if file_located:
+                logger.debug('File is available')
+                break
+            elif _ == 2 and not file_located:
+                logger.debug('File is available')
+            else:
+                time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+                type('2', KeyModifier.CMD, type_delay)  # change view of finder
+
+    else:
+        file_located = exists(filename_pattern)
+        logger.debug('File is available')
+
+    try:
+        click(filename_pattern)
+
+        file_option()
+
+    except FindError:
+        raise APIHelperError('Could not find file in folder.')
+    finally:
+        if Settings.is_windows():
+            type('w', KeyModifier.CTRL)
+        elif Settings.is_linux():
+            type('q', KeyModifier.CTRL)
+        elif Settings.is_mac():
+            type('w', KeyModifier.CMD + KeyModifier.ALT)
+
+
 class Option(object):
     """Class with zoom members."""
 
