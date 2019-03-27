@@ -1369,7 +1369,7 @@ def select_file_in_folder(directory, filename_pattern, file_option):
 
     :param directory: Folder on hard drive to open.
     :param filename_pattern: File Pattern to select.
-    :param file_option: Copy file hot key function or any other file iteration function (e.g. edit_cut, edit_delete).
+    :param file_option: File processing function. Appropriate methods are: edit_copy, edit_cut, edit_delete.
     """
 
     type_delay = 0.5
@@ -1387,7 +1387,7 @@ def select_file_in_folder(directory, filename_pattern, file_option):
 
     file_located = False
 
-    if Settings.get_os() == Platform.MAC:
+    try:
         for _ in range(3):
             file_located = exists(filename_pattern)
 
@@ -1395,16 +1395,13 @@ def select_file_in_folder(directory, filename_pattern, file_option):
                 logger.debug('File is available')
                 break
             elif _ == 2 and not file_located:
-                logger.debug('File is available')
+                logger.debug('File is not available')
+                break
             else:
                 time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
-                type('2', KeyModifier.CMD, type_delay)  # change view of finder
+                if Settings.get_os() == Platform.MAC:
+                    type('2', KeyModifier.CMD, type_delay)  # change view of finder
 
-    else:
-        file_located = exists(filename_pattern)
-        logger.debug('File is available')
-
-    try:
         click(filename_pattern)
 
         file_option()
