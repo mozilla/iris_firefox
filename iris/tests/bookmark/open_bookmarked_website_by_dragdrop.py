@@ -57,7 +57,8 @@ class Test(BaseTest):
                     '\'Pocket\' bookmark is available in \'Most visited\' '
                     'folder on the \'Bookmarks toolbar\' top menu section')
 
-        drag_drop(pocket_bookmark_pattern, Location(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        drag_drop(pocket_bookmark_pattern, Location(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2),
+                  Settings.TINY_FIREFOX_TIMEOUT)
 
         bookmark_opened = exists(LocalWeb.POCKET_IMAGE, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, bookmark_opened, 'The selected website is correctly opened.')
