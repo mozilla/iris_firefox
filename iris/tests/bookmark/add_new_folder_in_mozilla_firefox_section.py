@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Add a new Folder in \'Mozilla Firefox\' section'
+        self.meta = 'Add a new Folder in \'Mozilla Firefox\' section '
         self.test_case_id = '163374'
         self.test_suite_id = '2525'
         self.locale = ['en-US']
