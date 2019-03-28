@@ -14,7 +14,7 @@ from src.core.util.local_web_server import LocalWebServer
 from src.core.util.path_manager import PathManager
 from src.core.util.test_assert import create_result_object
 from targets.firefox.bug_manager import is_blocked
-from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile
+from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, set_update_channel_pref
 from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.parse_args import parse_args
 
@@ -112,8 +112,9 @@ class Target(BaseTarget):
                 if status is None:
                     item.funcargs['firefox'].browser.runner.stop()
                 if not args.save:
-                    import shutil
-                    shutil.rmtree(item.funcargs['firefox'].profile)
+                    pass
+                    # import shutil
+                    # shutil.rmtree(item.funcargs['firefox'].profile)
         except (AttributeError, KeyError):
             pass
 
@@ -121,7 +122,8 @@ class Target(BaseTarget):
     def firefox(self, request):
         profile_type = request.node.own_markers[0].kwargs.get('profile')
         preferences = request.node.own_markers[0].kwargs.get('preferences')
-        profile = FirefoxProfile.make_profile(profile_type, preferences).profile
+        profile = FirefoxProfile.make_profile(profile_type, preferences)
+
         fx = args.firefox
         locale = args.locale
         app = FX_Collection.get(fx, locale)
@@ -130,6 +132,8 @@ class Target(BaseTarget):
             FX_Collection.add(fx, locale)
             app = FX_Collection.get(fx, locale)
 
+        if args.update_channel:
+            set_update_channel_pref(app.path, args.update_channel)
         self.values = {'fx_version': app.version, 'fx_build_id': app.build_id, 'channel': app.channel}
         return FXRunner(app, profile)
 
