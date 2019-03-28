@@ -27,8 +27,6 @@ class Test(BaseTest):
         moz_wiki_item = Pattern('moz_wiki_item.png')
         moz_pattern = Pattern('moz.png')
 
-        left_upper_corner = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
         navigate(url)
 
@@ -103,6 +101,6 @@ class Test(BaseTest):
         expected = region.exists(wikipedia_search_results_moz_pattern, 10)
         assert_true(self, expected, 'Wikipedia results are opened.')
 
-        expected = left_upper_corner.exists(moz_wiki_item, 10)
+        expected = Screen.LEFT_HALF.exists(moz_wiki_item, 10)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the wikipedia search engine.')
