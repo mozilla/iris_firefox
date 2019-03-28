@@ -20,26 +20,29 @@ class Test(BaseTest):
         bookmarks_highlighted_pattern = Pattern('bookmarks_highlighted.png')
         bookmarks_moved_pattern = Pattern('bookmarks_moved.png')
 
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
+
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        soap_wiki_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
-        assert_true(self, soap_wiki_opened, 'Firefox Test page opened')
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_test_site_opened, 'Firefox Test page opened')
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened, 'The test page is opened')
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
@@ -50,7 +53,7 @@ class Test(BaseTest):
 
         open_library()
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
