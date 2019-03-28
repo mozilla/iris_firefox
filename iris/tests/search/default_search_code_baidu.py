@@ -50,10 +50,7 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
         select_location_bar()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY)
-        url_text = Env.get_clipboard()
+        url_text = copy_to_clipboard()
 
         assert_contains(self, url_text, 'monline_dg', 'The resulting URL contains the \'monline_dg\' string.')
 
@@ -66,10 +63,7 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
         select_location_bar()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY)
-        url_text = Env.get_clipboard()
+        url_text = copy_to_clipboard()
 
         assert_contains(self, url_text, 'monline_dg', 'The resulting URL contains the \'monline_dg\' string.')
 
@@ -86,9 +80,6 @@ class Test(BaseTest):
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
         select_location_bar()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY)
-        url_text = Env.get_clipboard()
+        url_text = copy_to_clipboard()
 
         assert_contains(self, url_text, 'monline_dg', 'The resulting URL contains the \'monline_dg\' string.')
