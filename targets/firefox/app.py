@@ -36,13 +36,13 @@ class Target(BaseTarget):
         self.cc_settings = [
             {'name': 'firefox', 'type': 'list', 'label': 'Firefox',
              'value': ['local', 'latest', 'latest-esr', 'latest-beta', 'nightly'], 'default': 'beta'},
-            {'name': 'locale', 'type': 'list', 'label': 'Locale', 'value': ['en-US'], 'default': 'en-US'},
+            {'name': 'locale', 'type': 'list', 'label': 'Locale', 'value': OSHelper.LOCALES, 'default': 'en-US'},
             {'name': 'mouse', 'type': 'list', 'label': 'Mouse speed', 'value': ['0.0', '0.5', '1.0', '2.0'],
              'default': '0.5'},
-            {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting', 'value': False},
-            {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests', 'value': False},
-            {'name': 'email', 'type': 'checkbox', 'label': 'Email results', 'value': False},
-            {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report', 'value': False}
+            {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting'},
+            {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'},
+            {'name': 'email', 'type': 'checkbox', 'label': 'Email results'},
+            {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report'}
         ]
         self.local_web_root = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'local_web')
 

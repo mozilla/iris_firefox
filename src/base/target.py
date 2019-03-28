@@ -9,6 +9,7 @@ import pytest
 
 import logging
 from targets.firefox.parse_args import get_target_args
+from src.core.api.os_helpers import OSHelper
 from src.core.util.json_utils import update_run_index, create_run_log
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
@@ -25,7 +26,15 @@ class BaseTarget:
 
     def __init__(self):
         self.target_name = 'Default target'
-        self.cc_settings = []
+        self.cc_settings = [
+            {'name': 'locale', 'type': 'list', 'label': 'Locale', 'value': OSHelper.LOCALES, 'default': 'en-US'},
+            {'name': 'mouse', 'type': 'list', 'label': 'Mouse speed', 'value': ['0.0', '0.5', '1.0', '2.0'],
+             'default': '0.5'},
+            {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting'},
+            {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'}
+        ]
+
+
         self.locale = args.locale
         self.values = {}
 
@@ -34,7 +43,7 @@ class BaseTarget:
 
         :param _pytest.main.Session session: the pytest session object.
         """
-        self.start_time = int(time.time())
+        self.start_time = time.time()
         logger.info('** Test session {} started **'.format(session.name))
         logger.info('Iris settings:')
 
@@ -52,7 +61,7 @@ class BaseTarget:
         :param _pytest.main.Session session: the pytest session object.
         :param int exitstatus: the status which pytest will return to the system.
         """
-        self.end_time = int(time.time())
+        self.end_time = time.time()
 
         update_run_index(self, True)
         footer = create_footer(self)

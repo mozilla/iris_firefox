@@ -55,14 +55,14 @@ def update_run_index(app, finished=False):
         current_run = {'duration': total_duration,
                        'failed': failed,
                        'id': PathManager.get_run_id(),
-                       # 'locale': app.locale,
+                       'locale': args.locale,
                        'target': args.application,
                        'total': len(app.completed_tests)}
     else:
         current_run = {'duration': '-1',
                        'failed': '-1',
                        'id': PathManager.get_run_id(),
-                       # 'locale': app.locale,
+                       'locale': args.locale,
                        'target': args.application,
                        'total': '-1'}
 
@@ -90,7 +90,7 @@ def create_run_log(app):
             # 'platform': OSHelper.get_os().value,
             'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
                                           OSHelper.get_processor()),
-            # 'locale': app.locale,
+            'locale': args.locale,
             'args': ' '.join(sys.argv),
             'params': vars(args),
             'log': os.path.join(PathManager.get_current_run_dir(), 'iris_log.log')}
