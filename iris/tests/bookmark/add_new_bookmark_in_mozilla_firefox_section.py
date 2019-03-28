@@ -18,11 +18,14 @@ class Test(BaseTest):
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
-        mozilla_firefox_predefined_bookmarks_pattern = Pattern('mozilla_firefox_predefined_bookmarks.png')
         mozilla_firefox_bookmarks_folder_pattern = Pattern('mozilla_firefox_bookmarks_folder.png')
         mozilla_about_us_bookmark_pattern = Pattern('mozilla_about_us_bookmark.png')
         new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
         new_soap_bookmark_pattern = Pattern('new_soap_bookmark.png')
+        open_all_in_tabs_pattern = Pattern('open_all_in_tabs.png')
+        customize_firefox_bookmark_pattern = Pattern('mozilla_customize_firefox_bookmark.png')
+        get_involved_bookmark_pattern = Pattern('mozilla_get_involved_bookmark.png')
+        help_and_tutorials_bookmark_pattern = Pattern('mozilla_help_and_tutorials_bookmark.png')
 
         open_firefox_menu()
 
@@ -37,10 +40,20 @@ class Test(BaseTest):
                                                                    'bookmarks folder exists')
         click(mozilla_firefox_bookmarks_folder_pattern)
 
-        mozilla_firefox_predefined_bookmarks_exists = exists(mozilla_firefox_predefined_bookmarks_pattern,
-                                                             DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, mozilla_firefox_predefined_bookmarks_exists, 'Predefined Mozilla Firefox related bookmarks '
-                                                                       'displayed')
+        mozilla_customize_firefox_bookmark_exists = exists(customize_firefox_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, mozilla_customize_firefox_bookmark_exists, 'Customize Firefox bookmark is displayed')
+
+        mozilla_get_involved_bookmark_exists = exists(get_involved_bookmark_pattern)
+        assert_true(self, mozilla_get_involved_bookmark_exists, 'Get Involved bookmark is displayed')
+
+        mozilla_help_and_tutorials_bookmark_exists = exists(help_and_tutorials_bookmark_pattern)
+        assert_true(self, mozilla_help_and_tutorials_bookmark_exists, 'Help and Tutorials bookmark is displayed')
+
+        mozilla_about_us_bookmark_exists = exists(get_involved_bookmark_pattern)
+        assert_true(self, mozilla_about_us_bookmark_exists, 'About Us bookmark is displayed')
+
+        open_all_in_tabs_exists = exists(open_all_in_tabs_pattern)
+        assert_true(self, open_all_in_tabs_exists, 'Open all in tabs option exists')
 
         right_click(mozilla_about_us_bookmark_pattern)
 
