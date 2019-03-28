@@ -78,7 +78,7 @@ class Test(BaseTest):
 
         click(Library.BOOKMARKS_MENU)
 
-        bookmark_pasted = exists(getting_started_pattern)
+        bookmark_pasted = exists(getting_started_toolbar_pattern)
         assert_true(self, bookmark_pasted, 'The file from the previous step is pasted in the selected section')
 
         close_window_control('auxiliary')
