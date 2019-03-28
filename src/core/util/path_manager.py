@@ -12,7 +12,7 @@ import tempfile
 import git
 
 from src.core.api.os_helpers import OSHelper
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ def __create_tempdir():
 _tmp_dir = __create_tempdir()
 _run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
 _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
-args = parse_args()
+args = get_core_args()
 
 
 class PathManager:

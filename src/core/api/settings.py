@@ -4,7 +4,7 @@
 
 
 from src.core.api.enums import Color
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 
 
 class _Settings:
@@ -37,7 +37,7 @@ class _Settings:
     DEFAULT_SLOW_MOTION_DELAY = 2
     DEFAULT_OBSERVE_MIN_CHANGED_PIXELS = 50
     DEFAULT_TYPE_DELAY = 0
-    DEFAULT_MOVE_MOUSE_DELAY = parse_args().mouse
+    DEFAULT_MOVE_MOUSE_DELAY = get_core_args().mouse
     DEFAULT_CLICK_DELAY = 0
     DEFAULT_WAIT_SCAN_RATE = 3
     DEFAULT_OBSERVE_SCAN_RATE = 3

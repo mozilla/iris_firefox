@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from src.core.api.finder.pattern import Pattern
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 
 
 class LocalWeb(object):
@@ -10,7 +10,7 @@ class LocalWeb(object):
 
     _ip_host = '127.0.0.1'
     _domain_host = 'localhost.allizom.org'
-    _port = parse_args().port
+    _port = get_core_args().port
 
     """Simple blank HTML page."""
     BLANK_PAGE = 'http://%s:%s/blank.htm' % (_ip_host, _port)

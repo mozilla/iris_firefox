@@ -13,7 +13,7 @@ import shutil
 from src.core.api.keyboard.keyboard_api import check_keyboard_state
 from src.core.util import cleanup
 from src.core.util.app_loader import get_app_test_directory
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 from src.core.util.json_utils import create_target_json
 from src.core.util.local_web_server import LocalWebServer
 from src.core.util.logger_manager import initialize_logger
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    args = parse_args()
+    args = get_core_args()
     initialize_logger()
     if verify_config(args):
         user_result = None
@@ -52,7 +52,7 @@ def show_control_center():
     # TODO
     # expand logic to display Control Center only when no target specified,
     # or if -k argument is explicitly used
-    if parse_args().control:
+    if get_core_args().control:
         return True
     else:
         return False
@@ -96,7 +96,7 @@ def get_test_params(target):
     pytest_args.append('-vs')
     pytest_args.append('-r ')
     pytest_args.append('-s')
-    if parse_args().level > 10:
+    if get_core_args().level > 10:
         pytest_args.append('-p')
         pytest_args.append('no:terminal')
     return pytest_args
@@ -113,7 +113,7 @@ def verify_config(args):
 
 
 def init_control_center():
-    copy_tree(os.path.join(PathManager.get_module_dir(), 'src', 'control_center', 'assets'), parse_args().workdir)
+    copy_tree(os.path.join(PathManager.get_module_dir(), 'src', 'control_center', 'assets'), get_core_args().workdir)
     targets_dir = os.path.join(PathManager.get_module_dir(), 'targets')
 
     exclude_dirs = {'__pycache__'}
@@ -121,7 +121,7 @@ def init_control_center():
         [dirs.remove(d) for d in list(dirs) if d in exclude_dirs]
         for target in dirs:
             src = os.path.join(targets_dir, target, 'icon.png')
-            dest = os.path.join(parse_args().workdir, 'images', '%s.png' % target)
+            dest = os.path.join(get_core_args().workdir, 'images', '%s.png' % target)
             try:
                 shutil.copyfile(src, dest)
             except FileNotFoundError:
@@ -131,20 +131,17 @@ def init_control_center():
 
 
 def launch_control_center():
-    profile_path = os.path.join(parse_args().workdir, 'cc_profile')
+    profile_path = os.path.join(get_core_args().workdir, 'cc_profile')
     fx_path = PathManager.get_local_firefox_path()
     if fx_path is None:
         logger.error('Can\'t find local Firefox installation, aborting Iris run.')
         return False, None
 
-    args = []
-    args.append('-new-tab')
-    args.append('http://127.0.0.1:%s' % parse_args().port)
+    args = ['-new-tab', 'http://127.0.0.1:%s' % get_core_args().port]
     process_args = {'stream': None}
-    fx_runner = FirefoxRunner(binary=fx_path, profile=profile_path,
-                           cmdargs=args, process_args=process_args)
+    fx_runner = FirefoxRunner(binary=fx_path, profile=profile_path, cmdargs=args, process_args=process_args)
     fx_runner.start()
-    server = LocalWebServer(parse_args().workdir, parse_args().port)
+    server = LocalWebServer(get_core_args().workdir, get_core_args().port)
     server.stop()
     fx_runner.stop()
     return server.result

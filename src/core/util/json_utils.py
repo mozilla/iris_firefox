@@ -2,20 +2,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import importlib
+import json
+import logging
 import os
 import sys
 
 import git
-import importlib
-import json
-import logging
 import pytest
 
 from src.core.api.os_helpers import OSHelper
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
 
 logger = logging.getLogger(__name__)
+args = get_core_args()
 
 
 def create_target_json():
@@ -37,7 +38,7 @@ def create_target_json():
             logger.error('Problems importing module.')
 
     target_json = {'targets': targets}
-    target_json_file = os.path.join(parse_args().workdir, 'data', 'targets.json')
+    target_json_file = os.path.join(args.workdir, 'data', 'targets.json')
     with open(target_json_file, 'w') as f:
         json.dump(target_json, f, sort_keys=True, indent=True)
 
@@ -54,18 +55,18 @@ def update_run_index(app, finished=False):
         current_run = {'duration': total_duration,
                        'failed': failed,
                        'id': PathManager.get_run_id(),
-                       #'locale': app.locale,
-                       'target': parse_args().application,
+                       # 'locale': app.locale,
+                       'target': args.application,
                        'total': len(app.completed_tests)}
     else:
         current_run = {'duration': '-1',
                        'failed': '-1',
                        'id': PathManager.get_run_id(),
-                       #'locale': app.locale,
-                       'target': parse_args().application,
+                       # 'locale': app.locale,
+                       'target': args.application,
                        'total': '-1'}
 
-    run_file = os.path.join(parse_args().workdir, 'data', 'runs.json')
+    run_file = os.path.join(args.workdir, 'data', 'runs.json')
 
     if os.path.exists(run_file):
         logger.debug('Updating run file: %s' % run_file)
@@ -85,14 +86,13 @@ def update_run_index(app, finished=False):
 
 
 def create_run_log(app):
-
     meta = {'run_id': PathManager.get_run_id(),
-            #'platform': OSHelper.get_os().value,
+            # 'platform': OSHelper.get_os().value,
             'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
                                           OSHelper.get_processor()),
-            #'locale': app.locale,
+            # 'locale': app.locale,
             'args': ' '.join(sys.argv),
-            'params': vars(parse_args()),
+            'params': vars(args),
             'log': os.path.join(PathManager.get_current_run_dir(), 'iris_log.log')}
     values = {}
     for i in app.values:
@@ -130,10 +130,9 @@ def create_run_log(app):
     meta['end_time'] = app.end_time
     meta['total_time'] = app.end_time - app.start_time
 
-    tests = {}
-    tests['all_tests'] = convert_test_list(app.completed_tests)
-    tests['failed_tests'] = convert_test_list(app.completed_tests, only_failures=True)
-    
+    tests = {'all_tests': convert_test_list(app.completed_tests),
+             'failed_tests': convert_test_list(app.completed_tests, only_failures=True)}
+
     run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
     run_file_data = {'meta': meta, 'tests': tests}
 
@@ -141,18 +140,16 @@ def create_run_log(app):
         json.dump(run_file_data, f, sort_keys=True, indent=True)
 
 
-def convert_test_list(list, only_failures=False):
-    '''
-    Takes a flat list of test objects and paths and converts to an
-    object that can be serialized as JSON.
+def convert_test_list(test_list, only_failures=False):
+    """Takes a flat list of test objects and paths and converts to an object that can be serialized as JSON.
 
-    :param list: List of completed tests
+    :param test_list: List of completed tests
     :param only_failures: If True, only return failed tests
     :return:
-    '''
+    """
     test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     tests = []
-    for test in list:
+    for test in test_list:
         test_failed = True if 'FAILED' in test.outcome or 'ERROR' in test.outcome else False
         original_path = str(test.item.__dict__.get('fspath'))
         target_root = original_path.split(test_root)[1]
@@ -161,8 +158,7 @@ def convert_test_list(list, only_failures=False):
         parent = tests
         details = get_test_markers(test.item)
         for module in test_path.split(os.sep):
-            test_obj = {}
-            test_obj['name'] = module.split('.py')[0]
+            test_obj = {'name': module.split('.py')[0]}
             if 'py' not in module:
                 module_exists = False
                 for objects in parent:
@@ -181,12 +177,14 @@ def convert_test_list(list, only_failures=False):
                 if test_failed:
                     test_assert = {
                         'error': test.error.lstrip(), 'message': test.message.lstrip(), 'call_stack': test.traceback,
-                        'actual': test.actual, 'expected': test.expected, 'code': get_failing_code(test.node_name, int(test.line))
+                        'actual': test.actual, 'expected': test.expected,
+                        'code': get_failing_code(test.node_name, int(test.line))
                     }
                     test_obj['assert'] = test_assert
                 test_obj['result'] = test.outcome
                 test_obj['time'] = test.test_duration
-                debug_image_directory = os.path.join(PathManager.get_current_run_dir(), test_path.split('.py')[0], 'debug_images')
+                debug_image_directory = os.path.join(PathManager.get_current_run_dir(), test_path.split('.py')[0],
+                                                     'debug_images')
                 test_obj['debug_image_directory'] = debug_image_directory
                 test_obj['debug_images'] = get_image_names(debug_image_directory)
                 test_obj['description'] = details.get('description')
@@ -219,8 +217,8 @@ def get_failing_code(file, line):
     num_lines = 10
     if len(f) < num_lines:
         num_lines = len(f)
-    for x in range(int(line)-1, int(line)-(num_lines+1), -1):
-        lines.append('%s: %s' % (x+1, f[x]))
+    for x in range(int(line) - 1, int(line) - (num_lines + 1), -1):
+        lines.append('%s: %s' % (x + 1, f[x]))
     lines.reverse()
     return ''.join(lines)
 
@@ -249,8 +247,7 @@ def scan_all_tests(target):
         parent = tests
         details = get_test_markers(test)
         for module in test_path.split(os.sep):
-            test_obj = {}
-            test_obj['name'] = module.split('.py')[0]
+            test_obj = {'name': module.split('.py')[0]}
             if 'py' not in module:
                 module_exists = False
                 for objects in parent:

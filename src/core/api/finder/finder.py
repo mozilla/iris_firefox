@@ -5,6 +5,8 @@
 
 import time
 
+import pyautogui
+
 from src.core.api.enums import Color
 from src.core.api.enums import MatchTemplateType
 from src.core.api.errors import FindError
@@ -15,8 +17,7 @@ from src.core.api.highlight.screen_highlight import ScreenHighlight, HighlightRe
 from src.core.api.location import Location
 from src.core.api.rectangle import Rectangle
 from src.core.api.settings import Settings
-from src.core.util.arg_parser import parse_args
-import pyautogui
+from src.core.util.arg_parser import get_core_args
 
 
 def highlight(region=None, seconds=None, color=None, ps=None, location=None, text_location=None):
@@ -70,7 +71,7 @@ def find(ps: Pattern or str, region: Rectangle = None) -> Location or FindError:
     if isinstance(ps, Pattern):
         image_found = match_template(ps, region, MatchTemplateType.SINGLE)
         if len(image_found) > 0:
-            if parse_args().highlight:
+            if get_core_args().highlight:
                 highlight(region=region, ps=ps, location=image_found)
             return image_found[0]
         else:
@@ -78,7 +79,7 @@ def find(ps: Pattern or str, region: Rectangle = None) -> Location or FindError:
     elif isinstance(ps, str):
         text_found = text_find(ps, region)
         if len(text_found) > 0:
-            if parse_args().highlight:
+            if get_core_args().highlight:
                 highlight(region=region, ps=ps, text_location=text_found)
             return Location(text_found[0].x, text_found[0].y)
         else:
@@ -95,7 +96,7 @@ def find_all(ps: Pattern or str, region: Rectangle = None):
     if isinstance(ps, Pattern):
         images_found = match_template(ps, region, MatchTemplateType.MULTIPLE)
         if len(images_found) > 0:
-            if parse_args().highlight:
+            if get_core_args().highlight:
                 highlight(region=region, ps=ps, location=images_found)
             return images_found
         else:
@@ -104,7 +105,7 @@ def find_all(ps: Pattern or str, region: Rectangle = None):
         locations = []
         text_found = text_find_all(ps, region)
         if len(text_found) > 0:
-            if parse_args().highlight:
+            if get_core_args().highlight:
                 highlight(region=region, ps=ps, text_location=text_found)
             for text in text_found:
                 locations.append(Location(text.x, text.y))
@@ -127,7 +128,7 @@ def wait(ps, timeout=None, region=None) -> bool or FindError:
 
         image_found = image_find(ps, timeout, region)
         if image_found is not None:
-            if parse_args().highlight:
+            if get_core_args().highlight:
                 highlight(region=region, ps=ps, location=[image_found])
             return True
         else:
@@ -135,7 +136,7 @@ def wait(ps, timeout=None, region=None) -> bool or FindError:
     elif isinstance(ps, str):
         text_found = text_find(ps, region)
         if len(text_found) > 0:
-            if parse_args().highlight:
+            if get_core_args().highlight:
                 highlight(region=region, ps=ps, text_location=text_found)
             return Location(text_found[0].x, text_found[0].y)
         else:

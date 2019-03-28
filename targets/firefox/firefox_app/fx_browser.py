@@ -21,7 +21,7 @@ from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 
 from src.core.api.errors import APIHelperError
 
@@ -235,7 +235,7 @@ class FXRunner:
         args.append('-no-remote')
 
         if url is None:
-            url = 'http://127.0.0.1:{}'.format(parse_args().port)
+            url = 'http://127.0.0.1:{}'.format(get_core_args().port)
 
         args.append('-new-tab')
         args.append(url)

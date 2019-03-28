@@ -6,11 +6,11 @@
 import logging
 import os
 
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
 
 logger = logging.getLogger(__name__)
-args = parse_args()
+args = get_core_args()
 
 
 def load_app(app: str = None):

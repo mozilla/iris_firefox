@@ -6,7 +6,7 @@ import logging
 
 import coloredlogs
 
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
 
 LOG_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
@@ -52,4 +52,4 @@ def initialize_logger_level(level):
 
 def initialize_logger():
     logging.basicConfig(filename=PathManager.get_log_file_path(), format=LOG_FORMAT)
-    initialize_logger_level(parse_args().level)
+    initialize_logger_level(get_core_args().level)

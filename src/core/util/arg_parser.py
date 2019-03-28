@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 iris_args = None
 
 
-def parse_args():
+def get_core_args():
     global iris_args
     home = os.path.expanduser('~')
 
@@ -26,7 +26,7 @@ def parse_args():
         assert isinstance(log_level_int, int)
         return log_level_int
 
-    parser = argparse.ArgumentParser(description='Run Iris testsuite', prog='iris')
+    parser = argparse.ArgumentParser(description='Iris core arguments', prog='iris')
     app_dir = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../..'), 'targets')
     app_list = [f.path for f in os.scandir(app_dir) if f.is_dir()]
     for idx, app in enumerate(app_list):
@@ -59,6 +59,10 @@ def parse_args():
     parser.add_argument('-k', '--control',
                         help='Display control center',
                         action='store_true')
+    parser.add_argument('-l', '--locale',
+                        help='Language packages',
+                        action='store',
+                        default='en-US')
     parser.add_argument('-m', '--mouse',
                         help='Change mouse speed',
                         type=float,
@@ -81,17 +85,6 @@ def parse_args():
     parser.add_argument('-s', '--save',
                         help='Save profiles on disk',
                         action='store_true')
-    parser.add_argument('-f', '--firefox',
-                        help='Firefox version to test',
-                        action='store',
-                        default='latest-beta')
-    parser.add_argument('-u', '--update_channel',
-                        help='Update channel profile preference',
-                        action='store')
-    parser.add_argument('-l', '--locale',
-                        help='Locale to use for Firefox',
-                        action='store',
-                        default='en-US')
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,
@@ -104,6 +97,6 @@ def parse_args():
                         help='Convert hi-res images to normal',
                         action='store_true')
     if iris_args is None:
-        iris_args = parser.parse_args()
+        iris_args = parser.parse_known_args()[0]
 
     return iris_args

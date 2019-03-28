@@ -8,14 +8,14 @@ import time
 import pytest
 
 import logging
-from targets.firefox.parse_args import parse_args
+from targets.firefox.parse_args import get_target_args
 from src.core.util.json_utils import update_run_index, create_run_log
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
 from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.firefox_app.fx_browser import FirefoxApp
 
-args = parse_args()
+args = get_target_args()
 logger = logging.getLogger(__name__)
 
 

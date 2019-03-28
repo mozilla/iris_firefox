@@ -27,12 +27,12 @@ from src.core.api.settings import Settings
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from src.core.api.os_helpers import OSHelper, OSPlatform
-from targets.firefox.parse_args import parse_args
+from src.core.util.arg_parser import get_core_args
 
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
-args = parse_args()
+args = get_core_args()
 
 
 def change_preference(pref_name, value):

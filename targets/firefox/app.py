@@ -16,10 +16,12 @@ from src.core.util.test_assert import create_result_object
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, set_update_channel_pref
 from targets.firefox.firefox_app.fx_collection import FX_Collection
-from targets.firefox.parse_args import parse_args
+from targets.firefox.parse_args import get_target_args
+from src.core.util.arg_parser import get_core_args
 
 logger = logging.getLogger(__name__)
-args = parse_args()
+target_args = get_target_args()
+core_args = get_core_args()
 
 
 class Target(BaseTarget):
@@ -47,7 +49,7 @@ class Target(BaseTarget):
     def pytest_sessionstart(self, session):
         BaseTarget.pytest_sessionstart(self, session)
         try:
-            port = args.port
+            port = core_args.port
 
             logger.info('Starting local web server on port %s for directory %s' % (port, self.local_web_root))
             web_server_process = Process(target=LocalWebServer, args=(self.local_web_root, port,))
@@ -111,7 +113,7 @@ class Target(BaseTarget):
                 status = item.funcargs['firefox'].runner.process_handler.wait(10)
                 if status is None:
                     item.funcargs['firefox'].browser.runner.stop()
-                if not args.save:
+                if not core_args.save:
                     pass
                     # import shutil
                     # shutil.rmtree(item.funcargs['firefox'].profile)
@@ -124,16 +126,16 @@ class Target(BaseTarget):
         preferences = request.node.own_markers[0].kwargs.get('preferences')
         profile = FirefoxProfile.make_profile(profile_type, preferences)
 
-        fx = args.firefox
-        locale = args.locale
+        fx = target_args.firefox
+        locale = target_args.locale
         app = FX_Collection.get(fx, locale)
 
         if not app:
             FX_Collection.add(fx, locale)
             app = FX_Collection.get(fx, locale)
 
-        if args.update_channel:
-            set_update_channel_pref(app.path, args.update_channel)
+        if target_args.update_channel:
+            set_update_channel_pref(app.path, target_args.update_channel)
         self.values = {'fx_version': app.version, 'fx_build_id': app.build_id, 'channel': app.channel}
         return FXRunner(app, profile)
 

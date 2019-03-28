@@ -14,7 +14,7 @@ from src.core.api.errors import FindError
 from src.core.api.location import Location
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
-from src.core.util.arg_parser import parse_args
+from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
 
 try:
@@ -33,7 +33,7 @@ class Pattern:
     associate a specific similarity value, that will be used as the minimum value, when this pattern object is searched.
     """
 
-    def __init__(self, image_name: str, from_path: str = None, application: str = parse_args().application):
+    def __init__(self, image_name: str, from_path: str = None, application: str = get_core_args().application):
 
         if from_path is None:
             path = _get_image_path(inspect.stack()[1][1], image_name, application)
@@ -150,7 +150,7 @@ def _parse_name(full_name: str) -> (str, int):
 
 def _load_all_patterns(application: str) -> list:
     """Function returns a list with all the project's Patterns."""
-    if parse_args().resize:
+    if get_core_args().resize:
         _convert_hi_res_images()
     result_list = []
     for root, dirs, files in os.walk(PathManager.get_module_dir()):
@@ -261,7 +261,7 @@ def _get_image_path(caller, image: str, application: str) -> str:
     paths = []
     current_locale = ''
     try:
-        current_locale = parse_args().locale
+        current_locale = get_core_args().locale
     except AttributeError:
         pass
 
