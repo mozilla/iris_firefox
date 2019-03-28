@@ -25,7 +25,7 @@ class Test(BaseTest):
 
         navigate('about:preferences#privacy')
 
-        preferences_privacy_page_opened = exists(preferences_privacy_page_pattern, 30)
+        preferences_privacy_page_opened = exists(preferences_privacy_page_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, preferences_privacy_page_opened, 'The Preferences > Privacy page is successfully displayed')
 
         paste('Delete cookies')
@@ -33,15 +33,22 @@ class Test(BaseTest):
         delete_cookies_after_close_checkbox_exists = exists(delete_cookies_after_close_pattern)
         assert_true(self, delete_cookies_after_close_checkbox_exists, '"Delete cookies and site data when Firefox '
                                                                       'is closed" is displayed')
+
+        delete_cookies_after_close_location = find(delete_cookies_after_close_pattern)
+        delete_cookies_checkbox_width, delete_cookies_checkbox_height = delete_cookies_after_close_pattern.get_size()
+        delete_cookies_region = Region(delete_cookies_after_close_location.x, delete_cookies_after_close_location.y,
+                                       delete_cookies_checkbox_width, delete_cookies_checkbox_height)
+
         click(delete_cookies_after_close_pattern)
 
-        delete_cookies_after_close_marked_exists = exists(delete_cookies_after_close_marked_pattern)
+        delete_cookies_after_close_marked_exists = exists(delete_cookies_after_close_marked_pattern,
+                                                          in_region=delete_cookies_region)
         assert_true(self, delete_cookies_after_close_marked_exists, 'The option is successfully selected and '
                                                                     'remembered.')
 
         navigate('https://edition.cnn.com')
 
-        website_opened = exists(LocalWeb.CNN_LOGO, 100)
+        website_opened = exists(LocalWeb.CNN_LOGO, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, website_opened, 'The website is successfully displayed.')
 
         restart_firefox(self,
@@ -51,10 +58,11 @@ class Test(BaseTest):
                         image=preferences_privacy_page_pattern
                         )
 
-        time.sleep(DEFAULT_UI_DELAY)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+
         paste('Delete cookies')
 
-        manage_data_button_exists = exists(manage_data_button_pattern, 10)
+        manage_data_button_exists = exists(manage_data_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, manage_data_button_exists, 'The manage data button exists.')
 
         click(manage_data_button_pattern)

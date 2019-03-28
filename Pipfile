@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 iris = {path = ".",editable = true}
 pyautogui = "==0.9.41"
+pyscreeze = "==0.1.19"
 coloredlogs = "==10.0"
 python-dateutil = "==2.8.0"
 opencv-python = "==3.4.1.15"  #version needed for Windows 7
