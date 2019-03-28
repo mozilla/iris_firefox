@@ -64,8 +64,6 @@ class Test(BaseTest):
         google_search_suggestion_location = find(google_search_suggestion_pattern)
         google_search_suggestion_width, google_search_suggestion_height = google_search_suggestion_pattern.get_size()
 
-        print(google_search_suggestion_height, google_search_suggestion_width)
-
         coordinate_x = google_search_suggestion_location.x
 
         for search_engine in search_suggestions:
@@ -84,5 +82,5 @@ class Test(BaseTest):
 
         type(Key.ENTER)
 
-        search_result_is_default = exists(search_result_default_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        search_result_is_default = exists(search_result_default_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, search_result_is_default, 'Search results displayed, with the known/selected search-engine.')

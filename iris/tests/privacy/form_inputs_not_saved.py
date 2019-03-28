@@ -93,4 +93,4 @@ class Test(BaseTest):
         assert_false(self, saved_address_exists, 'The submitted information in the private session '
                                                  'is not displayed in the saved Addresses panel')
 
-        close_window_control("auxiliary")
+        close_window()
