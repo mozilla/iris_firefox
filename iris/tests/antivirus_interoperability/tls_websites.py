@@ -32,16 +32,21 @@ class Test(BaseTest):
 
         navigate('https://www.cloudflare.com/')
 
-        cloudflare_logo_displayed = exists(cloudflare_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cloudflare_logo_displayed = exists(cloudflare_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cloudflare_logo_displayed, 'Cloudflare page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
+
         cloudflare_show_connection_details_exists = exists(show_connection_details_button_pattern,
-                                                           DEFAULT_FIREFOX_TIMEOUT)
+                                                           Settings.FIREFOX_TIMEOUT)
         assert_true(self, cloudflare_show_connection_details_exists, 'Show Connection Details button displayed')
-        click(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        cloudflare_more_info_button_exists = exists(more_information_button_pattern)
+
+        click(show_connection_details_button_pattern)
+
+        cloudflare_more_info_button_exists = exists(more_information_button_pattern, Settings.FIREFOX_TIMEOUT)
+
         assert_true(self, cloudflare_more_info_button_exists, 'More information button displayed')
+
         click(more_information_button_pattern)
 
         cloudflare_page_info_opened = exists(page_info_window_pattern)
@@ -58,22 +63,25 @@ class Test(BaseTest):
 
         click(cloudflare_support_button_pattern)
 
-        cloudflare_support_page_displayed = exists(cloudflare_support_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cloudflare_support_page_displayed = exists(cloudflare_support_page_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cloudflare_support_page_displayed, 'There are no issues, crashes while navigating'
                                                              'on the website')
 
         navigate('https://www.theregister.co.uk/')
 
-        theregister_logo_displayed = exists(theregister_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        theregister_logo_displayed = exists(theregister_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, theregister_logo_displayed, 'The Register page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
         theregister_show_connection_details_exists = exists(show_connection_details_button_pattern,
-                                                            DEFAULT_FIREFOX_TIMEOUT)
+                                                            Settings.FIREFOX_TIMEOUT)
         assert_true(self, theregister_show_connection_details_exists, 'Show Connection Details button displayed')
+
         click(show_connection_details_button_pattern)
-        theregister_more_info_button_exists = exists(more_information_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
+        theregister_more_info_button_exists = exists(more_information_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, theregister_more_info_button_exists, 'More information button displayed')
+
         click(more_information_button_pattern)
 
         the_register_logo_displayed_page_info_opened = exists(page_info_window_pattern)
@@ -90,21 +98,25 @@ class Test(BaseTest):
 
         click(the_regiter_log_in_button_pattern)
 
-        the_register_log_in_page_displayed = exists(the_register_log_in_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        the_register_log_in_page_displayed = exists(the_register_log_in_page_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, the_register_log_in_page_displayed, 'There are no issues, crashes while navigating'
                                                               'on the website')
 
         navigate('https://www.cdn77.com/')
 
-        cdn77_logo_displayed = exists(cdn77_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cdn77_logo_displayed = exists(cdn77_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cdn77_logo_displayed, 'CDN77 page is successfully downloaded')
 
         click(LocationBar.IDENTITY_ICON)
-        cdn77_show_connection_details_exists = exists(show_connection_details_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
+        cdn77_show_connection_details_exists = exists(show_connection_details_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, cdn77_show_connection_details_exists, 'Show Connection Details button displayed')
+
         click(show_connection_details_button_pattern)
-        cdn77_more_info_button_exists = exists(more_information_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
+        cdn77_more_info_button_exists = exists(more_information_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, cdn77_more_info_button_exists, 'More information button displayed')
+
         click(more_information_button_pattern)
 
         cdn77_logo_displayed_page_info_opened = exists(page_info_window_pattern)
@@ -121,5 +133,5 @@ class Test(BaseTest):
 
         click(cdn77_support_button_pattern)
 
-        cdn77_support_page_displayed = exists(cdn77_support_page_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cdn77_support_page_displayed = exists(cdn77_support_page_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cdn77_support_page_displayed, 'There are no issues, crashes while navigating on the website')

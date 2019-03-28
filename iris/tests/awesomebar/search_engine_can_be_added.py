@@ -87,7 +87,9 @@ class Test(BaseTest):
 
         select_location_bar()
         type(Key.DELETE)
+        time.sleep(DEFAULT_UI_DELAY_LONG)
         paste('moz')
+        time.sleep(DEFAULT_UI_DELAY_LONG)
         type(Key.SPACE)
 
         expected = exists(moz_search_amazon_search_engine_pattern, 10)
@@ -113,7 +115,9 @@ class Test(BaseTest):
 
         select_location_bar()
         type(Key.DELETE)
+        time.sleep(DEFAULT_UI_DELAY_LONG)
         paste('moz')
+        time.sleep(DEFAULT_UI_DELAY_LONG)
         type(Key.SPACE)
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
