@@ -39,10 +39,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'The search is performed with the Bing engine.')
 
         select_location_bar()
-        time.sleep(DEFAULT_UI_DELAY)
-        edit_copy()
-        time.sleep(DEFAULT_UI_DELAY)
-        url_text = Env.get_clipboard()
+        url_text = copy_to_clipboard()
 
         assert_contains(self, url_text, 'pc=MOZI&form=MOZLBR', 'The resulted URL contains the \'pc=MOZI&form=MOZLBR\' '
                                                                'string.')

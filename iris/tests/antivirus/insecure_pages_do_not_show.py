@@ -23,7 +23,6 @@ class Test(BaseTest):
         change_preference('security.enterprise_roots.enabled', 'false')
 
         navigate('https://www.twitter.com')
-        close_content_blocking_pop_up()
         twitter_page_loaded = exists(twitter_logo_pattern)
         assert_true(self, twitter_page_loaded, 'Twitter webpage is loaded successfully')
 
@@ -32,7 +31,6 @@ class Test(BaseTest):
                     'No error stating that the "connection is not secured" is displayed for twitter page')
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-        close_content_blocking_pop_up()
         tracker_site_loaded = exists(tracker_site_pattern)
         assert_true(self, tracker_site_loaded, '"It\'s a tracker" site loaded')
 

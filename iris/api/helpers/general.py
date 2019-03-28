@@ -71,10 +71,13 @@ def change_preference(pref_name, value):
     """
     try:
         new_tab()
-        select_location_bar()
-        paste('about:config')
-        type(Key.ENTER)
         time.sleep(Settings.UI_DELAY)
+        select_location_bar()
+        time.sleep(Settings.UI_DELAY)
+        paste('about:config')
+        time.sleep(Settings.UI_DELAY)
+        type(Key.ENTER)
+        time.sleep(Settings.UI_DELAY_LONG)
 
         type(Key.SPACE)
         time.sleep(Settings.UI_DELAY)
@@ -295,9 +298,13 @@ def confirm_firefox_launch(image=None):
 
 def copy_to_clipboard():
     """Return the value copied to clipboard."""
+    time.sleep(DEFAULT_UI_DELAY)
     edit_select_all()
+    time.sleep(DEFAULT_UI_DELAY)
     edit_copy()
+    time.sleep(DEFAULT_UI_DELAY)
     value = Env.get_clipboard().strip()
+    time.sleep(DEFAULT_UI_DELAY)
     logger.debug("Copied to clipboard: %s" % value)
     return value
 
@@ -932,6 +939,24 @@ def open_about_firefox():
             type(Key.RIGHT)
         type(Key.UP)
         type(Key.ENTER)
+
+
+def open_bookmarks_toolbar():
+    """ Open the Bookmarks Toolbar using the context menu from the navigation bar """
+
+    home_button = NavBar.HOME_BUTTON
+    w, h = home_button.get_size()
+    horizontal_offset = w * 1.7
+    navbar_context_menu = home_button.target_offset(horizontal_offset, 0)
+
+    try:
+        right_click(navbar_context_menu)
+        click(NavBar.ContextMenu.BOOKMARKS_TOOLBAR)
+        logger.debug('Click is performed successfully on Bookmarks Toolbar option from navigation bar context menu.')
+    except FindError:
+        raise APIHelperError('Could not open the Bookmarks Toolbar using context menu from the navigation bar.')
+
+    restore_firefox_focus()
 
 
 def open_library_menu(option):

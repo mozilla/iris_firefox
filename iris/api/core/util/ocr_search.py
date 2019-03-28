@@ -160,7 +160,7 @@ class OCRSearch:
                         screen_data['height'] = screen_data['height'] / dpi_factor / scale_divider
                         final_data.append(screen_data)
                     else:
-                        if scale_divider > 1:
+                        if scale_divider >= 1:
                             screen_data = copy.deepcopy(virtual_data)
                             screen_data['x'] = screen_data['x'] / scale_divider
                             screen_data['y'] = screen_data['y'] / scale_divider

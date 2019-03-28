@@ -18,24 +18,15 @@ class Test(BaseTest):
     def run(self):
         folder_in_bookmarks_pattern = Pattern('folder_in_bookmarks_toolbar.png')
         mozilla_bookmark_icon_pattern = Pattern('mozilla_bookmark_icon.png')
-        context_menu_bookmarks_toolbar_pattern = Pattern('bookmarks_toolbar_navbar_context_menu.png')
 
         home_button_displayed = exists(NavBar.HOME_BUTTON, DEFAULT_UI_DELAY)
         assert_true(self, home_button_displayed, 'Home button displayed')
 
-        #  open Bookmark toolbar from bookmark section of Firefox menu
-        home_button = NavBar.HOME_BUTTON
-        w, h = home_button.get_size()
-        horizontal_offset = w * 1.7
-        navbar_context_menu = home_button.target_offset(horizontal_offset, 0)
+        open_bookmarks_toolbar()
 
-        right_click(navbar_context_menu)
-
-        context_menu_bookmarks_toolbar = exists(context_menu_bookmarks_toolbar_pattern)
-        assert_true(self, context_menu_bookmarks_toolbar, 'Context menu bookmarks toolbar option exists')
-        click(context_menu_bookmarks_toolbar_pattern)
-
-        mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern)
+        home_button_location = find(NavBar.HOME_BUTTON)
+        proper_mozilla_bookmark_icon_region = Region(0,home_button_location.y, SCREEN_WIDTH, SCREEN_HEIGHT / 5)
+        mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern, in_region=proper_mozilla_bookmark_icon_region)
         assert_true(self, mozilla_bookmark_icon, 'Mozilla bookmark icon displayed')
 
         right_click(mozilla_bookmark_icon_pattern)
