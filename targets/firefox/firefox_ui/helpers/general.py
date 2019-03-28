@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 import time
 
 from src.core.api.finder.finder import wait, exists, find
@@ -21,10 +26,13 @@ from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close
 from src.core.api.settings import Settings
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.firefox.firefox_ui.nav_bar import NavBar
+from src.core.api.os_helpers import OSHelper, OSPlatform
+from targets.firefox.parse_args import parse_args
 
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
+args = parse_args()
 
 
 def change_preference(pref_name, value):
@@ -137,7 +145,7 @@ def confirm_firefox_launch(image=None):
     :return: None.
     """
     if image is None:
-        image = NavBar.HOME_BUTTON
+        image = Pattern('iris_logo.png')
 
     try:
         wait(image, 60)
@@ -238,6 +246,7 @@ def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, del
 
     return pattern_found
 
+
 def key_to_one_off_search(highlighted_pattern, direction='left'):
     """Iterate through the one of search engines list until the given one is
     highlighted.
@@ -307,3 +316,33 @@ def open_library_menu(option):
                 'Can\'t find the option in the page, aborting test.')
 
 
+def open_about_firefox():
+    """Open the 'About Firefox' window."""
+    if OSHelper.get_os() == OSPlatform.MAC:
+        type(Key.F3, modifier=KeyModifier.CTRL)
+        type(Key.F2, modifier=KeyModifier.CTRL)
+
+        time.sleep(0.5)
+        type(Key.RIGHT)
+        type(Key.DOWN)
+        type(Key.DOWN)
+        type(Key.ENTER)
+
+    elif OSHelper.get_os() == OSPlatform.WINDOWS:
+        type(Key.ALT)
+        if args.locale != 'ar':
+            type(Key.LEFT)
+        else:
+            type(Key.RIGHT)
+        type(Key.ENTER)
+        type(Key.UP)
+        type(Key.ENTER)
+
+    else:
+        type(Key.F10)
+        if args.locale != 'ar':
+            type(Key.LEFT)
+        else:
+            type(Key.RIGHT)
+        type(Key.UP)
+        type(Key.ENTER)

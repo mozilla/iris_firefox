@@ -26,14 +26,12 @@ from funcy import compose
 from targets.firefox.firefox_ui.helpers.general import *
 
 
-
 mylogger = logging.getLogger(__name__)
 
 
-class BaseTest():
+class BaseTest:
 
     def setup(self):
-        "setup method for each test instance"
         return
 
     @classmethod
@@ -46,7 +44,6 @@ class BaseTest():
 
     def setup_method(self, method):
         return
-
 
     def teardown_method(self, method):
         return

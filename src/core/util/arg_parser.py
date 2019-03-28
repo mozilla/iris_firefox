@@ -81,6 +81,17 @@ def parse_args():
     parser.add_argument('-s', '--save',
                         help='Save profiles on disk',
                         action='store_true')
+    parser.add_argument('-f', '--firefox',
+                        help='Firefox version to test',
+                        action='store',
+                        default='latest-beta')
+    parser.add_argument('-u', '--update_channel',
+                        help='Update channel profile preference',
+                        action='store')
+    parser.add_argument('-l', '--locale',
+                        help='Locale to use for Firefox',
+                        action='store',
+                        default='en-US')
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,

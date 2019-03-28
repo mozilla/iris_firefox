@@ -71,6 +71,9 @@ def parse_args():
                         help='Locale to use for Firefox',
                         action='store',
                         default='en-US')
+    parser.add_argument('-u', '--update_channel',
+                        help='Update channel profile preference',
+                        action='store')
     parser.add_argument('-m', '--mouse',
                         help='Change mouse speed',
                         type=float,
