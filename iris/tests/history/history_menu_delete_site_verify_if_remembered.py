@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        show_all_history = History.HistoryMenu.SHOW_ALL_HISTORY
         local_server_autocomplete = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
         pocket_autocomplete = Pattern('pocket_autocomplete.png')
@@ -35,6 +34,8 @@ class Test(BaseTest):
         expected_1 = exists(pocket_autocomplete, 10)
         assert_true(self, expected_1, 'Pocket page is auto-completed successfully.')
 
+        click(NavBar.FORWARD_BUTTON.target_offset(-50, 0))
+
         select_location_bar()
         paste('127.0.0.1:2000/m')
         expected_2 = exists(mozilla_autocomplete, 10)
@@ -44,9 +45,8 @@ class Test(BaseTest):
         new_tab()
 
         # Open History and check if is populated with Mozilla page.
-        open_library_menu('History')
+        open_history_library_window()
 
-        click(show_all_history)
         expected_3 = exists(mozilla_bookmark_focus, 10)
         assert_true(self, expected_3, 'Mozilla page is displayed in the History list successfully.')
 

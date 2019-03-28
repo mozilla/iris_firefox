@@ -33,10 +33,17 @@ class Test(BaseTest):
         saved_addresses_button_pattern = Pattern('saved_addresses_button.png').similar(.6)
         name_in_saved_addresses_pattern = Pattern('name_in_saved_addresses.png')
 
+        change_preference('browser.search.region', 'US')
+
+        restart_firefox(self, self.browser.path, self.profile_path, LocalWeb.FIREFOX_TEST_SITE,
+                        image=LocalWeb.FIREFOX_LOGO)
+
         new_private_window()
+
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
+
         page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern) \
-                                               and exists(submit_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+                                               and exists(submit_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, page_opened_in_private_browsing_mode, 'Test page is opened in a new private window.')
 
         input_data = {
@@ -69,16 +76,21 @@ class Test(BaseTest):
         assert_false(self, private_browsing_image_exists, 'Normal browsing session is displayed')
 
         navigate('about:preferences#privacy')
+
         find_in_prefs_field_exists = exists(find_in_prefs_field_pattern)
         assert_true(self, find_in_prefs_field_exists, 'Preferences search field is available')
+
         click(find_in_prefs_field_pattern)
 
         type('Autofill')
+
         saved_addresses_button_exists = exists(saved_addresses_button_pattern)
         assert_true(self, saved_addresses_button_exists, '"Saved addresses" button is available')
+
         click(saved_addresses_button_pattern)
 
         saved_address_exists = exists(name_in_saved_addresses_pattern)
         assert_false(self, saved_address_exists, 'The submitted information in the private session '
                                                  'is not displayed in the saved Addresses panel')
+
         close_window()
