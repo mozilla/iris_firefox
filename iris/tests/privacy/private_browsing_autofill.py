@@ -24,6 +24,8 @@ class Test(BaseTest):
         name_field_pattern = Pattern('name_field.png').similar(.6)
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         saved_profiles_pattern = Pattern('saved_profiles.png').similar(.6)
+        if Settings.is_mac():
+            additional_saved_profiles_pattern = Pattern('additional_saved_profiles.png').similar(.6)
 
         find_in_preferences_field_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
@@ -32,6 +34,7 @@ class Test(BaseTest):
         change_preference('browser.search.region', 'US')
 
         navigate('about:preferences#privacy')
+
         search_field_exists = exists(find_in_preferences_field_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, search_field_exists, 'Preferences page is opened')
 
@@ -66,6 +69,7 @@ class Test(BaseTest):
         type('\n')
 
         restore_firefox_focus()
+
         click(name_field_pattern)
 
         for fields in range(9):
@@ -75,10 +79,17 @@ class Test(BaseTest):
         type('\n')
 
         click(name_field_pattern)
+
         double_click(name_field_pattern)
 
-        saved_profiles_exists = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, saved_profiles_exists, 'The Name from the saved profile is displayed in the drop down')
+        if Settings.is_mac():
+            saved_profiles_exists = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            additional_saved_profiles_exists = exists(additional_saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, saved_profiles_exists or additional_saved_profiles_exists,
+                        'The Name from the saved profile is displayed in the drop down')
+        else:
+            saved_profiles_exists = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, saved_profiles_exists, 'The Name from the saved profile is displayed in the drop down')
 
         new_private_window()
 
@@ -91,10 +102,19 @@ class Test(BaseTest):
         assert_true(self, name_field_exists_private, 'The basic forms Autofill demo is opened')
 
         click(name_field_pattern)
+
         double_click(name_field_pattern)
 
-        saved_profiles_exists_private = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, saved_profiles_exists_private, 'The Name from the saved profile is displayed in the drop down'
-                                                         'in Private browsing')
+        if Settings.is_mac():
+            saved_profiles_exists_private = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            additional_saved_profiles_exists_private = exists(additional_saved_profiles_pattern,
+                                                              DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, saved_profiles_exists_private or additional_saved_profiles_exists_private,
+                        'The Name from the saved profile is displayed in the drop down'
+                        'in Private browsing')
+        else:
+            saved_profiles_exists_private = exists(saved_profiles_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, saved_profiles_exists_private, 'The Name from the saved profile is displayed in the drop '
+                                                             'down in Private browsing')
 
         close_window()
