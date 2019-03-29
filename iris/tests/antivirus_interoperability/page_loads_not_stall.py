@@ -23,8 +23,6 @@ class Test(BaseTest):
         site_logo_exists = exists(site_logo_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, site_logo_exists, 'Logo is loaded properly')
 
-        close_content_blocking_pop_up()
-
         site_content_exists = exists(site_content_pattern)
         assert_true(self, site_content_exists, 'Page loads properly, there\'s no obvious stall')
 

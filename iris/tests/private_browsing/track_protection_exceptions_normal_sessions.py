@@ -55,7 +55,6 @@ class Test(BaseTest):
                     'The "Strict" content blocking option was successfully saved')
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-        close_content_blocking_pop_up()
         firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern)
         assert_true(self, firefox_tracker_site_logo_displayed, 'The website is successfully displayed.')
 
