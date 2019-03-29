@@ -46,11 +46,11 @@ def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_a
             file_located = exists(filename_pattern)
 
             if file_located:
-                logger.debug('File {} in directory {} is available'.format(filename_pattern, directory))
+                logger.debug('File {} in directory {} is available.'.format(filename_pattern, directory))
                 break
             else:
                 if attempt == max_num_of_attempts:
-                    logger.debug('File {} is not available after attempt {}'.format(filename_pattern, attempt))
+                    logger.debug('File {} is not available after {} attempt(s).'.format(filename_pattern, attempt))
                     raise Exception
 
                 time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
