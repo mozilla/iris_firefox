@@ -10,7 +10,6 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description="This test case navigates through the awesomebar suggestions/one-offs/settings gear using the ' \
                     'right/left keys",
-        locale='[en-US]',
         test_case_id="108277",
         test_suite_id="1902",
         locales=['en-US']
