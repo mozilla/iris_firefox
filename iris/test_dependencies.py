@@ -25,6 +25,7 @@ from iris.api.core.firefox_ui.utils import *
 from iris.api.helpers.customize_utils import *
 from iris.api.helpers.download_manager_utils import *
 from iris.api.helpers.history_utils import *
+from iris.api.helpers.file_picker_utils import *
 
 from iris.api.core.mouse import scroll
 
