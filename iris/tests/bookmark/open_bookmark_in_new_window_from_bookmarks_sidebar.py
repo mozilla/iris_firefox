@@ -24,34 +24,34 @@ class Test(BaseTest):
         open_in_new_window_option_pattern = Pattern('open_in_new_window.png')
 
         if Settings.is_mac():
-            other_bookmarks_pattern = Pattern('other_bookmarks.png')
+            other_bookmarks_pattern = Pattern('other_bookmarks_from_sidebar.png')
         else:
             other_bookmarks_pattern = Library.OTHER_BOOKMARKS
 
         bookmarks_sidebar('open')
 
-        bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_header_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_header_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_sidebar_menu_exists, 'Bookmarks Sidebar is correctly displayed.')
 
-        other_bookmarks_exists = exists(other_bookmarks_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        other_bookmarks_exists = exists(other_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, other_bookmarks_exists, 'Other bookmarks exists')
 
         click(other_bookmarks_pattern)
 
-        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_sidebar_logo_exists, 'Firefox bookmark exists')
 
         right_click(firefox_sidebar_logo_pattern)
 
-        open_option_exists = exists(open_in_new_window_option_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        open_option_exists = exists(open_in_new_window_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, open_option_exists, 'Open in New Window option exists')
 
         click(open_in_new_window_option_pattern)
 
-        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, DEFAULT_SITE_LOAD_TIMEOUT)
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_full_logo_exists, 'Firefox content exists')
 
         close_window()
 
-        iris_logo_exists = exists(LocalWeb.IRIS_LOGO, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        iris_logo_exists = exists(LocalWeb.IRIS_LOGO, Settings.FIREFOX_TIMEOUT)
         assert_true(self, iris_logo_exists, 'The page is correctly opened in a new window.')
