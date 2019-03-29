@@ -247,6 +247,22 @@ def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, del
     return pattern_found
 
 
+def select_location_bar_option(option_number):
+    """Select option from the location bar menu.
+
+    :param option_number: Option number.
+    :return: None.
+    """
+    if OSHelper.get_os() == OSPlatform.WINDOWS:
+        for i in range(option_number + 1):
+            type(Key.DOWN)
+        type(Key.ENTER)
+    else:
+        for i in range(option_number - 1):
+            type(Key.DOWN)
+        type(Key.ENTER)
+
+
 def key_to_one_off_search(highlighted_pattern, direction='left'):
     """Iterate through the one of search engines list until the given one is
     highlighted.
@@ -346,3 +362,15 @@ def open_about_firefox():
             type(Key.RIGHT)
         type(Key.UP)
         type(Key.ENTER)
+
+
+class RightClickLocationBar(object):
+    """Class with location bar members."""
+
+    UNDO = 0
+    CUT = 1
+    COPY = 2
+    PASTE = 3
+    PASTE_GO = 4
+    DELETE = 5
+    SELECT_ALL = 6
