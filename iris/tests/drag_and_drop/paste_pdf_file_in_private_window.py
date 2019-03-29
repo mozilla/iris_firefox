@@ -30,7 +30,7 @@ class Test(BaseTest):
 
         new_private_window()
 
-        private_window_opened = exists(PrivateWindow.private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        private_window_opened = exists(PrivateWindow.private_window_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, private_window_opened, 'A new private window is successfully loaded.')
 
         navigate('https://mystor.github.io/dragndrop/')
