@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '165093'
         self.test_suite_id = '102'
         self.locales = ['en-US']
-        # self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
+        self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
 
     def run(self):
         paste_pdf_button_pattern = Pattern('paste_pdf_file_button.png')
@@ -25,8 +25,7 @@ class Test(BaseTest):
         pdf_file_pattern = Pattern('pdf_file.png')
         jpg_file_pattern = Pattern('jpg_file.png')
 
-        DRAG_AND_DROP_DURATION = 3
-        PASTE_DELAY = 0.5
+        drag_and_drop_duration = 3
         folderpath = self.get_asset_path('')
 
         new_private_window()
@@ -42,14 +41,11 @@ class Test(BaseTest):
         click(paste_pdf_button_pattern)
 
         paste_pdf_option_selected = exists(paste_pdf_file_selected_button_pattern)
-        assert_true(self, paste_pdf_option_selected,
-                    'The paste-pdf-file changed color to red which indicates that it '
-                    'has been selected.')
+        assert_true(self, paste_pdf_option_selected, 'The paste-pdf-file changed color to red which indicates that it '
+                                                     'has been selected.')
 
-        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
-                                                              1)
-        assert_true(self, matching_block_available,
-                    'The drop result verification area is displayed on the page')
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20, 1)
+        assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
 
         not_matching_message_location = find(not_matching_message_pattern)
         not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
@@ -60,102 +56,31 @@ class Test(BaseTest):
         matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
                                  width=matching_message_width + 10, height=matching_message_height * 2)
 
-        if Settings.is_windows():
-            open_file_picker()
-            finder_window_loaded = exists(AuxiliaryWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
-
-            paste(folderpath)
-            type(Key.ENTER)
-
-        elif Settings.is_mac():
-            open_directory(folderpath)
-            finder_window_loaded = exists(MainWindow.MAIN_WINDOW_CONTROLS)
-            assert_true(self, finder_window_loaded, 'Finder window successfully loaded')
-
-            # open folder in Finder
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)
-            paste(folderpath)
-            type(Key.ENTER)
-            type('2', KeyModifier.CMD)  # change view of finder
-
-            finder_window_location = find(MainWindow.MAIN_WINDOW_CONTROLS)
-            finder_window_before = Location(finder_window_location.x + 10, finder_window_location.y)
-            finder_window_after = Location(SCREEN_WIDTH / 2, finder_window_location.y)
-
-            drag_drop(finder_window_before, finder_window_after)
-
-        elif Settings.is_linux():
-            open_directory(folderpath)
-
-            finder_window_loaded = exists(MainWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
-
-            finder_window_location = find(MainWindow.CLOSE_BUTTON)
-            finder_window_after = Location(SCREEN_WIDTH / 2, finder_window_location.y)
-
-            type(' ', KeyModifier.ALT, PASTE_DELAY)
-            type('m', interval=PASTE_DELAY)
-
-            mouse_move(finder_window_after)
-            click(finder_window_after)
-
-        test_file_pdf_located = exists(pdf_file_pattern)
-        assert_true(self, test_file_pdf_located, 'PDF test file is available')
-
-        click(pdf_file_pattern)
-
-        edit_copy()
-        if Settings.is_windows():
-            type(Key.ESC, interval=1)
-        elif Settings.is_linux():
-            change_window_view()
+        select_file_in_folder(folderpath, pdf_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+        click(drop_here_pattern, drag_and_drop_duration)
 
         edit_paste()
 
-        # matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
-        # assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
-        #                                               'result is identical to result. ')
+        matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
+        assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
+                                                      'result is identical to result. ')
 
-        if Settings.is_windows():
-            open_file_picker()
-            finder_window_loaded = exists(AuxiliaryWindow.CLOSE_BUTTON)
-            assert_true(self, finder_window_loaded, 'Explorer window successfully loaded')
-
-            paste(folderpath)
-            type(Key.ENTER)
-
-        else:
-            change_window_view()
-
-        test_file_jpg_located = exists(jpg_file_pattern)
-        assert_true(self, test_file_jpg_located, 'JPG test file is available')
-
-        click(jpg_file_pattern)
-
-        edit_copy()
-        if Settings.is_windows():
-            type(Key.ESC, interval=1)
-        elif Settings.is_linux():
-            type('q', KeyModifier.CTRL)
-        elif Settings.is_mac():
-            type('w', KeyModifier.CMD)
+        select_file_in_folder(folderpath, jpg_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+        click(drop_here_pattern, drag_and_drop_duration)
 
         edit_paste()
 
-        # not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
-        # assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
-        #                                                   'expected result is different from result.')
+        not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
+        assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
+                                                          'expected result is different from result.')
 
         type(Key.ESC)
 
