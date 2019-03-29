@@ -141,6 +141,10 @@ def drag_drop(drag_from: Pattern or str, drop_to: Pattern or str, region: Rectan
 
     Mouse().drag_and_drop(loc_from, loc_to, duration)
 
+def mouse_reset():
+    """Reset Mouse to coordinates to top left corner."""
+
+    Mouse.move(0,0)
 
 def scroll_down(dy: int = None, iterations: int = 1):
     """Scroll down mouse event."""

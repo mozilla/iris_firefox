@@ -17,6 +17,8 @@ from mozinstall import install, get_binary
 from mozrunner import FirefoxRunner, errors as run_errors
 from mozprofile import Profile as MozProfile
 
+from src.core.api.mouse import mouse
+from src.core.api.mouse.mouse import mouse_reset
 from src.core.api.os_helpers import OSHelper
 from src.core.util.path_manager import PathManager
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
@@ -253,7 +255,10 @@ class FXRunner:
             raise APIHelperError('Error creating Firefox runner.')
 
     def start(self, image=None, maximize=True):
+
         self.runner.start()
+        if OSHelper.is_mac():
+            mouse_reset()
         confirm_firefox_launch(image)
         if maximize:
             maximize_window()
