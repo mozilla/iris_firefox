@@ -38,8 +38,6 @@ class Test(BaseTest):
         cnn_page_opened = exists(LocalWeb.CNN_LOGO, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_page_opened, 'The CNN site successfully opened')
 
-        close_content_blocking_pop_up()
-
         history_sidebar()
 
         history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
@@ -62,13 +60,6 @@ class Test(BaseTest):
 
         history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
         assert_true(self, history_updated_wiki, 'The Wikipedia site is added to history')
-
-        location_for_click = find(NavBar.HOME_BUTTON).right(100)
-
-        right_click(location_for_click)
-        toolbar_bookmarks_button_displayed = exists(toolbar_bookmarks_toolbar_pattern)
-        assert_true(self, toolbar_bookmarks_button_displayed, 'Bookmarks toolbar button displayed')
-        click(toolbar_bookmarks_toolbar_pattern)
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)

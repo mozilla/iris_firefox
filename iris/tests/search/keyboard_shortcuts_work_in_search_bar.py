@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.meta = 'All the keyboard shortcuts available for the Search Bar are working properly.'
         self.test_case_id = '4278'
         self.test_suite_id = '83'
+        self.blocked_by = {'id': '1537117', 'platform': Platform.ALL}
         self.locale = ['en-US']
 
     def run(self):
@@ -20,7 +21,6 @@ class Test(BaseTest):
         search_using_google_pattern = Pattern('search_using_google.png')
         duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png')
         search_duckduckgo_pattern = Pattern('search_duckduckgo.png')
-        mozilla_text_highlighted_pattern = Pattern('mozilla_text_highlighted.png')
         bing_search_engine_pattern = Pattern('bing_search_engine.png')
         google_search_engine_pattern = Pattern('google_search_engine.png')
 
@@ -36,8 +36,7 @@ class Test(BaseTest):
         assert_true(self, expected, '\'Search using Google\' is shown as tooltip.')
 
         # Start typing inside the Search Bar.
-        type('moz')
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        type('mozilla')
 
         # Hover the mouse over the one-click search engines.
         expected = exists(duckduckgo_search_bar_pattern, 10)
@@ -49,16 +48,16 @@ class Test(BaseTest):
 
         # While the cursor is on the search toolbar, select the arrow DOWN and then the arrow UP keys.
         type(Key.DOWN)
-        expected = exists(mozilla_text_highlighted_pattern, 10)
-        assert_true(self, expected, 'Pressing the arrow DOWN key will slide in the search menu.')
+        searchbar_text = copy_to_clipboard()
+        assert_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow DOWN key will slide in the search menu.')
 
         type(Key.DOWN)
-        expected = exists(mozilla_text_highlighted_pattern, 3)
-        assert_false(self, expected, 'Pressing the arrow DOWN key will slide in the search menu.')
+        searchbar_text = copy_to_clipboard()
+        assert_not_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow DOWN key will slide in the search menu.')
 
         type(Key.UP)
-        expected = exists(mozilla_text_highlighted_pattern, 10)
-        assert_true(self, expected, 'Pressing the arrow UP key will slide in the search menu.')
+        searchbar_text = copy_to_clipboard()
+        assert_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow UP key will slide in the search menu.')
 
         # Use the tab key to navigate.
         select_search_bar()
