@@ -25,8 +25,7 @@ class Test(BaseTest):
         txt_file_pattern = Pattern('txt_file.png')
         jpg_file_pattern = Pattern('jpg_file.png')
 
-        DRAG_AND_DROP_DURATION = 3
-        PASTE_DELAY = 0.5
+        drag_and_drop_duration = 3
         folderpath = self.get_asset_path('')
 
         new_private_window()
@@ -57,38 +56,12 @@ class Test(BaseTest):
         matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
                                  width=matching_message_width + 10, height=matching_message_height * 2)
 
-        open_directory(folderpath)
-
-        if Settings.is_mac():
-            for i in range(3):
-                time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
-                type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
-                test_file_jpg_located = exists(jpg_file_pattern)
-                if test_file_jpg_located:
-                    assert_true(self, test_file_jpg_located, 'JPG test file is available')
-                    break
-                elif i == 2 and not test_file_jpg_located:
-                    assert_true(self, test_file_jpg_located, 'JPG test file is available')
-        else:
-            test_file_jpg_located = exists(jpg_file_pattern)
-            assert_true(self, test_file_jpg_located, 'JPG test file is available')
-
-        click(txt_file_pattern)
-
-        edit_copy()
-
-        # closing File picker (Explorer) window
-        if Settings.is_windows():
-            type(Key.F4, KeyModifier.ALT)
-        elif Settings.is_linux():
-            type('q', KeyModifier.CTRL)
-        elif Settings.is_mac():
-            type('w', KeyModifier.CMD+KeyModifier.ALT)
+        select_file_in_folder(folderpath, txt_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+        click(drop_here_pattern, drag_and_drop_duration)
 
         edit_paste()
 
@@ -96,38 +69,12 @@ class Test(BaseTest):
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected'
                                                       'result is identical to result. ')
 
-        open_directory(folderpath)
-
-        if Settings.is_mac():
-            for i in range(3):
-                time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
-                type('2', KeyModifier.CMD, PASTE_DELAY)  # change view of finder
-                test_file_jpg_located = exists(jpg_file_pattern)
-                if test_file_jpg_located:
-                    assert_true(self, test_file_jpg_located, 'JPG test file is available')
-                    break
-                elif i == 2 and not test_file_jpg_located:
-                    assert_true(self, test_file_jpg_located, 'JPG test file is available')
-        else:
-            test_file_jpg_located = exists(jpg_file_pattern)
-            assert_true(self, test_file_jpg_located, 'JPG test file is available')
-
-        click(jpg_file_pattern)
-
-        edit_copy()
-
-        # closing File picker (Explorer) window
-        if Settings.is_windows():
-            type(Key.F4, KeyModifier.ALT)
-        elif Settings.is_linux():
-            type('q', KeyModifier.CTRL)
-        elif Settings.is_mac():
-            type('w', KeyModifier.CMD+KeyModifier.ALT)
+        select_file_in_folder(folderpath, jpg_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+        click(drop_here_pattern, drag_and_drop_duration)
 
         edit_paste()
 
