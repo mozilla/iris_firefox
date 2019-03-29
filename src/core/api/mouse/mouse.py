@@ -9,6 +9,7 @@ from src.core.api.finder.image_search import image_find
 from src.core.api.finder.pattern import Pattern
 from src.core.api.mouse.mouse_controller import Mouse
 from src.core.api.rectangle import Rectangle
+import pyautogui
 
 try:
     from src.core.api.mouse.mouse_controller import Button
@@ -142,9 +143,9 @@ def drag_drop(drag_from: Pattern or str, drop_to: Pattern or str, region: Rectan
     Mouse().drag_and_drop(loc_from, loc_to, duration)
 
 def mouse_reset():
-    """Reset Mouse to coordinates to top left corner."""
+    """Reset Mouse coordinates to top left corner."""
 
-    Mouse.move(0,0)
+    pyautogui.moveTo(0,0)
 
 def scroll_down(dy: int = None, iterations: int = 1):
     """Scroll down mouse event."""
