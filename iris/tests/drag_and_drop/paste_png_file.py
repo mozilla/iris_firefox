@@ -69,7 +69,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, DEFAULT_SHORT_FIREFOX_TIMEOUT)
+        click(drop_here_pattern, drag_and_drop_duration)
 
         edit_paste()
 
