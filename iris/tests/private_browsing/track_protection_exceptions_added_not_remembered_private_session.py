@@ -29,7 +29,7 @@ class Test(BaseTest):
             Pattern('simulated_first_party_tracker_correctly_blocked_text.png')
         dnt_signal_correctly_sent_pattern = Pattern('dnt_signal_correctly_sent_text.png')
         open_trackers_list_pattern = Pattern('open_trackers_list.png')
-        tracker_site_in_list_pattern = Pattern('tracker_site_in_list.png')
+        tracker_site_in_list_pattern = Pattern('tracker_testsite_in_list.png')
 
         new_private_window()
         private_window_opened = exists(PrivateWindow.private_window_pattern, DEFAULT_FIREFOX_TIMEOUT)

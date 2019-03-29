@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'This test case tests the smart region feature.'
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         url = LocalWeb.FOCUS_TEST_SITE

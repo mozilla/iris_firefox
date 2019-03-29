@@ -10,8 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Check "Find Again" works on a new tab/window ' \
-                    '[NOTE: Test fails on Step 7 because find toolbar does not contain any text in a new window]'
+        self.meta = 'Check "Find Again" works on a new tab/window '
         self.test_case_id = '127263'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
