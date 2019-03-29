@@ -23,7 +23,7 @@ class Test(BaseTest):
         reordered_sidebar_bookmarks_pattern = Pattern('sidebar_bookmarks_reordered.png')
         pocket_bookmark_pattern = Pattern('pocket_sidebar_bookmark.png')
         mozilla_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
-        other_bookmarks_pattern = Pattern('other_bookmarks.png')
+        other_bookmarks_pattern = Pattern('other_bookmarks_sidebar.png')
 
         bookmarks_sidebar("open")
 
