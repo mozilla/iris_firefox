@@ -51,7 +51,7 @@ def is_blocked(id):
     """Checks if a Github issue/Bugzilla bug is blocked or not."""
     try:
         if 'issue_' in id:
-            bug = get_github_issue(id).state
+            bug = get_github_issue(id)
             if bug is None:
                 return True
             if bug.state == 'closed':
