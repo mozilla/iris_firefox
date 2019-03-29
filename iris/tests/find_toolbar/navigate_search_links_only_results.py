@@ -10,8 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Navigate through Search Links only results ' \
-                    '[NOTE: Fails on step 3 because pink background does not appear]'
+        self.meta = 'Navigate through Search Links only results '
         self.test_case_id = '127253'
         self.test_suite_id = '2085'
         self.locales = ['en-US']

@@ -58,7 +58,7 @@ class Test(BaseTest):
         expected = exists(about_preferences_search_page_pattern, 10)
         assert_true(self, expected, 'The \'about:preferences#search\' page successfully loaded.')
 
-        expected = exists(show_search_suggestions_in_address_bar_results_checked_pattern.similar(0.9), 10)
+        expected = exists(show_search_suggestions_in_address_bar_results_checked_pattern, 10)
         assert_true(self, expected, 'Checkbox displayed in front of the \'Show search suggestions in address bar '
                                     'results\' text is checked by default.')
 

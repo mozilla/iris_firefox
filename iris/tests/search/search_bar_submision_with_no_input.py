@@ -25,7 +25,6 @@ class Test(BaseTest):
         assert_true(self, expected, 'Option found in the page.')
 
         click(add_search_bar_in_toolbar_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
 
         expected = exists(search_bar_pattern, 10)
         assert_true(self, expected, 'Search bar successfully enabled in the page.')
@@ -34,6 +33,5 @@ class Test(BaseTest):
         time.sleep(DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
-        time.sleep(DEFAULT_UI_DELAY)
         expected = exists(google_search_no_input_pattern, 10)
         assert_true(self, expected, 'The search engine page is opened with no searches performed.')

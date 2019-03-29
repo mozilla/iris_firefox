@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '99475'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def setup(self):
         """Test case setup
