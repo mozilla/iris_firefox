@@ -21,7 +21,7 @@ class Test(BaseTest):
         modified_status_pattern = Pattern('modified_status.png')
         true_value_highlight_pattern = Pattern('true_value_highlight.png')
         false_value_no_highlight_pattern = Pattern('false_value_no_highlight.png')
-        accept_risk_pattern = Pattern('accept_risk.png')
+        accept_risk_pattern = Pattern('accept_risk.png').similar(0.7)
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
 
