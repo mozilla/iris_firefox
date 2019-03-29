@@ -15,6 +15,12 @@ class Test(BaseTest):
         self.test_suite_id = "3063"
         self.locale = ["en-US"]
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'browser.download.dir': IrisCore.get_downloads_dir()})
+        self.set_profile_pref({'browser.download.folderList': 2})
+        self.set_profile_pref({'browser.download.useDownloadDir': True})
+
     def run(self):
         url_classifier_title_pattern = Pattern('url_classifier_title.png')
         google4_row_pattern = Pattern('google4_row.png')
@@ -29,13 +35,14 @@ class Test(BaseTest):
 
         navigate('about:url-classifier')
 
-        url_classifier_page_opened = exists(url_classifier_title_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        url_classifier_page_opened = exists(url_classifier_title_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, url_classifier_page_opened, 'URL Classifier page is successfully opened')
 
         open_find()
+
         paste('Cache')
 
-        providers_displays = exists(google4_row_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        providers_displays = exists(google4_row_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, providers_displays, 'The providers are displayed')
 
         google4_row_location = find(google4_row_pattern)
@@ -46,27 +53,29 @@ class Test(BaseTest):
         google4_row_region = Region(google4_row_location.x, google4_row_location.y, SCREEN_WIDTH, google4_row_height)
         click(trigger_update_button_pattern, in_region=google4_row_region)
 
-        google4_success_status_displaying = exists(success_status_pattern, DEFAULT_FIREFOX_TIMEOUT,
+        google4_success_status_displaying = exists(success_status_pattern, Settings.FIREFOX_TIMEOUT,
                                                    in_region=google4_row_region)
         assert_true(self, google4_success_status_displaying, 'The last google4 update status is changed to success.')
 
         google_row_region = Region(google_row_location.x, google_row_location.y, SCREEN_WIDTH, google4_row_height)
+
         click(trigger_update_button_pattern, in_region=google_row_region)
 
-        google_success_status_displaying = exists(success_status_pattern, DEFAULT_FIREFOX_TIMEOUT,
+        google_success_status_displaying = exists(success_status_pattern, Settings.FIREFOX_TIMEOUT,
                                                   in_region=google_row_region)
         assert_false(self, google_success_status_displaying, 'Nothing changes in the google update status.')
 
         mozilla_row_region = Region(mozilla_row_location.x, mozilla_row_location.y, SCREEN_WIDTH, google4_row_height)
+
         click(trigger_update_button_pattern, in_region=mozilla_row_region)
 
-        mozilla_success_status_displaying = exists(success_status_pattern, DEFAULT_FIREFOX_TIMEOUT,
+        mozilla_success_status_displaying = exists(success_status_pattern, Settings.FIREFOX_TIMEOUT,
                                                    in_region=mozilla_row_region)
         assert_true(self, mozilla_success_status_displaying, 'The last mozilla update status is changed to success.')
 
         navigate('http://testsafebrowsing.appspot.com/')
 
-        test_page_opened = exists(desktop_download_warning_title_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        test_page_opened = exists(desktop_download_warning_title_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, test_page_opened, 'The \'testsafebrowsing\' page is properly loaded')
 
         desktop_download_warning_location = find(desktop_download_warning_title_pattern)
@@ -87,16 +96,20 @@ class Test(BaseTest):
 
         for download_tests in range(6):
             region_to_click = Region(first_test_label_location.x, coordinate_y, SCREEN_WIDTH, first_test_label_height)
+
             click(link_pattern, in_region=region_to_click)
 
             if Settings.is_windows():
-                download_dialog_opened = exists(save_file_button_pattern, DEFAULT_SYSTEM_DELAY)
+                download_dialog_opened = exists(save_file_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
                 assert_true(self, download_dialog_opened, 'Download dialog opened')
+
                 click(save_file_button_pattern)
             else:
-                download_dialog_opened = exists(DownloadDialog.OK_BUTTON, DEFAULT_SYSTEM_DELAY)
+                download_dialog_opened = exists(DownloadDialog.OK_BUTTON, Settings.SHORT_FIREFOX_TIMEOUT)
                 assert_true(self, download_dialog_opened, 'Download dialog opened')
+
                 click(DownloadDialog.OK_BUTTON)
+
             coordinate_y += first_test_label_height
             click(download_button)
 
@@ -105,3 +118,6 @@ class Test(BaseTest):
 
             download_completed = exists(DownloadManager.DownloadState.COMPLETED)
             assert_false(self, download_completed, 'File was not downloaded successfully')
+
+    def teardown(self):
+        downloads_cleanup()
