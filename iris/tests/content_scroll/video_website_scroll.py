@@ -28,10 +28,10 @@ class Test(BaseTest):
 
         navigate('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
-        youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, youtube_page_is_downloaded, 'Youtube is properly loaded')
 
-        speaker_icon_displayed = exists(speaker_icon_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        speaker_icon_displayed = exists(speaker_icon_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, speaker_icon_displayed, 'The video content is playing')
 
         focusing_inside_the_page = find(NavBar.HOME_BUTTON).offset(300, 300)
