@@ -63,6 +63,8 @@ def run(master_tests_list, test_list, browser):
             fx_args = ','.join(current.firefox_runner.command)
 
             try:
+                if Settings.is_windows():
+                    restore_firefox_focus()
                 confirm_firefox_launch()
                 if current.maximize_window:
                     maximize_window()
@@ -85,7 +87,8 @@ def run(master_tests_list, test_list, browser):
             try:
                 current.teardown()
             except (FindError, APIHelperError):
-                logger.info('Could not find the necessary patterns during cleanup on test case : %s - %s' % (index, current.meta))
+                logger.info('Could not find the necessary patterns during cleanup on test case : %s - %s' % (
+                    index, current.meta))
 
             close_firefox(current)
             print_results(module, current)
