@@ -25,7 +25,7 @@ class Test(BaseTest):
         mozilla_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         other_bookmarks_pattern = Pattern('other_bookmarks_sidebar.png')
 
-        bookmarks_sidebar("open")
+        bookmarks_sidebar('open')
 
         sidebar_opened = exists(other_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, sidebar_opened, '\'Bookmarks Sidebar\' is correctly displayed.')
