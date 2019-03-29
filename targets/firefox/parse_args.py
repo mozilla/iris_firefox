@@ -15,10 +15,6 @@ def get_target_args():
                         help='Firefox version to test',
                         action='store',
                         default='latest-beta')
-    parser.add_argument('-l', '--locale',
-                        help='Locale to use for Firefox',
-                        action='store',
-                        default='en-US')
     parser.add_argument('-u', '--update_channel',
                         help='Update channel profile preference',
                         action='store')
