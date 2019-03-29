@@ -53,5 +53,5 @@ class Test(BaseTest):
                                                                  ' by mouse scroll')
 
         top_of_the_page_destinated = scroll_until_pattern_found(youtube_autoplay_switch_pattern,
-                                                                scroll, (mouse_wheel_steps,))
+                                                                scroll, (mouse_wheel_steps,), 25)
         assert_true(self, top_of_the_page_destinated, 'Successfully scrolled to the top of the page by mouse scroll')
