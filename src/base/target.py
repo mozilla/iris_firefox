@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 target_args = ''
 try:
     module = importlib.import_module('targets.{}.parse_args'.format(core_args.application))
-    met = getattr(module, 'get_target_arg')
+    met = getattr(module, 'get_target_args')
     target_args = met()
 except (ImportError, AttributeError):
     logger.error('Could not retrieve arguments for {} application'.format(core_args.application))
