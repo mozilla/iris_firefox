@@ -42,14 +42,14 @@ def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_a
     open_directory(directory)
 
     try:
-        for attempt in range(0, max_num_of_attempts):
+        for attempt in range(1, max_num_of_attempts+1):
             file_located = exists(filename_pattern)
 
             if file_located:
                 logger.debug('File {} in directory {} is available'.format(filename_pattern, directory))
                 break
             else:
-                if attempt == max_num_of_attempts - 1:
+                if attempt == max_num_of_attempts:
                     logger.debug('File {} is not available after attempt {}'.format(filename_pattern, attempt))
                     raise Exception
 
@@ -62,7 +62,7 @@ def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_a
         file_option()
 
     except Exception:
-        raise APIHelperError('Could not find file in folder.')
+        raise APIHelperError('Could not find file {} in folder {}.'.format(filename_pattern, directory))
     finally:
         if Settings.is_windows():
             type('w', KeyModifier.CTRL)
