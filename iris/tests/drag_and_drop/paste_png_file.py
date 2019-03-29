@@ -15,24 +15,17 @@ class Test(BaseTest):
         self.test_suite_id = '102'
         self.locales = ['en-US']
         self.blocked_by = {'id': '1288773', 'platform': Platform.ALL}
-        #  File picker doesn't support copy/paste functionality on OSx and Linux
-        self.exclude = [Platform.MAC, Platform.LINUX]
 
     def run(self):
-        library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
-        library_import_restore_submenu_pattern = Library.ImportAndBackup.RESTORE
-        library_import_choose_file_submenu_pattern = Library.ImportAndBackup.Restore.CHOOSE_FILE
         paste_png_button_pattern = Pattern('paste_png_file_button.png')
         paste_png_file_selected_button_pattern = Pattern('paste_png_file_selected_button.png')
-        library_popup_pattern = Pattern('library_popup.png')
-        select_bookmark_popup_pattern = Pattern('select_bookmark_tab_popup.png')
         drop_here_pattern = Pattern('drop_here.png')
         not_matching_message_pattern = Pattern('not_matching_message.png')
         matching_message_pattern = Pattern('matching_message_precise.png')
         png_file_pattern = Pattern('png_file.png')
         txt_file_pattern = Pattern('txt_file.png')
 
-        DRAG_AND_DROP_DURATION = 3
+        drag_and_drop_duration = 3
         folderpath = self.get_asset_path('')
 
         navigate('https://mystor.github.io/dragndrop/')
@@ -59,75 +52,20 @@ class Test(BaseTest):
         matching_region = Region(x=not_matching_message_location.x, y=not_matching_message_location.y,
                                  width=matching_message_width + 10, height=matching_message_height * 2)
 
-        open_library()
-
-        # open and drag library window
-        library_popup_open = exists(library_import_backup_pattern.similar(0.6), DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, library_popup_open, 'Library popup window is correctly opened.')
-
-        library_popup_tab_before = find(library_popup_pattern)
-        library_title_width, library_title_height = library_popup_pattern.get_size()
-        library_tab_region_after = Region(x=SCREEN_WIDTH / 2 - library_title_width / 2,
-                                          y=library_popup_tab_before.y - library_title_height / 2,
-                                          width=library_title_width * 2, height=library_title_height * 3)
-        library_popup_tab_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
-
-        drag_drop(library_popup_tab_before, library_popup_tab_after, DRAG_AND_DROP_DURATION)
-
-        library_popup_dropped = exists(library_popup_pattern, in_region=library_tab_region_after)
-        assert_true(self, library_popup_dropped, 'Library popup dropped to right half of screen successfully')
-
-        click(library_import_backup_pattern)
-
-        restore_context_available = exists(library_import_restore_submenu_pattern)
-        assert_true(self, restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu '
-                                                     'available')
-
-        click(library_import_restore_submenu_pattern)
-
-        choose_file_available = exists(library_import_choose_file_submenu_pattern)
-        assert_true(self, choose_file_available, 'Choose file option from context menu available')
-
-        click(library_import_choose_file_submenu_pattern)
-
-        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
-
-        paste(folderpath)
-        type(Key.ENTER, interval=DEFAULT_UI_DELAY)
-
-        type('*')  # Show all files in Windows Explorer
-        type(Key.ENTER, interval=DEFAULT_UI_DELAY)
-
-        test_file_png_located = exists(png_file_pattern)
-        assert_true(self, test_file_png_located, 'PNG test file is available')
-
-        click(png_file_pattern)
-
-        edit_copy()
+        select_file_in_folder(folderpath, png_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
 
-        click(drop_here_pattern, DRAG_AND_DROP_DURATION)
+        click(drop_here_pattern, drag_and_drop_duration)
 
         edit_paste()
-
-        change_window_view()
-
-        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
                                                       'result is identical to result. ')
 
-        test_file_txt_located = exists(txt_file_pattern)
-        assert_true(self, test_file_txt_located, 'TXT test file is available')
-
-        click(txt_file_pattern)
-
-        edit_copy()
+        select_file_in_folder(folderpath, txt_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert_true(self, drop_here_available, '"Drop here" pattern available')
@@ -140,12 +78,6 @@ class Test(BaseTest):
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
                                                           'expected result is different from result.')
 
-        change_window_view()
-
-        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, select_bookmark_popup_available, '\'Select a bookmark backup\' window available')
-
         type(Key.ESC)
 
-        open_library()  # restore Library focus
         close_tab()
