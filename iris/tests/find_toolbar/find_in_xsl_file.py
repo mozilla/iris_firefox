@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '127274'
         self.test_suite_id = '2085'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         xls_first_occurrence_highlighted_pattern = Pattern('xls_first_occurrence_hl.png')

@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '101673'
         self.test_suite_id = '1956'
         self.locales = ['en-US']
-        self.exclude = Platform.ALL
+        self.enabled = False
 
     def run(self):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern

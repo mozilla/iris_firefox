@@ -10,31 +10,35 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = "Open Library from Bookmarks menu"
-        self.test_case_id = "163193"
-        self.test_suite_id = "2525"
-        self.locale = ["en-US"]
+        self.meta = 'Open the Library from the Bookmarks menu'
+        self.test_case_id = '165493'
+        self.test_suite_id = '2525'
+        self.locales = ['en-US']
+
+    def setup(self):
+        BaseTest.setup(self)
+        self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
-        if Settings.is_linux() or Settings.is_mac():
-            ff_menu_show_all_bookmarks_pattern = Pattern('ff_menu_show_all_bookmarks.png')
-        else:
-            ff_menu_show_all_bookmarks_pattern = Pattern('show_all_bookmarks_button.png')
+        show_all_bookmarks_button_pattern = Pattern('show_all_bookmarks_button.png')
 
-        open_firefox_menu()
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
+        click(NavBar.LIBRARY_MENU)
 
-        click(firefox_menu_bookmarks_pattern)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, bookmarks_menu_option_exists, 'The Bookmarks option exists')
 
-        ff_menu_show_all_bookmarks_exists = exists(ff_menu_show_all_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, ff_menu_show_all_bookmarks_exists, 'Firefox menu > Bookmarks > Show All Bookmarks exists')
+        click(LibraryMenu.BOOKMARKS_OPTION)
 
-        click(ff_menu_show_all_bookmarks_pattern)
+        show_all_bookmarks_button_exists = exists(show_all_bookmarks_button_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, show_all_bookmarks_button_exists, 'The Bookmarks menu is correctly displayed')
 
-        library_opened_from_ff_menu = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
-        assert_true(self, library_opened_from_ff_menu, 'Library opened from View History, saved bookmarks and more')
+        click(show_all_bookmarks_button_pattern)
 
-        close_window_control('auxiliary')
+        library_exists = exists(Library.TITLE, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, library_exists, 'The Library is opened')
+
+        click(Library.TITLE)
+        close_tab()

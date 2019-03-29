@@ -17,6 +17,11 @@ class LocalWeb(object):
     BLANK_PAGE = 'http://%s:%s/blank.htm' % (_ip_host, _port)
     BLANK_PAGE_2 = 'http://%s:%s/blank.htm' % (_domain_host, _port)
 
+    """Iris Core elements"""
+    IRIS_LOGO = Pattern('iris_logo.png')
+    IRIS_LOGO_ACTIVE_TAB = Pattern('iris_logo_active_tab.png')
+    IRIS_LOGO_INACTIVE_TAB = Pattern('iris_logo_inactive_tab.png')
+
     """Local Firefox site."""
     FIREFOX_TEST_SITE = 'http://%s:%s/firefox/' % (_ip_host, _port)
     FIREFOX_TEST_SITE_2 = 'http://%s:%s/firefox/' % (_domain_host, _port)

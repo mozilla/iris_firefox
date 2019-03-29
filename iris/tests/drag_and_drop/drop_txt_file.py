@@ -44,6 +44,8 @@ class Test(BaseTest):
 
         folderpath = self.get_asset_path('')
 
+        DRAG_AND_DROP_DURATION = 3
+        PASTE_DELAY = 0.5
         navigate('https://mystor.github.io/dragndrop/')
 
         drop_html_data_button_displayed = exists(drop_txt_file_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -55,8 +57,7 @@ class Test(BaseTest):
         assert_true(self, drop_txt_option_selected, 'The drop-txt-file changed color to red which indicates that it '
                                                     'has been selected.')
 
-        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
-                                                              DEFAULT_UI_DELAY)
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll_down, (5,), 30, 1)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
 
         not_matching_message_location = find(not_matching_message_pattern)
@@ -81,7 +82,7 @@ class Test(BaseTest):
                                           width=library_title_width * 2, height=library_title_height * 3)
         library_popup_tab_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
 
-        drag_drop(library_popup_tab_before, library_popup_tab_after, DEFAULT_DELAY_BEFORE_DROP)
+        drag_drop(library_popup_tab_before, library_popup_tab_after, DRAG_AND_DROP_DURATION)
 
         library_popup_dropped = exists(library_popup_pattern, in_region=library_tab_region_after)
         assert_true(self, library_popup_dropped, 'Library popup dropped to right half of screen successfully')
@@ -110,7 +111,7 @@ class Test(BaseTest):
             type('1', KeyModifier.CMD)
         else:
             paste(folderpath)
-            type(Key.ENTER, interval=DEFAULT_UI_DELAY)
+            type(Key.ENTER, interval=PASTE_DELAY)
 
         if Settings.is_linux():
             json_option = exists(file_type_json_pattern)
@@ -125,11 +126,11 @@ class Test(BaseTest):
 
         else:
             type('*')
-            type(Key.ENTER, interval=DEFAULT_UI_DELAY)
+            type(Key.ENTER, interval=PASTE_DELAY)
 
-        select_bookmark_popup_after = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
+        select_bookmark_popup_location_final = Location(SCREEN_WIDTH / 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
-        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_after)
+        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
         test_file_txt = exists(txt_bak_file_pattern)
         assert_true(self, test_file_txt, 'TXT test file is available')
@@ -137,7 +138,7 @@ class Test(BaseTest):
         drop_here = exists(drop_here_pattern)
         assert_true(self, drop_here, '"Drop here" pattern available')
 
-        drag_drop(txt_bak_file_pattern, drop_here_pattern)
+        drag_drop(txt_bak_file_pattern, drop_here_pattern, DRAG_AND_DROP_DURATION)
 
         matching_message_displayed = exists(matching_message_pattern, in_region=matching_region)
         assert_true(self, matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '
@@ -146,7 +147,7 @@ class Test(BaseTest):
         test_file_jpg = exists(jpg_bak_file_pattern)
         assert_true(self, test_file_jpg, 'JPG test file is available')
 
-        drag_drop(jpg_bak_file_pattern, drop_here_pattern)
+        drag_drop(jpg_bak_file_pattern, drop_here_pattern, DRAG_AND_DROP_DURATION)
 
         not_matching_message_displayed = exists(not_matching_message_pattern, in_region=not_matching_region)
         assert_true(self, not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '
