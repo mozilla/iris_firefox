@@ -25,11 +25,13 @@ class Test(BaseTest):
         test_bookmarks_path = self.get_asset_path('bookmarks.html')
 
         open_library()
-        library_popup_open = exists(library_import_backup_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
+        library_popup_open = exists(library_import_backup_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_popup_open, 'Library is correctly opened.')
 
         click(library_import_backup_pattern)
-        import_button_available = exists(library_import_bookmarks_from_html_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
+        import_button_available = exists(library_import_bookmarks_from_html_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, import_button_available, '"Import bookmarks from HTML" button available')
 
         click(library_import_bookmarks_from_html_pattern)
@@ -37,26 +39,31 @@ class Test(BaseTest):
         if Settings.is_mac():
             type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # go to folder
             paste(test_bookmarks_path)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+
             type(Key.ENTER)
 
-            open_bookmark_file = exists(import_bookmarks_from_html_dropdown_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            open_bookmark_file = exists(import_bookmarks_from_html_dropdown_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, open_bookmark_file, 'Import bookmark menu is displayed')
 
             click(import_bookmarks_from_html_dropdown_pattern)
+
         else:
             import_bookmarks_from_html_dropdown = exists(import_bookmarks_from_html_dropdown_pattern,
-                                                         DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, import_bookmarks_from_html_dropdown,
-                        'Import bookmark menu is displayed')
+                                                         Settings.FIREFOX_TIMEOUT)
+            assert_true(self, import_bookmarks_from_html_dropdown, 'Import bookmark menu is displayed')
 
             paste(test_bookmarks_path)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+
             type(Key.ENTER)
 
-        sidebar_bookmarks_button = exists(sidebar_bookmarks_menu_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        sidebar_bookmarks_button = exists(sidebar_bookmarks_menu_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, sidebar_bookmarks_button, 'Sidebar bookmarks button available')
 
         click(sidebar_bookmarks_menu_pattern)
-        test_bookmark_imported = exists(test_bookmark_imported_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
+        test_bookmark_imported = exists(test_bookmark_imported_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_bookmark_imported,
                     'The bookmarks are successfully imported and displayed in the Library.')
 
