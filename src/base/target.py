@@ -4,20 +4,28 @@
 
 import os
 import time
+import importlib
 
 import pytest
 
 import logging
-from targets.firefox.parse_args import get_target_args
+from src.core.util.arg_parser import get_core_args
 from src.core.api.os_helpers import OSHelper
 from src.core.util.json_utils import update_run_index, create_run_log
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
-from targets.firefox.firefox_app.fx_collection import FX_Collection
-from targets.firefox.firefox_app.fx_browser import FirefoxApp
 
-args = get_target_args()
+core_args = get_core_args()
 logger = logging.getLogger(__name__)
+
+target_args = ''
+try:
+    module = importlib.import_module('targets.{}.parse_args'.format(core_args.application))
+    met = getattr(module, 'get_target_arg')
+    target_args = met()
+except (ImportError, AttributeError):
+    logger.error('Could not retrieve arguments for {} application'.format(core_args.application))
+    exit(1)
 
 
 class BaseTarget:
@@ -34,8 +42,6 @@ class BaseTarget:
             {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'}
         ]
 
-
-        self.locale = args.locale
         self.values = {}
 
     def pytest_sessionstart(self, session):
@@ -49,8 +55,8 @@ class BaseTarget:
 
         settings_list = []
 
-        for arg in vars(args):
-            settings_list.append('{}: {}'.format(arg, getattr(args, arg)))
+        for arg in vars(target_args):
+            settings_list.append('{}: {}'.format(arg, getattr(target_args, arg)))
         logger.info(', '.join(settings_list))
         logger.info('\n')
         update_run_index(self, False)

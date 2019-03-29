@@ -9,19 +9,12 @@ import coloredlogs
 from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
 
-LOG_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
+core_args = get_core_args()
 
 SUCCESS_LEVEL_NUM = 35
 logging.addLevelName(SUCCESS_LEVEL_NUM, 'SUCCESS')
 
 logger = logging.getLogger(__name__)
-
-coloredlogs.DEFAULT_LOG_FORMAT = LOG_FORMAT
-coloredlogs.DEFAULT_FIELD_STYLES = {'levelname': {'color': 'cyan', 'bold': True},
-                                    'name': {'color': 'cyan', 'bold': True}}
-coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True},
-                                    'success': {'color': 'green', 'bold': True},
-                                    'error': {'color': 'red', 'bold': True}}
 
 
 def success(self, message, *args, **kws):
@@ -50,6 +43,25 @@ def initialize_logger_level(level):
         coloredlogs.install(level='CRITICAL')
 
 
+def set_log_format():
+
+    if core_args.level < 20:
+        log_format = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
+        coloredlogs.DEFAULT_LOG_FORMAT = log_format
+        coloredlogs.DEFAULT_FIELD_STYLES = {'levelname': {'color': 'cyan', 'bold': True},
+                                            'name': {'color': 'cyan', 'bold': True}}
+        coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True},
+                                            'success': {'color': 'green', 'bold': True},
+                                            'error': {'color': 'red', 'bold': True}}
+    else:
+        log_format = '%(message)s'
+        coloredlogs.DEFAULT_LOG_FORMAT = log_format
+        coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True},
+                                            'success': {'color': 'green', 'bold': True},
+                                            'error': {'color': 'red', 'bold': True}}
+    return log_format
+
+
 def initialize_logger():
-    logging.basicConfig(filename=PathManager.get_log_file_path(), format=LOG_FORMAT)
-    initialize_logger_level(get_core_args().level)
+    logging.basicConfig(filename=PathManager.get_log_file_path(), format=set_log_format())
+    initialize_logger_level(core_args.level)

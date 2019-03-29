@@ -35,11 +35,15 @@ def main():
             # parse user_result to extract desired target and parameters,
             # and pass parameters to target
         if user_result is not 'cancel':
-            target_plugin = get_target(args.application)
-            pytest_args = get_test_params(args.application)
-            initialize_platform(args)
-            logger.info(pytest_args)
-            pytest.main(pytest_args, plugins=[target_plugin])
+            try:
+                target_plugin = get_target(args.application)
+                pytest_args = get_test_params(args.application)
+                initialize_platform(args)
+                logger.info(pytest_args)
+                pytest.main(pytest_args, plugins=[target_plugin])
+            except ImportError:
+                logger.error('Could not load plugin for {} application'.format(args.application))
+                exit(1)
         else:
             # If we get 'cancel' we will shut down Iris
             pass
@@ -69,7 +73,7 @@ def get_target(target_name):
         except NameError:
             logger.error('Can\'t find default Target class.')
             exit(1)
-    except ModuleNotFoundError:
+    except ImportError:
         logger.error('Problems importing module.')
         exit(1)
 
