@@ -30,7 +30,7 @@ class Test(BaseTest):
 
         navigate('https://mystor.github.io/dragndrop/')
 
-        paste_png_file_button_displayed = exists(paste_png_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        paste_png_file_button_displayed = exists(paste_png_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, paste_png_file_button_displayed, 'The demo website loaded successfully')
 
         click(paste_png_button_pattern)
@@ -39,8 +39,7 @@ class Test(BaseTest):
         assert_true(self, paste_png_option_selected, 'The paste-png-file changed color to red which indicates that it '
                                                      'has been selected.')
 
-        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20,
-                                                              DEFAULT_UI_DELAY)
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20, 1)
         assert_true(self, matching_block_available, 'The drop result verification area is displayed on the page')
 
         not_matching_message_location = find(not_matching_message_pattern)
