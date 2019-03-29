@@ -16,7 +16,7 @@ from iris.api.core.platform import Platform
 logger = logging.getLogger(__name__)
 
 
-def select_file_in_folder(directory, filename_pattern, file_option):
+def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_attempts=3):
     """
     Opens directory, selects file in opened directory, and provides action with it (e.g. copy, cut, delete),
     and closes opened directory.
@@ -24,11 +24,13 @@ def select_file_in_folder(directory, filename_pattern, file_option):
     :param directory: Folder on hard drive to open.
     :param filename_pattern: File Pattern to select.
     :param file_option: File processing function. Appropriate methods are: edit_copy, edit_cut, edit_delete.
+    :param max_num_of_attempts: Attempts to find pattern of file name. Default: 3
     """
 
+    finder_list_view = '2'
     type_delay = 0.5
 
-    if not isinstance(directory, basestring):
+    if not isinstance(directory, str):
         raise ValueError(INVALID_GENERIC_INPUT)
 
     if not isinstance(filename_pattern, Pattern):
@@ -40,20 +42,20 @@ def select_file_in_folder(directory, filename_pattern, file_option):
     open_directory(directory)
 
     try:
-        for attempt in range(1, 5):
+        for attempt in range(0, max_num_of_attempts):
             file_located = exists(filename_pattern)
 
             if file_located:
                 logger.debug('File {} in directory {} is available'.format(filename_pattern, directory))
                 break
             else:
-                if attempt == 4:
+                if attempt == max_num_of_attempts - 1:
                     logger.debug('File {} is not available after attempt {}'.format(filename_pattern, attempt))
                     raise Exception
 
                 time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
                 if Settings.get_os() == Platform.MAC:
-                    type('2', KeyModifier.CMD, type_delay)  # change view of finder
+                    type(finder_list_view, KeyModifier.CMD, type_delay)
 
         click(filename_pattern)
 
