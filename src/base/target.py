@@ -51,14 +51,18 @@ class BaseTarget:
         """
         self.start_time = time.time()
         logger.info('** Test session {} started **'.format(session.name))
-        logger.info('Iris settings:')
 
-        settings_list = []
+        core_settings_list = []
+        for arg in vars(core_args):
+            core_settings_list.append('{}: {}'.format(arg, getattr(core_args, arg)))
+        logger.info('\nIris settings:\n' + ', '.join(core_settings_list))
+
+        application_settings_list = []
 
         for arg in vars(target_args):
-            settings_list.append('{}: {}'.format(arg, getattr(target_args, arg)))
-        logger.info(', '.join(settings_list))
-        logger.info('\n')
+            application_settings_list.append('{}: {}'.format(arg, getattr(target_args, arg)))
+        logger.info(('\n{} settings:\n' +
+                     ', '.join(application_settings_list)).format(str(core_args.application).capitalize()))
         update_run_index(self, False)
 
     def pytest_sessionfinish(self, session):

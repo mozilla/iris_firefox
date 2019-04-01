@@ -18,5 +18,8 @@ def get_target_args():
     parser.add_argument('-u', '--update_channel',
                         help='Update channel profile preference',
                         action='store')
+    parser.add_argument('-s', '--save',
+                        help='Save Firefox profiles on disk',
+                        action='store_true')
 
     return parser.parse_known_args()[0]

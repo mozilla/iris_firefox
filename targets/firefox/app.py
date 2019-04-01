@@ -113,10 +113,9 @@ class Target(BaseTarget):
                 status = item.funcargs['firefox'].runner.process_handler.wait(10)
                 if status is None:
                     item.funcargs['firefox'].browser.runner.stop()
-                if not core_args.save:
-                    pass
-                    # import shutil
-                    # shutil.rmtree(item.funcargs['firefox'].profile)
+                if not target_args.save:
+                    import shutil
+                    shutil.rmtree(item.funcargs['firefox'].profile)
         except (AttributeError, KeyError):
             pass
 
