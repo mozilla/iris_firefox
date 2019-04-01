@@ -7,11 +7,11 @@ import ast
 from datetime import date
 
 from src.configuration.config_parser import get_config_property, logger
-from src.core.api.errors import TestRailError
+from targets.firefox.errors import TestRailError
 from src.core.api.os_helpers import OSHelper
 from src.core.util.report_utils import Color
-from targets.firefox.test_rail import api_client
-from targets.firefox.test_rail.testcase_results import TestSuiteMap, TestRailTests
+from targets.firefox.testrail import api_client
+from targets.firefox.testrail.testcase_results import TestSuiteMap, TestRailTests
 
 
 class TestRail:
