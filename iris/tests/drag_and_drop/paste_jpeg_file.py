@@ -30,13 +30,13 @@ class Test(BaseTest):
 
         navigate('https://mystor.github.io/dragndrop/')
 
-        paste_pdf_file_button_displayed = exists(paste_jpeg_button_pattern, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, paste_pdf_file_button_displayed, 'The demo website loaded successfully')
+        paste_jpeg_file_button_displayed = exists(paste_jpeg_button_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, paste_jpeg_file_button_displayed, 'The demo website loaded successfully')
 
         click(paste_jpeg_button_pattern)
 
-        paste_pdf_option_selected = exists(paste_jpeg_file_selected_button_pattern)
-        assert_true(self, paste_pdf_option_selected, 'The paste-pdf-file changed color to red which indicates that it '
+        paste_jpeg_option_selected = exists(paste_jpeg_file_selected_button_pattern)
+        assert_true(self, paste_jpeg_option_selected, 'The paste-jpeg-file changed color to red which indicates that it '
                                                      'has been selected.')
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20, 1)
