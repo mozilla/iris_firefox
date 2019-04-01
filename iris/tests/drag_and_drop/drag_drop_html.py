@@ -61,6 +61,11 @@ class Test(BaseTest):
         new_window_drop_location = Location(SCREEN_WIDTH * 0.75, SCREEN_HEIGHT / 20)
         drag_drop(opened_tab_location, new_window_drop_location)
 
+        tab_still_displayed = exists(Tabs.NEW_TAB_HIGHLIGHTED)
+        assert_true(self, tab_still_displayed, 'Selected "New tab" still displayed')
+
+        click(Tabs.NEW_TAB_HIGHLIGHTED)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         wiki_page_loaded = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, wiki_page_loaded, 'Wiki webpage successfully is loaded.')
