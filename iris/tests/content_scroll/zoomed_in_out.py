@@ -40,9 +40,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
 
         [scroll(-scroll_height) for _ in range(2)]
-        after_scroll_down_content_not_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After zooming in and scrolling down using mouse wheel content is gone')
+        try:
+            after_scroll_down_content_not_exists = wait_vanish(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_down_content_not_exists,
+                        'After zooming in and scrolling down using mouse wheel content is gone')
+        except FindError:
+            raise FindError('After zooming in and scrolling down using mouse wheel content still exists')
         [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -53,9 +56,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using arrow keys is on the page')
 
         repeat_key_down(10)
-        after_scroll_down_content_not_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After zooming in and scrolling down using arrow keys content is gone')
+        try:
+            after_scroll_down_content_not_exists = wait_vanish(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_down_content_not_exists,
+                        'After zooming in and scrolling down using arrow keys content is gone')
+        except FindError:
+            raise FindError('After zooming in and scrolling down using arrow keys content still exists')
         repeat_key_up(10)
 
         after_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -66,9 +72,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using page up/down is on the page')
 
         [type(Key.PAGE_DOWN) for _ in range(4)]
-        after_scroll_down_content_not_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After zooming in and scrolling down using page up/down keys content is gone')
+        try:
+            after_scroll_down_content_not_exists = wait_vanish(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_down_content_not_exists,
+                        'After zooming in and scrolling down using page up/down keys content is gone')
+        except FindError:
+            raise FindError('After zooming in and scrolling down using page up/down keys content still exists')
         [type(Key.PAGE_UP) for _ in range(4)]
 
         after_scroll_content_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -83,9 +92,12 @@ class Test(BaseTest):
         else:
             type(Key.DOWN, modifier=KeyModifier.CTRL)
 
-        after_scroll_down_content_not_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After zooming in and scrolling down using ctrl + up/down keys content is gone')
+        try:
+            after_scroll_down_content_not_exists = wait_vanish(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_down_content_not_exists,
+                        'After zooming in and scrolling down using ctrl + up/down keys content is gone')
+        except FindError:
+            raise FindError('After zooming in and scrolling down using ctrl + up/down keys content still exists')
 
         if Settings.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
@@ -100,9 +112,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar is on the page')
 
         [type(Key.SPACE) for _ in range(5)]
-        after_scroll_down_content_not_exists = exists(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_down_content_not_exists,
-                     'After zooming in and scrolling down using space bar content is gone')
+        try:
+            after_scroll_down_content_not_exists = wait_vanish(after_zooming_in_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_down_content_not_exists,
+                        'After zooming in and scrolling down using space bar content is gone')
+        except FindError:
+            raise FindError('After zooming in and scrolling down using space bar content still exists')
         page_home()
 
         restore_zoom()
@@ -118,9 +133,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using mouse wheel is on the page')
 
         [scroll(-scroll_height) for _ in range(2)]
-        after_scroll_up_content_not_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_up_content_not_exists,
-                     'After zooming out and scrolling up using mouse wheel content is gone')
+        try:
+            after_scroll_up_content_not_exists = wait_vanish(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_up_content_not_exists,
+                        'After zooming out and scrolling up using mouse wheel content is gone')
+        except FindError:
+            raise FindError('After zooming out and scrolling up using mouse wheel content still exists')
         [scroll(scroll_height) for _ in range(5)]
 
         after_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -131,9 +149,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using arrow keys is on the page')
 
         repeat_key_down(10)
-        after_scroll_up_content_not_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_up_content_not_exists,
-                     'After zooming out and scrolling up using arrow keys content is gone')
+        try:
+            after_scroll_up_content_not_exists = wait_vanish(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_up_content_not_exists,
+                        'After zooming out and scrolling up using arrow keys content is gone')
+        except FindError:
+            raise FindError('After zooming out and scrolling up using arrow keys content still exists')
         repeat_key_up(10)
 
         after_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -144,9 +165,12 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using page up/down is on the page')
 
         [type(Key.PAGE_DOWN) for _ in range(4)]
-        after_scroll_up_content_not_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_up_content_not_exists,
-                     'After zooming out and scrolling up using page up/down keys content is gone')
+        try:
+            after_scroll_up_content_not_exists = wait_vanish(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_up_content_not_exists,
+                        'After zooming out and scrolling up using page up/down keys content is gone')
+        except FindError:
+            raise FindError('After zooming out and scrolling up using page up/down keys content still exists')
         [type(Key.PAGE_UP) for _ in range(4)]
 
         after_scroll_content_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
@@ -161,9 +185,12 @@ class Test(BaseTest):
         else:
             type(Key.DOWN, modifier=KeyModifier.CTRL)
 
-        after_scroll_up_content_not_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_up_content_not_exists,
-                     'After zooming out and scrolling up using ctrl + up/down keys content is gone')
+        try:
+            after_scroll_up_content_not_exists = wait_vanish(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_up_content_not_exists,
+                        'After zooming out and scrolling up using ctrl + up/down keys content is gone')
+        except FindError:
+            raise FindError('After zooming out and scrolling up using ctrl + up/down keys content still exists')
 
         if Settings.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
@@ -178,7 +205,10 @@ class Test(BaseTest):
         assert_true(self, before_scroll_content_exists, 'Content before scrolling using space bar is on the page')
 
         [type(Key.SPACE) for _ in range(5)]
-        after_scroll_up_content_not_exists = exists(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
-        assert_false(self, after_scroll_up_content_not_exists,
-                     'After zooming out and scrolling up using space bar content is gone')
 
+        try:
+            after_scroll_up_content_not_exists = wait_vanish(after_zooming_out_content_pattern, DEFAULT_FIREFOX_TIMEOUT)
+            assert_true(self, after_scroll_up_content_not_exists,
+                        'After zooming out and scrolling up using space bar content is gone')
+        except FindError:
+            raise FindError('After zooming out and scrolling up using space bar content still exists')
