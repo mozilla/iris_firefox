@@ -192,3 +192,5 @@ class OSPlatform(str, Enum):
     WINDOWS = 'win'
     LINUX = 'linux'
     MAC = 'osx'
+
+    ALL = [WINDOWS, LINUX, MAC]

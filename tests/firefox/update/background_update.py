@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This is a test for Firefox background update.',
-        # exclude=OSPlatform.WINDOWS,
+        exclude=OSPlatform.ALL,
         preferences={'app.update.auto': True,
                      'app.update.interval': 7200,
                      'app.update.badgeWaitTime': 10,

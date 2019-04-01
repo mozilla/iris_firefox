@@ -71,7 +71,7 @@ class Target(BaseTarget):
         BaseTarget.pytest_runtest_setup(self, item)
         if item.name == 'test_run':
             values = item.own_markers[0].kwargs
-            if 'exclude' in values and OSHelper.get_os() == values.get('exclude'):
+            if 'exclude' in values and OSHelper.get_os() in values.get('exclude'):
                 logger.info(
                     'Test excluded: - [%s]: %s' % (
                         item.nodeid.split(':')[0], values.get('description')))
