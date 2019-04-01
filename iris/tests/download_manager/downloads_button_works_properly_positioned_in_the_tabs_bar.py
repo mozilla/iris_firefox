@@ -55,6 +55,9 @@ class Test(BaseTest):
         assert_true(self, expected, 'Download button turns blue when download is completed.')
 
         open_downloads()
+        
+        if Settings.get_os() == Platform.LINUX:
+            drag_drop(Library.TITLE, DownloadFiles.EXTRA_SMALL_FILE_5MB, 2)
 
         expected = exists(NavBar.CUSTOM_DOWNLOADS_BUTTON, 10)
         assert_true(self, expected, 'Download button turns back to default color.')
