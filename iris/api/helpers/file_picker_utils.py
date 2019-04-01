@@ -10,11 +10,27 @@ from iris.api.core.region import exists, Pattern
 from iris.api.core.util.core_helper import INVALID_GENERIC_INPUT
 from iris.api.helpers.general import open_directory
 from iris.api.core.settings import Settings
-from iris.api.core.key import KeyModifier, type
+from iris.api.core.key import KeyModifier, type, paste, Key
 from iris.api.core.platform import Platform
 
 logger = logging.getLogger(__name__)
 
+def open_test_case_assets_folder_in_file_manager(test_asset_path):
+
+    if Settings.is_linux():
+        type(text='l', modifier=KeyModifier.CTRL)
+        paste(test_asset_path)
+        type(Key.ENTER)
+
+    elif Settings.is_mac():
+        type(text='g', modifier=KeyModifier.SHIFT + KeyModifier.CMD)
+        paste(test_asset_path)
+        type(Key.ENTER)
+
+    elif Settings.is_windows():
+        type(text='l', modifier=KeyModifier.CTRL)
+        paste(test_asset_path)
+        type(Key.ENTER)
 
 def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_attempts=3):
     """

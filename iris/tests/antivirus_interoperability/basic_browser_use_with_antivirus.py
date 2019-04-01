@@ -16,22 +16,6 @@ class Test(BaseTest):
         self.test_suite_id = '3063'
         self.locales = ['en-US']
 
-    def open_test_case_assets_folder_in_file_manager(self):
-        path_to_test_assets = self.get_asset_path('')
-
-        if Settings.is_linux():
-            type(text='l', modifier=KeyModifier.CTRL)
-            paste(path_to_test_assets)
-            type(Key.ENTER)
-        elif Settings.is_mac():
-            type(text='g', modifier=KeyModifier.SHIFT + KeyModifier.CMD)
-            paste(path_to_test_assets)
-            type(Key.ENTER)
-        elif Settings.is_windows():
-            type(text='l', modifier=KeyModifier.CTRL)
-            paste(path_to_test_assets)
-            type(Key.ENTER)
-
     def run(self):
         soap_wiki_page_article_header_pattern = Pattern('wiki_article_header.png')
         new_tab_highlighted_with_theme_applied_pattern = Pattern('new_tab_highlighted_theme_applied.png')
@@ -53,7 +37,8 @@ class Test(BaseTest):
         popup_opened = exists(popup_open_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened')
 
-        self.open_test_case_assets_folder_in_file_manager()
+        open_test_case_assets_folder_in_file_manager(self.get_asset_path(''))
+
         theme_file_is_available = exists(theme_file_icon_pattern, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, theme_file_is_available, 'Theme file is available.')
 
@@ -88,5 +73,3 @@ class Test(BaseTest):
 
         page_loaded = exists(soap_wiki_page_article_header_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, page_loaded, 'The website is loaded without any issue.')
-
-        close_window()
