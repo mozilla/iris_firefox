@@ -126,7 +126,7 @@ class Target(BaseTarget):
         profile = FirefoxProfile.make_profile(profile_type, preferences)
 
         fx = target_args.firefox
-        locale = target_args.locale
+        locale = core_args.locale
         app = FX_Collection.get(fx, locale)
 
         if not app:

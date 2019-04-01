@@ -1,8 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
-
+import json
 import time
 
 from src.core.api.finder.finder import wait, exists, find
@@ -362,6 +361,48 @@ def open_about_firefox():
             type(Key.RIGHT)
         type(Key.UP)
         type(Key.ENTER)
+
+def get_telemetry_info():
+    """Returns telemetry information as a JSON object from 'about:telemetry'
+    page.
+    """
+
+    copy_raw_data_to_clipboard_pattern = Pattern(
+        'copy_raw_data_to_clipboard.png')
+    raw_json_pattern = Pattern('raw_json.png')
+    raw_data_pattern = Pattern('raw_data.png')
+
+    new_tab()
+
+    paste('about:telemetry')
+    type(Key.ENTER)
+
+    try:
+        wait(raw_json_pattern, 10)
+        logger.debug('\'RAW JSON\' button is present on the page.')
+        click(raw_json_pattern)
+    except (FindError, ValueError):
+        raise APIHelperError('\'RAW JSON\' button not present in the page.')
+
+    try:
+        wait(raw_data_pattern, 10)
+        logger.debug('\'Raw Data\' button is present on the page.')
+        click(raw_data_pattern)
+    except (FindError, ValueError):
+        close_tab()
+        raise APIHelperError('\'Raw Data\' button not present in the page.')
+
+    try:
+        click(copy_raw_data_to_clipboard_pattern)
+        time.sleep(Settings.UI_DELAY)
+        json_text = get_clipboard()
+        return json.loads(json_text)
+    except Exception as e:
+        raise APIHelperError(
+            'Failed to retrieve raw message information value. %s' % e.message)
+    finally:
+        close_tab()
+
 
 
 class RightClickLocationBar(object):
