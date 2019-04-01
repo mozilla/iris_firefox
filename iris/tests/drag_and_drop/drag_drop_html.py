@@ -25,7 +25,7 @@ class Test(BaseTest):
         drop_verified_pattern = Pattern('drop_matching_verified.png')
         drop_not_matching_pattern = Pattern('drop_not_matching.png')
         correct_result_pattern = Pattern('correct_result.png').similar(0.6)
-        soap_url_selected_pattern = Pattern('soap_url_selected.png')
+        soap_url_selected_pattern = Pattern('soap_url_selected.png').similar(0.7)
         browser_console_title_pattern = Pattern('browser_console_title.png')
 
         navigate('https://mystor.github.io/dragndrop/')
