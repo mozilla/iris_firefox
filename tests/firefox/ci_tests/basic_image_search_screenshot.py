@@ -10,10 +10,9 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description="This test verifies if Pyautogui/MSS screenshot and image search are working properly in a ' \
                     'framebuffer environment..",
-        locale='[en-US]',
-        blocked_by={'id': '1488708', 'platform': ["windows", "osx"]}
+        locale='[en-US]'
     )
-    def test_run(self):
+    def test_run(self,firefox):
 
         # Image sccreenshot with pyautogui
         try:
@@ -69,12 +68,12 @@ class Test(FirefoxTest):
                 exit(1)
 
         # Image search in full screen with Pyautogui
-        #
-        # navigate(LocalWeb.MOZILLA_TEST_SITE)
-        #
-        # expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        # if expected_1:
-        #         logger.info('Image search in full screen screenshot succeed ')
-        # else:
-        #         logger.error('Image search in full screen screenshot failed!!!')
-        #         exit(1)
+
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        if expected_1:
+                logger.info('Image search in full screen screenshot succeed ')
+        else:
+                logger.error('Image search in full screen screenshot failed!!!')
+                exit(1)
