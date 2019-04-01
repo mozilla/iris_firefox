@@ -28,11 +28,6 @@ class Test(BaseTest):
         drag_and_drop_duration = 3
         folderpath = self.get_asset_path('')
 
-        new_private_window()
-
-        private_window_opened = exists(PrivateWindow.private_window_pattern, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, private_window_opened, 'A new private window is successfully loaded.')
-
         navigate('https://mystor.github.io/dragndrop/')
 
         paste_pdf_file_button_displayed = exists(paste_jpeg_button_pattern, Settings.SITE_LOAD_TIMEOUT)
@@ -83,5 +78,3 @@ class Test(BaseTest):
                                                           'expected result is different from result.')
 
         type(Key.ESC)
-
-        close_tab()
