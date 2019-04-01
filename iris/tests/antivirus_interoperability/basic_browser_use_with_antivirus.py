@@ -43,41 +43,50 @@ class Test(BaseTest):
         load_temporary_addon_button_pattern = Pattern('load_temporary_addon_button.png')
 
         navigate('about:debugging')
-        debugging_page_loaded = exists(load_temporary_addon_button_pattern, DEFAULT_SYSTEM_DELAY)
+
+        debugging_page_loaded = exists(load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, debugging_page_loaded,
                     'Debugging page is successfully loaded and contains \'Load temporary addon\' button.')
 
         click(load_temporary_addon_button_pattern)
-        popup_opened = exists(popup_open_button_pattern, DEFAULT_SYSTEM_DELAY)
+
+        popup_opened = exists(popup_open_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened')
 
         self.open_test_case_assets_folder_in_file_manager()
-        theme_file_is_available = exists(theme_file_icon_pattern, DEFAULT_UI_DELAY)
+        theme_file_is_available = exists(theme_file_icon_pattern, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, theme_file_is_available, 'Theme file is available.')
 
         click(theme_file_icon_pattern)
+
         type(Key.ENTER)
-        theme_applied = exists(home_icon_with_applied_theme_pattern, DEFAULT_SYSTEM_DELAY)
+
+        theme_applied = exists(home_icon_with_applied_theme_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, theme_applied, 'Theme successfully applied.')
 
         click(load_temporary_addon_button_pattern)
-        popup_opened = exists(popup_open_button_pattern, DEFAULT_SYSTEM_DELAY)
+
+        popup_opened = exists(popup_open_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened.')
 
-        addon_file_is_available = exists(addon_file_icon_pattern, DEFAULT_SYSTEM_DELAY)
+        addon_file_is_available = exists(addon_file_icon_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, addon_file_is_available, 'Addon file is available.')
 
         click(addon_file_icon_pattern)
+
         type(Key.ENTER)
-        addon_installed = exists(adblock_icon_pattern, DEFAULT_SYSTEM_DELAY)
+
+        addon_installed = exists(adblock_icon_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, addon_installed, 'Addon successfully installed.')
 
         click(home_icon_with_applied_theme_pattern)
-        new_tab_opened = exists(new_tab_highlighted_with_theme_applied_pattern, DEFAULT_SYSTEM_DELAY)
+
+        new_tab_opened = exists(new_tab_highlighted_with_theme_applied_pattern.similar(0.6), Settings.FIREFOX_TIMEOUT)
         assert_true(self, new_tab_opened, 'The \'about:newtab\' page is opened.')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        page_loaded = exists(soap_wiki_page_article_header_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+
+        page_loaded = exists(soap_wiki_page_article_header_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, page_loaded, 'The website is loaded without any issue.')
 
         close_window()
