@@ -5,6 +5,7 @@
 import logging
 import os
 from multiprocessing import Process
+from pathlib import Path
 
 import pytest
 
@@ -115,7 +116,14 @@ class Target(BaseTarget):
                     item.funcargs['firefox'].browser.runner.stop()
                 if not target_args.save:
                     import shutil
-                    shutil.rmtree(item.funcargs['firefox'].profile)
+                    profile_instance=item.funcargs['firefox'].profile
+                    if os.path.exists(profile_instance.profile):
+                        try:
+                            shutil.rmtree(profile_instance.profile)
+                        except OSError as e:
+                            print("Error: %s - %s." % (e.filename, e.strerror))
+                    else:
+                        logger.error('Invalid Path!')
         except (AttributeError, KeyError):
             pass
 
