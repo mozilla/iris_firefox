@@ -33,6 +33,11 @@ class Test(BaseTest):
 
         change_preference('browser.search.region', 'US')
 
+        restart_firefox(self,
+                        self.browser.path,
+                        self.profile_path,
+                        self.base_local_web_url)
+
         navigate('about:preferences#privacy')
 
         search_field_exists = exists(find_in_preferences_field_pattern, DEFAULT_FIREFOX_TIMEOUT)
