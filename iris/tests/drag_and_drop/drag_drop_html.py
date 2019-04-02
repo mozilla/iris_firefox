@@ -25,7 +25,7 @@ class Test(BaseTest):
         drop_verified_pattern = Pattern('drop_matching_verified.png')
         drop_not_matching_pattern = Pattern('drop_not_matching.png')
         correct_result_pattern = Pattern('correct_result.png').similar(0.6)
-        soap_url_selected_pattern = Pattern('soap_url_selected.png')
+        soap_url_selected_pattern = Pattern('soap_url_selected.png').similar(0.7)
         browser_console_title_pattern = Pattern('browser_console_title.png')
 
         navigate('https://mystor.github.io/dragndrop/')
@@ -60,6 +60,11 @@ class Test(BaseTest):
         opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).offset(offset, 0)
         new_window_drop_location = Location(SCREEN_WIDTH * 0.75, SCREEN_HEIGHT / 20)
         drag_drop(opened_tab_location, new_window_drop_location)
+
+        tab_still_displayed = exists(Tabs.NEW_TAB_HIGHLIGHTED)
+        assert_true(self, tab_still_displayed, 'Selected "New tab" still displayed')
+
+        click(Tabs.NEW_TAB_HIGHLIGHTED)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
         wiki_page_loaded = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_FIREFOX_TIMEOUT)
