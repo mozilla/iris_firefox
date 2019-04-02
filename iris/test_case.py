@@ -19,7 +19,7 @@ class BaseTest(object):
     def __init__(self):
         self.meta = ''
         self.fx_version = ''
-        self.exclude = []
+        self.enabled = True
         self.test_title = ''
         self.exclude = []
         self.results = []
@@ -164,7 +164,9 @@ class BaseTest(object):
         self.window_size = None
 
         """Temporary code used to write a pref file, not used otherwise."""
-        self.set_profile_pref({'iris.enabled': True})
+        self.set_profile_pref({'iris.enabled': True}),
+        self.set_profile_pref({'extensions.privatebrowsing.notification': True}),
+        self.set_profile_pref({'browser.contentblocking.introCount': 20})
 
         return
 
