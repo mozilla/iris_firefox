@@ -31,28 +31,28 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(bookmarks_toolbar_folder_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(bookmarks_toolbar_folder_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Bookmarks toolbar folder exists')
 
         click(bookmarks_toolbar_folder_pattern)
 
-        getting_started_bookmark_exists = exists(getting_started_in_toolbar_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        getting_started_bookmark_exists = exists(getting_started_in_toolbar_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, getting_started_bookmark_exists, 'Getting started bookmark exists')
 
         right_click(getting_started_in_toolbar_pattern)
 
-        copy_option_exists = exists(copy_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        copy_option_exists = exists(copy_option_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, copy_option_exists, 'The Copy option exists')
 
         click(copy_option_pattern)
 
         mozilla_firefox_bookmarks_folder_exists = exists(mozilla_firefox_bookmarks_folder_pattern,
-                                                         DEFAULT_FIREFOX_TIMEOUT)
+                                                         Settings.FIREFOX_TIMEOUT)
         assert_true(self, mozilla_firefox_bookmarks_folder_exists, 'Firefox menu > Bookmarks > Mozilla Firefox '
                                                                    'bookmarks folder exists')
 
@@ -67,7 +67,7 @@ class Test(BaseTest):
         mozilla_help_and_tutorials_bookmark_exists = exists(help_and_tutorials_bookmark_pattern)
         assert_true(self, mozilla_help_and_tutorials_bookmark_exists, 'Help and Tutorials bookmark is displayed')
 
-        mozilla_about_us_bookmark_exists = exists(get_involved_bookmark_pattern)
+        mozilla_about_us_bookmark_exists = exists(mozilla_about_us_bookmark_pattern)
         assert_true(self, mozilla_about_us_bookmark_exists, 'About Us bookmark is displayed')
 
         open_all_in_tabs_exists = exists(open_all_in_tabs_pattern)
@@ -75,12 +75,12 @@ class Test(BaseTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        paste_option_exists = exists(paste_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        paste_option_exists = exists(paste_option_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, paste_option_exists, 'Paste option exists')
 
         click(paste_option_pattern)
 
-        bookmark_pasted = exists(getting_started_in_toolbar_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        bookmark_pasted = exists(getting_started_in_toolbar_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmark_pasted, 'Bookmark is correctly pasted in selected section')
 
         restore_firefox_focus()
