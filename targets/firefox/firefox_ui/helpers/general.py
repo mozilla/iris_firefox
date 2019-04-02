@@ -129,8 +129,6 @@ def click_hamburger_menu_option(option):
         click(hamburger_menu_pattern)
         time.sleep(Settings.UI_DELAY)
         try:
-            region.wait(option, 10)
-            logger.debug('Option found.')
             region.click(option)
             return region
         except FindError:
@@ -164,8 +162,8 @@ def create_region_from_image(image):
             hamburger_pop_up_menu_weight = 285
             hamburger_pop_up_menu_height = 655
             logger.debug('Creating a region for Hamburger menu pop up.')
-            region = Region(m.x - hamburger_pop_up_menu_weight, m.y,
-                            hamburger_pop_up_menu_weight,
+            region = Region(m.x - hamburger_pop_up_menu_weight + 70, m.y,
+                            hamburger_pop_up_menu_weight - 50,
                             hamburger_pop_up_menu_height)
             return region
         else:
