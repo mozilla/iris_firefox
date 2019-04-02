@@ -54,7 +54,7 @@ class Test(BaseTest):
         mozilla_help_and_tutorials_bookmark_exists = exists(help_and_tutorials_bookmark_pattern)
         assert_true(self, mozilla_help_and_tutorials_bookmark_exists, 'Help and Tutorials bookmark is displayed')
 
-        mozilla_about_us_bookmark_exists = exists(get_involved_bookmark_pattern)
+        mozilla_about_us_bookmark_exists = exists(mozilla_about_us_bookmark_pattern)
         assert_true(self, mozilla_about_us_bookmark_exists, 'About Us bookmark is displayed')
 
         open_all_in_tabs_exists = exists(open_all_in_tabs_pattern)
