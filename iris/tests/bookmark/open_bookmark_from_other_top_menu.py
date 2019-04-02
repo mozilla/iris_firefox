@@ -50,3 +50,6 @@ class Test(BaseTest):
 
         webpage_loaded = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, webpage_loaded, 'Needed webpage is loaded')
+
+        previous_tab_not_displayed = not exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
+        assert_true(self, previous_tab_not_displayed, 'Webpage was opened in current tab')
