@@ -58,7 +58,7 @@ class Test(BaseTest):
 
         click(open_bookmark_new_tab_pattern)
 
-        webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
+        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, webpage_opened, 'Expected webpage is opened')
 
         opened_in_new_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
