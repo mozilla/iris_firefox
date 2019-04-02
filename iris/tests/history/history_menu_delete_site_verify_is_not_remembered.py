@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        show_all_history = History.HistoryMenu.SHOW_ALL_HISTORY
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
         mozilla_autocomplete = Pattern('mozilla_autocomplete.png')
 
@@ -35,9 +34,8 @@ class Test(BaseTest):
         new_tab()
 
         # Open History and check if is populated with Mozilla page.
-        open_library_menu('History')
+        open_history_library_window()
 
-        click(show_all_history)
         expected_2 = exists(mozilla_bookmark_focus, 10)
         assert_true(self, expected_2, 'Mozilla page is displayed in the History list successfully.')
 

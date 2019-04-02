@@ -246,6 +246,13 @@ class IrisCore(object):
         return
 
     @staticmethod
+    def is_enabled(test):
+        result = False
+        if parse_args().override or test.enabled:
+            result = True
+        return result
+
+    @staticmethod
     def verify_test_compat(test, browser):
         if browser.channel is None or browser.version is None:
             return False
