@@ -16,14 +16,14 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        not_matching_message_pattern = Pattern("not_matching_message.png")
-        copy_image_context_menu_pattern = Pattern('copy_image_option.png')
-        image_from_wiki_article_pattern = Pattern("image_from_wiki.png")
-        matching_message_pattern = Pattern('matching_message.png')
-        phrase_from_wiki_page_pattern = Pattern('wiki_article_header.png')
         paste_html_data_radiobutton_selected_pattern = Pattern('paste_html_data_selected.png')
         paste_html_data_radiobutton_pattern = Pattern('paste_html_data.png')
-        drop_stuff_here_area_pattern = Pattern('drop_stuff_here_area.png')
+        not_matching_message_pattern = Pattern("not_matching_message.png")
+        copy_image_context_menu_pattern = Pattern('copy_image_option.png')
+        phrase_from_wiki_page_pattern = Pattern('wiki_article_header.png')
+        image_from_wiki_article_pattern = Pattern("image_from_wiki.png")
+        matching_message_pattern = Pattern('matching_message.png')
+        drop_stuff_here_area_pattern = Pattern('drop_here.png')
 
         navigate('https://mystor.github.io/dragndrop/')
         page_opened = exists(paste_html_data_radiobutton_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
@@ -50,7 +50,7 @@ class Test(BaseTest):
         assert_true(self, drop_stuff_here_area_pattern, '\'Drop stuff here\' area is displayed on the page')
 
         edit_paste()
-        matching_message_exists = scroll_until_pattern_found(matching_message_pattern, type, (Key.DOWN,))
+        matching_message_exists = scroll_until_pattern_found(matching_message_pattern, type, (Key.PAGE_DOWN,))
         assert_true(self, matching_message_exists,
                     '\'Matching\' appears under the \'Drop Stuff Here\' '
                     'area, the expected result is identical to the result.')
@@ -68,7 +68,8 @@ class Test(BaseTest):
         select_tab(1)
         edit_paste()
 
-        not_matching_message_displayed = scroll_until_pattern_found(not_matching_message_pattern, type, (Key.DOWN,))
+        not_matching_message_displayed = scroll_until_pattern_found(not_matching_message_pattern, type,
+                                                                    (Key.PAGE_DOWN,))
         assert_true(self, not_matching_message_displayed, '\'Not Matching\' appears under the \'Drop Stuff Here\'' 
                                                           'area, the expected result is different from the result.')
 
