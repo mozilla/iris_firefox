@@ -56,7 +56,7 @@ class Test(BaseTest):
 
         click(open_bookmark_in_private_pattern)
 
-        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, webpage_opened, 'Expected webpage is properly displayed')
 
         window_is_private = exists(PrivateWindow.private_window_pattern)
