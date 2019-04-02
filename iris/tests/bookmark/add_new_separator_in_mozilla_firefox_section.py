@@ -29,7 +29,7 @@ class Test(BaseTest):
         open_firefox_menu()
 
         firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
+        assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks button exists')
 
         click(firefox_menu_bookmarks_pattern)
 
