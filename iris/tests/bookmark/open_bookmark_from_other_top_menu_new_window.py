@@ -58,10 +58,10 @@ class Test(BaseTest):
 
         click(open_bookmark_new_window_pattern)
 
-        webpage_opened = exists(LocalWeb.FIREFOX_LOGO)
+        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, webpage_opened, 'Expected webpage is properly displayed')
 
-        iris_tab_not_visible = not exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.UI_DELAY)
+        iris_tab_not_visible = not exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
         assert_true(self, iris_tab_not_visible, 'Previous tab isn\'t visible')
 
         close_window()
