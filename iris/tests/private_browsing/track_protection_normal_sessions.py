@@ -24,33 +24,38 @@ class Test(BaseTest):
         do_not_track_signal_displayed_pattern = Pattern('do_not_track_signal_displayed.png')
 
         navigate('about:preferences#privacy')
-        privacy_preferences_page_displayed = exists(preferences_privacy_find_field_pattern, DEFAULT_FIREFOX_TIMEOUT)
+
+        privacy_preferences_page_displayed = exists(preferences_privacy_find_field_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, privacy_preferences_page_displayed, 'The privacy preferences page is successfully displayed')
 
         click(preferences_privacy_find_field_pattern)
+
         paste('Send websites a')
-        send_track_data_found = scroll_until_pattern_found(send_track_data_pattern, type, (Key.DOWN,))
+
+        send_track_data_found = scroll_until_pattern_found(send_track_data_pattern, scroll, (-25,), 20, 1)
         assert_true(self, send_track_data_found, 'Send websites option found')
+
         send_track_data_pattern_width, send_track_data_pattern_height = send_track_data_pattern.get_size()
 
         send_websites_option_position = find(send_track_data_pattern)
-        send_websites_option_region = \
-            Region(send_websites_option_position.x-100, send_websites_option_position.y,
-                   width=send_track_data_pattern_width+100, height=send_track_data_pattern_height+100)
-        send_websites_option_unchecked = exists(do_not_track_unselected_pattern, DEFAULT_FIREFOX_TIMEOUT,
-                                                in_region=send_websites_option_region)
+        send_websites_option_region = Region(send_websites_option_position.x-100, send_websites_option_position.y,
+                                             send_track_data_pattern_width+100, send_track_data_pattern_height+100)
+
+        send_websites_option_unchecked = exists(do_not_track_unselected_pattern, Settings.FIREFOX_TIMEOUT,
+                                                send_websites_option_region)
         assert_true(self, send_websites_option_unchecked, 'Do not track "Always" option is displayed unchecked')
 
         click(do_not_track_unselected_pattern, in_region=send_websites_option_region)
-        do_not_track_selected = exists(do_not_track_selected_pattern, DEFAULT_FIREFOX_TIMEOUT,
-                                       in_region=send_websites_option_region)
+
+        do_not_track_selected = exists(do_not_track_selected_pattern, Settings.FIREFOX_TIMEOUT,
+                                       send_websites_option_region)
         assert_true(self, do_not_track_selected, 'Do not track "Always" option checked')
 
         new_tab()
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-        website_loaded = exists(tracker_website_content_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+
+        website_loaded = exists(tracker_website_content_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, website_loaded, 'The Website is successfully loaded')
 
         do_not_track_signal_displayed = exists(do_not_track_signal_displayed_pattern)
-        assert_true(self, do_not_track_signal_displayed,
-                    'The DNT (Do not track) signal is displayed as correctly sent.')
+        assert_true(self, do_not_track_signal_displayed, 'The DNT (Do not track) signal is displayed as correctly sent')
