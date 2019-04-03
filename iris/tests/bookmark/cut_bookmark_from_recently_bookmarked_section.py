@@ -77,4 +77,4 @@ close_window_control('auxiliary')
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         recently_firefox_bookmark_not_exists = exists(LocalWeb.FIREFOX_BOOKMARK, Settings.TINY_FIREFOX_TIMEOUT)
-        assert_false(self, recently_firefox_bookmark_not_exists, 'Firefox bookmark cut fromrecently bookmarked section')
+        assert_false(self, recently_firefox_bookmark_not_exists, 'Firefox bookmark cut from recently bookmarked section')
