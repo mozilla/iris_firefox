@@ -5,8 +5,6 @@
 
 import time
 
-import pyautogui
-
 from src.core.api.enums import Color
 from src.core.api.enums import MatchTemplateType
 from src.core.api.errors import FindError
@@ -182,42 +180,3 @@ def wait_vanish(pattern: Pattern, timeout: float = None, region: Rectangle = Non
         return True
     else:
         raise FindError('%s did not vanish' % pattern.get_filename())
-
-
-def hover(where=None, duration=0, in_region=None):
-    """Hover over a Location, Pattern or image.
-
-    :param where: Location, Pattern or image name for hover target.
-    :param duration: Speed of hovering from current location to target.
-    :param in_region: Region object in order to minimize the area.
-    :return: None.
-    """
-    if isinstance(where, Pattern):
-        pos = find(where, region=in_region)
-        if pos.x != -1:
-            needle_width, needle_height = where.get_size()
-            if isinstance(where, Pattern):
-                possible_offset = where.get_target_offset()
-                if possible_offset is not None:
-                    move_to = Location(pos.x + possible_offset.x, pos.y + possible_offset.y)
-                    pyautogui.moveTo(move_to.x, move_to.y)
-                else:
-                    move_to = Location(pos.x, pos.y)
-                    pyautogui.moveTo(move_to.x + needle_width / 2, move_to.y + needle_height / 2)
-            else:
-                pyautogui.moveTo(pos.x + needle_width / 2, pos.y + needle_height / 2)
-        else:
-            raise FindError('Unable to find image %s' % where.get_filename())
-
-    elif isinstance(where, str):
-        a_match = find(where, True, in_region)
-        if a_match is not None:
-            pyautogui.moveTo(a_match['x'] + a_match['width'] / 2, a_match['y'] + a_match['height'] / 2)
-        else:
-            raise FindError('Unable to find text %s' % where)
-
-    elif isinstance(where, Location):
-        pyautogui.moveTo(where.x, where.y, duration)
-
-    else:
-        raise ValueError('INVALID_GENERIC_INPUT')

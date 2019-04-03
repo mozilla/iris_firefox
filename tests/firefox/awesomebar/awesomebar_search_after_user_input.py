@@ -29,7 +29,7 @@ class Test(FirefoxTest):
 
         navigate(url)
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert  expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, 'Page successfully loaded, firefox logo found.'
 
         # Type a partial part of the above address and perform a search, in a new tab, using an one-off.
         select_location_bar()
@@ -72,7 +72,7 @@ class Test(FirefoxTest):
         assert expected, 'Searched string found at the bottom of the drop-down list.'
 
         expected = region.exists(bing_one_off_button, 10)
-        assert_true(self, expected, 'The \'Bing\' one-off button found.')
+        assert expected, '\'Bing\' one-off button not found.'
 
         hover(bing_one_off_button)
 

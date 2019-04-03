@@ -10,7 +10,6 @@ from src.core.api.finder.text_search import text_find
 from src.core.api.finder.pattern import Pattern
 from src.core.api.mouse.mouse_controller import Mouse
 from src.core.api.rectangle import Rectangle
-import pyautogui
 
 try:
     from src.core.api.mouse.mouse_controller import Button
@@ -34,6 +33,17 @@ def move(ps: Pattern or str, duration: int = None, region: Rectangle = None, ali
         click_location = _get_string_click_location(ps, region, align)
 
     Mouse().move(click_location, duration)
+
+
+def hover(ps: Pattern or str = None, region: Rectangle = None, align: Alignment = None):
+    """Mouse Hover.
+
+    :param ps: Pattern or String.
+    :param region: Region object in order to minimize the area.
+    :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+    :return: None.
+    """
+    move(ps, 0, region, align)
 
 
 def press(ps: Pattern or str, duration: int = None, region: Rectangle = None, button: Button = Button.left,
