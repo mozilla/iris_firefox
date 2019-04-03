@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         description='This test case disables search suggestions in awesomebar.',
         locale='[en-US]',
         test_case_id='108263',
-        test_suite_id='1902',
-        blocked_by='issue_77'
+        test_suite_id='1902'
     )
     def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -67,7 +66,8 @@ class Test(FirefoxTest):
         click(show_search_suggestions_in_address_bar_results_checked_pattern)
 
         # Move focus away from the clicked option.
-        click(show_search_suggestions_in_address_bar_results_checked_pattern.target_offset(-100, 15))
+        click(show_search_suggestions_in_address_bar_results_checked_pattern.target_offset(-100, 15),
+              align=Alignment.TOP_LEFT)
 
         expected = exists(show_search_suggestions_in_address_bar_results_unchecked_pattern.similar(0.9), 10)
         assert expected, 'Checkbox displayed in front of the \'Show search suggestions in address bar ' \
