@@ -37,6 +37,13 @@ class Test(BaseTest):
         # Detect the locale.
         for value in regions_by_locales.get(self.browser.locale):
             change_preference('browser.search.region', value)
+
+            # Remove the file 'search.json.mozlz4' from the profile directory.
+            profile_temp = IrisCore.get_tempdir()
+            parent, test = IrisCore.parse_module_path()
+            search_json_mozlz4_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
+            os.remove(os.path.join(search_json_mozlz4_path, 'search.json.mozlz4'))
+
             restart_firefox(self,
                             self.browser.path,
                             self.profile_path,
