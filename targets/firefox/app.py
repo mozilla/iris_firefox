@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+import email
 import logging
 import os
 from multiprocessing import Process
@@ -31,7 +31,7 @@ class Target(BaseTarget):
     def __init__(self):
         BaseTarget.__init__(self)
         self.target_name = 'Firefox'
-        self.values = {'fx_version': 0, 'fx_build_id': 0, 'channel': '0'}
+
         self.process_list = []
 
         self.cc_settings = [
@@ -116,7 +116,7 @@ class Target(BaseTarget):
                     item.funcargs['firefox'].browser.runner.stop()
                 if not target_args.save:
                     import shutil
-                    profile_instance=item.funcargs['firefox'].profile
+                    profile_instance = item.funcargs['firefox'].profile
                     if os.path.exists(profile_instance.profile):
                         try:
                             shutil.rmtree(profile_instance.profile)
@@ -143,9 +143,8 @@ class Target(BaseTarget):
 
         if target_args.update_channel:
             set_update_channel_pref(app.path, target_args.update_channel)
-        self.values = {'fx_version': app.version, 'fx_build_id': app.build_id, 'channel': app.channel}
+        Target.values = {'fx_version': app.version, 'fx_build_id': app.build_id, 'channel': app.channel}
         return FXRunner(app, profile)
-
 
         # BaseTarget.pytest_runtest_makereport(self, item, call)
         #

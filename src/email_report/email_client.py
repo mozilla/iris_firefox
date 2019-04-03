@@ -33,9 +33,9 @@ class EmailClient:
         self.targets = ast.literal_eval(get_config_property('EmailRecipients', 'targets'))
 
     @staticmethod
-    def create_email_subject(firefox_version: str):
-        email_info = '[Firefox %s][%s]Iris Test Report %s' % (
-            firefox_version, OSHelper.get_os_version().capitalize(), date.today())
+    def create_email_subject(application: str):
+        email_info = '[%s][%s]Iris Test Report %s' % (
+            application.target_name+" "+str(application.values['fx_version']) if application.target_name else application.target_name, OSHelper.get_os_version().capitalize(), date.today())
         return email_info
 
     @staticmethod
@@ -51,7 +51,7 @@ class EmailClient:
         else:
             raise Exception('File %s is not present in path' % test_report_file)
 
-    def send_email_report(self, firefox_version: str, test_status: str, repo_details: str):
+    def send_email_report(self, application: str, test_status: str, repo_details: str):
         email = MIMEMultipart()
         body_message = ""
         if isinstance(repo_details, dict):
@@ -64,13 +64,14 @@ class EmailClient:
         else:
             raise EmailError("Invalid Body Message")
 
+
         email.attach(body_message)
         attachment = self.get_file_attachment()
         email.attach(attachment)
 
         email['From'] = self.sender
         email['To'] = ', '.join(self.targets)
-        email['Subject'] = self.create_email_subject(firefox_version)
+        email['Subject'] = self.create_email_subject(application)
 
         server = smtplib.SMTP_SSL(self.email_host, self.email_port)
 
@@ -79,6 +80,8 @@ class EmailClient:
         except Exception:
             raise EmailError("User not logged into server. Please check your credentials.")
         else:
+            logger.debug('User succesfully logged into email server')
+
             try:
                 server.sendmail(self.sender, self.targets, email.as_string())
             except Exception:
@@ -88,14 +91,13 @@ class EmailClient:
                 logger.info('Email successfully sent to %s' % self.targets)
 
 
-def submit_email_report(test_results):
+def submit_email_report(application,result):
 
     """ PLACEHOLDER FOR EMAIL REPORT
         :param test_results: TEST RESULT SESSION
         need to update with appliications and git object
     """
-
     logger.info(' --------------------------------------------------------- '+Color.BLUE+'Starting Email report:'+Color.END+' ----------------------------------------------------------\n')
     email_report = EmailClient()
-    email_report.send_email_report("65", str(test_results), PathManager.get_git_details())
+    email_report.send_email_report(application, str(result), PathManager.get_git_details())
 

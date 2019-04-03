@@ -14,6 +14,7 @@ from src.core.api.os_helpers import OSHelper
 from src.core.util.json_utils import update_run_index, create_run_log
 from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
+from src.email_report.email_client import submit_email_report
 
 core_args = get_core_args()
 logger = logging.getLogger(__name__)
@@ -42,7 +43,6 @@ class BaseTarget:
             {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'}
         ]
 
-        self.values = {}
 
     def pytest_sessionstart(self, session):
         """Called after the 'Session' object has been created and before performing test collection.
@@ -75,10 +75,14 @@ class BaseTarget:
 
         update_run_index(self, True)
         footer = create_footer(self)
-        footer.print_report_footer()
+        result=footer.print_report_footer()
         create_run_log(self)
 
         logger.info("** Test session {} complete **".format(session.name))
+
+
+        if core_args.email:
+            submit_email_report(self,result)
 
     def pytest_runtest_setup(self, item):
         os.environ['CURRENT_TEST'] = str(item.__dict__.get('fspath'))
