@@ -91,8 +91,8 @@ class Test(FirefoxTest):
         hover(wikipedia_one_off_button_pattern)
 
         try:
-            expected = region.exists(moz_pattern, 3)
-            assert not expected, 'The \'Wikipedia\' one-off button is highlighted.'
+            expected = region.wait_vanish(moz_pattern, 3)
+            assert expected, 'The \'Wikipedia\' one-off button is highlighted.'
         except FindError:
             raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
 

@@ -135,6 +135,7 @@ class Test(FirefoxTest):
         else:
             type(Key.TAB)
 
+        scroll_down()
         expected = exists(find_more_search_engines_pattern, 10)
         assert expected, '\'Find more search engines\' link found.'
 
