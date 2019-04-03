@@ -10,6 +10,7 @@ from src.core.api.errors import APIHelperError, FindError
 from src.core.api.finder.pattern import Pattern
 from src.core.api.keyboard.key import KeyModifier, Key
 from src.core.api.keyboard.keyboard_api import key_down, key_up, type
+from src.core.api.mouse.mouse import Mouse
 from src.core.api.location import Location
 from src.core.api.os_helpers import OSHelper
 from src.core.api.screen.region import click, drag_drop, find, wait, wait_vanish
@@ -411,7 +412,7 @@ def maximize_window():
         width, height = window_controls_pattern.get_size()
         drag_start = Location(xcoord + 70, ycoord + 5)
         drag_end = Location(xcoord + 75, ycoord + 5)
-        drag_drop(drag_start, drag_end, duration=0.1)
+        Mouse().drag_and_drop(drag_start, drag_end, duration=0.1)
 
         # Alt key changes maximize button from full screen to maximize window.
         maximize_button = window_controls_pattern.target_offset(width / 2 - 3, 0)
