@@ -26,6 +26,7 @@ class Test(BaseTest):
         drop_stuff_here_area_pattern = Pattern('drop_here.png')
 
         navigate('https://mystor.github.io/dragndrop/')
+        
         page_opened = exists(paste_html_data_radiobutton_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, page_opened, 'Firefox started and page loaded successfully.')
 
@@ -83,5 +84,3 @@ class Test(BaseTest):
                                                                     (Key.PAGE_DOWN,))
         assert_true(self, not_matching_message_displayed, '\'Not Matching\' appears under the \'Drop Stuff Here\'' 
                                                           'area, the expected result is different from the result.')
-
-        close_window()
