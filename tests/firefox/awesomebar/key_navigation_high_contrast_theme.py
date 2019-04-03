@@ -66,7 +66,7 @@ class Test(FirefoxTest):
         assert expected, 'The searched string is highlighted.'
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_up(2)
         key_to_one_off_search(search_wikipedia_dark_theme_pattern)

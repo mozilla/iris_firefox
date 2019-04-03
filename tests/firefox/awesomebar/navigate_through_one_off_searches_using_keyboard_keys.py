@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # The search suggestion list has 10 suggestions by default.
         for i in range(10):
@@ -60,7 +60,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # The search suggestion list has 10 suggestions by default.
         for i in range(10):
@@ -80,7 +80,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Navigate through the one-offs list. List has 7 elements by default.
 

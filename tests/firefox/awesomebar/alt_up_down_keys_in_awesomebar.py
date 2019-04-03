@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Navigate through the one-offs list with ALT + arrow UP keys. List has 6 elements but we will navigate 7 times
         # through the one-offs list to make sure that the settings gear button is not included in the cycle.
@@ -60,7 +60,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Navigate through the one-offs list with ALT + arrow DOWN keys. List has 6 elements but we will navigate 7
         # times through the one-offs list to make sure that the settings gear button is not included in the cycle.
@@ -91,7 +91,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # # Start cycling trough the autocomplete results. After this step the first suggestion is highlighted.
         repeat_key_down(1)

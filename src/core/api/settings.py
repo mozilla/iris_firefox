@@ -51,8 +51,9 @@ class _Settings:
     DEFAULT_MOUSE_SCROLL_STEP = 100
     DEFAULT_SITE_LOAD_TIMEOUT = 30
     DEFAULT_HEAVY_SITE_LOAD_TIMEOUT = 90
-    UI_DELAY = 1
+    DEFAULT_UI_DELAY = 1
     DEFAULT_UI_DELAY_LONG = 2.5
+    DEFAULT_SYSTEM_DELAY = 5
 
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
                  move_mouse_delay=DEFAULT_MOVE_MOUSE_DELAY, click_delay=DEFAULT_CLICK_DELAY,

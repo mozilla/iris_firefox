@@ -55,7 +55,7 @@ class Test(FirefoxTest):
                 raise FindError('Element found at position ' + i.__str__() + ' in the list not found.')
 
         click(search_settings_pattern)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         expected = exists(about_preferences_search_page_pattern, 10)
         assert expected, 'The \'about:preferences#search\' page successfully loaded.'
@@ -68,7 +68,7 @@ class Test(FirefoxTest):
         # Uncheck all the search engines from the list.
         while exists(check_engine_pattern, 2):
             click(check_engine_pattern)
-            time.sleep(Settings.UI_DELAY)
+            time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
             expected = region.exists(check_engine_pattern.similar(0.9), 5)

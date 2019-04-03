@@ -76,7 +76,7 @@ def select_location_bar():
     else:
         type(text='l', modifier=KeyModifier.CTRL)
     # Wait to allow the location bar to become responsive.
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def reload_page():
@@ -423,7 +423,7 @@ def maximize_window():
         type(text=Key.UP, modifier=KeyModifier.WIN)
     else:
         type(text=Key.UP, modifier=[KeyModifier.CTRL, KeyModifier.META])
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def minimize_window():
@@ -434,7 +434,7 @@ def minimize_window():
         type(text=Key.DOWN, modifier=KeyModifier.WIN)
     else:
         type(text=Key.DOWN, modifier=[KeyModifier.CTRL, KeyModifier.META])
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def new_tab():
@@ -443,7 +443,7 @@ def new_tab():
         type(text='t', modifier=KeyModifier.CMD)
     else:
         type(text='t', modifier=KeyModifier.CTRL)
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def new_window():
@@ -556,7 +556,7 @@ def bookmark_all_tabs():
     else:
         type(text='d', modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
     # Wait for the Bookmark All Tabs dialog to be opened.
-    time.sleep(Settings.UI_DELAY_LONG)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
 
 def bookmark_page():

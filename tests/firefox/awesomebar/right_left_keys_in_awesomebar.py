@@ -31,7 +31,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Without closing the autocomplete drop-down hit the arrow DOWN key until you reach the first one-off button.
         repeat_key_down(10)

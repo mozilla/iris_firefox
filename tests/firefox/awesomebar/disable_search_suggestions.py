@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         paste('abc')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # The search suggestion list has 10 suggestions by default.
         for i in range(10):
@@ -53,7 +53,7 @@ class Test(FirefoxTest):
         assert expected, 'The \'Search settings\' button is displayed in the awesomebar.'
 
         click(search_settings_pattern)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         expected = exists(about_preferences_search_page_pattern, 10)
         assert expected, 'The \'about:preferences#search\' page successfully loaded.'
@@ -80,7 +80,7 @@ class Test(FirefoxTest):
         paste('abc')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Check that the search suggestion list has now no suggestion.
         for i in range(1):

@@ -54,7 +54,7 @@ class Test(FirefoxTest):
                 raise FindError('Element found at position ' + i.__str__() + ' in the list not found.')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_down(10)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
@@ -91,7 +91,7 @@ class Test(FirefoxTest):
         type('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Declare a variable which can close the while loop if the pattern is not found
 

@@ -44,20 +44,20 @@ def change_preference(pref_name, value):
     try:
         new_tab()
         navigate('about:config')
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.SPACE)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         paste(pref_name)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.TAB)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.TAB)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
             retrieved_value = copy_to_clipboard()
@@ -86,13 +86,13 @@ def change_preference(pref_name, value):
 
 def copy_to_clipboard():
     """Return the value copied to clipboard."""
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
     edit_select_all()
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
     edit_copy()
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
     value = get_clipboard()
-    time.sleep(Settings.UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
     logger.debug("Copied to clipboard: %s" % value)
     return value
 
@@ -127,7 +127,7 @@ def click_hamburger_menu_option(option):
             'Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
         click(hamburger_menu_pattern)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         try:
             region.click(option)
             return region
@@ -315,7 +315,7 @@ def open_library_menu(option):
         raise APIHelperError(
             'Can\'t find the library menu in the page, aborting test.')
     else:
-        time.sleep(Settings.UI_DELAY_LONG)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         click(library_menu_pattern)
         time.sleep(Settings.FX_DELAY)
         try:
@@ -360,6 +360,7 @@ def open_about_firefox():
         type(Key.UP)
         type(Key.ENTER)
 
+
 def get_telemetry_info():
     """Returns telemetry information as a JSON object from 'about:telemetry'
     page.
@@ -392,7 +393,7 @@ def get_telemetry_info():
 
     try:
         click(copy_raw_data_to_clipboard_pattern)
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         json_text = get_clipboard()
         return json.loads(json_text)
     except Exception as e:
@@ -400,7 +401,6 @@ def get_telemetry_info():
             'Failed to retrieve raw message information value. %s' % e.message)
     finally:
         close_tab()
-
 
 
 class RightClickLocationBar(object):

@@ -36,7 +36,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         for i in range(7):
             scroll_down()
