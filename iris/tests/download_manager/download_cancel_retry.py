@@ -27,11 +27,10 @@ class Test(BaseTest):
         return
 
     def run(self):
-        file_to_download = DownloadFiles.EXTRA_LARGE_FILE_512MB
+        file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(10)
         download_file(file_to_download, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)

@@ -29,9 +29,8 @@ class Test(BaseTest):
         return
 
     def run(self):
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(20)
         download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
 
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
@@ -70,6 +69,9 @@ class Test(BaseTest):
             raise FindError('The downloads folder was not closed.')
 
         # Switch the focus on firefox browser.
+        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+        assert_true(self, expected, 'Download button found in the page.')
+
         click(NavBar.DOWNLOADS_BUTTON.target_offset(-70, 15))
 
         click(NavBar.DOWNLOADS_BUTTON)

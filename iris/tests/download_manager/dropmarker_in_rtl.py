@@ -73,13 +73,18 @@ class Test(BaseTest):
         expected = region_left.exists(NavBar.LIBRARY_MENU)
         assert_true(self, expected, '\'Library Menu dialog\' button is aligned RTL.')
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
         download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
                                DownloadFiles.EXTRA_SMALL_FILE_5MB]
 
-        scroll(5)
         for f in download_files_list:
             download_file(f, DownloadFiles.OK)
+            file_index = download_files_list.index(f)
+
+            if file_index == 0:
+                expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+                assert_true(self, expected, 'Download button found in the page.')
+
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(50, 0))
 
         # Check if Downloads Panel details are aligned RTL,

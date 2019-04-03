@@ -33,52 +33,39 @@ class Test(BaseTest):
                                DownloadFiles.MEDIUM_FILE_100MB, DownloadFiles.MEDIUM_FILE_50MB,
                                DownloadFiles.SMALL_FILE_20MB]
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(5)
+        # Wait for the page to be loaded.
+        try:
+            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+            logger.debug('File is present in the page.')
+        except FindError:
+            raise FindError('File is not present in the page.')
+
+        select_throttling(NetworkOption.REGULAR_4G)
+
         for f in download_files_list:
-
             download_file(f, DownloadFiles.OK)
-            file_index = download_files_list.index(f)
 
-            if file_index != 0:
-                click(NavBar.DOWNLOADS_BUTTON)
+        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+        assert_true(self, expected, 'Download button found in the page.')
 
-            expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
-            assert_true(self, expected, 'Progress information is displayed.')
-            expected = exists(DownloadManager.DownloadState.SPEED_PER_SECOND, 10)
-            assert_true(self, expected, 'Speed information is displayed.')
+        click(NavBar.DOWNLOADS_BUTTON)
 
-            if file_index == 0:
-                expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_1GB, 10)
-                assert_true(self, expected, 'Total size information is displayed for 1 GB file.')
-
-            if file_index == 1:
-                expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_512MB, 10)
-                assert_true(self, expected, 'Total size information is displayed for 512 MB file.')
-
-            if file_index == 2:
-                expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_100MB, 10)
-                assert_true(self, expected, 'Total size information is displayed for 100 MB file.')
-
-            if file_index == 3:
-                expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_50MB, 10)
-                assert_true(self, expected, 'Total size information is displayed for 50 MB file.')
-
-            if (Settings.get_os() is not Platform.LINUX) and file_index == 4:
-                expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_20MB, 10)
-                assert_true(self, expected, 'Total size information is displayed for 20 MB file.')
-
-            click(NavBar.DOWNLOADS_BUTTON.target_offset(-50, 0))
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
+        assert_true(self, expected, '1GB file is present in the download panel.')
 
         download_file(file_to_download, DownloadFiles.OK)
 
         click(NavBar.DOWNLOADS_BUTTON)
+
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_5MB, 10)
         assert_true(self, expected, '5MB file was downloaded.')
 
-        expected = exists(DownloadManager.DownloadState.COMPLETED, 10)
-        assert_true(self, expected, 'Download completed information is displayed.')
+        expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
+        assert_true(self, expected, 'Progress information is displayed.')
+        expected = exists(DownloadManager.DownloadState.SPEED_PER_SECOND, 10)
+        assert_true(self, expected, 'Speed information is displayed.')
 
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
         assert_false(self, expected, '1GB file was removed from the download panel.')

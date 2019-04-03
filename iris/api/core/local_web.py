@@ -81,5 +81,5 @@ class LocalWeb(object):
     CNN_LOGO = Pattern('cnn_logo.png')
     CNN_BLOCKED_CONTENT_ADV = Pattern('cnn_blocked_content.png')
 
-
-
+    """Thinkbroadband site"""
+    THINKBROADBAND_TEST_SITE = 'http://%s:%s/thinkbroadband/' % (_ip_host, _port)

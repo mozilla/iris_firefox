@@ -82,6 +82,10 @@ class Test(BaseTest):
             expected = exists(malicious_file, 10)
             assert_true(self, expected, 'Malicious file is displayed.')
             click_window_control('close')
+
+            expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+            assert_true(self, expected, 'Download button found in the page.')
+
             click(NavBar.DOWNLOADS_BUTTON)
             right_click(DownloadManager.DownloadState.COMPLETED)
         else:

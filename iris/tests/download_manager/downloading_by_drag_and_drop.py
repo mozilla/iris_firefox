@@ -33,11 +33,19 @@ class Test(BaseTest):
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert_true(self, expected, 'Downloads button successfully activated in the nav bar.')
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+
+        # Wait for the page to be loaded.
+        try:
+            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+            logger.debug('File is present in the page.')
+        except FindError:
+            raise FindError('File is not present in the page.')
+
+        select_throttling(NetworkOption.GPRS)
 
         max_attempts = 10
         while max_attempts > 0:
-            scroll_down(5)
             if exists(DownloadFiles.VERY_LARGE_FILE_1GB, 2):
                 # Wait a moment to ensure button can be grabbed for drag operation
                 time.sleep(Settings.UI_DELAY)
@@ -55,5 +63,4 @@ class Test(BaseTest):
         click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
 
     def teardown(self):
-
         downloads_cleanup()
