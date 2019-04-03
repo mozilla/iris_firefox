@@ -54,16 +54,13 @@ class Test(FirefoxTest):
         # Deleted assert for ebay because we no longer have the ebay search engine in some locations.
 
         # Check that the default one-off list is displayed in the awesomebar.
-        for i in range(pattern_list.__len__()):
-            try:
-                if OSHelper.is_mac():
-                    expected = region.exists(pattern_list[i].similar(0.7), 10)
-                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
-                else:
-                    expected = region.exists(pattern_list[i].similar(0.9), 10)
-                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
-            except FindError:
-                raise FindError('Element found at position ' + i.__str__() + ' in the list not found.')
+        for index, pattern in enumerate(pattern_list):
+            if OSHelper.is_mac():
+                expected = region.exists(pattern.similar(0.7), 10)
+                assert expected, 'Element found at position {} in the list found.'.format(index)
+            else:
+                expected = region.exists(pattern.similar(0.8), 10)
+                assert expected, 'Element found at position {} in the list found.'.format(index)
 
         click(search_settings_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
@@ -122,16 +119,14 @@ class Test(FirefoxTest):
         if OSHelper.is_windows() or OSHelper.is_linux():
             try:
                 expected = wait_vanish(google_one_off_button_pattern, 10)
-                assert expected, 'Unchecked search engine successfully removed from the one-off searches'' bar.'
+                assert expected, 'Unchecked search engine successfully removed from the one-off searches bar.'
             except FindError:
                 raise FindError('Unchecked search engine not removed from the one-off searches bar.')
         else:
             expected = exists(google_one_off_button_pattern.similar(0.9), 10)
             assert not expected, 'Unchecked search engine successfully removed from the one-off searches bar.'
 
-        # Add a new search engine.
         next_tab()
-
         for i in range(12):
             type(Key.TAB)
 

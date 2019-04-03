@@ -42,17 +42,13 @@ class Test(FirefoxTest):
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, google_one_off_button_pattern,
                         twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 
-        # Check that the one-off list is displayed in the awesomebar by default.
-        for i in range(pattern_list.__len__()):
-            try:
-                if OSHelper.get_os() == OSPlatform.MAC:
-                    expected = region.exists(pattern_list[i].similar(0.7), 10)
-                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
-                else:
-                    expected = region.exists(pattern_list[i].similar(0.9), 10)
-                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
-            except FindError:
-                raise FindError('Element found at position ' + i.__str__() + ' in the list not found.')
+        for index, pattern in enumerate(pattern_list):
+            if OSHelper.is_mac():
+                expected = region.exists(pattern.similar(0.7), 10)
+                assert expected, 'Element found at position {} in the list found.'.format(index)
+            else:
+                expected = region.exists(pattern.similar(0.8), 10)
+                assert expected, 'Element found at position {} in the list found.'.format(index)
 
         click(search_settings_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -70,11 +66,8 @@ class Test(FirefoxTest):
             click(check_engine_pattern)
             time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        try:
-            expected = region.exists(check_engine_pattern.similar(0.9), 5)
-            assert not expected, 'Each search engine is unchecked.'
-        except FindError:
-            raise FindError('There are search engines still checked.')
+        expected = region.exists(check_engine_pattern.similar(0.9), 5)
+        assert not expected, 'Each search engine is unchecked.'
 
         new_tab()
 
@@ -82,9 +75,6 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Check that the one-off list is not displayed in the awesomebar after each search engine was unchecked.
-        for i in range(pattern_list.__len__()):
-            try:
-                expected = exists(pattern_list[i].similar(0.9), 5)
-                assert not expected, 'Element found at position ' + i.__str__() + ' in the list not found.'
-            except FindError:
-                raise FindError('Element found at position ' + i.__str__() + ' in the list found.')
+        for index, pattern in enumerate(pattern_list):
+            expected = exists(pattern.similar(0.9), 1)
+            assert not expected, 'Element found at position {} in the list not found.'.format(index)

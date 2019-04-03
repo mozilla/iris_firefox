@@ -48,7 +48,7 @@ class Test(FirefoxTest):
         expected = region.exists(localhost, 10)
         assert expected, 'Searched string found at the bottom of the drop-down list.'
 
-        hover(coord)
+        Mouse().move(coord)
 
         expected = exists(hover_duck_duck_go_one_off_button, 10)
         assert expected, 'Mouse is over the \'DuckDuckGo\' search engine.'

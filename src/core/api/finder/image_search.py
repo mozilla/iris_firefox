@@ -33,6 +33,9 @@ FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 def _is_pattern_size_correct(pattern, region):
     """validates that the pattern is inside the region."""
+    if region is None:
+        return True
+
     p_width, p_height = pattern.get_size()
     r_width = region.width
     r_height = region.height

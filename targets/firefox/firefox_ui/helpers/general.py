@@ -317,9 +317,9 @@ def open_library_menu(option):
     else:
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         click(library_menu_pattern)
-        time.sleep(Settings.FX_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         try:
-            time.sleep(Settings.FX_DELAY)
+            time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
             region.wait(option, 10)
             logger.debug('Option found.')
             region.click(option)
