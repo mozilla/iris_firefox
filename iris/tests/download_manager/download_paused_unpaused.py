@@ -27,10 +27,9 @@ class Test(BaseTest):
         return
 
     def run(self):
-        file_to_download = DownloadFiles.MEDIUM_FILE_50MB
-        navigate('https://www.thinkbroadband.com/download')
+        file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(15)
         download_file(file_to_download, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadState.PROGRESS, 10)

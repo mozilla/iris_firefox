@@ -28,13 +28,21 @@ class Test(BaseTest):
         return
 
     def run(self):
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(15)
+        # Wait for the page to be loaded.
+        try:
+            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+            logger.debug('File is present in the page.')
+        except FindError:
+            raise FindError('File is not present in the page.')
+
+        select_throttling(NetworkOption.GOOD_3G)
+
         if Settings.get_os() == Platform.LINUX:
-            download_file(DownloadFiles.MEDIUM_FILE_50MB, DownloadFiles.OK)
+            download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
         else:
-            download_file(DownloadFiles.SMALL_FILE_20MB, DownloadFiles.OK)
+            download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert_true(self, expected, 'Progress information is displayed.')
@@ -42,9 +50,12 @@ class Test(BaseTest):
         assert_true(self, expected, 'Speed information is displayed.')
 
         # Download a second file to check the blue download arrow
+        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+        assert_true(self, expected, 'Download button found in the page.')
+
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
         download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
-        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 90)
         assert_true(self, expected, 'Downloads button found.')
 
     def teardown(self):

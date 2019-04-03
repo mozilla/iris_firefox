@@ -32,11 +32,16 @@ class Test(BaseTest):
         downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED, DownloadFiles.LIBRARY_DOWNLOADS_10MB,
                                   DownloadFiles.LIBRARY_DOWNLOADS_20MB]
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(20)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
+            file_index = download_files_list.index(pattern)
+
+            if file_index == 0:
+                expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+                assert_true(self, expected, 'Download button found in the page.')
+
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
         # Open the Library - Downloads section.

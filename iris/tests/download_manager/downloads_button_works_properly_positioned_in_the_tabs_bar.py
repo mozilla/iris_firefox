@@ -45,9 +45,8 @@ class Test(BaseTest):
         expected = exists(NavBar.CUSTOM_DOWNLOADS_BUTTON, 10)
         assert_true(self, expected, 'Custom Download button is available in tabs bar.')
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(25)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
 
@@ -72,5 +71,4 @@ class Test(BaseTest):
         close_window()
 
     def teardown(self):
-
         downloads_cleanup()

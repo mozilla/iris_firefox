@@ -28,9 +28,17 @@ class Test(BaseTest):
         return
 
     def run(self):
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(5)
+        # Wait for the page to be loaded.
+        try:
+            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+            logger.debug('File is present in the page.')
+        except FindError:
+            raise FindError('File is not present in the page.')
+
+        select_throttling(NetworkOption.GOOD_3G)
+
         download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
 
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
@@ -42,9 +50,6 @@ class Test(BaseTest):
 
         expected = exists(DownloadManager.DownloadsPanel.TIME_LEFT.similar(0.7), 10)
         assert_true(self, expected, 'Time left information is displayed.')
-
-        expected = exists(DownloadManager.DownloadsPanel.OF_1GB, 10)
-        assert_true(self, expected, 'Downloaded total size is displayed.')
 
         expected = exists(DownloadManager.DownloadsPanel.BYTES_SECOND, 10)
         assert_true(self, expected, 'Speed of download is displayed.')

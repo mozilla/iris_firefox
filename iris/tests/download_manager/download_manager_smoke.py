@@ -52,6 +52,9 @@ class Test(BaseTest):
 
         click_window_control('close')
 
+        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+        assert_true(self, expected, 'Download button found in the page.')
+
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
     def teardown(self):

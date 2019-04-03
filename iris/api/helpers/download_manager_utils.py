@@ -10,11 +10,12 @@ from iris.api.core.firefox_ui.download_manager import DownloadManager
 from iris.api.core.firefox_ui.library import Library
 from iris.api.core.firefox_ui.library_menu import LibraryMenu
 from iris.api.core.firefox_ui.nav_bar import NavBar
+from iris.api.core.key import *
 from iris.api.core.mouse import click
 from iris.api.core.region import wait, exists, Pattern, Region, find, SCREEN_HEIGHT, SCREEN_WIDTH
 from iris.api.core.util.core_helper import IrisCore
 from iris.api.helpers.general import click_window_control, close_tab
-from iris.api.helpers.keyboard_shortcuts import scroll_down
+from iris.api.helpers.keyboard_shortcuts import scroll_down, open_web_console
 from iris.api.helpers.test_utils import access_and_check_pattern, Step
 
 logger = logging.getLogger(__name__)
@@ -71,72 +72,10 @@ class DownloadFiles(object):
     CANCEL_ALL_DOWNLOADS_POP_UP = Pattern('cancel_all_downloads.png')
 
 
-def download_file(file_to_download, accept_download):
-    """
-    :param file_to_download: File to be downloaded.
-    :param accept_download: Accept download pattern.
-    :return: None.
-    """
-    file_found = exists(file_to_download, 2)
-    if file_found:
-        click(file_to_download)
-    else:
-        while not file_found:
-            scroll_down(5)
-            try:
-                click(file_to_download)
-                file_found = True
-            except FindError:
-                file_found = False
-            if exists(DownloadFiles.ABOUT, 2):
-                raise APIHelperError('File to be downloaded not found.')
-
-    try:
-        wait(DownloadFiles.SAVE_FILE, 5)
-        logger.debug('The \'Save file\' option is present in the page.')
-        click(DownloadFiles.SAVE_FILE)
-    except FindError:
-        raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
-
-    try:
-        ok_button = exists(accept_download, 5)
-        if ok_button:
-            logger.debug('The OK button found in the page.')
-            click(accept_download)
-    except FindError:
-        raise APIHelperError('The OK button is not found in the page.')
-
-
-def downloads_cleanup():
-    path = IrisCore.get_downloads_dir()
-    shutil.rmtree(path, ignore_errors=True)
-
-
-def open_show_downloads_window_using_download_panel():
-    return [
-        access_and_check_pattern(NavBar.DOWNLOADS_BUTTON, '\"Downloads panel\"', DownloadManager.SHOW_ALL_DOWNLOADS,
-                                 'click'),
-        access_and_check_pattern(DownloadManager.SHOW_ALL_DOWNLOADS, '\"Show all downloads\"',
-                                 Library.DownloadLibrary.DOWNLOADS, 'click'),
-        access_and_check_pattern(Library.DownloadLibrary.DOWNLOADS, '\"Downloads library\"')]
-
-
-def open_show_all_downloads_window_from_library_menu():
-    return [
-        access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.DOWNLOADS, 'click'),
-        access_and_check_pattern(LibraryMenu.DOWNLOADS, '\"Downloads menu\"',
-                                 DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
-        access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
-                                 Library.DownloadLibrary.DOWNLOADS, 'click')]
-
-
-def show_all_downloads_from_library_menu_private_window():
-    return [
-        access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.DOWNLOADS, 'click'),
-        access_and_check_pattern(LibraryMenu.DOWNLOADS, '\"Downloads menu\"',
-                                 DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
-        access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
-                                 DownloadManager.AboutDownloads.ABOUT_DOWNLOADS, 'click')]
+def cancel_and_clear_downloads(private_window=False):
+    logger.info('>>>Downloads Cleanup steps<<<')
+    for step in cancel_in_progress_downloads_from_the_library(private_window):
+        logger.info('Step %s - passed? %s' % (step.message, step.resolution))
 
 
 def cancel_in_progress_downloads_from_the_library(private_window=False):
@@ -202,11 +141,107 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     return steps
 
 
-def cancel_and_clear_downloads(private_window=False):
-    logger.info('>>>Downloads Cleanup steps<<<')
-    for step in cancel_in_progress_downloads_from_the_library(private_window):
-        logger.info('Step %s - passed? %s' % (step.message, step.resolution))
+def download_file(file_to_download, accept_download):
+    """
+    :param file_to_download: File to be downloaded.
+    :param accept_download: Accept download pattern.
+    :return: None.
+    """
+    file_found = exists(file_to_download, 2)
+    if file_found:
+        click(file_to_download)
+    else:
+        while not file_found:
+            scroll_down(5)
+            try:
+                click(file_to_download)
+                file_found = True
+            except FindError:
+                file_found = False
+            if exists(DownloadFiles.ABOUT, 2):
+                raise APIHelperError('File to be downloaded not found.')
+
+    try:
+        wait(DownloadFiles.SAVE_FILE, 90)
+        logger.debug('The \'Save file\' option is present in the page.')
+        click(DownloadFiles.SAVE_FILE)
+    except FindError:
+        raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
+
+    try:
+        ok_button = exists(accept_download, 5)
+        if ok_button:
+            logger.debug('The OK button found in the page.')
+            click(accept_download)
+    except FindError:
+        raise APIHelperError('The OK button is not found in the page.')
+
+
+def downloads_cleanup():
+    path = IrisCore.get_downloads_dir()
+    shutil.rmtree(path, ignore_errors=True)
 
 
 def force_delete_folder(path):
     shutil.rmtree(path, ignore_errors=True)
+
+
+def open_show_all_downloads_window_from_library_menu():
+    return [
+        access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.DOWNLOADS, 'click'),
+        access_and_check_pattern(LibraryMenu.DOWNLOADS, '\"Downloads menu\"',
+                                 DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
+        access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
+                                 Library.DownloadLibrary.DOWNLOADS, 'click')]
+
+
+def open_show_downloads_window_using_download_panel():
+    return [
+        access_and_check_pattern(NavBar.DOWNLOADS_BUTTON, '\"Downloads panel\"', DownloadManager.SHOW_ALL_DOWNLOADS,
+                                 'click'),
+        access_and_check_pattern(DownloadManager.SHOW_ALL_DOWNLOADS, '\"Show all downloads\"',
+                                 Library.DownloadLibrary.DOWNLOADS, 'click'),
+        access_and_check_pattern(Library.DownloadLibrary.DOWNLOADS, '\"Downloads library\"')]
+
+
+def select_throttling(option):
+    open_web_console()
+
+    try:
+        wait(Pattern('network.png'), 10)
+        click(Pattern('network.png'))
+    except FindError:
+        raise APIHelperError('Can\'t find the network menu in the page, aborting test.')
+
+    try:
+        wait(Pattern('no_throttling.png'), 10)
+        click(Pattern('no_throttling.png'))
+    except FindError:
+        raise APIHelperError('Can\'t find the throttling menu in the page, aborting test.')
+
+    for i in range(option + 1):
+        type(Key.DOWN)
+    type(Key.ENTER)
+
+
+def show_all_downloads_from_library_menu_private_window():
+    return [
+        access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.DOWNLOADS, 'click'),
+        access_and_check_pattern(LibraryMenu.DOWNLOADS, '\"Downloads menu\"',
+                                 DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, 'click'),
+        access_and_check_pattern(DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '\"Downloads library\"',
+                                 DownloadManager.AboutDownloads.ABOUT_DOWNLOADS, 'click')]
+
+
+class NetworkOption(object):
+    """Class with throttling options."""
+
+    NO_THROTTLING = 0
+    GPRS = 1
+    REGULAR_2G = 2
+    GOOD_2G = 3
+    REGULAR_3G = 4
+    GOOD_3G = 5
+    REGULAR_4G = 6
+    DSL = 7
+    WIFI = 8

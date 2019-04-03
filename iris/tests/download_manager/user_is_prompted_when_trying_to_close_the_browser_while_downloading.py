@@ -30,19 +30,30 @@ class Test(BaseTest):
     def run(self):
         download_files_list = [DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.EXTRA_LARGE_FILE_512MB]
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(5)
+        # Wait for the page to be loaded.
+        try:
+            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+            logger.debug('File is present in the page.')
+        except FindError:
+            raise FindError('File is not present in the page.')
+
+        select_throttling(NetworkOption.GOOD_3G)
+
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
+            file_index = download_files_list.index(pattern)
+
+            if file_index == 0:
+                expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+                assert_true(self, expected, 'Download button found in the page.')
+
             click(NavBar.DOWNLOADS_BUTTON.target_offset(-50, 0))
 
         click(NavBar.DOWNLOADS_BUTTON)
-        expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_1GB, 10)
-        assert_true(self, expected, 'The 1GB download is in progress.')
-
-        expected = exists(DownloadFiles.TOTAL_DOWNLOAD_SIZE_512MB, 10)
-        assert_true(self, expected, 'The 512MB download is in progress.')
+        expected = exists(DownloadManager.DownloadState.SPEED_PER_SECOND, 10)
+        assert_true(self, expected, 'At least one download is in progress.')
 
         quit_firefox()
 
