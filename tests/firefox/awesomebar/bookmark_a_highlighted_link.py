@@ -9,10 +9,10 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case checks the position of the bookmark drop down for a highlighted link.",
+        description='This test case checks the position of the bookmark drop down for a highlighted link.',
         locale='[en-US]',
-        test_case_id="117526",
-        test_suite_id="1902"
+        test_case_id='117526',
+        test_suite_id='1902'
     )
     def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

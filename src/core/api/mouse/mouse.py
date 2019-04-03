@@ -6,10 +6,10 @@
 from src.core.api.enums import Alignment
 from src.core.api.errors import FindError
 from src.core.api.finder.image_search import image_find
+from src.core.api.finder.text_search import text_find
 from src.core.api.finder.pattern import Pattern
 from src.core.api.mouse.mouse_controller import Mouse
 from src.core.api.rectangle import Rectangle
-import pyautogui
 
 try:
     from src.core.api.mouse.mouse_controller import Button
@@ -29,8 +29,21 @@ def move(ps: Pattern or str, duration: int = None, region: Rectangle = None, ali
     click_location = None
     if isinstance(ps, Pattern):
         click_location = _get_pattern_click_location(ps, region, align)
+    if isinstance(ps, str):
+        click_location = _get_string_click_location(ps, region, align)
 
     Mouse().move(click_location, duration)
+
+
+def hover(ps: Pattern or str = None, region: Rectangle = None, align: Alignment = None):
+    """Mouse Hover.
+
+    :param ps: Pattern or String.
+    :param region: Region object in order to minimize the area.
+    :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+    :return: None.
+    """
+    move(ps, 0, region, align)
 
 
 def press(ps: Pattern or str, duration: int = None, region: Rectangle = None, button: Button = Button.left,
@@ -47,6 +60,8 @@ def press(ps: Pattern or str, duration: int = None, region: Rectangle = None, bu
     click_location = None
     if isinstance(ps, Pattern):
         click_location = _get_pattern_click_location(ps, region, align)
+    if isinstance(ps, str):
+        click_location = _get_string_click_location(ps, region, align)
 
     Mouse().press(click_location, duration, button)
 
@@ -65,6 +80,8 @@ def release(ps: Pattern or str, duration: int = None, region: Rectangle = None, 
     click_location = None
     if isinstance(ps, Pattern):
         click_location = _get_pattern_click_location(ps, region, align)
+    if isinstance(ps, str):
+        click_location = _get_string_click_location(ps, region, align)
 
     Mouse().release(click_location, duration, button)
 
@@ -82,6 +99,8 @@ def click(ps: Pattern or str = None, duration: int = None, region: Rectangle = N
     click_location = None
     if isinstance(ps, Pattern):
         click_location = _get_pattern_click_location(ps, region, align)
+    if isinstance(ps, str):
+        click_location = _get_string_click_location(ps, region, align)
 
     Mouse().general_click(click_location, duration, Button.left, 1)
 
@@ -99,6 +118,8 @@ def right_click(ps: Pattern or str = None, duration: int = None, region: Rectang
     click_location = None
     if isinstance(ps, Pattern):
         click_location = _get_pattern_click_location(ps, region, align)
+    if isinstance(ps, str):
+        click_location = _get_string_click_location(ps, region, align)
 
     Mouse().general_click(click_location, duration, Button.right, 1)
 
@@ -116,6 +137,8 @@ def double_click(ps: Pattern or str = None, duration: int = None, region: Rectan
     click_location = None
     if isinstance(ps, Pattern):
         click_location = _get_pattern_click_location(ps, region, align)
+    if isinstance(ps, str):
+        click_location = _get_string_click_location(ps, region, align)
 
     Mouse().general_click(click_location, duration, Button.left, 2)
 
@@ -136,16 +159,22 @@ def drag_drop(drag_from: Pattern or str, drop_to: Pattern or str, region: Rectan
 
     if isinstance(drag_from, Pattern):
         loc_from = _get_pattern_click_location(drag_from, region, align)
+    if isinstance(drag_from, str):
+        loc_from = _get_string_click_location(drag_from, region, align)
 
-    if isinstance(drag_from, Pattern):
+    if isinstance(drop_to, Pattern):
         loc_to = _get_pattern_click_location(drop_to, region, align)
+    if isinstance(drop_to, str):
+        loc_to = _get_string_click_location(drop_to, region, align)
 
     Mouse().drag_and_drop(loc_from, loc_to, duration)
+
 
 def mouse_reset():
     """Reset Mouse coordinates to top left corner."""
 
-    pyautogui.moveTo(0,0)
+    Mouse().move(None)
+
 
 def scroll_down(dy: int = None, iterations: int = 1):
     """Scroll down mouse event."""
@@ -185,3 +214,15 @@ def _get_pattern_click_location(ps: Pattern, region: Rectangle = None, align: Al
 
     rect = Rectangle(find_location.x, find_location.y, width, height)
     return rect.apply_alignment(align)
+
+
+def _get_string_click_location(ps: str, region: Rectangle = None, align: Alignment = None):
+    if align is None:
+        align = Alignment.CENTER
+
+    find_location = text_find(ps, region)
+
+    if find_location is None:
+        raise FindError('Unable to click on: %s' % ps)
+
+    return find_location[0].apply_alignment(align)

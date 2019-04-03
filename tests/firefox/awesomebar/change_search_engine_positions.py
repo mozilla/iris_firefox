@@ -9,11 +9,11 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="his test case verifies that changing the search engines positions the change is applied in ' \
-                    'awesome bar too.",
+        description='This test case verifies that changing the search engines positions the change is applied in '
+                    'awesome bar too.',
         locale='[en-US]',
-        test_case_id="108262",
-        test_suite_id="1902"
+        test_case_id='108262',
+        test_suite_id='1902'
     )
     def test_run(self, firefox):
         search_engine_pattern = Pattern('search_engine.png')
@@ -31,13 +31,13 @@ class Test(FirefoxTest):
         search_with_duckduckgo_one_off_string_pattern = Pattern('search_with_DuckDuckGo_one_off_string.png')
         search_with_bing_one_off_string_pattern = Pattern('search_with_Bing_one_off_string.png')
 
-        region = Region(0, 0, Screen().width , 2*Screen().height / 3)
+        region = Region(0, 0, Screen().width, 2*Screen().height / 3)
 
         select_location_bar()
         paste('moz')
 
         pattern_list = [google_one_off_button_pattern, bing_one_off_button_pattern, twitter_one_off_button_pattern,
-                        wikipedia_one_off_button_pattern,amazon_one_off_button_pattern]
+                        wikipedia_one_off_button_pattern, amazon_one_off_button_pattern]
 
         # Deleted assert for ebay because we no longer have the ebay search engine in place in some locations.
 
@@ -49,23 +49,25 @@ class Test(FirefoxTest):
                     assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
                 else:
                     expected = region.exists(pattern_list[i].similar(0.9), 10)
-                    assert  expected, 'Element found at position ' + i.__str__() + ' in the list found.'
+                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
             except FindError:
                 raise FindError('Element found at position ' + i.__str__() + ' in the list not found.')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_down(10)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'The \'Google\' one-off search engine holds the first position in the one-offs ''list by default.'
+        assert expected, 'The \'Google\' one-off search engine holds the first position in the one-offs ' \
+                         'list by default.'
 
         type(Key.DOWN)
 
         expected = region.exists(search_with_bing_one_off_string_pattern, 10)
-        assert expected, 'The \'Bing\' one-off search engine holds the second position in the one-offs ''list by default.'
+        assert expected, 'The \'Bing\' one-off search engine holds the second position in the one-offs ' \
+                         'list by default.'
 
         # Navigate to the about:preferences#search page and reorder the search engines.
         click(search_settings_pattern)
@@ -89,7 +91,7 @@ class Test(FirefoxTest):
         type('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Declare a variable which can close the while loop if the pattern is not found
 
@@ -97,9 +99,11 @@ class Test(FirefoxTest):
         key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'The \'Google\' one-off search engine still holds the first position in the ''one-offs list after reorder.'
+        assert expected, 'The \'Google\' one-off search engine still holds the first position in the ' \
+                         'one-offs list after reorder.'
 
         type(Key.DOWN)
 
         expected = region.exists(search_with_duckduckgo_one_off_string_pattern, 10)
-        assert expected, 'The \'DuckDuckGo\' one-off search engine holds the second position in the'' one-offs list after reorder.'
+        assert expected, 'The \'DuckDuckGo\' one-off search engine holds the second position in the ' \
+                         'one-offs list after reorder.'

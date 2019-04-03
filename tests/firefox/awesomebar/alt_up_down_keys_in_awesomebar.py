@@ -1,17 +1,19 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="Alt+UP/DOWN Keys - in the Awesome Bar.",
+        description='Alt+UP/DOWN Keys - in the Awesome Bar.',
         locale='[en-US]',
         blocked_by={'id': '1488708', 'platform': ["linux"]},
-        test_case_id="108278",
-        test_suite_id="1902"
+        test_case_id='108278',
+        test_suite_id='1902'
     )
     def test_run(self, firefox):
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
@@ -26,7 +28,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Navigate through the one-offs list with ALT + arrow UP keys. List has 6 elements but we will navigate 7 times
         # through the one-offs list to make sure that the settings gear button is not included in the cycle.
@@ -58,7 +60,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Navigate through the one-offs list with ALT + arrow DOWN keys. List has 6 elements but we will navigate 7
         # times through the one-offs list to make sure that the settings gear button is not included in the cycle.
@@ -89,7 +91,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # # Start cycling trough the autocomplete results. After this step the first suggestion is highlighted.
         repeat_key_down(1)
@@ -129,4 +131,5 @@ class Test(FirefoxTest):
         assert expected, '\'Wikipedia\' is the one-off in focus.'
 
         expected = region.exists(moz_search_wikipedia_pattern, 10)
-        assert expected, 'Previously autocomplete result in focus is still highlighted after navigating back''and forth using the \'ALT\' and arrow UP/DOWN keys.'
+        assert expected, 'Previously autocomplete result in focus is still highlighted after navigating back ' \
+                         'and forth using the \'ALT\' and arrow UP/DOWN keys.'

@@ -1,16 +1,18 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case perform one-offs searches in private browsing.",
+        description='This test case perform one-offs searches in private browsing.',
         locale='[en-US]',
-        test_case_id="108253",
-        test_suite_id="1902",
+        test_case_id='108253',
+        test_suite_id='1902',
         locales=['en-US']
     )
     def test_run(self, firefox):
@@ -51,8 +53,8 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = exists(new_tab_twitter_search_results_pattern, 10) \
-                   or exists(new_tab_twitter_search_results_pattern2, 5)
+        expected = exists(new_tab_twitter_search_results_pattern, 10) or exists(new_tab_twitter_search_results_pattern2,
+                                                                                5)
         assert expected, 'Twitter search results are opened in the same tab.'
 
         new_tab()

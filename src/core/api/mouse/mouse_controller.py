@@ -111,7 +111,7 @@ class Mouse:
         :param duration: Speed of mouse movement to the drag and drop location.
         :return: None.
         """
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         self.move(start, duration)
         time.sleep(Settings.delay_before_mouse_down)
         self.mouse.press(Button.left)

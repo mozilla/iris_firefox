@@ -33,6 +33,9 @@ FIND_METHOD = cv2.TM_CCOEFF_NORMED
 
 def _is_pattern_size_correct(pattern, region):
     """validates that the pattern is inside the region."""
+    if region is None:
+        return True
+
     p_width, p_height = pattern.get_size()
     r_width = region.width
     r_height = region.height
@@ -152,12 +155,12 @@ def image_vanish(pattern: Pattern, timeout: float = None, region: Rectangle = No
     start_time = datetime.datetime.now()
     end_time = start_time + datetime.timedelta(seconds=timeout)
 
-    while pattern_found is True and start_time < end_time:
+    while pattern_found and start_time < end_time:
         image_found = match_template(pattern, region, MatchTemplateType.SINGLE)
         if len(image_found) == 0:
-            pattern_found = True
-        else:
             pattern_found = False
+        else:
+            pattern_found = True
         start_time = datetime.datetime.now()
 
     return None if pattern_found else True

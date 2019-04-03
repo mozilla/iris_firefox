@@ -57,7 +57,7 @@ class Test(FirefoxTest):
         assert expected, 'The \'Search settings\' button is displayed in the awesomebar.'
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_down(16)
         key_to_one_off_search(settings_gear_highlighted_pattern, "right")

@@ -45,7 +45,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_up(7)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
@@ -71,7 +71,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_up(6)
         key_to_one_off_search(search_with_bing_one_off_string_pattern)
@@ -92,7 +92,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_up(5)
         key_to_one_off_search(search_with_amazon_one_off_string_pattern)
@@ -113,7 +113,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_up(4)
         key_to_one_off_search(search_with_duckduckgo_one_off_string_pattern)
@@ -143,7 +143,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_up(3)
         key_to_one_off_search(search_with_twitter_one_off_string_pattern)
@@ -165,7 +165,7 @@ class Test(FirefoxTest):
         paste('moz')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         repeat_key_up(2)
         key_to_one_off_search(search_with_wikipedia_one_off_string_pattern)
