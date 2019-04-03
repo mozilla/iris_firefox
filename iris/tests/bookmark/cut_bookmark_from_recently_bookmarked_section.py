@@ -67,6 +67,8 @@ class Test(BaseTest):
         assert_true(self, firefox_bookmark_cut_exists,
                     'The bookmark is correctly added in the selected section and deleted from the previous one.')
 
+close_window_control('auxiliary')
+
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
