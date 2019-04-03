@@ -67,4 +67,4 @@ class Test(BaseTest):
         close_window()
 
         previous_window_opened = exists(LocalWeb.IRIS_LOGO)
-        assert_true(self, previous_window_opened, 'Start window is opened, bookmarked tab was opened in new tab')
+        assert_true(self, previous_window_opened, 'The Test page was opened in the new window')
