@@ -66,3 +66,13 @@ class Test(BaseTest):
         firefox_bookmark_cut_exists = exists(LocalWeb.FIREFOX_BOOKMARK, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, firefox_bookmark_cut_exists,
                     'The bookmark is correctly added in the selected section and deleted from the previous one.')
+
+        click(NavBar.LIBRARY_MENU)
+
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, bookmarks_menu_option_exists, 'The Bookmarks menu is correctly displayed')
+
+        click(LibraryMenu.BOOKMARKS_OPTION)
+
+        recently_firefox_bookmark_not_exists = exists(LocalWeb.FIREFOX_BOOKMARK, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_false(self, recently_firefox_bookmark_not_exists, 'Firefox bookmark cut fromrecently bookmarked section')
