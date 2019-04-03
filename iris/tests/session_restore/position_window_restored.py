@@ -16,17 +16,21 @@ class Test(BaseTest):
         self.test_suite_id = '68'
         self.locales = ['en-US']
 
+    def setup(self):
+        BaseTest.setup(self)
+        self.set_profile_pref({'devtools.chrome.enabled': True})
+
     def run(self):
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png')
-        focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png').similar(0.95)
-        iris_pattern = Pattern('iris_tab.png')
+        focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png')
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
         console_output_height_500 = Pattern('console_output_height_500.png')
         console_output_width_500 = Pattern('console_output_width_500.png')
         console_output_height_400 = Pattern('console_output_height_400.png')
         console_output_width_600 = Pattern('console_output_width_600.png')
         console_output_width_1000 = Pattern('console_output_width_1000.png')
+        CLICK_DURATION = 1
 
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
@@ -34,11 +38,8 @@ class Test(BaseTest):
 
         default_window_location = Location(x=(SCREEN_WIDTH / 20), y=(SCREEN_HEIGHT / 20))
 
-        iris_tab_on_start_position = find(iris_pattern)
+        iris_tab_on_start_position = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         drag_drop(iris_tab_on_start_position, default_window_location)
-        maximize_window()
-
-        change_preference('devtools.chrome.enabled', True)
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -47,20 +48,14 @@ class Test(BaseTest):
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
-        tab_two_loaded = exists(focus_test_site_tab_pattern, 30)
+        tab_two_loaded = exists(focus_test_site_tab_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, tab_two_loaded, 'Second tab loaded')
-
-        if not Settings.is_mac():
-            minimize_window()
 
         open_browser_console()
         paste('window.resizeTo(1000, 400)')
         type(Key.ENTER)
 
-        if not Settings.is_mac():
-            click_window_control('close')
-        else:
-            type('w', KeyModifier.CMD)
+        close_tab()
 
         tabs_located_after_size_changed = exists(focus_test_site_tab_pattern)
         assert_true(self, tabs_located_after_size_changed, 'Tabs located after size of main window had changed.')
@@ -77,7 +72,7 @@ class Test(BaseTest):
         open_browser_console()
         paste('window.resizeTo(600, 400)')
         type(Key.ENTER)
-        click_window_control('close')
+        close_tab()
 
         tab_two_relocated = not exists(focus_test_site_tab_pattern, in_region=default_tabs_region)
         active_tab_switched = exists(firefox_test_site_tab_pattern)
@@ -88,12 +83,12 @@ class Test(BaseTest):
         tab_one_drop_location = Location(x=(tab_one_location.x + SCREEN_WIDTH / 5),
                                          y=(tab_one_location.y + SCREEN_HEIGHT / 10))
 
-        drag_drop(tab_one_location, tab_one_drop_location, 0.5)
+        drag_drop(tab_one_location, tab_one_drop_location, CLICK_DURATION)
 
         open_browser_console()
         paste('window.resizeTo(500, 500)')
         type(Key.ENTER)
-        click_window_control('close')
+        close_tab()
 
         tab_one_drop_location.offset(SCREEN_WIDTH / 10, SCREEN_HEIGHT / 20)
         tab_one_moved = exists(firefox_test_site_tab_pattern)
@@ -102,7 +97,7 @@ class Test(BaseTest):
                     'Changes to height and width performed. First tab\'s first relocation completed.')
         tab_one_intermediate_location = find(firefox_test_site_tab_pattern)
 
-        drag_drop(tab_one_intermediate_location, tab_one_drop_location, 0.5)
+        drag_drop(tab_one_intermediate_location, tab_one_drop_location, CLICK_DURATION)
 
         tab_one_relocated = not exists(firefox_test_site_tab_pattern, in_region=default_tabs_region)
         assert_true(self, tab_one_relocated,
@@ -122,7 +117,7 @@ class Test(BaseTest):
             assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the "Hamburger" menu.')
             click(hamburger_menu_quit_item_pattern, 1)
         else:
-            type('q', KeyModifier.CMD)
+            quit_firefox()
 
         status = self.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
         if status is None:
@@ -135,22 +130,24 @@ class Test(BaseTest):
             self.base_local_web_url)
         self.firefox_runner.start()
 
-        firefox_restarted = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        firefox_restarted = exists(hamburger_menu_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_restarted, 'Firefox restarted successfully')
 
         click(hamburger_menu_button_pattern, 1)
-        restore_previous_session_located = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        restore_previous_session_located = exists(restore_previous_session_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, restore_previous_session_located,
                     'The "Hamburger" menu is successfully displayed. "Restore previous session" menu item located')
 
         click(restore_previous_session_pattern)
-        focus_site_restored = exists(focus_test_site_tab_pattern, 10)
-        firefox_test_site_restored = exists(firefox_test_site_tab_pattern, 20)
-        assert_true(self, focus_site_restored and firefox_test_site_restored, 'Session restored successfully')
+        focus_site_restored = exists(focus_test_site_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, focus_site_restored, 'Firefox window with Focus webpage is opened')
+
+        firefox_test_site_restored = exists(firefox_test_site_tab_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_test_site_restored, 'Firefox window with Focus webpage is opened')
 
         firefox_test_site_restored_position = find(firefox_test_site_tab_pattern)
         focus_site_restored_position = find(focus_test_site_tab_pattern)
-        iris_tab_restored_position = find(iris_pattern)
+        iris_tab_restored_position = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
 
         firefox_test_site_most_right = firefox_test_site_restored_position.x > max(iris_tab_restored_position.x,
                                                                                    focus_site_restored_position.x)
