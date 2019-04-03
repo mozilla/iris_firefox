@@ -1,19 +1,20 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case checks that more search engines can be added and are well displayed on one-off ' \
-                    'searches bar.",
+        description='This test case checks that more search engines can be added and are well displayed on one-off '
+                    'searches bar.',
         locales=['en-US'],
-        test_case_id="108261",
-        test_suite_id="1902",
+        test_case_id='108261',
+        test_suite_id='1902',
     )
-
     def test_run(self, firefox):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -41,7 +42,7 @@ class Test(FirefoxTest):
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert  expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         paste('moz')
@@ -57,7 +58,7 @@ class Test(FirefoxTest):
             try:
                 if OSHelper.is_mac():
                     expected = region.exists(pattern_list[i].similar(0.7), 10)
-                    assert  expected, 'Element found at position ' + i.__str__() + ' in the list found.'
+                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
                 else:
                     expected = region.exists(pattern_list[i].similar(0.9), 10)
                     assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
@@ -71,7 +72,7 @@ class Test(FirefoxTest):
         assert expected, 'The \'about:preferences#search\' page successfully loaded.'
 
         expected = exists(default_search_engine_dropdown_pattern, 10)
-        assert  expected, 'Default search engine dropdown found.'
+        assert expected, 'Default search engine dropdown found.'
 
         click(default_search_engine_dropdown_pattern)
 
@@ -91,7 +92,7 @@ class Test(FirefoxTest):
         type(Key.SPACE)
 
         expected = exists(moz_search_amazon_search_engine_pattern, 10)
-        assert  expected, 'Default search engine successfully changed.'
+        assert expected, 'Default search engine successfully changed.'
 
         # Remove the 'Google' search engine.
         next_tab()
@@ -106,7 +107,7 @@ class Test(FirefoxTest):
             click(search_engine_pattern.target_offset(20, 150))
 
         expected = exists(search_engine_pattern, 10)
-        assert  expected, 'One-Click Search Engines section found.'
+        assert expected, 'One-Click Search Engines section found.'
 
         # Check that unchecked search engine is successfully removed from the one-off searches bar.
         previous_tab()
@@ -140,7 +141,7 @@ class Test(FirefoxTest):
             type(Key.TAB)
 
         expected = exists(find_more_search_engines_pattern, 10)
-        assert  expected, '\'Find more search engines\' link found.'
+        assert expected, '\'Find more search engines\' link found.'
 
         click(find_more_search_engines_pattern)
 
@@ -154,24 +155,24 @@ class Test(FirefoxTest):
         paste('startpage')
 
         expected = exists(add_startpage_https_privacy_search_engine_pattern, 10)
-        assert  expected, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.'
+        assert expected, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.'
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
         expected = exists(add_to_firefox_pattern, 10)
-        assert  expected, '\'Add to Firefox\' button found.'
+        assert expected, '\'Add to Firefox\' button found.'
 
         click(add_to_firefox_pattern)
 
         expected = exists(add_button_pattern, 10)
-        assert  expected, '\'Add\' button found.'
+        assert expected, '\'Add\' button found.'
 
         click(add_button_pattern)
 
         previous_tab()
 
         expected = exists(startpage_https_search_engine_pattern, 10)
-        assert  expected, 'The search engine added found in the \'One-Click Search Engines\' section.'
+        assert expected, 'The search engine added found in the \'One-Click Search Engines\' section.'
 
         # Perform a new search in the url bar and make sure that everything looks ok after all the above changes.
         previous_tab()
@@ -182,14 +183,14 @@ class Test(FirefoxTest):
         type(Key.SPACE)
 
         expected = exists(moz_search_amazon_search_engine_pattern, 10)
-        assert  expected, 'Default search engine is still changed.'
+        assert expected, 'Default search engine is still changed.'
 
         expected = exists(startpage_one_off_button_pattern, 10)
-        assert  expected, 'Newly added search engine successfully found in the one-off searches bar.'
+        assert expected, 'Newly added search engine successfully found in the one-off searches bar.'
 
         if OSHelper.is_mac():
             expected = exists(google_one_off_button_pattern.similar(0.9), 10)
             assert not expected, 'Unchecked search engine is still removed from the one-off searches bar.'
         else:
             expected = exists(google_one_off_button_pattern, 10)
-            assert not  expected, 'Unchecked search engine is still removed from the one-off searches bar.'
+            assert not expected, 'Unchecked search engine is still removed from the one-off searches bar.'

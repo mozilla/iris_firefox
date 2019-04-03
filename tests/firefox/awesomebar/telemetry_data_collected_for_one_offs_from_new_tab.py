@@ -1,16 +1,18 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case checks that telemetry data is collected for one-offs from new tab",
+        description='This test case checks that telemetry data is collected for one-offs from new tab',
         locales=['en-US'],
-        test_case_id="108274",
-        test_suite_id="1902",
+        test_case_id='108274',
+        test_suite_id='1902',
     )
     def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

@@ -9,10 +9,10 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case adds links using \'CTRL\' + \'ENTER\' keys",
+        description='This test case adds links using \'CTRL\' + \'ENTER\' keys',
         locale='[en-US]',
-        test_case_id="119484",
-        test_suite_id="1902",
+        test_case_id='119484',
+        test_suite_id='1902',
         exclude=OSPlatform.ALL
         # blocked_by='1520795'
     )

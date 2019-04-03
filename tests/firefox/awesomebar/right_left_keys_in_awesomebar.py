@@ -2,16 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case navigates through the awesomebar suggestions/one-offs/settings gear using the ' \
-                    'right/left keys",
-        test_case_id="108277",
-        test_suite_id="1902",
+        description='This test case navigates through the awesomebar suggestions/one-offs/settings gear using the '
+                    'right/left keys',
+        test_case_id='108277',
+        test_suite_id='1902',
         locales=['en-US']
     )
     def test_run(self, firefox):
@@ -23,7 +24,7 @@ class Test(FirefoxTest):
 
         navigate(url)
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert  expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
 
@@ -50,22 +51,22 @@ class Test(FirefoxTest):
         type(Key.LEFT)
 
         expected = region.exists(settings_gear_highlighted_pattern, 10)
-        assert  expected, 'The settings gear is in focus.'
+        assert expected, 'The settings gear is in focus.'
 
         type(Key.RIGHT)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert  expected, 'The search engine in focus is \'Google\'.'
+        assert expected, 'The search engine in focus is \'Google\'.'
 
         # Once the first one-off is selected, arrow key until the first one-off is selected again.
 
         type(Key.LEFT)
 
         expected = region.exists(settings_gear_highlighted_pattern, 10)
-        assert  expected, 'The settings gear is in focus.'
+        assert expected, 'The settings gear is in focus.'
 
         repeat_key_up(6)
         key_to_one_off_search(search_with_google_one_off_string_pattern)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert  expected, 'The search engine in focus is \'Google\'.'
+        assert expected, 'The search engine in focus is \'Google\'.'

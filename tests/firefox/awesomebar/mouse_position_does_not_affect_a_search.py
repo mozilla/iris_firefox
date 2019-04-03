@@ -1,32 +1,32 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
+
 
 class Test(FirefoxTest):
 
-
     @pytest.mark.details(
-            description="This test case checks that mouse position does not affect a search from awesomebar.",
-            locale='[en-US]',
-            test_case_id="108256",
-            test_suite_id="1902"
-        )
-
-    def test_run(self,firefox):
-
+        description='This test case checks that mouse position does not affect a search from awesomebar.',
+        locale='[en-US]',
+        test_case_id='108256',
+        test_suite_id='1902'
+    )
+    def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         duck_duck_go_one_off_button = Pattern('duck_duck_go_one_off_button.png')
         google_search_results = Pattern('google_search_results.png')
         localhost = Pattern('localhost.png')
         hover_duck_duck_go_one_off_button = Pattern('hover_duck_duck_go_one_off_button.png')
 
-        region = Region(0, 0, Screen().width , 2*Screen().height / 3)
+        region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert  expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         paste('moz')
@@ -59,4 +59,5 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         expected = exists(google_search_results, 10)
-        assert expected, 'The browser does NOT search using the search engine that had the mouse over it, ''search is performed with the default search engine which is \'Google\''
+        assert expected, 'The browser does NOT search using the search engine that had the mouse over it, ' \
+                         'search is performed with the default search engine which is \'Google\''

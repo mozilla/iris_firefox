@@ -9,10 +9,10 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-            description="This test case deletes history from the URL bar completion list.",
+            description='This test case deletes history from the URL bar completion list.',
             locale='[en-US]',
-            test_case_id="117530",
-            test_suite_id="1902"
+            test_case_id='117530',
+            test_suite_id='1902'
         )
     def test_run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         focus_history_menu_pattern = Pattern('focus_history_menu.png')
         library_menu_pattern = NavBar.LIBRARY_MENU
 
-        region = Region(0, 0, Screen().width , 2*Screen().height / 3)
+        region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)

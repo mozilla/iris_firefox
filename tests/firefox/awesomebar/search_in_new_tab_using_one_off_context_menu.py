@@ -1,18 +1,19 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case verifies that \'Search in New Tab\' option works correctly using an one-off.",
+        description='This test case verifies that \'Search in New Tab\' option works correctly using an one-off.',
         locales=['en-US'],
-        test_case_id="108250",
-        test_suite_id="1902",
+        test_case_id='108250',
+        test_suite_id='1902',
     )
-
     def test_run(self, firefox):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -28,21 +29,20 @@ class Test(FirefoxTest):
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert  expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         paste('moz')
 
         expected = region.exists(moz_pattern, 10)
-        assert  expected, 'Searched string found at the bottom of the drop-down list.'
+        assert expected, 'Searched string found at the bottom of the drop-down list.'
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
 
         hover(google_one_off_button_pattern)
 
         try:
             expected = region.exists(moz_pattern, 10)
-            assert not  expected, 'The \'Google\' one-off button is highlighted.'
+            assert not expected, 'The \'Google\' one-off button is highlighted.'
         except FindError:
             raise FindError('The \'Google\' one-off button is not highlighted.')
 
@@ -50,15 +50,15 @@ class Test(FirefoxTest):
         key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
         expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
-        assert  expected, 'The \'Twitter\' one-off button is highlighted.'
+        assert expected, 'The \'Twitter\' one-off button is highlighted.'
 
         right_click(twitter_one_off_button_highlight_pattern)
 
         expected = exists(search_in_new_tab_pattern, 10)
-        assert  expected, 'The \'Search in New Tab\' option found.'
+        assert expected, 'The \'Search in New Tab\' option found.'
 
         expected = exists(set_as_default_search_engine_pattern, 10)
-        assert  expected, 'The \'Set As Default Search Engine\' option found.'
+        assert expected, 'The \'Set As Default Search Engine\' option found.'
 
         click(search_in_new_tab_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)

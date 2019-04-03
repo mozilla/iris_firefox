@@ -1,21 +1,21 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from targets.firefox.fx_testcase import *
+
 
 class Test(FirefoxTest):
 
-
     @pytest.mark.details(
-            description="This test case checks that one-off searches are displayed in the awesomebar.",
-            locale='[en-US]',
-            test_case_id="108248",
-            test_suite_id="1902",
-            locales=['en-US']
+        description='This test case checks that one-off searches are displayed in the awesomebar.',
+        locale='[en-US]',
+        test_case_id='108248',
+        test_suite_id='1902',
+        locales=['en-US']
     )
-
-    def test_run(self,firefox):
-
+    def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
@@ -26,12 +26,12 @@ class Test(FirefoxTest):
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
         moz_pattern = Pattern('moz.png')
 
-        region = Region(0, 0, Screen().width , 2*Screen().height / 3)
+        region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert  expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         paste('moz')

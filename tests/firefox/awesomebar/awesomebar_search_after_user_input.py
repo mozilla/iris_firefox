@@ -9,10 +9,10 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="This test case checks the awesomebar search after user input.",
+        description='This test case checks the awesomebar search after user input.',
         locale='[en-US]',
-        test_case_id="108255",
-        test_suite_id="1902"
+        test_case_id='108255',
+        test_suite_id='1902'
     )
     def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
