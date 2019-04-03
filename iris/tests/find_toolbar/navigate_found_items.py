@@ -27,7 +27,9 @@ class Test(BaseTest):
 
         # Open the Find Toolbar
         open_find()
+
         edit_select_all()
+
         edit_delete()
 
         find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, Settings.FIREFOX_TIMEOUT)
@@ -35,6 +37,7 @@ class Test(BaseTest):
 
         # Search for a term that appears more than once in the page
         type('see', interval=1)
+
         type(Key.ENTER)
 
         selected_label_exists = exists(LocalWeb.SOAP_WIKI_SEE_LABEL, Settings.FIREFOX_TIMEOUT)
