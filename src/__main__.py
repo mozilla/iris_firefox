@@ -89,9 +89,11 @@ def get_test_params():
     tests_to_execute = get_app_test_directory()
     pytest_args = []
 
-    if tests_to_execute:
+    if len(tests_to_execute) > 0:
         for running in tests_to_execute:
             pytest_args.append(running)
+    else:
+        exit(1)
 
     pytest_args.append('-vs')
     pytest_args.append('-r ')

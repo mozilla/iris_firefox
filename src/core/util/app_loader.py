@@ -14,6 +14,7 @@ core_args = get_core_args()
 
 
 def load_app(app: str = None):
+    """Checks if provided application exists."""
     if app is None:
         logger.warning('No application provided. Launching Firefox application by default')
         app = core_args.application
@@ -27,36 +28,27 @@ def load_app(app: str = None):
     return False
 
 
-def str_to_test_path_list(app: str, test_path_arg: str):
-    test_path_list = []
-    test_list = test_path_arg.split(',')
-    for test in test_list:
-        test_path_list.append(os.path.join(PathManager.get_tests_dir(), app, test))
-    return test_path_list
-
-
 def get_app_test_directory():
+    """Collects tests based on include/exclude criteria and selected application."""
     app = core_args.application
+    test_list = []
+
     if load_app(app):
         include = core_args.test
         exclude = core_args.exclude
 
-        test_list = []
-
-        tests_directory = os.path.join(PathManager.get_tests_dir(), app)
-        logger.debug('Path %s found. Checking content ...', tests_directory)
-        for dir_path, sub_dirs, all_files in PathManager.sorted_walk(tests_directory):
+        tests_dir = os.path.join(PathManager.get_tests_dir(), app)
+        logger.debug('Path %s found. Checking content ...', tests_dir)
+        for dir_path, sub_dirs, all_files in PathManager.sorted_walk(tests_dir):
             for current_file in all_files:
                 current_full_path = os.path.join(dir_path, current_file)
-                if current_file.endswith('.py') and not current_file.startswith(
-                        '__') and include in current_full_path:
+                if current_file.endswith('.py') and not current_file.startswith('__') and include in current_full_path:
                     if exclude == '' or exclude not in current_full_path:
                         test_list.append(current_full_path)
 
         if len(test_list) == 0:
-            logger.error('Directory %s does not contain test files. Exiting program ...' % tests_directory)
-            exit(1)
+            logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
         else:
             logger.info('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
 
-        return test_list
+    return test_list
