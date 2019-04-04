@@ -28,6 +28,8 @@ class Test(BaseTest):
         console_output_height_400 = Pattern('console_output_height_400.png')
         console_output_width_600 = Pattern('console_output_width_600.png')
         console_output_width_1000 = Pattern('console_output_width_1000.png')
+        if not Settings.is_mac():
+            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
         CLICK_DURATION = 1
         iris_tab_offset = - LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[1]
 
@@ -37,10 +39,10 @@ class Test(BaseTest):
         if Settings.is_linux():
             iris_tab_offset = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[0] * 2
 
-        hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
-        minimize_window()
+        if not Settings.is_mac():
+            minimize_window()
 
-        default_window_location = Location(x=(SCREEN_WIDTH / 20), y=(SCREEN_HEIGHT / 20))
+        default_window_location = Location(x=(SCREEN_WIDTH / 10), y=(SCREEN_HEIGHT / 20))
 
         if Settings.is_linux():
             default_window_location.offset(iris_tab_offset, 0)
@@ -78,10 +80,12 @@ class Test(BaseTest):
 
         drag_drop(default_tabs_position, tab_two_drop_location, CLICK_DURATION)
 
-        focus_page_content_displayed = exists(LocalWeb.FOCUS_LOGO)
+        tab_two_region = Region(tab_two_drop_location.x, tab_two_drop_location.y, SCREEN_WIDTH, SCREEN_HEIGHT // 2)
+
+        focus_page_content_displayed = exists(LocalWeb.FOCUS_LOGO, in_region=tab_two_region)
         assert_true(self, focus_page_content_displayed, 'Focus webpage content is being displayed')
 
-        click(LocalWeb.FOCUS_LOGO)
+        click(LocalWeb.FOCUS_LOGO, in_region=tab_two_region)
 
         open_browser_console()
         paste('window.resizeTo(600, 400)')
@@ -185,8 +189,8 @@ class Test(BaseTest):
         assert_true(self, firefox_test_site_most_right and firefox_test_site_middle_height,
                     'First restored window is located in the right position')
 
-        assert_true(self, focus_site_most_left and focus_site_the_lowest,
-                    'Second restored window is located in the right position')
+        assert_true(self, focus_site_most_left, 'Second window is the most left')
+        assert_true(self, focus_site_the_lowest, 'Second restored window is located in the right position')
 
         click(firefox_test_site_tab_pattern, CLICK_DURATION)
         open_browser_console()
