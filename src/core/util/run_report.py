@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
 from src.configuration.config_parser import logger
 from src.core.api.os_helpers import OSHelper
 from src.core.util.test_assert import TestResult
@@ -28,7 +29,7 @@ class ReportFooter(object):
         if self.failures.__len__() is not None:
             failure_str = '\n\nThe following tests did not pass:\n'
             for failed_tests in self.failures:
-                failure_str += failed_tests + '\n'
+                failure_str += os.path.basename(failed_tests) + '\n'
                 failure_str += '\n'
 
         app_details = 'Application: %s,Platform: %s' % (self.app.target_name, self.platform)
