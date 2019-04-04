@@ -55,6 +55,7 @@ def get_app_test_directory():
 
         if len(test_list) == 0:
             logger.error('Directory %s does not contain test files. Exiting program ...' % tests_directory)
+            exit(1)
         else:
             logger.info('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
 
