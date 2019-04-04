@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from iris.api.core.firefox_ui.about_preferences import *
+from iris.api.core.firefox_ui.about_config import *
 from iris.api.core.firefox_ui.bookmarks import *
 from iris.api.core.firefox_ui.content_blocking_tour import *
 from iris.api.core.firefox_ui.docker import *
