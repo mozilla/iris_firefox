@@ -5,7 +5,7 @@
 from distutils.dir_util import copy_tree
 import importlib
 import logging
-from mozrunner import FirefoxRunner, errors
+from mozrunner import FirefoxRunner
 import os
 import pytest
 import shutil
@@ -37,7 +37,7 @@ def main():
         if user_result is not 'cancel':
             try:
                 target_plugin = get_target(args.application)
-                pytest_args = get_test_params(args.application)
+                pytest_args = get_test_params()
                 initialize_platform(args)
                 logger.info(pytest_args)
                 pytest.main(pytest_args, plugins=[target_plugin])
@@ -85,17 +85,13 @@ def initialize_platform(args):
     PathManager.create_run_directory()
 
 
-def get_test_params(target):
-    tests_to_execute = get_app_test_directory(target)
+def get_test_params():
+    tests_to_execute = get_app_test_directory()
     pytest_args = []
 
-    if tests_to_execute['running']:
-        for running in tests_to_execute['running']:
+    if tests_to_execute:
+        for running in tests_to_execute:
             pytest_args.append(running)
-
-    if tests_to_execute['excluded']:
-        for excluded in tests_to_execute['excluded']:
-            pytest_args.append('--ignore={}'.format(excluded))
 
     pytest_args.append('-vs')
     pytest_args.append('-r ')

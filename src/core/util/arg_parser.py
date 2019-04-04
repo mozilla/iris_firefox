@@ -33,7 +33,6 @@ def get_core_args():
         app_list[idx] = os.path.basename(os.path.normpath(app))
 
     parser.add_argument('application', nargs='?', action='store', type=str, help='Application name', choices=app_list)
-    parser.add_argument('test_path', action='store', type=str, help='Path to tests module or directory', nargs='?')
 
     parser.add_argument('-a', '--rerun',
                         help='Rerun last failed tests',
@@ -82,14 +81,19 @@ def get_core_args():
     parser.add_argument('-r', '--report',
                         help='Report tests to TestRail',
                         action='store_true')
+    parser.add_argument('-t', '--test',
+                        help='Partial or full test names or paths to execute',
+                        action='store',
+                        default='')
     parser.add_argument('-w', '--workdir',
                         help='Path to working directory',
                         type=os.path.abspath,
                         action='store',
                         default='%s/.iris2' % home)
     parser.add_argument('-x', '--exclude',
-                        help='List of test names or directories to exclude',
-                        metavar='empty')
+                        help='Partial or full test names or paths to exclude',
+                        action='store',
+                        default='')
     parser.add_argument('-z', '--resize',
                         help='Convert hi-res images to normal',
                         action='store_true')
