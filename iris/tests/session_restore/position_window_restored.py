@@ -20,8 +20,8 @@ class Test(BaseTest):
         self.set_profile_pref({'devtools.chrome.enabled': True})
 
     def run(self):
-        firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png')
-        focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png')
+        firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png').similar(0.9)
+        focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png').similar(0.9)
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
         console_output_height_500 = Pattern('console_output_height_500.png')
         console_output_width_500 = Pattern('console_output_width_500.png')
@@ -29,17 +29,25 @@ class Test(BaseTest):
         console_output_width_600 = Pattern('console_output_width_600.png')
         console_output_width_1000 = Pattern('console_output_width_1000.png')
         CLICK_DURATION = 1
+        iris_tab_offset = - LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[1]
 
-        if not Settings.is_mac():
-            iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
-            assert_true(self, iris_tab_displayed, 'Iris tab is displayed properly')
-            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
-            minimize_window()
+        iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+        assert_true(self, iris_tab_displayed, 'Iris tab is displayed properly')
 
-            default_window_location = Location(x=(SCREEN_WIDTH / 20), y=(SCREEN_HEIGHT / 20))
+        if Settings.is_linux():
+            iris_tab_offset = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[0] * 2
 
-            iris_tab_on_start_position = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
-            drag_drop(iris_tab_on_start_position, default_window_location, CLICK_DURATION)
+        hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
+        minimize_window()
+
+        default_window_location = Location(x=(SCREEN_WIDTH / 20), y=(SCREEN_HEIGHT / 20))
+
+        if Settings.is_linux():
+            default_window_location.offset(iris_tab_offset, 0)
+
+        iris_tab_on_start_position = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+        iris_tab_on_start_position.offset(iris_tab_offset, 0)
+        drag_drop(iris_tab_on_start_position, default_window_location, CLICK_DURATION)
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -155,6 +163,9 @@ class Test(BaseTest):
 
         firefox_test_site_restored = exists(firefox_test_site_tab_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_test_site_restored, 'Firefox window with Focus webpage is opened')
+
+        iris_page_restored = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, iris_page_restored, 'Firefox window with Iris webpage is opened')
 
         firefox_test_site_restored_position = find(firefox_test_site_tab_pattern)
         focus_site_restored_position = find(focus_test_site_tab_pattern)
