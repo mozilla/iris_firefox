@@ -19,7 +19,7 @@ class Test(BaseTest):
 
     def run(self):
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
-        top_sites_item_pattern = Pattern('top_sites_item.png')
+        top_sites_pattern = Pattern('top_sites.png')
 
         dock_region = Region(0, 0.8 * SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
 
@@ -42,7 +42,7 @@ class Test(BaseTest):
 
         click(Docker.FIREFOX_DOCKER_ICON, in_region=dock_region)
 
-        top_sites_item_exists = exists(top_sites_item_pattern, Settings.FIREFOX_TIMEOUT)
+        top_sites_item_exists = exists(top_sites_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, top_sites_item_exists, 'New window with new tab opened successfully.')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
