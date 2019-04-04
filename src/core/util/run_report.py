@@ -2,26 +2,30 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
+import logging
 import os
-from src.configuration.config_parser import logger
+
 from src.core.api.os_helpers import OSHelper
-from src.core.util.test_assert import TestResult
+
+logger = logging.getLogger(__name__)
 
 
 class ReportFooter(object):
 
-    def __init__(self, app, total_tests_run, passed_tests, failed_tests, skipped_tests, error_tests, total_duration, failures):
+    def __init__(self, app, total_tests_run, passed_tests, failed_tests, skipped_tests, errors, total_time, failures):
         self.platform = OSHelper.get_os().value
         self.app = app
         self.total_tests_run = total_tests_run
         self.failed_tests = failed_tests
         self.passed_tests = passed_tests
         self.skipped_tests = skipped_tests
-        self.error_tests = error_tests
-        self.total_duration = total_duration
+        self.error_tests = errors
+        self.total_duration = total_time
         self.failures = failures
 
     def print_report_footer(self):
+        """Print report footer in a nice format."""
         total = self.passed_tests + self.failed_tests + self.skipped_tests + self.error_tests
         separator = '\n' + '-' * 120 + '\n'
         failure_str = ''
@@ -46,7 +50,7 @@ class ReportFooter(object):
 
 
 def create_footer(app):
-    """
+    """Generate report footer object.
 
     :param app: Target Application Ex:Notepad,Firefox
     :return: ReportFooter object
@@ -74,4 +78,5 @@ def create_footer(app):
 
         total_duration = total_duration + test.test_duration
 
-    return ReportFooter(app, passed + skipped + failed + errors, passed, failed, skipped, errors, total_duration, failed_tests)
+    total_tests = passed + skipped + failed + errors
+    return ReportFooter(app, total_tests, passed, failed, skipped, errors, total_duration, failed_tests)
