@@ -57,10 +57,9 @@ class Test(BaseTest):
         for one_search_engine in range(one_of_pattern_list.__len__()):
             if Settings.get_os() == Platform.MAC:
                 one_of_pattern_exists = left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.7), Settings.FIREFOX_TIMEOUT)
-                assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() + ' in the list found.')
             else:
                 one_of_pattern_exists = left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9), Settings.FIREFOX_TIMEOUT)
-                assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() + ' in the list found.')
+            assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() + ' in the list found.')
 
         click(search_settings_pattern)
 
@@ -75,6 +74,7 @@ class Test(BaseTest):
         click(default_search_engine_dropdown_pattern)
 
         # Change the default search engine.
+
         repeat_key_down(2)
 
         type(Key.ENTER)
@@ -94,19 +94,12 @@ class Test(BaseTest):
         # Remove the 'Google' search engine.
         next_tab()
 
-        for i in range(4):
-            type(Key.TAB)
-
-        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            type(Key.SPACE)
-        else:
-            type(Key.TAB)
-            google_one_off_button = scroll_until_pattern_found(google_one_off_button_pattern, scroll, (-25,), 20, 1)
-            assert_true(self, google_one_off_button, 'google_one_off_button_pattern')
-            google_one_off_button_location = find(google_one_off_button_pattern)
-            google_button_width, google_button_height = google_one_off_button_pattern.get_size()
-            click(Location(google_one_off_button_location.x - int(google_button_width/2),
-                           google_one_off_button_location.y + int(google_button_width/2)))
+        google_one_off_button = scroll_until_pattern_found(google_one_off_button_pattern, scroll, (-25,), 20, 1)
+        assert_true(self, google_one_off_button, 'google_one_off_button_pattern')
+        google_one_off_button_location = find(google_one_off_button_pattern)
+        google_button_width, google_button_height = google_one_off_button_pattern.get_size()
+        click(Location(google_one_off_button_location.x - int(google_button_width/2),
+                       google_one_off_button_location.y + int(google_button_width/2)))
 
         one_click_search_engine_pattern = exists(search_engine_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, one_click_search_engine_pattern, 'One-Click Search Engines section found.')
@@ -121,22 +114,13 @@ class Test(BaseTest):
         type(Key.SPACE)
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            google_one_off_button = exists(google_one_off_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-            assert_false(self, google_one_off_button, 'Unchecked search engine successfully removed from the one-off searches bar.')
+            google_one_off_search_engine = exists(google_one_off_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         else:
             google_one_off_search_engine = exists(google_one_off_button_pattern.similar(0.9), Settings.SHORT_FIREFOX_TIMEOUT)
-            assert_false(self, google_one_off_search_engine, 'Unchecked search engine successfully removed from the one-off searches bar.')
+        assert_false(self, google_one_off_search_engine, 'Unchecked search engine successfully removed from the one-off searches bar.')
 
         # Add a new search engine.
         next_tab()
-
-        for i in range(12):
-            type(Key.TAB)
-
-        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            type(Key.SPACE)
-        else:
-            type(Key.TAB)
 
         find_more_search_engines = exists(find_more_search_engines_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, find_more_search_engines, '\'Find more search engines\' link found.')
@@ -187,7 +171,6 @@ class Test(BaseTest):
 
         if Settings.get_os() == Platform.MAC:
             google_one_off_button = exists(google_one_off_button_pattern.similar(0.9), Settings.FIREFOX_TIMEOUT)
-            assert_false(self, google_one_off_button, 'Unchecked search engine is still removed from the one-off searches bar.')
         else:
             google_one_off_button = exists(google_one_off_button_pattern, Settings.FIREFOX_TIMEOUT)
-            assert_false(self, google_one_off_button, 'Unchecked search engine is still removed from the one-off searches bar.')
+        assert_false(self, google_one_off_button, 'Unchecked search engine is still removed from the one-off searches bar.')
