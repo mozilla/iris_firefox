@@ -58,10 +58,15 @@ class Test(BaseTest):
         # Check that the default one-off list is displayed in the awesomebar.
         for one_search_engine in range(one_of_pattern_list.__len__()):
             if Settings.get_os() == Platform.MAC:
-                one_of_pattern_exists = left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.7), Settings.FIREFOX_TIMEOUT)
+                one_of_pattern_exists = \
+                    left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.7),
+                                                            Settings.FIREFOX_TIMEOUT)
             else:
-                one_of_pattern_exists = left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9), Settings.FIREFOX_TIMEOUT)
-            assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() + ' in the list found.')
+                one_of_pattern_exists = \
+                    left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9),
+                                                            Settings.FIREFOX_TIMEOUT)
+            assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() +
+                                                     ' in the list found.')
 
         click(search_settings_pattern, Settings.TINY_FIREFOX_TIMEOUT)
 
@@ -115,8 +120,10 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             google_one_off_search_engine = exists(google_one_off_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         else:
-            google_one_off_search_engine = exists(google_one_off_button_pattern.similar(0.9), Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_false(self, google_one_off_search_engine, 'Unchecked search engine successfully removed from the one-off searches bar.')
+            google_one_off_search_engine = exists(google_one_off_button_pattern.similar(0.9),
+                                                  Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_false(self, google_one_off_search_engine, 'Unchecked search engine successfully removed from the one-off '
+                                                         'searches bar.')
 
         # Add a new search engine.
         next_tab()
@@ -137,7 +144,8 @@ class Test(BaseTest):
         paste('startpage')
 
         startpage_search_engine = exists(add_startpage_https_privacy_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, startpage_search_engine, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.')
+        assert_true(self, startpage_search_engine, '\'Startpage HTTPS Privacy Search Engine\' engine successfully '
+                                                   'found.')
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
@@ -154,7 +162,8 @@ class Test(BaseTest):
         previous_tab()
 
         startpage_search_engine = exists(startpage_https_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, startpage_search_engine, 'The search engine added found in the \'One-Click Search Engines\' section.')
+        assert_true(self, startpage_search_engine, 'The search engine added found in the \'One-Click Search Engines\' '
+                                                   'section.')
 
         # Perform a new search in the url bar and make sure that everything looks ok after all the above changes.
         previous_tab()
@@ -169,10 +178,12 @@ class Test(BaseTest):
         assert_true(self, moz_search_amazon_search_engine, 'Default search engine is still changed.')
 
         startpage_one_off_button = exists(startpage_one_off_button_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, startpage_one_off_button, 'Newly added search engine successfully found in the one-off searches bar.')
+        assert_true(self, startpage_one_off_button, 'Newly added search engine successfully found in the one-off '
+                                                    'searches bar.')
 
         if Settings.get_os() == Platform.MAC:
             google_one_off_button = exists(google_one_off_button_pattern.similar(0.9), Settings.SHORT_FIREFOX_TIMEOUT)
         else:
             google_one_off_button = exists(google_one_off_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_false(self, google_one_off_button, 'Unchecked search engine is still removed from the one-off searches bar.')
+        assert_false(self, google_one_off_button, 'Unchecked search engine is still removed from the one-off searches '
+                                                  'bar.')
