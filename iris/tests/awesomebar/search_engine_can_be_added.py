@@ -120,6 +120,9 @@ class Test(BaseTest):
         # Add a new search engine.
         next_tab()
 
+        google_one_off_button = scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
+        assert_true(self, google_one_off_button, 'google_one_off_button_pattern')
+
         find_more_search_engines = exists(find_more_search_engines_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, find_more_search_engines, '\'Find more search engines\' link found.')
 
