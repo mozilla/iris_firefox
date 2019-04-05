@@ -23,6 +23,7 @@ class Test(BaseTest):
 
     def run(self):
         close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
+        cancel_button_pattern = Pattern('cancel_button.png')
 
         if Settings.is_mac():
             cancel_multiple_tabs_warning_pattern = Pattern('cancel_multiple_tabs_warning.png')
@@ -43,12 +44,30 @@ class Test(BaseTest):
 
         close_window()
 
-        close_multiple_tabs_warning_exists = exists(close_multiple_tabs_warning_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, close_multiple_tabs_warning_exists, 'close_multiple_tabs_warning_exists')
+        if Settings.is_linux():
+            maximize_button_exists = exists(maximize_button_pattern)
+            assert_true(self, maximize_button_exists, 'maximize_button_exists')
+
+            click(maximize_button_pattern)
+
+            hover_reg = Location(0, 0)
+
+            hover(hover_reg)
+
+            restore_button_exists = exists(restore_button_pattern)
+            assert_true(self, restore_button_exists, 'restore_button_exists')
+
+            click(restore_button_pattern)
+
+        cancel_button_exists = exists(cancel_button_pattern)
+        assert_true(self, cancel_button_exists, 'cancel_button_exists')
 
         click_cancel_button()
 
         close_window()
+
+        close_multiple_tabs_warning_exists = exists(close_multiple_tabs_warning_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, close_multiple_tabs_warning_exists, 'close_multiple_tabs_warning_exists')
 
         close_window_control('auxiliary')
 
