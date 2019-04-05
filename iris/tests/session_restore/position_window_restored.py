@@ -28,16 +28,18 @@ class Test(BaseTest):
         console_output_height_400 = Pattern('console_output_height_400.png')
         console_output_width_600 = Pattern('console_output_width_600.png')
         console_output_width_1000 = Pattern('console_output_width_1000.png')
+        hamburger_menu_quit_item_pattern = None
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
-        CLICK_DURATION = 1
+
+        click_duration = 1
         iris_tab_offset = - LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[1]
 
         iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         assert_true(self, iris_tab_displayed, 'Iris tab is displayed properly')
 
         if Settings.is_linux():
-            iris_tab_offset = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[0] * 2
+            iris_tab_offset = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[0] * 5
 
         if not Settings.is_mac():
             minimize_window()
@@ -49,7 +51,7 @@ class Test(BaseTest):
 
         iris_tab_on_start_position = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         iris_tab_on_start_position.offset(iris_tab_offset, 0)
-        drag_drop(iris_tab_on_start_position, default_window_location, CLICK_DURATION)
+        drag_drop(iris_tab_on_start_position, default_window_location, click_duration)
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -78,7 +80,7 @@ class Test(BaseTest):
 
         tab_two_drop_location = Location(x=0, y=(default_tabs_position.y + 2 * SCREEN_HEIGHT / 5))
 
-        drag_drop(default_tabs_position, tab_two_drop_location, CLICK_DURATION)
+        drag_drop(default_tabs_position, tab_two_drop_location, click_duration)
 
         tab_two_region = Region(tab_two_drop_location.x, tab_two_drop_location.y, SCREEN_WIDTH, SCREEN_HEIGHT // 2)
 
@@ -101,7 +103,7 @@ class Test(BaseTest):
         tab_one_drop_location = Location(x=(tab_one_location.x + SCREEN_WIDTH / 5),
                                          y=(tab_one_location.y + SCREEN_HEIGHT / 10))
 
-        drag_drop(tab_one_location, tab_one_drop_location, CLICK_DURATION)
+        drag_drop(tab_one_location, tab_one_drop_location, click_duration)
 
         firefox_page_displayed = exists(LocalWeb.FIREFOX_LOGO)
         assert_true(self, firefox_page_displayed, 'Firefox webpage content is being displayed')
@@ -120,7 +122,7 @@ class Test(BaseTest):
                     'Changes to height and width performed. First tab\'s first relocation completed.')
         tab_one_intermediate_location = find(firefox_test_site_tab_pattern)
 
-        drag_drop(tab_one_intermediate_location, tab_one_drop_location, CLICK_DURATION)
+        drag_drop(tab_one_intermediate_location, tab_one_drop_location, click_duration)
 
         tab_one_relocated = not exists(firefox_test_site_tab_pattern, in_region=default_tabs_region)
         assert_true(self, tab_one_relocated,
@@ -135,10 +137,10 @@ class Test(BaseTest):
         assert_true(self, tab_one_moved_twice, 'Tabs positioned in different places.')
 
         if not Settings.is_mac():
-            click(NavBar.HAMBURGER_MENU, CLICK_DURATION, tab_one_window_region)
+            click(NavBar.HAMBURGER_MENU, click_duration, tab_one_window_region)
             hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the "Hamburger" menu.')
-            click(hamburger_menu_quit_item_pattern, CLICK_DURATION)
+            click(hamburger_menu_quit_item_pattern, click_duration)
         else:
             quit_firefox()
 
@@ -156,12 +158,12 @@ class Test(BaseTest):
         firefox_restarted = exists(NavBar.HAMBURGER_MENU, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_restarted, 'Firefox restarted successfully')
 
-        click(NavBar.HAMBURGER_MENU, CLICK_DURATION)
+        click(NavBar.HAMBURGER_MENU, click_duration)
         restore_previous_session_located = exists(restore_previous_session_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, restore_previous_session_located,
                     'The "Hamburger" menu is successfully displayed. "Restore previous session" menu item located')
 
-        click(restore_previous_session_pattern, CLICK_DURATION)
+        click(restore_previous_session_pattern, click_duration)
         focus_site_restored = exists(focus_test_site_tab_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, focus_site_restored, 'Firefox window with Focus webpage is opened')
 
@@ -192,7 +194,7 @@ class Test(BaseTest):
         assert_true(self, focus_site_most_left, 'Second window is the most left')
         assert_true(self, focus_site_the_lowest, 'Second restored window is located in the right position')
 
-        click(firefox_test_site_tab_pattern, CLICK_DURATION)
+        click(firefox_test_site_tab_pattern, click_duration)
         open_browser_console()
         paste('window.innerHeight')
         type(Key.ENTER)
@@ -206,7 +208,7 @@ class Test(BaseTest):
                     'First window size matched')
         close_tab()
 
-        click(focus_test_site_tab_pattern, CLICK_DURATION)
+        click(focus_test_site_tab_pattern, click_duration)
         open_browser_console()
         paste('window.innerHeight')
         type(Key.ENTER)
@@ -220,7 +222,7 @@ class Test(BaseTest):
 
         click_window_control('close')
 
-        click(LocalWeb.IRIS_LOGO_ACTIVE_TAB, CLICK_DURATION)
+        click(LocalWeb.IRIS_LOGO_ACTIVE_TAB, click_duration)
         open_browser_console()
 
         paste('window.innerHeight')
