@@ -30,6 +30,7 @@ class DownloadFiles(object):
     EXTRA_LARGE_FILE_512MB = Pattern('512MB.png')
     VERY_LARGE_FILE_1GB = Pattern('1GB.png')
     DOWNLOAD_TYPE_ICON = Pattern('download_Type_Icon.png').similar(0.7)
+    DOWNLOAD_TYPE_ICON_ZIP = Pattern('download_type_zip_icon.png')
     DOWNLOAD_FILE_NAME_1GB = Pattern('download_name_1GB.png')
     DOWNLOAD_FILE_NAME_512MB = Pattern('download_name_512MB.png')
     DOWNLOAD_FILE_NAME_20MB = Pattern('download_name_20MB.png')
