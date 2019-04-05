@@ -120,7 +120,6 @@ def click_hamburger_menu_option(option):
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
         wait(hamburger_menu_pattern, 10)
-        region = create_region_from_image(hamburger_menu_pattern)
         logger.debug('Hamburger menu found.')
     except FindError:
         raise APIHelperError(
@@ -129,6 +128,7 @@ def click_hamburger_menu_option(option):
         click(hamburger_menu_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         try:
+            region = create_region_from_image(hamburger_menu_pattern)
             region.click(option)
             return region
         except FindError:
@@ -157,14 +157,29 @@ def create_region_from_image(image):
     :return: None.
     """
     try:
+        from src.core.api.rectangle import Rectangle
+        from src.core.api.enums import Alignment
         m = image_find(image)
         if m:
-            hamburger_pop_up_menu_weight = 285
-            hamburger_pop_up_menu_height = 655
-            logger.debug('Creating a region for Hamburger menu pop up.')
-            region = Region(m.x - hamburger_pop_up_menu_weight + 70, m.y,
-                            hamburger_pop_up_menu_weight - 50,
-                            hamburger_pop_up_menu_height)
+            sync_pattern = Pattern('sync_hamburger_menu.png')
+            sync_width, sync_height = sync_pattern.get_size()
+            sync_image = image_find(sync_pattern)
+            top_left = Rectangle(sync_image.x, sync_image.y, sync_width, sync_width).\
+                apply_alignment(Alignment.TOP_RIGHT)
+            if OSHelper.is_mac():
+                exit_pattern = Pattern('help_hamburger_menu.png')
+            else:
+                exit_pattern = Pattern('exit_hamburger_menu.png')
+            exit_width, exit_height = exit_pattern.get_size()
+            exit_image = image_find(exit_pattern)
+            bottom_left = Rectangle(exit_image.x, exit_image.y, exit_width, exit_height).\
+                apply_alignment(Alignment.BOTTOM_RIGHT)
+
+            x0 = top_left.x + 2
+            y0 = top_left.y
+            height = bottom_left.y - top_left.y
+            width = Screen().width - top_left.x - 2
+            region = Region(x0, y0, width, height)
             return region
         else:
             raise APIHelperError('No matching found.')

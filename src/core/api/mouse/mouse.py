@@ -222,7 +222,7 @@ def _get_string_click_location(ps: str, region: Rectangle = None, align: Alignme
 
     find_location = text_find(ps, region)
 
-    if find_location is None:
+    if len(find_location) == 0:
         raise FindError('Unable to click on: %s' % ps)
 
     return find_location[0].apply_alignment(align)

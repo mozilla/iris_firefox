@@ -31,7 +31,7 @@ class Rectangle:
             return Location(self.x + self.width, self.y)
         elif align is Alignment.BOTTOM_LEFT:
             return Location(self.x, self.y + self.height)
-        elif align is Alignment.TOP_RIGHT:
+        elif align is Alignment.BOTTOM_RIGHT:
             return Location(self.x + self.width, self.y + self.height)
         else:
             return Location(self.x, self.y)
