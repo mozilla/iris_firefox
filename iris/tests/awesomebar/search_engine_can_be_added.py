@@ -38,6 +38,7 @@ class Test(BaseTest):
         startpage_one_off_button_pattern = Pattern('startpage_one_off_button.png')
         find_add_ons_pattern = Pattern('find_add_ons.png')
         amazon_search_engine_pattern = Pattern('amazon_search_engine.png')
+
         left_two_thirds_of_screen_region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
