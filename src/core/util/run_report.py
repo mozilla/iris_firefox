@@ -36,9 +36,9 @@ class ReportFooter(object):
                 failure_str += os.path.basename(failed_tests) + '\n'
                 failure_str += '\n'
 
-        app_details = 'Application: %s, Platform: %s, Firefox Build: %s' % (self.app.target_name, self.platform,
-                                                                            self.app.values['fx_build_id'])\
-            if self.app.target_name == 'Firefox' else self.app.target_name
+        additional_info = _get_additional_info(self.app.values)
+
+        app_details = 'Application: %s, Platform: %s%s' % (self.app.target_name, self.platform, additional_info)
         test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors %s  -- Total: %s' \
                            % (self.passed_tests, self.failed_tests, self.skipped_tests, self.error_tests, total)
         total_time_str = 'Total time: %s second(s)' % self.total_duration
@@ -82,3 +82,12 @@ def create_footer(app):
 
     total_tests = passed + skipped + failed + errors
     return ReportFooter(app, total_tests, passed, failed, skipped, errors, total_duration, failed_tests)
+
+
+def _get_additional_info(values):
+
+    additional_info = ''
+    if values:
+        for key in values:
+            additional_info += ', ' + key + ': ' + values[key]
+    return additional_info
