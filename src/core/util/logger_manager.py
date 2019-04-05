@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import logging
+import os
 
 import coloredlogs
 
@@ -65,3 +66,7 @@ def set_log_format():
 def initialize_logger():
     logging.basicConfig(filename=PathManager.get_log_file_path(), format=set_log_format())
     initialize_logger_level(core_args.level)
+
+    # Control pytest terminal output via environment variable instead of parameter.
+    if core_args.level > 10:
+        os.environ['PYTEST_ADDOPTS'] = '-p no:terminal'

@@ -39,7 +39,6 @@ def main():
                 target_plugin = get_target(args.application)
                 pytest_args = get_test_params()
                 initialize_platform(args)
-                logger.info(pytest_args)
                 pytest.main(pytest_args, plugins=[target_plugin])
             except ImportError:
                 logger.error('Could not load plugin for {} application'.format(args.application))
@@ -73,8 +72,8 @@ def get_target(target_name):
         except NameError:
             logger.error('Can\'t find default Target class.')
             exit(1)
-    except ImportError:
-        logger.error('Problems importing module.')
+    except ImportError as e:
+        logger.error('Problems importing module:\n%s' % e)
         exit(1)
 
 
@@ -98,9 +97,6 @@ def get_test_params():
     pytest_args.append('-vs')
     pytest_args.append('-r ')
     pytest_args.append('-s')
-    if get_core_args().level > 10:
-        pytest_args.append('-p')
-        pytest_args.append('no:terminal')
     return pytest_args
 
 
