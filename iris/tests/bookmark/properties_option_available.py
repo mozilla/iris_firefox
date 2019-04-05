@@ -64,3 +64,5 @@ class Test(BaseTest):
         assert_true(self, folder_properties_opened,
                     'The Properties option is active and clickable. '
                     'Note: In the affected builds the Properties option was grey out.')
+
+        type(Key.ESC)
