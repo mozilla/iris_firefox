@@ -37,7 +37,7 @@ class Test(BaseTest):
         startpage_https_search_engine_pattern = Pattern('startpage_https_search_engine.png')
         startpage_one_off_button_pattern = Pattern('startpage_one_off_button.png')
         find_add_ons_pattern = Pattern('find_add_ons.png')
-
+        amazon_search_engine_pattern = Pattern('amazon_search_engine.png')
         left_two_thirds_of_screen_region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -62,9 +62,7 @@ class Test(BaseTest):
                 one_of_pattern_exists = left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9), Settings.FIREFOX_TIMEOUT)
             assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() + ' in the list found.')
 
-        click(search_settings_pattern)
-
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        click(search_settings_pattern, Settings.TINY_FIREFOX_TIMEOUT)
 
         search_page = exists(about_preferences_search_page_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, search_page, 'The \'about:preferences#search\' page successfully loaded.')
@@ -75,10 +73,10 @@ class Test(BaseTest):
         click(default_search_engine_dropdown_pattern)
 
         # Change the default search engine.
+        amazon_search_engine = exists(amazon_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, amazon_search_engine, 'amazon_search_engine')
 
-        repeat_key_down(2)
-
-        type(Key.ENTER)
+        click(amazon_search_engine_pattern)
 
         # Check that default search engine successfully changed.
         previous_tab()
