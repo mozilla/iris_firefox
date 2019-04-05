@@ -39,7 +39,8 @@ class Test(BaseTest):
         assert_true(self, iris_tab_displayed, 'Iris tab is displayed properly')
 
         if Settings.is_linux():
-            iris_tab_offset = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[0] * 5
+            iris_tab_offset = find(LocalWeb.IRIS_LOGO).y
+            # iris_tab_offset = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[0] * 5
 
         if not Settings.is_mac():
             minimize_window()
@@ -73,6 +74,8 @@ class Test(BaseTest):
         assert_true(self, tabs_located_after_size_changed, 'Tabs located after size of main window had changed.')
 
         default_tabs_position = find(focus_test_site_tab_pattern)
+        click(default_tabs_position)
+
         default_tabs_region = Region(0,
                                      default_tabs_position.y,
                                      width=SCREEN_WIDTH,
@@ -99,6 +102,8 @@ class Test(BaseTest):
         assert_true(self, tab_two_relocated and active_tab_switched, 'Second tab relocated')
 
         tab_one_location = find(firefox_test_site_tab_pattern)
+
+        click(tab_one_location)
 
         tab_one_drop_location = Location(x=(tab_one_location.x + SCREEN_WIDTH / 5),
                                          y=(tab_one_location.y + SCREEN_HEIGHT / 10))
