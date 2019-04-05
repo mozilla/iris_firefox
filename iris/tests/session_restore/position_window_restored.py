@@ -137,7 +137,9 @@ class Test(BaseTest):
             assert_true(self, hamburger_menu_in_tab_one_found, 'Hamburger menu button of first tab window is found')
 
             hamburger_menu_button_location_x = find(NavBar.HAMBURGER_MENU, region=tab_one_region).x
-            tab_one_intermediate_location.offset(hamburger_menu_button_location_x - tab_one_intermediate_location.x, 0)
+            tab_one_drag_drop_offset = hamburger_menu_button_location_x - tab_one_intermediate_location.x
+            tab_one_intermediate_location.offset(tab_one_drag_drop_offset, 0)
+            tab_one_drop_location.offset(tab_one_drag_drop_offset, 0)
 
         drag_drop(tab_one_intermediate_location, tab_one_drop_location, click_duration)
 
