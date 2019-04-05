@@ -18,7 +18,7 @@ class Test(BaseTest):
 
     def run(self):
         moz_pattern = Pattern('moz.png')
-        search_engine_pattern = Pattern('search_engine.png')
+        one_click_search_engine_pattern = Pattern('search_engine.png')
         search_settings_pattern = Pattern('search_settings.png')
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
         bing_one_off_button_pattern = Pattern('bing_one_off_button.png')
@@ -26,6 +26,7 @@ class Test(BaseTest):
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         twitter_one_off_button_pattern = Pattern('twitter_one_off_button.png')
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
+        google_search_engine_pattern = Pattern('google_search_engine.png')
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
         default_search_engine_dropdown_pattern = Pattern('default_search_engine_dropdown.png')
         moz_search_amazon_search_engine_pattern = Pattern('moz_search_amazon_search_engine.png')
@@ -94,14 +95,13 @@ class Test(BaseTest):
         # Remove the 'Google' search engine.
         next_tab()
 
-        google_one_off_button = scroll_until_pattern_found(google_one_off_button_pattern, scroll, (-25,), 20, 1)
+        google_one_off_button = scroll_until_pattern_found(google_search_engine_pattern, scroll, (-25,), 20, 1)
         assert_true(self, google_one_off_button, 'google_one_off_button_pattern')
-        google_one_off_button_location = find(google_one_off_button_pattern)
-        google_button_width, google_button_height = google_one_off_button_pattern.get_size()
-        click(Location(google_one_off_button_location.x - int(google_button_width/2),
-                       google_one_off_button_location.y + int(google_button_width/2)))
 
-        one_click_search_engine_pattern = exists(search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        google_check_box_location = find(google_search_engine_pattern)
+        click(Location(google_check_box_location.x+5, google_check_box_location.y+10), 1)
+
+        one_click_search_engine_pattern = exists(one_click_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, one_click_search_engine_pattern, 'One-Click Search Engines section found.')
 
         # Check that unchecked search engine is successfully removed from the one-off searches bar.
