@@ -14,7 +14,6 @@ class Test(FirefoxTest):
         locale='[en-US]',
         test_case_id='219584',
         test_suite_id='3063',
-        exclude=OSPlatform.ALL
     )
     def test_run(self, firefox):
         click_hamburger_menu_option('New Private Window')
