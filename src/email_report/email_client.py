@@ -35,7 +35,8 @@ class EmailClient:
     @staticmethod
     def create_email_subject(application: str):
         email_info = '[%s][%s]Iris Test Report %s' % (
-            application.target_name+" "+str(application.values['fx_version']) if application.target_name else application.target_name, OSHelper.get_os_version().capitalize(), date.today())
+            application.target_name+" "+str(application.values['fx_version']) if application.target_name == 'Firefox'
+            else application.target_name, OSHelper.get_os_version().capitalize(), date.today())
         return email_info
 
     @staticmethod
