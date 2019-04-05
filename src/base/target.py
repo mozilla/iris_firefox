@@ -32,6 +32,7 @@ except (ImportError, AttributeError):
 class BaseTarget:
 
     completed_tests = []
+    values = {}
 
     def __init__(self):
         self.target_name = 'Default target'
