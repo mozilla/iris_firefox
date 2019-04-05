@@ -17,19 +17,13 @@ class Test(BaseTest):
 
     def setup(self):
         BaseTest.setup(self)
-        # self.profile = Profile.BRAND_NEW
         self.set_profile_pref({'browser.warnOnQuit': True,
                                'browser.tabs.warnOnClose': True})
 
     def run(self):
         close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
-        cancel_button_pattern = Pattern('cancel_button.png')
-
-        if Settings.is_mac():
-            cancel_multiple_tabs_warning_pattern = Pattern('cancel_multiple_tabs_warning.png')
 
         if Settings.is_linux():
-            close_multiple_tabs_warning_logo_pattern = Pattern('close_multiple_tabs_warning_logo.png')
             maximize_button_pattern = Pattern('maximize_button.png')
             restore_button_pattern = Pattern('restore_button.png')
 
@@ -40,13 +34,16 @@ class Test(BaseTest):
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
         test_site_opened = exists(LocalWeb.FOCUS_LOGO, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, test_site_opened, 'test_site_opened')
+        assert_true(self, test_site_opened, 'Test site is opened')
 
         close_window()
 
+        close_multiple_tabs_warning_exists = exists(close_multiple_tabs_warning_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, close_multiple_tabs_warning_exists, 'Close multiple tabs warning is displayed')
+
         if Settings.is_linux():
             maximize_button_exists = exists(maximize_button_pattern)
-            assert_true(self, maximize_button_exists, 'maximize_button_exists')
+            assert_true(self, maximize_button_exists, 'Maximize button is displayed')
 
             click(maximize_button_pattern)
 
@@ -55,32 +52,45 @@ class Test(BaseTest):
             hover(hover_reg)
 
             restore_button_exists = exists(restore_button_pattern)
-            assert_true(self, restore_button_exists, 'restore_button_exists')
+            assert_true(self, restore_button_exists, 'Restore button is displayed')
 
             click(restore_button_pattern)
 
-        cancel_button_exists = exists(cancel_button_pattern)
-        assert_true(self, cancel_button_exists, 'cancel_button_exists')
+        if not Settings.is_mac():
+            close_window_control('auxiliary')
+
+            try:
+                warning_vanished = wait_vanish(close_multiple_tabs_warning_pattern, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, warning_vanished, 'Close multiple tabs warning is dismissed after the click on the '
+                                                    'Close button')
+            except FindError:
+                raise FindError('Close multiple tabs warning isn\'t dismissed.The Close button didn\'t works as '
+                                'intended')
+
+            close_window()
 
         click_cancel_button()
 
+        try:
+            warning_vanished = wait_vanish(close_multiple_tabs_warning_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, warning_vanished, 'Close multiple tabs warning is dismissed after the click on the Cancel'
+                                                ' button')
+        except FindError:
+            raise FindError('Close multiple tabs warning isn\'t dismissed.The Cancel button didn\'t works as '
+                            'intended')
+
         close_window()
 
         close_multiple_tabs_warning_exists = exists(close_multiple_tabs_warning_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, close_multiple_tabs_warning_exists, 'close_multiple_tabs_warning_exists')
-
-        close_window_control('auxiliary')
-
-        close_window()
-
-        close_multiple_tabs_warning_exists = exists(close_multiple_tabs_warning_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, close_multiple_tabs_warning_exists, 'close_multiple_tabs_warning_exists')
+        assert_true(self, close_multiple_tabs_warning_exists, 'Close multiple tabs warning is displayed')
 
         click(close_multiple_tabs_warning_pattern)
 
         try:
-            expected_7 = wait_vanish(close_multiple_tabs_warning_pattern, Settings.FIREFOX_TIMEOUT)
-            expected_8 = wait_vanish(LocalWeb.FOCUS_LOGO, Settings.FIREFOX_TIMEOUT)
-            assert_true(self, expected_7 and expected_8, 'The browser was closed successfully')
+            warning_vanished = wait_vanish(close_multiple_tabs_warning_pattern, Settings.FIREFOX_TIMEOUT)
+            window_closed = wait_vanish(LocalWeb.FOCUS_LOGO, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, warning_vanished and window_closed, 'The browser was closed successfully after the click '
+                                                                  'on the Close Tab button')
         except FindError:
-            raise FindError('The browser was not closed successfully')
+            raise FindError('The browser was not closed successfully. The Close Tab button didn\'t works as '
+                            'intended')
