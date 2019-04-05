@@ -4,7 +4,7 @@
 
 
 from iris.test_case import *
-import pygetwindow
+
 
 class Test(BaseTest):
 
