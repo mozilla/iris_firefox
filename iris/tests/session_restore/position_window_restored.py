@@ -32,15 +32,15 @@ class Test(BaseTest):
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
 
+        iris_icon_height = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[1]
         click_duration = 1
-        iris_tab_offset = - LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[1]
+        iris_tab_offset = - iris_icon_height
 
         iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         assert_true(self, iris_tab_displayed, 'Iris tab is displayed properly')
 
         if Settings.is_linux():
             iris_tab_offset = find(LocalWeb.IRIS_LOGO).y
-            # iris_tab_offset = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[0] * 5
 
         if not Settings.is_mac():
             minimize_window()
@@ -127,6 +127,18 @@ class Test(BaseTest):
                     'Changes to height and width performed. First tab\'s first relocation completed.')
         tab_one_intermediate_location = find(firefox_test_site_tab_pattern)
 
+        if not Settings.is_linux():
+            tab_one_intermediate_location.offset(-iris_icon_height, 0)
+        else:
+            tab_one_region = Region(tab_one_intermediate_location.x, tab_one_intermediate_location.y,
+                                    SCREEN_WIDTH * 2 // 3, SCREEN_HEIGHT // 2)
+
+            hamburger_menu_in_tab_one_found = exists(NavBar.HAMBURGER_MENU, in_region=tab_one_region)
+            assert_true(self, hamburger_menu_in_tab_one_found, 'Hamburger menu button of first tab window is found')
+
+            hamburger_menu_button_location_x = find(NavBar.HAMBURGER_MENU, region=tab_one_region).x
+            tab_one_intermediate_location.offset(hamburger_menu_button_location_x - tab_one_intermediate_location.x, 0)
+
         drag_drop(tab_one_intermediate_location, tab_one_drop_location, click_duration)
 
         tab_one_relocated = not exists(firefox_test_site_tab_pattern, in_region=default_tabs_region)
@@ -160,7 +172,7 @@ class Test(BaseTest):
             self.base_local_web_url)
         self.firefox_runner.start()
 
-        firefox_restarted = exists(NavBar.HAMBURGER_MENU, Settings.SITE_LOAD_TIMEOUT)
+        firefox_restarted = exists(NavBar.HAMBURGER_MENU.similar(0.9), Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_restarted, 'Firefox restarted successfully')
 
         click(NavBar.HAMBURGER_MENU, click_duration)
@@ -226,7 +238,7 @@ class Test(BaseTest):
         assert_true(self, focus_site_window_height_matched and focus_site_window_width_matched,
                     'Second window size matched')
 
-        click_window_control('close')
+        close_tab()
 
         click(LocalWeb.IRIS_LOGO_ACTIVE_TAB, click_duration)
         open_browser_console()
