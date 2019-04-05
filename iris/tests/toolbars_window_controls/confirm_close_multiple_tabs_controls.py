@@ -69,6 +69,10 @@ class Test(BaseTest):
 
             close_window()
 
+            close_multiple_tabs_warning_exists = exists(close_multiple_tabs_warning_pattern,
+                                                        Settings.SHORT_FIREFOX_TIMEOUT)
+            assert_true(self, close_multiple_tabs_warning_exists, 'Close multiple tabs warning is displayed')
+
         click_cancel_button()
 
         try:
