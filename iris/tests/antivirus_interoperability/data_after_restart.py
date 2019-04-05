@@ -38,7 +38,7 @@ class Test(BaseTest):
 
         history_sidebar()
 
-        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, history_sidebar_opened, 'History sidebar opened')
 
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
