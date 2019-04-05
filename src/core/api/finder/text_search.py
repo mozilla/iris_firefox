@@ -115,7 +115,10 @@ def _text_search(text, region: Rectangle = None, multiple_search=False):
         if len(first_word_occurrences) == 0:
             first_word = []
         else:
-            first_word = [first_word_occurrences[0]]
+            if word_count == 1:
+                first_word = [first_word_occurrences[0]]
+            else:
+                first_word = first_word_occurrences
     else:
         first_word = first_word_occurrences
 
