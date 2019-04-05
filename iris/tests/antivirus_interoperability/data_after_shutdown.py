@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locale = ["en-US"]
 
     def run(self):
-        toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         restore_previous_session_button_pattern = Pattern('restore_previous_session.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
@@ -28,14 +27,14 @@ class Test(BaseTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'SOAP Wiki site successfully opened')
 
         new_tab()
 
         navigate('https://edition.cnn.com')
 
-        cnn_page_opened = exists(LocalWeb.CNN_LOGO, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cnn_page_opened = exists(LocalWeb.CNN_LOGO, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_page_opened, 'The CNN site successfully opened')
 
         history_sidebar()
@@ -45,10 +44,7 @@ class Test(BaseTest):
 
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
         history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
-        history_sidebar_region = Region(history_sidebar_location.x - 10,
-                                        history_sidebar_location.y,
-                                        history_width + 10,
-                                        SCREEN_HEIGHT / 2)
+        history_sidebar_region = Region(0, history_sidebar_location.y, history_width * 3, SCREEN_HEIGHT / 2)
 
         today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY)
         assert_true(self, today_timeline_exists, 'The Today timeline displayed')
@@ -69,41 +65,49 @@ class Test(BaseTest):
         stardialog_region = Region(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT)
 
         bookmark_page()
+
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
+
         cnn_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
                                                        in_region=stardialog_region)
         assert_true(self, cnn_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
+
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6), in_region=stardialog_region)
+
         click(Bookmarks.StarDialog.DONE)
 
         previous_tab()
 
         bookmark_page()
+
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
+
         wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
                                                         in_region=stardialog_region)
         assert_true(self, wiki_bookmark_toolbar_folder_displayed, 'Bookmark toolbar folder displayed')
+
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6), in_region=stardialog_region)
+
         click(Bookmarks.StarDialog.DONE)
 
-        cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, Settings.SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_added, 'The CNN bookmark is successfully added')
 
-        wiki_bookmark_added = exists(wikipedia_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        wiki_bookmark_added = exists(wikipedia_logo_pattern, Settings.SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
         new_tab()
 
         navigate('https://www.youtube.com/')
 
-        youtube_opened = exists(youtube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        youtube_opened = exists(youtube_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, youtube_opened, 'The Youtube site successfully opened')
 
         new_tab()
 
         navigate('https://twitter.com/')
 
-        twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        twitter_opened = exists(twitter_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
         restart_firefox(self,
@@ -111,18 +115,19 @@ class Test(BaseTest):
                         self.profile_path,
                         self.base_local_web_url)
 
-        firefox_is_restarted = exists(NavBar.HOME_BUTTON, 180)
+        firefox_is_restarted = exists(NavBar.HOME_BUTTON, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_is_restarted, 'Firefox is successfully restarted')
 
         restore_firefox_focus()
 
-        cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, Settings.SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
 
-        wiki_bookmark_restored = exists(wikipedia_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        wiki_bookmark_restored = exists(wikipedia_logo_pattern, Settings.SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored')
 
         click(NavBar.HAMBURGER_MENU)
+
         restore_previous_session_button_displayed = exists(restore_previous_session_button_pattern)
         assert_true(self, restore_previous_session_button_displayed, 'Restore previous session button displayed')
 
@@ -152,9 +157,9 @@ class Test(BaseTest):
         tab_restored_twitter = exists(twitter_logo_unactive_tab_pattern, in_region=tabs_region)
         assert_true(self, tab_restored_twitter, 'The Twitter tab is restored')
 
-        cnn_bookmark_still_displayed = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        cnn_bookmark_still_displayed = exists(LocalWeb.CNN_LOGO, Settings.SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_still_displayed, 'The CNN bookmark is still displayed')
 
-        wiki_bookmark_still_displayed = exists(wikipedia_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT,
+        wiki_bookmark_still_displayed = exists(wikipedia_logo_pattern, Settings.SITE_LOAD_TIMEOUT,
                                                bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_still_displayed, 'The Wikipedia bookmark is still displayed')
