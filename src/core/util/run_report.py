@@ -36,8 +36,10 @@ class ReportFooter(object):
                 failure_str += os.path.basename(failed_tests) + '\n'
                 failure_str += '\n'
 
-        app_details = 'Application: %s,Platform: %s' % (self.app.target_name, self.platform)
-        test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors %s   -- Total: %s' \
+        app_details = 'Application: %s, Platform: %s, Firefox Build: %s' % (self.app.target_name, self.platform,
+                                                                            self.app.values['fx_build_id'])\
+            if self.app.target_name == 'Firefox' else self.app.target_name
+        test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors %s  -- Total: %s' \
                            % (self.passed_tests, self.failed_tests, self.skipped_tests, self.error_tests, total)
         total_time_str = 'Total time: %s second(s)' % self.total_duration
 
