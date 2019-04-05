@@ -39,11 +39,11 @@ class Test(BaseTest):
         find_add_ons_pattern = Pattern('find_add_ons.png')
         pref_default_search_engine_amazon_pattern = Pattern('pref_default_search_engine_amazon.png')
 
-        left_two_thirds_of_screen_region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
+        top_two_thirds_of_screen_region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
+        site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, site_loaded, 'Page successfully loaded, firefox logo found.')
 
         select_location_bar()
@@ -59,11 +59,11 @@ class Test(BaseTest):
         for one_search_engine in range(one_of_pattern_list.__len__()):
             if Settings.get_os() == Platform.MAC:
                 one_of_pattern_exists = \
-                    left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.7),
+                    top_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.7),
                                                             Settings.FIREFOX_TIMEOUT)
             else:
                 one_of_pattern_exists = \
-                    left_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9),
+                    top_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9),
                                                             Settings.FIREFOX_TIMEOUT)
             assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() +
                                                      ' in the list found.')
