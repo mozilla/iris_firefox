@@ -102,7 +102,8 @@ class Test(BaseTest):
         region_20_mb = Region(file_20_mb.x, file_20_mb.y - 10,
                               file_20_mb.x, show_all_downloads_button.y - file_20_mb.y)
 
-        expected = region_20_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10)
+        expected = region_20_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10) or region_20_mb.exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10)
         assert_true(self, expected, '20 MB file icon is aligned RTL.')
         region_20_mb_containing_folder = Region(downloads_button.x, file_20_mb.y,
                                                 file_20_mb.x, show_all_downloads_button.y - file_20_mb.y)
@@ -117,7 +118,8 @@ class Test(BaseTest):
         region_10_mb = Region(file_10_mb.x, file_10_mb.y - 10,
                               file_10_mb.x, file_20_mb.y - file_10_mb.y)
 
-        expected = region_10_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10)
+        expected = region_10_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10) or region_10_mb.exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10)
         assert_true(self, expected, '10 MB file icon is aligned RTL.')
 
         region_10_mb_containing_folder = Region(downloads_button.x, file_10_mb.y,
@@ -133,7 +135,8 @@ class Test(BaseTest):
         region_5_mb_icon = Region(file_5_mb.x, file_5_mb.y - 10,
                                   file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
-        expected = region_5_mb_icon.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10)
+        expected = region_5_mb_icon.exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10) or region_5_mb_icon.exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON, 10)
         assert_true(self, expected, '5 MB file icon is aligned RTL.')
         region_5_mb_containing_folder = Region(downloads_button.x, file_5_mb.y,
                                                file_5_mb.x, file_10_mb.y - file_5_mb.y)
