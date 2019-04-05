@@ -172,7 +172,7 @@ class Test(BaseTest):
         assert_true(self, startpage_one_off_button, 'Newly added search engine successfully found in the one-off searches bar.')
 
         if Settings.get_os() == Platform.MAC:
-            google_one_off_button = exists(google_one_off_button_pattern.similar(0.9), Settings.FIREFOX_TIMEOUT)
+            google_one_off_button = exists(google_one_off_button_pattern.similar(0.9), Settings.SHORT_FIREFOX_TIMEOUT)
         else:
-            google_one_off_button = exists(google_one_off_button_pattern, Settings.FIREFOX_TIMEOUT)
+            google_one_off_button = exists(google_one_off_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, google_one_off_button, 'Unchecked search engine is still removed from the one-off searches bar.')
