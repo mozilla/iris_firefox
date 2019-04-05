@@ -4,7 +4,7 @@
 
 
 from iris.test_case import *
-
+import pygetwindow
 
 class Test(BaseTest):
 
@@ -159,6 +159,7 @@ class Test(BaseTest):
         assert_true(self, firefox_restarted, 'Firefox restarted successfully')
 
         click(NavBar.HAMBURGER_MENU, click_duration)
+
         restore_previous_session_located = exists(restore_previous_session_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, restore_previous_session_located,
                     'The "Hamburger" menu is successfully displayed. "Restore previous session" menu item located')
