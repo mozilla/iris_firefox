@@ -4,6 +4,7 @@
 
 
 import difflib
+import logging
 
 import pytesseract
 from PIL import ImageEnhance
@@ -16,6 +17,8 @@ from src.core.api.screen.screenshot_image import ScreenshotImage
 TRY_RESIZE_IMAGES = 2
 OCR_RESULT_COLUMNS_COUNT = 12
 WORD_PROXIMITY = 5
+
+logger = logging.getLogger(__name__)
 
 cutoffs = {'string': {'min_cutoff': 0.7, 'max_cutoff': 0.9, 'step': 0.1},
            'digit': {'min_cutoff': 0.75, 'max_cutoff': 0.9, 'step': 0.05}}
@@ -100,9 +103,10 @@ def _assemble_results(result_list):
 
 def _text_search(text, region: Rectangle = None, multiple_search=False):
     """Search text in region or screen."""
+
     if region is None:
         region = DisplayCollection[0].bounds
-
+    logger.debug('Text find: \'{}\''.format(text))
     img = ScreenshotImage(region=region)
     raw_gray_image = img.get_gray_image()
     enhanced_image = ImageEnhance.Contrast(img.get_gray_image()).enhance(10.0)

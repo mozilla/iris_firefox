@@ -64,7 +64,6 @@ def match_template(pattern: Pattern, region: Rectangle = None,
 
     locations_list = []
     save_img_location_list = []
-    logger.debug('Searching for pattern: %s' % pattern.get_filename())
     if not isinstance(match_type, MatchTemplateType):
         logger.warning('%s should be an instance of `%s`' % (match_type, MatchTemplateType))
         return []
@@ -119,8 +118,8 @@ def image_find(pattern, timeout=None, region=None):
     :param Region region: Region object.
     :return: Location.
     """
-    # if not _is_pattern_size_correct(pattern, region):
-    #     return None
+    if not _is_pattern_size_correct(pattern, region):
+        return None
 
     if timeout is None:
         timeout = Settings.auto_wait_timeout
@@ -130,7 +129,7 @@ def image_find(pattern, timeout=None, region=None):
 
     while start_time < end_time:
         time_remaining = end_time - start_time
-        logger.debug("Searching for image %s - %s seconds remaining" % (pattern.get_filename(), time_remaining))
+        logger.debug('Image find: {} - {} seconds remaining'.format(pattern.get_filename(), time_remaining))
         pos = match_template(pattern, region, MatchTemplateType.SINGLE)
         start_time = datetime.datetime.now()
 
@@ -156,6 +155,8 @@ def image_vanish(pattern: Pattern, timeout: float = None, region: Rectangle = No
     end_time = start_time + datetime.timedelta(seconds=timeout)
 
     while pattern_found and start_time < end_time:
+        time_remaining = end_time - start_time
+        logger.debug('Image vanish: {} - {} seconds remaining'.format(pattern.get_filename(), time_remaining))
         image_found = match_template(pattern, region, MatchTemplateType.SINGLE)
         if len(image_found) == 0:
             pattern_found = False
