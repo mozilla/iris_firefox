@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         locales=['en-US'],
         test_case_id='108260',
         test_suite_id='1902',
-        # blocked_by={'id': '1297382', 'platform': Platform.ALL}
+        blocked_by='1542729',
         set_profile_pref={'browser.contentblocking.enabled': False}
     )
     def test_run(self, firefox):
