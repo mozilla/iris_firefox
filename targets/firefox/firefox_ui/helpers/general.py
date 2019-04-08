@@ -4,30 +4,28 @@
 import json
 import time
 
-from src.core.api.finder.finder import wait, exists, find
-from src.core.api.keyboard.key import *
-
 from src.core.api.errors import APIHelperError
 from src.core.api.errors import FindError
+from src.core.api.finder.finder import find
 from src.core.api.finder.finder import wait, exists
 from src.core.api.finder.image_search import image_find
 from src.core.api.finder.pattern import Pattern
-from src.core.api.mouse.mouse import click
-from src.core.api.screen.region import Region
-from targets.firefox.firefox_ui.content_blocking import ContentBlocking
+from src.core.api.keyboard.key import *
 from src.core.api.keyboard.key import Key
-from src.core.api.screen.screen import Screen
-from src.core.util.logger_manager import logger
+from src.core.api.keyboard.keyboard import type
 from src.core.api.keyboard.keyboard_api import paste
-from src.core.api.keyboard.keyboard_api import type
-from src.core.api.keyboard.keyboard_api import get_clipboard
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
+from src.core.api.keyboard.keyboard_util import get_clipboard
+from src.core.api.mouse.mouse import click
+from src.core.api.os_helpers import OSHelper, OSPlatform
+from src.core.api.screen.region import Region
+from src.core.api.screen.screen import Screen
 from src.core.api.settings import Settings
+from src.core.util.arg_parser import get_core_args
+from src.core.util.logger_manager import logger
+from targets.firefox.firefox_ui.content_blocking import ContentBlocking
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.firefox.firefox_ui.nav_bar import NavBar
-from src.core.api.os_helpers import OSHelper, OSPlatform
-from src.core.util.arg_parser import get_core_args
-
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'

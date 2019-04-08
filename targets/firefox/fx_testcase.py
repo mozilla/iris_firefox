@@ -5,18 +5,12 @@
 import logging
 
 from src.base.testcase import *
-from targets.firefox.test_assert import *
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import *
-from targets.firefox.firefox_ui.web_links.local_web import LocalWeb
-from targets.firefox.firefox_app.fx_browser import Profiles, get_firefox_version
-from targets.firefox.firefox_ui.bookmarks import Bookmarks
-from targets.firefox.firefox_ui.helpers.update_rules import is_update_required, get_rule_for_channel, get_update_rules
+from targets.firefox.test_dependencies import *
 
 logger = logging.getLogger(__name__)
 
 
 class FirefoxTest(BaseTest):
-
     outcome = ''
     test_results = []
 
