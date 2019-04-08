@@ -74,12 +74,10 @@ class Test(BaseTest):
         assert_true(self, tabs_located_after_size_changed, 'Tabs located after size of main window had changed.')
 
         default_tabs_position = find(focus_test_site_tab_pattern)
+
         click(default_tabs_position)
 
-        default_tabs_region = Region(0,
-                                     default_tabs_position.y,
-                                     width=SCREEN_WIDTH,
-                                     height=SCREEN_HEIGHT / 10)
+        default_tabs_region = Region(0, default_tabs_position.y, width=SCREEN_WIDTH, height=SCREEN_HEIGHT / 10)
 
         tab_two_drop_location = Location(x=0, y=(default_tabs_position.y + 2 * SCREEN_HEIGHT / 5))
 
@@ -147,16 +145,15 @@ class Test(BaseTest):
         assert_true(self, tab_one_relocated,
                     'First opened tab relocated. Two tabs were dragged outside the main browser window.')
 
-        tab_one_window_region = Region(0,
-                                       tab_one_drop_location.y,
-                                       width=SCREEN_WIDTH,
-                                       height=SCREEN_HEIGHT / 5)
+        tab_one_window_region = Region(0, tab_one_drop_location.y, width=SCREEN_WIDTH, height=SCREEN_HEIGHT / 5)
 
         tab_one_moved_twice = exists(firefox_test_site_tab_pattern)
         assert_true(self, tab_one_moved_twice, 'Tabs positioned in different places.')
 
         if not Settings.is_mac():
+
             click(NavBar.HAMBURGER_MENU, click_duration, tab_one_window_region)
+
             hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the "Hamburger" menu.')
             click(hamburger_menu_quit_item_pattern, click_duration)
@@ -168,10 +165,7 @@ class Test(BaseTest):
             self.firefox_runner.stop()
             self.firefox_runner = None
 
-        self.firefox_runner = launch_firefox(
-            self.browser.path,
-            self.profile_path,
-            self.base_local_web_url)
+        self.firefox_runner = launch_firefox(self.browser.path, self.profile_path, self.base_local_web_url)
         self.firefox_runner.start()
 
         firefox_restarted = exists(NavBar.HAMBURGER_MENU.similar(0.9), Settings.SITE_LOAD_TIMEOUT)
@@ -184,6 +178,7 @@ class Test(BaseTest):
                     'The "Hamburger" menu is successfully displayed. "Restore previous session" menu item located')
 
         click(restore_previous_session_pattern, click_duration)
+
         focus_site_restored = exists(focus_test_site_tab_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, focus_site_restored, 'Firefox window with Focus webpage is opened')
 
@@ -215,6 +210,7 @@ class Test(BaseTest):
         assert_true(self, focus_site_the_lowest, 'Second restored window is located in the right position')
 
         click(firefox_test_site_tab_pattern, click_duration)
+
         open_browser_console()
         paste('window.innerHeight')
         type(Key.ENTER)
@@ -229,6 +225,7 @@ class Test(BaseTest):
         close_tab()
 
         click(focus_test_site_tab_pattern, click_duration)
+
         open_browser_console()
         paste('window.innerHeight')
         type(Key.ENTER)
@@ -243,6 +240,7 @@ class Test(BaseTest):
         close_tab()
 
         click(LocalWeb.IRIS_LOGO_ACTIVE_TAB, click_duration)
+
         open_browser_console()
 
         paste('window.innerHeight')
