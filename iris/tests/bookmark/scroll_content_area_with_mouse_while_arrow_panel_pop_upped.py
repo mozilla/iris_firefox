@@ -18,6 +18,11 @@ class Test(BaseTest):
         soap_scroll_content_pattern = Pattern('soap_scroll_content.png')
         site_information_panel_pattern = Pattern('site_information_panel.png')
 
+        if Settings.is_windows():
+            scroll_value = SCREEN_HEIGHT
+        else:
+            scroll_value = SCREEN_HEIGHT/200
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.SITE_LOAD_TIMEOUT)
@@ -33,7 +38,7 @@ class Test(BaseTest):
 
         mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
-        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-SCREEN_HEIGHT, None), 100,
+        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-scroll_value, None), 100,
                                    Settings.TINY_FIREFOX_TIMEOUT/2)
 
         try:
@@ -59,7 +64,7 @@ class Test(BaseTest):
 
         mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
-        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-SCREEN_HEIGHT, None), 100,
+        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-scroll_value, None), 100,
                                    Settings.TINY_FIREFOX_TIMEOUT/2)
 
         try:
@@ -85,7 +90,7 @@ class Test(BaseTest):
 
         mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
-        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-SCREEN_HEIGHT, None), 100,
+        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-scroll_value, None), 100,
                                    Settings.TINY_FIREFOX_TIMEOUT / 2)
 
         try:
@@ -110,7 +115,7 @@ class Test(BaseTest):
 
         mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
-        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-SCREEN_HEIGHT, None), 100,
+        scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-scroll_value, None), 100,
                                    Settings.TINY_FIREFOX_TIMEOUT / 2)
 
         try:
