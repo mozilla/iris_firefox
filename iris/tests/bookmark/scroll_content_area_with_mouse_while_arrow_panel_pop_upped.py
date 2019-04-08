@@ -9,7 +9,7 @@ from iris.test_case import *
 class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Open a bookmark in a New Tab from Bookmarks Sidebar'
+        self.meta = 'Bug 1471415 - No longer able to scroll content area with mouse wheel while arrow panel pop-upped'
         self.test_case_id = '175213'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
@@ -20,8 +20,10 @@ class Test(BaseTest):
 
         if Settings.is_windows():
             scroll_value = SCREEN_HEIGHT
-        else:
+        if Settings.is_linux():
             scroll_value = SCREEN_HEIGHT/200
+        else:
+            scroll_value = SCREEN_HEIGHT/50
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -33,7 +35,7 @@ class Test(BaseTest):
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'The Library menu is correctly displayed')
 
         mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
@@ -51,7 +53,10 @@ class Test(BaseTest):
 
         click(soap_scroll_content_pattern)
 
-        page_home()
+        if not Settings.is_mac():
+            page_home()
+        else:
+            type(text=Key.UP, modifier=KeyModifier.CMD)
 
         hamburger_menu_icon_exists = exists(NavBar.HAMBURGER_MENU, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, hamburger_menu_icon_exists, 'Hamburger menu icon exists')
@@ -62,7 +67,7 @@ class Test(BaseTest):
                                              Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, hamburger_menu_panel_exists, 'Hamburger menu panel is displayed')
 
-        mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(.7))
 
         scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-scroll_value, None), 100,
                                    Settings.TINY_FIREFOX_TIMEOUT/2)
@@ -77,7 +82,10 @@ class Test(BaseTest):
 
         click(soap_scroll_content_pattern)
 
-        page_home()
+        if not Settings.is_mac():
+            page_home()
+        else:
+            type(text=Key.UP, modifier=KeyModifier.CMD)
 
         site_information_icon_exists = exists(site_information_panel_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, site_information_icon_exists, 'Site information icon exists')
@@ -88,7 +96,7 @@ class Test(BaseTest):
                                                Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, site_information_panel_exists, 'Site information panel is displayed')
 
-        mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(.7))
 
         scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-scroll_value, None), 100,
                                    Settings.TINY_FIREFOX_TIMEOUT / 2)
@@ -103,7 +111,10 @@ class Test(BaseTest):
 
         click(soap_scroll_content_pattern)
 
-        page_home()
+        if not Settings.is_mac():
+            page_home()
+        else:
+            type(text=Key.UP, modifier=KeyModifier.CMD)
 
         star_button_exists = exists(LocationBar.STAR_BUTTON_UNSTARRED, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, star_button_exists, 'Star button icon exists')
@@ -113,7 +124,7 @@ class Test(BaseTest):
         star_panel_exists = exists(Bookmarks.StarDialog.NEW_BOOKMARK, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, star_panel_exists, 'Star panel is displayed')
 
-        mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        mouse_move(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(.7))
 
         scroll_until_pattern_found(soap_scroll_content_pattern, scroll, (-scroll_value, None), 100,
                                    Settings.TINY_FIREFOX_TIMEOUT / 2)
@@ -122,10 +133,13 @@ class Test(BaseTest):
             soap_wiki_label_not_exists = wait_vanish(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(.9),
                                                      Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, soap_wiki_label_not_exists,
-                        'Scroll using mouse wheel is successful with hamburger menu pop upped panel')
+                        'Scroll using mouse wheel is successful with star panel pop upped panel')
         except FindError:
             raise FindError('Content is still on the page')
 
         click(soap_scroll_content_pattern)
 
-        page_home()
+        if not Settings.is_mac():
+            page_home()
+        else:
+            type(text=Key.UP, modifier=KeyModifier.CMD)
