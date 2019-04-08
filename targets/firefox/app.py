@@ -1,16 +1,18 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-import email
+
+
 import logging
 import os
 from multiprocessing import Process
-from pathlib import Path
 
 import pytest
 
 from src.base.target import BaseTarget
+from src.core.api.mouse.mouse import mouse_reset
 from src.core.api.os_helpers import OSHelper
+from src.core.util.arg_parser import get_core_args
 from src.core.util.local_web_server import LocalWebServer
 from src.core.util.path_manager import PathManager
 from src.core.util.test_assert import create_result_object
@@ -18,7 +20,6 @@ from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, set_update_channel_pref
 from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.parse_args import get_target_args
-from src.core.util.arg_parser import get_core_args
 
 logger = logging.getLogger(__name__)
 target_args = get_target_args()
@@ -70,6 +71,8 @@ class Target(BaseTarget):
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
+        if not OSHelper.is_linux():
+            mouse_reset()
         if item.name == 'test_run':
             values = item.own_markers[0].kwargs
             if 'exclude' in values and OSHelper.get_os() in values.get('exclude'):

@@ -4,6 +4,7 @@
 
 
 import ctypes
+import logging
 import re
 import subprocess
 import time
@@ -15,11 +16,12 @@ from src.core.api.errors import FindError
 from src.core.api.keyboard.key import KeyModifier, Key
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
-from src.core.util.arg_parser import logger
 from src.core.util.system import shutdown_process
 
 DEFAULT_KEY_SHORTCUT_DELAY = 0.1
 pyautogui.FAILSAFE = False
+
+logger = logging.getLogger(__name__)
 
 
 def key_down(key):
@@ -64,11 +66,9 @@ def type(text: Key or str = None, modifier=None, interval: int = None):
     :param interval: The number of seconds in between each press. By default it is 0 seconds.
     :return: None.
     """
-    logger.debug('type method: ')
     if modifier is None:
         if isinstance(text, Key):
-            logger.debug('Scenario 1: reserved key.')
-            logger.debug('Reserved key: %s' % text)
+            logger.debug('Type Method: [Reserved key: {}]'.format(text))
             key_down(text)
             key_up(text)
             time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
@@ -76,15 +76,13 @@ def type(text: Key or str = None, modifier=None, interval: int = None):
             if interval is None:
                 interval = Settings.type_delay
 
-            logger.debug('Scenario 2: normal key or text block.')
-            logger.debug('Text: %s' % text)
+            logger.debug('Type Method: [Text: {}]'.format(text))
             pyautogui.typewrite(text, interval)
     else:
-        logger.debug('Scenario 3: combination of modifiers and other keys.')
         modifier_keys = get_active_modifiers(modifier)
         num_keys = len(modifier_keys)
-        logger.debug('Modifiers (%s): %s ' % (num_keys, ' '.join(key.name for key in modifier_keys)))
-        logger.debug('text: %s' % text)
+        logger.debug('Type Method: [Modifiers ({}): {}] + [Text: {}]'
+                     .format(num_keys, ' '.join(key.name for key in modifier_keys), text))
         if num_keys == 1:
             key_down(modifier_keys[0])
             time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
