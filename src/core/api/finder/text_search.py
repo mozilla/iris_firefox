@@ -62,31 +62,6 @@ def _create_rectangle_from_ocr_data(data, scale):
     return Rectangle(x, y, width, height)
 
 
-def _get_first_word(sentence_list, image_list):
-    """Finds all occurrences of the first searched word."""
-    first_word = sentence_list.split()[0]
-    cutoff_type = 'digit' if _replace_multiple(first_word, digit_chars, '').isdigit() else 'string'
-    words_found = []
-    for index_image, stack_image in enumerate(image_list):
-        for index_scale, scale in enumerate(range(1, TRY_RESIZE_IMAGES + 1)):
-            stack_image = stack_image.resize([stack_image.width * scale, stack_image.height * scale])
-            processed_data = pytesseract.image_to_data(stack_image)
-            for index_data, line in enumerate(processed_data.split('\n')[1:]):
-                d = line.split()
-                if len(d) == OCR_RESULT_COLUMNS_COUNT:
-                    cutoff = cutoffs[cutoff_type]['max_cutoff']
-                    while cutoff >= cutoffs[cutoff_type]['min_cutoff']:
-                        if difflib.get_close_matches(first_word, [d[11]], cutoff=cutoff):
-                            try:
-                                vd = _create_rectangle_from_ocr_data(d, scale)
-                                if not _is_similar_result(words_found, vd.x, vd.y, WORD_PROXIMITY):
-                                    words_found.append(vd)
-                            except ValueError:
-                                continue
-                        cutoff -= cutoffs[cutoff_type]['step']
-    return words_found
-
-
 def _assemble_results(result_list):
     """Merge all Rectangle objects into one that contains them all."""
     from operator import attrgetter
@@ -101,18 +76,50 @@ def _assemble_results(result_list):
     return Rectangle(x, y, width, height)
 
 
+def _get_processed_data(image_list):
+    """Get all OCR data from images."""
+    data = []
+    for index_image, stack_image in enumerate(image_list):
+        for index_scale, scale in enumerate(range(1, TRY_RESIZE_IMAGES + 1)):
+            stack_image = stack_image.resize([stack_image.width * scale, stack_image.height * scale])
+            processed_data = pytesseract.image_to_data(stack_image)
+            for index_data, line in enumerate(processed_data.split('\n')[1:]):
+                d = line.split()
+                if len(d) == OCR_RESULT_COLUMNS_COUNT:
+                    d.append(scale)
+                    data.append(d)
+    return data
+
+
+def _get_first_word(word, data_list):
+    """Finds all occurrences of the first searched word."""
+    words_found = []
+    cutoff_type = 'digit' if _replace_multiple(word, digit_chars, '').isdigit() else 'string'
+    for data in data_list:
+        cutoff = cutoffs[cutoff_type]['max_cutoff']
+        while cutoff >= cutoffs[cutoff_type]['min_cutoff']:
+            if difflib.get_close_matches(word, [data[11]], cutoff=cutoff):
+                try:
+                    vd = _create_rectangle_from_ocr_data(data, data[12])
+                    if not _is_similar_result(words_found, vd.x, vd.y, WORD_PROXIMITY):
+                        words_found.append(vd)
+                except ValueError:
+                    continue
+            cutoff -= cutoffs[cutoff_type]['step']
+    return words_found
+
+
 def _text_search(text, region: Rectangle = None, multiple_search=False):
     """Search text in region or screen."""
-
     if region is None:
         region = DisplayCollection[0].bounds
+
     logger.debug('Text find: \'{}\''.format(text))
     img = ScreenshotImage(region=region)
     raw_gray_image = img.get_gray_image()
     enhanced_image = ImageEnhance.Contrast(img.get_gray_image()).enhance(10.0)
-    stack_images = [raw_gray_image, enhanced_image]
-    first_word_occurrences = _get_first_word(text, stack_images)
-
+    data_list = _get_processed_data([raw_gray_image, enhanced_image])
+    first_word_occurrences = _get_first_word(text.split()[0], data_list)
     word_count = len(text.split())
 
     if not multiple_search:
@@ -141,29 +148,20 @@ def _text_search(text, region: Rectangle = None, multiple_search=False):
         for index_word, word_to_search in enumerate(text.split()[1:]):
             found = False
             cutoff_type = 'digit' if _replace_multiple(word_to_search, digit_chars, '').isdigit() else 'string'
-            for index_image, stack_image in enumerate(stack_images):
+            for d in data_list:
                 if not found:
-                    for index_scale, scale in enumerate(range(1, TRY_RESIZE_IMAGES + 1)):
-                        if not found:
-                            stack_image = stack_image.resize([stack_image.width * scale, stack_image.height * scale])
-                            processed_data = pytesseract.image_to_data(stack_image)
-                            for index_data, line in enumerate(processed_data.split('\n')[1:]):
-                                if not found:
-                                    d = line.split()
-                                    if len(d) == OCR_RESULT_COLUMNS_COUNT:
-                                        cutoff = cutoffs[cutoff_type]['max_cutoff']
-                                        while cutoff >= cutoffs[cutoff_type]['min_cutoff'] and not found:
-
-                                            if difflib.get_close_matches(word_to_search, [d[11]], cutoff=cutoff):
-                                                try:
-                                                    vd = _create_rectangle_from_ocr_data(d, scale)
-                                                    if _is_next_word(sentence[index][-1], vd.x, vd.y):
-                                                        sentence[index].append(vd)
-                                                        found = True
-                                                except ValueError:
-                                                    continue
-                                            cutoff -= cutoffs[cutoff_type]['step']
-
+                    cutoff = cutoffs[cutoff_type]['max_cutoff']
+                    while cutoff >= cutoffs[cutoff_type]['min_cutoff']:
+                        if difflib.get_close_matches(word_to_search, [d[11]], cutoff=cutoff):
+                            try:
+                                vd = _create_rectangle_from_ocr_data(d, d[12])
+                                if _is_next_word(sentence[index][-1], vd.x, vd.y) and \
+                                        not _is_similar_result(sentence[index], vd.x, vd.y, WORD_PROXIMITY):
+                                    sentence[index].append(vd)
+                                    found = True
+                            except ValueError:
+                                continue
+                        cutoff -= cutoffs[cutoff_type]['step']
     final_result = []
     for words in sentence:
         if len(words) == word_count:
