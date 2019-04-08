@@ -4,7 +4,6 @@
 
 
 from iris.test_case import *
-import os
 
 
 class Test(BaseTest):
@@ -37,8 +36,7 @@ class Test(BaseTest):
         popup_opened = exists(popup_open_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, popup_opened, '\'Load temporary add-on\' popup is opened')
 
-        assets_folder = self.get_asset_path('')
-        open_test_case_assets_folder_in_file_manager(assets_folder)
+        open_test_case_assets_folder_in_file_manager()
 
         theme_file_is_available = exists(theme_file_icon_pattern, Settings.TINY_FIREFOX_TIMEOUT)
         assert_true(self, theme_file_is_available, 'Theme file is available.')
