@@ -20,7 +20,7 @@ class Test(BaseTest):
 
         if Settings.is_windows():
             scroll_value = SCREEN_HEIGHT
-        if Settings.is_linux():
+        elif Settings.is_linux():
             scroll_value = SCREEN_HEIGHT/200
         else:
             scroll_value = SCREEN_HEIGHT/50
