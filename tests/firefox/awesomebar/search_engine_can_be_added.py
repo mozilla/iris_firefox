@@ -101,7 +101,7 @@ class Test(FirefoxTest):
             type(Key.SPACE)
         else:
             type(Key.TAB)
-            click(search_engine_pattern.target_offset(20, 150))
+            click(search_engine_pattern.target_offset(20, 150), align=Alignment.TOP_LEFT)
 
         expected = exists(search_engine_pattern, 10)
         assert expected, 'One-Click Search Engines section found.'
