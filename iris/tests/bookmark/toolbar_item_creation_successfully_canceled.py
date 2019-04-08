@@ -25,6 +25,8 @@ class Test(BaseTest):
         getting_started_toolbar_bookmark_pattern = Pattern('getting_started_in_toolbar.png')
         new_bookmark_option_pattern = Pattern('new_bookmark_option.png')
         new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
+        toolbar_new_bookmark_pattern = Pattern('new_bookmark.png')
+        delete_option_pattern = Pattern('delete_bookmark.png')
 
         open_bookmarks_toolbar()
 
@@ -45,3 +47,27 @@ class Test(BaseTest):
 
         new_bookmark_popup_opened = exists(new_bookmark_window_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_bookmark_popup_opened, 'The \'New Bookmark\' popup window is displayed.')
+
+        close_window_control('auxiliary')
+
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+
+        new_bookmark_created = exists(toolbar_new_bookmark_pattern)
+        assert_false(self, new_bookmark_created and new_bookmark_popup_opened,
+                     'The popup window closes instantly. - New Bookmark is '
+                     'not saved as bookmarked inside the Bookmarks Toolbar.')
+
+        right_click(getting_started_toolbar_bookmark_pattern)
+
+        delete_option_available = exists(delete_option_pattern)
+        assert_true(self, delete_option_available,
+                    '\'Delete\' option available in context menu after right click at bookmark from toolbar.')
+
+        click(delete_option_pattern)
+
+        getting_started_bookmark_available = exists(getting_started_toolbar_bookmark_pattern)
+        assert_false(self, getting_started_bookmark_available,
+                     'Delete bookmark action is successfully performed. - Note: In the affected build, '
+                     'New Bookmark/ New Folder was displayed as bookmarked inside the Bookmarks Toolbar once the popup '
+                     'window was dismissed. No action (delete/rename/move) could be done either, as a consequence of '
+                     'closing the popup window via [x] button. ')
