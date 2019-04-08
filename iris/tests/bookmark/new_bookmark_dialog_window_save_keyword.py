@@ -53,7 +53,7 @@ class Test(BaseTest):
         else:
             type(Key.TAB)
             type(Key.TAB)
-        paste('soap_keyword')
+        paste('y')
 
         type(Key.ENTER)
 
@@ -66,7 +66,7 @@ class Test(BaseTest):
 
         select_location_bar()
 
-        type('soap_keyword')
+        type('y')
 
         suggestion_exists = exists(keyword_suggestion_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, suggestion_exists, 'The keyword search displays as first suggestion the bookmarked website.')
