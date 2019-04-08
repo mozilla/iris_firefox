@@ -7,6 +7,8 @@ import argparse
 import logging
 import os
 
+from src.core.api.os_helpers import OSHelper
+
 logger = logging.getLogger(__name__)
 iris_args = None
 
@@ -97,7 +99,15 @@ def get_core_args():
     parser.add_argument('-z', '--resize',
                         help='Convert hi-res images to normal',
                         action='store_true')
+    parser.add_argument('-vk', '--virtual_keyboard',
+                        help='Use the virtual/fake keyboard for virtual environments',
+                        action='store_true',
+                        default=False)
     if iris_args is None:
         iris_args = parser.parse_known_args()[0]
+
+    if iris_args.virtual_keyboard and not OSHelper.is_linux():
+        logger.error("Virtual keyboard is available only on LINUX.")
+        exit(1)
 
     return iris_args

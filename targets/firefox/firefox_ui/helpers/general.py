@@ -17,15 +17,14 @@ from src.core.api.mouse.mouse import click, hover, Mouse
 from src.core.api.screen.region import Region
 from src.core.api.location import Location
 from targets.firefox.firefox_ui.content_blocking import ContentBlocking
-from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from src.core.api.keyboard.key import Key
 from src.core.api.screen.screen import Screen
 from src.core.util.logger_manager import logger
-from src.core.api.keyboard.keyboard_api import paste, key_down, key_up
-from src.core.api.keyboard.keyboard_api import type
-from src.core.api.keyboard.keyboard_api import get_clipboard
+from src.core.api.keyboard.keyboard_api import paste
+from src.core.api.keyboard.keyboard import type, key_up, key_down
+from src.core.api.keyboard.keyboard_util import get_clipboard
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
 from src.core.api.settings import Settings
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
