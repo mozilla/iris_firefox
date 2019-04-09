@@ -8,12 +8,14 @@ import ast
 from src.configuration.config_parser import get_config_property
 
 
+
+
+
+
 class TestRailTests:
-    test_status = ''
-    test_steps = []
 
     def __init__(self, test_case_name: str, suite_id: int, blocked_by: int, test_case_id: int,
-                 test_steps_assertion: list):
+                 outcome):
 
         """
         :param test_case_name: name of the test case
@@ -25,7 +27,7 @@ class TestRailTests:
         self.section_id = suite_id
         self.blocked_by = blocked_by
         self.test_case_id = test_case_id
-        self.test_case_steps = test_steps_assertion
+        self.outcome = outcome
 
     def get_test_status(self):
         """
@@ -35,27 +37,8 @@ class TestRailTests:
         :return test_status
 
         """
+        return self.outcome
 
-        for assertion in range(len(self.test_case_steps)):
-            if self.test_case_steps[assertion].outcome == 'PASSED':
-                self.test_status = 'PASSED'
-            else:
-                self.test_status = 'FAILED'
-                break
-        return self.test_status
-
-    def get_steps_results(self):
-        """
-
-        Method that will retrieve the test case_name
-
-        :return test_steps
-
-        """
-        for message in range(len(self.test_case_steps)):
-            test_step = self.test_case_steps[message].message
-            self.test_steps.append(test_step)
-        return self.test_steps
 
     def get_test_case_name(self):
         """

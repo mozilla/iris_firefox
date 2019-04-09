@@ -7,6 +7,7 @@ import ast
 from datetime import date
 
 from src.configuration.config_parser import get_config_property, logger
+from src.core.util.test_assert import TestResult
 from targets.firefox.errors import TestRailError
 from src.core.api.os_helpers import OSHelper
 from src.core.util.report_utils import Color
@@ -175,25 +176,16 @@ class TestRail:
                         suite_id_tests = suite.test_results_list
                         for test in suite_id_tests:
                             payload = {}
-                            complete_test_assert = ''
                             test_results = test.get_test_status()
-                            test_results_steps = test.test_case_steps
-                            for iterator in range(len(test_results_steps)):
-                                message = test_results_steps[iterator].message
-                                expected = test_results_steps[iterator].expected
-                                actual = test_results_steps[iterator].actual
-                                test_steps = ' *Test assertion:* \n  %s \n - Expected: %s \n - Actual: %s' % (
-                                    message, expected, actual)
-                                complete_test_assert = test_steps + '\n\n\n' + complete_test_assert
 
-                            if len(test.blocked_by) > 1:
+                            if (test.blocked_by) is not None:
                                 payload['status_id'] = 2
-                                payload['defects'] = test.blocked_by
+                                payload['defects'] = str(test.blocked_by)
                             elif test_results.__contains__('FAILED') or test_results.__contains__('ERROR'):
                                 payload['status_id'] = 5
                             else:
                                 payload['status_id'] = 1
-                            payload['comment'] = complete_test_assert
+                            # payload['comment'] = complete_test_assert
                             payload['case_id'] = test.test_case_id
                             object_list.append(payload)
                             results['results'] = object_list
@@ -225,6 +217,8 @@ class TestRail:
         """
         test_plan_name = '[Firefox %s][%s]Iris Test Run %s' % (
             firefox_version, OSHelper.get_os().capitalize(), date.today())
+
+        logger.debug('Creating Test Plan', test_plan_name)
         return test_plan_name
 
     @staticmethod
@@ -264,16 +258,34 @@ class TestRail:
         return test_suite_array
 
 
+def create_testrail_test_map(collected_tests):
+    """
+              :param collected_tests: list of tests to be reported
+              :return: a list of TestRailTests objects
 
-def report_test_results(test_case_results):
-    """ PLACEHOLDER FOR Test Rail REPORT
-           :param test_case_results: TEST RESULT SESSION
+    """
+    test_object_list = []
 
-           need to update method with the app details
-       """
+    for test in collected_tests:
+        if isinstance(test, TestResult):
+            test_object = TestRailTests(test.item.own_markers[0].kwargs.get('description'),
+                                        test.item.own_markers[0].kwargs.get('test_suite_id'),
+                                        test.item.own_markers[0].kwargs.get('blocked_by'),
+                                        test.item.own_markers[0].kwargs.get('test_case_id'), test.outcome)
+        test_object_list.append(test_object)
+
+    return test_object_list
+
+
+def report_test_results(app_test):
+    """
+           :param app_test: Target object that contains test runned
+           :return: none
+
+    """
 
     logger.info(
         ' --------------------------------------------------------- ' + Color.BLUE + 'Starting Test Rail report:' + Color.END + ' ----------------------------------------------------------\n')
-
+    test_rail_tests = create_testrail_test_map(app_test.completed_tests)
     test_rail_report = TestRail()
-    test_rail_report.create_test_plan("build_id", "version", test_case_results)
+    test_rail_report.create_test_plan(app_test.values['fx_build_id'], app_test.values['fx_version'], test_rail_tests)

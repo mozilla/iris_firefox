@@ -20,6 +20,7 @@ from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, set_update_channel_pref
 from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.parse_args import get_target_args
+from targets.firefox.testrail.testrail_client import report_test_results
 
 logger = logging.getLogger(__name__)
 target_args = get_target_args()
@@ -68,6 +69,8 @@ class Target(BaseTarget):
             process.terminate()
             process.join()
         logger.debug('Finishing Firefox session')
+        if core_args.report:
+            report_test_results(self)
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)

@@ -1,9 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
-
 import base64
+from base64 import b64encode
 import json
 from urllib import request, error
 
@@ -33,7 +32,7 @@ class APIClient:
         """
         return self.__send_request('POST', uri, data)
 
-    def __send_request(self, method: str, uri: str, payload: str = None):
+    def __send_request(self, method: str, uri: str, payload=None):
 
         """
         :param method: HTTP Method (GET,POST)
@@ -42,15 +41,23 @@ class APIClient:
         :return: response Object
         """
         url = self.__url + uri
+        auth = str(
+            base64.b64encode(
+                bytes('%s:%s' % (self.user, self.password), 'utf-8')
+            ),
+            'ascii'
+        ).strip()
+
+        headers = {
+            'Content-Type': "application/json",
+            'Authorization': 'Basic %s' % auth,
+            'cache-control': "no-cache"
+        }
 
         if method == 'POST':
-            api_request = request.Request(url, data=json.dumps(payload))
+            api_request = request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
         else:
-            api_request = request.Request(url)
-        auth = base64.b64encode('%s:%s' % (self.user, self.password))
-
-        api_request.add_header('Authorization', 'Basic %s' % auth)
-        api_request.add_header('Content-Type', 'application/json')
+            api_request = request.Request(url, data=None, headers=headers)
 
         try:
             response = request.urlopen(api_request).read()
