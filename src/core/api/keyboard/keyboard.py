@@ -4,15 +4,17 @@
 
 import pyautogui
 
+from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import get_core_args
 import logging
 import os
 import time
 
-from Xlib.display import Display
-from Xlib import X
-from Xlib.ext.xtest import fake_input
-import Xlib.XK
+if OSHelper.is_linux():
+    from Xlib.display import Display
+    from Xlib import X
+    from Xlib.ext.xtest import fake_input
+    import Xlib.XK
 from src.core.api.keyboard.key import Key, KeyModifier
 from src.core.api.keyboard.keyboard_util import get_active_modifiers, is_shift_character
 from src.core.api.settings import Settings
@@ -253,8 +255,8 @@ class _XKeyboard(XScreen):
 
 
 # Initialize fake keyboard
-
-virtual_keyboard = _XKeyboard()
+if OSHelper.is_linux():
+    virtual_keyboard = _XKeyboard()
 
 
 class _Keyboard(object):
