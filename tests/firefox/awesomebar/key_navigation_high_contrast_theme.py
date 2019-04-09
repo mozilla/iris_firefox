@@ -19,7 +19,6 @@ class Test(FirefoxTest):
         themes_pattern = Pattern('themes.png')
         dark_theme_pattern = Pattern('dark_theme.png')
         wear_theme_pattern = Pattern('wear_theme.png')
-        stop_wear_theme = Pattern('stop_wear_theme.png')
         moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png')
         search_wikipedia_dark_theme_pattern = Pattern('search_wikipedia_dark_theme.png')
 
