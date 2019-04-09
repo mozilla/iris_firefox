@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import os
-import inspect
 import logging
 import time
 
@@ -13,38 +11,10 @@ from iris.api.core.region import exists, Pattern
 from iris.api.core.util.core_helper import INVALID_GENERIC_INPUT
 from iris.api.helpers.general import open_directory
 from iris.api.core.settings import Settings
-from iris.api.core.key import KeyModifier, type, paste, Key
+from iris.api.core.key import KeyModifier, type
 from iris.api.core.platform import Platform
 
 logger = logging.getLogger(__name__)
-
-def open_test_case_assets_folder_in_file_manager():
-    """
-    Opens local file path to the test asset in previously opened file manager (e.g. "Open file", "Import bookmark")
-    """
-
-    test_path = inspect.stack()[1][1]
-    module_path = os.path.split(test_path)[0]
-    module_name = os.path.split(test_path)[1].split('.py')[0]
-    assets_path = os.path.join(module_path, 'assets', module_name)
-
-    if Settings.is_linux():
-        type(text='l', modifier=KeyModifier.CTRL, interval=Settings.UI_DELAY)
-        paste(assets_path)
-        time.sleep(Settings.UI_DELAY)
-        type(Key.ENTER)
-
-    elif Settings.is_mac():
-        type(text='g', modifier=KeyModifier.SHIFT + KeyModifier.CMD, interval=Settings.UI_DELAY)
-        paste(assets_path)
-        time.sleep(Settings.UI_DELAY)
-        type(Key.ENTER)
-
-    elif Settings.is_windows():
-        type(text='l', modifier=KeyModifier.CTRL, interval=Settings.UI_DELAY)
-        paste(assets_path)
-        time.sleep(Settings.UI_DELAY)
-        type(Key.ENTER)
 
 
 def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_attempts=3):
