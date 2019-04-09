@@ -9,19 +9,19 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='Bookmark a website from the Library - History menu.',
+        description='Bookmark a website from the Library - History menu - Change Name/ Folder/ Tags.',
         locale='[en-US]',
-        test_case_id='174043',
+        test_case_id='174044',
         test_suite_id='2000',
-        profile=Profiles.TEN_BOOKMARKS
     )
     def test_run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         iris_bookmark_focus_pattern = Pattern('iris_bookmark_focus.png')
-        library_bookmarks_iris_pattern = Pattern('library_bookmarks_iris.png')
-        library_expand_bookmarks_menu_pattern = Library.BOOKMARKS_MENU
+        library_bookmarks_custom_iris_pattern = Pattern('library_bookmarks_custom_iris.png')
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
+        library_other_bookmarks_pattern = Library.OTHER_BOOKMARKS
+        new_bookmark_folder_bookmarks_menu_pattern = Pattern('new_bookmark_folder_bookmarks_menu.png')
 
         # Open History and check if it is populated with the Iris page.
         open_library_menu('History')
@@ -44,9 +44,24 @@ class Test(FirefoxTest):
         right_click(iris_bookmark_focus_pattern)
         type(text='b')
 
-        # Bookmark the website.
+        # Bookmark the website with custom name, folder and tag.
         expected = exists(save_bookmark_button_pattern, 10)
         assert expected, 'New Bookmark popup displayed properly.'
+
+        paste('Test name')
+
+        if OSHelper.is_mac():
+            click(new_bookmark_folder_bookmarks_menu_pattern)
+            type(Key.DOWN)
+            type(Key.RETURN)
+            type(Key.TAB)
+        else:
+            type(Key.TAB)
+            type(Key.DOWN)
+            type(Key.TAB)
+            type(Key.TAB)
+
+        paste('Test_tag')
 
         click(save_bookmark_button_pattern)
 
@@ -54,21 +69,20 @@ class Test(FirefoxTest):
             expected = wait_vanish(save_bookmark_button_pattern, 10)
             assert expected, 'New Bookmark popup was closed successfully.'
         except FindError:
-            raise FindError('New Bookmark popup is still open')
+            raise FindError('New Bookmark popup is still open.')
 
         click_window_control('close')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        # Open the library and check that the page was bookmarked with default settings.
+        # Open the library and check that the page was bookmarked with custom settings.
         open_library()
 
-        expected = exists(library_expand_bookmarks_menu_pattern, 10)
-        assert expected, 'Expand bookmarks menu button displayed properly.'
+        expected = exists(library_other_bookmarks_pattern, 10)
+        assert expected, 'Other Bookmarks section found.'
 
-        click(library_expand_bookmarks_menu_pattern)
+        click(library_other_bookmarks_pattern)
 
-        expected = exists(library_bookmarks_iris_pattern, 10)
-        assert expected, 'The website is bookmarked in the Bookmarks Menu folder, with the default name and ' \
-                         'without any tags.'
+        expected = exists(library_bookmarks_custom_iris_pattern, 10)
+        assert expected, 'The website is bookmarked in the Other Bookmarks folder, with custom name and custom tag.'
 
         click_window_control('close')
