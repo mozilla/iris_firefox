@@ -20,6 +20,7 @@ from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, set_update_channel_pref
 from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.parse_args import get_target_args
+from targets.firefox.firefox_ui.helpers.version_parser import check_version
 from targets.firefox.testrail.testrail_client import report_test_results
 
 logger = logging.getLogger(__name__)
@@ -58,6 +59,15 @@ class Target(BaseTarget):
             web_server_process = Process(target=LocalWebServer, args=(self.local_web_root, port,))
             self.process_list.append(web_server_process)
             web_server_process.start()
+
+            fx = target_args.firefox
+            locale = core_args.locale
+            app = FX_Collection.get(fx, locale)
+
+            if not app:
+                FX_Collection.add(fx, locale)
+                app = FX_Collection.get(fx, locale)
+            self.values = {'fx_version': app.version, 'fx_build_id': app.build_id, 'channel': app.channel}
         except IOError:
             logger.critical('Unable to launch local web server, aborting Iris.')
             # TODO: abort Iris
@@ -74,31 +84,49 @@ class Target(BaseTarget):
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
+
         if not OSHelper.is_linux():
             mouse_reset()
         if item.name == 'test_run':
+            skip_reason_list = []
             values = item.own_markers[0].kwargs
-            if 'exclude' in values and OSHelper.get_os() in values.get('exclude'):
+            is_disabled = 'enabled' in values and not values.get('enabled')
+            is_excluded = 'exclude' in values and OSHelper.get_os() in values.get('exclude')
+            incorrect_locale = 'locale' in values and core_args.locale not in values.get('locale')
+            incorrect_platform = 'platform' in values and OSHelper.get_os() not in values.get('platform')
+            fx_version = self.values.get('fx_version')
+            incorrect_fx_version = 'fx_version' in values and not check_version(fx_version, values.get('fx_version'))
+
+            if is_disabled:
+                skip_reason_list.append('Test is disabled')
+
+            if is_excluded:
+                skip_reason_list.append('Test is excluded for {}'.format(OSHelper.get_os()))
+
+            if 'blocked_by' in values:
+                bug_id = values.get('blocked_by')
+                if is_blocked(bug_id):
+                    skip_reason_list.append('Test is blocked by [{}]'.format(bug_id))
+
+            if incorrect_locale:
+                skip_reason_list.append('Test doesn\'t support locale [{}]'.format(core_args.locale))
+
+            if incorrect_platform:
+                skip_reason_list.append('Test doesn\'t support platform [{}]'.format(OSHelper.get_os()))
+
+            if incorrect_fx_version:
+                skip_reason_list.append('Test doesn\'t support Firefox version [{}]'.format(fx_version))
+
+            if len(skip_reason_list) > 0:
                 logger.info(
-                    'Test excluded: - [%s]: %s' % (
-                        item.nodeid.split(':')[0], values.get('description')))
+                    'Test skipped: - [{}]: {} Reason(s): {}'.format(item.nodeid.split(':')[0],
+                                                                    values.get('description'),
+                                                                    ', '.join(skip_reason_list)))
                 test_instance = (item, 'SKIPPED', None)
 
                 test_result = create_result_object(test_instance, 0, 0)
                 self.completed_tests.append(test_result)
                 pytest.skip(item)
-
-            elif 'blocked_by' in values:
-                bug_id = values.get('blocked_by')
-                if is_blocked(bug_id):
-                    logger.info(
-                        'Test skipped: - [%s]: %s' % (
-                            item.nodeid.split(':')[0], values.get('description')))
-                    test_instance = (item, 'SKIPPED', None)
-
-                    test_result = create_result_object(test_instance, 0, 0)
-                    self.completed_tests.append(test_result)
-                    pytest.skip(item)
 
     def pytest_runtest_call(self, item):
         """ called to execute the test ``item``. """
@@ -149,7 +177,6 @@ class Target(BaseTarget):
 
         if target_args.update_channel:
             set_update_channel_pref(app.path, target_args.update_channel)
-        Target.values = {'fx_version': app.version, 'fx_build_id': app.build_id, 'channel': app.channel}
         return FXRunner(app, profile)
 
         # BaseTarget.pytest_runtest_makereport(self, item, call)

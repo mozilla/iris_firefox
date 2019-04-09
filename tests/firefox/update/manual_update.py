@@ -8,8 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
-    @pytest.mark.details(description='This is a test for Firefox manual update.',
-                         preferences={'app.update.auto': True})
+    @pytest.mark.details(
+        description='This is a test for Firefox manual update.',
+        preferences={'app.update.auto': True},
+        enabled=False
+    )
     def test_run(self, firefox):
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')

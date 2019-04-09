@@ -166,7 +166,7 @@ class LanguageCode(Enum):
     YIDDISH = 'yid'
 
 
-class Locales(Enum):
+class Locales(str, Enum):
     ARABIC = 'ar'
     CHINESE = 'zh-CN'
     ENGLISH = 'en-US'
