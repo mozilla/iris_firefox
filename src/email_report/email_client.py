@@ -25,15 +25,15 @@ class EmailClient:
 
     def __init__(self):
         logger.info('Starting email reporting.')
-        self.email_host = get_config_property('EmailServerConfig', 'smtp_ssl_host')
-        self.email_port = get_config_property('EmailServerConfig', 'smtp_ssl_port')
-        self.username = get_config_property('EmailAccount', 'username')
-        self.password = get_config_property('EmailAccount', 'password')
-        self.sender = get_config_property('EmailRecipients', 'sender')
-        self.targets = ast.literal_eval(get_config_property('EmailRecipients', 'targets'))
+        self.email_host = get_config_property('Email', 'smtp_ssl_host')
+        self.email_port = get_config_property('Email', 'smtp_ssl_port')
+        self.username = get_config_property('Email', 'username')
+        self.password = get_config_property('Email', 'password')
+        self.sender = get_config_property('Email', 'sender')
+        self.targets = ast.literal_eval(get_config_property('Email', 'targets'))
 
     @staticmethod
-    def create_email_subject(application: str):
+    def create_email_subject(application):
         email_info = '[%s][%s]Iris Test Report %s' % (
             application.target_name+" "+str(application.values['fx_version']) if application.target_name == 'Firefox'
             else application.target_name, OSHelper.get_os_version().capitalize(), date.today())

@@ -6,13 +6,29 @@
 import logging
 import os.path
 from configparser import ConfigParser
-from src.core.api.errors import ConfigError
 from src.core.util.path_manager import PathManager
 
 logger = logging.getLogger(__name__)
 
 config_file = os.path.join(PathManager.get_module_dir(), 'config.ini')
 config = ConfigParser()
+
+
+def get_config_section(section):
+    """Returns all properties of a section as a dict or None if section does not exist."""
+    if os.path.isfile(config_file):
+        try:
+            config.read(config_file)
+            if config.has_section(section):
+                result = dict(config.items(section))
+                return result
+            else:
+                logger.warning('Section {} not found'.format(section))
+        except EOFError:
+            logger.warning('Config file error.')
+        return None
+    logger.warning('Config file not found.')
+    return None
 
 
 def get_config_property(section, prop):
@@ -22,16 +38,11 @@ def get_config_property(section, prop):
     :param prop: Property of a specific section.
     :return: Config property.
     """
-    logger.debug('Extracting %s for section %s' % (prop, section))
-    if os.path.isfile(config_file):
+    logger.debug('Extracting {} for section {}'.format(prop, section))
+    section_dict = get_config_section(section)
+    if section_dict is not None:
         try:
-            config.read(config_file)
-            if config.has_section(section):
-                result = config.get(section, prop)
-                return result
-            else:
-                raise ConfigError('Section %s not found' % section)
-        except EOFError:
-            raise ConfigError('Config file error.')
-    else:
-        raise ConfigError('Config file not found.')
+            return section_dict[prop]
+        except KeyError:
+            logger.warning('Property \'{}\' not found in section {}'.format(prop, section))
+            return None

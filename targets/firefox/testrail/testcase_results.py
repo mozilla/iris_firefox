@@ -60,7 +60,7 @@ class TestRailTests:
 
 
 class TestSuiteMap:
-    suite_dictionary = ast.literal_eval(get_config_property("Test_Rail_Suites", "suite_dictionary"))
+    suite_dictionary = ast.literal_eval(get_config_property("Test_rail", "suite_dictionary"))
 
     suite_name = ''
 

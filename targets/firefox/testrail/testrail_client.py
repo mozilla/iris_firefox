@@ -239,7 +239,7 @@ class TestRail:
         :return: a list of TestSuiteMap
         """
         test_suite_array = []
-        suite_dictionary = ast.literal_eval(get_config_property('Test_Rail_Suites', 'suite_dictionary'))
+        suite_dictionary = ast.literal_eval(get_config_property('Test_Rail', 'suite_dictionary'))
         suite_ids = []
         for suite in suite_dictionary:
             suite_ids.append(suite_dictionary.get(suite))

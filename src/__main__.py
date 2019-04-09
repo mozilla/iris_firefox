@@ -2,14 +2,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from distutils.dir_util import copy_tree
 import importlib
 import logging
-from mozrunner import FirefoxRunner
 import os
-import pytest
 import shutil
+from distutils.dir_util import copy_tree
 
+import pytest
+from mozrunner import FirefoxRunner
+
+from src.configuration.config_parser import get_config_section
 from src.core.api.keyboard.keyboard_api import check_keyboard_state
 from src.core.util import cleanup
 from src.core.util.app_loader import get_app_test_directory
@@ -26,6 +28,7 @@ logger = logging.getLogger(__name__)
 def main():
     args = get_core_args()
     initialize_logger()
+    validate_config_ini(args)
     if verify_config(args):
         user_result = None
         if show_control_center():
@@ -148,9 +151,36 @@ def launch_control_center():
 class ShutdownTasks(cleanup.CleanUp):
     """Class for restoring system state when Iris has been quit.
     """
+
     @staticmethod
     def at_exit():
         reset_terminal_encoding()
         # TBD:
         # terminate subprocesses
         # remove temp folder(s)
+
+
+def validate_config_ini(args):
+    if args.email:
+        email_section = get_config_section('Email')
+        if email_section is None:
+            logger.warning('Submit email report was disabled.')
+            args.email = False
+        else:
+            for key in email_section:
+                if len(str(email_section[key])) == 0:
+                    logger.warning('Property \'{}\' from section Email has no value set'.format(key))
+                    args.email = False
+                    logger.warning('Submit email report was disabled.')
+
+    if args.report:
+        test_rail_section = get_config_section('Test_rail')
+        if test_rail_section is None:
+            logger.warning('Report tests to TestRail was disabled.')
+            args.report = False
+        else:
+            for key in test_rail_section:
+                if len(str(test_rail_section[key])) == 0:
+                    logger.warning('Property \'{}\' from section Test_rail has no value set'.format(key))
+                    args.report = False
+                    logger.warning('Submit email report was disabled.')
