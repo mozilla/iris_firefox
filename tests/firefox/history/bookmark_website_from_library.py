@@ -33,6 +33,12 @@ class Test(FirefoxTest):
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
         assert expected, 'Iris page is displayed in the History menu list.'
 
+        try:
+            wait(show_all_history_pattern, 10)
+            logger.debug('Show All History option found.')
+        except FindError:
+            raise FindError('Show All History option is not present on the page, aborting.')
+
         click(show_all_history_pattern)
 
         expected = exists(iris_bookmark_focus_pattern, 10)
