@@ -16,14 +16,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
-        """
         BaseTest.setup(self)
         self.profile = Profile.BRAND_NEW
-
-        return
 
     def run(self):
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
@@ -34,47 +28,57 @@ class Test(BaseTest):
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, expected_1, 'Mozilla page loaded successfully.')
+
+        mozilla_test_site = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, mozilla_test_site, 'Mozilla page loaded successfully.')
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        expected_2 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, expected_2, 'Mozilla page loaded successfully.')
+
+        mozilla_test_site = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, mozilla_test_site, 'Mozilla page loaded successfully.')
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        expected_3 = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, expected_3, 'Firefox page loaded successfully.')
+
+        firefox_test_site = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_test_site, 'Firefox page loaded successfully.')
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
-        expected_4 = exists(LocalWeb.FOCUS_LOGO, 10)
-        assert_true(self, expected_4, 'Focus page loaded successfully.')
+
+        focus_test_site = exists(LocalWeb.FOCUS_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, focus_test_site, 'Focus page loaded successfully.')
 
         new_tab()
         navigate(LocalWeb.POCKET_TEST_SITE)
-        expected_5 = exists(LocalWeb.POCKET_LOGO, 10)
-        assert_true(self, expected_5, 'Pocket page loaded successfully.')
+
+        pocket_test_site = exists(LocalWeb.POCKET_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, pocket_test_site, 'Pocket page loaded successfully.')
 
         # Open the History sidebar.
         history_sidebar()
-        expected_6 = exists(history_today_sidebar_pattern, 10)
-        assert_true(self, expected_6, 'Expand history sidebar button displayed properly.')
+
+        history_today_sidebar = exists(history_today_sidebar_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, history_today_sidebar, 'Expand history sidebar button displayed properly.')
+
         click(history_today_sidebar_pattern)
 
         # Sort by date.
-        expected_7 = exists(history_sidebar_view_button_pattern, 10)
-        assert_true(self, expected_7, 'View button displayed properly.')
+        history_sidebar_view_button = exists(history_sidebar_view_button_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, history_sidebar_view_button, 'View button displayed properly.')
 
         click(history_sidebar_view_button_pattern)
-        expected_8 = exists(history_sidebar_sort_by_date_pattern, 10)
-        assert_true(self, expected_8, 'Default sorting option - sort by date - is selected properly.')
+
+        history_sidebar_sort_by_date = exists(history_sidebar_sort_by_date_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, history_sidebar_sort_by_date, 'Default sorting option - sort by date - is selected properly.')
 
         # Sort by last visited.
-        expected_9 = exists(history_sidebar_sort_by_last_visited_pattern, 10)
-        assert_true(self, expected_9, 'Sort by last visited option is displayed properly.')
+        history_sort_last_visited = exists(history_sidebar_sort_by_last_visited_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, history_sort_last_visited, 'Sort by last visited option is displayed properly.')
 
-        click(history_sidebar_sort_by_last_visited_pattern)
-        expected_10 = exists(history_sidebar_items_sort_by_last_visited_pattern)
-        assert_true(self, expected_10, 'History list is sorted properly by last visited.')
+        click(history_sidebar_sort_by_last_visited_pattern, 1)
+
+        history_sidebar_sort_by_last_visited = exists(history_sidebar_items_sort_by_last_visited_pattern,
+                                                      Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, history_sidebar_sort_by_last_visited, 'History list is sorted properly by last visited.')
