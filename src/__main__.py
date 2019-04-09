@@ -11,6 +11,7 @@ import pytest
 import shutil
 
 from src.core.api.keyboard.keyboard_util import check_keyboard_state
+from src.core.api.os_helpers import OSHelper
 from src.core.util import cleanup
 from src.core.util.app_loader import get_app_test_directory
 from src.core.util.arg_parser import get_core_args
@@ -73,8 +74,11 @@ def get_target(target_name):
             logger.error('Can\'t find default Target class.')
             exit(1)
     except ImportError as e:
-        logger.error('Problems importing module:\n%s' % e)
-        exit(1)
+        if e.name.__contains__('Xlib') and not OSHelper.is_linux():
+            pass
+        else:
+            logger.error('Problems importing module:\n%s' % e)
+            exit(1)
 
 
 def initialize_platform(args):
