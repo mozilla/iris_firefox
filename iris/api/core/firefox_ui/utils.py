@@ -12,3 +12,5 @@ class Utils(object):
 
     # Back Arrow.
     LIBRARY_BACK_BUTTON = Pattern('subview_button_back.png')
+
+    TOP_SITES = Pattern('top_sites.png')

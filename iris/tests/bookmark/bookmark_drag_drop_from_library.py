@@ -40,6 +40,9 @@ class Test(BaseTest):
 
         open_library()
 
+        if Settings.get_os() == Platform.LINUX:
+            drag_drop(Library.TITLE, Utils.TOP_SITES, 2)
+
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
@@ -48,7 +51,7 @@ class Test(BaseTest):
         bookmark_exists = exists(wiki_bookmark_logo_pattern)
         assert_true(self, bookmark_exists, 'Previously added bookmark exists in Library')
 
-        drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR)
+        drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR, 2)
 
         soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened_from_bookmarks, 'The test page is opened with drag and drop from Library')
