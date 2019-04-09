@@ -19,6 +19,7 @@ class Test(BaseTest):
         soap_bookmark_pattern = Pattern('soap_bookmark.png').similar(.6)
         new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
         keyword_suggestion_pattern = Pattern('keyword_suggestion.png')
+        add_button_pattern = Pattern('add_button.png')
 
         open_library()
 
@@ -55,7 +56,10 @@ class Test(BaseTest):
             type(Key.TAB)
         paste('y')
 
-        type(Key.ENTER)
+        add_button_active = exists(add_button_pattern)
+        assert_true(self, add_button_active, 'The fields are properly filled and the Add button is active and'
+                                             ' highlighted.')
+        click(add_button_pattern)
 
         bookmark_exists = exists(soap_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmark_exists, 'The new bookmark is added in the selected section')
