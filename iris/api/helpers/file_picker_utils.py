@@ -4,6 +4,7 @@
 
 import logging
 import time
+
 from iris.api.core.errors import APIHelperError
 from iris.api.core.mouse import click
 from iris.api.core.region import exists, Pattern
