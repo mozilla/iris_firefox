@@ -19,6 +19,7 @@ from src.core.api.location import Location
 from targets.firefox.firefox_ui.content_blocking import ContentBlocking
 from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
+from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from src.core.api.keyboard.key import Key
 from src.core.api.screen.screen import Screen
 from src.core.util.logger_manager import logger
@@ -36,6 +37,31 @@ from src.core.util.arg_parser import get_core_args
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
 args = get_core_args()
+
+
+def access_bookmarking_tools(option):
+    """Access option from 'Bookmarking Tools'.
+
+    :param option: Option from 'Bookmarking Tools'.
+    :return: None.
+    """
+
+    bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
+    open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
+
+    try:
+        wait(bookmarking_tools_pattern, 10)
+        logger.debug('Bookmarking Tools option has been found.')
+        click(bookmarking_tools_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the Bookmarking Tools option, aborting.')
+    try:
+        wait(option, 15)
+        logger.debug('%s option has been found.' % option)
+        click(option)
+    except FindError:
+        raise APIHelperError('Can\'t find the %s option, aborting.' % option)
 
 
 def change_preference(pref_name, value):
