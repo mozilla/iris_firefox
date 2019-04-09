@@ -17,6 +17,7 @@ from src.core.api.mouse.mouse import click, hover, Mouse
 from src.core.api.screen.region import Region
 from src.core.api.location import Location
 from targets.firefox.firefox_ui.content_blocking import ContentBlocking
+from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from src.core.api.keyboard.key import Key
 from src.core.api.screen.screen import Screen
@@ -625,3 +626,43 @@ class RightClickLocationBar(object):
     PASTE_GO = 4
     DELETE = 5
     SELECT_ALL = 6
+
+
+def access_bookmarking_tools(option):
+    """Access option from 'Bookmarking Tools'.
+
+    :param option: Option from 'Bookmarking Tools'.
+    :return: None.
+    """
+
+    bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
+    open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
+
+    try:
+        wait(bookmarking_tools_pattern, 10)
+        logger.debug('Bookmarking Tools option has been found.')
+        click(bookmarking_tools_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the Bookmarking Tools option, aborting.')
+    try:
+        wait(option, 15)
+        logger.debug('%s option has been found.' % option)
+        click(option)
+    except FindError:
+        raise APIHelperError('Can\'t find the %s option, aborting.' % option)
+
+def restore_firefox_focus():
+    """Restore Firefox focus by clicking the panel near HOME or REFRESH button."""
+
+    try:
+        if exists(NavBar.HOME_BUTTON, Settings.DEFAULT_UI_DELAY):
+            target_pattern = NavBar.HOME_BUTTON
+        else:
+            target_pattern = NavBar.RELOAD_BUTTON
+        w, h = target_pattern.get_size()
+        horizontal_offset = w * 1.7
+        click_area = target_pattern.target_offset(horizontal_offset, 0)
+        click(click_area)
+    except FindError:
+        raise APIHelperError('Could not restore firefox focus.')
