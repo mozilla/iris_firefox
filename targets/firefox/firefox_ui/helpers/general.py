@@ -4,21 +4,24 @@
 import json
 import time
 
-from src.core.api.finder.finder import wait, exists, find
 from src.core.api.keyboard.key import *
 
 from src.core.api.errors import APIHelperError
 from src.core.api.errors import FindError
+from src.core.api.enums import Alignment
 from src.core.api.finder.finder import wait, exists
 from src.core.api.finder.image_search import image_find
 from src.core.api.finder.pattern import Pattern
-from src.core.api.mouse.mouse import click
+from src.core.api.mouse.mouse import click, hover, Mouse
+
 from src.core.api.screen.region import Region
+from src.core.api.location import Location
 from targets.firefox.firefox_ui.content_blocking import ContentBlocking
+from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from src.core.api.keyboard.key import Key
 from src.core.api.screen.screen import Screen
 from src.core.util.logger_manager import logger
-from src.core.api.keyboard.keyboard_api import paste
+from src.core.api.keyboard.keyboard_api import paste, key_down, key_up
 from src.core.api.keyboard.keyboard_api import type
 from src.core.api.keyboard.keyboard_api import get_clipboard
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
@@ -111,6 +114,28 @@ def close_content_blocking_pop_up():
         pass
 
 
+def close_window_control(window_type):
+    """Click on close window control.
+
+    :param window_type: Type of window that need to be closed.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        if OSHelper.is_mac():
+            hover(AuxiliaryWindow.RED_BUTTON_PATTERN, align=Alignment.TOP_LEFT)
+            click(AuxiliaryWindow.HOVERED_RED_BUTTON)
+        else:
+            click(AuxiliaryWindow.CLOSE_BUTTON)
+    else:
+        if OSHelper.is_mac():
+            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL, align=Alignment.TOP_LEFT)
+            click(MainWindow.HOVERED_MAIN_RED_CONTROL)
+        else:
+            click(MainWindow.CLOSE_BUTTON)
+
+
 def click_hamburger_menu_option(option):
     """Click on a specific option from the hamburger menu.
 
@@ -134,6 +159,27 @@ def click_hamburger_menu_option(option):
         except FindError:
             raise APIHelperError(
                 'Can\'t find the option in the page, aborting test.')
+
+
+def click_window_control(button, window_type='auxiliary'):
+    """Click window with options: close, minimize, maximize, restore, full_screen.
+
+    :param button: Auxiliary or main window options.
+    :param window_type: Type of window that need to be controlled.
+    :return: None.
+    """
+    if button == 'close':
+        close_window_control(window_type)
+    elif button == 'minimize':
+        minimize_window_control(window_type)
+    elif button == 'maximize':
+        maximize_window_control(window_type)
+    elif button == 'restore':
+        restore_window_control(window_type)
+    elif button == 'full_screen':
+        full_screen_control(window_type)
+    else:
+        raise APIHelperError('Button option is not supported.')
 
 
 def confirm_firefox_launch(image=None):
@@ -187,6 +233,70 @@ def create_region_from_image(image):
         raise APIHelperError('Image not present.')
 
 
+def find_window_controls(window_type):
+    """Find window controls for main and auxiliary windows.
+
+    :param window_type: Controls for a specific window type.
+    :return: None.
+    """
+    if window_type == 'auxiliary':
+        Mouse().move(Location(1, 300))
+        if OSHelper.is_mac():
+            try:
+                wait(AuxiliaryWindow.RED_BUTTON_PATTERN.similar(0.9), 5)
+                logger.debug('Auxiliary window control found.')
+            except FindError:
+                raise APIHelperError('Can\'t find the auxiliary window controls, aborting.')
+        else:
+            if OSHelper.is_linux():
+                Mouse().move(Location(80, 0))
+            try:
+                wait(AuxiliaryWindow.CLOSE_BUTTON, 5)
+                logger.debug('Auxiliary window control found.')
+            except FindError:
+                raise APIHelperError(
+                    'Can\'t find the auxiliary window controls, aborting.')
+
+    elif window_type == 'main':
+        if OSHelper.is_mac():
+            try:
+                wait(MainWindow.MAIN_WINDOW_CONTROLS.similar(0.9), 5)
+                logger.debug('Main window controls found.')
+            except FindError:
+                raise APIHelperError('Can\'t find the Main window controls, aborting.')
+        else:
+            try:
+                if OSHelper.is_linux():
+                    reset_mouse()
+                wait(MainWindow.CLOSE_BUTTON, 5)
+                logger.debug('Main window control found.')
+            except FindError:
+                raise APIHelperError(
+                    'Can\'t find the Main window controls, aborting.')
+    else:
+        raise APIHelperError('Window Type not supported.')
+
+
+def full_screen_control(window_type):
+    """Click on full screen window mode (Applicable only for MAC system).
+
+    :param window_type: Type of window that need to be maximized in full screen mode.
+    :reurn: None.
+    """
+    if OSHelper.is_mac():
+        find_window_controls(window_type)
+
+        if window_type == 'auxiliary':
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
+                  align=Alignment.TOP_LEFT)
+        else:
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
+    else:
+        raise APIHelperError('Full screen mode applicable only for MAC')
+
+
 def repeat_key_down(num):
     """Repeat DOWN keystroke a given number of times.
 
@@ -233,6 +343,37 @@ def repeat_key_up(num):
         type(Key.UP)
 
 
+def restore_window_control(window_type):
+    """Click on restore window control.
+
+    :param window_type: Type of window that need to be restored.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        if OSHelper.is_mac():
+            key_down(Key.ALT)
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
+                  align=Alignment.TOP_LEFT)
+            key_up(Key.ALT)
+        else:
+            if OSHelper.is_linux():
+                reset_mouse()
+            click(AuxiliaryWindow.ZOOM_RESTORE_BUTTON)
+    else:
+        if OSHelper.is_mac():
+            key_down(Key.ALT)
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
+            key_up(Key.ALT)
+        else:
+            if OSHelper.is_linux():
+                reset_mouse()
+            click(MainWindow.RESIZE_BUTTON)
+
+
 def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
     """
     Press the Key Up button until specified image pattern is found.
@@ -257,6 +398,11 @@ def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, del
         time.sleep(delay_between_presses)
 
     return pattern_found
+
+
+def reset_mouse():
+    """Reset mouse position to location (0, 0)."""
+    Mouse().move(Location(0, 0))
 
 
 def select_location_bar_option(option_number):
@@ -295,6 +441,58 @@ def key_to_one_off_search(highlighted_pattern, direction='left'):
             max_attempts -= 1
 
 
+def minimize_window_control(window_type):
+    """Click on minimize window control.
+
+    :param window_type: Type of window that need to be minimized.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        if OSHelper.is_mac():
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width / 2, height / 2),
+                  align=Alignment.TOP_LEFT)
+        else:
+            click(AuxiliaryWindow.MINIMIZE_BUTTON)
+    else:
+        if OSHelper.is_mac():
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width / 2, height / 2), align=Alignment.TOP_LEFT)
+        else:
+            click(MainWindow.MINIMIZE_BUTTON)
+
+
+def maximize_window_control(window_type):
+    """Click on maximize window control.
+
+    :param window_type: Type of window that need to be maximized.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        if OSHelper.is_mac():
+            key_down(Key.ALT)
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
+                  align=Alignment.TOP_LEFT)
+            key_up(Key.ALT)
+        else:
+            click(AuxiliaryWindow.MAXIMIZE_BUTTON)
+            if OSHelper.is_linux():
+                reset_mouse()
+    else:
+        if OSHelper.is_mac():
+            key_down(Key.ALT)
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
+            key_up(Key.ALT)
+        else:
+            click(MainWindow.MAXIMIZE_BUTTON)
+
+
 def navigate(url):
     """Navigates, via the location bar, to a given URL.
 
@@ -322,8 +520,8 @@ def open_library_menu(option):
 
     try:
         wait(library_menu_pattern, 10)
-        region = Region(find(library_menu_pattern).x - Screen().width / 4,
-                        find(library_menu_pattern).y, Screen().width / 4,
+        region = Region(image_find(library_menu_pattern).x - Screen().width / 4,
+                        image_find(library_menu_pattern).y, Screen().width / 4,
                         Screen().height / 4)
         logger.debug('Library menu found.')
     except FindError:
@@ -411,9 +609,8 @@ def get_telemetry_info():
         time.sleep(Settings.DEFAULT_UI_DELAY)
         json_text = get_clipboard()
         return json.loads(json_text)
-    except Exception as e:
-        raise APIHelperError(
-            'Failed to retrieve raw message information value. %s' % e.message)
+    except Exception:
+        raise APIHelperError('Failed to retrieve raw message information value.')
     finally:
         close_tab()
 
