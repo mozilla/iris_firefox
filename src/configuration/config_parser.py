@@ -46,3 +46,15 @@ def get_config_property(section, prop):
         except KeyError:
             logger.warning('Property \'{}\' not found in section {}'.format(prop, section))
             return None
+
+
+def validate_section(section):
+    section_dict = get_config_section(section)
+    if section_dict is None:
+        return False
+    else:
+        for key in section_dict:
+            if len(str(section_dict[key]).strip()) == 0:
+                logger.warning('Property \'{}\' from section {} has no value set'.format(key, section))
+                return False
+    return True

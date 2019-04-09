@@ -11,7 +11,7 @@ from distutils.dir_util import copy_tree
 import pytest
 from mozrunner import FirefoxRunner
 
-from src.configuration.config_parser import get_config_section
+from src.configuration.config_parser import validate_section
 from src.core.api.keyboard.keyboard_api import check_keyboard_state
 from src.core.util import cleanup
 from src.core.util.app_loader import get_app_test_directory
@@ -162,25 +162,11 @@ class ShutdownTasks(cleanup.CleanUp):
 
 def validate_config_ini(args):
     if args.email:
-        email_section = get_config_section('Email')
-        if email_section is None:
+        if not validate_section('Email'):
             logger.warning('Submit email report was disabled.')
             args.email = False
-        else:
-            for key in email_section:
-                if len(str(email_section[key])) == 0:
-                    logger.warning('Property \'{}\' from section Email has no value set'.format(key))
-                    args.email = False
-                    logger.warning('Submit email report was disabled.')
 
     if args.report:
-        test_rail_section = get_config_section('Test_rail')
-        if test_rail_section is None:
+        if not validate_section('Test_rail'):
             logger.warning('Report tests to TestRail was disabled.')
             args.report = False
-        else:
-            for key in test_rail_section:
-                if len(str(test_rail_section[key])) == 0:
-                    logger.warning('Property \'{}\' from section Test_rail has no value set'.format(key))
-                    args.report = False
-                    logger.warning('Submit email report was disabled.')

@@ -8,9 +8,10 @@ import logging
 import bugzilla
 from github import Github
 
-from src.configuration.config_parser import get_config_property, ConfigError
-from targets.firefox.errors import BugManagerError
+from src.configuration.config_parser import get_config_property
+from src.core.api.errors import ConfigError
 from src.core.api.os_helpers import OSHelper
+from targets.firefox.errors import BugManagerError
 
 logger = logging.getLogger(__name__)
 
