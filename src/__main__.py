@@ -38,6 +38,12 @@ def main():
             user_result = launch_control_center()
             logger.debug(user_result)
 
+            # Parse list of tests
+            pytest_args = user_result['testsPath']
+            if len(pytest_args) == 0:
+                logger.info('No tests chosen, closing Iris.')
+                exit(1)
+
             # TODO:
             # Extract target from response
             # Set core arg for application/target
@@ -51,12 +57,6 @@ def main():
             # Extract settings from response
             # Update parameters and pass to target
             args = get_core_args()
-
-            # Parse list of tests
-            pytest_args = user_result['testsPath']
-            if len(pytest_args) == 0:
-                logger.info('No tests chosen, closing Iris.')
-                exit(1)
 
         if user_result is not 'cancel':
             try:
@@ -125,9 +125,6 @@ def get_test_params():
     else:
         exit(1)
 
-    #pytest_args.append('-vs')
-    #pytest_args.append('-r ')
-    #pytest_args.append('-s')
     return pytest_args
 
 
