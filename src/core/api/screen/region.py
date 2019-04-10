@@ -6,7 +6,7 @@
 from src.core.api.errors import FindError
 from src.core.api.finder.finder import wait, find, find_all, exists, highlight, wait_vanish
 from src.core.api.location import Location
-from src.core.api.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop
+from src.core.api.mouse.mouse import move, press, release, click, right_click, double_click, drag_drop, hover
 from src.core.api.rectangle import Rectangle
 
 
@@ -127,6 +127,14 @@ class Region:
         :return: Call the find_all() method.
         """
         return find_all(ps, self._area)
+
+    def hover(self, ps=None, align=None):
+        """Mouse hover.
+
+        :param ps: Pattern or String.
+        :param align: Hover location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+        """
+        return hover(ps, self._area, align)
 
     def wait(self, ps=None, timeout=None) -> bool or FindError:
         """Wait for a Pattern or image to appear.
