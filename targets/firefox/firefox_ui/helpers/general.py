@@ -4,35 +4,31 @@
 import json
 import time
 
-from src.core.api.keyboard.key import *
-
+from src.core.api.enums import Alignment
 from src.core.api.errors import APIHelperError
 from src.core.api.errors import FindError
-from src.core.api.enums import Alignment
 from src.core.api.finder.finder import wait, exists
 from src.core.api.finder.image_search import image_find
 from src.core.api.finder.pattern import Pattern
-from src.core.api.mouse.mouse import click, hover, Mouse
-
-from src.core.api.screen.region import Region
-from src.core.api.location import Location
-from targets.firefox.firefox_ui.content_blocking import ContentBlocking
-from targets.firefox.firefox_ui.library_menu import LibraryMenu
-from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
-from targets.firefox.firefox_ui.library_menu import LibraryMenu
+from src.core.api.keyboard.key import *
 from src.core.api.keyboard.key import Key
-from src.core.api.screen.screen import Screen
-from src.core.util.logger_manager import logger
-from src.core.api.keyboard.keyboard_api import paste, key_down, key_up
-from src.core.api.keyboard.keyboard_api import type
-from src.core.api.keyboard.keyboard_api import get_clipboard
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
-from src.core.api.settings import Settings
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
-from targets.firefox.firefox_ui.nav_bar import NavBar
+from src.core.api.keyboard.keyboard import type, key_up, key_down
+from src.core.api.keyboard.keyboard_api import paste
+from src.core.api.keyboard.keyboard_util import get_clipboard
+from src.core.api.location import Location
+from src.core.api.mouse.mouse import click, hover, Mouse
 from src.core.api.os_helpers import OSHelper, OSPlatform
+from src.core.api.screen.region import Region
+from src.core.api.screen.screen import Screen
+from src.core.api.settings import Settings
 from src.core.util.arg_parser import get_core_args
-
+from src.core.util.logger_manager import logger
+from targets.firefox.firefox_ui.content_blocking import ContentBlocking
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
+from targets.firefox.firefox_ui.library_menu import LibraryMenu
+from targets.firefox.firefox_ui.nav_bar import NavBar
+from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
@@ -237,7 +233,7 @@ def create_region_from_image(image):
             sync_pattern = Pattern('sync_hamburger_menu.png')
             sync_width, sync_height = sync_pattern.get_size()
             sync_image = image_find(sync_pattern)
-            top_left = Rectangle(sync_image.x, sync_image.y, sync_width, sync_width).\
+            top_left = Rectangle(sync_image.x, sync_image.y, sync_width, sync_width). \
                 apply_alignment(Alignment.TOP_RIGHT)
             if OSHelper.is_mac():
                 exit_pattern = Pattern('help_hamburger_menu.png')
@@ -245,7 +241,7 @@ def create_region_from_image(image):
                 exit_pattern = Pattern('exit_hamburger_menu.png')
             exit_width, exit_height = exit_pattern.get_size()
             exit_image = image_find(exit_pattern)
-            bottom_left = Rectangle(exit_image.x, exit_image.y, exit_width, exit_height).\
+            bottom_left = Rectangle(exit_image.x, exit_image.y, exit_width, exit_height). \
                 apply_alignment(Alignment.BOTTOM_RIGHT)
 
             x0 = top_left.x + 2
@@ -677,6 +673,7 @@ def access_bookmarking_tools(option):
         click(option)
     except FindError:
         raise APIHelperError('Can\'t find the %s option, aborting.' % option)
+
 
 def restore_firefox_focus():
     """Restore Firefox focus by clicking the panel near HOME or REFRESH button."""

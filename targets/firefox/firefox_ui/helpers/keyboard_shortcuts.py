@@ -9,7 +9,7 @@ import time
 from src.core.api.errors import APIHelperError, FindError
 from src.core.api.finder.pattern import Pattern
 from src.core.api.keyboard.key import KeyModifier, Key
-from src.core.api.keyboard.keyboard_api import key_down, key_up, type
+from src.core.api.keyboard.keyboard import key_down, key_up, type
 from src.core.api.mouse.mouse import Mouse
 from src.core.api.location import Location
 from src.core.api.os_helpers import OSHelper
