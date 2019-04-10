@@ -37,7 +37,9 @@ class Test(BaseTest):
         cookies_blocking_unticked = exists(block_cookies_unticked_pattern)
 
         if cookies_blocking_unticked:
+
             click(block_cookies_unticked_pattern)
+
         cookies_blocking_ticked = exists(block_cookies_ticked_pattern)
         assert_true(self, cookies_blocking_ticked, 'Ticked blocking cookies checkbox')
 
@@ -45,17 +47,18 @@ class Test(BaseTest):
         assert_true(self, strictness_menu_appeared, 'Strictness menu appeared.')
 
         click(cookies_blocking_strictness_menu_pattern)
+
         dropdown_opened = exists(block_all_cookies_pattern)
         assert_true(self, dropdown_opened, 'Strictness dropdown menu opened')
 
         click(block_all_cookies_pattern)
 
         navigate('https://www.youtube.com/')
-        site_loaded = exists(youtube_logo_pattern, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT*2)
+        site_loaded = exists(youtube_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, site_loaded, 'The website is successfully displayed.')
 
         navigate('about:preferences#privacy')
-        preferences_opened = exists(custom_content_blocking_ticked_patten, DEFAULT_FIREFOX_TIMEOUT)
+        preferences_opened = exists(custom_content_blocking_ticked_patten)
         assert_true(self, preferences_opened, 'The "about:preferences#privacy" page is successfully displayed.')
 
         paste('manage data')
@@ -63,6 +66,7 @@ class Test(BaseTest):
         assert_true(self, cookies_data_button_located, '\"Manage cookies data\" button displayed.')
 
         click(manage_cookies_data_pattern)
+
         cookies_window_opened = exists(cookies_window_title_pattern)
         assert_true(self, cookies_window_opened, 'Cookies window displayed.')
 
