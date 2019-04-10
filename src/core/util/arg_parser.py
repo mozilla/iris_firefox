@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+from argparse import Namespace
 import argparse
 import logging
 import os
@@ -103,6 +103,8 @@ def get_core_args():
                         help='Use the virtual/fake keyboard for virtual environments',
                         action='store_true',
                         default=False)
+
+    global iris_args
     if iris_args is None:
         iris_args = parser.parse_known_args()[0]
 
@@ -111,3 +113,10 @@ def get_core_args():
         exit(1)
 
     return iris_args
+
+
+def set_core_arg(arg, value):
+    global iris_args
+    arg_dict = vars(iris_args)
+    arg_dict[arg] = value
+    iris_args = Namespace(**arg_dict)

@@ -16,7 +16,7 @@ from src.core.api.keyboard.keyboard_util import check_keyboard_state
 from src.core.api.os_helpers import OSHelper
 from src.core.util import cleanup
 from src.core.util.app_loader import get_app_test_directory
-from src.core.util.arg_parser import get_core_args
+from src.core.util.arg_parser import get_core_args, set_core_arg
 from src.core.util.json_utils import create_target_json
 from src.core.util.local_web_server import LocalWebServer
 from src.core.util.logger_manager import initialize_logger
@@ -32,16 +32,40 @@ def main():
     validate_config_ini(args)
     if verify_config(args):
         user_result = None
+        pytest_args = None
         if show_control_center():
             init_control_center()
             user_result = launch_control_center()
+            logger.debug(user_result)
+
             # TODO:
-            # parse user_result to extract desired target and parameters,
-            # and pass parameters to target
+            # Extract target from response
+            # Set core arg for application/target
+            # TEMP: to be replaced by 'target' property in response
+            if 'firefox' in user_result['testsPath'][0]:
+                set_core_arg('application', 'firefox')
+            else:
+                set_core_arg('application', 'notepad')
+
+            # TODO:
+            # Extract settings from response
+            # Update parameters and pass to target
+            args = get_core_args()
+
+            # Parse list of tests
+            pytest_args = user_result['testsPath']
+            if len(pytest_args) == 0:
+                logger.info('No tests chosen, closing Iris.')
+                exit(1)
+
         if user_result is not 'cancel':
             try:
                 target_plugin = get_target(args.application)
-                pytest_args = get_test_params()
+                if pytest_args is None:
+                    pytest_args = get_test_params()
+                pytest_args.append('-vs')
+                pytest_args.append('-r ')
+                pytest_args.append('-s')
                 initialize_platform(args)
                 pytest.main(pytest_args, plugins=[target_plugin])
             except ImportError:
@@ -49,7 +73,7 @@ def main():
                 exit(1)
         else:
             # If we get 'cancel' we will shut down Iris
-            pass
+            exit(0)
     else:
         logger.error('Failed platform verification.')
         exit(1)
@@ -101,9 +125,9 @@ def get_test_params():
     else:
         exit(1)
 
-    pytest_args.append('-vs')
-    pytest_args.append('-r ')
-    pytest_args.append('-s')
+    #pytest_args.append('-vs')
+    #pytest_args.append('-r ')
+    #pytest_args.append('-s')
     return pytest_args
 
 

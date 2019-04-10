@@ -87,7 +87,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             else:
                 self.set_headers()
         except Exception as e:
-            logger.debug('Exception in do_POSTs')
+            logger.debug('Exception in do_POSTs:\n%s' % e)
             if '10053' in e.args:
                 logger.debug('Browser closed connection before response completed.')
 

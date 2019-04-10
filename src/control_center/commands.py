@@ -82,7 +82,7 @@ def go(request):
     Find POST body, handle JSON in body
     """
     logger.debug('Finish command received: %s' % request.path)
-    data_string = request.rfile.read(int(request.headers['Content-Length']))
+    data_string = request.rfile.read(int(request.headers['Content-Length'])).decode('utf-8')
     logger.debug(data_string)
     sorted_response = json.dumps(json.loads(data_string), sort_keys=True)
     request.set_result(json.loads(sorted_response))
