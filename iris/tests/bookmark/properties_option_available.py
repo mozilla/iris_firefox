@@ -32,8 +32,10 @@ class Test(BaseTest):
         assert_true(self, toolbar_opened, 'The Bookmarks Toolbar is successfully enabled.')
 
         getting_started_bookmark_location = find(getting_started_toolbar_bookmark_pattern)
-        getting_started_bookmark_location.x += 300
-        getting_started_bookmark_location.y += 15
+        click_location_x_offset = SCREEN_WIDTH // 2
+        click_location_y_offset = getting_started_toolbar_bookmark_pattern.get_size()[1] // 2
+
+        getting_started_bookmark_location.offset(click_location_x_offset, click_location_y_offset)
 
         right_click(getting_started_bookmark_location)
 
