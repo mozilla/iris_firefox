@@ -43,7 +43,7 @@ def hover(ps: Pattern or str = None, region: Rectangle = None, align: Alignment 
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
     :return: None.
     """
-    move(ps, 0, region, align)
+    move(ps, 1, region, align)
 
 
 def press(ps: Pattern or str, duration: int = None, region: Rectangle = None, button: Button = Button.left,

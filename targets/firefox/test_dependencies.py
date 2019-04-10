@@ -15,6 +15,7 @@ from targets.firefox.firefox_ui.sidebar import Sidebar
 from targets.firefox.firefox_ui.test_utils import restore_firefox_focus, open_clear_recent_history_window
 from targets.firefox.local_web.web_links.local_web import LocalWeb
 from targets.firefox.firefox_ui.utils import Utils
+from src.core.api.mouse.mouse import scroll_down
 from src.core.util.region_utils import RegionUtils
 from src.core.util.path_manager import PathManager
 
