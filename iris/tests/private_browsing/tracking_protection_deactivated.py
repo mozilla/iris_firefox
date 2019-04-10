@@ -24,6 +24,8 @@ class Test(BaseTest):
         trackers_unchecked_pattern = Pattern('trackers_unchecked.png')
         cookies_checked_pattern = Pattern('cookies_preference_checked.png')
         cookies_unchecked_pattern = Pattern('cookies_preference_unchecked.png')
+        checkbox_checked_pattern = Pattern('checkbox_checked.png')
+        checkbox_unchecked_pattern = Pattern('checkbox_unchecked.png')
         private_browsing_tab_pattern = Pattern('private_browsing_tab_logo.png')
         private_content_blocking_warning_pattern = Pattern('private_window_content_blocking_warning.png')
         info_button_pattern = Pattern('info_button.png')
@@ -53,7 +55,19 @@ class Test(BaseTest):
         content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
 
-        click(cookies_checked_pattern)
+        content_blocking_cookies_checked = exists(cookies_checked_pattern)
+        if content_blocking_cookies_checked:
+            cookies_option_location = find(cookies_checked_pattern)
+            cookies_width, cookies_height = cookies_checked_pattern.get_size()
+            cookies_option_region = Region(cookies_option_location.x - cookies_width,
+                                                cookies_option_location.y - cookies_height,
+                                                cookies_width * 2, cookies_height * 3)
+
+            checkbox_checked = exists(checkbox_checked_pattern, in_region=cookies_option_region)
+            if checkbox_checked:
+                click(checkbox_checked_pattern)
+            else:
+                assert_false(self, checkbox_checked, 'Cookies checkbox is unchecked')
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
