@@ -11,7 +11,7 @@ from src.core.api.os_helpers import OSHelper
 logger = logging.getLogger(__name__)
 
 
-class ReportFooter(object):
+class ReportFooter:
 
     def __init__(self, app, total_tests_run, passed_tests, failed_tests, skipped_tests, errors, total_time, failures):
         self.platform = OSHelper.get_os().value
@@ -27,24 +27,24 @@ class ReportFooter(object):
     def print_report_footer(self):
         """Print report footer in a nice format."""
         total = self.passed_tests + self.failed_tests + self.skipped_tests + self.error_tests
-        separator = '\n' + '-' * 120 + '\n'
+        header = '\n' + 'Test Report'.center(os.get_terminal_size().columns, '-') + '\n'
+        separator = '\n' + ''.center(os.get_terminal_size().columns, '-') + '\n'
         failure_str = ''
 
-        if self.failures.__len__() is not None:
+        if len(self.failures) > 0:
             failure_str = '\n\nThe following tests did not pass:\n'
             for failed_tests in self.failures:
                 failure_str += os.path.basename(failed_tests) + '\n'
                 failure_str += '\n'
 
         additional_info = _get_additional_info(self.app.values)
-
         app_details = 'Application: %s, Platform: %s%s' % (self.app.target_name, self.platform, additional_info)
         test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors %s  -- Total: %s' \
                            % (self.passed_tests, self.failed_tests, self.skipped_tests, self.error_tests, total)
         total_time_str = 'Total time: %s second(s)' % self.total_duration
 
-        test_results = (separator + app_details + '\n' + test_results_str + ' ' *
-                        (120 - (len(test_results_str) + len(total_time_str))) +
+        test_results = (header + app_details + '\n' + test_results_str + ' ' *
+                        (os.get_terminal_size().columns - (len(test_results_str) + len(total_time_str))) +
                         total_time_str + failure_str + separator)
 
         logger.info(test_results)

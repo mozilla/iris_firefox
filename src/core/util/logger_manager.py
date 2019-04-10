@@ -47,10 +47,9 @@ def initialize_logger_level(level):
 def set_log_format():
 
     if core_args.level < 20:
-        log_format = '%(asctime)s [%(levelname)s] [%(name)s] %(message)s'
+        log_format = '%(asctime)s [%(levelname)s] %(message)s'
         coloredlogs.DEFAULT_LOG_FORMAT = log_format
-        coloredlogs.DEFAULT_FIELD_STYLES = {'levelname': {'color': 'cyan', 'bold': True},
-                                            'name': {'color': 'cyan', 'bold': True}}
+        coloredlogs.DEFAULT_FIELD_STYLES = {'levelname': {'color': 'cyan', 'bold': True}}
         coloredlogs.DEFAULT_LEVEL_STYLES = {'warning': {'color': 'yellow', 'bold': True},
                                             'success': {'color': 'green', 'bold': True},
                                             'error': {'color': 'red', 'bold': True}}

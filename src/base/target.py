@@ -3,27 +3,24 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
+import logging
 import os
 import time
-import importlib
 
 import pytest
 
-import logging
-from src.core.util.arg_parser import get_core_args
 from src.core.api.os_helpers import OSHelper
+from src.core.util.arg_parser import get_core_args
 from src.core.util.json_utils import update_run_index, create_run_log
-from src.core.util.test_assert import create_result_object
 from src.core.util.run_report import create_footer
+from src.core.util.test_assert import create_result_object
 from src.email_report.email_client import submit_email_report
 
 core_args = get_core_args()
 logger = logging.getLogger(__name__)
 
 
-
 class BaseTarget:
-
     completed_tests = []
     values = {}
 
@@ -48,7 +45,7 @@ class BaseTarget:
         :param _pytest.main.Session session: the pytest session object.
         """
         self.start_time = time.time()
-        logger.info('** Test session {} started **'.format(session.name))
+        logger.info('\n' + 'Test session {} started'.format(session.name).center(os.get_terminal_size().columns, '-'))
 
         core_settings_list = []
         for arg in vars(core_args):
@@ -73,14 +70,13 @@ class BaseTarget:
 
         update_run_index(self, True)
         footer = create_footer(self)
-        result=footer.print_report_footer()
+        result = footer.print_report_footer()
         create_run_log(self)
 
-        logger.info("** Test session {} complete **".format(session.name))
-
+        logger.info('\n' + 'Test session {} complete'.format(session.name).center(os.get_terminal_size().columns, '-'))
 
         if core_args.email:
-            submit_email_report(self,result)
+            submit_email_report(self, result)
 
     def pytest_runtest_setup(self, item):
         os.environ['CURRENT_TEST'] = str(item.__dict__.get('fspath'))
@@ -111,8 +107,8 @@ class BaseTarget:
         new_value = {}
 
         class Options:
-
-            def get(self, name):
+            @staticmethod
+            def get(name):
                 return new_value.get(name, pytestconfig.getini(name))
 
         return Options()
