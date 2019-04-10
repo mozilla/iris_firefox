@@ -92,6 +92,12 @@ class PathManager:
         return test_directory
 
     @staticmethod
+    def get_current_test_asset_dir(asset_file_name):
+        test_path_dir = os.environ.get('CURRENT_TEST').split('.py')[0]
+        pref, suf = os.path.split(test_path_dir)
+        return os.path.join(pref, 'assets', suf, asset_file_name)
+
+    @staticmethod
     def get_tempdir():
         """Returns temporary directory path."""
         return _tmp_dir
@@ -226,3 +232,9 @@ class PathManager:
                     yield x
         if not topdown:
             yield directory, dirs, nondirs
+
+
+test_root = os.path.join('tests', 'Firefox')
+current_test = 'ocr.py'
+test_path = current_test.split('.py')[0]
+print(test_path)
