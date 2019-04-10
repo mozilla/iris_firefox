@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+import argparse
 import logging
 import os
 from multiprocessing import Process
@@ -19,12 +19,11 @@ from src.core.util.test_assert import create_result_object
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, set_update_channel_pref
 from targets.firefox.firefox_app.fx_collection import FX_Collection
-from targets.firefox.parse_args import get_target_args
 from targets.firefox.firefox_ui.helpers.version_parser import check_version
 from targets.firefox.testrail.testrail_client import report_test_results
 
 logger = logging.getLogger(__name__)
-target_args = get_target_args()
+target_args = None
 core_args = get_core_args()
 
 
@@ -33,10 +32,10 @@ class Target(BaseTarget):
 
     def __init__(self):
         BaseTarget.__init__(self)
+        global target_args
+        target_args = self.get_target_args()
         self.target_name = 'Firefox'
-
         self.process_list = []
-
         self.cc_settings = [
             {'name': 'firefox', 'type': 'list', 'label': 'Firefox',
              'value': ['local', 'latest', 'latest-esr', 'latest-beta', 'nightly'], 'default': 'beta'},
@@ -49,6 +48,21 @@ class Target(BaseTarget):
             {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report'}
         ]
         self.local_web_root = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'local_web')
+
+    def get_target_args(self):
+        parser = argparse.ArgumentParser(description='Firefox-specific arguments', prog='iris')
+        parser.add_argument('-f', '--firefox',
+                            help='Firefox version to test',
+                            action='store',
+                            default='latest-beta')
+        parser.add_argument('-u', '--update_channel',
+                            help='Update channel profile preference',
+                            action='store')
+        parser.add_argument('-s', '--save',
+                            help='Save Firefox profiles on disk',
+                            action='store_true')
+
+        return parser.parse_known_args()[0]
 
     def pytest_sessionstart(self, session):
         BaseTarget.pytest_sessionstart(self, session)

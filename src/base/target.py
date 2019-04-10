@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import argparse
 import os
 import time
 import importlib
@@ -19,15 +20,18 @@ from src.email_report.email_client import submit_email_report
 core_args = get_core_args()
 logger = logging.getLogger(__name__)
 
+'''
+
 target_args = ''
 try:
     module = importlib.import_module('targets.{}.parse_args'.format(core_args.application))
     met = getattr(module, 'get_target_args')
+    logger.info('met: %s' % met)
     target_args = met()
 except (ImportError, AttributeError):
     logger.error('Could not retrieve arguments for {} application'.format(core_args.application))
     exit(1)
-
+'''
 
 class BaseTarget:
 
@@ -35,6 +39,7 @@ class BaseTarget:
     values = {}
 
     def __init__(self):
+        self.args = self.get_target_args()
         self.target_name = 'Default target'
         self.cc_settings = [
             {'name': 'locale', 'type': 'list', 'label': 'Locale', 'value': OSHelper.LOCALES, 'default': 'en-US'},
@@ -44,6 +49,9 @@ class BaseTarget:
             {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'}
         ]
 
+    def get_target_args(self):
+        parser = argparse.ArgumentParser(description='Target-specific arguments', prog='iris')
+        return parser.parse_known_args()[0]
 
     def pytest_sessionstart(self, session):
         """Called after the 'Session' object has been created and before performing test collection.
@@ -60,8 +68,8 @@ class BaseTarget:
 
         application_settings_list = []
 
-        for arg in vars(target_args):
-            application_settings_list.append('{}: {}'.format(arg, getattr(target_args, arg)))
+        for arg in vars(self.args):
+            application_settings_list.append('{}: {}'.format(arg, getattr(self.args, arg)))
         logger.info(('\n{} settings:\n' +
                      ', '.join(application_settings_list)).format(str(core_args.application).capitalize()))
         update_run_index(self, False)

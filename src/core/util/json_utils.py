@@ -34,8 +34,8 @@ def create_target_json():
                                 'settings': target.cc_settings})
             except NameError:
                 logger.error('Can\'t find default Target class.')
-        except ModuleNotFoundError:
-            logger.error('Problems importing module.')
+        except ImportError as e:
+            logger.error('Problems importing module \'%s\':\n%s' % (item, e))
 
     target_json = {'targets': targets}
     target_json_file = os.path.join(args.workdir, 'data', 'targets.json')
