@@ -65,6 +65,7 @@ class _Settings:
                  slow_motion_delay=DEFAULT_SLOW_MOTION_DELAY,
                  observe_scan_rate=DEFAULT_OBSERVE_SCAN_RATE,
                  observe_min_changed_pixels=DEFAULT_OBSERVE_MIN_CHANGED_PIXELS,
+                 system_delay=DEFAULT_SYSTEM_DELAY,
                  highlight_duration=DEFAULT_HIGHLIGHT_DURATION,
                  highlight_color=DEFAULT_HIGHLIGHT_COLOR,
                  highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS,
@@ -80,6 +81,7 @@ class _Settings:
         self.delay_before_drag = delay_before_drag
         self.delay_before_drop = delay_before_drop
         self.slow_motion_delay = slow_motion_delay
+        self.system_delay = system_delay
         self.observe_scan_rate = observe_scan_rate
         self.observe_min_changed_pixels = observe_min_changed_pixels
         self.highlight_duration = highlight_duration
@@ -90,6 +92,10 @@ class _Settings:
     @property
     def type_delay(self):
         return self._type_delay
+
+    @property
+    def SYSTEM_DELAY(self):
+        return self.system_delay
 
     @type_delay.setter
     def type_delay(self, value):

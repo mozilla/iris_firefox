@@ -48,13 +48,11 @@ class Test(FirefoxTest):
 
         right_click(iris_bookmark_focus_pattern)
         type(text='c')
-        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         click_window_control('close')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         right_click(bookmarks_toolbar_most_visited_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(text='p')
 
         expected = exists(iris_logo_toolbar_pattern)
