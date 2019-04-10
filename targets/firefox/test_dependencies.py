@@ -13,7 +13,9 @@ from targets.firefox.firefox_ui.library import Library
 from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.sidebar import Sidebar
 from targets.firefox.firefox_ui.test_utils import restore_firefox_focus, open_clear_recent_history_window
-from targets.firefox.firefox_ui.web_links.local_web import LocalWeb
+from targets.firefox.local_web.web_links.local_web import LocalWeb
+from targets.firefox.firefox_ui.utils import Utils
+
 
 
 from targets.firefox.test_assert import *
