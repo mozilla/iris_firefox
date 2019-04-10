@@ -34,8 +34,10 @@ class Test(BaseTest):
         assert_true(self, toolbar_opened, 'The Bookmarks Toolbar is successfully enabled.')
 
         getting_started_bookmark_location = find(getting_started_toolbar_bookmark_pattern)
-        getting_started_bookmark_location.x += 300
-        getting_started_bookmark_location.y += 15
+        click_location_x_offset = SCREEN_WIDTH // 2
+        click_location_y_offset = getting_started_toolbar_bookmark_pattern.get_size()[1] // 2
+
+        getting_started_bookmark_location.offset(click_location_x_offset, click_location_y_offset)
 
         right_click(getting_started_bookmark_location)
 
@@ -50,12 +52,12 @@ class Test(BaseTest):
 
         close_window_control('auxiliary')
 
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        popup_opened = exists(new_bookmark_window_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_false(self, popup_opened, 'The popup window closes instantly.')
 
-        new_bookmark_created = exists(toolbar_new_bookmark_pattern)
-        assert_false(self, new_bookmark_created and new_bookmark_popup_opened,
-                     'The popup window closes instantly. - New Bookmark is '
-                     'not saved as bookmarked inside the Bookmarks Toolbar.')
+        new_bookmark_not_created = wait_vanish(toolbar_new_bookmark_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_true(self, new_bookmark_not_created,
+                    'New Bookmark is not saved as bookmarked inside the Bookmarks Toolbar.')
 
         right_click(getting_started_toolbar_bookmark_pattern)
 
