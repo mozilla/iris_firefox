@@ -28,6 +28,10 @@ class Test(BaseTest):
 
         new_private_window()
 
+        # Set English language preference on Google page settings.
+        navigate('https://www.google.com/preferences?hl=en-US&fg=1#languages')
+        click(Utils.SAVE_BUTTON_GOOGLE)
+
         navigate(url)
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
