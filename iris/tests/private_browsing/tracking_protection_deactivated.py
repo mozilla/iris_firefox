@@ -66,8 +66,9 @@ class Test(BaseTest):
             checkbox_checked = exists(checkbox_checked_pattern, in_region=cookies_option_region)
             if checkbox_checked:
                 click(checkbox_checked_pattern)
-            else:
-                assert_false(self, checkbox_checked, 'Cookies checkbox is unchecked')
+
+            checkbox_unchecked = exists(checkbox_unchecked_pattern, in_region=cookies_option_region)
+            assert_true(self, checkbox_unchecked, 'Cookies checkbox is unchecked')
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
