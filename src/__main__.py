@@ -11,7 +11,7 @@ from distutils.dir_util import copy_tree
 import pytest
 from mozrunner import FirefoxRunner
 
-from src.configuration.config_parser import validate_section
+from src.configuration.config_parser import validate_config_ini
 from src.core.api.keyboard.keyboard_util import check_keyboard_state
 from src.core.api.os_helpers import OSHelper
 from src.core.util import cleanup
@@ -162,15 +162,3 @@ class ShutdownTasks(cleanup.CleanUp):
         # TBD:
         # terminate subprocesses
         # remove temp folder(s)
-
-
-def validate_config_ini(args):
-    if args.email:
-        if not validate_section('Email'):
-            logger.warning('Submit email report was disabled.')
-            args.email = False
-
-    if args.report:
-        if not validate_section('Test_rail'):
-            logger.warning('Report tests to TestRail was disabled.')
-            args.report = False
