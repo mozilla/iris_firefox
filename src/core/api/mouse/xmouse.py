@@ -1,19 +1,20 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+import os
 
 from Xlib import X
 from Xlib.ext.xtest import fake_input
+from Xlib.display import Display
 
-from core.api.location import Location
-from core.keyboard.Xkeyboard import Xscreen
+from src.core.api.location import Location
+from src.core.api.keyboard.keyboard import XScreen
 
 
-class XMouse(Xscreen):
+class XMouse(XScreen):
 
     def __init__(self):
-        self.display = Xscreen()
+        self.display = Display(os.environ['DISPLAY'])
         self.MOUSE_BUTTONS = {'left': 1, 'middle': 2, 'right': 3, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7}
 
     def click(self, location: Location, button: str):

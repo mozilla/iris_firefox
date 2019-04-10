@@ -11,7 +11,7 @@ import pytest
 from src.core.api.finder.finder import *
 from src.core.api.finder.pattern import Pattern
 from src.core.api.keyboard.key import *
-from src.core.api.keyboard.keyboard_api import *
+from src.core.api.keyboard.keyboard import type, key_down, key_up
 from src.core.api.mouse.mouse import *
 from src.core.api.mouse.mouse import Mouse
 from src.core.api.screen.region import *
