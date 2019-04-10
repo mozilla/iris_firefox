@@ -55,9 +55,12 @@ class Test(BaseTest):
         popup_opened = exists(new_bookmark_window_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, popup_opened, 'The popup window closes instantly.')
 
-        new_bookmark_not_created = wait_vanish(toolbar_new_bookmark_pattern, Settings.TINY_FIREFOX_TIMEOUT)
-        assert_true(self, new_bookmark_not_created,
-                    'New Bookmark is not saved as bookmarked inside the Bookmarks Toolbar.')
+        try:
+            new_bookmark_not_created = wait_vanish(toolbar_new_bookmark_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+            assert_true(self, new_bookmark_not_created,
+                        'New Bookmark is not saved as bookmarked inside the Bookmarks Toolbar.')
+        except FindError:
+            raise FindError('\'New bookmark\' pattern did not vanish')
 
         right_click(getting_started_toolbar_bookmark_pattern)
 
