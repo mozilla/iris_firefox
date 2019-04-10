@@ -23,7 +23,6 @@ from src.core.api.os_helpers import *
 from src.core.api.rectangle import *
 from src.core.api.settings import Settings
 from funcy import compose
-from targets.firefox.firefox_ui.helpers.general import *
 
 
 mylogger = logging.getLogger(__name__)

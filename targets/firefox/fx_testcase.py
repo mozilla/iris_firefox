@@ -5,8 +5,9 @@
 import logging
 
 from src.base.testcase import *
-
+from targets.firefox.firefox_ui.helpers.general import *
 from targets.firefox.test_dependencies import *
+
 
 logger = logging.getLogger(__name__)
 
