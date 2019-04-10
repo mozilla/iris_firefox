@@ -35,9 +35,11 @@ class Test(BaseTest):
         navigate('about:preferences#privacy')
         preferences_opened = exists(custom_content_blocking_unticked_pattern)
         assert_true(self, preferences_opened, 'The privacy preferences page is successfully displayed.')
+
         click(custom_content_blocking_unticked_pattern)
 
         cookies_blocking_unticked = exists(cookies_blocking_unticked_pattern)
+
         if cookies_blocking_unticked:
             click(cookies_blocking_unticked_pattern)
 
@@ -46,11 +48,13 @@ class Test(BaseTest):
 
         strictness_menu_appeared = exists(cookies_blocking_strictness_menu_pattern)
         assert_true(self, strictness_menu_appeared, 'Cookies blocking strictness menu appear.')
+
         click(cookies_blocking_strictness_menu_pattern)
 
         strictness_dropdown_displayed = exists(block_all_third_party_cookies_pattern)
         assert_true(self, strictness_dropdown_displayed, 'Block all third party cookies blocking '
                                                          'dropdown menu displayed.')
+
         click(block_all_third_party_cookies_pattern)
 
         reload_page()
@@ -62,18 +66,21 @@ class Test(BaseTest):
 
         open_clear_data_button_displayed = exists(open_clear_data_window_pattern)
         assert_true(self, open_clear_data_button_displayed, '"Clear data" button displayed.')
+
         click(open_clear_data_window_pattern)
 
         clear_data_window_displayed = exists(clear_data_button_pattern)
         assert_true(self, clear_data_window_displayed, 'Clear data window displayed.')
+
         click(clear_data_button_pattern)
 
         message_window_displayed = exists(confirm_clear_data_pattern)
         assert_true(self, message_window_displayed, '"Clear data" message window displayed.')
+
         click(confirm_clear_data_pattern)
 
         navigate('https://www.prosport.ro/')
-        site_loaded = exists(site_tab_pattern, 120)
+        site_loaded = exists(site_tab_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT * 2)
         assert_true(self, site_loaded, 'The "Prosport" website is successfully displayed.')
 
         navigate('about:preferences#privacy')
@@ -83,6 +90,7 @@ class Test(BaseTest):
         paste('manage data')
         cookies_data_button_located = exists(manage_cookies_data_pattern)
         assert_true(self, cookies_data_button_located, '"Manage Data..." button displayed.')
+
         click(manage_cookies_data_pattern)
 
         cookies_data_window_opened = exists(cookies_window_title_pattern)
@@ -95,6 +103,7 @@ class Test(BaseTest):
         assert_true(self, site_cookie_two_saved, 'Other target cookie saved.')
 
         click(site_cookie_one_pattern)
+
         type(Key.DELETE)  # There are two cookies must be left after visiting prosport.ro
         type(Key.DELETE)  # So it's needed to press "Delete" key twice to remove this site's cookies from list
 
