@@ -22,6 +22,8 @@ class Test(BaseTest):
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
+        centre_location = Location(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
@@ -40,8 +42,7 @@ class Test(BaseTest):
 
         open_library()
 
-        if Settings.get_os() == Platform.LINUX:
-            drag_drop(Library.TITLE, Utils.TOP_SITES, 2)
+        drag_drop(Library.TITLE, centre_location, 2)
 
         library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
