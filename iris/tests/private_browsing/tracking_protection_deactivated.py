@@ -15,10 +15,37 @@ class Test(BaseTest):
         self.test_suite_id = '1826'
         self.locales = ['en-US']
 
-    def enable_checkbox(self, option_before, option_after, action_element):
+    def enable_checkbox(self, action_element_before, action_element_after, option=None, action_element_region=None):
+        """
+        Method clicks on action element. Assume checkbox or radiobutton, which changes state after single click.
 
+        :param action_element_before: Pattern of action element before click.
+        :param action_element_after: Pattern of action element after click.
+        :param option: A pattern with action element. action_element_region will be defined as region of option pattern.
+        :param action_element_region:
+        :return: None
+        """
 
-        pass
+        if action_element_region is None:
+            try:
+                option_with_action_element_location = find(option)
+            except:
+                raise FindError('Option {} is not available'.format(option))
+
+            option_width, option_height = option.get_size()
+            action_element_region = Region(option_with_action_element_location.x, option_with_action_element_location.y,
+                                           option_width, option_height)
+
+        checkbox_before = exists(action_element_before, Settings.TINY_FIREFOX_TIMEOUT, action_element_region)
+
+        if checkbox_before:
+            click(action_element_before, in_region=action_element_region)
+
+        try:
+            wait(action_element_after, Settings.TINY_FIREFOX_TIMEOUT)
+            logger.debug('Action element status changed successfully.')
+        except:
+            raise FindError('Action element status was not changed')
 
     def run(self):
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
@@ -59,20 +86,15 @@ class Test(BaseTest):
         content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
 
-        content_blocking_cookies_checked = exists(cookies_checked_pattern, Settings.FIREFOX_TIMEOUT)
-        if content_blocking_cookies_checked:
+        cookies_checked = exists(cookies_checked_pattern, Settings.FIREFOX_TIMEOUT)
+        if cookies_checked:
             cookies_option_location = find(cookies_checked_pattern)
             cookies_width, cookies_height = cookies_checked_pattern.get_size()
             cookies_option_region = Region(cookies_option_location.x - cookies_width,
                                                 cookies_option_location.y - cookies_height,
                                                 cookies_width * 2, cookies_height * 3)
 
-            checkbox_checked = exists(checkbox_checked_pattern, in_region=cookies_option_region)
-            if checkbox_checked:
-                click(checkbox_checked_pattern)
-
-            checkbox_unchecked = exists(checkbox_unchecked_pattern, in_region=cookies_option_region)
-            assert_true(self, checkbox_unchecked, 'Cookies checkbox is unchecked')
+            self.enable_checkbox(action_element_region=cookies_option_region)
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
