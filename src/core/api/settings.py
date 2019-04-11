@@ -51,6 +51,7 @@ class _Settings:
     DEFAULT_MOUSE_SCROLL_STEP = 100
     DEFAULT_SITE_LOAD_TIMEOUT = 30
     DEFAULT_HEAVY_SITE_LOAD_TIMEOUT = 90
+    DEFAULT_KEY_SHORTCUT_DELAY = 0.1
     DEFAULT_UI_DELAY = 1
     DEFAULT_UI_DELAY_SHORT = 0.5
     DEFAULT_UI_DELAY_LONG = 2.5
@@ -69,7 +70,8 @@ class _Settings:
                  highlight_duration=DEFAULT_HIGHLIGHT_DURATION,
                  highlight_color=DEFAULT_HIGHLIGHT_COLOR,
                  highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS,
-                 mouse_scroll_step=DEFAULT_MOUSE_SCROLL_STEP):
+                 mouse_scroll_step=DEFAULT_MOUSE_SCROLL_STEP,
+                 key_shortcut_delay=DEFAULT_KEY_SHORTCUT_DELAY):
 
         self.wait_scan_rate = wait_scan_rate
         self._type_delay = type_delay
@@ -88,6 +90,7 @@ class _Settings:
         self.highlight_color = highlight_color.value
         self.highlight_thickness = highlight_thickness
         self.mouse_scroll_step = mouse_scroll_step
+        self.key_shortcut_delay = key_shortcut_delay
 
     @property
     def type_delay(self):

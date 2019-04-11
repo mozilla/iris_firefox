@@ -2,27 +2,32 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import pyautogui
-
-from src.core.api.os_helpers import OSHelper
-from src.core.util.arg_parser import get_core_args
 import logging
 import os
 import time
 
-if OSHelper.is_linux():
+import pyautogui
+
+from src.core.api.keyboard.key import Key, KeyModifier
+from src.core.api.keyboard.keyboard_util import get_active_modifiers, is_shift_character
+from src.core.api.os_helpers import OSHelper
+from src.core.api.settings import Settings
+from src.core.util.arg_parser import get_core_args
+
+
+logger = logging.getLogger(__name__)
+
+try:
     from Xlib.display import Display
     from Xlib import X
     from Xlib.ext.xtest import fake_input
     import Xlib.XK
-from src.core.api.keyboard.key import Key, KeyModifier
-from src.core.api.keyboard.keyboard_util import get_active_modifiers, is_shift_character
-from src.core.api.settings import Settings
+except ImportError:
+    if OSHelper.is_linux():
+        logger.error('Could not import Xlib modules.')
+        exit(1)
 
-logger = logging.getLogger(__name__)
-DEFAULT_KEY_SHORTCUT_DELAY = 0.1
 pyautogui.FAILSAFE = False
-
 use_virtual_keyboard = get_core_args().virtual_keyboard
 
 
@@ -51,9 +56,9 @@ def key_up(key):
 
 
 def type(text: Key or str = None, modifier=None, interval: int = None):
-    """
-    :param str || list text: If a string, then the characters to be pressed. If a list, then the key names of the keys
-                             to press in order.
+    """Keyboard type.
+
+    :param text: String or Key pressed
     :param modifier: Key modifier.
     :param interval: The number of seconds in between each press. By default it is 0 seconds.
     :return: None.
@@ -65,35 +70,21 @@ def type(text: Key or str = None, modifier=None, interval: int = None):
 
 
 class XScreen:
+    def __init__(self):
+        self.display = Display(os.environ['DISPLAY'])
 
     def _screen_size(self):
-        """
-            Returns:
-                 Screen Width and Height of the virtual screen
-        """
-
+        """Returns Screen Width and Height of the virtual screen. """
         return self.display.screen().width_in_pixels, self.display.screen().height_in_pixels
 
 
 class _XKeyboard(XScreen):
-
-    def __init__(self):
-
-        self.display = Display(os.environ['DISPLAY'])
-
     def key_down(self, key):
+        """Performs a keyboard key press without the release. This will put that key in a held down state.
+
+        :param key: The key to be pressed down. The valid names are listed in Key class
+        :return: None.
         """
-        Performs a keyboard key press without the release. This will put that
-        key in a held down state.
-
-        Args:
-          key (str): The key to be pressed down. The valid names are listed in
-          Key class
-
-        Returns:
-          None
-        """
-
         if isinstance(key, Key) or isinstance(key, KeyModifier):
             key = key.value.x11key
 
@@ -116,18 +107,13 @@ class _XKeyboard(XScreen):
         self.display.sync()
 
     def press(self, characters, interval):
+        """Performs a keyboard key press down, followed by a release
+
+        :param characters: The key to be released up. The valid names are listed in Key Class
+        :param interval: Time between key presses
+        :return: None.
         """
-        Performs a keyboard key press down, followed by a release
-
-        Args:
-          key (str): The key to be released up. The valid names are listed in
-          Key Class
-
-        Returns:
-          None
-        """
-
-        if type(characters) == str:
+        if isinstance(characters, str):
             characters = [characters]  # put string in a list
         else:
             lower_keys = []
@@ -143,17 +129,11 @@ class _XKeyboard(XScreen):
             time.sleep(interval)
 
     def key_up(self, key):
+        """Performs a keyboard key release (without the press down beforehand).
+
+        :param key: The key to be released up. The valid names are listed in Key Class
+        :return: None.
         """
-        Performs a keyboard key release (without the press down beforehand).
-
-        Args:
-          key (str): The key to be released up. The valid names are listed in
-          Key Class
-
-        Returns:
-          None
-        """
-
         if isinstance(key, Key) or isinstance(key, KeyModifier):
             key = key.value.x11key
 
@@ -161,89 +141,74 @@ class _XKeyboard(XScreen):
             return
 
         if isinstance(key, int):
-            keycode = key
+            key_code = key
         else:
-            keycode = self.keyboard_mapping(key)
+            key_code = self.keyboard_mapping(key)
 
-        fake_input(self.display, X.KeyRelease, keycode)
+        fake_input(self.display, X.KeyRelease, key_code)
         self.display.sync()
 
     def type_write(self, keys, interval: int = None):
+        """Performs a keyboard key press down, followed by a release, for each of the characters in message.
+
+        :param keys: Can also be list of strings, in which case any valid keyboard name can be used.
+        :param interval: The number of seconds in between each press. By default it is 0 seconds.
+        :return: None.
         """
-       "Performs a keyboard key press down, followed by a release, for each of the characters in message.
-
-        Args:
-          :param  str || list  keys: The message argument can also be list of strings, in which case any valid
-                      keyboard name can be used.
-          :param interval: The number of seconds in between each press. By default it is 0 seconds.
-
-        Returns:
-          None
-        """
-
         for character in keys:
             if len(character) > 1:
-                c = c.lower()
-            self.press(c, interval)
+                character = character.lower()
+            self.press(character, interval)
             time.sleep(interval)
 
-    def keyboard_mapping(self, iriskey):
-
-        return self.display.keysym_to_keycode(Xlib.XK.string_to_keysym(iriskey))
+    def keyboard_mapping(self, key):
+        return self.display.keysym_to_keycode(Xlib.XK.string_to_keysym(key))
 
     @staticmethod
     def type(text: Key or str = None, modifier=None, interval: int = None):
-        """
-        :param str || list text: If a string, then the characters to be pressed. If a list, then the key names of the keys
-                                 to press in order.
+        """Keyboard type.
+
+        :param text: String or Key pressed
         :param modifier: Key modifier.
         :param interval: The number of seconds in between each press. By default it is 0 seconds.
         :return: None.
         """
-
-        logger.debug('type method: ')
-
         if modifier is None:
             if isinstance(text, Key):
-                logger.debug('Scenario 1: reserved key.')
-                logger.debug('Reserved key: %s' % text)
+                logger.debug('Type Method: [Reserved key: {}]'.format(text))
                 virtual_keyboard.key_down(text)
                 virtual_keyboard.key_up(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
             else:
                 if interval is None:
                     interval = Settings.type_delay
-
-                logger.debug('Scenario 2: normal key or text block.')
-                logger.debug('text :')
-                logger.debug(text)
+                logger.debug('Type Method: [Text: {}]'.format(text))
                 virtual_keyboard.type_write(text, interval)
         else:
-            logger.debug('Scenario 3: combination of modifiers and other keys.')
             modifier_keys = get_active_modifiers(modifier)
             num_keys = len(modifier_keys)
-            logger.debug('Modifiers (%s): %s ' % (num_keys, ' '.join(key.name for key in modifier_keys)))
-            logger.debug('text: %s' % text)
+            logger.debug('Type Method: [Modifiers ({}): {}] + [Text: {}]'
+                         .format(num_keys, ' '.join(key.name for key in modifier_keys), text))
 
             if num_keys == 1:
                 virtual_keyboard.key_down(modifier_keys[0])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_down(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_up(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_up(modifier_keys[0])
             elif num_keys == 2:
                 virtual_keyboard.key_down(modifier_keys[0])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_down(modifier_keys[1])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_down(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_up(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_up(modifier_keys[1])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 virtual_keyboard.key_up(modifier_keys[0])
             else:
                 logger.error('Returned key modifiers out of range.')
@@ -254,12 +219,11 @@ class _XKeyboard(XScreen):
         logger.debug('END virtual type')
 
 
-# Initialize fake keyboard
 if OSHelper.is_linux():
     virtual_keyboard = _XKeyboard()
 
 
-class _Keyboard(object):
+class _Keyboard:
     @staticmethod
     def key_down(key):
         """Performs a keyboard key press without the release. This will put that key in a held down state.
@@ -296,54 +260,50 @@ class _Keyboard(object):
 
     @staticmethod
     def type(text: Key or str = None, modifier=None, interval: int = None):
-        """
-        :param str || list text: If a string, then the characters to be pressed. If a list, then the key names of the keys
-                                 to press in order.
+        """Keyboard type.
+
+        :param text: String or Key pressed
         :param modifier: Key modifier.
         :param interval: The number of seconds in between each press. By default it is 0 seconds.
         :return: None.
         """
-        logger.debug('type method: ')
         if modifier is None:
             if isinstance(text, Key):
-                logger.debug('Scenario 1: reserved key.')
-                logger.debug('Reserved key: %s' % text)
+                logger.debug('Type Method: [Reserved key: {}]'.format(text))
                 key_down(text)
                 key_up(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
             else:
                 if interval is None:
                     interval = Settings.type_delay
 
-                logger.debug('Scenario 2: normal key or text block.')
-                logger.debug('Text: %s' % text)
+                logger.debug('Type Method: [Text: {}]'.format(text))
                 pyautogui.typewrite(text, interval)
         else:
-            logger.debug('Scenario 3: combination of modifiers and other keys.')
             from src.core.api.keyboard.keyboard_util import get_active_modifiers
             modifier_keys = get_active_modifiers(modifier)
             num_keys = len(modifier_keys)
-            logger.debug('Modifiers (%s): %s ' % (num_keys, ' '.join(key.name for key in modifier_keys)))
-            logger.debug('text: %s' % text)
+            logger.debug('Type Method: [Modifiers ({}): {}] + [Text: {}]'
+                         .format(num_keys, ' '.join(key.name for key in modifier_keys), text))
             if num_keys == 1:
                 key_down(modifier_keys[0])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_down(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_up(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_up(modifier_keys[0])
             elif num_keys == 2:
                 key_down(modifier_keys[0])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_down(modifier_keys[1])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_down(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_up(text)
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_up(modifier_keys[1])
-                time.sleep(DEFAULT_KEY_SHORTCUT_DELAY)
+                time.sleep(Settings.key_shortcut_delay)
                 key_up(modifier_keys[0])
             else:
                 logger.error('Returned key modifiers out of range.')
