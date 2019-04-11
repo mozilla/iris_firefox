@@ -22,9 +22,9 @@ class Test(BaseTest):
 
     def run(self):
         most_visited_toolbar_bookmarks_folder_pattern = Pattern('most_visited_bookmarks.png')
-        getting_started_toolbar_bookmark_pattern = Pattern('getting_started_in_toolbar.png')
         new_separator_option_pattern = Pattern('new_separator_option.png')
         toolbar_separator_pattern = Pattern('toolbar_separator.png')
+        toolbar_bookmarks_pattern = Pattern('toolbar_bookmarks.png')
 
         open_bookmarks_toolbar()
 
@@ -43,26 +43,22 @@ class Test(BaseTest):
         click(new_separator_option_pattern)
 
         separator_appeared = exists(toolbar_separator_pattern, in_region=region_with_separator)
-
         assert_true(self, separator_appeared,
                     'A separator is placed in front of the first bookmark/folder inside the Bookmark Toolbar.')
 
+        open_bookmarks_toolbar()  # to close the toolbar
+
+        try:
+            toolbar_disabled = wait_vanish(most_visited_toolbar_bookmarks_folder_pattern)
+            assert_true(self, toolbar_disabled, 'The Bookmark Toolbar is no longer displayed.')
+        except FindError:
+            raise FindError('Toolbar did not close')
+
         open_bookmarks_toolbar()
 
-        toolbar_disabled = exists(most_visited_toolbar_bookmarks_folder_pattern)
-        assert_false(self, toolbar_disabled, 'The Bookmark Toolbar is no longer displayed.')
+        bookmarks_displayed_properly = exists(toolbar_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, bookmarks_displayed_properly,
+                    'Toolbar opened. All the bookmarks/folders are in the proper place, like were previously set. '
+                    'Note: In the affected build the Bookmarks Toolbar was completely empty after re-enabled.')
 
-        open_bookmarks_toolbar()
-
-        separator_available = exists(toolbar_separator_pattern, in_region=region_with_separator)
-
-        most_visited_folder_available = exists(most_visited_toolbar_bookmarks_folder_pattern,
-                                               Settings.SHORT_FIREFOX_TIMEOUT)
-
-        getting_started_bookmark_available = exists(getting_started_toolbar_bookmark_pattern,
-                                                    Settings.SHORT_FIREFOX_TIMEOUT)
-
-        assert_true(self, separator_available and most_visited_folder_available and getting_started_bookmark_available,
-                    'The Bookmarks Toolbar is successfully enabled and all the bookmarks/folders'
-                    ' (including the separator) are in the proper place, like were previously set.'
-                    ' Note: In the affected build the Bookmarks Toolbar was completely empty after re-enabled')
+        assert_true(self, separator_appeared, 'Separator available on toolbar after reopening')
