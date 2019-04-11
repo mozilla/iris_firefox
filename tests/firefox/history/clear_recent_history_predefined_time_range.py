@@ -34,7 +34,7 @@ class Test(FirefoxTest):
         for step in open_clear_recent_history_window():
             assert  step.resolution, step.message
 
-        if Settings.is_mac():
+        if OSHelper.is_mac():
             click(clear_recent_history_last_hour_pattern)
             type(Key.DOWN)
             type(Key.DOWN)
