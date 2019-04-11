@@ -15,24 +15,23 @@ class Test(BaseTest):
         self.test_suite_id = '1826'
         self.locales = ['en-US']
 
-    def enable_checkbox(self, action_element_before, action_element_after, option=None, action_element_region=None):
+    def enable_checkbox(self, action_element_before, action_element_after, action_element):
         """
         Method clicks on action element. Assume checkbox or radiobutton, which changes state after single click.
 
         :param action_element_before: Pattern of action element before click.
         :param action_element_after: Pattern of action element after click.
-        :param option: A pattern with action element. action_element_region will be defined as region of option pattern.
-        :param action_element_region:
+        :param action_element: Pattern with option element, or Region with this element.
         :return: None
         """
 
-        if action_element_region is None:
+        if action_element:
             try:
-                option_with_action_element_location = find(option)
+                option_with_action_element_location = find(action_element)
             except:
-                raise FindError('Option {} is not available'.format(option))
+                raise FindError('Option {} is not available'.format(action_element))
 
-            option_width, option_height = option.get_size()
+            option_width, option_height = action_element.get_size()
             action_element_region = Region(option_with_action_element_location.x, option_with_action_element_location.y,
                                            option_width, option_height)
 
@@ -40,6 +39,8 @@ class Test(BaseTest):
 
         if checkbox_before:
             click(action_element_before, in_region=action_element_region)
+        else:
+            raise FindError('Action element was not found')
 
         try:
             wait(action_element_after, Settings.TINY_FIREFOX_TIMEOUT)
@@ -94,7 +95,7 @@ class Test(BaseTest):
                                                 cookies_option_location.y - cookies_height,
                                                 cookies_width * 2, cookies_height * 3)
 
-            self.enable_checkbox(action_element_region=cookies_option_region)
+            self.enable_checkbox(action_element=cookies_option_region)
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
