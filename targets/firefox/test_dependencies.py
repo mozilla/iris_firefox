@@ -16,3 +16,4 @@ from targets.firefox.firefox_ui.test_utils import restore_firefox_focus, open_cl
 from targets.firefox.local_web.web_links.local_web import LocalWeb
 from targets.firefox.firefox_ui.utils import Utils
 from targets.firefox.firefox_ui.helpers.general import *
+from targets.firefox.firefox_ui.helpers.history_test_utils import *
