@@ -1,6 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 import json
 import time
 
@@ -638,7 +640,7 @@ def get_telemetry_info():
         close_tab()
 
 
-class RightClickLocationBar(object):
+class RightClickLocationBar:
     """Class with location bar members."""
 
     UNDO = 0
@@ -648,31 +650,6 @@ class RightClickLocationBar(object):
     PASTE_GO = 4
     DELETE = 5
     SELECT_ALL = 6
-
-
-def access_bookmarking_tools(option):
-    """Access option from 'Bookmarking Tools'.
-
-    :param option: Option from 'Bookmarking Tools'.
-    :return: None.
-    """
-
-    bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
-    open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
-
-    try:
-        wait(bookmarking_tools_pattern, 10)
-        logger.debug('Bookmarking Tools option has been found.')
-        click(bookmarking_tools_pattern)
-    except FindError:
-        raise APIHelperError(
-            'Can\'t find the Bookmarking Tools option, aborting.')
-    try:
-        wait(option, 15)
-        logger.debug('%s option has been found.' % option)
-        click(option)
-    except FindError:
-        raise APIHelperError('Can\'t find the %s option, aborting.' % option)
 
 
 def restore_firefox_focus():
@@ -689,3 +666,97 @@ def restore_firefox_focus():
         click(click_area)
     except FindError:
         raise APIHelperError('Could not restore firefox focus.')
+
+
+def get_pref_value(pref_name):
+    """Returns the value of a provided preference from 'about:config' page.
+
+    :param pref_name: Preference's name.
+    :return: Preference's value.
+    """
+
+    new_tab()
+    select_location_bar()
+    paste('about:config')
+    type(Key.ENTER)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+
+    type(Key.SPACE)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+
+    paste(pref_name)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+    type(Key.TAB)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
+    try:
+        value = copy_to_clipboard().split(';'[0])[1]
+    except Exception as e:
+        raise APIHelperError(
+            'Failed to retrieve preference value.\n{}'.format(e))
+
+    close_tab()
+    return value
+
+
+def get_firefox_version_from_about_config():
+    """Returns the Firefox version from 'about:config' page."""
+
+    try:
+        return get_pref_value('extensions.lastAppVersion')
+    except APIHelperError:
+        raise APIHelperError('Could not retrieve firefox version information from about:config page.')
+
+
+def get_firefox_build_id_from_about_config():
+    """Returns the Firefox build id from 'about:config' page."""
+    pref_1 = 'browser.startup.homepage_override.buildID'
+    pref_2 = 'extensions.lastAppBuildId'
+
+    try:
+        return get_pref_value(pref_1)
+    except APIHelperError:
+        try:
+            return get_pref_value(pref_2)
+        except APIHelperError:
+            raise APIHelperError('Could not retrieve firefox build id information from about:config page.')
+
+
+def get_firefox_channel_from_about_config():
+    """Returns the Firefox channel from 'about:config' page."""
+    try:
+        return get_pref_value('app.update.channel')
+    except APIHelperError:
+        raise APIHelperError('Could not retrieve firefox channel information from about:config page.')
+
+
+def get_firefox_locale_from_about_config():
+    """Returns the Firefox locale from 'about:config' page."""
+    try:
+        value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
+        logger.debug(value_str)
+        temp = json.loads(value_str)
+        return str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
+    except (APIHelperError, KeyError):
+        raise APIHelperError('Pref format to determine locale has changed.')
+
+
+def get_support_info():
+    """Returns support information as a JSON object from 'about:support' page."""
+    copy_raw_data_to_clipboard = Pattern('about_support_copy_raw_data_button.png')
+
+    new_tab()
+    select_location_bar()
+    paste('about:support')
+    type(Key.ENTER)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+
+    try:
+        click(copy_raw_data_to_clipboard)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        json_text = get_clipboard()
+        return json.loads(json_text)
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve support information value.\n{}'.format(e))
+    finally:
+        close_tab()
