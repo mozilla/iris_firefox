@@ -22,28 +22,31 @@ class Test(BaseTest):
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
+        centre_location = Location(SCREEN_WIDTH/2, SCREEN_HEIGHT/4)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened, 'The test page is opened')
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, stardialog_displayed, 'StarDialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
         new_tab()
+
         select_tab(1)
+
         close_tab()
 
         open_library()
 
-        if Settings.get_os() == Platform.LINUX:
-            drag_drop(Library.TITLE, Utils.TOP_SITES, 2)
+        drag_drop(Library.TITLE, centre_location, Settings.TINY_FIREFOX_TIMEOUT)
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
         click(Library.OTHER_BOOKMARKS)
@@ -51,12 +54,13 @@ class Test(BaseTest):
         bookmark_exists = exists(wiki_bookmark_logo_pattern)
         assert_true(self, bookmark_exists, 'Previously added bookmark exists in Library')
 
-        drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR, 2)
+        drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR, Settings.TINY_FIREFOX_TIMEOUT)
 
-        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
+        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened_from_bookmarks, 'The test page is opened with drag and drop from Library')
 
         open_library()
 
         click(Library.TITLE)
+
         close_window_control('auxiliary')
