@@ -10,10 +10,11 @@ class Test(FirefoxTest):
     @pytest.mark.details(
             description='This test case checks that navigation to a page without entering the \'http://\' protocol '
                         'works correctly.',
-            locale='[en-US]',
+            locale=[Locales.ENGLISH, Locales.CHINESE, Locales.SPANISH, Locales.FRENCH, Locales.GERMAN, Locales.ARABIC,
+                    Locales.RUSSIAN, Locales.KOREAN, Locales.PORTUGUESE, Locales.VIETNAMESE, Locales.POLISH,
+                    Locales.TURKISH, Locales.ROMANIAN, Locales.JAPANESE],
             test_case_id='117529',
             test_suite_id='1902',
-            locales=['en-US', 'zh-CN', 'es-ES', 'fr', 'de', 'ar', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja']
     )
     def test_run(self, firefox):
 

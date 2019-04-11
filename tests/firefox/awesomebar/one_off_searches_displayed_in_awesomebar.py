@@ -10,10 +10,9 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks that one-off searches are displayed in the awesomebar.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108248',
         test_suite_id='1902',
-        locales=['en-US']
     )
     def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

@@ -12,28 +12,25 @@ class Test(FirefoxTest):
     )
     def test_run(self, firefox):
         history_empty_pattern = Pattern('history_empty.png')
-        if OSHelper.is_mac():
-            clear_recent_history_last_hour_pattern = Pattern('sanitize_duration_choice_last_hour')
 
-        # Open some pages to create history.
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, expected_1, 'Mozilla page loaded successfully.')
+        assert expected_1, 'Mozilla page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, expected_2, 'Firefox page loaded successfully.')
+        assert expected_2, 'Firefox page loaded successfully.'
 
         # Open the History sidebar.
         history_sidebar()
 
         # Open the Clear Recent History window and select 'Everything'.
         for step in open_clear_recent_history_window():
-            assert_true(self, step.resolution, step.message)
+            assert step.resolution, step.message
         if OSHelper.is_mac():
-            click(clear_recent_history_last_hour_pattern)
+            click(Pattern('sanitize_duration_choice_last_hour'))
             for i in range(4):
                 type(Key.DOWN)
             type(Key.ENTER)
@@ -61,4 +58,4 @@ class Test(FirefoxTest):
 
         # Check that all the history was cleared.
         expected_4 = exists(history_empty_pattern.similar(0.9), 10)
-        assert_true(self, expected_4, 'All the history was cleared successfully.')
+        assert expected_4, 'All the history was cleared successfully.'

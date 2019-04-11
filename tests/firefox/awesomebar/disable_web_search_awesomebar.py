@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case disables the web search in the awesomebar.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108254',
         test_suite_id='1902',
         preferences={'browser.contentblocking.enabled': False}
@@ -46,8 +46,6 @@ class Test(FirefoxTest):
 
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        # From time to time user is redirected to the Mozilla support page instead of the Google page. If this happens
-        # we will repeat the search.
         expected = region.exists(mozilla_support_url_pattern, 10)
         if expected:
             select_location_bar()
@@ -61,7 +59,6 @@ class Test(FirefoxTest):
 
         navigate('about:config')
 
-        # Change focus from the url bar.
         if OSHelper.get_os() == OSPlatform.WINDOWS or OSHelper.get_os() == OSPlatform.LINUX:
             click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
             type(Key.ENTER)
@@ -99,7 +96,6 @@ class Test(FirefoxTest):
         expected = exists(amazon_logo_pattern, 10)
         assert expected, 'Page successfully loaded, amazon logo found.'
 
-        # Perform a search using the same engine as the one used above.
         select_location_bar()
         paste('test')
 

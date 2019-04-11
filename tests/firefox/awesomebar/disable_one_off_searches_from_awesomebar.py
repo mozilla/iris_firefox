@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case disables one-off searches from the awesomebar.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108258',
         test_suite_id='1902'
     )
@@ -43,8 +43,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         expected = region.exists(default_status_pattern, 10)
-        assert expected, \
-            'The \'browser.urlbar.oneOffSearches\' preference has status \'default\' by default.'
+        assert expected, 'The \'browser.urlbar.oneOffSearches\' preference has status \'default\' by default.'
 
         expected = region.exists(true_value_pattern, 10)
         assert expected, 'The \'browser.urlbar.oneOffSearches\' preference has value \'true\' by default.'
@@ -66,14 +65,12 @@ class Test(FirefoxTest):
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, ebay_one_off_button_pattern,
                         google_one_off_button_pattern, twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 
-        # Check that the one-off list is not displayed in the awesomebar after the 'browser.urlbar.oneOffSearches'
-        # preference is set to 'false'.
-        for i in range(pattern_list.__len__()):
+        for index, pattern in enumerate(pattern_list):
             try:
-                expected = exists(pattern_list[i].similar(0.9), 2)
-                assert not expected, 'Element found at position ' + i.__str__() + ' in the list not found.'
+                expected = wait_vanish(pattern.similar(0.9), 2)
+                assert expected, 'Element found at position {} in the list not found.'.format(index)
             except FindError:
-                raise FindError('Element found at position ' + i.__str__() + ' in the list found.')
+                raise FindError('Element found at position {} in the list found.'.format(index))
 
         select_location_bar()
         paste('moz')

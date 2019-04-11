@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Mouse handling - in the awesomebar.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108282',
         test_suite_id='1902'
     )

@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case verifies that changing the search engines positions the change is applied in '
                     'awesome bar too.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108262',
         test_suite_id='1902'
     )

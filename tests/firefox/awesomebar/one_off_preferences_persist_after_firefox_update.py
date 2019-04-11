@@ -7,12 +7,12 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='This test case checks that the one-off search feature does not affect the search engine preferences after updating the Firefox version.',
-        locale='[en-US]',
+        description='This test case checks that the one-off search feature does not affect the search engine '
+                    'preferences after updating the Firefox version.',
+        locale=[Locales.ENGLISH],
         test_case_id="108269",
         test_suite_id="1902",
         blocked_by={'id': '1488708'},
-        locales=['en-US'],
         enabled=False,
         set_profile_pref={'app.update.auto': True,
                           'app.update.interval': 7200,
@@ -150,8 +150,7 @@ class Test(FirefoxTest):
         starting_condition = rules_dict['starting_condition']
         update_steps_list = rules_dict['steps'].split(',')
 
-        assert current_version in get_firefox_version(
-            self.browser.path), 'Firefox version is correct (%s)' % current_version
+        assert current_version in get_firefox_version(firefox.application.path), 'Firefox version is correct'
 
         if is_update_required(current_version, starting_condition):
             for update_step in update_steps_list:
@@ -163,16 +162,14 @@ class Test(FirefoxTest):
                 firefox.restart()
                 navigate(self.base_local_web_url)
 
-                assert update_step in get_firefox_version(
-                    self.browser.path), 'Firefox successfully updated from %s to %s.' % (current_version, update_step)
+                assert update_step in get_firefox_version(firefox.application.path), 'Firefox successfully updated'
 
                 current_version = update_step
 
         open_about_firefox()
         wait(firefox_up_to_date_pattern, 20)
         type(Key.ESC)
-        assert current_version in get_firefox_version(
-            self.browser.path), 'Firefox version is correct (%s)' % current_version
+        assert current_version in get_firefox_version(firefox.application.path), 'Firefox version is correct'
 
         select_location_bar()
         paste('moz')
@@ -183,13 +180,15 @@ class Test(FirefoxTest):
         if OSHelper.is_windows() or OSHelper.is_linux():
             try:
                 expected = wait_vanish(google_one_off_button_pattern, 10)
-                assert expected, 'The removed search engine from the one-off searches bar in previous Firefox version is still removed in the latest Firefox version.'
+                assert expected, 'The removed search engine from the one-off searches bar in previous Firefox ' \
+                                 'version is still removed in the latest Firefox version.'
             except FindError:
                 raise FindError('The removed search engine from the one-off searches bar in previous Firefox version '
                                 'is not removed in the latest Firefox version.')
         else:
             expected = exists(google_one_off_button_pattern.similar(0.9), 10)
-            assert not expected, 'The removed search engine from the one-off searches bar in previous Firefox version is still removed in the latest Firefox version.'
+            assert not expected, 'The removed search engine from the one-off searches bar in previous Firefox ' \
+                                 'version is still removed in the latest Firefox version.'
 
         navigate('about:preferences#search')
 
@@ -198,4 +197,5 @@ class Test(FirefoxTest):
             type(Key.TAB)
 
         expected = exists(startpage_https_search_engine_pattern, 10)
-        assert expected, 'The new search engine added in previous Firefox version found in the \'One-Click Search Engines\' section in the latest Firefox version.'
+        assert expected, 'The new search engine added in previous Firefox version found in the ' \
+                         '\'One-Click Search Engines\' section in the latest Firefox version.'

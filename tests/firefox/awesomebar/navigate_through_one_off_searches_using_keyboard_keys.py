@@ -10,11 +10,10 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case navigates through one-off searches using the keyboard keys',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108267',
         test_suite_id='1902',
         # blocked_by={'id': '1488708'},
-        locales=['en-US']
     )
     def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

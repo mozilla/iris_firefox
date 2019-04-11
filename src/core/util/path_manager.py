@@ -232,9 +232,3 @@ class PathManager:
                     yield x
         if not topdown:
             yield directory, dirs, nondirs
-
-
-test_root = os.path.join('tests', 'Firefox')
-current_test = 'ocr.py'
-test_path = current_test.split('.py')[0]
-print(test_path)

@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks the \'Paste & Go\' option if CRLF exists at the end of clipboard url.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='117523',
         test_suite_id='1902'
     )
@@ -22,13 +22,9 @@ class Test(FirefoxTest):
         assert expected, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
-
-        # Copy selection to clipboard.
         edit_copy()
 
         new_tab()
-
-        # Open menu from the location bar by pressing the right click.
         right_click(NavBar.HAMBURGER_MENU.target_offset(-400, 10))
 
         # Select 'Paste & Go' option.

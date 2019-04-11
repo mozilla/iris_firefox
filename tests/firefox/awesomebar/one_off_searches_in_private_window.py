@@ -10,10 +10,9 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case perform one-offs searches in private browsing.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108253',
-        test_suite_id='1902',
-        locales=['en-US']
+        test_suite_id='1902'
     )
     def test_run(self, firefox):
         moz_pattern = Pattern('moz.png')

@@ -23,7 +23,7 @@ MULTI_MONITOR_AREA = mss.mss().monitors[0]
 class OSHelper:
 
     LOCALES = ['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ar', 'ko', 'pt-PT', 'vi',
-           'pl', 'tr', 'ro', 'ja' ,'it', 'pt-BR', 'in', 'en-GB', 'id', 'ca', 'be', 'kk']
+               'pl', 'tr', 'ro', 'ja' ,'it', 'pt-BR', 'in', 'en-GB', 'id', 'ca', 'be', 'kk']
 
     @staticmethod
     def is_high_def_display():

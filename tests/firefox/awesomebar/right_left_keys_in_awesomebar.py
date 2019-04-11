@@ -11,9 +11,9 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case navigates through the awesomebar suggestions/one-offs/settings gear using the '
                     'right/left keys',
+        locale=[Locales.ENGLISH],
         test_case_id='108277',
-        test_suite_id='1902',
-        locales=['en-US']
+        test_suite_id='1902'
     )
     def test_run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

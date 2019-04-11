@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
             description='This test case performs key navigation in the URL drop-down in high contrast theme.',
-            locale='[en-US]',
+            locale=[Locales.ENGLISH],
             test_case_id='120136',
             test_suite_id='1902'
         )

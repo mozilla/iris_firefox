@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case disables search suggestions in awesomebar.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108263',
         test_suite_id='1902'
     )
@@ -26,8 +26,6 @@ class Test(FirefoxTest):
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
-        # Perform a search with the 'Show search suggestions in address bar results' option checked(default state).
-
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
@@ -36,10 +34,7 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('abc')
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
-
-        # The search suggestion list has 10 suggestions by default.
         for i in range(10):
             scroll_down()
 
@@ -61,11 +56,7 @@ class Test(FirefoxTest):
         assert expected, 'Checkbox displayed in front of the \'Show search suggestions in address bar ' \
                          'results\' text is checked by default.'
 
-        # Perform a search with the 'Show search suggestions in address bar results' option unchecked(modified state).
-
         click(show_search_suggestions_in_address_bar_results_checked_pattern)
-
-        # Move focus away from the clicked option.
         click(show_search_suggestions_in_address_bar_results_checked_pattern.target_offset(-100, 15),
               align=Alignment.TOP_LEFT)
 
@@ -79,10 +70,7 @@ class Test(FirefoxTest):
         type(Key.DELETE)
         paste('abc')
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
-
-        # Check that the search suggestion list has now no suggestion.
         for i in range(1):
             scroll_down()
 

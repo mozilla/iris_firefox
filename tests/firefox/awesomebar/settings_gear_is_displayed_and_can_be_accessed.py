@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks that the Settings gear is displayed and can be accessed.',
-        locales=['en-US'],
+        locale=[Locales.ENGLISH],
         test_case_id='108260',
         test_suite_id='1902',
         blocked_by='1542729',

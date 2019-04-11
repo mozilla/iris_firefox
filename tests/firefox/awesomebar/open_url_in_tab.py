@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case opens an URL in a new tab when the \'browser.search.openintab\' preference is ' 
                     'set to true.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='117527',
         test_suite_id='1902'
     )

@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks the awesomebar search after user input.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108255',
         test_suite_id='1902'
     )

@@ -4,28 +4,26 @@
 
 
 import logging
-import unittest
 
 import pytest
 
-from src.core.api.finder.finder import *
+from src.core.api.finder.finder import highlight, wait, wait_vanish, find, find_all, exists
 from src.core.api.finder.pattern import Pattern
-from src.core.api.keyboard.key import *
+from src.core.api.keyboard.key import Key, KeyModifier
 from src.core.api.keyboard.keyboard import type, key_down, key_up
 from src.core.api.mouse.mouse import *
-from src.core.api.mouse.mouse import Mouse
-from src.core.api.screen.region import *
+from src.core.api.mouse.mouse_controller import Mouse
+from src.core.api.screen.region import Region
 from src.core.api.screen.screen import *
 from src.core.api.enums import *
 from src.core.api.errors import *
-from src.core.api.location import *
-from src.core.api.os_helpers import *
-from src.core.api.rectangle import *
+from src.core.api.location import Location
+from src.core.api.os_helpers import OSHelper
+from src.core.api.rectangle import Rectangle
 from src.core.api.settings import Settings
+from src.core.util.region_utils import RegionUtils
+from src.core.util.path_manager import PathManager
 from funcy import compose
-
-
-mylogger = logging.getLogger(__name__)
 
 
 class BaseTest:

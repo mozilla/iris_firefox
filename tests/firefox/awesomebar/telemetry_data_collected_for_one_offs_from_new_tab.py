@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks that telemetry data is collected for one-offs from new tab',
-        locales=['en-US'],
+        locale=[Locales.ENGLISH],
         test_case_id='108274',
         test_suite_id='1902',
     )

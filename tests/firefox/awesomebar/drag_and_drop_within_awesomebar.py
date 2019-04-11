@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case checks the \'Drag and Drop within the awesomebar\' option, if it searches for'
                     ' the dropped string.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='117524',
         test_suite_id='1902'
     )
@@ -26,8 +26,6 @@ class Test(FirefoxTest):
         navigate(url)
         assert exists(LocalWeb.FOCUS_LOGO, 10), 'Page successfully loaded, focus logo found.'
 
-        # Highlight the selected area.
-
         try:
             wait(text_to_be_highlighted, 10)
             logger.debug('The text is present on the page.')
@@ -39,15 +37,12 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('The text is not present on the page, aborting.')
 
-        # Wait for text to be highlighted.
-
         try:
             wait(highlighted_text.similar(0.7), 10)
             logger.debug('Selected text is present on the page.')
         except FindError:
             raise FindError('Selected text is not present on the page, aborting.')
 
-        # Drag and drop highlighted text into awesomebar.
         try:
             drag_drop(highlighted_text, drag_area, duration=0.5)
         except FindError:

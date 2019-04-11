@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case perform a search by keyboard only.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108268',
         test_suite_id='1902',
         preferences={'browser.contentblocking.enabled': False}

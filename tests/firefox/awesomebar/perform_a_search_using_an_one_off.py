@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case perform a search using an one-off focusing on the autocomplete drop-down.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108249',
         test_suite_id='1902',
         blocked_by='issue_84'
@@ -25,8 +25,6 @@ class Test(FirefoxTest):
         google_search_results_pattern = Pattern('google_search_results.png')
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
-
-        # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)
@@ -49,8 +47,7 @@ class Test(FirefoxTest):
         expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
         assert expected, 'Focus page loaded successfully.'
 
-        firefox.restart(LocalWeb.FIREFOX_TEST_SITE,
-                        image=LocalWeb.FIREFOX_LOGO)
+        firefox.restart(LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
 
         new_tab()
 

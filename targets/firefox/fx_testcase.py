@@ -2,10 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import logging
 
 from src.base.testcase import *
-from targets.firefox.firefox_ui.helpers.general import *
 from targets.firefox.test_dependencies import *
 
 

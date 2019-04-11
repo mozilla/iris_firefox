@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case clicks on a search result while the settings gear is focused.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         test_case_id='108264',
         test_suite_id='1902',
         blocked_by='issue_84'
@@ -23,7 +23,6 @@ class Test(FirefoxTest):
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
-        # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)

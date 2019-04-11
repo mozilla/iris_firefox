@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Alt+UP/DOWN Keys - in the Awesome Bar.',
-        locale='[en-US]',
+        locale=[Locales.ENGLISH],
         blocked_by={'id': '1488708', 'platform': ["linux"]},
         test_case_id='108278',
         test_suite_id='1902'
@@ -79,7 +79,7 @@ class Test(FirefoxTest):
 
         while max_attempts > 0:
             if region.exists(search_with_google_one_off_string_pattern, 1):
-                assert_true(self, expected, '\'Google\' is the one-off in focus.')
+                assert expected, '\'Google\' is the one-off in focus.'
                 max_attempts = 0
             else:
                 key_down(Key.ALT)
