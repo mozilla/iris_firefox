@@ -26,9 +26,12 @@ class Test(BaseTest):
 
         new_private_window()
 
+        private_window_opened = exists(PrivateWindow.private_window_pattern)
+        assert_true(self, private_window_opened, 'New Private Window opened')
+
         navigate('https://mystor.github.io/dragndrop/')
 
-        drop_html_data_button_displayed = exists(drop_html_data_button_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        drop_html_data_button_displayed = exists(drop_html_data_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, drop_html_data_button_displayed, 'Site downloaded')
 
         click(drop_html_data_button_pattern)
@@ -41,6 +44,9 @@ class Test(BaseTest):
 
         new_private_window()
 
+        private_window_opened = exists(PrivateWindow.private_window_pattern)
+        assert_true(self, private_window_opened, 'New Private Window opened')
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         home_button_exists = exists(NavBar.HOME_BUTTON)
@@ -49,7 +55,7 @@ class Test(BaseTest):
         home_height, home_width = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT, tabs_region)
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
         point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(SCREEN_WIDTH/5)
