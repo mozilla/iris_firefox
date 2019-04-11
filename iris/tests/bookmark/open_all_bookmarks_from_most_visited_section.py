@@ -62,9 +62,11 @@ class Test(BaseTest):
 
         select_tab(2)
 
+        num = 0
+
         for tab in tabs:
-            num = tabs.index(tab) + 1
-            site_from_list_opened = exists(tab, Settings.SITE_LOAD_TIMEOUT)
+            num += 1
+            site_from_list_opened = exists(tab, Settings.HEAVY_SITE_LOAD_TIMEOUT)
             assert_true(self, site_from_list_opened, 'The website #' + str(num) + ' from \'Most Visited\' '
                                                                                   'section is opened')
             next_tab()

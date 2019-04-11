@@ -26,19 +26,19 @@ class Test(BaseTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, soap_wiki_opened, 'SOAP Wiki site successfully opened')
 
         new_tab()
 
         navigate('https://edition.cnn.com')
 
-        cnn_page_opened = exists(LocalWeb.CNN_LOGO, DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        cnn_page_opened = exists(LocalWeb.CNN_LOGO, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_page_opened, 'The CNN site successfully opened')
 
         history_sidebar()
 
-        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
+        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, history_sidebar_opened, 'History sidebar opened')
 
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
@@ -50,7 +50,8 @@ class Test(BaseTest):
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
-        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
+        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), Settings.FIREFOX_TIMEOUT,
+                                     in_region=history_sidebar_region)
         assert_true(self, history_updated_cnn, 'The CNN site is added to history')
 
         history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
@@ -62,59 +63,66 @@ class Test(BaseTest):
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
         bookmark_page()
+
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
         click(Bookmarks.StarDialog.DONE)
 
         previous_tab()
 
         bookmark_page()
+
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
+
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
         click(Bookmarks.StarDialog.DONE)
 
-        cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, Settings.FIREFOX_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_added, 'The CNN bookmark is successfully added')
 
-        wiki_bookmark_added = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        wiki_bookmark_added = exists(LocalWeb.CNN_LOGO, Settings.FIREFOX_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
         new_tab()
 
         navigate('https://www.youtube.com/')
 
-        youtube_opened = exists(youtube_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        youtube_opened = exists(youtube_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, youtube_opened, 'The Youtube site successfully opened')
 
         new_tab()
 
         navigate('https://twitter.com/')
 
-        twitter_opened = exists(twitter_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        twitter_opened = exists(twitter_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
         open_browser_console()
 
-        browser_console_opened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        browser_console_opened = exists(browser_console_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, browser_console_opened, 'Browser console displayed')
 
         restart_via_console()
 
-        browser_console_reopened = exists(browser_console_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        browser_console_reopened = exists(browser_console_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, browser_console_reopened, 'Browser console reopened')
 
         click(browser_console_pattern)
+
         close_window_control('auxiliary')
 
-        firefox_is_restarted = exists(NavBar.HOME_BUTTON, 180)
+        firefox_is_restarted = exists(NavBar.HOME_BUTTON, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_is_restarted, 'Firefox is successfully restarted')
 
         restore_firefox_focus()
 
-        cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, Settings.FIREFOX_TIMEOUT, bookmarks_toolbar_region)
         assert_true(self, cnn_bookmark_restored, 'The CNN bookmark is successfully restored')
 
-        wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO, DEFAULT_SITE_LOAD_TIMEOUT, bookmarks_toolbar_region)
+        wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO, in_region=bookmarks_toolbar_region)
         assert_true(self, wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored')
 
         history_restored_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)

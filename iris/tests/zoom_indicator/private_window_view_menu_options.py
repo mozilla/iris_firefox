@@ -22,45 +22,44 @@ class Test(BaseTest):
         urlbar_zoom_button_110_pattern = LocationBar.URLBAR_ZOOM_BUTTON_110
         urlbar_zoom_button_90_pattern = LocationBar.URLBAR_ZOOM_BUTTON_90
         zoom_text_only_check_pattern = Pattern('zoom_text_only_check.png')
-        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
 
         new_private_window()
         navigate(url)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
+        expected = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         select_location_bar()
-        expected = exists(url_bar_default_zoom_level_pattern, 10)
+        expected = exists(url_bar_default_zoom_level_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         select_zoom_menu_option(Option.ZOOM_IN)
 
         region = create_region_for_url_bar()
 
-        expected = region.exists(urlbar_zoom_button_110_pattern, 10)
+        expected = region.exists(urlbar_zoom_button_110_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
-        click(hamburger_menu_pattern.target_offset(-320, 0))
+        click(urlbar_zoom_button_110_pattern)
 
-        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         select_zoom_menu_option(Option.ZOOM_OUT)
 
-        expected = region.exists(urlbar_zoom_button_90_pattern, 10)
+        expected = region.exists(urlbar_zoom_button_90_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
-        click(hamburger_menu_pattern.target_offset(-320, 0))
+        click(urlbar_zoom_button_90_pattern)
 
-        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         select_zoom_menu_option(Option.ZOOM_TEXT_ONLY)
 
         open_zoom_menu()
 
-        expected = exists(zoom_text_only_check_pattern, 10)
+        expected = exists(zoom_text_only_check_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, '\'Zoom text only\' option successfully checked.')
 
         close_find()
@@ -68,35 +67,36 @@ class Test(BaseTest):
 
         select_location_bar()
 
-        expected = exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
+        expected = exists(url_bar_default_zoom_level_pattern.similar(0.92), Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected,
                     'Zoom indicator not displayed in the url bar after \'zoom text only\' option is set.')
 
         zoom_in()
 
-        expected = region.exists(urlbar_zoom_button_110_pattern, 10)
+        expected = region.exists(urlbar_zoom_button_110_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom level successfully increased, zoom indicator found in the url bar.')
 
-        click(hamburger_menu_pattern.target_offset(-320, 0))
+        click(urlbar_zoom_button_110_pattern)
 
-        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
+        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         zoom_out()
 
-        expected = region.exists(urlbar_zoom_button_90_pattern, 10)
+        expected = region.exists(urlbar_zoom_button_90_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.')
 
         select_zoom_menu_option(Option.RESET)
 
-        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), 10)
-        assert_true(self, expected,
-                    'Zoom indicator not displayed in the url bar after zoom level reset.')
+        expected = region.exists(url_bar_default_zoom_level_pattern.similar(0.92), Settings.FIREFOX_TIMEOUT)
+        assert_true(self, expected, 'Zoom indicator not displayed in the url bar after zoom level reset.')
 
         open_zoom_menu()
 
-        expected = exists(zoom_text_only_check_pattern, 10)
+        expected = exists(zoom_text_only_check_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, '\'Zoom text only\' option is still checked.')
 
         close_find()
         close_find()
+
+        close_tab()

@@ -7,15 +7,20 @@ from iris.api.core.pattern import Pattern
 
 class NavBar(object):
     BACK_BUTTON = Pattern('back_button.png')
+    BACK_BUTTON_RTL = Pattern('back_button_rtl.png')
     FORWARD_BUTTON = Pattern('forward_button.png')
+    FORWARD_BUTTON_RTL = Pattern('forward_button_rtl.png')
     RELOAD_BUTTON = Pattern('reload_button.png')
+    RELOAD_BUTTON_RTL = Pattern('reload_button_rtl.png')
     HOME_BUTTON = Pattern('home_button.png')
 
     LIBRARY_MENU = Pattern('library_button.png')
     SIDEBAR_MENU = Pattern('sidebar_button.png')
+    SIDEBAR_MENU_RTL = Pattern('sidebar_button_rtl.png')
     HAMBURGER_MENU = Pattern('panel_ui_menu_button.png')
 
-    # Customized buttons.
+    # Zoom navigation buttons are reachable on NavBar after drag and drop correspondent item from 'Customize...'
+    # hamburger menu.
     ZOOM_RESET_BUTTON = Pattern('zoom_reset_button_100.png')
     ZOOM_RESET_BUTTON_90 = Pattern('zoom_reset_button_90.png')
     ZOOM_RESET_BUTTON_110 = Pattern('zoom_reset_button_110.png')
