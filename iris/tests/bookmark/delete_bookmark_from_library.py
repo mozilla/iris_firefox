@@ -21,14 +21,17 @@ class Test(BaseTest):
 
         stardialog_region = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT)
 
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
+
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT, stardialog_region)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.FIREFOX_TIMEOUT, stardialog_region)
         assert_true(self, stardialog_displayed, 'Bookmark page dialog displayed')
 
         click(Bookmarks.StarDialog.DONE, 0, stardialog_region)
@@ -39,7 +42,7 @@ class Test(BaseTest):
 
         open_library()
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
         other_bookmarks_exists = exists(Library.OTHER_BOOKMARKS)
@@ -47,7 +50,7 @@ class Test(BaseTest):
 
         click(Library.OTHER_BOOKMARKS)
 
-        wiki_bookmark_added = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        wiki_bookmark_added = exists(soap_wiki_tab_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, wiki_bookmark_added, 'The Wikipedia bookmark is successfully added')
 
         right_click(soap_wiki_tab_pattern)
