@@ -17,7 +17,7 @@ from src.core.util.local_web_server import LocalWebServer
 from src.core.util.path_manager import PathManager
 from src.core.util.test_assert import create_result_object
 from targets.firefox.bug_manager import is_blocked
-from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, set_update_channel_pref
+from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.firefox_ui.helpers.version_parser import check_version
 from targets.firefox.testrail.testrail_client import report_test_results
@@ -190,7 +190,7 @@ class Target(BaseTarget):
             app = FX_Collection.get(fx, locale)
 
         if target_args.update_channel:
-            set_update_channel_pref(app.path, target_args.update_channel)
+            FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
         return FXRunner(app, profile)
 
         # BaseTarget.pytest_runtest_makereport(self, item, call)

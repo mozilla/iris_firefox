@@ -33,7 +33,8 @@ class Test(FirefoxTest):
 
         starting_condition = rules_dict['starting_condition']
         update_steps_list = rules_dict['steps'].split(',')
-        assert current_version in get_firefox_version(firefox.application.path), 'Incorrect Firefox version.'
+        assert current_version in FirefoxUtils.get_firefox_version(firefox.application.path), \
+            'Incorrect Firefox version.'
 
         if is_update_required(current_version, starting_condition):
             for update_step in update_steps_list:
@@ -50,13 +51,15 @@ class Test(FirefoxTest):
                     raise FindError('Background update hamburger menu icon notification did not appear, aborting.')
 
                 firefox.restart()
-                assert update_step in get_firefox_version(firefox.application.path), 'Incorrect Firefox update.'
+                assert update_step in FirefoxUtils.get_firefox_version(firefox.application.path), \
+                    'Incorrect Firefox update.'
                 current_version = update_step
 
         open_about_firefox()
         wait(firefox_up_to_date_pattern, 20)
         type(Key.ESC)
-        assert current_version in get_firefox_version(firefox.application.path), 'Incorrect Firefox version.'
+        assert current_version in FirefoxUtils.get_firefox_version(firefox.application.path), \
+            'Incorrect Firefox version.'
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)

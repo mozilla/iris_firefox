@@ -150,7 +150,8 @@ class Test(FirefoxTest):
         starting_condition = rules_dict['starting_condition']
         update_steps_list = rules_dict['steps'].split(',')
 
-        assert current_version in get_firefox_version(firefox.application.path), 'Firefox version is correct'
+        assert current_version in FirefoxUtils.get_firefox_version(firefox.application.path), \
+            'Firefox version is correct'
 
         if is_update_required(current_version, starting_condition):
             for update_step in update_steps_list:
@@ -162,14 +163,16 @@ class Test(FirefoxTest):
                 firefox.restart()
                 navigate(self.base_local_web_url)
 
-                assert update_step in get_firefox_version(firefox.application.path), 'Firefox successfully updated'
+                assert update_step in FirefoxUtils.get_firefox_version(firefox.application.path), \
+                    'Firefox successfully updated'
 
                 current_version = update_step
 
         open_about_firefox()
         wait(firefox_up_to_date_pattern, 20)
         type(Key.ESC)
-        assert current_version in get_firefox_version(firefox.application.path), 'Firefox version is correct'
+        assert current_version in FirefoxUtils.get_firefox_version(firefox.application.path), \
+            'Firefox version is correct'
 
         select_location_bar()
         paste('moz')

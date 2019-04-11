@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from targets.firefox.firefox_app.fx_browser import Profiles, get_firefox_version
+from targets.firefox.firefox_app.fx_browser import Profiles, FirefoxUtils
 from targets.firefox.firefox_ui.bookmarks import Bookmarks
 from targets.firefox.firefox_ui.helpers.history_test_utils import open_clear_recent_history_window
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import *
