@@ -33,8 +33,6 @@ class Test(BaseTest):
         library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library is opened')
 
-        # maximize_window()
-
         bookmark_menu_folder_exists = exists(Library.BOOKMARKS_MENU)
         assert_true(self, bookmark_menu_folder_exists, 'Bookmark menu folder exists')
 
