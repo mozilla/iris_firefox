@@ -49,17 +49,13 @@ class Test(BaseTest):
 
         if condition_before:
             click(action_item_before, in_region=action_item_region)
-            logger.debug('Action item clicked')
+            logger.debug('Action item clicked.')
 
         elif condition_after:
             logger.debug('Action item status changed successfully.')
+
         else:
             raise FindError('Action item was not found')
-
-        # try:
-        #     wait(action_item_after, Settings.TINY_FIREFOX_TIMEOUT)
-        # except:
-        #     raise FindError('Action item status was not changed')
 
 
     def run(self):
