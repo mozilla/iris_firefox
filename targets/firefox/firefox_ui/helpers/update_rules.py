@@ -2,18 +2,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from src.configuration.config_parser import get_config_property
-from targets.firefox.firefox_ui.helpers.version_parser import check_version
-from src.core.api.os_helpers import OSHelper
 import ast
 import logging
+
+from src.configuration.config_parser import get_config_property
+from src.core.api.os_helpers import OSHelper
+from targets.firefox.firefox_ui.helpers.version_parser import check_version
 
 logger = logging.getLogger(__name__)
 
 
 def get_update_rules():
     """Returns the 'update_rules' config property from the 'Update' section."""
-    return ast.literal_eval(get_config_property('Update', 'update_rules'))
+    rules = get_config_property('Update', 'update_rules')
+    if rules is None:
+        return None
+    return ast.literal_eval(rules)
 
 
 def get_rule_for_channel(channel, current_version):
@@ -22,12 +26,16 @@ def get_rule_for_channel(channel, current_version):
     :param current_version: Current Firefox version.
     :return: Channel's list of rules.
     """
-    result_list = [x for x in get_update_rules() if x['channel'] == channel and OSHelper.get_os() in x['os'] and
+    rules = get_update_rules()
+    if rules is None:
+        return None
+
+    result_list = [x for x in rules if x['channel'] == channel and OSHelper.get_os() in x['os'] and
                    check_version(current_version, x['starting_condition'])]
     if len(result_list) == 0:
         return None
     elif len(result_list) > 1:
-        logger.warning('Multiple rules for "%s" channel' % channel)
+        logger.warning('Multiple rules for \'{}\' channel'.format(channel))
         return result_list[0]
     return result_list[0]
 

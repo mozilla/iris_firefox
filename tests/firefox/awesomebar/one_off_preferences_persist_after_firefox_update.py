@@ -12,15 +12,14 @@ class Test(FirefoxTest):
         locale=[Locales.ENGLISH],
         test_case_id="108269",
         test_suite_id="1902",
-        blocked_by={'id': '1488708'},
+        blocked_by='1488708',
         enabled=False,
         set_profile_pref={'app.update.auto': True,
                           'app.update.interval': 7200,
                           'app.update.badgeWaitTime': 10,
                           'app.update.lastUpdateTime.background-update-timer': 1,
                           'app.update.promptWaitTime': 30,
-                          'app.update.timerMinimumDelay': 10,
-                          'app.update.channel': '%s-cdntest'}
+                          'app.update.timerMinimumDelay': 10}
     )
     def test_run(self, firefox):
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
@@ -118,7 +117,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         expected = exists(add_startpage_https_privacy_search_engine_pattern, 10)
-        assert expected, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.'
+        assert expected, '\'Start page HTTPS Privacy Search Engine\' engine successfully found.'
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
@@ -144,8 +143,7 @@ class Test(FirefoxTest):
         channel = firefox.application.channel
         rules_dict = get_rule_for_channel(channel, current_version)
 
-        if rules_dict is None:
-            raise ValueError('No rules found for %s channel. Please update config.ini file.' % channel)
+        assert rules_dict is not None, 'No rules found for {} channel. Please update config.ini file.'.format(channel)
 
         starting_condition = rules_dict['starting_condition']
         update_steps_list = rules_dict['steps'].split(',')

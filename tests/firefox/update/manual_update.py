@@ -21,8 +21,8 @@ class Test(FirefoxTest):
         current_version = version if '-dev' not in version else version.replace('-dev', '')
         channel = firefox.application.channel
         rules_dict = get_rule_for_channel(channel, current_version)
-        if rules_dict is None:
-            raise ValueError('No rules found for %s channel. Please update config.ini file.' % channel)
+
+        assert rules_dict is not None, 'No rules found for {} channel. Please update config.ini file.'.format(channel)
 
         starting_condition = rules_dict['starting_condition']
         update_steps_list = rules_dict['steps'].split(',')
