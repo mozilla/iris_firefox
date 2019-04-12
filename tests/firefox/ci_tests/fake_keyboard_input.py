@@ -7,8 +7,9 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description="Created to test fake keyboard inputs",
-        locale='[en-US]'
+        description='Created to test fake keyboard inputs',
+        locale=[Locales.ENGLISH],
+        platform=OSPlatform.LINUX
     )
     def test_run(self, firefox):
         history_empty_pattern = Pattern('history_empty.png')
@@ -23,21 +24,13 @@ class Test(FirefoxTest):
         expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert expected_2, 'Firefox page loaded successfully.'
 
-        # Open the History sidebar.
         history_sidebar()
 
-        # Open the Clear Recent History window and select 'Everything'.
         for step in open_clear_recent_history_window():
             assert step.resolution, step.message
-        if OSHelper.is_mac():
-            click(Pattern('sanitize_duration_choice_last_hour'))
-            for i in range(4):
-                type(Key.DOWN)
-            type(Key.ENTER)
 
-        else:
-            for i in range(4):
-                type(Key.DOWN)
+        for i in range(4):
+            type(Key.DOWN)
 
         logger.debug('TAB')
         type(Key.TAB)
@@ -52,10 +45,7 @@ class Test(FirefoxTest):
         logger.debug('ENTER')
         type(Key.ENTER)
 
-        # Sometimes Firefox is in a state where it can't receive keyboard input
-        # and we need to restore the focus manually.
         restore_firefox_focus()
 
-        # Check that all the history was cleared.
         expected_4 = exists(history_empty_pattern.similar(0.9), 10)
         assert expected_4, 'All the history was cleared successfully.'
