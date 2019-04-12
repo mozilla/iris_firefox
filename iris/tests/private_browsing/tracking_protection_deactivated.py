@@ -31,7 +31,7 @@ class Test(BaseTest):
             try:
                 option_with_action_item_location = find(action_item)
             except:
-                raise FindError('Option {} is not available'.format(action_item))
+                raise FindError('Option {} is not available'.format(action_item.image_name))
 
             option_width, option_height = action_item.get_size()
             action_item_region = Region(option_with_action_item_location.x, option_with_action_item_location.y,
