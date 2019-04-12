@@ -61,7 +61,10 @@ class Test(BaseTest):
 
         click(delete_option_pattern)
 
-        bookmark_deleted = exists(mozilla_about_us_bookmark_pattern)
-        assert_false(self, bookmark_deleted, 'Bookmark is correctly deleted from selected section')
+        try:
+            bookmark_deleted = wait_vanish(mozilla_about_us_bookmark_pattern)
+            assert_true(self, bookmark_deleted, 'Bookmark is correctly deleted from selected section')
+        except FindError:
+            raise FindError('Bookmark is not deleted from selected section')
 
         restore_firefox_focus()
