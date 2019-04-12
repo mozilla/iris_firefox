@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'History is not remembered if reopening a Private window ' \
                     'from the dock (for a profile used only in private mode) '
-        self.test_case_id = '101671'
+        self.test_case_id = '120455'
         self.test_suite_id = '1826'
         self.locales = ['en-US']
         self.exclude = [Platform.WINDOWS, Platform.LINUX]
