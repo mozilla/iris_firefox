@@ -33,7 +33,7 @@ class Test(BaseTest):
         library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library is opened')
 
-        maximize_window()
+        # maximize_window()
 
         bookmark_menu_folder_exists = exists(Library.BOOKMARKS_MENU)
         assert_true(self, bookmark_menu_folder_exists, 'Bookmark menu folder exists')
@@ -80,13 +80,13 @@ class Test(BaseTest):
         mozilla_customize_firefox_bookmark_exists = exists(customize_firefox_bookmark_pattern, Settings.FIREFOX_TIMEOUT,
                                                            first_bookmark_region)
         assert_true(self, mozilla_customize_firefox_bookmark_exists, 'Customize Firefox bookmark is placed on the first'
-                                                                     'line after replacing Help and tutorial by drag '
+                                                                     ' line after replacing Help and tutorial by drag '
                                                                      'and drop to the third line')
 
         mozilla_get_involved_bookmark_exists = exists(get_involved_bookmark_pattern, in_region=second_bookmark_region)
-        assert_true(self, mozilla_get_involved_bookmark_exists, 'Get Involved bookmark is displayed is placed on the '
-                                                                'second line after replacing Help and tutorial by drag '
-                                                                'and drop to the third line. '
-                                                                'Help and tutorial placed on the third line')
+        assert_true(self, mozilla_get_involved_bookmark_exists, 'Get Involved bookmark is placed on the second line '
+                                                                'after replacing Help and tutorial by drag and drop to '
+                                                                'the third line. Help and tutorial placed on the '
+                                                                'third line')
 
         close_window_control('auxiliary')
