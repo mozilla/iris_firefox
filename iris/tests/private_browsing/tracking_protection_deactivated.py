@@ -50,14 +50,15 @@ class Test(BaseTest):
         if condition_before:
             click(action_item_before, in_region=action_item_region)
             logger.debug('Action item clicked.')
+
             try:
                 wait(action_item_after, Settings.FIREFOX_TIMEOUT, action_item_region)
-                logger.debug('Action item status changed successfully.')
+                logger.debug('Action item state changed successfully.')
             except:
-                raise FindError('Action item status was not changed.')
+                raise FindError('Action item state was not changed.')
 
         elif condition_after:
-            logger.debug('Action item status changed successfully.')
+            logger.debug('Action item state changed successfully.')
 
         else:
             raise FindError('Action item was not found.')
