@@ -81,7 +81,7 @@ class Test(BaseTest):
                                                            first_bookmark_region)
         assert_true(self, mozilla_customize_firefox_bookmark_exists, 'Customize Firefox bookmark is placed on the first'
                                                                      ' line after replacing Help and tutorial by drag '
-                                                                     'and drop to the third line')
+                                                                     'and drop to the second line')
 
         help_and_tutorials_bookmark_replaced = exists(help_and_tutorials_bookmark_pattern,
                                                       in_region=second_bookmark_region)
