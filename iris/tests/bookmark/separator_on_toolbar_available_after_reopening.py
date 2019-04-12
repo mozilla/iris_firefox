@@ -61,4 +61,5 @@ class Test(BaseTest):
                     'Toolbar opened. All the bookmarks/folders are in the proper place, like were previously set. '
                     'Note: In the affected build the Bookmarks Toolbar was completely empty after re-enabled.')
 
+        separator_appeared = exists(toolbar_separator_pattern, in_region=region_with_separator)
         assert_true(self, separator_appeared, 'Separator available on toolbar after reopening')
