@@ -13,7 +13,6 @@ class Test(BaseTest):
         self.meta = 'All the keyboard shortcuts available for the Search Bar are working properly.'
         self.test_case_id = '4278'
         self.test_suite_id = '83'
-        self.blocked_by = {'id': '1537117', 'platform': Platform.ALL}
         self.locale = ['en-US']
 
     def run(self):
