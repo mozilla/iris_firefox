@@ -41,7 +41,7 @@ class Test(BaseTest):
             action_item_region = action_item
 
         else:
-            raise APIHelperError('Argument type is {}, only Pattern or Region allowed'
+            raise APIHelperError('Argument type is {}, Pattern or Region expected'
                                  .format(action_item.__class__.__name__))
 
         condition_before = exists(action_item_before, Settings.TINY_FIREFOX_TIMEOUT, action_item_region)
@@ -50,12 +50,17 @@ class Test(BaseTest):
         if condition_before:
             click(action_item_before, in_region=action_item_region)
             logger.debug('Action item clicked.')
+            try:
+                wait(action_item_after, Settings.FIREFOX_TIMEOUT, action_item_region)
+                logger.debug('Action item status changed successfully.')
+            except:
+                raise FindError('Action item status was not changed.')
 
         elif condition_after:
             logger.debug('Action item status changed successfully.')
 
         else:
-            raise FindError('Action item was not found')
+            raise FindError('Action item was not found.')
 
 
     def run(self):
@@ -77,7 +82,7 @@ class Test(BaseTest):
         blocked_tracker_pattern = Pattern('blocked_tracker_label.png')
         trackers_icon_pattern = Pattern('trackers_icon.png')
         to_block_set_to_strict_pattern = Pattern('to_block_set_to_strict.png')
-
+        s = "sss"
         new_tab()
         navigate('about:preferences#privacy')
 
@@ -105,7 +110,7 @@ class Test(BaseTest):
                                              cookies_option_location.y - cookies_height,
                                              cookies_width * 2, cookies_height * 3)
 
-            self.click_on_action_item(checkbox_checked_pattern, checkbox_unchecked_pattern, cookies_checkbox_region)
+            self.click_on_action_item(checkbox_checked_pattern, checkbox_unchecked_pattern, s)
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
