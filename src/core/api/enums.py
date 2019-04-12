@@ -182,6 +182,9 @@ class Locales(str, Enum):
     TURKISH = 'tr'
     VIETNAMESE = 'vi'
 
+    ALL = [ARABIC, CHINESE, ENGLISH, FRENCH, GERMAN, JAPANESE, KOREAN, POLISH, PORTUGUESE, ROMANIAN, RUSSIAN,
+           SPANISH, TURKISH, VIETNAMESE]
+
 
 class MatchTemplateType(Enum):
     SINGLE = 0

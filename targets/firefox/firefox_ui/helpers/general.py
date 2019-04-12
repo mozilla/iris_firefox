@@ -760,3 +760,31 @@ def get_support_info():
         raise APIHelperError('Failed to retrieve support information value.\n{}'.format(e))
     finally:
         close_tab()
+
+
+def restore_window_from_taskbar(option=None):
+    """Restore firefox from task bar."""
+    if OSHelper.is_mac():
+        try:
+            click(Pattern('main_menu_window.png'))
+            if option == "browser_console":
+                click(Pattern('window_browser_console.png'))
+            else:
+                click(Pattern('window_firefox.png'))
+        except FindError:
+            raise APIHelperError('Restore window from taskbar unsuccessful.')
+    elif OSHelper.get_os_version() == 'win7':
+        try:
+            click(Pattern('firefox_start_bar.png'))
+            if option == "library_menu":
+                click(Pattern('firefox_start_bar_library.png'))
+            if option == "browser_console":
+                click(Pattern('firefox_start_bar_browser_console.png'))
+        except FindError:
+            raise APIHelperError('Restore window from taskbar unsuccessful.')
+
+    else:
+        type(text=Key.TAB, modifier=KeyModifier.ALT)
+        if OSHelper.is_linux():
+            Mouse().move(Location(0, 50))
+    time.sleep(Settings.DEFAULT_UI_DELAY)
