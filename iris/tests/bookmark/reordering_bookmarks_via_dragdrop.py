@@ -62,9 +62,9 @@ class Test(BaseTest):
 
         second_bookmark_region = Region(help_and_tutorials_location.x,
                                         help_and_tutorials_location.y + help_and_tutorials_height,
-                                        help_and_tutorials_width, help_and_tutorials_height)
+                                        help_and_tutorials_width, int(help_and_tutorials_height/0.8))
 
-        location_to_drop = find(get_involved_bookmark_pattern).below(10)
+        location_to_drop = find(get_involved_bookmark_pattern)
 
         click(mozilla_about_us_bookmark_pattern)
 
@@ -75,16 +75,17 @@ class Test(BaseTest):
 
         drag_drop(help_and_tutorials_location, location_to_drop)
 
+        click(library_mozilla_firefox_folder_pattern)
+
         mozilla_customize_firefox_bookmark_exists = exists(customize_firefox_bookmark_pattern, Settings.FIREFOX_TIMEOUT,
                                                            first_bookmark_region)
         assert_true(self, mozilla_customize_firefox_bookmark_exists, 'Customize Firefox bookmark is placed on the first'
                                                                      ' line after replacing Help and tutorial by drag '
                                                                      'and drop to the third line')
 
-        mozilla_get_involved_bookmark_exists = exists(get_involved_bookmark_pattern, in_region=second_bookmark_region)
-        assert_true(self, mozilla_get_involved_bookmark_exists, 'Get Involved bookmark is placed on the second line '
-                                                                'after replacing Help and tutorial by drag and drop to '
-                                                                'the third line. Help and tutorial placed on the '
-                                                                'third line')
+        help_and_tutorials_bookmark_replaced = exists(help_and_tutorials_bookmark_pattern,
+                                                      in_region=second_bookmark_region)
+        assert_true(self, help_and_tutorials_bookmark_replaced, 'Help and tutorial is placed on the second line. '
+                                                                'Get Involved is placed on the third line')
 
         close_window_control('auxiliary')
