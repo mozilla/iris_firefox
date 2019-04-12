@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from argparse import Namespace
 import argparse
 import logging
 import os
@@ -10,13 +11,14 @@ import time
 import pytest
 
 from src.core.api.os_helpers import OSHelper
-from src.core.util.arg_parser import get_core_args
+from src.core.util.arg_parser import get_core_args, set_core_arg
 from src.core.util.json_utils import update_run_index, create_run_log
 from src.core.util.run_report import create_footer
 from src.core.util.test_assert import create_result_object
 from src.email_report.email_client import submit_email_report
 
 core_args = get_core_args()
+target_args = None
 logger = logging.getLogger(__name__)
 
 
@@ -38,6 +40,31 @@ class BaseTarget:
     def get_target_args(self):
         parser = argparse.ArgumentParser(description='Target-specific arguments', prog='iris')
         return parser.parse_known_args()[0]
+
+    def update_settings(self, response):
+        self.cc_settings = response
+        global core_args
+        core_arg_dict = vars(core_args)
+        target_arg_dict = vars(self.args)
+
+        for arg in response:
+            if arg in core_arg_dict:
+                set_core_arg(arg, response[arg])
+            if arg in target_arg_dict:
+                self.set_target_arg(arg, response[arg])
+
+        """
+        global target_args
+        core_args = Namespace(**core_arg_dict)
+        
+        """
+
+
+    def set_target_arg(self, arg, value):
+        logger.info('Setting %s to %s' % (arg, value))
+        arg_dict = vars(self.args)
+        arg_dict[arg] = value
+        self.args = Namespace(**arg_dict)
 
     def pytest_sessionstart(self, session):
         """Called after the 'Session' object has been created and before performing test collection.

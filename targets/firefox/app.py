@@ -65,6 +65,8 @@ class Target(BaseTarget):
         return parser.parse_known_args()[0]
 
     def pytest_sessionstart(self, session):
+        global core_args
+        core_args = get_core_args()
         BaseTarget.pytest_sessionstart(self, session)
         try:
             port = core_args.port
@@ -74,8 +76,13 @@ class Target(BaseTarget):
             self.process_list.append(web_server_process)
             web_server_process.start()
 
-            fx = target_args.firefox
+            fx = self.args.firefox
+            #fx = target_args.firefox
             locale = core_args.locale
+
+            logger.info ('Which?')
+            logger.info(fx)
+            logger.info(locale)
             app = FX_Collection.get(fx, locale)
 
             if not app:
@@ -182,7 +189,7 @@ class Target(BaseTarget):
         profile = FirefoxProfile.make_profile(profile_type, preferences)
 
         fx = target_args.firefox
-        locale = core_args.locale
+        locale = get_core_args().locale
         app = FX_Collection.get(fx, locale)
 
         if not app:

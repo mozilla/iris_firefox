@@ -31,49 +31,51 @@ def main():
     initialize_logger()
     validate_config_ini(args)
     if verify_config(args):
-        user_result = None
         pytest_args = None
+        user_result = None
+        settings = None
         if show_control_center():
             init_control_center()
             user_result = launch_control_center()
             logger.debug(user_result)
+            if user_result is not 'cancel' and user_result is not None:
+                # Parse list of tests
+                pytest_args = user_result['tests']
+                if len(pytest_args) == 0:
+                    logger.info('No tests chosen, closing Iris.')
+                    # TODO:
+                    # delete abandoned run folder and runs.json entry
+                    exit(1)
 
-            # Parse list of tests
-            pytest_args = user_result['testsPath']
-            if len(pytest_args) == 0:
-                logger.info('No tests chosen, closing Iris.')
-                exit(1)
+                # Extract target from response and update core arg for application/target
+                set_core_arg('application', user_result['target'])
 
-            # TODO:
-            # Extract target from response
-            # Set core arg for application/target
-            # TEMP: to be replaced by 'target' property in response
-            if 'firefox' in user_result['testsPath'][0]:
-                set_core_arg('application', 'firefox')
+                # TODO:
+                # Extract settings from response
+                # Update parameters and pass to target
+                args = get_core_args()
+                settings = user_result['args']
+
             else:
-                set_core_arg('application', 'notepad')
+                # User cancelled or otherwise failed to select tests,
+                # so we will shut down Iris.
+                exit(0)
 
-            # TODO:
-            # Extract settings from response
-            # Update parameters and pass to target
-            args = get_core_args()
-
-        if user_result is not 'cancel':
-            try:
-                target_plugin = get_target(args.application)
-                if pytest_args is None:
-                    pytest_args = get_test_params()
-                pytest_args.append('-vs')
-                pytest_args.append('-r ')
-                pytest_args.append('-s')
-                initialize_platform(args)
-                pytest.main(pytest_args, plugins=[target_plugin])
-            except ImportError:
-                logger.error('Could not load plugin for {} application'.format(args.application))
-                exit(1)
-        else:
-            # If we get 'cancel' we will shut down Iris
-            exit(0)
+        try:
+            target_plugin = get_target(args.application)
+            if settings is not None:
+                logger.debug('Passing settings to target: %s' % settings)
+                target_plugin.update_settings(settings)
+            if pytest_args is None:
+                pytest_args = get_test_params()
+            pytest_args.append('-vs')
+            pytest_args.append('-r ')
+            pytest_args.append('-s')
+            initialize_platform(args)
+            pytest.main(pytest_args, plugins=[target_plugin])
+        except ImportError:
+            logger.error('Could not load plugin for {} application'.format(args.application))
+            exit(1)
     else:
         logger.error('Failed platform verification.')
         exit(1)

@@ -88,12 +88,13 @@ def update_run_index(app, finished=False):
 
 
 def create_run_log(app):
+    args = get_core_args()
     meta = {'run_id': PathManager.get_run_id(),
             # 'platform': OSHelper.get_os().value,
             'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
                                           OSHelper.get_processor()),
             'locale': args.locale,
-            'args': ' '.join(sys.argv),
+            'args': ' '.join(vars(args)),
             'params': vars(args),
             'log': os.path.join(PathManager.get_current_run_dir(), 'iris_log.log')}
     values = {}

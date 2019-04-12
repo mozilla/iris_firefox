@@ -116,6 +116,7 @@ def get_core_args():
 
 
 def set_core_arg(arg, value):
+    logger.debug('Set core arg %s = %s' % (arg, value))
     global iris_args
     arg_dict = vars(iris_args)
     arg_dict[arg] = value
