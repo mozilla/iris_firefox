@@ -15,38 +15,52 @@ class Test(BaseTest):
         self.test_suite_id = '1826'
         self.locales = ['en-US']
 
-    def enable_checkbox(self, action_element_before, action_element_after, action_element):
+    def click_on_action_item(self, action_item_before, action_item_after, action_item):
         """
-        Method clicks on action element. Assume checkbox or radiobutton, which changes state after single click.
+        Method clicks on action item. Assume action_item is e.g. checkbox or radiobutton, which changes state after
+        single click.
 
-        :param action_element_before: Pattern of action element before click.
-        :param action_element_after: Pattern of action element after click.
-        :param action_element: Pattern with option element, or Region with this element.
+        :param action_item_before: Pattern of action item before click.
+        :param action_item_after: Pattern of action item after click.
+        :param action_item: Pattern or Region with item to click on.
+            Note: Pattern or Region can contain only one action item
         :return: None
         """
 
-        if action_element:
+        if action_item.__class__.__name__ is 'Pattern':
             try:
-                option_with_action_element_location = find(action_element)
+                option_with_action_item_location = find(action_item)
             except:
-                raise FindError('Option {} is not available'.format(action_element))
+                raise FindError('Option {} is not available'.format(action_item))
 
-            option_width, option_height = action_element.get_size()
-            action_element_region = Region(option_with_action_element_location.x, option_with_action_element_location.y,
-                                           option_width, option_height)
+            option_width, option_height = action_item.get_size()
+            action_item_region = Region(option_with_action_item_location.x, option_with_action_item_location.y,
+                                        option_width, option_height)
 
-        checkbox_before = exists(action_element_before, Settings.TINY_FIREFOX_TIMEOUT, action_element_region)
+        elif action_item.__class__.__name__ is 'Region':
+            action_item_region = action_item
 
-        if checkbox_before:
-            click(action_element_before, in_region=action_element_region)
         else:
-            raise FindError('Action element was not found')
+            raise APIHelperError('Argument type is {}, only Pattern or Region allowed'
+                                 .format(action_item.__class__.__name__))
 
-        try:
-            wait(action_element_after, Settings.TINY_FIREFOX_TIMEOUT)
-            logger.debug('Action element status changed successfully.')
-        except:
-            raise FindError('Action element status was not changed')
+        condition_before = exists(action_item_before, Settings.TINY_FIREFOX_TIMEOUT, action_item_region)
+        condition_after = exists(action_item_after, Settings.TINY_FIREFOX_TIMEOUT, action_item_region)
+
+        if condition_before:
+            click(action_item_before, in_region=action_item_region)
+            logger.debug('Action item clicked')
+
+        elif condition_after:
+            logger.debug('Action item status changed successfully.')
+        else:
+            raise FindError('Action item was not found')
+
+        # try:
+        #     wait(action_item_after, Settings.TINY_FIREFOX_TIMEOUT)
+        # except:
+        #     raise FindError('Action item status was not changed')
+
 
     def run(self):
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
@@ -91,11 +105,11 @@ class Test(BaseTest):
         if cookies_checked:
             cookies_option_location = find(cookies_checked_pattern)
             cookies_width, cookies_height = cookies_checked_pattern.get_size()
-            cookies_option_region = Region(cookies_option_location.x - cookies_width,
-                                                cookies_option_location.y - cookies_height,
-                                                cookies_width * 2, cookies_height * 3)
+            cookies_checkbox_region = Region(cookies_option_location.x - cookies_width,
+                                             cookies_option_location.y - cookies_height,
+                                             cookies_width * 2, cookies_height * 3)
 
-            self.enable_checkbox(action_element=cookies_option_region)
+            self.click_on_action_item(checkbox_checked_pattern, checkbox_unchecked_pattern, cookies_checkbox_region)
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
@@ -158,3 +172,6 @@ class Test(BaseTest):
                     '\'To block all trackers, set content blocking to "Strict"\' is displayed')
 
         close_window()
+
+
+
