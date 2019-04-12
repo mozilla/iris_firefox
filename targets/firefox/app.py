@@ -104,7 +104,7 @@ class Target(BaseTarget):
         if item.name == 'test_run':
             skip_reason_list = []
             values = item.own_markers[0].kwargs
-            is_disabled = 'enabled' in values and not values.get('enabled')
+            is_disabled = 'enabled' in values and not values.get('enabled') and not core_args.override
             is_excluded = 'exclude' in values and OSHelper.get_os() in values.get('exclude')
             incorrect_locale = 'locale' in values and core_args.locale not in values.get('locale')
             incorrect_platform = 'platform' in values and OSHelper.get_os() not in values.get('platform')
