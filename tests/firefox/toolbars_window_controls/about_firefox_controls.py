@@ -17,12 +17,10 @@ class Test(FirefoxTest):
         firefox_in_about_pattern = Pattern('firefox_in_about.png')
 
         open_about_firefox()
-        expected_1 = exists(firefox_in_about_pattern, 10)
-        assert expected_1, '\'About Firefox\' window was opened successfully.'
+        assert exists(firefox_in_about_pattern, 10), '\'About Firefox\' window was opened successfully.'
 
         click_window_control('close')
         try:
-            expected_2 = wait_vanish(firefox_in_about_pattern, 10)
-            assert expected_2, '\'About Firefox\' window was closed successfully.'
+            assert wait_vanish(firefox_in_about_pattern, 10), '\'About Firefox\' window was closed successfully.'
         except FindError:
             raise FindError('About Firefox\' window is still open')

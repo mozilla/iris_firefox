@@ -17,3 +17,4 @@ from targets.firefox.local_web.web_links.local_web import LocalWeb
 from targets.firefox.firefox_ui.utils import Utils
 from targets.firefox.firefox_ui.helpers.general import *
 from targets.firefox.firefox_ui.helpers.history_test_utils import *
+from targets.firefox.firefox_ui.tabs import Tabs

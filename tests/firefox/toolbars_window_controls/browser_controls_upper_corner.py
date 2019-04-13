@@ -24,46 +24,40 @@ class Test(FirefoxTest):
         hover_close_control_pattern = Pattern('hover_close_control.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert exists(LocalWeb.FIREFOX_LOGO, 10), 'Page successfully loaded, firefox logo found.'
 
         hover(window_controls_minimize_pattern)
-        expected = exists(hover_minimize_control_pattern, 10)
-        assert expected, 'Hover over the \'minimize\' button works correctly.'
+        assert exists(hover_minimize_control_pattern, 10), 'Hover over the \'minimize\' button works correctly.'
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             hover(window_controls_restore_pattern)
-            expected = exists(hover_restore_control_pattern, 10)
-            assert expected, 'Hover over the \'restore\' button works correctly.'
+            assert exists(hover_restore_control_pattern, 10), 'Hover over the \'restore\' button works correctly.'
 
         if OSHelper.is_mac():
             middle = find(hover_maximize_control_pattern)
             Mouse().move(Location(middle.x + 7, middle.y + 5))
-            expected = exists(hover_maximize_control_pattern, 10)
-            assert expected, 'Hover over the \'maximize\' button works correctly.'
+            assert exists(hover_maximize_control_pattern, 10), 'Hover over the \'maximize\' button works correctly.'
 
-            hover(Location(middle.x - 35, middle.y + 5))
-            expected = exists(hover_close_control_pattern, 10)
-            assert expected, 'Hover over the \'close\' button works correctly.'
+            Mouse().move(Location(middle.x - 35, middle.y + 5))
+            assert exists(hover_close_control_pattern.similar(0.7), 10), \
+                'Hover over the \'close\' button works correctly.'
         else:
             hover(window_controls_close_pattern)
-            expected = exists(hover_close_control_pattern, 10)
-            assert expected, 'Hover over the \'close\' button works correctly.'
+            assert exists(hover_close_control_pattern, 10), 'Hover over the \'close\' button works correctly.'
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             click_window_control('restore', 'main')
             time.sleep(Settings.DEFAULT_UI_DELAY)
             hover(window_controls_maximize_pattern)
-            expected = exists(hover_maximize_control_pattern, 10)
-            assert expected, 'Hover over the \'maximize\' button works correctly; Window successfully restored.'
+            assert exists(hover_maximize_control_pattern, 10), \
+                'Hover over the \'maximize\' button works correctly; Window successfully restored.'
         if OSHelper:
             hover(Pattern('home_button.png'))
         click_window_control('minimize', 'main')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
-            expected = wait_vanish(LocalWeb.FIREFOX_LOGO, 10)
-            assert expected, 'Window successfully minimized.'
+            assert wait_vanish(LocalWeb.FIREFOX_LOGO, 10), 'Window successfully minimized.'
         except FindError:
             raise FindError('Window not minimized.')
 
@@ -72,13 +66,11 @@ class Test(FirefoxTest):
         if OSHelper.is_windows():
             click_window_control('maximize', 'main')
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Window successfully opened again.'
+        assert exists(LocalWeb.FIREFOX_LOGO, 10), 'Window successfully opened again.'
 
         click_window_control('close', 'main')
 
         try:
-            expected = wait_vanish(LocalWeb.FIREFOX_LOGO, 10)
-            assert expected, 'Window successfully closed.'
+            assert wait_vanish(LocalWeb.FIREFOX_LOGO, 10), 'Window successfully closed.'
         except FindError:
             assert False, 'Window successfully closed.'

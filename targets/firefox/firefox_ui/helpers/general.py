@@ -149,13 +149,13 @@ def close_window_control(window_type):
 
     if window_type == 'auxiliary':
         if OSHelper.is_mac():
-            hover(AuxiliaryWindow.RED_BUTTON_PATTERN, align=Alignment.TOP_LEFT)
+            hover(AuxiliaryWindow.RED_BUTTON_PATTERN)
             click(AuxiliaryWindow.HOVERED_RED_BUTTON)
         else:
             click(AuxiliaryWindow.CLOSE_BUTTON)
     else:
         if OSHelper.is_mac():
-            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL, align=Alignment.TOP_LEFT)
+            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL)
             click(MainWindow.HOVERED_MAIN_RED_CONTROL)
         else:
             click(MainWindow.CLOSE_BUTTON)
@@ -788,3 +788,26 @@ def restore_window_from_taskbar(option=None):
         if OSHelper.is_linux():
             Mouse().move(Location(0, 50))
     time.sleep(Settings.DEFAULT_UI_DELAY)
+
+
+def close_customize_page():
+    """Close the 'Customize...' page by pressing the 'Done' button."""
+    customize_done_button_pattern = Pattern('customize_done_button.png')
+    try:
+        wait(customize_done_button_pattern, 10)
+        logger.debug('Done button found.')
+        click(customize_done_button_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the Done button in the page, aborting.')
+
+
+def click_cancel_button():
+    """Click cancel button."""
+    cancel_button_pattern = Pattern('cancel_button.png')
+    try:
+        wait(cancel_button_pattern, 10)
+        logger.debug('Cancel button found.')
+        click(cancel_button_pattern)
+    except FindError:
+        raise APIHelperError('Can\'t find the cancel button, aborting.')
