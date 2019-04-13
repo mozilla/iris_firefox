@@ -656,9 +656,19 @@ def open_browser_console():
     """
     Opens the Browser Console.
     """
-    if OSHelper.get_os() == "osx":
+    if OSHelper.is_mac():
         type(text="j", modifier=[KeyModifier.CMD, KeyModifier.SHIFT])
     else:
         type(text="j", modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
+
+
+def restart_via_console():
+    """
+     restarts Firefox if web console is opened
+    """
+    if OSHelper.is_mac():
+        type(text='r', modifier=[KeyModifier.CMD, KeyModifier.ALT])
+    else:
+        type(text='r', modifier=[KeyModifier.CTRL, KeyModifier.ALT])
 
 # End Tools keyboard shortcuts
