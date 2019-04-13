@@ -18,19 +18,14 @@ class Test(FirefoxTest):
         download_button_pattern = Pattern('pdf_download_button.png')
         dialog_pattern = Pattern('download_dialog.png')
 
-        navigate(PathManager.get_current_test_web_asset_dir('moz.pdf'))
+        navigate(PathManager.get_web_asset_dir('moz.pdf'))
+        assert exists(test_pdf_pattern, 10), 'The test PDF is present.'
 
-        expected = exists(test_pdf_pattern, 10)
-        assert expected, 'The test PDF is present.'
         click(download_button_pattern)
-
-        expected = exists(dialog_pattern, 10)
-        assert expected, 'Download dialog is present.'
+        assert exists(dialog_pattern, 10), 'Download dialog is present.'
 
         click_window_control('close')
-
         try:
-            expected = wait_vanish(dialog_pattern, 5)
-            assert expected, 'Download dialog was closed.'
+            assert wait_vanish(dialog_pattern, 5), 'Download dialog was closed.'
         except FindError:
             raise FindError('Download dialog is still present.')

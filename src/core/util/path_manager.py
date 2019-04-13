@@ -98,11 +98,8 @@ class PathManager:
         return os.path.join(pref, 'assets', suf, asset_file_name)
 
     @staticmethod
-    def get_current_test_web_asset_dir(asset_file_name):
-        # TODO fix this
-        test_path_dir = os.environ.get('CURRENT_TEST').split('.py')[0]
-        module, test_name = os.path.split(test_path_dir)
-        resource = '/tests%s/%s/%s' % (module, test_name, asset_file_name)
+    def get_web_asset_dir(asset_file_name):
+        resource = '/tests/{}'.format(asset_file_name)
         return 'http://127.0.0.1:%s' % get_core_args().port + resource
 
     @staticmethod
