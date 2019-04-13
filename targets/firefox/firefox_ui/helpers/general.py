@@ -18,7 +18,7 @@ from src.core.api.keyboard.keyboard import type, key_up, key_down
 from src.core.api.keyboard.keyboard_api import paste
 from src.core.api.keyboard.keyboard_util import get_clipboard
 from src.core.api.location import Location
-from src.core.api.mouse.mouse import click, hover, Mouse
+from src.core.api.mouse.mouse import click, hover, Mouse, scroll_down
 from src.core.api.os_helpers import OSHelper, OSPlatform
 from src.core.api.screen.region import Region
 from src.core.api.screen.screen import Screen
@@ -811,3 +811,22 @@ def click_cancel_button():
         click(cancel_button_pattern)
     except FindError:
         raise APIHelperError('Can\'t find the cancel button, aborting.')
+
+
+def scroll_until_pattern_found(pattern, dy=10, iterations=10, timeout=3):
+    """
+    Scrolls until specified image pattern is found.
+
+    :param pattern: Image Pattern to search.
+    :param dy: number of pixels
+    :param iterations: Number of scrolling iterations.
+    :param timeout: Number of seconds passed to the 'timeout' param of the 'exist' function.
+    :return: Boolean. True if image pattern found during scrolling, False otherwise
+    """
+    for _ in range(iterations):
+        scroll_down(dy, 1)
+        pattern_found = exists(pattern, timeout)
+
+        if pattern_found:
+            return True
+    return False
