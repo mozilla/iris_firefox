@@ -216,7 +216,7 @@ class FirefoxApp:
         :param: build: str with firefox build
         :return: Installation path for the Firefox App
         """
-        logger.info('Version %s, locale %s' % (version, locale))
+        logger.debug('Getting build, version %s, locale %s' % (version, locale))
         if version == 'local':
             candidate = PathManager.get_local_firefox_path()
             if candidate is None:
@@ -225,13 +225,8 @@ class FirefoxApp:
             try:
                 s_t, s_d = _get_scraper_details(version, CHANNELS,
                                                 os.path.join(PathManager.get_working_dir(), 'cache'), locale)
-                s_d1 = {'destination': '/Users/mwobensmith/.iris2/cache', 'branch': 'mozilla-central', 'locale': 'fr'}
-                s_d2 = {'locale': 'fr', 'branch': 'mozilla-central', 'destination': '/Users/mwobensmith/.iris2/cache'}
 
-                #scraper = FactoryScraper(s_t, **s_d)
-                scraper = FactoryScraper(s_t, **s_d2)
-                logger.info ('Scraper details:\n %s' % s_t)
-                logger.info(s_d)
+                scraper = FactoryScraper(s_t, **s_d)
                 firefox_dmg = scraper.download()
 
                 install_dir = install(src=firefox_dmg,

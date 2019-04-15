@@ -242,7 +242,7 @@ def scan_all_tests(target):
     tests = []
 
     my_plugin = TestCollector()
-    pytest.main(['--collect-only', '-p', 'no:terminal', test_root], plugins=[my_plugin])
+    pytest.main(['--collect-only', '-s', '-p', 'no:terminal', test_root], plugins=[my_plugin])
 
     for test in my_plugin.get_collected_items():
         original_path = str(test.__dict__.get('fspath'))

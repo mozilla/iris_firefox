@@ -67,6 +67,7 @@ class Target(BaseTarget):
     def pytest_sessionstart(self, session):
         global core_args
         core_args = get_core_args()
+        global target_args
         BaseTarget.pytest_sessionstart(self, session)
         try:
             port = core_args.port
@@ -77,12 +78,7 @@ class Target(BaseTarget):
             web_server_process.start()
 
             fx = self.args.firefox
-            #fx = target_args.firefox
             locale = core_args.locale
-
-            logger.info ('Which?')
-            logger.info(fx)
-            logger.info(locale)
             app = FX_Collection.get(fx, locale)
 
             if not app:
@@ -91,7 +87,7 @@ class Target(BaseTarget):
             self.values = {'fx_version': app.version, 'fx_build_id': app.build_id, 'channel': app.channel}
         except IOError:
             logger.critical('Unable to launch local web server, aborting Iris.')
-            # TODO: abort Iris
+            exit(1)
 
     def pytest_sessionfinish(self, session):
         BaseTarget.pytest_sessionfinish(self, session)
