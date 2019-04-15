@@ -43,6 +43,11 @@ class Test(BaseTest):
 
         double_click(library_mozilla_firefox_folder_pattern)
 
+        mozilla_firefox_folder_exists = exists(library_mozilla_firefox_folder_pattern)
+        assert_true(self, mozilla_firefox_folder_exists, 'Mozilla Firefox folder exists')
+
+        click(library_mozilla_firefox_folder_pattern)
+
         mozilla_customize_firefox_bookmark_exists = exists(customize_firefox_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, mozilla_customize_firefox_bookmark_exists, 'Customize Firefox bookmark is displayed')
 
