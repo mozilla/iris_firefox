@@ -36,17 +36,17 @@ class Test(BaseTest):
         bookmark_menu_folder_exists = exists(Library.BOOKMARKS_MENU)
         assert_true(self, bookmark_menu_folder_exists, 'Bookmark menu folder exists')
 
+        bookmark_menu_folder_location = find(Library.BOOKMARKS_MENU)
+        bookmark_menu_folder_width, bookmark_menu_folder_height = Library.BOOKMARKS_MENU.get_size()
+        bookmarks_tree_region = Region(bookmark_menu_folder_location.x, bookmark_menu_folder_location.y,
+                                       bookmark_menu_folder_width, bookmark_menu_folder_height*4)
+
         double_click(Library.BOOKMARKS_MENU)
 
-        mozilla_firefox_folder_exists = exists(library_mozilla_firefox_folder_pattern)
+        mozilla_firefox_folder_exists = exists(library_mozilla_firefox_folder_pattern, in_region=bookmarks_tree_region)
         assert_true(self, mozilla_firefox_folder_exists, 'Mozilla Firefox folder exists')
 
-        double_click(library_mozilla_firefox_folder_pattern)
-
-        mozilla_firefox_folder_exists = exists(library_mozilla_firefox_folder_pattern)
-        assert_true(self, mozilla_firefox_folder_exists, 'Mozilla Firefox folder exists')
-
-        click(library_mozilla_firefox_folder_pattern)
+        click(library_mozilla_firefox_folder_pattern, in_region=bookmarks_tree_region)
 
         mozilla_customize_firefox_bookmark_exists = exists(customize_firefox_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, mozilla_customize_firefox_bookmark_exists, 'Customize Firefox bookmark is displayed')
