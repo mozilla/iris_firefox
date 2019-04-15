@@ -53,13 +53,6 @@ class BaseTarget:
             if arg in target_arg_dict:
                 self.set_target_arg(arg, response[arg])
 
-        """
-        global target_args
-        core_args = Namespace(**core_arg_dict)
-        
-        """
-
-
     def set_target_arg(self, arg, value):
         logger.info('Setting %s to %s' % (arg, value))
         arg_dict = vars(self.args)

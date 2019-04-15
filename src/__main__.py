@@ -45,17 +45,14 @@ def main():
                     logger.info('No tests chosen, closing Iris.')
                     # TODO:
                     # delete abandoned run folder and runs.json entry
-                    exit(1)
+                    exit(0)
 
                 # Extract target from response and update core arg for application/target
                 set_core_arg('application', user_result['target'])
 
-                # TODO:
                 # Extract settings from response
-                # Update parameters and pass to target
                 args = get_core_args()
                 settings = user_result['args']
-
             else:
                 # User cancelled or otherwise failed to select tests,
                 # so we will shut down Iris.
