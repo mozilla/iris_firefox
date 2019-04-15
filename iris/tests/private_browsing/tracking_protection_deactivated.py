@@ -27,7 +27,7 @@ class Test(BaseTest):
         :return: None
         """
 
-        if action_item.__class__.__name__ is 'Pattern':
+        if isinstance(action_item, Pattern):
             try:
                 option_with_action_item_location = find(action_item)
             except:
@@ -37,12 +37,11 @@ class Test(BaseTest):
             action_item_region = Region(option_with_action_item_location.x, option_with_action_item_location.y,
                                         option_width, option_height)
 
-        elif action_item.__class__.__name__ is 'Region':
+        elif isinstance(action_item, Region):
             action_item_region = action_item
 
         else:
-            raise APIHelperError('Argument type is {}, Pattern or Region expected'
-                                 .format(action_item.__class__.__name__))
+            raise ValueError(INVALID_GENERIC_INPUT)
 
         condition_before = exists(action_item_before, Settings.TINY_FIREFOX_TIMEOUT, action_item_region)
         condition_after = exists(action_item_after, Settings.TINY_FIREFOX_TIMEOUT, action_item_region)
