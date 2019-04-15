@@ -25,10 +25,10 @@ class Test(BaseTest):
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
         moz_wiki_item = Pattern('moz_wiki_item.png')
-        moz_pattern = Pattern('moz.png')
+        one_offs_bar_moz_pattern = Pattern('moz.png')
 
         top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
-        upper_left_region = Region(0,0, SCREEN_WIDTH/4, SCREEN_HEIGHT/4)
+        upper_left_region = Region(0, 0, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4)
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
@@ -50,10 +50,11 @@ class Test(BaseTest):
         assert_true(self, expected, 'Window successfully minimized.')
 
         select_location_bar()
+
         paste('moz')
         type(Key.SPACE)
 
-        expected = top_two_thirds_of_screen.exists(moz_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, 10)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
 
         expected = top_two_thirds_of_screen.exists(search_settings_pattern, 10)
@@ -65,7 +66,7 @@ class Test(BaseTest):
         expected = top_two_thirds_of_screen.exists(magnifying_glass_pattern, 10)
         assert_true(self, expected, 'The default search engine is \'Google\', page successfully loaded.')
 
-        expected = upper_left_region.exists('Moz', 10)
+        expected = upper_left_region.exists('moz', 10)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the default search engine.')
 
@@ -82,7 +83,7 @@ class Test(BaseTest):
         paste('moz')
         type(Key.SPACE)
 
-        expected = top_two_thirds_of_screen.exists(moz_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, 10)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
 
         expected = top_two_thirds_of_screen.exists(search_settings_pattern, 10)
@@ -91,7 +92,7 @@ class Test(BaseTest):
         hover(wikipedia_one_off_button_pattern)
 
         try:
-            expected = top_two_thirds_of_screen.wait_vanish(moz_pattern, 10)
+            expected = top_two_thirds_of_screen.wait_vanish(one_offs_bar_moz_pattern, 10)
             assert_true(self, expected, 'The \'Wikipedia\' one-off button is highlighted.')
         except FindError:
             raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
