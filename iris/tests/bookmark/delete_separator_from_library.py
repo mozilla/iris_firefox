@@ -17,30 +17,33 @@ class Test(BaseTest):
 
     def run(self):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
-        separator_added_pattern = Pattern('separator_added.png')
+        separator_added_pattern = Pattern('separator_added_to_library.png')
         separator_deleted_pattern = Pattern('separator_deleted.png')
         delete_option_pattern = Pattern('delete_bookmark.png')
 
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
+
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_test_site_opened, 'Firefox Test page opened')
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, stardialog_displayed, 'StarDialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(soap_wiki_tab_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, soap_wiki_opened, 'Soap wiki page opened')
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, DEFAULT_FIREFOX_TIMEOUT)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, stardialog_displayed, 'StarDialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
@@ -51,7 +54,7 @@ class Test(BaseTest):
 
         open_library()
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'The Library is opened')
 
         click(Library.OTHER_BOOKMARKS)
@@ -80,4 +83,5 @@ class Test(BaseTest):
         assert_true(self, separator_deleted, 'The separator is correctly deleted.')
 
         click(Library.TITLE)
+
         close_window_control('auxiliary')
