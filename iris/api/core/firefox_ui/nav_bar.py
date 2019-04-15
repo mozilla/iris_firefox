@@ -18,6 +18,7 @@ class NavBar(object):
     SIDEBAR_MENU = Pattern('sidebar_button.png')
     SIDEBAR_MENU_RTL = Pattern('sidebar_button_rtl.png')
     HAMBURGER_MENU = Pattern('panel_ui_menu_button.png')
+    MORE_TOOLS = Pattern('more_tools.png')
 
     # Zoom navigation buttons are reachable on NavBar after drag and drop correspondent item from 'Customize...'
     # hamburger menu.

@@ -12,6 +12,7 @@ from iris.api.helpers.general import click_hamburger_menu_option, close_customiz
 
 class CustomizePage(object):
     AUTO_HIDE = Pattern('auto_hide.png')
+    OVERFLOW_MENU_ICON = Pattern('overflow_menu_icon.png')
 
 
 def auto_hide_download_button():
