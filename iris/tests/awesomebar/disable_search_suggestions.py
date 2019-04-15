@@ -56,7 +56,7 @@ class Test(BaseTest):
 
         click(search_settings_pattern)
 
-        time.sleep(DEFAULT_UI_DELAY)
+        time.sleep(Settings.UI_DELAY)
 
         about_preferences_search_page = exists(about_preferences_search_page_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, about_preferences_search_page, 'The \'about:preferences#search\' page successfully loaded.')
