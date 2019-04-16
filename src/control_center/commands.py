@@ -47,27 +47,29 @@ def do_command(request):
     return True
 
 
-def delete(args):
-    # Load run log JSON, find entry that matches the argument and delete it.
-    # Then, write new run log file.
+def delete(args, update_run_file=True):
     logger.debug('Received delete command with arguments: %s ' % args)
-    run_file = os.path.join(PathManager.get_working_dir(), 'data', 'all_runs.json')
-    if os.path.exists(run_file):
-        logger.debug('Deleting entry %s from run file: %s' % (args, run_file))
-        with open(run_file, 'r') as data:
-            run_file_data = json.load(data)
-        found = False
-        for run in run_file_data['runs']:
-            if run['id'] == args:
-                run_file_data['runs'].remove(run)
-                found = True
-        if found:
-            with open(run_file, 'w') as data:
-                json.dump(run_file_data, data, sort_keys=True, indent=True)
+
+    if update_run_file:
+        # Load run log JSON, find entry that matches the argument and delete it.
+        # Then, write new run log file.
+        run_file = os.path.join(PathManager.get_working_dir(), 'data', 'runs.json')
+        if os.path.exists(run_file):
+            logger.debug('Deleting entry %s from run file: %s' % (args, run_file))
+            with open(run_file, 'r') as data:
+                run_file_data = json.load(data)
+            found = False
+            for run in run_file_data['runs']:
+                if run['id'] == args:
+                    run_file_data['runs'].remove(run)
+                    found = True
+            if found:
+                with open(run_file, 'w') as data:
+                    json.dump(run_file_data, data, sort_keys=True, indent=True)
+            else:
+                logger.error('Entry for run %s not found in run log file.' % args)
         else:
-            logger.error('Entry for run %s not found in run log file.' % args)
-    else:
-        logger.error('Run file not found.')
+            logger.error('Run file not found.')
 
     # Remove run directory on disk.
     target_run = os.path.join(PathManager.get_working_dir(), 'runs', args)

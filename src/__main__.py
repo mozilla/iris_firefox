@@ -12,6 +12,7 @@ import pytest
 from mozrunner import FirefoxRunner
 
 from src.configuration.config_parser import validate_config_ini
+from src.control_center.commands import delete
 from src.core.api.keyboard.keyboard_util import check_keyboard_state
 from src.core.api.os_helpers import OSHelper
 from src.core.util import cleanup
@@ -32,20 +33,19 @@ def main():
     validate_config_ini(args)
     if verify_config(args):
         pytest_args = None
-        user_result = None
         settings = None
         if show_control_center():
             init_control_center()
             user_result = launch_control_center()
             logger.debug(user_result)
-            if user_result is not 'cancel' and user_result is not None:
-                # Parse list of tests
-                pytest_args = user_result['tests']
-                if len(pytest_args) == 0:
+            if user_result is not 'cancel':
+                # Extract list of tests
+                if hasattr(user_result, 'tests') is False:
                     logger.info('No tests chosen, closing Iris.')
-                    # TODO:
-                    # delete abandoned run folder and runs.json entry
+                    delete(PathManager.get_run_id(), update_run_file=False)
                     exit(0)
+
+                pytest_args = user_result['tests']
 
                 # Extract target from response and update core arg for application/target
                 set_core_arg('application', user_result['target'])
@@ -56,6 +56,7 @@ def main():
             else:
                 # User cancelled or otherwise failed to select tests,
                 # so we will shut down Iris.
+                delete(PathManager.get_run_id(), update_run_file=False)
                 exit(0)
 
         try:
