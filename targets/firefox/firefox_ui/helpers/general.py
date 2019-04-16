@@ -18,7 +18,7 @@ from src.core.api.keyboard.keyboard import type, key_up, key_down
 from src.core.api.keyboard.keyboard_api import paste
 from src.core.api.keyboard.keyboard_util import get_clipboard
 from src.core.api.location import Location
-from src.core.api.mouse.mouse import click, hover, Mouse, scroll_down
+from src.core.api.mouse.mouse import click, hover, Mouse, scroll_down, right_click
 from src.core.api.os_helpers import OSHelper, OSPlatform
 from src.core.api.screen.region import Region
 from src.core.api.screen.screen import Screen
@@ -830,3 +830,17 @@ def scroll_until_pattern_found(pattern, dy=10, iterations=10, timeout=3):
         if pattern_found:
             return True
     return False
+
+
+def right_click_and_type(target,delay=None,keyboard_action=None):
+
+    right_click(target)
+    if delay:
+        time.sleep(delay)
+    else:
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+    type(text=keyboard_action)
+
+
+
+
