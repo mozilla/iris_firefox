@@ -54,8 +54,7 @@ class Test(FirefoxTest):
         assert expected, 'Mouse is over the \'DuckDuckGo\' search engine.'
 
         # Press the 'arrow down' key to focus a page result.
-        scroll_down()
-
+        type(Key.DOWN)
         type(Key.ENTER)
 
         expected = exists(google_search_results, 10)
