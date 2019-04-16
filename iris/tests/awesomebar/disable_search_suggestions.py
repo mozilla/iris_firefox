@@ -16,25 +16,26 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
-        show_search_suggestions_in_address_bar_results_checked_pattern = Pattern(
-            'show_search_suggestions_in_address_bar_results_checked.png')
-        show_search_suggestions_in_address_bar_results_unchecked_pattern = Pattern(
-            'show_search_suggestions_in_address_bar_results_unchecked.png')
+        show_search_suggestions_in_address_bar_results_checked_pattern = \
+            Pattern('show_search_suggestions_in_address_bar_results_checked.png')
+        show_search_suggestions_in_address_bar_results_unchecked_pattern = \
+            Pattern('show_search_suggestions_in_address_bar_results_unchecked.png')
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
+        firefox_test_url = LocalWeb.FIREFOX_TEST_SITE
 
-        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
+        top_part_of_screen_region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         # Perform a search with the 'Show search suggestions in address bar results' option checked(default state).
 
-        navigate(url)
+        navigate(firefox_test_url)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
+        firefox_logo = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, firefox_logo, 'Page successfully loaded, firefox logo found.')
 
         select_location_bar()
+
         paste('abc')
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
@@ -44,38 +45,45 @@ class Test(BaseTest):
         for i in range(10):
             scroll_down()
 
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert_true(self, expected, 'With default value for the \'Show search suggestions in address bar results\' '
-                                    'option the \'Google\' search engine is found after 10 scrolls through the '
-                                    'suggestions list.')
+        search_with_google_one_off = top_part_of_screen_region.exists(search_with_google_one_off_string_pattern,
+                                                                      Settings.FIREFOX_TIMEOUT)
+        assert_true(self, search_with_google_one_off, 'With default value for the \'Show search suggestions in address '
+                                                      'bar results\' option the \'Google\' search engine is found after'
+                                                      ' 10 scrolls through the suggestions list.')
 
-        expected = region.exists(search_settings_pattern, 10)
-        assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesomebar.')
+        search_settings = top_part_of_screen_region.exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, search_settings, 'The \'Search settings\' button is displayed in the awesomebar.')
 
         click(search_settings_pattern)
-        time.sleep(DEFAULT_UI_DELAY)
 
-        expected = exists(about_preferences_search_page_pattern, 10)
-        assert_true(self, expected, 'The \'about:preferences#search\' page successfully loaded.')
+        time.sleep(Settings.UI_DELAY)
 
-        expected = exists(show_search_suggestions_in_address_bar_results_checked_pattern, 10)
-        assert_true(self, expected, 'Checkbox displayed in front of the \'Show search suggestions in address bar '
-                                    'results\' text is checked by default.')
+        about_preferences_search_page = exists(about_preferences_search_page_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, about_preferences_search_page, 'The \'about:preferences#search\' page successfully loaded.')
+
+        suggestions_in_address_bar_checked = exists(show_search_suggestions_in_address_bar_results_checked_pattern,
+                                                    Settings.FIREFOX_TIMEOUT)
+        assert_true(self, suggestions_in_address_bar_checked, 'Checkbox displayed in front of the \'Show search '
+                                                              'suggestions in address bar results\' text is checked '
+                                                              'by default.')
 
         # Perform a search with the 'Show search suggestions in address bar results' option unchecked(modified state).
 
         click(show_search_suggestions_in_address_bar_results_checked_pattern)
 
         # Move focus away from the clicked option.
-        click(show_search_suggestions_in_address_bar_results_checked_pattern.target_offset(-100, 15))
+        type(Key.TAB)
 
-        expected = exists(show_search_suggestions_in_address_bar_results_unchecked_pattern.similar(0.9), 10)
-        assert_true(self, expected, 'Checkbox displayed in front of the \'Show search suggestions in address bar '
-                                    'results\' text is unchecked.')
+        suggestions_in_address_bar_unchecked = exists(show_search_suggestions_in_address_bar_results_unchecked_pattern,
+                                                      Settings.FIREFOX_TIMEOUT)
+        assert_true(self, suggestions_in_address_bar_unchecked, 'Checkbox displayed in front of the \'Show search '
+                                                                'suggestions in address bar results\' text is '
+                                                                'unchecked.')
 
         previous_tab()
 
         select_location_bar()
+
         type(Key.DELETE)
         paste('abc')
 
@@ -86,7 +94,8 @@ class Test(BaseTest):
         for i in range(1):
             scroll_down()
 
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert_true(self, expected, 'With modified value for the \'Show search suggestions in address bar results\' '
-                                    'option the \'Google\' search engine is found after 1 scroll through the '
-                                    'suggestions list.')
+        search_with_google_one_off = top_part_of_screen_region.exists(search_with_google_one_off_string_pattern,
+                                                                      Settings.FIREFOX_TIMEOUT)
+        assert_true(self, search_with_google_one_off, 'With modified value for the \'Show search suggestions in address'
+                                                      ' bar results\' option the \'Google\' search engine is found '
+                                                      'after 1 scroll through the suggestions list.')
