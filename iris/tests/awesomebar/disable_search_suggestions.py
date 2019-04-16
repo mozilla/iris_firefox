@@ -72,7 +72,7 @@ class Test(BaseTest):
         click(show_search_suggestions_in_address_bar_results_checked_pattern)
 
         # Move focus away from the clicked option.
-        click(show_search_suggestions_in_address_bar_results_checked_pattern.target_offset(-100, 15))
+        type(Key.TAB)
 
         suggestions_in_address_bar_unchecked = exists(show_search_suggestions_in_address_bar_results_unchecked_pattern,
                                                       Settings.FIREFOX_TIMEOUT)
