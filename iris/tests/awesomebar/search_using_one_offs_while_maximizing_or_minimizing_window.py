@@ -28,7 +28,7 @@ class Test(BaseTest):
         one_offs_bar_moz_pattern = Pattern('moz.png')
 
         top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
-        upper_left_region = Region(0, 0, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 4)
+        upper_left_region = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
