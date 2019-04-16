@@ -34,7 +34,7 @@ class Test(BaseTest):
 
         # Wait for the page to be loaded.
         try:
-            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 30)
             logger.debug('File is present in the page.')
         except FindError:
             raise FindError('File is not present in the page.')

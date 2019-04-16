@@ -60,7 +60,19 @@ class Test(BaseTest):
         # Check that all the downloads are also displayed in the 'about:downloads' page.
         new_tab()
         navigate('about:downloads')
+
+        try:
+            wait(DownloadFiles.LIBRARY_DOWNLOADS_20MB, 10)
+            logger.debug('The page successfully loaded.')
+        except FindError:
+            raise FindError('The page did not load, aborting.')
+
         for pattern in downloads_library_list:
+            if pattern == DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED:
+                # Sometimes the 5MB file is highlighted and sometimes not. Focusing it to make the test case stable.
+                click(DownloadFiles.LIBRARY_DOWNLOADS_20MB)
+                repeat_key_up(3)
+
             expected = exists(pattern, 10)
             assert_true(self, expected, '%s file found in the \'about:downloads\' page.'
                         % str(pattern.get_filename()).split('_')[0])
