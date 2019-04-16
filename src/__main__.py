@@ -40,7 +40,7 @@ def main():
             logger.debug(user_result)
             if user_result is not 'cancel':
                 # Extract list of tests
-                if hasattr(user_result, 'tests') is False:
+                if not 'tests' in user_result:
                     logger.info('No tests chosen, closing Iris.')
                     delete(PathManager.get_run_id(), update_run_file=False)
                     exit(0)
@@ -93,8 +93,10 @@ def get_target(target_name):
     logger.info('Desired target: %s' % target_name)
     try:
         my_module = importlib.import_module('targets.%s.app' % target_name)
+        logger.info('1')
         try:
             target_plugin = my_module.Target()
+            logger.info('2')
             logger.info('Found target named %s' % target_plugin.target_name)
             return target_plugin
         except NameError:

@@ -9,6 +9,7 @@ from multiprocessing import Process
 
 import pytest
 
+
 from src.base.target import BaseTarget
 from src.core.api.mouse.mouse import mouse_reset
 from src.core.api.os_helpers import OSHelper
@@ -16,13 +17,16 @@ from src.core.util.arg_parser import get_core_args
 from src.core.util.local_web_server import LocalWebServer
 from src.core.util.path_manager import PathManager
 from src.core.util.test_assert import create_result_object
+
+logger = logging.getLogger(__name__)
+logger.info('Loading test images...')
+
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.firefox.firefox_app.fx_collection import FX_Collection
 from targets.firefox.firefox_ui.helpers.version_parser import check_version
 from targets.firefox.testrail.testrail_client import report_test_results
 
-logger = logging.getLogger(__name__)
 target_args = None
 core_args = get_core_args()
 
@@ -88,6 +92,7 @@ class Target(BaseTarget):
         except IOError:
             logger.critical('Unable to launch local web server, aborting Iris.')
             exit(1)
+        logger.info('Loading more test images...')
 
     def pytest_sessionfinish(self, session):
         BaseTarget.pytest_sessionfinish(self, session)

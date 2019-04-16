@@ -21,7 +21,7 @@ args = get_core_args()
 
 def create_target_json():
     logging.info('Preparing data for the Control Center.')
-    logging.info('Please wait...')
+    logging.info('This may take a minute.')
     master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
     target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
 
@@ -235,7 +235,7 @@ def get_test_markers(item):
 
 
 def scan_all_tests(target):
-    logging.info('Gathering test info for \'%s\'' % target)
+    logging.info('Gathering test info for \'%s\'...' % target)
     master_test_root = os.path.join(PathManager.get_module_dir(), 'tests')
     test_root = os.path.join(master_test_root, target)
     base_props = ['description']

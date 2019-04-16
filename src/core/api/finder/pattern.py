@@ -252,7 +252,7 @@ def _get_image_path(caller, image: str, application: str) -> str:
     module_directory = os.path.split(caller)[0]
     parent_directory = os.path.basename(module_directory)
     file_name = image.split('.')[0]
-    names = [image, '%s@2x.png' % file_name, '%s@3x.png' % file_name, '%s@4x.png' % file_name]
+    names = [image, '%s@2x.png' % file_name]
 
     if OSHelper.get_os_version() == 'win7':
         os_version = 'win7'
