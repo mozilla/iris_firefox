@@ -48,6 +48,8 @@ class Test(BaseTest):
         expected = exists(window_controls_maximize_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Window successfully minimized.')
 
+        top_search_result_location = find(window_controls_maximize_pattern)
+
         select_location_bar()
 
         paste('moz')
@@ -55,6 +57,8 @@ class Test(BaseTest):
 
         expected = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
+
+        left_bottom_search_result_location = find(one_offs_bar_moz_pattern)
 
         expected = top_two_thirds_of_screen.exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
@@ -65,7 +69,13 @@ class Test(BaseTest):
         expected = top_two_thirds_of_screen.exists(magnifying_glass_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'The default search engine is \'Google\', page successfully loaded.')
 
-        expected = upper_left_region.exists('moz', Settings.FIREFOX_TIMEOUT)
+        magnifying_glass_location = find(magnifying_glass_pattern)
+
+        search_results_region = Region(left_bottom_search_result_location.x, top_search_result_location.y,
+                                       magnifying_glass_location.x - left_bottom_search_result_location.x,
+                                       (left_bottom_search_result_location.y - top_search_result_location.y) * 2)
+
+        expected = exists('moz', Settings.FIREFOX_TIMEOUT, search_results_region)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the default search engine.')
 
