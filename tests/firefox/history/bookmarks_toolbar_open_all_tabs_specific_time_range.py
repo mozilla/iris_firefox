@@ -63,7 +63,7 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('Show All History option is not present on the page, aborting.')
 
-        expected = exists(history_today_pattern, 10)
+        expected = exists(history_today_pattern.similar(0.6), 10)
         assert expected, 'Today history option is available.'
 
         right_click_and_type(history_today_pattern, keyboard_action='c')

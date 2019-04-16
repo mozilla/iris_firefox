@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         # Expand History.
         double_click(history_pattern)
 
-        expected_3 = exists(history_today_pattern, 10)
+        expected_3 = exists(history_today_pattern.similar(0.6), 10)
         assert expected_3, 'Today history option is available.'
 
         # Verify if Mozilla page is present in Today History.

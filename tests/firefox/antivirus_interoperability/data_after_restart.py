@@ -45,7 +45,7 @@ class Test(FirefoxTest):
         assert exists(Sidebar.HistorySidebar.Timeline.TODAY), 'The Today timeline displayed.'
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
-        assert history_sidebar_region.exists(LocalWeb.CNN_LOGO.similar(.6)), 'The CNN site is added to history.'
+        assert history_sidebar_region.exists(LocalWeb.CNN_LOGO.similar(0.6)), 'The CNN site is added to history.'
         assert history_sidebar_region.exists(wikipedia_logo_pattern), 'The Wikipedia site is added to history.'
 
         right_click(NavBar.HOME_BUTTON.target_offset(100, 0))
@@ -59,15 +59,15 @@ class Test(FirefoxTest):
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
         bookmark_page()
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
         click(Bookmarks.StarDialog.DONE)
 
         previous_tab()
 
         bookmark_page()
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0)
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
         click(Bookmarks.StarDialog.DONE)
         assert bookmarks_toolbar_region.exists(LocalWeb.CNN_LOGO, Settings.DEFAULT_SITE_LOAD_TIMEOUT), \
             'The CNN bookmark is successfully added.'
@@ -97,10 +97,10 @@ class Test(FirefoxTest):
             'The CNN bookmark is successfully restored.'
         assert bookmarks_toolbar_region.exists(LocalWeb.CNN_LOGO, Settings.DEFAULT_SITE_LOAD_TIMEOUT), \
             'The Wikipedia bookmark is successfully restored.'
-        assert history_sidebar_region.exists(LocalWeb.CNN_LOGO.similar(.6)), 'The CNN site is added to history.'
+        assert history_sidebar_region.exists(LocalWeb.CNN_LOGO.similar(0.6)), 'The CNN site is added to history.'
         assert history_sidebar_region.exists(wikipedia_logo_pattern), 'The Wikipedia site is added to history.'
         assert history_sidebar_region.exists(youtube_logo_pattern), 'The Youtube site is added to history.'
         assert history_sidebar_region.exists(twitter_logo_pattern), 'The Twitter site is added to history.'
-        assert tabs_region.exists(cnn_logo_unactive_tab_pattern.similar(.6)), 'The CNN tab is restored.'
+        assert tabs_region.exists(cnn_logo_unactive_tab_pattern.similar(0.6)), 'The CNN tab is restored.'
         assert tabs_region.exists(wiki_logo_unactive_tab_pattern), 'The Wikipedia tab is restored.'
         assert tabs_region.exists(twitter_logo_pattern), 'The Twitter tab is restored.'
