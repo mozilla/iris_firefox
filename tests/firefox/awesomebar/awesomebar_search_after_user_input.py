@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
         twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
 
-        region = Region(0, 0, Screen().width / 2, Screen().height / 2)
+        region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2 + 100)
 
         navigate(url)
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
