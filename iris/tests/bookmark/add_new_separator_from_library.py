@@ -26,7 +26,7 @@ class Test(BaseTest):
 
         bookmark_page()
 
-        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.SITE_LOAD_TIMEOUT)
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, stardialog_displayed, 'StarDialog displayed')
 
         click(Bookmarks.StarDialog.DONE)
