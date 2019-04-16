@@ -68,5 +68,4 @@ class Test(BaseTest):
         assert_true(self, separator_added, 'A new separator is displayed above the selected bookmark.')
 
         click(Library.TITLE)
-        
         close_window_control('auxiliary')
