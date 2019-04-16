@@ -30,7 +30,7 @@ class Test(BaseTest):
         upper_left_region = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
+        expected = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
@@ -45,7 +45,7 @@ class Test(BaseTest):
             click(maximize_button)
             key_up(Key.ALT)
 
-        expected = exists(window_controls_maximize_pattern, 10)
+        expected = exists(window_controls_maximize_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Window successfully minimized.')
 
         select_location_bar()
@@ -53,19 +53,19 @@ class Test(BaseTest):
         paste('moz')
         type(Key.SPACE)
 
-        expected = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
 
-        expected = top_two_thirds_of_screen.exists(search_settings_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         type(Key.ENTER)
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
-        expected = top_two_thirds_of_screen.exists(magnifying_glass_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(magnifying_glass_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'The default search engine is \'Google\', page successfully loaded.')
 
-        expected = upper_left_region.exists('moz', 10)
+        expected = upper_left_region.exists('moz', Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the default search engine.')
 
@@ -75,33 +75,33 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.LINUX:
             reset_mouse()
 
-        expected = exists(window_controls_restore_pattern, 10)
+        expected = exists(window_controls_restore_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Window successfully maximized.')
 
         select_location_bar()
         paste('moz')
         type(Key.SPACE)
 
-        expected = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
 
-        expected = top_two_thirds_of_screen.exists(search_settings_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         hover(wikipedia_one_off_button_pattern)
 
         try:
-            expected = top_two_thirds_of_screen.wait_vanish(one_offs_bar_moz_pattern, 10)
+            expected = top_two_thirds_of_screen.wait_vanish(one_offs_bar_moz_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, expected, 'The \'Wikipedia\' one-off button is highlighted.')
         except FindError:
             raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
 
         click(wikipedia_one_off_button_pattern)
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
-        expected = top_two_thirds_of_screen.exists(wikipedia_search_results_moz_pattern, 10)
+        expected = top_two_thirds_of_screen.exists(wikipedia_search_results_moz_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, expected, 'Wikipedia results are opened.')
 
-        expected = Screen.LEFT_HALF.exists(moz_wiki_item_pattern, 10)
+        expected = Screen.LEFT_HALF.exists(moz_wiki_item_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the wikipedia search engine.')
