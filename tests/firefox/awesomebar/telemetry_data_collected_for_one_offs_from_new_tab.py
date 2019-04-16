@@ -39,7 +39,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         for i in range(7):
-            scroll_down()
+            type(Key.DOWN)
         type(Key.ENTER)
 
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)

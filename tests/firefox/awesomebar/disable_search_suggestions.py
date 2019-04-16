@@ -36,7 +36,7 @@ class Test(FirefoxTest):
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
         for i in range(10):
-            scroll_down()
+            type(Key.DOWN)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert expected, 'With default value for the \'Show search suggestions in address bar results\' ' \
@@ -71,8 +71,8 @@ class Test(FirefoxTest):
         paste('abc')
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
-        for i in range(1):
-            scroll_down()
+
+        type(Key.DOWN)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
         assert expected, 'With modified value for the \'Show search suggestions in address bar results\' ' \
