@@ -17,19 +17,18 @@ class Test(BaseTest):
         self.set_profile_pref({'browser.contentblocking.enabled': False})
 
     def run(self):
-        url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         window_controls_restore_pattern = Pattern('window_controls_restore.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
         window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
-        moz_wiki_item = Pattern('moz_wiki_item.png')
+        moz_wiki_item_pattern = Pattern('moz_wiki_item.png')
         one_offs_bar_moz_pattern = Pattern('moz.png')
 
         top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
-        upper_left_region = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
-        navigate(url)
+        upper_left_region = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
@@ -103,6 +102,6 @@ class Test(BaseTest):
         expected = top_two_thirds_of_screen.exists(wikipedia_search_results_moz_pattern, 10)
         assert_true(self, expected, 'Wikipedia results are opened.')
 
-        expected = Screen.LEFT_HALF.exists(moz_wiki_item, 10)
+        expected = Screen.LEFT_HALF.exists(moz_wiki_item_pattern, 10)
         assert_true(self, expected,
                     'Searched item is successfully found in the page opened by the wikipedia search engine.')
