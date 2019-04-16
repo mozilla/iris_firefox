@@ -95,6 +95,7 @@ class Test(BaseTest):
         mouse.mouse_move(Location(SCREEN_WIDTH / 4 + 100, SCREEN_HEIGHT / 4))
         click(NavBar.UNWANTED_DOWNLOADS_BUTTON)
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_ARROW)
+        time.sleep(DEFAULT_UI_DELAY)
         click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON)
 
         # Check that there are no downloads displayed in Downloads Library window.
