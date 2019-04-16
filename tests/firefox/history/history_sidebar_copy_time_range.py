@@ -43,11 +43,9 @@ class Test(FirefoxTest):
         assert expected_4, 'Expand history button displayed properly.'
 
         # Copy the History time range from the History sidebar and paste it to the Bookmarks toolbar.
-        right_click(history_today_sidebar_pattern)
-        type(text='c')
+        right_click_and_type(history_today_sidebar_pattern, keyboard_action='c')
 
-        right_click(bookmarks_toolbar_most_visited_pattern)
-        type(text='p')
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action='p')
 
         expected_5 = exists(today_bookmarks_toolbar_pattern)
         assert expected_5, 'History time range was copied successfully to the Bookmarks toolbar.'

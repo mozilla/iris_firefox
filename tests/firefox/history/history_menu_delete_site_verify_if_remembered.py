@@ -51,8 +51,7 @@ class Test(FirefoxTest):
         assert expected_3, 'Mozilla page is displayed in the History list successfully.'
 
         # Delete Mozilla page.
-        right_click(mozilla_bookmark_focus)
-        type(text='d')
+        right_click_and_type(mozilla_bookmark_focus, keyboard_action='d')
 
         try:
             expected_4 = wait_vanish(mozilla_bookmark_focus, 10)

@@ -57,8 +57,8 @@ class Test(FirefoxTest):
         expected_5 = left_upper_corner.exists(mozilla_bookmark_small_pattern.similar(0.7), 10)
         assert expected_5, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click(mozilla_bookmark_small_pattern)
-        type(text='d')
+        right_click_and_type(mozilla_bookmark_small_pattern,keyboard_action='d')
+
 
         try:
             expected_6 = left_upper_corner.wait_vanish(mozilla_bookmark_small_pattern, 10)

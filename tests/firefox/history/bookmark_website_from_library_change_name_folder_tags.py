@@ -41,8 +41,7 @@ class Test(FirefoxTest):
         expected = exists(iris_bookmark_focus_pattern, 10)
         assert expected, 'Iris page is displayed in the Recent History list.'
 
-        right_click(iris_bookmark_focus_pattern)
-        type(text='b')
+        right_click_and_type(iris_bookmark_focus_pattern, keyboard_action='b')
 
         # Bookmark the website with custom name, folder and tag.
         expected = exists(save_bookmark_button_pattern, 10)

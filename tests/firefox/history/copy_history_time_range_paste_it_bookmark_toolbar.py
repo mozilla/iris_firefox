@@ -49,17 +49,14 @@ class Test(FirefoxTest):
         assert expected, 'Iris page is displayed in the Recent History list.'
 
         # Copy the History time range from the Library and paste it to the Bookmarks toolbar.
-        right_click(history_today_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-        type(text='c')
+
+        right_click_and_type(history_today_pattern, keyboard_action='c')
 
         click_window_control('close')
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        right_click(bookmarks_toolbar_most_visited_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-        type(text='p')
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action='p')
 
         expected = exists(today_bookmarks_toolbar_pattern)
         assert expected, 'History time range was copied successfully to the Bookmarks toolbar.'

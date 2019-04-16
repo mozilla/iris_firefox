@@ -46,14 +46,12 @@ class Test(FirefoxTest):
         expected = exists(iris_bookmark_focus_pattern, 10)
         assert expected, 'Iris page is displayed in the Recent History list.'
 
-        right_click(iris_bookmark_focus_pattern)
-        type(text='c')
+        right_click_and_type(iris_bookmark_focus_pattern, keyboard_action='c')
 
         click_window_control('close')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        right_click(bookmarks_toolbar_most_visited_pattern)
-        type(text='p')
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action='p')
 
         expected = exists(iris_logo_toolbar_pattern)
         assert expected, 'History was copied successfully to the Bookmarks toolbar.'

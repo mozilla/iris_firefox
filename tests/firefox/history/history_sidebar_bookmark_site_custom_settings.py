@@ -44,8 +44,9 @@ class Test(FirefoxTest):
         expected_4 = exists(history_sidebar_mozilla_pattern, 10)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click(history_sidebar_mozilla_pattern, 1)
-        type(text='b')
+        right_click_and_type(history_sidebar_mozilla_pattern, keyboard_action='b')
+
+
 
         expected_5 = exists(save_bookmark_button_pattern, 10)
         assert expected_5, 'New Bookmark popup displayed properly.'

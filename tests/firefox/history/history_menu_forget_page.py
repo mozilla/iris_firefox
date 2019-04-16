@@ -38,8 +38,7 @@ class Test(FirefoxTest):
         assert expected_2, 'Iris page is displayed Recent History list successfully.'
 
         # Forget Mozilla page.
-        right_click(iris_bookmark_focus)
-        type(text='f')
+        right_click_and_type(iris_bookmark_focus, keyboard_action='f')
 
         try:
             expected_3 = wait_vanish(iris_bookmark_focus, 10)

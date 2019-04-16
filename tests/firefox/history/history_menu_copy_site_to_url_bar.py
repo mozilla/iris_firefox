@@ -30,8 +30,7 @@ class Test(FirefoxTest):
         assert expected_1, 'Mozilla page is displayed in the History list successfully.'
 
         # Copy a website from the History section and paste it into the URL bar.
-        right_click(mozilla_bookmark_focus)
-        type(text='c')
+        right_click_and_type(mozilla_bookmark_focus, keyboard_action='c')
 
         click_window_control('close')
 

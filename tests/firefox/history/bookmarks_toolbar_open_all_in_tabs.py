@@ -51,18 +51,15 @@ class Test(FirefoxTest):
         assert expected_4, 'Expand history button displayed properly.'
 
         # Copy the History time range from the History sidebar and paste it to the Bookmarks toolbar.
-        right_click(expand_button_history_sidebar_pattern)
-        type(text='c')
+        right_click_and_type(expand_button_history_sidebar_pattern, keyboard_action='c')
 
-        right_click(bookmarks_toolbar_most_visited_pattern)
-        type(text='p')
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action='p')
 
         expected_5 = exists(today_bookmarks_toolbar_pattern)
         assert expected_5, 'History time range was copied successfully to the Bookmarks toolbar.'
 
         # Click on the bookmark and select the Open All in Tabs button.
-        right_click(today_bookmarks_toolbar_pattern)
-        type(text='o')
+        right_click_and_type(today_bookmarks_toolbar_pattern, keyboard_action='o')
 
         # Check that all the pages loaded successfully.
         expected_6 = exists(firefox_privacy_logo_pattern, 10)

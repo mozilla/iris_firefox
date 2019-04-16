@@ -46,11 +46,12 @@ class Test(FirefoxTest):
         expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
         assert expected_5, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
-        type(text='c')
+        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_SMALL, keyboard_action='c')
+
         history_sidebar()
-        right_click(bookmarks_toolbar_most_visited_pattern)
-        type(text='p')
+
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action='p')
+
         if OSHelper.is_mac():
             expected_6 = exists(bookmarks_toolbar_mozilla_pattern)
         else:

@@ -46,8 +46,7 @@ class Test(FirefoxTest):
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
         # Delete Mozilla page from Today's History.
-        right_click(history_mozilla_pattern)
-        type(text='d')
+        right_click_and_type(history_mozilla_pattern, keyboard_action='d')
 
         try:
             expected_5 = wait_vanish(history_mozilla_pattern.similar(0.9), 10)

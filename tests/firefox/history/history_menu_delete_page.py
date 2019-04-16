@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from targets.firefox.fx_testcase import *
 
 
@@ -39,8 +38,7 @@ class Test(FirefoxTest):
         assert expected_2, 'Iris page is displayed Recent History list successfully.'
 
         # Delete Iris page.
-        right_click(iris_bookmark_focus)
-        type(text='d')
+        right_click_and_type(iris_bookmark_focus, keyboard_action='d')
 
         try:
             expected_3 = wait_vanish(iris_bookmark_focus, 10)

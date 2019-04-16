@@ -44,8 +44,8 @@ class Test(FirefoxTest):
         expected_4 = left_upper_corner.exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.7), 10)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
-        type(text='f')
+        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_SMALL, keyboard_action='f')
+
 
         try:
             expected_5 = left_upper_corner.wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)

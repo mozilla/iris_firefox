@@ -48,14 +48,12 @@ class Test(FirefoxTest):
         expected = exists(history_pattern, 10)
         assert expected, 'History section is visible.'
 
-        right_click(history_pattern)
-        type(text='c')
+        right_click_and_type(history_pattern, keyboard_action='c')
 
         click_window_control('close')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        right_click(bookmarks_toolbar_most_visited_pattern)
-        type(text='p')
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action='p')
 
         new_tab()
 
