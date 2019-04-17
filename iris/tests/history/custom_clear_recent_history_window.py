@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.meta = 'Custom sections selected in \'Clear Recent History\' window'
         self.test_case_id = '172047'
         self.test_suite_id = '2000'
-        self.blocked_by = {'id': '1505771', 'platform': Platform.ALL}
         self.locales = ['en-US']
 
     def setup(self):
@@ -31,28 +30,30 @@ class Test(BaseTest):
     def run(self):
         clear_recent_history_window_pattern = History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
         clear_now_button_pattern = History.CLearRecentHistory.CLEAR_NOW
-        search_uncheked_box_pattern = Utils.UNCHECKEDBOX
+        search_unchecked_box_pattern = Utils.UNCHECKEDBOX
         history_pattern = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE
         searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON
         privacy_logo_pattern = Pattern('privacy_logo.png')
         manage_data_pattern = Pattern('manage_data_button.png')
-        manage_data_title_pattern = Pattern('manage_cookies_and_site_data_table_heads.png')
+        manage_data_title_pattern = Pattern('manage_cookies_and_site_data_table_heads.png').similar(0.7)
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
-        saved_logins_window_pattern = Pattern('saved_logins_table_heads.png')
-        ago_word_pattern = Pattern('ago_pattern.png')
+        saved_logins_window_pattern = Pattern('saved_logins_table_heads.png').similar(0.7)
+        ago_word_pattern = Pattern('ago_pattern.png').similar(0.95)
         empty_saved_logins_pattern = Pattern('empty_saved_logins.png')
-        disk_space_is_not_used_pattern = Pattern('0_bytes_of_data.png')
 
         # Open the 'Clear Recent History' window and uncheck all the items.
         for step in open_clear_recent_history_window():
             assert_true(self, step.resolution, step.message)
 
-        # Check all options to be cleared.
-        expected = exists(search_uncheked_box_pattern.similar(0.9), 10)
+        if Settings.get_os() == Platform.MAC:
+            expected = exists(search_unchecked_box_pattern, 10)
+        else:
+            expected = exists(search_unchecked_box_pattern.similar(0.9), 10)
+
         while expected:
             assert_true(self, expected, 'Unchecked box exists.')
-            click(search_uncheked_box_pattern)
-            expected = exists(search_uncheked_box_pattern, 10)
+            click(search_unchecked_box_pattern)
+            expected = exists(search_unchecked_box_pattern, 10)
 
         # Clear the Clear recent history.
         expected = exists(clear_now_button_pattern, 10)
@@ -60,8 +61,11 @@ class Test(BaseTest):
         click(clear_now_button_pattern)
 
         # Check that the Clear Recent History window was dismissed properly.
-        expected = wait_vanish(clear_recent_history_window_pattern.similar(0.9), 10)
-        assert_true(self, expected, 'Clear Recent History window was dismissed properly.')
+        try:
+            expected = wait_vanish(clear_recent_history_window_pattern.similar(0.9), 10)
+            assert_true(self, expected, 'Clear Recent History window was dismissed properly.')
+        except FindError:
+            raise FindError('Clear Recent History window is still open.')
 
         # ASSERTS.
 
@@ -98,7 +102,7 @@ class Test(BaseTest):
 
         # Check that "Saved Logins" window is displayed.
         region = Region(SCREEN_WIDTH / 7, SCREEN_HEIGHT / 4, SCREEN_WIDTH, SCREEN_HEIGHT / 4)
-        expected = region.exists(saved_logins_window_pattern.similar(0.65), 10)
+        expected = region.exists(saved_logins_window_pattern, 10)
         assert_true(self, expected, '\"Saved Logins\" window is displayed.')
 
         # Check that the "Saved Logins" window is empty.
@@ -127,7 +131,3 @@ class Test(BaseTest):
         type(Key.ESC)
         expected = exists(manage_data_title_pattern, 10)
         assert_false(self, expected, '\"Manage Cookies and Site Data\" window is NOT displayed.')
-
-        # Check that no disk space is used for cookies, site data and cache.
-        expected = exists(disk_space_is_not_used_pattern, 10)
-        assert_true(self, expected, 'No disk space is used to store cookies, site data and cache.')
