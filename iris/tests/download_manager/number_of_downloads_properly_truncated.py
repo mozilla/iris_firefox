@@ -44,6 +44,13 @@ class Test(BaseTest):
 
         select_throttling(NetworkOption.REGULAR_4G)
 
+        expected = exists(NavBar.RELOAD_BUTTON, 10)
+        assert_true(self, expected, 'Reload button found in the page.')
+        click(NavBar.RELOAD_BUTTON)
+
+        expected = exists(DownloadFiles.STATUS_200, 10)
+        assert_true(self, expected, 'Page successfully reloaded.')
+
         for f in download_files_list:
             download_file(f, DownloadFiles.OK)
 
