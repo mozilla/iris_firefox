@@ -47,6 +47,8 @@ class Test(BaseTest):
 
             key_up(Key.ALT)
 
+        reset_mouse()
+
         maximize_button_exists = exists(window_controls_maximize_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, maximize_button_exists, 'Window successfully minimized.')
 
@@ -74,7 +76,6 @@ class Test(BaseTest):
         moz_word_available = exists('moz', Settings.FIREFOX_TIMEOUT, search_results_region)
         assert_true(self, moz_word_available, 'Searched item is successfully found in the search engine page.')
 
-        reset_mouse()
         maximize_window()
 
         if Settings.get_os() == Platform.LINUX:
