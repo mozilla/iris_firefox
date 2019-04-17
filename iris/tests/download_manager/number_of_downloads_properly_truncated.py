@@ -71,7 +71,7 @@ class Test(BaseTest):
 
         expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert_true(self, expected, 'Progress information is displayed.')
-        expected = exists(DownloadManager.DownloadState.SPEED_PER_SECOND, 10)
+        expected = exists(DownloadManager.DownloadState.SPEED_PER_SECOND.similar(0.75), 10)
         assert_true(self, expected, 'Speed information is displayed.')
 
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
