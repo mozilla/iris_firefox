@@ -25,12 +25,19 @@ class Test(BaseTest):
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
         moz_wiki_item_pattern = Pattern('moz_wiki_item.png')
         one_offs_bar_moz_pattern = Pattern('moz.png')
+        google_one_click_search_pattern = Pattern('google_one_click_search.png')
 
         top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        figefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, figefox_site_loaded, 'Page successfully loaded, firefox logo found.')
+        home_location = find(NavBar.HOME_BUTTON)
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+
+        search_results_region = Region(home_location.x, home_location.y, home_width, home_height)
+        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
+
+        firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, firefox_site_loaded, 'Page successfully loaded, firefox logo found.')
 
         if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
             minimize_window()
@@ -41,13 +48,13 @@ class Test(BaseTest):
             maximize_button = window_controls_pattern.target_offset(width - 10, height / 2)
 
             key_down(Key.ALT)
+
             click(maximize_button)
+
             key_up(Key.ALT)
 
         maximize_button_exists = exists(window_controls_maximize_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, maximize_button_exists, 'Window successfully minimized.')
-
-        top_region_location = find(window_controls_maximize_pattern)
 
         select_location_bar()
 
@@ -56,25 +63,17 @@ class Test(BaseTest):
         one_offs_bar_exists = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, one_offs_bar_exists, 'Searched string found at the bottom of the drop-down list.')
 
-        left_bottom_search_result_location = find(one_offs_bar_moz_pattern)
-
         one_offs_settings = top_two_thirds_of_screen.exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, one_offs_settings, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         type(Key.ENTER)
 
-        magnifying_glass_google = top_two_thirds_of_screen.exists(magnifying_glass_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, magnifying_glass_google, 'The default search engine is \'Google\', page successfully loaded.')
-
-        magnifying_glass_location = find(magnifying_glass_pattern)
-
-        search_results_region = Region(left_bottom_search_result_location.x, top_region_location.y,
-                                       magnifying_glass_location.x - left_bottom_search_result_location.x,
-                                       (left_bottom_search_result_location.y - top_region_location.y) * 2)
+        google_search_successful = tabs_region.exists(google_one_click_search_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, google_search_successful, 'The default search engine \'Google\' website loaded.')
 
         moz_word_available = exists('moz', Settings.FIREFOX_TIMEOUT, search_results_region)
         assert_true(self, moz_word_available,
-                    'Searched item is successfully found in the page opened by the default search engine.')
+                    'Searched item is successfully found in the search engine page.')
 
         reset_mouse()
         maximize_window()
