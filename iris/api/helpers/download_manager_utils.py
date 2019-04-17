@@ -64,6 +64,7 @@ class DownloadFiles(object):
     POTENTIALLY_UNWANTED = Pattern('potentially_unwanted.png')
     FIREFOX_INSTALLER = Pattern('firefox_installer.png')
     FIREFOX_INSTALLER_HIGHLIGHTED = Pattern('firefox_installer_highlighted.png')
+    STATUS_200 = Pattern('status_200.png')
 
     ABOUT = Pattern('about.png')
     SAVE_FILE = Pattern('save_file.png')
