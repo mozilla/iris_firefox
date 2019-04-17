@@ -51,8 +51,7 @@ class Test(BaseTest):
 
         select_location_bar()
 
-        paste('moz')
-        type(Key.SPACE)
+        type('moz ', interval=0.5)
 
         one_offs_bar_exists = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, one_offs_bar_exists, 'Searched string found at the bottom of the drop-down list.')
@@ -63,7 +62,6 @@ class Test(BaseTest):
         assert_true(self, one_offs_settings, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         type(Key.ENTER)
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         magnifying_glass_google = top_two_thirds_of_screen.exists(magnifying_glass_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, magnifying_glass_google, 'The default search engine is \'Google\', page successfully loaded.')
@@ -88,8 +86,8 @@ class Test(BaseTest):
         assert_true(self, restore_window_button, 'Window successfully maximized.')
 
         select_location_bar()
-        paste('moz')
-        type(Key.SPACE)
+
+        type('moz ', interval=0.5)
 
         one_offs_bar_moz = top_two_thirds_of_screen.exists(one_offs_bar_moz_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, one_offs_bar_moz, 'Searched string found at the bottom of the drop-down list.')
@@ -105,8 +103,11 @@ class Test(BaseTest):
         except FindError:
             raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
 
+        wikipedia_one_off_button = top_two_thirds_of_screen.exists(wikipedia_one_off_button_pattern,
+                                                                   Settings.FIREFOX_TIMEOUT)
+        assert_true(self, wikipedia_one_off_button, 'Wikipedia one off button exists')
+
         click(wikipedia_one_off_button_pattern)
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         wikipedia_search_tab = top_two_thirds_of_screen.exists(wikipedia_search_results_moz_pattern,
                                                                Settings.SITE_LOAD_TIMEOUT)
