@@ -29,7 +29,6 @@ class Test(BaseTest):
         top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-
         firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
         assert_true(self, firefox_site_loaded, 'Page successfully loaded, firefox logo found.')
 
