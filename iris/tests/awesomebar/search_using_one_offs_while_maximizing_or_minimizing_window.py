@@ -62,7 +62,6 @@ class Test(BaseTest):
         assert_true(self, one_offs_settings, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         type(Key.ENTER)
-        time.sleep(20)
 
         home_location = find(NavBar.HOME_BUTTON)
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
