@@ -19,7 +19,6 @@ class Test(BaseTest):
     def run(self):
         search_settings_pattern = Pattern('search_settings.png')
         window_controls_restore_pattern = Pattern('window_controls_restore.png')
-        magnifying_glass_pattern = Pattern('magnifying_glass.png')
         window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
@@ -30,11 +29,6 @@ class Test(BaseTest):
         top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        home_location = find(NavBar.HOME_BUTTON)
-        home_width, home_height = NavBar.HOME_BUTTON.get_size()
-
-        search_results_region = Region(home_location.x, home_location.y, home_width, home_height)
-        tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
         firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
         assert_true(self, firefox_site_loaded, 'Page successfully loaded, firefox logo found.')
@@ -44,8 +38,9 @@ class Test(BaseTest):
         else:
             reset_mouse()
             window_controls_pattern = Pattern('window_controls.png')
-            width, height = window_controls_pattern.get_size()
-            maximize_button = window_controls_pattern.target_offset(width - 10, height / 2)
+            window_controls_width, window_controls_height = window_controls_pattern.get_size()
+            maximize_button = window_controls_pattern.target_offset(window_controls_width - 10,
+                                                                    window_controls_height / 2)
 
             key_down(Key.ALT)
 
@@ -67,13 +62,19 @@ class Test(BaseTest):
         assert_true(self, one_offs_settings, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         type(Key.ENTER)
+        time.sleep(20)
+
+        home_location = find(NavBar.HOME_BUTTON)
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+
+        search_results_region = Region(home_location.x, home_location.y, home_width * 40, home_height * 20)
+        tabs_region = Region(0, home_location.y-home_height * 4, SCREEN_WIDTH, home_height * 4)
 
         google_search_successful = tabs_region.exists(google_one_click_search_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, google_search_successful, 'The default search engine \'Google\' website loaded.')
 
         moz_word_available = exists('moz', Settings.FIREFOX_TIMEOUT, search_results_region)
-        assert_true(self, moz_word_available,
-                    'Searched item is successfully found in the search engine page.')
+        assert_true(self, moz_word_available, 'Searched item is successfully found in the search engine page.')
 
         reset_mouse()
         maximize_window()
