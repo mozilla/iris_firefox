@@ -79,7 +79,7 @@ class Test(BaseTest):
             url_height = about_downloads_label_pattern.get_size()[1]
             url_location = find(about_downloads_label_pattern)
             # Remove selection from pattern
-            click(Location(url_location.x, url_location.y + url_height * 15))
+            click(Location(url_location.x, url_location.y + url_height * 30))
 
         second_file_downloaded = exists(second_bytes_label_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, second_file_downloaded, 'Second file saved')
