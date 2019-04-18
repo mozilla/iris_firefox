@@ -38,7 +38,7 @@ class Test(BaseTest):
         private_browsing_window_opened = exists(PrivateWindow.private_window_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, private_browsing_window_opened, 'Private Browsing Window opened')
 
-        navigate(LocalWeb.SAMPLE_FILES + '1.zip')
+        navigate('{local_path_to_sample_files}1.zip'.format(local_path_to_sample_files=LocalWeb.SAMPLE_FILES))
 
         save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, Settings.FIREFOX_TIMEOUT)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
@@ -52,7 +52,7 @@ class Test(BaseTest):
         
         restore_firefox_focus()
 
-        navigate(LocalWeb.SAMPLE_FILES + '2.zip')
+        navigate('{local_path_to_sample_files}2.zip'.format(local_path_to_sample_files=LocalWeb.SAMPLE_FILES))
 
         save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, Settings.FIREFOX_TIMEOUT)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
