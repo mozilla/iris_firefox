@@ -34,15 +34,16 @@ class Test(BaseTest):
         about_downloads_label_pattern = Pattern('about_downloads_label.png')
 
         new_private_window()
-        private_browsing_window_opened = exists(PrivateWindow.private_window_pattern, 5)
+        private_browsing_window_opened = exists(PrivateWindow.private_window_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, private_browsing_window_opened, 'Private Browsing Window opened')
 
         navigate(LocalWeb.SAMPLE_FILES + '1.zip')
-        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, 10)
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, Settings.FIREFOX_TIMEOUT)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
-        ok_button_exists = exists(DownloadDialog.OK_BUTTON, 5)
+
+        ok_button_exists = exists(DownloadDialog.OK_BUTTON, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, ok_button_exists, 'Button OK exists')
 
         click(DownloadDialog.OK_BUTTON)
@@ -50,24 +51,25 @@ class Test(BaseTest):
         restore_firefox_focus()
 
         navigate(LocalWeb.SAMPLE_FILES + '2.zip')
-        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, 10)
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, Settings.FIREFOX_TIMEOUT)
         assert_true(self, save_file_dialog_exists, 'Save file dialog opened')
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
-        ok_button_exists = exists(DownloadDialog.OK_BUTTON, 5)
+
+        ok_button_exists = exists(DownloadDialog.OK_BUTTON, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, ok_button_exists, 'Button OK exists')
 
         click(DownloadDialog.OK_BUTTON)
 
         open_downloads()
 
-        about_downloads_label_exists = exists(about_downloads_label_pattern, 5)
+        about_downloads_label_exists = exists(about_downloads_label_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, about_downloads_label_exists, 'Downloads opened')
 
         if Settings.is_mac():
             click(about_downloads_label_pattern)
 
-        first_file_downloaded = exists(first_bytes_label_pattern, 5)
+        first_file_downloaded = exists(first_bytes_label_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, first_file_downloaded, 'First file saved')
 
         if Settings.is_linux():
@@ -76,7 +78,7 @@ class Test(BaseTest):
             # Remove selection from pattern
             click(Location(url_location.x, url_location.y + url_height * 15))
 
-        second_file_downloaded = exists(second_bytes_label_pattern, 5)
+        second_file_downloaded = exists(second_bytes_label_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, second_file_downloaded, 'Second file saved')
 
         close_window()
