@@ -17,49 +17,19 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        default_status_pattern = Pattern('default_status.png')
-        modified_status_pattern = Pattern('modified_status.png')
-        true_value_highlight_pattern = Pattern('true_value_highlight.png')
-        false_value_no_highlight_pattern = Pattern('false_value_no_highlight.png')
-        accept_risk_pattern = Pattern('accept_risk.png').similar(0.7)
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
-        navigate('about:config')
-        expected = exists(accept_risk_pattern, 10)
-        assert_true(self, expected, 'Need to accept the risks before continue to next step.')
-        click(accept_risk_pattern)
-
-        expected = region.exists(default_status_pattern, 10)
-        assert_true(self, expected, 'The \'about:config\' page successfully loaded and default status is correct.')
-
-        paste('browser.search.openintab')
-        type(Key.ENTER)
-
-        expected = region.exists(default_status_pattern, 10)
-        assert_true(self, expected, 'The \'browser.search.openintab\' preference has status \'default\' by default.')
-
-        expected = region.exists(false_value_no_highlight_pattern, 10)
-        assert_true(self, expected, 'The \'browser.search.openintab\' preference has value \'false\' by default.')
-
-        double_click(default_status_pattern)
-
-        expected = region.exists(modified_status_pattern, 10)
-        assert_true(self, expected, 'The \'browser.search.openintab\' preference has status \'modified\' after the '
-                                    'preference has changed.')
-
-        expected = region.exists(true_value_highlight_pattern, 10)
-        assert_true(self, expected, 'The \'browser.search.openintab\' preference has value \'true\' after the '
-                                    'preference has changed.')
-
-        select_location_bar()
-        paste('about:newtab')
-        type(Key.ENTER)
+        change_preference('browser.search.openintab', True)
+        navigate('about:newtab')
 
         expected = region.exists(search_settings_pattern, 10)
         assert_true(self, expected, 'The \'about:newtab\' page successfully loaded.')
+
+        expected = exists(Tabs.NEW_TAB_HIGHLIGHTED, 10)
+        assert_true(self, expected, 'Tab information is correctly displayed.')
 
         select_location_bar()
         paste(url)
@@ -68,3 +38,6 @@ class Test(BaseTest):
         # Link is opened in the same tab.
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
+
+        expected = exists(Tabs.NEW_TAB_HIGHLIGHTED, 10)
+        assert_false(self, expected, 'Link is opened in the same tab.')
