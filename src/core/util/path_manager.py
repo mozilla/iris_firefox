@@ -103,7 +103,7 @@ class PathManager:
         return 'http://127.0.0.1:%s' % get_core_args().port + resource
 
     @staticmethod
-    def get_tempdir():
+    def get_temp_dir():
         """Returns temporary directory path."""
         return _tmp_dir
 

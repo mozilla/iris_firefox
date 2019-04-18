@@ -195,4 +195,6 @@ class ShutdownTasks(cleanup.CleanUp):
         reset_terminal_encoding()
         # TBD:
         # terminate subprocesses
-        # remove temp folder(s)
+        # remove temp folder
+        if os.path.exists(PathManager.get_temp_dir()):
+            shutil.rmtree(PathManager.get_temp_dir(), ignore_errors=True)
