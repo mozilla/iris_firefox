@@ -139,3 +139,10 @@ def set_terminal_encoding(encoding):
             logger.debug('Successfully set codepage to "%s"' % encoding)
         else:
             logger.warning('Can\'t set codepage for terminal')
+
+
+def get_python_version():
+    version_string = subprocess.Popen('python --version', stdout=subprocess.PIPE, shell=True).communicate()[
+        0].rstrip().decode("utf-8")
+    version = version_string.split(' ')[1]
+    return version

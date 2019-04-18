@@ -14,6 +14,7 @@ import pytest
 from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
+from src.core.util.system import get_python_version
 
 logger = logging.getLogger(__name__)
 args = get_core_args()
@@ -90,11 +91,11 @@ def update_run_index(app, finished=False):
 def create_run_log(app):
     args = get_core_args()
     meta = {'run_id': PathManager.get_run_id(),
-            # 'platform': OSHelper.get_os().value,
+            'platform': OSHelper.get_os().value,
             'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
                                           OSHelper.get_processor()),
             'locale': args.locale,
-            'args': ' '.join(vars(args)),
+            'args': ' '.join(sys.argv),
             'params': vars(args),
             'log': os.path.join(PathManager.get_current_run_dir(), 'iris_log.log')}
     values = {}
@@ -107,6 +108,7 @@ def create_run_log(app):
     meta['iris_repo'] = repo.working_tree_dir
     meta['iris_branch'] = repo.active_branch.name
     meta['iris_branch_head'] = repo.head.object.hexsha
+    meta['python_version'] = get_python_version()
 
     failed = 0
     passed = 0

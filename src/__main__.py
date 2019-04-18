@@ -22,7 +22,7 @@ from src.core.util.json_utils import create_target_json
 from src.core.util.local_web_server import LocalWebServer
 from src.core.util.logger_manager import initialize_logger
 from src.core.util.path_manager import PathManager
-from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding
+from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding, get_python_version
 
 logger = logging.getLogger(__name__)
 
@@ -132,6 +132,11 @@ def get_test_params():
 
 def verify_config(args):
     """Checks keyboard state is correct, and that Tesseract and 7zip are installed."""
+    if OSHelper.get_os().value is 'win':
+        if get_python_version() is not '3.5.3':
+            logger.error('Iris 2.0 does not run on versions of Python above 3.5.3')
+            logger.error('at the moment due to compatibility issues.')
+            logger.info('Shutting down.')
     try:
         if not all([check_keyboard_state(args.no_check), init_tesseract_path(), check_7zip()]):
             exit(1)
