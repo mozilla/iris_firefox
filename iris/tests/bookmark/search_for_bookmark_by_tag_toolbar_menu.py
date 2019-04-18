@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Search for available bookmarks from Bookmarks Toolbar menu by tag'
+        self.meta = 'Search for available bookmarks from Bookmarks Toolbar menu by tag.'
         self.test_case_id = '166039'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
@@ -21,23 +21,76 @@ class Test(BaseTest):
         self.profile = Profile.TEN_BOOKMARKS
 
     def run(self):
-        focused_url_bar_with_asterisk_pattern = Pattern('focused_url_address_bar_with_asterisk')
+        search_bookmarks_option_pattern = LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS
+        toolbar_bookmarks_top_menu_item_pattern = Pattern('bookmarks_toolbar_menu_option.png')
+        getting_started_bookmark_top_menu_pattern = Pattern('getting_started_top_menu.png')
+        focused_url_bar_with_asterisk_pattern = Pattern('focused_search_field.png')
+        search_by_tag_result_pattern = Pattern('tagged_bookmark_search_result.png')
+        bookmarks_menu_item_top_menu_pattern = Pattern('bookmarks_top_menu.png')
+        properties_option_pattern = Pattern('bookmark_properties_button.png')
+        save_button_pattern = Pattern('save_bookmark_name.png')
+
+        open_firefox_menu()
+
+        bookmark_menu_item_available = exists(bookmarks_menu_item_top_menu_pattern)
+        assert_true(self, bookmark_menu_item_available, '\'Bookmarks\' option is available on Firefox top menu')
+
+        click(bookmarks_menu_item_top_menu_pattern)
+
+        toolbar_bookmarks_available_on_top_menu = exists(toolbar_bookmarks_top_menu_item_pattern)
+        assert_true(self, toolbar_bookmarks_available_on_top_menu,
+                    '\'Bookmarks Toolbar\' option available in \'Bookmarks\' section from top menu')
+
+        mouse_move(toolbar_bookmarks_top_menu_item_pattern)
+
+        getting_started_bookmark_available = exists(getting_started_bookmark_top_menu_pattern)
+        assert_true(self, getting_started_bookmark_available,
+                    '\'Getting started\' bookmark available in \'Bookmarks\' section from top menu')
+
+        mouse_move(getting_started_bookmark_top_menu_pattern)
+
+        right_click(getting_started_bookmark_top_menu_pattern)
+
+        properties_option_appeared = exists(properties_option_pattern)
+        assert_true(self, properties_option_appeared, '\'Properties\' option available after right-click at bookmark')
+
+        click(properties_option_pattern)
+
+        tags_field_available = exists(Bookmarks.StarDialog.TAGS_FIELD)
+        assert_true(self, tags_field_available, '\'Tags\' field available in \'Properties\' window')
+
+        click(Bookmarks.StarDialog.TAGS_FIELD)
+
+        paste('test')
+
+        click(save_button_pattern)
+
+        properties_window_opened = exists(save_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_false(self, properties_window_opened, '\'Properties\' window for \'Getting started\' bookmark closed')
 
         click(NavBar.LIBRARY_MENU)
 
-        library_menu_opened = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, library_menu_opened, 'The Bookmarks menu is correctly displayed.')
+        library_menu_displayed = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, library_menu_displayed, 'The Bookmarks menu is correctly displayed.')
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        search_bookmarks_option_available = exists(Library.SEARCH_BOOKMARKS, Settings.SHORT_FIREFOX_TIMEOUT)
+        search_bookmarks_option_available = exists(search_bookmarks_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, search_bookmarks_option_available,
-                    '\'Search bookmarks\' option from \'Bookmarks\' toolbar menu')
+                    '\'Search bookmarks\' option from \'Bookmarks\' toolbar menu.')
 
-        click(Library.SEARCH_BOOKMARKS)
+        click(search_bookmarks_option_pattern)
 
-        menu_opened = exists(Library.SEARCH_BOOKMARKS)
-        assert_false(self, menu_opened, 'The menu is dismissed')
+        menu_opened = exists(search_bookmarks_option_pattern)
+        assert_false(self, menu_opened, 'The menu is dismissed.')
 
         url_bar_focused = exists(focused_url_bar_with_asterisk_pattern)
         assert_true(self, url_bar_focused, 'The focus is in the URL address bar after a \'*\'.')
+
+        click(focused_url_bar_with_asterisk_pattern)
+
+        paste('test')
+
+        bookmark_found_by_tag = exists(search_by_tag_result_pattern)
+        assert_true(self, bookmark_found_by_tag,
+                    'All the valid results are displayed under the URL bar with a star-shaped button in front.')
