@@ -20,35 +20,38 @@ class Test(BaseTest):
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         iris_bookmark_focus_pattern = Pattern('iris_bookmark_focus.png')
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+
         today_bookmarks_toolbar_pattern = Pattern('today_bookmarks_toolbar.png')
         history_today_pattern = Library.HISTORY_TODAY
 
         # Open the Bookmarks toolbar.
-        access_bookmarking_tools(view_bookmarks_toolbar)
-        expected = exists(bookmarks_toolbar_most_visited_pattern, 10)
-        assert_true(self, expected, 'Bookmarks Toolbar has been activated.')
+        open_bookmarks_toolbar()
 
         # Open History and check if it is populated with the Iris page.
-        open_library_menu('History')
+        open_library_menu(LibraryMenu.HISTORY_BUTTON)
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
+
+        expected = right_upper_corner.exists(iris_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Iris page is displayed in the History menu list.')
 
         click(show_all_history_pattern)
 
-        expected = exists(iris_bookmark_focus_pattern, 10)
+        expected = exists(iris_bookmark_focus_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Iris page is displayed in the Recent History list.')
 
         # Copy the History time range from the Library and paste it to the Bookmarks toolbar.
         right_click(history_today_pattern)
+
         type(text='c')
 
         click_window_control('close')
-        time.sleep(DEFAULT_UI_DELAY)
+
+        bookmarks_toolbar_most_visited_exist = exists(bookmarks_toolbar_most_visited_pattern)
+        assert_true(self, bookmarks_toolbar_most_visited_exist, 'Bookmarks toolbar > Most Visited exist')
 
         right_click(bookmarks_toolbar_most_visited_pattern)
+
         type(text='p')
 
         expected = exists(today_bookmarks_toolbar_pattern)
