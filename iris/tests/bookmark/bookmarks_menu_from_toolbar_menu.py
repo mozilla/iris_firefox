@@ -25,12 +25,12 @@ class Test(BaseTest):
         show_all_bookmarks_pattern = Pattern('show_all_bookmarks_button.png')
         recently_bookmarked_label_pattern = Pattern('recently_bookmarked_label.png')
 
-        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.TINY_FIREFOX_TIMEOUT)
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'The Bookmarks menu is correctly displayed')
 
         click(LibraryMenu.BOOKMARKS_OPTION)
@@ -38,22 +38,20 @@ class Test(BaseTest):
         back_button_exists = exists(Utils.LIBRARY_BACK_BUTTON, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, back_button_exists, 'Back button is displayed')
 
-        bookmarks_title_exists = exists(bookmarks_title_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        bookmarks_title_exists = exists(bookmarks_title_pattern)
         assert_true(self, bookmarks_title_exists, 'Bookmarks title is displayed')
 
-        bookmark_this_page_exists = exists(bookmark_this_page_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        bookmark_this_page_exists = exists(bookmark_this_page_pattern)
         assert_true(self, bookmark_this_page_exists, 'Bookmark this page button is displayed')
 
-        bookmarking_tools_exists = exists(LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS, Settings.TINY_FIREFOX_TIMEOUT)
+        bookmarking_tools_exists = exists(LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS)
         assert_true(self, bookmarking_tools_exists, 'Bookmarking Tools button is displayed')
 
-        search_bookmarks_exists = exists(LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS, Settings.TINY_FIREFOX_TIMEOUT)
+        search_bookmarks_exists = exists(LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS)
         assert_true(self, search_bookmarks_exists, 'Search Bookmarks button is displayed')
 
-        recently_bookmarked_label_exists = exists(recently_bookmarked_label_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        recently_bookmarked_label_exists = exists(recently_bookmarked_label_pattern)
         assert_true(self, recently_bookmarked_label_exists, 'Recently bookmarked section is displayed')
 
-        show_all_bookmarks_exists = exists(show_all_bookmarks_pattern, Settings.TINY_FIREFOX_TIMEOUT)
+        show_all_bookmarks_exists = exists(show_all_bookmarks_pattern)
         assert_true(self, show_all_bookmarks_exists, 'Show all bookmarks button is displayed')
-
-
