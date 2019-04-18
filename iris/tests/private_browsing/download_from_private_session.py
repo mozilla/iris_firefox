@@ -70,6 +70,12 @@ class Test(BaseTest):
         first_file_downloaded = exists(first_bytes_label_pattern, 5)
         assert_true(self, first_file_downloaded, 'First file saved')
 
+        if Settings.is_linux():
+            url_height = about_downloads_label_pattern.get_size()[1]
+            url_location = find(about_downloads_label_pattern)
+            # Remove selection from pattern
+            click(Location(url_location.x, url_location.y + url_height * 15))
+
         second_file_downloaded = exists(second_bytes_label_pattern, 5)
         assert_true(self, second_file_downloaded, 'Second file saved')
 
