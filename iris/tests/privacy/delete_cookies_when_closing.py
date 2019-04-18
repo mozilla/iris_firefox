@@ -58,7 +58,9 @@ class Test(BaseTest):
                         image=preferences_privacy_page_pattern
                         )
 
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(Settings.SHORT_FIREFOX_TIMEOUT)
+
+        open_find()
 
         paste('Delete cookies')
 
