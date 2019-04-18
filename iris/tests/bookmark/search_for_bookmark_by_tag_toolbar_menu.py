@@ -70,11 +70,15 @@ class Test(BaseTest):
         except FindError:
             raise FindError('\'Properties\' window for \'Getting started\' bookmark didn\'t close')
 
+        library_menu_available = exists(NavBar.LIBRARY_MENU)
+        assert_true(self, library_menu_available, '\'Library menu\' button is available')
+
         click(NavBar.LIBRARY_MENU)
 
         library_menu_displayed = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_menu_displayed,
-                    '\'View history, saved bookmarks and more\' menu section is correctly displayed.')
+                    '\'Bookmark option\' available in \'View history, saved '
+                    'bookmarks and more\' menu section is correctly displayed.')
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
