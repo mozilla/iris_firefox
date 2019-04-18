@@ -32,12 +32,14 @@ def is_command(request):
 
 def do_command(request):
     logger.debug('Parsing command from path: %s ' % request.path)
-    if 'delete' in request.path:
+    if 'delete?' in request.path:
         try:
+            request.set_headers(False)
             delete(request.path.split('?')[1])
         except KeyError:
             logger.error('Malformed delete command: %s' % request.path)
-        request.set_headers(False)
+    elif 'deleteAll' in request.path:
+        delete_all()
     elif 'go' in request.path:
         go(request)
         request.set_headers(False)
@@ -48,6 +50,11 @@ def do_command(request):
 
 
 def delete(args, update_run_file=True):
+    """
+    Delete a past run.
+    :param args: The run ID to delete
+    :param update_run_file: Remove entry from runs.json file
+    """
     logger.debug('Received delete command with arguments: %s ' % args)
 
     if update_run_file:
@@ -79,9 +86,24 @@ def delete(args, update_run_file=True):
         logger.error('Run directory does not exist: %s' % target_run)
 
 
+def delete_all():
+    """
+    Delete each run in the runs.json file, one at a time.
+    """
+    logger.debug('Delete All command received.')
+    run_file = os.path.join(PathManager.get_working_dir(), 'data', 'runs.json')
+
+    with open(run_file, 'r') as data:
+        run_file_data = json.load(data)
+        data.close()
+
+    for run in run_file_data['runs']:
+            delete(run['id'])
+
+
 def go(request):
     """
-    Find POST body, handle JSON in body
+    Find POST body, handle JSON in body.
     """
     logger.debug('Finish command received: %s' % request.path)
     data_string = request.rfile.read(int(request.headers['Content-Length'])).decode('utf-8')
@@ -94,7 +116,7 @@ def go(request):
 
 def cancel(request):
     """
-    Exit Iris with no further action.
+    Stop web server with no further action.
     """
     logger.debug('Cancel command received: %s' % request.path)
     request.set_result('cancel')

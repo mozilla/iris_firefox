@@ -76,6 +76,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 self.wfile.write(f.read())
         except Exception as e:
             logger.debug('Exception in do_GET')
+            logger.debug (e.args)
             if '10053' in e.args:
                 logger.debug('Browser closed connection before response completed.')
 
