@@ -73,13 +73,15 @@ class Test(BaseTest):
         click(NavBar.LIBRARY_MENU)
 
         library_menu_displayed = exists(LibraryMenu.BOOKMARKS_OPTION, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_true(self, library_menu_displayed, 'The Bookmarks menu is correctly displayed.')
+        assert_true(self, library_menu_displayed,
+                    '\'View history, saved bookmarks and more\' menu section is correctly displayed.')
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         search_bookmarks_option_available = exists(search_bookmarks_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, search_bookmarks_option_available,
-                    '\'Search bookmarks\' option from \'Bookmarks\' toolbar menu.')
+                    'Bookmarks menu is displayed and \'Search bookmarks\' '
+                    'option from \'Bookmarks\' toolbar menu available.')
 
         click(search_bookmarks_option_pattern)
 
