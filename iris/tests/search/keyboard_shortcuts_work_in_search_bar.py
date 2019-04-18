@@ -31,6 +31,7 @@ class Test(BaseTest):
 
         # Hover the mouse over the Search Bar.
         hover(search_bar_pattern)
+
         expected = exists(search_using_google_pattern, 10)
         assert_true(self, expected, '\'Search using Google\' is shown as tooltip.')
 
@@ -74,5 +75,6 @@ class Test(BaseTest):
         assert_true(self, expected, 'The default search engine becomes the next one from the list.')
 
         change_search_previous()
+
         expected = exists(google_search_engine_pattern, 10)
         assert_true(self, expected, 'The default search engine becomes the previous one from the list.')
