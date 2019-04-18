@@ -66,5 +66,5 @@ class Test(BaseTest):
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu(LibraryMenu.HISTORY_BUTTON)
 
-        expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.9), 5)
+        expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.9), Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, expected_6, 'Mozilla page is not displayed in the Recent History list.')
