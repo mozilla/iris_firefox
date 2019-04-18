@@ -47,8 +47,6 @@ class Test(BaseTest):
         assert_true(self, getting_started_bookmark_available,
                     '\'Getting started\' bookmark available in \'Bookmarks\' section from top menu')
 
-        mouse_move(getting_started_bookmark_top_menu_pattern)
-
         right_click(getting_started_bookmark_top_menu_pattern)
 
         properties_option_appeared = exists(properties_option_pattern)
@@ -65,8 +63,12 @@ class Test(BaseTest):
 
         click(save_button_pattern)
 
-        properties_window_opened = exists(save_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_false(self, properties_window_opened, '\'Properties\' window for \'Getting started\' bookmark closed')
+        try:
+            properties_window_closed = wait_vanish(save_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+            assert_true(self, properties_window_closed,
+                        '\'Properties\' window for \'Getting started\' bookmark closed')
+        except FindError:
+            raise FindError('\'Properties\' window for \'Getting started\' bookmark didn\'t close')
 
         click(NavBar.LIBRARY_MENU)
 
@@ -81,8 +83,11 @@ class Test(BaseTest):
 
         click(search_bookmarks_option_pattern)
 
-        menu_opened = exists(search_bookmarks_option_pattern)
-        assert_false(self, menu_opened, 'The menu is dismissed.')
+        try:
+            menu_closed = wait_vanish(search_bookmarks_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+            assert_true(self, menu_closed, 'The \'Bookmarks toolbar menu\' is dismissed.')
+        except FindError:
+            raise FindError('The \'Bookmarks toolbar menu\' didn\'t dismiss.')
 
         url_bar_focused = exists(focused_url_bar_with_asterisk_pattern)
         assert_true(self, url_bar_focused, 'The focus is in the URL address bar after a \'*\'.')
