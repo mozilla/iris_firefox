@@ -20,7 +20,7 @@ class Test(BaseTest):
 
         open_library()
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
@@ -52,4 +52,5 @@ class Test(BaseTest):
         assert_true(self, bookmark_exists, 'The New Folder is added in the selected section')
 
         click(Library.TITLE)
+
         close_window_control('auxiliary')
