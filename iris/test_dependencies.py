@@ -22,6 +22,7 @@ from iris.api.core.firefox_ui.sidebar import *
 from iris.api.core.firefox_ui.site_information_panel import *
 from iris.api.core.firefox_ui.tabs import *
 from iris.api.core.firefox_ui.utils import *
+from iris.api.core.firefox_ui.more_tools import *
 
 from iris.api.helpers.customize_utils import *
 from iris.api.helpers.download_manager_utils import *

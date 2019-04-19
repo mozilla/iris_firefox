@@ -13,6 +13,8 @@ class Test(BaseTest):
         self.meta = 'The downloads button works properly positioned in the Overflow Menu.'
         self.test_case_id = '245607'
         self.test_suite_id = '1827'
+        self.blocked_by = {'id': '1527607', 'platform': Platform.ALL}
+        self.blocked_by = {'id': '2920', 'platform': Platform.ALL}
         self.locales = ['en-US']
 
     def setup(self):
@@ -53,27 +55,29 @@ class Test(BaseTest):
 
         click(NavBar.MORE_TOOLS)
 
-        expected = exists(Library.DownloadLibrary.DOWNLOADS, 10)
+        expected = exists(MoreTools.DOWNLOADS, 10)
         assert_true(self, expected, 'Download option is placed in Overflow menu.')
 
-        #time.sleep(100)
+        click(MoreTools.DOWNLOADS.target_offset(-50, 0))
 
-        navigate('https://www.thinkbroadband.com/download')
+        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
 
-        scroll_down(25)
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
 
-        expected = exists(NavBar.CUSTOM_DOWNLOADS_BUTTON_BLUE, 30)
-        assert_true(self, expected, 'Download button turns blue when download is completed.')
+        time.sleep(DEFAULT_UI_DELAY_LONG)
+
+        click(NavBar.MORE_TOOLS)
+
+        download_option = find(MoreTools.DOWNLOADS_OPTION)
+        region_download_button_blue = Region(download_option.x - 50, download_option.y - 20, 100, 100)
+        expected = region_download_button_blue.exists(NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.99), 30)
+        assert_true(self, expected, 'Download button turns blue in the overflow menu when download is completed.')
 
         open_downloads()
 
         if Settings.get_os() == Platform.LINUX:
-            drag_drop(Library.TITLE, DownloadFiles.EXTRA_SMALL_FILE_5MB, 2)
-
-        expected = exists(NavBar.CUSTOM_DOWNLOADS_BUTTON, 10)
-        assert_true(self, expected, 'Download button turns back to default color.')
+            drag_drop(Library.TITLE, DownloadFiles.ABOUT, 2)
 
         # Check that all downloads are displayed in Downloads category.
         for pattern in downloads_library_list:
