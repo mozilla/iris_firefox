@@ -30,11 +30,22 @@ class Test(BaseTest):
 
         # Open a website in a new private window.
         new_private_window()
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, expected_1, 'Mozilla page loaded successfully.')
+
+        test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, test_site_loaded, 'Mozilla page loaded successfully.')
 
         # Check that the previously opened page is not displayed in the Recent History list.
-        open_library_menu('History')
-        expected_2 = exists(recent_history_default_pattern, 10)
-        assert_true(self, expected_2, 'Mozilla page is not displayed in the History list.')
+        library_button_exists = exists(NavBar.LIBRARY_MENU)
+        assert_true(self, library_button_exists, 'Library button exists')
+
+        click(NavBar.LIBRARY_MENU)
+
+        history_button_exists = exists(LibraryMenu.HISTORY_BUTTON, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, history_button_exists, 'History button exists')
+
+        click(LibraryMenu.HISTORY_BUTTON)
+
+        page_not_displayed = exists(recent_history_default_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, page_not_displayed, 'Mozilla page is not displayed in the History list.')
