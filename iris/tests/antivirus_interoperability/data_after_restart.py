@@ -103,7 +103,6 @@ class Test(BaseTest):
         for _ in range(3):
             open_browser_console()
             browser_console_opened = exists(browser_console_pattern, Settings.FIREFOX_TIMEOUT)
-            print _
             if browser_console_opened:
                 break
 
