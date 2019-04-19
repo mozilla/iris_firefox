@@ -51,7 +51,7 @@ class Test(BaseTest):
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
-        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), in_region=history_sidebar_region)
+        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), Settings.FIREFOX_TIMEOUT, history_sidebar_region)
         assert_true(self, history_updated_cnn, 'The CNN site is added to history')
 
         history_updated_wiki = exists(wikipedia_logo_pattern, in_region=history_sidebar_region)
