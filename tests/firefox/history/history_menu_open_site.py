@@ -34,7 +34,7 @@ class Test(FirefoxTest):
         expected_2 = right_upper_corner.exists(recent_history_mozilla_pattern, 10)
         assert expected_2, 'Mozilla page displayed in the History list successfully.'
 
-        right_upper_corner.click(recent_history_mozilla_pattern)
+        right_upper_corner.click(recent_history_mozilla_pattern, 1)
 
         # Check that the page was opened successfully.
         expected_3 = exists(LocalWeb.MOZILLA_LOGO, 10)
