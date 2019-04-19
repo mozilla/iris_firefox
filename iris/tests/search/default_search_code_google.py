@@ -19,6 +19,7 @@ class Test(BaseTest):
         url = LocalWeb.FOCUS_TEST_SITE
         text_pattern = Pattern('focus_text.png')
         text_pattern_selected = Pattern('focus_text_selected.png')
+        google_logo_pattern = Pattern('search_result_default.png')
 
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
@@ -52,14 +53,15 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY_LONG)
 
             navigate('about:preferences#search')
-            expected = exists(default_search_engine_google_pattern, 10)
+            expected = exists(default_search_engine_google_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, expected, 'Google is the default search engine.')
 
             # Perform a search using the awesome bar and then clear the content from it.
             select_location_bar()
             paste('test')
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
+            assert_true(self, google_page_downloaded, 'Google search results displayed')
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -87,7 +89,8 @@ class Test(BaseTest):
             select_search_bar()
             paste('test')
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
+            assert_true(self, google_page_downloaded, 'Google search results displayed')
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -111,7 +114,7 @@ class Test(BaseTest):
             # Highlight some text and right click it.
             new_tab()
             navigate(url)
-            expected = exists(text_pattern, 50)
+            expected = exists(text_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
 
             double_click(text_pattern)
@@ -120,7 +123,8 @@ class Test(BaseTest):
             time.sleep(DEFAULT_UI_DELAY)
             repeat_key_down(3)
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
+            assert_true(self, google_page_downloaded, 'Google search results displayed')
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -143,12 +147,13 @@ class Test(BaseTest):
 
             # Perform a search from about:newtab page, content search field.
             new_tab()
-            expected = exists(google_logo_content_search_field_pattern, 10)
+            expected = exists(google_logo_content_search_field_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, expected, 'Google logo from content search field found.')
             click(google_logo_content_search_field_pattern)
             paste('beats')
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
+            assert_true(self, google_page_downloaded, 'Google search results displayed')
             select_location_bar()
             url_text = copy_to_clipboard()
 
