@@ -17,6 +17,8 @@ class Test(BaseTest):
 
     def run(self):
         iris_new_folder_pattern = Pattern('iris_new_folder.png')
+        if Settings.is_linux():
+            new_folder_bookmark_bookmark = Pattern('new_folder_bookmark.png')
 
         open_library()
 
@@ -37,7 +39,6 @@ class Test(BaseTest):
         click(Library.Organize.NEW_FOLDER)
 
         if Settings.is_linux():
-            new_folder_bookmark_bookmark = Pattern('new_folder_bookmark.png')
             new_bookmark_window_opened = exists(new_folder_bookmark_bookmark)
             assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
         else:
