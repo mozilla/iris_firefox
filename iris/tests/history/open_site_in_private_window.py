@@ -33,8 +33,8 @@ class Test(BaseTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected_1 = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, expected_1, 'Mozilla page loaded successfully.')
+        test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, test_site_loaded, 'Mozilla page loaded successfully.')
 
         # Check that the previously opened page is not displayed in the Recent History list.
         library_button_exists = exists(NavBar.LIBRARY_MENU)
@@ -47,5 +47,5 @@ class Test(BaseTest):
 
         click(LibraryMenu.HISTORY_BUTTON)
 
-        expected_2 = exists(recent_history_default_pattern, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, expected_2, 'Mozilla page is not displayed in the History list.')
+        page_not_displayed = exists(recent_history_default_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, page_not_displayed, 'Mozilla page is not displayed in the History list.')
