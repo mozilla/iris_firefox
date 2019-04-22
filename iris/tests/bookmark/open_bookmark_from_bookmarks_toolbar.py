@@ -25,5 +25,5 @@ class Test(BaseTest):
 
         click(getting_started_bookmark_pattern)
 
-        get_started_page_opened = exists(get_started_tab_pattern, Settings.SITE_LOAD_TIMEOUT)
+        get_started_page_opened = exists(get_started_tab_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, get_started_page_opened, 'Get started page successfully opened')
