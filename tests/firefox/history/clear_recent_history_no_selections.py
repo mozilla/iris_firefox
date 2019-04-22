@@ -37,14 +37,14 @@ class Test(FirefoxTest):
         region = Region(Screen().width / 4, Screen().height / 4, Screen().width / 2, Screen().height / 2)
 
         # Uncheck all options to be cleared.
-        while region.exists(checked_box, 10):
+        while region.exists(checked_box.similar(0.9), 10):
             time.sleep(Settings.DEFAULT_UI_DELAY)
             click(checked_box)
-            region.exists(checked_box, 10)
+            region.exists(checked_box.similar(0.9), 10)
 
         # Check that the 'Clear Now' button is disabled.
         expected_4 = exists(clear_now_button_disabled.similar(0.8), 10)
-        assert  expected_4, 'Clear Now button is disabled.'
+        assert expected_4, 'Clear Now button is disabled.'
 
         # Close the 'Clear Recent History' window.
         type(Key.ESC)
