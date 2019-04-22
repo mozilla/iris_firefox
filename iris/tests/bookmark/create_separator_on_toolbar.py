@@ -27,20 +27,22 @@ class Test(BaseTest):
 
         open_bookmarks_toolbar()
 
-        bookmark_available_in_toolbar = exists(getting_started_toolbar_bookmark_pattern, DEFAULT_SYSTEM_DELAY)
+        bookmark_available_in_toolbar = exists(getting_started_toolbar_bookmark_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmark_available_in_toolbar, 'The \'Bookmarks Toolbar\' is enabled.')
 
         right_click(getting_started_toolbar_bookmark_pattern)
-        new_separator_option_available = exists(new_separator_option_pattern, DEFAULT_SYSTEM_DELAY)
+
+        new_separator_option_available = exists(new_separator_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, new_separator_option_available,
                     '\'New separator\' option is available in context menu after right click at the bookmark')
 
         click(new_separator_option_pattern)
+
         try:
             context_menu_closed = wait_vanish(new_separator_option_pattern)
             assert_true(self, context_menu_closed, 'Context menu successfully closed after adding the separator')
         except FindError:
             raise FindError('Context menu didn\'t close after adding the separator for a bookmark')
 
-        separator_added = exists(bookmark_separator_pattern, DEFAULT_SYSTEM_DELAY)
+        separator_added = exists(bookmark_separator_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, separator_added, 'A separator is displayed in front of the selected bookmark.')
