@@ -35,12 +35,12 @@ class Test(BaseTest):
         select_search_bar()
         type(Key.DOWN)
 
-        change_search_settings_button = exists(change_search_settings_pattern, 10)
+        change_search_settings_button = exists(change_search_settings_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, change_search_settings_button, 'The \'Change Search Settings\' button found in the page.')
 
         click(change_search_settings_pattern)
 
-        about_preferences_page_loaded = exists(about_preferences_search_page_pattern, 10)
+        about_preferences_page_loaded = exists(about_preferences_search_page_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, about_preferences_page_loaded, 'The \'about:preferences#search\' page opened.')
 
         # Add a new search engine.
@@ -53,13 +53,13 @@ class Test(BaseTest):
         else:
             type(Key.TAB)
 
-        find_more_search_engines_link = exists(find_more_search_engines_pattern, 10)
+        find_more_search_engines_link = exists(find_more_search_engines_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, find_more_search_engines_link, '\'Find more search engines\' link found.')
 
         click(find_more_search_engines_pattern)
 
         try:
-            wait(find_add_ons, 10)
+            wait(find_add_ons, Settings.SITE_LOAD_TIMEOUT)
             logger.debug('Find add-ons field is present on the page.')
             click(find_add_ons)
         except FindError:
@@ -67,37 +67,37 @@ class Test(BaseTest):
 
         paste('startpage')
 
-        add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern, 10)
+        add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, add_startpage_search_engine_button, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.')
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
-        add_to_firefox_button = exists(add_to_firefox_pattern, 10)
+        add_to_firefox_button = exists(add_to_firefox_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, add_to_firefox_button, '\'Add to Firefox\' button found.')
 
         click(add_to_firefox_pattern)
 
-        add_button_found = exists(add_button_pattern, 10)
+        add_button_found = exists(add_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, add_button_found, '\'Add\' button found.')
 
         click(add_button_pattern)
 
         previous_tab()
 
-        startpage_search_engine_added = exists(startpage_https_search_engine_pattern, 10)
+        startpage_search_engine_added = exists(startpage_https_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, startpage_search_engine_added, 'The search engine added found in the \'One-Click Search Engines\' section.')
 
         # Navigate to a page that could contain different search engines and can be added to Firefox.
         navigate('https://play.google.com/store')
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         select_search_bar()
         type(Key.DOWN)
-        add_google_play_button = exists(add_google_play_pattern, 10)
+        add_google_play_button = exists(add_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, add_google_play_button, 'The \'Add \'Google Play\' button is found in the page.')
 
         click(add_google_play_pattern)
-        google_play_search_engine_added = exists(google_play_search_engine_pattern, 10)
+        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, google_play_search_engine_added, 'The \'Google Play\' search engine is added to Firefox.')
 
         # Search using the search bar, the content search field and the location bar.
@@ -106,12 +106,12 @@ class Test(BaseTest):
 
         click(google_play_search_engine_pattern)
 
-        test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), 10)
+        test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the search bar works properly.')
 
         navigate('about:newtab')
 
-        google_logo_content_search_field = exists(google_logo_content_search_field_pattern, 10)
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, google_logo_content_search_field, 'Google logo from the content search found.')
 
         click(google_logo_content_search_field_pattern)
@@ -121,7 +121,7 @@ class Test(BaseTest):
 
         click(google_play_search_engine_pattern)
 
-        test_search_google_play = exists(test_search_google_play_pattern, 10)
+        test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the content search field works properly.')
 
         select_location_bar()
@@ -131,5 +131,5 @@ class Test(BaseTest):
 
         click(google_play_search_engine_pattern)
 
-        test_search_google_play = exists(test_search_google_play_pattern, 10)
+        test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the location bar works properly.')
