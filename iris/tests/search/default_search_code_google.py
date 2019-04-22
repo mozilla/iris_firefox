@@ -57,6 +57,7 @@ class Test(BaseTest):
 
             # Perform a search using the awesome bar and then clear the content from it.
             select_location_bar()
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             type('test')
             type(Key.ENTER)
             time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
@@ -85,6 +86,7 @@ class Test(BaseTest):
 
             # Perform a search using the search bar.
             select_search_bar()
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             type('test')
             type(Key.ENTER)
             time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
@@ -146,6 +148,7 @@ class Test(BaseTest):
             expected = exists(google_logo_content_search_field_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, expected, 'Google logo from content search field found.')
             click(google_logo_content_search_field_pattern)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             type('beats')
             type(Key.ENTER)
             time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
