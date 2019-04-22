@@ -21,7 +21,7 @@ class Test(BaseTest):
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
         find_more_search_engines_pattern = Pattern('find_more_search_engines.png')
         startpage_https_search_engine_pattern = Pattern('startpage_https_search_engine.png')
-        find_add_ons = Pattern('find_add_ons.png')
+        find_add_ons_pattern = Pattern('find_add_ons.png')
         add_to_firefox_pattern = Pattern('add_to_firefox.png')
         add_button_pattern = Pattern('add_button.png')
         add_google_play_pattern = Pattern('add_google_play.png')
@@ -44,24 +44,18 @@ class Test(BaseTest):
         assert_true(self, about_preferences_page_loaded, 'The \'about:preferences#search\' page opened.')
 
         # Add a new search engine.
-        for i in range(12):
-            type(Key.TAB)
-
-        if Settings.get_os() == Platform.WINDOWS or Settings.get_os() == Platform.LINUX:
-            type(Key.SPACE)
-            mouse.scroll(-10)
-        else:
-            type(Key.TAB)
+        find_more_search_engines_pattern = scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
+        # matching_message_appears = scroll_until_pattern_found(matching_message_pattern, type, (Key.PAGE_DOWN,)
 
         find_more_search_engines_link = exists(find_more_search_engines_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, find_more_search_engines_link, '\'Find more search engines\' link found.')
 
         click(find_more_search_engines_pattern)
 
-        find_add_ons_button = exists(find_add_ons, Settings.SITE_LOAD_TIMEOUT)
+        find_add_ons_button = exists(find_add_ons_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, find_add_ons_button, 'Find add-ons field is present on the page.')
 
-        click(find_add_ons, 1)
+        click(find_add_ons_pattern, 1)
 
         paste('startpage')
 
