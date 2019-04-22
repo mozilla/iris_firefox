@@ -83,18 +83,25 @@ class Test(BaseTest):
 
         select_search_bar()
         type(Key.DOWN)
+
         add_google_play_button = exists(add_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, add_google_play_button, 'The \'Add \'Google Play\' button is found in the page.')
 
         click(add_google_play_pattern)
+
+        # Prevent Unknown icon in search drop-down menu
+        type(Key.ESC)
+        select_search_bar()
+        type(Key.DOWN)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, google_play_search_engine_added, 'The \'Google Play\' search engine is added to Firefox.')
 
         # Search using the search bar, the content search field and the location bar.
         paste('test')
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
-        click(google_play_search_engine_pattern, 1)
+        click(google_play_search_engine_pattern)
 
         test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the search bar works properly.')
@@ -107,8 +114,9 @@ class Test(BaseTest):
         click(google_logo_content_search_field_pattern)
 
         paste('test')
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
-        click(google_play_search_engine_pattern, 1)
+        click(google_play_search_engine_pattern)
 
         test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the content search field works properly.')
@@ -116,8 +124,9 @@ class Test(BaseTest):
         select_location_bar()
 
         paste('test')
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
-        click(google_play_search_engine_pattern, 1)
+        click(google_play_search_engine_pattern)
 
         test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the location bar works properly.')
