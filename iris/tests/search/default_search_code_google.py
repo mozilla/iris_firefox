@@ -19,7 +19,6 @@ class Test(BaseTest):
         url = LocalWeb.FOCUS_TEST_SITE
         text_pattern = Pattern('focus_text.png')
         text_pattern_selected = Pattern('focus_text_selected.png')
-        google_logo_pattern = Pattern('search_result_default.png')
 
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
@@ -50,7 +49,7 @@ class Test(BaseTest):
                             self.profile_path,
                             LocalWeb.FIREFOX_TEST_SITE,
                             image=LocalWeb.FIREFOX_LOGO)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
             navigate('about:preferences#search')
             expected = exists(default_search_engine_google_pattern, Settings.FIREFOX_TIMEOUT)
@@ -58,10 +57,9 @@ class Test(BaseTest):
 
             # Perform a search using the awesome bar and then clear the content from it.
             select_location_bar()
-            paste('test')
+            type('test')
             type(Key.ENTER)
-            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
-            assert_true(self, google_page_downloaded, 'Google search results displayed')
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -87,10 +85,9 @@ class Test(BaseTest):
 
             # Perform a search using the search bar.
             select_search_bar()
-            paste('test')
+            type('test')
             type(Key.ENTER)
-            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
-            assert_true(self, google_page_downloaded, 'Google search results displayed')
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -118,13 +115,12 @@ class Test(BaseTest):
             assert_true(self, expected, 'Page successfully loaded, focus text found.')
 
             double_click(text_pattern)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             right_click(text_pattern_selected)
-            time.sleep(DEFAULT_UI_DELAY)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             repeat_key_down(3)
             type(Key.ENTER)
-            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
-            assert_true(self, google_page_downloaded, 'Google search results displayed')
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -150,10 +146,9 @@ class Test(BaseTest):
             expected = exists(google_logo_content_search_field_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, expected, 'Google logo from content search field found.')
             click(google_logo_content_search_field_pattern)
-            paste('beats')
+            type('beats')
             type(Key.ENTER)
-            google_page_downloaded = exists(google_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
-            assert_true(self, google_page_downloaded, 'Google search results displayed')
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 
