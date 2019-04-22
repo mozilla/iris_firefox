@@ -66,6 +66,10 @@ class Test(BaseTest):
         assert_true(self, search_done, 'The Search is successfully performed.')
 
         new_tab()
+
+        search_bar_is_not_empty = exists(search_bar_not_empty_pattern)
+        assert_true(self, search_bar_is_not_empty, 'Search button isn\'t empty')
+
         if Settings.is_linux():
             double_click(search_bar_not_empty_pattern)
         else:
