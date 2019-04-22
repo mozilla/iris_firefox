@@ -44,11 +44,9 @@ class Test(BaseTest):
         assert_true(self, about_preferences_page_loaded, 'The \'about:preferences#search\' page opened.')
 
         # Add a new search engine.
-        find_more_search_engines_pattern = scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
-        # matching_message_appears = scroll_until_pattern_found(matching_message_pattern, type, (Key.PAGE_DOWN,)
-
-        find_more_search_engines_link = exists(find_more_search_engines_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, find_more_search_engines_link, '\'Find more search engines\' link found.')
+        find_more_search_engines_button = \
+            scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
+        assert_true(self, find_more_search_engines_button, '\'Find more search engines\' link found.')
 
         click(find_more_search_engines_pattern)
 
@@ -95,9 +93,8 @@ class Test(BaseTest):
 
         # Search using the search bar, the content search field and the location bar.
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
 
-        click(google_play_search_engine_pattern)
+        click(google_play_search_engine_pattern, 1)
 
         test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the search bar works properly.')
@@ -110,9 +107,8 @@ class Test(BaseTest):
         click(google_logo_content_search_field_pattern)
 
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
 
-        click(google_play_search_engine_pattern)
+        click(google_play_search_engine_pattern, 1)
 
         test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the content search field works properly.')
@@ -120,9 +116,8 @@ class Test(BaseTest):
         select_location_bar()
 
         paste('test')
-        time.sleep(DEFAULT_UI_DELAY)
 
-        click(google_play_search_engine_pattern)
+        click(google_play_search_engine_pattern, 1)
 
         test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_search_google_play, 'Search performed using the location bar works properly.')
