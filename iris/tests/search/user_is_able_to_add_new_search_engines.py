@@ -35,13 +35,13 @@ class Test(BaseTest):
         select_search_bar()
         type(Key.DOWN)
 
-        expected = exists(change_search_settings_pattern, 10)
-        assert_true(self, expected, 'The \'Change Search Settings\' button found in the page.')
+        change_search_settings_button = exists(change_search_settings_pattern, 10)
+        assert_true(self, change_search_settings_button, 'The \'Change Search Settings\' button found in the page.')
 
         click(change_search_settings_pattern)
 
-        expected = exists(about_preferences_search_page_pattern, 10)
-        assert_true(self, expected, 'The \'about:preferences#search\' page opened.')
+        about_preferences_page_loaded = exists(about_preferences_search_page_pattern, 10)
+        assert_true(self, about_preferences_page_loaded, 'The \'about:preferences#search\' page opened.')
 
         # Add a new search engine.
         for i in range(12):
@@ -53,8 +53,8 @@ class Test(BaseTest):
         else:
             type(Key.TAB)
 
-        expected = exists(find_more_search_engines_pattern, 10)
-        assert_true(self, expected, '\'Find more search engines\' link found.')
+        find_more_search_engines_link = exists(find_more_search_engines_pattern, 10)
+        assert_true(self, find_more_search_engines_link, '\'Find more search engines\' link found.')
 
         click(find_more_search_engines_pattern)
 
@@ -67,25 +67,25 @@ class Test(BaseTest):
 
         paste('startpage')
 
-        expected = exists(add_startpage_https_privacy_search_engine_pattern, 10)
-        assert_true(self, expected, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.')
+        add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern, 10)
+        assert_true(self, add_startpage_search_engine_button, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.')
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
-        expected = exists(add_to_firefox_pattern, 10)
-        assert_true(self, expected, '\'Add to Firefox\' button found.')
+        add_to_firefox_button = exists(add_to_firefox_pattern, 10)
+        assert_true(self, add_to_firefox_button, '\'Add to Firefox\' button found.')
 
         click(add_to_firefox_pattern)
 
-        expected = exists(add_button_pattern, 10)
-        assert_true(self, expected, '\'Add\' button found.')
+        add_button_found = exists(add_button_pattern, 10)
+        assert_true(self, add_button_found, '\'Add\' button found.')
 
         click(add_button_pattern)
 
         previous_tab()
 
-        expected = exists(startpage_https_search_engine_pattern, 10)
-        assert_true(self, expected, 'The search engine added found in the \'One-Click Search Engines\' section.')
+        startpage_search_engine_added = exists(startpage_https_search_engine_pattern, 10)
+        assert_true(self, startpage_search_engine_added, 'The search engine added found in the \'One-Click Search Engines\' section.')
 
         # Navigate to a page that could contain different search engines and can be added to Firefox.
         navigate('https://play.google.com/store')
@@ -93,12 +93,12 @@ class Test(BaseTest):
 
         select_search_bar()
         type(Key.DOWN)
-        expected = exists(add_google_play_pattern, 10)
-        assert_true(self, expected, 'The \'Add \'Google Play\' button is found in the page.')
+        add_google_play_button = exists(add_google_play_pattern, 10)
+        assert_true(self, add_google_play_button, 'The \'Add \'Google Play\' button is found in the page.')
 
         click(add_google_play_pattern)
-        expected = exists(google_play_search_engine_pattern, 10)
-        assert_true(self, expected, 'The \'Google Play\' search engine is added to Firefox.')
+        google_play_search_engine_added = exists(google_play_search_engine_pattern, 10)
+        assert_true(self, google_play_search_engine_added, 'The \'Google Play\' search engine is added to Firefox.')
 
         # Search using the search bar, the content search field and the location bar.
         paste('test')
@@ -106,13 +106,13 @@ class Test(BaseTest):
 
         click(google_play_search_engine_pattern)
 
-        expected = exists(test_search_google_play_pattern.similar(0.7), 10)
-        assert_true(self, expected, 'Search performed using the search bar works properly.')
+        test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), 10)
+        assert_true(self, test_search_google_play, 'Search performed using the search bar works properly.')
 
         navigate('about:newtab')
 
-        expected = exists(google_logo_content_search_field_pattern, 10)
-        assert_true(self, expected, 'Google logo from the content search found.')
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern, 10)
+        assert_true(self, google_logo_content_search_field, 'Google logo from the content search found.')
 
         click(google_logo_content_search_field_pattern)
 
@@ -121,8 +121,8 @@ class Test(BaseTest):
 
         click(google_play_search_engine_pattern)
 
-        expected = exists(test_search_google_play_pattern, 10)
-        assert_true(self, expected, 'Search performed using the content search field works properly.')
+        test_search_google_play = exists(test_search_google_play_pattern, 10)
+        assert_true(self, test_search_google_play, 'Search performed using the content search field works properly.')
 
         select_location_bar()
 
@@ -131,5 +131,5 @@ class Test(BaseTest):
 
         click(google_play_search_engine_pattern)
 
-        expected = exists(test_search_google_play_pattern, 10)
-        assert_true(self, expected, 'Search performed using the location bar works properly.')
+        test_search_google_play = exists(test_search_google_play_pattern, 10)
+        assert_true(self, test_search_google_play, 'Search performed using the location bar works properly.')
