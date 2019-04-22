@@ -38,7 +38,7 @@ class Test(BaseTest):
         change_search_settings_button = exists(change_search_settings_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, change_search_settings_button, 'The \'Change Search Settings\' button found in the page.')
 
-        click(change_search_settings_pattern)
+        click(change_search_settings_pattern, 1)
 
         about_preferences_page_loaded = exists(about_preferences_search_page_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, about_preferences_page_loaded, 'The \'about:preferences#search\' page opened.')
@@ -58,12 +58,10 @@ class Test(BaseTest):
 
         click(find_more_search_engines_pattern)
 
-        try:
-            wait(find_add_ons, Settings.SITE_LOAD_TIMEOUT)
-            logger.debug('Find add-ons field is present on the page.')
-            click(find_add_ons)
-        except FindError:
-            raise FindError('Find add-ons field is NOT present on the page, aborting.')
+        find_add_ons_button = exists(find_add_ons, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, find_add_ons_button, 'Find add-ons field is present on the page.')
+
+        click(find_add_ons, 1)
 
         paste('startpage')
 
@@ -97,6 +95,7 @@ class Test(BaseTest):
         assert_true(self, add_google_play_button, 'The \'Add \'Google Play\' button is found in the page.')
 
         click(add_google_play_pattern)
+
         google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, google_play_search_engine_added, 'The \'Google Play\' search engine is added to Firefox.')
 
