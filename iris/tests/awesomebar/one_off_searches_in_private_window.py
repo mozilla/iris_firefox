@@ -48,18 +48,18 @@ class Test(BaseTest):
         select_location_bar()
         paste('moz')
 
-        mozilla_search_one_offs_available = top_two_thirds_of_screen.exists(moz_pattern, Settings.FIREFOX_TIMEOUT)
+        mozilla_search_one_offs_available = exists(moz_pattern, Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen)
         assert_true(self, mozilla_search_one_offs_available, 'Searched string found at the bottom of the drop-down '
                                                              'list.')
 
-        search_settings_button = top_two_thirds_of_screen.exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT)
+        search_settings_button = exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen)
         assert_true(self, search_settings_button, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         repeat_key_up(3)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
-        twitter_one_off_highlight = top_two_thirds_of_screen.exists(twitter_one_off_button_highlight_pattern,
-                                                                    Settings.FIREFOX_TIMEOUT)
+        twitter_one_off_highlight = exists(twitter_one_off_button_highlight_pattern, Settings.FIREFOX_TIMEOUT,
+                                           top_two_thirds_of_screen)
         assert_true(self, twitter_one_off_highlight, 'The \'Twitter\' one-off button is highlighted.')
 
         type(Key.ENTER)
@@ -75,8 +75,8 @@ class Test(BaseTest):
         select_location_bar()
         paste('test')
 
-        google_on_off_button_private_window = top_two_thirds_of_screen.exists(google_on_off_private_window_pattern,
-                                                                              Settings.FIREFOX_TIMEOUT)
+        google_on_off_button_private_window = exists(google_on_off_private_window_pattern, Settings.FIREFOX_TIMEOUT,
+                                                     top_two_thirds_of_screen)
         assert_true(self, google_on_off_button_private_window, 'The\'Google\' one-off button found.')
 
         if Settings.get_os() == Platform.MAC:
@@ -93,10 +93,10 @@ class Test(BaseTest):
 
         next_tab()
 
-        magnifying_glass = top_two_thirds_of_screen.exists(magnifying_glass_pattern, Settings.SITE_LOAD_TIMEOUT)
+        magnifying_glass = exists(magnifying_glass_pattern, Settings.SITE_LOAD_TIMEOUT, top_two_thirds_of_screen)
         assert_true(self, magnifying_glass, 'Page successfully loaded using the \'Google\' engine.')
 
-        test_item = top_two_thirds_of_screen.exists(test_pattern, Settings.SITE_LOAD_TIMEOUT)
+        test_item = exists(test_pattern, Settings.SITE_LOAD_TIMEOUT, top_two_thirds_of_screen)
         assert_true(self, test_item, 'Searched item is successfully found in the page opened by the \'Google\' search '
                                      'engine.')
 
