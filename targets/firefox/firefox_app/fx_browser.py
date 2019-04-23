@@ -7,11 +7,13 @@ import logging
 import os
 import shutil
 import subprocess
+import time
 from distutils import dir_util
 from distutils.spawn import find_executable
 from enum import Enum
 
 import mozversion
+import psutil as psutil
 from mozdownload import FactoryScraper, errors
 from mozinstall import install, get_binary
 from mozrunner import FirefoxRunner, errors as run_errors
@@ -191,7 +193,7 @@ class FirefoxApp:
                 firefox_dmg = scraper.download()
 
                 install_dir = install(src=firefox_dmg,
-                                      dest=os.path.join(PathManager.get_temp_dir(),
+                                      dest=os.path.join(PathManager.get_current_run_dir(),
                                                         'firefox{}{}'.format(normalize_str(version),
                                                                              normalize_str(locale))))
 
@@ -202,12 +204,15 @@ class FirefoxApp:
 
 
 class FXRunner:
+
     def __init__(self, app: FirefoxApp, profile: FirefoxProfile = None):
 
         if profile is None:
             profile = FirefoxProfile.make_profile()
 
         self.application = app
+        self.url = 'http://127.0.0.1:{}'.format(get_core_args().port)
+
         self.profile = profile
         self.runner = self._launch()
 
@@ -227,17 +232,14 @@ class FXRunner:
         args.append('-foreground')
         args.append('-no-remote')
 
-        if url is None:
-            url = 'http://127.0.0.1:{}'.format(get_core_args().port)
-
         args.append('-new-tab')
-        args.append(url)
+        args.append(self.url)
 
         process_args = {'stream': None}
         logger.debug('Creating Firefox runner ...')
         try:
             runner = FirefoxRunner(binary=self.application.path, profile=self.profile,
-                                   cmdargs=args, process_args=process_args)
+                                       cmdargs=args, process_args=process_args)
             logger.debug('Firefox runner successfully created.')
             logger.debug('Running Firefox with command: "%s"' %
                          ','.join(runner.command))
@@ -246,25 +248,54 @@ class FXRunner:
             raise APIHelperError('Error creating Firefox runner.')
 
     def start(self, image=None, maximize=True):
+        if not OSHelper.is_windows():
+            self.runner.start()
+        else:
 
-        self.runner.start()
-        if OSHelper.is_mac():
+            try:
+                FXRunner.process = subprocess.Popen(
+                    [self.application.path, self.url, '-foreground', '-no-remote', '-profile', self.profile.profile])
+
+            except subprocess.CalledProcessError:
+                logger.error('Firefox failed to start')
+                exit(1)
             mouse_reset()
         confirm_firefox_launch(image)
         if maximize:
             maximize_window()
 
     def stop(self):
-        if self.runner and self.runner.process_handler:
-            from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
+
+        from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
+
+        if OSHelper.is_windows():
+            logger.debug('Closing firefox instance')
             quit_firefox()
-            status = self.runner.process_handler.wait(DEFAULT_FIREFOX_TIMEOUT)
-            if status is None:
-                self.runner.stop()
+            time.sleep(3)
+
+            logger.debug('Killing proces PID ')
+            subprocess.Popen.kill( FXRunner.process.pid)
+        else:
+            if self.runner and self.runner.process_handler:
+                quit_firefox()
+                status = self.runner.process_handler.wait(DEFAULT_FIREFOX_TIMEOUT)
+                if status is None:
+                    self.runner.stop()
 
     def restart(self, image=None):
         self.stop()
         self.start(image, False)
+
+
+def kill_proc_tree(pid, including_parent=True):
+    parent = psutil.Process(pid)
+    children = parent.children(recursive=True)
+    for child in children:
+        child.kill()
+    gone, still_alive = psutil.wait_procs(children, timeout=5)
+    if including_parent:
+        parent.kill()
+        parent.wait(5)
 
 
 def normalize_str(main_string: str) -> str:

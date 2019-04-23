@@ -162,24 +162,29 @@ class Target(BaseTarget):
             pass
 
     def pytest_runtest_teardown(self, item):
+        logger.info("TEAR_DOWN1111111111111111111")
         BaseTarget.pytest_runtest_teardown(self, item)
+        from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
+
         try:
-            if item.funcargs['firefox'].runner and item.funcargs['firefox'].runner.process_handler:
-                from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
-                quit_firefox()
-                status = item.funcargs['firefox'].runner.process_handler.wait(10)
-                if status is None:
-                    item.funcargs['firefox'].browser.runner.stop()
-                if not target_args.save:
-                    import shutil
-                    profile_instance = item.funcargs['firefox'].profile
-                    if os.path.exists(profile_instance.profile):
-                        try:
-                            shutil.rmtree(profile_instance.profile)
-                        except OSError as e:
-                            print("Error: %s - %s." % (e.filename, e.strerror))
-                    else:
-                        logger.error('Invalid Path!')
+            if not OSHelper.is_windows():
+                if item.funcargs['firefox'].runner and item.funcargs['firefox'].runner.process_handler:
+                    quit_firefox()
+                    status = item.funcargs['firefox'].runner.process_handler.wait(10)
+                    if status is None:
+                        item.funcargs['firefox'].browser.runner.stop()
+            else:
+                Target.FxApp.stop()
+            if not target_args.save:
+                import shutil
+                profile_instance = item.funcargs['firefox'].profile
+                if os.path.exists(profile_instance.profile):
+                    try:
+                        shutil.rmtree(profile_instance.profile)
+                    except OSError as e:
+                        print("Error: %s - %s." % (e.filename, e.strerror))
+                else:
+                    logger.error('Invalid Path!')
         except (AttributeError, KeyError):
             pass
 
@@ -199,17 +204,6 @@ class Target(BaseTarget):
 
         if target_args.update_channel:
             FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
-        return FXRunner(app, profile)
+        Target.FxApp = FXRunner(app, profile)
+        return Target.FxApp
 
-        # BaseTarget.pytest_runtest_makereport(self, item, call)
-        #
-        # outcome = yield
-        # report = outcome.get_result()
-        #
-        # if report.when == "call":
-        #     test_case_instance = item.instance
-        #     test_object_result = TestRailTests(test_case_instance.meta,
-        #                                        test_case_instance.test_suite_id, test_case_instance.test_case_id,
-        #                                        test_case_instance.blocked_by, test_case_instance.test_results)
-        #
-        #     self.test_run_object_list.append(test_object_result)
