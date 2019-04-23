@@ -16,52 +16,62 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-
-        Override the setup method to use a pre-canned bookmarks profile.
-        """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
         return
 
     def run(self):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        iris_bookmark_pattern = Pattern('iris_bookmark.png')
-        history_pattern = Library.HISTORY
-        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        iris_logo_pattern = Pattern('iris_logo.png')
+        history_pattern = Library.HISTORY
+        iris_bookmark_pattern = Pattern('iris_bookmark.png')
         history_bookmarks_toolbar_pattern = Pattern('history_bookmarks_toolbar.png')
+        copy_pattern = Pattern('copy.png')
+        paste_pattern = Pattern('paste.png')
 
         # Open the Bookmarks toolbar.
-        access_bookmarking_tools(view_bookmarks_toolbar)
-        expected = exists(bookmarks_toolbar_most_visited_pattern, 10)
-        assert_true(self, expected, 'Bookmarks Toolbar has been activated.')
+        open_bookmarks_toolbar()
 
         # Open History and check if it is populated with the Iris page.
-        open_library_menu('History')
+        open_library_menu(LibraryMenu.HISTORY_BUTTON)
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
-        assert_true(self, expected, 'Iris page is displayed in the History menu list.')
+
+        iris_bookmark_exists = right_upper_corner.exists(iris_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, iris_bookmark_exists, 'Iris page is displayed in the View History, saved bookmarks and more '
+                                                '> History menu list.')
+
+        show_all_history_exists = exists(show_all_history_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, show_all_history_exists, '\"Show All History\" option exists.')
 
         click(show_all_history_pattern)
 
-        expected = exists(history_pattern, 10)
-        assert_true(self, expected, 'History section is visible.')
+        history_section_displayed = exists(history_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, history_section_displayed, 'Library > History section is visible.')
 
         right_click(history_pattern)
-        type(text='c')
+
+        copy_option_exists = exists(copy_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, copy_option_exists, 'Copy option was found.')
+
+        click(copy_pattern)
 
         click_window_control('close')
-        time.sleep(DEFAULT_UI_DELAY)
+
+        bookmarks_toolbar_most_visited_exists = exists(bookmarks_toolbar_most_visited_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, bookmarks_toolbar_most_visited_exists, 'Bookmarks Toolbar > Most Visited exists')
 
         right_click(bookmarks_toolbar_most_visited_pattern)
-        type(text='p')
+
+        paste_option_exists = exists(paste_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, paste_option_exists, 'Paste option was found.')
+
+        click(paste_pattern)
 
         new_tab()
-        expected = exists(history_bookmarks_toolbar_pattern)
-        assert_true(self, expected, 'History section is displayed in the Bookmarks Toolbar.')
+
+        history_section_pasted = exists(history_bookmarks_toolbar_pattern)
+        assert_true(self, history_section_pasted, 'History section is pasted to the Bookmarks Toolbar.')
 
         click(history_bookmarks_toolbar_pattern)
 
@@ -70,5 +80,5 @@ class Test(BaseTest):
         type(Key.RIGHT)
         type(Key.ENTER)
 
-        expected = exists(iris_logo_pattern, 10)
-        assert_true(self, expected, 'Iris page successfully loaded.')
+        expected = exists(LocalWeb.IRIS_LOGO, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, expected, 'All the history is displayed and the page is correctly opened.')
