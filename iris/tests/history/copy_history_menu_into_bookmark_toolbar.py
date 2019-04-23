@@ -16,10 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
-        """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
         return
@@ -74,5 +70,5 @@ class Test(BaseTest):
         # Check that the history was copied.
         region = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
-        history_copied = region.exists(history_bookmarks_toolbar_pattern, 10)
+        history_copied = region.exists(history_bookmarks_toolbar_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, history_copied, 'History was successfully copied.')
