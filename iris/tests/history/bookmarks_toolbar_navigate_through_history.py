@@ -16,19 +16,15 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def setup(self):
-        """Test case setup
-
-        Override the setup method to use a pre-canned bookmarks profile.
-        """
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
         return
 
     def run(self):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        iris_bookmark_pattern = Pattern('iris_bookmark.png')
-        history_pattern = Library.HISTORY
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
+        history_pattern = Library.HISTORY
+        iris_bookmark_pattern = Pattern('iris_bookmark.png')
         history_bookmarks_toolbar_pattern = Pattern('history_bookmarks_toolbar.png')
         copy_pattern = Pattern('copy.png')
         paste_pattern = Pattern('paste.png')
@@ -42,7 +38,8 @@ class Test(BaseTest):
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
         iris_bookmark_exists = right_upper_corner.exists(iris_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, iris_bookmark_exists, 'Iris page is displayed in the History menu list.')
+        assert_true(self, iris_bookmark_exists, 'Iris page is displayed in the View History, saved bookmarks and more '
+                                                '> History menu list.')
 
         show_all_history_exists = exists(show_all_history_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, show_all_history_exists, '\"Show All History\" option exists.')
@@ -50,7 +47,7 @@ class Test(BaseTest):
         click(show_all_history_pattern)
 
         history_section_displayed = exists(history_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, history_section_displayed, 'History section is visible.')
+        assert_true(self, history_section_displayed, 'Library > History section is visible.')
 
         right_click(history_pattern)
 
@@ -74,7 +71,7 @@ class Test(BaseTest):
         new_tab()
 
         history_section_pasted = exists(history_bookmarks_toolbar_pattern)
-        assert_true(self, history_section_pasted, 'History section is displayed in the Bookmarks Toolbar.')
+        assert_true(self, history_section_pasted, 'History section is pasted to the Bookmarks Toolbar.')
 
         click(history_bookmarks_toolbar_pattern)
 
@@ -84,4 +81,4 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         expected = exists(LocalWeb.IRIS_LOGO, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, expected, 'Iris page successfully loaded.')
+        assert_true(self, expected, 'All the history is displayed and the page is correctly opened.')
