@@ -17,7 +17,6 @@ class Test(BaseTest):
 
     def run(self):
         moz_pattern = Pattern('moz.png')
-        url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
@@ -25,6 +24,8 @@ class Test(BaseTest):
         google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
         test_pattern = Pattern('test.png')
+
+        url = LocalWeb.FIREFOX_TEST_SITE
 
         new_private_window()
 
@@ -36,30 +37,30 @@ class Test(BaseTest):
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
+        firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
+        assert_true(self, firefox_site_loaded, 'Page successfully loaded, firefox logo found.')
 
         select_location_bar()
         paste('moz')
 
-        expected = region.exists(moz_pattern, 10)
-        assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
+        mozilla_search_one_offs_available = region.exists(moz_pattern, 10)
+        assert_true(self, mozilla_search_one_offs_available, 'Searched string found at the bottom of the drop-down list.')
 
-        expected = region.exists(search_settings_pattern, 10)
-        assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
+        search_settings_button = region.exists(search_settings_pattern, 10)
+        assert_true(self, search_settings_button, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         repeat_key_up(3)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern, )
 
-        expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
-        assert_true(self, expected, 'The \'Twitter\' one-off button is highlighted.')
+        twitter_one_off_highlight = region.exists(twitter_one_off_button_highlight_pattern, 10)
+        assert_true(self, twitter_one_off_highlight, 'The \'Twitter\' one-off button is highlighted.')
 
         type(Key.ENTER)
         time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = exists(new_tab_twitter_search_results_pattern, 10) \
+        new_tab_twitter_search_results = exists(new_tab_twitter_search_results_pattern, 10) \
             or exists(new_tab_twitter_search_results_pattern2, 5)
-        assert_true(self, expected, 'Twitter search results are opened in the same tab.')
+        assert_true(self, new_tab_twitter_search_results, 'Twitter search results are opened in the same tab.')
 
         new_tab()
         time.sleep(DEFAULT_UI_DELAY)
@@ -67,8 +68,8 @@ class Test(BaseTest):
         select_location_bar()
         paste('test')
 
-        expected = region.exists(google_on_off_button_private_window_pattern, 10)
-        assert_true(self, expected, 'The\'Google\' one-off button found.')
+        google_on_off_button_private_window = region.exists(google_on_off_button_private_window_pattern, 10)
+        assert_true(self, google_on_off_button_private_window, 'The\'Google\' one-off button found.')
 
         if Settings.get_os() == Platform.MAC:
             key_down(Key.CMD)
@@ -84,11 +85,11 @@ class Test(BaseTest):
 
         next_tab()
 
-        expected = region.exists(magnifying_glass_pattern, 10)
-        assert_true(self, expected, 'Page successfully loaded using the \'Google\' engine.')
+        magnifying_glass = region.exists(magnifying_glass_pattern, 10)
+        assert_true(self, magnifying_glass, 'Page successfully loaded using the \'Google\' engine.')
 
-        expected = region.exists(test_pattern, 10)
-        assert_true(self, expected,
+        test_item = region.exists(test_pattern, 10)
+        assert_true(self, test_item,
                     'Searched item is successfully found in the page opened by the \'Google\' search engine.')
 
         close_window()
