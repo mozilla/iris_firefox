@@ -83,7 +83,6 @@ class Test(BaseTest):
         # Navigate to a page that could contain different search engines and can be added to Firefox.
         navigate('https://play.google.com/store')
         time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
-        #  site loaded
 
         select_search_bar()
         type(Key.DOWN)
