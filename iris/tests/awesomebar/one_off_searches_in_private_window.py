@@ -27,8 +27,15 @@ class Test(BaseTest):
 
         new_private_window()
 
+        private_window_opened = exists(PrivateWindow.private_window_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, private_window_opened, 'A new private window is successfully loaded.')
+
         # Set English language preference on Google page settings.
         navigate('https://www.google.com/preferences?hl=en-US&fg=1#languages')
+
+        save_button_google_available = exists(Utils.SAVE_BUTTON_GOOGLE, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, save_button_google_available, '\'Save\' google button available.')
+
         click(Utils.SAVE_BUTTON_GOOGLE)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
