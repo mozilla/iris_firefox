@@ -37,38 +37,38 @@ class Test(BaseTest):
 
         region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
-        firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
+        firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
         assert_true(self, firefox_site_loaded, 'Page successfully loaded, firefox logo found.')
 
         select_location_bar()
         paste('moz')
 
-        mozilla_search_one_offs_available = region.exists(moz_pattern, 10)
+        mozilla_search_one_offs_available = region.exists(moz_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, mozilla_search_one_offs_available, 'Searched string found at the bottom of the drop-down list.')
 
-        search_settings_button = region.exists(search_settings_pattern, 10)
+        search_settings_button = region.exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, search_settings_button, 'The \'Search settings\' button is displayed in the awesome bar.')
 
         repeat_key_up(3)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern, )
 
-        twitter_one_off_highlight = region.exists(twitter_one_off_button_highlight_pattern, 10)
+        twitter_one_off_highlight = region.exists(twitter_one_off_button_highlight_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, twitter_one_off_highlight, 'The \'Twitter\' one-off button is highlighted.')
 
         type(Key.ENTER)
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
-        new_tab_twitter_search_results = exists(new_tab_twitter_search_results_pattern, 10) \
+        new_tab_twitter_search_results = exists(new_tab_twitter_search_results_pattern, Settings.FIREFOX_TIMEOUT) \
             or exists(new_tab_twitter_search_results_pattern2, 5)
         assert_true(self, new_tab_twitter_search_results, 'Twitter search results are opened in the same tab.')
 
         new_tab()
-        time.sleep(DEFAULT_UI_DELAY)
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         select_location_bar()
         paste('test')
 
-        google_on_off_button_private_window = region.exists(google_on_off_button_private_window_pattern, 10)
+        google_on_off_button_private_window = region.exists(google_on_off_button_private_window_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, google_on_off_button_private_window, 'The\'Google\' one-off button found.')
 
         if Settings.get_os() == Platform.MAC:
@@ -85,10 +85,10 @@ class Test(BaseTest):
 
         next_tab()
 
-        magnifying_glass = region.exists(magnifying_glass_pattern, 10)
+        magnifying_glass = region.exists(magnifying_glass_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, magnifying_glass, 'Page successfully loaded using the \'Google\' engine.')
 
-        test_item = region.exists(test_pattern, 10)
+        test_item = region.exists(test_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, test_item,
                     'Searched item is successfully found in the page opened by the \'Google\' search engine.')
 
