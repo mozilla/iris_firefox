@@ -27,7 +27,10 @@ class Test(BaseTest):
         google_images_page_mark_pattern = Pattern('google_images_page_mark.png')
         show_more_results_button_pattern = Pattern('show_more_results_button.png')
 
-        mouse_wheel_steps = 100
+        if Settings.is_linux():
+            mouse_wheel_steps = 10
+        if Settings.is_mac():
+            mouse_wheel_steps = 50
         if Settings.is_windows():
             mouse_wheel_steps = SCREEN_HEIGHT
 
