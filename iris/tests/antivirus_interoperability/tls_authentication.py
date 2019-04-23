@@ -18,7 +18,7 @@ class Test(BaseTest):
     def run(self):
         cdn77_logo_pattern = Pattern('cdn77_logo.png')
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
-        cdn77_support_button_pattern = Pattern('cdn77_support_button.png')
+        cdn77_support_button_pattern = Pattern('cdn77_support_button.png').similar(0.65)
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
         download_button_pattern = Pattern('download_button.png')
