@@ -55,7 +55,7 @@ class Test(BaseTest):
         search_settings_button = exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen)
         assert_true(self, search_settings_button, 'The \'Search settings\' button is displayed in the awesome bar.')
 
-        repeat_key_up(3)
+        type(Key.UP)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
         twitter_one_off_highlight = exists(twitter_one_off_button_highlight_pattern, Settings.FIREFOX_TIMEOUT,
@@ -79,19 +79,7 @@ class Test(BaseTest):
                                                      top_two_thirds_of_screen)
         assert_true(self, google_on_off_button_private_window, 'The\'Google\' one-off button found.')
 
-        if Settings.get_os() == Platform.MAC:
-            key_down(Key.CMD)
-        else:
-            key_down(Key.CTRL)
-
         click(google_on_off_private_window_pattern)
-
-        if Settings.get_os() == Platform.MAC:
-            key_up(Key.CMD)
-        else:
-            key_up(Key.CTRL)
-
-        next_tab()
 
         magnifying_glass = exists(magnifying_glass_pattern, Settings.SITE_LOAD_TIMEOUT, top_two_thirds_of_screen)
         assert_true(self, magnifying_glass, 'Page successfully loaded using the \'Google\' engine.')
