@@ -105,6 +105,9 @@ class Test(BaseTest):
         paste('test')
         time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
+        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, google_play_search_engine_added, 'The \'Google Play\' search engine is available.')
+
         click(google_play_search_engine_pattern)
 
         test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), Settings.FIREFOX_TIMEOUT)
@@ -120,6 +123,9 @@ class Test(BaseTest):
         paste('test')
         time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
+        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, google_play_search_engine_added, 'The \'Google Play\' search engine is available.')
+
         click(google_play_search_engine_pattern)
 
         test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
@@ -129,6 +135,9 @@ class Test(BaseTest):
 
         paste('test')
         time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+
+        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, google_play_search_engine_added, 'The \'Google Play\' search engine is available.')
 
         click(google_play_search_engine_pattern)
 
