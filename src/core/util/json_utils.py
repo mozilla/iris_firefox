@@ -2,11 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from datetime import datetime
 import importlib
 import json
 import logging
 import os
 import sys
+import time
 
 import git
 import pytest
@@ -21,29 +23,30 @@ args = get_core_args()
 
 
 def create_target_json():
-    logging.info('Preparing data for the Control Center.')
-    logging.info('This may take a minute.')
-    master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
-    target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
+    if not use_cached_target_file():
+        logging.info('Preparing data for the Control Center.')
+        logging.info('This may take a minute.')
+        master_target_dir = os.path.join(PathManager.get_module_dir(), 'targets')
+        target_list = [f for f in os.listdir(master_target_dir) if not f.startswith('__') and not f.startswith('.')]
 
-    targets = []
-    for item in target_list:
-        try:
-            app_tests = scan_all_tests(item)
-            target_module = importlib.import_module('targets.%s.app' % item)
+        targets = []
+        for item in target_list:
             try:
-                target = target_module.Target()
-                targets.append({'name': target.target_name, 'tests': app_tests, 'icon': '%s.png' % item,
-                                'settings': target.cc_settings})
-            except NameError:
-                logger.error('Can\'t find default Target class.')
-        except ImportError as e:
-            logger.error('Problems importing module \'%s\':\n%s' % (item, e))
+                app_tests = scan_all_tests(item)
+                target_module = importlib.import_module('targets.%s.app' % item)
+                try:
+                    target = target_module.Target()
+                    targets.append({'name': target.target_name, 'tests': app_tests, 'icon': '%s.png' % item,
+                                    'settings': target.cc_settings})
+                except NameError:
+                    logger.error('Can\'t find default Target class.')
+            except ImportError as e:
+                logger.error('Problems importing module \'%s\':\n%s' % (item, e))
 
-    target_json = {'targets': targets}
-    target_json_file = os.path.join(args.workdir, 'data', 'targets.json')
-    with open(target_json_file, 'w') as f:
-        json.dump(target_json, f, sort_keys=True, indent=True)
+        target_json = {'targets': targets}
+        target_json_file = os.path.join(args.workdir, 'data', 'targets.json')
+        with open(target_json_file, 'w') as f:
+            json.dump(target_json, f, sort_keys=True, indent=True)
 
 
 def update_run_index(app, finished=False):
@@ -281,6 +284,26 @@ def scan_all_tests(target):
                 parent = tests
     return tests
 
+def use_cached_target_file():
+    """
+    Helper function to determine if target.json is relatively recent and can be re-used.
+    :return: True/False
+    """
+    # We will cache the target file for t5 minutes - adjust below if desired.
+    cache_time = 60 * 15
+
+    result = False
+    target_json_file = os.path.join(args.workdir, 'data', 'targets.json')
+    if os.path.exists(target_json_file):
+        file_modified_time = int(os.path.getmtime(target_json_file))
+        logger.debug('Target file created: %s' % file_modified_time)
+        current_time = int(time.mktime(datetime.now().timetuple()))
+        logger.debug('Current time: %s' % current_time)
+        elapsed_time = current_time - file_modified_time
+        logger.debug('Elapsed time: %s' % elapsed_time)
+        if elapsed_time < cache_time:
+            result = True
+    return result
 
 class TestCollector:
 

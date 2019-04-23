@@ -13,9 +13,11 @@ from mozrunner import FirefoxRunner
 
 from src.configuration.config_parser import validate_config_ini
 from src.control_center.commands import delete
+from src.core.api.keyboard.key import KeyModifier
+from src.core.api.keyboard.keyboard import type
 from src.core.api.keyboard.keyboard_util import check_keyboard_state
 from src.core.api.os_helpers import OSHelper
-from src.core.util import cleanup
+from src.core.util.cleanup import *
 from src.core.util.app_loader import get_app_test_directory
 from src.core.util.arg_parser import get_core_args, set_core_arg
 from src.core.util.json_utils import create_target_json
@@ -43,6 +45,7 @@ def main():
                 if not 'tests' in user_result:
                     logger.info('No tests chosen, closing Iris.')
                     delete(PathManager.get_run_id(), update_run_file=False)
+                    ShutdownTasks.at_exit()
                     exit(0)
 
                 pytest_args = user_result['tests']
@@ -57,6 +60,7 @@ def main():
                 # User cancelled or otherwise failed to select tests,
                 # so we will shut down Iris.
                 delete(PathManager.get_run_id(), update_run_file=False)
+                ShutdownTasks.at_exit()
                 exit(0)
 
         try:
@@ -111,7 +115,7 @@ def get_target(target_name):
 
 
 def initialize_platform(args):
-    cleanup.init()
+    init()
     fix_terminal_encoding()
     PathManager.create_working_directory(args.workdir)
     PathManager.create_run_directory()
@@ -176,25 +180,39 @@ def launch_control_center():
         logger.error('Can\'t find local Firefox installation, aborting Iris run.')
         return False, None
 
-    args = ['-new-tab', 'http://127.0.0.1:%s' % get_core_args().port]
+    args = ['http://127.0.0.1:%s' % get_core_args().port]
     process_args = {'stream': None}
     fx_runner = FirefoxRunner(binary=fx_path, profile=profile_path, cmdargs=args, process_args=process_args)
     fx_runner.start()
     server = LocalWebServer(get_core_args().workdir, get_core_args().port)
     server.stop()
-    fx_runner.stop()
+
+    if OSHelper.is_mac():
+        type(text='q', modifier=KeyModifier.CMD)
+    elif OSHelper.is_windows():
+        type(text='w', modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
+    else:
+        type(text='q', modifier=KeyModifier.CTRL)
+
+    try:
+        fx_runner.stop()
+    except Exception as e:
+        logger.debug('Error stopping fx_runner')
+        logger.debug(e)
+
     return server.result
 
 
-class ShutdownTasks(cleanup.CleanUp):
+class ShutdownTasks(CleanUp):
     """Class for restoring system state when Iris has been quit.
     """
 
     @staticmethod
     def at_exit():
         reset_terminal_encoding()
-        # TBD:
-        # terminate subprocesses
-        # remove temp folder
+
         if os.path.exists(PathManager.get_temp_dir()):
             shutil.rmtree(PathManager.get_temp_dir(), ignore_errors=True)
+
+        if os.path.exists(os.path.join(get_core_args().workdir, 'cc_profile')):
+            shutil.rmtree(os.path.join(get_core_args().workdir, 'cc_profile'), ignore_errors = True)
