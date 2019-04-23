@@ -6,6 +6,7 @@
 import logging
 import os
 import shutil
+import signal
 import subprocess
 import time
 from distutils import dir_util
@@ -23,6 +24,7 @@ from src.core.api.mouse.mouse import mouse_reset
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
 from src.core.util.path_manager import PathManager
+from src.core.util.system import shutdown_process
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
 from src.core.util.arg_parser import get_core_args
@@ -251,7 +253,6 @@ class FXRunner:
         if not OSHelper.is_windows():
             self.runner.start()
         else:
-
             try:
                 FXRunner.process = subprocess.Popen(
                     [self.application.path, self.url, '-foreground', '-no-remote', '-profile', self.profile.profile])
@@ -271,10 +272,14 @@ class FXRunner:
         if OSHelper.is_windows():
             logger.debug('Closing firefox instance')
             quit_firefox()
-            time.sleep(3)
-
-            logger.debug('Killing proces PID ')
-            subprocess.Popen.kill( FXRunner.process.pid)
+            if FXRunner.process.poll() is None:
+                try:
+                    logger.info('Closing firefox processId %s' % FXRunner.process.pid)
+                    FXRunner.process.kill()
+                    shutdown_process('firefox')
+                except subprocess.SubprocessError:
+                    logger.error('Failed to close Firefox PID process.Closing Firefox process!!')
+                    shutdown_process('firefox')
         else:
             if self.runner and self.runner.process_handler:
                 quit_firefox()

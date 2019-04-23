@@ -162,7 +162,6 @@ class Target(BaseTarget):
             pass
 
     def pytest_runtest_teardown(self, item):
-        logger.info("TEAR_DOWN1111111111111111111")
         BaseTarget.pytest_runtest_teardown(self, item)
         from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
 
