@@ -57,8 +57,10 @@ class Test(BaseTest):
 
         paste('startpage')
 
-        add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, add_startpage_search_engine_button, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.')
+        add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern,
+                                                    Settings.FIREFOX_TIMEOUT)
+        assert_true(self, add_startpage_search_engine_button, '\'Startpage HTTPS Privacy Search Engine\' engine '
+                                                              'successfully found.')
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
@@ -75,11 +77,13 @@ class Test(BaseTest):
         previous_tab()
 
         startpage_search_engine_added = exists(startpage_https_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, startpage_search_engine_added, 'The search engine added found in the \'One-Click Search Engines\' section.')
+        assert_true(self, startpage_search_engine_added, 'The search engine added found in the \'One-Click Search '
+                                                         'Engines\' section.')
 
         # Navigate to a page that could contain different search engines and can be added to Firefox.
         navigate('https://play.google.com/store')
         time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        #  site loaded
 
         select_search_bar()
         type(Key.DOWN)
