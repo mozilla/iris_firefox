@@ -48,7 +48,7 @@ class Test(BaseTest):
         mouse_move(center_location)
 
         scroll_until_pattern_found(play_button_pattern, scroll, (-mouse_wheel_steps,), 100,
-                                   Settings.TINY_FIREFOX_TIMEOUT)
+                                   Settings.TINY_FIREFOX_TIMEOUT/2)
 
         sound_on_not_exists = exists(sound_on_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, sound_on_not_exists, 'The sound icon doesn\'t exists.')
@@ -70,5 +70,5 @@ class Test(BaseTest):
 
         show_more_results_button_exists = scroll_until_pattern_found(show_more_results_button_pattern,
                                                                      scroll, (-mouse_wheel_steps,), 100,
-                                                                     Settings.TINY_FIREFOX_TIMEOUT)
+                                                                     Settings.TINY_FIREFOX_TIMEOUT/2)
         assert_true(self, show_more_results_button_exists, 'The images are properly displayed.')
