@@ -66,3 +66,5 @@ class Test(BaseTest):
 
         expected = exists(warning_message_tracking_protection_pattern.similar(0.92), 10)
         assert_true(self, expected, 'The warning message from Tracking Protection is readable.')
+
+        close_window()
