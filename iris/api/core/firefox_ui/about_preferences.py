@@ -9,6 +9,9 @@ from iris.api.core.pattern import Pattern
 class AboutPreferences(object):
     PRIVACY_AND_SECURITY_BUTTON_SELECTED = Pattern('category_privacy_button_selected.png')
     PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED = Pattern('category_privacy_button_not_selected.png')
+    BROWSE = Pattern('browse_option.png')
+    ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN = Pattern('about_preferences_search_page.png')
+    DOWNLOADS = Pattern('downloads_about_preference.png')
 
     class Privacy(object):
         CONTENT_TRACKING_TRACKERS_CHECKBOX_SELECTED = \
