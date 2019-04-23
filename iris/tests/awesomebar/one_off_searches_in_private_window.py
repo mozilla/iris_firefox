@@ -63,14 +63,12 @@ class Test(BaseTest):
         assert_true(self, twitter_one_off_highlight, 'The \'Twitter\' one-off button is highlighted.')
 
         type(Key.ENTER)
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         new_tab_twitter_search_results = exists(new_tab_twitter_search_results_pattern, Settings.FIREFOX_TIMEOUT) \
             or exists(new_tab_twitter_search_results_2_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, new_tab_twitter_search_results, 'Twitter search results are opened in the same tab.')
 
         new_tab()
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         select_location_bar()
         paste('test')
