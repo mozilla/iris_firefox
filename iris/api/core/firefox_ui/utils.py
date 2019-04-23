@@ -16,3 +16,11 @@ class Utils(object):
     TOP_SITES = Pattern('top_sites.png')
 
     SAVE_BUTTON_GOOGLE = Pattern('save_button_google.png')
+
+    # Folder view.
+    NEW_FOLDER = Pattern('new_folder.png')
+    NEW_FOLDER_HIGHLIGHTED = Pattern('new_folder_highlighted.png')
+    SELECT_FOLDER = Pattern('select_folder.png')
+    NEW_DOWNLOADS_FOLDER_HIGHLIGHTED = Pattern('new_downloads_folder_highlighted.png')
+
+
