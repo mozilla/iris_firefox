@@ -4,6 +4,7 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
+CWD=$(powershell -Command "(Get-Location).Path")
 
 echo -e "\n${RED}##### Starting Windows bootstrap #####${NC}\n"
 
@@ -31,17 +32,31 @@ fi
 
 
 echo -e "\n${GREEN}  --->  Installing Git #####${NC}\n"
-if command -v git &>/dev/null; then
+if [[ $(scoop list | grep git) =~ git ]]; then
     echo -e "${GREEN}  --->  Skipping Git install. Already installed. ${NC}\n"
+    powershell -Command "scoop update git"
+    powershell -Command "scoop update openssh"
 else
     powershell -Command "scoop install git"
     powershell -Command "scoop install openssh"
 fi
 
 
-echo -e "\n${GREEN} --->  Installing/updating 'which' & 'sudo' admin package #####${NC}\n"
-powershell -Command "scoop install which"
-powershell -Command "scoop install sudo"
+echo -e "\n${GREEN}  --->  Installing 'which' & 'sudo' #####${NC}\n"
+echo -e "\n${GREEN}  --->  Installing which #####${NC}\n"
+if [[ $(scoop list | grep which) =~ which ]]; then
+    echo -e "${GREEN}  --->  Skipping which install. Already installed. ${NC}\n"
+    powershell -Command "scoop update which"
+else
+    powershell -Command "scoop install which"
+fi
+echo -e "\n${GREEN}  --->  Installing sudo #####${NC}\n"
+if [[ $(scoop list | grep sudo) =~ sudo ]]; then
+    echo -e "${GREEN}  --->  Skipping sudo install. Already installed. ${NC}\n"
+    powershell -Command "scoop update sudo"
+else
+    powershell -Command "scoop install sudo"
+fi
 
 
 echo -e "\n${GREEN}--->  Installing/updating 7zip #####${NC}\n"
@@ -52,31 +67,32 @@ else
 fi
 
 
-echo -e "\n${GREEN} --->  Installing Tesseract 4 ${NC} \n"
+echo -e "\n${GREEN} --->  Installing Tesseract  v4.1.0.20190314 ${NC} \n"
 if command -v tesseract &>/dev/null; then
     echo -e "${GREEN}  --->  Tesseract already installed. ${NC}\n"
     echo -e "${GREEN}    --->  Checking Tesseract version. ${NC}\n"
-    if [[ $(tesseract -v | grep "tesseract 3.05") ]]; then
-        echo -e "${RED}  --->  You have Tesseract 3, removing and installing Tesseract 4.${NC}\n"
+    if [[ $(tesseract -v | grep "tesseract v4.0.0.20190314") =~ v4.0.0.20190314 ]]; then
+        tesseract -v | grep "tesseract v4.0.0.20190314"
+        echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
+    else
+        echo -e "${RED}  --->  You don't have Tesseract 20190314 version, removing and installing Tesseract 4.1.0.20190314.${NC}\n"
         powershell -Command "scoop uninstall tesseract" # If Scoop does not recognize tesseract3 command
         powershell -Command "scoop uninstall tesseract3"
-        powershell -Command "scoop install tesseract"
-    else
-        echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
+        powershell -Command "scoop install "${CWD}"\bootstrap\tesseract20190314.json"
     fi
 else
-    powershell -Command "scoop install tesseract"
+    powershell -Command "scoop install "${CWD}"\bootstrap\tesseract20190314.json"
 fi
 
 
-echo -e "\n${GREEN}  --->  Installing Python 3.5 #####${NC}\n"
-# Installing Python 3.5 because of Python BUG: https://bugs.python.org/issue32745
-if command -v python3 &>/dev/null; then
+echo -e "\n${GREEN}  --->  Installing Python 3.5.3 #####${NC}\n"
+# Installing Python 3.5.3 because of Python BUG: https://bugs.python.org/issue32745
+if [[ $(scoop list | grep 'python353') =~ 353 ]] ; then
     echo -e "${GREEN}  --->  Skipping Python 3 install. Already installed. ${NC}\n"
 else
-    powershell -Command "scoop install python35" | grep 'bucket already exists.' &> /dev/null
+    powershell -Command "scoop install "$CWD"\bootstrap\python353.json"
     if [ $? != 0 ]; then
-       echo -e "\n${RED} --->  Python 3.5 now installed. You need to restart the terminal 2nd time and run the bootstrap.sh again to complete the install.${NC}\n"
+       echo -e "\n${RED} --->  Python 3.5.3 is now installed. You need to restart the terminal 2nd time and run the bootstrap.sh again to complete the install.${NC}\n"
        sleep 20
        exit
     fi
@@ -85,8 +101,8 @@ fi
 
 echo -e "\n${GREEN}  --->  installing/upgrading pipenv ${NC}\n"
 if command -v pipenv &>/dev/null; then
-    powershell -Command "python -m pip install --upgrade pip"
-    powershell -Command "python -m pip install --upgrade pipenv"
+    powershell -Command "pip3 install --upgrade pip"
+    powershell -Command "pip3 install --upgrade pipenv"
 else
-    powershell -Command "pip install pipenv"
+    powershell -Command "pip3 install pipenv"
 fi

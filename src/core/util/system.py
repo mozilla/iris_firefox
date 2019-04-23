@@ -142,7 +142,7 @@ def set_terminal_encoding(encoding):
 
 
 def get_python_version():
-    version_string = subprocess.Popen('python --version', stdout=subprocess.PIPE, shell=True).communicate()[
+    version_string = subprocess.Popen('python3 --version', stdout=subprocess.PIPE, shell=True).communicate()[
         0].rstrip().decode("utf-8")
     version = version_string.split(' ')[1]
     return version
