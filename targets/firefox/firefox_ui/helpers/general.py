@@ -547,7 +547,7 @@ def open_library_menu(option):
         wait(library_menu_pattern, 10)
         region = Region(image_find(library_menu_pattern).x - Screen().width / 4,
                         image_find(library_menu_pattern).y, Screen().width / 4,
-                        Screen().height / 4)
+                        Screen().height / 4 - 100)
         logger.debug('Library menu found.')
     except FindError:
         raise APIHelperError(
