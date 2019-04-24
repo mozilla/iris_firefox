@@ -36,32 +36,32 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_toolbar_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar folder exists')
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, most_visited_folder_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited '
                                                       'folder exists')
 
-        getting_started_exists = exists(getting_started_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        getting_started_exists = exists(getting_started_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, getting_started_exists, 'Firefox menu > Bookmarks > Bookmarks Toolbar > Getting Started '
                                                   'bookmark exists')
 
         right_click(getting_started_pattern)
 
-        properties_option_exists = exists(properties_option_pattern)
+        properties_option_exists = exists(properties_option_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, properties_option_exists, 'Properties option exists')
 
         click(properties_option_pattern)
 
-        bookmark_properties_opened = exists(name_field_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        bookmark_properties_opened = exists(name_field_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmark_properties_opened, 'Bookmark properties window is opened')
 
         paste('Focus')
@@ -82,12 +82,12 @@ class Test(BaseTest):
 
         open_bookmarks_toolbar()
 
-        bookmark_edited = exists(LocalWeb.FOCUS_BOOKMARK_SMALL)
+        bookmark_edited = exists(LocalWeb.FOCUS_BOOKMARK_SMALL, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmark_edited, 'The window is dismissed and all the changes are correctly saved')
 
         right_click(LocalWeb.FOCUS_BOOKMARK_SMALL)
 
-        properties_option_exists = exists(properties_option_pattern)
+        properties_option_exists = exists(properties_option_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, properties_option_exists, 'Properties option exists')
 
         click(properties_option_pattern)
@@ -95,13 +95,13 @@ class Test(BaseTest):
         name_edited = exists(name_edited_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, name_edited, 'Name is edited')
 
-        location_edited = exists(location_edited_pattern)
+        location_edited = exists(location_edited_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, location_edited, 'Location is edited')
 
-        tags_edited = exists(tags_edited_pattern)
+        tags_edited = exists(tags_edited_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, tags_edited, 'Tags are edited')
 
-        keyword_edited = exists(keyword_edited_pattern)
+        keyword_edited = exists(keyword_edited_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, keyword_edited, 'Keyword are edited')
 
         type(Key.ESC)
