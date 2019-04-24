@@ -25,7 +25,7 @@ class Test(BaseTest):
         customize_dev_tools_pattern = Pattern('customize_developer_tools.png')
         customize_dev_tools_message_pattern = Pattern('customize_dev_tools_message.png').similar(0.5)
         responsive_design_message_pattern = Pattern('responsive_design_message.png').similar(0.5)
-        responsive_design_active_pattern = Pattern('responsive_design_active.png').similar(0.4)
+        responsive_design_active_pattern = Pattern('responsive_design_active.png')
         dock_to_left_pattern = Pattern('dock_to_left.png')
         dock_to_right_pattern = Pattern('dock_to_right.png')
         separate_window_pattern = Pattern('separate_window_option.png')
@@ -43,20 +43,44 @@ class Test(BaseTest):
         left_upper_corner = Region(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         button_region = Region(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
-        for button in buttons:
-            expected_buttons = button_region.exists(button, 5)
-            assert_true(self, expected_buttons, 'option %s has been found.' % button)
-
-        # Check if the labels are displayed when the cursor hovers over the options.
-
-        for m_index, button in enumerate(buttons):
-            button_region.hover(button)
-            expected_messages = button_region.exists(button_messages[m_index], 10)
-            assert_true(self, expected_messages, 'Message %s found.' % button_messages[m_index])
+        # for button in buttons:
+        #     expected_buttons = button_region.exists(button, 5)
+        #     assert_true(self, expected_buttons, 'option %s has been found.' % button)
+        #
+        # # Check if the labels are displayed when the cursor hovers over the options.
+        #
+        # for m_index, button in enumerate(buttons):
+        #     button_region.hover(button)
+        #     expected_messages = button_region.exists(button_messages[m_index], 10)
+        #     assert_true(self, expected_messages, 'Message %s found.' % button_messages[m_index])
 
         # Checking the button functionality.
 
-        button_region.click(responsive_design_button_pattern)
+        # button_region.click(responsive_design_button_pattern)
+        responsive_design_button_displayed = exists(responsive_design_button_pattern)
+        assert_true(self,responsive_design_button_displayed, '"Responsive design" button displayed')
+
+        hover(responsive_design_button_pattern)
+
+        responsive_design_message_displayed = exists(responsive_design_message_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, responsive_design_message_displayed, '"Responsive design" message is displayed')
+
+        customize_dev_tools_button_displayed = exists(customize_dev_tools_pattern)
+        assert_true(self, customize_dev_tools_button_displayed, '"Customize dev tools" button displayed')
+
+        hover(customize_dev_tools_pattern)
+
+        customize_dev_tools_message_displayed = exists(customize_dev_tools_message_pattern,
+                                                       Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, customize_dev_tools_message_displayed, '"Customize dev tools" message is displayed')
+
+        close_dev_tools_button_displayed = exists(close_dev_tools_button_pattern)
+        assert_true(self, close_dev_tools_button_displayed, '"Close dev tools" button displayed')
+
+        hover(close_dev_tools_button_pattern)
+
+        close_message_displayed = exists(close_message_pattern)
+        assert_true(self, close_message_displayed, '"Close dev tools" message is displayed')
 
         responsive_design_assert = exists(responsive_design_active_pattern, 10)
         assert_true(self, responsive_design_assert, 'Responsive Design Mode is enabled.')
