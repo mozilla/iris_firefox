@@ -55,6 +55,7 @@ class DownloadFiles(object):
     DOWNLOADS_PANEL_5MB_MISSING = Pattern('moved_missing_5mb_file.png')
     DOWNLOADS_PANEL_10MB_MISSING = Pattern('moved_missing_10mb_file.png')
     DOWNLOADS_PANEL_20MB_MISSING = Pattern('moved_missing_20mb_file.png')
+    DOWNLOADS_PANEL_FREETDS_PATCHED = Pattern('completed_freetds_patched.png')
     DOWNLOADS_PANEL_5MB_COMPLETED_RTL = Pattern('completed_5mb_file_rtl.png')
     DOWNLOADS_PANEL_10MB_COMPLETED_RTL = Pattern('completed_10mb_file_rtl.png')
     DOWNLOADS_PANEL_20MB_COMPLETED_RTL = Pattern('completed_20mb_file_rtl.png')
