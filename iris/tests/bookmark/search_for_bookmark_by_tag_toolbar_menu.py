@@ -33,29 +33,30 @@ class Test(BaseTest):
 
         open_firefox_menu()
 
-        bookmark_menu_item_available = exists(bookmarks_menu_item_top_menu_pattern)
+        bookmark_menu_item_available = exists(bookmarks_menu_item_top_menu_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmark_menu_item_available, '\'Bookmarks\' option is available on Firefox top menu')
 
         click(bookmarks_menu_item_top_menu_pattern)
 
-        toolbar_bookmarks_available_on_top_menu = exists(toolbar_bookmarks_top_menu_item_pattern)
+        toolbar_bookmarks_available_on_top_menu = exists(toolbar_bookmarks_top_menu_item_pattern,
+                                                         Settings.FIREFOX_TIMEOUT)
         assert_true(self, toolbar_bookmarks_available_on_top_menu,
                     '\'Bookmarks Toolbar\' option available in \'Bookmarks\' section from top menu')
 
         mouse_move(toolbar_bookmarks_top_menu_item_pattern)
 
-        getting_started_bookmark_available = exists(getting_started_bookmark_top_menu_pattern)
+        getting_started_bookmark_available = exists(getting_started_bookmark_top_menu_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, getting_started_bookmark_available,
                     '\'Getting started\' bookmark available in \'Bookmarks\' section from top menu')
 
         right_click(getting_started_bookmark_top_menu_pattern)
 
-        properties_option_appeared = exists(properties_option_pattern)
+        properties_option_appeared = exists(properties_option_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, properties_option_appeared, '\'Properties\' option available after right-click at bookmark')
 
         click(properties_option_pattern)
 
-        tags_field_available = exists(Bookmarks.StarDialog.TAGS_FIELD)
+        tags_field_available = exists(Bookmarks.StarDialog.TAGS_FIELD, Settings.FIREFOX_TIMEOUT)
         assert_true(self, tags_field_available, '\'Tags\' field available in \'Properties\' window')
 
         click(Bookmarks.StarDialog.TAGS_FIELD)
@@ -71,7 +72,7 @@ class Test(BaseTest):
         except FindError:
             raise FindError('\'Properties\' window for \'Getting started\' bookmark didn\'t close')
 
-        library_menu_available = exists(NavBar.LIBRARY_MENU)
+        library_menu_available = exists(NavBar.LIBRARY_MENU, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_menu_available, '\'Library menu\' button is available')
 
         click(NavBar.LIBRARY_MENU)
@@ -96,13 +97,13 @@ class Test(BaseTest):
         except FindError:
             raise FindError('The \'Bookmarks toolbar menu\' didn\'t dismiss.')
 
-        url_bar_focused = exists(focused_url_bar_with_asterisk_pattern)
+        url_bar_focused = exists(focused_url_bar_with_asterisk_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, url_bar_focused, 'The focus is in the URL address bar after a \'*\'.')
 
         click(focused_url_bar_with_asterisk_pattern)
 
         paste('test')
 
-        bookmark_found_by_tag = exists(search_by_tag_result_pattern)
+        bookmark_found_by_tag = exists(search_by_tag_result_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, bookmark_found_by_tag,
                     'All the valid results are displayed under the URL bar with a star-shaped button in front.')
