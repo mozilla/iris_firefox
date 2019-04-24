@@ -24,91 +24,93 @@ class Test(BaseTest):
         add_bookmarks_menu_to_toolbar_pattern = Pattern('add_bookmarks_menu_to_toolbar.png')
         hide_bookmarks_sidebar_pattern = Pattern('hide_bookmarks_sidebar.png')
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(library_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
         click(library_button_pattern)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
 
         click(bookmarks_menu_option_pattern)
 
-        bookmarking_tools_exists = exists(bookmarking_tools_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarking_tools_exists = exists(bookmarking_tools_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarking_tools_exists, 'The Bookmarks menu is correctly displayed')
 
         click(bookmarking_tools_pattern)
 
-        add_bookmarks_menu_to_toolbar_exists = exists(add_bookmarks_menu_to_toolbar_pattern, DEFAULT_UI_DELAY_LONG)
+        add_bookmarks_menu_to_toolbar_exists = exists(add_bookmarks_menu_to_toolbar_pattern,
+                                                      Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, add_bookmarks_menu_to_toolbar_exists, 'Bookmarking Tools window contains '
                                                                 'Add Bookmarks Menu to Toolbar')
 
-        view_bookmarks_sidebar_exists = exists(view_bookmarks_sidebar_pattern, DEFAULT_UI_DELAY_LONG)
+        view_bookmarks_sidebar_exists = exists(view_bookmarks_sidebar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, view_bookmarks_sidebar_exists, 'Bookmarking Tools window contains View Bookmarks Sidebar')
 
-        view_bookmarks_toolbar_exists = exists(view_bookmarks_toolbar_pattern, DEFAULT_UI_DELAY_LONG)
+        view_bookmarks_toolbar_exists = exists(view_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, view_bookmarks_toolbar_exists, 'Bookmarking Tools window contains View Bookmarks Toolbar')
 
         click(view_bookmarks_sidebar_pattern)
 
         try:
-            bookmarking_tools_not_exists = wait_vanish(view_bookmarks_sidebar_pattern)
+            bookmarking_tools_not_exists = wait_vanish(view_bookmarks_sidebar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, bookmarking_tools_not_exists, 'Bookmarking Tools window is dismissed')
         except FindError:
             raise FindError('Bookmarking Tools window is not dismissed')
 
-        bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_sidebar_menu_exists = exists(bookmarks_sidebar_menu_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_sidebar_menu_exists, 'the Bookmarks Sidebar is correctly displayed '
                                                          'inside the FF window, on the left side.')
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(library_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section still exists')
 
         click(library_button_pattern)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option still exists')
 
         click(bookmarks_menu_option_pattern)
 
-        bookmarking_tools_exists = exists(bookmarking_tools_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarking_tools_exists = exists(bookmarking_tools_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarking_tools_exists, 'The Bookmarks menu is correctly displayed')
 
         click(bookmarking_tools_pattern)
 
-        add_bookmarks_menu_to_toolbar_exists = exists(add_bookmarks_menu_to_toolbar_pattern, DEFAULT_UI_DELAY_LONG)
+        add_bookmarks_menu_to_toolbar_exists = exists(add_bookmarks_menu_to_toolbar_pattern,
+                                                      Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, add_bookmarks_menu_to_toolbar_exists, 'Bookmarking Tools window contains '
                                                                 'Add Bookmarks Menu to Toolbar')
 
-        hide_bookmarks_sidebar_exists = exists(hide_bookmarks_sidebar_pattern, DEFAULT_UI_DELAY_LONG)
+        hide_bookmarks_sidebar_exists = exists(hide_bookmarks_sidebar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, hide_bookmarks_sidebar_exists, 'Bookmarking Tools window contains Hide Bookmarks Sidebar')
 
-        view_bookmarks_toolbar_exists = exists(view_bookmarks_toolbar_pattern, DEFAULT_UI_DELAY_LONG)
+        view_bookmarks_toolbar_exists = exists(view_bookmarks_toolbar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, view_bookmarks_toolbar_exists, 'Bookmarking Tools window contains View Bookmarks Toolbar')
 
         click(hide_bookmarks_sidebar_pattern)
 
         try:
-            bookmarks_sidebar_menu_exists = wait_vanish(bookmarks_sidebar_menu_pattern)
+            bookmarks_sidebar_menu_exists = wait_vanish(bookmarks_sidebar_menu_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
             assert_true(self, bookmarks_sidebar_menu_exists, 'The bookmarks sidebar is dismissed')
         except FindError:
             raise FindError('The bookmarks sidebar is not dismissed')
 
-        library_button_exists = exists(library_button_pattern, DEFAULT_UI_DELAY_LONG)
+        library_button_exists = exists(library_button_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
         click(library_button_pattern)
 
-        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarks_menu_option_exists, 'Bookmarks menu option exists')
 
         click(bookmarks_menu_option_pattern)
 
-        bookmarking_tools_exists = exists(bookmarking_tools_pattern, DEFAULT_UI_DELAY_LONG)
+        bookmarking_tools_exists = exists(bookmarking_tools_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, bookmarking_tools_exists, 'The Bookmarks menu is correctly displayed')
 
         click(bookmarking_tools_pattern)
 
-        view_bookmarks_sidebar_exists = exists(view_bookmarks_sidebar_pattern, DEFAULT_UI_DELAY_LONG)
+        view_bookmarks_sidebar_exists = exists(view_bookmarks_sidebar_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
         assert_true(self, view_bookmarks_sidebar_exists, 'The Hide Bookmarks Sidebar button '
                                                          'changes its state to View Bookmarks Sidebar')
