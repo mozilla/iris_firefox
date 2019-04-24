@@ -83,6 +83,7 @@ class Test(BaseTest):
 
         # Navigate to a page that could contain different search engines and can be added to Firefox.
         navigate('https://play.google.com/store')
+
         google_play_store_loaded = exists(google_play_store_loaded_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, google_play_store_loaded, 'Google play store website loaded')
 
