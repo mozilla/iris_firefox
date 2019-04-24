@@ -13,6 +13,7 @@ class Test(BaseTest):
         self.test_case_id = '168937'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
+        self.blocked_by = {'id': '1527258', 'platform': Platform.WINDOWS}
 
     def run(self):
         properties_option_pattern = Pattern('properties_option.png')
