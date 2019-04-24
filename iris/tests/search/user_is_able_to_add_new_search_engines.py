@@ -28,6 +28,7 @@ class Test(BaseTest):
         google_play_search_engine_pattern = Pattern('google_play_search_engine.png')
         test_search_google_play_pattern = Pattern('test_search_google_play.png')
         google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
+        google_play_store_loaded_pattern = Pattern('google_play_store_loaded.png')
 
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
@@ -82,6 +83,9 @@ class Test(BaseTest):
 
         # Navigate to a page that could contain different search engines and can be added to Firefox.
         navigate('https://play.google.com/store')
+        google_play_store_loaded = exists(google_play_store_loaded_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, google_play_store_loaded, 'Google play store website loaded')
+
         time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         select_search_bar()
