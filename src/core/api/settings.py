@@ -56,6 +56,7 @@ class _Settings:
     DEFAULT_UI_DELAY_SHORT = 0.5
     DEFAULT_UI_DELAY_LONG = 2.5
     DEFAULT_SYSTEM_DELAY = 5
+    DEFAULT_FIREFOX_TIMEOUT = 10
 
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
                  move_mouse_delay=DEFAULT_MOVE_MOUSE_DELAY, click_delay=DEFAULT_CLICK_DELAY,
@@ -71,6 +72,7 @@ class _Settings:
                  highlight_color=DEFAULT_HIGHLIGHT_COLOR,
                  highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS,
                  mouse_scroll_step=DEFAULT_MOUSE_SCROLL_STEP,
+                 firefox_timeout=DEFAULT_FIREFOX_TIMEOUT,
                  key_shortcut_delay=DEFAULT_KEY_SHORTCUT_DELAY):
 
         self.wait_scan_rate = wait_scan_rate
@@ -91,10 +93,15 @@ class _Settings:
         self.highlight_thickness = highlight_thickness
         self.mouse_scroll_step = mouse_scroll_step
         self.key_shortcut_delay = key_shortcut_delay
+        self.firefox_timeout = firefox_timeout
 
     @property
     def type_delay(self):
         return self._type_delay
+
+    @property
+    def FIREFOX_TIMEOUT(self):
+        return self.firefox_timeout
 
     @property
     def SYSTEM_DELAY(self):
