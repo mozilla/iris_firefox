@@ -8,6 +8,7 @@ from iris.api.core.pattern import Pattern
 class DownloadManager(object):
     SHOW_ALL_DOWNLOADS = Pattern('downloads_history_show_all_downloads.png')
     DOWNLOADS_FOLDER = Pattern('downloads_folder.png')
+    DOWNLOADS_FOLDER_PATH = Pattern('downloads_folder.png')
     NEW_DOWNLOADS_FOLDER = Pattern('new_downloads_folder_path.png')
 
     class DownloadsPanel(object):

@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '99488'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        self.blocked_by = {'id': '1513494', 'platform': [Platform.LINUX]}
+        #self.blocked_by = {'id': '1513494', 'platform': [Platform.LINUX]}
 
     def setup(self):
         """Test case setup
@@ -74,8 +74,8 @@ class Test(BaseTest):
         click(Utils.SELECT_FOLDER)
 
         try:
-            expected_3 = wait_vanish(Utils.SELECT_FOLDER, 10)
-            assert_true(self, expected_3, 'Downloads folder option window is dismissed.')
+            expected = wait_vanish(Utils.SELECT_FOLDER, 10)
+            assert_true(self, expected, 'Downloads folder option window is dismissed.')
         except FindError:
             logger.error('Downloads folder option is still displayed.')
 
@@ -104,7 +104,10 @@ class Test(BaseTest):
         assert_true(self, expected, 'Containing folder icon is available for 5mb file.')
 
         click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, in_region=region_5_mb)
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+
+        # Workaround to avoid 1513494 bug on Linux.
+        if Settings.get_os() == Platform.LINUX:
+            click(Pattern('linux_folder_icon.png'))
 
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
         assert_true(self, expected, 'Default Downloads folder is displayed.')
@@ -129,6 +132,10 @@ class Test(BaseTest):
 
         click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, in_region=region_10_mb)
 
+        # Workaround to avoid 1513494 bug on Linux.
+        if Settings.get_os() == Platform.LINUX:
+            click(Pattern('linux_folder_icon.png'))
+
         expected = exists(DownloadManager.NEW_DOWNLOADS_FOLDER, 10)
         assert_true(self, expected, 'New Downloads folder is displayed.')
 
@@ -152,8 +159,10 @@ class Test(BaseTest):
 
         if Settings.get_os() == Platform.MAC:
             click(DownloadManager.NEW_DOWNLOADS_FOLDER)
-
-        click(DownloadManager.DOWNLOADS_FOLDER)
+        elif Settings.get_os() == Platform.LINUX:
+            click(DownloadManager.NEW_DOWNLOADS_FOLDER)
+        else:
+            click(DownloadManager.DOWNLOADS_FOLDER)
 
         click(Utils.SELECT_FOLDER)
 
