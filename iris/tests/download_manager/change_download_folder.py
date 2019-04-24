@@ -140,7 +140,7 @@ class Test(BaseTest):
         assert_true(self, expected, 'New Downloads folder is displayed.')
 
         expected = exists(DownloadFiles.FOLDER_VIEW_10MB_HIGHLIGHTED, 10)
-        assert_true(self, expected, '5mb file is displayed in the newly downloads folder.')
+        assert_true(self, expected, '10mb file is displayed in the newly downloads folder.')
 
         close_tab()
 
