@@ -14,11 +14,11 @@ class Test(BaseTest):
         self.test_case_id = '163195'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
-        self.blocked_by = {'id': '1527258', 'platform': Platform.WINDOWS}
 
     def setup(self):
         BaseTest.setup(self)
         self.profile = Profile.TEN_BOOKMARKS
+        return
 
     def run(self):
         firefox_menu_bookmarks_pattern = Pattern('firefox_menu_bookmarks.png')
@@ -26,22 +26,22 @@ class Test(BaseTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        test_site_opened = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        test_site_opened = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, test_site_opened, 'Previously bookmarked Mozilla website is opened')
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, Settings.FIREFOX_TIMEOUT)
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, firefox_menu_bookmarks_exists, 'Firefox menu > Bookmarks exists')
 
         click(firefox_menu_bookmarks_pattern)
 
-        edit_this_bookmark_option_exists = exists(edit_this_bookmark_option_pattern, Settings.FIREFOX_TIMEOUT)
+        edit_this_bookmark_option_exists = exists(edit_this_bookmark_option_pattern, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, edit_this_bookmark_option_exists, 'Edit This Bookmark option exists')
 
         click(edit_this_bookmark_option_pattern)
 
-        edit_stardialog_displayed = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, Settings.FIREFOX_TIMEOUT)
+        edit_stardialog_displayed = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, DEFAULT_FIREFOX_TIMEOUT)
         assert_true(self, edit_stardialog_displayed, 'The Edit This Bookmark popup is displayed under the star-shaped '
                                                      'icon.')
 
