@@ -24,6 +24,8 @@ class Test(BaseTest):
         if Settings.is_windows():
             bookmark_properties_pattern = Pattern('bookmark_properties.png')
             bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
+        elif Settings.is_mac():
+            bookmarks_menu_pattern = Pattern('bookmarks_menu_library_icon.png')
         else:
             bookmarks_menu_pattern = Pattern('bookmarks_menu.png')
 
@@ -32,7 +34,6 @@ class Test(BaseTest):
             top_menu_displayed = exists(bookmarks_top_menu_pattern)
             assert_true(self, top_menu_displayed, 'Firefox menu is displayed')
             click(bookmarks_top_menu_pattern)
-
         else:
             open_library()
             library_opened = exists(bookmarks_menu_pattern)
