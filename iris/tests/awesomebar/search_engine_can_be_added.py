@@ -80,7 +80,7 @@ class Test(BaseTest):
 
         # Change the default search engine.
         amazon_search_engine = exists(pref_default_search_engine_amazon_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, amazon_search_engine, 'Amazon search engine is avalable.')
+        assert_true(self, amazon_search_engine, 'Amazon search engine is available.')
 
         click(pref_default_search_engine_amazon_pattern)
 
@@ -128,11 +128,8 @@ class Test(BaseTest):
         # Add a new search engine.
         next_tab()
 
-        google_one_off_button = scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
-        assert_true(self, google_one_off_button, 'Find_more_search_engines_pattern')
-
-        find_more_search_engines = exists(find_more_search_engines_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, find_more_search_engines, '\'Find more search engines\' link found.')
+        find_more_search_button = scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
+        assert_true(self, find_more_search_button, '\'Find more search engines\' link found.')
 
         click(find_more_search_engines_pattern)
 
