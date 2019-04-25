@@ -6,9 +6,11 @@ import importlib
 import logging
 import os
 import shutil
+import time
 from distutils.dir_util import copy_tree
 
 import pytest
+from mozprofile import Profile as MozProfile
 from mozrunner import FirefoxRunner
 
 from src.configuration.config_parser import validate_config_ini
@@ -17,6 +19,7 @@ from src.core.api.keyboard.key import KeyModifier
 from src.core.api.keyboard.keyboard import type
 from src.core.api.keyboard.keyboard_util import check_keyboard_state
 from src.core.api.os_helpers import OSHelper
+from src.core.api.settings import Settings
 from src.core.util.cleanup import *
 from src.core.util.app_loader import get_app_test_directory
 from src.core.util.arg_parser import get_core_args, set_core_arg
@@ -179,10 +182,12 @@ def launch_control_center():
 
     args = ['http://127.0.0.1:%s' % get_core_args().port]
     process_args = {'stream': None}
-    fx_runner = FirefoxRunner(binary=fx_path, profile=profile_path, cmdargs=args, process_args=process_args)
+    profile = MozProfile(profile=profile_path, preferences=Settings.default_fx_prefs)
+    fx_runner = FirefoxRunner(binary=fx_path, profile=profile, cmdargs=args, process_args=process_args)
     fx_runner.start()
     server = LocalWebServer(get_core_args().workdir, get_core_args().port)
     server.stop()
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
     if OSHelper.is_mac():
         type(text='q', modifier=KeyModifier.CMD)
@@ -210,6 +215,3 @@ class ShutdownTasks(CleanUp):
 
         if os.path.exists(PathManager.get_temp_dir()):
             shutil.rmtree(PathManager.get_temp_dir(), ignore_errors=True)
-
-        if os.path.exists(os.path.join(get_core_args().workdir, 'cc_profile')):
-            shutil.rmtree(os.path.join(get_core_args().workdir, 'cc_profile'), ignore_errors = True)
