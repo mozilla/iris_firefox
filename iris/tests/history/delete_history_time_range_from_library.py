@@ -19,33 +19,36 @@ class Test(BaseTest):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         iris_bookmark_focus_pattern = Pattern('iris_bookmark_focus.png')
-        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         history_today_pattern = Library.HISTORY_TODAY
 
-        # Open the Bookmarks toolbar.
-        access_bookmarking_tools(view_bookmarks_toolbar)
-        expected = exists(bookmarks_toolbar_most_visited_pattern, 10)
-        assert_true(self, expected, 'Bookmarks Toolbar has been activated.')
-
         # Open History and check if it is populated with the Iris page.
-        open_library_menu('History')
+        library_button_exists = exists(NavBar.LIBRARY_MENU)
+        assert_true(self, library_button_exists, 'Library button exists')
+
+        click(NavBar.LIBRARY_MENU)
+
+        history_button_exists = exists(LibraryMenu.HISTORY_BUTTON, Settings.SHORT_FIREFOX_TIMEOUT)
+        assert_true(self, history_button_exists, 'History button exists')
+
+        click(LibraryMenu.HISTORY_BUTTON)
 
         right_upper_corner = Region(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
+
+        expected = right_upper_corner.exists(iris_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Iris page is displayed in the History menu list.')
 
         click(show_all_history_pattern)
 
-        expected = exists(iris_bookmark_focus_pattern, 10)
+        expected = exists(iris_bookmark_focus_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Iris page is displayed in the Recent History list.')
 
         # Right click on a History time range (e.g. 'Today') and select Delete.
         right_click(history_today_pattern)
+
         type(text='d')
 
         try:
-            expected = wait_vanish(history_today_pattern, 10)
+            expected = wait_vanish(history_today_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, expected, 'The selected time range is deleted.')
         except FindError:
             raise FindError('The selected time range is not deleted.')

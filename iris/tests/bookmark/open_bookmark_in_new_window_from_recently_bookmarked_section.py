@@ -22,7 +22,7 @@ class Test(BaseTest):
     def run(self):
         open_in_new_window_option_pattern = Pattern('open_in_new_window.png')
 
-        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.TINY_FIREFOX_TIMEOUT)
+        library_button_exists = exists(NavBar.LIBRARY_MENU, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_button_exists, 'View history, saved bookmarks and more section exists')
 
         click(NavBar.LIBRARY_MENU)

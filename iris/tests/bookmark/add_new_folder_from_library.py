@@ -17,10 +17,12 @@ class Test(BaseTest):
 
     def run(self):
         iris_new_folder_pattern = Pattern('iris_new_folder.png')
+        if Settings.is_linux():
+            new_folder_bookmark_bookmark = Pattern('new_folder_bookmark.png')
 
         open_library()
 
-        library_opened = exists(Library.TITLE, DEFAULT_FIREFOX_TIMEOUT)
+        library_opened = exists(Library.TITLE, Settings.FIREFOX_TIMEOUT)
         assert_true(self, library_opened, 'Library opened')
 
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
@@ -37,7 +39,6 @@ class Test(BaseTest):
         click(Library.Organize.NEW_FOLDER)
 
         if Settings.is_linux():
-            new_folder_bookmark_bookmark = Pattern('new_folder_bookmark.png')
             new_bookmark_window_opened = exists(new_folder_bookmark_bookmark)
             assert_true(self, new_bookmark_window_opened, 'New Folder window is displayed')
         else:
@@ -52,4 +53,5 @@ class Test(BaseTest):
         assert_true(self, bookmark_exists, 'The New Folder is added in the selected section')
 
         click(Library.TITLE)
+
         close_window_control('auxiliary')

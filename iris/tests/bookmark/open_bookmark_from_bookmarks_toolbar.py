@@ -14,38 +14,16 @@ class Test(BaseTest):
         self.test_suite_id = '2525'
         self.locales = ['en-US']
 
-    def setup(self):
-        """Test case setup
-
-        Override the setup method to use a pre-canned bookmarks profile..
-        """
-        BaseTest.setup(self)
-        self.profile = Profile.TEN_BOOKMARKS
-        return
-
     def run(self):
-        moz_draggable_pattern = Pattern('moz_sidebar_bookmark.png')
-        drag_area_pattern = Pattern('drag_area.png')
-        dragged_bookmark_pattern = Pattern('moz_toolbar_dragged_bookmark.png')
-        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        getting_started_bookmark_pattern = Pattern('getting_started_in_toolbar.png')
+        get_started_tab_pattern = Pattern('get_started_tab.png')
 
-        navigate('about:blank')
+        open_bookmarks_toolbar()
 
-        access_bookmarking_tools(view_bookmarks_toolbar_pattern)
+        getting_started_bookmark_exists = exists(getting_started_bookmark_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, getting_started_bookmark_exists, 'Bookmarks Toolbar enabled. Getting started bookmark exists')
 
-        bookmarks_sidebar('open')
+        click(getting_started_bookmark_pattern)
 
-        paste('mozilla')
-
-        drag_drop(moz_draggable_pattern, drag_area_pattern, 0.5)
-
-        bookmark_drag_assert = exists(dragged_bookmark_pattern, 10)
-        assert_true(self, bookmark_drag_assert, 'Moz Bookmark was dragged successfully.')
-
-        bookmarks_sidebar('close')
-
-        click(dragged_bookmark_pattern)
-
-        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert_true(self, mozilla_page_assert,
-                    'Moz bookmark has been successfully accessed from the Bookmarks Toolbar.')
+        get_started_page_opened = exists(get_started_tab_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
+        assert_true(self, get_started_page_opened, 'Get started page successfully opened')

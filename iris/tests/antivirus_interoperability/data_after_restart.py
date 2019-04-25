@@ -100,9 +100,12 @@ class Test(BaseTest):
         twitter_opened = exists(twitter_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_opened, 'The Twitter site successfully opened')
 
-        open_browser_console()
+        for _ in range(3):
+            open_browser_console()
+            browser_console_opened = exists(browser_console_pattern, Settings.FIREFOX_TIMEOUT)
+            if browser_console_opened:
+                break
 
-        browser_console_opened = exists(browser_console_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, browser_console_opened, 'Browser console displayed')
 
         restart_via_console()

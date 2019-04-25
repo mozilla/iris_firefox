@@ -51,6 +51,7 @@ class DownloadManager(object):
     class DownloadState(object):
         COMPLETED = Pattern('download_details_completed.png')
         CANCELED = Pattern('download_details_canceled.png')
+        FAILED = Pattern('download_details_failed.png')
         PROGRESS = Pattern('download_details_left_size.png')
         PAUSED = Pattern('download_details_paused.png')
         RETRY_DOWNLOAD = Pattern('download_details_retry_download.png')

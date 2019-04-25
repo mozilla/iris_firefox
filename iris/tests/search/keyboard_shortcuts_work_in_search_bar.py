@@ -31,48 +31,55 @@ class Test(BaseTest):
 
         # Hover the mouse over the Search Bar.
         hover(search_bar_pattern)
-        expected = exists(search_using_google_pattern, 10)
-        assert_true(self, expected, '\'Search using Google\' is shown as tooltip.')
+
+        search_using_google = exists(search_using_google_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, search_using_google, '\'Search using Google\' is shown as tooltip.')
 
         # Start typing inside the Search Bar.
         type('mozilla')
 
         # Hover the mouse over the one-click search engines.
-        expected = exists(duckduckgo_search_bar_pattern, 10)
-        assert_true(self, expected, 'Search engine is visible.')
+        duckduckgo_search_bar = exists(duckduckgo_search_bar_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, duckduckgo_search_bar, 'Search engine is visible.')
 
         hover(duckduckgo_search_bar_pattern)
-        expected = exists(search_duckduckgo_pattern, 10)
-        assert_true(self, expected, 'Search engine is highlighted.')
+
+        search_duckduckgo = exists(search_duckduckgo_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, search_duckduckgo, 'Search engine is highlighted.')
 
         # While the cursor is on the search toolbar, select the arrow DOWN and then the arrow UP keys.
         type(Key.DOWN)
+
         searchbar_text = copy_to_clipboard()
         assert_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow DOWN key will slide in the search menu.')
 
         type(Key.DOWN)
+
         searchbar_text = copy_to_clipboard()
         assert_not_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow DOWN key will slide in the search menu.')
 
         type(Key.UP)
+
         searchbar_text = copy_to_clipboard()
         assert_equal(self, searchbar_text, 'mozilla', 'Pressing the arrow UP key will slide in the search menu.')
 
         # Use the tab key to navigate.
         select_search_bar()
 
-        for i in range(3):
+        for _ in range(3):
             type(Key.TAB)
 
-        expected = exists(search_duckduckgo_pattern, 10)
-        assert_true(self, expected,
-                    'Pressing tab selects the one-click search engines while the search suggestions are skipped.')
+        search_duckduckgo = exists(search_duckduckgo_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, search_duckduckgo, 'Pressing tab selects the one-click search engines while the search '
+                                             'suggestions are skipped.')
 
         # Select ctrl/cmd + arrow UP and arrow DOWN keys.
         change_search_next()
-        expected = exists(bing_search_engine_pattern, 10)
-        assert_true(self, expected, 'The default search engine becomes the next one from the list.')
+
+        bing_search_engine = exists(bing_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, bing_search_engine, 'The default search engine becomes the next one from the list.')
 
         change_search_previous()
-        expected = exists(google_search_engine_pattern, 10)
-        assert_true(self, expected, 'The default search engine becomes the previous one from the list.')
+
+        google_search_engine = exists(google_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, google_search_engine, 'The default search engine becomes the previous one from the list.')

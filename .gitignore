@@ -136,3 +136,6 @@ Pipfile.lock
 
 # To download files
 iris/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives/*
+
+# This will be downloaded at bootstrap run
+bootstrap\get-pip.py

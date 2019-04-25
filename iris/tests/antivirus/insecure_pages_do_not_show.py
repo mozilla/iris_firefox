@@ -23,7 +23,7 @@ class Test(BaseTest):
         change_preference('security.enterprise_roots.enabled', 'false')
 
         navigate('https://www.twitter.com')
-        twitter_page_loaded = exists(twitter_logo_pattern)
+        twitter_page_loaded = exists(twitter_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, twitter_page_loaded, 'Twitter webpage is loaded successfully')
 
         connection_insecure_not_displayed_twitter = not exists(insecure_connection_pattern)
@@ -31,7 +31,7 @@ class Test(BaseTest):
                     'No error stating that the "connection is not secured" is displayed for twitter page')
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
-        tracker_site_loaded = exists(tracker_site_pattern)
+        tracker_site_loaded = exists(tracker_site_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, tracker_site_loaded, '"It\'s a tracker" site loaded')
 
         connection_insecure_not_displayed_tracker_site = not exists(insecure_connection_pattern)

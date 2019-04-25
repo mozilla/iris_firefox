@@ -66,10 +66,18 @@ class Test(BaseTest):
         assert_true(self, search_done, 'The Search is successfully performed.')
 
         new_tab()
+
+        search_bar_is_not_empty = exists(search_bar_not_empty_pattern)
+        assert_true(self, search_bar_is_not_empty, 'Search button isn\'t empty')
+
         if Settings.is_linux():
+
             double_click(search_bar_not_empty_pattern)
+
         else:
+
             click(search_bar_not_empty_pattern)
+
         paste('r')
         previously_searched_not_saved = not exists(search_form_suggestion_pattern)
         assert_true(self, previously_searched_not_saved, 'The previously searched word is not saved.')
