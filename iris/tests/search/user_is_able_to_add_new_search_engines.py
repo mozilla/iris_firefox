@@ -59,7 +59,7 @@ class Test(BaseTest):
         paste('startpage')
 
         add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern,
-                                                    Settings.FIREFOX_TIMEOUT)
+                                                    Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, add_startpage_search_engine_button, '\'Startpage HTTPS Privacy Search Engine\' engine '
                                                               'successfully found.')
 
@@ -86,8 +86,6 @@ class Test(BaseTest):
 
         google_play_store_loaded = exists(google_play_store_loaded_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, google_play_store_loaded, 'Google play store website loaded')
-
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
         select_search_bar()
         type(Key.DOWN)
