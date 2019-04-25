@@ -159,7 +159,7 @@ class Test(BaseTest):
         if Settings.get_os() == Platform.MAC:
             click(DownloadManager.NEW_DOWNLOADS_FOLDER)
         if Settings.get_os() == Platform.LINUX:
-            click(DownloadManager.NEW_DOWNLOADS_FOLDER)
+            click(DownloadManager.DOWNLOADS_FOLDER_PATH)
         else:
             click(DownloadManager.DOWNLOADS_FOLDER)
 
