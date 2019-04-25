@@ -14,7 +14,6 @@ class Test(BaseTest):
         self.test_case_id = '99488'
         self.test_suite_id = '1827'
         self.locales = ['en-US']
-        #self.blocked_by = {'id': '1513494', 'platform': [Platform.LINUX]}
 
     def setup(self):
         """Test case setup
@@ -46,14 +45,15 @@ class Test(BaseTest):
         click(NavBar.HOME_BUTTON.target_offset(70, 0))
 
         # Navigate to about:preferences.
-        navigate('about:preferences#searchResults')
+        navigate('about:preferences#search')
 
         expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
         assert_true(self, expected, 'The \'about:preferences#search\' page successfully loaded.')
 
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        expected = exists(AboutPreferences.FIND_IN_OPTIONS, 10)
+        assert_true(self, expected, '\'Find in Options\' search field is displayed.')
 
-        type('downloads')
+        paste('downloads')
         expected = exists(AboutPreferences.DOWNLOADS, 10)
         assert_true(self, expected, 'The \'Downloads\' section is displayed.')
 
@@ -65,7 +65,7 @@ class Test(BaseTest):
         expected = exists(Utils.NEW_FOLDER_HIGHLIGHTED, 10)
         assert_true(self, expected, '\'New Folder\' is highlighted.')
 
-        type('new_downloads_folder')
+        paste('new_downloads_folder')
 
         type(Key.ENTER)
         expected = exists(Utils.NEW_DOWNLOADS_FOLDER_HIGHLIGHTED, 10)
@@ -149,17 +149,15 @@ class Test(BaseTest):
 
     def teardown(self):
         # Set back default downloads folder.
-        navigate('about:preferences#searchResults')
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        navigate('about:preferences#search')
 
-        type('downloads')
-        time.sleep(DEFAULT_UI_DELAY_LONG)
+        paste('downloads')
 
         click(AboutPreferences.BROWSE)
 
         if Settings.get_os() == Platform.MAC:
             click(DownloadManager.NEW_DOWNLOADS_FOLDER)
-        elif Settings.get_os() == Platform.LINUX:
+        if Settings.get_os() == Platform.LINUX:
             click(DownloadManager.NEW_DOWNLOADS_FOLDER)
         else:
             click(DownloadManager.DOWNLOADS_FOLDER)

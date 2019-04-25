@@ -12,6 +12,7 @@ class AboutPreferences(object):
     BROWSE = Pattern('browse_option.png')
     ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN = Pattern('about_preferences_search_page.png')
     DOWNLOADS = Pattern('downloads_about_preference.png')
+    FIND_IN_OPTIONS = Pattern('find_in_options.png')
 
     class Privacy(object):
         CONTENT_TRACKING_TRACKERS_CHECKBOX_SELECTED = \
