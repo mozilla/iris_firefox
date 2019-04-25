@@ -32,7 +32,7 @@ class Test(BaseTest):
 
         download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.85), DownloadFiles.OK)
 
-        expected = exists(DownloadManager.DownloadState.COMPLETED, 50)
+        expected = exists(DownloadManager.DownloadState.COMPLETED, 90)
         assert_true(self, expected, 'Firefox installer download is completed.')
 
         expected = exists(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER, 10)
