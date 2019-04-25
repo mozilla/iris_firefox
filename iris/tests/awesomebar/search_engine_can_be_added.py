@@ -57,17 +57,16 @@ class Test(BaseTest):
         # Deleted assert for ebay because we no longer have the ebay search engine in some locations.
 
         # Check that the default one-off list is displayed in the awesomebar.
-        for one_search_engine in range(one_of_pattern_list.__len__()):
+        for one_search_engine in range(len(one_of_pattern_list)):
             if Settings.get_os() == Platform.MAC:
-                one_of_pattern_exists = \
-                    top_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.7),
-                                                            Settings.FIREFOX_TIMEOUT)
+                one_of_pattern_exists = top_two_thirds_of_screen_region.exists(
+                    one_of_pattern_list[one_search_engine].similar(0.7), Settings.FIREFOX_TIMEOUT)
             else:
                 one_of_pattern_exists = \
                     top_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9),
-                                                            Settings.FIREFOX_TIMEOUT)
-            assert_true(self, one_of_pattern_exists, 'Element found at position ' + one_search_engine.__str__() +
-                                                     ' in the list found.')
+                                                           Settings.FIREFOX_TIMEOUT)
+            assert_true(self, one_of_pattern_exists, 'Search engine Pattern {0} - {1} is displayed.'.format(
+                one_search_engine+1, one_of_pattern_list[one_search_engine].image_name))
 
         click(search_settings_pattern, Settings.TINY_FIREFOX_TIMEOUT)
 
@@ -81,7 +80,7 @@ class Test(BaseTest):
 
         # Change the default search engine.
         amazon_search_engine = exists(pref_default_search_engine_amazon_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, amazon_search_engine, 'amazon_search_engine')
+        assert_true(self, amazon_search_engine, 'Amazon search engine is avalable.')
 
         click(pref_default_search_engine_amazon_pattern)
 
@@ -101,7 +100,7 @@ class Test(BaseTest):
         next_tab()
 
         google_one_off_button = scroll_until_pattern_found(google_search_engine_pattern, scroll, (-25,), 20, 1)
-        assert_true(self, google_one_off_button, 'google_one_off_button_pattern')
+        assert_true(self, google_one_off_button, 'Google one off search engine button is displayed.')
 
         google_check_box_location = find(google_search_engine_pattern)
         click(Location(google_check_box_location.x+5, google_check_box_location.y+10), 1)
@@ -130,7 +129,7 @@ class Test(BaseTest):
         next_tab()
 
         google_one_off_button = scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
-        assert_true(self, google_one_off_button, 'google_one_off_button_pattern')
+        assert_true(self, google_one_off_button, 'Find_more_search_engines_pattern')
 
         find_more_search_engines = exists(find_more_search_engines_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, find_more_search_engines, '\'Find more search engines\' link found.')
