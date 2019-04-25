@@ -53,7 +53,9 @@ class Test(BaseTest):
         expected = exists(AboutPreferences.FIND_IN_OPTIONS, 10)
         assert_true(self, expected, '\'Find in Options\' search field is displayed.')
 
+        click(AboutPreferences.FIND_IN_OPTIONS)
         paste('downloads')
+
         expected = exists(AboutPreferences.DOWNLOADS, 10)
         assert_true(self, expected, 'The \'Downloads\' section is displayed.')
 
@@ -66,8 +68,8 @@ class Test(BaseTest):
         assert_true(self, expected, '\'New Folder\' is highlighted.')
 
         paste('new_downloads_folder')
-
         type(Key.ENTER)
+
         expected = exists(Utils.NEW_DOWNLOADS_FOLDER_HIGHLIGHTED, 10)
         assert_true(self, expected, '\'New Downloads Folder\' is created.')
 
@@ -152,7 +154,6 @@ class Test(BaseTest):
         navigate('about:preferences#search')
 
         paste('downloads')
-
         click(AboutPreferences.BROWSE)
 
         if Settings.get_os() == Platform.MAC:
@@ -163,5 +164,4 @@ class Test(BaseTest):
             click(DownloadManager.DOWNLOADS_FOLDER)
 
         click(Utils.SELECT_FOLDER)
-
         downloads_cleanup()
