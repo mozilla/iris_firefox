@@ -50,8 +50,9 @@ class Test(BaseTest):
         paste('moz')
 
         one_of_pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
-                        bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, google_one_off_button_pattern,
-                        twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
+                               bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern,
+                               google_one_off_button_pattern, twitter_one_off_button_pattern,
+                               wikipedia_one_off_button_pattern]
 
         # Deleted assert for ebay because we no longer have the ebay search engine in some locations.
 
@@ -122,8 +123,8 @@ class Test(BaseTest):
         else:
             google_one_off_search_engine = exists(google_one_off_button_pattern.similar(0.9),
                                                   Settings.SHORT_FIREFOX_TIMEOUT)
-        assert_false(self, google_one_off_search_engine, 'Unchecked search engine successfully removed from the one-off '
-                                                         'searches bar.')
+        assert_false(self, google_one_off_search_engine, 'Unchecked search engine successfully removed from the '
+                                                         'one-off searches bar.')
 
         # Add a new search engine.
         next_tab()
@@ -139,7 +140,7 @@ class Test(BaseTest):
         find_add_ons = exists(find_add_ons_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, find_add_ons, 'Find add-ons field is present on the page.')
 
-        click(find_add_ons_pattern)
+        click(find_add_ons_pattern, Settings.TINY_FIREFOX_TIMEOUT)
 
         paste('startpage')
 
