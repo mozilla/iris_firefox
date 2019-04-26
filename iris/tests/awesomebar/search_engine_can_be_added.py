@@ -59,12 +59,11 @@ class Test(BaseTest):
         # Check that the default one-off list is displayed in the awesomebar.
         for one_search_engine in range(len(one_of_pattern_list)):
             if Settings.get_os() == Platform.MAC:
-                one_of_pattern_exists = top_two_thirds_of_screen_region.exists(
-                    one_of_pattern_list[one_search_engine].similar(0.7), Settings.FIREFOX_TIMEOUT)
+                one_of_pattern_exists = exists(one_of_pattern_list[one_search_engine].similar(0.7),
+                                               Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen_region)
             else:
-                one_of_pattern_exists = \
-                    top_two_thirds_of_screen_region.exists(one_of_pattern_list[one_search_engine].similar(0.9),
-                                                           Settings.FIREFOX_TIMEOUT)
+                one_of_pattern_exists = exists(one_of_pattern_list[one_search_engine].similar(0.9),
+                                               Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen_region)
             assert_true(self, one_of_pattern_exists, 'Search engine Pattern {0} - {1} is displayed.'.format(
                 one_search_engine+1, one_of_pattern_list[one_search_engine].image_name))
 
