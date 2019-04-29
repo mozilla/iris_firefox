@@ -140,13 +140,15 @@ def get_test_params():
 def verify_config(args):
     """Checks keyboard state is correct, and that Tesseract and 7zip are installed."""
 
+    # Disable Python version checking for Windows until further notice.
+    '''
     if OSHelper.get_os().value is 'win':
         if get_python_version() is not '3.5.3':
             logger.error('Iris 2.0 does not run on versions of Python above 3.5.3')
             logger.error('at the moment due to compatibility issues.')
             logger.info('Shutting down.')
             exit(1)
-
+    '''
     try:
         if not all([check_keyboard_state(args.no_check), init_tesseract_path(), check_7zip()]):
             exit(1)
