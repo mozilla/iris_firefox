@@ -107,8 +107,8 @@ class Target(BaseTarget):
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
 
-        if not OSHelper.is_linux():
-            mouse_reset()
+        # if not OSHelper.is_linux() or not OSHelper.is_windows ():
+        #     mouse_reset()
         if item.name == 'test_run':
             skip_reason_list = []
             values = item.own_markers[0].kwargs
@@ -173,7 +173,7 @@ class Target(BaseTarget):
                     if status is None:
                         item.funcargs['firefox'].browser.runner.stop()
             else:
-                Target.FxApp.stop()
+                item.funcargs['firefox'].stop()
             if not target_args.save:
                 import shutil
                 profile_instance = item.funcargs['firefox'].profile
@@ -203,6 +203,5 @@ class Target(BaseTarget):
 
         if target_args.update_channel:
             FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
-        Target.FxApp = FXRunner(app, profile)
-        return Target.FxApp
+        return  FXRunner(app, profile)
 

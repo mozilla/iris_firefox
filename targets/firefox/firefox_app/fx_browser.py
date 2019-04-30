@@ -216,12 +216,11 @@ class FXRunner:
         self.url = 'http://127.0.0.1:{}'.format(get_core_args().port)
 
         self.profile = profile
-        self.runner = self._launch()
 
     def __str__(self):
         return '(profile: {}, runner: {})'.format(self.profile, self.runner)
 
-    def _launch(self, url: str=None, args=None):
+    def _launch(self, args=None):
         """Launch the app with optional args for profile, windows, URI, etc.
 
         :param url: URL to be loaded.
@@ -251,16 +250,17 @@ class FXRunner:
 
     def start(self, image=None, maximize=True):
         if not OSHelper.is_windows():
+            self._launch()
             self.runner.start()
         else:
             try:
+                logger.debug('Starting firefox with custom command:')
                 FXRunner.process = subprocess.Popen(
-                    [self.application.path, self.url, '-foreground', '-no-remote', '-profile', self.profile.profile])
+                    [self.application.path,'-no-remote','-new-tab', self.url, '--wait-for-browser','-foreground', '-profile', self.profile.profile],shell=False)
 
             except subprocess.CalledProcessError:
                 logger.error('Firefox failed to start')
                 exit(1)
-            mouse_reset()
         confirm_firefox_launch(image)
         if maximize:
             maximize_window()
@@ -270,15 +270,17 @@ class FXRunner:
         from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
 
         if OSHelper.is_windows():
-            logger.debug('Closing firefox instance')
+            logger.info('Closing firefox instance')
             quit_firefox()
-            if FXRunner.process.poll() is None:
+            if FXRunner.process.pid is not None:
                 try:
                     logger.info('Closing firefox processId %s' % FXRunner.process.pid)
-                    FXRunner.process.kill()
-                    shutdown_process('firefox')
-                except subprocess.SubprocessError:
-                    logger.error('Failed to close Firefox PID process.Closing Firefox process!!')
+                    process = psutil.Process(FXRunner.process.pid)
+                    for proc in process.children(recursive=True):
+                        proc.kill()
+                    process.kill()
+                except subprocess.CalledProcessError:
+                    logger.error('Failed to close Firefox PID process.Closing Firefox process by name!!')
                     shutdown_process('firefox')
         else:
             if self.runner and self.runner.process_handler:

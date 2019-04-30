@@ -85,14 +85,14 @@ else
 fi
 
 
-echo -e "\n${GREEN}  --->  Installing Python 3.5.3 #####${NC}\n"
-# Installing Python 3.5.3 because of Python BUG: https://bugs.python.org/issue32745
-if [[ $(scoop list | grep 'python353') =~ 353 ]] ; then
-    echo -e "${GREEN}  --->  Skipping Python 3 install. Already installed. ${NC}\n"
+
+echo -e "\n${GREEN}  --->  Installing Python 3.7 #####${NC}\n"
+if command -v python3 &>/dev/null; then
+    echo -e "${GREEN}  --->  Skipping Python 3.7 install. Already installed. ${NC}\n"
 else
-    powershell -Command "scoop install "$CWD"\bootstrap\python353.json"
+    powershell -Command "scoop install python" | grep 'bucket already exists.' &> /dev/null
     if [ $? != 0 ]; then
-       echo -e "\n${RED} --->  Python 3.5.3 is now installed. You need to restart the terminal 2nd time and run the bootstrap.sh again to complete the install.${NC}\n"
+       echo -e "\n${RED} --->  Python 3.7 now installed. You need to restart the terminal 2nd time and run the bootstrap.sh again to complete the install.${NC}\n"
        sleep 20
        exit
     fi
