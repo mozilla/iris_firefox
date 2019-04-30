@@ -7,6 +7,7 @@ from iris.api.core.pattern import Pattern
 
 class DownloadManager(object):
     SHOW_ALL_DOWNLOADS = Pattern('downloads_history_show_all_downloads.png')
+    SHOW_ALL_DOWNLOADS_DARK_THEME = Pattern('downloads_history_show_all_downloads_dark_theme.png')
     DOWNLOADS_FOLDER = Pattern('downloads_folder.png')
     DOWNLOADS_FOLDER_PATH = Pattern('downloads_folder_path.png')
     NEW_DOWNLOADS_FOLDER = Pattern('new_downloads_folder_path.png')
@@ -30,6 +31,7 @@ class DownloadManager(object):
         UNWANTED_DOWNLOAD_ICON = Pattern('download_unwanted_badge.png')
         UNCOMMON_DOWNLOAD_ICON = Pattern('download_uncommon_badge.png')
         VIRUS_OR_MALWARE_DOWNLOAD = Pattern('virus_or_malware_message.png')
+        VIRUS_OR_MALWARE_DOWNLOAD_DARK_THEME = Pattern('virus_or_malware_message_dark_theme.png')
         UNWANTED_DOWNLOAD = Pattern('unwanted_message.png')
         UNCOMMON_DOWNLOAD = Pattern('uncommon_message.png')
 
