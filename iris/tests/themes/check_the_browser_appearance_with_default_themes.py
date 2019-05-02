@@ -64,9 +64,6 @@ class Test(BaseTest):
 
         click_window_control('close')
 
-        open_file_picker()
-        close_find()
-
         # Enable the LIGHT theme and check that options from menu bar work correctly using the selected theme.
         next_tab()
         click(AboutAddons.THEMES)
@@ -106,9 +103,6 @@ class Test(BaseTest):
 
         click_window_control('close')
 
-        open_file_picker()
-        close_find()
-
         # Enable the DARK theme and check that options from menu bar work correctly using the selected theme.
         next_tab()
         click(AboutAddons.THEMES)
@@ -133,6 +127,3 @@ class Test(BaseTest):
         assert_true(self, expected, 'Expand bookmarks menu button displayed properly.')
 
         click_window_control('close')
-
-        open_file_picker()
-        close_find()
