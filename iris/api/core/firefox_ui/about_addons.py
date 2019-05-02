@@ -16,5 +16,5 @@ class AboutAddons(object):
 
         ENABLE_BUTTON = Pattern('enable_button.png')
         DISABLE_BUTTON = Pattern('disable_button.png')
-        IRIS_TAB_LIGHT_OR_DEFAULT_THEME = Pattern('iris_tab_light_theme.png')
-        IRIS_TAB_DARK_THEME = Pattern('iris_tab_dark_theme.png')
+        IRIS_TAB_LIGHT_OR_DEFAULT_THEME = Pattern('iris_tab_light_theme.png').similar(0.75)
+        IRIS_TAB_DARK_THEME = Pattern('iris_tab_dark_theme.png').similar(0.75)
