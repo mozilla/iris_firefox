@@ -216,11 +216,13 @@ class FXRunner:
         self.url = 'http://127.0.0.1:{}'.format(get_core_args().port)
 
         self.profile = profile
+        self.runner=self.launch()
 
     def __str__(self):
         return '(profile: {}, runner: {})'.format(self.profile, self.runner)
 
-    def _launch(self, args=None):
+
+    def launch(self, args=None):
         """Launch the app with optional args for profile, windows, URI, etc.
 
         :param url: URL to be loaded.
@@ -244,13 +246,14 @@ class FXRunner:
             logger.debug('Firefox runner successfully created.')
             logger.debug('Running Firefox with command: "%s"' %
                          ','.join(runner.command))
-            return runner
         except run_errors.RunnerNotStartedError:
             raise APIHelperError('Error creating Firefox runner.')
 
+        else:
+            return runner
+
     def start(self, image=None, maximize=True):
         if not OSHelper.is_windows():
-            self._launch()
             self.runner.start()
         else:
             try:

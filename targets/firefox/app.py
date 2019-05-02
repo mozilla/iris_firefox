@@ -107,7 +107,7 @@ class Target(BaseTarget):
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
 
-        if  OSHelper.is_mac():
+        if OSHelper.is_mac():
             mouse_reset()
         if item.name == 'test_run':
             skip_reason_list = []
