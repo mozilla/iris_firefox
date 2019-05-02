@@ -65,6 +65,9 @@ class Test(BaseTest):
         responsive_design_assert = exists(responsive_design_active_pattern)
         assert_true(self, responsive_design_assert, 'Responsive Design Mode is enabled.')
 
+        customize_button_in_bottom = exists(customize_dev_tools_pattern, in_region=button_region)
+        assert_true(self, customize_button_in_bottom, '"Customize dev tools" button is located in window\'s bottom')
+
         click(customize_dev_tools_pattern, in_region=button_region)
 
         dock_to_left_button_exists = exists(dock_to_left_pattern)
@@ -72,8 +75,8 @@ class Test(BaseTest):
 
         click(dock_to_left_pattern)
 
-        dock_to_left_assert = exists(customize_dev_tools_pattern, in_region=left_upper_corner)
-        assert_true(self, dock_to_left_assert, '"Dock to Left" option works as expected.')
+        dock_to_left_works = exists(customize_dev_tools_pattern, in_region=left_upper_corner)
+        assert_true(self, dock_to_left_works, '"Dock to Left" option works as expected.')
 
         click(customize_dev_tools_pattern, in_region=left_upper_corner)
 
@@ -92,10 +95,18 @@ class Test(BaseTest):
 
         click(separate_window_pattern)
 
-        separate_window_assert = exists(dev_tools_window_pattern)
-        assert_true(self, separate_window_assert, 'Separate Window option works as expected.')
+        separate_window_opened = exists(dev_tools_window_pattern)
+        assert_true(self, separate_window_opened, '"Separate Window" option works as expected.')
 
-        click(customize_dev_tools_pattern)
+        separate_window_location = find(dev_tools_window_pattern)
+
+        separate_window_region = Region(separate_window_location.x, separate_window_location.y,
+                                        SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+        customize_button_in_separate_window = exists(customize_dev_tools_pattern, in_region=separate_window_region)
+        assert_true(self, customize_button_in_separate_window, '"Customize dev tools" button is inside separate window')
+
+        click(customize_dev_tools_pattern, in_region=separate_window_region)
 
         dock_to_bottom_button_displayed = exists(dock_to_bottom_pattern)
         assert_true(self, dock_to_bottom_button_displayed, '"Dock to Bottom" button is displayed')
@@ -108,7 +119,7 @@ class Test(BaseTest):
         click(close_dev_tools_button_pattern, in_region=button_region)
 
         try:
-            close_button_assert = button_region.wait_vanish(customize_dev_tools_pattern)
-            assert_true(self, close_button_assert, 'Close button works.')
+            customize_button_disappeared = wait_vanish(customize_dev_tools_pattern, in_region=button_region)
+            assert_true(self, customize_button_disappeared, 'Close button works.')
         except FindError:
             raise FindError('The Web Console can not be closed, aborting test.')
