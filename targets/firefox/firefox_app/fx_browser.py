@@ -270,11 +270,10 @@ class FXRunner:
         from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
 
         if OSHelper.is_windows():
-            logger.info('Closing firefox instance')
             quit_firefox()
             if FXRunner.process.pid is not None:
                 try:
-                    logger.info('Closing firefox processId %s' % FXRunner.process.pid)
+                    logger.debug('Closing firefox processId %s' % FXRunner.process.pid)
                     process = psutil.Process(FXRunner.process.pid)
                     for proc in process.children(recursive=True):
                         proc.kill()
