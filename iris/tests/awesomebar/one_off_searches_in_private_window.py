@@ -38,6 +38,12 @@ class Test(BaseTest):
 
         click(Utils.SAVE_BUTTON_GOOGLE)
 
+        try:
+            save_button_disappeared = wait_vanish(Utils.SAVE_BUTTON_GOOGLE, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, save_button_disappeared, 'Google main page is displayed')
+        except FindError:
+            raise FindError('\'Save\' google button is still available.')
+
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
         top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
