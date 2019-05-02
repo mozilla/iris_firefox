@@ -195,7 +195,7 @@ class FirefoxApp:
                 firefox_dmg = scraper.download()
 
                 install_dir = install(src=firefox_dmg,
-                                      dest=os.path.join(PathManager.get_current_run_dir(),
+                                      dest=os.path.join(PathManager.get_temp_dir(),
                                                         'firefox{}{}'.format(normalize_str(version),
                                                                              normalize_str(locale))))
 
