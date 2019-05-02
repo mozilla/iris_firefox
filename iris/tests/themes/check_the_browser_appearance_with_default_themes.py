@@ -38,6 +38,8 @@ class Test(BaseTest):
         expected = exists(AboutAddons.Themes.ENABLE_BUTTON, 5)
         assert_false(self, expected, 'ENABLE button NOT found in the page.')
 
+        previous_tab()
+
         expected = exists(AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME, 10)
         assert_true(self, expected, 'Tab information is correctly displayed for DEFAULT theme.')
 
@@ -66,6 +68,7 @@ class Test(BaseTest):
         close_find()
 
         # Enable the LIGHT theme and check that options from menu bar work correctly using the selected theme.
+        next_tab()
         click(AboutAddons.THEMES)
         click(AboutAddons.Themes.LIGHT_THEME)
 
@@ -76,6 +79,8 @@ class Test(BaseTest):
 
         expected = exists(AboutAddons.Themes.DISABLE_BUTTON, 10)
         assert_true(self, expected, 'DISABLE button found in the page.')
+
+        previous_tab()
 
         expected = exists(AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME, 10)
         assert_true(self, expected, 'LIGHT theme successfully applied.')
@@ -105,6 +110,7 @@ class Test(BaseTest):
         close_find()
 
         # Enable the DARK theme and check that options from menu bar work correctly using the selected theme.
+        next_tab()
         click(AboutAddons.THEMES)
         click(AboutAddons.Themes.DARK_THEME)
 
@@ -115,6 +121,8 @@ class Test(BaseTest):
 
         expected = exists(AboutAddons.Themes.DISABLE_BUTTON, 10)
         assert_true(self, expected, 'DISABLE button found in the page.')
+
+        previous_tab()
 
         expected = exists(AboutAddons.Themes.IRIS_TAB_DARK_THEME, 10)
         assert_true(self, expected, 'LIGHT theme successfully applied.')
