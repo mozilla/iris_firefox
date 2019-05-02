@@ -6,9 +6,9 @@ import argparse
 import logging
 import os
 from multiprocessing import Process
+import shutil
 
 import pytest
-
 
 from src.base.target import BaseTarget
 from src.core.api.mouse.mouse import mouse_reset
@@ -24,6 +24,7 @@ logger.info('Loading test images...')
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.firefox.firefox_app.fx_collection import FX_Collection
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
 from targets.firefox.firefox_ui.helpers.version_parser import check_version
 from targets.firefox.testrail.testrail_client import report_test_results
 
@@ -163,7 +164,6 @@ class Target(BaseTarget):
 
     def pytest_runtest_teardown(self, item):
         BaseTarget.pytest_runtest_teardown(self, item)
-        from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
 
         try:
             if not OSHelper.is_windows():
@@ -175,15 +175,14 @@ class Target(BaseTarget):
             else:
                 item.funcargs['firefox'].stop()
             if not target_args.save:
-                import shutil
                 profile_instance = item.funcargs['firefox'].profile
                 if os.path.exists(profile_instance.profile):
                     try:
                         shutil.rmtree(profile_instance.profile)
                     except OSError as e:
-                        print("Error: %s - %s." % (e.filename, e.strerror))
+                        logger.error('Error: %s - %s.' % (e.filename, e.strerror))
                 else:
-                    logger.error('Invalid Path!')
+                    logger.error('Invalid Path: %s' % profile_instance.profile)
         except (AttributeError, KeyError):
             pass
 
@@ -204,4 +203,3 @@ class Target(BaseTarget):
         if target_args.update_channel:
             FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
         return  FXRunner(app, profile)
-

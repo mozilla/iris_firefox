@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+import logging
 import multiprocessing
 
 import mozinfo
@@ -12,6 +12,8 @@ import time
 
 from src.core.api.enums import OSPlatform
 from src.core.api.errors import APIHelperError
+
+logger = logging.getLogger(__name__)
 
 OS_NAME = mozinfo.os
 OS_VERSION = mozinfo.os_version
@@ -111,44 +113,38 @@ class OSHelper:
         file_object = None
         if os.path.exists(filepath):
             try:
-                print ("Trying to open %s." % filepath)
+                logger.debug('Trying to open file: %s' % filepath)
                 buffer_size = 8
-                # Opening file in append mode and read the first 8 characters.
+                # Open file in append mode and read the first 8 characters.
                 file_object = open(filepath, 'a', buffer_size)
                 if file_object:
-                    print ("%s is not locked." % filepath)
+                    logger.debug('File is not locked: %s' % filepath)
                     locked = False
             except IOError as message:
-                print( "File is locked (unable to open in append mode). %s." % \
-                      message)
+                logger.debug('File is locked (unable to open in append mode): %s.' % message)
                 locked = True
             finally:
                 if file_object:
                     file_object.close()
-                    print( "%s closed." % filepath)
+                    logger.debug('File closed: %s' % filepath)
         else:
-            print( "%s not found." % filepath)
+            logger.debug('File not found: %s' % filepath)
         return locked
 
 
     @staticmethod
     def wait_for_files(filepath):
         """Checks if the files are ready.
-
-        For a file to be ready it must exist and can be opened in append
-        mode.
+        For a file to be ready it must exist and can be opened in append mode.
         """
         wait_time = 5
-
         # If the file doesn't exist, wait wait_time seconds and try again
         # until it's found.
         while not os.path.exists(filepath):
-            print ("%s hasn't arrived. Waiting %s seconds." % \
-                (filepath, wait_time))
+            logger.debug('%s hasn\'t arrived. Waiting %s seconds.' % (filepath, wait_time))
             time.sleep(wait_time)
             # If the file exists but locked, wait wait_time seconds and check
             # again until it's no longer locked by another process.
         while OSHelper._is_locked(filepath):
-            print( "%s is currently in use. Waiting %s seconds." % \
-                      (filepath, wait_time))
+            logger.debug('%s is currently in use. Waiting %s seconds.' % (filepath, wait_time))
             time.sleep(wait_time)

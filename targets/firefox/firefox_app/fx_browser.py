@@ -26,7 +26,7 @@ from src.core.api.settings import Settings
 from src.core.util.path_manager import PathManager
 from src.core.util.system import shutdown_process
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window, quit_firefox
 from src.core.util.arg_parser import get_core_args
 
 from src.core.api.errors import APIHelperError
@@ -211,12 +211,10 @@ class FXRunner:
 
         if profile is None:
             profile = FirefoxProfile.make_profile()
-
         self.application = app
         self.url = 'http://127.0.0.1:{}'.format(get_core_args().port)
-
         self.profile = profile
-        self.runner=self.launch()
+        self.runner = self.launch()
 
     def __str__(self):
         return '(profile: {}, runner: {})'.format(self.profile, self.runner)
@@ -257,7 +255,7 @@ class FXRunner:
             self.runner.start()
         else:
             try:
-                logger.debug('Starting firefox with custom command:')
+                logger.debug('Starting Firefox with custom command.')
                 FXRunner.process = subprocess.Popen(
                     [self.application.path,'-no-remote','-new-tab', self.url, '--wait-for-browser','-foreground', '-profile', self.profile.profile],shell=False)
 
@@ -269,20 +267,17 @@ class FXRunner:
             maximize_window()
 
     def stop(self):
-
-        from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
-
         if OSHelper.is_windows():
             quit_firefox()
             if FXRunner.process.pid is not None:
                 try:
-                    logger.debug('Closing firefox processId %s' % FXRunner.process.pid)
+                    logger.debug('Closing Firefox process ID: %s' % FXRunner.process.pid)
                     process = psutil.Process(FXRunner.process.pid)
                     for proc in process.children(recursive=True):
                         proc.kill()
                     process.kill()
                 except subprocess.CalledProcessError:
-                    logger.error('Failed to close Firefox PID process.Closing Firefox process by name!!')
+                    logger.error('Failed to close Firefox PID process. Closing Firefox process by name.')
                     shutdown_process('firefox')
         else:
             if self.runner and self.runner.process_handler:
