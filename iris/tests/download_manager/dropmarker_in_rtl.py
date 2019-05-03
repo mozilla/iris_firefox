@@ -94,13 +94,13 @@ class Test(BaseTest):
         region_20_mb = Region(file_20_mb.x, file_20_mb.y - 10,
                               file_20_mb.x, show_all_downloads_button.y - file_20_mb.y)
 
-        expected = region_20_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT) or region_20_mb.exists(
-            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT)
+        expected = exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_20_mb) or exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_20_mb)
         assert_true(self, expected, '20 MB file icon is aligned RTL.')
         region_20_mb_containing_folder = Region(downloads_button.x, file_20_mb.y,
                                                 file_20_mb.x, show_all_downloads_button.y - file_20_mb.y)
 
-        expected = region_20_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT)
+        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_20_mb_containing_folder)
         assert_true(self, expected, '20 MB file Containing folder button is aligned RTL.')
 
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
@@ -110,14 +110,14 @@ class Test(BaseTest):
         region_10_mb = Region(file_10_mb.x, file_10_mb.y - 10,
                               file_10_mb.x, file_20_mb.y - file_10_mb.y)
 
-        expected = region_10_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT) or region_10_mb.exists(
-            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT)
+        expected = exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_10_mb) or exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_10_mb)
         assert_true(self, expected, '10 MB file icon is aligned RTL.')
 
         region_10_mb_containing_folder = Region(downloads_button.x, file_10_mb.y,
                                                 file_10_mb.x, file_20_mb.y - file_10_mb.y)
 
-        expected = region_10_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT)
+        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_10_mb_containing_folder)
         assert_true(self, expected, '10 MB file Containing folder button is aligned RTL.')
 
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
@@ -127,13 +127,13 @@ class Test(BaseTest):
         region_5_mb_icon = Region(file_5_mb.x, file_5_mb.y - 10,
                                   file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
-        expected = region_5_mb_icon.exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT) or region_5_mb_icon.exists(
-            DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT)
+        expected = exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_10_mb_containing_folder) or exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_5_mb_icon)
         assert_true(self, expected, '5 MB file icon is aligned RTL.')
         region_5_mb_containing_folder = Region(downloads_button.x, file_5_mb.y,
                                                file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
-        expected = region_5_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT)
+        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_5_mb_containing_folder)
         assert_true(self, expected, '5 MB file Containing folder button is aligned RTL.')
 
     def teardown(self):
