@@ -35,7 +35,7 @@ class Test(BaseTest):
         assert_true(self, pdf_document_opened, 'The PDF file successfully opened in In-browser PDF viewer')
 
         zoom_in_button_available = exists(zoom_in_button_pattern)
-        assert_true(self, zoom_in_button_available, '\'Zoom in\' button available in In-browser PDF viewer')
+        assert_true(self, zoom_in_button_available, '\'Zoom in (+)\' button available in In-browser PDF viewer')
 
         [click(zoom_in_button_pattern) for _ in range(3)]
 
@@ -43,7 +43,7 @@ class Test(BaseTest):
         assert_true(self, pdf_document_zoomed_in, 'The PDF file is successfully zoomed in via \'+\' button')
 
         zoom_out_button_available = exists(zoom_out_button_pattern)
-        assert_true(self, zoom_out_button_available, '\'Zoom out\' button available in In-browser PDF viewer')
+        assert_true(self, zoom_out_button_available, '\'Zoom out (-)\' button available in In-browser PDF viewer')
 
         [click(zoom_out_button_pattern) for _ in range(3)]
 
@@ -54,20 +54,21 @@ class Test(BaseTest):
 
         pdf_document_zoomed_in = exists(pdf_file_page_contents_zoomed_in_pattern)
         assert_true(self, pdf_document_zoomed_in,
-                    'The PDF file is successfully zoomed in via shortcut (\'Ctrl\' + \'+\')')
+                    'The PDF file is successfully zoomed in via shortcut (\'Ctrl/Control\' + \'+\')')
 
         [type('-', modifier=KeyModifier.CTRL) for _ in range(3)]
 
         pdf_document_zoomed_out = exists(pdf_file_page_contents_pattern)
         assert_true(self, pdf_document_zoomed_out,
-                    'The PDF file is successfully zoomed out via shortcut (\'Ctrl\' + \'-\')')
+                    'The PDF file is successfully zoomed out via shortcut (\'Ctrl/Control\' + \'-\')')
 
         key_down(key_used_in_scroll_zoom)
         [scroll(1) for _ in range(3)]
         key_up(key_used_in_scroll_zoom)
 
         pdf_document_zoomed_in = exists(pdf_file_page_contents_zoomed_in_pattern)
-        assert_true(self, pdf_document_zoomed_in, 'The PDF file is successfully zoomed in via cmd + mouse scroll')
+        assert_true(self, pdf_document_zoomed_in,
+                    'The PDF file is successfully zoomed in via Ctrl/Command + mouse scroll')
 
         key_down(key_used_in_scroll_zoom)
         [scroll(-1) for _ in range(3)]
@@ -75,4 +76,4 @@ class Test(BaseTest):
 
         pdf_document_zoomed_out = exists(pdf_file_page_contents_pattern)
         assert_true(self, pdf_document_zoomed_out,
-                    'The PDF file is successfully zoomed out via cmd + mouse scroll')
+                    'The PDF file is successfully zoomed out via Ctrl/Command + mouse scroll')
