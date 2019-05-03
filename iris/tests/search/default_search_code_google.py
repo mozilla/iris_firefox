@@ -49,17 +49,20 @@ class Test(BaseTest):
                             self.profile_path,
                             LocalWeb.FIREFOX_TEST_SITE,
                             image=LocalWeb.FIREFOX_LOGO)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
 
             navigate('about:preferences#search')
-            expected = exists(default_search_engine_google_pattern, 10)
-            assert_true(self, expected, 'Google is the default search engine.')
+
+            default_search_engine_check = exists(default_search_engine_google_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, default_search_engine_check, 'Google is the default search engine.')
 
             # Perform a search using the awesome bar and then clear the content from it.
             select_location_bar()
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             paste('test')
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -85,9 +88,11 @@ class Test(BaseTest):
 
             # Perform a search using the search bar.
             select_search_bar()
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             paste('test')
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -110,17 +115,19 @@ class Test(BaseTest):
 
             # Highlight some text and right click it.
             new_tab()
+
             navigate(url)
-            expected = exists(text_pattern, 50)
-            assert_true(self, expected, 'Page successfully loaded, focus text found.')
+
+            focus_page_loaded = exists(text_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
+            assert_true(self, focus_page_loaded, 'Page successfully loaded, focus text found.')
 
             double_click(text_pattern)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             right_click(text_pattern_selected)
-            time.sleep(DEFAULT_UI_DELAY)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             repeat_key_down(3)
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 
@@ -143,12 +150,16 @@ class Test(BaseTest):
 
             # Perform a search from about:newtab page, content search field.
             new_tab()
-            expected = exists(google_logo_content_search_field_pattern, 10)
-            assert_true(self, expected, 'Google logo from content search field found.')
+
+            google_logo_found = exists(google_logo_content_search_field_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, google_logo_found, 'Google logo from content search field found.')
+
             click(google_logo_content_search_field_pattern)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             paste('beats')
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             type(Key.ENTER)
-            time.sleep(DEFAULT_UI_DELAY_LONG)
+            time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
             select_location_bar()
             url_text = copy_to_clipboard()
 

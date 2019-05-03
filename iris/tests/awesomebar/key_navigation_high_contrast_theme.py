@@ -16,8 +16,6 @@ class Test(BaseTest):
 
     def run(self):
         url = LocalWeb.FIREFOX_TEST_SITE
-        themes_pattern = Pattern('themes.png')
-        dark_theme_pattern = Pattern('dark_theme.png')
         wear_theme_pattern = Pattern('wear_theme.png')
         moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png')
         search_wikipedia_dark_theme_pattern = Pattern('search_wikipedia_dark_theme.png')
@@ -31,15 +29,15 @@ class Test(BaseTest):
 
         open_addons()
 
-        expected = region.exists(themes_pattern, 10)
+        expected = region.exists(AboutAddons.THEMES, 10)
         assert_true(self, expected, 'Add-ons page successfully loaded.')
 
-        click(themes_pattern)
+        click(AboutAddons.THEMES)
 
-        expected = exists(dark_theme_pattern, 10)
+        expected = exists(AboutAddons.Themes.DARK_THEME, 10)
         assert_true(self, expected, 'Dark theme option found in the page.')
 
-        right_click(dark_theme_pattern)
+        right_click(AboutAddons.Themes.DARK_THEME)
 
         expected = exists(wear_theme_pattern, 10)
         assert_true(self, expected, 'The \'Wear theme\' option found in the page.')
@@ -48,7 +46,7 @@ class Test(BaseTest):
         click(wear_theme_pattern)
 
         # Check that 'Wear theme' option successfully selected.
-        right_click(dark_theme_pattern)
+        right_click(AboutAddons.Themes.DARK_THEME)
 
         try:
             expected = region.wait_vanish(wear_theme_pattern, 10)

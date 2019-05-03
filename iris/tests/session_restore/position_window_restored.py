@@ -30,7 +30,7 @@ class Test(BaseTest):
         console_output_width_1000 = Pattern('console_output_width_1000.png')
         hamburger_menu_quit_item_pattern = None
         if not Settings.is_mac():
-            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.95)
+            hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.9)
 
         iris_icon_height = LocalWeb.IRIS_LOGO_ACTIVE_TAB.get_size()[1]
         click_duration = 1
@@ -179,13 +179,13 @@ class Test(BaseTest):
 
         click(restore_previous_session_pattern, click_duration)
 
-        focus_site_restored = exists(focus_test_site_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        focus_site_restored = exists(focus_test_site_tab_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, focus_site_restored, 'Firefox window with Focus webpage is opened')
 
-        firefox_test_site_restored = exists(firefox_test_site_tab_pattern, Settings.SITE_LOAD_TIMEOUT)
+        firefox_test_site_restored = exists(firefox_test_site_tab_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, firefox_test_site_restored, 'Firefox window with Focus webpage is opened')
 
-        iris_page_restored = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.SITE_LOAD_TIMEOUT)
+        iris_page_restored = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, iris_page_restored, 'Firefox window with Iris webpage is opened')
 
         firefox_test_site_restored_position = find(firefox_test_site_tab_pattern)

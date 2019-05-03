@@ -17,78 +17,73 @@ class Test(BaseTest):
 
     def run(self):
         moz_pattern = Pattern('moz.png')
-        url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
-        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png')
-        google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
+        new_tab_twitter_search_results_2_pattern = Pattern('new_tab_twitter_search_results_2.png')
+        google_on_off_private_window_pattern = Pattern('google_on_off_button_private_window.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
         test_pattern = Pattern('test.png')
 
         new_private_window()
 
+        private_window_opened = exists(PrivateWindow.private_window_pattern, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, private_window_opened, 'A new private window is successfully loaded.')
+
         # Set English language preference on Google page settings.
         navigate('https://www.google.com/preferences?hl=en-US&fg=1#languages')
+
+        save_button_google_available = exists(Utils.SAVE_BUTTON_GOOGLE, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, save_button_google_available, '\'Save\' google button available.')
+
         click(Utils.SAVE_BUTTON_GOOGLE)
 
-        navigate(url)
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
+        top_two_thirds_of_screen = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
+        firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, firefox_site_loaded, 'Page successfully loaded, firefox logo found.')
 
         select_location_bar()
         paste('moz')
 
-        expected = region.exists(moz_pattern, 10)
-        assert_true(self, expected, 'Searched string found at the bottom of the drop-down list.')
+        mozilla_search_one_offs_available = exists(moz_pattern, Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen)
+        assert_true(self, mozilla_search_one_offs_available, 'Searched string found at the bottom of the drop-down '
+                                                             'list.')
 
-        expected = region.exists(search_settings_pattern, 10)
-        assert_true(self, expected, 'The \'Search settings\' button is displayed in the awesome bar.')
+        search_settings_button = exists(search_settings_pattern, Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen)
+        assert_true(self, search_settings_button, 'The \'Search settings\' button is displayed in the awesome bar.')
 
-        repeat_key_up(3)
-        key_to_one_off_search(twitter_one_off_button_highlight_pattern, )
+        type(Key.UP)
+        key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
-        expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
-        assert_true(self, expected, 'The \'Twitter\' one-off button is highlighted.')
+        twitter_one_off_highlight = exists(twitter_one_off_button_highlight_pattern, Settings.FIREFOX_TIMEOUT,
+                                           top_two_thirds_of_screen)
+        assert_true(self, twitter_one_off_highlight, 'The \'Twitter\' one-off button is highlighted.')
 
         type(Key.ENTER)
-        time.sleep(DEFAULT_UI_DELAY_LONG)
 
-        expected = exists(new_tab_twitter_search_results_pattern, 10) \
-            or exists(new_tab_twitter_search_results_pattern2, 5)
-        assert_true(self, expected, 'Twitter search results are opened in the same tab.')
+        new_tab_twitter_search_results = exists(new_tab_twitter_search_results_pattern, Settings.FIREFOX_TIMEOUT) \
+            or exists(new_tab_twitter_search_results_2_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, new_tab_twitter_search_results, 'Twitter search results are opened in the same tab.')
 
         new_tab()
-        time.sleep(DEFAULT_UI_DELAY)
 
         select_location_bar()
         paste('test')
 
-        expected = region.exists(google_on_off_button_private_window_pattern, 10)
-        assert_true(self, expected, 'The\'Google\' one-off button found.')
+        google_on_off_button_private_window = exists(google_on_off_private_window_pattern, Settings.FIREFOX_TIMEOUT,
+                                                     top_two_thirds_of_screen)
+        assert_true(self, google_on_off_button_private_window, 'The\'Google\' one-off button found.')
 
-        if Settings.get_os() == Platform.MAC:
-            key_down(Key.CMD)
-        else:
-            key_down(Key.CTRL)
+        click(google_on_off_private_window_pattern)
 
-        click(google_on_off_button_private_window_pattern)
+        magnifying_glass = exists(magnifying_glass_pattern, Settings.SITE_LOAD_TIMEOUT, top_two_thirds_of_screen)
+        assert_true(self, magnifying_glass, 'Page successfully loaded using the \'Google\' engine.')
 
-        if Settings.get_os() == Platform.MAC:
-            key_up(Key.CMD)
-        else:
-            key_up(Key.CTRL)
-
-        next_tab()
-
-        expected = region.exists(magnifying_glass_pattern, 10)
-        assert_true(self, expected, 'Page successfully loaded using the \'Google\' engine.')
-
-        expected = region.exists(test_pattern, 10)
-        assert_true(self, expected,
-                    'Searched item is successfully found in the page opened by the \'Google\' search engine.')
+        test_item = exists(test_pattern, Settings.SITE_LOAD_TIMEOUT, top_two_thirds_of_screen)
+        assert_true(self, test_item, 'Searched item is successfully found in the page opened by the \'Google\' search '
+                                     'engine.')
 
         close_window()

@@ -7,6 +7,7 @@ from iris.api.core.pattern import Pattern
 
 class LocationBar(object):
     IDENTITY_ICON = Pattern('identity_icon.png')
+    INSECURE_CONNECTION_LOCK_DARK_THEME = Pattern('insecure_connection_lock_dark_theme.png')
 
     HISTORY_DROPMARKER = Pattern('history_dropmarker.png')
     PAGE_ACTION_BUTTON = Pattern('page_action_button.png')
