@@ -101,7 +101,7 @@ class Test(BaseTest):
         separate_window_location = find(dev_tools_window_pattern)
 
         separate_window_region = Region(separate_window_location.x, separate_window_location.y,
-                                        SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+                                        SCREEN_WIDTH - separate_window_location.x, SCREEN_HEIGHT // 2)
 
         customize_button_in_separate_window = exists(customize_dev_tools_pattern, in_region=separate_window_region)
         assert_true(self, customize_button_in_separate_window, '"Customize dev tools" button is inside separate window')
