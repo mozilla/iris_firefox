@@ -96,6 +96,7 @@ class Test(BaseTest):
         download_type_icon = exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_20_mb) or exists(
             DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_20_mb)
         assert_true(self, download_type_icon, '20 MB file icon is aligned RTL.')
+
         region_20_mb_containing_folder = Region(downloads_button.x, file_20_mb.y, file_20_mb.x,
                                                 show_all_downloads_button.y - file_20_mb.y)
 
@@ -129,9 +130,10 @@ class Test(BaseTest):
         region_5_mb_icon = Region(file_5_mb.x, file_5_mb.y - 10, file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
         download_type_icon_zip = exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT,
-                                        region_10_mb_containing_folder) or exists(
+                                        region_5_mb_icon) or exists(
             DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_5_mb_icon)
         assert_true(self, download_type_icon_zip, '5 MB file icon is aligned RTL.')
+
         region_5_mb_containing_folder = Region(downloads_button.x, file_5_mb.y, file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
         open_containing_folder = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT,
