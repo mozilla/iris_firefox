@@ -32,23 +32,32 @@ class Test(BaseTest):
         change_preference('intl.uidirection', '2')
 
         # Check if main firefox buttons are aligned RTL.
-        region_right = Screen.UPPER_RIGHT_CORNER.top_half()
-        expected = region_right.exists(NavBar.BACK_BUTTON_RTL, 10)
+        right_top_corner_region = Screen.UPPER_RIGHT_CORNER.top_half()
+
+        expected = exists(NavBar.BACK_BUTTON_RTL, 10, right_top_corner_region)
         assert_true(self, expected, '\'Back\' button is aligned RTL.')
-        expected = region_right.exists(NavBar.HOME_BUTTON, 10)
+
+        expected = exists(NavBar.HOME_BUTTON, 10, right_top_corner_region)
         assert_true(self, expected, '\'Home\' button is aligned RTL.')
-        expected = region_right.exists(NavBar.FORWARD_BUTTON_RTL, 10)
+
+        expected = exists(NavBar.FORWARD_BUTTON_RTL, 10, right_top_corner_region)
         assert_true(self, expected, '\'Forward\' button is aligned RTL.')
-        expected = region_right.exists(NavBar.RELOAD_BUTTON_RTL, 10)
+
+        expected = exists(NavBar.RELOAD_BUTTON_RTL, 10, right_top_corner_region)
         assert_true(self, expected, '\'Reload\' button is aligned RTL.')
-        region_left = Screen.LEFT_HALF.top_half()
-        expected = region_left.exists(LocationBar.STAR_BUTTON_UNSTARRED)
+
+        left_top_half_region = Screen.LEFT_HALF.top_half()
+
+        expected = exists(LocationBar.STAR_BUTTON_UNSTARRED, Settings.FIREFOX_TIMEOUT, left_top_half_region)
         assert_true(self, expected, '\'Star dialog\' button is aligned RTL.')
-        expected = region_left.exists(NavBar.HAMBURGER_MENU)
+
+        expected = exists(NavBar.HAMBURGER_MENU, Settings.FIREFOX_TIMEOUT, left_top_half_region)
         assert_true(self, expected, '\'Hamburger menu\' button is aligned RTL.')
-        expected = region_left.exists(NavBar.SIDEBAR_MENU_RTL)
+
+        expected = exists(NavBar.SIDEBAR_MENU_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
         assert_true(self, expected, '\'Sidebar\' button is aligned RTL.')
-        expected = region_left.exists(NavBar.LIBRARY_MENU)
+
+        expected = exists(NavBar.LIBRARY_MENU, Settings.FIREFOX_TIMEOUT, left_top_half_region)
         assert_true(self, expected, '\'Library Menu dialog\' button is aligned RTL.')
 
         navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
@@ -67,18 +76,18 @@ class Test(BaseTest):
 
         # Check if Downloads Panel details are aligned RTL,
         # containing folder icon aligned on the left and download type icon aligned on the right for each file.
-        expected = region_left.exists(NavBar.DOWNLOADS_BUTTON_BLUE, 50)
+        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 50, left_top_half_region)
         assert_true(self, expected, '\'Downloads\'button  button is aligned RTL.')
 
         click(NavBar.DOWNLOADS_BUTTON)
 
-        expected = region_left.exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
+        expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10, left_top_half_region)
         assert_true(self, expected, '\'Show all downloads\' button is aligned RTL.')
 
         downloads_button = find(NavBar.DOWNLOADS_BUTTON)
         show_all_downloads_button = find(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = region_left.exists(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL, 10)
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL, 10, left_top_half_region)
         assert_true(self, expected, 'The 20MB download is complete and aligned RTL.')
 
         file_20_mb = find(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL)
@@ -94,7 +103,7 @@ class Test(BaseTest):
         expected = region_20_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
         assert_true(self, expected, '20 MB file Containing folder button is aligned RTL.')
 
-        expected = region_left.exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL, 10)
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL, 10, left_top_half_region)
         assert_true(self, expected, 'The 10MB download is complete and aligned RTL.')
 
         file_10_mb = find(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL)
@@ -111,7 +120,7 @@ class Test(BaseTest):
         expected = region_10_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
         assert_true(self, expected, '10 MB file Containing folder button is aligned RTL.')
 
-        expected = region_left.exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL, 10)
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL, 10, left_top_half_region)
         assert_true(self, expected, 'The 5MB download is complete and aligned RTL.')
 
         file_5_mb = find(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL)
