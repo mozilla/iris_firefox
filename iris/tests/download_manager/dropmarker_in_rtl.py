@@ -23,6 +23,8 @@ class Test(BaseTest):
         return
 
     def run(self):
+        download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
+                               DownloadFiles.EXTRA_SMALL_FILE_5MB]
 
         # Change firefox alignment to be Right-To-Left.
         change_preference('intl.uidirection', '2')
@@ -58,12 +60,10 @@ class Test(BaseTest):
         assert_true(self, navbar_library_menu, '\'Library Menu dialog\' button is aligned RTL.')
 
         navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
-        download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
-                               DownloadFiles.EXTRA_SMALL_FILE_5MB]
 
-        for f in download_files_list:
-            download_file(f, DownloadFiles.OK)
-            file_index = download_files_list.index(f)
+        for local_file in download_files_list:
+            download_file(local_file, DownloadFiles.OK)
+            file_index = download_files_list.index(local_file)
 
             if file_index == 0:
                 navbar_downloads_button = exists(NavBar.DOWNLOADS_BUTTON, Settings.FIREFOX_TIMEOUT)
