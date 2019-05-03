@@ -34,31 +34,31 @@ class Test(BaseTest):
         # Check if main firefox buttons are aligned RTL.
         right_top_corner_region = Screen.UPPER_RIGHT_CORNER.top_half()
 
-        expected = exists(NavBar.BACK_BUTTON_RTL, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
-        assert_true(self, expected, '\'Back\' button is aligned RTL.')
+        navbar_back_button_rtl = exists(NavBar.BACK_BUTTON_RTL, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
+        assert_true(self, navbar_back_button_rtl, '\'Back\' button is aligned RTL.')
 
-        expected = exists(NavBar.HOME_BUTTON, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
-        assert_true(self, expected, '\'Home\' button is aligned RTL.')
+        navbar_home_button = exists(NavBar.HOME_BUTTON, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
+        assert_true(self, navbar_home_button, '\'Home\' button is aligned RTL.')
 
-        expected = exists(NavBar.FORWARD_BUTTON_RTL, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
-        assert_true(self, expected, '\'Forward\' button is aligned RTL.')
+        navbar_forward_button_rtl = exists(NavBar.FORWARD_BUTTON_RTL, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
+        assert_true(self, navbar_forward_button_rtl, '\'Forward\' button is aligned RTL.')
 
-        expected = exists(NavBar.RELOAD_BUTTON_RTL, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
-        assert_true(self, expected, '\'Reload\' button is aligned RTL.')
+        navbar_reload_button_rtl = exists(NavBar.RELOAD_BUTTON_RTL, Settings.FIREFOX_TIMEOUT, right_top_corner_region)
+        assert_true(self, navbar_reload_button_rtl, '\'Reload\' button is aligned RTL.')
 
         left_top_half_region = Screen.LEFT_HALF.top_half()
 
-        expected = exists(LocationBar.STAR_BUTTON_UNSTARRED, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, '\'Star dialog\' button is aligned RTL.')
+        locationbar_star_button_unstarred = exists(LocationBar.STAR_BUTTON_UNSTARRED, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, locationbar_star_button_unstarred, '\'Star dialog\' button is aligned RTL.')
 
-        expected = exists(NavBar.HAMBURGER_MENU, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, '\'Hamburger menu\' button is aligned RTL.')
+        navbar_hamburger_menu = exists(NavBar.HAMBURGER_MENU, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, navbar_hamburger_menu, '\'Hamburger menu\' button is aligned RTL.')
 
-        expected = exists(NavBar.SIDEBAR_MENU_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, '\'Sidebar\' button is aligned RTL.')
+        navbar_sidebar_menu_rtl = exists(NavBar.SIDEBAR_MENU_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, navbar_sidebar_menu_rtl, '\'Sidebar\' button is aligned RTL.')
 
-        expected = exists(NavBar.LIBRARY_MENU, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, '\'Library Menu dialog\' button is aligned RTL.')
+        navbar_library_menu = exists(NavBar.LIBRARY_MENU, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, navbar_library_menu, '\'Library Menu dialog\' button is aligned RTL.')
 
         navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
         download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
@@ -69,72 +69,72 @@ class Test(BaseTest):
             file_index = download_files_list.index(f)
 
             if file_index == 0:
-                expected = exists(NavBar.DOWNLOADS_BUTTON, Settings.FIREFOX_TIMEOUT)
-                assert_true(self, expected, 'Download button found in the page.')
+                navbar_downloads_button = exists(NavBar.DOWNLOADS_BUTTON, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, navbar_downloads_button, 'Download button found in the page.')
 
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(50, 0))
 
         # Check if Downloads Panel details are aligned RTL,
         # containing folder icon aligned on the left and download type icon aligned on the right for each file.
-        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, Settings.SITE_LOAD_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, '\'Downloads\'button  button is aligned RTL.')
+        navbar_downloads_button_blue = exists(NavBar.DOWNLOADS_BUTTON_BLUE, Settings.SITE_LOAD_TIMEOUT, left_top_half_region)
+        assert_true(self, navbar_downloads_button_blue, '\'Downloads\'button  button is aligned RTL.')
 
         click(NavBar.DOWNLOADS_BUTTON)
 
-        expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, '\'Show all downloads\' button is aligned RTL.')
+        downloadmanager_show_all_downloads = exists(DownloadManager.SHOW_ALL_DOWNLOADS, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, downloadmanager_show_all_downloads, '\'Show all downloads\' button is aligned RTL.')
 
         downloads_button = find(NavBar.DOWNLOADS_BUTTON)
         show_all_downloads_button = find(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = exists(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, 'The 20MB download is complete and aligned RTL.')
+        downloads_panel_20mb_completed_rtl = exists(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, downloads_panel_20mb_completed_rtl, 'The 20MB download is complete and aligned RTL.')
 
         file_20_mb = find(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL)
         region_20_mb = Region(file_20_mb.x, file_20_mb.y - 10,
                               file_20_mb.x, show_all_downloads_button.y - file_20_mb.y)
 
-        expected = exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_20_mb) or exists(
+        download_type_icon = exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_20_mb) or exists(
             DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_20_mb)
-        assert_true(self, expected, '20 MB file icon is aligned RTL.')
+        assert_true(self, download_type_icon, '20 MB file icon is aligned RTL.')
         region_20_mb_containing_folder = Region(downloads_button.x, file_20_mb.y,
                                                 file_20_mb.x, show_all_downloads_button.y - file_20_mb.y)
 
-        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_20_mb_containing_folder)
-        assert_true(self, expected, '20 MB file Containing folder button is aligned RTL.')
+        open_containing_folder = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_20_mb_containing_folder)
+        assert_true(self, open_containing_folder, '20 MB file Containing folder button is aligned RTL.')
 
-        expected = exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, 'The 10MB download is complete and aligned RTL.')
+        downloads_panel_10mb_completed_rtl = exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, downloads_panel_10mb_completed_rtl, 'The 10MB download is complete and aligned RTL.')
 
         file_10_mb = find(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL)
         region_10_mb = Region(file_10_mb.x, file_10_mb.y - 10,
                               file_10_mb.x, file_20_mb.y - file_10_mb.y)
 
-        expected = exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_10_mb) or exists(
+        download_type_icon = exists(DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_10_mb) or exists(
             DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_10_mb)
-        assert_true(self, expected, '10 MB file icon is aligned RTL.')
+        assert_true(self, download_type_icon, '10 MB file icon is aligned RTL.')
 
         region_10_mb_containing_folder = Region(downloads_button.x, file_10_mb.y,
                                                 file_10_mb.x, file_20_mb.y - file_10_mb.y)
 
-        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_10_mb_containing_folder)
-        assert_true(self, expected, '10 MB file Containing folder button is aligned RTL.')
+        open_containing_folder = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_10_mb_containing_folder)
+        assert_true(self, open_containing_folder, '10 MB file Containing folder button is aligned RTL.')
 
-        expected = exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
-        assert_true(self, expected, 'The 5MB download is complete and aligned RTL.')
+        downloads_panel_5mb_completed_rtl = exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL, Settings.FIREFOX_TIMEOUT, left_top_half_region)
+        assert_true(self, downloads_panel_5mb_completed_rtl, 'The 5MB download is complete and aligned RTL.')
 
         file_5_mb = find(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL)
         region_5_mb_icon = Region(file_5_mb.x, file_5_mb.y - 10,
                                   file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
-        expected = exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_10_mb_containing_folder) or exists(
+        download_type_icon_zip = exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, Settings.FIREFOX_TIMEOUT, region_10_mb_containing_folder) or exists(
             DownloadFiles.DOWNLOAD_TYPE_ICON, Settings.FIREFOX_TIMEOUT, region_5_mb_icon)
-        assert_true(self, expected, '5 MB file icon is aligned RTL.')
+        assert_true(self, download_type_icon_zip, '5 MB file icon is aligned RTL.')
         region_5_mb_containing_folder = Region(downloads_button.x, file_5_mb.y,
                                                file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
-        expected = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_5_mb_containing_folder)
-        assert_true(self, expected, '5 MB file Containing folder button is aligned RTL.')
+        open_containing_folder = exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, Settings.FIREFOX_TIMEOUT, region_5_mb_containing_folder)
+        assert_true(self, open_containing_folder, '5 MB file Containing folder button is aligned RTL.')
 
     def teardown(self):
         downloads_cleanup()
