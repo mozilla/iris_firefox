@@ -27,31 +27,9 @@ class Test(BaseTest):
         return
 
     def run(self):
-        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
 
         # Change firefox alignment to be Right-To-Left.
-        navigate('about:config')
-        click(AboutConfig.ACCEPT_RISK.similar(0.7))
-
-        expected = region.exists(AboutConfig.DEFAULT_STATUS_PATTERN, 10)
-        assert_true(self, expected, 'The \'about:config\' page successfully loaded and default status is correct.')
-
-        paste('intl.uidirection')
-        type(Key.ENTER)
-
-        expected = exists(AboutConfig.PreferenceName.INTL_UIDIRECTION, 10)
-        assert_true(self, expected, 'The \'intl.uidirection\' preference is displayed.')
-
-        double_click(AboutConfig.PreferenceName.INTL_UIDIRECTION)
-        expected = exists(AboutConfig.ENTER_INTEGER_VALUE, 10)
-        assert_true(self, expected, 'Integer value window is open.')
-
-        type('2')
-        click(DownloadFiles.OK)
-
-        expected = exists(AboutConfig.MODIFIED_STATUS_PATTERN, 10)
-        assert_true(self, expected,
-                    'The \'intl.uidirection\' preference has status \'modified\' after the preference has changed.')
+        change_preference('intl.uidirection', '2')
 
         # Check if main firefox buttons are aligned RTL.
         region_right = Screen.UPPER_RIGHT_CORNER.top_half()
