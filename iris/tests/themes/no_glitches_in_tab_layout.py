@@ -26,6 +26,8 @@ class Test(BaseTest):
         close_tab_hover_dark_theme = Pattern('close_tab_hover_dark_theme.png')
 
         open_addons()
+        previous_tab()
+        close_tab()
 
         expected = exists(AboutAddons.THEMES, 10)
         assert_true(self, expected, 'Add-ons page successfully loaded.')
