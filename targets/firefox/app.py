@@ -34,6 +34,7 @@ core_args = get_core_args()
 
 class Target(BaseTarget):
     test_run_object_list = []
+    index = 1
 
     def __init__(self):
         BaseTarget.__init__(self)
@@ -153,9 +154,11 @@ class Target(BaseTarget):
 
     def pytest_runtest_call(self, item):
         """ called to execute the test ``item``. """
+
         logger.info(
-            'Executing: - [%s]: %s' % (
+            'Executing %s: - [%s]: %s' % (self.index,
                 item.nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
+        self.index += 1
         try:
             if item.funcargs['firefox']:
                 item.funcargs['firefox'].start()
@@ -178,7 +181,7 @@ class Target(BaseTarget):
                 profile_instance = item.funcargs['firefox'].profile
                 if os.path.exists(profile_instance.profile):
                     try:
-                        shutil.rmtree(profile_instance.profile)
+                        shutil.rmtree(profile_instance.profile, ignore_errors=True)
                     except OSError as e:
                         logger.error('Error: %s - %s.' % (e.filename, e.strerror))
                 else:
@@ -203,3 +206,4 @@ class Target(BaseTarget):
         if target_args.update_channel:
             FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
         return  FXRunner(app, profile)
+
