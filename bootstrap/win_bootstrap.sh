@@ -4,7 +4,6 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-CWD=$(powershell -Command "(Get-Location).Path")
 
 echo -e "\n${RED}##### Starting Windows bootstrap #####${NC}\n"
 
@@ -67,21 +66,20 @@ else
 fi
 
 
-echo -e "\n${GREEN} --->  Installing Tesseract  v4.1.0.20190314 ${NC} \n"
+echo -e "\n${GREEN} --->  Installing Tesseract 4 ${NC} \n"
 if command -v tesseract &>/dev/null; then
     echo -e "${GREEN}  --->  Tesseract already installed. ${NC}\n"
     echo -e "${GREEN}    --->  Checking Tesseract version. ${NC}\n"
-    if [[ $(tesseract -v | grep "tesseract v4.0.0.20190314") =~ v4.0.0.20190314 ]]; then
-        tesseract -v | grep "tesseract v4.0.0.20190314"
-        echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
-    else
-        echo -e "${RED}  --->  You don't have Tesseract 20190314 version, removing and installing Tesseract 4.1.0.20190314.${NC}\n"
+    if [[ $(tesseract -v | grep "tesseract 3.05") ]]; then
+        echo -e "${RED}  --->  You have Tesseract 3, removing and installing Tesseract 4.${NC}\n"
         powershell -Command "scoop uninstall tesseract" # If Scoop does not recognize tesseract3 command
         powershell -Command "scoop uninstall tesseract3"
-        powershell -Command "scoop install "${CWD}"\bootstrap\tesseract20190314.json"
+        powershell -Command "scoop install tesseract"
+    else
+        echo -e "${GREEN}    --->  Tesseract is the correct version. ${NC}\n"
     fi
 else
-    powershell -Command "scoop install "${CWD}"\bootstrap\tesseract20190314.json"
+    powershell -Command "scoop install tesseract"
 fi
 
 
