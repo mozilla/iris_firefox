@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a unit test to verify basic Firefox build info.'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         assert firefox.application.version == get_firefox_version_from_about_config(), \
             'API for Firefox version is correct'
         assert firefox.application.build_id == get_firefox_build_id_from_about_config(), \

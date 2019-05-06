@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         recent_history_default_pattern = Pattern('recent_history_default.png')
 
         # Open the History Menu and check the Recent History list.

@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='120467',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         library_title_pattern = Library.TITLE
         open_library()
         assert exists(library_title_pattern, 10), 'The library was opened successfully.'

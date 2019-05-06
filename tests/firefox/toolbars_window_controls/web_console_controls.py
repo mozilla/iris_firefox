@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='120137',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         close_dev_tools_button_pattern = Pattern('close_dev_tools.png')
         dev_tools_window_pattern = Pattern('dev_tools_window.png')
         close_message_pattern = Pattern('close_message.png').similar(0.5)

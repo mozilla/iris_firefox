@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='217874',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         browser_console_pattern = Pattern('browser_console_opened.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')

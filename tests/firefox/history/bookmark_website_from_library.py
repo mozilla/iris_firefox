@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.TEN_BOOKMARKS
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         iris_bookmark_focus_pattern = Pattern('iris_bookmark_focus.png')

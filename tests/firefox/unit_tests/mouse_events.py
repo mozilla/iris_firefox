@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a unit test for hover, and click.'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         t_left = Pattern('ut-top-left.png')
         b_right = Pattern('ut-bottom-right.png')
 

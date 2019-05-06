@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         test_suite_id='1902',
         set_profile_pref={'browser.contentblocking.enabled': False}
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')

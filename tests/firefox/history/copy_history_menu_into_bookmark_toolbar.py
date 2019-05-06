@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.TEN_BOOKMARKS
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED

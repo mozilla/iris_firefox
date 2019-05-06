@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='108255',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         localhost = Pattern('localhost.png')
         localhost_2 = Pattern('localhost_2.png')

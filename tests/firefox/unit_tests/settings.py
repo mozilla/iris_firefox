@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='Unit tests for Settings Class'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = 'about:home'
         youtube_top_site_image = Pattern('youtube_top_site.png')
         navigate(url)

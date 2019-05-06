@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='225144',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         cdn77_logo_pattern = Pattern('cdn77_logo.png')
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
         cdn77_support_button_pattern = Pattern('cdn77_support_button.png')

@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='120465',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         firefox_in_about_pattern = Pattern('firefox_in_about.png')
 
         open_about_firefox()

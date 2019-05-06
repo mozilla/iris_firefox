@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 

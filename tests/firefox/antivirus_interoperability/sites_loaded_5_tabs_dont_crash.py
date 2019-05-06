@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='217877',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         youtube_logo_pattern = Pattern('youtube_logo.png')
         google_logo_pattern = Pattern('google_logo.png')
         blogspot_logo_pattern = Pattern('blogspot_logo.png')

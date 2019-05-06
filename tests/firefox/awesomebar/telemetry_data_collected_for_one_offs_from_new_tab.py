@@ -12,9 +12,9 @@ class Test(FirefoxTest):
         description='This test case checks that telemetry data is collected for one-offs from new tab',
         locale=[Locales.ENGLISH],
         test_case_id='108274',
-        test_suite_id='1902',
+        test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         bing_search_results_moz_pattern = Pattern('bing_search_results_moz.png')
         focus_on_search_bar = Pattern('focus_on_search_bar.png')

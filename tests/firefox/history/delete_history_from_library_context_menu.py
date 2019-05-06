@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         history_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
         history_pattern = Library.HISTORY
         history_today_pattern = Library.HISTORY_TODAY

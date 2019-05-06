@@ -14,9 +14,9 @@ class Test(FirefoxTest):
                     Locales.RUSSIAN, Locales.KOREAN, Locales.PORTUGUESE, Locales.VIETNAMESE, Locales.POLISH,
                     Locales.TURKISH, Locales.ROMANIAN, Locales.JAPANESE],
             test_case_id='117529',
-            test_suite_id='1902',
+            test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
 
         apache_logo_pattern = Pattern('apache_logo.png')
 

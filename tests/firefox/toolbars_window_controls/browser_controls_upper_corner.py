@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='119481',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         window_controls_minimize_pattern = Pattern('window_controls_minimize.png')
         hover_minimize_control_pattern = Pattern('hover_minimize_control.png')
         window_controls_restore_pattern = Pattern('window_controls_restore.png')

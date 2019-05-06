@@ -13,9 +13,9 @@ class Test(FirefoxTest):
         description='Test case: No crash or bluescreen after closing a tab while in private browsing mode.',
         locale='[en-US]',
         test_case_id='219584',
-        test_suite_id='3063',
+        test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         click_hamburger_menu_option('New Private Window')
 
         private_window_opened = exists(PrivateWindow.private_window_pattern)

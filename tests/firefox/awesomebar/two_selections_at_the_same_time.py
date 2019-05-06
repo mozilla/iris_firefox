@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='108257',
         test_suite_id='1902',
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
 
         hover_duck_duck_go_one_off_button_pattern = Pattern('hover_duck_duck_go_one_off_button.png')
         duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')

@@ -13,9 +13,9 @@ class Test(FirefoxTest):
                     'searches bar.',
         locale=[Locales.ENGLISH],
         test_case_id='108261',
-        test_suite_id='1902',
+        test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
         search_engine_pattern = Pattern('search_engine.png')

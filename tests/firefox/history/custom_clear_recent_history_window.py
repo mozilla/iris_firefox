@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW,
         preferences={'datareporting.policy.firstRunURL': ''}
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         clear_recent_history_window_pattern = History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
         clear_now_button_pattern = History.CLearRecentHistory.CLEAR_NOW
         search_uncheked_box_pattern = Utils.UNCHECKEDBOX

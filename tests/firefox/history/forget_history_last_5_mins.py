@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='174072',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         forget_customize_page_pattern = Pattern('forget_customize_page.png')
         forget_toolbar_pattern = Pattern('forget_toolbar.png')
         forget_button_pattern = History.ForgetLast.FORGET_BUTTON

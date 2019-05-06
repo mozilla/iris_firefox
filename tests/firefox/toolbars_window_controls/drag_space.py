@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id='1998',
         exclude=OSPlatform.LINUX
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         customize_page_drag_space_disabled_pattern = Pattern('customize_page_drag_space_disabled.png')
         drag_space_disabled_pattern = Pattern('drag_space_disabled.png')
         customize_page_drag_space_enabled_pattern = Pattern('customize_page_drag_space_enabled.png')

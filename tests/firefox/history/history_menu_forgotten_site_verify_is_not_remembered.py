@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='174051',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         show_all_history = History.HistoryMenu.SHOW_ALL_HISTORY
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
         mozilla_autocomplete = Pattern('mozilla_autocomplete.png')

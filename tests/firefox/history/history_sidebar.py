@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         history_sidebar_default_pattern = Pattern('history_sidebar_default.png')

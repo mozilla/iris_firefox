@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_case_id='108262',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         search_engine_pattern = Pattern('search_engine.png')
         search_settings_pattern = Pattern('search_settings.png')
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')

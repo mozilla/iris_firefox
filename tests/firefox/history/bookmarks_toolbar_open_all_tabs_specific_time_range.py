@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='174035',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         iris_tab_icon = Pattern('iris_logo_tab.png')
         mozilla_tab_icon = Pattern('mozilla_logo_tab.png')
         iris_bookmark_pattern = Pattern('iris_bookmark.png')

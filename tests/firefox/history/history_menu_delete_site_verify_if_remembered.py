@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='174049',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         local_server_autocomplete = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
         pocket_autocomplete = Pattern('pocket_autocomplete.png')

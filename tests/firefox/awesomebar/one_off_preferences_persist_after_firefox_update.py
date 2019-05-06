@@ -21,7 +21,7 @@ class Test(FirefoxTest):
                           'app.update.promptWaitTime': 30,
                           'app.update.timerMinimumDelay': 10}
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
         default_search_engine_dropdown_pattern = Pattern('default_search_engine_dropdown.png')
         moz_search_amazon_search_engine_pattern = Pattern('moz_search_amazon_search_engine.png')

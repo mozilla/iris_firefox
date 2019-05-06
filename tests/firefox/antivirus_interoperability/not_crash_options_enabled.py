@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='3063',
         preferences={'media.autoplay.default': 0}
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         soundcloud_logo_pattern = Pattern('soundcloud_logo.png')
         sound_on_pattern = Pattern('sound_on.png').similar(0.9)
         youtube_autoplay_switch_pattern = Pattern('youtube_autoplay_switch.png')

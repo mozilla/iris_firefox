@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='217866',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         browser_console_opened_pattern = Pattern('browser_console_opened.png')
 
         open_browser_console()

@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_case_id='117524',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         text_to_be_highlighted = Pattern('focus_text.png')
         highlighted_text = Pattern('focus_highlighted_text.png')
         drag_area = Pattern('focus_awesomebar.png')

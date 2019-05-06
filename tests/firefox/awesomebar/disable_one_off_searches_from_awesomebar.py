@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='108258',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         default_status_pattern = Pattern('default_status.png')
         modified_status_pattern = Pattern('modified_status.png')
         true_value_pattern = Pattern('true_value.png')

@@ -31,7 +31,7 @@ class Test(FirefoxTest):
         test_case_id='217855',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         soap_wiki_page_article_header_pattern = Pattern('wiki_article_header.png')
         new_tab_highlighted_with_theme_applied_pattern = Pattern('new_tab_highlighted_theme_applied.png')
         adblock_icon_pattern = Pattern('adblock_icon.png')

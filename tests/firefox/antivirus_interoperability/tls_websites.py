@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='217857',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         page_info_window_pattern = Pattern('technical_details.png')
         tls_check_pattern = Pattern('tls_check.png')
         show_connection_details_button_pattern = Pattern('show_connection_details_button.png')

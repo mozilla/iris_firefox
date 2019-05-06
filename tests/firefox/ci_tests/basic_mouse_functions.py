@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description="This test will verify if PyAutoGUI mouse is working properly in a frame buffer environment."
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
 
         try:
             pyautogui.moveTo(300, 300)

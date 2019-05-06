@@ -12,9 +12,9 @@ class Test(FirefoxTest):
         description='This test case verifies that \'Search in New Tab\' option works correctly using an one-off.',
         locale=[Locales.ENGLISH],
         test_case_id='108250',
-        test_suite_id='1902',
+        test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
         google_one_off_button_pattern = Pattern('google_one_off_button.png')

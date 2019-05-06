@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_case_id='120126',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         expand_button_history_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY

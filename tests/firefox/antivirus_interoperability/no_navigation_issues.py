@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='217876',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         blogspot_logo_pattern = Pattern('blogspot_logo.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)

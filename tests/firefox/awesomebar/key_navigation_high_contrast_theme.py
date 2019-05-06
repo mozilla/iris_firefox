@@ -14,7 +14,7 @@ class Test(FirefoxTest):
             test_case_id='120136',
             test_suite_id='1902'
         )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         themes_pattern = Pattern('themes.png')
         dark_theme_pattern = Pattern('dark_theme.png')

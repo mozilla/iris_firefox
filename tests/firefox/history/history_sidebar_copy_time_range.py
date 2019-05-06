@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='120125',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR

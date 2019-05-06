@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='172045',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         history_empty_pattern = Pattern('history_empty.png')
         if OSHelper.is_mac():
             clear_recent_history_last_hour_pattern = History.CLearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR

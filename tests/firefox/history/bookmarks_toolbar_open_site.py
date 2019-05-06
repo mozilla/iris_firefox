@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.TEN_BOOKMARKS
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
 
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         sidebar_history_today_pattern = Sidebar.HistorySidebar.Timeline.TODAY

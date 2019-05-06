@@ -14,7 +14,7 @@ class Test(FirefoxTest):
             test_case_id='117530',
             test_suite_id='1902'
         )
-    def test_run(self, firefox):
+    def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png')
         search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')

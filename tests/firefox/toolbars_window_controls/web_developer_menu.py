@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id='1998',
         exclude=OSPlatform.ALL
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
 
         navigate("about:home")
         open_web_developer_menu()

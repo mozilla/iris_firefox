@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='120464',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         browser_console = Pattern('browser_console.png')
         clear_web_console = Pattern('clear.png')
 

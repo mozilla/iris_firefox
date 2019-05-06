@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='118801',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         test_pdf_pattern = Pattern('moz_fast.png')
         download_button_pattern = Pattern('pdf_download_button.png')
         dialog_pattern = Pattern('download_dialog.png')

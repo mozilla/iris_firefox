@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a unit test for ocr.'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         navigate(PathManager.get_current_test_asset_dir('ocr.html'))
 
         top_left_marker = Pattern('ut-top-left.png')

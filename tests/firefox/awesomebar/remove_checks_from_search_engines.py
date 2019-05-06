@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_case_id='108259',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         moz_pattern = Pattern('moz.png')
         search_engine_pattern = Pattern('search_engine.png')
         check_engine_pattern = Pattern('check_engine.png')

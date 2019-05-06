@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         clear_recent_history_window_pattern = History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
 
         # Check that the Clear Recent History window is displayed properly.

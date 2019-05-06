@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         test_case_id='118809',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url_example_pattern = Pattern('url_example.png')
 
         navigate('data:text/html,<a href="http://example.org/?q">Link</a>')

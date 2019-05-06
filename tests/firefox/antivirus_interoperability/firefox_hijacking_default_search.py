@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='219663',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         picker_pattern = Pattern('search_engines_picker.png')
         about_preferences_search_pattern = Pattern('about_preferences_search.png')
         default_search_engines_list_small_pattern = Pattern('default_search_engines_list_small.png')

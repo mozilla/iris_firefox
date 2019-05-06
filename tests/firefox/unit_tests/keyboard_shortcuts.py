@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         description='This is a unit test for keyboard events.',
         blocked_by='issue_1682'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = PathManager.get_current_test_asset_dir('keyboard-events.html')
 
         t_left = Pattern('ut-top-left.png')

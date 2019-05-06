@@ -12,10 +12,10 @@ class Test(FirefoxTest):
         description='This test case navigates through one-off searches using the keyboard keys',
         locale=[Locales.ENGLISH],
         test_case_id='108267',
-        test_suite_id='1902',
+        test_suite_id='1902'
         # blocked_by={'id': '1488708'},
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')

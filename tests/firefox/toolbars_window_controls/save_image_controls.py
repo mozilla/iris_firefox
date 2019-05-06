@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='118803',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         test_pattern = Pattern('sleepy_head_nose.png')
         save_as_pattern = Pattern('save_as.png')
 

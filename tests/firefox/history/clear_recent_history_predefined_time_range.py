@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='172044',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         history_items_old_pattern = Pattern('history_items_old.png')
         history_title_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         if OSHelper.is_mac():

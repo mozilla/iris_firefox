@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='2000',
         profile=Profiles.TEN_BOOKMARKS
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
 
         # Open some page to create some history for today.

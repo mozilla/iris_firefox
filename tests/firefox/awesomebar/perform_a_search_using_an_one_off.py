@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='1902',
         blocked_by='issue_84'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png')
         search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')

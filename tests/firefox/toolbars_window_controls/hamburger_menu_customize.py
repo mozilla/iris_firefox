@@ -11,7 +11,7 @@ class Test(FirefoxTest):
         description='This is a test case that checks the Hamburger menu > Customize opens the customize page.',
         locale=Locales.ENGLISH
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         navigate('about:home')
         click_hamburger_menu_option('Customize...')
         assert exists(NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE, 10), '\'Customize\' page present.'

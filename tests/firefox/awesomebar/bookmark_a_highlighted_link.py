@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='117526',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
         bookmark_drop_down_under_bookmark_icon_pattern = Pattern('bookmark_drop_down_under_bookmark_icon.png')

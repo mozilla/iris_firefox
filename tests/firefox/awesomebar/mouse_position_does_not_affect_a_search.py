@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='108256',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         duck_duck_go_one_off_button = Pattern('duck_duck_go_one_off_button.png')
         google_search_results = Pattern('google_search_results.png')

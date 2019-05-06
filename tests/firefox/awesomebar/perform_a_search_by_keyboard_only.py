@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='1902',
         preferences={'browser.contentblocking.enabled': False}
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
         search_with_duckduckgo_one_off_string_pattern = Pattern('search_with_DuckDuckGo_one_off_string.png')
         search_with_amazon_one_off_string_pattern = Pattern('search_with_Amazon_one_off_string.png')

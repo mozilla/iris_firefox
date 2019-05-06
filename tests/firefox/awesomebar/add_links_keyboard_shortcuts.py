@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         exclude=OSPlatform.ALL
         # blocked_by='1520795'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         cnn_tab_pattern = Pattern('cnn_tab.png')
         cnn_icon_pattern = Pattern('cnn_icon.png')
         facebook_tab_pattern = Pattern('facebook_tab.png')

@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         preferences={'browser.warnOnQuit': True,
                      'browser.tabs.warnOnClose': True}
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         close_multiple_tabs_warning_pattern = Pattern('close_multiple_tabs_warning.png')
         home_button_pattern = NavBar.HOME_BUTTON
 

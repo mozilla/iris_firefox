@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='119466',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         x_button_sidebar_pattern = Pattern('x_button_sidebar.png')
         x_button_sidebar_hovered_pattern = Pattern('x_button_sidebar_hovered.png')
         sidebar_title_pattern = Pattern('sidebar_title.png')

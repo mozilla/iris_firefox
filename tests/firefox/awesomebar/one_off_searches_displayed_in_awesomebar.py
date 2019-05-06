@@ -12,9 +12,9 @@ class Test(FirefoxTest):
         description='This test case checks that one-off searches are displayed in the awesomebar.',
         locale=[Locales.ENGLISH],
         test_case_id='108248',
-        test_suite_id='1902',
+        test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')

@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id='118183',
         test_suite_id='1998'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         navigate('about:home')
 
         activate_title_bar_pattern = Pattern('title_bar.png')

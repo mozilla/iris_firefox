@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         test_suite_id='1902',
         set_profile_pref={'browser.contentblocking.enabled': False}
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         window_controls_restore_pattern = Pattern('window_controls_restore.png')

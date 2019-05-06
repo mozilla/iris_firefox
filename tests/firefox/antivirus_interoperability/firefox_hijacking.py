@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='217858',
         test_suite_id='3063'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         about_preferences_search_pattern = Pattern('about_preferences_search.png')
         about_preferences_home_pattern = Pattern('about_preferences_home.png')
         default_search_engine_pattern = Pattern('default_search_engine.png')

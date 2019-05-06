@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         test_case_id='172046',
         test_suite_id='2000'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         checked_box = Utils.CHECKEDBOX
         clear_now_button_disabled = History.CLearRecentHistory.DISABLED_CLEAR_NOW
 

@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_case_id='117523',
         test_suite_id='1902'
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
