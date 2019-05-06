@@ -102,15 +102,15 @@ class Test(BaseTest):
         content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
 
-        cookies_checked = exists(cookies_checked_pattern, Settings.FIREFOX_TIMEOUT)
-        if cookies_checked:
-            cookies_option_location = find(cookies_checked_pattern)
-            cookies_width, cookies_height = cookies_checked_pattern.get_size()
-            cookies_checkbox_region = Region(cookies_option_location.x - cookies_width,
-                                             cookies_option_location.y - cookies_height,
-                                             cookies_width * 2, cookies_height * 3)
-
-            self.click_on_action_item(checkbox_checked_pattern, checkbox_unchecked_pattern, cookies_checkbox_region)
+        # cookies_checked = exists(cookies_checked_pattern, Settings.FIREFOX_TIMEOUT)
+        # if cookies_checked:
+        #     cookies_option_location = find(cookies_checked_pattern)
+        #     cookies_width, cookies_height = cookies_checked_pattern.get_size()
+        #     cookies_checkbox_region = Region(cookies_option_location.x - cookies_width,
+        #                                      cookies_option_location.y - cookies_height,
+        #                                      cookies_width * 2, cookies_height * 3)
+        #
+        #     self.click_on_action_item(checkbox_checked_pattern, checkbox_unchecked_pattern, cookies_checkbox_region)
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
