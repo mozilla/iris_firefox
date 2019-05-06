@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.meta = 'There are no glitches in tab layout.'
-        self.test_case_id = '1521526867'
+        self.test_case_id = '15268'
         self.test_suite_id = '494'
         self.locales = ['en-US']
 
