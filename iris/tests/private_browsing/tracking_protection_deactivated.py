@@ -15,54 +15,6 @@ class Test(BaseTest):
         self.test_suite_id = '1826'
         self.locales = ['en-US']
 
-    def click_on_action_item(self, action_item_before, action_item_after, action_item):
-        """
-        Method clicks on action item. Assume action_item is e.g. checkbox or radiobutton, which changes state after
-        single click.
-
-        :param action_item_before: Pattern of action item before click.
-        :param action_item_after: Pattern of action item after click.
-        :param action_item: Pattern or Region with item to click on.
-            Note: Pattern or Region can contain only one action item
-        :return: None
-        """
-
-        if isinstance(action_item, Pattern):
-            try:
-                option_with_action_item_location = find(action_item)
-            except:
-                raise FindError('Option {} is not available'.format(action_item.image_name))
-
-            option_width, option_height = action_item.get_size()
-            action_item_region = Region(option_with_action_item_location.x, option_with_action_item_location.y,
-                                        option_width, option_height)
-
-        elif isinstance(action_item, Region):
-            action_item_region = action_item
-
-        else:
-            raise ValueError(INVALID_GENERIC_INPUT)
-
-        condition_before = exists(action_item_before, Settings.TINY_FIREFOX_TIMEOUT, action_item_region)
-        condition_after = exists(action_item_after, Settings.TINY_FIREFOX_TIMEOUT, action_item_region)
-
-        if condition_before:
-            click(action_item_before, in_region=action_item_region)
-            logger.debug('Action item clicked.')
-
-            try:
-                wait(action_item_after, Settings.FIREFOX_TIMEOUT, action_item_region)
-                logger.debug('Action item state changed successfully.')
-            except:
-                raise FindError('Action item state was not changed.')
-
-        elif condition_after:
-            logger.debug('Action item state changed successfully.')
-
-        else:
-            raise FindError('Action item was not found.')
-
-
     def run(self):
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
         privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
@@ -70,10 +22,7 @@ class Test(BaseTest):
         custom_privacy_radio_pattern = Pattern('custom_privacy_radio.png')
         trackers_checked_pattern = Pattern('trackers_checked.png')
         trackers_unchecked_pattern = Pattern('trackers_unchecked.png')
-        cookies_checked_pattern = Pattern('cookies_preference_checked.png')
         cookies_unchecked_pattern = Pattern('cookies_preference_unchecked.png')
-        checkbox_checked_pattern = Pattern('checkbox_checked.png')
-        checkbox_unchecked_pattern = Pattern('checkbox_unchecked.png')
         private_browsing_tab_pattern = Pattern('private_browsing_tab_logo.png')
         private_content_blocking_warning_pattern = Pattern('private_window_content_blocking_warning.png')
         info_button_pattern = Pattern('info_button.png')
@@ -101,16 +50,6 @@ class Test(BaseTest):
 
         content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
-
-        # cookies_checked = exists(cookies_checked_pattern, Settings.FIREFOX_TIMEOUT)
-        # if cookies_checked:
-        #     cookies_option_location = find(cookies_checked_pattern)
-        #     cookies_width, cookies_height = cookies_checked_pattern.get_size()
-        #     cookies_checkbox_region = Region(cookies_option_location.x - cookies_width,
-        #                                      cookies_option_location.y - cookies_height,
-        #                                      cookies_width * 2, cookies_height * 3)
-        #
-        #     self.click_on_action_item(checkbox_checked_pattern, checkbox_unchecked_pattern, cookies_checkbox_region)
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
@@ -173,6 +112,3 @@ class Test(BaseTest):
                     '\'To block all trackers, set content blocking to "Strict"\' is displayed')
 
         close_window()
-
-
-
