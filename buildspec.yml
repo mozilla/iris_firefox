@@ -1,0 +1,57 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+      - echo Build started on `date`
+      - ls -all
+      - pwd
+      - echo UPDATE
+      - apt-get update
+      - echo software-properties-common
+      - apt-get -y install software-properties-common
+      - echo wget
+      - apt-get -y install wget
+      - echo build-essential
+      - apt-get -y install build-essential
+      - echo unzip
+      - apt-get -y install unzip
+      - echo libssl-dev
+      - apt-get -y install libssl-dev
+      - echo other libss-dev
+      - apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev
+  pre_build:
+    commands:
+      - echo Entered the pre_build phase...
+      - echo Build started on `date`
+      - cd bootstrap/
+      - ls -all
+      - chmod +x bootstrap.sh
+      - chmod +x linux_bootstrap.sh
+      - ./bootstrap.sh
+      - echo FINISH Bootstrap INSTALL!!!!
+  build:
+    commands:
+      - echo Entered the build phase...
+      - echo Build started on `date`
+      - pwd
+      - cd ../
+      - pwd
+      - ls -all
+      - export LC_ALL=C.UTF-8
+      - export LANG=C.UTF-8
+      - echo INSTALL PIPENV
+      - pipenv install
+      - export DISPLAY=:99.0
+      - Xvfb :99 -screen 0 1920x1080x24+32 +extension GLX +extension RANDR > /dev/null 2>&1 &
+      - sleep 3
+      - echo Start CI tests
+      - pipenv run iris -t fake_keyboard_input -vk -i DEBUG
+      - echo FINISH RUNNING TESTS
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - cd ~/.iris
+      - ls -all
+      - echo Build completed on `date`
