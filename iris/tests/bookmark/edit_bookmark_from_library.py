@@ -22,14 +22,14 @@ class Test(BaseTest):
 
     def run(self):
         location_field_pattern = Pattern('location_field_label.png')
-        name_field_pattern = Pattern('name_bookmark_field.png')
+        name_field_pattern = Pattern('name_bookmark_field.png').similar(0.85)
         tags_field_pattern = Pattern('tags_field_label.png')
         keyword_field_pattern = Pattern('keyword_field_label.png')
         bookmark_new_name_pattern = Pattern('bookmark_new_name.png')
-        edited_name_pattern = Pattern('edit_bookmark_name_modified.png')
-        edited_tags_pattern = Pattern('edit_bookmark_tags_modified.png')
-        edited_location_pattern = Pattern('location_saved.png')
-        edited_keyword_pattern = Pattern('keyword_saved.png')
+        edited_name_pattern = Pattern('edited_bookmark_name_library.png')             # edit_bookmark_name_modified
+        edited_tags_pattern = Pattern('edited_bookmark_tags_library.png')             # edit_bookmark_tags_modified
+        edited_location_pattern = Pattern('edited_bookmark_location_library.png')     # location_saved
+        edited_keyword_pattern = Pattern('edited_bookmark_keyword_library.png')       # keyword_saved
 
         open_library()
 
@@ -41,31 +41,34 @@ class Test(BaseTest):
         name_field_displayed = exists(name_field_pattern)
         assert_true(self, name_field_displayed, 'Name field is displayed')
 
-        click(name_field_pattern)
+        fields_location = find(name_field_pattern)
+        fields_region = Region(fields_location.x, fields_location.y, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+        click(name_field_pattern, in_region=fields_region)
 
         edit_select_all()
         paste('New Name')
 
-        location_field_displayed = exists(location_field_pattern)
+        location_field_displayed = exists(location_field_pattern, in_region=fields_region)
         assert_true(self, location_field_displayed, 'Location field is displayed')
 
-        click(location_field_pattern)
+        click(location_field_pattern, in_region=fields_region)
 
         edit_select_all()
         paste('http://wikipedia.org/')
 
-        tags_field_displayed = exists(tags_field_pattern)
+        tags_field_displayed = exists(tags_field_pattern, in_region=fields_region)
         assert_true(self, tags_field_displayed, 'Tags field is displayed')
 
-        click(tags_field_pattern)
+        click(tags_field_pattern, in_region=fields_region)
 
         edit_select_all()
         paste('tags, test')
 
-        keyword_field_displayed = exists(keyword_field_pattern)
+        keyword_field_displayed = exists(keyword_field_pattern.similar(0.7), in_region=fields_region)
         assert_true(self, keyword_field_displayed, 'Keywords field is displayed')
 
-        click(keyword_field_pattern)
+        click(keyword_field_pattern, in_region=fields_region)
 
         edit_select_all()
         paste('test')
@@ -82,6 +85,9 @@ class Test(BaseTest):
         new_name_bookmark_created = exists(bookmark_new_name_pattern)
         assert_true(self, new_name_bookmark_created, '"New Name" bookmark exists')
 
+        bookmark_name_location = find(bookmark_new_name_pattern)
+        fields_region = Region(0, bookmark_name_location.y, SCREEN_WIDTH * 2 // 3, SCREEN_HEIGHT * 2 // 3)
+
         click(bookmark_new_name_pattern)
 
         name_field_displayed = exists(name_field_pattern)
@@ -90,13 +96,13 @@ class Test(BaseTest):
         click(name_field_pattern)
 
         edit_select_all()
-        name_is_edited = exists(edited_name_pattern)
+        name_is_edited = exists(edited_name_pattern, in_region=fields_region)
         assert_true(self, name_is_edited, 'Bookmark\'s name is edited')
 
-        location_field_displayed = exists(location_field_pattern)
+        location_field_displayed = exists(location_field_pattern, in_region=fields_region)
         assert_true(self, location_field_displayed, 'Location field is displayed')
 
-        click(location_field_pattern)
+        click(location_field_pattern, in_region=fields_region)
 
         edit_select_all()
         location_edited = exists(edited_location_pattern)
@@ -105,10 +111,10 @@ class Test(BaseTest):
         tags_edited = exists(edited_tags_pattern)
         assert_true(self, tags_edited, 'Bookmark\'s tags are edited')
 
-        keyword_field_displayed = exists(keyword_field_pattern)
+        keyword_field_displayed = exists(keyword_field_pattern, in_region=fields_region)
         assert_true(self, keyword_field_displayed, 'Keywords field is displayed')
 
-        click(keyword_field_pattern)
+        click(keyword_field_pattern, in_region=fields_region)
 
         edit_select_all()
         keyword_edited = exists(edited_keyword_pattern)
