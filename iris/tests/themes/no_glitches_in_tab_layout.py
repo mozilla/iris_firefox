@@ -53,7 +53,7 @@ class Test(BaseTest):
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
-            expected = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+            expected = exists(LocalWeb.MOZILLA_LOGO, 120)
             assert_true(self, expected, 'Mozilla page loaded successfully.')
 
         max_attempts = 9
@@ -63,10 +63,10 @@ class Test(BaseTest):
 
             if expected:
                 tab = find(mozilla_tab_not_focused)
-                region = Region(tab.x, tab.y, 210, 30)
+                region = Region(tab.x, tab.y - 10, 220, 80)
                 region.hover(tab)
 
-                expected = exists(mozilla_hover, 10)
+                expected = region.exists(mozilla_hover, 10)
                 assert_true(self, expected, 'Mozilla page is hovered.')
 
                 region.click(tab)
@@ -106,7 +106,7 @@ class Test(BaseTest):
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
-            expected = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+            expected = exists(LocalWeb.MOZILLA_LOGO, 120)
             assert_true(self, expected, 'Mozilla page loaded successfully.')
 
         max_attempts = 9
@@ -116,10 +116,10 @@ class Test(BaseTest):
 
             if expected:
                 tab = find(mozilla_tab_not_focused_light_theme)
-                region = Region(tab.x, tab.y, 210, 30)
+                region = Region(tab.x, tab.y - 10, 220, 80)
                 hover(tab)
 
-                expected = exists(mozilla_hover, 10)
+                expected = region.exists(mozilla_hover, 10)
                 assert_true(self, expected, 'Mozilla page is hovered.')
 
                 region.click(tab)
@@ -159,7 +159,7 @@ class Test(BaseTest):
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
-            expected = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+            expected = exists(LocalWeb.MOZILLA_LOGO, 120)
             assert_true(self, expected, 'Mozilla page loaded successfully.')
 
         max_attempts = 9
@@ -169,10 +169,10 @@ class Test(BaseTest):
 
             if expected:
                 tab = find(mozilla_tab_not_focused)
-                region = Region(tab.x, tab.y, 210, 30)
+                region = Region(tab.x, tab.y - 10, 220, 80)
                 hover(tab)
 
-                expected = exists(mozilla_hover_dark_theme, 10)
+                expected = region.exists(mozilla_hover_dark_theme, 10)
                 assert_true(self, expected, 'Mozilla page is hovered.')
 
                 region.click(tab)
