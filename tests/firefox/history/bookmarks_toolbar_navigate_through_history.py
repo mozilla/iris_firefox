@@ -62,6 +62,8 @@ class Test(FirefoxTest):
 
         click(history_bookmarks_toolbar_pattern)
 
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
         # Navigate to a page from Today's history, in our case the Iris page.
         type(Key.DOWN)
         time.sleep(Settings.DEFAULT_UI_DELAY)
