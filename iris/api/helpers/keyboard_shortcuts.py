@@ -73,7 +73,7 @@ def select_location_bar():
     else:
         type(text='l', modifier=KeyModifier.CTRL)
     # Wait to allow the location bar to become responsive.
-    time.sleep(Settings.UI_DELAY_LONG)
+    time.sleep(Settings.UI_DELAY)
 
 
 def select_folder_location_bar():
@@ -475,7 +475,7 @@ def new_tab():
     else:
         type(text='t', modifier=KeyModifier.CTRL)
     # Wait to allow new tab to be opened.
-    time.sleep(Settings.FX_DELAY)
+    time.sleep(Settings.UI_DELAY)
 
 
 def new_window():

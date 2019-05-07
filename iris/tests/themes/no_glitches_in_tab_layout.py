@@ -69,6 +69,7 @@ class Test(BaseTest):
                 expected = region.exists(mozilla_hover, 10)
                 assert_true(self, expected, 'Mozilla page is hovered.')
 
+                reset_mouse()
                 region.click(tab)
 
                 expected = region.exists(close_tab_button, 10)
