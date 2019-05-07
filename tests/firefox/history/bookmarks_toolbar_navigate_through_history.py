@@ -64,9 +64,9 @@ class Test(FirefoxTest):
 
         # Navigate to a page from Today's history, in our case the Iris page.
         type(Key.DOWN)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         type(Key.RIGHT)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         type(Key.ENTER)
 
         expected = exists(iris_logo_pattern, 10)
