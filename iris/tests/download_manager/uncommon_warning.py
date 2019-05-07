@@ -31,11 +31,11 @@ class Test(BaseTest):
 
         navigate('https://testsafebrowsing.appspot.com')
 
-        expected = exists(DownloadFiles.UNCOMMON, 10)
+        expected = exists(DownloadFiles.UNCOMMON_HTTPS, 10)
         assert_true(self, expected, 'Uncommon file has been found.')
 
-        width, height = DownloadFiles.UNCOMMON.get_size()
-        download_file(DownloadFiles.UNCOMMON.target_offset(width + 10, height / 2), DownloadFiles.OK)
+        width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width + 10, height / 2), DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadsPanel.UNCOMMON_DOWNLOAD_ICON, 10)
         assert_true(self, expected, 'Uncommon download icon is displayed.')
@@ -87,7 +87,7 @@ class Test(BaseTest):
         click(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY)
 
         # Check the uncommon download button.
-        download_file(DownloadFiles.UNCOMMON.target_offset(width + 10, height / 2), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width + 10, height / 2), DownloadFiles.OK)
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
         assert_true(self, expected, 'Uncommon downloads button is displayed.')
 

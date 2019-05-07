@@ -62,9 +62,6 @@ class DownloadFiles(object):
     DOWNLOADS_PANEL_20MB_COMPLETED_RTL = Pattern('completed_20mb_file_rtl.png')
     FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern('5MB_folder_view_highlighted.png').similar(0.79)
     FOLDER_VIEW_10MB_HIGHLIGHTED = Pattern('10MB_folder_view_highlighted.png').similar(0.79)
-    MALICIOUS = Pattern('malicious.png')
-    UNCOMMON = Pattern('uncommon.png')
-    POTENTIALLY_UNWANTED = Pattern('potentially_unwanted.png')
     FIREFOX_INSTALLER = Pattern('firefox_installer.png')
     FIREFOX_INSTALLER_HIGHLIGHTED = Pattern('firefox_installer_highlighted.png')
     STATUS_200 = Pattern('status_200.png')
@@ -74,6 +71,26 @@ class DownloadFiles(object):
     DOWNLOAD_CANCELED = Pattern('download_canceled.png')
     OK = Pattern('ok.png')
     CANCEL_ALL_DOWNLOADS_POP_UP = Pattern('cancel_all_downloads.png')
+
+    # Safe Browsing Testing patterns.
+    MALICIOUS = Pattern('malicious.png')
+    MALICIOUS_HTTPS = Pattern('malicious_https.png')
+    DANGEROUS_HOST_WARNING = Pattern('dangerous_host_warning.png')
+    UNCOMMON = Pattern('uncommon.png')
+    UNCOMMON_HTTPS = Pattern('uncommon_https.png')
+    POTENTIALLY_UNWANTED = Pattern('potentially_unwanted.png')
+    DOWNLOADS_PANEL_CONTENT_COMPLETED = Pattern('completed_content.png')
+    DOWNLOADS_PANEL_CONTENT1_COMPLETED = Pattern('completed_content1.png')
+    DOWNLOADS_PANEL_BADREP_COMPLETED = Pattern('completed_badrep.png')
+    DOWNLOADS_PANEL_PUA_COMPLETED = Pattern('completed_pua.png')
+    DOWNLOADS_PANEL_UNKNOWN_COMPLETED = Pattern('completed_unknown.png')
+    DOWNLOADS_PANEL_UNKNOWN1_COMPLETED = Pattern('completed_unknown1.png')
+    LIBRARY_DOWNLOADS_CONTENT = Pattern('content_library_downloads.png')
+    LIBRARY_DOWNLOADS_CONTENT_RED = Pattern('content_library_downloads_red.png')
+    LIBRARY_DOWNLOADS_CONTENT1 = Pattern('content1_library_downloads.png')
+    LIBRARY_DOWNLOADS_CONTENT1_RED = Pattern('content1_library_downloads_red.png')
+    LIBRARY_DOWNLOADS_BADREP = Pattern('badrep_library_downloads.png')
+    LIBRARY_DOWNLOADS_BADREP_RED = Pattern('badrep_library_downloads_red.png')
 
 
 def cancel_and_clear_downloads(private_window=False):
