@@ -83,7 +83,7 @@ def delete(args, update_run_file=True):
     if os.path.exists(target_run):
         shutil.rmtree(target_run, ignore_errors=True)
     else:
-        logger.error('Run directory does not exist: %s' % target_run)
+        logger.debug('Run directory does not exist: %s' % target_run)
 
 
 def delete_all():

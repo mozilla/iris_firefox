@@ -91,7 +91,7 @@ def get_core_args():
                         help='Path to working directory',
                         type=os.path.abspath,
                         action='store',
-                        default='%s/.iris2' % home)
+                        default='%s/.iris' % home)
     parser.add_argument('-x', '--exclude',
                         help='Partial or full test names or paths to exclude',
                         action='store',

@@ -27,7 +27,7 @@ from src.core.util.json_utils import create_target_json
 from src.core.util.local_web_server import LocalWebServer
 from src.core.util.logger_manager import initialize_logger
 from src.core.util.path_manager import PathManager
-from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding, get_python_version
+from src.core.util.system import check_7zip, fix_terminal_encoding, init_tesseract_path, reset_terminal_encoding
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +35,7 @@ logger = logging.getLogger(__name__)
 def main():
     args = get_core_args()
     initialize_logger()
+    migrate_data()
     validate_config_ini(args)
     if verify_config(args):
         pytest_args = None
@@ -120,6 +121,7 @@ def get_target(target_name):
 def initialize_platform(args):
     init()
     fix_terminal_encoding()
+    migrate_data()
     PathManager.create_working_directory(args.workdir)
     PathManager.create_run_directory()
 
@@ -139,16 +141,6 @@ def get_test_params():
 
 def verify_config(args):
     """Checks keyboard state is correct, and that Tesseract and 7zip are installed."""
-
-    # Disable Python version checking for Windows until further notice.
-    '''
-    if OSHelper.get_os().value is 'win':
-        if get_python_version() is not '3.5.3':
-            logger.error('Iris 2.0 does not run on versions of Python above 3.5.3')
-            logger.error('at the moment due to compatibility issues.')
-            logger.info('Shutting down.')
-            exit(1)
-    '''
     try:
         if not all([check_keyboard_state(args.no_check), init_tesseract_path(), check_7zip()]):
             exit(1)
@@ -205,6 +197,20 @@ def launch_control_center():
         logger.debug(e)
 
     return server.result
+
+
+def migrate_data():
+    iris_1_install = os.path.join(os.path.expanduser('~'), '.iris', 'data', 'all_args.json')
+    logger.debug('Old Iris 1 install exists: %s' % os.path.exists(iris_1_install))
+
+    if os.path.exists(iris_1_install):
+        os.rename(os.path.join(os.path.expanduser('~'), '.iris'), os.path.join(os.path.expanduser('~'), '.iris_old'))
+
+    iris_2_install = os.path.join(os.path.expanduser('~'), '.iris2')
+    logger.debug('Old Iris 2 install exists: %s' % os.path.exists(iris_2_install))
+
+    if os.path.exists(iris_2_install):
+        os.rename(os.path.join(os.path.expanduser('~'), '.iris2'), os.path.join(os.path.expanduser('~'), '.iris'))
 
 
 class ShutdownTasks(CleanUp):
