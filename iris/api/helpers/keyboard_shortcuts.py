@@ -408,11 +408,12 @@ def force_close():
 
 
 def change_window_view():
-    """Change the focus on another window."""
+    """Change the focus to another window."""
     if Settings.get_os() == Platform.MAC:
         type(text=Key.TAB, modifier=KeyModifier.CMD)
     else:
         type(text=Key.TAB, modifier=KeyModifier.ALT)
+    time.sleep(Settings.UI_DELAY)
 
 
 def full_screen():

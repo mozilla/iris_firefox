@@ -4,6 +4,7 @@
 
 from iris.api.core.firefox_ui.about_preferences import *
 from iris.api.core.firefox_ui.about_config import *
+from iris.api.core.firefox_ui.about_addons import *
 from iris.api.core.firefox_ui.bookmarks import *
 from iris.api.core.firefox_ui.content_blocking_tour import *
 from iris.api.core.firefox_ui.docker import *
@@ -23,6 +24,7 @@ from iris.api.core.firefox_ui.site_information_panel import *
 from iris.api.core.firefox_ui.tabs import *
 from iris.api.core.firefox_ui.utils import *
 from iris.api.core.firefox_ui.more_tools import *
+from iris.api.core.firefox_ui.customize import *
 
 from iris.api.helpers.customize_utils import *
 from iris.api.helpers.download_manager_utils import *
