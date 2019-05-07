@@ -10,11 +10,10 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = 'Change the properties of a bookmark from \'Other Bookmarks\' sections - Bookmarks menu'
+        self.meta = 'Change the bookmarks order by drag&drop in the same section from Library'
         self.test_case_id = '163219'
         self.test_suite_id = '2525'
         self.locales = ['en-US']
-
 
     def setup(self):
         BaseTest.setup(self)
