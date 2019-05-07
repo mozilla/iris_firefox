@@ -26,10 +26,10 @@ class Test(BaseTest):
         tags_field_pattern = Pattern('tags_field_label.png')
         keyword_field_pattern = Pattern('keyword_field_label.png')
         bookmark_new_name_pattern = Pattern('bookmark_new_name.png')
-        edited_name_pattern = Pattern('edited_bookmark_name_library.png')             # edit_bookmark_name_modified
-        edited_tags_pattern = Pattern('edited_bookmark_tags_library.png')             # edit_bookmark_tags_modified
-        edited_location_pattern = Pattern('edited_bookmark_location_library.png')     # location_saved
-        edited_keyword_pattern = Pattern('edited_bookmark_keyword_library.png')       # keyword_saved
+        edited_name_pattern = Pattern('edited_bookmark_name_library.png')
+        edited_tags_pattern = Pattern('edited_bookmark_tags_library.png')
+        edited_location_pattern = Pattern('edited_bookmark_location_library.png')
+        edited_keyword_pattern = Pattern('edited_bookmark_keyword_library.png')
 
         open_library()
 
@@ -42,7 +42,7 @@ class Test(BaseTest):
         assert_true(self, name_field_displayed, 'Name field is displayed')
 
         fields_location = find(name_field_pattern)
-        fields_region = Region(fields_location.x, fields_location.y, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        fields_region = Region(0, fields_location.y, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
         click(name_field_pattern, in_region=fields_region)
 
