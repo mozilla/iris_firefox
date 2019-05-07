@@ -29,6 +29,7 @@ pygithub = "*"
 bugzilla = "*"
 psutil = "*"
 funcy = "==1.11"
+more-itertools = "==5.0.0"
 # Platform dependencies
 xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 

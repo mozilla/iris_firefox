@@ -10,17 +10,10 @@ phases:
       - echo UPDATE
       - apt-get update
       - echo software-properties-common
-      - apt-get -y install software-properties-common
-      - echo wget
-      - apt-get -y install wget
-      - echo build-essential
-      - apt-get -y install build-essential
-      - echo unzip
-      - apt-get -y install unzip
-      - echo libssl-dev
-      - apt-get -y install libssl-dev
-      - echo other libss-dev
-      - apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev
+      - apt-get -y install software-properties-common wget build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev tk-dev
+  libgdbm-dev libc6-dev openssl  - apt-get -y install software-properties-common wget build-essential checkinstall libreadline-gplv2-dev
+  libncursesw5-dev tk-dev libgdbm-dev libc6-dev openssl unzip make libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev unzip make libssl-dev
+  zlib1g-dev libbz2-dev libsqlite3-dev libffi-dev python3-setuptools
   pre_build:
     commands:
       - echo Entered the pre_build phase...
