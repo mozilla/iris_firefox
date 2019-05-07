@@ -53,7 +53,7 @@ class Test(BaseTest):
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
-            expected = exists(LocalWeb.MOZILLA_LOGO, 10)
+            expected = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
             assert_true(self, expected, 'Mozilla page loaded successfully.')
 
         max_attempts = 9
@@ -62,22 +62,24 @@ class Test(BaseTest):
             expected = exists(mozilla_tab_not_focused, 3)
 
             if expected:
-                hover(mozilla_tab_not_focused)
+                tab = find(mozilla_tab_not_focused)
+                region = Region(tab.x, tab.y, 210, 30)
+                region.hover(tab)
 
                 expected = exists(mozilla_hover, 10)
                 assert_true(self, expected, 'Mozilla page is hovered.')
 
-                click(mozilla_tab_not_focused)
+                region.click(tab)
 
-                expected = exists(close_tab_button, 10)
+                expected = region.exists(close_tab_button, 10)
                 assert_true(self, expected, 'Close tab button is visible.')
 
-                hover(close_tab_button)
+                region.hover(close_tab_button)
 
                 expected = exists(close_tab_hover, 10)
                 assert_true(self, expected, 'Close button is hovered.')
 
-                click(close_tab_button.similar(0.7))
+                region.click(close_tab_button.similar(0.7))
                 max_attempts -= 1
             else:
                 max_attempts = 0
@@ -104,7 +106,7 @@ class Test(BaseTest):
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
-            expected = exists(LocalWeb.MOZILLA_LOGO, 10)
+            expected = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
             assert_true(self, expected, 'Mozilla page loaded successfully.')
 
         max_attempts = 9
@@ -113,22 +115,24 @@ class Test(BaseTest):
             expected = exists(mozilla_tab_not_focused_light_theme, 3)
 
             if expected:
-                hover(mozilla_tab_not_focused_light_theme)
+                tab = find(mozilla_tab_not_focused_light_theme)
+                region = Region(tab.x, tab.y, 210, 30)
+                hover(tab)
 
                 expected = exists(mozilla_hover, 10)
                 assert_true(self, expected, 'Mozilla page is hovered.')
 
-                click(mozilla_tab_not_focused_light_theme)
+                region.click(tab)
 
-                expected = exists(close_tab_button, 10)
+                expected = region.exists(close_tab_button, 10)
                 assert_true(self, expected, 'Close tab button is visible.')
 
-                hover(close_tab_button)
+                region.hover(close_tab_button)
 
                 expected = exists(close_tab_hover, 10)
                 assert_true(self, expected, 'Close button is hovered.')
 
-                click(close_tab_button.similar(0.7))
+                region.click(close_tab_button.similar(0.7))
                 max_attempts -= 1
             else:
                 max_attempts = 0
@@ -155,7 +159,7 @@ class Test(BaseTest):
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
-            expected = exists(LocalWeb.MOZILLA_LOGO, 10)
+            expected = exists(LocalWeb.MOZILLA_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
             assert_true(self, expected, 'Mozilla page loaded successfully.')
 
         max_attempts = 9
@@ -164,22 +168,24 @@ class Test(BaseTest):
             expected = exists(mozilla_tab_not_focused, 3)
 
             if expected:
-                hover(mozilla_tab_not_focused)
+                tab = find(mozilla_tab_not_focused)
+                region = Region(tab.x, tab.y, 210, 30)
+                hover(tab)
 
                 expected = exists(mozilla_hover_dark_theme, 10)
                 assert_true(self, expected, 'Mozilla page is hovered.')
 
-                click(mozilla_tab_not_focused)
+                region.click(tab)
 
-                expected = exists(close_tab_button_dark_theme, 10)
+                expected = region.exists(close_tab_button_dark_theme, 10)
                 assert_true(self, expected, 'Close tab button is visible.')
 
-                hover(close_tab_button_dark_theme)
+                region.hover(close_tab_button_dark_theme)
 
                 expected = exists(close_tab_hover_dark_theme, 10)
                 assert_true(self, expected, 'Close button is hovered.')
 
-                click(close_tab_button_dark_theme.similar(0.7))
+                region.click(close_tab_button_dark_theme.similar(0.7))
                 max_attempts -= 1
             else:
                 max_attempts = 0
