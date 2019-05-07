@@ -19,7 +19,37 @@ class Test(BaseTest):
         new_tab()
         navigate('about:blank')
 
+        top_sites_available = exists(Utils.TOP_SITES, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, top_sites_available, 'about:newtab available')
+
         new_tab()
         navigate('about:newtab')
 
+        top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
+        assert_false(self, top_sites_available, 'about:blank available')
+
         restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
+
+        new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
+        assert_true(self, new_tab_not_highlighted, 'Not highlighted new tab is available')
+
+        click(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 1)
+
+        top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
+
+        if top_sites_available:
+            assert_true(self, top_sites_available, 'about:newtab available')
+        else:
+            assert_false(self, top_sites_available, 'about:blank available')
+
+        new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
+        assert_true(self, new_tab_not_highlighted, 'new_tab_not_highlighted')
+
+        click(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 1)
+
+        top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
+
+        if top_sites_available:
+            assert_true(self, top_sites_available, 'about:newtab available')
+        else:
+            assert_false(self, top_sites_available, 'about:blank available')
