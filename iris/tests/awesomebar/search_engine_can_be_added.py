@@ -50,21 +50,21 @@ class Test(BaseTest):
         paste('moz')
 
         one_off_pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
-                               bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern,
-                               google_one_off_button_pattern, twitter_one_off_button_pattern,
-                               wikipedia_one_off_button_pattern]
+                                bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern,
+                                google_one_off_button_pattern, twitter_one_off_button_pattern,
+                                wikipedia_one_off_button_pattern]
 
         # Deleted assert for ebay because we no longer have the ebay search engine in some locations.
 
         # Check that the default one-off list is displayed in the awesomebar.
         for one_search_engine in range(len(one_off_pattern_list)):
             if Settings.get_os() == Platform.MAC:
-                one_of_pattern_exists = exists(one_off_pattern_list[one_search_engine].similar(0.7),
-                                               Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen_region)
+                one_off_pattern_exists = exists(one_off_pattern_list[one_search_engine].similar(0.7),
+                                                Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen_region)
             else:
-                one_of_pattern_exists = exists(one_off_pattern_list[one_search_engine].similar(0.9),
-                                               Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen_region)
-            assert_true(self, one_of_pattern_exists, 'Search engine Pattern {0} - {1} is displayed.'.format(
+                one_off_pattern_exists = exists(one_off_pattern_list[one_search_engine].similar(0.9),
+                                                Settings.FIREFOX_TIMEOUT, top_two_thirds_of_screen_region)
+            assert_true(self, one_off_pattern_exists, 'Search engine Pattern {0} - {1} is displayed.'.format(
                 one_search_engine+1, one_off_pattern_list[one_search_engine].image_name))
 
         click(search_settings_pattern, Settings.TINY_FIREFOX_TIMEOUT)
