@@ -10,7 +10,7 @@ class Test(BaseTest):
 
     def __init__(self):
         BaseTest.__init__(self)
-        self.meta = ' Bug 1357098 - Pinned tabs are not restored after browser restart.'
+        self.meta = 'Bug 1357098 - Pinned tabs are not restored after browser restart.'
         self.test_case_id = '114816'
         self.test_suite_id = '68'
         self.locales = ['en-US']
@@ -29,7 +29,7 @@ class Test(BaseTest):
         assert_true(self, focus_site_opened, 'Focus website is properly opened.')
 
         focus_tab_exists = exists(focus_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, focus_tab_exists, 'firefox_tab_pattern')
+        assert_true(self, focus_tab_exists, 'Focus tab is available.')
 
         right_click(focus_tab_pattern)
 
@@ -37,39 +37,40 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, focus_tab_pinned, 'focus_tab_pinned')
+        assert_true(self, focus_tab_pinned, 'Focus tab successfully pinned.')
 
         new_window()
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        mozilla_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, mozilla_test_site_opened, 'Mozilla website is properly opened.')
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, firefox_test_site_opened, 'Firefox website is properly opened.')
 
-        mozilla_test_tab_exists = exists(firefox_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, mozilla_test_tab_exists, 'mozilla_test_tab_pattern')
+        firefox_test_tab_exists = exists(firefox_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, firefox_test_tab_exists, 'Firefox tab is available.')
 
         right_click(firefox_tab_pattern)
 
         repeat_key_down(pin_tab)
         type(Key.ENTER)
 
-        mozilla_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, mozilla_test_tab_pinned, 'mozilla_test_tab_pinned')
+        firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, firefox_test_tab_pinned, 'Firefox tab successfully pinned.')
 
         restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url, image=LocalWeb.IRIS_LOGO)
 
         close_tab()
-        mozilla_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, mozilla_test_tab_pinned, 'mozilla_test_tab_pinned')
+
+        firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
 
         close_window()
-        focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, focus_tab_pinned, 'focus_tab_pinned')
 
-        assert_true(self, mozilla_test_tab_pinned and focus_tab_pinned,
+        focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+
+        assert_true(self, firefox_test_tab_pinned and focus_tab_pinned,
                     'Browser starts with two windows. Both "example.com" and "example.org" are pinned and available in '
                     'respective windows.\n\n Note: old builds affected by this bug have shown this behavior: "Browser '
                     'started with two windows. Only "example.com" pinned tab has been restored in its window. Second '
                     'window contains two blank tabs. "example.org" pinned tab has been lost."')
-
