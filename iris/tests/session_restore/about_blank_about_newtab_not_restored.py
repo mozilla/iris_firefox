@@ -20,13 +20,13 @@ class Test(BaseTest):
         navigate('about:blank')
 
         top_sites_available = exists(Utils.TOP_SITES, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, top_sites_available, 'about:newtab available')
+        assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
 
         new_tab()
         navigate('about:newtab')
 
         top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
-        assert_false(self, top_sites_available, 'about:blank available')
+        assert_false(self, top_sites_available, 'about:blank website loaded successfully')
 
         restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
 
@@ -38,9 +38,9 @@ class Test(BaseTest):
         top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
 
         if top_sites_available:
-            assert_true(self, top_sites_available, 'about:newtab available')
+            assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
         else:
-            assert_false(self, top_sites_available, 'about:blank available')
+            assert_false(self, top_sites_available, 'about:blank website loaded successfully')
 
         new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
         assert_true(self, new_tab_not_highlighted, 'new_tab_not_highlighted')
@@ -50,6 +50,6 @@ class Test(BaseTest):
         top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
 
         if top_sites_available:
-            assert_true(self, top_sites_available, 'about:newtab available')
+            assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
         else:
-            assert_false(self, top_sites_available, 'about:blank available')
+            assert_false(self, top_sites_available, 'about:blank website loaded successfully')
