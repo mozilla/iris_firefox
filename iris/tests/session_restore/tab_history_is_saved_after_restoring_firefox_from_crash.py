@@ -18,6 +18,8 @@ class Test(BaseTest):
     def run(self):
         restart_firefox_button_pattern = Pattern('restart_firefox_button.png')
         restore_previous_session_checkbox_pattern = Pattern('restore_previous_session_checkbox.png')
+        if Settings.is_windows():
+            crash_reporter_icon_pattern = Pattern('crash_reporter_icon.png')
 
         navigate('about:preferences#general')
 
@@ -55,7 +57,6 @@ class Test(BaseTest):
         navigate('about:crashparent')
 
         if Settings.is_windows():
-            crash_reporter_icon_pattern = Pattern('crash_reporter_icon.png')
             crash_reporter_icon_exists = exists(crash_reporter_icon_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
             assert_true(self, crash_reporter_icon_exists, 'Crash Reporter icon exists')
             click(crash_reporter_icon_pattern)
