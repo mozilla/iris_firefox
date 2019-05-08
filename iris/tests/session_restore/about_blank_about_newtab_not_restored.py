@@ -31,27 +31,26 @@ class Test(BaseTest):
 
         restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
 
-        time.sleep(1234)
-        # new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
-        # assert_true(self, new_tab_not_highlighted, 'Not highlighted new tab is available')
-        #
-        # click(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 1)
-        #
-        # top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
-        #
-        # if top_sites_available:
-        #     assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
-        # else:
-        #     assert_false(self, top_sites_available, 'about:blank website loaded successfully')
-        #
-        # new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
-        # assert_true(self, new_tab_not_highlighted, 'Another not highlighted new tab is available')
-        #
-        # click(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 1)
-        #
-        # top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
-        #
-        # if top_sites_available:
-        #     assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
-        # else:
-        #     assert_false(self, top_sites_available, 'about:blank website loaded successfully')
+        new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
+        assert_true(self, new_tab_not_highlighted, 'Not highlighted new tab is available')
+
+        click(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 1)
+
+        top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
+
+        if top_sites_available:
+            assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
+        else:
+            assert_false(self, top_sites_available, 'about:blank website loaded successfully')
+
+        new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
+        assert_true(self, new_tab_not_highlighted, 'Another not highlighted new tab is available')
+
+        click(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 1)
+
+        top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
+
+        if top_sites_available:
+            assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
+        else:
+            assert_false(self, top_sites_available, 'about:blank website loaded successfully')
