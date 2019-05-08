@@ -214,7 +214,6 @@ class FXRunner:
         self.application = app
         self.url = 'http://127.0.0.1:{}'.format(get_core_args().port)
         self.profile = profile
-        self.runner = self.launch()
 
     def __str__(self):
         return '(profile: {}, runner: {})'.format(self.profile, self.runner)
@@ -250,14 +249,17 @@ class FXRunner:
         else:
             return runner
 
-    def start(self, image=None, maximize=True):
+    def start(self, url=None, image=None, maximize=True):
+        if url is not None: self.url = url
         if not OSHelper.is_windows():
+            self.runner = self.launch()
             self.runner.start()
         else:
             try:
                 logger.debug('Starting Firefox with custom command.')
                 FXRunner.process = subprocess.Popen(
-                    [self.application.path,'-no-remote','-new-tab', self.url, '--wait-for-browser','-foreground', '-profile', self.profile.profile],shell=False)
+                    [self.application.path, '-no-remote', '-new-tab', self.url, '--wait-for-browser', '-foreground',
+                     '-profile', self.profile.profile], shell=False)
 
             except subprocess.CalledProcessError:
                 logger.error('Firefox failed to start')
@@ -286,9 +288,9 @@ class FXRunner:
                 if status is None:
                     self.runner.stop()
 
-    def restart(self, image=None):
+    def restart(self,url=None ,image=None):
         self.stop()
-        self.start(image, False)
+        self.start(url,image, False)
 
 
 def kill_proc_tree(pid, including_parent=True):
