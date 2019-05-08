@@ -54,7 +54,8 @@ class Test(BaseTest):
 
         click_hamburger_menu_option('Restore Previous Session')
 
-        youtube_logo_inactive = exists(youtube_logo_inactive_tab_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
+        youtube_logo_inactive = exists(youtube_logo_inactive_tab_pattern.similar(0.7), Settings.FIREFOX_TIMEOUT,
+                                       tabs_region)
         assert_true(self, youtube_logo_inactive, 'Youtube inactive tab found.')
 
         click(youtube_logo_inactive_tab_pattern, 1)
