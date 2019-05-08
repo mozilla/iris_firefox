@@ -110,7 +110,7 @@ class Test(BaseTest):
         location_edited = exists(edited_location_pattern)
         assert_true(self, location_edited, 'Bookmark\'s location is edited')
 
-        tags_edited = exists(edited_tags_pattern)
+        tags_edited = exists(edited_tags_pattern.similar(0.7))
         assert_true(self, tags_edited, 'Bookmark\'s tags are edited')
 
         keyword_field_displayed = exists(keyword_field_pattern, in_region=fields_region)
