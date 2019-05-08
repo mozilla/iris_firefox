@@ -30,19 +30,21 @@ class Test(BaseTest):
         edited_tags_pattern = Pattern('edited_bookmark_tags_library.png')
         edited_location_pattern = Pattern('edited_bookmark_location_library.png')
         edited_keyword_pattern = Pattern('edited_bookmark_keyword_library.png')
+        linkedin_logo = Pattern('linkedin_logo.png')
 
         open_library()
 
-        library_opened = exists(ExternalWeb.CNN_LOGO)
+        library_opened = exists(linkedin_logo)
+
         assert_true(self, library_opened, 'Bookmarks library is opened')
 
-        click(ExternalWeb.CNN_LOGO)
+        click(linkedin_logo)
 
         name_field_displayed = exists(name_field_pattern)
         assert_true(self, name_field_displayed, 'Name field is displayed')
 
         fields_location = find(name_field_pattern)
-        fields_region = Region(0, fields_location.y, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        fields_region = Region(0, fields_location.y, SCREEN_WIDTH * 2 // 3, SCREEN_HEIGHT * 2 // 3)
 
         click(name_field_pattern, in_region=fields_region)
 
