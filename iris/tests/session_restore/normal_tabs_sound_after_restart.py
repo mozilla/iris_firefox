@@ -19,6 +19,7 @@ class Test(BaseTest):
     def run(self):
         # sound_on_pattern = Pattern('sound_on.png').similar(0.9)
         youtube_logo_pattern = Pattern('youtube_logo.png')
+        youtube_logo_inactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
         youtube_autoplay_switch_pattern = Pattern('youtube_autoplay_switch.png')
         tab_muted_pattern = Pattern('tab_muted.png')
         mute_tab = 2
@@ -54,4 +55,13 @@ class Test(BaseTest):
 
         click_hamburger_menu_option('Restore Previous Session')
 
-        time.sleep(1234)
+        youtube_logo_inactive = exists(youtube_logo_inactive_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, youtube_logo_inactive, 'Youtube inactive tab found.')
+
+        click(youtube_logo_inactive_tab_pattern, 1)
+
+        youtube_tab = exists(youtube_logo_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
+        assert_true(self, youtube_tab, 'Youtube tab is active.')
+
+        tab_muted_icon = exists(tab_muted_pattern, Settings.FIREFOX_TIMEOUT, mute_icon_region)
+        assert_true(self, tab_muted_icon, 'Tab is muted after restart.')
