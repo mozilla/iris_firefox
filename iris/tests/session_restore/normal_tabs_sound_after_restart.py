@@ -33,7 +33,7 @@ class Test(BaseTest):
         youtube_tab = exists(youtube_logo_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
         assert_true(self, youtube_tab, 'Youtube tab is available')
 
-        youtube_logo_location = find(youtube_logo_pattern)
+        youtube_logo_location = find(youtube_logo_pattern, tabs_region)
         logo_height = youtube_logo_pattern.get_size()[1]
         mute_icon_region = Region(youtube_logo_location.x, youtube_logo_location.y - logo_height,
                                   SCREEN_WIDTH / 5, logo_height * 5)
@@ -54,13 +54,18 @@ class Test(BaseTest):
 
         click_hamburger_menu_option('Restore Previous Session')
 
-        youtube_logo_inactive = exists(youtube_logo_inactive_tab_pattern, Settings.FIREFOX_TIMEOUT)
+        youtube_logo_inactive = exists(youtube_logo_inactive_tab_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
         assert_true(self, youtube_logo_inactive, 'Youtube inactive tab found.')
 
         click(youtube_logo_inactive_tab_pattern, 1)
 
         youtube_tab = exists(youtube_logo_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
         assert_true(self, youtube_tab, 'Youtube tab is active.')
+
+        youtube_logo_location = find(youtube_logo_pattern, tabs_region)
+        logo_height = youtube_logo_pattern.get_size()[1]
+        mute_icon_region = Region(youtube_logo_location.x, youtube_logo_location.y - logo_height,
+                                  SCREEN_WIDTH / 5, logo_height * 5)
 
         tab_muted_icon = exists(tab_muted_pattern, Settings.FIREFOX_TIMEOUT, mute_icon_region)
         assert_true(self, tab_muted_icon, 'Tab is muted after restart.')
