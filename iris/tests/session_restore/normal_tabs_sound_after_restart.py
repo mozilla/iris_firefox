@@ -36,7 +36,7 @@ class Test(BaseTest):
         youtube_logo_location = find(youtube_logo_pattern, tabs_region)
         logo_height = youtube_logo_pattern.get_size()[1]
         mute_icon_region = Region(youtube_logo_location.x, youtube_logo_location.y - logo_height,
-                                  SCREEN_WIDTH / 5, logo_height * 5)
+                                  SCREEN_WIDTH / 3, logo_height * 5)
 
         right_click(youtube_logo_pattern, 1)
 
@@ -59,13 +59,8 @@ class Test(BaseTest):
 
         click(youtube_logo_inactive_tab_pattern, 1)
 
-        youtube_tab = exists(youtube_logo_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
+        youtube_tab = exists(youtube_logo_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, youtube_tab, 'Youtube tab is active.')
-
-        youtube_logo_location = find(youtube_logo_pattern, tabs_region)
-        logo_height = youtube_logo_pattern.get_size()[1]
-        mute_icon_region = Region(youtube_logo_location.x, youtube_logo_location.y - logo_height,
-                                  SCREEN_WIDTH / 5, logo_height * 5)
 
         tab_muted_icon = exists(tab_muted_pattern, Settings.FIREFOX_TIMEOUT, mute_icon_region)
         assert_true(self, tab_muted_icon, 'Tab is muted after restart.')
