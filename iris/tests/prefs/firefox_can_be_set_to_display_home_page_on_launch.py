@@ -17,4 +17,18 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        default_new_tab_setting_home_pattern = Pattern('default_new_tab_setting_home.png')
+        homepage_new_windows_pattern = Pattern('homepage_new_windows.png')
+
         navigate('about:preferences#home')
+
+        preferences_opened = exists(default_new_tab_setting_home_pattern)
+        assert_true(self, preferences_opened, 'Preferences is opened')
+
+        new_page_is_firefox_home = exists(homepage_new_windows_pattern)
+        assert_true(self, new_page_is_firefox_home, 'Firefox home page was set as default new page')
+
+        restart_firefox(self, self.browser.path, self.profile_path, '', image=Tabs.NEW_TAB_HIGHLIGHTED)
+
+        new_tab_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED, Settings.SITE_LOAD_TIMEOUT)
+        assert_true(self, new_tab_opened, 'Browser was opened with firefox homepage')
