@@ -17,13 +17,14 @@ class Test(BaseTest):
 
     def run(self):
         new_tab()
-        navigate('about:blank')
+        navigate('about:newtab')
 
         top_sites_available = exists(Utils.TOP_SITES, Settings.FIREFOX_TIMEOUT)
         assert_true(self, top_sites_available, 'about:newtab website loaded successfully')
 
         new_tab()
-        navigate('about:newtab')
+        navigate('about:blank')
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)  # Pattern of new tab will be found before loading about:blank
 
         top_sites_available = exists(Utils.TOP_SITES, Settings.TINY_FIREFOX_TIMEOUT)
         assert_false(self, top_sites_available, 'about:blank website loaded successfully')
