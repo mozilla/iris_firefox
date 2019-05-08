@@ -18,12 +18,12 @@ class Test(BaseTest):
     def run(self):
         mozilla_tab_not_focused = Pattern('mozilla_tab_not_focused.png')
         mozilla_tab_not_focused_light_theme = Pattern('mozilla_tab_not_focused_light_theme.png')
-        mozilla_hover = Pattern('mozilla_hover.png')
-        mozilla_hover_dark_theme = Pattern('mozilla_hover_dark_theme.png')
+        mozilla_hover = Pattern('mozilla_hover.png').similar(0.7)
+        mozilla_hover_dark_theme = Pattern('mozilla_hover_dark_theme.png').similar(0.7)
         close_tab_button = Pattern('close_tab_button.png')
         close_tab_button_dark_theme = Pattern('close_tab_button_dark_theme.png')
-        close_tab_hover = Pattern('close_tab_hover.png')
-        close_tab_hover_dark_theme = Pattern('close_tab_hover_dark_theme.png')
+        close_tab_hover = Pattern('close_tab_hover.png').similar(0.7)
+        close_tab_hover_dark_theme = Pattern('close_tab_hover_dark_theme.png').similar(0.7)
 
         open_addons()
         previous_tab()
