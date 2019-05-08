@@ -23,7 +23,7 @@ class Test(BaseTest):
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, SCREEN_WIDTH, home_height * 4)
 
-        click_hamburger_menu_option(customize_option_pattern)
+        click_hamburger_menu_option('Customize...')
 
         customize_page_opened = exists(customize_option_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
         assert_true(self, customize_page_opened, '"Customize..." mode is properly open.')
