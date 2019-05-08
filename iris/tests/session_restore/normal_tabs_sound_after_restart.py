@@ -17,7 +17,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        # sound_on_pattern = Pattern('sound_on.png').similar(0.9)
         youtube_logo_pattern = Pattern('youtube_logo.png')
         youtube_logo_inactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
         youtube_autoplay_switch_pattern = Pattern('youtube_autoplay_switch.png')
