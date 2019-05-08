@@ -43,7 +43,7 @@ class Test(BaseTest):
             assert_false(self, top_sites_available, 'about:blank website loaded successfully')
 
         new_tab_not_highlighted = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
-        assert_true(self, new_tab_not_highlighted, 'new_tab_not_highlighted')
+        assert_true(self, new_tab_not_highlighted, 'Another not highlighted new tab is available')
 
         click(Tabs.NEW_TAB_NOT_HIGHLIGHTED, 1)
 
