@@ -28,10 +28,12 @@ class Test(BaseTest):
         test_site_opened = exists(LocalWeb.POCKET_LOGO, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, test_site_opened, 'Pocket test website is opened')
 
-        if not Settings.is_mac():
-            click_hamburger_menu_option('Exit')
-        else:
+        if Settings.is_mac():
             quit_firefox()
+        elif Settings.is_linux():
+            click_hamburger_menu_option('Quit')
+        else:
+            click_hamburger_menu_option('Exit')
 
         status = self.firefox_runner.process_handler.wait(Settings.FIREFOX_TIMEOUT)
         if status is None:
