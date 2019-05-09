@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         description='This test case clicks on a search result while the settings gear is focused.',
         locale=['en-US'],
         test_case_id='108264',
-        test_suite_id='1902',
-        blocked_by='issue_84'
+        test_suite_id='1902'
     )
     def run(self, firefox):
         search_settings_pattern = Pattern('search_settings.png')
@@ -45,7 +44,7 @@ class Test(FirefoxTest):
         expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
         assert expected, 'Focus page loaded successfully.'
 
-        firefox.restart(image=LocalWeb.FIREFOX_LOGO)
+        firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE,image=LocalWeb.FIREFOX_LOGO)
 
         new_tab()
 
@@ -68,9 +67,8 @@ class Test(FirefoxTest):
         assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
         # Find the coordinates of the above search suggestion.
-        coord = image_find(search_suggestion_history_pattern)
 
-        click(coord)
+        click(search_suggestion_history_pattern)
 
         # The page corresponding to the search result is opened and NOT the about:preferences#search page.
         expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
