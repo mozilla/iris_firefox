@@ -32,3 +32,6 @@ class Test(BaseTest):
 
         new_tab_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, new_tab_opened, 'Browser was opened with firefox homepage')
+
+        new_tab_content_displayed = exists(Utils.TOP_SITES)
+        assert_true(self, new_tab_content_displayed, 'New tab content was successfully rendered.')
