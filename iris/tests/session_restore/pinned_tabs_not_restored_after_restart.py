@@ -77,19 +77,35 @@ class Test(BaseTest):
         self.firefox_runner = launch_firefox(self.browser.path, self.profile_path, self.base_local_web_url)
         self.firefox_runner.start()
 
-        if not Settings.is_linux():  # Linux doesn't have IRIS tab at startup
+        firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
+
+        if firefox_restarted or not Settings.is_linux():  # windows with tabs on Linux can be on random order after restart
             firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
             assert_true(self, firefox_restarted, 'Firefox restarted successfully')
 
             close_tab()
 
-        firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
+            firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
 
-        close_window()
+            close_window()
 
-        focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+            focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+
+        else:
+            focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+
+            close_window()
+
+            firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
+            assert_true(self, firefox_restarted, 'Firefox restarted successfully')
+
+            close_tab()
+
+            firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
 
         assert_true(self, firefox_test_tab_pinned and focus_tab_pinned,
                     'Browser starts with two windows. Both "example.com" and "example.org" are pinned and available in '
