@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case adds links using \'CTRL\' + \'ENTER\' keys',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='119484',
         test_suite_id='1902',
         exclude=OSPlatform.ALL

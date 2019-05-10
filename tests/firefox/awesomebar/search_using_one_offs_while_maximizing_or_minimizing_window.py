@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case performs a search using one-offs while maximizing/minimizing the browser\'s '
                     'window.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108252',
         test_suite_id='1902',
         set_profile_pref={'browser.contentblocking.enabled': False}

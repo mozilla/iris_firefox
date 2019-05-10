@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Multiple Alexa top sites loaded in 5 tabs don\'t crash.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217877',
         test_suite_id='3063'
     )

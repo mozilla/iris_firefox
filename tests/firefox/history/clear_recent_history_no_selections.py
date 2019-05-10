@@ -8,7 +8,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='No sections selected in Clear Recent History window.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='172046',
         test_suite_id='2000'
     )

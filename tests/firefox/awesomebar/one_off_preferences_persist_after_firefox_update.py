@@ -9,7 +9,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case checks that the one-off search feature does not affect the search engine '
                     'preferences after updating the Firefox version.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id="108269",
         test_suite_id="1902",
         blocked_by='1488708',

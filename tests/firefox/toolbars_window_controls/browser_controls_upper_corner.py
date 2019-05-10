@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='Browser controls work as expected.',
-        locale=Locales.ENGLISH,
+        locale=['en-US'],
         test_case_id='119481',
         test_suite_id='1998'
     )

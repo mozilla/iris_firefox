@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This is a test that bookmarks a page from the History sidebar with custom settings.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='120124',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

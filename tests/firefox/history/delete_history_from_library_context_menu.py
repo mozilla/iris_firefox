@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Delete history from Library context menu',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='178346',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Page visits show in Recent history.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='178345',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

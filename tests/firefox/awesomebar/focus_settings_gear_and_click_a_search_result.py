@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case clicks on a search result while the settings gear is focused.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108264',
         test_suite_id='1902',
         blocked_by='issue_84'

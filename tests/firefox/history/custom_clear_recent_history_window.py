@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Custom sections selected in \'Clear Recent History\' window',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='172047',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW,

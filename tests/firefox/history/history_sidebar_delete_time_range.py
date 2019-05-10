@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Delete a time range from the History sidebar.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='120134',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

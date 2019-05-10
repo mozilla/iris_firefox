@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='Checks if the Title Bar can be activated/deactivated properly from Customize menu',
-        locale=Locales.ENGLISH,
+        locale=['en-US'],
         test_case_id='118183',
         test_suite_id='1998'
     )

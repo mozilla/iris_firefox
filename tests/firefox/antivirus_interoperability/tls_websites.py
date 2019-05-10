@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='ebsites using TLS 1.3.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217857',
         test_suite_id='3063'
     )

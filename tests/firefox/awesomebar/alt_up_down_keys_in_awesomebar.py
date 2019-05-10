@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Alt+UP/DOWN Keys - in the Awesome Bar.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         blocked_by='1488708',
         test_case_id='108278',
         test_suite_id='1902'

@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Verify if the deleted page from History is not retained by auto-complete.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174051',
         test_suite_id='2000'
     )

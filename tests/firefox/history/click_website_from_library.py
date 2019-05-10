@@ -8,7 +8,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Click on a website from the Library.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='172043',
         test_suite_id='2000'
     )

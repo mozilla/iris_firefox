@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Copy a website from the History sidebar and paste it into the URL bar.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='120129',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

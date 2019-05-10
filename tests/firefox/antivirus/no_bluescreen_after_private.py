@@ -11,7 +11,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Test case: No crash or bluescreen after closing a tab while in private browsing mode.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='219584',
         test_suite_id='3063'
     )

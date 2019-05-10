@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case checks that more search engines can be added and are well displayed on one-off '
                     'searches bar.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108261',
         test_suite_id='1902'
     )

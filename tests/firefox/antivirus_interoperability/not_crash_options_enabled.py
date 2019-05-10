@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Firefox does not crash - all antivirus options enabled.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217878',
         test_suite_id='3063',
         preferences={'media.autoplay.default': 0}

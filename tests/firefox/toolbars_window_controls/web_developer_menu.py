@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a test case that checks that Developer Toolbar controls work as expected.',
-        locale=Locales.ENGLISH,
+        locale=['en-US'],
         test_case_id='119483',
         test_suite_id='1998',
         exclude=OSPlatform.ALL

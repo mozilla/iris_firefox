@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks that mouse position does not affect a search from awesomebar.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108256',
         test_suite_id='1902'
     )

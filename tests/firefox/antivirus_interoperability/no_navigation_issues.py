@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Alexa Top sites - no navigation issues.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217876',
         test_suite_id='3063'
     )

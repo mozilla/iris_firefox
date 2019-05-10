@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Check security.enterprise_roots.enabled set to true doesn\'t break TLS Client Authentication.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='225144',
         test_suite_id='3063'
     )

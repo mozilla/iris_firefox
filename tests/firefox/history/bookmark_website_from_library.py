@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Bookmark a website from the Library - History menu.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174043',
         test_suite_id='2000',
         profile=Profiles.TEN_BOOKMARKS

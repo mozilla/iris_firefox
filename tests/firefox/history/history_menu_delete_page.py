@@ -9,7 +9,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Delete a page from the Library - History menu.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174048',
         test_suite_id='2000',
         profile=Profiles.TEN_BOOKMARKS

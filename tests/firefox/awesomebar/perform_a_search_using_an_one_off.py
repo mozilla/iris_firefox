@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case perform a search using an one-off focusing on the autocomplete drop-down.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108249',
         test_suite_id='1902',
         # blocked_by='issue_84'

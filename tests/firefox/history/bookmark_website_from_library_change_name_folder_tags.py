@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Bookmark a website from the Library - History menu - Change Name/ Folder/ Tags.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174044',
         test_suite_id='2000'
     )

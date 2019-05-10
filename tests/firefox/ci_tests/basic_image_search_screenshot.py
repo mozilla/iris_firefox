@@ -13,7 +13,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test verifies if PyAutoGUI/MSS screenshot and image search are working properly in a '
                     'frame buffer environment.',
-        locale=[Locales.ENGLISH]
+        locale=['en-US']
     )
     def run(self, firefox):
 

@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Copy a History time range from the History sidebar and paste it to the Bookmarks toolbar.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='120125',
         test_suite_id='2000'
     )

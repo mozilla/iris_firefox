@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case verifies that \'Set as Default Search Engine\' option works correctly using an '
                     'one-off.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108251',
         test_suite_id='1902',
         set_profile_pref={'browser.contentblocking.enabled': False}

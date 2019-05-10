@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a test of the Save Image dialog controls.',
-        locale=Locales.ENGLISH,
+        locale=['en-US'],
         test_case_id='118803',
         test_suite_id='1998'
     )

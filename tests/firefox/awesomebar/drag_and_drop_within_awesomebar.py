@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case checks the \'Drag and Drop within the awesomebar\' option, if it searches for'
                     ' the dropped string.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='117524',
         test_suite_id='1902'
     )

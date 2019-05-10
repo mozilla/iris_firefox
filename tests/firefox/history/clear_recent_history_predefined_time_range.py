@@ -9,7 +9,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Clear Recent History from a predefined time range.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='172044',
         test_suite_id='2000'
     )

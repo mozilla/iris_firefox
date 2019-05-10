@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
             description='This test case deletes history from the URL bar completion list.',
-            locale=[Locales.ENGLISH],
+            locale=['en-US'],
             test_case_id='117530',
             test_suite_id='1902'
         )

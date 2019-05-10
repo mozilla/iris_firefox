@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='No data loss after forced restart.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217874',
         test_suite_id='3063'
     )

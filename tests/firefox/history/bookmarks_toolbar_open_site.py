@@ -8,7 +8,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Copy a website from the History sidebar and paste it to the Bookmarks toolbar, then open it.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='120128',
         test_suite_id='2000',
         profile=Profiles.TEN_BOOKMARKS

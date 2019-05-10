@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case perform one-offs searches in private browsing.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108253',
         test_suite_id='1902'
     )

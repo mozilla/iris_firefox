@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Check browser doesn\'t show insecure webpage errors',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='225143',
         test_suite_id='3063'
     )

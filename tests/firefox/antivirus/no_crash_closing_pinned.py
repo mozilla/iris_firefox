@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='[Kaspersky] No crash or bluescreen after closing a pinned tab',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='219585',
         test_suite_id='3063'
     )

@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a test case that checks that Browser Control Console work as expected.',
-        locale=Locales.ENGLISH,
+        locale=['en-US'],
         test_case_id='120464',
         test_suite_id='1998'
     )

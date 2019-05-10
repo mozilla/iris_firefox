@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks the position of the bookmark drop down for a highlighted link.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='117526',
         test_suite_id='1902'
     )

@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Copy a website from the Library - History menu and paste it in to the Bookmark Toolbar.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174045',
         test_suite_id='2000'
     )

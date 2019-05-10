@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case perform 2 selections at the same time.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108257',
         test_suite_id='1902',
     )

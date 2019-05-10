@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Delete a history time range from the Library.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174036',
         test_suite_id='2000'
     )

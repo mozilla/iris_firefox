@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Forget a page from the Library - History menu.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174050',
         test_suite_id='2000'
     )

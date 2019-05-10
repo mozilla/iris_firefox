@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Forget all the history from the last 5 minutes.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174072',
         test_suite_id='2000'
     )

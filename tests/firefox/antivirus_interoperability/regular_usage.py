@@ -27,7 +27,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Firefox Regular Usage.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217855',
         test_suite_id='3063'
     )

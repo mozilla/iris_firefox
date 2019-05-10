@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Open all tabs from a specific time range saved in Bookmark Toolbar.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='174035',
         test_suite_id='2000'
     )

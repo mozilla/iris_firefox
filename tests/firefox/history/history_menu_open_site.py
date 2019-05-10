@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Open a website from the Recent History list.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='118807',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

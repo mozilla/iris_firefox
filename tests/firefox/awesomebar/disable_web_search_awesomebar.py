@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case disables the web search in the awesomebar.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108254',
         test_suite_id='1902',
         preferences={'browser.contentblocking.enabled': False}

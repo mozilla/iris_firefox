@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Dismiss the search from the History sidebar.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='119442',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Firefox hijacking - default search engine.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='219663',
         test_suite_id='3063'
     )

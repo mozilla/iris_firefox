@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case verifies that \'Search in New Tab\' option works correctly using an one-off.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108250',
         test_suite_id='1902'
     )

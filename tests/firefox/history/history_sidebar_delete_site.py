@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Delete a page from the History sidebar.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='120130',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

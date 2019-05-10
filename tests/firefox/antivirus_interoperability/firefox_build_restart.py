@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Firefox Build Restart.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217866',
         test_suite_id='3063'
     )

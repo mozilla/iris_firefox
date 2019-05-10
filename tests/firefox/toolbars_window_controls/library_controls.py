@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a test of the library window controls.',
-        locale=Locales.ENGLISH,
+        locale=['en-US'],
         test_case_id='120467',
         test_suite_id='1998'
     )

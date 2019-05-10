@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='This is a test of the \'Confirm close multiple tabs\' window controls',
-        locale=Locales.ENGLISH,
+        locale=['en-US'],
         test_case_id='120468',
         test_suite_id='1998',
         profile=Profiles.BRAND_NEW,

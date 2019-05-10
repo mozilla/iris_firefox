@@ -10,9 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks that url bar properly unescapes ASCII url.',
-        locale=[Locales.ENGLISH, Locales.CHINESE, Locales.SPANISH, Locales.FRENCH, Locales.GERMAN, Locales.ARABIC,
-                Locales.RUSSIAN, Locales.KOREAN, Locales.PORTUGUESE, Locales.VIETNAMESE, Locales.POLISH,
-                Locales.TURKISH, Locales.ROMANIAN, Locales.JAPANESE],
+        locale=['en-US', 'zh-CN', 'es-ES', 'fr', 'de', 'ar', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja'],
         test_case_id='118809',
         test_suite_id='1902'
     )

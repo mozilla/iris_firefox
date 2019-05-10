@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='[Avast] Page loads should not stall - 1373365.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='217869',
         test_suite_id='3063'
     )

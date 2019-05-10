@@ -11,7 +11,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case checks the one-off search bar and the Settings gear after removing checks for ' 
                     'each search engine from the Search Settings.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='108259',
         test_suite_id='1902'
     )

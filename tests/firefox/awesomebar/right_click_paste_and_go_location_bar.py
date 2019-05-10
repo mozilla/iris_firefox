@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This test case checks the \'Paste & Go\' option if CRLF exists at the end of clipboard url.',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         test_case_id='117523',
         test_suite_id='1902'
     )

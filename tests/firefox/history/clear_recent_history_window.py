@@ -9,7 +9,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Check that the \'Clear Recent History\' window is displayed properly.',
-        locale='[en-US]',
+        locale=['en-US'],
         test_case_id='172043',
         test_suite_id='2000',
         profile=Profiles.BRAND_NEW

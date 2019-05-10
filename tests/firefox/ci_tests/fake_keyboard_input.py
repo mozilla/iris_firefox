@@ -8,7 +8,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='Created to test fake keyboard inputs',
-        locale=[Locales.ENGLISH],
+        locale=['en-US'],
         platform=OSPlatform.LINUX
     )
     def run(self, firefox):
