@@ -206,11 +206,9 @@ def migrate_data():
     if os.path.exists(iris_1_install):
         os.rename(os.path.join(os.path.expanduser('~'), '.iris'), os.path.join(os.path.expanduser('~'), '.iris_old'))
 
-    iris_2_install = os.path.join(os.path.expanduser('~'), '.iris2')
-    logger.debug('Old Iris 2 install exists: %s' % os.path.exists(iris_2_install))
-
-    if os.path.exists(iris_2_install):
-        os.rename(os.path.join(os.path.expanduser('~'), '.iris2'), os.path.join(os.path.expanduser('~'), '.iris'))
+    # TBD: what to do with previous Iris 2.0 folder
+    old_iris_2_install = os.path.join(os.path.expanduser('~'), '.iris2')
+    logger.debug('Old Iris 2 install exists: %s' % os.path.exists(old_iris_2_install))
 
 
 class ShutdownTasks(CleanUp):
