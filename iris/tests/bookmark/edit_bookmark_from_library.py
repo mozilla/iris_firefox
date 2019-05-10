@@ -35,7 +35,6 @@ class Test(BaseTest):
         open_library()
 
         library_opened = exists(linkedin_logo)
-
         assert_true(self, library_opened, 'Bookmarks library is opened')
 
         click(linkedin_logo)
