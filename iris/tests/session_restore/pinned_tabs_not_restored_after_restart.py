@@ -20,8 +20,9 @@ class Test(BaseTest):
         focus_pinned_tab_pattern = Pattern('focus_pinned_tab.png')
         firefox_tab_pattern = Pattern('firefox_tab.png')
         firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
+        pin_tab_item_pattern = Pattern('pin_tab_item.png')
 
-        pin_tab = 3
+        click_duration = 2
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
@@ -33,8 +34,10 @@ class Test(BaseTest):
 
         right_click(focus_tab_pattern)
 
-        repeat_key_down(pin_tab)
-        type(Key.ENTER)
+        pin_tab_item = exists(pin_tab_item_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, pin_tab_item, 'Pin tab item option available')
+
+        click(pin_tab_item_pattern, click_duration)
 
         focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, focus_tab_pinned, 'Focus tab successfully pinned.')
@@ -51,8 +54,10 @@ class Test(BaseTest):
 
         right_click(firefox_tab_pattern)
 
-        repeat_key_down(pin_tab)
-        type(Key.ENTER)
+        pin_tab_item = exists(pin_tab_item_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, pin_tab_item, 'Pin tab item option available')
+
+        click(pin_tab_item_pattern, click_duration)
 
         firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, firefox_test_tab_pinned, 'Firefox tab successfully pinned.')
