@@ -77,10 +77,11 @@ class Test(BaseTest):
         self.firefox_runner = launch_firefox(self.browser.path, self.profile_path, self.base_local_web_url)
         self.firefox_runner.start()
 
-        firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
-        assert_true(self, firefox_restarted, 'Firefox restarted successfully')
+        if not Settings.is_linux():  # Linux doesn't have IRIS tab at startup
+            firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
+            assert_true(self, firefox_restarted, 'Firefox restarted successfully')
 
-        close_tab()
+            close_tab()
 
         firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
