@@ -26,7 +26,7 @@ class Test(BaseTest):
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        focus_site_opened = exists(LocalWeb.FOCUS_LOGO, DEFAULT_SITE_LOAD_TIMEOUT)
+        focus_site_opened = exists(LocalWeb.FOCUS_LOGO, Settings.FIREFOX_TIMEOUT)
         assert_true(self, focus_site_opened, 'Focus website is properly opened.')
 
         focus_tab_exists = exists(focus_tab_pattern, Settings.FIREFOX_TIMEOUT)
@@ -77,9 +77,7 @@ class Test(BaseTest):
         self.firefox_runner = launch_firefox(self.browser.path, self.profile_path, self.base_local_web_url)
         self.firefox_runner.start()
 
-        firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
-
-        if firefox_restarted or not Settings.is_linux():  # windows with tabs on Linux can be on random order after restart
+        if not Settings.is_linux():  # windows with tabs on Linux can be on random order after restart
             firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
             assert_true(self, firefox_restarted, 'Firefox restarted successfully')
 
@@ -88,24 +86,78 @@ class Test(BaseTest):
             firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
 
+            firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+            assert_true(self, firefox_test_site_opened, 'Firefox website is properly opened.')
+
             close_window()
 
             focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
             assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
 
-        else:
-            focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-            assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+            focus_site_opened = exists(LocalWeb.FOCUS_LOGO, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, focus_site_opened, 'Focus website is properly opened.')
 
-            close_window()
+        elif Settings.is_linux():
+            firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
+            focus_site_restored = exists(LocalWeb.FOCUS_LOGO, Settings.FIREFOX_TIMEOUT)
+            iris_tab_restored = exists(LocalWeb.IRIS_LOGO, Settings.FIREFOX_TIMEOUT)
 
-            firefox_restarted = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
-            assert_true(self, firefox_restarted, 'Firefox restarted successfully')
+            if firefox_test_site_restored:
+                assert_true(self, firefox_test_site_restored, 'Firefox website is properly restored.')
 
-            close_tab()
+                firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
 
-            firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
-            assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
+                close_window()
+
+                iris_tab_restored = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
+                if iris_tab_restored:
+                    assert_true(self, iris_tab_restored, 'Iris tab restored successfully')
+
+                    close_tab()
+
+                focus_site_restored = exists(LocalWeb.FOCUS_LOGO, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, focus_site_restored, 'Focus website is properly restored.')
+
+                focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+
+            elif focus_site_restored:
+                assert_true(self, focus_site_restored, 'Focus website is properly restored.')
+
+                focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+
+                close_window()
+
+                firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+                assert_true(self, firefox_test_site_restored, 'Firefox website is properly restored.')
+
+                firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
+
+            elif iris_tab_restored:
+                assert_true(self, iris_tab_restored, 'Firefox restarted successfully')
+
+                close_tab()
+
+                focus_site_restored = exists(LocalWeb.FOCUS_LOGO, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, focus_site_restored, 'Focus website is properly restored.')
+
+                focus_tab_pinned = exists(focus_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, focus_tab_pinned, 'Focus tab is pinned after restart.')
+
+                close_window()
+
+                firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+                assert_true(self, firefox_test_site_restored, 'Firefox website is properly restored.')
+
+                firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
+                assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
+
+            elif not (firefox_test_site_restored and focus_site_restored and iris_tab_restored):
+                assert_false(self, firefox_test_site_restored and focus_site_restored and iris_tab_restored,
+                             'Firefox restarted incorrectly')
 
         assert_true(self, firefox_test_tab_pinned and focus_tab_pinned,
                     'Browser starts with two windows. Both "example.com" and "example.org" are pinned and available in '
