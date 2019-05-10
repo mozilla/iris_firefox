@@ -59,6 +59,7 @@ class Test(BaseTest):
         if Settings.is_windows():
             crash_reporter_icon_exists = exists(crash_reporter_icon_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
             assert_true(self, crash_reporter_icon_exists, 'Crash Reporter icon exists')
+
             click(crash_reporter_icon_pattern)
 
         firefox_crashed = exists(restart_firefox_button_pattern, Settings.FIREFOX_TIMEOUT)
