@@ -22,6 +22,7 @@ class Test(BaseTest):
         youtube_autoplay_switch_pattern = Pattern('youtube_autoplay_switch.png')
         tab_muted_pattern = Pattern('tab_muted.png')
         mute_tab = 2
+        click_duration = 1
 
         navigate('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 
@@ -38,7 +39,7 @@ class Test(BaseTest):
         mute_icon_region = Region(youtube_logo_location.x, youtube_logo_location.y - logo_height,
                                   SCREEN_WIDTH / 3, logo_height * 5)
 
-        right_click(youtube_logo_pattern, 1)
+        right_click(youtube_logo_pattern, click_duration)
 
         repeat_key_down(mute_tab)
         type(Key.ENTER)
@@ -58,7 +59,7 @@ class Test(BaseTest):
                                        tabs_region)
         assert_true(self, youtube_logo_inactive, 'Youtube inactive tab found.')
 
-        click(youtube_logo_inactive_tab_pattern, 1)
+        click(youtube_logo_inactive_tab_pattern, click_duration)
 
         youtube_tab = exists(youtube_logo_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert_true(self, youtube_tab, 'Youtube tab is active.')
