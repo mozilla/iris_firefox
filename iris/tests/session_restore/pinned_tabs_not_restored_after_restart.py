@@ -103,14 +103,14 @@ class Test(BaseTest):
             iris_tab_restored = exists(LocalWeb.IRIS_LOGO, Settings.FIREFOX_TIMEOUT)
 
             if firefox_test_site_restored:
-                assert_true(self, firefox_test_site_restored, 'Firefox website is properly restored.')
+                assert_true(self, firefox_test_site_restored, 'Firefox website is properly restored after restart.')
 
                 firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
                 assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
 
                 close_window()
 
-                iris_tab_restored = exists(LocalWeb.IRIS_LOGO, Settings.SITE_LOAD_TIMEOUT)
+                iris_tab_restored = exists(LocalWeb.IRIS_LOGO, Settings.FIREFOX_TIMEOUT)
                 if iris_tab_restored:
                     assert_true(self, iris_tab_restored, 'Iris tab restored successfully')
 
@@ -154,10 +154,6 @@ class Test(BaseTest):
 
                 firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, Settings.FIREFOX_TIMEOUT)
                 assert_true(self, firefox_test_tab_pinned, 'Firefox tab is pinned after restart.')
-
-            elif not (firefox_test_site_restored and focus_site_restored and iris_tab_restored):
-                assert_false(self, firefox_test_site_restored and focus_site_restored and iris_tab_restored,
-                             'Firefox restarted incorrectly')
 
         assert_true(self, firefox_test_tab_pinned and focus_tab_pinned,
                     'Browser starts with two windows. Both "example.com" and "example.org" are pinned and available in '
