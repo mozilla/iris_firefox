@@ -21,7 +21,8 @@ class Test(FirefoxTest):
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
         library_bookmarks_mozilla_custom_settings_pattern = Pattern('library_bookmarks_mozilla_custom_settings.png')
-        new_bookmark_folder_bookmarks_menu_pattern = Pattern('new_bookmark_folder_bookmarks_menu.png')
+        if OSHelper.is_mac():
+            new_bookmark_folder_bookmarks_menu_pattern = Pattern('new_bookmark_folder_bookmarks_menu.png')
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
