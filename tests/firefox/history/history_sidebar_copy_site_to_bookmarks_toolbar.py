@@ -19,7 +19,8 @@ class Test(FirefoxTest):
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        bookmarks_toolbar_mozilla_pattern = Pattern('bookmarks_toolbar_mozilla.png')
+        if OSHelper.is_mac():
+            bookmarks_toolbar_mozilla_pattern = Pattern('bookmarks_toolbar_mozilla.png')
 
         # Open a page to create some history.
         new_tab()
