@@ -33,6 +33,8 @@ class Test(BaseTest):
         test_form_1 = self.get_asset_path('test_1_sign_in.htm')
         test_form_2 = self.get_asset_path('test_2_sign_in.htm')
 
+        change_preference('signon.autofillForms', 'false')  # prevent autocomplete in site #2
+
         # saving password for site #1
         navigate(test_form_1)
 
@@ -79,8 +81,6 @@ class Test(BaseTest):
 
         click(save_login_button_pattern, 1)
 
-        time.sleep(1234)
-
         navigate('about:preferences#privacy')
 
         navigated_to_preferences = exists(preferences_privacy_find_field_pattern, 20)
@@ -114,7 +114,6 @@ class Test(BaseTest):
         assert_true(self, password_change_succeeded, 'Password change succeeded.')
 
         available_button_ok_password_change_succeeded = exists(button_ok_password_change_succeeded_pattern, 30)
-        #  location to prevent multiple occurrences of OK button
         assert_true(self, available_button_ok_password_change_succeeded, 'Button OK is available.')
 
         type(Key.ENTER)
@@ -122,8 +121,10 @@ class Test(BaseTest):
         master_password_box_is_checked = exists(master_password_box_is_checked_pattern, 30)
         assert_true(self, master_password_box_is_checked, 'Master password checkbox is checked')
 
+        change_preference('security.enterprise_roots.enabled', 'true')
 
-
+        restart_firefox(self, self.browser.path, self.profile_path, 'about:preferences#privacy',
+                        LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
 
         time.sleep(1234)
