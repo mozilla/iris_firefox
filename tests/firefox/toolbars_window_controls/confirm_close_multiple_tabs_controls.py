@@ -40,7 +40,7 @@ class Test(FirefoxTest):
         if OSHelper.is_linux():
             maximize_window()
             hover(Pattern('close_multiple_tabs_warning_logo.png').target_offset(0, -100), align=Alignment.TOP_LEFT)
-            assert exists(Pattern('maximize_button.png'), 10), 'Close multiple tabs warning was maximized successfully.'
+            assert exists(MainWindow.RESIZE_BUTTON, 10), 'Close multiple tabs warning was maximized successfully.'
 
             minimize_window()
             assert exists(Pattern('maximize_button.png'), 10), 'Close multiple tabs warning was restored successfully.'
