@@ -27,9 +27,7 @@ class Test(FirefoxTest):
         manage_data_title_pattern = Pattern('manage_cookies_and_site_data_table_heads.png')
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
         saved_logins_window_pattern = Pattern('saved_logins_table_heads.png')
-        ago_word_pattern = Pattern('ago_pattern.png')
         empty_saved_logins_pattern = Pattern('empty_saved_logins.png')
-        disk_space_is_not_used_pattern = Pattern('0_bytes_of_data.png')
 
         # Open the 'Clear Recent History' window and uncheck all the items.
         for step in open_clear_recent_history_window():
@@ -101,7 +99,7 @@ class Test(FirefoxTest):
 
         expected = exists(saved_logins_button_pattern, 2)
         while not expected:
-            scroll_down(50, 2)
+            scroll_down(5, 2)
             expected = exists(saved_logins_button_pattern, 2)
 
         assert expected, '\"Saved Logins\" button has been found.'
@@ -135,8 +133,8 @@ class Test(FirefoxTest):
         # Check that the "Manage Cookies and Site Data" window is empty.
         region = Screen().new_region(0, Screen.SCREEN_HEIGHT / 2 - 100, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT/2)
 
-        expected = region.wait_vanish(ago_word_pattern.similar(0.9), 10)
-        assert expected, 'Cookies were deleted.'
+        expected = region.exists('ago', 10)
+        assert not expected, 'Cookies were deleted.'
 
         # Close and check the "Manage Cookies and Site Data" window.
         type(Key.ESC)
@@ -145,5 +143,5 @@ class Test(FirefoxTest):
         assert expected, '\"Manage Cookies and Site Data\" window is NOT displayed.'
 
         # Check that no disk space is used for cookies, site data and cache.
-        expected = exists(disk_space_is_not_used_pattern, 10)
+        expected = exists('using 0', 10)
         assert expected, 'No disk space is used to store cookies, site data and cache.'
