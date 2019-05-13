@@ -36,6 +36,11 @@ class Test(BaseTest):
         test_form_1 = self.get_asset_path('test_1_sign_in.htm')
         test_form_2 = self.get_asset_path('test_2_sign_in.htm')
 
+        if Settings.is_linux():
+            scroll_length = -10
+        else:
+            scroll_length = -25
+
         change_preference('signon.autofillForms', 'false')  # prevent autocomplete in site #2
 
         # saving password for site #1
@@ -135,7 +140,8 @@ class Test(BaseTest):
         restart_firefox(self, self.browser.path, self.profile_path, 'about:preferences#privacy',
                         image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
-        saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, scroll, (-25,), 30, 1)
+        saved_logins_button_exists = scroll_until_pattern_found(
+            saved_logins_button_pattern, scroll, (scroll_length,), 30, 1)
         assert_true(self, saved_logins_button_exists, 'Saved logins button exists')
 
         click(saved_logins_button_pattern, 1)
@@ -154,7 +160,8 @@ class Test(BaseTest):
         restart_firefox(self, self.browser.path, self.profile_path, 'about:preferences#privacy',
                         image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
-        saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, scroll, (-25,), 30, 1)
+        saved_logins_button_exists = scroll_until_pattern_found(
+            saved_logins_button_pattern, scroll, (scroll_length,), 30, 1)
         assert_true(self, saved_logins_button_exists, 'Saved logins button exists')
 
         click(saved_logins_button_pattern, 1)
