@@ -21,7 +21,8 @@ class Test(FirefoxTest):
         library_bookmarks_custom_iris_pattern = Pattern('library_bookmarks_custom_iris.png')
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
         library_other_bookmarks_pattern = Library.OTHER_BOOKMARKS
-        new_bookmark_folder_bookmarks_menu_pattern = Pattern('new_bookmark_folder_bookmarks_menu.png')
+        if OSHelper.is_mac():
+            new_bookmark_folder_bookmarks_menu_pattern = Pattern('new_bookmark_folder_bookmarks_menu.png')
 
         # Open History and check if it is populated with the Iris page.
         open_library_menu('History')
