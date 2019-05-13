@@ -14,8 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '115426'
         self.test_suite_id = '68'
         self.locales = ['en-US']
-        self.private_browsing = False
-
+        
     def run(self):
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
         hamburger_menu_quit_item_pattern = None
@@ -45,9 +44,7 @@ class Test(BaseTest):
 
             click(hamburger_menu_quit_item_pattern)
 
-        self.private_browsing = True
-
-        restart_firefox(self, self.browser.path, self.profile_path, 'localhost:2000')
+        restart_firefox(self, self.browser.path, self.profile_path, self.base_local_web_url)
 
         new_private_window()
         private_window_opened = exists(PrivateWindow.private_window_pattern)
