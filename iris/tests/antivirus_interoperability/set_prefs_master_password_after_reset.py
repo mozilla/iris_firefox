@@ -26,6 +26,7 @@ class Test(BaseTest):
         remove_button_available_in_change_master_password_pattern = \
             Pattern('remove_button_available_in_change_master_password_pattern.png')
         master_password_deleted_pattern = Pattern('master_password_deleted.png')
+        form_address = self.get_asset_path('form.html')
 
         navigate('about:preferences#privacy')
 
