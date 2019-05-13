@@ -31,6 +31,7 @@ class Test(BaseTest):
         save_login_button_pattern = Pattern('save_login_button.png')
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
         saved_logins_list_available_pattern = Pattern('saved_logins_list_available.png')
+        master_password_required_popup_pattern = Pattern('master_password_required_popup.png')
 
         test_form_1 = self.get_asset_path('test_1_sign_in.htm')
         test_form_2 = self.get_asset_path('test_2_sign_in.htm')
@@ -135,8 +136,10 @@ class Test(BaseTest):
 
         click(saved_logins_button_pattern, 1)
 
+        enter_master_password = exists(master_password_required_popup_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, enter_master_password, 'Enter master password successfully loaded.')
+
         type('123')
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
 
         saved_logins_list_available = exists(saved_logins_list_available_pattern, Settings.FIREFOX_TIMEOUT)
@@ -152,8 +155,10 @@ class Test(BaseTest):
 
         click(saved_logins_button_pattern, 1)
 
+        enter_master_password = exists(master_password_required_popup_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, enter_master_password, 'Enter master password successfully loaded.')
+
         type('123')
-        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
 
         saved_logins_list_available = exists(saved_logins_list_available_pattern, Settings.FIREFOX_TIMEOUT)
