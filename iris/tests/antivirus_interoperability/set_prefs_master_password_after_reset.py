@@ -85,19 +85,20 @@ class Test(BaseTest):
 
         navigate('about:preferences#privacy')
 
-        navigated_to_preferences = exists(preferences_privacy_find_field_pattern, 20)
+        navigated_to_preferences = exists(preferences_privacy_find_field_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, navigated_to_preferences, 'Preferences/privacy page successfully loaded.')
 
         paste('Use a master password')
 
-        unchecked_use_master_password_checkbox_exists = exists(master_password_box_is_unchecked_pattern, 20)
+        unchecked_use_master_password_checkbox_exists = exists(master_password_box_is_unchecked_pattern,
+                                                               Settings.FIREFOX_TIMEOUT)
         assert_true(self, unchecked_use_master_password_checkbox_exists, 'Master Password checkbox is unchecked.')
 
         hover(master_password_box_is_unchecked_pattern, 0.2)
 
         click(master_password_box_is_unchecked_pattern)
 
-        change_master_password_popup = exists(change_master_password_popup_pattern, 20)
+        change_master_password_popup = exists(change_master_password_popup_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, change_master_password_popup, 'Master password popup exist')
 
         type('123')
@@ -105,22 +106,23 @@ class Test(BaseTest):
         type('123')
 
         ok_button_available_in_change_master_password = \
-            exists(ok_button_available_in_change_master_password_pattern, 30)
+            exists(ok_button_available_in_change_master_password_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, ok_button_available_in_change_master_password, 'Button OK is available')
 
         hover(ok_button_available_in_change_master_password_pattern, 0.2)
 
         click(ok_button_available_in_change_master_password_pattern)
 
-        password_change_succeeded = exists(password_change_succeeded_pattern, 20)
+        password_change_succeeded = exists(password_change_succeeded_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, password_change_succeeded, 'Password change succeeded.')
 
-        available_button_ok_password_change_succeeded = exists(button_ok_password_change_succeeded_pattern, 30)
+        available_button_ok_password_change_succeeded = exists(button_ok_password_change_succeeded_pattern,
+                                                               Settings.FIREFOX_TIMEOUT)
         assert_true(self, available_button_ok_password_change_succeeded, 'Button OK is available.')
 
         type(Key.ENTER)
 
-        master_password_box_is_checked = exists(master_password_box_is_checked_pattern, 30)
+        master_password_box_is_checked = exists(master_password_box_is_checked_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, master_password_box_is_checked, 'Master password checkbox is checked')
 
         change_preference('security.enterprise_roots.enabled', 'true')
@@ -163,12 +165,13 @@ class Test(BaseTest):
         new_tab()
         navigate('about:preferences#privacy')
 
-        navigated_to_preferences = exists(preferences_privacy_find_field_pattern, 20)
+        navigated_to_preferences = exists(preferences_privacy_find_field_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, navigated_to_preferences, 'Preferences/privacy page successfully loaded.')
 
         paste('Use a Master Password')
 
-        checked_use_master_password_checkbox_exists = exists(master_password_box_is_checked_pattern, 20)
+        checked_use_master_password_checkbox_exists = exists(master_password_box_is_checked_pattern,
+                                                             Settings.FIREFOX_TIMEOUT)
         assert_true(self, checked_use_master_password_checkbox_exists, 'Master Password checkbox is unchecked.')
 
         hover(master_password_box_is_checked_pattern, 0.2)
@@ -176,29 +179,31 @@ class Test(BaseTest):
         click(master_password_box_is_checked_pattern)
 
         #  deactivate master password
-        change_master_password_popup = exists(change_master_password_popup_pattern, 20)
+        change_master_password_popup = exists(change_master_password_popup_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, change_master_password_popup, 'Master password popup exist')
 
         type('123')
         type(Key.TAB)
 
         remove_button_available_in_change_master_password = \
-            exists(remove_button_available_in_change_master_password_pattern, 30)
+            exists(remove_button_available_in_change_master_password_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, remove_button_available_in_change_master_password, 'Button remove is available')
 
         hover(remove_button_available_in_change_master_password_pattern, 0.2)
 
         click(remove_button_available_in_change_master_password_pattern)
 
-        master_password_deleted = exists(master_password_deleted_pattern, 20)
+        master_password_deleted = exists(master_password_deleted_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, master_password_deleted, 'Master password deleted.')
 
-        available_button_ok_password_change_succeeded = exists(button_ok_password_change_succeeded_pattern, 30)
+        available_button_ok_password_change_succeeded = exists(button_ok_password_change_succeeded_pattern,
+                                                               Settings.FIREFOX_TIMEOUT)
         assert_true(self, available_button_ok_password_change_succeeded, 'Button OK is available.')
 
         hover(button_ok_password_change_succeeded_pattern, 0.2)
 
         click(button_ok_password_change_succeeded_pattern)
 
-        unchecked_use_master_password_checkbox_exists = exists(master_password_box_is_unchecked_pattern, 20)
+        unchecked_use_master_password_checkbox_exists = exists(master_password_box_is_unchecked_pattern,
+                                                               Settings.FIREFOX_TIMEOUT)
         assert_true(self, unchecked_use_master_password_checkbox_exists, 'Master Password checkbox is unchecked.')
