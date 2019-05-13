@@ -14,7 +14,7 @@ class Test(BaseTest):
         self.test_case_id = '115426'
         self.test_suite_id = '68'
         self.locales = ['en-US']
-        
+
     def run(self):
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
         hamburger_menu_quit_item_pattern = None
