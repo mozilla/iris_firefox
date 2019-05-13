@@ -129,10 +129,9 @@ class Test(BaseTest):
                         image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
         saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, scroll, (-25,), 30, 1)
-
         assert_true(self, saved_logins_button_exists, 'Saved logins button exists')
 
-        click(saved_logins_button_pattern)
+        click(saved_logins_button_pattern, 1)
 
         type('123')
         time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
@@ -149,9 +148,10 @@ class Test(BaseTest):
         saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, scroll, (-25,), 30, 1)
         assert_true(self, saved_logins_button_exists, 'Saved logins button exists')
 
-        click(saved_logins_button_pattern)
+        click(saved_logins_button_pattern, 1)
 
         type('123')
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
 
         saved_logins_list_available = exists(saved_logins_list_available_pattern, Settings.FIREFOX_TIMEOUT)
