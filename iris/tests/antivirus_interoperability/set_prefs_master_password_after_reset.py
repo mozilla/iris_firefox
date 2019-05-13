@@ -29,6 +29,8 @@ class Test(BaseTest):
         name_form_pattern = Pattern('name_form.png')
         password_form_pattern = Pattern('password_form.png').similar(.6)
         save_login_button_pattern = Pattern('save_login_button.png')
+        saved_logins_button_pattern = Pattern('saved_logins_button.png')
+        saved_logins_list_available_pattern = Pattern('saved_logins_list_available.png')
 
         test_form_1 = self.get_asset_path('test_1_sign_in.htm')
         test_form_2 = self.get_asset_path('test_2_sign_in.htm')
@@ -124,8 +126,18 @@ class Test(BaseTest):
         change_preference('security.enterprise_roots.enabled', 'true')
 
         restart_firefox(self, self.browser.path, self.profile_path, 'about:preferences#privacy',
-                        LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
+                        image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
+        saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, type, (Key.PAGE_DOWN,))
+        assert_true(self, saved_logins_button_exists, 'saved_logins_button_exists')
+
+        click(saved_logins_button_pattern)
+
+        type('123')
+        type(Key.ENTER)
+
+        saved_logins_list_available = exists(saved_logins_list_available_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, saved_logins_list_available, 'saved_logins_available_pattern')
 
         time.sleep(1234)
 
