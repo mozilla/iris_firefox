@@ -128,8 +128,26 @@ class Test(BaseTest):
         restart_firefox(self, self.browser.path, self.profile_path, 'about:preferences#privacy',
                         image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
-        saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, type, (Key.PAGE_DOWN,))
-        assert_true(self, saved_logins_button_exists, 'saved_logins_button_exists')
+        saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, scroll, (-25,), 30, 1)
+
+        assert_true(self, saved_logins_button_exists, 'Saved logins button exists')
+
+        click(saved_logins_button_pattern)
+
+        type('123')
+        time.sleep(Settings.TINY_FIREFOX_TIMEOUT)
+        type(Key.ENTER)
+
+        saved_logins_list_available = exists(saved_logins_list_available_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, saved_logins_list_available, 'All saved logins are displayed.')
+
+        change_preference('security.enterprise_roots.enabled', 'false')
+
+        restart_firefox(self, self.browser.path, self.profile_path, 'about:preferences#privacy',
+                        image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
+
+        saved_logins_button_exists = scroll_until_pattern_found(saved_logins_button_pattern, scroll, (-25,), 30, 1)
+        assert_true(self, saved_logins_button_exists, 'Saved logins button exists')
 
         click(saved_logins_button_pattern)
 
@@ -137,11 +155,12 @@ class Test(BaseTest):
         type(Key.ENTER)
 
         saved_logins_list_available = exists(saved_logins_list_available_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, saved_logins_list_available, 'saved_logins_available_pattern')
+        assert_true(self, saved_logins_list_available, 'All saved logins are displayed.')
 
-        time.sleep(1234)
+        type(Key.ESC)
 
         # deactivate
+        new_tab()
         navigate('about:preferences#privacy')
 
         navigated_to_preferences = exists(preferences_privacy_find_field_pattern, 20)
@@ -155,9 +174,6 @@ class Test(BaseTest):
         hover(master_password_box_is_checked_pattern, 0.2)
 
         click(master_password_box_is_checked_pattern)
-
-
-
 
         #  deactivate master password
         change_master_password_popup = exists(change_master_password_popup_pattern, 20)
