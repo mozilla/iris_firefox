@@ -48,6 +48,8 @@ class Test(BaseTest):
 
         paste('user1')
 
+        restore_firefox_focus()
+
         password_form_displayed = exists(password_form_pattern)
         assert_true(self, password_form_displayed, 'The website is successfully displayed.')
 
@@ -70,6 +72,8 @@ class Test(BaseTest):
         click(name_form_pattern)
 
         paste('user2')
+
+        restore_firefox_focus()
 
         password_form_displayed = exists(password_form_pattern)
         assert_true(self, password_form_displayed, 'The website is successfully displayed.')
