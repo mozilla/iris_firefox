@@ -26,7 +26,60 @@ class Test(BaseTest):
         remove_button_available_in_change_master_password_pattern = \
             Pattern('remove_button_available_in_change_master_password_pattern.png')
         master_password_deleted_pattern = Pattern('master_password_deleted.png')
-        form_address = self.get_asset_path('form.html')
+        name_form_pattern = Pattern('name_form.png')
+        password_form_pattern = Pattern('password_form.png').similar(.6)
+        save_login_button_pattern = Pattern('save_login_button.png')
+
+        test_form_1 = self.get_asset_path('test_1_sign_in.htm')
+        test_form_2 = self.get_asset_path('test_2_sign_in.htm')
+
+        # saving password for site #1
+        navigate(test_form_1)
+
+        name_form_displayed = exists(name_form_pattern)
+        assert_true(self, name_form_displayed, 'Test form #1 displayed.')
+
+        click(name_form_pattern)
+
+        paste('user1')
+
+        password_form_displayed = exists(password_form_pattern)
+        assert_true(self, password_form_displayed, 'The website is successfully displayed.')
+
+        click(password_form_pattern)
+
+        paste('test')
+        type(Key.ENTER)
+
+        save_login_button_available = exists(save_login_button_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, save_login_button_available, 'Save login button is available')
+
+        click(save_login_button_pattern, 1)
+
+        # saving password for site #2
+        navigate(test_form_2)
+
+        name_form_displayed = exists(name_form_pattern)
+        assert_true(self, name_form_displayed, 'Test form #2 displayed.')
+
+        click(name_form_pattern)
+
+        paste('user2')
+
+        password_form_displayed = exists(password_form_pattern)
+        assert_true(self, password_form_displayed, 'The website is successfully displayed.')
+
+        click(password_form_pattern)
+
+        paste('test')
+        type(Key.ENTER)
+
+        save_login_button_available = exists(save_login_button_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, save_login_button_available, 'Save login button is available')
+
+        click(save_login_button_pattern, 1)
+
+        time.sleep(1234)
 
         navigate('about:preferences#privacy')
 
@@ -68,6 +121,9 @@ class Test(BaseTest):
 
         master_password_box_is_checked = exists(master_password_box_is_checked_pattern, 30)
         assert_true(self, master_password_box_is_checked, 'Master password checkbox is checked')
+
+
+
 
 
         time.sleep(1234)
