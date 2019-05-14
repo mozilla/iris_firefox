@@ -18,13 +18,22 @@ class Test(BaseTest):
     def run(self):
         custom_url_option_pattern = Pattern('custom_url_option.png')
         default_new_tab_setting_home_pattern = Pattern('default_new_tab_setting_home.png')
+        homepage_new_windows_pattern = Pattern('homepage_new_windows.png')
         url_field_pattern = Pattern('url_field.png')
 
         navigate('about:preferences#home')
-        preferences_opened = exists(default_new_tab_setting_home_pattern)
-        assert_true(self, preferences_opened, 'Preferences page is opened, Firefox Home is set as default ')
+        preferences_are_opened = exists(homepage_new_windows_pattern)
+        assert_true(self, preferences_are_opened, 'Preferences#Home page is opened')
 
-        click(default_new_tab_setting_home_pattern)
+        preference_region_offset = homepage_new_windows_pattern.get_size()[1]
+        preference_location = find(homepage_new_windows_pattern)
+        preference_region = Region(preference_location.x, preference_location.y - (preference_region_offset // 2),
+                                   SCREEN_WIDTH // 2, preference_region_offset * 2)
+
+        home_is_default = exists(default_new_tab_setting_home_pattern, in_region=preference_region)
+        assert_true(self, home_is_default, 'Preferences page is opened, Firefox Home is set as default ')
+
+        click(default_new_tab_setting_home_pattern, in_region=preference_region)
 
         custom_url_option_exists = exists(custom_url_option_pattern)
         assert_true(self, custom_url_option_exists, '"Custom URL" option is displayed')
