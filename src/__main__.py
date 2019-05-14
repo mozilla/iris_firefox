@@ -6,9 +6,11 @@ import importlib
 import logging
 import os
 import shutil
+import subprocess
 import time
 from distutils.dir_util import copy_tree
 
+import psutil
 import pytest
 from mozprofile import Profile as MozProfile
 from mozrunner import FirefoxRunner
@@ -177,8 +179,15 @@ def launch_control_center():
     args = ['http://127.0.0.1:%s' % get_core_args().port]
     process_args = {'stream': None}
     profile = MozProfile(profile=profile_path, preferences=Settings.default_fx_prefs)
-    fx_runner = FirefoxRunner(binary=fx_path, profile=profile, cmdargs=args, process_args=process_args)
-    fx_runner.start()
+    if OSHelper.is_windows():
+        process = subprocess.Popen(
+            [fx_path, '-no-remote', '-new-tab', args, '--wait-for-browser', '-foreground', '-profile',
+             profile.profile], shell=False)
+
+    else:
+        fx_runner = FirefoxRunner(binary=fx_path, profile=profile, cmdargs=args, process_args=process_args)
+        fx_runner.start()
+
     server = LocalWebServer(get_core_args().workdir, get_core_args().port)
     server.stop()
     time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -189,12 +198,22 @@ def launch_control_center():
         type(text='w', modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
     else:
         type(text='q', modifier=KeyModifier.CTRL)
-
-    try:
-        fx_runner.stop()
-    except Exception as e:
-        logger.debug('Error stopping fx_runner')
-        logger.debug(e)
+    if OSHelper.is_windows():
+        if process.pid is not None:
+            try:
+                logger.debug('Closing Firefox process ID: %s' % process.pid)
+                process = psutil.Process(process.pid)
+                for proc in process.children(recursive=True):
+                    proc.kill()
+                process.kill()
+            except psutil.NoSuchProcess:
+                pass
+    else:
+        try:
+            fx_runner.stop()
+        except Exception as e:
+            logger.debug('Error stopping fx_runner')
+            logger.debug(e)
 
     return server.result
 
