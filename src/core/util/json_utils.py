@@ -279,6 +279,10 @@ def scan_all_tests(target):
                 for i in details:
                     if i not in base_props:
                         values[i] = details.get(i)
+                if details.get('platform') is None:
+                    values['platform'] = 'all'
+                if details.get('locale') is None:
+                    values['locale'] = 'all'
                 test_obj['values'] = values
                 parent.append(test_obj)
                 parent = tests
