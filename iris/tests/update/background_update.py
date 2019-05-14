@@ -25,7 +25,7 @@ class Test(BaseTest):
         self.maximize_window = False
 
     def run(self):
-        update_restart_pattern = Pattern('background_update_menu_notification.png')
+        update_restart_pattern = Pattern('background_update_menu_notification.png').similar(0.5)
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
 
         version = parse_args().firefox

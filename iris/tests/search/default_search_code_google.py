@@ -22,10 +22,10 @@ class Test(BaseTest):
 
         # Detect the build.
         if get_firefox_channel(self.browser.path) == 'beta' or get_firefox_channel(self.browser.path) == 'release':
-            default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
+            default_search_engine_google_pattern = Pattern('default_search_engine_google.png').similar(0.5)
             google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
         elif get_firefox_channel(self.browser.path) == 'esr':
-            default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png')
+            default_search_engine_google_pattern = Pattern('default_search_engine_google_esr_build.png').similar(0.5)
             google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field_esr_build.png')
 
         regions_by_locales = {'en-US': ['US', 'in', 'id', 'ca'], 'de': ['de', 'ru'], 'fr': ['fr'], 'pl': ['pl'],

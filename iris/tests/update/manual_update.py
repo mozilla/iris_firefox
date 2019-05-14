@@ -19,7 +19,7 @@ class Test(BaseTest):
         self.set_profile_pref({'app.update.auto': True})
 
     def run(self):
-        update_restart_pattern = Pattern('manual_restart_to_update_button.png')
+        update_restart_pattern = Pattern('manual_restart_to_update_button.png').similar(0.5)
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
 
         version = parse_args().firefox
