@@ -38,27 +38,32 @@ class Test(BaseTest):
 
         # Define some Location / Region variables
         click_duration = 1
-        top_screen_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT//5)
+        top_screen_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT // 5)
         bottom_half_region = Screen.BOTTOM_HALF
 
-        iris_tab_logo = exists(iris_tab_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        iris_tab_logo = exists(iris_tab_logo_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, iris_tab_logo, 'Iris tab available')
 
         iris_tab_logo_location = find(iris_tab_logo_pattern)
-        proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, width=SCREEN_WIDTH, height=SCREEN_HEIGHT//5)
+        proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, SCREEN_WIDTH, SCREEN_HEIGHT // 5)
 
         hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, Settings.FIREFOX_TIMEOUT,
-                                              in_region=proper_hamburger_menu_region)
+                                              proper_hamburger_menu_region)
         assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
 
         hamburger_menu_button_location = find(hamburger_menu_button_pattern, proper_hamburger_menu_region)
 
         click(hamburger_menu_button_location, click_duration)
 
-        restore_previous_session_exists = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        restore_previous_session_exists = exists(restore_previous_session_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, restore_previous_session_exists, '\'Restore previous session\' item located')
 
         restore_previous_session_location = find(restore_previous_session_pattern)
+
+        hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the \'Hamburger\' menu.')
+
+        hamburger_menu_quit_item_location = find(hamburger_menu_quit_item_pattern, proper_hamburger_menu_region)
 
         restore_firefox_focus()
 
@@ -77,7 +82,7 @@ class Test(BaseTest):
         reset_mouse()
 
         expected = exists(default_zoom_level_toolbar_customize_page_pattern, Settings.FIREFOX_TIMEOUT,
-                          in_region=Region(0, 0, SCREEN_WIDTH, 300))
+                          in_region=Region(0, 0, SCREEN_WIDTH, top_screen_region))
         assert_true(self, expected, 'Zoom controls successfully dragged and dropped in toolbar.')
 
         close_customize_page()
@@ -134,15 +139,9 @@ class Test(BaseTest):
         else:
             click(hamburger_menu_button_location, click_duration)
 
-            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, DEFAULT_FIREFOX_TIMEOUT)
-            assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the \'Hamburger\' menu.')
+            click(hamburger_menu_quit_item_location, click_duration)
 
-            click(hamburger_menu_quit_item_pattern, click_duration)
-
-        restart_firefox(self,
-                        self.browser.path,
-                        self.profile_path,
-                        'about:home',
+        restart_firefox(self, self.browser.path, self.profile_path, 'about:home',
                         image=NavBar.HAMBURGER_MENU_DARK_THEME)
 
         hamburger_menu_button_exists = exists(NavBar.HAMBURGER_MENU_DARK_THEME, Settings.FIREFOX_TIMEOUT)
