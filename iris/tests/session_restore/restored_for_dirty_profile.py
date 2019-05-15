@@ -31,10 +31,14 @@ class Test(BaseTest):
         toolbar_pattern = NavBar.TOOLBAR
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
         iris_tab_logo_pattern = Pattern('iris_tab.png')
-        hamburger_menu_quit_item_pattern = None
+        restore_previous_session_pattern = Pattern('hamburger_restore_previous_session.png')
 
+        hamburger_menu_quit_item_pattern = None
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_exit.png')
+
+        # Define some Location / Region variables
+        top_screen_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT // 5)
 
         iris_tab_logo = exists(iris_tab_logo_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
         assert_true(self, iris_tab_logo, 'Iris tab available')
@@ -42,16 +46,20 @@ class Test(BaseTest):
         iris_tab_logo_location = find(iris_tab_logo_pattern)
         proper_hamburger_menu_region = Region(0, iris_tab_logo_location.y, width=SCREEN_WIDTH, height=SCREEN_HEIGHT//5)
 
-        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT,
+        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, Settings.FIREFOX_TIMEOUT,
                                               in_region=proper_hamburger_menu_region)
         assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
 
-        hamburger_menu_button_location = Location(, DEFAULT_FIREFOX_TIMEOUT,
-                                              in_region=proper_hamburger_menu_region)
+        hamburger_menu_button_location = find(hamburger_menu_button_pattern, proper_hamburger_menu_region)
 
-        top_screen_region = Region(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT // 5)
+        click(hamburger_menu_button_location, 1)
 
-        #  change few buttons position
+        restore_previous_session_exists = exists(restore_previous_session_pattern, DEFAULT_FIREFOX_TIMEOUT)
+        assert_true(self, restore_previous_session_exists, '"Restore previous session" item located')
+
+        restore_previous_session_location = find(restore_previous_session_pattern)
+
+        #  Step 2: change few buttons position
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -138,21 +146,24 @@ class Test(BaseTest):
         close_customize_page()
 
         # Quit via Hamburger menu
-        hamburger_menu_button_exists = exists(hamburger_menu_button_pattern, DEFAULT_FIREFOX_TIMEOUT,
-                                              in_region=proper_hamburger_menu_region)
-        assert_true(self, hamburger_menu_button_exists, 'Hamburger menu appears on screen.')
+        if Settings.is_mac():
+            type('q', KeyModifier.CMD)
 
-        if not Settings.is_mac():
-            click(hamburger_menu_button_pattern, DEFAULT_UI_DELAY, in_region=proper_hamburger_menu_region)
+        else:
+            click(hamburger_menu_button_location, DEFAULT_UI_DELAY)
+
             hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, DEFAULT_FIREFOX_TIMEOUT)
             assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the "Hamburger" menu.')
+
             click(hamburger_menu_quit_item_pattern, DEFAULT_UI_DELAY)
-        else:
-            type('q', KeyModifier.CMD)
 
         restart_firefox(self,
                         self.browser.path,
                         self.profile_path,
-                        'about:home', image=Utils.TOP_SITES)
+                        'about:home', image=NavBar.HAMBURGER_MENU_DARK_THEME)
+
+        click(NavBar.HAMBURGER_MENU_DARK_THEME, 1)
+
+        click(restore_previous_session_location, 1)
 
         time.sleep(1234)
