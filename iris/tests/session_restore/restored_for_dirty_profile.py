@@ -63,7 +63,7 @@ class Test(BaseTest):
         hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the \'Hamburger\' menu.')
 
-        hamburger_menu_quit_item_location = find(hamburger_menu_quit_item_pattern, proper_hamburger_menu_region)
+        hamburger_menu_quit_item_location = find(hamburger_menu_quit_item_pattern)
 
         restore_firefox_focus()
 
@@ -77,11 +77,11 @@ class Test(BaseTest):
         expected = exists(zoom_controls_customize_page_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, expected, 'Zoom controls found in the \'Customize\' page.')
 
-        drag_drop(zoom_controls_customize_page_pattern, toolbar_pattern, 0.5)
+        drag_drop(zoom_controls_customize_page_pattern, toolbar_pattern, click_duration)
         time.sleep(Settings.UI_DELAY)
         reset_mouse()
 
-        expected = exists(default_zoom_level_toolbar_customize_page_pattern, Settings.FIREFOX_TIMEOUT,
+        expected = exists(default_zoom_level_toolbar_customize_page_pattern, Settings.SITE_LOAD_TIMEOUT,
                           in_region=Region(0, 0, SCREEN_WIDTH, top_screen_region))
         assert_true(self, expected, 'Zoom controls successfully dragged and dropped in toolbar.')
 
