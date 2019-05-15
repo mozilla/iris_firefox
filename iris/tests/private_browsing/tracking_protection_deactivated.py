@@ -22,7 +22,6 @@ class Test(BaseTest):
         custom_privacy_radio_pattern = Pattern('custom_privacy_radio.png')
         trackers_checked_pattern = Pattern('trackers_checked.png')
         trackers_unchecked_pattern = Pattern('trackers_unchecked.png')
-        cookies_checked_pattern = Pattern('cookies_preference_checked.png')
         cookies_unchecked_pattern = Pattern('cookies_preference_unchecked.png')
         private_browsing_tab_pattern = Pattern('private_browsing_tab_logo.png')
         private_content_blocking_warning_pattern = Pattern('private_window_content_blocking_warning.png')
@@ -34,26 +33,23 @@ class Test(BaseTest):
         to_block_set_to_strict_pattern = Pattern('to_block_set_to_strict.png')
 
         new_tab()
-
         navigate('about:preferences#privacy')
 
         navigated_to_preferences = exists(privacy_page_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, navigated_to_preferences, 'The about:preferences#privacy page is successfully displayed.')
 
-        custom_radio_found = exists(custom_privacy_radio_pattern)
+        custom_radio_found = exists(custom_privacy_radio_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, custom_radio_found, 'Custom" radio button from the "Content Blocking" section is displayed.')
 
-        click(custom_privacy_radio_pattern)
+        click(custom_privacy_radio_pattern, 1)
 
-        custom_protection_popup_opened = exists(trackers_checked_pattern)
+        custom_protection_popup_opened = exists(trackers_checked_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, custom_protection_popup_opened, 'The Custom panel is displayed.')
 
         click(trackers_checked_pattern)
 
-        content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern)
+        content_blocking_trackers_unchecked = exists(trackers_unchecked_pattern, Settings.FIREFOX_TIMEOUT)
         assert_true(self, content_blocking_trackers_unchecked, 'The trackers checkbox is unchecked successfully.')
-
-        click(cookies_checked_pattern)
 
         content_blocking_cookies_unchecked = exists(cookies_unchecked_pattern)
         assert_true(self, content_blocking_cookies_unchecked, 'The cookies checkbox is unchecked successfully.')
@@ -67,13 +63,14 @@ class Test(BaseTest):
         cnn_logo_exists = exists(cnn_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
 
-        tracking_protection_shield_common_window = exists(tracking_protection_shield_pattern, Settings.FIREFOX_TIMEOUT)
+        tracking_protection_shield_common_window = exists(tracking_protection_shield_pattern,
+                                                          Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, tracking_protection_shield_common_window,
                      'The Content blocking shield is not displayed near the address bar.')
 
         new_private_window()
 
-        private_window_opened = exists(private_browsing_tab_pattern, Settings.SHORT_FIREFOX_TIMEOUT)
+        private_window_opened = exists(private_browsing_tab_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert_true(self, private_window_opened, 'Private browsing window opened')
 
         content_blocking_private_displayed = exists(private_content_blocking_warning_pattern,
@@ -86,7 +83,8 @@ class Test(BaseTest):
         cnn_logo_exists = exists(cnn_logo_pattern, Settings.HEAVY_SITE_LOAD_TIMEOUT)
         assert_true(self, cnn_logo_exists, 'The website is successfully displayed.')
 
-        tracking_protection_shield_private_window = exists(tracking_protection_shield_pattern, Settings.FIREFOX_TIMEOUT)
+        tracking_protection_shield_private_window = exists(tracking_protection_shield_pattern,
+                                                           Settings.SHORT_FIREFOX_TIMEOUT)
         assert_false(self, tracking_protection_shield_private_window,
                      'The Content blocking shield is not displayed near the address bar')
 
