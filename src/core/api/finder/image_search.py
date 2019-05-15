@@ -71,7 +71,7 @@ def match_template(pattern: Pattern, region: Rectangle = None,
     try:
         stack_image = ScreenshotImage(region=region, screen_id=_region_in_display_list(region))
         precision = pattern.similarity
-        if precision == 1:
+        if precision == 0.99:
             logger.debug('Searching image with similarity %s' % precision)
             res = cv2.matchTemplate(stack_image.get_color_array(), pattern.get_color_array(),FIND_METHOD)
         else:
