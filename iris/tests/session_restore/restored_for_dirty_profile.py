@@ -27,11 +27,12 @@ class Test(BaseTest):
         firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
         default_zoom_level_toolbar_customize_page_pattern = NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE
         zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
-        url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
         toolbar_pattern = NavBar.TOOLBAR
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
         iris_tab_logo_pattern = Pattern('iris_tab.png')
         restore_previous_session_pattern = Pattern('hamburger_restore_previous_session.png')
+        firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
+
 
         hamburger_menu_quit_item_pattern = None
         if not Settings.is_mac():
@@ -59,16 +60,12 @@ class Test(BaseTest):
 
         restore_previous_session_location = find(restore_previous_session_pattern)
 
+        restore_firefox_focus()
+
         #  Step 2: change few buttons position
 
-        navigate(LocalWeb.FIREFOX_TEST_SITE)
-
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, expected, 'Page successfully loaded, firefox logo found.')
-
-        region = top_screen_region
-        expected = region.exists(url_bar_default_zoom_level_pattern, 10)
-        assert_true(self, expected, 'Zoom indicator not displayed by default in the url bar.')
+        expected = exists(NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE, Settings.TINY_FIREFOX_TIMEOUT, top_screen_region)
+        assert_false(self, expected, 'Zoom indicator not displayed by default in the url bar.')
 
         click_hamburger_menu_option('Customize...')
 
@@ -87,19 +84,20 @@ class Test(BaseTest):
 
         # Pin tab
 
-        new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
         firefox_tab_opened = exists(firefox_tab_pattern)
-        assert_true(self, firefox_tab_opened, 'Second webpage is opened')
+        assert_true(self, firefox_tab_opened, 'Firefox webpage is opened')
+
         right_click(firefox_tab_pattern)
 
         unpinned_dropdown_opened = exists(pin_tab_pattern)
-        assert_true(self, unpinned_dropdown_opened, 'Dropdown for common tab opened')
+        assert_true(self, unpinned_dropdown_opened, 'Dropdown menu for tab opened')
+
         click(pin_tab_pattern)
 
         second_tab_pinned = exists(firefox_pinned_tab_pattern)
-        assert_true(self, second_tab_pinned, 'Second tab is pinned')
+        assert_true(self, second_tab_pinned, 'Firefox tab is pinned')
 
         # open several different website
         local_url = [LocalWeb.FOCUS_TEST_SITE, LocalWeb.MOZILLA_TEST_SITE]
@@ -112,18 +110,6 @@ class Test(BaseTest):
             assert_true(self, website_loaded,
                         'Website {0} loaded'
                         .format(_ + 1))
-
-        close_tab()
-
-        one_tab_exists = exists(local_url_logo_pattern[0], 20)
-        assert_true(self, one_tab_exists,
-                    'One opened tab left. {0} tabs were successfully closed.'
-                    .format(len(local_url) - 1))
-
-        undo_close_tab()
-        tab_is_restored = exists(local_url_logo_pattern[1])  # +1 as url[0] is one opened tab
-        assert_true(self, tab_is_restored,
-                    'Tab successfully restored')
 
         # Customize Firefox: set a theme, change a few button position, pin a tab, etc.
         click_hamburger_menu_option('Customize...')
@@ -166,4 +152,18 @@ class Test(BaseTest):
 
         click(restore_previous_session_location, 1)
 
-        time.sleep(1234)
+        select_tab(1)
+
+        firefox_page_content_restored = exists(LocalWeb.FIREFOX_LOGO)
+        assert_true(self, firefox_page_content_restored, 'Firefox pinned tab restored successfully.')
+
+        local_url_logo_pattern = [LocalWeb.FOCUS_LOGO, LocalWeb.MOZILLA_LOGO]
+
+        select_tab(2)
+        focus_tab_restored = exists(LocalWeb.FOCUS_LOGO)
+        assert_true(self, focus_tab_restored, 'Focus tab restored successfully.')
+
+        select_tab(3)
+        mozilla_tab_restored = exists(LocalWeb.MOZILLA_LOGO)
+        assert_true(self, mozilla_tab_restored, 'Mozilla tab restored successfully.')
+        
