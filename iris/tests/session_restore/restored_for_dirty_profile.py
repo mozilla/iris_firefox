@@ -82,7 +82,7 @@ class Test(BaseTest):
         reset_mouse()
 
         expected = exists(default_zoom_level_toolbar_customize_page_pattern, Settings.SITE_LOAD_TIMEOUT,
-                          in_region=Region(0, 0, SCREEN_WIDTH, top_screen_region))
+                          top_screen_region)
         assert_true(self, expected, 'Zoom controls successfully dragged and dropped in toolbar.')
 
         close_customize_page()
@@ -144,12 +144,14 @@ class Test(BaseTest):
         restart_firefox(self, self.browser.path, self.profile_path, 'about:home',
                         image=NavBar.HAMBURGER_MENU_DARK_THEME)
 
+        time.sleep(Settings.SHORT_FIREFOX_TIMEOUT)  # wait while Linux maximizes window
+
         hamburger_menu_button_exists = exists(NavBar.HAMBURGER_MENU_DARK_THEME, Settings.FIREFOX_TIMEOUT)
         assert_true(self, hamburger_menu_button_exists, 'The Hamburger menu is successfully displayed.')
 
         click(NavBar.HAMBURGER_MENU_DARK_THEME, click_duration)
 
-        click(restore_previous_session_location, click_duration)
+        click(restore_previous_session_location, Settings.TINY_FIREFOX_TIMEOUT)
 
         select_tab(1)
 
