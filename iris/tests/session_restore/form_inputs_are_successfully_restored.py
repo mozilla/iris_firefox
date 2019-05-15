@@ -18,8 +18,7 @@ class Test(BaseTest):
     def run(self):
         title_field_pattern = Pattern('title_field.png')
 
-        input_data = ['Maria V. Griggs', 'Loblaws', '1223 Rainbow Drive', 'Youngstown, OH', '1223 Rainbow Drive',
-                      '44512', 'US', '9079782387', 'maria_griggs@gmail.com']
+        input_data = ['Maria V. Griggs', 'Loblaws', '1223 Rainbow Drive']
 
         navigate('https://www.roboform.com/filling-test-all-fields')
 
@@ -32,11 +31,21 @@ class Test(BaseTest):
 
         click(in_field_focus)
 
-        for fields in range(9):
+        for fields in range(3):
             type(input_data[fields])
             type(Key.TAB)
 
-        type('\n')
+        click(in_field_focus)
+
+        entered_data = []
+
+        for fields in range(3):
+            edit_select_all()
+            field_data = copy_to_clipboard()
+            entered_data.append(str(field_data))
+            type(Key.TAB)
+
+        assert_true(self, entered_data == input_data, 'The data is displayed successfully.')
 
         if Settings.is_mac():
             quit_firefox()
@@ -64,7 +73,7 @@ class Test(BaseTest):
 
         restored_data = []
 
-        for fields in range(9):
+        for fields in range(3):
             edit_select_all()
             field_data = copy_to_clipboard()
             restored_data.append(str(field_data))
