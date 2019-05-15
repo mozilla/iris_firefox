@@ -32,7 +32,6 @@ class Test(BaseTest):
         restore_previous_session_pattern = Pattern('hamburger_restore_previous_session.png')
         firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
 
-        hamburger_menu_quit_item_pattern = None
         if not Settings.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_exit.png')
 
