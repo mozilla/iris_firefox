@@ -40,19 +40,31 @@ class ScreenshotImage:
             screen_region = {'top': int(region.y), 'left': int(region.x),
                              'width': int(region.width), 'height': int(region.height)}
 
-        self._gray_array = _region_to_image(screen_region)
+        self._raw_image = _region_to_image(screen_region)
+        self._gray_array = _convert_image_to_gray(self._raw_image)
+        self._color_array=_convert_image_to_color(self._raw_image)
+
+
         height, width = self._gray_array.shape
         self.width = width
         self.height = height
+
+
+
+
 
         scale = DisplayCollection[screen_id].scale
 
         if scale != 1:
             self.width = int(width / scale)
             self.height = int(height / scale)
-            self._gray_array = cv2.resize(self._gray_array,
+            self._color_array = cv2.resize(self._color_array,
                                           dsize=(self.width, self.height),
                                           interpolation=cv2.INTER_CUBIC)
+            self._gray_array=cv2.resize(self._gray_array,
+                                          dsize=(self.width, self.height),
+                                          interpolation=cv2.INTER_CUBIC)
+
 
     def get_gray_array(self):
         """Getter for the gray_array property."""
@@ -65,6 +77,25 @@ class ScreenshotImage:
     def binarize(self):
         return cv2.threshold(self._gray_array, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
+    def get_raw_image(self):
+        """Getter raw_image property."""
+        return Image.fromarray(self._raw_image)
+
+    def get_raw_array(self):
+        """Getter array property."""
+        return self._raw_image
+
+    def get_color_array(self):
+        """Getter color array property."""
+        return self._color_array
+
+    def show_image(self):
+        """Displays this image. This method is mainly intended for
+        debugging purposes."""
+        image = self.get_raw_image()
+        return image.show()
+
+
 
 def _region_to_image(region) -> Image or ScreenshotError:
     if not OSHelper.is_linux():
@@ -75,7 +106,20 @@ def _region_to_image(region) -> Image or ScreenshotError:
         except (IOError, OSError):
             logger.debug('Call to pyautogui.screnshot failed, using mss instead.')
             grabbed_area = _mss_screenshot(region)
-    return cv2.cvtColor(grabbed_area, cv2.COLOR_BGR2GRAY)
+    return grabbed_area
+
+
+def _convert_image_to_gray(image):
+    """Converts an Image to Gray
+    :returns np array"""
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+
+def _convert_image_to_color(image):
+    """Converts an Image to Color
+     :returns np array"""
+
+    return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
 
 def _mss_screenshot(region):

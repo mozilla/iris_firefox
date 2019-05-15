@@ -41,7 +41,7 @@ class Pattern:
             path = from_path
         name, scale = _parse_name(os.path.split(path)[1])
 
-        image = cv2.imread(path)
+        image = cv2.imread(path,cv2.IMREAD_COLOR)
 
         self.image_name = name
         self.image_path = path
@@ -122,6 +122,10 @@ class Pattern:
     def get_size(self):
         """Getter for the _size property."""
         return self._size
+
+    def get_color_array(self):
+        """Encode color image to BGR2RGB """
+        return cv2.cvtColor(np.array(self.color_image), cv2.COLOR_BGR2RGB)
 
 
 def _parse_name(full_name: str) -> (str, int):

@@ -12,13 +12,12 @@ class Test(FirefoxTest):
         description='This test case adds links using \'CTRL\' + \'ENTER\' keys',
         locale=['en-US'],
         test_case_id='119484',
-        test_suite_id='1902',
-        exclude=OSPlatform.ALL
-        # blocked_by='1520795'
+        test_suite_id='1902'
+
     )
     def run(self, firefox):
         cnn_tab_pattern = Pattern('cnn_tab.png')
-        cnn_icon_pattern = Pattern('cnn_icon.png')
+        cnn_icon_pattern = Pattern('cnn_icon.png').exact()
         facebook_tab_pattern = Pattern('facebook_tab.png')
 
         region = Region(0, 0, Screen().width / 2, Screen().height / 3)
