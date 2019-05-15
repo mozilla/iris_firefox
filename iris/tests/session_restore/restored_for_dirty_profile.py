@@ -60,10 +60,11 @@ class Test(BaseTest):
 
         restore_previous_session_location = find(restore_previous_session_pattern)
 
-        hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the \'Hamburger\' menu.')
+        if not Settings.is_mac():
+            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, Settings.FIREFOX_TIMEOUT)
+            assert_true(self, hamburger_menu_quit_displayed, 'Close Firefox from the \'Hamburger\' menu.')
 
-        hamburger_menu_quit_item_location = find(hamburger_menu_quit_item_pattern)
+            hamburger_menu_quit_item_location = find(hamburger_menu_quit_item_pattern)
 
         restore_firefox_focus()
 
