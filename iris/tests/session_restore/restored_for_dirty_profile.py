@@ -70,21 +70,21 @@ class Test(BaseTest):
 
         #  Step 2: Customize Firefox: change few buttons position
 
-        expected = exists(NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE, Settings.TINY_FIREFOX_TIMEOUT, top_screen_region)
-        assert_false(self, expected, 'Zoom indicator not displayed by default in the URL bar.')
+        zoom_indicator_not_displayed = exists(NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE, Settings.TINY_FIREFOX_TIMEOUT, top_screen_region)
+        assert_false(self, zoom_indicator_not_displayed, 'Zoom indicator not displayed by default in the URL bar.')
 
         click_hamburger_menu_option('Customize...')
 
-        expected = exists(zoom_controls_customize_page_pattern, Settings.FIREFOX_TIMEOUT)
-        assert_true(self, expected, 'Zoom controls found in the \'Customize\' page.')
+        zoom_controls_customize_exists = exists(zoom_controls_customize_page_pattern, Settings.FIREFOX_TIMEOUT)
+        assert_true(self, zoom_controls_customize_exists, 'Zoom controls found in the \'Customize\' page.')
 
         drag_drop(zoom_controls_customize_page_pattern, toolbar_pattern, click_duration)
         time.sleep(Settings.UI_DELAY)
         reset_mouse()
 
-        expected = exists(default_zoom_level_toolbar_customize_page_pattern, Settings.SITE_LOAD_TIMEOUT,
-                          top_screen_region)
-        assert_true(self, expected, 'Zoom controls successfully dragged and dropped in toolbar.')
+        zoom_toolbar_dragged = exists(default_zoom_level_toolbar_customize_page_pattern, Settings.SITE_LOAD_TIMEOUT,
+                                      top_screen_region)
+        assert_true(self, zoom_toolbar_dragged, 'Zoom controls successfully dragged and dropped in toolbar.')
 
         close_customize_page()
 
@@ -118,18 +118,18 @@ class Test(BaseTest):
         # Customize Firefox: set a theme, change a few button position, pin a tab, etc.
         click_hamburger_menu_option('Customize...')
 
-        expected = exists(Customize.THEMES_DEFAULT_SET, Settings.FIREFOX_TIMEOUT, bottom_half_region)
-        assert_true(self, expected, 'Themes button is available.')
+        theme_button_available = exists(Customize.THEMES_DEFAULT_SET, Settings.FIREFOX_TIMEOUT, bottom_half_region)
+        assert_true(self, theme_button_available, 'Themes button is available.')
 
         click(Customize.THEMES_DEFAULT_SET)
 
-        expected = exists(Customize.DARK_THEME_OPTION, Settings.FIREFOX_TIMEOUT, bottom_half_region)
-        assert_true(self, expected, 'Dark theme option is available.')
+        dark_theme_option_available = exists(Customize.DARK_THEME_OPTION, Settings.FIREFOX_TIMEOUT, bottom_half_region)
+        assert_true(self, dark_theme_option_available, 'Dark theme option is available.')
 
         click(Customize.DARK_THEME_OPTION)
 
-        expected = exists(Customize.DARK_THEME_SET, Settings.FIREFOX_TIMEOUT, bottom_half_region)
-        assert_true(self, expected, 'Dark theme is set.')
+        dark_theme_is_set = exists(Customize.DARK_THEME_SET, Settings.FIREFOX_TIMEOUT, bottom_half_region)
+        assert_true(self, dark_theme_is_set, 'Dark theme is set.')
 
         close_customize_page()
 
