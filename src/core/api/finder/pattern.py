@@ -41,7 +41,7 @@ class Pattern:
             path = from_path
         name, scale = _parse_name(os.path.split(path)[1])
 
-        image = cv2.imread(path,cv2.IMREAD_COLOR)
+        image = cv2.imread(path, cv2.IMREAD_COLOR)
 
         self.image_name = name
         self.image_path = path

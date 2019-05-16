@@ -42,7 +42,7 @@ class ScreenshotImage:
 
         self._raw_image = _region_to_image(screen_region)
         self._gray_array = _convert_image_to_gray(self._raw_image)
-        self._color_array=_convert_image_to_color(self._raw_image)
+        self._color_array = _convert_image_to_color(self._raw_image)
 
 
         height, width = self._gray_array.shape
@@ -61,7 +61,7 @@ class ScreenshotImage:
             self._color_array = cv2.resize(self._color_array,
                                           dsize=(self.width, self.height),
                                           interpolation=cv2.INTER_CUBIC)
-            self._gray_array=cv2.resize(self._gray_array,
+            self._gray_array = cv2.resize(self._gray_array,
                                           dsize=(self.width, self.height),
                                           interpolation=cv2.INTER_CUBIC)
 
