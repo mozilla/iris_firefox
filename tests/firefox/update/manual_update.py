@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         preferences={'app.update.auto': True},
         enabled=False
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
 

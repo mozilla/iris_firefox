@@ -19,7 +19,7 @@ class Test(FirefoxTest):
                      },
         enabled=False
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
 
         update_restart_pattern = Pattern('background_update_menu_notification.png')
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
