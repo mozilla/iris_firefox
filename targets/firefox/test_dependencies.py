@@ -20,3 +20,4 @@ from targets.firefox.firefox_ui.helpers.history_test_utils import *
 from targets.firefox.firefox_ui.tabs import Tabs
 from targets.firefox.firefox_ui.download_dialog import DownloadDialog
 from targets.firefox.firefox_ui.about_preferences import AboutPreferences
+from targets.firefox.firefox_ui.about_addons import *
