@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.meta = 'The form inputs that were previously saved in a normal session are remembered in ' \
                     'Private Browsing session.'
         self.test_case_id = '101666'
-        self.test_suite_id = '1956'
+        self.test_suite_id = '1826'
         self.locales = ['en-US']
 
     def setup(self):

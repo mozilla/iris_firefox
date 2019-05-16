@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Autofill is not automatically performed in Private Browsing.'
         self.test_case_id = '101673'
-        self.test_suite_id = '1956'
+        self.test_suite_id = '1826'
         self.locales = ['en-US']
         self.enabled = False
 

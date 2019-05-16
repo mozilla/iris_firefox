@@ -13,7 +13,7 @@ class Test(BaseTest):
         self.meta = 'Credit Card form inputs that were previously saved in a normal session are remembered in Private '\
                     'Browsing session '
         self.test_case_id = '101667'
-        self.test_suite_id = '1956'
+        self.test_suite_id = '1826'
         self.locales = ['en-US']
 
     def setup(self):
