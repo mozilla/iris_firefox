@@ -220,7 +220,7 @@ def get_image_names(path):
 
 
 def get_failing_code(file, line):
-    f = open(file, 'rb', encoding="utf8").readlines()
+    f = open(file, 'rb').readlines()
     lines = []
     num_lines = 10
     if len(f) < num_lines:
