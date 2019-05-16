@@ -11,15 +11,28 @@ echo -e "${GREEN}   --->   Check and install Homebrew${NC} \n"
 command -v brew >/dev/null 2>&1 || { echo >&2 "Installing Homebrew Now"; \
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; }
 
-echo -e "\n${GREEN}  --->  installing/updating Python 3 ${NC} \n"
+install_python37 () {
+    brew install python3
+    brew link --overwrite python3
+    export PATH=/usr/local/share/python:$PATH
+}
+
+echo -e "\n${GREEN}  --->  installing/updating Python 3.7 ${NC} \n"
 
 if command -v python3 &>/dev/null; then
-    echo -e "\n${GREEN}  --->  Skipping Python 3 install. Already installed. ${NC}\n"
+    if [[ $(python3 --version | grep "Python 3.7") =~ 3.7 ]]; then
+        echo -e "\n${GREEN} --->  Skipping Python 3.7 install. Already installed. ${NC}\n"--version | grep "Python 3.7"
+    elif command -v python3.7 &>/dev/null; then
+        echo -e "\n${GREEN} ---> Verified for specific python3.7. Skipped install. Already installed. ${NC}\n"--version | grep "Python 3.7"
+    else
+        echo -e "\n${GREEN}  --->  Installing Python 3.7 #####${NC}\n"
+        install_python37
+    fi
 else
-    brew install python
-    brew link python
-    export PATH=/usr/local/share/python:$PATH
+    echo -e "\n${GREEN}  --->  Installing Python 3.7 #####${NC}\n"
+    install_python37
 fi
+
 
 echo -e "\n${GREEN} --->  Installing Tesseract ${NC} \n"
 if command -v tesseract -v >/dev/null 2>&1; then
@@ -41,25 +54,34 @@ brew install p7zip
 echo -e "\n${GREEN}  --->  installing/updating xquartz ${NC} \n"
 brew cask install xquartz
 
+echo -e "\n${GREEN}  --->  installing/updating firefox ${NC} \n"
+if [[ $(mdfind "kMDItemKind == 'Application'" | grep Firefox.app) =~ "Firefox.app" ]]; then
+    echo -e "\n${GREEN} --->  Skipping Firefox install. Already installed. ${NC}\n"
+else
+    echo -e "\n${GREEN}  --->  installing Firefox ${NC}\n"
+    brew cask install firefox
+fi
+
 echo -e "\n${GREEN}  --->  installing/upgrading pipenv ${NC}\n"
 if command -v pipenv &>/dev/null; then
     brew upgrade pipenv
 else
+    echo -e "\n${GREEN}  --->  installing pipenv ${NC}\n"
     brew install pipenv
 fi
 
 echo -e "\n${GREEN}--->  Installing pyobjc library #####${NC}\n"
-if [[ $(pip show pyobjc | grep Name:) =~ "pyobjc" ]]; then
+if [[ $(pip3.7 show pyobjc | grep Name:) =~ "pyobjc" ]]; then
     echo -e "${GREEN}  --->  Skipping pyobjc install. Already installed. ${NC}\n"
 else
-    pip install -U pyobjc
+    pip3.7 install -U pyobjc
 fi
 
 echo -e "\n${GREEN}--->  Installing pyobjc-core library #####${NC}\n"
-if [[ $(pip show pyobjc-core | grep Name:) =~ "pyobjc-core" ]]; then
+if [[ $(pip3.7 show pyobjc-core | grep Name:) =~ "pyobjc-core" ]]; then
     echo -e "${GREEN}  --->  Skipping pyobjc-core install. Already installed. ${NC}\n"
 else
-    pip install -U pyobjc-core
+    pip3.7 install -U pyobjc-core
 fi
 
 # Exporting settings to .bash_profile or .zshrc

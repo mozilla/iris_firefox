@@ -23,6 +23,7 @@ mozinfo = "==1.0.0"
 mozlog = "==4.0"
 mozrunner = "==7.4.0"
 mss = "==4.0.1"
+more-itertools = "==5.0.0"
 pytest = "*"
 pygithub = "*"
 bugzilla = "*"
@@ -35,3 +36,5 @@ xlib = {platform_system = "== 'Linux'",version = "==0.21"}
 pylint = "*"
 pep8 = "*"
 
+[requires]
+python_version = "3.7"
