@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Form inputs are not saved if they are performed inside a private browsing session.'
         self.test_case_id = '101669'
-        self.test_suite_id = '1956'
+        self.test_suite_id = '1826'
         self.locales = ['en-US']
         self.set_profile_pref({'extensions.formautofill.available': 'on'})
 

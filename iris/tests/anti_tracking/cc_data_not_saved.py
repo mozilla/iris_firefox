@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Credit Card form inputs are not saved if they are given inside a Private Browsing session.'
         self.test_case_id = '101668'
-        self.test_suite_id = '1956'
+        self.test_suite_id = '1826'
         self.locales = ['en-US']
         self.set_profile_pref({'extensions.formautofill.available': 'on',
                                'extensions.formautofill.creditCards.available': True})

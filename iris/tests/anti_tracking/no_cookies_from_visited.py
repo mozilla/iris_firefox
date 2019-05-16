@@ -11,7 +11,7 @@ class Test(BaseTest):
     def __init__(self):
         BaseTest.__init__(self)
         self.test_case_id = '105525'
-        self.test_suite_id = '1956'
+        self.test_suite_id = '1826'
         self.meta = 'Firefox can be set to no longer accept cookies from visited websites.'
         self.locale = ['en-US']
 

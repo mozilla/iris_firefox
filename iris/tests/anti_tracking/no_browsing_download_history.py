@@ -12,7 +12,7 @@ class Test(BaseTest):
         BaseTest.__init__(self)
         self.meta = 'Firefox can be set to no longer remember browsing and download history.'
         self.test_case_id = '105208'
-        self.test_suite_id = '1956'
+        self.test_suite_id = '1826'
         self.locale = ['en-US']
 
     def setup(self):
