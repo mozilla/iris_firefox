@@ -32,5 +32,5 @@ class Test(FirefoxTest):
             raise FindError('Clear Recent History button NOT found, aborting.')
 
         # Check that the Clear Recent History window was dismissed properly.
-        expected = wait_vanish(clear_recent_history_window_pattern.similar(0.9), 10)
-        assert expected, 'Clear Recent History window was dismissed properly.'
+        expected = exists(clear_recent_history_window_pattern.similar(0.9), 10)
+        assert expected is not True, 'Clear Recent History window was dismissed properly.'

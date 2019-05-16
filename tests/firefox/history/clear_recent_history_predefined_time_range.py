@@ -50,7 +50,7 @@ class Test(FirefoxTest):
 
         try:
             expected_4 = wait_vanish(history_title_pattern, 10)
-            assert  expected_4, 'Today\'s history was removed successfully.'
+            assert expected_4, 'Today\'s history was removed successfully.'
         except FindError:
             raise FindError('Today\'s history is still present.')
         expected_5 = exists(history_items_old_pattern, 10)

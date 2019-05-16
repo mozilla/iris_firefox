@@ -51,7 +51,7 @@ class Test(FirefoxTest):
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
 
-        expected_4 = wait_vanish(iris_bookmark, 5)
-        assert expected_4, 'Iris page is not displayed in the History menu list.'
+        expected_4 = exists(iris_bookmark, 5)
+        assert expected_4 is not True, 'Iris page is not displayed in the History menu list.'
 
         type(Key.ESC)

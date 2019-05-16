@@ -63,8 +63,8 @@ class Test(FirefoxTest):
         click(clear_now_button_pattern)
 
         # Check that the Clear Recent History window was dismissed properly.
-        expected = wait_vanish(clear_recent_history_window_pattern.similar(0.9), 10)
-        assert expected, 'Clear Recent History window was dismissed properly.'
+        expected = exists(clear_recent_history_window_pattern.similar(0.9), 10)
+        assert expected is not True, 'Clear Recent History window was dismissed properly.'
 
         # ASSERTS.
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -77,14 +77,14 @@ class Test(FirefoxTest):
         # Check that the history is empty.
         region = Screen().new_region(0, 150, Screen.SCREEN_WIDTH / 2,Screen.SCREEN_HEIGHT / 2)
 
-        expected = region.wait_vanish(searched_history_logo_pattern, 10)
-        assert expected, 'History is empty.'
+        expected = region.exists(searched_history_logo_pattern, 10)
+        assert expected is not True, 'History is empty.'
 
         # Close the History sidebar.
         history_sidebar()
 
-        expected = wait_vanish(history_pattern, 10)
-        assert expected, 'History sidebar is closed.'
+        expected = exists(history_pattern, 10)
+        assert expected is not True, 'History sidebar is closed.'
 
         # Check that cookies were deleted.
         # Access the privacy page.
@@ -117,8 +117,8 @@ class Test(FirefoxTest):
         # Close and check the "Saved Logins" window.
         type(Key.ESC)
 
-        expected = wait_vanish(saved_logins_window_pattern, 10)
-        assert expected, '\"Saved Logins\" window is NOT displayed.'
+        expected = exists(saved_logins_window_pattern, 10)
+        assert expected is not True, '\"Saved Logins\" window is NOT displayed.'
 
         # Access the "Manage Data" window.
         expected = exists(manage_data_pattern, 10)
@@ -139,8 +139,8 @@ class Test(FirefoxTest):
         # Close and check the "Manage Cookies and Site Data" window.
         type(Key.ESC)
 
-        expected = wait_vanish(manage_data_title_pattern, 10)
-        assert expected, '\"Manage Cookies and Site Data\" window is NOT displayed.'
+        expected = exists(manage_data_title_pattern, 10)
+        assert expected is not True, '\"Manage Cookies and Site Data\" window is NOT displayed.'
 
         # Check that no disk space is used for cookies, site data and cache.
         expected = exists('using 0', 10)

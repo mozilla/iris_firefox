@@ -43,7 +43,6 @@ class Test(FirefoxTest):
         expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-
         right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_SMALL,keyboard_action='d')
 
         try:
@@ -55,5 +54,5 @@ class Test(FirefoxTest):
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
 
-        expected_6 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.9), 5)
-        assert expected_6, 'Mozilla page is not displayed in the Recent History list.'
+        expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.9), 5)
+        assert expected_6 is not True, 'Mozilla page is not displayed in the Recent History list.'

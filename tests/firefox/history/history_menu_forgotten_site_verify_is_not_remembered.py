@@ -53,9 +53,7 @@ class Test(FirefoxTest):
         expected_3 = exists(mozilla_bookmark_focus, 10)
         assert expected_3, 'Mozilla page is displayed in the History list successfully.'
 
-
         right_click_and_type(mozilla_bookmark_focus, keyboard_action='f')
-
 
         try:
             expected_4 = wait_vanish(mozilla_bookmark_focus, 10)
@@ -68,12 +66,12 @@ class Test(FirefoxTest):
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
 
-        expected_5 = wait_vanish(recent_history_mozilla_pattern, 5)
-        assert expected_5, 'Mozilla page is not displayed in the Recent History list.'
+        expected_5 = exists(recent_history_mozilla_pattern, 5)
+        assert expected_5 is not True, 'Mozilla page is not displayed in the Recent History list.'
 
         # Check that the forgotten page is not auto-completed in the URL bar.
         select_location_bar()
         paste('http://127.0.0.1:2000/m')
 
-        expected_6 = wait_vanish(mozilla_autocomplete.similar(0.9), 10)
-        assert expected_6, 'Mozilla page is not auto-completed in the URL bar.'
+        expected_6 = exists(mozilla_autocomplete.similar(0.9), 10)
+        assert expected_6 is not True, 'Mozilla page is not auto-completed in the URL bar.'

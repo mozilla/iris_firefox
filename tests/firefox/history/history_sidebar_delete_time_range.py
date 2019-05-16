@@ -37,6 +37,5 @@ class Test(FirefoxTest):
         # Delete a time range from the History sidebar.
         right_click_and_type(history_today_sidebar_pattern,keyboard_action='d')
 
-
-        expected_4 = wait_vanish(history_today_sidebar_pattern, 5)
-        assert expected_4, 'Time range was deleted successfully from the history sidebar.'
+        expected_4 = exists(history_today_sidebar_pattern, 5)
+        assert expected_4 is not True, 'Time range was deleted successfully from the history sidebar.'

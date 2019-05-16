@@ -41,7 +41,6 @@ class Test(FirefoxTest):
         # Delete Mozilla page.
         right_click_and_type(mozilla_bookmark_focus, keyboard_action='d')
 
-
         try:
             expected_3 = wait_vanish(mozilla_bookmark_focus, 10)
             assert expected_3, 'Mozilla page was deleted successfully from the history.'
@@ -54,5 +53,5 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('http://127.0.0.1:2000/m')
 
-        expected_4 = wait_vanish(mozilla_autocomplete.similar(0.9), 10)
-        assert expected_4, 'Mozilla page is not auto-completed in URL bar.'
+        expected_4 = exists(mozilla_autocomplete.similar(0.9), 10)
+        assert expected_4 is not True, 'Mozilla page is not auto-completed in URL bar.'

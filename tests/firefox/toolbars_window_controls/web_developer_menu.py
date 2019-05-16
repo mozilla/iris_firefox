@@ -31,8 +31,11 @@ class Test(FirefoxTest):
             right_corner_region.click(Pattern('web_developer_close_button.png'))
             logger.debug('Closing web developer bar.')
         if OSHelper.is_mac():
-            close_button_assert = left_corner_region.wait_vanish(Pattern('web_developer_close_button.png'), 5)
-            assert close_button_assert, 'Bar was closed.'
+            try:
+                close_button_assert = left_corner_region.wait_vanish(Pattern('web_developer_close_button.png'), 5)
+                assert close_button_assert, 'Bar was closed.'
+            except FindError:
+                raise FindError('Bar was NOT closed.')
 
             open_web_developer_menu()
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
@@ -45,8 +48,11 @@ class Test(FirefoxTest):
                 assert resize_region.exists(word), 'Item is present: \'{}\''.format(word)
 
         else:
-            dev_close_button_assert = right_corner_region.wait_vanish(Pattern('web_developer_close_button.png'), 4)
-            assert dev_close_button_assert, 'Web developer bar was closed.'
+            try:
+                dev_close_button_assert = right_corner_region.wait_vanish(Pattern('web_developer_close_button.png'), 4)
+                assert dev_close_button_assert, 'Web developer bar was closed.'
+            except FindError:
+                raise FindError('Web developer bar was NOT closed.')
 
             open_web_developer_menu()
             time.sleep(Settings.UI_DELAY_LONG)

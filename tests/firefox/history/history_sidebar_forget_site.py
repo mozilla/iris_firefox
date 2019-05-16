@@ -46,7 +46,6 @@ class Test(FirefoxTest):
 
         right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_SMALL, keyboard_action='f')
 
-
         try:
             expected_5 = left_upper_corner.wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
             assert expected_5, 'Mozilla page was deleted successfully from the history.'
@@ -56,5 +55,5 @@ class Test(FirefoxTest):
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
 
-        expected_6 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.9), 10)
-        assert expected_6, 'Mozilla page is not displayed in the Recent History list.'
+        expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.9), 10)
+        assert expected_6 is not True, 'Mozilla page is not displayed in the Recent History list.'
