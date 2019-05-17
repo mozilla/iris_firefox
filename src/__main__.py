@@ -103,10 +103,8 @@ def get_target(target_name):
     logger.info('Desired target: %s' % target_name)
     try:
         my_module = importlib.import_module('targets.%s.app' % target_name)
-        logger.info('1')
         try:
             target_plugin = my_module.Target()
-            logger.info('2')
             logger.info('Found target named %s' % target_plugin.target_name)
             return target_plugin
         except NameError:
