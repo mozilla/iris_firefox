@@ -128,13 +128,13 @@ class Region:
         """
         return find_all(ps, self._area)
 
-    def hover(self, ps=None, align=None):
+    def hover(self, lps=None, align=None):
         """Mouse hover.
 
-        :param ps: Pattern or String.
+        :param ps: Location or Pattern or String.
         :param align: Hover location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         """
-        return hover(ps, self._area, align)
+        return hover(lps, self._area, align)
 
     def wait(self, ps=None, timeout=None) -> bool or FindError:
         """Wait for a Pattern or image to appear.

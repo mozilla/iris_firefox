@@ -63,7 +63,7 @@ class Test(FirefoxTest):
             if expected:
                 tab = find(mozilla_tab_not_focused)
                 region = Region(tab.x - 10, tab.y - 10, 220, 80)
-                region.hover(mozilla_tab_not_focused, align=Alignment.CENTER)
+                region.hover(tab)
 
                 expected = exists(mozilla_hover, 10)
                 assert expected is True, 'Mozilla page is hovered.'
@@ -118,7 +118,7 @@ class Test(FirefoxTest):
             if expected:
                 tab = find(mozilla_tab_not_focused_light_theme)
                 region = Region(tab.x, tab.y - 10, 220, 80)
-                region.hover(mozilla_tab_not_focused_light_theme, align=Alignment.CENTER)
+                region.hover(tab)
 
                 expected = exists(mozilla_hover, 10)
                 assert expected is True, 'Mozilla page is hovered.'
@@ -173,7 +173,7 @@ class Test(FirefoxTest):
             if expected:
                 tab = find(mozilla_tab_not_focused)
                 region = Region(tab.x - 10, tab.y - 10, 220, 80)
-                region.hover(mozilla_tab_not_focused, align=Alignment.CENTER)
+                region.hover(tab)
 
                 expected = exists(mozilla_hover_dark_theme, 10)
                 assert expected is True, 'Mozilla page is hovered.'

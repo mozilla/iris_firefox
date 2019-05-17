@@ -8,6 +8,7 @@ from src.core.api.errors import FindError
 from src.core.api.finder.image_search import image_find
 from src.core.api.finder.text_search import text_find
 from src.core.api.finder.pattern import Pattern
+from src.core.api.location import Location
 from src.core.api.mouse.mouse_controller import Mouse
 from src.core.api.rectangle import Rectangle
 
@@ -17,33 +18,35 @@ except AttributeError:
     from src.core.api.enums import Button
 
 
-def move(ps: Pattern or str, duration: int = None, region: Rectangle = None, align: Alignment = None):
+def move(lps: Location or Pattern or str, duration: int = None, region: Rectangle = None, align: Alignment = None):
     """Mouse Move.
 
-    :param ps: Pattern or String.
+    :param ps: Location or Pattern or String.
     :param duration: Speed of hovering from current location to target.
     :param region: Region object in order to minimize the area.
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
     :return: None.
     """
     click_location = None
-    if isinstance(ps, Pattern):
-        click_location = _get_pattern_click_location(ps, region, align)
-    if isinstance(ps, str):
-        click_location = _get_string_click_location(ps, region, align)
+    if isinstance(lps, Pattern):
+        click_location = _get_pattern_click_location(lps, region, align)
+    elif isinstance(lps, str):
+        click_location = _get_string_click_location(lps, region, align)
+    else:
+        click_location = lps
 
     Mouse().move(click_location, duration)
 
 
-def hover(ps: Pattern or str = None, region: Rectangle = None, align: Alignment = None):
+def hover(lps: Location or Pattern or str = None, region: Rectangle = None, align: Alignment = None):
     """Mouse Hover.
 
-    :param ps: Pattern or String.
+    :param ps: Location or Pattern or String.
     :param region: Region object in order to minimize the area.
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
     :return: None.
     """
-    move(ps, 1, region, align)
+    move(lps, 1, region, align)
 
 
 def press(ps: Pattern or str, duration: int = None, region: Rectangle = None, button: Button = Button.left,
