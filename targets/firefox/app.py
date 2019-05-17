@@ -5,6 +5,7 @@
 import argparse
 import logging
 import os
+import sqlite3
 from multiprocessing import Process
 import shutil
 
@@ -182,8 +183,8 @@ class Target(BaseTarget):
                 if os.path.exists(profile_instance.profile):
                     try:
                         shutil.rmtree(profile_instance.profile, ignore_errors=True)
-                    except OSError as e:
-                        logger.error('Error: %s - %s.' % (e.filename, e.strerror))
+                    except sqlite3.OperationalError:
+                        pass
                 else:
                     logger.error('Invalid Path: %s' % profile_instance.profile)
         except (AttributeError, KeyError):
