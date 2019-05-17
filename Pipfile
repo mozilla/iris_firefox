@@ -17,7 +17,7 @@ packaging = "==19.0"
 gitpython = "==2.1.11"
 pynput = "==1.4"
 mozinstall = "==2.0.0"
-mozdownload = {git = 'https://github.com/AndreiH/mozdownload.git',ref = 'mozdownload_python3'}
+mozdownload = "==1.26"
 mozversion = "==2.1.0"
 mozinfo = "==1.0.0"
 mozlog = "==4.0"
