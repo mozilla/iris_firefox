@@ -114,6 +114,7 @@ class _Settings:
                  mouse_scroll_step=DEFAULT_MOUSE_SCROLL_STEP,
                  firefox_timeout=DEFAULT_FIREFOX_TIMEOUT,
                  key_shortcut_delay=DEFAULT_KEY_SHORTCUT_DELAY,
+                 site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT,
                  default_fx_prefs=DEFAULT_FX_PREFS):
 
         self.wait_scan_rate = wait_scan_rate
@@ -136,6 +137,7 @@ class _Settings:
         self.key_shortcut_delay = key_shortcut_delay
         self.firefox_timeout = firefox_timeout
         self.default_fx_prefs = default_fx_prefs
+        self.site_load_timeout = site_load_timeout
 
     @property
     def type_delay(self):
@@ -159,6 +161,10 @@ class _Settings:
     @property
     def click_delay(self):
         return self._click_delay
+
+    @property
+    def SITE_LOAD_TIMEOUT(self):
+        return self.site_load_timeout
 
     @click_delay.setter
     def click_delay(self, value):
