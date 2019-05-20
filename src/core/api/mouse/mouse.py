@@ -21,7 +21,7 @@ except AttributeError:
 def move(lps: Location or Pattern or str, duration: int = None, region: Rectangle = None, align: Alignment = None):
     """Mouse Move.
 
-    :param ps: Location or Pattern or String.
+    :param lps: Location or Pattern or String.
     :param duration: Speed of hovering from current location to target.
     :param region: Region object in order to minimize the area.
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
@@ -41,7 +41,7 @@ def move(lps: Location or Pattern or str, duration: int = None, region: Rectangl
 def hover(lps: Location or Pattern or str = None, region: Rectangle = None, align: Alignment = None):
     """Mouse Hover.
 
-    :param ps: Location or Pattern or String.
+    :param lps: Location or Pattern or String.
     :param region: Region object in order to minimize the area.
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
     :return: None.
@@ -49,11 +49,11 @@ def hover(lps: Location or Pattern or str = None, region: Rectangle = None, alig
     move(lps, 1, region, align)
 
 
-def press(ps: Pattern or str, duration: int = None, region: Rectangle = None, button: Button = Button.left,
+def press(lps: Location or Pattern or str, duration: int = None, region: Rectangle = None, button: Button = Button.left,
           align: Alignment = None):
     """Mouse Press.
 
-    :param ps: Pattern or String.
+    :param lps: Location or Pattern or String.
     :param duration: Speed of hovering from current location to target.
     :param region: Region object in order to minimize the area.
     :param button: 'left','right' or 'middle'.
@@ -61,19 +61,21 @@ def press(ps: Pattern or str, duration: int = None, region: Rectangle = None, bu
     :return: None.
     """
     click_location = None
-    if isinstance(ps, Pattern):
-        click_location = _get_pattern_click_location(ps, region, align)
-    if isinstance(ps, str):
-        click_location = _get_string_click_location(ps, region, align)
+    if isinstance(lps, Pattern):
+        click_location = _get_pattern_click_location(lps, region, align)
+    elif isinstance(lps, str):
+        click_location = _get_string_click_location(lps, region, align)
+    else:
+        click_location = lps
 
     Mouse().press(click_location, duration, button)
 
 
-def release(ps: Pattern or str, duration: int = None, region: Rectangle = None, button: Button = Button.left,
-            align: Alignment = None):
+def release(lps: Location or Pattern or str, duration: int = None, region: Rectangle = None,
+            button: Button = Button.left, align: Alignment = None):
     """Mouse Release.
 
-    :param ps: Pattern or String.
+    :param lps: Location or Pattern or String.
     :param duration: Speed of hovering from current location to target.
     :param region: Region object in order to minimize the area.
     :param button: 'left','right' or 'middle'.
@@ -81,18 +83,21 @@ def release(ps: Pattern or str, duration: int = None, region: Rectangle = None, 
     :return: None.
     """
     click_location = None
-    if isinstance(ps, Pattern):
-        click_location = _get_pattern_click_location(ps, region, align)
-    if isinstance(ps, str):
-        click_location = _get_string_click_location(ps, region, align)
+    if isinstance(lps, Pattern):
+        click_location = _get_pattern_click_location(lps, region, align)
+    elif isinstance(lps, str):
+        click_location = _get_string_click_location(lps, region, align)
+    else:
+        click_location = lps
 
     Mouse().release(click_location, duration, button)
 
 
-def click(ps: Pattern or str = None, duration: int = None, region: Rectangle = None, align: Alignment = None):
+def click(lps: Location or Pattern or str = None, duration: int = None, region: Rectangle = None,
+          align: Alignment = None):
     """Mouse Left Click.
 
-    :param ps: Pattern or String.
+    :param lps: Location or Pattern or String.
     :param duration: Speed of hovering from current location to target.
     :param region: Region object in order to minimize the area.
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
@@ -100,18 +105,21 @@ def click(ps: Pattern or str = None, duration: int = None, region: Rectangle = N
     """
 
     click_location = None
-    if isinstance(ps, Pattern):
-        click_location = _get_pattern_click_location(ps, region, align)
-    if isinstance(ps, str):
-        click_location = _get_string_click_location(ps, region, align)
+    if isinstance(lps, Pattern):
+        click_location = _get_pattern_click_location(lps, region, align)
+    elif isinstance(lps, str):
+        click_location = _get_string_click_location(lps, region, align)
+    else:
+        click_location = lps
 
     Mouse().general_click(click_location, duration, Button.left, 1)
 
 
-def right_click(ps: Pattern or str = None, duration: int = None, region: Rectangle = None, align: Alignment = None):
+def right_click(lps: Location or Pattern or str = None, duration: int = None, region: Rectangle = None,
+                align: Alignment = None):
     """Mouse Right Click.
 
-    :param ps: Pattern or String.
+    :param lps: Location or Pattern or String.
     :param duration: Speed of hovering from current location to target.
     :param region: Region object in order to minimize the area.
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
@@ -119,18 +127,21 @@ def right_click(ps: Pattern or str = None, duration: int = None, region: Rectang
     """
 
     click_location = None
-    if isinstance(ps, Pattern):
-        click_location = _get_pattern_click_location(ps, region, align)
-    if isinstance(ps, str):
-        click_location = _get_string_click_location(ps, region, align)
+    if isinstance(lps, Pattern):
+        click_location = _get_pattern_click_location(lps, region, align)
+    elif isinstance(lps, str):
+        click_location = _get_string_click_location(lps, region, align)
+    else:
+        click_location = lps
 
     Mouse().general_click(click_location, duration, Button.right, 1)
 
 
-def double_click(ps: Pattern or str = None, duration: int = None, region: Rectangle = None, align: Alignment = None):
+def double_click(lps: Location or Pattern or str = None, duration: int = None, region: Rectangle = None,
+                 align: Alignment = None):
     """Mouse Double Click.
 
-    :param ps: Pattern or String.
+    :param lps: Location or Pattern or String.
     :param duration: Speed of hovering from current location to target.
     :param region: Region object in order to minimize the area.
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
@@ -138,15 +149,18 @@ def double_click(ps: Pattern or str = None, duration: int = None, region: Rectan
     """
 
     click_location = None
-    if isinstance(ps, Pattern):
-        click_location = _get_pattern_click_location(ps, region, align)
-    if isinstance(ps, str):
-        click_location = _get_string_click_location(ps, region, align)
+    if isinstance(lps, Pattern):
+        click_location = _get_pattern_click_location(lps, region, align)
+    elif isinstance(lps, str):
+        click_location = _get_string_click_location(lps, region, align)
+    else:
+        click_location = lps
 
     Mouse().general_click(click_location, duration, Button.left, 2)
 
 
-def drag_drop(drag_from: Pattern or str, drop_to: Pattern or str, region: Rectangle = None, duration: float = None,
+def drag_drop(drag_from: Location or Pattern or str, drop_to: Location or Pattern or str, region: Rectangle = None,
+              duration: float = None,
               align: Alignment = None):
     """Mouse drag and drop.
 
@@ -164,11 +178,15 @@ def drag_drop(drag_from: Pattern or str, drop_to: Pattern or str, region: Rectan
         loc_from = _get_pattern_click_location(drag_from, region, align)
     if isinstance(drag_from, str):
         loc_from = _get_string_click_location(drag_from, region, align)
+    if isinstance(drag_from, Location):
+        loc_from = drag_from
 
     if isinstance(drop_to, Pattern):
         loc_to = _get_pattern_click_location(drop_to, region, align)
     if isinstance(drop_to, str):
         loc_to = _get_string_click_location(drop_to, region, align)
+    if isinstance(drop_to, Location):
+        loc_to = drop_to
 
     Mouse().drag_and_drop(loc_from, loc_to, duration)
 

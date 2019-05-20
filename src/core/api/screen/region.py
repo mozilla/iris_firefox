@@ -131,7 +131,7 @@ class Region:
     def hover(self, lps=None, align=None):
         """Mouse hover.
 
-        :param ps: Location or Pattern or String.
+        :param lps: Location or Pattern or String.
         :param align: Hover location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         """
         return hover(lps, self._area, align)
@@ -172,72 +172,72 @@ class Region:
         """
         highlight(self, duration, color)
 
-    def mouse_move(self, ps=None, duration=None, align=None):
+    def mouse_move(self, lps=None, duration=None, align=None):
         """Mouse move.
 
-        :param ps: Pattern or String.
+        :param lps: Location, Pattern or String.
         :param duration: Speed of hovering from current location to target.
         :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         :return: None.
         """
-        return move(ps, duration, self._area, align)
+        return move(lps, duration, self._area, align)
 
-    def mouse_press(self, ps=None, duration=None, button=None, align=None):
+    def mouse_press(self, lps=None, duration=None, button=None, align=None):
         """Mouse press.
 
-        :param ps: Pattern or String.
+        :param lps: Location, Pattern or String.
         :param duration: Speed of hovering from current location to target.
         :param button: 'left','right' or 'middle'.
         :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         :return: None.
         """
-        return press(ps, duration, self._area, button, align)
+        return press(lps, duration, self._area, button, align)
 
-    def mouse_release(self, ps=None, duration=None, button=None, align=None):
+    def mouse_release(self, lps=None, duration=None, button=None, align=None):
         """Mouse release.
 
-        :param ps: Pattern or String.
+        :param lps: Location, Pattern or String.
         :param duration: Speed of hovering from current location to target.
         :param button: 'left','right' or 'middle'.
         :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         :return: None.
         """
-        return release(ps, duration, self._area, button, align)
+        return release(lps, duration, self._area, button, align)
 
-    def click(self, ps=None, duration=None, align=None):
+    def click(self, lps=None, duration=None, align=None):
         """Mouse left click.
 
-        :param ps: Pattern or String.
+        :param lps: Location, Pattern or String.
         :param duration: Speed of hovering from current location to target.
         :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         :return: None.
         """
-        return click(ps, duration, self._area, align)
+        return click(lps, duration, self._area, align)
 
-    def right_click(self, ps=None, duration=None, align=None):
+    def right_click(self, lps=None, duration=None, align=None):
         """Mouse right click.
 
-        :param ps: Pattern or String.
+        :param lps: Location, Pattern or String.
         :param duration: Speed of hovering from current location to target.
         :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         :return: None.
         """
-        return right_click(ps, duration, self._area, align)
+        return right_click(lps, duration, self._area, align)
 
-    def double_click(self, ps=None, duration=None, align=None):
+    def double_click(self, lps=None, duration=None, align=None):
         """Mouse double click.
 
-        :param ps: Pattern or String.
+        :param lps: Location, Pattern or String.
         :param duration: Speed of hovering from current location to target.
         :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
         :return: None.
         """
-        return double_click(ps, duration, self._area, align)
+        return double_click(lps, duration, self._area, align)
 
     def drag_drop(self, drag_from=None, drop_to=None, duration=None, align=None):
         """Mouse drag and drop.
 
-        :param drag_from: Starting point for drag and drop. Can be pattern or String.
+        :param drag_from: Starting point for drag and drop. Can be Location, pattern or String.
         :param drop_to: Ending point for drag and drop. Can be pattern or String.
         :param duration: Speed of hovering from current location to target.
         :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
