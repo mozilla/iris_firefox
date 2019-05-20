@@ -53,7 +53,7 @@ class Test(FirefoxTest):
         # Deactivated assert for ebay because we no longer have the ebay search engine in some locations.
 
         # expected = region.exists(ebay_one_off_button_pattern, 10)
-        # assert_true(self, expected, 'The \'Ebay\' one-off button found.')
+        # assert expected is True,(self, expected, 'The \'Ebay\' one-off button found.')
 
         expected = region.exists(google_one_off_button_pattern, 10)
         assert expected, 'The \'Google\' one-off button found.'

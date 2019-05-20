@@ -77,15 +77,15 @@ def change_preference(pref_name, value):
         type(Key.SPACE)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        # type(Key.ENTER)
+        # time.sleep(Settings.DEFAULT_UI_DELAY)
 
         paste(pref_name)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.TAB)
         time.sleep(Settings.DEFAULT_UI_DELAY)
-        type(Key.TAB)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        # type(Key.TAB)
+        # time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
             retrieved_value = copy_to_clipboard()
