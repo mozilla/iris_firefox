@@ -56,8 +56,6 @@ class _Settings:
     DEFAULT_UI_DELAY_SHORT = 0.5
     DEFAULT_UI_DELAY_LONG = 2.5
     DEFAULT_SYSTEM_DELAY = 5
-    DEFAULT_TINY_FIREFOX_TIMEOUT = 3
-    DEFAULT_SHORT_FIREFOX_TIMEOUT = 5
     DEFAULT_FIREFOX_TIMEOUT = 10
     DEFAULT_FX_PREFS = {
         # Don't automatically update the application
@@ -114,11 +112,7 @@ class _Settings:
                  highlight_color=DEFAULT_HIGHLIGHT_COLOR,
                  highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS,
                  mouse_scroll_step=DEFAULT_MOUSE_SCROLL_STEP,
-                 tiny_firefox_timeout=DEFAULT_TINY_FIREFOX_TIMEOUT,
-                 short_firefox_timeout=DEFAULT_SHORT_FIREFOX_TIMEOUT,
                  firefox_timeout=DEFAULT_FIREFOX_TIMEOUT,
-                 site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT,
-                 heavy_site_load_timeout=DEFAULT_HEAVY_SITE_LOAD_TIMEOUT,
                  key_shortcut_delay=DEFAULT_KEY_SHORTCUT_DELAY,
                  site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT,
                  default_fx_prefs=DEFAULT_FX_PREFS):
@@ -141,11 +135,7 @@ class _Settings:
         self.highlight_thickness = highlight_thickness
         self.mouse_scroll_step = mouse_scroll_step
         self.key_shortcut_delay = key_shortcut_delay
-        self.tiny_firefox_timeout = tiny_firefox_timeout
-        self.short_firefox_timeout = short_firefox_timeout
         self.firefox_timeout = firefox_timeout
-        self.site_load_timeout = site_load_timeout
-        self.heavy_site_load_timeout = heavy_site_load_timeout
         self.default_fx_prefs = default_fx_prefs
         self.site_load_timeout = site_load_timeout
 
@@ -156,22 +146,6 @@ class _Settings:
     @property
     def FIREFOX_TIMEOUT(self):
         return self.firefox_timeout
-
-    @property
-    def TINY_FIREFOX_TIMEOUT(self):
-        return self.tiny_firefox_timeout
-
-    @property
-    def SHORT_FIREFOX_TIMEOUT(self):
-        return self.short_firefox_timeout
-
-    @property
-    def SITE_LOAD_TIMEOUT(self):
-        return self.site_load_timeout
-
-    @property
-    def HEAVY_SITE_LOAD_TIMEOUT(self):
-        return self.heavy_site_load_timeout
 
     @property
     def SYSTEM_DELAY(self):
