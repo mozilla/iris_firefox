@@ -185,7 +185,6 @@ def convert_test_list(test_list, only_failures=False):
                 if test_failed:
                     test_assert = {
                         'error': test.error.lstrip(), 'message': test.message.lstrip(), 'call_stack': test.traceback,
-                        'actual': test.actual, 'expected': test.expected,
                         'code': get_failing_code(test.node_name, int(test.line))
                     }
                     test_obj['assert'] = test_assert
