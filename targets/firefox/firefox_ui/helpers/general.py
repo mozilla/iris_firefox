@@ -77,15 +77,10 @@ def change_preference(pref_name, value):
         type(Key.SPACE)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        # type(Key.ENTER)
-        # time.sleep(Settings.DEFAULT_UI_DELAY)
-
         paste(pref_name)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.TAB)
         time.sleep(Settings.DEFAULT_UI_DELAY)
-        # type(Key.TAB)
-        # time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
             retrieved_value = copy_to_clipboard()
@@ -832,15 +827,10 @@ def scroll_until_pattern_found(pattern, dy=10, iterations=10, timeout=3):
     return False
 
 
-def right_click_and_type(target,delay=None,keyboard_action=None):
-
+def right_click_and_type(target, delay=None, keyboard_action=None):
     right_click(target)
     if delay:
         time.sleep(delay)
     else:
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
     type(text=keyboard_action)
-
-
-
-
