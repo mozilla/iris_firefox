@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 iris = {path = ".",editable = true}
+pygetwindow = "==0.0.4"
 pyautogui = "==0.9.41"
 pyscreeze = "==0.1.19"
 coloredlogs = "==10.0"
