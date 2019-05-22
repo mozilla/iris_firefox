@@ -159,6 +159,28 @@ def double_click(lps: Location or Pattern or str = None, duration: int = None, r
     Mouse().general_click(click_location, duration, Button.left, 2)
 
 
+def middle_click(lps: Location or Pattern or str = None, duration: int = None, region: Rectangle = None,
+                 align: Alignment = None):
+    """Mouse middle click. Wrapper over _general_click.
+
+    :param lps: Location or Pattern or String.
+    :param duration: Speed of hovering from current location to target.
+    :param region: Region object in order to minimize the area.
+    :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
+    :return: None.
+    """
+
+    click_location = None
+    if isinstance(lps, Pattern):
+        click_location = _get_pattern_click_location(lps, region, align)
+    elif isinstance(lps, str):
+        click_location = _get_string_click_location(lps, region, align)
+    else:
+        click_location = lps
+
+    Mouse().general_click(click_location, duration, Button.middle, 1)
+
+
 def drag_drop(drag_from: Location or Pattern or str, drop_to: Location or Pattern or str, region: Rectangle = None,
               duration: float = None,
               align: Alignment = None):
