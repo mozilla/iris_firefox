@@ -33,10 +33,10 @@ class EmailClient:
         self.targets = ast.literal_eval(get_config_property('Email', 'targets'))
 
     @staticmethod
-    def create_email_subject(application):
+    def create_email_subject(target):
         email_info = '[%s][%s]Iris Test Report %s' % (
-            application.target_name+" "+str(application.values['fx_version']) if application.target_name == 'Firefox'
-            else application.target_name, OSHelper.get_os_version().capitalize(), date.today())
+            target.target_name+" "+str(target.values['fx_version']) if target.target_name == 'Firefox'
+            else target.target_name, OSHelper.get_os_version().capitalize(), date.today())
         return email_info
 
     @staticmethod
@@ -52,7 +52,7 @@ class EmailClient:
         else:
             raise Exception('File %s is not present in path' % test_report_file)
 
-    def send_email_report(self, application: str, test_status: str, repo_details: str):
+    def send_email_report(self, target: str, test_status: str, repo_details: str):
         email = MIMEMultipart()
         body_message = ""
         if isinstance(repo_details, dict):
@@ -72,7 +72,7 @@ class EmailClient:
 
         email['From'] = self.sender
         email['To'] = ', '.join(self.targets)
-        email['Subject'] = self.create_email_subject(application)
+        email['Subject'] = self.create_email_subject(target)
 
         server = smtplib.SMTP_SSL(self.email_host, self.email_port)
 
@@ -92,7 +92,7 @@ class EmailClient:
                 logger.info('Email successfully sent to %s' % self.targets)
 
 
-def submit_email_report(application,result):
+def submit_email_report(target, result):
 
     """ PLACEHOLDER FOR EMAIL REPORT
         :param test_results: TEST RESULT SESSION
@@ -100,5 +100,4 @@ def submit_email_report(application,result):
     """
     logger.info(' --------------------------------------------------------- '+Color.BLUE+'Starting Email report:'+Color.END+' ----------------------------------------------------------\n')
     email_report = EmailClient()
-    email_report.send_email_report(application, str(result), PathManager.get_git_details())
-
+    email_report.send_email_report(target, str(result), PathManager.get_git_details())

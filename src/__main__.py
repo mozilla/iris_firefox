@@ -23,7 +23,7 @@ from src.core.api.keyboard.keyboard_util import check_keyboard_state
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
 from src.core.util.cleanup import *
-from src.core.util.app_loader import get_app_test_directory
+from src.core.util.target_loader import get_target_test_directory
 from src.core.util.arg_parser import get_core_args, set_core_arg
 from src.core.util.json_utils import create_target_json
 from src.core.util.local_web_server import LocalWebServer
@@ -56,8 +56,8 @@ def main():
 
                 pytest_args = user_result['tests']
 
-                # Extract target from response and update core arg for application/target
-                set_core_arg('application', user_result['target'])
+                # Extract target from response and update core arg for target
+                set_core_arg('target', user_result['target'])
 
                 # Extract settings from response
                 args = get_core_args()
@@ -70,7 +70,7 @@ def main():
                 exit(0)
 
         try:
-            target_plugin = get_target(args.application)
+            target_plugin = get_target(args.target)
             if settings is not None:
                 logger.debug('Passing settings to target: %s' % settings)
                 target_plugin.update_settings(settings)
@@ -82,7 +82,7 @@ def main():
             initialize_platform(args)
             pytest.main(pytest_args, plugins=[target_plugin])
         except ImportError:
-            logger.error('Could not load plugin for {} application'.format(args.application))
+            logger.error('Could not load plugin for {} target'.format(args.target))
             exit(1)
     else:
         logger.error('Failed platform verification.')
@@ -102,7 +102,7 @@ def show_control_center():
 def get_target(target_name):
     logger.info('Desired target: %s' % target_name)
     try:
-        my_module = importlib.import_module('targets.%s.app' % target_name)
+        my_module = importlib.import_module('targets.%s.main' % target_name)
         try:
             target_plugin = my_module.Target()
             logger.info('Found target named %s' % target_plugin.target_name)
@@ -127,7 +127,7 @@ def initialize_platform(args):
 
 
 def get_test_params():
-    tests_to_execute = get_app_test_directory()
+    tests_to_execute = get_target_test_directory()
     pytest_args = []
 
     if len(tests_to_execute) > 0:

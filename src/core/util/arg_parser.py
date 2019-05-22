@@ -29,12 +29,12 @@ def get_core_args():
         return log_level_int
 
     parser = argparse.ArgumentParser(description='Iris core arguments', prog='iris')
-    app_dir = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../..'), 'targets')
-    app_list = [f.path for f in os.scandir(app_dir) if f.is_dir()]
-    for idx, app in enumerate(app_list):
-        app_list[idx] = os.path.basename(os.path.normpath(app))
+    target_dir = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../..'), 'targets')
+    target_list = [f.path for f in os.scandir(target_dir) if f.is_dir()]
+    for idx, target in enumerate(target_list):
+        target_list[idx] = os.path.basename(os.path.normpath(target))
 
-    parser.add_argument('application', nargs='?', action='store', type=str, help='Application name', choices=app_list)
+    parser.add_argument('target', nargs='?', action='store', type=str, help='Target name', choices=target_list)
 
     parser.add_argument('-a', '--rerun',
                         help='Rerun last failed tests',

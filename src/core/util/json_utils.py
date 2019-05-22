@@ -32,11 +32,11 @@ def create_target_json():
         targets = []
         for item in target_list:
             try:
-                app_tests = scan_all_tests(item)
-                target_module = importlib.import_module('targets.%s.app' % item)
+                target_tests = scan_all_tests(item)
+                target_module = importlib.import_module('targets.%s.main' % item)
                 try:
                     target = target_module.Target()
-                    targets.append({'name': target.target_name, 'tests': app_tests, 'icon': '%s.png' % item,
+                    targets.append({'name': target.target_name, 'tests': target_tests, 'icon': '%s.png' % item,
                                     'settings': target.cc_settings})
                 except NameError:
                     logger.error('Can\'t find default Target class.')
@@ -62,14 +62,14 @@ def update_run_index(app, finished=False):
                        'failed': failed,
                        'id': PathManager.get_run_id(),
                        'locale': args.locale,
-                       'target': args.application,
+                       'target': args.target,
                        'total': len(app.completed_tests)}
     else:
         current_run = {'duration': '-1',
                        'failed': '-1',
                        'id': PathManager.get_run_id(),
                        'locale': args.locale,
-                       'target': args.application,
+                       'target': args.target,
                        'total': '-1'}
 
     run_file = os.path.join(args.workdir, 'data', 'runs.json')

@@ -171,15 +171,15 @@ class PathManager:
     @staticmethod
     def get_target_directory():
         """Returns the path to the target directory."""
-        return os.path.join(PathManager.get_module_dir(), 'targets', args.application)
+        return os.path.join(PathManager.get_module_dir(), 'targets', args.target)
 
     @staticmethod
     def get_current_tests_directory():
-        return os.path.join('tests', args.application)
+        return os.path.join('tests', args.target)
 
     @staticmethod
     def get_debug_image_directory():
-        test_root = os.path.join('tests', args.application)
+        test_root = os.path.join('tests', args.target)
         current_test = os.environ.get('CURRENT_TEST')
         test_path = current_test.split(test_root)[1].split('.py')[0][1:]
         return os.path.join(PathManager.get_current_run_dir(), test_path, 'debug_images')

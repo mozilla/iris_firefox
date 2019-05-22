@@ -33,10 +33,10 @@ class Pattern:
     associate a specific similarity value, that will be used as the minimum value, when this pattern object is searched.
     """
 
-    def __init__(self, image_name: str, from_path: str = None, application: str = get_core_args().application):
+    def __init__(self, image_name: str, from_path: str = None, target: str = get_core_args().target):
 
         if from_path is None:
-            path = _get_image_path(inspect.stack()[1][1], image_name, application)
+            path = _get_image_path(inspect.stack()[1][1], image_name, target)
         else:
             path = from_path
         name, scale = _parse_name(os.path.split(path)[1])
@@ -152,7 +152,7 @@ def _parse_name(full_name: str) -> (str, int):
             return full_name, 1
 
 
-def _load_all_patterns(application: str) -> list:
+def _load_all_patterns(target: str) -> list:
     """Function returns a list with all the project's Patterns."""
     if get_core_args().resize:
         _convert_hi_res_images()
@@ -160,7 +160,7 @@ def _load_all_patterns(application: str) -> list:
     for root, dirs, files in os.walk(PathManager.get_module_dir()):
         for file_name in files:
             if file_name.endswith('.png'):
-                if application in root and (PathManager.get_images_path() in root or 'common' in root):
+                if target in root and (PathManager.get_images_path() in root or 'common' in root):
                     pattern_name, pattern_scale = _parse_name(file_name)
                     pattern_path = os.path.join(root, file_name)
                     pattern = {'name': pattern_name, 'path': pattern_path, 'scale': pattern_scale}
@@ -232,7 +232,7 @@ def _get_gray_image(colored_image: Image) -> Image:
     return colored_image.convert('L')
 
 
-def _get_image_path(caller, image: str, application: str) -> str:
+def _get_image_path(caller, image: str, target: str) -> str:
     """Enforce proper location for all Pattern creation.
 
     :param caller: Path of calling Python module.
@@ -298,7 +298,7 @@ def _get_image_path(caller, image: str, application: str) -> str:
         logger.debug('Found %s' % image_path)
         return image_path
     else:
-        result_list = [x for x in _load_all_patterns(application) if x['name'] == image]
+        result_list = [x for x in _load_all_patterns(target) if x['name'] == image]
         if len(result_list) > 0:
             res = result_list[0]
             logger.warning('Failed to find image %s in default locations for module %s.' % (image, module))

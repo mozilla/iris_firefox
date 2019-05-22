@@ -72,12 +72,12 @@ class BaseTarget:
             core_settings_list.append('{}: {}'.format(arg, getattr(core_args, arg)))
         logger.info('\nIris settings:\n' + ', '.join(core_settings_list))
 
-        application_settings_list = []
+        target_settings_list = []
 
         for arg in vars(self.args):
-            application_settings_list.append('{}: {}'.format(arg, getattr(self.args, arg)))
+            target_settings_list.append('{}: {}'.format(arg, getattr(self.args, arg)))
         logger.info(('\n{} settings:\n' +
-                     ', '.join(application_settings_list)).format(str(core_args.application).capitalize()))
+                     ', '.join(target_settings_list)).format(str(core_args.target).capitalize()))
         update_run_index(self, False)
 
     def pytest_sessionfinish(self, session):
