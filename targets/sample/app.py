@@ -10,7 +10,7 @@ class Target(BaseTarget):
     def __init__(self):
         BaseTarget.__init__(self)
         self.args = self.get_target_args()
-        self.target_name = 'Notepad'
+        self.target_name = 'Sample'
 
         self.cc_settings = [
             {'name': 'build', 'type': 'list', 'label': 'Build',
@@ -22,18 +22,18 @@ class Target(BaseTarget):
         ]
 
     def get_target_args(self):
-        parser = argparse.ArgumentParser(description='Notepad-specific arguments', prog='iris')
-        parser.add_argument('-u', '--notepad_first_argument',
-                            help='Notepad first argument',
+        parser = argparse.ArgumentParser(description='Sample-specific arguments', prog='iris')
+        parser.add_argument('-u', '--sample_first_argument',
+                            help='Sample first argument',
                             action='store',
-                            default='notepad first argument')
-        parser.add_argument('-v', '--notepad_second_argument',
-                            help='Notepad second argument',
+                            default='sample first argument')
+        parser.add_argument('-v', '--sample_second_argument',
+                            help='Sample second argument',
                             action='store',
-                            default='notepad second argument')
-        parser.add_argument('-y', '--notepad_third_argument',
-                            help='Notepad third argument',
+                            default='sample second argument')
+        parser.add_argument('-y', '--sample_third_argument',
+                            help='Sample third argument',
                             action='store',
-                            default='notepad third argument')
+                            default='sample third argument')
 
         return parser.parse_known_args()[0]

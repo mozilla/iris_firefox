@@ -10,9 +10,9 @@ from src.core.api.screen.screen import Rectangle
 
 class Test(BaseTest):
 
-    @pytest.mark.details(meta="Notepad Test experiment", locale=['en-US', 'es-ES', 'ro'],
-                                       description="This test is just an experiment for Notepad",
-                                       blocked_by="232111")
+    @pytest.mark.details(meta="Sample Test experiment", locale=['en-US', 'es-ES', 'ro'],
+                                       description="This test is just an experiment for Sample.",
+                                       custom_value="banana")
     def run(self):
         find(Pattern('test.png'), Rectangle(0, 0, 100, 100))
         assert True == True, 'Assert message failed'
