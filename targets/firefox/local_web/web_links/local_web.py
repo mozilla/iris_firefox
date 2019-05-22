@@ -75,5 +75,8 @@ class LocalWeb(object):
     CNN_LOGO = Pattern('cnn_logo.png')
     CNN_BLOCKED_CONTENT_ADV = Pattern('cnn_blocked_content.png')
 
-
+    """Iris Core elements"""
+    IRIS_LOGO = Pattern('iris_logo.png')
+    IRIS_LOGO_ACTIVE_TAB = Pattern('iris_logo_active_tab.png')
+    IRIS_LOGO_INACTIVE_TAB = Pattern('iris_logo_inactive_tab.png')
 
