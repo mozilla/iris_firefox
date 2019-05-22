@@ -202,6 +202,21 @@ def click_window_control(button, window_type='auxiliary'):
         raise APIHelperError('Button option is not supported.')
 
 
+def confirm_close_multiple_tabs():
+    """Click confirm 'Close all tabs' for warning popup when multiple tabs are
+    opened.
+    """
+    close_all_tabs_button_pattern = Pattern('close_all_tabs_button.png')
+
+    try:
+        wait(close_all_tabs_button_pattern, 5)
+        logger.debug('"Close all tabs" warning popup found.')
+        type(Key.ENTER)
+    except FindError:
+        logger.debug('Couldn\'t find the "Close all tabs" warning popup.')
+        pass
+
+
 def confirm_firefox_launch(image=None):
     """Waits for firefox to exist by waiting for the iris logo to be present.
     :param image: Pattern to confirm Firefox launch
@@ -526,6 +541,24 @@ def navigate(url):
     except Exception:
         raise APIHelperError(
             'No active window found, cannot navigate to page.')
+
+
+def open_bookmarks_toolbar():
+    """ Open the Bookmarks Toolbar using the context menu from the navigation bar """
+
+    home_button = NavBar.HOME_BUTTON
+    w, h = home_button.get_size()
+    horizontal_offset = w * 1.7
+    navbar_context_menu = home_button.target_offset(horizontal_offset, 0)
+
+    try:
+        right_click(navbar_context_menu)
+        click(NavBar.ContextMenu.BOOKMARKS_TOOLBAR)
+        logger.debug('Click is performed successfully on Bookmarks Toolbar option from navigation bar context menu.')
+    except FindError:
+        raise APIHelperError('Could not open the Bookmarks Toolbar using context menu from the navigation bar.')
+
+    restore_firefox_focus()
 
 
 def open_library_menu(option):
