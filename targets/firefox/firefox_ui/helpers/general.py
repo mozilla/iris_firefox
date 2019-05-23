@@ -668,6 +668,15 @@ def get_telemetry_info():
         close_tab()
 
 
+class Option(object):
+    """Class with zoom members."""
+
+    ZOOM_IN = 0
+    ZOOM_OUT = 1
+    RESET = 2
+    ZOOM_TEXT_ONLY = 3
+
+
 class RightClickLocationBar:
     """Class with location bar members."""
 
@@ -678,6 +687,13 @@ class RightClickLocationBar:
     PASTE_GO = 4
     DELETE = 5
     SELECT_ALL = 6
+
+
+class ZoomType(object):
+    """Class with zoom type members."""
+
+    IN = 300 if Settings.is_windows() else 1
+    OUT = -300 if Settings.is_windows() else -1
 
 
 def restore_firefox_focus():
