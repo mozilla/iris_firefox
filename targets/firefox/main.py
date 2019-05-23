@@ -22,6 +22,7 @@ from src.core.util.test_assert import create_result_object
 logger = logging.getLogger(__name__)
 logger.info('Loading test images...')
 
+from src.configuration.config_parser import validate_section
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.firefox.firefox_app.fx_collection import FX_Collection
@@ -62,6 +63,9 @@ class Target(BaseTarget):
                             help='Firefox version to test',
                             action='store',
                             default='latest-beta')
+        parser.add_argument('-r', '--report',
+                            help='Report tests to TestRail',
+                            action='store_true')
         parser.add_argument('-u', '--update_channel',
                             help='Update channel profile preference',
                             action='store')
@@ -71,11 +75,27 @@ class Target(BaseTarget):
 
         return parser.parse_known_args()[0]
 
+    def validate_config(self):
+        if self.args.report:
+            rep_s = validate_section('Test_rail')
+            if len(rep_s) > 0:
+                logger.warning('{}. Report tests to TestRail was disabled.'.format(rep_s))
+                self.args.report = False
+
+        bugzilla_s = validate_section('Bugzilla')
+        if len(bugzilla_s) > 0:
+            logger.warning('{}. Tests blocked by Bugzilla issues will be automatically skipped.'.format(bugzilla_s))
+
+        git_hub_s = validate_section('GitHub')
+        if len(bugzilla_s) > 0:
+            logger.warning('{}. Tests blocked by GitHub issues will be automatically skipped.'.format(git_hub_s))
+
     def pytest_sessionstart(self, session):
         global core_args
         core_args = get_core_args()
         global target_args
         BaseTarget.pytest_sessionstart(self, session)
+        self.validate_config()
         try:
             port = core_args.port
 
@@ -104,7 +124,7 @@ class Target(BaseTarget):
             process.terminate()
             process.join()
         logger.debug('Finishing Firefox session')
-        if core_args.report:
+        if target_args.report:
             report_test_results(self)
 
     def pytest_runtest_setup(self, item):

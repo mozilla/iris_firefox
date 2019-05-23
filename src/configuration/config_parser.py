@@ -65,17 +65,3 @@ def validate_config_ini(args):
         if len(email_s) > 0:
             logger.warning('{}. Submit email report was disabled.'.format(email_s))
             args.email = False
-
-    if args.report:
-        rep_s = validate_section('Test_rail')
-        if len(rep_s) > 0:
-            logger.warning('{}. Report tests to TestRail was disabled.'.format(rep_s))
-            args.report = False
-
-    bugzilla_s = validate_section('Bugzilla')
-    if len(bugzilla_s) > 0:
-        logger.warning('{}. Tests blocked by Bugzilla issues will be automatically skipped.'.format(bugzilla_s))
-
-    git_hub_s = validate_section('GitHub')
-    if len(bugzilla_s) > 0:
-        logger.warning('{}. Tests blocked by GitHub issues will be automatically skipped.'.format(git_hub_s))

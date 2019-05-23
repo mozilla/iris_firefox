@@ -80,9 +80,6 @@ def get_core_args():
                         type=int,
                         action='store',
                         default=2000)
-    parser.add_argument('-r', '--report',
-                        help='Report tests to TestRail',
-                        action='store_true')
     parser.add_argument('-t', '--test',
                         help='Partial or full test names or paths to execute',
                         action='store',
