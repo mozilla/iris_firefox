@@ -671,4 +671,16 @@ def restart_via_console():
     else:
         type(text='r', modifier=[KeyModifier.CTRL, KeyModifier.ALT])
 
+
+def open_firefox_menu():
+    """
+    Opens Firefox top menu
+    """
+    if OSHelper.is_linux():
+        key_down(Key.ALT)
+        time.sleep(0.5)
+        key_up(Key.ALT)
+    elif OSHelper.is_windows():
+        type(Key.ALT)
+
 # End Tools keyboard shortcuts
