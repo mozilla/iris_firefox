@@ -692,8 +692,8 @@ class RightClickLocationBar:
 class ZoomType(object):
     """Class with zoom type members."""
 
-    IN = 300 if Settings.is_windows() else 1
-    OUT = -300 if Settings.is_windows() else -1
+    IN = 300 if OSHelper.is_windows() else 1
+    OUT = -300 if OSHelper.is_windows() else -1
 
 
 def restore_firefox_focus():
