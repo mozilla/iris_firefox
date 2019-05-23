@@ -494,9 +494,9 @@ def select_tab(num):
     if OSHelper.is_mac():
         type(text=num, modifier=KeyModifier.CMD)
     elif OSHelper.is_windows():
-        type(text=num, modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
-    else:
         type(text=num, modifier=KeyModifier.CTRL)
+    else:
+        type(text=num, modifier=KeyModifier.ALT)
 
 
 def select_last_tab():
