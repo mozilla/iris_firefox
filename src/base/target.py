@@ -96,7 +96,10 @@ class BaseTarget:
         logger.info('\n' + 'Test session {} complete'.format(session.name).center(os.get_terminal_size().columns, '-'))
 
         if core_args.email:
-            submit_email_report(self, result)
+            try:
+                submit_email_report(self, result)
+            except SyntaxError:
+                logger.error('Problem with email report - check config file for correct values.')
 
     def pytest_runtest_setup(self, item):
         os.environ['CURRENT_TEST'] = str(item.__dict__.get('fspath'))
