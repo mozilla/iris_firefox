@@ -5,7 +5,8 @@
 
 from src.base.testcase import *
 from targets.firefox.test_dependencies import *
-
+import inspect
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -51,3 +52,11 @@ class FirefoxTest(BaseTest):
             logger.info('>>> PASSED <<< Step %s: %s' % (len(self.test_results), result.message))
 
         self.outcome = result.outcome
+
+    @staticmethod
+    def get_asset_path(asset_file):
+        """Returns a fully-resolved local file path to the test asset."""
+        test_path = inspect.stack()[1][1]
+        module_path = os.path.split(test_path)[0]
+        module_name = os.path.split(test_path)[1].split('.py')[0]
+        return os.path.join(module_path, 'assets', module_name, asset_file)
