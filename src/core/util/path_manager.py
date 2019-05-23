@@ -29,7 +29,7 @@ def __create_tempdir():
 
 
 _tmp_dir = __create_tempdir()
-_run_id = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
+_run_id = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 _current_module = os.path.join(os.path.expanduser('~'), 'temp', 'test')
 args = get_core_args()
 
