@@ -16,11 +16,21 @@ final_result = None
 
 class CustomHandler(BaseHTTPRequestHandler):
 
-    CONTENT_TYPES = {'htm': 'text/html', 'html': 'text/html', 'css': 'text/css',
-                     'js': 'text/javascript', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
-                     'png': 'image/png', 'json': 'application/json', 'ico': 'image/x-icon',
-                     'pdf': 'application/pdf', 'zip': 'application/zip', 'woff': 'font/woff',
-                     'woff2': 'font/woff2'}
+    CONTENT_TYPES = {'css': 'text/css',
+                     'htm': 'text/html',
+                     'html': 'text/html',
+                     'ico': 'image/x-icon',
+                     'jpeg': 'image/jpeg',
+                     'jpg': 'image/jpeg',
+                     'js': 'text/javascript',
+                     'json': 'application/json',
+                     'log': 'text/plain',
+                     'pdf': 'application/pdf',
+                     'png': 'image/png',
+                     'woff': 'font/woff',
+                     'woff2': 'font/woff2',
+                     'zip': 'application/zip'
+                    }
 
     def stop_server(self):
         logger.debug('Handler stop_server')
