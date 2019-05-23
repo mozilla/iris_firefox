@@ -198,21 +198,6 @@ class PathManager:
         PathManager.create_downloads_directory()
         return PathManager.create_downloads_directory()
 
-    '''
-    @staticmethod
-    def get_test_output_directory():
-        """Returns the path to the test output directory."""
-        return PathManager.make_test_output_dir()
-
-    @staticmethod
-    def make_test_output_dir():
-        """Creates directories inside the current run directory for test output."""
-        downloads_directory = os.path.join(PathManager.get_current_run_dir(), 'downloads')
-        if not os.path.exists(downloads_directory):
-            os.makedirs(downloads_directory)
-        return downloads_directory
-    '''
-
     @staticmethod
     def get_git_details():
         repo_details = {}
