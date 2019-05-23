@@ -24,5 +24,7 @@ from targets.firefox.firefox_ui.about_addons import *
 from targets.firefox.firefox_ui.private_window import *
 from targets.firefox.firefox_ui.find_toolbar import *
 from targets.firefox.firefox_ui.hamburger import *
+from targets.firefox.firefox_ui.nav_bar import *
+from targets.firefox.firefox_ui.menu_bar import *
 
 from targets.firefox.settings import FirefoxSettings
