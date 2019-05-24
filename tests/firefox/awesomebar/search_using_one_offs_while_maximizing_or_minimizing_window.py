@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='108252',
         test_suite_id='1902',
-        set_profile_pref={'browser.contentblocking.enabled': False}
+        profile_preferences={'browser.contentblocking.enabled': False}
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

@@ -195,8 +195,18 @@ class PathManager:
     @staticmethod
     def get_downloads_dir():
         """Returns the path to the downloads directory."""
-        PathManager.create_downloads_directory()
         return PathManager.create_downloads_directory()
+
+    @staticmethod
+    def remove_dir_contents(path):
+        for c in os.listdir(path):
+            full_path = os.path.join(path, c)
+            if os.path.isfile(full_path):
+                logger.debug('Remove downloaded file: %s' % full_path)
+                os.remove(full_path)
+            else:
+                logger.debug('Remove downloaded directory: %s' % full_path)
+                shutil.rmtree(full_path, ignore_errors=True)
 
     @staticmethod
     def get_git_details():

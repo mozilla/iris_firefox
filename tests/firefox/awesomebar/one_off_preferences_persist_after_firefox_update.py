@@ -14,12 +14,12 @@ class Test(FirefoxTest):
         test_suite_id="1902",
         blocked_by='1488708',
         enabled=False,
-        set_profile_pref={'app.update.auto': True,
-                          'app.update.interval': 7200,
-                          'app.update.badgeWaitTime': 10,
-                          'app.update.lastUpdateTime.background-update-timer': 1,
-                          'app.update.promptWaitTime': 30,
-                          'app.update.timerMinimumDelay': 10}
+        profile_preferences={'app.update.auto': True,
+                             'app.update.interval': 7200,
+                             'app.update.badgeWaitTime': 10,
+                             'app.update.lastUpdateTime.background-update-timer': 1,
+                             'app.update.promptWaitTime': 30,
+                             'app.update.timerMinimumDelay': 10}
     )
     def run(self, firefox):
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
