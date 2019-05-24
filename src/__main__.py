@@ -90,10 +90,7 @@ def main():
 
 
 def show_control_center():
-    # TODO
-    # expand logic to display Control Center only when no target specified,
-    # or if -k argument is explicitly used
-    if get_core_args().control:
+    if get_core_args().control or get_core_args().target is None:
         return True
     else:
         return False
