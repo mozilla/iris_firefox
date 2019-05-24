@@ -857,23 +857,58 @@ def click_cancel_button():
         raise APIHelperError('Can\'t find the cancel button, aborting.')
 
 
-def scroll_until_pattern_found(pattern, dy=10, iterations=10, timeout=3):
+def scroll_until_pattern_found(image_pattern: Pattern, scroll_function, scroll_params: tuple = tuple(),
+                               num_of_scroll_iterations: int = 10, timeout: float = Settings.auto_wait_timeout):
     """
     Scrolls until specified image pattern is found.
 
-    :param pattern: Image Pattern to search.
-    :param dy: number of pixels
-    :param iterations: Number of scrolling iterations.
+    :param image_pattern: Image Pattern to search.
+    :param scroll_function: Scrolling function or any callable object (e.g. type, scroll, etc.)
+    :param scroll_params: Tuple of params to pass in the scroll_function
+            (e.g. (Key.UP, ) or (Key.UP, KeyModifier.CTRL) for the type function).
+            NOTE: Tuple should contains from 0 (empty tuple) to 2 items.
+    :param num_of_scroll_iterations: Number of scrolling iterations.
     :param timeout: Number of seconds passed to the 'timeout' param of the 'exist' function.
     :return: Boolean. True if image pattern found during scrolling, False otherwise
     """
-    for _ in range(iterations):
-        scroll_down(dy, 1)
-        pattern_found = exists(pattern, timeout)
+
+    scroll_arg = None
+    scroll_modifier = None
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not callable(scroll_function):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if not isinstance(scroll_params, tuple):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    if len(scroll_params) == 2:
+        scroll_arg, scroll_modifier = scroll_params
+    elif len(scroll_params) == 1:
+        scroll_arg, = scroll_params
+    elif len(scroll_params) == 0:
+        pass
+    else:
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_scroll_iterations):
+        pattern_found = exists(image_pattern, timeout)
 
         if pattern_found:
-            return True
-    return False
+            break
+
+        if scroll_modifier is None and scroll_arg is None:
+            scroll_function()
+        elif scroll_modifier is None:
+            scroll_function(scroll_arg)
+        else:
+            scroll_function(scroll_arg, scroll_modifier)
+
+    return pattern_found
 
 
 def right_click_and_type(target, delay=None, keyboard_action=None):
