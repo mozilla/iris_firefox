@@ -26,5 +26,10 @@ from targets.firefox.firefox_ui.find_toolbar import *
 from targets.firefox.firefox_ui.hamburger import *
 from targets.firefox.firefox_ui.nav_bar import *
 from targets.firefox.firefox_ui.menu_bar import *
+from targets.firefox.firefox_ui.find_toolbar import *
+from targets.firefox.firefox_ui.location_bar import *
+from targets.firefox.firefox_ui.private_window import *
+from targets.firefox.firefox_ui.content_blocking import *
+from targets.firefox.firefox_ui.content_blocking_tour import *
 
 from targets.firefox.settings import FirefoxSettings
