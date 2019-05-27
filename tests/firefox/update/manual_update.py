@@ -42,9 +42,9 @@ class Test(FirefoxTest):
                 type(Key.ESC)
 
                 firefox.restart()
-                assert update_step in FirefoxUtils.get_firefox_version(firefox.application.path), \
+                assert FirefoxUtils.get_firefox_version(firefox.application.path) in update_step, \
                     'Incorrect Firefox update.'
-                current_version = update_step
+                current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
         open_about_firefox()
         wait(firefox_up_to_date_pattern, 20)
