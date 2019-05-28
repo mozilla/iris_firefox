@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='108251',
         test_suite_id='1902',
-        profile_preferences={'browser.contentblocking.enabled': False}
+        preferences={'browser.contentblocking.enabled': False}
     )
     def run(self, firefox):
         moz_pattern = Pattern('moz.png')

@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="1902",
         blocked_by='1488708',
         enabled=False,
-        profile_preferences={'app.update.auto': True,
+        preferences={'app.update.auto': True,
                              'app.update.interval': 7200,
                              'app.update.badgeWaitTime': 10,
                              'app.update.lastUpdateTime.background-update-timer': 1,

@@ -213,7 +213,7 @@ class Target(BaseTarget):
     @pytest.fixture()
     def firefox(self, request):
         profile_type = request.node.own_markers[0].kwargs.get('profile')
-        preferences = request.node.own_markers[0].kwargs.get('profile_preferences')
+        preferences = request.node.own_markers[0].kwargs.get('preferences')
         profile = FirefoxProfile.make_profile(profile_type, preferences)
 
         fx = target_args.firefox
