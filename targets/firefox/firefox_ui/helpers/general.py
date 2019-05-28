@@ -109,6 +109,43 @@ def change_preference(pref_name, value):
             'Could not set value: %s to preference: %s' % (value, pref_name))
 
 
+def check_preference(pref_name, value):
+    """Check the value for a specific preference.
+
+    :param pref_name: Preference to be searched.
+    :param value: Preference's value to be checked.
+    :return: None.
+    """
+
+    new_tab()
+    select_location_bar()
+
+    paste('about:config')
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+    type(Key.ENTER)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+
+    type(Key.SPACE)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+
+    paste(pref_name)
+
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+    type(Key.TAB)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
+    try:
+        retrieved_value = copy_to_clipboard().split(';'[0])[1]
+
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve preference value. %s' % e.message)
+
+    if retrieved_value == value:
+        return True
+    else:
+        return False
+
+
 def copy_to_clipboard():
     """Return the value copied to clipboard."""
     time.sleep(Settings.DEFAULT_UI_DELAY)
