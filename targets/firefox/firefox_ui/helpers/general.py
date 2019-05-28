@@ -25,12 +25,14 @@ from src.core.api.screen.screen import Screen
 from src.core.api.settings import Settings
 from src.core.util.arg_parser import get_core_args
 from src.core.util.logger_manager import logger
+from src.core.util.region_utils import RegionUtils
 from targets.firefox.firefox_ui.content_blocking import ContentBlocking
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
+from targets.firefox.firefox_ui.location_bar import LocationBar
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
@@ -229,6 +231,59 @@ def confirm_firefox_launch(image=None):
         wait(image, 60)
     except Exception:
         raise APIHelperError('Can\'t launch Firefox - aborting test run.')
+
+
+def create_region_for_hamburger_menu():
+    """Create region for hamburger menu pop up."""
+
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    try:
+        wait(hamburger_menu_pattern, 10)
+        click(hamburger_menu_pattern)
+        time.sleep(0.5)
+        sign_in_to_sync = Pattern('sign_in_to_sync.png')
+        if OSHelper.is_linux():
+            quit_menu_pattern = Pattern('quit.png')
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+                                                           quit_menu_pattern, None,
+                                                           padding_right=20)
+        elif OSHelper.is_mac():
+            help_menu_pattern = Pattern('help.png')
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+                                                           help_menu_pattern, None,
+                                                           padding_right=20)
+        else:
+            exit_menu_pattern = Pattern('exit.png')
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+                                                           exit_menu_pattern, None,
+                                                           padding_right=20)
+    except (FindError, ValueError):
+        raise APIHelperError(
+            'Can\'t find the hamburger menu in the page, aborting test.')
+
+
+def create_region_for_url_bar():
+    """Create region for the right side of the url bar."""
+
+    try:
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+        show_history_pattern = LocationBar.HISTORY_DROPMARKER
+        select_location_bar()
+        return RegionUtils.create_region_from_patterns(show_history_pattern, hamburger_menu_pattern, padding_top=20,
+                                                       padding_bottom=20)
+    except FindError:
+        raise APIHelperError('Could not create region for URL bar.')
+
+
+def create_region_for_awesome_bar():
+    """Create region for the awesome bar."""
+
+    try:
+        identity_icon_pattern = LocationBar.IDENTITY_ICON
+        page_action_pattern = LocationBar.PAGE_ACTION_BUTTON
+        return RegionUtils.create_region_from_patterns(left=page_action_pattern, right=identity_icon_pattern)
+    except FindError:
+        raise APIHelperError('Could not create region for awesome bar.')
 
 
 def create_region_from_image(image):
