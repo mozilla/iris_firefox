@@ -1043,3 +1043,29 @@ def remove_zoom_indicator_from_toolbar():
     except FindError:
         raise APIHelperError(
             'Zoom indicator not removed from toolbar, aborting.')
+
+
+def select_zoom_menu_option(option_number):
+    """Open the 'Zoom' menu from the 'View' menu and select option."""
+
+    open_zoom_menu()
+
+    repeat_key_down(option_number)
+    type(text=Key.ENTER)
+
+
+def open_zoom_menu():
+    """Open the 'Zoom' menu from the 'View' menu."""
+
+    if OSHelper.is_mac():
+        view_menu_pattern = Pattern('view_menu.png')
+
+        click(view_menu_pattern)
+
+        repeat_key_down(3)
+        type(text=Key.ENTER)
+    else:
+        type(text='v', modifier=KeyModifier.ALT)
+
+        repeat_key_down(2)
+        type(text=Key.ENTER)
