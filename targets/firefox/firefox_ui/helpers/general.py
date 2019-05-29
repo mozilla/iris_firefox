@@ -9,7 +9,7 @@ import time
 from src.core.api.enums import Alignment
 from src.core.api.errors import APIHelperError
 from src.core.api.errors import FindError
-from src.core.api.finder.finder import wait, exists
+from src.core.api.finder.finder import wait, exists, wait_vanish
 from src.core.api.finder.image_search import image_find
 from src.core.api.finder.pattern import Pattern
 from src.core.api.keyboard.key import *
@@ -1010,3 +1010,36 @@ def right_click_and_type(target, delay=None, keyboard_action=None):
     else:
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
     type(text=keyboard_action)
+
+
+def remove_zoom_indicator_from_toolbar():
+    """Remove the zoom indicator from toolbar by clicking on the 'Remove from
+    Toolbar' button.
+    """
+
+    zoom_control_toolbar_decrease_pattern = NavBar.ZOOM_OUT
+    remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
+
+    try:
+        wait(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        logger.debug('\'Decrease\' zoom control found.')
+        right_click(zoom_control_toolbar_decrease_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the \'Decrease\' zoom control button in the page, \
+            aborting.')
+
+    try:
+        wait(remove_from_toolbar_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        logger.debug('\'Remove from Toolbar\' option found.')
+        click(remove_from_toolbar_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the \'Remove from Toolbar\' option in the page, \
+            aborting.')
+
+    try:
+        wait_vanish(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+    except FindError:
+        raise APIHelperError(
+            'Zoom indicator not removed from toolbar, aborting.')
