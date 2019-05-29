@@ -7,6 +7,7 @@ import logging
 import os
 import shutil
 import signal
+import sqlite3
 import subprocess
 import time
 from distutils import dir_util
@@ -53,7 +54,7 @@ class Profiles(str, Enum):
     DEFAULT = 'like_new'
 
 
-class FirefoxProfile:
+class FirefoxProfile(MozProfile):
     """Profile options available to tests.
 
     With the exception of BRAND_NEW, they are pre-configured, zipped profiles that are part of the source tree,
@@ -62,6 +63,16 @@ class FirefoxProfile:
     """
 
     _profiles = []
+    old_del = MozProfile.__del__
+
+    def new_del(self):
+        try:
+            self.old_del
+        except Exception:
+            pass
+
+    MozProfile.__del__ = new_del
+
 
     @staticmethod
     def _get_staged_profile(profile_name, path):
@@ -151,6 +162,10 @@ class FirefoxProfile:
         FirefoxProfile._profiles.append(path)
         if len(FirefoxProfile._profiles) > 1:
             shutil.rmtree(FirefoxProfile._profiles.pop(0), ignore_errors=True)
+
+    def cleanup(self):
+        logger.info('Cleaning profile ')
+        pass
 
 
 class FirefoxApp:
@@ -268,7 +283,9 @@ class FXRunner:
         if maximize:
             maximize_window()
 
+
     def stop(self):
+
         if OSHelper.is_windows():
             quit_firefox()
             if FXRunner.process.pid is not None:
@@ -297,6 +314,7 @@ class FXRunner:
                         logger.error('Failed to close Firefox PID process. Closing Firefox process by name.')
                         shutdown_process('firefox')
         else:
+
             if self.runner and self.runner.process_handler:
                 quit_firefox()
                 status = self.runner.process_handler.wait(DEFAULT_FIREFOX_TIMEOUT)

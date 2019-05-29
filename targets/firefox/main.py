@@ -183,7 +183,7 @@ class Target(BaseTarget):
         try:
             if item.funcargs['firefox']:
                 item.funcargs['firefox'].start()
-        except (AttributeError, KeyError):
+        except (AttributeError, KeyError, sqlite3.OperationalError):
             pass
 
     def pytest_runtest_teardown(self, item):
