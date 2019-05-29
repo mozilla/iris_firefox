@@ -63,6 +63,10 @@ class FirefoxProfile(MozProfile):
     """
 
     _profiles = []
+
+    def __init__(self):
+        self.profile = self.make_profile()
+
     old_del = MozProfile.__del__
 
     def new_del(self):
@@ -72,7 +76,6 @@ class FirefoxProfile(MozProfile):
             pass
 
     MozProfile.__del__ = new_del
-
 
     @staticmethod
     def _get_staged_profile(profile_name, path):
@@ -118,7 +121,6 @@ class FirefoxProfile(MozProfile):
 
         return to_directory
 
-    @staticmethod
     def make_profile(profile_type: Profiles = None, preferences: dict = None):
         """Internal-only method used to create profiles on disk.
 
@@ -225,7 +227,7 @@ class FXRunner:
     def __init__(self, app: FirefoxApp, profile: FirefoxProfile = None):
 
         if profile is None:
-            profile = FirefoxProfile.make_profile()
+            profile = FirefoxProfile()
         self.application = app
         self.url = 'http://127.0.0.1:{}'.format(get_core_args().port)
         self.profile = profile
