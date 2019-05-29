@@ -225,7 +225,7 @@ def get_failing_code(file, line):
     if len(f) < num_lines:
         num_lines = len(f)
     for x in range(int(line) - 1, int(line) - (num_lines + 1), -1):
-        lines.append('%s: %s' % (x + 1, f[x]))
+        lines.append('%s: %s' % (x + 1, f[x].decode('utf-8')))
     lines.reverse()
     return ''.join(lines)
 
