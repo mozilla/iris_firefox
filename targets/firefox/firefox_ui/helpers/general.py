@@ -1069,3 +1069,35 @@ def open_zoom_menu():
 
         repeat_key_down(2)
         type(text=Key.ENTER)
+
+
+def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
+    """Zoom in/Zoom out using the mouse wheel.
+
+    :param nr_of_times: Number of times the 'zoom in'/'zoom out' action should
+    take place.
+    :param zoom_type: Type of the zoom action('zoom in'/'zoom out') intended to
+    be performed.
+    :return: None.
+    """
+
+    # Move focus in the middle of the page to be able to use the scroll.
+
+    Mouse().move(Location(Screen.SCREEN_WIDTH // 4, Screen.SCREEN_HEIGHT // 2))
+
+    for i in range(nr_of_times):
+        if OSHelper.is_mac():
+            key_down('command')
+
+        else:
+            key_down('ctrl')
+
+        Mouse().scroll(dy=zoom_type, dx=0)
+        if OSHelper.is_mac():
+            key_up('command')
+
+        else:
+            key_up('ctrl')
+
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+    Mouse().move(Location(0, 0))
