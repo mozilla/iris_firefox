@@ -230,7 +230,9 @@ class PathManager:
                     'C:\\Program Files (x86)\\Nightly\\firefox.exe',
                     'C:\\Program Files\\Mozilla Firefox\\firefox.exe',
                     'C:\\Program Files\\Firefox Developer Edition\\firefox.exe',
-                    'C:\\Program Files\\Nightly\\firefox.exe'],
+                    'C:\\Program Files\\Nightly\\firefox.exe',
+                    str(os.environ['USERPROFILE']) + '\\scoop\\shims\\firefox.exe'],
+
             'linux': ['/usr/bin/firefox',
                       '/usr/lib/firefox/firefox']
         }
