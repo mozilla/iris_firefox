@@ -1,13 +1,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
+import pyautogui as pyautogui
 
 from src.core.api.enums import Alignment
 from src.core.api.errors import FindError
 from src.core.api.finder.image_search import image_find
-from src.core.api.finder.text_search import text_find
 from src.core.api.finder.pattern import Pattern
+from src.core.api.finder.text_search import text_find
 from src.core.api.location import Location
 from src.core.api.mouse.mouse_controller import Mouse
 from src.core.api.rectangle import Rectangle
@@ -237,6 +237,14 @@ def scroll_left(dx: int = None, iterations: int = 1):
 def scroll_right(dx: int = None, iterations: int = 1):
     """Scroll right mouse event."""
     Mouse().scroll(abs(dx), 0, iterations)
+
+
+def scroll(clicks):
+    """Performs a scroll of the mouse scroll wheel.
+    :param clicks: The amount of scrolling to perform.
+    :return: None.
+    """
+    pyautogui.scroll(clicks)
 
 
 def _get_pattern_click_location(ps: Pattern, region: Rectangle = None, align: Alignment = None):

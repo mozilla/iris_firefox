@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from src.core.api.mouse import mouse
 from targets.firefox.fx_testcase import *
 
 
@@ -29,13 +28,6 @@ class Test(FirefoxTest):
         google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
         google_play_store_loaded_pattern = Pattern('google_play_store_loaded.png')
 
-        if OSHelper.is_windows():
-            mouse_wheel_steps = 500
-        elif OSHelper.is_linux():
-            mouse_wheel_steps = 1
-        else:
-            mouse_wheel_steps = 5
-
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
 
@@ -58,7 +50,7 @@ class Test(FirefoxTest):
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             type(Key.SPACE)
-            mouse.scroll(-10)
+            scroll(-10)
         else:
             type(Key.TAB)
 
@@ -76,7 +68,8 @@ class Test(FirefoxTest):
 
         add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern,
                                                     Settings.SITE_LOAD_TIMEOUT)
-        assert add_startpage_search_engine_button is True, '\'Startpage HTTPS Privacy Search Engine\' engine successfully found.'
+        assert add_startpage_search_engine_button is True, '\'Startpage HTTPS Privacy Search Engine\' engine ' \
+                                                           'successfully found.'
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
@@ -93,18 +86,21 @@ class Test(FirefoxTest):
         previous_tab()
 
         startpage_search_engine_added = exists(startpage_https_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
-        assert startpage_search_engine_added is True, 'The search engine added found in the \'One-Click Search Engines\' section.'
+        assert startpage_search_engine_added is True, 'The search engine added found in the \'One-Click Search ' \
+                                                      'Engines\' section.'
 
         # Navigate to a page that could contain different search engines and can be added to Firefox.
+        new_tab()
         navigate('https://play.google.com/store')
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        google_play_store_loaded = exists(google_play_store_loaded_pattern, Settings.SITE_LOAD_TIMEOUT)
+        google_play_store_loaded = exists(google_play_store_loaded_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_store_loaded is True, 'Google play store website loaded'
 
         select_search_bar()
         type(Key.DOWN)
 
-        add_google_play_button = exists(add_google_play_pattern, Settings.FIREFOX_TIMEOUT)
+        add_google_play_button = exists(add_google_play_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert add_google_play_button is True, 'The \'Add \'Google Play\' button is found in the page.'
 
         click(add_google_play_pattern)
@@ -114,14 +110,16 @@ class Test(FirefoxTest):
         select_search_bar()
         type(Key.DOWN)
 
-        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
+        google_play_search_engine_added = exists(google_play_search_engine_pattern,
+                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is added to Firefox.'
 
         # Search using the search bar, the content search field and the location bar.
         paste('test')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
+        google_play_search_engine_added = exists(google_play_search_engine_pattern,
+                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
 
         click(google_play_search_engine_pattern)
@@ -139,7 +137,8 @@ class Test(FirefoxTest):
         paste('test')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
+        google_play_search_engine_added = exists(google_play_search_engine_pattern,
+                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
 
         click(google_play_search_engine_pattern)
@@ -152,7 +151,8 @@ class Test(FirefoxTest):
         paste('test')
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        google_play_search_engine_added = exists(google_play_search_engine_pattern, Settings.SITE_LOAD_TIMEOUT)
+        google_play_search_engine_added = exists(google_play_search_engine_pattern,
+                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
 
         click(google_play_search_engine_pattern)
