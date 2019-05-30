@@ -5,6 +5,7 @@
 
 import json
 import time
+import os
 
 from src.core.api.enums import Alignment
 from src.core.api.errors import APIHelperError
@@ -1101,3 +1102,12 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
     Mouse().move(Location(0, 0))
+
+
+def open_directory(directory):
+    if OSHelper.is_windows():
+        os.startfile(directory)
+    elif OSHelper.is_linux():
+        os.system('xdg-open \"' + directory + '\"')
+    else:
+        os.system('open \"' + directory + '\"')
