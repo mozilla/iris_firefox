@@ -481,7 +481,7 @@ def quit_firefox():
     if OSHelper.is_mac():
         type(text='q', modifier=KeyModifier.CMD)
     elif OSHelper.is_windows():
-        type(text='w', modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
+        type(text='q', modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
     else:
         type(text='q', modifier=KeyModifier.CTRL)
 
