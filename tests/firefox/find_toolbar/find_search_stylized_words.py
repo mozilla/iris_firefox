@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         navigate(vertical_search_page_local)  # https://bug1279704.bmoattachments.org/attachment.cgi?id=8762295
 
         navigated_to_style_url = exists(style_text_url_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (self, navigated_to_style_url, 'Style text URL loaded successfully.')
+        assert navigated_to_style_url, 'Style text URL loaded successfully.'
 
         # to prevent selecting of all text in win 10
         delay_click = Location(500, 500)

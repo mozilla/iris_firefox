@@ -37,7 +37,7 @@ class Test(FirefoxTest):
         type('for')
 
         text_first_occurrence_exists = exists(first_occurrence_highlighted_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (self, text_first_occurrence_exists, 'The first occurrence is highlighted.')
+        assert text_first_occurrence_exists, 'The first occurrence is highlighted.'
 
         # Navigate through found items
         find_next()

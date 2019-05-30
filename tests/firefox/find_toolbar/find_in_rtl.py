@@ -51,7 +51,7 @@ class Test(FirefoxTest):
         assert rtl_second_highlighted_exists, 'The first one has a green background highlighted.'
 
         rtl_second_not_highlighted_exists = exists(rtl_second_not_highlighted_pattern)
-        assert (self, rtl_second_not_highlighted_exists, 'The second one not highlighted.')
+        assert rtl_second_not_highlighted_exists, 'The second one not highlighted.'
 
         edit_select_all()
         edit_delete()
