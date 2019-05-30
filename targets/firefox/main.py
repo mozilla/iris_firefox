@@ -37,6 +37,7 @@ core_args = get_core_args()
 class Target(BaseTarget):
     test_run_object_list = []
     index = 1
+    total_tests = None
 
     def __init__(self):
         BaseTarget.__init__(self)
@@ -177,9 +178,9 @@ class Target(BaseTarget):
         """ called to execute the test ``item``. """
 
         logger.info(
-            'Executing %s: - [%s]: %s' % (self.index,
+            'Executing %s: - [%s]: %s' % (Target.index,
                 item.nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
-        self.index += 1
+        Target.index += 1
         try:
             if item.funcargs['firefox']:
                 item.funcargs['firefox'].start()
@@ -226,5 +227,8 @@ class Target(BaseTarget):
 
         if target_args.update_channel:
             FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
-        return  FXRunner(app, profile)
 
+        args = {'total': len(request.node.session.items), 'current': Target.index,
+                'title': os.path.basename(request.node.fspath)}
+
+        return  FXRunner(app, profile, args)

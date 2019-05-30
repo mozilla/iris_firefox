@@ -227,13 +227,19 @@ class FirefoxApp:
 
 class FXRunner:
 
-    def __init__(self, app: FirefoxApp, profile: FirefoxProfile = None):
+    def __init__(self, app: FirefoxApp, profile: FirefoxProfile = None, args = None):
 
         if profile is None:
             profile = FirefoxProfile()
         self.application = app
         self.url = 'http://127.0.0.1:{}'.format(get_core_args().port)
         self.profile = profile
+        if args is not None:
+            query_string = '?'
+            for arg in args:
+                value_pair = '%s=%s&' % (arg, args[arg])
+                query_string += value_pair
+            self.url += query_string[:-1]
 
     def __str__(self):
         return '(profile: {}, runner: {})'.format(self.profile, self.runner)
