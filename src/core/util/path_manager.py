@@ -219,6 +219,10 @@ class PathManager:
         return repo_details
 
     @staticmethod
+    def get_win_environment_path():
+        return str(os.environ['USERPROFILE']) + '\\scoop\\shims\\firefox.exe'
+
+    @staticmethod
     def get_local_firefox_path() -> str or None:
         """Checks if Firefox is installed on your machine."""
         paths = {
@@ -230,12 +234,13 @@ class PathManager:
                     'C:\\Program Files (x86)\\Nightly\\firefox.exe',
                     'C:\\Program Files\\Mozilla Firefox\\firefox.exe',
                     'C:\\Program Files\\Firefox Developer Edition\\firefox.exe',
-                    'C:\\Program Files\\Nightly\\firefox.exe',
-                    str(os.environ['USERPROFILE']) + '\\scoop\\shims\\firefox.exe'],
+                    'C:\\Program Files\\Nightly\\firefox.exe'],
 
             'linux': ['/usr/bin/firefox',
                       '/usr/lib/firefox/firefox']
         }
+        if OSHelper.is_windows():
+            paths['win'].append(PathManager.get_win_environment_path())
 
         for path in paths[OSHelper.get_os().value]:
             if os.path.exists(path):
