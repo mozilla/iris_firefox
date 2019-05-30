@@ -67,6 +67,9 @@ class FirefoxProfile(MozProfile):
     def __init__(self):
         self.profile = self.make_profile()
 
+    # Fix for issue #253 - MozProfile has an error on close.
+    # We work around this by monkeypatching the problematic method.
+    
     old_del = MozProfile.__del__
 
     def new_del(self):
