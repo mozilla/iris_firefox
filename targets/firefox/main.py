@@ -150,9 +150,19 @@ class Target(BaseTarget):
                 skip_reason_list.append('Test is excluded for {}'.format(OSHelper.get_os()))
 
             if 'blocked_by' in values:
-                bug_id = values.get('blocked_by')
-                if is_blocked(bug_id):
-                    skip_reason_list.append('Test is blocked by [{}]'.format(bug_id))
+                bug_id = ''
+                platform = OSHelper.get_os()
+                if type(values.get('blocked_by')) is str:
+                    bug_id = values.get('blocked_by')
+                elif type(values.get('blocked_by')) is dict:
+                    bug_id = values.get('blocked_by')['id']
+                    platform = values.get('blocked_by')['platform']
+                logger.debug('Looking up bug #%s...' % bug_id)
+                blocked_platform = OSHelper.get_os() in platform
+                logger.debug('Test has blocking issue: %s' % is_blocked(bug_id))
+                logger.debug('Test is blocked on this platform: %s' % blocked_platform)
+                if is_blocked(bug_id) and blocked_platform:
+                    skip_reason_list.append('Test is blocked by [{}] on this platform.'.format(bug_id))
 
             if incorrect_locale:
                 skip_reason_list.append('Test doesn\'t support locale [{}]'.format(core_args.locale))
