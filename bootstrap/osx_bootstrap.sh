@@ -89,3 +89,18 @@ grep -q -F 'export LC_ALL=en_US.UTF-8' ~/.bash_profile || echo 'export LC_ALL=en
 grep -q -F 'export LANG=en_US.UTF-8' ~/.bash_profile || echo 'export LANG=en_US.UTF-8' >> ~/.bash_profile
 grep -q -F 'export LC_ALL=en_US.UTF-8' ~/.zshrc || echo 'export LC_ALL=en_US.UTF-8' >> ~/.zshrc
 grep -q -F 'export LANG=en_US.UTF-8' ~/.zshrc || echo 'export LANG=en_US.UTF-8' >> ~/.zshrc
+
+# Create download files
+mkdir -p targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
+cd targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
+
+dd if=/dev/zero of=1GB.zip bs=1024 count=1024000
+dd if=/dev/zero of=512MB.zip bs=1024 count=524000
+dd if=/dev/zero of=200MB.zip bs=1024 count=205000
+dd if=/dev/zero of=100MB.zip bs=1024 count=102400
+dd if=/dev/zero of=50MB.zip bs=1024 count=51200
+dd if=/dev/zero of=20MB.zip bs=1024 count=20500
+dd if=/dev/zero of=10MB.zip bs=1024 count=10200
+dd if=/dev/zero of=5MB.zip bs=1024 count=5100
+
+cd ../../../../../

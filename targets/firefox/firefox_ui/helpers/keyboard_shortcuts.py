@@ -683,4 +683,15 @@ def open_firefox_menu():
     elif OSHelper.is_windows():
         type(Key.ALT)
 
+
+def delete_selected_file():
+    """Delete selected file/files inside a folder."""
+    if OSHelper.is_mac():
+        type(text=Key.BACKSPACE, modifier=KeyModifier.CMD)
+    elif OSHelper.get_os_version() == 'win7':
+        type(text=Key.DELETE)
+        type(text='y')
+    else:
+        type(text=Key.DELETE)
+
 # End Tools keyboard shortcuts

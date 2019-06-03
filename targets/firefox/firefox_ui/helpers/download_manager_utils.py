@@ -8,8 +8,8 @@ import shutil
 from src.core.api.errors import FindError, APIHelperError
 from src.core.api.finder.finder import find, exists, wait
 from src.core.api.finder.pattern import Pattern
-from src.core.api.keyboard.key import Key
-from src.core.api.mouse.mouse import click, scroll_down
+from src.core.api.keyboard.keyboard import *
+from src.core.api.mouse.mouse import click, scroll_down, hover
 from src.core.api.screen.region import Region
 from src.core.api.screen.screen import Screen
 from src.core.util.path_manager import PathManager
@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 class DownloadFiles(object):
     EXTRA_SMALL_FILE_5MB = Pattern('5MB.png')
-    SMALL_FILE_10MB = Pattern('10MB.png').similar(0.95)
-    SMALL_FILE_20MB = Pattern('20MB.png').similar(0.95)
+    SMALL_FILE_10MB = Pattern('10MB.png').similar(0.85)
+    SMALL_FILE_20MB = Pattern('20MB.png').similar(0.9)
     MEDIUM_FILE_50MB = Pattern('50MB.png')
     MEDIUM_FILE_100MB = Pattern('100MB.png')
     LARGE_FILE_200MB = Pattern('200MB.png')
@@ -123,6 +123,9 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     else:
         steps = open_show_all_downloads_window_from_library_menu()
         logger.debug('Creating a region for Non-private Library window.')
+        expected = exists(Library.TITLE, 10)
+        assert expected is True, 'Library successfully opened.'
+
         try:
             find_library = find(Library.TITLE)
         except FindError:
@@ -148,13 +151,16 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
         steps.append(Step(True, 'There are no downloads to be cancelled.'))
         cancel_downloads = False
 
-    cancel_pattern = DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL if expected else DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED
+    cancel_pattern = DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL if expected \
+        else DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED
 
     if cancel_downloads:
         while expected_cancel:
             expected_cancel = region.exists(cancel_pattern, 10)
             if expected_cancel:
                 click(cancel_pattern)
+                if not private_window:
+                    hover(Library.TITLE)
         steps.append(Step(True, 'All downloads were cancelled.'))
 
     if private_window:
@@ -176,7 +182,7 @@ def download_file(file_to_download, accept_download):
         click(file_to_download)
     else:
         while not file_found:
-            scroll_down(5)
+            type(Key.PAGE_DOWN)
             try:
                 click(file_to_download)
                 file_found = True

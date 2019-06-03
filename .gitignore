@@ -135,3 +135,6 @@ Pipfile.lock
 
 # Visual Studio Code
 .vscode
+
+# To download files
+iris2/targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives/*

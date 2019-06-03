@@ -80,3 +80,5 @@ class LocalWeb(object):
     IRIS_LOGO_ACTIVE_TAB = Pattern('iris_logo_active_tab.png')
     IRIS_LOGO_INACTIVE_TAB = Pattern('iris_logo_inactive_tab.png')
 
+    """Thinkbroadband site"""
+    THINKBROADBAND_TEST_SITE = 'http://%s:%s/thinkbroadband/' % (_ip_host, _port)

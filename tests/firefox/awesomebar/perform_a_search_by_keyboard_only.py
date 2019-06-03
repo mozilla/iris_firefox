@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='108268',
         test_suite_id='1902',
-        preferences={'browser.contentblocking.enabled': False}
+        profile_preferences={'browser.contentblocking.enabled': False}
     )
     def run(self, firefox):
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
