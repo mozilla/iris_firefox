@@ -155,8 +155,11 @@ class Target(BaseTarget):
                 if type(values.get('blocked_by')) is str:
                     bug_id = values.get('blocked_by')
                 elif type(values.get('blocked_by')) is dict:
-                    bug_id = values.get('blocked_by')['id']
-                    platform = values.get('blocked_by')['platform']
+                    try:
+                        bug_id = values.get('blocked_by')['id']
+                        platform = values.get('blocked_by')['platform']
+                    except KeyError as e:
+                        logger.debug('Missing key in blocked_by field: %s' % e)
                 logger.debug('Looking up bug #%s...' % bug_id)
                 blocked_platform = OSHelper.get_os() in platform
                 logger.debug('Test has blocking issue: %s' % is_blocked(bug_id))
