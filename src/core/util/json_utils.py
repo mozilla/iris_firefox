@@ -184,7 +184,7 @@ def convert_test_list(test_list, only_failures=False):
             else:
                 if test_failed:
                     test_assert = {
-                        'error': test.error.lstrip(), 'message': test.message.lstrip(), 'call_stack': test.traceback,
+                        'error': test.error.lstrip(), 'message': test.message.lstrip(), 'call_stack': test.traceback + '\n\n ',
                         'code': get_failing_code(test.node_name, int(test.line))
                     }
                     test_obj['assert'] = test_assert
@@ -228,6 +228,7 @@ def get_failing_code(file, line):
     for x in range(int(line) - 1, int(line) - (num_lines + 1), -1):
         lines.append('%s: %s' % (x + 1, f[x].decode('utf-8')))
     lines.reverse()
+    lines.append('\n')
     return ''.join(lines)
 
 
