@@ -215,6 +215,7 @@ def get_image_names(path):
         for root, dirs, files in os.walk(path):
             for file_name in files:
                 images.append(file_name)
+    images.sort()
     return images
 
 
