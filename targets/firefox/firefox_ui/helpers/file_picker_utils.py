@@ -4,6 +4,8 @@
 
 import logging
 import time
+import shutil
+import os
 
 from src.core.api.errors import APIHelperError
 from src.core.api.mouse.mouse import click
@@ -45,7 +47,7 @@ def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_a
     open_directory(directory)
 
     try:
-        for attempt in range(1, max_num_of_attempts+1):
+        for attempt in range(1, max_num_of_attempts + 1):
             file_located = exists(filename_pattern)
 
             if file_located:
@@ -73,3 +75,20 @@ def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_a
             type(text='q', modifier=KeyModifier.CTRL)
         elif OSHelper.is_mac():
             type(text='w', modifier=KeyModifier.CMD + KeyModifier.ALT)
+
+
+def copy_file(original, copy):
+    try:
+        shutil.copy(original, copy)
+    except OSError:
+        raise APIHelperError(f'Cannot copy {original} file')
+
+
+def delete_file(path):
+    try:
+        os.remove(path)
+    except FileNotFoundError:
+        logger.debug(f'File {path} not found. Skipping deleting.')
+        return
+    except OSError:
+        raise APIHelperError(f'Cannot remove {path} file')
