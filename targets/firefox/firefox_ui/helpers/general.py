@@ -1082,6 +1082,10 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     :return: None.
     """
 
+    # MAC needs doubled number of mouse wheels to zoom in correctly.
+    if OSHelper.is_mac():
+        nr_of_times *= 2
+
     # Move focus in the middle of the page to be able to use the scroll.
 
     Mouse().move(Location(Screen.SCREEN_WIDTH // 4, Screen.SCREEN_HEIGHT // 2))
