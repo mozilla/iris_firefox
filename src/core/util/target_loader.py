@@ -49,6 +49,6 @@ def get_target_test_directory():
         if len(test_list) == 0:
             logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
         else:
-            logger.info('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
+            logger.debug('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
 
     return test_list

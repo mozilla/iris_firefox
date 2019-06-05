@@ -49,10 +49,7 @@ def main():
             if user_result is not 'cancel':
                 # Extract list of tests
                 if not 'tests' in user_result:
-                    logger.info('No tests chosen, closing Iris.')
-                    delete(PathManager.get_run_id(), update_run_file=False)
-                    ShutdownTasks.at_exit()
-                    exit(0)
+                    exit_iris('No tests chosen, closing Iris.', status=0)
 
                 pytest_args = user_result['tests']
 
@@ -65,25 +62,25 @@ def main():
             else:
                 # User cancelled or otherwise failed to select tests,
                 # so we will shut down Iris.
-                delete(PathManager.get_run_id(), update_run_file=False)
-                ShutdownTasks.at_exit()
-                exit(0)
+                exit_iris('User cancelled run, closing Iris.', status=0)
 
         try:
+            if pytest_args is None:
+                pytest_args = get_test_params()
+            if len(pytest_args) == 0:
+                exit_iris('No tests found.', status=1)
+
+            pytest_args.append('-vs')
+            pytest_args.append('-r ')
+            pytest_args.append('-s')
             target_plugin = get_target(args.target)
             if settings is not None:
                 logger.debug('Passing settings to target: %s' % settings)
                 target_plugin.update_settings(settings)
-            if pytest_args is None:
-                pytest_args = get_test_params()
-            pytest_args.append('-vs')
-            pytest_args.append('-r ')
-            pytest_args.append('-s')
             initialize_platform(args)
             pytest.main(pytest_args, plugins=[target_plugin])
-        except ImportError:
-            logger.error('Could not load plugin for {} target'.format(args.target))
-            exit(1)
+        except ImportError as e:
+            exit_iris('Could not load plugin for %s target, error: %s' % (args.target, e), status=1)
     else:
         logger.error('Failed platform verification.')
         exit(1)
@@ -105,14 +102,12 @@ def get_target(target_name):
             logger.info('Found target named %s' % target_plugin.target_name)
             return target_plugin
         except NameError:
-            logger.error('Can\'t find default Target class.')
-            exit(1)
+            exit_iris('Can\'t find default Target class.', status=1)
     except ImportError as e:
         if e.name.__contains__('Xlib') and not OSHelper.is_linux():
             pass
         else:
-            logger.error('Problems importing module:\n%s' % e)
-            exit(1)
+            exit_iris('Problems importing module:\n%s' % e, status=1)
 
 
 def initialize_platform(args):
@@ -126,13 +121,25 @@ def initialize_platform(args):
 def get_test_params():
     tests_to_execute = get_target_test_directory()
     pytest_args = []
-
-    if len(tests_to_execute) > 0:
-        for running in tests_to_execute:
-            pytest_args.append(running)
+    if get_core_args().rerun:
+        failed_tests_file = os.path.join(PathManager.get_working_dir(), 'lastfail.txt')
+        tests_dir = os.path.join(PathManager.get_tests_dir(), get_core_args().target)
+        failed_tests = []
+        with open(failed_tests_file, 'r') as f:
+            for line in f:
+                failed_tests.append(line.rstrip('\n'))
+        f.close()
+        # Read first line to see if these tests apply to current target.
+        if tests_dir in failed_tests[0]:
+            pytest_args = failed_tests
+        else:
+            logging.error('The -a flag cannot be used now because the last failed tests don\'t match current target.')
     else:
-        exit(1)
-
+        if len(tests_to_execute) > 0:
+            for running in tests_to_execute:
+                pytest_args.append(running)
+        else:
+            exit_iris('No tests to execute.', status=1)
     return pytest_args
 
 
@@ -140,9 +147,9 @@ def verify_config(args):
     """Checks keyboard state is correct, and that Tesseract and 7zip are installed."""
     try:
         if not all([check_keyboard_state(args.no_check), init_tesseract_path(), check_7zip()]):
-            exit(1)
-    except KeyboardInterrupt:
-        exit(1)
+            exit_iris('Failed platform check, closing Iris.', status=1)
+    except KeyboardInterrupt as e:
+        exit_iris(e, status=1)
     return True
 
 
@@ -223,6 +230,18 @@ def migrate_data():
     # TBD: what to do with previous Iris 2.0 folder
     old_iris_2_install = os.path.join(os.path.expanduser('~'), '.iris2')
     logger.debug('Old Iris 2 install exists: %s' % os.path.exists(old_iris_2_install))
+
+
+def exit_iris(message, status=0):
+    if status == 0:
+        logger.info(message)
+    elif status == 1:
+        logger.error(message)
+    else:
+        logger.debug(message)
+    delete(PathManager.get_run_id(), update_run_file=False)
+    ShutdownTasks.at_exit()
+    exit(status)
 
 
 class ShutdownTasks(CleanUp):

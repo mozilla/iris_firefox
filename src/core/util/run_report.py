@@ -7,6 +7,7 @@ import logging
 import os
 
 from src.core.api.os_helpers import OSHelper
+from src.core.util.path_manager import PathManager
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,7 @@ class ReportFooter:
         failure_str = ''
 
         if len(self.failures) > 0:
+            save_failed_tests(self.failures)
             failure_str = '\n\nThe following tests did not pass:\n'
             for failed_tests in self.failures:
                 failure_str += os.path.basename(failed_tests) + '\n'
@@ -49,6 +51,14 @@ class ReportFooter:
 
         logger.info(test_results)
         return test_results
+
+
+def save_failed_tests(test_list):
+    failed_tests_file = os.path.join(PathManager.get_working_dir(), 'lastfail.txt')
+    with open(failed_tests_file, 'w') as f:
+        for test in test_list:
+            f.write(test + '\n')
+    f.close()
 
 
 def create_footer(app):
