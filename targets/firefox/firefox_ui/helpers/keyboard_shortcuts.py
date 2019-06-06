@@ -476,7 +476,10 @@ def previous_tab():
 def quit_firefox():
     """Quit the browser."""
 
-    # Wait before quiting Firefox to avoid concurrency.
+    # Press the ESC key to exit any modal dialogs that might prevent key capture.
+    type(text=Key.ESC)
+
+    # Wait before quitting Firefox to avoid concurrency.
     time.sleep(1)
     if OSHelper.is_mac():
         type(text='q', modifier=KeyModifier.CMD)
