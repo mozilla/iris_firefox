@@ -173,7 +173,6 @@ class PathManager:
         run_directory = os.path.join(master_run_directory, PathManager.get_run_id())
         if not os.path.exists(run_directory):
             os.mkdir(run_directory)
-        #PathManager.create_runs_file()
 
     @staticmethod
     def get_run_directory():
