@@ -89,6 +89,7 @@ def update_run_index(app, finished=False):
 
     with open(run_file, 'w') as f:
         json.dump(run_file_data, f, sort_keys=True, indent=True)
+        f.close()
 
 
 def create_run_log(app):
@@ -128,7 +129,7 @@ def create_run_log(app):
         if test.outcome == 'ERROR':
             errors = errors + 1
 
-    logger.debug('Updating runs.json with completed run data.')
+    logger.debug('Updating run.json with completed run data.')
     meta['total'] = len(app.completed_tests)
     meta['passed'] = passed
     meta['failed'] = failed

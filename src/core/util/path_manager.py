@@ -4,6 +4,7 @@
 
 
 import datetime
+import json
 import logging
 import os
 import shutil
@@ -138,12 +139,23 @@ class PathManager:
             master_run_directory = os.path.join(path, 'runs')
             if os.path.exists(master_run_directory):
                 shutil.rmtree(master_run_directory, ignore_errors=True)
-            run_file = os.path.join(path, 'data', 'all_runs.json')
+                PathManager.create_run_directory()
+            run_file = os.path.join(path, 'data', 'runs.json')
             if os.path.exists(run_file):
                 os.remove(run_file)
+                PathManager.create_runs_file()
             cache_builds_directory = os.path.join(path, 'cache')
             if os.path.exists(cache_builds_directory):
                 shutil.rmtree(cache_builds_directory, ignore_errors=True)
+
+    @staticmethod
+    def create_runs_file():
+        run_file = os.path.join(args.workdir, 'data', 'runs.json')
+        if not os.path.exists(run_file):
+            run_file_data = {'runs': []}
+            with open(run_file, 'w') as f:
+                json.dump(run_file_data, f, sort_keys=True, indent=True)
+            f.close()
 
     @staticmethod
     def get_working_dir():
@@ -161,6 +173,7 @@ class PathManager:
         run_directory = os.path.join(master_run_directory, PathManager.get_run_id())
         if not os.path.exists(run_directory):
             os.mkdir(run_directory)
+        #PathManager.create_runs_file()
 
     @staticmethod
     def get_run_directory():
