@@ -133,7 +133,7 @@ class Target(BaseTarget):
 
         if OSHelper.is_mac():
             mouse_reset()
-        if item.name == 'run':
+        if item.name == 'run' and not core_args.override:
             skip_reason_list = []
             values = item.own_markers[0].kwargs
             is_disabled = 'enabled' in values and not values.get('enabled') and not core_args.override

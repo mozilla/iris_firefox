@@ -49,9 +49,6 @@ def get_core_args():
     parser.add_argument('-e', '--email',
                         help='Submit email report',
                         action='store_true')
-    parser.add_argument('-g', '--image_debug',
-                        help='Temporary flag to hunt down misplaced pattern images.',
-                        action='store_true')
     parser.add_argument('-i', '--level',
                         help='Set the logging output level',
                         type=log_level_string_to_int,
