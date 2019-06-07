@@ -8,6 +8,31 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
+    def setup(self):
+
+        copies_directory_name = 'copies'
+        asset_dir = self.get_asset_path('')
+        copies_directory_path = os.path.join(asset_dir, copies_directory_name)
+        os.mkdir(copies_directory_path)
+
+        jpg_file_name = 'jpgimage.jpg'
+        jpg_copy_name = 'jpgimage_bak.jpg'
+        copied_jpg_file = os.path.join(copies_directory_name, jpg_copy_name)
+
+        original_jpgfile_path = self.get_asset_path(jpg_file_name)
+        backup_jpgfile_path = self.get_asset_path(copied_jpg_file)
+
+        copy_file(original_jpgfile_path, backup_jpgfile_path)
+
+        txt_file_name = 'testfile.txt'
+        txt_copy_name = 'testfile_bak.txt'
+        copied_txt_file = os.path.join(copies_directory_name, txt_copy_name)
+
+        original_txtfile_path = self.get_asset_path(txt_file_name)
+        backup_txtfile_path = self.get_asset_path(copied_txt_file)
+
+        copy_file(original_txtfile_path, backup_txtfile_path)
+
     @pytest.mark.details(
         description='Drop single and multiple .txt files in demopage opened in Private Window.',
         locale=['en-US'],
@@ -32,9 +57,9 @@ class Test(FirefoxTest):
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
 
-        folderpath = self.get_asset_path('')
+        folderpath = self.get_asset_path('copies')
 
-        drag_and_drop_duration = 3
+        drag_and_drop_duration = 2
         paste_delay = 0.5
         new_private_window()
 
@@ -150,3 +175,19 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
         close_tab()
+
+    def teardown(self):
+        jpg_file_name = 'jpgimage_bak.jpg'
+        txt_file_name = 'testfile_bak.txt'
+        copies_directory_name = 'copies'
+
+        jpg_backup_file = os.path.join(copies_directory_name, jpg_file_name)
+        txt_backup_file = os.path.join(copies_directory_name, txt_file_name)
+
+        jpg_backup_path = self.get_asset_path(jpg_backup_file)
+        txt_backup_path = self.get_asset_path(txt_backup_file)
+        copies_directory = self.get_asset_path(copies_directory_name)
+
+        delete_file(jpg_backup_path)
+        delete_file(txt_backup_path)
+        os.rmdir(copies_directory)

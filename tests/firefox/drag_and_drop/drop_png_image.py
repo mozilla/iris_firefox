@@ -8,12 +8,37 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
+    def setup(self):
+        jpg_file_name = 'jpgimage.jpg'
+        png_file_name = 'pngimage.png'
+
+        jpg_copy_name = 'jpgimage_bak.jpg'
+        png_copy_name = 'pngimage_bak.png'
+
+        copies_directory_name = 'copies'
+
+        copied_jpg_file = os.path.join(copies_directory_name, jpg_copy_name)
+        copied_png_file = os.path.join(copies_directory_name, png_copy_name)
+
+        asset_dir = self.get_asset_path('')
+        copies_directory_path = os.path.join(asset_dir, copies_directory_name)
+
+        os.mkdir(copies_directory_path)
+
+        original_jpgfile_path = self.get_asset_path(jpg_file_name)
+        backup_jpgfile_path = self.get_asset_path(copied_jpg_file)
+
+        original_png_file_path = self.get_asset_path(png_file_name)
+        backup_png_file_path = self.get_asset_path(copied_png_file)
+
+        copy_file(original_jpgfile_path, backup_jpgfile_path)
+        copy_file(original_png_file_path, backup_png_file_path)
+
     @pytest.mark.details(
         description='Drop html data in demopage opened in Private Window',
         locale=['en-US'],
         test_case_id='165089',
         test_suite_id='102',
-        blocked_by='270, drag_drop'
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -37,7 +62,7 @@ class Test(FirefoxTest):
 
         drag_and_drop_duration = 3
         paste_delay = 0.5
-        folderpath = self.get_asset_path('')
+        folderpath = self.get_asset_path('copies')
 
         navigate('https://mystor.github.io/dragndrop/')
 
@@ -152,3 +177,19 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
         close_tab()
+
+    def teardown(self):
+        jpg_file_name = 'jpgimage_bak.jpg'
+        png_file_name = 'pngimage_bak.png'
+        copies_directory_name = 'copies'
+
+        jpg_backup_file = os.path.join(copies_directory_name, jpg_file_name)
+        png_backup_file = os.path.join(copies_directory_name, png_file_name)
+
+        jpg_backup_path = self.get_asset_path(jpg_backup_file)
+        png_backup_path = self.get_asset_path(png_backup_file)
+        copies_directory = self.get_asset_path(copies_directory_name)
+
+        delete_file(jpg_backup_path)
+        delete_file(png_backup_path)
+        os.rmdir(copies_directory)

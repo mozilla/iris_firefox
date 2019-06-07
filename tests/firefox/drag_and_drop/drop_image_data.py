@@ -14,7 +14,8 @@ class Test(BaseTest):
         test_case_id='165086',
         test_suite_id='102',
         preferences={'devtools.chrome.enabled': True},
-        )
+        blocked_by={'id': '1288773', 'platform': OSPlatform.ALL}
+    )
     def run(self, firefox):
         drop_image_data_radiobutton_selected_pattern = Pattern('drop_image_data_selected.png')
         drop_image_data_radiobutton_pattern = Pattern('drop_image_data.png')

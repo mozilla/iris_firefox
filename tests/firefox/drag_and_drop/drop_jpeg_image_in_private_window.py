@@ -6,7 +6,33 @@
 from targets.firefox.fx_testcase import *
 
 
-class Test(BaseTest):
+class Test(FirefoxTest):
+
+    def setup(self):
+        jpg_file_name = 'jpgimage.jpg'
+        png_file_name = 'pngimage.png'
+
+        jpg_copy_name = 'jpgimage_bak.jpg'
+        png_copy_name = 'pngimage_bak.png'
+
+        copies_directory_name = 'copies'
+
+        copied_pdf_file = os.path.join(copies_directory_name, jpg_copy_name)
+        copied_txt_file = os.path.join(copies_directory_name, png_copy_name)
+
+        asset_dir = self.get_asset_path('')
+        copies_directory_path = os.path.join(asset_dir, copies_directory_name)
+
+        os.mkdir(copies_directory_path)
+
+        original_pdffile_path = self.get_asset_path(jpg_file_name)
+        backup_pdffile_path = self.get_asset_path(copied_pdf_file)
+
+        original_txtfile_path = self.get_asset_path(png_file_name)
+        backup_txtfile_path = self.get_asset_path(copied_txt_file)
+
+        copy_file(original_pdffile_path, backup_pdffile_path)
+        copy_file(original_txtfile_path, backup_txtfile_path)
 
     @pytest.mark.details(
         description='Drop single and multiple .jpeg images in demopage opened in Private Window',
@@ -14,8 +40,6 @@ class Test(BaseTest):
         test_case_id='165085',
         test_suite_id='102',
         set_profile_pref={'devtools.chrome.enabled': True},
-        blocked_by='get_asset_path, drag_drop, 1328964'
-
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -39,7 +63,7 @@ class Test(BaseTest):
 
         drag_and_drop_duration = 3
         paste_delay = 0.5
-        folderpath = self.get_asset_path('')
+        folderpath = self.get_asset_path('copies')
 
         new_private_window()
 
@@ -82,7 +106,7 @@ class Test(BaseTest):
                                              width=library_title_width * 2, height=library_title_height * 3)
         library_popup_tab_after = Location(Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y)
 
-        drag_drop(library_popup_tab_before, library_popup_tab_after,  duration=drag_and_drop_duration)
+        drag_drop(library_popup_tab_before, library_popup_tab_after, duration=drag_and_drop_duration)
 
         library_popup_dropped = exists(library_popup_pattern, region=library_tab_region_after)
         assert library_popup_dropped, 'Library popup dropped to right half of screen successfully'
@@ -160,3 +184,20 @@ class Test(BaseTest):
         type(Key.ESC)
         close_tab()
         close_tab()
+
+    def teardown(self):
+
+        jpg_file_name = 'jpgimage_bak.jpg'
+        png_file_name = 'pngimage_bak.png'
+        copies_directory_name = 'copies'
+
+        jpg_backup_file = os.path.join(copies_directory_name, jpg_file_name)
+        png_backup_file = os.path.join(copies_directory_name, png_file_name)
+
+        jpg_backup_path = self.get_asset_path(jpg_backup_file)
+        png_backup_path = self.get_asset_path(png_backup_file)
+        copies_directory = self.get_asset_path(copies_directory_name)
+
+        delete_file(jpg_backup_path)
+        delete_file(png_backup_path)
+        os.rmdir(copies_directory)

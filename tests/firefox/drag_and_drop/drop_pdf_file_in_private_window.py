@@ -8,13 +8,37 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
+    def setup(self):
+        pdf_file_name = 'pdffile.pdf'
+        txt_file_name = 'testfile.txt'
+
+        pdf_copy_name = 'pdffile_bak.pdf'
+        txt_copy_name = 'testfile_bak.txt'
+
+        copies_directory_name = 'copies'
+
+        copied_pdf_file = os.path.join(copies_directory_name, pdf_copy_name)
+        copied_txt_file = os.path.join(copies_directory_name, txt_copy_name)
+
+        asset_dir = self.get_asset_path('')
+        copies_directory_path = os.path.join(asset_dir, copies_directory_name)
+
+        os.mkdir(copies_directory_path)
+
+        original_pdffile_path = self.get_asset_path(pdf_file_name)
+        backup_pdffile_path = self.get_asset_path(copied_pdf_file)
+
+        original_txtfile_path = self.get_asset_path(txt_file_name)
+        backup_txtfile_path = self.get_asset_path(copied_txt_file)
+
+        copy_file(original_pdffile_path, backup_pdffile_path)
+        copy_file(original_txtfile_path, backup_txtfile_path)
+
     @pytest.mark.details(
         description='Drop .pdf File in demopage',
         locale=['en-US'],
         test_case_id='165080',
         test_suite_id='102',
-        set_profile_pref={'devtools.chrome.enabled': True},
-        blocked_by='shutil, os, 270'
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -32,13 +56,14 @@ class Test(FirefoxTest):
         file_type_all_files_pattern = None
         file_type_json_pattern = None
 
-        PASTE_DELAY = 0.5
-
         if OSHelper.is_linux():
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
 
-        folderpath = self.get_asset_path('')
+        paste_delay = 0.5
+        drag_and_drop_duration = 2
+
+        folderpath = self.get_asset_path('copies')
 
         new_private_window()
 
@@ -47,7 +72,7 @@ class Test(FirefoxTest):
 
         navigate('https://mystor.github.io/dragndrop/')
 
-        drop_pdf_file_button_displayed = exists(drop_pdf_file_button_pattern, Settings.DEFAULT_SITE_LOAD_TIMEOUT)
+        drop_pdf_file_button_displayed = exists(drop_pdf_file_button_pattern, Settings.site_load_timeout)
         assert drop_pdf_file_button_displayed, 'The demo website loaded successfully'
 
         click(drop_pdf_file_button_pattern)
@@ -81,7 +106,7 @@ class Test(FirefoxTest):
                                           width=library_title_width * 2, height=library_title_height * 3)
         library_popup_tab_after = Location(Screen.SCREEN_WIDTH / 2, library_popup_tab_before.y)
 
-        drag_drop(library_popup_tab_before, library_popup_tab_after, Settings.DRAG_AND_DROP_DURATION)
+        drag_drop(library_popup_tab_before, library_popup_tab_after, duration=drag_and_drop_duration)
 
         library_popup_dropped = exists(library_popup_pattern, region=library_tab_region_after)
         assert library_popup_dropped, 'Library popup dropped to right half of screen successfully'
@@ -111,7 +136,7 @@ class Test(FirefoxTest):
             type('2', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
-            type(Key.ENTER, interval=PASTE_DELAY)
+            type(Key.ENTER, interval=paste_delay)
 
         if OSHelper.is_linux():
             json_option_available = exists(file_type_json_pattern)
@@ -126,7 +151,7 @@ class Test(FirefoxTest):
 
         else:
             type('*')  # Show all files in Windows Explorer
-            type(Key.ENTER, interval=PASTE_DELAY)
+            type(Key.ENTER, interval=paste_delay)
 
         select_bookmark_popup_location_final = Location(Screen.SCREEN_WIDTH / 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
@@ -138,7 +163,7 @@ class Test(FirefoxTest):
         drop_here_available = exists(drop_here_pattern)
         assert drop_here_available, '"Drop here" pattern is available'
 
-        drag_drop(pdf_bak_file_pattern, drop_here_pattern, Settings.DRAG_AND_DROP_DURATION)
+        drag_drop(pdf_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         matching_message_displayed = exists(matching_message_pattern, region=matching_region)
         assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
@@ -150,7 +175,7 @@ class Test(FirefoxTest):
         drop_here_available = exists(drop_here_pattern)
         assert drop_here_available, '"Drop here" pattern is available'
 
-        drag_drop(txt_bak_file_pattern, drop_here_pattern, Settings.DRAG_AND_DROP_DURATION)
+        drag_drop(txt_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         not_matching_message_displayed = exists(not_matching_message_pattern, region=not_matching_region)
         assert not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and ' \
@@ -159,3 +184,19 @@ class Test(FirefoxTest):
         type(Key.ESC)
         close_tab()
         close_tab()
+
+    def teardown(self):
+        pdf_file_name = 'pdffile_bak.pdf'
+        txt_file_name = 'testfile_bak.txt'
+        copies_directory_name = 'copies'
+
+        pdf_backup_file = os.path.join(copies_directory_name, pdf_file_name)
+        txt_backup_file = os.path.join(copies_directory_name, txt_file_name)
+
+        pdf_backup_path = self.get_asset_path(pdf_backup_file)
+        txt_backup_path = self.get_asset_path(txt_backup_file)
+        copies_directory = self.get_asset_path(copies_directory_name)
+
+        delete_file(pdf_backup_path)
+        delete_file(txt_backup_path)
+        os.rmdir(copies_directory)

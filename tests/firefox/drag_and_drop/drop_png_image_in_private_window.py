@@ -8,12 +8,38 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
 
+    def setup(self):
+        jpg_file_name = 'jpgimage.jpg'
+        png_file_name = 'pngimage.png'
+
+        jpg_copy_name = 'jpgimage_bak.jpg'
+        png_copy_name = 'pngimage_bak.png'
+
+        copies_directory_name = 'copies'
+
+        copied_jpg_file = os.path.join(copies_directory_name, jpg_copy_name)
+        copied_png_file = os.path.join(copies_directory_name, png_copy_name)
+
+        asset_dir = self.get_asset_path('')
+        copies_directory_path = os.path.join(asset_dir, copies_directory_name)
+
+        os.mkdir(copies_directory_path)
+
+        original_jpgfile_path = self.get_asset_path(jpg_file_name)
+        backup_jpgfile_path = self.get_asset_path(copied_jpg_file)
+
+        original_png_file_path = self.get_asset_path(png_file_name)
+        backup_png_file_path = self.get_asset_path(copied_png_file)
+
+        copy_file(original_jpgfile_path, backup_jpgfile_path)
+        copy_file(original_png_file_path, backup_png_file_path)
+
     @pytest.mark.details(
         description='Drop single and multiple .png images in demopage opened in Private Window',
         locale=['en-US'],
         test_case_id='165086',
         test_suite_id='102',
-        )
+    )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
         library_import_restore_submenu_pattern = Library.ImportAndBackup.RESTORE
@@ -32,9 +58,9 @@ class Test(FirefoxTest):
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
 
-        drag_and_drop_duration = 3
+        drag_and_drop_duration = 2
         paste_delay = 0.5
-        folderpath = self.get_asset_path('')
+        folderpath = self.get_asset_path('copies')
 
         new_private_window()
 
@@ -49,8 +75,8 @@ class Test(FirefoxTest):
         click(drop_png_file_button_pattern)
 
         drop_png_option_selected = exists(drop_png_file_selected_button_pattern)
-        assert drop_png_option_selected, 'The drop-png-file changed color to red which indicates that it '\
-                                                    'has been selected.'
+        assert drop_png_option_selected, 'The drop-png-file changed color to red which indicates that it ' \
+                                         'has been selected.'
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll_down, (5,), 30,
                                                               paste_delay)
@@ -86,8 +112,8 @@ class Test(FirefoxTest):
         click(library_import_backup_pattern)
 
         restore_context_available = exists(library_import_restore_submenu_pattern)
-        assert restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu is '\
-                                                     'available'
+        assert restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu is ' \
+                                          'available'
 
         click(library_import_restore_submenu_pattern)
 
@@ -138,8 +164,8 @@ class Test(FirefoxTest):
         drag_drop(png_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         matching_message_displayed = exists(matching_message_pattern, region=matching_region)
-        assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '\
-                                                      'result is identical to result.'
+        assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
+                                           'result is identical to result.'
 
         test_file_jpg_located = exists(jpg_bak_file_pattern)
         assert test_file_jpg_located, 'JPG test file is available'
@@ -150,9 +176,25 @@ class Test(FirefoxTest):
         drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         not_matching_message_displayed = exists(not_matching_message_pattern, region=not_matching_region)
-        assert not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '\
-                                                          'expected result is different from result.'
+        assert not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and ' \
+                                               'expected result is different from result.'
 
         type(Key.ESC)
         close_tab()
         close_tab()
+
+    def teardown(self):
+        jpg_file_name = 'jpgimage_bak.jpg'
+        png_file_name = 'pngimage_bak.png'
+        copies_directory_name = 'copies'
+
+        jpg_backup_file = os.path.join(copies_directory_name, jpg_file_name)
+        png_backup_file = os.path.join(copies_directory_name, png_file_name)
+
+        jpg_backup_path = self.get_asset_path(jpg_backup_file)
+        png_backup_path = self.get_asset_path(png_backup_file)
+        copies_directory = self.get_asset_path(copies_directory_name)
+
+        delete_file(jpg_backup_path)
+        delete_file(png_backup_path)
+        os.rmdir(copies_directory)

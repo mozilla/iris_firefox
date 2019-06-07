@@ -51,7 +51,7 @@ class Test(FirefoxTest):
         matching_region = Region(not_matching_message_location.x, not_matching_message_location.y,
                                  width=matching_message_width + 10, height=matching_message_height * 2)
 
-        # select_file_in_folder(folderpath, png_file_pattern, edit_copy)
+        select_file_in_folder(folderpath, png_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert drop_here_available, '"Drop here" pattern available'
@@ -64,7 +64,7 @@ class Test(FirefoxTest):
         assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '\
                                                       'result is identical to result. '
 
-        # select_file_in_folder(folderpath, txt_file_pattern, edit_copy)
+        select_file_in_folder(folderpath, txt_file_pattern, edit_copy)
 
         drop_here_available = exists(drop_here_pattern)
         assert drop_here_available, '"Drop here" pattern available'

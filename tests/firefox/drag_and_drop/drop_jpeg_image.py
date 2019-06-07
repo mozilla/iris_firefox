@@ -6,7 +6,33 @@
 from targets.firefox.fx_testcase import *
 
 
-class Test(BaseTest):
+class Test(FirefoxTest):
+
+    def setup(self):
+        jpg_file_name = 'jpgimage.jpg'
+        png_file_name = 'pngimage.png'
+
+        jpg_copy_name = 'jpgimage_bak.jpg'
+        png_copy_name = 'pngimage_bak.png'
+
+        copies_directory_name = 'copies'
+
+        copied_jpg_file = os.path.join(copies_directory_name, jpg_copy_name)
+        copied_png_file = os.path.join(copies_directory_name, png_copy_name)
+
+        asset_dir = self.get_asset_path('')
+        copies_directory_path = os.path.join(asset_dir, copies_directory_name)
+
+        os.mkdir(copies_directory_path)
+
+        original_jpgfile_path = self.get_asset_path(jpg_file_name)
+        backup_jpgfile_path = self.get_asset_path(copied_jpg_file)
+
+        original_pngfile_path = self.get_asset_path(png_file_name)
+        backup_pngfile_path = self.get_asset_path(copied_png_file)
+
+        copy_file(original_jpgfile_path, backup_jpgfile_path)
+        copy_file(original_pngfile_path, backup_pngfile_path)
 
     @pytest.mark.details(
         description='Drop .jpeg image File in demopage',
@@ -14,8 +40,6 @@ class Test(BaseTest):
         test_case_id='165084',
         test_suite_id='102',
         set_profile_pref={'devtools.chrome.enabled': True},
-        blocked_by='change_preference, drag_drop, 1328964'
-
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -35,9 +59,9 @@ class Test(BaseTest):
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
 
-        DRAG_AND_DROP_DURATION = 3
-        PASTE_DELAY = 0.5
-        folderpath = self.get_asset_path('')
+        drag_and_drop_duration = 3
+        paste_delay = 0.5
+        folderpath = self.get_asset_path('copies')
 
         navigate('https://mystor.github.io/dragndrop/')
 
@@ -75,7 +99,7 @@ class Test(BaseTest):
                                              width=library_title_width * 2, height=library_title_height * 3)
         library_popup_tab_after = Location(Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y)
 
-        drag_drop(library_popup_tab_before, library_popup_tab_after, duration=DRAG_AND_DROP_DURATION)
+        drag_drop(library_popup_tab_before, library_popup_tab_after, duration=drag_and_drop_duration)
 
         library_popup_dropped = exists(library_popup_pattern, region=library_tab_region_after)
         assert library_popup_dropped, 'Library popup dropped to right half of screen successfully'
@@ -104,7 +128,7 @@ class Test(BaseTest):
             type('2', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
-            type(Key.ENTER, interval=PASTE_DELAY)
+            type(Key.ENTER, interval=paste_delay)
 
         if OSHelper.is_linux():
             json_option_available = exists(file_type_json_pattern)
@@ -119,9 +143,9 @@ class Test(BaseTest):
 
         else:
             type('*')  # Show all files in Windows Explorer
-            type(Key.ENTER, interval=PASTE_DELAY)
+            type(Key.ENTER, interval=paste_delay)
 
-        select_bookmark_popup_location_final = Location(Settings.SCREEN_WIDTH / 2, library_popup_tab_before.y)
+        select_bookmark_popup_location_final = Location(Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
@@ -131,7 +155,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert drop_here_available, '"Drop here" pattern is available'
 
-        drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=DRAG_AND_DROP_DURATION)
+        drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         matching_message_displayed = exists(matching_message_pattern, region=matching_region)
         assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
@@ -143,7 +167,7 @@ class Test(BaseTest):
         drop_here_available = exists(drop_here_pattern)
         assert drop_here_available, '"Drop here" pattern is available'
 
-        drag_drop(png_bak_file_pattern, drop_here_pattern, duration=DRAG_AND_DROP_DURATION)
+        drag_drop(png_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         not_matching_message_displayed = exists(not_matching_message_pattern, region=not_matching_region)
         assert not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and ' \
@@ -152,3 +176,19 @@ class Test(BaseTest):
         type(Key.ESC)
 
         close_tab()
+
+    def teardown(self):
+        jpg_file_name = 'jpgimage_bak.jpg'
+        png_file_name = 'pngimage_bak.png'
+        copies_directory_name = 'copies'
+
+        jpg_backup_file = os.path.join(copies_directory_name, jpg_file_name)
+        png_backup_file = os.path.join(copies_directory_name, png_file_name)
+
+        jpg_backup_path = self.get_asset_path(jpg_backup_file)
+        png_backup_path = self.get_asset_path(png_backup_file)
+        copies_directory = self.get_asset_path(copies_directory_name)
+
+        delete_file(jpg_backup_path)
+        delete_file(png_backup_path)
+        os.rmdir(copies_directory)

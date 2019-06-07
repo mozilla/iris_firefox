@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         copy_image_context_menu_pattern = Pattern('copy_image_option.png')
 
         navigate('https://mystor.github.io/dragndrop/')
-        test_page_opened = exists(paste_image_data_radiobutton_pattern, DEFAULT_SITE_LOAD_TIMEOUT)
+        test_page_opened = exists(paste_image_data_radiobutton_pattern, Settings.site_load_timeout)
         assert test_page_opened, 'Firefox started and page loaded successfully.'
 
         click(paste_image_data_radiobutton_pattern)
@@ -32,7 +32,7 @@ class Test(FirefoxTest):
                                           'it has been selected.'
 
         new_tab()
-        select_tab(2)
+        select_tab('2')
         navigate(LocalWeb.POCKET_TEST_SITE)
         two_images_displayed_on_the_page = exists(first_picture_pattern) and exists(second_picture_pattern)
         assert two_images_displayed_on_the_page, 'Web page successfully loads.'
@@ -43,20 +43,20 @@ class Test(FirefoxTest):
                                             'clicking at the first image'
 
         click(copy_image_context_menu_pattern)
-        select_tab(1)
+        select_tab('1')
         edit_paste()
         matching_message_appears = scroll_until_pattern_found(matching_message_pattern, type, (Key.PAGE_DOWN,))
         assert matching_message_appears, '"Matching" appears under the "Drop Stuff Here" area, the expected ' \
                                          'result is identical to the result.'
 
-        select_tab(2)
+        select_tab('2')
         right_click(second_picture_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
         assert copy_image_option_available, '"Copy Image" option is available in the context menu after right ' \
                                             'clicking at the second image'
 
         click(copy_image_context_menu_pattern)
-        select_tab(1)
+        select_tab('1')
         edit_paste()
         matching_message_appears = exists(matching_message_pattern)
         assert matching_message_appears, '"Matching" appears under the "Drop Stuff Here" area, the expected result ' \
