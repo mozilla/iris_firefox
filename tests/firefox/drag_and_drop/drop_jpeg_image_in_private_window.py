@@ -67,7 +67,7 @@ class Test(FirefoxTest):
 
         new_private_window()
 
-        private_window_opened = exists(PrivateWindow.private_window_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        private_window_opened = exists(PrivateWindow.PRIVATE_TAB, Settings.DEFAULT_FIREFOX_TIMEOUT)
         assert private_window_opened, 'A new private window is successfully loaded.'
 
         navigate('https://mystor.github.io/dragndrop/')
@@ -114,7 +114,7 @@ class Test(FirefoxTest):
         click(library_import_backup_pattern)
 
         restore_context_available = exists(library_import_restore_submenu_pattern)
-        assert restore_context_available, '\'Restore\' option from \'Import and Backup\'context menu is ' \
+        assert restore_context_available, '"Restore" option from "Import and Backup"context menu is ' \
                                           'available'
 
         click(library_import_restore_submenu_pattern)
@@ -125,12 +125,12 @@ class Test(FirefoxTest):
         click(library_import_choose_file_submenu_pattern)
 
         select_bookmark_popup_available = exists(select_bookmark_popup_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
-        assert select_bookmark_popup_available, '\'Select a bookmark backup\' window is available'
+        assert select_bookmark_popup_available, '"Select a bookmark backup" window is available'
 
         select_bookmark_popup_location = find(select_bookmark_popup_pattern)
 
         if OSHelper.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
+            type('g', modifier=(KeyModifier.CMD, KeyModifier.SHIFT))  # open folder in Finder
             paste(folderpath)
             type(Key.ENTER)
             type('2', KeyModifier.CMD)  # change view of finder
@@ -140,12 +140,12 @@ class Test(FirefoxTest):
 
         if OSHelper.is_linux():
             json_option_available = exists(file_type_json_pattern)
-            assert json_option_available, '\'File type JSON\' option in file picker window is available'
+            assert json_option_available, '"File type JSON" option in file picker window is available'
 
             click(file_type_json_pattern)
 
             all_files_option_available = exists(file_type_all_files_pattern)
-            assert all_files_option_available, '\'All Files\' option in file picker window is available'
+            assert all_files_option_available, '"All Files" option in file picker window is available'
 
             click(file_type_all_files_pattern)
 
