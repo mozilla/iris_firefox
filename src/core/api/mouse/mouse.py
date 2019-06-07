@@ -193,22 +193,24 @@ def drag_drop(drag_from: Location or Pattern or str, drop_to: Location or Patter
     :param align: Click location alignment could be top_left, center, top_right, bottom_left, bottom_right.
     :return: None.
     """
-    loc_from = None
-    loc_to = None
 
-    if isinstance(drag_from, Pattern):
-        loc_from = _get_pattern_click_location(drag_from, region, align)
-    if isinstance(drag_from, str):
-        loc_from = _get_string_click_location(drag_from, region, align)
     if isinstance(drag_from, Location):
         loc_from = drag_from
+    elif isinstance(drag_from, Pattern):
+        loc_from = _get_pattern_click_location(drag_from, region, align)
+    elif isinstance(drag_from, str):
+        loc_from = _get_string_click_location(drag_from, region, align)
+    else:
+        raise ValueError(f'drag_from argument must be Location or Pattern or str, {type(drag_from)}')
 
     if isinstance(drop_to, Pattern):
         loc_to = _get_pattern_click_location(drop_to, region, align)
-    if isinstance(drop_to, str):
+    elif isinstance(drop_to, str):
         loc_to = _get_string_click_location(drop_to, region, align)
-    if isinstance(drop_to, Location):
+    elif isinstance(drop_to, Location):
         loc_to = drop_to
+    else:
+        raise ValueError(f'drop_to argument must be Location or Pattern or str, {type(drop_to)}')
 
     Mouse().drag_and_drop(loc_from, loc_to, duration)
 
