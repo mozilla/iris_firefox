@@ -80,6 +80,16 @@ def select_location_bar():
     time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
+def select_folder_location_bar():
+    """Set focus to the location bar/open folder popup in previously opened file manager
+    (e.g. "Open file", "Import bookmark")  to navigate to path"""
+
+    if OSHelper.is_mac():
+        type(text='g', modifier=[KeyModifier.SHIFT, KeyModifier.CMD])
+    else:
+        type(text='l', modifier=KeyModifier.CTRL)
+
+
 def reload_page():
     """Reload the current web page."""
     if OSHelper.is_mac():
