@@ -31,19 +31,19 @@ class Test(FirefoxTest):
         # Hover the mouse over the Search Bar.
         hover(search_bar_pattern)
 
-        search_using_google = exists(search_using_google_pattern, Settings.FIREFOX_TIMEOUT)
+        search_using_google = exists(search_using_google_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_using_google is True, '\'Search using Google\' is shown as tooltip.'
 
         # Start typing inside the Search Bar.
         type('mozilla')
 
         # Hover the mouse over the one-click search engines.
-        duckduckgo_search_bar = exists(duckduckgo_search_bar_pattern, Settings.FIREFOX_TIMEOUT)
+        duckduckgo_search_bar = exists(duckduckgo_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert duckduckgo_search_bar is True, 'Search engine is visible.'
 
         hover(duckduckgo_search_bar_pattern)
 
-        search_duckduckgo = exists(search_duckduckgo_pattern, Settings.FIREFOX_TIMEOUT)
+        search_duckduckgo = exists(search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_duckduckgo is True, 'Search engine is highlighted.'
 
         # While the cursor is on the search toolbar, select the arrow DOWN and then the arrow UP keys.
@@ -68,17 +68,17 @@ class Test(FirefoxTest):
         for _ in range(3):
             type(Key.TAB)
 
-        search_duckduckgo = exists(search_duckduckgo_pattern, Settings.FIREFOX_TIMEOUT)
+        search_duckduckgo = exists(search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_duckduckgo is True, 'Pressing tab selects the one-click search engines while the search ' \
                                           'suggestions are skipped.'
 
         # Select ctrl/cmd + arrow UP and arrow DOWN keys.
         change_search_next()
 
-        bing_search_engine = exists(bing_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        bing_search_engine = exists(bing_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bing_search_engine is True, 'The default search engine becomes the next one from the list.'
 
         change_search_previous()
 
-        google_search_engine = exists(google_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        google_search_engine = exists(google_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_search_engine is True, 'The default search engine becomes the previous one from the list.'

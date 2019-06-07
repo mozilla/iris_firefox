@@ -33,27 +33,27 @@ class Test(FirefoxTest):
         select_search_bar()
         type(Key.DOWN)
 
-        expected = exists(change_search_settings_pattern, Settings.FIREFOX_TIMEOUT)
+        expected = exists(change_search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'The \'Change Search Settings\' button found in the page.'
 
         click(change_search_settings_pattern)
 
-        expected = exists(about_preferences_search_page_pattern, Settings.FIREFOX_TIMEOUT)
+        expected = exists(about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'The \'about:preferences#search\' page opened.'
 
         # Deselect several search engines from the One-click search engines list.
         paste('one-click')
 
-        expected = exists(search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        expected = exists(search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'The \'One-Click Search Engines\' section found.'
 
-        expected = exists(check_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        expected = exists(check_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'The check engine pattern found in the page.'
 
         region_int = Screen.LEFT_THIRD
         region = region_int.middle_third_horizontal()
 
-        while region.exists(check_engine_pattern, Settings.FIREFOX_TIMEOUT):
+        while region.exists(check_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT):
             click(check_engine_pattern)
             time.sleep(Settings.DEFAULT_UI_DELAY)
 
@@ -72,7 +72,7 @@ class Test(FirefoxTest):
 
         for i in range(pattern_list.__len__()):
             try:
-                expected = wait_vanish(pattern_list[i], Settings.FIREFOX_TIMEOUT)
+                expected = wait_vanish(pattern_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
                 assert expected is True, 'Element found at position ' + i.__str__() + ' in the list not found.'
 
             except FindError:
@@ -85,7 +85,7 @@ class Test(FirefoxTest):
 
         for i in range(pattern_list.__len__()):
             try:
-                expected = wait_vanish(pattern_list[i], Settings.FIREFOX_TIMEOUT)
+                expected = wait_vanish(pattern_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
                 assert expected is True, 'Element found at position ' + i.__str__() + ' in the list not found.'
 
             except FindError:
@@ -99,7 +99,7 @@ class Test(FirefoxTest):
 
         click(change_search_settings_pattern)
 
-        expected = exists(about_preferences_search_page_pattern, Settings.FIREFOX_TIMEOUT)
+        expected = exists(about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'The \'about:preferences#search\' page opened.'
 
         type(Key.TAB)
@@ -123,7 +123,7 @@ class Test(FirefoxTest):
 
         for i in range(pattern_list.__len__()):
             try:
-                expected = region.exists(pattern_list[i], Settings.FIREFOX_TIMEOUT)
+                expected = region.exists(pattern_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
                 assert expected is True, 'Element found at position ' + i.__str__() + ' in the list found.'
 
             except FindError:
@@ -151,5 +151,5 @@ class Test(FirefoxTest):
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        expected = exists(test_search_bing_pattern, Settings.FIREFOX_TIMEOUT)
+        expected = exists(test_search_bing_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'The search is performed with the Bing engine.'

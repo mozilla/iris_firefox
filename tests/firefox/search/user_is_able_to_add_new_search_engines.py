@@ -59,7 +59,7 @@ class Test(FirefoxTest):
 
         click(find_more_search_engines_pattern)
 
-        find_add_ons_button = exists(find_add_ons_pattern, Settings.SITE_LOAD_TIMEOUT)
+        find_add_ons_button = exists(find_add_ons_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert find_add_ons_button is True, 'Find add-ons field is present on the page.'
 
         click(find_add_ons_pattern, 1)
@@ -67,25 +67,25 @@ class Test(FirefoxTest):
         paste('startpage')
 
         add_startpage_search_engine_button = exists(add_startpage_https_privacy_search_engine_pattern,
-                                                    Settings.SITE_LOAD_TIMEOUT)
+                                                    FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert add_startpage_search_engine_button is True, '\'Startpage HTTPS Privacy Search Engine\' engine ' \
                                                            'successfully found.'
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
-        add_to_firefox_button = exists(add_to_firefox_pattern, Settings.FIREFOX_TIMEOUT)
+        add_to_firefox_button = exists(add_to_firefox_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_to_firefox_button is True, '\'Add to Firefox\' button found.'
 
         click(add_to_firefox_pattern)
 
-        add_button_found = exists(add_button_pattern, Settings.FIREFOX_TIMEOUT)
+        add_button_found = exists(add_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_button_found is True, '\'Add\' button found.'
 
         click(add_button_pattern)
 
         previous_tab()
 
-        startpage_search_engine_added = exists(startpage_https_search_engine_pattern, Settings.FIREFOX_TIMEOUT)
+        startpage_search_engine_added = exists(startpage_https_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert startpage_search_engine_added is True, 'The search engine added found in the \'One-Click Search ' \
                                                       'Engines\' section.'
 
@@ -111,7 +111,7 @@ class Test(FirefoxTest):
         type(Key.DOWN)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
-                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+                                                 FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is added to Firefox.'
 
         # Search using the search bar, the content search field and the location bar.
@@ -119,17 +119,17 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
-                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+                                                 FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
 
         click(google_play_search_engine_pattern)
 
-        test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), Settings.FIREFOX_TIMEOUT)
+        test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_search_google_play is True, 'Search performed using the search bar works properly.'
 
         navigate('about:newtab')
 
-        google_logo_content_search_field = exists(google_logo_content_search_field_pattern, Settings.FIREFOX_TIMEOUT)
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_logo_content_search_field is True, 'Google logo from the content search found.'
 
         click(google_logo_content_search_field_pattern)
@@ -138,12 +138,12 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
-                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+                                                 FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
 
         click(google_play_search_engine_pattern)
 
-        test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
+        test_search_google_play = exists(test_search_google_play_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_search_google_play is True, 'Search performed using the content search field works properly.'
 
         select_location_bar()
@@ -152,10 +152,10 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
-                                                 Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+                                                 FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
 
         click(google_play_search_engine_pattern)
 
-        test_search_google_play = exists(test_search_google_play_pattern, Settings.FIREFOX_TIMEOUT)
+        test_search_google_play = exists(test_search_google_play_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_search_google_play is True, 'Search performed using the location bar works properly.'
