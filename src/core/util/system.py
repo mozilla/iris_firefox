@@ -144,16 +144,10 @@ def set_terminal_encoding(encoding):
 def get_python_version():
     version = ''
     try:
-        py_version = 'python3 --version'
+        py_version = 'python --version'
         version_string = subprocess.Popen(py_version, stdout=subprocess.PIPE, shell=True).communicate()[
             0].rstrip().decode("utf-8")
         version = version_string.split(' ')[1]
     except IndexError:
-        try:
-            py_version = 'python --version'
-            version_string = subprocess.Popen(py_version, stdout=subprocess.PIPE, shell=True).communicate()[
-                0].rstrip().decode("utf-8")
-            version = version_string.split(' ')[1]
-        except IndexError:
-            version = 'unknown'
+        version = 'unknown'
     return version
