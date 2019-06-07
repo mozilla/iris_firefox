@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function (event) {
+            document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+            var body = document.getElementById('body')
+
+            var greyBackground = document.getElementsByClassName('top-left')[0];
+            var blueBackground = document.getElementsByClassName('bottom-right')[0];
+
+            if (greyBackground && blueBackground) {
+                greyBackground.addEventListener("click", function () {
+                    body.className = 'grey-bk'
+                });
+
+                blueBackground.addEventListener("click", function () {
+                    body.className = 'blue-bk'
+                });
+            }
+        });
+
+    </script>
+    <style>
+        body {
+            padding: 5px 20px 20px 20px;
+        }
+
+        .grey-bk {
+            background-color: grey;
+        }
+
+        .blue-bk {
+            background-color: blue;
+        }
+
+        #page-corners .fas {
+            position: absolute;
+            font-size: 20px;
+        }
+
+        .fas.top-left {
+            top: 1px;
+            left: 1px;
+        }
+
+        .fas.top-right {
+            top: 1px;
+            right: 1px;
+        }
+
+        .fas.bottom-left {
+            bottom: 1px;
+            left: 1px;
+        }
+
+        .fas.bottom-right {
+            bottom: 1px;
+            right: 1px;
+        }
+
+        .medium-text {
+            font-size: 20px;
+        }
+
+        .big-text {
+            font-size: 28px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9"
+        crossorigin="anonymous">
+    <title>Ocr template</title>
+</head>
+
+<body id="body">
+    <div id="page-corners">
+        <i class="fas top-left fa-arrow-circle-right"></i>
+        <i class="fas top-right fa-arrow-circle-down"></i>
+        <i class="fas bottom-right fa-arrow-circle-left"></i>
+        <i class="fas bottom-left fa-arrow-circle-up"></i>
+    </div>
+
+    <div id="main-content">
+        <p>Lorem New Window Library Find in This Page New Private Window</p>
+        <p class="medium-text">The quick brown fox jumps over the lazy dog. </p>
+        <p class="big-text">Quisque eget nisi feugiat, volutpat purus a, aliquam mi. </p>
+    </div>
+</body>
+
+</html>

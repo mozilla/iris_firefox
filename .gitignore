@@ -48,7 +48,6 @@ local/
 .DS_Store
 .gitignore
 *.sh.swp
-*.ini
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -134,8 +133,8 @@ __debug__.py
 # Pipfile.lock (since we are using multiple platforms, differences will appear)
 Pipfile.lock
 
-# To download files
-iris/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives/*
+# Visual Studio Code
+.vscode
 
-# This will be downloaded at bootstrap run
-bootstrap\get-pip.py
+# To download files
+iris2/targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives/*
