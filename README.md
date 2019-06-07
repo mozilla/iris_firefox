@@ -1,7 +1,8 @@
 # Welcome to Mozilla Iris!
-Iris is a visual test suite for Firefox. 
 
-* Supports Mac, Windows and Ubuntu Linux.
-* For all information, including setup, API, and contributions, please see our [wiki](https://github.com/mozilla/iris/wiki/).
+NOTE: This repo is an archive of the original Iris 1.0 project, and is no longer being maintained.
 
-Thank you for visiting our project, and we look forward to working with you.
+Please refer to these active projects instead:
+
+* [Iris](https://github.com/mozilla/iris) - a visual automation platform for the desktop, written in Python 3.
+* [Iris for Firefox](https://github.com/mozilla/iris_firefox) - tests written specifically for automation of the Firefox browser.
