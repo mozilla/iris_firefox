@@ -149,7 +149,11 @@ def get_python_version():
             0].rstrip().decode("utf-8")
         version = version_string.split(' ')[1]
     except IndexError:
-        py_version = 'python --version'
-        version_string = subprocess.Popen(py_version, stdout=subprocess.PIPE, shell=True).communicate()[
-            0].rstrip().decode("utf-8")
+        try:
+            py_version = 'python --version'
+            version_string = subprocess.Popen(py_version, stdout=subprocess.PIPE, shell=True).communicate()[
+                0].rstrip().decode("utf-8")
+            version = version_string.split(' ')[1]
+        except IndexError:
+            version = 'unknown'
     return version
