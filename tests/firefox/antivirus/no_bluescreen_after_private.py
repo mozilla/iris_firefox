@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from targets.firefox.firefox_ui.private_window import PrivateWindow
 from targets.firefox.fx_testcase import *
 
 

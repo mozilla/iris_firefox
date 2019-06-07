@@ -19,6 +19,8 @@ class Test(FirefoxTest):
         twitter_logo_pattern = Pattern('twitter_logo.png')
         tracker_site_pattern = Pattern('firefox_download.png')
 
+        change_preference('security.enterprise_roots.enabled', 'true')
+
         change_preference('security.enterprise_roots.enabled', 'false')
 
         navigate('https://www.twitter.com')
