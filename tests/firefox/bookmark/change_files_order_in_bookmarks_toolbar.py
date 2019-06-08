@@ -14,8 +14,7 @@ class Test(FirefoxTest):
         test_case_id='163482',
         test_suite_id='2525',
         profile=Profiles.TEN_BOOKMARKS,
-        exclude=OSPlatform.MAC,
-        exclude=OSPlatform.LINUX
+        exclude=[OSPlatform.MAC, OSPlatform.LINUX]
     )
     def run(self, firefox):
         library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
