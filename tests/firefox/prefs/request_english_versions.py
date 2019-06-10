@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         test_suite_id='2074',
     )
     def run(self, firefox):
-        choose_language_button_pattern = Pattern('choose_language_button.png')
+        choose_language_button_pattern = Pattern('choose_button.png')
         webpage_language_settings_title_pattern = Pattern('webpage_language_settings_title.png')
         request_english_version_unchecked_pattern = Pattern('request_english_verison_unchecked.png')
         reguest_english_versions_checked_pattern = Pattern('reguest_english_versions_checked.png')
