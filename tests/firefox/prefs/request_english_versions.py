@@ -19,13 +19,16 @@ class Test(FirefoxTest):
         choose_language_button_pattern = Pattern('choose_button.png')
         webpage_language_settings_title_pattern = Pattern('webpage_language_settings_title.png')
         request_english_versions_unchecked_pattern = Pattern('request_english_versions_unchecked.png')
-        reguest_english_versions_checked_pattern = Pattern('reguest_english_versions_checked.png')
+        request_english_versions_checked_pattern = Pattern('request_english_versions_checked.png')
 
         change_preference('privacy.resistFingerprinting', 'true')
 
         navigate('about:preferences')
 
-        choose_language_button = scroll_until_pattern_found(choose_language_button_pattern, scroll, (-25,), 20, 1)
+        type(Key.TAB)
+
+        choose_language_button = scroll_until_pattern_found(choose_language_button_pattern, type, (Key.DOWN,), 20,
+                                                            timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
         assert choose_language_button, 'Choose language button found.'
 
         click(choose_language_button_pattern)
@@ -40,7 +43,7 @@ class Test(FirefoxTest):
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_english_version_unchecked, '"Request English versions..." unchecked.'
 
-        reguest_english_versions_checked = exists(reguest_english_versions_checked_pattern,
+        reguest_english_versions_checked = exists(request_english_versions_checked_pattern,
                                                   FirefoxSettings.FIREFOX_TIMEOUT)
         assert reguest_english_versions_checked, '"Request English versions..." checked.'
 
