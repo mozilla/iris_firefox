@@ -17,9 +17,9 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
-        search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png')
-        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')
-        search_suggestion_history_pattern = Pattern('search_suggestion_history.png')
+        search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png').similar(.6)
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.6)
+        search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.6)
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         google_search_results_pattern = Pattern('google_search_results.png')
@@ -27,24 +27,24 @@ class Test(FirefoxTest):
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Mozilla page loaded successfully.'
 
         bookmark_page()
 
-        expected = region.exists(page_bookmarked_pattern, 10)
+        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Page was bookmarked.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FIREFOX_LOGO, 10)
+        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Firefox page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
+        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Focus page loaded successfully.'
 
         firefox.restart(LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
@@ -54,29 +54,29 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('m')
 
-        expected = region.exists(search_suggestion_bookmarked_tab_pattern, 10)
+        expected = region.exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Bookmarked page found between search suggestions.'
 
         select_location_bar()
         paste('o')
 
-        expected = region.exists(search_suggestion_opened_tab_pattern, 10)
+        expected = region.exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Opened tab found between search suggestions.'
 
         select_location_bar()
         paste('f')
 
-        expected = region.exists(search_suggestion_history_pattern, 10)
+        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
-        expected = region.exists(popular_search_suggestion_pattern, 10)
+        expected = region.exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Popular search suggestions from the default search engine found between search suggestions.'
 
-        expected = region.exists(google_one_off_button_pattern, 10)
+        expected = region.exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'The \'Google\' one-off button found.'
 
         click(google_one_off_button_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = exists(google_search_results_pattern, 10)
+        expected = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Google search results are displayed.'
