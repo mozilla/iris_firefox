@@ -58,4 +58,5 @@ class Test(FirefoxTest):
 
         request_english_version_unchecked = exists(request_english_versions_unchecked_pattern,
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
-        assert request_english_version_unchecked, '"Request English versions..." unchecked.'
+        assert request_english_version_unchecked, '"Request English versions..." unchecked. NOTE: The build affected ' \
+                                                  'by this bug the field remained checked. '
