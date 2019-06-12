@@ -26,4 +26,4 @@ class Test(FirefoxTest):
         assert find_more_highlighted, '"Find more (search engine)" link is highlighted.'
 
         # -NOTE: In the builds affected by this bug the one-click Search Engines section was shown, but
-        # the searched text was not highlighted.
+        #  the searched text was not highlighted.
