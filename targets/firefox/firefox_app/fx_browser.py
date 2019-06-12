@@ -258,6 +258,11 @@ class FXRunner:
         args.append('-foreground')
         args.append('-no-remote')
 
+        args.append('-height')
+        args.append('600')
+        args.append('-width')
+        args.append('800')
+
         args.append('-new-tab')
         args.append(self.url)
 
