@@ -19,9 +19,12 @@ class Test(FirefoxTest):
 
         navigate('about:preferences')
 
-        type('find more')
+        paste('find more')
 
-        find_more_highlighted = exists(find_more_highlighted_pattern.similar(0.99), FirefoxSettings.FIREFOX_TIMEOUT)
+        if OSHelper.is_linux():
+            find_more_highlighted = exists(find_more_highlighted_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT)
+        else:
+            find_more_highlighted = exists(find_more_highlighted_pattern.similar(0.99), FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert find_more_highlighted, '"Find more (search engine)" link is highlighted.'
 
