@@ -20,7 +20,7 @@ class Test(FirefoxTest):
 
         navigate('about:preferences')
 
-        paste('Reports')
+        paste('Firefox Data')
 
         firefox_data_collection_and_use = exists(firefox_data_collection_and_use_pattern,
                                                  FirefoxSettings.FIREFOX_TIMEOUT)
