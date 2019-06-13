@@ -16,6 +16,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
     )
     def run(self, firefox):
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         navigate('about:preferences')
 
         page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
@@ -30,13 +31,13 @@ class Test(FirefoxTest):
                                 FirefoxSettings.FIREFOX_TIMEOUT)
         assert privacy_selected and page_displayed, 'The button is selected and the corresponding page is displayed.'
 
-        click_offset = NavBar.HOME_BUTTON.get_size()[0]
+        empty_space_near_navigation_menu_location = find(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
 
-        click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED.target_offset(-click_offset))
+        click(Location(10, empty_space_near_navigation_menu_location.y))
 
         button_remains_selected = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
                                          FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert button_remains_selected, ' The selected button from step 3 remains selected and has a blue color. ' \
+        assert button_remains_selected, 'The selected button from step 3 remains selected and has a blue color. ' \
                                         'NOTE: In the builds affected by this bug the button gets deselected. ' \
                                         'To see behaviour, click here.' \
                                         '[https://bug1524210.bmoattachments.org/attachment.cgi?id=9040357]'
