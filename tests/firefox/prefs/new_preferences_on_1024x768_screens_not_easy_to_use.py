@@ -15,6 +15,7 @@ class Test(FirefoxTest):
         test_case_id='145230',
         test_suite_id='2241',
         enabled=False
+        # Blocked due to precondition: "Have screen resolution of 1024 x 768."
     )
     def run(self, firefox):
         type(Key.F11)
