@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
         assert page_loaded, 'about:preferences page loaded.'
 
-        paste('Firefox Data')
+        paste('crash reports')
 
         firefox_data_collection_and_use = exists(firefox_data_collection_and_use_pattern,
                                                  FirefoxSettings.FIREFOX_TIMEOUT)
