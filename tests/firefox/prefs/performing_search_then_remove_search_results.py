@@ -16,9 +16,12 @@ class Test(FirefoxTest):
         locale=['en-US'],
     )
     def run(self, firefox):
-        firefox_data_collection_and_use_pattern = Pattern('firefox_data_collection_and_use.png.png')
+        firefox_data_collection_and_use_pattern = Pattern('firefox_data_collection_and_use.png')
 
         navigate('about:preferences')
+
+        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
+        assert page_loaded, 'about:preferences page loaded.'
 
         paste('Firefox Data')
 
@@ -26,13 +29,13 @@ class Test(FirefoxTest):
                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_data_collection_and_use, '"firefox data" Search Results are displayed'
 
-        click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
 
         try:
-            search_results_dissapear = wait_vanish(firefox_data_collection_and_use_pattern)
+            search_results_disappear = wait_vanish(firefox_data_collection_and_use_pattern)
         except FindError:
             raise FindError('Search results are still on page.')
 
-        assert search_results_dissapear, 'The Search Results disappear and the options for the selected section ' \
+        assert search_results_disappear, 'The Search Results disappear and the options for the selected section ' \
                                          'are displayed. -NOTE: In the builds affected by this bug, the Search Result' \
                                          ' remained on top of the page. '
