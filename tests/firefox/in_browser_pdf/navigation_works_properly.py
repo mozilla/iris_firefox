@@ -42,7 +42,7 @@ class Test(FirefoxTest):
         navigate(pdf_file_path)
 
         pdf_document_opened = exists(pdf_file_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert pdf_document_opened, 'The PDF file successfully opened in In-browser P   DF viewer'
+        assert pdf_document_opened, 'The PDF file successfully opened in In-browser PDF viewer'
 
         arrow_down_navigation_works = scroll_until_pattern_found(introduction_chapter_pattern, type, (Key.DOWN,))
         assert arrow_down_navigation_works, 'Navigation via \'Arrow down\' key works properly'
