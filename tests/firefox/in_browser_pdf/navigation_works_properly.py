@@ -44,10 +44,12 @@ class Test(FirefoxTest):
         pdf_document_opened = exists(pdf_file_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert pdf_document_opened, 'The PDF file successfully opened in In-browser PDF viewer'
 
-        arrow_down_navigation_works = scroll_until_pattern_found(introduction_chapter_pattern, type, (Key.DOWN,))
+        arrow_down_navigation_works = scroll_until_pattern_found(introduction_chapter_pattern, type, (Key.DOWN,),
+                                                                 num_of_scroll_iterations=20)
         assert arrow_down_navigation_works, 'Navigation via \'Arrow down\' key works properly'
 
-        arrow_up_navigation_works = scroll_until_pattern_found(pdf_file_page_contents_pattern, type, (Key.UP,))
+        arrow_up_navigation_works = scroll_until_pattern_found(pdf_file_page_contents_pattern, type, (Key.UP,),
+                                                               num_of_scroll_iterations=20)
         assert arrow_up_navigation_works, 'Navigation via \'Arrow up\' key works properly'
 
         [type(Key.RIGHT) for _ in range(2)]
