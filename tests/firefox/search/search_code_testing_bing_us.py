@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         change_preference('browser.search.widget.inNavBar', True)
 
         navigate('about:preferences#search')
-        expected = exists(default_search_engine_google_pattern, 10)
+        expected = exists(default_search_engine_google_pattern.similar(0.7), 10)
         assert expected is True, 'Google is the default search engine.'
 
         # Change the default search engine to Bing.
