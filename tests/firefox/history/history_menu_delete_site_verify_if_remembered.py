@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         select_location_bar()
-        paste('127.0.0.1:2000/p')
+        type('127.0.0.1:2000/p')
 
         expected_1 = exists(pocket_autocomplete, 10)
         assert expected_1, 'Pocket page is auto-completed successfully.'
@@ -36,7 +36,7 @@ class Test(FirefoxTest):
         click(NavBar.FORWARD_BUTTON.target_offset(-50, 0), align=Alignment.TOP_LEFT)
 
         select_location_bar()
-        paste('127.0.0.1:2000/m')
+        type('127.0.0.1:2000/m')
 
         expected_2 = exists(mozilla_autocomplete, 10)
         assert expected_2, 'Mozilla page is auto-completed successfully.'
@@ -63,7 +63,7 @@ class Test(FirefoxTest):
 
         # Check that the local server is still auto-completed in the URL bar.
         select_location_bar()
-        paste('127')
+        type('127')
 
         expected_5 = exists(local_server_autocomplete, 10)
         assert expected_5, 'Local server is auto-completed successfully.'
