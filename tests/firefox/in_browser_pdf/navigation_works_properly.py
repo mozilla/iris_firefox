@@ -20,8 +20,8 @@ class Test(FirefoxTest):
         doc_properties_close_button_pattern = Pattern('document_properties_close_button.png')
         document_properties_filename_pattern = Pattern('document_properties_info.png')
         document_properties_button_pattern = Pattern('document_properties_button.png')
-        last_page_text_contents_pattern = Pattern('last_page_text_contents.png')
         introduction_chapter_pattern = Pattern('introduction_chapter_headline.png')
+        last_page_text_contents_pattern = Pattern('last_page_text_contents.png')
         go_to_first_page_button_pattern = Pattern('go_to_first_page_button.png')
         rotate_clockwise_button_pattern = Pattern('rotate_clockwise_button.png')
         pdf_file_last_page_contents_pattern = Pattern('last_page_contents.png')
@@ -53,6 +53,7 @@ class Test(FirefoxTest):
         assert arrow_up_navigation_works, 'Navigation via \'Arrow up\' key works properly'
 
         [type(Key.RIGHT) for _ in range(2)]
+        type(Key.DOWN)
 
         arrow_right_navigation_works = exists(history_chapter_pattern)
         assert arrow_right_navigation_works, 'Navigation via \'Arrow right\' key works properly'
@@ -82,6 +83,7 @@ class Test(FirefoxTest):
         assert previous_page_button_available, '\'Previous page\' button available'
 
         [click(previous_page_button_pattern) for _ in range(2)]
+        type(Key.DOWN)
 
         navigation_via_previous_page_button_works = exists(history_chapter_pattern)
         assert navigation_via_previous_page_button_works, \
@@ -146,9 +148,12 @@ class Test(FirefoxTest):
         page_rotated_back = exists(pdf_file_last_page_contents_pattern)
         assert page_rotated_back, 'Page contents rotated via \'Rotate counterclockwise\' button'
 
-        rotate_counterclockwise_button_available = exists(rotate_counterclockwise_button_pattern)
-        assert rotate_counterclockwise_button_available, \
-            '\'Tools\' menu didn\'t close after rotating page counterclockwise'
+        type(Key.ESC)
+
+        tools_button_available = exists(tools_button_pattern)
+        assert tools_button_available, '\'Tools\' button available in In-browser PDF viewer'
+
+        click(tools_button_pattern)
 
         hand_tool_available = exists(hand_tool_button_pattern)
         assert hand_tool_available, '\'Hand tool\' button available in \'Tools\' menu'
