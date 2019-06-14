@@ -20,7 +20,6 @@ class Test(FirefoxTest):
         remember_history_pattern = Pattern('remember_history.png')
         restart_browser_pattern = Pattern('restart_browser.png')
         always_use_private_browsing_mode_unticked_pattern = Pattern('always_use_private_browsing_mode_unticked.png')
-        always_use_private_browsing_mode_ticked_pattern = Pattern('always_use_private_browsing_mode_ticked.png')
         remember_browsing_search_clear_history_unticked_pattern = \
             Pattern('remember_browsing_search_clear_history_unticked.png')
 
