@@ -157,8 +157,12 @@ class Test(FirefoxTest):
 
         drag_drop(pdf_file_last_page_contents_pattern, Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT))
 
-        hand_tool_works = not exists(pdf_file_last_page_contents_pattern)
-        assert hand_tool_works, 'Scrolling via \'Hand tool\' works properly'
+        try:
+            content_scrolled_via_hand_tool = wait_vanish(pdf_file_last_page_contents_pattern)
+        except FindError:
+            raise FindError('Page contents didn\'t scroll using \'Hand tool\'')
+
+        assert content_scrolled_via_hand_tool, 'Scrolling via \'Hand tool\' works properly'
 
         tools_button_available = exists(tools_button_pattern)
         assert tools_button_available, '\'Tools\' button available in In-browser PDF viewer'
