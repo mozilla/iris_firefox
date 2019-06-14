@@ -30,6 +30,7 @@ class Test(FirefoxTest):
         else:
             value = 100
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         navigate('about:preferences#privacy')
 
         page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT)
