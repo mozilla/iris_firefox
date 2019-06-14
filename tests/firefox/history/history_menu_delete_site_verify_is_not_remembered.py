@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         select_location_bar()
-        paste('http://127.0.0.1:2000/m')
+        type('http://127.0.0.1:2000/m')
 
         expected_1 = exists(mozilla_autocomplete, 10)
         assert expected_1, 'Mozilla page is auto-completed successfully.'
@@ -51,7 +51,7 @@ class Test(FirefoxTest):
 
         # Check that the deleted page is not auto-completed in the URL bar.
         select_location_bar()
-        paste('http://127.0.0.1:2000/m')
+        type('http://127.0.0.1:2000/m')
 
         expected_4 = exists(mozilla_autocomplete.similar(0.9), 10)
-        assert expected_4 is not True, 'Mozilla page is not auto-completed in URL bar.'
+        assert expected_4 is False, 'Mozilla page is not auto-completed in URL bar.'
