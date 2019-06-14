@@ -22,12 +22,6 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#privacy')
 
-        # privacy_page_assert = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-        #                              FirefoxSettings.FIREFOX_TIMEOUT)
-        # assert privacy_page_assert is True, 'Privacy page has been accessed.'
-        #
-        # click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
-
         paste('firefox will remember')
 
         history_dropdown = exists(history_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
