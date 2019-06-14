@@ -17,6 +17,11 @@ class Test(FirefoxTest):
     def run(self, firefox):
         remember_history_selected_pattern = Pattern('remember_history_selected.png')
 
+        select_location_bar()
+        edit_copy()
+        start_url = get_clipboard()
+        restore_firefox_focus()
+
         navigate('about:preferences#privacy')
 
         preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
@@ -37,6 +42,10 @@ class Test(FirefoxTest):
         navigate(LocalWeb.POCKET_TEST_SITE)
         iris_page_loaded = exists(LocalWeb.POCKET_IMAGE, Settings.site_load_timeout)
         assert iris_page_loaded, 'Iris local page is loaded'
+
+        navigate(start_url)
+        start_page_loaded = exists(LocalWeb.IRIS_LOGO)
+        assert start_page_loaded, 'Start iris page is loaded'
 
         library_menu_button_reachable = exists(NavBar.LIBRARY_MENU)
         assert library_menu_button_reachable, 'Library menu button is reachable'
