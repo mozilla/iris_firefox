@@ -37,10 +37,15 @@ class Test(FirefoxTest):
         region = Region(Screen().width / 4, Screen().height / 4, Screen().width / 2, Screen().height / 2)
 
         # Uncheck all options to be cleared.
-        while region.exists(checked_box.similar(0.8), 10):
-            time.sleep(Settings.DEFAULT_UI_DELAY)
-            click(checked_box)
-            region.exists(checked_box.similar(0.8), 10)
+        for step in range(1, 6):
+            checked_box_exists = exists(checked_box)
+            if checked_box_exists:
+                assert checked_box_exists, 'Checked box number {} exist'.format(step)
+
+                time.sleep(Settings.DEFAULT_UI_DELAY)
+                click(checked_box)
+            else:
+                break
 
         # Check that the 'Clear Now' button is disabled.
         expected_4 = exists(clear_now_button_disabled.similar(0.8), 10)
