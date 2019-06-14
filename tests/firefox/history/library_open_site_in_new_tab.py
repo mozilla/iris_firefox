@@ -19,14 +19,13 @@ class Test(FirefoxTest):
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         history_today_pattern = Library.HISTORY_TODAY
-        library_bookmarks_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
         iris_tab_icon = Pattern('iris_logo_tab.png')
 
         # Open a page to create some today's history.
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected_1 = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_1 is True, 'Mozilla page loaded successfully.'
 
         close_tab()
@@ -36,34 +35,37 @@ class Test(FirefoxTest):
         right_upper_corner = Screen().new_region(Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2,
                                                  Screen.SCREEN_HEIGHT / 2)
 
-        expected_2 = right_upper_corner.exists(iris_bookmark_pattern, 10)
+        expected_2 = right_upper_corner.exists(iris_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_2 is True, 'Iris page is displayed in the History menu list.'
 
         # Click on the Show All History button.
         click(show_all_history_pattern, 2)
 
-        expected_3 = exists(history_today_pattern, 10)
+        expected_3 = exists(history_today_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_3 is True, 'Today history option is available.'
+
+        type(Key.DOWN)
 
         # Verify if Mozilla page is present in Today's History.
 
-        expected_4 = exists(library_bookmarks_mozilla_pattern, 10)
+        expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_4 is True, 'Mozilla page is displayed successfully in the History list.'
 
         # Open the Mozilla page using the 'Open in a New Tab' button from the context menu.
-        right_click(library_bookmarks_mozilla_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         type(text='w')
 
         # Close the library.
         open_library()
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         click_window_control('close')
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         # Check that the Mozilla page loaded successfully in a new tab.
-        expected_5 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected_5 = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_5 is True, 'Mozilla page loaded successfully.'
 
-        expected_6 = exists(iris_tab_icon, 10)
+        expected_6 = exists(iris_tab_icon, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_6 is True, 'Iris local page is still open in the first tab.'
