@@ -12,8 +12,8 @@ class Test(FirefoxTest):
         description='Bug 1435786 - "Request English versions…" checkbox in Preferences can\'t be unchecked '
                     'after being checked',
         locale=['en-US'],
-        test_case_id='125532',
-        test_suite_id='2074',
+        test_case_id='145063',
+        test_suite_id='2241',
     )
     def run(self, firefox):
         choose_language_button_pattern = Pattern('choose_button.png')
