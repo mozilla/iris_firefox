@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         cnn_tab_pattern = Pattern('cnn_tab.png')
-        cnn_icon_pattern = Pattern('cnn_icon.png').exact()
+        cnn_icon_pattern = Pattern('cnn_icon.png')
         facebook_tab_pattern = Pattern('facebook_tab.png')
 
         region = Region(0, 0, Screen().width / 2, Screen().height / 3)
@@ -29,7 +29,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         key_up(Key.CTRL)
 
-        expected = region.exists(cnn_icon_pattern, 10)
+        expected = region.exists(cnn_icon_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected, 'CNN page successfully loaded .'
 
         new_tab()
@@ -41,7 +41,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         key_up(Key.CTRL)
 
-        expected = region.exists(facebook_tab_pattern, 10)
+        expected = region.exists(facebook_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected, 'Facebook page successfully loaded.'
 
         previous_tab()
@@ -51,5 +51,5 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         key_up(Key.CTRL)
 
-        expected = region.exists(cnn_tab_pattern, 10)
+        expected = region.exists(cnn_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected, 'CNN page successfully reloaded.'

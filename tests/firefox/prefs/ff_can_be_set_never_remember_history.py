@@ -42,8 +42,8 @@ class Test(FirefoxTest):
 
         click(restart_browser_pattern)
 
-        browser_relaunched = exists(NavBar.LIBRARY_MENU, Settings.site_load_timeout) \
-                             and exists(NavBar.SIDEBAR_MENU, Settings.site_load_timeout)
+        browser_relaunched = exists(NavBar.LIBRARY_MENU, Settings.site_load_timeout) and exists(
+            NavBar.SIDEBAR_MENU, Settings.site_load_timeout)
         assert browser_relaunched, 'Browser is relaunched'
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
