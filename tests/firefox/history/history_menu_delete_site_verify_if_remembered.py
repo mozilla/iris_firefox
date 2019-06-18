@@ -15,13 +15,14 @@ class Test(FirefoxTest):
         test_suite_id='2000'
     )
     def run(self, firefox):
-        local_server_autocomplete = Pattern('local_server_autocomplete.png')
-        mozilla_bookmark_focus = Pattern('mozilla_bookmark_focus.png')
-        pocket_autocomplete = Pattern('pocket_autocomplete.png')
-        mozilla_autocomplete = Pattern('mozilla_autocomplete.png')
+        local_server_autocomplete_pattern = Pattern('local_server_autocomplete.png')
+        mozilla_bookmark_focus_pattern = Pattern('mozilla_bookmark_focus.png')
+        pocket_autocomplete_pattern = Pattern('pocket_autocomplete.png')
+        mozilla_autocomplete_pattern = Pattern('mozilla_autocomplete.png')
 
         # Visit two pages from the same domain at least two times to make sure that auto-fill is working in the URL bar.
         new_tab()
+
         navigate(LocalWeb.POCKET_TEST_SITE)
         navigate(LocalWeb.POCKET_TEST_SITE)
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -30,16 +31,16 @@ class Test(FirefoxTest):
         select_location_bar()
         type('127.0.0.1:2000/p')
 
-        expected_1 = exists(pocket_autocomplete, 10)
-        assert expected_1, 'Pocket page is auto-completed successfully.'
+        pocket_autocomplete_exists = exists(pocket_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert pocket_autocomplete_exists, 'Pocket page is auto-completed successfully.'
 
         click(NavBar.FORWARD_BUTTON.target_offset(-50, 0), align=Alignment.TOP_LEFT)
 
         select_location_bar()
         type('127.0.0.1:2000/m')
 
-        expected_2 = exists(mozilla_autocomplete, 10)
-        assert expected_2, 'Mozilla page is auto-completed successfully.'
+        mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_autocomplete_exists, 'Mozilla page is auto-completed successfully.'
 
         close_tab()
         new_tab()
@@ -47,15 +48,16 @@ class Test(FirefoxTest):
         # Open History and check if is populated with Mozilla page.
         open_history_library_window()
 
-        expected_3 = exists(mozilla_bookmark_focus, 10)
-        assert expected_3, 'Mozilla page is displayed in the History list successfully.'
+        mozilla_bookmark_focus_exists = exists(mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_bookmark_focus_exists, 'Mozilla page is displayed in the History list successfully.'
 
         # Delete Mozilla page.
-        right_click_and_type(mozilla_bookmark_focus, keyboard_action='d')
+        right_click_and_type(mozilla_bookmark_focus_pattern, keyboard_action='d')
 
         try:
-            expected_4 = wait_vanish(mozilla_bookmark_focus, 10)
-            assert expected_4, 'Mozilla page was deleted successfully from the history.'
+            mozilla_bookmark_focus_vanished = wait_vanish(mozilla_bookmark_focus_pattern,
+                                                          FirefoxSettings.FIREFOX_TIMEOUT)
+            assert mozilla_bookmark_focus_vanished, 'Mozilla page was deleted successfully from the history.'
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
 
@@ -65,5 +67,5 @@ class Test(FirefoxTest):
         select_location_bar()
         type('127')
 
-        expected_5 = exists(local_server_autocomplete, 10)
-        assert expected_5, 'Local server is auto-completed successfully.'
+        local_server_autocomplete_exists = exists(local_server_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert local_server_autocomplete_exists, 'Local server is auto-completed successfully.'
