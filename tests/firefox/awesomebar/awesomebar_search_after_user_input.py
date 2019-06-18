@@ -25,65 +25,69 @@ class Test(FirefoxTest):
         twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
         twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
 
-        region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2 + 100)
-
         navigate(url)
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+
+        firefox_logo_exists = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert firefox_logo_exists, 'Page successfully loaded, firefox logo found.'
 
         # Type a partial part of the above address and perform a search, in a new tab, using an one-off.
         select_location_bar()
         paste('127')
-        expected = region.exists(localhost, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
 
-        expected = region.exists(twitter_one_off_button, 10)
-        assert expected, 'The \'Twitter\' one-off button found.'
+        localhost_string_exists = exists(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert localhost_string_exists, 'Searched string found at the bottom of the drop-down list.'
+
+        twitter_one_off_button_exists = exists(twitter_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert twitter_one_off_button_exists, 'The \'Twitter\' one-off button found.'
 
         hover(twitter_one_off_button)
 
         try:
-            expected = region.wait_vanish(localhost, 10)
-            assert expected, 'The \'Twitter\' one-off button is highlighted.'
+            localhost_string_vanished = wait_vanish(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert localhost_string_vanished, 'The \'Twitter\' one-off button is highlighted.'
         except FindError:
             raise FindError('The \'Twitter\' one-off button is not highlighted.')
 
         right_click(twitter_one_off_button)
 
-        expected = exists(search_in_new_tab, 10)
-        assert expected, 'The \'Search in New Tab\' option found.'
+        search_in_new_tab_exists = exists(search_in_new_tab, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_in_new_tab_exists, 'The \'Search in New Tab\' option found.'
 
         click(search_in_new_tab)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         # Move focus to the new tab opened.
         next_tab()
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = region.exists(twitter_search_results_localhost.similar(0.9), 5) or region.exists(
-            twitter_search_results_localhost_2, 5)
-        assert expected, 'A new tab with \'Twitter\' search results for the searched string is opened.'
+        twitter_search_results_localhost_exists = exists(twitter_search_results_localhost.similar(0.9),
+                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT) or \
+                                                  exists(twitter_search_results_localhost_2,
+                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert twitter_search_results_localhost_exists, 'A new tab with \'Twitter\' search results' \
+                                                        ' for the searched string is opened.'
 
         # Type a partial part of the above address and perform a search, in the same tab, using an one-off .
         select_location_bar()
         paste('127.0')
 
-        expected = region.exists(localhost_2, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
+        localhost_string_exists = exists(localhost_2, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert localhost_string_exists, 'Searched string found at the bottom of the drop-down list.'
 
-        expected = region.exists(bing_one_off_button, 10)
-        assert expected, '\'Bing\' one-off button not found.'
+        bing_one_off_button_exists = exists(bing_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bing_one_off_button_exists, '\'Bing\' one-off button not found.'
 
         hover(bing_one_off_button)
 
         try:
-            expected = region.wait_vanish(localhost, 10)
-            assert expected, 'The \'Bing\' one-off button is highlighted.'
+            localhost_string_vanished = wait_vanish(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert localhost_string_vanished, 'The \'Bing\' one-off button is highlighted.'
         except FindError:
             raise FindError('The \'Bing\' one-off button is not highlighted.')
 
         click(bing_one_off_button)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = region.exists(bing_search_results_localhost.similar(0.9), 10)
-        assert expected, '\'Bing\' search results are opened in the same tab.'
+        bing_search_results_localhost_exists = exists(bing_search_results_localhost.similar(0.9),
+                                                      FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bing_search_results_localhost_exists, '\'Bing\' search results are opened in the same tab.'
