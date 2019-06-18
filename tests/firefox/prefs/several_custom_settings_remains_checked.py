@@ -24,13 +24,12 @@ class Test(FirefoxTest):
             Pattern('remember_browsing_search_clear_history_unticked.png')
 
         if OSHelper.is_windows():
-            value = Screen.SCREEN_HEIGHT/2
+            scroll_length = Screen.SCREEN_HEIGHT/2
         elif OSHelper.is_linux():
-            value = 5
+            scroll_length = 5
         else:
-            value = 100
+            scroll_length = 100
 
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         navigate('about:preferences#privacy')
 
         page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT)
@@ -46,7 +45,8 @@ class Test(FirefoxTest):
         center_screen_location = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
         move(center_screen_location)
 
-        remember_history = scroll_until_pattern_found(remember_history_pattern, Mouse().scroll, (0, -value), 100)
+        remember_history = scroll_until_pattern_found(remember_history_pattern, Mouse().scroll,
+                                                      (0, -scroll_length), 100)
 
         assert remember_history, '"Remember history" option from the History dropdown list found.'
 
@@ -79,7 +79,7 @@ class Test(FirefoxTest):
         move(center_screen_location)
 
         remember_browsing_search_clear_history_unticked = scroll_until_pattern_found(
-            remember_browsing_search_clear_history_unticked_pattern, Mouse().scroll, (0, -value), 100)
+            remember_browsing_search_clear_history_unticked_pattern, Mouse().scroll, (0, -scroll_length), 100)
 
         assert remember_browsing_search_clear_history_unticked, \
             '"Use custom settings for history" option from the History dropdown list found.' \
