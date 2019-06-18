@@ -22,10 +22,16 @@ class Test(FirefoxTest):
         change_preference('browser.search.widget.inNavBar', True)
 
         navigate('about:preferences#search')
-        expected = exists(default_search_engine_google_pattern.similar(0.7), 10)
-        assert expected is True, 'Google is the default search engine.'
+
+        default_search_engine_google_exists = exists(default_search_engine_google_pattern.similar(0.7),
+                                                     FirefoxSettings.FIREFOX_TIMEOUT)
+        assert default_search_engine_google_exists is True, 'Google is the default search engine.'
 
         # Change the default search engine to DuckDuckGo.
+        default_search_engine_dropdown_exists = exists(default_search_engine_dropdown_pattern,
+                                                       FirefoxSettings.FIREFOX_TIMEOUT)
+        assert default_search_engine_dropdown_exists is True, 'Default search engine dropdown exists'
+
         click(default_search_engine_dropdown_pattern)
         repeat_key_down(3)
         type(Key.ENTER)
@@ -34,9 +40,10 @@ class Test(FirefoxTest):
         paste('test')
         type(Key.ENTER)
 
-        expected = exists(test_search_duckduckgo_pattern, 10)
-        assert expected is True, 'The search is performed with the DuckDuckGo engine.'
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        test_search_duckduckgo_exists = exists(test_search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert test_search_duckduckgo_exists is True, 'The search is performed with the DuckDuckGo engine.'
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         select_location_bar()
         url_text = copy_to_clipboard()
