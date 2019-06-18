@@ -24,7 +24,7 @@ class Test(FirefoxTest):
             Pattern('remember_browsing_search_clear_history_unticked.png')
 
         if OSHelper.is_windows():
-            scroll_length = Screen.SCREEN_HEIGHT//2
+            scroll_length = Screen.SCREEN_HEIGHT // 2
         elif OSHelper.is_linux():
             scroll_length = 5
         else:
