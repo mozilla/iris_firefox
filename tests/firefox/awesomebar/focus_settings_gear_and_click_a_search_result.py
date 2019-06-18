@@ -18,52 +18,52 @@ class Test(FirefoxTest):
         search_settings_pattern = Pattern('search_settings.png')
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
-        search_suggestion_history_pattern = Pattern('search_suggestion_history.png')
+        search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.7)
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Mozilla page loaded successfully.'
 
         bookmark_page()
 
-        expected = region.exists(page_bookmarked_pattern, 10)
+        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Page was bookmarked.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FIREFOX_LOGO, 10)
+        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Firefox page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
+        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Focus page loaded successfully.'
 
-        firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE,image=LocalWeb.FIREFOX_LOGO)
+        firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
 
         new_tab()
 
         select_location_bar()
         paste('fo')
 
-        expected = region.exists(search_settings_pattern, 10)
+        expected = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'The \'Search settings\' button is displayed in the awesomebar.'
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         repeat_key_down(16)
         key_to_one_off_search(settings_gear_highlighted_pattern, "right")
 
-        expected = region.exists(settings_gear_highlighted_pattern, 5)
+        expected = region.exists(settings_gear_highlighted_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert expected, 'The \'Search settings\' button has focus.'
 
-        expected = region.exists(search_suggestion_history_pattern, 10)
+        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
         # Find the coordinates of the above search suggestion.
@@ -71,5 +71,5 @@ class Test(FirefoxTest):
         click(search_suggestion_history_pattern)
 
         # The page corresponding to the search result is opened and NOT the about:preferences#search page.
-        expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
+        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Focus page loaded successfully.'
