@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         the_swish_life_tab_pattern = Pattern('the_swish_life_tab.png')
         fashion_tag_pattern = Pattern('fashion_tag.png')
-        fashion_page_pattern = Pattern('fashion_page.png')
+        fashion_page_pattern = Pattern('fashion_page.png').similar(.7)
         the_home_button_pattern = Pattern('the_home_button.png')
 
         navigate('http://theswishlife.com/')
