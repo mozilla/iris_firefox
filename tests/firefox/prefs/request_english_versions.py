@@ -43,9 +43,9 @@ class Test(FirefoxTest):
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_english_version_unchecked, '"Request English versions..." unchecked.'
 
-        reguest_english_versions_checked = exists(request_english_versions_checked_pattern,
+        request_english_versions_checked = exists(request_english_versions_checked_pattern,
                                                   FirefoxSettings.FIREFOX_TIMEOUT)
-        assert reguest_english_versions_checked, '"Request English versions..." checked.'
+        assert request_english_versions_checked, '"Request English versions..." checked.'
 
         type(Key.ENTER)
 
