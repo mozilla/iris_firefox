@@ -46,7 +46,7 @@ class Test(FirefoxTest):
 
         click(empty_space_near_privacy_button_location)
 
-        button_remains_selected = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
+        button_remains_selected = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED.similar(0.95),
                                          FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert button_remains_selected, 'The selected button from step 3 remains selected and has a blue color. ' \
                                         'NOTE: In the builds affected by this bug the button gets deselected. ' \
