@@ -41,14 +41,15 @@ class Test(FirefoxTest):
 
         try:
             restart_browser_dismissed = wait_vanish(restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            logger.debug('Restart browser popup was dismissed.')
+            assert restart_browser_dismissed, 'Restart browser popup was dismissed.'
+
         except FindError:
             raise FindError('Browser restart popup was not closed.')
 
         try:
             never_remember_history_not_saved = wait_vanish(never_remember_history_pattern,
                                                            FirefoxSettings.FIREFOX_TIMEOUT)
-            logger.debug('Never Remember History option was not saved.')
+            assert never_remember_history_not_saved, 'Never Remember History option was not saved.'
 
         except FindError:
             raise FindError('Never Remember History option was changed')
