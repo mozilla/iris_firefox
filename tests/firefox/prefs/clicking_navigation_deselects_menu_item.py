@@ -16,7 +16,6 @@ class Test(FirefoxTest):
         locale=['en-US'],
     )
     def run(self, firefox):
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         navigate('about:preferences')
 
         page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
@@ -31,15 +30,16 @@ class Test(FirefoxTest):
         screen_center_location = Location(Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT)
         Mouse().move(screen_center_location)
 
-        page_displayed = scroll_until_pattern_found(
-            AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED,
-            Mouse().scroll, (0, -20,), 100, FirefoxSettings.TINY_FIREFOX_TIMEOUT//3)
+        always_radio_not_selected_pattern = AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
+        page_displayed = scroll_until_pattern_found(always_radio_not_selected_pattern, Mouse().scroll, (0, -20,), 100,
+                                                    FirefoxSettings.TINY_FIREFOX_TIMEOUT // 3)
 
         assert privacy_selected and page_displayed, 'The button is selected and the corresponding page is displayed.'
 
         empty_space_near_navigation_menu_location = find(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
 
-        click(Location(10, empty_space_near_navigation_menu_location.y))
+        empty_space_near_navigation_menu = Location(10, empty_space_near_navigation_menu_location.y)
+        click(empty_space_near_navigation_menu)
 
         button_remains_selected = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
                                          FirefoxSettings.SITE_LOAD_TIMEOUT)
