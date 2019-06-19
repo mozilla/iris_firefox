@@ -15,19 +15,23 @@ class Test(FirefoxTest):
         locale=['en-US'],
     )
     def run(self, firefox):
-        time.sleep(5)
         restore_previous_session_checked_pattern = Pattern('restore_previous_session_checked.png')
         restore_previous_session_unchecked_pattern = Pattern('restore_previous_session_unchecked.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
+
         firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.site_load_timeout)
         assert firefox_site_loaded, 'Firefox local web page is loaded'
 
+        new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
+
         focus_site_loaded = exists(LocalWeb.FOCUS_IMAGE, Settings.site_load_timeout)
         assert focus_site_loaded, 'Focus local web page is loaded'
 
+        new_tab()
         navigate('about:preferences')
+
         general_tab_loaded = exists(restore_previous_session_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert general_tab_loaded, 'The options for "General" section are displayed.'
 
@@ -38,7 +42,16 @@ class Test(FirefoxTest):
 
         firefox.restart()
 
-        time.sleep(1234)
+        select_tab(1)
 
+        firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.site_load_timeout)
 
+        select_tab(2)
 
+        focus_site_loaded = exists(LocalWeb.FOCUS_IMAGE, Settings.site_load_timeout)
+
+        select_tab(3)
+
+        general_tab_loaded = exists(restore_previous_session_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert general_tab_loaded and firefox_site_loaded and focus_site_loaded, \
+            'The browser opens successfully and all the pages from the last session are loaded.'
