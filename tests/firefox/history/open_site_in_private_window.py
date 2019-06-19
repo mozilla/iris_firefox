@@ -23,7 +23,7 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_loaded is True, 'Mozilla page loaded successfully.'
 
         # Check that the previously opened page is not displayed in the Recent History list.
@@ -32,10 +32,10 @@ class Test(FirefoxTest):
 
         click(NavBar.LIBRARY_MENU)
 
-        history_button_exists = exists(LibraryMenu.HISTORY_BUTTON, Settings.SHORT_FIREFOX_TIMEOUT)
+        history_button_exists = exists(LibraryMenu.HISTORY_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert history_button_exists is True, 'History button exists'
 
         click(LibraryMenu.HISTORY_BUTTON)
 
-        page_not_displayed = exists(recent_history_default_pattern, Settings.SITE_LOAD_TIMEOUT)
+        page_not_displayed = exists(recent_history_default_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert page_not_displayed is True, 'Mozilla page is not displayed in the History list.'

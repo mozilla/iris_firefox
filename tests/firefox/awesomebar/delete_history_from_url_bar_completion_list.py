@@ -16,9 +16,9 @@ class Test(FirefoxTest):
         )
     def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
-        search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png')
-        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')
-        search_suggestion_history_pattern = Pattern('search_suggestion_history.png')
+        search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png').similar(.6)
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.7)
+        search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.7)
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
         focus_history_menu_pattern = Pattern('focus_history_menu.png')
         library_menu_pattern = NavBar.LIBRARY_MENU
@@ -27,22 +27,22 @@ class Test(FirefoxTest):
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        expected = region.exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Mozilla page loaded successfully.'
 
         bookmark_page()
 
-        expected = region.exists(page_bookmarked_pattern, 10)
+        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Page was bookmarked.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        expected = region.exists(LocalWeb.FIREFOX_LOGO, 10)
+        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Firefox page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
-        expected = region.exists(LocalWeb.FOCUS_LOGO, 10)
+        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Focus page loaded successfully.'
         firefox.restart()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -52,15 +52,15 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('f')
 
-        expected = region.exists(search_suggestion_history_pattern, 10)
+        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
-        expected = region.exists(popular_search_suggestion_pattern, 10)
+        expected = region.exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Popular search suggestions from the default search engine found between search suggestions.'
 
         open_library_menu('History')
 
-        expected = region.exists(focus_history_menu_pattern, 10)
+        expected = region.exists(focus_history_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Focus page displayed in history menu.'
 
         # Close the library menu.
@@ -69,13 +69,13 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('o')
 
-        expected = region.exists(search_suggestion_opened_tab_pattern, 10)
+        expected = region.exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Opened tab found between search suggestions.'
 
         select_location_bar()
         paste('m')
 
-        expected = region.exists(search_suggestion_bookmarked_tab_pattern, 10)
+        expected = region.exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Bookmarked page found between search suggestions.'
 
         select_location_bar()
@@ -92,7 +92,7 @@ class Test(FirefoxTest):
             key_up(Key.SHIFT)
 
         try:
-            expected = region.wait_vanish(search_suggestion_history_pattern, 10)
+            expected = region.wait_vanish(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected, 'Focus page is removed from the list.'
         except FindError:
             raise FindError('Focus page is not removed from the list.')
@@ -100,7 +100,7 @@ class Test(FirefoxTest):
         open_library_menu('History')
 
         try:
-            expected = region.wait_vanish(focus_history_menu_pattern, 10)
+            expected = region.wait_vanish(focus_history_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected, 'Focus page successfully removed from the history menu.'
         except FindError:
             raise FindError('Focus page is still displayed in history menu.')

@@ -189,8 +189,6 @@ class Test(FirefoxTest):
                                                              FirefoxSettings.FIREFOX_TIMEOUT)
         assert checked_use_master_password_checkbox_exists, 'Master Password checkbox is unchecked.'
 
-        hover(master_password_box_is_checked_pattern)
-
         click(master_password_box_is_checked_pattern)
 
         #  deactivate master password

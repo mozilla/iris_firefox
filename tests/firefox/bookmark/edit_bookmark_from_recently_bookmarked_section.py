@@ -55,7 +55,7 @@ class Test(FirefoxTest):
 
         click(properties_option_pattern)
 
-        if not FirefoxSettings.is_mac():
+        if not OSHelper.is_mac():
             properties_window_exists = exists(properties_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
             assert properties_window_exists is True, 'Properties for "Getting Started" window is opened'
         else:
@@ -82,7 +82,7 @@ class Test(FirefoxTest):
 
         paste('Tag')
 
-        if FirefoxSettings.is_mac():
+        if OSHelper.is_mac():
             type(Key.TAB)
         else:
             [type(Key.TAB) for _ in range(2)]
@@ -118,7 +118,7 @@ class Test(FirefoxTest):
         tags_after_exists = exists(tags_after_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert tags_after_exists is True, 'Tags field changes are correctly saved'
 
-        if FirefoxSettings.is_mac():
+        if OSHelper.is_mac():
             type(Key.TAB)
         else:
             [type(Key.TAB) for _ in range(2)]
