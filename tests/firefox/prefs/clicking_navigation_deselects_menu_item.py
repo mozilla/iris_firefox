@@ -38,8 +38,13 @@ class Test(FirefoxTest):
 
         empty_space_near_navigation_menu_location = find(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
 
-        empty_space_near_navigation_menu = Location(10, empty_space_near_navigation_menu_location.y)
-        click(empty_space_near_navigation_menu)
+        home_width = NavBar.HOME_BUTTON.get_size()[0]
+
+        empty_space_near_privacy_button_location = Location(
+            empty_space_near_navigation_menu_location.x - (home_width * 1.5),
+            empty_space_near_navigation_menu_location.y)
+
+        click(empty_space_near_privacy_button_location)
 
         button_remains_selected = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
                                          FirefoxSettings.SITE_LOAD_TIMEOUT)
