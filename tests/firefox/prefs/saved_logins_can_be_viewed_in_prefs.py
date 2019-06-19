@@ -31,6 +31,7 @@ class Test(FirefoxTest):
             scroll_length = 5
 
         navigate(login_form)
+
         for i in range(10):
             name_field_located = exists(name_field_pattern)
             assert name_field_located, 'Name field is located'
@@ -42,7 +43,10 @@ class Test(FirefoxTest):
             password_field_located = exists(password_field_pattern)
             assert password_field_located, 'Password field is located'
 
-            click(password_field_pattern)
+            if OSHelper.is_linux():
+                type(Key.TAB)
+            else:
+                click(password_field_pattern)
             edit_select_all()
             paste(f'password{i}')
 
