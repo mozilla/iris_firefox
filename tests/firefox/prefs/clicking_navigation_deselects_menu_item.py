@@ -27,11 +27,11 @@ class Test(FirefoxTest):
         privacy_selected = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
                                   FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        screen_center_location = Location(Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT)
-        Mouse().move(screen_center_location)
+        screen_center_location = Location(Screen.SCREEN_WIDTH//2, Screen.SCREEN_HEIGHT//2)
+        hover(screen_center_location)
 
         always_radio_not_selected_pattern = AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
-        page_displayed = scroll_until_pattern_found(always_radio_not_selected_pattern, Mouse().scroll, (0, -20,), 100,
+        page_displayed = scroll_until_pattern_found(always_radio_not_selected_pattern, scroll, (-20,), 100,
                                                     FirefoxSettings.TINY_FIREFOX_TIMEOUT // 3)
 
         assert privacy_selected and page_displayed, 'The button is selected and the corresponding page is displayed.'
