@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         if OSHelper.is_linux():
             scroll_length = 3
         elif OSHelper.is_mac():
-            scroll_length = 10
+            scroll_length = 5
 
         navigate(login_form)
         for i in range(10):
@@ -36,12 +36,14 @@ class Test(FirefoxTest):
             assert name_field_located, 'Name field is located'
 
             click(name_field_pattern)
+            edit_select_all()
             paste(f'name{i}')
 
             password_field_located = exists(password_field_pattern)
             assert password_field_located, 'Password field is located'
 
             click(password_field_pattern)
+            edit_select_all()
             paste(f'password{i}')
 
             type(Key.ENTER)
