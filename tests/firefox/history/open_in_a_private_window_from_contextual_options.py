@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        last_searched_item = Pattern('iris_bookmark_focus.png')
+        last_searched_item_pattern = Pattern('iris_bookmark_focus.png')
 
         # Check that the Library window is displayed properly.
         library_button_exists = exists(NavBar.LIBRARY_MENU)
@@ -29,25 +29,23 @@ class Test(FirefoxTest):
 
         click(LibraryMenu.HISTORY_BUTTON)
 
-        expected = exists(show_all_history_pattern, Settings.FIREFOX_TIMEOUT)
-        assert expected is True, '\"Show All History\" option exists.'
+        show_all_history_exists = exists(show_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert show_all_history_exists is True, '\"Show All History\" option exists.'
 
-        click(show_all_history_pattern, 2)
+        click(show_all_history_pattern)
 
         # Open the last searched item in a new private window.
-        expected = exists(last_searched_item, Settings.FIREFOX_TIMEOUT)
-        assert expected is True, 'Last searched item was found.'
+        last_searched_item_exists = exists(last_searched_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert last_searched_item_exists is True, 'Last searched item was found.'
 
-        right_click(last_searched_item)
-
-        type(text='p')
+        right_click_and_type(last_searched_item_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT, 'p')
 
         # Assert the newly opened window.
-        expected = exists(PrivateWindow.private_window_pattern, Settings.FIREFOX_TIMEOUT)
-        assert expected is True, 'The private window was successfully opened.'
+        private_window_exists = exists(PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert private_window_exists is True, 'The private window was successfully opened.'
 
-        expected = exists(LocalWeb.IRIS_LOGO, Settings.FIREFOX_TIMEOUT)
-        assert expected is True, 'The page was successfully opened.'
+        iris_logo_exists = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert iris_logo_exists is True, 'The page was successfully opened.'
 
         # Close the private window and then the auxiliary window.
         close_window()
