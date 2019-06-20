@@ -26,10 +26,8 @@ class Test(FirefoxTest):
         ui_timeout = 1
 
         scroll_length = Screen.SCREEN_HEIGHT // 10
-        if OSHelper.is_linux():
+        if not OSHelper.is_windows():
             scroll_length = 3
-        elif OSHelper.is_mac():
-            scroll_length = 5
 
         navigate(login_form)
         name_field_displayed = exists(name_field_pattern)
