@@ -31,9 +31,9 @@ class Test(FirefoxTest):
         go_to_last_page_option_pattern = Pattern('go_to_last_page_option.png')
         inspect_element_option_pattern = Pattern('inspect_element_option.png')
         presentation_button_pattern = Pattern('presentation_mode_button.png')
+        close_devtools_button_pattern = Pattern('close_devtools_button.png')
         save_page_as_option_pattern = Pattern('save_page_as_option.png')
         view_page_info_pattern = Pattern('view_page_info_option.png')
-        select_all_option_pattern = Pattern('select_all_option.png')
         page_info_pattern = Pattern('page_info.png')
 
         change_preference('pdfjs.defaultZoomValue', '100')
@@ -163,7 +163,10 @@ class Test(FirefoxTest):
                                               FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert inspect_element_option_works, '\'Inspect element...\' option works as expected'
 
-        type("I", modifier=[KeyModifier.CMD, KeyModifier.ALT])
+        close_devtools_button_available = exists(close_devtools_button_pattern)
+        assert close_devtools_button_available, '\'Close\' button available in devtools panel'
+
+        click(close_devtools_button_pattern)
 
         try:
             dev_console_closed = wait_vanish(dev_console_inspector_button_pattern,
@@ -183,3 +186,12 @@ class Test(FirefoxTest):
 
         exit_fullscreen_option_works = exists(presentation_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert exit_fullscreen_option_works, '\'Exit Full Screen\' option works as expected'
+
+        right_click(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
+        assert exists(take_screenshot_option_pattern), \
+            '\'Take a Screenshot\' option available in context menu after right-click at the document area'
+
+        click(take_screenshot_option_pattern)
+
+        # The next assertion is pointless due to a bug:
+        # https://bugzilla.mozilla.org/show_bug.cgi?id=1541376
