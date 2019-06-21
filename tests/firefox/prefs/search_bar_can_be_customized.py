@@ -15,9 +15,6 @@ class Test(FirefoxTest):
         locale=['en-US'],
     )
     def run(self, firefox):
-        preferences_search_pattern = AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
-        # add_search_bar_in_toolbar_deselected_pattern = Pattern('add_search_bar_in_toolbar_deselected.png')
-        # add_search_bar_in_toolbar_selected_pattern = Pattern('add_search_bar_in_toolbar_selected.png')
         default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
         amazon_search_engine_pattern = Pattern('amazon_search_engine.png')
 
