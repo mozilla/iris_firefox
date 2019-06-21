@@ -187,6 +187,11 @@ class Test(FirefoxTest):
         exit_fullscreen_option_works = exists(presentation_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert exit_fullscreen_option_works, '\'Exit Full Screen\' option works as expected'
 
+        click(presentation_button_pattern)
+
+        assert exists(exit_fullscreen_button_pattern) and not exists(presentation_button_pattern), \
+            'Presentation mode enabled'
+
         right_click(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
         assert exists(take_screenshot_option_pattern), \
             '\'Take a Screenshot\' option available in context menu after right-click at the document area'
