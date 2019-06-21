@@ -23,14 +23,6 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#search')
 
-        preferences_search_loaded = exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert preferences_search_loaded, 'The about:preferences page is successfully loaded.'
-
-        url_bar_location = find(preferences_search_pattern)
-        url_bar_height = preferences_search_pattern.get_size()[1]
-        test_search_region = Region(0, url_bar_location.y + url_bar_height,
-                                    Screen.SCREEN_WIDTH // 3, Screen.SCREEN_HEIGHT // 3)
-
         default_search_engine_google = exists(default_search_engine_google_pattern)
         assert default_search_engine_google, '"Default Search Engine" option available.'
 
@@ -50,7 +42,11 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        search_is_done = exists('test search', FirefoxSettings.FIREFOX_TIMEOUT * 2, region=test_search_region)
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
+        test_search_region = Region(0, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 2)
+
+        search_is_done = exists('test search', FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT, region=test_search_region)
         assert search_is_done, 'The search is made successfully.'
 
         select_location_bar()
