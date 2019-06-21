@@ -739,11 +739,16 @@ def open_library_menu(option):
 
     library_menu_pattern = NavBar.LIBRARY_MENU
 
+    if OSHelper.is_windows():
+        value = 5
+    else:
+        value = 4
+
     try:
         wait(library_menu_pattern, 10)
-        region = Region(image_find(library_menu_pattern).x - Screen().width / 4,
-                        image_find(library_menu_pattern).y, Screen().width / 4,
-                        Screen().height / 4)
+        region = Region(image_find(library_menu_pattern).x - Screen().width / value,
+                        image_find(library_menu_pattern).y, Screen().width / value,
+                        Screen().height / value)
         logger.debug('Library menu found.')
     except FindError:
         raise APIHelperError(
