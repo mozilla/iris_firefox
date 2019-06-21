@@ -61,7 +61,7 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('\'Full screen\' popup did not vanish')
 
-        scrolling_works = scroll_until_pattern_found(introduction_chapter_headline_pattern, scroll, (-100,))
+        scrolling_works = scroll_until_pattern_found(introduction_chapter_headline_pattern, scroll, (-1,))
         assert scrolling_works, 'Navigation via mouse scroll works in presentation mode'
 
         right_click(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
