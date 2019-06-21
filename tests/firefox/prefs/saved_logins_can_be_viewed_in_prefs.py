@@ -19,8 +19,8 @@ class Test(FirefoxTest):
         password_field_pattern = Pattern('password_field.png')
         save_login_button_pattern = Pattern('save_login_button.png')
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
-        first_saved_login_pattern = Pattern('name0_login.png').similar(0.98)
-        last_saved_login_pattern = Pattern('name9_login.png').similar(0.98)
+        first_saved_login_pattern = Pattern('name0_login.png').similar(0.95)
+        last_saved_login_pattern = Pattern('name9_login.png').similar(0.95)
         login_form = self.get_asset_path('form.html')
         ui_timeout = 1
 
