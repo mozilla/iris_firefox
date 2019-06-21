@@ -31,8 +31,6 @@ class Test(FirefoxTest):
 
         change_preference('browser.search.region', 'US')
 
-        firefox.restart(LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
-
         new_private_window()
 
         navigate('https://luke-chang.github.io/autofill-demo/basic_cc.html')
