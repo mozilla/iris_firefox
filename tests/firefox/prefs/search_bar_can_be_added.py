@@ -33,7 +33,7 @@ class Test(FirefoxTest):
                                                       FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_search_bar_in_toolbar_deselected, 'Option "Add search bar in toolbar" is deselected.'
 
-        click(add_search_bar_in_toolbar_deselected_pattern)
+        click(add_search_bar_in_toolbar_deselected_pattern, 1)
 
         add_search_bar_in_toolbar_selected = exists(add_search_bar_in_toolbar_selected_pattern,
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
