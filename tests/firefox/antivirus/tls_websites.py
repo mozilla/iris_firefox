@@ -68,7 +68,7 @@ class Test(FirefoxTest):
 
         click(show_connection_details_button_pattern)
 
-        assert exists(more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOU), \
+        assert exists(more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
             'More information button displayed.'
 
         click(more_information_button_pattern)
