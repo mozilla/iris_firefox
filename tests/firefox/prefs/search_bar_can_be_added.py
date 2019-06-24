@@ -18,6 +18,7 @@ class Test(FirefoxTest):
         preferences_search_pattern = AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
         add_search_bar_in_toolbar_deselected_pattern = Pattern('add_search_bar_in_toolbar_deselected.png')
         add_search_bar_in_toolbar_selected_pattern = Pattern('add_search_bar_in_toolbar_selected.png')
+        search_result_default_pattern = Pattern('search_result_default.png')
 
         navigate('about:preferences#search')
 
@@ -47,6 +48,9 @@ class Test(FirefoxTest):
         paste('test search')
 
         type(Key.ENTER)
+
+        assert exists(search_result_default_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
+            'Search results displayed, with the known/selected search-engine.'
 
         search_is_done = exists('test search', FirefoxSettings.FIREFOX_TIMEOUT * 2, region=test_search_region)
         assert search_is_done, 'The search is done without any issues. '
