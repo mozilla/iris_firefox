@@ -41,7 +41,6 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        navigate('about:newtab')
         select_location_bar()
 
         paste('test search')
