@@ -40,7 +40,6 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert exists(search_result_default_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
             'Search results displayed, with the known/selected search-engine.'
 
