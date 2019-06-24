@@ -45,9 +45,11 @@ class Test(FirefoxTest):
 
         paste('test search')
 
-        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-
         type(Key.ENTER)
+
+        search_result_default_pattern = Pattern('search_result_default.png')
+        assert exists(search_result_default_pattern, Settings.DEFAULT_SITE_LOAD_TIMEOUT), \
+            'Search results displayed, with the known/selected search-engine.'
 
         search_is_done = exists('test search', FirefoxSettings.FIREFOX_TIMEOUT * 2, region=test_search_region)
         assert search_is_done, 'The search is done without any issues. '
