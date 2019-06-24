@@ -48,7 +48,7 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        assert exists(search_result_default_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
+        assert exists(search_result_default_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
             'Search results displayed, with the known/selected search-engine.'
 
         search_is_done = exists('test search', FirefoxSettings.FIREFOX_TIMEOUT * 2, region=test_search_region)
