@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
-        amazon_search_engine_pattern = Pattern('amazon_search_engine.png')
+        amazon_search_engine_pattern = Pattern('amazon_search_engine.png').similar(0.9)
         search_result_default_pattern = Pattern('search_result_default.png')
 
         navigate('about:preferences#search')
@@ -24,9 +24,14 @@ class Test(FirefoxTest):
         default_search_engine_google = exists(default_search_engine_google_pattern)
         assert default_search_engine_google, '"Default Search Engine" option available.'
 
+        default_search_engine_google_location = find(default_search_engine_google_pattern)
+        default_search_engine_amazon_region = Region(default_search_engine_google_location.x-10,
+                                                     default_search_engine_google_location.y-10,
+                                                     Screen.SCREEN_WIDTH // 5, Screen.SCREEN_HEIGHT // 5)
+
         click(default_search_engine_google_pattern, 1)
 
-        amazon_search_engine = exists(amazon_search_engine_pattern)
+        amazon_search_engine = exists(amazon_search_engine_pattern, region=default_search_engine_amazon_region)
         assert amazon_search_engine, 'A different default search engine available.'
 
         click(amazon_search_engine_pattern, 1)
