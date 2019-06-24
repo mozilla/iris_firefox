@@ -19,6 +19,8 @@ class Test(FirefoxTest):
         add_search_bar_in_toolbar_deselected_pattern = Pattern('add_search_bar_in_toolbar_deselected.png')
         add_search_bar_in_toolbar_selected_pattern = Pattern('add_search_bar_in_toolbar_selected.png')
         search_result_default_pattern = Pattern('search_result_default.png')
+        use_address_bar_deselected_pattern = Pattern('use_address_bar_deselected.png')
+        use_address_bar_selected_pattern = Pattern('use_address_bar_selected.png')
 
         navigate('about:preferences#search')
 
@@ -42,7 +44,6 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        navigate('about:newtab')
         select_search_bar()
 
         paste('test search')
@@ -54,3 +55,23 @@ class Test(FirefoxTest):
 
         search_is_done = exists('test search', FirefoxSettings.FIREFOX_TIMEOUT * 2, region=test_search_region)
         assert search_is_done, 'The search is done without any issues. '
+
+        navigate('about:preferences#search')
+
+        preferences_search_loaded = exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert preferences_search_loaded, 'The about:preferences page is successfully loaded.'
+
+        use_address_bar_deselected = exists(use_address_bar_deselected_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert use_address_bar_deselected, 'Option "Use the address bar for search and navigation" is available'
+
+        click(use_address_bar_deselected_pattern, 1)
+
+        use_address_bar_selected = exists(use_address_bar_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert use_address_bar_selected, 'Option "Use the address bar for search and navigation" selected'
+
+        try:
+            search_bar_removed = wait_vanish(LocationBar.SEARCH_BAR.similar(0.95), region=Screen.UPPER_RIGHT_CORNER)
+        except FindError:
+            raise FindError('Search bar is not removed')
+
+        assert search_bar_removed, 'The search bar is removed from the right side of the address bar.'
