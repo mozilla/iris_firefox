@@ -37,37 +37,37 @@ class Test(FirefoxTest):
 
         click(google_one_off_button_pattern)
 
-        expected = region.exists(mozilla_support_url_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        if expected:
+        mozilla_support_url_exists = region.exists(mozilla_support_url_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        if mozilla_support_url_exists:
             select_location_bar()
             type('moz')
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
             click(google_one_off_button_pattern)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
 
-        expected = region.exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Google search results are displayed.'
+        google_search_results_displayed = region.exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_search_results_displayed, 'Google search results are displayed.'
 
         change_preference('keyword.enabled', 'false')
 
         select_location_bar()
         type('amaz')
 
-        expected = region.exists(search_with_url_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Search is performed with url autocomplete for pages where you have been before.'
+        autocomplete_performed = region.exists(search_with_url_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert autocomplete_performed, 'Search is performed with url autocomplete for pages where you have been before.'
 
         type(Key.ENTER)
 
-        expected = exists(amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, amazon logo found.'
+        amazon_page_opened = exists(amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert amazon_page_opened, 'Page successfully loaded, amazon logo found.'
 
         select_location_bar()
         type('test')
 
-        expected = region.exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'The \'Google\' one-off button found.'
+        google_one_off_button_found = region.exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_one_off_button_found, 'The \'Google\' one-off button found.'
 
         click(google_one_off_button_pattern)
 
-        expected = region.exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Google search results are displayed.'
+        google_search_results_displayed = region.exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_search_results_displayed, 'Google search results are displayed.'
