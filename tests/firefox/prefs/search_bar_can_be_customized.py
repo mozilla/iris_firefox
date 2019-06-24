@@ -17,6 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
         amazon_search_engine_pattern = Pattern('amazon_search_engine.png')
+        search_result_default_pattern = Pattern('search_result_default.png')
 
         navigate('about:preferences#search')
 
@@ -40,6 +41,8 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert exists(search_result_default_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
+            'Search results displayed, with the known/selected search-engine.'
 
         test_search_region = Region(0, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 2)
 
