@@ -27,7 +27,7 @@ class Test(FirefoxTest):
 
         select_location_bar()
 
-        type('http://127.0.0.1:2000/m')
+        type('http://127.0.0.1:2000/m', interval=0.1)
 
         mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_autocomplete_exists, 'Mozilla page is auto-completed successfully.'
@@ -72,7 +72,7 @@ class Test(FirefoxTest):
 
         # Check that the forgotten page is not auto-completed in the URL bar.
         select_location_bar()
-        type('http://127.0.0.1:2000/m')
+        type('http://127.0.0.1:2000/m', interval=0.1)
 
         mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_autocomplete_exists is False, 'Mozilla page is not auto-completed in the URL bar.'
