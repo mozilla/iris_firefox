@@ -45,6 +45,8 @@ class Test(FirefoxTest):
 
         paste('test search')
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
 
         search_is_done = exists('test search', FirefoxSettings.FIREFOX_TIMEOUT * 2, region=test_search_region)
