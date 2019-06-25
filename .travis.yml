@@ -7,14 +7,13 @@ python: '2.7'
 # blocklist Ex.if there are particular branches that we don't want to test with Travis should be added to 'except'
 branches:
   except:
-  - test2
+  - dev
 
 
 # safelist
 branches:
   only:
-  - master
-  - /.*/
+  - test
 
 #Bootstrap install /due to a pipenv bug pip is downgraded to a lower version
 install:
@@ -44,7 +43,7 @@ jobs:
 notifications:
   email:
     recipients:
-      - afilip@mozilla.com
+      - twalker@mozilla.com
     on_success: change
     on_failure: always
     on_cancel: always
