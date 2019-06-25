@@ -1,7 +1,7 @@
 
 dist: xenial
 language: python
-python: '3.7.3'
+python: '3.7'
 
 
 # blocklist Ex.if there are particular branches that we don't want to test with Travis should be added to 'except'
@@ -36,7 +36,7 @@ jobs:
     - stage: Ubuntu 16.04 Image search and mouse movement tests
       os: linux
       dist: xenial
-      script: pipenv -h
+      script: pipenv shell
 
 
 # Email notification
