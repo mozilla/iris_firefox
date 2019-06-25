@@ -34,7 +34,7 @@ class Test(FirefoxTest):
         amazon_search_engine = exists(amazon_search_engine_pattern, region=default_search_engine_amazon_region)
         assert amazon_search_engine, 'A different default search engine available.'
 
-        click(amazon_search_engine_pattern, 1)
+        click(amazon_search_engine_pattern, 1, region=default_search_engine_amazon_region)
 
         new_tab()
 
@@ -45,7 +45,7 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        assert exists(search_result_default_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
+        assert exists(amazon_search_engine_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
             'Search results displayed, with the known/selected search-engine.'
 
         test_search_region = Region(0, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 2)
