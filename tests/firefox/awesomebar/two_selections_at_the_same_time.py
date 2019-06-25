@@ -31,8 +31,8 @@ class Test(FirefoxTest):
 
         navigate('www.amazon.com')
 
-        expected = exists(amazon_logo_pattern, 10)
-        assert expected, 'Page successfully loaded, amazon logo found.'
+        amazon_logo_exists = exists(amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert amazon_logo_exists, 'Page successfully loaded, amazon logo found.'
 
         navigate('about:config')
 
@@ -43,42 +43,58 @@ class Test(FirefoxTest):
         else:
             if exists(accept_risk_pattern):
                 click(accept_risk_pattern)
-        expected = region.exists(default_status_pattern, 10)
-        assert expected, 'The \'about:config\' page successfully loaded and default status is correct.'
+        default_status_exists = region.exists(default_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert default_status_exists, 'The \'about:config\' page successfully loaded and default status is correct.'
 
         paste('keyword.enabled')
         type(Key.ENTER)
 
-        expected = region.exists(default_status_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has status \'default\' by default.'
+        default_status_exists = region.exists(default_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert default_status_exists, 'The \'keyword.enabled\' preference has status \'default\' by default.'
 
-        expected = region.exists(true_value_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has value \'true\' by default.'
+        true_value_exists = region.exists(true_value_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert true_value_exists, 'The \'keyword.enabled\' preference has value \'true\' by default.'
 
         double_click(default_status_pattern)
 
-        expected = region.exists(modified_status_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has status \'modified\' after the preference has changed.'
+        modified_status_exists = region.exists(modified_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert modified_status_exists, 'The \'keyword.enabled\' preference has status \'modified\' ' \
+                                       'after the preference has changed.'
 
-        expected = region.exists(false_value_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has value \'false\' after the preference has changed.'
+        false_value_exists = region.exists(false_value_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert false_value_exists, 'The \'keyword.enabled\' preference has value \'false\'' \
+                                   ' after the preference has changed.'
 
         select_location_bar()
-        paste('amaz')
 
-        expected = region.exists(search_with_url_autocomplete_pattern, 10)
-        assert expected, 'Search is performed with url autocomplete for pages where you have been before.'
+        type('amaz')
+
+        search_with_url_autocomplete_exists = region.exists(search_with_url_autocomplete_pattern,
+                                                            FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_with_url_autocomplete_exists, 'Search is performed with url autocomplete' \
+                                                    ' for pages where you have been before.'
+
+        try:
+            duck_duck_go_one_off_button_exists = wait(duck_duck_go_one_off_button_pattern,
+                                                      FirefoxSettings.FIREFOX_TIMEOUT)
+            assert duck_duck_go_one_off_button_exists, 'DuckDuckGo button exists'
+        except FindError:
+            raise FindError('DuckDuckGo button doesn\'t exist')
 
         hover(duck_duck_go_one_off_button_pattern)
 
-        expected = exists(hover_duck_duck_go_one_off_button_pattern, 10)
-        assert expected, 'Mouse is over the \'DuckDuckGo\' search engine.'
+        hover_duck_duck_go_one_off_button_exists = exists(hover_duck_duck_go_one_off_button_pattern,
+                                                          FirefoxSettings.FIREFOX_TIMEOUT)
+        assert hover_duck_duck_go_one_off_button_exists, 'Mouse is over the \'DuckDuckGo\' search engine.'
 
-        expected = region.exists(search_with_url_autocomplete_pattern, 10)
-        assert expected, 'The autocomplete is still displayed after user hovers an one-off button.'
+        search_with_url_autocomplete_exists = region.exists(search_with_url_autocomplete_pattern,
+                                                            FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_with_url_autocomplete_exists, 'The autocomplete is still displayed after' \
+                                                    ' user hovers an one-off button.'
 
         repeat_key_up(3)
         key_to_one_off_search(twitter_one_off_button_highlight_pattern)
 
-        expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
-        assert expected, 'The \'Twitter\' one-off button is highlighted.'
+        twitter_one_off_button_highlight_exists = region.exists(twitter_one_off_button_highlight_pattern,
+                                                                FirefoxSettings.FIREFOX_TIMEOUT)
+        assert twitter_one_off_button_highlight_exists, 'The \'Twitter\' one-off button is highlighted.'
