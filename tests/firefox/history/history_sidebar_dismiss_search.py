@@ -22,6 +22,9 @@ class Test(FirefoxTest):
         x_button_search_history_box_pattern = Sidebar.SidebarHeader.CLEAR_SEARCH_BOX
         history_sidebar_items_pattern = Pattern('history_sidebar_items.png')
 
+        if OSHelper.is_windows():
+            x_button_search_history_box_pattern = Pattern('x_button_search_history.png')
+
         # Open a page to create some history.
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
