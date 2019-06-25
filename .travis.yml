@@ -1,7 +1,7 @@
 
 dist: xenial
 language: python
-python: '2.7'
+python: '3.7.3'
 
 
 # blocklist Ex.if there are particular branches that we don't want to test with Travis should be added to 'except'
@@ -13,13 +13,12 @@ branches:
 # safelist
 branches:
   only:
-  - master
-  - /.*/
+  - test
 
 #Bootstrap install /due to a pipenv bug pip is downgraded to a lower version
 install:
   - 'bootstrap/bootstrap.sh'
-  - 'pip install pip==9.0.3'
+  #- 'pip install pip==9.0.3'
   - 'pip install pipenv'
   - 'pipenv install'
 
@@ -37,7 +36,7 @@ jobs:
     - stage: Ubuntu 16.04 Image search and mouse movement tests
       os: linux
       dist: xenial
-      script: pipenv run iris -j -n -d ci_tests
+      script: pipenv -h
 
 
 # Email notification
