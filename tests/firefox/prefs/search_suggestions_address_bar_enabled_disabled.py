@@ -74,8 +74,10 @@ class Test(FirefoxTest):
 
         click(show_search_suggestions_pattern, 1)
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # wait for proper pattern
+
         # The option "Show search suggestions ahead of browsing history in address bar results" is greyed out.
-        assert exists(show_suggestions_unchecked_greyed_pattern), '"Show suggestions..." is greyed out.'
+        assert exists(show_suggestions_unchecked_greyed_pattern.similar(0.7)), '"Show suggestions..." is greyed out.'
 
         new_tab()
 
