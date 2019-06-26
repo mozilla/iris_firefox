@@ -22,7 +22,6 @@ class Test(FirefoxTest):
         provide_search_suggestions_pattern = Pattern('provide_search_suggestions_checked.png')
         show_search_suggestions_pattern = Pattern('show_search_suggestions_checked.png')
         show_search_browsing_history_pattern = Pattern('show_search_browsing_history_checked.png')
-        time.sleep(10)
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
