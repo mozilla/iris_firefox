@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         window_controls_restore_pattern = Pattern('window_controls_restore.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
         window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
-        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
+        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(.7)
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
         moz_wiki_item = Pattern('moz_wiki_item.png')
         moz_pattern = Pattern('moz.png')
@@ -32,8 +32,8 @@ class Test(FirefoxTest):
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
         navigate(url)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        test_page_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert test_page_opened, 'Page successfully loaded, firefox logo found.'
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             minimize_window()
@@ -47,27 +47,28 @@ class Test(FirefoxTest):
             click(maximize_button)
             key_up(Key.ALT)
 
-        expected = exists(window_controls_maximize_pattern, 10)
-        assert expected, 'Window successfully minimized.'
+        window_minimized = exists(window_controls_maximize_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert window_minimized, 'Window successfully minimized.'
 
         select_location_bar()
         paste('moz')
         type(Key.SPACE)
 
-        expected = region.exists(moz_pattern, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
+        moz_pattern_found = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert moz_pattern_found, 'Searched string found at the bottom of the drop-down list.'
 
-        expected = region.exists(search_settings_pattern, 10)
-        assert expected, 'The \'Search settings\' button is displayed in the awesome bar.'
+        settings_button_displayed = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert settings_button_displayed, 'The \'Search settings\' button is displayed in the awesome bar.'
 
         type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
-        expected = region.exists(magnifying_glass_pattern, 10)
-        assert expected, 'The default search engine is \'Google\', page successfully loaded.'
+        google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_page_opened, 'The default search engine is \'Google\', page successfully loaded.'
 
-        expected = region.exists('Moz', 10)
-        assert expected, 'Searched item is successfully found in the page opened by the default search engine.'
+        searched_item_found = region.exists('moz', FirefoxSettings.FIREFOX_TIMEOUT)
+        assert searched_item_found, 'Searched item is successfully found in the page opened by the default search ' \
+                                    'engine.'
 
         mouse_reset()
         maximize_window()
@@ -75,32 +76,36 @@ class Test(FirefoxTest):
         if OSHelper.is_linux():
             mouse_reset()
 
-        expected = exists(window_controls_restore_pattern, 10)
-        assert expected, 'Window successfully maximized.'
+        window_maximized = exists(window_controls_restore_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert window_maximized, 'Window successfully maximized.'
 
         select_location_bar()
         paste('moz')
         type(Key.SPACE)
 
-        expected = region.exists(moz_pattern, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
+        moz_pattern_found = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert moz_pattern_found, 'Searched string found at the bottom of the drop-down list.'
 
-        expected = region.exists(search_settings_pattern, 10)
-        assert expected, 'The \'Search settings\' button is displayed in the awesome bar.'
+        settings_button_displayed = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert settings_button_displayed, 'The \'Search settings\' button is displayed in the awesome bar.'
+
+        wiki_button_displayed = region.exists(wikipedia_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert wiki_button_displayed, 'wikipedia_one_off_button_pattern'
 
         hover(wikipedia_one_off_button_pattern)
 
         try:
-            expected = region.wait_vanish(moz_pattern, 3)
-            assert expected, 'The \'Wikipedia\' one-off button is highlighted.'
+            wiki_highlighted = region.wait_vanish(moz_pattern, 3)
+            assert wiki_highlighted, 'The \'Wikipedia\' one-off button is highlighted.'
         except FindError:
             raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
 
         click(wikipedia_one_off_button_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(wikipedia_search_results_moz_pattern, 10)
-        assert expected, 'Wikipedia results are opened.'
+        wiki_page_opened = region.exists(wikipedia_search_results_moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert wiki_page_opened, 'Wikipedia results are opened.'
 
-        expected = left_upper_corner.exists(moz_wiki_item, 10)
-        assert expected, 'Searched item is successfully found in the page opened by the wikipedia search engine.'
+        searched_item_found = left_upper_corner.exists(moz_wiki_item, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert searched_item_found, 'Searched item is successfully found in the page opened by the wikipedia search' \
+                                    ' engine.'
