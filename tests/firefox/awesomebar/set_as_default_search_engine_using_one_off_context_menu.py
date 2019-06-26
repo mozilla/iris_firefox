@@ -78,5 +78,5 @@ class Test(FirefoxTest):
         expected = exists(wikipedia_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Wikipedia results are opened.'
 
-        expected = exists(test_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists('Test', FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Searched item is successfully found in the page opened by the wikipedia search engine.'
