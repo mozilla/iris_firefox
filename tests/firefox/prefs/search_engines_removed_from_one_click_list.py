@@ -26,6 +26,7 @@ class Test(FirefoxTest):
         wiki_one_click_search_pattern = Pattern('wiki_one_click_search.png')
 
         navigate('about:preferences#search')
+
         assert exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
             'The about:preferences page is successfully loaded.'
 
