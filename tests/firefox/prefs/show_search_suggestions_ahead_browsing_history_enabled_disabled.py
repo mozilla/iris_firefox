@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         suggestions_displayed_pattern = Pattern('suggestions_displayed.png')
         browsing_history_search_bar_pattern = Pattern('browsing_history_search_bar.png')
         provide_search_suggestions_pattern = Pattern('provide_search_suggestions_checked.png')
-        show_search_suggestions_pattern = Pattern('show_search_suggestions_in_address_bar_results_checked.png')
+        show_search_suggestions_pattern = Pattern('show_search_suggestions_checked.png')
         show_search_browsing_history_checked_pattern = Pattern('show_search_browsing_history_checked.png')
         show_search_browsing_history_unchecked_pattern = Pattern('show_search_browsing_history_unchecked.png')
         time.sleep(10)
