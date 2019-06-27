@@ -1128,8 +1128,6 @@ def option_is_checked(option_pattern: Pattern):
     :param option_pattern: Pattern with checkbox element
     :return: Boolean. True if check sign found in option_pattern
     """
-    option_checked = False
-
     if not isinstance(option_pattern, Pattern):
         raise ValueError(INVALID_GENERIC_INPUT)
 
@@ -1138,9 +1136,7 @@ def option_is_checked(option_pattern: Pattern):
         logger.debug('Option pattern found.')
 
         width, height = option_pattern.get_size()
-        region = Region(image_find(option_pattern).x, image_find(option_pattern).y,
-                        Screen.SCREEN_WIDTH - image_find(option_pattern).x + width,
-                        Screen.SCREEN_HEIGHT - image_find(option_pattern).y + height)
+        region = Region(image_find(option_pattern).x, image_find(option_pattern).y, width, height)
 
         option_checked = exists(AboutPreferences.CHECKED_BOX.similar(0.9), timeout=Settings.DEFAULT_UI_DELAY_LONG,
                                 region=region)
