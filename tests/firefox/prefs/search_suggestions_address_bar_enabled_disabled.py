@@ -18,7 +18,9 @@ class Test(FirefoxTest):
         preferences_search_page = AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
         suggestions_displayed_pattern = Pattern('suggestions_displayed.png')
         browsing_history_search_bar_pattern = Pattern('browsing_history_search_bar.png')
-        show_suggestions_unchecked_greyed_pattern = Pattern('show_suggestions_unchecked_greyed.png')
+        show_suggestions_unchecked_pattern = Pattern('show_suggestions_unchecked.png')
+        show_suggestions_ahead_of_history_unchecked_greyed_pattern = \
+            Pattern('show_suggestions_ahead_of_history_unchecked_greyed.png')
         provide_search_suggestions_pattern = Pattern('provide_search_suggestions_checked.png')
         show_search_suggestions_pattern = Pattern('show_search_suggestions_checked.png')
         show_search_browsing_history_pattern = Pattern('show_search_browsing_history_checked.png')
@@ -46,8 +48,9 @@ class Test(FirefoxTest):
         # "Show search suggestions in address bar results" and
         # "Show search suggestions ahead of browsing history in address bar results" are selected.
 
-        assert exists(provide_search_suggestions_pattern) and exists(show_search_suggestions_pattern) and \
-            exists(show_search_browsing_history_pattern), \
+        assert find_in_region_from_pattern(provide_search_suggestions_pattern, AboutPreferences.CHECKED_BOX) and \
+            find_in_region_from_pattern(show_search_suggestions_pattern, AboutPreferences.CHECKED_BOX) and \
+            find_in_region_from_pattern(show_search_browsing_history_pattern, AboutPreferences.CHECKED_BOX), \
             'The options "Provide search suggestions", "Show search suggestions in address bar results" and ' \
             '"Show search suggestions ahead of browsing history in address bar results" are selected.'
 
@@ -76,7 +79,9 @@ class Test(FirefoxTest):
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # wait for proper pattern
 
         # The option "Show search suggestions ahead of browsing history in address bar results" is greyed out.
-        assert exists(show_suggestions_unchecked_greyed_pattern.similar(0.7)), '"Show suggestions..." is greyed out.'
+        assert find_in_region_from_pattern(show_suggestions_unchecked_pattern, AboutPreferences.UNCHECKED_BOX) and \
+            find_in_region_from_pattern(show_suggestions_ahead_of_history_unchecked_greyed_pattern,
+                                        AboutPreferences.UNCHECKED_BOX), '"Show suggestions..." is greyed out.'
 
         new_tab()
 
