@@ -27,7 +27,6 @@ class Test(FirefoxTest):
         go_to_first_page_option_pattern = Pattern('go_to_first_page_option.png')
         exit_full_screen_option_pattern = Pattern('exit_full_screen_option.png')
         rotate_clockwise_option_pattern = Pattern('rotate_clockwise_option.png')
-        take_screenshot_option_pattern = Pattern('take_screenshot_option.png')
         go_to_last_page_option_pattern = Pattern('go_to_last_page_option.png')
         inspect_element_option_pattern = Pattern('inspect_element_option.png')
         presentation_button_pattern = Pattern('presentation_mode_button.png')
@@ -194,13 +193,10 @@ class Test(FirefoxTest):
         click(presentation_button_pattern)
 
         assert exists(exit_fullscreen_button_pattern) and not exists(presentation_button_pattern), \
-            'Presentation mode enabled'
+            'Presentation mode can be enabled after clicking at \'Exit Full Screen\' option'
 
-        right_click(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
-        assert exists(take_screenshot_option_pattern), \
-            '\'Take a Screenshot\' option available in context menu after right-click at the document area'
-
-        click(take_screenshot_option_pattern)
-
-        # The next assertion is pointless due to a bug:
+        # "Take screenshot" option is not tested because of a bug:
         # https://bugzilla.mozilla.org/show_bug.cgi?id=1541376
+
+        # "Select all" option is not tested because of a bug:
+        # https://bugzilla.mozilla.org/show_bug.cgi?id=1267592
