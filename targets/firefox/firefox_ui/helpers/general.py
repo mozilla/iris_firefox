@@ -34,7 +34,6 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
-from targets.firefox.firefox_ui.about_preferences import AboutPreferences
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
