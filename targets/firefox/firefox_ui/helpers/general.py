@@ -34,6 +34,7 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
+from targets.firefox.firefox_ui.about_preferences import AboutPreferences
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
@@ -1120,3 +1121,27 @@ class ZoomType(object):
 
     IN = 300 if OSHelper.is_windows() else 1
     OUT = -300 if OSHelper.is_windows() else -1
+
+
+def option_is_checked(option_pattern: Pattern):
+    """ Check whether option_pattern is checked or not
+    :param option_pattern: Pattern with checkbox element
+    :return: Boolean. True if check sign found in option_pattern
+    """
+    if not isinstance(option_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    try:
+        wait(option_pattern, 10)
+        logger.debug('Option pattern found.')
+
+        width, height = option_pattern.get_size()
+        region = Region(image_find(option_pattern).x, image_find(option_pattern).y, width, height)
+
+        option_checked = exists(AboutPreferences.CHECKED_BOX.similar(0.9), timeout=Settings.DEFAULT_UI_DELAY_LONG,
+                                region=region)
+
+    except FindError:
+        raise APIHelperError('Can\'t find the option pattern.')
+
+    return option_checked

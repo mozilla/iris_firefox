@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
         new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png')
         google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
-        magnifying_glass_pattern = Pattern('magnifying_glass.png')
+        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
         test_pattern = Pattern('test.png')
 
         new_private_window()
@@ -31,39 +31,42 @@ class Test(FirefoxTest):
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        test_page_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert test_page_loaded, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         paste('moz')
 
-        expected = region.exists(moz_pattern, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
+        string_found = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert string_found, 'Searched string found at the bottom of the drop-down list.'
 
-        expected = region.exists(search_settings_pattern, 10)
-        assert expected, 'The \'Search settings\' button is displayed in the awesome bar.'
+        search_settings_button_displayed = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_settings_button_displayed, 'The \'Search settings\' button is displayed in the awesome bar.'
 
         repeat_key_up(3)
-        key_to_one_off_search(twitter_one_off_button_highlight_pattern, )
 
-        expected = region.exists(twitter_one_off_button_highlight_pattern, 10)
-        assert expected, 'The \'Twitter\' one-off button is highlighted.'
+        key_to_one_off_search(twitter_one_off_button_highlight_pattern)
+
+        twitter_button_highlighted = region.exists(twitter_one_off_button_highlight_pattern,
+                                                   FirefoxSettings.FIREFOX_TIMEOUT)
+        assert twitter_button_highlighted, 'The \'Twitter\' one-off button is highlighted.'
 
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = exists(new_tab_twitter_search_results_pattern, 10) or exists(new_tab_twitter_search_results_pattern2,
-                                                                                5)
-        assert expected, 'Twitter search results are opened in the same tab.'
+        twitter_result_displayed = exists(new_tab_twitter_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT) or\
+                                   exists(new_tab_twitter_search_results_pattern2, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert twitter_result_displayed, 'Twitter search results are opened in the same tab.'
 
         new_tab()
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
 
         select_location_bar()
         paste('test')
 
-        expected = region.exists(google_on_off_button_private_window_pattern, 10)
-        assert expected, 'The\'Google\' one-off button found.'
+        google_button_found = region.exists(google_on_off_button_private_window_pattern,
+                                            FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_button_found, 'The\'Google\' one-off button found.'
 
         if OSHelper.is_mac():
             key_down(Key.CMD)
@@ -79,10 +82,11 @@ class Test(FirefoxTest):
 
         next_tab()
 
-        expected = region.exists(magnifying_glass_pattern, 10)
-        assert expected, 'Page successfully loaded using the \'Google\' engine.'
+        google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_page_opened, 'Page successfully loaded using the \'Google\' engine.'
 
-        expected = region.exists(test_pattern, 10)
-        assert expected, 'Searched item is successfully found in the page opened by the \'Google\' search engine.'
+        google_result_displayed = region.exists(test_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_result_displayed, 'Searched item is successfully found in the page opened by ' \
+                                        'the \'Google\' search engine.'
 
         close_window()
