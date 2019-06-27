@@ -75,7 +75,7 @@ class Test(FirefoxTest):
         click(restart_browser_pattern)
 
         browser_closed = wait_vanish(NavBar.SIDEBAR_MENU)
-        assert browser_closed, ''
+        assert browser_closed, 'Browser is closed'
 
         browser_restarted = exists(NavBar.SIDEBAR_MENU.similar(0.9), Settings.site_load_timeout)
         assert browser_restarted, 'Browser restarted'
@@ -107,8 +107,9 @@ class Test(FirefoxTest):
                                                   remember_browsing_history_width + box_width * 2,
                                                   remember_browsing_history_height)
 
-        always_private_unchecked = exists(prefs_unchecked_box_pattern, region=remember_browsing_history_region)
-        assert always_private_unchecked, '"Always use private browsing mode" is off'
+        remember_browsing_history_unchecked = exists(prefs_unchecked_box_pattern,
+                                                     region=remember_browsing_history_region)
+        assert remember_browsing_history_unchecked, '"Always use private browsing mode" is off'
 
         remember_search_history_displayed = exists(remember_search_history_pattern)
         assert remember_search_history_displayed, '"Remember browsing" is displayed'
@@ -121,8 +122,8 @@ class Test(FirefoxTest):
                                                 remember_search_history_width + box_width * 2,
                                                 remember_search_history_height)
 
-        always_private_unchecked = exists(prefs_unchecked_box_pattern, region=remember_search_history_region)
-        assert always_private_unchecked, '"Always use private browsing mode" is off'
+        remember_search_history_unchecked = exists(prefs_unchecked_box_pattern, region=remember_search_history_region)
+        assert remember_search_history_unchecked, '"Always use private browsing mode" is off'
 
         clear_history_closing_displayed = exists(clear_history_closing_pattern)
         assert clear_history_closing_displayed, '"Clear history when closed" is displayed'
