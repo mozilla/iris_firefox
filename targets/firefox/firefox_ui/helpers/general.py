@@ -1123,25 +1123,29 @@ class ZoomType(object):
     OUT = -300 if OSHelper.is_windows() else -1
 
 
-def option_is_checked(option_pattern: Pattern):
-    """ Check whether option_pattern is checked or not
-    :param option_pattern: Pattern with checkbox element
-    :return: Boolean. True if check sign found in option_pattern
+def find_in_region_from_pattern(outer_pattern: Pattern, inner_pattern: Pattern,
+                                outer_pattern_timeout: Settings.auto_wait_timeout,
+                                inner_pattern_timeout: Settings.auto_wait_timeout):
+    """ Finds pattern in region created from another pattern
+    :param outer_pattern: Pattern for region creation
+    :param inner_pattern: Pattern to find in region
+    :param outer_pattern_timeout: Time to finding outer_pattern
+    :param inner_pattern_timeout: Time to finding inner_pattern,
+    :return: Boolean. True if inner_pattern found in outer_pattern region
     """
-    if not isinstance(option_pattern, Pattern):
+    if not isinstance(outer_pattern, Pattern) or isinstance(inner_pattern, Pattern):
         raise ValueError(INVALID_GENERIC_INPUT)
 
     try:
-        wait(option_pattern, 10)
-        logger.debug('Option pattern found.')
-
-        width, height = option_pattern.get_size()
-        region = Region(image_find(option_pattern).x, image_find(option_pattern).y, width, height)
-
-        option_checked = exists(AboutPreferences.CHECKED_BOX.similar(0.9), timeout=Settings.DEFAULT_UI_DELAY_LONG,
-                                region=region)
+        wait(outer_pattern, outer_pattern_timeout)
+        logger.debug('Outer pattern found.')
 
     except FindError:
-        raise APIHelperError('Can\'t find the option pattern.')
+        raise APIHelperError('Can\'t find the outer pattern.')
 
-    return option_checked
+    width, height = outer_pattern.get_size()
+    region = Region(image_find(outer_pattern).x, image_find(outer_pattern).y, width, height)
+
+    pattern_found = exists(inner_pattern, inner_pattern_timeout, region=region)
+
+    return pattern_found
