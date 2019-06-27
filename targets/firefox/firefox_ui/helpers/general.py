@@ -1131,6 +1131,7 @@ def find_in_region_from_pattern(outer_pattern: Pattern, inner_pattern: Pattern,
     :param outer_pattern_timeout: Time to finding outer_pattern
     :param inner_pattern_timeout: Time to finding inner_pattern,
     :return: Boolean. True if inner_pattern found in outer_pattern region
+    :raises: ValueError and APIHelperError
     """
     if not isinstance(outer_pattern, Pattern) or not isinstance(inner_pattern, Pattern):
         raise ValueError(INVALID_GENERIC_INPUT)
