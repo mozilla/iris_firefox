@@ -34,7 +34,6 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
-from targets.firefox.firefox_ui.about_preferences import AboutPreferences
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
@@ -1124,16 +1123,17 @@ class ZoomType(object):
 
 
 def find_in_region_from_pattern(outer_pattern: Pattern, inner_pattern: Pattern,
-                                outer_pattern_timeout: Settings.auto_wait_timeout,
-                                inner_pattern_timeout: Settings.auto_wait_timeout):
+                                outer_pattern_timeout=Settings.auto_wait_timeout,
+                                inner_pattern_timeout=Settings.auto_wait_timeout):
     """ Finds pattern in region created from another pattern
     :param outer_pattern: Pattern for region creation
     :param inner_pattern: Pattern to find in region
     :param outer_pattern_timeout: Time to finding outer_pattern
     :param inner_pattern_timeout: Time to finding inner_pattern,
     :return: Boolean. True if inner_pattern found in outer_pattern region
+    :raises: ValueError and APIHelperError
     """
-    if not isinstance(outer_pattern, Pattern) or isinstance(inner_pattern, Pattern):
+    if not isinstance(outer_pattern, Pattern) or not isinstance(inner_pattern, Pattern):
         raise ValueError(INVALID_GENERIC_INPUT)
 
     try:
