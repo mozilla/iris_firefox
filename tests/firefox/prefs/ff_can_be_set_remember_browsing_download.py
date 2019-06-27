@@ -187,9 +187,9 @@ class Test(FirefoxTest):
     def teardown(self):
         downloads_cleanup()
 
-        if exists(Library.TITLE, 1):
+        if exists(Library.TITLE, 0.5):
             click_window_control('close')
 
-        if exists(NavBar.HOME_BUTTON):
+        if exists(NavBar.HOME_BUTTON, 0.5):
             restore_firefox_focus()
             quit_firefox()
