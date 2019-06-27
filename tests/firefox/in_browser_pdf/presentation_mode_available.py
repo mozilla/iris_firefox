@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH
     )
     def test_run(self, firefox):
-        dialogue_window_cancel_button = History.CLearRecentHistory.CANCEL
+        dialogue_window_cancel_button = History.CLearRecentHistory.CANCEL.similar(0.75)
         introduction_chapter_headline_pattern = Pattern('introduction_chapter_headline_pres_mode.png')
         last_page_contents_rotated_pattern = Pattern('last_page_contents_pres_mode_rotated.png')
         rotate_counterclockwise_option_pattern = Pattern('rotate_counterclockwise_option.png')
@@ -61,7 +61,11 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('\'Full screen\' popup did not vanish')
 
-        scrolling_works = scroll_until_pattern_found(introduction_chapter_headline_pattern, scroll, (-100,))
+        if OSHelper.is_windows():
+            scrolling_works = scroll_until_pattern_found(introduction_chapter_headline_pattern, scroll, (-100,))
+        else:
+            scrolling_works = scroll_until_pattern_found(introduction_chapter_headline_pattern, scroll, (-1,))
+
         assert scrolling_works, 'Navigation via mouse scroll works in presentation mode'
 
         right_click(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
