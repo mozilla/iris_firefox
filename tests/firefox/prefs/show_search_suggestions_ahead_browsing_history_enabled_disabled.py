@@ -47,8 +47,9 @@ class Test(FirefoxTest):
         # "Show search suggestions in address bar results" and
         # "Show search suggestions ahead of browsing history in address bar results" are selected.
 
-        assert exists(provide_search_suggestions_pattern) and exists(show_search_suggestions_pattern) and \
-            exists(show_search_browsing_history_checked_pattern), \
+        assert find_in_region_from_pattern(provide_search_suggestions_pattern, AboutPreferences.CHECKED_BOX) and \
+            find_in_region_from_pattern(show_search_suggestions_pattern, AboutPreferences.CHECKED_BOX) and \
+            find_in_region_from_pattern(show_search_browsing_history_checked_pattern, AboutPreferences.CHECKED_BOX), \
             'The options "Provide search suggestions", "Show search suggestions in address bar results" and ' \
             '"Show search suggestions ahead of browsing history in address bar results" are selected.'
 
@@ -69,15 +70,16 @@ class Test(FirefoxTest):
 
         close_tab()
 
-        preferences_privacy_page = exists(show_search_browsing_history_checked_pattern)
-        assert preferences_privacy_page, 'Privacy options successfully opened.'
+        assert find_in_region_from_pattern(show_search_browsing_history_checked_pattern, AboutPreferences.CHECKED_BOX),\
+            'Privacy options successfully opened.'
 
         click(show_search_browsing_history_checked_pattern, 1)
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # wait for proper pattern
 
         # The option "Show search suggestions ahead of browsing history in address bar results" is unchecked.
-        assert exists(show_search_browsing_history_unchecked_pattern.similar(0.7)), \
+        assert find_in_region_from_pattern(show_search_browsing_history_unchecked_pattern,
+                                           AboutPreferences.UNCHECKED_BOX), \
             '"Show suggestions ahead of browsing history..." is unchecked.'
 
         new_tab()
