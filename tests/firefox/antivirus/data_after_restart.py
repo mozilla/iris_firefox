@@ -23,15 +23,19 @@ class Test(FirefoxTest):
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+
         assert exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'SOAP Wiki site successfully opened.'
 
         new_tab()
+
         navigate('https://edition.cnn.com')
         assert exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), 'The CNN site successfully opened'
 
         close_content_blocking_pop_up()
+
         history_sidebar()
+
         assert exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE), 'History sidebar opened.'
 
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
@@ -41,6 +45,7 @@ class Test(FirefoxTest):
         assert exists(Sidebar.HistorySidebar.Timeline.TODAY), 'The Today timeline displayed.'
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
+
         assert history_sidebar_region.exists(LocalWeb.CNN_LOGO.similar(0.6)), 'The CNN site is added to history.'
         assert history_sidebar_region.exists(wikipedia_logo_pattern), 'The Wikipedia site is added to history.'
 
@@ -50,8 +55,11 @@ class Test(FirefoxTest):
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
         bookmark_page()
+
         click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
+
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
+
         click(Bookmarks.StarDialog.DONE)
 
         previous_tab()
@@ -85,9 +93,11 @@ class Test(FirefoxTest):
         click(browser_console_pattern)
         
         close_window_control('auxiliary')
+
         assert exists(NavBar.HOME_BUTTON, 180), 'Firefox is successfully restarted.'
 
         restore_firefox_focus()
+
         assert bookmarks_toolbar_region.exists(LocalWeb.CNN_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT), \
             'The CNN bookmark is successfully restored.'
         assert bookmarks_toolbar_region.exists(LocalWeb.CNN_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT), \
