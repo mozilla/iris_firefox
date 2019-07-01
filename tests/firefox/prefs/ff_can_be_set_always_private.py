@@ -37,6 +37,7 @@ class Test(FirefoxTest):
         pdf_file = self.get_asset_path('Faust.pdf')
         html_form = self.get_asset_path('form.html')
         ui_timeout = 1
+        quick_click_duration = 0.3
 
         box_width, box_heigth = prefs_checked_box_pattern.get_size()
 
@@ -94,7 +95,7 @@ class Test(FirefoxTest):
                                        always_private_width + box_width * 2, always_private_height)
 
         always_private_checked = exists(prefs_checked_box_pattern, region=always_private_region)
-        assert always_private_checked, '"Always use private browsing mode" is off'
+        assert always_private_checked, '"Always use private browsing mode" is on'
 
         remember_browsing_displayed = exists(remember_browsing_history_pattern)
         assert remember_browsing_displayed, '"Remember browsing" is displayed'
@@ -111,6 +112,12 @@ class Test(FirefoxTest):
                                                      region=remember_browsing_history_region)
         assert remember_browsing_history_unchecked, '"Always use private browsing mode" is off'
 
+        click(prefs_unchecked_box_pattern, quick_click_duration, remember_browsing_history_region)
+
+        remember_browsing_history_grayed_out = exists(prefs_unchecked_box_pattern,
+                                                      region=remember_browsing_history_region)
+        assert remember_browsing_history_grayed_out, '"Always use private browsing mode" is grayed out'
+
         remember_search_history_displayed = exists(remember_search_history_pattern)
         assert remember_search_history_displayed, '"Remember browsing" is displayed'
 
@@ -125,19 +132,29 @@ class Test(FirefoxTest):
         remember_search_history_unchecked = exists(prefs_unchecked_box_pattern, region=remember_search_history_region)
         assert remember_search_history_unchecked, '"Always use private browsing mode" is off'
 
+        click(prefs_unchecked_box_pattern, quick_click_duration, remember_search_history_region)
+
+        remember_search_history_grayed_out = exists(prefs_unchecked_box_pattern, region=remember_search_history_region)
+        assert remember_search_history_grayed_out, '"Always use private browsing mode" is grayed out'
+
         clear_history_closing_displayed = exists(clear_history_closing_pattern)
         assert clear_history_closing_displayed, '"Clear history when closed" is displayed'
 
         clear_history_closing_location = find(clear_history_closing_pattern)
 
         clear_history_closing_width, clear_history_closing_height = clear_history_closing_pattern.get_size()
-        clear_history_closing_region = Region(clear_history_closing_location.x - box_width*2,
+        clear_history_closing_region = Region(clear_history_closing_location.x - box_width * 2,
                                               clear_history_closing_location.y,
-                                              clear_history_closing_width + box_width*2,
+                                              clear_history_closing_width + box_width * 2,
                                               clear_history_closing_height)
 
         clear_history_unchecked = exists(prefs_unchecked_box_pattern, region=clear_history_closing_region)
         assert clear_history_unchecked, '"Clear history" is unchecked'
+
+        click(prefs_unchecked_box_pattern, quick_click_duration, clear_history_closing_region)
+
+        clear_history_grayed_out = exists(prefs_unchecked_box_pattern, region=clear_history_closing_region)
+        assert clear_history_grayed_out, '"Clear history" is grayed out'
 
         navigate(html_form)
         form_opened = exists(name_field_pattern)
@@ -190,8 +207,15 @@ class Test(FirefoxTest):
 
         click(DownloadDialog.OK_BUTTON)
 
-        download_finished = exists(NavBar.DOWNLOADS_BUTTON_BLUE)
+        download_finished = exists(NavBar.DOWNLOADS_BUTTON)
         assert download_finished, 'Download is finished'
+
+        download_finished = exists(pdf_downloaded)
+        assert download_finished, 'Download is finished'
+
+        click(NavBar.DOWNLOADS_BUTTON)
+
+        restore_firefox_focus()
 
         new_tab()
 
@@ -228,28 +252,10 @@ class Test(FirefoxTest):
         focus_page_not_visited = not exists(LocalWeb.FOCUS_BOOKMARK, ui_timeout)
         assert focus_page_not_visited, 'Focus local page visit was\'nt saved in history'
 
-        pocket_page_not_visited = not exists(LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout)
+        pocket_page_not_visited = not exists(LocalWeb.POCKET_BOOKMARK, ui_timeout)
         assert pocket_page_not_visited, 'Pocket local page visit was\'nt saved in history'
 
         restore_firefox_focus()
 
-        open_library()
-        library_opened = exists(Library.DOWNLOADS)
-        assert library_opened, 'Library is opened'
-
-        click(Library.DOWNLOADS)
-
-        file_not_in_downloads = not exists(pdf_downloaded)
-        assert file_not_in_downloads, 'The previously downloaded pdf file is not displayed in Firefox download history.'
-
-        click_window_control('close')
-
     def teardown(self):
         downloads_cleanup()
-
-        if exists(Library.TITLE, 1):
-            click_window_control('close')
-
-        if exists(NavBar.HOME_BUTTON):
-            restore_firefox_focus()
-            quit_firefox()
