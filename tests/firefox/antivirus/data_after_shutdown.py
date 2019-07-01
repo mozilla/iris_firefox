@@ -66,9 +66,13 @@ class Test(FirefoxTest):
 
         bookmarks_toolbar_region = Screen().new_region(0, bookmarks_toolbar_location.y, Screen.SCREEN_WIDTH,
                                                        home_height * 3)
-        tabs_region = Screen().new_region(0, 0, int(Screen.SCREEN_WIDTH * 0.75), home_height * 3)
+        tabs_region = Region(0, 0, int(Screen.SCREEN_WIDTH * 0.75), home_height * 4)
 
-        stardialog_region = Screen().new_region(Screen.SCREEN_WIDTH/2, 0, Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT)
+        stardialog_region = Region(Screen.SCREEN_WIDTH/2, 0, Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT)
+
+        bookmark_page()
+
+        time.sleep(10)
 
         bookmark_page()
 
@@ -83,6 +87,10 @@ class Test(FirefoxTest):
         click(Bookmarks.StarDialog.DONE)
 
         previous_tab()
+
+        bookmark_page()
+
+        time.sleep(10)
 
         bookmark_page()
 
