@@ -20,12 +20,7 @@ class Test(FirefoxTest):
         duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
         search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
-        default_status_pattern = Pattern('default_status.png')
-        modified_status_pattern = Pattern('modified_status.png')
-        true_value_pattern = Pattern('true_value.png')
-        false_value_pattern = Pattern('false_value.png')
         amazon_logo_pattern = Pattern('amazon_logo.png')
-        accept_risk_pattern = Pattern('accept_risk.png')
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
@@ -34,36 +29,7 @@ class Test(FirefoxTest):
         amazon_logo_exists = exists(amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert amazon_logo_exists, 'Page successfully loaded, amazon logo found.'
 
-        navigate('about:config')
-
-        # Change focus from the url bar.
-        if OSHelper.is_windows() or OSHelper.is_linux():
-            click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
-            type(Key.ENTER)
-        else:
-            if exists(accept_risk_pattern):
-                click(accept_risk_pattern)
-        default_status_exists = region.exists(default_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert default_status_exists, 'The \'about:config\' page successfully loaded and default status is correct.'
-
-        paste('keyword.enabled')
-        type(Key.ENTER)
-
-        default_status_exists = region.exists(default_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert default_status_exists, 'The \'keyword.enabled\' preference has status \'default\' by default.'
-
-        true_value_exists = region.exists(true_value_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert true_value_exists, 'The \'keyword.enabled\' preference has value \'true\' by default.'
-
-        double_click(default_status_pattern)
-
-        modified_status_exists = region.exists(modified_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert modified_status_exists, 'The \'keyword.enabled\' preference has status \'modified\' ' \
-                                       'after the preference has changed.'
-
-        false_value_exists = region.exists(false_value_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert false_value_exists, 'The \'keyword.enabled\' preference has value \'false\'' \
-                                   ' after the preference has changed.'
+        change_preference('keyword.enabled', False)
 
         select_location_bar()
 
