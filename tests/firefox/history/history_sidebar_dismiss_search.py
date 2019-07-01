@@ -57,6 +57,7 @@ class Test(FirefoxTest):
         history_sidebar_items_exists = exists(history_sidebar_items_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_sidebar_items_exists, 'History sidebar item exists'
 
-        expected_6 = exists(history_sidebar_items_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        expected_7 = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected_6 and expected_7, 'The expected items are displayed in the History list.'
+        history_sidebar_items_exists = exists(history_sidebar_items_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        search_history_box_exists = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert history_sidebar_items_exists and search_history_box_exists, \
+            'The expected items are displayed in the History list.'
