@@ -62,6 +62,7 @@ class Test(FirefoxTest):
         click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
         
         click(Bookmarks.StarDialog.DONE)
+        
         assert bookmarks_toolbar_region.exists(LocalWeb.CNN_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT), \
             'The CNN bookmark is successfully added.'
         assert bookmarks_toolbar_region.exists(LocalWeb.CNN_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT), \
