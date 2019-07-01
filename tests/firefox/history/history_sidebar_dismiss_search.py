@@ -22,23 +22,20 @@ class Test(FirefoxTest):
         x_button_search_history_box_pattern = Sidebar.SidebarHeader.CLEAR_SEARCH_BOX
         history_sidebar_items_pattern = Pattern('history_sidebar_items.png')
 
-        if OSHelper.is_windows():
-            x_button_search_history_box_pattern = Pattern('x_button_search_history.png')
-
         # Open a page to create some history.
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        expected_1 = exists(LocalWeb.FOCUS_LOGO, 10)
-        assert expected_1, 'Focus page loaded successfully.'
+        focus_logo_exists = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert focus_logo_exists, 'Focus page loaded successfully.'
 
         # Open the History sidebar.
         history_sidebar()
 
-        expected_2 = exists(search_history_box_pattern, 10)
-        assert expected_2, 'Sidebar was opened successfully.'
+        search_history_box_exists = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_history_box_exists, 'Sidebar was opened successfully.'
 
-        expected_3 = exists(history_today_sidebar_pattern, 10)
-        assert expected_3, 'Expand history button displayed properly.'
+        history_today_sidebar_exists = exists(history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert history_today_sidebar_exists, 'Expand history button displayed properly.'
 
         click(history_today_sidebar_pattern)
         click(search_history_box_pattern)
@@ -47,15 +44,19 @@ class Test(FirefoxTest):
         paste('focus')
         type(Key.TAB)
 
-        expected_4 = exists(history_sidebar_focus_pattern, 10)
-        assert expected_4, 'Focus page was found in the History list successfully.'
+        history_sidebar_focus_exists = exists(history_sidebar_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert history_sidebar_focus_exists, 'Focus page was found in the History list successfully.'
 
         # Clear the History search box.
-        expected_5 = exists(x_button_search_history_box_pattern, 10)
-        assert expected_5, 'Clear field button was displayed properly.'
+        x_button_search_history_box_exists = exists(x_button_search_history_box_pattern,
+                                                    FirefoxSettings.FIREFOX_TIMEOUT)
+        assert x_button_search_history_box_exists, 'Clear field button was displayed properly.'
 
         click(x_button_search_history_box_pattern)
 
-        expected_6 = exists(history_sidebar_items_pattern, 10)
-        expected_7 = exists(search_history_box_pattern, 10)
+        history_sidebar_items_exists = exists(history_sidebar_items_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert history_sidebar_items_exists, 'History sidebar item exists'
+
+        expected_6 = exists(history_sidebar_items_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected_7 = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_6 and expected_7, 'The expected items are displayed in the History list.'
