@@ -24,9 +24,14 @@ class Test(FirefoxTest):
         new_tab()
 
         navigate(LocalWeb.POCKET_TEST_SITE)
-        navigate(LocalWeb.POCKET_TEST_SITE)
+
+        pocket_page_opened = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert pocket_page_opened, 'Pocket page opened'
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        mozilla_page_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert mozilla_page_opened, 'Mozilla page opened'
 
         select_location_bar()
         type('127.0.0.1:2000/p')
