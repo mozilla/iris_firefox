@@ -27,14 +27,14 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        assert exists(LocalWeb.MOZILLA_LOGO), 'Mozilla site loaded.'
+        assert exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT), 'Mozilla site loaded.'
 
         close_tab()
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        assert exists(LocalWeb.FOCUS_LOGO), 'Focus site loaded.'
+        assert exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT), 'Focus site loaded.'
 
         close_tab()
 
