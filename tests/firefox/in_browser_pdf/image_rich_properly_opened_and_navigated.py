@@ -35,11 +35,11 @@ class Test(FirefoxTest):
         click(image_rich_pdf_first_page_contents_pattern)  # To make mouse scroll possible
 
         scrolling_down_works = scroll_until_pattern_found(image_rich_pdf_third_page_contents_pattern, scroll,
-                                                          (-200,), num_of_scroll_iterations=30)
+                                                          (-50,), num_of_scroll_iterations=30)
         assert scrolling_down_works, 'Scrolling down via mouse wheel works properly'
 
         scrolling_up_works = scroll_until_pattern_found(image_rich_pdf_first_page_contents_pattern, scroll,
-                                                        (200,), num_of_scroll_iterations=30)
+                                                        (50,), num_of_scroll_iterations=30)
         assert scrolling_up_works, 'Scrolling up via mouse wheel works properly'
 
         arrow_down_navigation_works = scroll_until_pattern_found(image_rich_pdf_third_page_contents_pattern,
