@@ -1120,3 +1120,32 @@ class ZoomType(object):
 
     IN = 300 if OSHelper.is_windows() else 1
     OUT = -300 if OSHelper.is_windows() else -1
+
+
+def find_in_region_from_pattern(outer_pattern: Pattern, inner_pattern: Pattern,
+                                outer_pattern_timeout=Settings.auto_wait_timeout,
+                                inner_pattern_timeout=Settings.auto_wait_timeout):
+    """ Finds pattern in region created from another pattern
+    :param outer_pattern: Pattern for region creation
+    :param inner_pattern: Pattern to find in region
+    :param outer_pattern_timeout: Time to finding outer_pattern
+    :param inner_pattern_timeout: Time to finding inner_pattern,
+    :return: Boolean. True if inner_pattern found in outer_pattern region
+    :raises: ValueError and APIHelperError
+    """
+    if not isinstance(outer_pattern, Pattern) or not isinstance(inner_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    try:
+        wait(outer_pattern, outer_pattern_timeout)
+        logger.debug('Outer pattern found.')
+
+    except FindError:
+        raise APIHelperError('Can\'t find the outer pattern.')
+
+    width, height = outer_pattern.get_size()
+    region = Region(image_find(outer_pattern).x, image_find(outer_pattern).y, width, height)
+
+    pattern_found = exists(inner_pattern, inner_pattern_timeout, region=region)
+
+    return pattern_found

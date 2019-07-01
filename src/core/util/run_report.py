@@ -43,7 +43,11 @@ class ReportFooter:
         app_details = 'Application: %s, Platform: %s%s' % (self.app.target_name, self.platform, additional_info)
         test_results_str = 'Passed: %s, Failed: %s, Skipped: %s, Errors %s  -- Total: %s' \
                            % (self.passed_tests, self.failed_tests, self.skipped_tests, self.error_tests, total)
-        total_time_str = 'Total time: %s second(s)' % self.total_duration
+        
+        total_time_hours = int(self.total_duration / 3600)
+        total_time_minutes = int((self.total_duration - (total_time_hours * 3600)) / 60)
+        total_time_seconds = self.total_duration - (total_time_hours * 3600) - (total_time_minutes * 60)
+        total_time_str = 'Total time: %02d:%02d:%06.3f' % (total_time_hours, total_time_minutes, total_time_seconds)
 
         test_results = (header + app_details + '\n' + test_results_str + ' ' *
                         (os.get_terminal_size().columns - (len(test_results_str) + len(total_time_str))) +
