@@ -83,6 +83,7 @@ class Test(FirefoxTest):
         assert exists(browser_console_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), 'Browser console reopened.'
 
         click(browser_console_pattern)
+        
         close_window_control('auxiliary')
         assert exists(NavBar.HOME_BUTTON, 180), 'Firefox is successfully restarted.'
 
