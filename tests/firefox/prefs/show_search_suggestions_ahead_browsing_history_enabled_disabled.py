@@ -27,14 +27,16 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        assert exists(LocalWeb.MOZILLA_LOGO), 'Mozilla site loaded.'
+        mozilla_site_loaded = exists(LocalWeb.MOZILLA_LOGO)
+        assert mozilla_site_loaded, 'Mozilla site loaded.'
 
         close_tab()
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        assert exists(LocalWeb.FOCUS_LOGO), 'Focus site loaded.'
+        focus_site_loaded = exists(LocalWeb.FOCUS_LOGO)
+        assert focus_site_loaded, 'Focus site loaded.'
 
         close_tab()
 
@@ -47,11 +49,19 @@ class Test(FirefoxTest):
         # "Show search suggestions in address bar results" and
         # "Show search suggestions ahead of browsing history in address bar results" are selected.
 
-        assert find_in_region_from_pattern(provide_search_suggestions_pattern, AboutPreferences.CHECKED_BOX) and \
-            find_in_region_from_pattern(show_search_suggestions_pattern, AboutPreferences.CHECKED_BOX) and \
-            find_in_region_from_pattern(show_search_browsing_history_checked_pattern, AboutPreferences.CHECKED_BOX), \
-            'The options "Provide search suggestions", "Show search suggestions in address bar results" and ' \
-            '"Show search suggestions ahead of browsing history in address bar results" are selected.'
+        provide_search_suggestions = find_in_region_from_pattern(provide_search_suggestions_pattern,
+                                                                 AboutPreferences.CHECKED_BOX)
+        assert provide_search_suggestions, '"Provide search suggestions" is selected.'
+
+        show_search_suggestions = find_in_region_from_pattern(show_search_suggestions_pattern,
+                                                              AboutPreferences.CHECKED_BOX)
+        assert show_search_suggestions, '"Show search suggestions in address bar results" is selected.'
+
+        show_search_browsing_history = find_in_region_from_pattern(show_search_browsing_history_checked_pattern,
+                                                                   AboutPreferences.CHECKED_BOX)
+        assert show_search_browsing_history, 'The options "Provide search suggestions", "Show search suggestions in ' \
+                                             'address bar results" and "Show search suggestions ahead of browsing ' \
+                                             'history in address bar results" are selected.'
 
         new_tab()
 
@@ -62,25 +72,27 @@ class Test(FirefoxTest):
         # The suggestions are displayed for any of the available search engines.
         suggestions_displayed = exists(suggestions_displayed_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
+        assert suggestions_displayed, 'The suggestions are displayed for any of the available search engines.'
+
         # Underneath those the browsing history is displayed.
         browsing_history_search_bar = exists(browsing_history_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
-        assert suggestions_displayed and browsing_history_search_bar, \
-            'Suggestions and browsing history displayed after search'
+        assert browsing_history_search_bar, 'Browsing history is displayed.'
 
         close_tab()
 
-        assert find_in_region_from_pattern(show_search_browsing_history_checked_pattern, AboutPreferences.CHECKED_BOX),\
-            'Privacy options successfully opened.'
+        show_search_browsing_history = find_in_region_from_pattern(show_search_browsing_history_checked_pattern,
+                                                                   AboutPreferences.CHECKED_BOX)
+        assert show_search_browsing_history, 'Privacy options successfully opened.'
 
         click(show_search_browsing_history_checked_pattern, 1)
 
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # wait for proper pattern
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # wait for option to load; otherwise asserts unexpected option
 
         # The option "Show search suggestions ahead of browsing history in address bar results" is unchecked.
-        assert find_in_region_from_pattern(show_search_browsing_history_unchecked_pattern,
-                                           AboutPreferences.UNCHECKED_BOX), \
-            '"Show suggestions ahead of browsing history..." is unchecked.'
+        show_search_browsing_unchecked = find_in_region_from_pattern(show_search_browsing_history_unchecked_pattern,
+                                                                     AboutPreferences.UNCHECKED_BOX)
+        assert show_search_browsing_unchecked, '"Show suggestions ahead of browsing history..." is unchecked.'
 
         new_tab()
 
