@@ -82,6 +82,8 @@ class Test(FirefoxTest):
 
         click(soap_wiki_label_location)
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+
         drag_drop(link_to_drag_drop_pattern, drop_here_pattern)
 
         not_matching_message_displayed = exists(not_matching_message_pattern)

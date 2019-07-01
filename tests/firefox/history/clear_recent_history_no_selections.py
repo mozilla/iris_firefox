@@ -19,32 +19,38 @@ class Test(FirefoxTest):
         # Open some pages to create some history.
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert  expected_1, 'Mozilla page loaded successfully.'
+
+        mozilla_logo_exists = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_logo_exists, 'Mozilla page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert  expected_2, 'Firefox page loaded successfully.'
+
+        firefox_logo_exists = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert firefox_logo_exists, 'Firefox page loaded successfully.'
 
         # Open the History sidebar.
         history_sidebar()
 
         # Open the 'Clear Recent History' window and uncheck all the items.
         for step in open_clear_recent_history_window():
-            assert  step.resolution, step.message
-
-        region = Region(Screen().width / 4, Screen().height / 4, Screen().width / 2, Screen().height / 2)
+            assert step.resolution, step.message
 
         # Uncheck all options to be cleared.
-        while region.exists(checked_box.similar(0.8), 10):
-            time.sleep(Settings.DEFAULT_UI_DELAY)
-            click(checked_box)
-            region.exists(checked_box.similar(0.8), 10)
+        for step in range(1, 6):
+            checked_box_exists = exists(checked_box, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+            if checked_box_exists:
+                assert checked_box_exists, 'Checked box number {} exist'.format(step)
+
+                time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+                click(checked_box)
+            else:
+                break
 
         # Check that the 'Clear Now' button is disabled.
-        expected_4 = exists(clear_now_button_disabled.similar(0.8), 10)
-        assert expected_4, 'Clear Now button is disabled.'
+        clear_now_button_disabled_exists = exists(clear_now_button_disabled.similar(0.8),
+                                                  FirefoxSettings.FIREFOX_TIMEOUT)
+        assert clear_now_button_disabled_exists, 'Clear Now button is disabled.'
 
         # Close the 'Clear Recent History' window.
         type(Key.ESC)
