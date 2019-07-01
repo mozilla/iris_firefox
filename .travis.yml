@@ -13,8 +13,7 @@ branches:
 # Safelist
 branches:
   only:
-  - master
-  - dev
+  - test
 
 # Bootstrap install
 install:
@@ -35,7 +34,7 @@ jobs:
     - stage: Ubuntu 16.04 Image search and mouse movement tests
       os: linux
       dist: xenial
-      script: pipenv run iris firefox -vk -n -t ci_tests
+      script: pipenv run iris -h
 
 # Email notification
 notifications:
