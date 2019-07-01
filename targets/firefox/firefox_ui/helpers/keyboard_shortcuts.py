@@ -505,12 +505,12 @@ def select_tab(num):
     param:  num  is a string 1-8. example: '4'.
     """
     if OSHelper.is_mac():
-        type(text=num, modifier=KeyModifier.CMD)
+        type(text=str(num), modifier=KeyModifier.CMD)
     elif OSHelper.is_windows():
-        type(text=num, modifier=KeyModifier.CTRL)
+        type(text=str(num), modifier=KeyModifier.CTRL)
     else:
-        type(text=num, modifier=KeyModifier.ALT)
-
+        type(text=str(num), modifier=KeyModifier.ALT)
+        
 
 def select_last_tab():
     """Select the last tab."""

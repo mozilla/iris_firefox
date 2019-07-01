@@ -16,9 +16,9 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW
     )
     def run(self, firefox):
-        search_history_box = Sidebar.HistorySidebar.SEARCH_BOX
+        search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
-        local_server_autocomplete = Pattern('local_server_autocomplete.png')
+        local_server_autocomplete_pattern = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
 
         left_upper_corner = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
@@ -26,18 +26,19 @@ class Test(FirefoxTest):
         # Open some pages to create some history.
         close_tab()
         new_tab()
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert expected_1, 'Mozilla page loaded successfully.'
+        mozilla_logo_exists = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_logo_exists, 'Mozilla page loaded successfully.'
 
         close_tab()
-
         new_tab()
+
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected_2, 'Firefox page loaded successfully.'
+        firefox_logo_exists = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert firefox_logo_exists, 'Firefox page loaded successfully.'
 
         close_tab()
         new_tab()
@@ -45,37 +46,40 @@ class Test(FirefoxTest):
         # Open the History sidebar.
         history_sidebar()
 
-        expected_3 = exists(search_history_box, 10)
-        assert expected_3, 'Sidebar was opened successfully.'
+        search_history_box_exists = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_history_box_exists, 'Sidebar was opened successfully.'
 
-        expected_4 = exists(history_today_sidebar_pattern, 10)
-        assert expected_4, 'Expand history button displayed properly.'
+        history_today_sidebar_exists = exists(history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert history_today_sidebar_exists, 'Expand history button displayed properly.'
 
         click(history_today_sidebar_pattern)
 
         # Delete a page from the History sidebar.
-        expected_5 = left_upper_corner.exists(mozilla_bookmark_small_pattern.similar(0.7), 10)
-        assert expected_5, 'Mozilla page is displayed in the History list successfully.'
+        mozilla_bookmark_small_exists = left_upper_corner.exists(mozilla_bookmark_small_pattern.similar(0.7),
+                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_bookmark_small_exists, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type(mozilla_bookmark_small_pattern,keyboard_action='d')
+        right_click_and_type(mozilla_bookmark_small_pattern, keyboard_action='d')
 
         try:
-            expected_6 = left_upper_corner.wait_vanish(mozilla_bookmark_small_pattern, 10)
-            assert expected_6, 'Mozilla page was deleted successfully from the history.'
+            mozilla_bookmark_small_vanished = left_upper_corner.wait_vanish(mozilla_bookmark_small_pattern,
+                                                                            FirefoxSettings.FIREFOX_TIMEOUT)
+            assert mozilla_bookmark_small_vanished, 'Mozilla page was deleted successfully from the history.'
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
 
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
 
-        expected_7 = exists(mozilla_bookmark_small_pattern.similar(0.9), 10)
-        assert expected_7 is not True, 'Mozilla page is not displayed in the Recent History list.'
+        mozilla_bookmark_small_exists = exists(mozilla_bookmark_small_pattern.similar(0.9),
+                                               FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_bookmark_small_exists is False, 'Mozilla page is not displayed in the Recent History list.'
 
         type(Key.ESC)
 
         # Check that the local server is still auto-completed in the URL bar.
         select_location_bar()
-        paste('127')
+        type('127')
 
-        expected_8 = exists(local_server_autocomplete, 10)
-        assert expected_8, 'Local server is auto-completed successfully.'
+        local_server_autocomplete_exists = exists(local_server_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert local_server_autocomplete_exists, 'Local server is auto-completed successfully.'

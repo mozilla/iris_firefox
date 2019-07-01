@@ -21,13 +21,12 @@ class Test(FirefoxTest):
         history_pattern = Library.HISTORY
         view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        iris_logo_pattern = Pattern('iris_logo.png')
         history_bookmarks_toolbar_pattern = Pattern('history_bookmarks_toolbar.png')
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
 
-        expected = exists(bookmarks_toolbar_most_visited_pattern, 10)
+        expected = exists(bookmarks_toolbar_most_visited_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Bookmarks Toolbar has been activated.'
 
         # Open History and check if it is populated with the Iris page.
@@ -35,23 +34,23 @@ class Test(FirefoxTest):
 
         right_upper_corner = Screen().new_region(Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2,
                                                  Screen.SCREEN_HEIGHT / 2)
-        expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
+        expected = right_upper_corner.exists(iris_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Iris page is displayed in the History menu list.'
 
         try:
-            wait(show_all_history_pattern, 10)
+            wait(show_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug('Show All History option found.')
             click(show_all_history_pattern)
         except FindError:
             raise FindError('Show All History option is not present on the page, aborting.')
 
-        expected = exists(history_pattern, 10)
+        expected = exists(history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'History section is visible.'
 
         right_click_and_type(history_pattern, keyboard_action='c')
 
         click_window_control('close')
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action='p')
 
@@ -62,14 +61,14 @@ class Test(FirefoxTest):
 
         click(history_bookmarks_toolbar_pattern)
 
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         # Navigate to a page from Today's history, in our case the Iris page.
         type(Key.DOWN)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         type(Key.RIGHT)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         type(Key.ENTER)
 
-        expected = exists(iris_logo_pattern, 10)
+        expected = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Iris page successfully loaded.'
