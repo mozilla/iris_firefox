@@ -28,7 +28,7 @@ def load_target(target: str = None):
     return False
 
 
-def get_target_test_directory():
+def collect_tests():
     """Collects tests based on include/exclude criteria and selected target."""
     target = core_args.target
     test_list = []
