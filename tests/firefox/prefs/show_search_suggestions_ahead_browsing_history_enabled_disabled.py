@@ -87,12 +87,12 @@ class Test(FirefoxTest):
         paste('2000 ')
 
         exists(suggestions_displayed_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
-        suggestions_displayed_location = find(suggestions_displayed_pattern)
+        suggestions_displayed_y = find(suggestions_displayed_pattern).y
 
         exists(browsing_history_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        browsing_history_search_bar_location = find(browsing_history_search_bar_pattern)
+        browsing_history_search_bar_y = find(browsing_history_search_bar_pattern).y
 
         # The browsing history is displayed before the search suggestions.
-        assert browsing_history_search_bar_location.y < suggestions_displayed_location.y, \
+        assert browsing_history_search_bar_y < suggestions_displayed_y, \
             'The suggestions are no longer displayed for any of the available search engines. Only the browsing' \
             ' history is displayed. '
