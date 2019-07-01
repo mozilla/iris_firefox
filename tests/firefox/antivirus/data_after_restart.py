@@ -15,7 +15,6 @@ class Test(FirefoxTest):
         test_suite_id='3063'
     )
     def run(self, firefox):
-        toolbar_bookmarks_toolbar_pattern = Pattern('toolbar_bookmarks_toolbar.png')
         browser_console_pattern = Pattern('browser_console_opened.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
@@ -44,11 +43,6 @@ class Test(FirefoxTest):
         click(Sidebar.HistorySidebar.Timeline.TODAY)
         assert history_sidebar_region.exists(LocalWeb.CNN_LOGO.similar(0.6)), 'The CNN site is added to history.'
         assert history_sidebar_region.exists(wikipedia_logo_pattern), 'The Wikipedia site is added to history.'
-
-        right_click(NavBar.HOME_BUTTON.target_offset(100, 0))
-        assert exists(toolbar_bookmarks_toolbar_pattern), 'Bookmarks toolbar button displayed.'
-
-        click(toolbar_bookmarks_toolbar_pattern)
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
