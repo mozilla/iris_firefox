@@ -72,17 +72,23 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        time.sleep(10)
+        new_bookmark_title = exists(Bookmarks.StarDialog.NEW_BOOKMARK)
+        assert new_bookmark_title, 'StarDialog opened'
 
-        bookmark_page()
+        hover(Bookmarks.StarDialog.NEW_BOOKMARK)
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), region=stardialog_region)
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        assert folder_option_button_exists, 'Folder option button exists'
 
-        cnn_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6),
-                                                       region=stardialog_region)
-        assert cnn_bookmark_toolbar_folder_displayed is True, 'Bookmark toolbar folder displayed'
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6), region=stardialog_region)
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert toolbar_option_button_exists, 'Toolbar option button exists'
+
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
+        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
+        assert panel_option_button_exists, 'Panel option button exists'
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -90,17 +96,23 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        time.sleep(10)
+        new_bookmark_title = exists(Bookmarks.StarDialog.NEW_BOOKMARK)
+        assert new_bookmark_title, 'StarDialog opened'
 
-        bookmark_page()
+        hover(Bookmarks.StarDialog.NEW_BOOKMARK)
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), region=stardialog_region)
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        assert folder_option_button_exists, 'Folder option button exists'
 
-        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6),
-                                                        region=stardialog_region)
-        assert wiki_bookmark_toolbar_folder_displayed is True, 'Bookmark toolbar folder displayed'
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6), region=stardialog_region)
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert toolbar_option_button_exists, 'Toolbar option button exists'
+
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
+        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
+        assert panel_option_button_exists, 'Panel option button exists'
 
         click(Bookmarks.StarDialog.DONE)
 
