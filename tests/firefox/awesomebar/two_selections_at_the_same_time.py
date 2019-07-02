@@ -17,11 +17,10 @@ class Test(FirefoxTest):
     def run(self, firefox):
 
         hover_duck_duck_go_one_off_button_pattern = Pattern('hover_duck_duck_go_one_off_button.png')
-        duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png').similar(0.5)
+        duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
         search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
         amazon_logo_pattern = Pattern('amazon_logo.png')
-        search_engines = Pattern('search_engines.png')
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
         move_to_region = Region(0, 0, Screen().width/2, Screen().height/2)
@@ -41,8 +40,8 @@ class Test(FirefoxTest):
                                                             FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_with_url_autocomplete_exists, 'Search is performed with url autocomplete' \
                                                     ' for pages where you have been before.'
-        duck_duck_go_one_off_button_exists = find_in_region_from_pattern(search_engines,
-                                                                         duck_duck_go_one_off_button_pattern)
+
+        duck_duck_go_one_off_button_exists = exists(duck_duck_go_one_off_button_pattern)
         assert duck_duck_go_one_off_button_exists, 'DuckDuckGo button exists.'
 
         move(move_to_region)
