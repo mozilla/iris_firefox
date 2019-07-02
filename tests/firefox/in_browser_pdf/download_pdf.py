@@ -57,6 +57,10 @@ class Test(FirefoxTest):
         pdf_listed_in_downloads_section = exists(pdf_in_downloads_pattern)
         assert pdf_listed_in_downloads_section, 'Downloaded PDF document is listed in Library\'s \'Downloads\' section'
 
+        downloads_dir = PathManager.get_downloads_dir()
+        file_present_in_filesystem = 'pdf.pdf' in os.listdir(downloads_dir)
+        assert file_present_in_filesystem, 'File successfully saved into a filesystem'
+
     def teardown(self):
-        # TODO
-        pass
+        downloads_dir = PathManager.get_downloads_dir()
+        PathManager.remove_dir_contents(downloads_dir)
