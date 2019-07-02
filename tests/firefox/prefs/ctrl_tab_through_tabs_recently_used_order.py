@@ -62,9 +62,10 @@ class Test(FirefoxTest):
         select_tab(4)
         select_tab(3)
 
-        key_down(Key.CTRL)
-
         try:
+
+            key_down(Key.CTRL)
+
             type(Key.TAB)
 
             ctrl_tab_focus_logo = exists(ctrl_tab_focus_logo_pattern)
@@ -94,10 +95,10 @@ class Test(FirefoxTest):
 
             assert not ctrl_tab_focus_not_active, 'If you continue to press Tab, the focus is shifted between the tabs.'
 
-        except:
+        except FindError:
             key_up(Key.CTRL)
             key_up(Key.TAB)
-            raise Exception('PyAutoGUI error.')
+            raise FindError('Error using Ctrl+Tab switcher.')
 
         key_up(Key.CTRL)
 
