@@ -20,6 +20,8 @@ class Test(FirefoxTest):
 
         navigate('about:preferences')
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         paste('asdasdasd')
 
         no_results_in_preferences = exists(no_results_in_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
