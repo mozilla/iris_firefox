@@ -42,7 +42,7 @@ class Test(FirefoxTest):
                                                     ' for pages where you have been before.'
 
         duck_duck_go_one_off_button_exists = exists(duck_duck_go_one_off_button_pattern,
-                                                    FirefoxSettings.FIREFOX_TIMEOUT)
+                                                    FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.LEFT_HALF)
         assert duck_duck_go_one_off_button_exists, 'DuckDuckGo button exists.'
 
         move(move_to_region)
