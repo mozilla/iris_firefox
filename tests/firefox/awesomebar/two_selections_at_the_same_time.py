@@ -21,6 +21,7 @@ class Test(FirefoxTest):
         search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
         amazon_logo_pattern = Pattern('amazon_logo.png')
+        search_engines = Pattern('search_engines.png')
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
         move_to_region = Region(0, 0, Screen().width/2, Screen().height/2)
@@ -41,8 +42,6 @@ class Test(FirefoxTest):
         assert search_with_url_autocomplete_exists, 'Search is performed with url autocomplete' \
                                                     ' for pages where you have been before.'
 
-        duck_duck_go_one_off_button_exists = exists(duck_duck_go_one_off_button_pattern,
-                                                    FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.LEFT_HALF)
         assert duck_duck_go_one_off_button_exists, 'DuckDuckGo button exists.'
 
         move(move_to_region)
