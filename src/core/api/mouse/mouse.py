@@ -258,7 +258,7 @@ def _get_pattern_click_location(ps: Pattern, region: Rectangle = None, align: Al
     find_location = image_find(ps, region=region)
 
     if find_location is None:
-        raise FindError('Unable to click on: %s' % ps.get_file_path())
+        raise FindError('Unable to find pattern {}'.format(ps.get_filename()))
 
     if ps.get_target_offset():
         target_offset = ps.get_target_offset()
@@ -276,6 +276,6 @@ def _get_string_click_location(ps: str, region: Rectangle = None, align: Alignme
     find_location = text_find(ps, region)
 
     if len(find_location) == 0:
-        raise FindError('Unable to click on: %s' % ps)
+        raise FindError('Unable to find pattern {}'.format(ps.get_filename()))
 
     return find_location[0].apply_alignment(align)
