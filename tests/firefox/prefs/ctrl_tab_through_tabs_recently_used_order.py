@@ -83,7 +83,7 @@ class Test(FirefoxTest):
             ctrl_tab_pocket_x = find(ctrl_tab_pocket_pattern).x
             assert ctrl_tab_pocket, 'Pocket tab appears in Ctrl+Tab switcher.'
 
-            assert ctrl_tab_firefox_x > ctrl_tab_focus_x < ctrl_tab_pocket_x, 'The order of the tabs are ' \
+            assert ctrl_tab_firefox_x < ctrl_tab_focus_x < ctrl_tab_pocket_x, 'The order of the tabs are ' \
                                                                               'the same as in step 3. '
 
             type(Key.TAB)
@@ -93,7 +93,7 @@ class Test(FirefoxTest):
             except FindError:
                 raise APIHelperError('The focus is not shifted between the tabs.')
 
-            assert not ctrl_tab_focus_not_active, 'If you continue to press Tab, the focus is shifted between the tabs.'
+            assert ctrl_tab_focus_not_active, 'If you continue to press Tab, the focus is shifted between the tabs.'
 
         except FindError:
             key_up(Key.CTRL)
