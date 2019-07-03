@@ -58,6 +58,8 @@ class Test(FirefoxTest):
 
         click('Remove', region=Screen.BOTTOM_THIRD)
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # wait until Bing removes
+
         # The selected search engines are not displayed anymore.
         assert not exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF), \
             'Bing is not displayed anymore in the "One-click Search Engines" list'
