@@ -53,9 +53,13 @@ class Test(FirefoxTest):
 
         click(bing_one_click_search_pattern, 1)
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)  # wait for load of active button Remove
+
         assert exists('Remove', FirefoxSettings.FIREFOX_TIMEOUT, Screen.BOTTOM_THIRD), 'Remove button available.'
 
         click('Remove', region=Screen.BOTTOM_THIRD)
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)  # wait until search engine actually removes
 
         # The selected search engines are not displayed anymore.
         assert not exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF), \
