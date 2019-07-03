@@ -15,13 +15,13 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH
     )
     def run(self, firefox):
-        title_field_pattern = Pattern('title_field.png').similar(.7)
+        title_field_pattern = Pattern('title_field.png').similar(.6)
 
         input_data = ['Maria V. Griggs', 'Loblaws', '1223 Rainbow Drive']
 
         navigate('https://www.roboform.com/filling-test-all-fields')
 
-        test_site_loaded = exists(title_field_pattern, Settings.SITE_LOAD_TIMEOUT)
+        test_site_loaded = exists(title_field_pattern, Settings.SITE_LOAD_TIMEOUT, region=Screen.LEFT_HALF)
         assert test_site_loaded, 'The test website is successfully displayed.'
 
         title_field_width, title_field_height = title_field_pattern.get_size()
