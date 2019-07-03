@@ -145,7 +145,7 @@ class Test(FirefoxTest):
         click(prefs_checked_box_pattern, quick_click_duration, clear_form_search_region)
 
         clear_form_search_unchecked = exists(prefs_unchecked_box_pattern, region=clear_form_search_region)
-        assert clear_form_search_unchecked, '"Clear browsing and download" was successfully unchecked'
+        assert clear_form_search_unchecked, '"Clear form and search" was successfully unchecked'
 
         type(Key.ENTER)
 
