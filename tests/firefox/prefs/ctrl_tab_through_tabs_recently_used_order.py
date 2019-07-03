@@ -98,7 +98,8 @@ class Test(FirefoxTest):
         except FindError:
             key_up(Key.CTRL)
             key_up(Key.TAB)
-            raise FindError('Error using Ctrl+Tab switcher.')
+
+            raise FindError('Could not find patter while using Ctrl+Tab switcher.')
 
         key_up(Key.CTRL)
 
