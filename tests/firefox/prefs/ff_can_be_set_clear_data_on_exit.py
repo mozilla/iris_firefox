@@ -20,7 +20,6 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         always_private_pattern = Pattern('always_private.png')
-        autocomplete_pattern = Pattern('word_autocomplete.png')
         remember_all_history_pattern = Pattern('remember_history.png')
         remember_browsing_history_pattern = Pattern('remember_browsing_download_history.png')
         clear_history_closing_pattern = Pattern('clear_history_when_closes.png')
