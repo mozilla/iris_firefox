@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id='161471',
         test_suite_id='2241',
         locale=['en-US'],
+        preferences={'browser.tabs.loadinBackground': False},
     )
     def run(self, firefox):
         navigate_load_listener_page_title_pattern = Pattern('navigate_page_title.png').similar(0.6)
