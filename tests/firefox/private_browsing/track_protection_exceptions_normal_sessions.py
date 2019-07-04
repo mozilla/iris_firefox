@@ -54,6 +54,9 @@ class Test(FirefoxTest):
                                                                   ' option was successfully saved'
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
+
+        close_content_blocking_pop_up()
+
         firefox_tracker_site_logo_displayed = exists(firefox_tracker_site_content_pattern)
         assert firefox_tracker_site_logo_displayed is True, 'The website is successfully displayed.'
 

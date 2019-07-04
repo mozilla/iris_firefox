@@ -21,7 +21,9 @@ class Test(FirefoxTest):
         # Visit a page at least two times to make sure that auto-fill is working in the URL bar.
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
-        navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        test_page_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert test_page_opened, 'Test page is opened'
 
         select_location_bar()
         type('http://127.0.0.1:2000/m')

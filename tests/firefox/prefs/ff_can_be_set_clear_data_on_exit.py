@@ -23,15 +23,15 @@ class Test(FirefoxTest):
         remember_all_history_pattern = Pattern('remember_history.png')
         remember_browsing_history_pattern = Pattern('remember_browsing_download_history.png')
         clear_history_closing_pattern = Pattern('clear_history_when_closes.png')
-        clear_history_settings_pattern = Pattern('clear_history_settings.png')  # needed to cut
+        clear_history_settings_pattern = Pattern('clear_history_settings.png')
         custom_history_settings_pattern = Pattern('custom_history_settings.png')
         remember_search_history_pattern = Pattern('remember_search_form_history.png')
         prefs_checked_box_pattern = Pattern('prefs_checked_box.png')
         prefs_unchecked_box_pattern = Pattern('prefs_unchecked_box.png')
         download_pdf_pattern = Pattern('download_pdf_button.png')
         pdf_downloaded_pattern = Pattern('downloaded_pdf.png')
-        clear_browsing_download_pattern = Pattern('clear_browsing_download.png')  # needed to cut
-        clear_form_search_patten = Pattern('clear_form_search.png')  # needed to cut
+        clear_browsing_download_pattern = Pattern('clear_browsing_download.png')
+        clear_form_search_patten = Pattern('clear_form_search.png')
 
         pdf_file = self.get_asset_path('Faust.pdf')
         ui_timeout = 1
@@ -113,7 +113,7 @@ class Test(FirefoxTest):
         clear_history_settings_button_activated = exists(clear_history_settings_pattern)
         assert clear_history_settings_button_activated, 'History purging settings button is activated'
 
-        click(clear_history_settings_pattern)
+        click(clear_history_settings_pattern, quick_click_duration)
 
         clear_history_settings_opened = exists(clear_browsing_download_pattern)
         assert clear_history_settings_opened, '"Clear after exit" settings opened'
@@ -184,7 +184,7 @@ class Test(FirefoxTest):
         library_menu_opened = exists(LibraryMenu.HISTORY_BUTTON)
         assert library_menu_opened, 'Library menu is opened'
 
-        click(LibraryMenu.HISTORY_BUTTON)
+        click(LibraryMenu.HISTORY_BUTTON, quick_click_duration)
 
         history_menu_opened = exists(History.HistoryMenu.SHOW_ALL_HISTORY)
         assert history_menu_opened, 'History menu is opened'
@@ -197,20 +197,40 @@ class Test(FirefoxTest):
         possible_to_return = exists(Utils.LIBRARY_BACK_BUTTON)
         assert possible_to_return, 'It\'s possible to go back to library menu'
 
-        click(Utils.LIBRARY_BACK_BUTTON)
+        click(Utils.LIBRARY_BACK_BUTTON, quick_click_duration)
 
         library_menu_still_opened = exists(LibraryMenu.DOWNLOADS)
         assert library_menu_still_opened, 'Library menu is still opened'
 
-        click(LibraryMenu.DOWNLOADS)
+        if not OSHelper.is_mac():
 
-        downloads_menu_opened = exists(DownloadManager.SHOW_ALL_DOWNLOADS)
-        assert downloads_menu_opened, 'Downloads menu is opened'
+            click(LibraryMenu.DOWNLOADS, quick_click_duration)
 
-        move(DownloadManager.SHOW_ALL_DOWNLOADS, quick_click_duration)
+            downloads_menu_opened = exists(DownloadManager.SHOW_ALL_DOWNLOADS)
+            assert downloads_menu_opened, 'Downloads menu is opened'
 
-        download_not_saved = exists(pdf_downloaded_pattern)
-        assert download_not_saved, 'Downloads are saved so far'
+            move(DownloadManager.SHOW_ALL_DOWNLOADS, quick_click_duration)
+
+            download_saved = exists(pdf_downloaded_pattern)
+            assert download_saved, 'Downloads are saved so far'
+
+            restore_firefox_focus()
+
+        else:
+            restore_firefox_focus()
+            open_library()
+            library_window_opened = exists(Library.DOWNLOADS)
+            assert library_window_opened, 'Library window is opened'
+
+            click(Library.DOWNLOADS, quick_click_duration)
+
+            download_saved = exists(pdf_downloaded_pattern)
+            assert download_saved, 'Downloads are saved so far'
+
+            close_tab()
+
+            library_window_closed = not exists(Library.TITLE, ui_timeout)
+            assert library_window_closed, 'Library is closed'
 
         firefox.restart()
 
@@ -222,7 +242,7 @@ class Test(FirefoxTest):
         library_menu_opened = exists(LibraryMenu.HISTORY_BUTTON)
         assert library_menu_opened, 'Library menu is opened'
 
-        click(LibraryMenu.HISTORY_BUTTON)
+        click(LibraryMenu.HISTORY_BUTTON, quick_click_duration)
 
         history_menu_opened = exists(History.HistoryMenu.SHOW_ALL_HISTORY)
         assert history_menu_opened, 'History menu is opened'
@@ -240,17 +260,34 @@ class Test(FirefoxTest):
         library_menu_still_opened = exists(LibraryMenu.DOWNLOADS)
         assert library_menu_still_opened, 'Library menu is still opened'
 
-        click(LibraryMenu.DOWNLOADS)
+        if OSHelper.is_mac():
+            restore_firefox_focus()
+            open_library()
+            library_window_opened = exists(Library.DOWNLOADS)
+            assert library_window_opened, 'Library window is opened'
 
-        downloads_menu_opened = exists(DownloadManager.SHOW_ALL_DOWNLOADS)
-        assert downloads_menu_opened, 'Downloads menu is opened'
+            click(Library.DOWNLOADS, quick_click_duration)
 
-        move(DownloadManager.SHOW_ALL_DOWNLOADS, quick_click_duration)
+            download_not_saved = not exists(pdf_downloaded_pattern, ui_timeout)
+            assert download_not_saved, 'Downloads are cleared'
 
-        download_not_saved = not exists(pdf_downloaded_pattern, ui_timeout)
-        assert download_not_saved, 'Downloads are cleared'
+            close_tab()
 
-        restore_firefox_focus()
+            library_window_closed = not exists(Library.TITLE, ui_timeout)
+            assert library_window_closed, 'Library is closed'
+
+        else:
+            click(LibraryMenu.DOWNLOADS, quick_click_duration)
+
+            downloads_menu_opened = exists(DownloadManager.SHOW_ALL_DOWNLOADS)
+            assert downloads_menu_opened, 'Downloads menu is opened'
+
+            move(DownloadManager.SHOW_ALL_DOWNLOADS, quick_click_duration)
+
+            download_not_saved = not exists(pdf_downloaded_pattern, ui_timeout)
+            assert download_not_saved, 'Downloads are cleared'
+
+            restore_firefox_focus()
 
     @staticmethod
     def teardown():
