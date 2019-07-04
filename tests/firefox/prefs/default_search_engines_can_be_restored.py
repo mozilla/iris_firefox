@@ -24,7 +24,8 @@ class Test(FirefoxTest):
         ebay_one_click_search_pattern = Pattern('ebay_one_click_search.png')
         twitter_one_click_search_pattern = Pattern('twitter_one_click_search.png')
         wiki_one_click_search_pattern = Pattern('wiki_one_click_search.png')
-        remove_password_pattern = Pattern('remove_password.png')
+        remove_search_system_pattern = Pattern('remove_search_system.png')
+        time.sleep(5)
 
         navigate('about:preferences#search')
 
