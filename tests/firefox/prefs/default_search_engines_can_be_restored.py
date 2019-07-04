@@ -26,8 +26,9 @@ class Test(FirefoxTest):
         wiki_one_click_search_pattern = Pattern('wiki_one_click_search.png')
 
         navigate('about:preferences#search')
-        assert exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
-            'The about:preferences page is successfully loaded.'
+
+        preferences_search = exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert preferences_search, 'The about:preferences page is successfully loaded.'
 
         hover(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
 
@@ -36,44 +37,53 @@ class Test(FirefoxTest):
         assert search_engines_list, 'The "One-click Search Engines" is available.'
 
         # All the search engines are displayed with their corresponding icon.
-        assert exists(google_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Google is in the "One-click Search Engines" list'
-        assert exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Bing is in the "One-click Search Engines" list'
-        assert exists(amazon_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Amazon is in the "One-click Search Engines" list'
-        assert exists(duck_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'DuckDuckGo is in the "One-click Search Engines" list'
-        assert exists(ebay_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Ebay is in the "One-click Search Engines" list'
-        assert exists(twitter_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Twitter is in the "One-click Search Engines" list'
-        assert exists(wiki_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Wikipedia is in the "One-click Search Engines" list'
+        google_one_click_search = exists(google_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert google_one_click_search, 'Google is in the "One-click Search Engines" list'
+
+        bing_one_click_search = exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert bing_one_click_search, 'Bing is in the "One-click Search Engines" list'
+
+        amazon_one_click_search = exists(amazon_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert amazon_one_click_search, 'Amazon is in the "One-click Search Engines" list'
+
+        duck_one_click_search = exists(duck_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert duck_one_click_search, 'DuckDuckGo is in the "One-click Search Engines" list'
+
+        ebay_one_click_search = exists(ebay_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert ebay_one_click_search, 'Ebay is in the "One-click Search Engines" list'
+
+        twitter_one_click_search = exists(twitter_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert twitter_one_click_search, 'Twitter is in the "One-click Search Engines" list'
+
+        wiki_one_click_search = exists(wiki_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert wiki_one_click_search, 'Wikipedia is in the "One-click Search Engines" list'
 
         click(bing_one_click_search_pattern, 1)
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)  # wait for load of active button Remove
 
-        assert exists('Remove', FirefoxSettings.FIREFOX_TIMEOUT, Screen.BOTTOM_THIRD), 'Remove button available.'
+        bottom_region = Region(0, Screen.SCREEN_HEIGHT//3, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT//3)
 
-        click('Remove', region=Screen.BOTTOM_THIRD)
+        remove_available = exists('Remove', FirefoxSettings.FIREFOX_TIMEOUT, bottom_region)
+        assert remove_available, 'Remove button available.'
+
+        click('Remove', bottom_region)
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)  # wait until search engine actually removes
 
         # The selected search engines are not displayed anymore.
-        assert not exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Bing is not displayed anymore in the "One-click Search Engines" list'
+        bing_one_click_search = exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert not bing_one_click_search, 'Bing is not displayed anymore in the "One-click Search Engines" list'
 
         # The "Restore Default Search Engines" button is enabled.
-        assert exists('Restore Default Search Engines', FirefoxSettings.FIREFOX_TIMEOUT, Screen.BOTTOM_THIRD),\
-            '"Restore Default Search Engines" remove button available.'
+        restore_default = exists('Restore Default Search Engines', FirefoxSettings.FIREFOX_TIMEOUT, Screen.BOTTOM_THIRD)
+        assert restore_default,'"Restore Default Search Engines" remove button available.'
 
         click('Restore Default Search Engines', region=Screen.BOTTOM_THIRD)
 
         # The previously deleted search engines are listed again.
-        assert exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF), \
-            'Bing is not displayed anymore in the "One-click Search Engines" list'
+        bing_one_click_search = exists(bing_one_click_search_pattern, region=Screen.LEFT_HALF)
+        assert bing_one_click_search, 'Bing is not displayed anymore in the "One-click Search Engines" list'
 
         # The previously deleted search engines are listed on the bottom of the doorhanger.
         new_tab()
@@ -85,5 +95,7 @@ class Test(FirefoxTest):
         # Wait for correct pattern to search
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
-        assert exists(bing_one_click_search_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.LEFT_HALF), \
-            'At the bottom of the dropdown, the deleted search engine is not listed among the others.'
+        bing_one_click_search = exists(bing_one_click_search_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       region=Screen.LEFT_HALF)
+        assert bing_one_click_search, 'At the bottom of the dropdown, the deleted search engine is not listed ' \
+                                      'among the others.'
