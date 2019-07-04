@@ -66,10 +66,10 @@ class Test(FirefoxTest):
 
         bottom_region = Region(0, Screen.SCREEN_HEIGHT//3, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT//3)
 
-        remove_available = exists(remove_password_pattern, FirefoxSettings.FIREFOX_TIMEOUT, bottom_region)
+        remove_available = exists(remove_search_system_pattern, FirefoxSettings.FIREFOX_TIMEOUT, bottom_region)
         assert remove_available, 'Remove button available.'
 
-        click(remove_password_pattern, bottom_region)
+        click(remove_search_system_pattern, bottom_region)
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)  # wait until search engine actually removes
 
