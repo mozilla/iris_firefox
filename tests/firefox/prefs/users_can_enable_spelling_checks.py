@@ -84,6 +84,7 @@ class Test(FirefoxTest):
 
         paste('test   ttteeesssttt ')
 
-        wrong_spelled_word_underlined_red = exists(word_underlined_red_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        wrong_spelled_word_underlined_red = exists(word_underlined_red_pattern.similar(0.9),
+                                                   FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         assert wrong_spelled_word_underlined_red is False, 'The word that was spelled wrong is underlined with a red ' \
                                                            'squiggly line.'
