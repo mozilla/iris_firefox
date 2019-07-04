@@ -202,21 +202,8 @@ class Test(FirefoxTest):
         library_menu_still_opened = exists(LibraryMenu.DOWNLOADS)
         assert library_menu_still_opened, 'Library menu is still opened'
 
-        if not OSHelper.is_mac():
+        if OSHelper.is_mac():
 
-            click(LibraryMenu.DOWNLOADS, quick_click_duration)
-
-            downloads_menu_opened = exists(DownloadManager.SHOW_ALL_DOWNLOADS)
-            assert downloads_menu_opened, 'Downloads menu is opened'
-
-            move(DownloadManager.SHOW_ALL_DOWNLOADS, quick_click_duration)
-
-            download_saved = exists(pdf_downloaded_pattern)
-            assert download_saved, 'Downloads are saved so far'
-
-            restore_firefox_focus()
-
-        else:
             restore_firefox_focus()
             open_library()
             library_window_opened = exists(Library.DOWNLOADS)
@@ -228,9 +215,21 @@ class Test(FirefoxTest):
             assert download_saved, 'Downloads are saved so far'
 
             close_tab()
-
             library_window_closed = not exists(Library.TITLE, ui_timeout)
             assert library_window_closed, 'Library is closed'
+
+        else:
+            click(LibraryMenu.DOWNLOADS, quick_click_duration)
+
+            downloads_menu_opened = exists(DownloadManager.SHOW_ALL_DOWNLOADS)
+            assert downloads_menu_opened, 'Downloads menu is opened'
+
+            move(DownloadManager.SHOW_ALL_DOWNLOADS, quick_click_duration)
+
+            download_saved = exists(pdf_downloaded_pattern)
+            assert download_saved, 'Downloads are saved so far'
+
+            restore_firefox_focus()
 
         firefox.restart()
 
