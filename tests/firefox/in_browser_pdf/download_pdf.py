@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+from targets.firefox.firefox_ui.helpers.download_manager_utils import downloads_cleanup
 from targets.firefox.fx_testcase import *
 
 
@@ -57,7 +58,7 @@ class Test(FirefoxTest):
         # Move mouse to the center of the screen to prevent pdf_in_downloads_pattern to be overlapped by any tooltip
         move(Location(Screen().SCREEN_WIDTH // 2, Screen().SCREEN_HEIGHT // 2))
 
-        pdf_listed_in_downloads_section = exists(pdf_in_downloads_pattern)
+        pdf_listed_in_downloads_section = exists(pdf_in_downloads_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert pdf_listed_in_downloads_section, 'Downloaded PDF document is listed in Library\'s \'Downloads\' section'
 
         downloads_dir = PathManager.get_downloads_dir()
@@ -65,5 +66,11 @@ class Test(FirefoxTest):
         assert file_present_in_filesystem, 'File successfully saved into a filesystem'
 
     def teardown(self):
-        downloads_dir = PathManager.get_downloads_dir()
-        PathManager.remove_dir_contents(downloads_dir)
+        downloads_cleanup()
+
+        if exists(Library.TITLE, 0.5):
+            click_window_control('close')
+
+        if exists(NavBar.HOME_BUTTON, 0.5):
+            restore_firefox_focus()
+            quit_firefox()
