@@ -63,10 +63,7 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        new_bookmark_title = exists(Bookmarks.StarDialog.NEW_BOOKMARK)
-        assert new_bookmark_title, 'StarDialog opened'
-
-        hover(Bookmarks.StarDialog.NEW_BOOKMARK)
+        type('CNN')
 
         folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
         assert folder_option_button_exists, 'Folder option button exists'
@@ -87,10 +84,7 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        new_bookmark_title = exists(Bookmarks.StarDialog.NEW_BOOKMARK)
-        assert new_bookmark_title, 'StarDialog opened'
-
-        hover(Bookmarks.StarDialog.NEW_BOOKMARK)
+        type('Wiki')
 
         folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
         assert folder_option_button_exists, 'Folder option button exists'
