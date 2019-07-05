@@ -62,6 +62,9 @@ class Test(FirefoxTest):
 
         next_tab()
 
+        test_site_loaded = exists(title_field_pattern, Settings.SITE_LOAD_TIMEOUT, region=Screen.LEFT_HALF)
+        assert test_site_loaded, 'The test website is successfully displayed.'
+
         click(in_field_focus)
 
         restored_data = []
