@@ -18,20 +18,24 @@ class Test(FirefoxTest):
         stored_cookies_cache_pattern = Pattern('stored_cookies_cache.png')
         zero_bytes_cache_pattern = Pattern('zero_bytes_cache.png')
         ui_timeout = 1
-        scroll_length = Screen.SCREEN_HEIGHT // 5
+        quick_click_duration = 0.3
+        scroll_length = -Screen.SCREEN_HEIGHT // 5
         if not OSHelper.is_windows():
-            scroll_length = 5
+            scroll_length = -5
 
         navigate('about:preferences#privacy')
 
         prefs_opened = exists(AboutPreferences.Privacy.TRACKING_PROTECTION_EXCEPTIONS_BUTTON)
         assert prefs_opened, 'Preferences are opened'
 
-        move(AboutPreferences.Privacy.TRACKING_PROTECTION_EXCEPTIONS_BUTTON)
+        exceptions_button_location = find(AboutPreferences.Privacy.TRACKING_PROTECTION_EXCEPTIONS_BUTTON)
+
+        click(exceptions_button_location.above(Screen.SCREEN_HEIGHT // 10), quick_click_duration)
 
         cookies_site_data_reached = scroll_until_pattern_found(stored_cookies_cache_pattern, scroll, (scroll_length,),
                                                                timeout=ui_timeout)
         assert cookies_site_data_reached, '"Cookies and Site Data" block is reached'
 
+        # time.sleep(300)
         some_memory_is_used = not exists(zero_bytes_cache_pattern, ui_timeout)
         assert some_memory_is_used, 'The amount is different from 0 MB'
