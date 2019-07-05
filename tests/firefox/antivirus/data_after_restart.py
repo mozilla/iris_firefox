@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         youtube_logo_pattern = Pattern('youtube_logo.png')
         twitter_logo_pattern = Pattern('twitter_favicon.png').similar(.75)
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
+        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png').similar(.7)
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
