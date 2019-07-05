@@ -21,11 +21,6 @@ class Test(FirefoxTest):
         word_underlined_red_pattern = Pattern('word_underlined_red.png')
         text_editor_page = self.get_asset_path('editor.html')
 
-        if OSHelper.is_windows():
-            scroll_height = Screen.SCREEN_HEIGHT*2
-        elif OSHelper.is_linux() or OSHelper.is_mac():
-            scroll_height = Screen.SCREEN_HEIGHT//100
-
         navigate('about:preferences#general')
 
         page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
@@ -59,15 +54,6 @@ class Test(FirefoxTest):
         assert page_loaded, 'about:preferences#general page loaded.'
 
         type('language')
-
-        # screen_center_location = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
-        #
-        # hover(screen_center_location)
-        #
-        # check_your_spelling = scroll_until_pattern_found(check_your_spelling_checked_pattern, Mouse().scroll,
-        #                                                  (None, -scroll_height), 30,
-        #                                                  FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
-        # assert check_your_spelling, '"Check you spelling..." option found.'
 
         check_your_spelling_checked = find_in_region_from_pattern(check_your_spelling_checked_pattern,
                                                                   AboutPreferences.CHECKED_BOX)
