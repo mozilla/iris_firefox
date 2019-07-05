@@ -36,6 +36,5 @@ class Test(FirefoxTest):
                                                                timeout=ui_timeout)
         assert cookies_site_data_reached, '"Cookies and Site Data" block is reached'
 
-        # time.sleep(300)
-        some_memory_is_used = not exists(zero_bytes_cache_pattern, ui_timeout)
+        some_memory_is_used = not exists(zero_bytes_cache_pattern.similar(0.9), ui_timeout)
         assert some_memory_is_used, 'The amount is different from 0 MB'
