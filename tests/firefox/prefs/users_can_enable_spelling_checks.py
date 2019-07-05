@@ -50,7 +50,7 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#general')
 
-        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
+        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert page_loaded, 'about:preferences#general page loaded.'
 
         type('language')
