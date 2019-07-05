@@ -44,8 +44,8 @@ class Test(FirefoxTest):
 
         previous_tab()
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO)
-        assert website_one_loaded, 'Page 1 was not loaded after second restart.'
+        assert website_one_loaded is False, 'Page 1 was not loaded after second restart.'
 
         previous_tab()
         website_two_loaded = exists(LocalWeb.FIREFOX_LOGO)
-        assert website_two_loaded is not True, 'Page 2 was not loaded after second restart.'
+        assert website_two_loaded is False, 'Page 2 was not loaded after second restart.'
