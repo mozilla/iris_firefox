@@ -63,7 +63,7 @@ class Test(FirefoxTest):
 
         click(search_settings_pattern)
 
-        pref_page_opened = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN,
+        pref_page_opened = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN.similar(.6),
                                   FirefoxSettings.FIREFOX_TIMEOUT)
         assert pref_page_opened, 'The \'about:preferences#search\' page successfully loaded.'
 
