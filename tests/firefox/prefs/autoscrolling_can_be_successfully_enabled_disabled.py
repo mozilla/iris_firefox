@@ -22,8 +22,9 @@ class Test(FirefoxTest):
         use_autoscrolling_unchecked_pattern = Pattern('use_autoscrolling_unchecked.png')
         autoscrolling_enabled_pattern = Pattern('autoscrolling_enabled.png')
 
-        navigate('about:preferences#general')
         location = Location(Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
+
+        navigate('about:preferences#general')
 
         about_preferences_general_url_exists = exists(about_preferences_general_url_pattern,
                                                       FirefoxSettings.FIREFOX_TIMEOUT)
@@ -34,9 +35,8 @@ class Test(FirefoxTest):
 
         if OSHelper.is_linux():
             use_autoscrolling_unchecked_exists = scroll_until_pattern_found(use_autoscrolling_unchecked_pattern,
-                                                                          Mouse().scroll, (0, -Screen.SCREEN_HEIGHT),
-                                                                          20,
-                                                                          FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
+                                                                            Mouse().scroll, (0, -Screen.SCREEN_HEIGHT),
+                                                                            20, FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
             assert use_autoscrolling_unchecked_exists, 'The option is not checked by default'
 
             click(use_autoscrolling_unchecked_pattern)
@@ -47,10 +47,9 @@ class Test(FirefoxTest):
 
         else:
             use_autoscrolling_checked_exists = scroll_until_pattern_found(use_autoscrolling_checked_pattern,
-                                                                  Mouse().scroll, (0, -Screen.SCREEN_HEIGHT), 20,
-                                                                  FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+                                                                          Mouse().scroll, (0, -Screen.SCREEN_HEIGHT),
+                                                                          20, FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
             assert use_autoscrolling_checked_exists, 'The option is checked by default'
-
 
         middle_click(location)
 
