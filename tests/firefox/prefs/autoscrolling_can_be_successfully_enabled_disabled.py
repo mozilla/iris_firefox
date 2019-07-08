@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         use_autoscrolling_unchecked_pattern = Pattern('use_autoscrolling_unchecked.png')
         autoscrolling_enabled_pattern = Pattern('autoscrolling_enabled.png')
 
-        location = Location(Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
+        location = Location(Screen.SCREEN_WIDTH / 1.5, Screen.SCREEN_HEIGHT / 2)
 
         navigate('about:preferences#general')
 
@@ -32,6 +32,8 @@ class Test(FirefoxTest):
 
         preferences_general_option_exists = exists(preferences_general_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_general_option_exists, 'The options for "General" section are displayed'
+
+        move(location)
 
         if OSHelper.is_linux():
             use_autoscrolling_unchecked_exists = scroll_until_pattern_found(use_autoscrolling_unchecked_pattern,
