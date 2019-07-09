@@ -32,10 +32,10 @@ class Test(FirefoxTest):
 
         edit_copy()
 
-        text_displayed = get_clipboard()
-        assert text_displayed in '\ntls-v1-0.\nbadssl.com\n', 'The URL is properly loaded and red background page is ' \
-                                                              'displayed, containing a string saying: ' \
-                                                              'tls-v1-0.badssl.com'
+        text_displayed = get_clipboard().replace('\n', '').replace('\r', '')
+        assert text_displayed in 'tls-v1-0.badssl.com', 'The URL is properly loaded and red background page is ' \
+                                                        'displayed, containing a string saying: ' \
+                                                        'tls-v1-0.badssl.com'
 
         click(LocationBar.IDENTITY_ICON)
 
