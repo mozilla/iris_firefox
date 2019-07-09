@@ -32,3 +32,5 @@ class LocationBar(object):
     TRACKING_ATTEMPTS_BLOCKED_MESSAGE = Pattern('tracking_attempts_blocked_message.png')
     TRACKING_CONTENT_DETECTED_MESSAGE = Pattern('tracking_content_detected_message.png')
 
+    NEW_FIREFOX_CONTENT_BLOCKING_LABEL = Pattern('uitour_tooltip_title_new_in_firefox_content_blocking.png')
+    NEXT_BUTTON_TOUR_FIRST_STEP = Pattern('uitour_tooltip_next_button.png')
