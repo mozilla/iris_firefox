@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         bad_ssl_logo_pattern = Pattern('bad_ssl_logo.png')
         show_connection_details_button_pattern = Pattern('show_connection_details_button.png')
         more_information_button_pattern = Pattern('more_information_button.png')
-        tls_broken_encryption_message_pattern = Pattern('tls_1.1_broken_encryption_message.png')
+        tls_broken_encryption_message_pattern = Pattern('tls_1_1_broken_encryption_message.png')
 
         navigate('https://tls-v1-1.badssl.com:1011/')
 
