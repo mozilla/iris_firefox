@@ -223,7 +223,7 @@ class PathManager:
     @staticmethod
     def get_git_details():
         repo_details = {}
-        repo = git.Repo()
+        repo = git.Repo(PathManager.get_module_dir())
         repo_details['iris_version'] = 0.1
         repo_details['iris_repo'] = repo.working_tree_dir
         repo_details['iris_branch'] = repo.active_branch.name
