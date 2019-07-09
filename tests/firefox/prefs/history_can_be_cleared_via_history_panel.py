@@ -84,7 +84,7 @@ class Test(FirefoxTest):
         clear_everything_history_displayed = exists(clear_everything_history_pattern)
         assert clear_everything_history_displayed, 'Time range menu is displayed properly'
 
-        click(clear_everything_history_pattern)
+        click(clear_history_today_pattern)
 
         sub_window_displayed=exists(clear_now_button_pattern)
         assert sub_window_displayed, 'Sub-window is still displayed'
