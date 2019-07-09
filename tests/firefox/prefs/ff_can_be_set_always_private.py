@@ -246,13 +246,13 @@ class Test(FirefoxTest):
         history_submenu_opened = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR)
         assert history_submenu_opened, 'History submenu is opened'
 
-        firefox_page_not_visited = not exists(LocalWeb.FIREFOX_BOOKMARK, ui_timeout)
+        firefox_page_not_visited = not exists(LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout)
         assert firefox_page_not_visited, 'Firefox local page visit was\'nt saved in history'
 
-        focus_page_not_visited = not exists(LocalWeb.FOCUS_BOOKMARK, ui_timeout)
+        focus_page_not_visited = not exists(LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout)
         assert focus_page_not_visited, 'Focus local page visit was\'nt saved in history'
 
-        pocket_page_not_visited = not exists(LocalWeb.POCKET_BOOKMARK, ui_timeout)
+        pocket_page_not_visited = not exists(LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout)
         assert pocket_page_not_visited, 'Pocket local page visit was\'nt saved in history'
 
         restore_firefox_focus()
