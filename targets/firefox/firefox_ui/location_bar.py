@@ -8,6 +8,7 @@ from src.core.api.finder.pattern import Pattern
 
 class LocationBar(object):
     IDENTITY_ICON = Pattern('identity_icon.png')
+    INSECURE_CONNECTION_LOCK = Pattern('insecure_connection_lock.png')
     INSECURE_CONNECTION_LOCK_DARK_THEME = Pattern('insecure_connection_lock_dark_theme.png')
 
     HISTORY_DROPMARKER = Pattern('history_dropmarker.png')
