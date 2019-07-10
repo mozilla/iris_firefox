@@ -13,9 +13,8 @@ class Test(FirefoxTest):
                     'from the dock (for a profile used only in private mode) ',
         test_case_id='120455',
         test_suite_id='1826',
-        locales=['en-US'],
-        exclude=[OSPlatform.WINDOWS, OSPlatform.LINUX],
-        blocked_by="issue_400",
+        locales=['en-US']
+        # exclude=[OSPlatform.WINDOWS, OSPlatform.LINUX]
     )
     def run(self, firefox):
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')

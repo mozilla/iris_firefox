@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='127252',
         test_suite_id='2085',
-        blocked_by='issue_1628 [Investigate highlight failure in a few Find Toolbar tests ]',
-        exclude=OSPlatform.ALL
+        blocked_by={'id': 'issue_1628', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         find_in_page_links_only_icon_pattern = Pattern('find_in_page_links_only_icon.png')

@@ -13,8 +13,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='168937',
         test_suite_id='2525',
-        blocked_by={'id': '1527258', 'platform': OSPlatform.WINDOWS},
-        enabled=False
+        blocked_by={'id': '1527258', 'platform': OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         properties_option_pattern = Pattern('properties_option.png')
