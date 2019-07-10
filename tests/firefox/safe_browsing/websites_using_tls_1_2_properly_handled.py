@@ -19,14 +19,13 @@ class Test(FirefoxTest):
         show_connection_details_button_pattern = Pattern('show_connection_details_button.png')
         more_information_button_pattern = Pattern('more_information_button.png')
         tls_connection_encrypted_message_pattern = Pattern('tls_1_2_connection_encrypted_message.png')
-        secure_connection_lock_pattern = Pattern('secure_connection_lock.png')
 
         navigate('https://tls-v1-2.badssl.com:1012/')
 
         bad_ssl_page_loaded = exists(bad_ssl_green_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert bad_ssl_page_loaded, 'Bad SSL page sucessfully loaded'
 
-        connection_is_secure = exists(secure_connection_lock_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        connection_is_secure = exists(LocationBar.SECURE_CONNECTION_LOCK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert connection_is_secure, 'The connection is secure.'
 
         edit_select_all()
