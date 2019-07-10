@@ -11,9 +11,9 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='Alt+UP/DOWN Keys - in the Awesome Bar.',
         locale=['en-US'],
-        blocked_by='1488708',
         test_case_id='108278',
-        test_suite_id='1902'
+        test_suite_id='1902',
+        blocked_by={'id': '1488708', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')

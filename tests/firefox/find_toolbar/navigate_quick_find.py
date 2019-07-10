@@ -8,12 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description='Navigate through Quick Find items [Failed due to absence of pink highlight]',
+        description='Navigate through Quick Find items',
         locale=['en-US'],
         test_case_id='127260',
         test_suite_id='2085',
-        blocked_by='id issue_1628',
-        exclude=OSPlatform.ALL
+        blocked_by={'id': 'issue_1628', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)

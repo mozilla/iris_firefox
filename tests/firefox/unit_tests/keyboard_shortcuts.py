@@ -10,7 +10,7 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description='This is a unit test for keyboard events.',
-        blocked_by='issue_1682'
+        blocked_by={'id': 'issue_1862', 'platform': OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         url = PathManager.get_current_test_asset_dir('keyboard-events.html')

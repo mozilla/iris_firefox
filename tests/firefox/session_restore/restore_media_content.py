@@ -13,8 +13,7 @@ class Test(FirefoxTest):
         test_case_id='117045',
         test_suite_id='68',
         locales=Locales.ENGLISH,
-        blocked_by='1520733',
-        excluded=OSPlatform.WINDOWS
+        blocked_by={'id': '1520733', 'platform': OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         speaker_icon_active_pattern = Pattern('speaker_icon_active.png').similar(0.9)
