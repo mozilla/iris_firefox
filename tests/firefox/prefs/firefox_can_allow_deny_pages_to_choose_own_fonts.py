@@ -22,10 +22,15 @@ class Test(FirefoxTest):
         pages_have_own_fonts_checked_pattern = Pattern('prefs_checked_box.png')
         pages_have_own_fonts_unchecked_pattern = Pattern('prefs_unchecked_box.png')
 
+        if OSHelper.is_windows():
+            value = Screen.SCREEN_HEIGHT
+        else:
+            value = Screen.SCREEN_HEIGHT/200
+
         navigate('http://www.psimadethis.com/')
 
         font_of_site_exists = scroll_until_pattern_found(font_of_site_pattern, Mouse().scroll,
-                                                         (0, -Screen.SCREEN_HEIGHT), 20,
+                                                         (0, -value), 20,
                                                          FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
         assert font_of_site_exists, 'Local font is found'
 
@@ -74,7 +79,7 @@ class Test(FirefoxTest):
         navigate('http://www.psimadethis.com/')
 
         font_of_site_changed_exists = scroll_until_pattern_found(font_of_site_changed_pattern, Mouse().scroll,
-                                                                 (0, -Screen.SCREEN_HEIGHT), 20,
+                                                                 (0, -value), 20,
                                                                  FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
         assert font_of_site_changed_exists, 'All the changes made can be seen'
 
