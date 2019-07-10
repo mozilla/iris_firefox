@@ -31,9 +31,13 @@ class Test(FirefoxTest):
 
         new_tab()
 
+        select_tab(1)
+
+        close_tab()
+
         navigate('about:preferences#general')
 
-        type('Fonts and Colors', interval=0.1)
+        type('Fonts and Colors', interval=0.2)
 
         advanced_button_exists = exists(advanced_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert advanced_button_exists, 'Advanced button exists'
@@ -67,7 +71,7 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('The "Fonts" subdialog still exists')
 
-        close_tab()
+        navigate('http://www.psimadethis.com/')
 
         font_of_site_changed_exists = scroll_until_pattern_found(font_of_site_changed_pattern, Mouse().scroll,
                                                                  (0, -Screen.SCREEN_HEIGHT), 20,
