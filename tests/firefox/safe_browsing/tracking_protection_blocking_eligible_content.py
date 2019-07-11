@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         # Wait around 30 sec - 1 minute until Firefox automatically downloads the Tracking Protection basic
         # protection list from disconnect.me.
 
-        time.sleep(protection_list_downloading_time)
+        # time.sleep(protection_list_downloading_time)
 
         new_private_window()
 
@@ -36,6 +36,8 @@ class Test(FirefoxTest):
         assert private_window_opened, 'A new private window is successfully opened.'
 
         navigate('https://itisatrap.org/firefox/its-a-tracker.html')
+
+        time.sleep(30)
 
         its_a_tracker_page_loaded = exists(its_a_tracker_tab_label_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert its_a_tracker_page_loaded, 'https://itisatrap.org/firefox/its-a-tracker.html page loaded'
