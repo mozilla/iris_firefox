@@ -60,7 +60,7 @@ class Test(FirefoxTest):
         fonts_subdialog_label_exists = exists(fonts_subdialog_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert fonts_subdialog_label_exists, 'The "Fonts" subdialog is displayed'
 
-        if OSHelper.is_windows() and OSHelper.is_linux():
+        if OSHelper.is_windows() or OSHelper.is_linux():
             [type(Key.TAB) for _ in range(2)]
 
             [type(Key.DOWN) for _ in range(6)]
