@@ -20,6 +20,9 @@ class Test(FirefoxTest):
         testsafebrowsing_tab_pattern = Pattern('testsafebrowsing_tab.png')
         mozilla_tab_logo_pattern = Pattern('mozilla_tab_logo.png')
 
+        home_button_displayed = exists(NavBar.HOME_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert home_button_displayed, 'The Home button displayed'
+
         home_button_location = find(NavBar.HOME_BUTTON)
         home_button_width, home_button_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_button_height * 4)
@@ -48,9 +51,6 @@ class Test(FirefoxTest):
         testsafebrowsing_page_loaded = exists(testsafebrowsing_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT,
                                               tabs_region)
         assert testsafebrowsing_page_loaded, 'The testsafebrowsing page loaded'
-
-        home_button_displayed = exists(NavBar.HOME_BUTTON)
-        assert home_button_displayed, 'The Home button displayed'
 
         click(warning_frame_location)
 
