@@ -59,13 +59,14 @@ class Test(FirefoxTest):
         wiki_opened = exists(wiki_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert wiki_opened, '\'Wiki\' page successfully opened'
 
-        type('Log in')
+        type('Log')
+        type(' in')
 
         quick_find_toolbar_appears_while_typing = exists(quick_find_toolbar_pattern)
         assert quick_find_toolbar_appears_while_typing, \
             'The \'Quick find\' toolbar appears at the bottom of the page'
 
-        search_is_done = exists(search_text_highlighted_pattern)
+        search_is_done = exists(search_text_highlighted_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert search_is_done, 'Search via \'Quick find\' toolbar is done successfully'
 
         navigate('about:preferences#general')
@@ -101,8 +102,10 @@ class Test(FirefoxTest):
 
         navigate('https://en.wikipedia.org/wiki/Main_Page')
 
-        type('Log in')
+        type('Log')
+        type(' in')
 
-        quick_find_toolbar_does_not_appear_while_typing = not exists(quick_find_toolbar_pattern)
+        quick_find_toolbar_does_not_appear_while_typing = not exists(quick_find_toolbar_pattern,
+                                                                     FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert quick_find_toolbar_does_not_appear_while_typing, \
             'The \'Quick find\' toolbar does not appear after unchecking \'Search for text when you start typing\''
