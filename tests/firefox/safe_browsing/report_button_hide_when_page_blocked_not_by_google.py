@@ -51,6 +51,10 @@ class Test(FirefoxTest):
             'at www.antiphishing.org. Learn more about Firefox’s Phishing and Malware Protection at ' \
             'support.mozilla.org."'
 
+        location_to_deselection = Location(Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT/2)
+
+        click(location_to_deselection)
+
         click(ignore_the_risk_link_pattern)
 
         itisatrap_page_loaded = exists(get_me_out_of_here_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
