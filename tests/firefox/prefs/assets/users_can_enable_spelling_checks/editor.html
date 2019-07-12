@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!--
+ ______   ______     __  __     ______   ______     ______     ______     ______    
+/\__  _\ /\  ___\   /\_\_\_\   /\__  _\ /\  __ \   /\  == \   /\  ___\   /\  __ \   
+\/_/\ \/ \ \  __\   \/_/\_\/_  \/_/\ \/ \ \  __ \  \ \  __<   \ \  __\   \ \  __ \  
+   \ \_\  \ \_____\   /\_\/\_\    \ \_\  \ \_\ \_\  \ \_\ \_\  \ \_____\  \ \_\ \_\ 
+    \/_/   \/_____/   \/_/\/_/     \/_/   \/_/\/_/   \/_/ /_/   \/_____/   \/_/\/_/ 
+-->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Text Editor – Test Page</title>
+    <meta name="description" content="myTextarea is a quick and simple online text editor for plain text. Wow!">
+    <!--[if lte IE 8]>
+	<meta http-equiv="refresh" content="0;URL=http://ie.mytextarea.com/" />
+	<![endif]-->
+    <style type="text/css">
+        body {
+            margin: 0px;
+        }
+        
+        h1 {
+            margin: 20px;
+        }
+        
+        p {
+            margin: 20px;
+        }
+        
+        textarea {
+            resize: none;
+            width: 100%;
+            height: 100%;
+            height: calc(100% - 10px);
+            position: absolute;
+            top: 0px;
+            border: 0px;
+            margin: 10px 0px 0px 0px;
+            padding: 0px 80px 10px 10px;
+            box-sizing: border-box;
+        }
+        
+        textarea:focus {
+            outline: none;
+        }
+        
+        #textarea_count {
+            font: 12px monospace;
+            color: #999;
+        }
+        
+        #textarea_word {
+            position: fixed;
+            bottom: 42px;
+            right: 10px;
+            line-height: 12px;
+        }
+        
+        #textarea_char {
+            position: fixed;
+            bottom: 30px;
+            right: 10px;
+            line-height: 12px;
+        }
+        
+        #save {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        
+        #save:hover {
+            opacity: 1;
+        }
+        
+        #save:active {
+            bottom: 9px;
+        }
+        
+        a img {
+            border: 0px;
+        }
+        
+        .share {
+            height: 16px;
+            width: 16px;
+            outline: none;
+            position: absolute;
+            top: 10px;
+            opacity: 0.8;
+        }
+        
+        .share:hover {
+            opacity: 1;
+        }
+        
+        .share:active {
+            top: 11px;
+        }
+        
+        .bookmark {
+            right: 62px;
+        }
+        
+        .tweet {
+            right: 10px;
+        }
+        
+        .fb {
+            right: 36px;
+        }
+        
+        #help {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #FFFFFF;
+            font: 12px monospace;
+            padding: 10px;
+            position: absolute;
+            right: 10px;
+            top: 64px;
+            width: 240px;
+            line-height: 16px;
+            display: none;
+        }
+        
+        #help ul,
+        #help ol {
+            margin: 0px 0px 10px -10px;
+        }
+        
+        #help p {
+            margin: 5px 15px 10px 0px;
+        }
+        
+        #help p a {
+            color: #fff;
+        }
+        
+        #help .title {
+            font-weight: bold;
+        }
+        
+        #help p.bloglink {
+            margin: 10px 15px 0px 0px;
+        }
+        
+        #arrow {
+            background-image: url(arrow.png);
+            opacity: 0.8;
+            position: absolute;
+            right: 10px;
+            top: 56px;
+            width: 8px;
+            height: 8px;
+            display: none;
+        }
+        
+        #toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 36px;
+            font: 12px monospace;
+            color: #999;
+        }
+        
+        #saved-alert {
+            display: none;
+            z-index: 2;
+            position: fixed;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            width: 220px;
+            height: 90px;
+            font-size: 32px;
+            text-align: center;
+            line-height: 96px;
+            font-family: sans-serif;
+            top: 50%;
+            left: 50%;
+            margin-top: -45px;
+            margin-left: -110px;
+            border-radius: 45px;
+            -moz-border-radius: 45px;
+            -webkit-border-radius: 45px;
+            text-shadow: #000 1px 1px 1px;
+        }
+        
+        #emphasiser {
+            position: fixed;
+            bottom: 70px;
+            right: 80px;
+            width: 101px;
+            height: 94px;
+            background-image: url('kickass-handdrawn-arrow.png');
+        }
+        
+        #pinterest {
+            display: none;
+        }
+        
+        @media print {
+            a,
+            span,
+            p,
+            h1,
+            div,
+            img {
+                visibility: hidden;
+            }
+        }
+    </style>
+    <noscript>
+        <style type="text/css">
+            .bookmark,
+            #toggle,
+            #arrow,
+            #help,
+            #save {
+                display: none;
+            }
+        </style>
+    </noscript>
+    <link rel="shortcut icon" href="https://www.mytextarea.com/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://www.mytextarea.com/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="http://www.mytextarea.com/">
+    <meta property="og:image" content="http://www.mytextarea.com/textarea.png">
+    <meta property="og:description" content="myTextarea is a quick and simple online text editor for plain text. Wow!">
+    <meta name="google" value="notranslate">
+</head>
+
+<body>
+    <h1><a href="http://www.mytextarea.com/" title="Online Text Editor">Online Text Editor</a></h1>
+
+    <p>Welcome to myTextarea - a simple <strong>online text editor</strong>. This html textarea is a <strong>free online text editor</strong>. A simple text editor that looks better than editpad and notepad.</p>
+    <p>myTextarea is a quick and simple online text editor for plain text.</p>
+
+    <textarea cols="66" rows="22" id="textarea" style="overflow: hidden;">tetset
+test
+</textarea><div id="textarea_word"><span id="textarea_count">2</span> </div><div id="textarea_char"><span id="textarea_count">12</span> </div>
+
+    <div id="emphasiser" style="display: none;"></div>
+
+    <img id="save" src="Online%20Text%20Editor%20-%20myTextarea%20-%20a%20simple%20online%20text%20editor_files/textarea-save.png" onclick="textarea.save();$('#textarea').focus();javascript: _gaq.push(['_trackPageview', '/save-cookie-button']);" title="Save Cookie Ctrl+S" alt="save textarea to cookie">
+
+    <a class="share bookmark" href="http://www.mytextarea.com/" title="Bookmark" onclick="javascript: _gaq.push(['_trackPageview', '/bookmark-button']);bookmarksite('myTextarea', 'http://www.mytextarea.com');$('#textarea').focus();return false;"><img src="Online%20Text%20Editor%20-%20myTextarea%20-%20a%20simple%20online%20text%20editor_files/textarea-bookmark.png" alt="Online Text Editor"></a>
+    <a class="share tweet" href="http://twitter.com/home?status=myTextarea%20-%20a%20simple%20online%20text%20editor%20http://www.mytextarea.com" title="Tweet" onclick="textarea.save();javascript: _gaq.push(['_trackPageview', '/tweet-button']);" rel="external nofollow"><img src="Online%20Text%20Editor%20-%20myTextarea%20-%20a%20simple%20online%20text%20editor_files/textarea-twitter.png" alt="Tweet about this online text editor"></a>
+    <a class="share fb" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.myTextarea.com" title="Share" onclick="textarea.save();javascript: _gaq.push(['_trackPageview', '/facebook-button']);" rel="external nofollow"><img src="Online%20Text%20Editor%20-%20myTextarea%20-%20a%20simple%20online%20text%20editor_files/textarea-facebook.png" alt="Share this online text editor"></a>
+
+    <span id="toggle">show info</span>
+
+    <div id="arrow"></div>
+    <div id="help">
+        <span class="title">Use myTextarea</span>
+        <ul>
+            <li>to type plain text</li>
+            <li>to remove markup from text</li>
+            <li>to count words and characters</li>
+        </ul>
+
+        <span class="title">Functions</span>
+        <ol>
+            <li>tab key support</li>
+            <li>save a cookie (Ctrl+S)</li>
+            <li>word and character count</li>
+        </ol>
+
+        <span class="title">Caution</span>
+        <p>myTextarea is not a reliable place to save important information. If your browser cache gets cleared, the information is gone.
+        </p>
+
+        <span class="title">Feedback</span>
+        <p>Feel free to <a href="mailto:hello@mytextarea.com">drop me a line</a> or share this tool on <a href="http://twitter.com/home?status=myTextarea%20-%20a%20simple%20online%20text%20editor%20http://www.mytextarea.com" title="Tweet" onclick="textarea.save();javascript: _gaq.push(['_trackPageview', '/tweet-button-help']);" rel="external nofollow">twitter</a> or <a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.myTextarea.com" title="Share" onclick="textarea.save();javascript: _gaq.push(['_trackPageview', '/facebook-button-help']);" rel="external nofollow">facebook</a>, thanks!</p>
+        <p>Over 8000 people worldwide use myTextarea every month :)</p>
+        <p class="bloglink">Made by <a href="http://www.michelkusters.nl/">Michel Kusters</a></p>
+    </div>
+    <script type="text/javascript">
+
+        textarea = {
+            textarea: null,
+            init: function() {
+                this.textarea = document.getElementsByTagName('textarea')[0];
+                this.textarea.focus();
+                this.load();
+            },
+            load: function() {
+                this.textarea.value = localStorage.getItem('text');
+            },
+            save: function() {
+                localStorage.setItem('text', this.textarea.value);
+                $("#saved-alert").css({
+                    'display': 'block'
+                });
+                $("#saved-alert").delay(340).fadeOut(600);
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function bookmarksite(title, url) {
+            if (window.sidebar) // firefox
+                window.sidebar.addPanel(title, url, "");
+            else if (window.opera && window.print) { // opera
+                var elem = document.createElement('a');
+                elem.setAttribute('href', url);
+                elem.setAttribute('title', title);
+                elem.setAttribute('rel', 'sidebar');
+                elem.click();
+            } else if (document.all) // ie
+                window.external.AddFavorite(url, title);
+            else
+                alert('Please use Ctrl+D to bookmark myTextarea');
+        }
+    </script>
+
+    <div id="saved-alert">
+        Saved
+    </div>
+
+
+<div style="position: absolute; display: none; overflow-wrap: break-word; font-weight: 400; width: 1350px; font-family: monospace; line-height: 14px; font-size: 13px; padding: 0px 80px 10px 10px;">tetset<br>test<br>&nbsp;</div></body></html>
