@@ -43,6 +43,6 @@ class Test(FirefoxTest):
 
         message_region = Region(0, int(Screen.SCREEN_HEIGHT/3), Screen.SCREEN_WIDTH, int(Screen.SCREEN_HEIGHT/3))
 
-        no_updates_unstalled = exists('No updates installed yet', region=message_region)
-        assert no_updates_unstalled, '"No updates installed yet" displayed. A list with updates that were installed ' \
+        no_updates_installed = exists('No updates installed yet', region=message_region)
+        assert no_updates_installed, '"No updates installed yet" displayed. A list with updates that were installed ' \
                                      'is correctly displayed.'
