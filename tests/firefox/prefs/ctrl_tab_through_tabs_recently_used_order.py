@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         ctrl_tab_pocket_pattern = Pattern('ctrl_tab_pocket.png')
         ctrl_tab_focus_active_pattern = Pattern('ctrl_tab_focus_active.png')
 
-        navigate('about:preferences')
+        navigate('about:preferences#general')
 
         about_preferences = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
                                    FirefoxSettings.SITE_LOAD_TIMEOUT)
