@@ -60,11 +60,6 @@ class Test(FirefoxTest):
         fonts_subdialog_label_exists = exists(fonts_subdialog_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert fonts_subdialog_label_exists, 'The "Fonts" subdialog is displayed'
 
-        if OSHelper.is_windows() or OSHelper.is_linux():
-            [type(Key.TAB) for _ in range(2)]
-
-            [type(Key.DOWN) for _ in range(6)]
-
         pages_have_own_fonts_checked_exists = exists(AboutPreferences.CHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pages_have_own_fonts_checked_exists, ' "Allow pages to choose their own fonts,' \
                                                     ' instead of your selections above" checked exists'
