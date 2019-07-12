@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         general_prefs_section_opened = exists(general_prefs_section_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert general_prefs_section_opened, '\'General\' section in \'Preferences\' successfully opened'
 
-        paste('Search for text when you start typing')
+        paste('Search for')
 
         search_for_text_start_typing_checkbox_available = exists(search_for_text_start_typing_checkbox_pattern)
         assert search_for_text_start_typing_checkbox_available, \
@@ -73,7 +73,7 @@ class Test(FirefoxTest):
         general_prefs_section_opened = exists(general_prefs_section_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert general_prefs_section_opened, '\'General\' section in \'Preferences\' successfully opened'
 
-        paste('Search for text when you start typing')
+        paste('Search for')
 
         search_for_text_start_typing_checkbox_available = exists(search_for_text_start_typing_checkbox_pattern)
         assert search_for_text_start_typing_checkbox_available, \
