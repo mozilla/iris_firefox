@@ -26,6 +26,11 @@ class Test(FirefoxTest):
 
         change_preference('pdfjs.defaultZoomValue', '100')
 
+        if OSHelper.is_linux():
+            scroll_height = -10
+        else:
+            scroll_height = -50
+
         pdf_file_path = self.get_asset_path('img_rich_pdf.pdf')
         navigate(pdf_file_path)
 
@@ -35,7 +40,7 @@ class Test(FirefoxTest):
         click(image_rich_pdf_first_page_contents_pattern)  # To make mouse scroll possible
 
         scrolling_down_works = scroll_until_pattern_found(image_rich_pdf_third_page_contents_pattern, scroll,
-                                                          (-50,), num_of_scroll_iterations=50)
+                                                          (scroll_height,), num_of_scroll_iterations=50)
         assert scrolling_down_works, 'Scrolling down via mouse wheel works properly'
 
         scrolling_up_works = scroll_until_pattern_found(image_rich_pdf_first_page_contents_pattern, scroll,
