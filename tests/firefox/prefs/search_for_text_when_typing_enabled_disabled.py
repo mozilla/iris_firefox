@@ -59,6 +59,8 @@ class Test(FirefoxTest):
         wiki_opened = exists(wiki_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert wiki_opened, '\'Wiki\' page successfully opened'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type('Log')
         type(' in')
 
