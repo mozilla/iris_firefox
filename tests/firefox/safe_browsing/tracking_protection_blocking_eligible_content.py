@@ -17,7 +17,10 @@ class Test(FirefoxTest):
     def run(self, firefox):
         disconnect_page_logo_pattern = Pattern('disconnect_page_logo.png')
         its_a_tracker_tab_label_pattern = Pattern('its_a_tracker_tab_label.png')
-        blocked_tests_area_pattern = Pattern('blocked_tests_area.png').similar(.95)
+        if not OSHelper.is_mac():
+            blocked_tests_area_pattern = Pattern('blocked_tests_area.png').similar(.95)
+        else:
+            blocked_tests_area_pattern = Pattern('blocked_tests_area.png')
         protection_list_downloading_time = 60
 
         navigate('https://disconnect.me/')
