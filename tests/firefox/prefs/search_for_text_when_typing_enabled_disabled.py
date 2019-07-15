@@ -19,7 +19,6 @@ class Test(FirefoxTest):
         general_prefs_section_pattern = Pattern('general_preferences_section.png')
         search_text_highlighted_pattern = Pattern('search_text_highlighted.png')
         quick_find_toolbar_pattern = Pattern('quick_find_toolbar.png')
-        wiki_logo_pattern = Pattern('wiki_logo.png')
 
         box_width, box_heigth = AboutPreferences.UNCHECKED_BOX.get_size()
 
@@ -54,12 +53,10 @@ class Test(FirefoxTest):
         assert search_for_text_start_typing_checked, \
             '\'Search for text when you start typing\' checkbox successfully checked'
 
-        navigate('https://en.wikipedia.org/wiki/Main_Page')
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        wiki_opened = exists(wiki_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert wiki_opened, '\'Wiki\' page successfully opened'
-
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         type('Log')
         type(' in')
@@ -102,7 +99,10 @@ class Test(FirefoxTest):
         assert search_for_text_start_typing_unchecked, \
             '\'Search for text when you start typing\' checkbox successfully unchecked'
 
-        navigate('https://en.wikipedia.org/wiki/Main_Page')
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+
+        wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert wiki_opened, '\'Wiki\' page successfully opened'
 
         type('Log')
         type(' in')
