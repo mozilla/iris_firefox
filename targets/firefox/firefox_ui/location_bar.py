@@ -8,6 +8,8 @@ from src.core.api.finder.pattern import Pattern
 
 class LocationBar(object):
     IDENTITY_ICON = Pattern('identity_icon.png')
+    SECURE_CONNECTION_LOCK = Pattern('secure_connection_lock.png')
+    INSECURE_CONNECTION_LOCK = Pattern('insecure_connection_lock.png')
     INSECURE_CONNECTION_LOCK_DARK_THEME = Pattern('insecure_connection_lock_dark_theme.png')
 
     HISTORY_DROPMARKER = Pattern('history_dropmarker.png')
@@ -31,5 +33,3 @@ class LocationBar(object):
     TRACKING_ATTEMPTS_BLOCKED_MESSAGE = Pattern('tracking_attempts_blocked_message.png')
     TRACKING_CONTENT_DETECTED_MESSAGE = Pattern('tracking_content_detected_message.png')
 
-    NEW_FIREFOX_CONTENT_BLOCKING_LABEL = Pattern('uitour_tooltip_title_new_in_firefox_content_blocking.png')
-    NEXT_BUTTON_TOUR_FIRST_STEP = Pattern('uitour_tooltip_next_button.png')

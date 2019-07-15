@@ -17,7 +17,6 @@ class Test(FirefoxTest):
     def run(self, firefox):
         cdn77_logo_pattern = Pattern('cdn77_logo.png')
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
-        cdn77_support_button_pattern = Pattern('cdn77_support_button.png')
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
         download_button_pattern = Pattern('download_button.png')
@@ -68,14 +67,21 @@ class Test(FirefoxTest):
         Mouse().move(certificate_manager_window_location)
         assert scroll_until_pattern_found(tls_certificate_name_pattern, scroll_down, (mouse_wheel_steps,), 50,
                                           timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2), 'TLS Certificate ' \
-                                                                                           'is imported.'
+                                                                                            'is imported.'
 
         navigate('https://www.cdn77.com/')
         assert exists(cdn77_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
             'CDN77 page is successfully downloaded.'
-        assert exists(cdn77_support_button_pattern), 'CDN77 Support button is displayed.'
 
-        click(cdn77_support_button_pattern)
+        cdn_button_location = find(cdn77_logo_pattern)
+        cdn_width, cdn_height = cdn77_logo_pattern.get_size()
+        cdn_region = Region(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
+
+        assert exists("Support", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
+            'CDN77 Support button is displayed.'
+
+        click("Support", region=cdn_region)
+
         assert exists(cdn77_support_page_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
             'TLS client certificate authentication mechanism will not be broken. No errors occur.'
 

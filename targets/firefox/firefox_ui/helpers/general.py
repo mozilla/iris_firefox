@@ -147,53 +147,15 @@ def check_preference(pref_name, value):
         return False
 
 
-def copy_to_clipboard():
-    """Return the value copied to clipboard."""
-    time.sleep(Settings.DEFAULT_UI_DELAY)
-    edit_select_all()
-    time.sleep(Settings.DEFAULT_UI_DELAY)
-    edit_copy()
-    time.sleep(Settings.DEFAULT_UI_DELAY)
-    value = get_clipboard()
-    time.sleep(Settings.DEFAULT_UI_DELAY)
-    logger.debug("Copied to clipboard: %s" % value)
-    return value
-
-
-def close_content_blocking_pop_up():
-    """Closes the content blocking pop up"""
-
-    pop_up_region = Screen().new_region(0, 50, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
-
+def click_cancel_button():
+    """Click cancel button."""
+    cancel_button_pattern = Pattern('cancel_button.png')
     try:
-        pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
-        logger.debug('Content blocking is present on the page and can be closed.')
-        pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
+        wait(cancel_button_pattern, 10)
+        logger.debug('Cancel button found.')
+        click(cancel_button_pattern)
     except FindError:
-        logger.debug('Couldn\'t find the Content blocking pop up.')
-        pass
-
-
-def close_window_control(window_type):
-    """Click on close window control.
-
-    :param window_type: Type of window that need to be closed.
-    :return: None.
-    """
-    find_window_controls(window_type)
-
-    if window_type == 'auxiliary':
-        if OSHelper.is_mac():
-            hover(AuxiliaryWindow.RED_BUTTON_PATTERN)
-            click(AuxiliaryWindow.HOVERED_RED_BUTTON)
-        else:
-            click(AuxiliaryWindow.CLOSE_BUTTON)
-    else:
-        if OSHelper.is_mac():
-            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL)
-            click(MainWindow.HOVERED_MAIN_RED_CONTROL)
-        else:
-            click(MainWindow.CLOSE_BUTTON)
+        raise APIHelperError('Can\'t find the cancel button, aborting.')
 
 
 def click_hamburger_menu_option(option):
@@ -242,6 +204,54 @@ def click_window_control(button, window_type='auxiliary'):
         raise APIHelperError('Button option is not supported.')
 
 
+def close_content_blocking_pop_up():
+    """Closes the content blocking pop up"""
+
+    pop_up_region = Screen().new_region(0, 50, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
+
+    try:
+        pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
+        logger.debug('Content blocking is present on the page and can be closed.')
+        pop_up_region.click(ContentBlocking.CLOSE_CB_POP_UP)
+    except FindError:
+        logger.debug('Couldn\'t find the Content blocking pop up.')
+        pass
+
+
+def close_customize_page():
+    """Close the 'Customize...' page by pressing the 'Done' button."""
+    customize_done_button_pattern = Pattern('customize_done_button.png')
+    try:
+        wait(customize_done_button_pattern, 10)
+        logger.debug('Done button found.')
+        click(customize_done_button_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the Done button in the page, aborting.')
+
+
+def close_window_control(window_type):
+    """Click on close window control.
+
+    :param window_type: Type of window that need to be closed.
+    :return: None.
+    """
+    find_window_controls(window_type)
+
+    if window_type == 'auxiliary':
+        if OSHelper.is_mac():
+            hover(AuxiliaryWindow.RED_BUTTON_PATTERN)
+            click(AuxiliaryWindow.HOVERED_RED_BUTTON)
+        else:
+            click(AuxiliaryWindow.CLOSE_BUTTON)
+    else:
+        if OSHelper.is_mac():
+            hover(MainWindow.UNHOVERED_MAIN_RED_CONTROL)
+            click(MainWindow.HOVERED_MAIN_RED_CONTROL)
+        else:
+            click(MainWindow.CLOSE_BUTTON)
+
+
 def confirm_close_multiple_tabs():
     """Click confirm 'Close all tabs' for warning popup when multiple tabs are
     opened.
@@ -269,6 +279,30 @@ def confirm_firefox_launch(image=None):
         wait(image, 60)
     except Exception:
         raise APIHelperError('Can\'t launch Firefox - aborting test run.')
+
+
+def copy_to_clipboard():
+    """Return the value copied to clipboard."""
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+    edit_select_all()
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+    edit_copy()
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+    value = get_clipboard()
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+    logger.debug("Copied to clipboard: %s" % value)
+    return value
+
+
+def create_region_for_awesome_bar():
+    """Create region for the awesome bar."""
+
+    try:
+        identity_icon_pattern = LocationBar.IDENTITY_ICON
+        page_action_pattern = LocationBar.PAGE_ACTION_BUTTON
+        return RegionUtils.create_region_from_patterns(left=page_action_pattern, right=identity_icon_pattern)
+    except FindError:
+        raise APIHelperError('Could not create region for awesome bar.')
 
 
 def create_region_for_hamburger_menu():
@@ -311,17 +345,6 @@ def create_region_for_url_bar():
                                                        padding_bottom=20)
     except FindError:
         raise APIHelperError('Could not create region for URL bar.')
-
-
-def create_region_for_awesome_bar():
-    """Create region for the awesome bar."""
-
-    try:
-        identity_icon_pattern = LocationBar.IDENTITY_ICON
-        page_action_pattern = LocationBar.PAGE_ACTION_BUTTON
-        return RegionUtils.create_region_from_patterns(left=page_action_pattern, right=identity_icon_pattern)
-    except FindError:
-        raise APIHelperError('Could not create region for awesome bar.')
 
 
 def create_region_from_image(image):
@@ -425,128 +448,139 @@ def full_screen_control(window_type):
         raise APIHelperError('Full screen mode applicable only for MAC')
 
 
-def repeat_key_down(num):
-    """Repeat DOWN keystroke a given number of times.
+def get_firefox_build_id_from_about_config():
+    """Returns the Firefox build id from 'about:config' page."""
+    pref_1 = 'browser.startup.homepage_override.buildID'
+    pref_2 = 'extensions.lastAppBuildId'
 
-    :param num: Number of times to repeat DOWN key stroke.
-    :return: None.
-    """
-    for i in range(num):
-        type(Key.DOWN)
-
-
-def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
-    """
-    Press the Key Down button until specified image pattern is found.
-
-    :param image_pattern: Image Pattern to search.
-    :param num_of_key_down_presses: Number of presses of the Key Down button.
-    :param delay_between_presses: Number of seconds to wait between the Key Down presses
-    :return: Boolean. True if image pattern found during Key Down button pressing, False otherwise
-    """
-
-    if not isinstance(image_pattern, Pattern):
-        raise ValueError(INVALID_GENERIC_INPUT)
-
-    pattern_found = False
-
-    for _ in range(num_of_key_down_presses):
-        pattern_found = exists(image_pattern)
-        if pattern_found:
-            break
-
-        type(Key.DOWN)
-        time.sleep(delay_between_presses)
-
-    return pattern_found
+    try:
+        return get_pref_value(pref_1)
+    except APIHelperError:
+        try:
+            return get_pref_value(pref_2)
+        except APIHelperError:
+            raise APIHelperError('Could not retrieve firefox build id information from about:config page.')
 
 
-def repeat_key_up(num):
-    """Repeat UP keystroke a given number of times.
-
-    :param num: Number of times to repeat UP key stroke.
-    :return: None.
-    """
-    for i in range(num):
-        type(Key.UP)
+def get_firefox_channel_from_about_config():
+    """Returns the Firefox channel from 'about:config' page."""
+    try:
+        return get_pref_value('app.update.channel')
+    except APIHelperError:
+        raise APIHelperError('Could not retrieve firefox channel information from about:config page.')
 
 
-def restore_window_control(window_type):
-    """Click on restore window control.
-
-    :param window_type: Type of window that need to be restored.
-    :return: None.
-    """
-    find_window_controls(window_type)
-
-    if window_type == 'auxiliary':
-        if OSHelper.is_mac():
-            key_down(Key.ALT)
-            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
-            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
-                  align=Alignment.TOP_LEFT)
-            key_up(Key.ALT)
-        else:
-            if OSHelper.is_linux():
-                reset_mouse()
-            click(AuxiliaryWindow.ZOOM_RESTORE_BUTTON)
-    else:
-        if OSHelper.is_mac():
-            key_down(Key.ALT)
-            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
-            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
-            key_up(Key.ALT)
-        else:
-            if OSHelper.is_linux():
-                reset_mouse()
-            click(MainWindow.RESIZE_BUTTON)
+def get_firefox_locale_from_about_config():
+    """Returns the Firefox locale from 'about:config' page."""
+    try:
+        value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
+        logger.debug(value_str)
+        temp = json.loads(value_str)
+        return str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
+    except (APIHelperError, KeyError):
+        raise APIHelperError('Pref format to determine locale has changed.')
 
 
-def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
-    """
-    Press the Key Up button until specified image pattern is found.
+def get_firefox_version_from_about_config():
+    """Returns the Firefox version from 'about:config' page."""
 
-    :param image_pattern: Image Pattern to search.
-    :param num_of_key_up_presses: Number of presses of the Key Up button.
-    :param delay_between_presses: Number of seconds to wait between the Key Down presses
-    :return: Boolean. True if image pattern found during the Key Up button pressing, False otherwise
+    try:
+        return get_pref_value('extensions.lastAppVersion')
+    except APIHelperError:
+        raise APIHelperError('Could not retrieve firefox version information from about:config page.')
+
+
+def get_pref_value(pref_name):
+    """Returns the value of a provided preference from 'about:config' page.
+
+    :param pref_name: Preference's name.
+    :return: Preference's value.
     """
 
-    if not isinstance(image_pattern, Pattern):
-        raise ValueError(INVALID_GENERIC_INPUT)
+    new_tab()
+    select_location_bar()
+    paste('about:config')
+    type(Key.ENTER)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
-    pattern_found = False
+    type(Key.SPACE)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
-    for _ in range(num_of_key_up_presses):
-        pattern_found = exists(image_pattern)
-        if pattern_found:
-            break
+    paste(pref_name)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+    type(Key.TAB)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        type(Key.UP)
-        time.sleep(delay_between_presses)
+    try:
+        value = copy_to_clipboard().split(';'[0])[1]
+    except Exception as e:
+        raise APIHelperError(
+            'Failed to retrieve preference value.\n{}'.format(e))
 
-    return pattern_found
+    close_tab()
+    return value
 
 
-def reset_mouse():
-    """Reset mouse position to location (0, 0)."""
-    Mouse().move(Location(0, 0))
+def get_support_info():
+    """Returns support information as a JSON object from 'about:support' page."""
+    copy_raw_data_to_clipboard = Pattern('about_support_copy_raw_data_button.png')
+
+    new_tab()
+    select_location_bar()
+    paste('about:support')
+    type(Key.ENTER)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
+
+    try:
+        click(copy_raw_data_to_clipboard)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        json_text = get_clipboard()
+        return json.loads(json_text)
+    except Exception as e:
+        raise APIHelperError('Failed to retrieve support information value.\n{}'.format(e))
+    finally:
+        close_tab()
 
 
-def select_location_bar_option(option_number):
-    """Select option from the location bar menu.
-
-    :param option_number: Option number.
-    :return: None.
+def get_telemetry_info():
+    """Returns telemetry information as a JSON object from 'about:telemetry'
+    page.
     """
-    if OSHelper.get_os() == OSPlatform.WINDOWS:
-        for i in range(option_number + 1):
-            type(Key.DOWN)
-        type(Key.ENTER)
-    else:
-        for i in range(option_number - 1):
-            type(Key.DOWN)
-        type(Key.ENTER)
+
+    copy_raw_data_to_clipboard_pattern = Pattern(
+        'copy_raw_data_to_clipboard.png')
+    raw_json_pattern = Pattern('raw_json.png')
+    raw_data_pattern = Pattern('raw_data.png')
+
+    new_tab()
+
+    paste('about:telemetry')
+    type(Key.ENTER)
+
+    try:
+        wait(raw_json_pattern, 10)
+        logger.debug('\'RAW JSON\' button is present on the page.')
+        click(raw_json_pattern)
+    except (FindError, ValueError):
+        raise APIHelperError('\'RAW JSON\' button not present in the page.')
+
+    try:
+        wait(raw_data_pattern, 10)
+        logger.debug('\'Raw Data\' button is present on the page.')
+        click(raw_data_pattern)
+    except (FindError, ValueError):
+        close_tab()
+        raise APIHelperError('\'Raw Data\' button not present in the page.')
+
+    try:
+        click(copy_raw_data_to_clipboard_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        json_text = get_clipboard()
+        return json.loads(json_text)
+    except Exception:
+        raise APIHelperError('Failed to retrieve raw message information value.')
+    finally:
+        close_tab()
 
 
 def key_to_one_off_search(highlighted_pattern, direction='left'):
@@ -636,58 +670,6 @@ def navigate(url):
             'No active window found, cannot navigate to page.')
 
 
-def open_bookmarks_toolbar():
-    """ Open the Bookmarks Toolbar using the context menu from the navigation bar """
-
-    home_button = NavBar.HOME_BUTTON
-    w, h = home_button.get_size()
-    horizontal_offset = w * 1.7
-    navbar_context_menu = home_button.target_offset(horizontal_offset, 0)
-
-    try:
-        right_click(navbar_context_menu)
-        click(NavBar.ContextMenu.BOOKMARKS_TOOLBAR)
-        logger.debug('Click is performed successfully on Bookmarks Toolbar option from navigation bar context menu.')
-    except FindError:
-        raise APIHelperError('Could not open the Bookmarks Toolbar using context menu from the navigation bar.')
-
-    restore_firefox_focus()
-
-
-def open_library_menu(option):
-    """Open the Library menu with an option as argument.
-
-    :param option: Library menu option.
-    :return: Custom region created for a more efficient and accurate image
-    pattern search.
-    """
-
-    library_menu_pattern = NavBar.LIBRARY_MENU
-
-    try:
-        wait(library_menu_pattern, 10)
-        region = Region(image_find(library_menu_pattern).x - Screen().width / 4,
-                        image_find(library_menu_pattern).y, Screen().width / 4,
-                        Screen().height / 4)
-        logger.debug('Library menu found.')
-    except FindError:
-        raise APIHelperError(
-            'Can\'t find the library menu in the page, aborting test.')
-    else:
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        click(library_menu_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-        try:
-            time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-            region.wait(option, 10)
-            logger.debug('Option found.')
-            region.click(option)
-            return region
-        except FindError:
-            raise APIHelperError(
-                'Can\'t find the option in the page, aborting test.')
-
-
 def open_about_firefox():
     """Open the 'About Firefox' window."""
     if OSHelper.get_os() == OSPlatform.MAC:
@@ -720,73 +702,197 @@ def open_about_firefox():
         type(Key.ENTER)
 
 
-def get_telemetry_info():
-    """Returns telemetry information as a JSON object from 'about:telemetry'
-    page.
+def open_bookmarks_toolbar():
+    """ Open the Bookmarks Toolbar using the context menu from the navigation bar """
+
+    home_button = NavBar.HOME_BUTTON
+    w, h = home_button.get_size()
+    horizontal_offset = w * 1.7
+    navbar_context_menu = home_button.target_offset(horizontal_offset, 0)
+
+    try:
+        right_click(navbar_context_menu)
+        click(NavBar.ContextMenu.BOOKMARKS_TOOLBAR)
+        logger.debug('Click is performed successfully on Bookmarks Toolbar option from navigation bar context menu.')
+    except FindError:
+        raise APIHelperError('Could not open the Bookmarks Toolbar using context menu from the navigation bar.')
+
+    restore_firefox_focus()
+
+
+def open_directory(directory):
+    if OSHelper.is_windows():
+        os.startfile(directory)
+    elif OSHelper.is_linux():
+        os.system('xdg-open \"' + directory + '\"')
+    else:
+        os.system('open \"' + directory + '\"')
+
+
+def open_library_menu(option):
+    """Open the Library menu with an option as argument.
+
+    :param option: Library menu option.
+    :return: Custom region created for a more efficient and accurate image
+    pattern search.
     """
 
-    copy_raw_data_to_clipboard_pattern = Pattern(
-        'copy_raw_data_to_clipboard.png')
-    raw_json_pattern = Pattern('raw_json.png')
-    raw_data_pattern = Pattern('raw_data.png')
+    library_menu_pattern = NavBar.LIBRARY_MENU
 
-    new_tab()
-
-    paste('about:telemetry')
-    type(Key.ENTER)
+    if OSHelper.is_windows():
+        value = 5
+    else:
+        value = 4
 
     try:
-        wait(raw_json_pattern, 10)
-        logger.debug('\'RAW JSON\' button is present on the page.')
-        click(raw_json_pattern)
-    except (FindError, ValueError):
-        raise APIHelperError('\'RAW JSON\' button not present in the page.')
+        wait(library_menu_pattern, 10)
+        region = Region(image_find(library_menu_pattern).x - Screen().width / value,
+                        image_find(library_menu_pattern).y, Screen().width / value,
+                        Screen().height / value)
+        logger.debug('Library menu found.')
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the library menu in the page, aborting test.')
+    else:
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        click(library_menu_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        try:
+            time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+            region.wait(option, 10)
+            logger.debug('Option found.')
+            region.click(option)
+            return region
+        except FindError:
+            raise APIHelperError(
+                'Can\'t find the option in the page, aborting test.')
+
+
+def open_zoom_menu():
+    """Open the 'Zoom' menu from the 'View' menu."""
+
+    if OSHelper.is_mac():
+        view_menu_pattern = Pattern('view_menu.png')
+
+        click(view_menu_pattern)
+
+        repeat_key_down(3)
+        type(text=Key.ENTER)
+    else:
+        type(text='v', modifier=KeyModifier.ALT)
+
+        repeat_key_down(2)
+        type(text=Key.ENTER)
+
+
+def remove_zoom_indicator_from_toolbar():
+    """Remove the zoom indicator from toolbar by clicking on the 'Remove from
+    Toolbar' button.
+    """
+
+    zoom_control_toolbar_decrease_pattern = NavBar.ZOOM_OUT
+    remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
     try:
-        wait(raw_data_pattern, 10)
-        logger.debug('\'Raw Data\' button is present on the page.')
-        click(raw_data_pattern)
-    except (FindError, ValueError):
-        close_tab()
-        raise APIHelperError('\'Raw Data\' button not present in the page.')
+        wait(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        logger.debug('\'Decrease\' zoom control found.')
+        right_click(zoom_control_toolbar_decrease_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the \'Decrease\' zoom control button in the page, \
+            aborting.')
 
     try:
-        click(copy_raw_data_to_clipboard_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-        json_text = get_clipboard()
-        return json.loads(json_text)
-    except Exception:
-        raise APIHelperError('Failed to retrieve raw message information value.')
-    finally:
-        close_tab()
+        wait(remove_from_toolbar_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        logger.debug('\'Remove from Toolbar\' option found.')
+        click(remove_from_toolbar_pattern)
+    except FindError:
+        raise APIHelperError(
+            'Can\'t find the \'Remove from Toolbar\' option in the page, \
+            aborting.')
+
+    try:
+        wait_vanish(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+    except FindError:
+        raise APIHelperError(
+            'Zoom indicator not removed from toolbar, aborting.')
 
 
-class Option(object):
-    """Class with zoom members."""
+def repeat_key_down(num):
+    """Repeat DOWN keystroke a given number of times.
 
-    ZOOM_IN = 0
-    ZOOM_OUT = 1
-    RESET = 2
-    ZOOM_TEXT_ONLY = 3
-
-
-class RightClickLocationBar:
-    """Class with location bar members."""
-
-    UNDO = 0
-    CUT = 1
-    COPY = 2
-    PASTE = 3
-    PASTE_GO = 4
-    DELETE = 5
-    SELECT_ALL = 6
+    :param num: Number of times to repeat DOWN key stroke.
+    :return: None.
+    """
+    for i in range(num):
+        type(Key.DOWN)
 
 
-class ZoomType(object):
-    """Class with zoom type members."""
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
+    """
+    Press the Key Down button until specified image pattern is found.
 
-    IN = 300 if OSHelper.is_windows() else 1
-    OUT = -300 if OSHelper.is_windows() else -1
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_down_presses: Number of presses of the Key Down button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during Key Down button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_down_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.DOWN)
+        time.sleep(delay_between_presses)
+
+    return pattern_found
+
+
+def repeat_key_up(num):
+    """Repeat UP keystroke a given number of times.
+
+    :param num: Number of times to repeat UP key stroke.
+    :return: None.
+    """
+    for i in range(num):
+        type(Key.UP)
+
+
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
+    """
+    Press the Key Up button until specified image pattern is found.
+
+    :param image_pattern: Image Pattern to search.
+    :param num_of_key_up_presses: Number of presses of the Key Up button.
+    :param delay_between_presses: Number of seconds to wait between the Key Down presses
+    :return: Boolean. True if image pattern found during the Key Up button pressing, False otherwise
+    """
+
+    if not isinstance(image_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    pattern_found = False
+
+    for _ in range(num_of_key_up_presses):
+        pattern_found = exists(image_pattern)
+        if pattern_found:
+            break
+
+        type(Key.UP)
+        time.sleep(delay_between_presses)
+
+    return pattern_found
+
+
+def reset_mouse():
+    """Reset mouse position to location (0, 0)."""
+    Mouse().move(Location(0, 0))
 
 
 def restore_firefox_focus():
@@ -805,98 +911,35 @@ def restore_firefox_focus():
         raise APIHelperError('Could not restore firefox focus.')
 
 
-def get_pref_value(pref_name):
-    """Returns the value of a provided preference from 'about:config' page.
+def restore_window_control(window_type):
+    """Click on restore window control.
 
-    :param pref_name: Preference's name.
-    :return: Preference's value.
+    :param window_type: Type of window that need to be restored.
+    :return: None.
     """
+    find_window_controls(window_type)
 
-    new_tab()
-    select_location_bar()
-    paste('about:config')
-    type(Key.ENTER)
-    time.sleep(Settings.DEFAULT_UI_DELAY)
-
-    type(Key.SPACE)
-    time.sleep(Settings.DEFAULT_UI_DELAY)
-
-    paste(pref_name)
-    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-    type(Key.TAB)
-    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
-    try:
-        value = copy_to_clipboard().split(';'[0])[1]
-    except Exception as e:
-        raise APIHelperError(
-            'Failed to retrieve preference value.\n{}'.format(e))
-
-    close_tab()
-    return value
-
-
-def get_firefox_version_from_about_config():
-    """Returns the Firefox version from 'about:config' page."""
-
-    try:
-        return get_pref_value('extensions.lastAppVersion')
-    except APIHelperError:
-        raise APIHelperError('Could not retrieve firefox version information from about:config page.')
-
-
-def get_firefox_build_id_from_about_config():
-    """Returns the Firefox build id from 'about:config' page."""
-    pref_1 = 'browser.startup.homepage_override.buildID'
-    pref_2 = 'extensions.lastAppBuildId'
-
-    try:
-        return get_pref_value(pref_1)
-    except APIHelperError:
-        try:
-            return get_pref_value(pref_2)
-        except APIHelperError:
-            raise APIHelperError('Could not retrieve firefox build id information from about:config page.')
-
-
-def get_firefox_channel_from_about_config():
-    """Returns the Firefox channel from 'about:config' page."""
-    try:
-        return get_pref_value('app.update.channel')
-    except APIHelperError:
-        raise APIHelperError('Could not retrieve firefox channel information from about:config page.')
-
-
-def get_firefox_locale_from_about_config():
-    """Returns the Firefox locale from 'about:config' page."""
-    try:
-        value_str = get_pref_value('browser.newtabpage.activity-stream.feeds.section.topstories.options')
-        logger.debug(value_str)
-        temp = json.loads(value_str)
-        return str(temp['stories_endpoint']).split('&locale_lang=')[1].split('&')[0]
-    except (APIHelperError, KeyError):
-        raise APIHelperError('Pref format to determine locale has changed.')
-
-
-def get_support_info():
-    """Returns support information as a JSON object from 'about:support' page."""
-    copy_raw_data_to_clipboard = Pattern('about_support_copy_raw_data_button.png')
-
-    new_tab()
-    select_location_bar()
-    paste('about:support')
-    type(Key.ENTER)
-    time.sleep(Settings.DEFAULT_UI_DELAY)
-
-    try:
-        click(copy_raw_data_to_clipboard)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        json_text = get_clipboard()
-        return json.loads(json_text)
-    except Exception as e:
-        raise APIHelperError('Failed to retrieve support information value.\n{}'.format(e))
-    finally:
-        close_tab()
+    if window_type == 'auxiliary':
+        if OSHelper.is_mac():
+            key_down(Key.ALT)
+            width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
+            click(AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
+                  align=Alignment.TOP_LEFT)
+            key_up(Key.ALT)
+        else:
+            if OSHelper.is_linux():
+                reset_mouse()
+            click(AuxiliaryWindow.ZOOM_RESTORE_BUTTON)
+    else:
+        if OSHelper.is_mac():
+            key_down(Key.ALT)
+            width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
+            key_up(Key.ALT)
+        else:
+            if OSHelper.is_linux():
+                reset_mouse()
+            click(MainWindow.RESIZE_BUTTON)
 
 
 def restore_window_from_taskbar(option=None):
@@ -927,27 +970,13 @@ def restore_window_from_taskbar(option=None):
     time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
-def close_customize_page():
-    """Close the 'Customize...' page by pressing the 'Done' button."""
-    customize_done_button_pattern = Pattern('customize_done_button.png')
-    try:
-        wait(customize_done_button_pattern, 10)
-        logger.debug('Done button found.')
-        click(customize_done_button_pattern)
-    except FindError:
-        raise APIHelperError(
-            'Can\'t find the Done button in the page, aborting.')
-
-
-def click_cancel_button():
-    """Click cancel button."""
-    cancel_button_pattern = Pattern('cancel_button.png')
-    try:
-        wait(cancel_button_pattern, 10)
-        logger.debug('Cancel button found.')
-        click(cancel_button_pattern)
-    except FindError:
-        raise APIHelperError('Can\'t find the cancel button, aborting.')
+def right_click_and_type(target, delay=None, keyboard_action=None):
+    right_click(target)
+    if delay:
+        time.sleep(delay)
+    else:
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+    type(text=keyboard_action)
 
 
 def scroll_until_pattern_found(image_pattern: Pattern, scroll_function, scroll_params: tuple = tuple(),
@@ -1004,46 +1033,20 @@ def scroll_until_pattern_found(image_pattern: Pattern, scroll_function, scroll_p
     return pattern_found
 
 
-def right_click_and_type(target, delay=None, keyboard_action=None):
-    right_click(target)
-    if delay:
-        time.sleep(delay)
-    else:
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-    type(text=keyboard_action)
+def select_location_bar_option(option_number):
+    """Select option from the location bar menu.
 
-
-def remove_zoom_indicator_from_toolbar():
-    """Remove the zoom indicator from toolbar by clicking on the 'Remove from
-    Toolbar' button.
+    :param option_number: Option number.
+    :return: None.
     """
-
-    zoom_control_toolbar_decrease_pattern = NavBar.ZOOM_OUT
-    remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
-
-    try:
-        wait(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
-        logger.debug('\'Decrease\' zoom control found.')
-        right_click(zoom_control_toolbar_decrease_pattern)
-    except FindError:
-        raise APIHelperError(
-            'Can\'t find the \'Decrease\' zoom control button in the page, \
-            aborting.')
-
-    try:
-        wait(remove_from_toolbar_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
-        logger.debug('\'Remove from Toolbar\' option found.')
-        click(remove_from_toolbar_pattern)
-    except FindError:
-        raise APIHelperError(
-            'Can\'t find the \'Remove from Toolbar\' option in the page, \
-            aborting.')
-
-    try:
-        wait_vanish(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
-    except FindError:
-        raise APIHelperError(
-            'Zoom indicator not removed from toolbar, aborting.')
+    if OSHelper.get_os() == OSPlatform.WINDOWS:
+        for i in range(option_number + 1):
+            type(Key.DOWN)
+        type(Key.ENTER)
+    else:
+        for i in range(option_number - 1):
+            type(Key.DOWN)
+        type(Key.ENTER)
 
 
 def select_zoom_menu_option(option_number):
@@ -1053,23 +1056,6 @@ def select_zoom_menu_option(option_number):
 
     repeat_key_down(option_number)
     type(text=Key.ENTER)
-
-
-def open_zoom_menu():
-    """Open the 'Zoom' menu from the 'View' menu."""
-
-    if OSHelper.is_mac():
-        view_menu_pattern = Pattern('view_menu.png')
-
-        click(view_menu_pattern)
-
-        repeat_key_down(3)
-        type(text=Key.ENTER)
-    else:
-        type(text='v', modifier=KeyModifier.ALT)
-
-        repeat_key_down(2)
-        type(text=Key.ENTER)
 
 
 def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
@@ -1108,10 +1094,58 @@ def zoom_with_mouse_wheel(nr_of_times=1, zoom_type=None):
     Mouse().move(Location(0, 0))
 
 
-def open_directory(directory):
-    if OSHelper.is_windows():
-        os.startfile(directory)
-    elif OSHelper.is_linux():
-        os.system('xdg-open \"' + directory + '\"')
-    else:
-        os.system('open \"' + directory + '\"')
+class Option(object):
+    """Class with zoom members."""
+
+    ZOOM_IN = 0
+    ZOOM_OUT = 1
+    RESET = 2
+    ZOOM_TEXT_ONLY = 3
+
+
+class RightClickLocationBar:
+    """Class with location bar members."""
+
+    UNDO = 0
+    CUT = 1
+    COPY = 2
+    PASTE = 3
+    PASTE_GO = 4
+    DELETE = 5
+    SELECT_ALL = 6
+
+
+class ZoomType(object):
+    """Class with zoom type members."""
+
+    IN = 300 if OSHelper.is_windows() else 1
+    OUT = -300 if OSHelper.is_windows() else -1
+
+
+def find_in_region_from_pattern(outer_pattern: Pattern, inner_pattern: Pattern,
+                                outer_pattern_timeout=Settings.auto_wait_timeout,
+                                inner_pattern_timeout=Settings.auto_wait_timeout):
+    """ Finds pattern in region created from another pattern
+    :param outer_pattern: Pattern for region creation
+    :param inner_pattern: Pattern to find in region
+    :param outer_pattern_timeout: Time to finding outer_pattern
+    :param inner_pattern_timeout: Time to finding inner_pattern,
+    :return: Boolean. True if inner_pattern found in outer_pattern region
+    :raises: ValueError and APIHelperError
+    """
+    if not isinstance(outer_pattern, Pattern) or not isinstance(inner_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    try:
+        wait(outer_pattern, outer_pattern_timeout)
+        logger.debug('Outer pattern found.')
+
+    except FindError:
+        raise APIHelperError('Can\'t find the outer pattern.')
+
+    width, height = outer_pattern.get_size()
+    region = Region(image_find(outer_pattern).x, image_find(outer_pattern).y, width, height)
+
+    pattern_found = exists(inner_pattern, inner_pattern_timeout, region=region)
+
+    return pattern_found
