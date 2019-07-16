@@ -52,6 +52,16 @@ class Test(FirefoxTest):
             type('a', modifier=KeyModifier.CMD)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
             type(Key.BACKSPACE, modifier=KeyModifier.CMD)
+        else:
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+            type('l', modifier=KeyModifier.CTRL)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            paste('safebrowsing/google4')
+            type(Key.ENTER)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            type('a', modifier=KeyModifier.CTRL)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            type(Key.DELETE)
 
         close_window_control('auxiliary')
 
