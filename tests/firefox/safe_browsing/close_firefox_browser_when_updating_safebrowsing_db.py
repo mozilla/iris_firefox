@@ -40,7 +40,14 @@ class Test(FirefoxTest):
 
         click(trigger_update_button_pattern, region=google4_row_region)
 
-        firefox.restart(url='about:url-classifier', image=url_classifier_title_pattern)
+        quit_firefox()
+
+        firefox.start()
+
+        navigate('about:url-classifier')
+
+        url_classifier_page_opened = exists(url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert url_classifier_page_opened is True, 'URL Classifier page is successfully opened'
 
         open_find()
 
