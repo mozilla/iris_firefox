@@ -19,7 +19,6 @@ class Test(FirefoxTest):
         start_in_safe_mode_button_pattern = Pattern('start_in_safe_mode_button.png')
         about_support_title_pattern = Pattern('about_support_title.png')
         restart_button_pattern = Pattern('restart_button.png')
-        about_support_info_pattern = Pattern('about_support_info.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -93,4 +92,3 @@ class Test(FirefoxTest):
 
         test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, 'Pocket test site opened'
-
