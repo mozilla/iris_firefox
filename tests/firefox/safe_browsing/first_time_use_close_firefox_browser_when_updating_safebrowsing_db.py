@@ -62,8 +62,9 @@ class Test(FirefoxTest):
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
             type(Key.DELETE)
         else:
-            type(Key.F4)
+            type('d', modifier=KeyModifier.ALT)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            type(Key.RIGHT)
             paste('\\safebrowsing\\google4')
             type(Key.ENTER)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
