@@ -52,8 +52,7 @@ class Test(FirefoxTest):
             type('a', modifier=KeyModifier.CMD)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
             type(Key.BACKSPACE, modifier=KeyModifier.CMD)
-        else:
-            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+        elif OSHelper.is_mac():
             type('l', modifier=KeyModifier.CTRL)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
             paste('safebrowsing/google4')
@@ -62,6 +61,17 @@ class Test(FirefoxTest):
             type('a', modifier=KeyModifier.CTRL)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
             type(Key.DELETE)
+        else:
+            type(Key.F4)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            paste('\\safebrowsing\\google4')
+            type(Key.ENTER)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            type('a', modifier=KeyModifier.CTRL)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            type(Key.DELETE)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
+            type(Key.ENTER)
 
         close_window_control('auxiliary')
 
