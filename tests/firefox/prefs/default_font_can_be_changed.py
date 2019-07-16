@@ -9,8 +9,8 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='The CTRL + TAB shortcut can be set to cycle through tabs in recently used order',
-        test_case_id='143549',
+        description='The default font can be successfully changed',
+        test_case_id='143553',
         test_suite_id='2241',
         locale=['en-US']
     )
@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         about_preferences_general_url_pattern = Pattern('about_preferences_general_url.png')
         preferences_general_option_pattern = Pattern('preferences_general_option.png')
         default_font_picker_pattern = Pattern('default_font_picker.png')
-        ff_page_with_arial_font_pattern = Pattern('ff_text_arial_font.png')
+        ff_page_with_arial_font_pattern = Pattern('ff_text_modified_font.png')
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
