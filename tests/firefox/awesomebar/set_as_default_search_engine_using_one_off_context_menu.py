@@ -19,62 +19,66 @@ class Test(FirefoxTest):
     def run(self, firefox):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
-        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
+        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(.7)
         set_as_default_search_engine_pattern = Pattern('set_as_default_search_engine.png')
         search_in_new_tab_pattern = Pattern('search_in_new_tab.png')
-        magnifying_glass_pattern = Pattern('magnifying_glass.png')
+        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
         wikipedia_search_results_pattern = Pattern('wikipedia_search_results.png')
-        test_pattern = Pattern('test.png').similar(0.5)
-
+        test_pattern = Pattern('test.png')
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
         navigate(url)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        test_page_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert test_page_opened, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         paste('test')
         type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(magnifying_glass_pattern, 10)
-        assert expected, 'The default search engine is \'Google\', page successfully loaded.'
+        google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert google_page_opened, 'The default search engine is \'Google\', page successfully loaded.'
 
-        expected = region.exists(test_pattern, 10)
-        assert expected, 'Searched item is successfully found in the page opened by the default search engine.'
+        searched_item_found = region.exists(test_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert searched_item_found, 'Searched item is successfully found in the page opened by the default ' \
+                                    'search engine.'
 
         select_location_bar()
         paste('moz')
 
-        expected = region.exists(moz_pattern, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
+        mozilla_pattern_displayed = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_pattern_displayed, 'Searched string found at the bottom of the drop-down list.'
+
+        wiki_button_displayed = region.exists(wikipedia_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert wiki_button_displayed, 'wikipedia_one_off_button_pattern'
 
         hover(wikipedia_one_off_button_pattern)
 
         try:
-            expected = region.wait_vanish(moz_pattern, 2)
-            assert expected, 'The \'Wikipedia\' one-off button is highlighted.'
+            wiki_is_highlighted = region.wait_vanish(moz_pattern)
+            assert wiki_is_highlighted, 'The \'Wikipedia\' one-off button is highlighted.'
         except FindError:
             raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
 
         right_click(wikipedia_one_off_button_pattern)
 
-        expected = exists(search_in_new_tab_pattern, 10)
-        assert expected, 'The \'Search in New Tab\' option found.'
+        search_in_new_tab_displayed = exists(search_in_new_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_in_new_tab_displayed, 'The \'Search in New Tab\' option found.'
 
-        expected = exists(set_as_default_search_engine_pattern, 10)
-        assert expected, 'The \'Set As Default Search Engine\' option found.'
+        set_as_default_displayed = exists(set_as_default_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert set_as_default_displayed, 'The \'Set As Default Search Engine\' option found.'
 
         click(set_as_default_search_engine_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
 
         select_location_bar()
-        paste('testing')
+        paste('test')
         type(Key.ENTER)
 
-        expected = exists(wikipedia_search_results_pattern, 10)
-        assert expected, 'Wikipedia results are opened.'
+        wiki_page_opened = exists(wikipedia_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert wiki_page_opened, 'Wikipedia results are opened.'
 
-        expected = exists(test_pattern, 10)
-        assert expected, 'Searched item is successfully found in the page opened by the wikipedia search engine.'
+        searched_item_found = exists('Test', FirefoxSettings.FIREFOX_TIMEOUT)
+        assert searched_item_found, 'Searched item is successfully found in the page opened by the wikipedia ' \
+                                    'search engine.'

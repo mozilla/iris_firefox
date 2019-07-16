@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         youtube_logo_pattern = Pattern('youtube_logo.png')
         twitter_logo_pattern = Pattern('twitter_favicon.png').similar(0.75)
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
+        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png').similar(.7)
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
         twitter_logo_unactive_tab_pattern = Pattern('twitter_logo_unactive_tab.png')
 
@@ -66,19 +66,24 @@ class Test(FirefoxTest):
 
         bookmarks_toolbar_region = Screen().new_region(0, bookmarks_toolbar_location.y, Screen.SCREEN_WIDTH,
                                                        home_height * 3)
-        tabs_region = Screen().new_region(0, 0, int(Screen.SCREEN_WIDTH * 0.75), home_height * 3)
-
-        stardialog_region = Screen().new_region(Screen.SCREEN_WIDTH/2, 0, Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT)
+        tabs_region = Region(0, 0, int(Screen.SCREEN_WIDTH * 0.75), home_height * 4)
 
         bookmark_page()
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), region=stardialog_region)
+        type('CNN')
 
-        cnn_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6),
-                                                       region=stardialog_region)
-        assert cnn_bookmark_toolbar_folder_displayed is True, 'Bookmark toolbar folder displayed'
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6), region=stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert toolbar_option_button_exists, 'Toolbar option button exists'
+
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
+        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
+        assert panel_option_button_exists, 'Panel option button exists'
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -86,13 +91,20 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), region=stardialog_region)
+        type('Wiki')
 
-        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6),
-                                                        region=stardialog_region)
-        assert wiki_bookmark_toolbar_folder_displayed is True, 'Bookmark toolbar folder displayed'
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6), region=stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert toolbar_option_button_exists, 'Toolbar option button exists'
+
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
+        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
+        assert panel_option_button_exists, 'Panel option button exists'
 
         click(Bookmarks.StarDialog.DONE)
 
