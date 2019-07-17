@@ -18,13 +18,15 @@ class Test(FirefoxTest):
         about_preferences_general_url_pattern = Pattern('about_preferences_general_url.png')
         preferences_general_option_pattern = Pattern('preferences_general_option.png')
         default_font_picker_pattern = Pattern('default_font_picker.png')
-        ff_page_with_arial_font_pattern = Pattern('ff_text_modified_font.png')
+        page_with_mod_font_pattern = Pattern('modified_text_font.png')
+        advanced_button_pattern = Pattern('advanced_button.png')
+        proportional_dropdown_pattern = Pattern('proportional_dropdown.png')
 
         new_tab()
-        navigate(LocalWeb.FIREFOX_TEST_SITE)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        ff_site_opened = exists(LocalWeb.FIREFOX_LOGO)
-        assert ff_site_opened, 'Test site is successfully opened'
+        # ff_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
+        # assert ff_site_opened, 'Test site is successfully opened'
 
         previous_tab()
         navigate('about:preferences#general')
@@ -36,16 +38,29 @@ class Test(FirefoxTest):
         preferences_general_option_exists = exists(preferences_general_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_general_option_exists, 'The options for "General" section are displayed'
 
+        advanced_button_exists = exists(advanced_button_pattern)
+        assert advanced_button_exists, 'Advanced settings is present'
+
+        click(advanced_button_pattern)
+
+        proportional_dropdown_exists = exists(proportional_dropdown_pattern)
+        assert proportional_dropdown_exists, 'Proportional drop is available'
+
+        click(proportional_dropdown_pattern)
+        type(Key.DOWN)
+        type(Key.ENTER)
+        type(Key.ENTER)
+
         default_font_picker_exists = exists(default_font_picker_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_font_picker_exists, 'Font picker is displayed'
 
         click(default_font_picker_pattern)
 
-        [type(Key.DOWN) for _ in range(13)]
+        [type(Key.DOWN) for _ in range(5)]
         type(Key.ENTER)
 
         next_tab()
 
-        font_is_changed_to_another = exists(ff_page_with_arial_font_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        font_is_changed_to_another = exists(page_with_mod_font_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert font_is_changed_to_another, 'Font is successfully changed!'
