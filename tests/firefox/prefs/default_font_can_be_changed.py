@@ -25,9 +25,6 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        # ff_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL)
-        # assert ff_site_opened, 'Test site is successfully opened'
-
         previous_tab()
         navigate('about:preferences#general')
 
