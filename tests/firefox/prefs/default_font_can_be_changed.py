@@ -35,15 +35,19 @@ class Test(FirefoxTest):
         preferences_general_option_exists = exists(preferences_general_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_general_option_exists, 'The options for "General" section are displayed'
 
-        advanced_button_exists = exists(advanced_button_pattern)
+        advanced_button_exists = exists(advanced_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert advanced_button_exists, 'Advanced settings is present'
 
         click(advanced_button_pattern)
 
-        proportional_dropdown_exists = exists(proportional_dropdown_pattern)
+        proportional_dropdown_exists = exists(proportional_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert proportional_dropdown_exists, 'Proportional drop is available'
 
-        click(proportional_dropdown_pattern)
+        if OSHelper.is_linux():
+            type(Key.TAB)
+        else:
+            click(proportional_dropdown_pattern)
+
         type(Key.DOWN)
         type(Key.ENTER)
         type(Key.ENTER)
