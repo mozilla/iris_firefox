@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description=' Bug 1325651 - Safe browsing is working in safe mode ',
+        description='Bug 1325651 - Safe browsing is working in safe mode',
         test_case_id='215325',
         test_suite_id='69',
         locale=['en-US'],
