@@ -26,6 +26,7 @@ class Test(FirefoxTest):
         name_form_pattern = Pattern('name_form.png')
         password_form_pattern = Pattern('password_form.png').similar(.6)
         autocomplete_pattern = Pattern('word_autocomplete.png')
+        save_login_button_pattern = Pattern('save_login_button.png')
 
         form_address = self.get_asset_path('form.html')
 
@@ -102,6 +103,13 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         navigate(form_address)
+
+        save_login_button = exists(save_login_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        if save_login_button:
+            type(Key.ESC)
+
+            no_autocomplete = not exists(autocomplete_pattern)
+            assert no_autocomplete, 'The form history is not saved.'
 
         click(name_form_pattern)
 
