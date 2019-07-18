@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         default_font_picker_pattern = Pattern('default_font_picker.png')
         page_with_mod_font_pattern = Pattern('modified_text_font.png')
         advanced_button_pattern = Pattern('advanced_button.png')
-        proportional_dropdown_pattern = Pattern('proportional_dropdown.png')
+        proportional_dropdown_pattern = Pattern('proportional_dropdown.png').similar(0.6)
 
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
