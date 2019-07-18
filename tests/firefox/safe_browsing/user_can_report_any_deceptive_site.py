@@ -23,23 +23,27 @@ class Test(FirefoxTest):
         test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, 'Test site opened'
 
+        click(NavBar.HAMBURGER_MENU)
+
+        hamburger_menu_region = create_region_from_image(NavBar.HAMBURGER_MENU)
+
         click_hamburger_menu_option('Help')
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         report_deceptive_site_option_exists = exists('Report Deceptive Site', FirefoxSettings.FIREFOX_TIMEOUT,
-                                                     Screen.RIGHT_THIRD)
+                                                     hamburger_menu_region)
         assert report_deceptive_site_option_exists, '"Report Deceptive Site..." option exists'
 
-        click('Report Deceptive Site', region=Screen.RIGHT_THIRD)
+        click('Report Deceptive Site', region=hamburger_menu_region)
 
         report_web_page_loaded = exists(google_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert report_web_page_loaded, 'Report Web Forgery page is loaded.'
 
-        url_field_found = exists('URL:', FirefoxSettings.FIREFOX_TIMEOUT)
+        url_field_found = exists('URL:', FirefoxSettings.FIREFOX_TIMEOUT, Screen.MIDDLE_THIRD_VERTICAL)
         assert url_field_found, 'URL field was found'
 
-        click('URL:')
+        click('URL:', region=Screen.MIDDLE_THIRD_VERTICAL)
 
         edit_copy()
         filled_url = get_clipboard()
