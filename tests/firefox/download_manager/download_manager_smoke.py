@@ -22,9 +22,9 @@ class Test(FirefoxTest):
     def run(self, firefox):
         navigate('https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/')
 
-        download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.85), DownloadFiles.OK)
+        download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.8), DownloadFiles.OK)
 
-        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected is True, 'Downloads button found.'
 
         expected = exists(DownloadManager.DownloadState.COMPLETED, 90)
@@ -41,6 +41,10 @@ class Test(FirefoxTest):
 
         expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
         assert expected is True, 'Downloads folder is displayed.'
+
+        if OSHelper.is_mac():
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+            type('2', modifier=KeyModifier.CMD)
 
         expected = exists(DownloadFiles.FIREFOX_INSTALLER_HIGHLIGHTED, 10)
         assert expected is True, 'Firefox installer is displayed in downloads folder.'
