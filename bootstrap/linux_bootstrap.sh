@@ -139,11 +139,7 @@ else
     cd ~
     if [ ! -f leptonica-1.76.0.tar.gz ]; then
         echo "\n${GREEN}  --->  Downloading leptonica-1.76.0.tar.gz ${NC}\n"
-<<<<<<< HEAD
-        wget http://www.leptonica.com/source/leptonica-1.76.0.tar.gz
-=======
         wget http://www.leptonica.org/source/leptonica-1.76.0.tar.gz
->>>>>>> core/master
     fi
 
     if [ ! -d leptonica-1.76.0 ]; then
