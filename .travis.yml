@@ -13,7 +13,8 @@ branches:
 # Safelist
 branches:
   only:
-  - test
+  - master
+  - dev
 
 # Bootstrap install
 install:
@@ -40,9 +41,8 @@ jobs:
 notifications:
   email:
     recipients:
+      - twalker@mozilla.com
       - mwobensmith@mozilla.com
     on_success: change
     on_failure: always
     on_cancel: always
-
-
