@@ -131,12 +131,14 @@ class Test(FirefoxTest):
 
         restart_via_console()
 
-        browser_console_reopened = exists(browser_console_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert browser_console_reopened, 'Browser console reopened'
+        browser_console_reopened = exists(browser_console_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
-        click(browser_console_pattern)
+        if browser_console_reopened:
+            assert browser_console_reopened, 'Browser console reopened'
 
-        close_window_control('auxiliary')
+            click(browser_console_pattern)
+
+            close_window_control('auxiliary')
 
         firefox_is_restarted = exists(NavBar.HOME_BUTTON, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert firefox_is_restarted, 'Firefox is successfully restarted'
