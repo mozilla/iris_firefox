@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description='Default Search Code: Yandex: Russia.',
-        locale=['ru', 'be', 'kk', 'tr'],
+        locale=['ru', 'be', 'kk', 'tr', 'en-US', 'en-GB', 'en-ZA'],
         test_case_id='218336',
         test_suite_id='83',
         profile=Profiles.BRAND_NEW
@@ -27,7 +27,10 @@ class Test(FirefoxTest):
             default_search_engine_yandex_pattern = Pattern('default_search_engine_yandex_esr_build.png').similar(0.5)
             yandex_logo_content_search_field_pattern = Pattern('yandex_logo_content_search_field_esr_build.png')
 
-        regions_by_locales = {'ru': ['RU'], 'be': ['BY'], 'kk': ['KZ'], 'tr': ['TR']}
+        regions_by_locales = {'ru': ['RU'], 'be': ['BY'], 'kk': ['KZ'], 'tr': ['TR'],
+                              'en-US': ['RU', 'BY', 'KZ', 'TR'],
+                              'en-GB': ['RU', 'BY', 'KZ', 'TR'],
+                              'en-ZA': ['RU', 'BY', 'KZ', 'TR']}
 
         change_preference('browser.search.widget.inNavBar', True)
 
@@ -39,65 +42,65 @@ class Test(FirefoxTest):
                             image=LocalWeb.FIREFOX_LOGO)
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        navigate('about:preferences#search')
-        expected = exists(default_search_engine_yandex_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Yandex is the default search engine.'
+            navigate('about:preferences#search')
+            expected = exists(default_search_engine_yandex_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert expected, 'Yandex is the default search engine.'
 
-        # Perform a search using the awesome bar and then clear the content from it.
-        select_location_bar()
-        paste('test')
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        select_location_bar()
-        url_text = copy_to_clipboard()
+            # Perform a search using the awesome bar and then clear the content from it.
+            select_location_bar()
+            paste('test')
+            type(Key.ENTER)
+            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
+            url_text = copy_to_clipboard()
 
-        assert 'search/?clid=2186621' in url_text, 'Client search code is correct for searches from awesome ' \
-                                                   'bar, region ' + value + '.'
+            assert 'search/?clid=2186621' in url_text, 'Client search code is correct for searches from awesome ' \
+                                                       'bar, region ' + value + '.'
 
-        select_location_bar()
-        type(Key.DELETE)
+            select_location_bar()
+            type(Key.DELETE)
 
-        # Perform a search using the search bar.
-        select_search_bar()
-        paste('test')
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        select_location_bar()
-        url_text = copy_to_clipboard()
+            # Perform a search using the search bar.
+            select_search_bar()
+            paste('test')
+            type(Key.ENTER)
+            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
+            url_text = copy_to_clipboard()
 
-        assert 'search/?clid=2186618' in url_text, 'Client search code is correct for searches from ' \
-                                                   'search bar, region ' + value + '.'
+            assert 'search/?clid=2186618' in url_text, 'Client search code is correct for searches from ' \
+                                                       'search bar, region ' + value + '.'
 
-        # Highlight some text and right click it.
-        new_tab()
-        navigate(url)
-        expected = exists(text_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, focus text found.'
+            # Highlight some text and right click it.
+            new_tab()
+            navigate(url)
+            expected = exists(text_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert expected, 'Page successfully loaded, focus text found.'
 
-        double_click(text_pattern)
-        right_click(text_pattern)
-        time.sleep(Settings.DEFAULT_FX_DELAY)
-        repeat_key_down(3)
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        select_location_bar()
-        url_text = copy_to_clipboard()
+            double_click(text_pattern)
+            right_click(text_pattern)
+            time.sleep(Settings.DEFAULT_FX_DELAY)
+            repeat_key_down(3)
+            type(Key.ENTER)
+            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
+            url_text = copy_to_clipboard()
 
-        assert 'search/?clid=2186623' in url_text, 'Client search code is correct for searches ' \
-                                                   'with context menu, region ' + value + '.'
+            assert 'search/?clid=2186623' in url_text, 'Client search code is correct for searches ' \
+                                                       'with context menu, region ' + value + '.'
 
-        # Perform a search from about:newtab page, content search field.
-        new_tab()
-        expected = exists(yandex_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Yandex logo from content search field found.'
+            # Perform a search from about:newtab page, content search field.
+            new_tab()
+            expected = exists(yandex_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert expected, 'Yandex logo from content search field found.'
 
-        click(yandex_logo_content_search_field_pattern)
+            click(yandex_logo_content_search_field_pattern)
 
-        paste('beats')
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        select_location_bar()
-        url_text = copy_to_clipboard()
+            paste('beats')
+            type(Key.ENTER)
+            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+            select_location_bar()
+            url_text = copy_to_clipboard()
 
-        assert 'search/?clid=2186620' in url_text, 'Client search code is correct for searches ' \
-                                                   'from about:newtab page, content search field, region ' + value + '.'
+            assert 'search/?clid=2186620' in url_text, 'Client search code is correct for searches ' \
+                                                       'from about:newtab page, content search field, region ' + value + '.'
