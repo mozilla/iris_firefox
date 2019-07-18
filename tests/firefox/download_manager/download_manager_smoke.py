@@ -24,7 +24,7 @@ class Test(FirefoxTest):
 
         download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.8), DownloadFiles.OK)
 
-        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.8), FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected is True, 'Downloads button found.'
 
         expected = exists(DownloadManager.DownloadState.COMPLETED, 90)
