@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description=' Close Firefox browser when updating safebrowsing DB',
+        description='Close Firefox browser when updating safebrowsing DB',
         test_case_id='50359',
         test_suite_id='69',
         locale=['en-US'],
