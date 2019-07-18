@@ -64,4 +64,4 @@ class Test(FirefoxTest):
 
         font_is_changed_to_another = exists(page_with_mod_font_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
-        assert font_is_changed_to_another, 'Font is successfully changed!'
+        assert font_is_changed_to_another, 'Font is successfully changed.'
