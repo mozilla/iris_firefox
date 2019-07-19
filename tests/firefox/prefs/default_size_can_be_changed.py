@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         about_preferences_general_url_pattern = Pattern('about_preferences_general_url.png')
         preferences_general_option_pattern = Pattern('preferences_general_option.png')
-        default_text_size_pattern = Pattern('default_text_size.png')
+        default_text_size_pattern = Pattern('default_text_size.png').similar(0.6)
         modified_text_size_pattern = Pattern('modified_text_size.png')
 
         new_tab()
@@ -39,6 +39,7 @@ class Test(FirefoxTest):
         default_text_size_exists = exists(default_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_text_size_exists, 'Default size can be changed'
 
+        time.sleep(2)
         click(default_text_size_pattern)
         [type(Key.DOWN) for _ in range(5)]
         type(Key.ENTER)
