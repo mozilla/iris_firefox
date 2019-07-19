@@ -115,7 +115,7 @@ class Test(FirefoxTest):
 
         click_window_control('close')
 
-        click(DownloadManager.AboutDownloads.NO_DOWNLOADS)
+        click(DownloadManager.AboutDownloads.NO_DOWNLOADS.similar(0.7))
 
     def teardown(self):
         downloads_cleanup()
