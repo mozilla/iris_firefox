@@ -47,7 +47,8 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert 'monline_dg' in url_text, 'The resulting URL contains the \'monline_dg\' string.'
+        assert '/baidu?wd=test&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
+                                                                                  '\'monline_7_dg\' string.'
 
         select_location_bar()
         type(Key.DELETE)
@@ -60,7 +61,8 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert 'monline_dg' in url_text, 'The resulting URL contains the \'monline_dg\' string.'
+        assert '/baidu?wd=test&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
+                                                                                  '\'monline_7_dg\' string.'
 
         # Highlight some text and right click it.
         new_tab()
@@ -69,6 +71,7 @@ class Test(FirefoxTest):
         assert expected, 'Page successfully loaded, focus text found.'
 
         double_click(text_pattern)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         right_click(text_pattern)
         time.sleep(Settings.DEFAULT_FX_DELAY)
         repeat_key_down(3)
@@ -77,4 +80,5 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert 'monline_dg' in url_text, 'The resulting URL contains the \'monline_dg\' string.'
+        assert '/baidu?wd=focus&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
+                                                                                   '\'monline_7_dg\' string.'

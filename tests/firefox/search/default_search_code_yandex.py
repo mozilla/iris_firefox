@@ -50,6 +50,7 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
             navigate('about:preferences#search')
+            time.sleep(10)
             expected = exists(default_search_engine_yandex_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected, 'Yandex is the default search engine.'
 
@@ -61,7 +62,7 @@ class Test(FirefoxTest):
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert 'search/?clid=2186621' in url_text, 'Client search code is correct for searches from awesome ' \
+            assert '/search/?text=test&clid=2186621' in url_text, 'Client search code is correct for searches from awesome ' \
                                                        'bar, region ' + value + '.'
 
             select_location_bar()
@@ -75,7 +76,7 @@ class Test(FirefoxTest):
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert 'search/?clid=2186618' in url_text, 'Client search code is correct for searches from ' \
+            assert '/search/?text=test&clid=2186618' in url_text, 'Client search code is correct for searches from ' \
                                                        'search bar, region ' + value + '.'
 
             # Highlight some text and right click it.
@@ -85,6 +86,7 @@ class Test(FirefoxTest):
             assert expected, 'Page successfully loaded, focus text found.'
 
             double_click(text_pattern)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
             right_click(text_pattern)
             time.sleep(Settings.DEFAULT_FX_DELAY)
             repeat_key_down(3)
@@ -93,7 +95,7 @@ class Test(FirefoxTest):
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert 'search/?clid=2186623' in url_text, 'Client search code is correct for searches ' \
+            assert '/search/?text=test&clid=2186623' in url_text, 'Client search code is correct for searches ' \
                                                        'with context menu, region ' + value + '.'
 
             # Perform a search from about:newtab page, content search field.
@@ -108,6 +110,7 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             select_location_bar()
             url_text = copy_to_clipboard()
+            print (url_text)
 
-            assert 'search/?clid=2186620' in url_text, 'Client search code is correct for searches ' \
+            assert '/search/?text=beats&clid=2186620' in url_text, 'Client search code is correct for searches ' \
                                                        'from about:newtab page, content search field, region ' + value + '.'
