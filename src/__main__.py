@@ -87,8 +87,11 @@ def main():
 
 
 def show_control_center():
-    if get_core_args().control or get_core_args().target is None:
+    if get_core_args().control:
         return True
+    elif get_core_args().target is None:
+        exit_iris('No target specified, e.g.: \n\niris your_target\n\nClosing Iris.', status=1)
+        return False
     else:
         return False
 
