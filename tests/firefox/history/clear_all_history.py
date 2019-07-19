@@ -62,3 +62,5 @@ class Test(FirefoxTest):
         # Check that all the history was cleared.
         expected_4 = exists(history_empty_pattern, 10)
         assert expected_4, 'All the history was cleared successfully.'
+
+        history_sidebar()
