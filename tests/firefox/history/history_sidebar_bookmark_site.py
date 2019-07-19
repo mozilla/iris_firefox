@@ -64,12 +64,14 @@ class Test(FirefoxTest):
         # Open the library and check that the page was bookmarked with default settings
         open_library()
 
-        expected_7 = exists(library_expand_bookmarks_menu_pattern, 10)
+        expected_7 = exists(library_expand_bookmarks_menu_pattern.similar(0.6), 10)
         assert expected_7, 'Expand bookmarks menu button displayed properly.'
 
-        click(library_expand_bookmarks_menu_pattern)
+        library_expand_bookmarks_menu_location = find(library_expand_bookmarks_menu_pattern.similar(0.6))
 
-        expected_8 = exists(library_bookmarks_mozilla_pattern, 10)
-        assert expected_8, 'Mozilla page is bookmarked with default name and without tags.'
+        click(library_expand_bookmarks_menu_location)
+
+        expected_8 = exists(library_bookmarks_mozilla_pattern, 10, region=Screen.TOP_HALF)
+        assert expected_8, 'Mozilla page is bookmarked with default name and without tags'
 
         click_window_control('close')
