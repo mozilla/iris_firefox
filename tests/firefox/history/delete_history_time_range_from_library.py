@@ -50,12 +50,25 @@ class Test(FirefoxTest):
         history_today = exists(history_today_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_today, 'History Today button available'
 
+        history_today_location = find(history_today_pattern)
+        history_today_width, history_today_height = history_today_pattern.get_size()
+        history_today_region = Region(history_today_location.x, history_today_location.y,
+                                      history_today_width, history_today_height)
+
+        history_today = exists('Today', FirefoxSettings.FIREFOX_TIMEOUT, history_today_region)
+        assert history_today, 'History Today button available'
+
         right_click_and_type(history_today_pattern.similar(0.6), keyboard_action='d')
 
-        try:
-            expected = wait_vanish(history_today_pattern, 10)
-            assert expected, 'The selected time range is deleted.'
-        except FindError:
-            raise FindError('The selected time range is not deleted.')
+        time.sleep(5)
+
+        # try:
+        #     expected = wait_vanish(history_today_pattern, 10)
+        #     assert expected, 'The selected time range is deleted.'
+        # except FindError:
+        #     raise FindError('The selected time range is not deleted.')
+
+        history_today = not exists('Today', FirefoxSettings.FIREFOX_TIMEOUT, history_today_region)
+        assert history_today, 'History Today button available'
 
         click_window_control('close')
