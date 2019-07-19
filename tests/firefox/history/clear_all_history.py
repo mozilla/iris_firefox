@@ -60,5 +60,5 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         # Check that all the history was cleared.
-        expected_4 = exists(history_empty_pattern.similar(0.9), 10)
+        expected_4 = exists(history_empty_pattern, 10)
         assert expected_4, 'All the history was cleared successfully.'
