@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         google4_row_pattern = Pattern('google4_row.png')
         trigger_update_button_pattern = Pattern('trigger_update_button.png')
         success_status_pattern = Pattern('success_status.png')
-        local_directory_row_pattern = Pattern('local_directory_row.png')
+        local_directory_row_pattern = Pattern('local_directory_row.png').similar(.6)
         show_in_button_pattern = Pattern('show_in_button.png').similar(.7)
 
         navigate('about:profiles')
