@@ -37,18 +37,24 @@ def collect_tests():
         include = core_args.test
         exclude = core_args.exclude
 
-        tests_dir = os.path.join(PathManager.get_tests_dir(), target)
-        logger.debug('Path %s found. Checking content ...', tests_dir)
-        for dir_path, sub_dirs, all_files in PathManager.sorted_walk(tests_dir):
-            for current_file in all_files:
-                current_full_path = os.path.join(dir_path, current_file)
-                if current_file.endswith('.py') and not current_file.startswith('__') and include in current_full_path:
-                    if exclude == '' or exclude not in current_full_path:
-                        test_list.append(current_full_path)
-
-        if len(test_list) == 0:
-            logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
+        if os.path.isfile(core_args.test):
+            with open(core_args.test, 'r') as f:
+                for line in f:
+                    test_list.append(line.rstrip('\n'))
+            f.close()
         else:
-            logger.debug('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
+            tests_dir = os.path.join(PathManager.get_tests_dir(), target)
+            logger.debug('Path %s found. Checking content ...', tests_dir)
+            for dir_path, sub_dirs, all_files in PathManager.sorted_walk(tests_dir):
+                for current_file in all_files:
+                    current_full_path = os.path.join(dir_path, current_file)
+                    if current_file.endswith('.py') and not current_file.startswith('__') and include in current_full_path:
+                        if exclude == '' or exclude not in current_full_path:
+                            test_list.append(current_full_path)
+
+            if len(test_list) == 0:
+                logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
+            else:
+                logger.debug('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
 
     return test_list
