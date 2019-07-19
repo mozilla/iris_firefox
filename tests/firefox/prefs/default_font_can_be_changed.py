@@ -52,7 +52,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         type(Key.ENTER)
 
-        default_font_picker_exists = exists(default_font_picker_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        default_font_picker_exists = exists(default_font_picker_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_font_picker_exists, 'Font picker is displayed'
 
         click(default_font_picker_pattern)
