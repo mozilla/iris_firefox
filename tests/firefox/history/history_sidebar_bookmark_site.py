@@ -22,6 +22,7 @@ class Test(FirefoxTest):
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
         library_expand_bookmarks_menu_pattern = Library.BOOKMARKS_MENU
         library_bookmarks_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
+        blank_white_squre_150_20_pattern = Pattern('blank_white_squre_150_20.png')
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -64,14 +65,27 @@ class Test(FirefoxTest):
         # Open the library and check that the page was bookmarked with default settings
         open_library()
 
-        expected_7 = exists(library_expand_bookmarks_menu_pattern.similar(0.6), 10)
+        expected_7 = exists(library_expand_bookmarks_menu_pattern, 10)
         assert expected_7, 'Expand bookmarks menu button displayed properly.'
 
-        library_expand_bookmarks_menu_location = find(library_expand_bookmarks_menu_pattern.similar(0.6))
+        library_expand_bookmarks_menu_location = find(library_expand_bookmarks_menu_pattern)
 
         click(library_expand_bookmarks_menu_location)
 
-        expected_8 = exists(library_bookmarks_mozilla_pattern, 10, region=Screen.TOP_HALF)
-        assert expected_8, 'Mozilla page is bookmarked with default name and without tags'
+        tags_column = exists(Library.TAGS_COLUMN, region=Screen.TOP_HALF)
+        assert tags_column, 'Tags column available'
 
-        click_window_control('close')
+        history_sidebar_mozilla = exists(library_bookmarks_mozilla_pattern, 10, region=Screen.TOP_HALF)
+        assert history_sidebar_mozilla, 'history_sidebar_mozilla'
+
+        history_sidebar_mozilla_location = find(library_bookmarks_mozilla_pattern.similar(0.6))
+        history_sidebar_mozilla_width, history_sidebar_mozilla_height = library_bookmarks_mozilla_pattern.get_size()
+
+        no_tags_region = Region(history_sidebar_mozilla_location.x+history_sidebar_mozilla_width,
+                                history_sidebar_mozilla_location.y, 150, 20)
+
+        no_tags = exists(blank_white_squre_150_20_pattern, region=no_tags_region)
+
+        assert no_tags and history_sidebar_mozilla, 'Mozilla page is bookmarked with default name and without tags'
+
+        open_library()
