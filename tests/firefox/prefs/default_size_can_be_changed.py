@@ -39,7 +39,6 @@ class Test(FirefoxTest):
         default_text_size_exists = exists(default_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_text_size_exists, 'Default size can be changed'
 
-        time.sleep(2)
         click(default_text_size_pattern)
         [type(Key.DOWN) for _ in range(5)]
         type(Key.ENTER)
