@@ -50,7 +50,6 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
             navigate('about:preferences#search')
-            time.sleep(10)
             expected = exists(default_search_engine_yandex_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected, 'Yandex is the default search engine.'
 
