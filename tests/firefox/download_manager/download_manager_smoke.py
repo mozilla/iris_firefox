@@ -27,10 +27,10 @@ class Test(FirefoxTest):
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.8), FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected is True, 'Downloads button found.'
 
-        expected = exists(DownloadManager.DownloadState.COMPLETED, 90)
+        expected = exists(DownloadManager.DownloadState.COMPLETED, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT * 2)
         assert expected is True, 'Firefox installer download is completed.'
 
-        expected = exists(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER, 10)
+        expected = exists(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'Containing folder button is available.'
 
         # Navigate to Downloads folder.
@@ -39,19 +39,19 @@ class Test(FirefoxTest):
         if OSHelper.is_linux():
             click(Pattern('linux_folder_icon.png'))
 
-        expected = exists(DownloadManager.DOWNLOADS_FOLDER, 10)
+        expected = exists(DownloadManager.DOWNLOADS_FOLDER, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'Downloads folder is displayed.'
 
         if OSHelper.is_mac():
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
             type('2', modifier=KeyModifier.CMD)
 
-        expected = exists(DownloadFiles.FIREFOX_INSTALLER_HIGHLIGHTED, 10)
+        expected = exists(DownloadFiles.FIREFOX_INSTALLER_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'Firefox installer is displayed in downloads folder.'
 
         click_window_control('close')
 
-        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, 'Download button found in the page.'
 
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
