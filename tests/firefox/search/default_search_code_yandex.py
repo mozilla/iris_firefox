@@ -38,6 +38,13 @@ class Test(FirefoxTest):
         for value in regions_by_locales.get(firefox.application.locale):
             change_preference('browser.search.region', value)
 
+            # Remove the file 'search.json.mozlz4' from the profile directory.
+            profile_temp = PathManager.get_temp_dir()
+            parent, test = PathManager.parse_module_path()
+            search_json_mozlz4_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
+            if os.path.isfile(search_json_mozlz4_path):
+                os.remove(os.path.join(search_json_mozlz4_path, 'search.json.mozlz4'))
+
             firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE,
                             image=LocalWeb.FIREFOX_LOGO)
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
