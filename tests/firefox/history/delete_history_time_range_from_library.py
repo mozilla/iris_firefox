@@ -47,7 +47,10 @@ class Test(FirefoxTest):
         assert expected, 'Iris page is displayed in the Recent History list.'
 
         # Right click on a History time range (e.g. 'Today') and select Delete.
-        right_click_and_type(history_today_pattern, keyboard_action='d')
+        history_today = exists(history_today_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        assert history_today, 'History Today button available'
+
+        right_click_and_type(history_today_pattern.similar(0.7), keyboard_action='d')
 
         try:
             expected = wait_vanish(history_today_pattern, 10)
