@@ -44,12 +44,12 @@ class Test(FirefoxTest):
         assert default_text_size_exists, 'Default size can be changed'
 
         click(default_text_size_pattern)
-        [type(Key.DOWN) for _ in range(5)]
+        [type(Key.DOWN) for _ in range(5)]  # select different font from drop-down
         type(Key.ENTER)
 
         next_tab()
 
         text_size_is_modified = exists(modified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         unmodified_text_size_exists = exists(unmodified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert text_size_is_modified and unmodified_text_size_exists is False,\
+        assert text_size_is_modified and unmodified_text_size_exists is False, \
             'The size of the text is successfully changed'
