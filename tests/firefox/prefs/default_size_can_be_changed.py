@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        unmodified_text_size_exists = exists(unmodified_text_size_pattern)
+        unmodified_text_size_exists = exists(unmodified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert unmodified_text_size_exists, 'Default wiki page is opened'
 
         previous_tab()
@@ -50,6 +50,6 @@ class Test(FirefoxTest):
         next_tab()
 
         text_size_is_modified = exists(modified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        unmodified_text_size_exists = exists(unmodified_text_size_pattern)
+        unmodified_text_size_exists = exists(unmodified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert text_size_is_modified and unmodified_text_size_exists is False,\
             'The size of the text is successfully changed'
