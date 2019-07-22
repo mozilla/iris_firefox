@@ -19,9 +19,13 @@ class Test(FirefoxTest):
         preferences_general_option_pattern = Pattern('preferences_general_option.png')
         default_text_size_pattern = Pattern('default_text_size.png').similar(0.6)
         modified_text_size_pattern = Pattern('modified_text_size.png')
+        unmodified_text_size_pattern = Pattern('unmodified_text_size.png')
 
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+
+        unmodified_text_size_exists = exists(unmodified_text_size_pattern)
+        assert unmodified_text_size_exists, 'Default wiki page is opened'
 
         previous_tab()
         navigate('about:preferences#general')
@@ -46,4 +50,6 @@ class Test(FirefoxTest):
         next_tab()
 
         text_size_is_modified = exists(modified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert text_size_is_modified, 'The size of the text is successfully changed'
+        unmodified_text_size_exists = exists(unmodified_text_size_pattern)
+        assert text_size_is_modified and unmodified_text_size_exists is False,\
+            'The size of the text is successfully changed'
