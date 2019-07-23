@@ -118,32 +118,20 @@ class Test(FirefoxTest):
         clear_history_settings_opened = exists(clear_browsing_download_pattern)
         assert clear_history_settings_opened, '"Clear after exit" settings opened'
 
-        clear_browsing_download_location = find(clear_browsing_download_pattern)
-
-        clear_browsing_download_width, clear_browsing_download_height = clear_browsing_download_pattern.get_size()
-        clear_browsing_download_region = Region(clear_browsing_download_location.x - box_width * 2,
-                                                clear_browsing_download_location.y,
-                                                clear_browsing_download_width + box_width * 2,
-                                                clear_browsing_download_height)
-        clear_browsing_download_checked = exists(prefs_checked_box_pattern, region=clear_browsing_download_region)
+        clear_browsing_download_checked = find_in_region_from_pattern(clear_browsing_download_pattern,
+                                                                      AboutPreferences.CHECKED_BOX)
         assert clear_browsing_download_checked, '"Clear browsing and download" is checked'
 
         settings_still_opened = exists(clear_form_search_patten)
         assert settings_still_opened, 'Settings are still opened'
 
-        clear_form_search_location = find(clear_form_search_patten)
-
-        clear_form_search_width, clear_form_search_height = clear_form_search_patten.get_size()
-        clear_form_search_region = Region(clear_form_search_location.x - box_width * 2,
-                                          clear_form_search_location.y,
-                                          clear_form_search_width + box_width * 2,
-                                          clear_form_search_height)
-        clear_form_search_checked = exists(prefs_checked_box_pattern, region=clear_form_search_region)
+        clear_form_search_checked = find_in_region_from_pattern(clear_form_search_patten, AboutPreferences.CHECKED_BOX)
         assert clear_form_search_checked, '"Clear browsing and download" is checked'
 
-        click(prefs_checked_box_pattern, quick_click_duration, clear_form_search_region)
+        click(clear_form_search_patten, quick_click_duration)
 
-        clear_form_search_unchecked = exists(prefs_unchecked_box_pattern, region=clear_form_search_region)
+        clear_form_search_unchecked = find_in_region_from_pattern(clear_form_search_patten,
+                                                                  AboutPreferences.UNCHECKED_BOX)
         assert clear_form_search_unchecked, '"Clear form and search" was successfully unchecked'
 
         type(Key.ENTER)
