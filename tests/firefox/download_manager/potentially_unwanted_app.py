@@ -103,7 +103,7 @@ class Test(FirefoxTest):
         close_tab()
 
         # Repeat steps 1-4 and click on Remove file.
-        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
 
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Uncommon downloads button is displayed.'
@@ -115,6 +115,8 @@ class Test(FirefoxTest):
 
         expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, 'Remove file button is displayed.'
+
+        click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 1)
 
         # The file is deleted from the Panel.
         type(Key.ESC)
