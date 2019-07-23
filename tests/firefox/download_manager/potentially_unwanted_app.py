@@ -25,7 +25,7 @@ class Test(FirefoxTest):
 
         navigate('https://testsafebrowsing.appspot.com')
 
-        expected = exists(DownloadFiles.POTENTIALLY_UNWANTED, 10)
+        expected = exists(DownloadFiles.POTENTIALLY_UNWANTED, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, 'Potentially unwanted file has been found.'
 
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
@@ -95,7 +95,7 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
 
-        download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO)
+        download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert download_image_site_loaded, 'Focus site loaded'
 
         download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK)
