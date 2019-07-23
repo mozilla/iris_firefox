@@ -149,7 +149,7 @@ class Test(FirefoxTest):
 
         click(download_pdf_pattern)
 
-        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON)
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert save_file_dialog_exists, 'Save file dialog opened'
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
