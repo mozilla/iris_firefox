@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         assert preferences_general_option_exists, 'The options for "General" section are displayed'
 
         click(AboutPreferences.FIND_IN_OPTIONS)
-        type('size')
+        paste('size')
 
         default_text_size_exists = exists(default_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_text_size_exists, 'Default size can be changed'
