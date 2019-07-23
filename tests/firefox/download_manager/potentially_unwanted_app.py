@@ -1,7 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from src.core.api.mouse import mouse
+
+
 from targets.firefox.firefox_ui.helpers.download_manager_utils import *
 from targets.firefox.fx_testcase import *
 
@@ -78,42 +79,53 @@ class Test(FirefoxTest):
             right_click(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD)
 
         # Clear the download panel.
+        expected = exists(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY, 10)
+        assert expected is True, '\'Remove from history\' option is available.'
+
         click(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY)
 
-        # Check the potentially unwanted download button.
-        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        # Delete downloads folder
+        downloads_cleanup()
+
+        # Use a dirty profile with at least one previous downloaded item!
+        download_image = self.get_asset_path('download_image.html')
+
+        new_tab()
+        navigate(download_image)
+
+        type(Key.ESC)
+
+        download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO)
+        assert download_image_site_loaded, 'Focus site loaded'
+
+        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK)
+
+        close_tab()
+
+        # Repeat steps 1-4 and click on Remove file.
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
-        assert expected is True, 'Potentially unwanted downloads button is displayed.'
+        assert expected is True, 'Uncommon downloads button is displayed.'
 
         # Remove the file from the download panel.
-        mouse.move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
         click(NavBar.UNWANTED_DOWNLOADS_BUTTON)
+
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_ARROW)
+
         expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, 'Remove file button is displayed.'
-        click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON)
 
-        # Check that there are no downloads displayed in Downloads Library window.
-        for step in open_show_all_downloads_window_from_library_menu():
-            assert expected is True, (step.resolution, step.message)
+        # The file is deleted from the Panel.
+        type(Key.ESC)
 
-        expected = exists(potentially_unwanted_file_download_library, 10)
-        assert expected is False, 'Unwanted file was deleted from Downloads Library.'
-        click_window_control('close')
+        downloads_button = exists(NavBar.DOWNLOADS_BUTTON)
+        assert downloads_button, 'Downloads button available.'
 
-        # Check that there are no downloads displayed in the 'about:downloads' page.
-        navigate('about:downloads')
-        expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
-        assert expected is True, 'There are no downloads displayed in the \'about:downloads\' page.'
+        click(NavBar.DOWNLOADS_BUTTON)
 
-        # Check that there are no downloads displayed in the downloads folder.
-        open_directory(PathManager.get_downloads_dir())
-        expected = exists(potentially_unwanted_file_download_library, 10)
-        assert expected is False, 'Unwanted file was deleted from the download folder.'
-
-        click_window_control('close')
-
-        click(DownloadManager.AboutDownloads.NO_DOWNLOADS)
+        potentially_unwanted_file = exists(potentially_unwanted_file_download_library)
+        assert potentially_unwanted_file is False, 'Potentially unwanted file is deleted from the Panel'
 
     def teardown(self):
         downloads_cleanup()
