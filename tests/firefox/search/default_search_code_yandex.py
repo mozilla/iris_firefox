@@ -16,7 +16,6 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
-        text_pattern = Pattern('focus_text.png')
 
         # Detect the build.
         if FirefoxUtils.get_firefox_channel(firefox.application.path) == 'beta' \
@@ -81,20 +80,22 @@ class Test(FirefoxTest):
             # Highlight some text and right click it.
             new_tab()
             navigate(url)
-            expected = exists(text_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert expected, 'Page successfully loaded, focus text found.'
+            expected = exists(LocalWeb.FOCUS_LOGO, 10)
+            assert expected, 'Page successfully loaded, Focus logo found.'
 
-            double_click(text_pattern)
-            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
-            right_click(text_pattern)
-            time.sleep(Settings.DEFAULT_FX_DELAY)
+            area = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 5, Screen.SCREEN_HEIGHT / 4)
+            area.double_click('Focus')
+            time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+            click_loc = Location(400, 300)
+            area.right_click(click_loc)
+            time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
             repeat_key_down(3)
             type(Key.ENTER)
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert '/search/?text=test&clid=2186623' in url_text, 'Client search code is correct for searches ' \
+            assert '/search/?text=Focus&clid=2186623' in url_text, 'Client search code is correct for searches ' \
                                                        'with context menu, region ' + value + '.'
 
             # Perform a search from about:newtab page, content search field.
@@ -109,7 +110,6 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             select_location_bar()
             url_text = copy_to_clipboard()
-            print (url_text)
 
             assert '/search/?text=beats&clid=2186620' in url_text, 'Client search code is correct for searches ' \
                                                        'from about:newtab page, content search field, region ' + value + '.'
