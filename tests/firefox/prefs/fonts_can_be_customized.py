@@ -9,8 +9,8 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='The default font can be successfully changed',
-        test_case_id='143553',
+        description='The default fonts can be successfully customized',
+        test_case_id='143558',
         test_suite_id='2241',
         locale=['en-US']
     )
