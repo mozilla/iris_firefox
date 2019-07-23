@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         about_preferences_general_url_pattern = Pattern('about_preferences_general_url.png')
         preferences_general_option_pattern = Pattern('preferences_general_option.png')
         advanced_button_pattern = Pattern('advanced_button.png')
-        proportional_dropdown_pattern = Pattern('proportional_dropdown.png')
+        proportional_dropdown_pattern = Pattern('proportional_dropdown.png').similar(0.6)
         proportional_font_size_pattern = Pattern('proportional_font_size.png')
         font_sans_serif_drop_pattern = Pattern('font_sans_serif_drop.png')
         page_with_mod_font_size_pattern = Pattern('page_with_mod_font_size.png')
@@ -44,15 +44,16 @@ class Test(FirefoxTest):
         proportional_dropdown_exists = exists(proportional_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert proportional_dropdown_exists, 'Proportional drop is available'
 
-        if OSHelper.is_mac():
+        if OSHelper.is_mac():  # for mac - navigation using 'tab' is not working by default
             click(proportional_dropdown_pattern)
             [type(Key.DOWN) for _ in range(2)]
         else:
             type(Key.TAB)
             type(Key.DOWN)
-        type(Key.ENTER)
+        if OSHelper.is_mac():
+            type(Key.ENTER)
 
-        font_sans_serif_drop_exists = exists(font_sans_serif_drop_pattern)
+        font_sans_serif_drop_exists = exists(font_sans_serif_drop_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert font_sans_serif_drop_exists, 'Sans serif font can be changed'
 
         click(font_sans_serif_drop_pattern)
@@ -64,17 +65,15 @@ class Test(FirefoxTest):
         if OSHelper.is_mac():
             type(Key.ENTER)  # select size in drop-down
 
-        proportional_font_size_exists = exists(proportional_font_size_pattern)
+        proportional_font_size_exists = exists(proportional_font_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert proportional_font_size_exists, 'Size can be chosen.'
 
         click(proportional_font_size_pattern)
 
         [type(Key.DOWN) for _ in range(5)]  # choose different size
 
-        if OSHelper.is_mac():
-            type(Key.ENTER)  # select size in drop-down
-
-        type(Key.ENTER)
+        type(Key.ENTER)  # select size in drop-down
+        type(Key.ENTER)  # close window
 
         next_tab()
 
