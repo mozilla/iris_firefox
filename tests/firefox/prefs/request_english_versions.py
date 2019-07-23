@@ -19,7 +19,6 @@ class Test(FirefoxTest):
         choose_language_button_pattern = Pattern('choose_button.png')
         webpage_language_settings_title_pattern = Pattern('webpage_language_settings_title.png')
         request_english_versions_unchecked_pattern = Pattern('request_english_versions_unchecked.png')
-        request_english_versions_checked_pattern = Pattern('request_english_versions_checked.png')
 
         change_preference('privacy.resistFingerprinting', 'true')
 
@@ -43,29 +42,25 @@ class Test(FirefoxTest):
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_english_version_unchecked, '"Request English versions..." found.'
 
-        request_english_location = find(request_english_versions_unchecked_pattern)
-        request_english_width, request_english_height = request_english_versions_unchecked_pattern.get_size()
-        request_english_region = Region(request_english_location.x-request_english_width,
-                                        request_english_location.y-request_english_height,
-                                        request_english_width*3, request_english_height*3)
+        request_checkbox_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
+                                                                 AboutPreferences.UNCHECKED_BOX,
+                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
 
-        request_checkbox_unchecked = exists(AboutPreferences.UNCHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT,
-                                            region=request_english_region)
-
-        assert request_english_version_unchecked and request_checkbox_unchecked, '"Request English versions..." ' \
-                                                                                 'is unchecked.'
+        assert request_checkbox_unchecked, '"Request English versions..." is unchecked.'
 
         click(request_english_versions_unchecked_pattern, 1)
 
-        request_checkbox_checked = exists(request_english_versions_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                          region=request_english_region)
+        request_checkbox_checked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
+                                                               AboutPreferences.CHECKED_BOX,
+                                                               FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert request_checkbox_checked, '"Request English versions..." checked.'
 
-        click(request_english_versions_checked_pattern, 1)
+        click(request_english_versions_unchecked_pattern, 1)
 
-        request_version_unchecked = exists(AboutPreferences.UNCHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT,
-                                           region=request_english_region)
+        request_version_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
+                                                                AboutPreferences.UNCHECKED_BOX,
+                                                                FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_version_unchecked, '"Request English versions..." unchecked.'
 
         type(Key.ENTER)
@@ -77,7 +72,8 @@ class Test(FirefoxTest):
                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert webpage_language_settings_title, 'Webpage language settings popup displayed .'
 
-        request_version_unchecked = exists(AboutPreferences.UNCHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT,
-                                           region=request_english_region)
+        request_version_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
+                                                                AboutPreferences.UNCHECKED_BOX,
+                                                                FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_version_unchecked, '"Request English versions..." unchecked. NOTE: The build affected ' \
                                           'by this bug the field remained checked. '
