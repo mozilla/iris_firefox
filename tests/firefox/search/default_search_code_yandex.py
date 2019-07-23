@@ -12,7 +12,8 @@ class Test(FirefoxTest):
         locale=['ru', 'be', 'kk', 'tr', 'en-US', 'en-GB', 'en-ZA'],
         test_case_id='218336',
         test_suite_id='83',
-        profile=Profiles.BRAND_NEW
+        profile=Profiles.BRAND_NEW,
+        blocked_by={'id': 'issue_3509', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
