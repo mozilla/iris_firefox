@@ -123,11 +123,6 @@ class Test(FirefoxTest):
         twitter_opened = exists(twitter_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert twitter_opened, 'The Twitter site successfully opened'
 
-        navigate('https://twitter.com/')
-
-        twitter_opened = exists(twitter_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert twitter_opened, 'The Twitter site successfully opened'
-
         for _ in range(3):
             open_browser_console()
             browser_console_opened = exists(browser_console_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
