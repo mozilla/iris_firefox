@@ -46,20 +46,30 @@ def collect_tests():
             logger.debug('Path %s found. Checking content ...', tests_dir)
             for dir_path, sub_dirs, all_files in PathManager.sorted_walk(tests_dir):
                 for current_file in all_files:
-                    current_full_path = os.path.join(dir_path, current_file)
-                    test_params = [include]
+                    directory = '%s%s%s' % (os.sep, core_args.directory, os.sep)
+                    include_params = [include]
                     exclude_params = [exclude]
                     if ',' in include:
-                        test_params = include.split(',')
+                        include_params = include.split(',')
                     if ',' in exclude:
                         exclude_params = exclude.split(',')
-                    for include_param in test_params:
-                        if current_file.endswith('.py') and not current_file.startswith('__') and include_param in current_full_path:
-                            for exclude_param in exclude_params:
-                                if exclude_param == '' or exclude_param not in current_full_path:
-                                    if not current_full_path in test_list:
-                                        test_list.append(current_full_path)
-
+                    current_full_path = os.path.join(dir_path, current_file)
+                    if current_file.endswith('.py') and not current_file.startswith('__'):
+                        if include is '' and exclude is '' and directory is '':
+                            if not current_full_path in test_list:
+                                test_list.append(current_full_path)
+                        else:
+                            if core_args.directory is '' or directory in current_full_path:
+                                for include_param in include_params:
+                                    if include_param is '' or include_param in current_full_path:
+                                        for exclude_param in exclude_params:
+                                            if exclude_param is '':
+                                                if not current_full_path in test_list:
+                                                    test_list.append(current_full_path)
+                                            else:
+                                                if exclude_param not in current_full_path:
+                                                    if not current_full_path in test_list:
+                                                        test_list.append(current_full_path)
             if len(test_list) == 0:
                 logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
             else:
