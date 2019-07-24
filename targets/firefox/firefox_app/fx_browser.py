@@ -293,38 +293,25 @@ class FXRunner:
         if maximize:
             maximize_window()
 
-
     def stop(self):
-
         if OSHelper.is_windows():
             quit_firefox()
             if FXRunner.process.pid is not None:
                 logger.debug('Closing Firefox process ID: %s' % FXRunner.process.pid)
-                if OSHelper.is_windows():
-                    import ctypes
-                    process_terminate = 1
-                    handle = ctypes.windll.kernel32.OpenProcess(process_terminate, False, FXRunner.process.pid)
-                    ctypes.windll.kernel32.TerminateProcess(handle, -1)
-                    ctypes.windll.kernel32.CloseHandle(handle)
-                else:
+                try:
                     process = psutil.Process(pid=FXRunner.process.pid)
-                    try:
-                        if process.children() is not None:
-                            for proc in process.children(recursive=True):
-                                proc.kill()
-                        try:
-                            if psutil.pid_exists(process):
-                                logger.debug('Terminating PID :%s' % process)
-                                process.terminate()
-                            else:
-                                pass
-                        except ProcessLookupError:
-                            pass
-                    except subprocess.CalledProcessError:
-                        logger.error('Failed to close Firefox PID process. Closing Firefox process by name.')
-                        shutdown_process('firefox')
-        else:
+                    if process.children() is not None:
+                        for proc in process.children(recursive=True):
+                            proc.kill()
 
+                    if psutil.pid_exists(process):
+                        logger.debug('Terminating PID :%s' % process)
+                        process.terminate()
+
+                except psutil.NoSuchProcess:
+                    logger.error('Failed to close Firefox PID process. Closing Firefox process by name.')
+                    shutdown_process('firefox')
+        else:
             if self.runner and self.runner.process_handler:
                 quit_firefox()
                 status = self.runner.process_handler.wait(DEFAULT_FIREFOX_TIMEOUT)
