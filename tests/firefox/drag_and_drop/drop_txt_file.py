@@ -118,7 +118,7 @@ class Test(FirefoxTest):
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
         if OSHelper.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in file picker
+            type('g', modifier=[KeyModifier.CMD, KeyModifier.SHIFT])  # open folder in file picker
             paste(folderpath)
             type(Key.ENTER)
             type('1', KeyModifier.CMD)
