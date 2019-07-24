@@ -32,10 +32,10 @@ class Test(FirefoxTest):
 
         navigate('https://edition.cnn.com')
 
+        close_content_blocking_pop_up()
+
         cnn_page_opened = exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert cnn_page_opened, 'The CNN site successfully opened'
-
-        close_content_blocking_pop_up()
 
         history_sidebar()
 
@@ -117,6 +117,11 @@ class Test(FirefoxTest):
         assert youtube_opened, 'The Youtube site successfully opened'
 
         new_tab()
+
+        navigate('https://twitter.com/')
+
+        twitter_opened = exists(twitter_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert twitter_opened, 'The Twitter site successfully opened'
 
         navigate('https://twitter.com/')
 
