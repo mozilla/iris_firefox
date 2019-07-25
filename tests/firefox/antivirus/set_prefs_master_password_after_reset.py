@@ -160,8 +160,11 @@ class Test(FirefoxTest):
         firefox.restart(url='about:preferences#privacy',
                         image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
-        saved_logins_button_exists = scroll_until_pattern_found(
-            saved_logins_button_pattern, scroll, (scroll_length,), 30, 1)
+        scroll_until_pattern_found(saved_logins_button_pattern, scroll, (scroll_length,), 30, 1)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        saved_logins_button_exists = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert saved_logins_button_exists, 'Saved logins button exists'
 
         click(saved_logins_button_pattern, 1)
