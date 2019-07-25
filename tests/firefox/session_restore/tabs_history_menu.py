@@ -59,7 +59,13 @@ class Test(FirefoxTest):
         assert tabs_list_exists, 'Previously Opened Tabs list exists. A new menu ' \
                                  'is displayed containing the recently closed tabs'
 
-        click(restore_tabs_pattern)
+        restore_tabs = exists(restore_tabs_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert restore_tabs, 'restore_tabs_pattern'
+
+        restore_tabs_location = find(restore_tabs_pattern)
+
+        click(restore_tabs_location, 0)
+
         #  check if all tabs reopened correctly
         tabs_count = len(website_image_pattern)
         for tab_index in range(6):
@@ -68,7 +74,7 @@ class Test(FirefoxTest):
                 assert one_tab_left, f'All {tabs_count - 1} closed tabs are successfully reopened.'
 
             else:
-                tab_exists = exists(website_image_pattern.pop())
+                tab_exists = exists(website_image_pattern.pop(), FirefoxSettings.SITE_LOAD_TIMEOUT)
                 assert tab_exists, f'Tab {tabs_count - tab_index} successfully reopened.'
 
                 previous_tab()
