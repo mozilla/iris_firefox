@@ -74,7 +74,7 @@ def select_file_in_folder(directory, filename_pattern, file_option, max_num_of_a
         elif OSHelper.is_linux():
             type(text='q', modifier=KeyModifier.CTRL)
         elif OSHelper.is_mac():
-            type(text='w', modifier=KeyModifier.CMD + KeyModifier.ALT)
+            type(text='w', modifier=[KeyModifier.CMD, KeyModifier.ALT])
 
 
 def copy_file(original, copy):
