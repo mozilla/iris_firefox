@@ -43,7 +43,7 @@ class Test(FirefoxTest):
         assert request_english_version_unchecked, '"Request English versions..." found.'
 
         request_checkbox_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
-                                                                 AboutPreferences.UNCHECKED_BOX,
+                                                                 AboutPreferences.UNCHECKED_BOX.similar(0.7),
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert request_checkbox_unchecked, '"Request English versions..." is unchecked.'
@@ -58,8 +58,10 @@ class Test(FirefoxTest):
 
         click(request_english_versions_unchecked_pattern, 1)
 
-        request_version_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
-                                                                AboutPreferences.UNCHECKED_BOX,
+        restore_firefox_focus()
+
+        request_version_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern.similar(0.7),
+                                                                AboutPreferences.UNCHECKED_BOX.similar(0.7),
                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_version_unchecked, '"Request English versions..." unchecked.'
 
