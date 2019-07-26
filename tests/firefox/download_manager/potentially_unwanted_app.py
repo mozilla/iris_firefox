@@ -31,9 +31,11 @@ class Test(FirefoxTest):
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
 
         if OSHelper.get_os_version() == 'win7':
-            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE)
+            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE,
+                          max_number_of_attempts=10)
         else:
-            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                          max_number_of_attempts=10)
 
         expected = exists(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Unwanted download icon is displayed.'
@@ -102,15 +104,17 @@ class Test(FirefoxTest):
         download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert download_image_site_loaded, 'Focus site loaded'
 
-        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK)
+        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK, max_number_of_attempts=10)
 
         close_tab()
 
         # Repeat steps 1-4 and click on Remove file.
         if OSHelper.get_os_version() == 'win7':
-            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE)
+            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE,
+                          max_number_of_attempts=10)
         else:
-            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+            download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                          max_number_of_attempts=10)
 
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Uncommon downloads button is displayed.'
