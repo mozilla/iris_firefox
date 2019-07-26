@@ -1,6 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from src.core.api.mouse import mouse
 from targets.firefox.firefox_ui.helpers.download_manager_utils import *
 from targets.firefox.fx_testcase import *
@@ -30,9 +32,11 @@ class Test(FirefoxTest):
         width, height = DownloadFiles.MALICIOUS.get_size()
 
         if OSHelper.get_os_version() == 'win7':
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE)
+            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE,
+                          max_number_of_attempts=10)
         else:
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                          max_number_of_attempts=10)
 
         expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Blocked download icon is displayed.'
@@ -112,16 +116,18 @@ class Test(FirefoxTest):
         download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert download_image_site_loaded, 'Focus site loaded'
 
-        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK)
+        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK, max_number_of_attempts=10)
 
         close_tab()
 
         # Repeat steps 1-4 and click on Remove file.
         width, height = DownloadFiles.MALICIOUS.get_size()
         if OSHelper.get_os_version() == 'win7':
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE)
+            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE,
+                          max_number_of_attempts=10)
         else:
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                          max_number_of_attempts=10)
 
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Malicious downloads button is displayed.'
