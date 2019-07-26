@@ -17,9 +17,9 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         duck_duck_go_one_off_button = Pattern('duck_duck_go_one_off_button.png')
-        google_search_results = Pattern('google_search_results.png')
-        localhost = Pattern('localhost.png')
         hover_duck_duck_go_one_off_button = Pattern('hover_duck_duck_go_one_off_button.png')
+        search_results_listed_pattern = Pattern('search_results_listed.png')
+        result_is_focused_pattern = Pattern('result_is_focused.png')
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
@@ -40,23 +40,47 @@ class Test(FirefoxTest):
         # In a new tab place the mouse cursor at a position that will later match position of a search
         # engine(e.g 'DuckDuckGo') icon in the awesomebar autocomplete area.
         new_tab()
+
+        Mouse().move(coord)
+
         select_location_bar()
 
         # Type a partial part of the above address.
         type('127')
 
-        expected = region.exists(localhost, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
+        # Type "bug" in the awesomebar to search for the page from step 2 (bookmarked page).
+        # Search results are listed.
 
-        Mouse().move(coord)
+        search_results_listed = exists(search_results_listed_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_results_listed, 'Search results are listed.'
 
-        expected = exists(hover_duck_duck_go_one_off_button, 10)
-        assert expected, 'Mouse is over the \'DuckDuckGo\' search engine.'
+        # 5
+        # Check the mouse cursor is over any of the search provider icons at the bottom of the results.
 
-        # Press the 'arrow down' key to focus a page result.
-        type(Key.DOWN)
+        Mouse().move(Location(coord.x+1, coord.y+1))
+
+        # Mouse is over a search engine icon.
+        hover_duck_duck_go_one_off = exists(hover_duck_duck_go_one_off_button, 10)
+        assert hover_duck_duck_go_one_off, 'Mouse is over the \'DuckDuckGo\' search engine icon.'
+
+        #Press the "↓" key to focus a page result. (e.g. "bugzilla.mozilla.org")
+
+        # type(Key.DOWN)
+
+        # The result is focused.
+        result_is_focused = exists(result_is_focused_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert result_is_focused, 'The result is focused.'
+
+        # Press Enter to perform the load of the page.
+
         type(Key.ENTER)
 
-        expected = exists(google_search_results, 10)
-        assert expected, 'The browser does NOT search using the search engine that had the mouse over it, ' \
-                         'search is performed with the default search engine which is \'Google\''
+        # The "bugzilla.mozilla.org" page is loaded.
+        # The browser does NOT search for "bug" with the search engine that had the mouse over it.
+
+        firefox_local_page_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        iris_local_page_loaded = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
+        assert firefox_local_page_loaded or iris_local_page_loaded,\
+            'Page successfully is loaded. The browser does NOT search for "bug" with the search engine that had ' \
+            'the mouse over it.'
