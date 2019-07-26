@@ -32,7 +32,7 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('moz')
 
-        expected = region.exists(duck_duck_go_one_off_button, 10)
+        expected = region.exists(duck_duck_go_one_off_button.similar(0.7), 10)
         assert expected, 'The \'DuckDuckGo\' one-off button found.'
 
         # Find the coordinates of the one-off button.
@@ -52,18 +52,16 @@ class Test(FirefoxTest):
         # Type "bug" in the awesomebar to search for the page from step 2 (bookmarked page).
         # Search results are listed.
 
-        search_results_listed = exists(search_results_listed_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        search_results_listed = exists(search_results_listed_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_results_listed, 'Search results are listed.'
 
-        # 5
-        # Check the mouse cursor is over any of the search provider icons at the bottom of the results.
+        # 5. Check the mouse cursor is over any of the search provider icons at the bottom of the results.
 
         duck_duck_go = region.exists(duck_duck_go_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
         assert duck_duck_go, 'The \'DuckDuckGo\' one-off button found.'
 
-        Mouse().move(Location(search_engine_location.x+1, search_engine_location.y+1), 0)
-
         # Mouse is over a search engine icon.
+        Mouse().move(Location(search_engine_location.x+1, search_engine_location.y+1), 0)
 
         # Press the "↓" key to focus a page result/search suggestion. (e.g. "bugzilla.mozilla.org")
 
