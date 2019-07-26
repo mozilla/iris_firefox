@@ -309,8 +309,8 @@ class FXRunner:
                         process.terminate()
 
                 except psutil.NoSuchProcess:
-                    logger.error('Failed to close Firefox PID process. Closing Firefox process by name.')
-                    shutdown_process('firefox')
+                    logger.debug('Failed to find and close Firefox PID: %s' % FXRunner.process.pid)
+                    # shutdown_process('firefox')
         else:
             if self.runner and self.runner.process_handler:
                 quit_firefox()
