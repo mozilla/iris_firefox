@@ -60,9 +60,11 @@ class Test(FirefoxTest):
                                  'is displayed containing the recently closed tabs'
 
         restore_tabs = exists(restore_tabs_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert restore_tabs, 'restore_tabs_pattern'
+        assert restore_tabs, 'Restore tabs button available.'
 
         restore_tabs_location = find(restore_tabs_pattern)
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         click(restore_tabs_location, 0)
 
