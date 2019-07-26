@@ -17,11 +17,12 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         duck_duck_go_one_off_button = Pattern('duck_duck_go_one_off_button.png')
-        hover_duck_duck_go_one_off_button = Pattern('hover_duck_duck_go_one_off_button.png')
         search_results_listed_pattern = Pattern('search_results_listed.png')
         result_is_focused_pattern = Pattern('result_is_focused.png')
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
+
+        change_preference('browser.urlbar.suggest.searches', 'false')
 
         navigate(url)
 
@@ -35,13 +36,13 @@ class Test(FirefoxTest):
         assert expected, 'The \'DuckDuckGo\' one-off button found.'
 
         # Find the coordinates of the one-off button.
-        coord = find(duck_duck_go_one_off_button)
+        search_engine_location = find(duck_duck_go_one_off_button)
 
         # In a new tab place the mouse cursor at a position that will later match position of a search
         # engine(e.g 'DuckDuckGo') icon in the awesomebar autocomplete area.
         new_tab()
 
-        Mouse().move(coord)
+        Mouse().move(search_engine_location)
 
         select_location_bar()
 
@@ -57,18 +58,19 @@ class Test(FirefoxTest):
         # 5
         # Check the mouse cursor is over any of the search provider icons at the bottom of the results.
 
-        Mouse().move(Location(coord.x+1, coord.y+1))
+        duck_duck_go = region.exists(duck_duck_go_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert duck_duck_go, 'The \'DuckDuckGo\' one-off button found.'
+
+        Mouse().move(Location(search_engine_location.x+1, search_engine_location.y+1), 0)
 
         # Mouse is over a search engine icon.
-        hover_duck_duck_go_one_off = exists(hover_duck_duck_go_one_off_button, 10)
-        assert hover_duck_duck_go_one_off, 'Mouse is over the \'DuckDuckGo\' search engine icon.'
 
-        #Press the "↓" key to focus a page result. (e.g. "bugzilla.mozilla.org")
+        # Press the "↓" key to focus a page result/search suggestion. (e.g. "bugzilla.mozilla.org")
 
-        # type(Key.DOWN)
+        type(Key.DOWN)
 
         # The result is focused.
-        result_is_focused = exists(result_is_focused_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        result_is_focused = exists(result_is_focused_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert result_is_focused, 'The result is focused.'
 
         # Press Enter to perform the load of the page.
