@@ -11,29 +11,30 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description='This test case checks that mouse position does not affect a search from awesomebar.',
         locale=['en-US'],
-        test_case_id='108256',
+        test_case_id='Settings.FIREFOX_TIMEOUT8256',
         test_suite_id='1902'
     )
     def run(self, firefox):
-        url = LocalWeb.FIREFOX_TEST_SITE
+        local_url = LocalWeb.FIREFOX_TEST_SITE
         duck_duck_go_one_off_button = Pattern('duck_duck_go_one_off_button.png')
         search_results_listed_pattern = Pattern('search_results_listed.png')
         result_is_focused_pattern = Pattern('result_is_focused.png')
 
-        region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
+        top_two_third_screen_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT // 3)
 
         change_preference('browser.urlbar.suggest.searches', 'false')
 
-        navigate(url)
+        navigate(local_url)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        local_url_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
+        assert local_url_loaded, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         paste('moz')
 
-        expected = region.exists(duck_duck_go_one_off_button.similar(0.7), 10)
-        assert expected, 'The \'DuckDuckGo\' one-off button found.'
+        search_engine_logo_icon = exists(duck_duck_go_one_off_button.similar(0.7), Settings.FIREFOX_TIMEOUT,
+                                         region=top_two_third_screen_region)
+        assert search_engine_logo_icon, 'The \'DuckDuckGo\' one-off button found.'
 
         # Find the coordinates of the one-off button.
         search_engine_location = find(duck_duck_go_one_off_button)
@@ -57,11 +58,12 @@ class Test(FirefoxTest):
 
         # 5. Check the mouse cursor is over any of the search provider icons at the bottom of the results.
 
-        duck_duck_go = region.exists(duck_duck_go_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        duck_duck_go = exists(duck_duck_go_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT,
+                              region=top_two_third_screen_region)
         assert duck_duck_go, 'The \'DuckDuckGo\' one-off button found.'
 
         # Mouse is over a search engine icon.
-        Mouse().move(Location(search_engine_location.x+1, search_engine_location.y+1), 0)
+        Mouse().move(Location(search_engine_location.x+1, search_engine_location.y+1), duration=0)
 
         # Press the "↓" key to focus a page result/search suggestion. (e.g. "bugzilla.mozilla.org")
 
