@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         test_search_wikipedia_pattern = Pattern('test_search_wikipedia.png')
         bing_search_bar_pattern = Pattern('bing_search_bar.png')
         amazon_search_bar_pattern = Pattern('amazon_search_bar.png')
-        duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png')
+        duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png').similar(0.6)
         wikipedia_search_bar_pattern = Pattern('wikipedia_search_bar.png').similar(0.6)
 
         one_click_engines_list = [bing_search_bar_pattern, amazon_search_bar_pattern, duckduckgo_search_bar_pattern,
