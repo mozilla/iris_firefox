@@ -12,11 +12,11 @@ class Test(FirefoxTest):
         locale=['ru', 'be', 'kk', 'tr', 'en-US', 'en-GB', 'en-ZA'],
         test_case_id='218336',
         test_suite_id='83',
-        profile=Profiles.BRAND_NEW
+        profile=Profiles.BRAND_NEW,
+        blocked_by={'id': 'issue_3509', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
-        text_pattern = Pattern('focus_text.png')
 
         # Detect the build.
         if FirefoxUtils.get_firefox_channel(firefox.application.path) == 'beta' \
@@ -38,6 +38,13 @@ class Test(FirefoxTest):
         for value in regions_by_locales.get(firefox.application.locale):
             change_preference('browser.search.region', value)
 
+            # Remove the file 'search.json.mozlz4' from the profile directory.
+            profile_temp = PathManager.get_temp_dir()
+            parent, test = PathManager.parse_module_path()
+            search_json_mozlz4_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
+            if os.path.isfile(search_json_mozlz4_path):
+                os.remove(os.path.join(search_json_mozlz4_path, 'search.json.mozlz4'))
+
             firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE,
                             image=LocalWeb.FIREFOX_LOGO)
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
@@ -54,7 +61,7 @@ class Test(FirefoxTest):
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert 'search/?clid=2186621' in url_text, 'Client search code is correct for searches from awesome ' \
+            assert '/search/?text=test&clid=2186621' in url_text, 'Client search code is correct for searches from awesome ' \
                                                        'bar, region ' + value + '.'
 
             select_location_bar()
@@ -68,25 +75,28 @@ class Test(FirefoxTest):
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert 'search/?clid=2186618' in url_text, 'Client search code is correct for searches from ' \
+            assert '/search/?text=test&clid=2186618' in url_text, 'Client search code is correct for searches from ' \
                                                        'search bar, region ' + value + '.'
 
             # Highlight some text and right click it.
             new_tab()
             navigate(url)
-            expected = exists(text_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert expected, 'Page successfully loaded, focus text found.'
+            expected = exists(LocalWeb.FOCUS_LOGO, 10)
+            assert expected, 'Page successfully loaded, Focus logo found.'
 
-            double_click(text_pattern)
-            right_click(text_pattern)
-            time.sleep(Settings.DEFAULT_FX_DELAY)
+            area = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 5, Screen.SCREEN_HEIGHT / 4)
+            area.double_click('Focus')
+            time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+            click_loc = Location(400, 300)
+            area.right_click(click_loc)
+            time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
             repeat_key_down(3)
             type(Key.ENTER)
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert 'search/?clid=2186623' in url_text, 'Client search code is correct for searches ' \
+            assert '/search/?text=Focus&clid=2186623' in url_text, 'Client search code is correct for searches ' \
                                                        'with context menu, region ' + value + '.'
 
             # Perform a search from about:newtab page, content search field.
@@ -102,5 +112,5 @@ class Test(FirefoxTest):
             select_location_bar()
             url_text = copy_to_clipboard()
 
-            assert 'search/?clid=2186620' in url_text, 'Client search code is correct for searches ' \
+            assert '/search/?text=beats&clid=2186620' in url_text, 'Client search code is correct for searches ' \
                                                        'from about:newtab page, content search field, region ' + value + '.'

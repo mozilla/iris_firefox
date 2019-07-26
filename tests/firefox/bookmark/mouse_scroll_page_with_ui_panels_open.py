@@ -22,9 +22,9 @@ class Test(FirefoxTest):
         if OSHelper.is_windows():
             scroll_value = Screen.SCREEN_HEIGHT
         elif OSHelper.is_linux():
-            scroll_value = Screen.SCREEN_HEIGHT/200
+            scroll_value = Screen.SCREEN_HEIGHT/100
         else:
-            scroll_value = Screen.SCREEN_HEIGHT/50
+            scroll_value = Screen.SCREEN_HEIGHT/20
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 

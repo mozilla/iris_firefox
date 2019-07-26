@@ -19,8 +19,8 @@ class Test(FirefoxTest):
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
-        new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
-        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png')
+        new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png').similar(0.6)
+        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png').similar(0.6)
         google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
         test_pattern = Pattern('test.png')

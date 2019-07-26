@@ -60,7 +60,9 @@ class Test(FirefoxTest):
         next_tab()
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        twitter_search_results_localhost_exists = exists(twitter_search_results_localhost.similar(0.9),
+        close_content_blocking_pop_up()
+
+        twitter_search_results_localhost_exists = exists(twitter_search_results_localhost,
                                                          FirefoxSettings.SHORT_FIREFOX_TIMEOUT) or \
                                                   exists(twitter_search_results_localhost_2,
                                                          FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
@@ -88,6 +90,6 @@ class Test(FirefoxTest):
         click(bing_one_off_button)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        bing_search_results_localhost_exists = exists(bing_search_results_localhost.similar(0.9),
+        bing_search_results_localhost_exists = exists(bing_search_results_localhost,
                                                       FirefoxSettings.FIREFOX_TIMEOUT)
         assert bing_search_results_localhost_exists, '\'Bing\' search results are opened in the same tab.'

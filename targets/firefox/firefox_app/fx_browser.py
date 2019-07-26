@@ -293,7 +293,9 @@ class FXRunner:
         if maximize:
             maximize_window()
 
+
     def stop(self):
+
         if OSHelper.is_windows():
             quit_firefox()
             if FXRunner.process.pid is not None:
@@ -312,6 +314,7 @@ class FXRunner:
                     logger.debug('Failed to find and close Firefox PID: %s' % FXRunner.process.pid)
                     # shutdown_process('firefox')
         else:
+
             if self.runner and self.runner.process_handler:
                 quit_firefox()
                 status = self.runner.process_handler.wait(DEFAULT_FIREFOX_TIMEOUT)

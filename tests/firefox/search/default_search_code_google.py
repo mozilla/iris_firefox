@@ -12,6 +12,8 @@ class Test(FirefoxTest):
         locale=['en-US', 'de', 'fr', 'pl', 'it', 'pt-BR', 'ja', 'es-ES', 'en-GB', 'ru'],
         test_case_id='218333',
         test_suite_id='83',
+        profile=Profiles.BRAND_NEW,
+        blocked_by={'id': 'issue_3509', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
@@ -36,6 +38,13 @@ class Test(FirefoxTest):
         # Detect the locale.
         for value in regions_by_locales.get(firefox.application.locale):
             change_preference('browser.search.region', value)
+
+            # Remove the file 'search.json.mozlz4' from the profile directory.
+            profile_temp = PathManager.get_temp_dir()
+            parent, test = PathManager.parse_module_path()
+            search_json_mozlz4_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
+            if os.path.isfile(search_json_mozlz4_path):
+                os.remove(os.path.join(search_json_mozlz4_path, 'search.json.mozlz4'))
 
             firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
