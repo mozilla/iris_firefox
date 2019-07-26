@@ -39,15 +39,15 @@ class Test(FirefoxTest):
 
             if i == 0:
                 paste('test')
-                expected = exists(test_bold_pattern, 10)
-                assert expected is True, 'Search suggestions are shown for the input in question.'
+                suggestions_shown = exists(test_bold_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+                assert suggestions_shown is True, 'Search suggestions are shown for the input in question.'
 
-            expected = exists(one_click_engines_list[i], 10)
-            assert expected is True, 'The %s search engine is visible.' % \
-                                     str(one_click_engines_list[i].get_filename()).split('_')[0].upper()
+            search_engine = exists(one_click_engines_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
+            assert search_engine is True, 'The %s search engine is visible.' % \
+                                          str(one_click_engines_list[i].get_filename()).split('_')[0].upper()
 
             click(one_click_engines_list[i])
-            expected = exists(test_search_list[i], 10)
+            test_search = exists(test_search_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
 
-            assert expected is True, 'Search results are displayed for the %s engine.' % \
-                                     str(one_click_engines_list[i].get_filename()).split('_')[0].upper()
+            assert test_search is True, 'Search results are displayed for the %s engine.' % \
+                                        str(one_click_engines_list[i].get_filename()).split('_')[0].upper()
