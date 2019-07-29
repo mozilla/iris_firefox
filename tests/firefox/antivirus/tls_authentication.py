@@ -26,6 +26,7 @@ class Test(FirefoxTest):
         tls_certificate_name_highlighted_pattern = Pattern('tls_certificate_name_highlighted.png')
         digicert_logo_pattern = Pattern('digicert_logo.png')
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
+        cdn77_tab_logo_pattern = Pattern('cdn77_tab_logo.png')
 
         if OSHelper.is_windows():
             mouse_wheel_steps = 500
@@ -70,6 +71,9 @@ class Test(FirefoxTest):
                                                                                             'is imported.'
 
         navigate('https://www.cdn77.com/')
+        assert exists(cdn77_tab_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
+            'CDN77 page is successfully downloaded.'
+
         assert exists(cdn77_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
             'CDN77 page is successfully downloaded.'
 
