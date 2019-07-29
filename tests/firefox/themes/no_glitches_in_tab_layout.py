@@ -77,12 +77,14 @@ class Test(FirefoxTest):
                 expected = exists(close_tab_button, 10)
                 assert expected, 'Close tab button is visible.'
 
-                hover(close_tab_button, align=Alignment.CENTER)
+                close_tab_button_location = find(close_tab_button)
+
+                hover(close_tab_button_location, align=Alignment.CENTER)
 
                 expected = exists(close_tab_hover, 10)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_tab_button)
+                region.click(close_tab_button_location)
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -140,12 +142,14 @@ class Test(FirefoxTest):
                 expected = exists(close_tab_button, 10)
                 assert expected, 'Close tab button is visible.'
 
-                hover(close_tab_button, align=Alignment.CENTER)
+                close_tab_button_location = find(close_tab_button)
+
+                hover(close_tab_button_location, align=Alignment.CENTER)
 
                 expected = exists(close_tab_hover, 10)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_tab_button.similar(0.6))
+                region.click(close_tab_button_location.similar(0.6))
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -203,12 +207,14 @@ class Test(FirefoxTest):
                 expected = exists(close_tab_button_dark_theme, 10)
                 assert expected, 'Close tab button is visible.'
 
-                hover(close_tab_button_dark_theme, align=Alignment.CENTER)
+                close_tab_dark_button_location = find(close_tab_button)
+
+                hover(close_tab_dark_button_location, align=Alignment.CENTER)
 
                 expected = exists(close_tab_hover_dark_theme, 10)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_tab_button_dark_theme)
+                region.click(close_tab_dark_button_location)
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
