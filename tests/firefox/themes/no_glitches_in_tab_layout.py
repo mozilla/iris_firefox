@@ -77,14 +77,18 @@ class Test(FirefoxTest):
                 expected = exists(close_tab_button, 10)
                 assert expected, 'Close tab button is visible.'
 
-                close_tab_button_location = find(close_tab_button)
+                close_width, close_height = close_tab_button.get_size()
 
-                hover(close_tab_button_location, align=Alignment.CENTER)
+                close_tab_button_location = find(close_tab_button)
+                close_click_location = Location(close_tab_button_location.x + close_width / 2,
+                                                close_tab_button_location.y + close_width / 2)
+
+                hover(close_click_location, align=Alignment.CENTER)
 
                 expected = exists(close_tab_hover, 10)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_tab_button_location)
+                region.click(close_click_location)
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -144,12 +148,17 @@ class Test(FirefoxTest):
 
                 close_tab_button_location = find(close_tab_button)
 
-                hover(close_tab_button_location, align=Alignment.CENTER)
+                close_width, close_height = close_tab_button.get_size()
+
+                close_click_location = Location(close_tab_button_location.x + close_width / 2,
+                                                close_tab_button_location.y + close_width / 2)
+
+                hover(close_click_location)
 
                 expected = exists(close_tab_hover, 10)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_tab_button_location.similar(0.6))
+                region.click(close_click_location)
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -207,14 +216,19 @@ class Test(FirefoxTest):
                 expected = exists(close_tab_button_dark_theme, 10)
                 assert expected, 'Close tab button is visible.'
 
-                close_tab_dark_button_location = find(close_tab_button)
+                close_tab_dark_button_location = find(close_tab_button_dark_theme)
 
-                hover(close_tab_dark_button_location, align=Alignment.CENTER)
+                close_width, close_height = close_tab_button_dark_theme.get_size()
+
+                close_dark_click_location = Location(close_tab_dark_button_location.x + close_width / 2,
+                                                     close_tab_dark_button_location.y + close_width / 2)
+
+                hover(close_dark_click_location)
 
                 expected = exists(close_tab_hover_dark_theme, 10)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_tab_dark_button_location)
+                region.click(close_dark_click_location)
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
