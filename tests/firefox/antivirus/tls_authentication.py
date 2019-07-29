@@ -22,6 +22,7 @@ class Test(FirefoxTest):
         download_button_pattern = Pattern('download_button.png')
         view_certificates_button_pattern = Pattern('view_certificates_button.png')
         certificate_manager_window_title_pattern = Pattern('certificate_manager_window_title.png')
+        tls_certificate_name_pattern_1 = Pattern('tls_certificate_name_1.png')
         tls_certificate_name_pattern = Pattern('tls_certificate_name.png')
         tls_certificate_name_highlighted_pattern = Pattern('tls_certificate_name_highlighted.png')
         digicert_logo_pattern = Pattern('digicert_logo.png')
@@ -35,7 +36,7 @@ class Test(FirefoxTest):
         else:
             mouse_wheel_steps = 5
 
-        change_preference('security.enterprise_roots.enabled', 'True')
+        # change_preference('security.enterprise_roots.enabled', 'True')
 
         navigate('https://www.digicert.com/digicert-root-certificates.htm')
 
@@ -66,9 +67,17 @@ class Test(FirefoxTest):
 
         certificate_manager_window_location = find(certificate_manager_window_title_pattern).below(200)
         Mouse().move(certificate_manager_window_location)
-        assert scroll_until_pattern_found(tls_certificate_name_pattern, scroll_down, (mouse_wheel_steps,), 50,
-                                          timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2), 'TLS Certificate ' \
-                                                                                            'is imported.'
+
+        tls_certificate_found_grey = scroll_until_pattern_found(tls_certificate_name_pattern,
+                                                                scroll_down, (mouse_wheel_steps,), 1,
+                                                                timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
+        if tls_certificate_found_grey:
+            assert tls_certificate_found_grey, 'TLS Certificate is imported.'
+        else:
+            tls_certificate_found_white = scroll_until_pattern_found(tls_certificate_name_pattern_1,
+                                                                     Mouse.scroll_up, (mouse_wheel_steps,), 50,
+                                                                     timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
+            assert tls_certificate_found_white, 'TLS Certificate is imported.'
 
         navigate('https://www.cdn77.com/')
         assert exists(cdn77_tab_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
