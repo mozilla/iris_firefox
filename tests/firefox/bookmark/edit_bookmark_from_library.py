@@ -87,7 +87,7 @@ class Test(FirefoxTest):
         fields_location = find(name_field_pattern)
         fields_width, fields_height = name_field_pattern.get_size()
         fields_region = Region(fields_location.x - fields_width, fields_location.y-fields_height, fields_width * 10,
-                               fields_height * 15)
+                               fields_height * 16)
 
         click(bookmark_new_name_pattern)
 
