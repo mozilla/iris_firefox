@@ -66,29 +66,33 @@ class Test(FirefoxTest):
 
             if expected:
                 tab = find(mozilla_tab_not_focused)
-                region = Region(tab.x - 10, tab.y - 10, 220, 80)
-                region.hover(tab)
+                active_tab_region = Region(tab.x - 10, tab.y - 10, 220, 80)
+                hover(tab, active_tab_region)
 
                 expected = exists(mozilla_hover, 10)
                 assert expected, 'Mozilla page is hovered.'
 
-                region.click(mozilla_tab_not_focused)
+                click(mozilla_tab_not_focused, region=active_tab_region)
 
-                expected = exists(close_tab_button, 10)
+                expected = exists(close_tab_button, 10, active_tab_region)
                 assert expected, 'Close tab button is visible.'
 
                 close_width, close_height = close_tab_button.get_size()
 
-                close_tab_button_location = find(close_tab_button)
+                close_tab_button_location = find(close_tab_button, active_tab_region)
                 close_click_location = Location(close_tab_button_location.x + close_width / 2,
                                                 close_tab_button_location.y + close_width / 2)
 
-                hover(close_click_location, align=Alignment.CENTER)
+                close_tab_hover_text_region = Region(close_tab_button_location.x-close_width,
+                                                     close_tab_button_location.y,
+                                                     close_width * 10, close_height*10)
 
-                expected = exists(close_tab_hover, 10)
+                hover(close_click_location, region=active_tab_region)
+
+                expected = exists(close_tab_hover, 10, close_tab_hover_text_region)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_click_location)
+                click(close_click_location, region=active_tab_region)
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -135,30 +139,34 @@ class Test(FirefoxTest):
 
             if expected:
                 tab = find(mozilla_tab_not_focused_light_theme)
-                region = Region(tab.x, tab.y - 10, 220, 80)
-                region.hover(tab)
+                active_tab_region = Region(tab.x, tab.y - 10, 220, 80)
+                hover(tab, active_tab_region)
 
                 expected = exists(mozilla_hover, 10)
                 assert expected, 'Mozilla page is hovered.'
 
-                region.click(mozilla_tab_not_focused_light_theme)
+                click(mozilla_tab_not_focused_light_theme, region=active_tab_region)
 
                 expected = exists(close_tab_button, 10)
                 assert expected, 'Close tab button is visible.'
 
-                close_tab_button_location = find(close_tab_button)
+                close_tab_button_location = find(close_tab_button, active_tab_region)
 
                 close_width, close_height = close_tab_button.get_size()
 
                 close_click_location = Location(close_tab_button_location.x + close_width / 2,
                                                 close_tab_button_location.y + close_width / 2)
 
-                hover(close_click_location)
+                close_tab_hover_text_region = Region(close_tab_button_location.x-close_width,
+                                                     close_tab_button_location.y,
+                                                     close_width * 10, close_height*10)
 
-                expected = exists(close_tab_hover, 10)
+                hover(close_click_location, active_tab_region)
+
+                expected = exists(close_tab_hover, 10, close_tab_hover_text_region)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_click_location)
+                click(close_click_location, region=active_tab_region)
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -205,31 +213,34 @@ class Test(FirefoxTest):
 
             if expected:
                 tab = find(mozilla_tab_not_focused)
-                region = Region(tab.x - 10, tab.y - 10, 220, 80)
-                region.hover(tab)
+                active_tab_region = Region(tab.x - 10, tab.y - 10, 220, 80)
+                hover(tab, active_tab_region)
 
                 expected = exists(mozilla_hover_dark_theme, 10)
                 assert expected, 'Mozilla page is hovered.'
 
-                region.click(mozilla_tab_not_focused)
+                click(mozilla_tab_not_focused, region=active_tab_region)
 
-                expected = exists(close_tab_button_dark_theme, 10)
+                expected = exists(close_tab_button_dark_theme, 10, active_tab_region)
                 assert expected, 'Close tab button is visible.'
 
-                close_tab_dark_button_location = find(close_tab_button_dark_theme)
+                close_tab_dark_button_location = find(close_tab_button_dark_theme, active_tab_region)
 
                 close_width, close_height = close_tab_button_dark_theme.get_size()
 
                 close_dark_click_location = Location(close_tab_dark_button_location.x + close_width / 2,
                                                      close_tab_dark_button_location.y + close_width / 2)
 
-                hover(close_dark_click_location)
+                close_tab_hover_text_region = Region(close_tab_dark_button_location.x-close_width,
+                                                     close_tab_dark_button_location.y,
+                                                     close_width * 10, close_height*10)
 
-                expected = exists(close_tab_hover_dark_theme, 10)
+                hover(close_dark_click_location, active_tab_region)
+
+                expected = exists(close_tab_hover_dark_theme, 10, close_tab_hover_text_region)
                 assert expected, 'Close button is hovered.'
 
-                region.click(close_dark_click_location)
-                time.sleep(Settings.DEFAULT_UI_DELAY)
+                click(close_dark_click_location, region=active_tab_region)
 
                 max_attempts -= 1
             else:
