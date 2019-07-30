@@ -100,7 +100,7 @@ class Test(FirefoxTest):
         cnn_restore_focus_pattern_exists = exists(cnn_restore_focus_pattern)
         assert cnn_restore_focus_pattern_exists is True, 'Restore focus patter displayed'
 
-        click(cnn_restore_focus_pattern)
+        click(cnn_restore_focus_pattern, region=Screen.LEFT_THIRD)
 
         cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,),
                                                                    timeout=FirefoxSettings.FIREFOX_TIMEOUT)
@@ -156,7 +156,7 @@ class Test(FirefoxTest):
         cnn_restore_focus_pattern_exists = exists(cnn_restore_focus_pattern)
         assert cnn_restore_focus_pattern_exists is True, 'Restore focus patter displayed'
 
-        click(cnn_restore_focus_pattern)
+        click(cnn_restore_focus_pattern, region=Screen.LEFT_THIRD)
 
         cnn_blocked_content_not_displayed = \
             scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,), 10)
