@@ -30,6 +30,13 @@ class Test(FirefoxTest):
         empty_saved_logins_pattern = Pattern('empty_saved_logins.png')
         zero_bytes_cache_pattern = Pattern('zero_bytes_cache.png')
 
+        if OSHelper.is_windows():
+            mouse_wheel_steps = 500
+        elif OSHelper.is_linux():
+            mouse_wheel_steps = 1
+        else:
+            mouse_wheel_steps = 5
+
         # Open the 'Clear Recent History' window and uncheck all the items.
         for step in open_clear_recent_history_window():
             assert step.resolution, step.message
@@ -96,14 +103,10 @@ class Test(FirefoxTest):
 
         # Scroll in page and access the "Saved Logins" button.
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        time.sleep(Settings.SYSTEM_DELAY)
 
-        expected = exists(saved_logins_button_pattern, 2)
-        while not expected:
-            scroll_down(5, 2)
-            expected = exists(saved_logins_button_pattern, 2)
-
-        assert expected, '\"Saved Logins\" button has been found.'
+        assert scroll_until_pattern_found(saved_logins_button_pattern, scroll_down, (mouse_wheel_steps,), 50,
+                                          timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2), '\"Saved Logins\" ' \
+                                                                                            'button has been found.'
         click(saved_logins_button_pattern)
 
         # Check that "Saved Logins" window is displayed.
