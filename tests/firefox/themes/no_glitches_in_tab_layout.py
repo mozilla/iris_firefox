@@ -70,7 +70,7 @@ class Test(FirefoxTest):
                 tab_title_width, tab_title_height = mozilla_tab_not_focused.get_size()
 
                 active_tab_region = Region(inactive_tab_location.x - 5, inactive_tab_location.y - tab_title_height,
-                                           tab_title_width * 3, tab_title_height * 10)
+                                           tab_title_width * 4, tab_title_height * 10)
 
                 hover(inactive_tab_location)
 
@@ -149,7 +149,7 @@ class Test(FirefoxTest):
                 tab_title_width, tab_title_height = mozilla_tab_not_focused_light_theme.get_size()
 
                 active_tab_region = Region(inactive_tab_location.x-5, inactive_tab_location.y - tab_title_height,
-                                           tab_title_width * 3, tab_title_height * 10)
+                                           tab_title_width * 4, tab_title_height * 10)
 
                 hover(inactive_tab_location)
 
@@ -229,7 +229,7 @@ class Test(FirefoxTest):
                 tab_title_width, tab_title_height = mozilla_tab_not_focused.get_size()
 
                 active_tab_region = Region(inactive_tab_location.x-5, inactive_tab_location.y - tab_title_height,
-                                           tab_title_width * 3, tab_title_height * 10)
+                                           tab_title_width * 4, tab_title_height * 10)
 
                 hover(inactive_tab_location)
 
