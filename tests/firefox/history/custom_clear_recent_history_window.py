@@ -28,6 +28,7 @@ class Test(FirefoxTest):
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
         saved_logins_window_pattern = Pattern('saved_logins_table_heads.png')
         empty_saved_logins_pattern = Pattern('empty_saved_logins.png')
+        zero_bytes_cache_pattern = Pattern('zero_bytes_cache.png')
 
         # Open the 'Clear Recent History' window and uncheck all the items.
         for step in open_clear_recent_history_window():
@@ -111,14 +112,18 @@ class Test(FirefoxTest):
         assert expected, '\"Saved Logins\" window is displayed.'
 
         # Check that the "Saved Logins" window is empty.
-        expected = exists(empty_saved_logins_pattern.similar(0.7), 10)
+        expected = exists(empty_saved_logins_pattern.similar(0.6), 10)
         assert expected, 'There are no logins saved.'
 
         # Close and check the "Saved Logins" window.
         type(Key.ESC)
 
-        expected = exists(saved_logins_window_pattern, 10)
-        assert expected is not True, '\"Saved Logins\" window is NOT displayed.'
+        try:
+            saved_logins_window_vanished = wait_vanish(saved_logins_window_pattern,
+                                                       FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+            assert saved_logins_window_vanished is True, '\"Saved Logins\" window still displayed.'
+        except FindError:
+            raise FindError('\"Saved Logins\" window still displayed.')
 
         # Access the "Manage Data" window.
         expected = exists(manage_data_pattern, 10)
@@ -139,9 +144,12 @@ class Test(FirefoxTest):
         # Close and check the "Manage Cookies and Site Data" window.
         type(Key.ESC)
 
-        expected = exists(manage_data_title_pattern, 10)
-        assert expected is not True, '\"Manage Cookies and Site Data\" window is NOT displayed.'
+        try:
+            manage_data_window_vanished = wait_vanish(manage_data_title_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+            assert manage_data_window_vanished is True, '\"Manage Cookies and Site Data\" window is NOT displayed.'
+        except FindError:
+            raise FindError('\"Manage Cookies and Site Data\" window still displayed.')
 
         # Check that no disk space is used for cookies, site data and cache.
-        expected = exists('using 0', 10)
+        expected = exists(zero_bytes_cache_pattern, 10)
         assert expected, 'No disk space is used to store cookies, site data and cache.'
