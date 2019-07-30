@@ -130,7 +130,7 @@ class Test(FirefoxTest):
         pocket_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert pocket_opened, 'The Pocket site successfully opened'
 
-        firefox.restart()
+        firefox.restart(url='', image=NavBar.HOME_BUTTON)
 
         firefox_is_restarted = exists(NavBar.HOME_BUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_is_restarted is True, 'Firefox is successfully restarted'
