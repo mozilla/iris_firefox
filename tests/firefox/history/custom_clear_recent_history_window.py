@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON
         privacy_logo_pattern = Pattern('privacy_logo.png')
         manage_data_pattern = Pattern('manage_data_button.png')
-        manage_data_title_pattern = Pattern('manage_cookies_and_site_data_table_heads.png')
+        manage_data_title_pattern = Pattern('manage_cookies_window_label.png')
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
         saved_logins_window_pattern = Pattern('saved_logins_table_heads.png')
         empty_saved_logins_pattern = Pattern('empty_saved_logins.png')
@@ -115,7 +115,7 @@ class Test(FirefoxTest):
         assert expected, '\"Saved Logins\" window is displayed.'
 
         # Check that the "Saved Logins" window is empty.
-        expected = exists(empty_saved_logins_pattern.similar(0.6), 10)
+        expected = exists(empty_saved_logins_pattern, 10)
         assert expected, 'There are no logins saved.'
 
         # Close and check the "Saved Logins" window.
