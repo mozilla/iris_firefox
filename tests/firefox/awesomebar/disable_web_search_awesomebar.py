@@ -21,25 +21,78 @@ class Test(FirefoxTest):
         search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
         mozilla_support_url_pattern = Pattern('mozilla_support_url.png')
         amazon_logo_pattern = Pattern('amazon_logo.png')
+        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
+        search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png').similar(.6)
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.6)
+        search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.6)
+        popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
+
+
 
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
+        region = top_two_thirds_region
 
-        navigate('www.amazon.com')
+        # Make some browsing history to check it later in awesome bar
 
-        amazon_page_opened = exists(amazon_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert amazon_page_opened, 'Page successfully loaded, amazon logo found.'
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Mozilla page loaded successfully.'
+
+        bookmark_page()
+
+        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Page was bookmarked.'
+
+        new_tab()
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
+
+        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Firefox page loaded successfully.'
+
+        new_tab()
+        navigate(LocalWeb.FOCUS_TEST_SITE)
+
+        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Focus page loaded successfully.'
 
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
+        new_tab()
+
         # The autocomplete drop-down with matching results for: bookmarks, open tabs, history, suggestions is displayed.
+        select_location_bar()
+        paste('m')
+
+        expected = region.exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Bookmarked page found between search suggestions.'
 
         select_location_bar()
-        type('moz')
+        paste('o')
+
+        expected = region.exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Opened tab found between search suggestions.'
+
+        select_location_bar()
+        paste('f')
+
+        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Web pages from personal browsing history found between search suggestions.'
+
+        expected = region.exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Popular search suggestions from the default search engine found between search suggestions.'
 
         one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                        region=top_two_thirds_region)
         assert one_off_button_exists, 'The \'Google\' one-off button found.'
 
+        # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
+
+        select_location_bar()
+        type('moz')
+
         click(google_one_off_button_pattern)
+
+        # - Firefox takes you to search results using the search provider of the selected one-off button
 
         mozilla_support_url_exists = exists(mozilla_support_url_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                             region=top_two_thirds_region)
