@@ -27,7 +27,7 @@ class Test(FirefoxTest):
         manage_data_title_pattern = Pattern('manage_cookies_window_label.png')
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
         saved_logins_window_pattern = Pattern('saved_logins_table_heads.png')
-        empty_saved_logins_pattern = Pattern('empty_saved_logins.png')
+        empty_saved_logins_pattern = Pattern('empty_saved_logins.png').similar(.7)
         zero_bytes_cache_pattern = Pattern('zero_bytes_cache.png')
 
         if OSHelper.is_windows():
