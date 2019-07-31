@@ -171,11 +171,12 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     return steps
 
 
-def download_file(file_to_download, accept_download, max_number_of_attempts=20):
+def download_file(file_to_download, accept_download, max_number_of_attempts=20, accept_download_available=True):
     """
     :param file_to_download: Pattern of file to be downloaded.
     :param accept_download: Accept download pattern.
     :param max_number_of_attempts: Max number of attempts to locate file_to_download pattern.
+    :param accept_download_available: False if Windows don't have accept download button
     :return: None.
     """
     for _ in range(max_number_of_attempts):
@@ -193,17 +194,22 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20):
     try:
         wait(DownloadFiles.SAVE_FILE, 90)
         logger.debug('The \'Save file\' option is present in the page.')
+
+        time.sleep(Settings.DEFAULT_SYSTEM_DELAY) # prevent click on inactive button on windows
+
         click(DownloadFiles.SAVE_FILE)
+
     except FindError:
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
-    try:
-        ok_button = exists(accept_download, 5)
-        if ok_button:
-            logger.debug('The OK button found in the page.')
-            click(accept_download)
-    except FindError:
-        raise APIHelperError('The OK button is not found in the page.')
+    if OSHelper.is_mac() or OSHelper.is_linux() or (OSHelper.is_windows() and accept_download_available):
+        try:
+            accept_download_button = exists(accept_download, 5)
+            if accept_download_button:
+                logger.debug('The accept download button found in the page.')
+                click(accept_download)
+        except FindError:
+            raise APIHelperError('The \'accept_download\' button is not found in the page.')
 
 
 def downloads_cleanup():
