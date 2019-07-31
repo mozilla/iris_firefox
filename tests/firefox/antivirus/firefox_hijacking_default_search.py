@@ -30,8 +30,8 @@ class Test(FirefoxTest):
         assert exists(default_search_engines_list_pattern) or exists(default_search_engines_list_small_pattern), \
             'The default search engine list is not changed.'
 
-
         restore_firefox_focus()
+
         open_find()
         paste('One-click')
         assert exists(one_click_search_engines_pattern), 'The default One-click search engine list is not changed.'
