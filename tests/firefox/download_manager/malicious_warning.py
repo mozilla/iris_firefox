@@ -31,12 +31,8 @@ class Test(FirefoxTest):
 
         width, height = DownloadFiles.MALICIOUS.get_size()
 
-        if OSHelper.get_os_version() == 'win7':
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE,
-                          max_number_of_attempts=10)
-        else:
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                          max_number_of_attempts=10)
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      accept_download_available=False)
 
         expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Blocked download icon is displayed.'
@@ -122,12 +118,9 @@ class Test(FirefoxTest):
 
         # Repeat steps 1-4 and click on Remove file.
         width, height = DownloadFiles.MALICIOUS.get_size()
-        if OSHelper.get_os_version() == 'win7':
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.SAVE_FILE,
-                          max_number_of_attempts=10)
-        else:
-            download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                          max_number_of_attempts=10)
+
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      accept_download_available=False)
 
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Malicious downloads button is displayed.'
