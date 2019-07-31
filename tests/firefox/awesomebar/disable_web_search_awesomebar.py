@@ -26,13 +26,22 @@ class Test(FirefoxTest):
         search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.6)
         search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.6)
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
-
+        mozilla_tab_logo_pattern = Pattern('mozilla_tab_logo.png')
 
 
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
         region = top_two_thirds_region
 
         # Make some browsing history to check it later in awesome bar
+
+        new_tab()
+        navigate('mozilla.org')
+
+        mozilla_page_opened = exists(mozilla_tab_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert mozilla_page_opened, 'Mozilla page opened'
+
+        # expected = region.exists(amazon_logo_pattern , FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        # assert expected, 'Amazon website loaded successfully.'
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -86,39 +95,50 @@ class Test(FirefoxTest):
         assert one_off_button_exists, 'The \'Google\' one-off button found.'
 
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
+        #
+        # # select_location_bar()
+        # # type('moz')
+        # #
+        # # click(google_one_off_button_pattern)
+        # #
+        # # - Firefox takes you to search results using the search provider of the selected one-off button
+        # #
+        # # search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        # # assert search_results_available, 'Google search results are displayed.'
+        # #
+        # # close_tab()
 
-        select_location_bar()
-        type('moz')
-
-        click(google_one_off_button_pattern)
-
-        # - Firefox takes you to search results using the search provider of the selected one-off button
-
-        mozilla_support_url_exists = exists(mozilla_support_url_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                            region=top_two_thirds_region)
-        assert mozilla_support_url_exists, 'Mozilla support url exists.'
-
-        select_location_bar()
-        type('moz')
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
-        click(google_one_off_button_pattern)
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
-
-        google_search_results_displayed = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                                 region=top_two_thirds_region)
-        assert google_search_results_displayed, 'Google search results are displayed.'
-
-        # Go to about:config and set the preference keyword.enabled to false.
+        # 3. Go to about:config and set the preference keyword.enabled to false.
         change_preference('keyword.enabled', 'false')
 
+        # 4. Enter a search in the URL bar and hit enter.
+        new_tab()
+
         select_location_bar()
-        type('amaz')
+        type('moz')
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+
+        type(Key.ENTER)
+
+        # The search is executed with URL autocomplete.
+
+        time.sleep(1234)
+
+        mozilla_support_url_exists = exists(mozilla_support_url_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT,
+                                            region=top_two_thirds_region)
+        assert mozilla_support_url_exists, 'The search is executed with URL autocomplete. Mozilla website loaded.'
+
+        # 5. Perform a search in the URL bar using the same one-off button as in step 2.
+        # The search is executed on using selected engine.
+
+        new_tab()
+        select_location_bar()
+        type('moz')
 
         autocomplete_performed = exists(search_with_url_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                         region=top_two_thirds_region)
         assert autocomplete_performed, 'Search is performed with url autocomplete for pages where you have been before.'
-
-        type(Key.ENTER)
 
         amazon_page_opened = exists(amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert amazon_page_opened, 'Page successfully loaded, amazon logo found.'
