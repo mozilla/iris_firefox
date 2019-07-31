@@ -13,8 +13,9 @@ class Test(FirefoxTest):
                     'from the dock (for a profile used only in private mode) ',
         test_case_id='120455',
         test_suite_id='1826',
-        locales=['en-US']
-        # exclude=[OSPlatform.WINDOWS, OSPlatform.LINUX]
+        locales=['en-US'],
+        exclude=[OSPlatform.WINDOWS, OSPlatform.LINUX],
+        # blocked_by={'id': 'issue_3220', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
@@ -22,7 +23,7 @@ class Test(FirefoxTest):
 
         dock_region = Region(0, int(0.8 * Screen.SCREEN_HEIGHT), Screen.SCREEN_WIDTH, int(0.2 * Screen.SCREEN_HEIGHT))
 
-        firefox.restart()
+        # firefox.restart()
 
         private_window_opened = exists(PrivateWindow.private_window_pattern.similar(0.6))
         assert private_window_opened, "Private window loaded."
