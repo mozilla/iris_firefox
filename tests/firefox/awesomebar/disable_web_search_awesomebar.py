@@ -29,6 +29,9 @@ class Test(FirefoxTest):
         amazon_page_opened = exists(amazon_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert amazon_page_opened, 'Page successfully loaded, amazon logo found.'
 
+        # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
+        # The autocomplete drop-down with matching results for: bookmarks, open tabs, history, suggestions is displayed.
+
         select_location_bar()
         type('moz')
 
@@ -40,17 +43,19 @@ class Test(FirefoxTest):
 
         mozilla_support_url_exists = exists(mozilla_support_url_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                             region=top_two_thirds_region)
-        if mozilla_support_url_exists:
-            select_location_bar()
-            type('moz')
-            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
-            click(google_one_off_button_pattern)
-            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+        assert mozilla_support_url_exists, 'Mozilla support url exists.'
+
+        select_location_bar()
+        type('moz')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+        click(google_one_off_button_pattern)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
 
         google_search_results_displayed = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                                  region=top_two_thirds_region)
         assert google_search_results_displayed, 'Google search results are displayed.'
 
+        # Go to about:config and set the preference keyword.enabled to false.
         change_preference('keyword.enabled', 'false')
 
         select_location_bar()
