@@ -150,7 +150,10 @@ class BaseTarget:
             # Examine the last line of the call stack.
             tb = call.excinfo.traceback.pop()
 
-            if str(item.__dict__.get('fspath')) in str(tb):
+            # Convert extra backslashes that appear on Windows
+            tb_str = str(tb).replace('\\\\', '\\')
+
+            if str(item.__dict__.get('fspath')) in tb_str:
                 if 'AssertionError' in str(call.excinfo):
                     logger.debug('Test failed with assert')
                     outcome = "FAILED"
@@ -165,8 +168,8 @@ class BaseTarget:
             # format can vary. Therefore, we build an exception string from more
             # predictable values.
 
-            file_name = str(tb).split('\'')[1]
-            line_number = str(tb).split('\':')[1].split(' ')[0]
+            file_name = tb_str.split('\'')[1]
+            line_number = tb_str.split('\':')[1].split(' ')[0]
             exception_error_class = call.excinfo.exconly(True).split(':')[0]
             message_only = str(call.excinfo.value).split('\n')[0]
             exc_str = '%s:%s: %s: %s' % (file_name, line_number, exception_error_class, message_only)
