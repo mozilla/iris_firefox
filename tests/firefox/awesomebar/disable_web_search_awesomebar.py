@@ -28,7 +28,6 @@ class Test(FirefoxTest):
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
         mozilla_tab_logo_pattern = Pattern('mozilla_tab_logo.png')
 
-
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
         region = top_two_thirds_region
 
@@ -115,7 +114,7 @@ class Test(FirefoxTest):
         new_tab()
 
         select_location_bar()
-        type('moz')
+        type('inputstring')
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
 
@@ -123,11 +122,15 @@ class Test(FirefoxTest):
 
         # The search is executed with URL autocomplete.
 
-        time.sleep(1234)
+        select_location_bar()
 
-        mozilla_support_url_exists = exists(mozilla_support_url_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT,
-                                            region=top_two_thirds_region)
-        assert mozilla_support_url_exists, 'The search is executed with URL autocomplete. Mozilla website loaded.'
+        edit_select_all()
+
+        edit_copy()
+
+        url_text = get_clipboard()
+
+        assert 'http://www.inputstring.com/' in url_text, 'The search is executed with URL autocomplete.'
 
         # 5. Perform a search in the URL bar using the same one-off button as in step 2.
         # The search is executed on using selected engine.
@@ -136,23 +139,18 @@ class Test(FirefoxTest):
         select_location_bar()
         type('moz')
 
-        autocomplete_performed = exists(search_with_url_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                        region=top_two_thirds_region)
-        assert autocomplete_performed, 'Search is performed with url autocomplete for pages where you have been before.'
-
-        amazon_page_opened = exists(amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert amazon_page_opened, 'Page successfully loaded, amazon logo found.'
+        # 5. Perform a search in the URL bar using the same one-off button as in step 2.
 
         select_location_bar()
-        type('test')
-
-        google_one_off_button_found = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                             region=top_two_thirds_region)
-        assert google_one_off_button_found, 'The \'Google\' one-off button found.'
+        type('moz')
 
         click(google_one_off_button_pattern)
 
-        google_search_results_displayed = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                                 region=top_two_thirds_region)
+        # The search is executed on using selected engine.
+        # Firefox takes you to search results using the search provider of the selected one-off button
 
-        assert google_search_results_displayed, 'Google search results are displayed.'
+        search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_results_available, 'Google search results are displayed. The search is executed on using ' \
+                                         'selected engine.'
+
+        time.sleep(1234)
