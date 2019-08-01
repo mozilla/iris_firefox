@@ -27,7 +27,6 @@ class Test(FirefoxTest):
 
         time.sleep(5)
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
-        region = top_two_thirds_region
         autofill_navigated = False
 
         # Make some browsing history to check it later in awesome bar
