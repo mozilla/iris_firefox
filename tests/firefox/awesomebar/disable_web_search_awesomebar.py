@@ -25,8 +25,10 @@ class Test(FirefoxTest):
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
         mozilla_tab_logo_pattern = Pattern('mozilla_tab_logo.png')
 
+        time.sleep(5)
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
         region = top_two_thirds_region
+        autofill_navigated = False
 
         # Make some browsing history to check it later in awesome bar
 
@@ -127,13 +129,20 @@ class Test(FirefoxTest):
 
         # The search is executed with URL autocomplete.
 
-        select_location_bar()
+        for page_not_found_rendered in range(3):
+            select_location_bar()
 
-        edit_select_all()
+            edit_select_all()
 
-        edit_copy()
+            edit_copy()
 
-        url_text = get_clipboard()
+            url_text = get_clipboard()
+
+            autofill_navigated = 'http://www.inputstring.com/' in url_text
+            if autofill_navigated:
+                break
+
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         assert 'http://www.inputstring.com/' in url_text, 'The search is executed with URL autocomplete.'
 
