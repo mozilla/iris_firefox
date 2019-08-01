@@ -6,6 +6,7 @@ from argparse import Namespace
 import argparse
 import logging
 import os
+import shutil
 import time
 
 import pytest
@@ -65,7 +66,7 @@ class BaseTarget:
         :param _pytest.main.Session session: the pytest session object.
         """
         self.start_time = time.time()
-        logger.info('\n' + 'Test session {} started'.format(session.name).center(os.get_terminal_size().columns, '-'))
+        logger.info('\n' + 'Test session {} started'.format(session.name).center(shutil.get_terminal_size().columns, '-'))
 
         core_settings_list = []
         for arg in vars(core_args):
@@ -93,7 +94,7 @@ class BaseTarget:
         result = footer.print_report_footer()
         create_run_log(self)
 
-        logger.info('\n' + 'Test session {} complete'.format(session.name).center(os.get_terminal_size().columns, '-'))
+        logger.info('\n' + 'Test session {} complete'.format(session.name).center(shutil.get_terminal_size().columns, '-'))
 
         if core_args.email:
             try:
