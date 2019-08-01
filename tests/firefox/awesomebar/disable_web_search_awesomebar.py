@@ -75,7 +75,7 @@ class Test(FirefoxTest):
         assert expected, 'Bookmarked page found between search suggestions.'
 
         select_location_bar()
-        paste('o')
+        paste('ox')
 
         expected = region.exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Opened tab found between search suggestions.'
@@ -94,18 +94,18 @@ class Test(FirefoxTest):
         assert one_off_button_exists, 'The \'Google\' one-off button found.'
 
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
-        #
-        # # select_location_bar()
-        # # type('moz')
-        # #
-        # # click(google_one_off_button_pattern)
-        # #
-        # # - Firefox takes you to search results using the search provider of the selected one-off button
-        # #
-        # # search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        # # assert search_results_available, 'Google search results are displayed.'
-        # #
-        # # close_tab()
+
+        select_location_bar()
+        type('moz')
+
+        click(google_one_off_button_pattern)
+
+        # - Firefox takes you to search results using the search provider of the selected one-off button
+
+        search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_results_available, 'Google search results are displayed.'
+
+        close_tab()
 
         # 3. Go to about:config and set the preference keyword.enabled to false.
         change_preference('keyword.enabled', 'false')
