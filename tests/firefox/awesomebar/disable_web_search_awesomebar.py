@@ -16,12 +16,9 @@ class Test(FirefoxTest):
         preferences={'browser.contentblocking.enabled': False}
     )
     def run(self, firefox):
+        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         google_search_results_pattern = Pattern('google_search_results.png')
-        search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
-        mozilla_support_url_pattern = Pattern('mozilla_support_url.png')
-        amazon_logo_pattern = Pattern('amazon_logo.png')
-        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png').similar(.6)
         search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.6)
         search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.6)
