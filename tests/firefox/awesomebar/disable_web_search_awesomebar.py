@@ -89,16 +89,16 @@ class Test(FirefoxTest):
         expected = region.exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Popular search suggestions from the default search engine found between search suggestions.'
 
-        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                       region=top_two_thirds_region)
-        assert one_off_button_exists, 'The \'Google\' one-off button found.'
-
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
 
         select_location_bar()
         type('moz')
 
-        click(google_one_off_button_pattern)
+        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       region=top_two_thirds_region)
+        assert one_off_button_exists, 'The \'Google\' one-off button found.'
+
+        click(google_one_off_button_pattern, 1)
 
         # - Firefox takes you to search results using the search provider of the selected one-off button
 
@@ -136,11 +136,6 @@ class Test(FirefoxTest):
         # The search is executed on using selected engine.
 
         new_tab()
-        select_location_bar()
-        type('moz')
-
-        # 5. Perform a search in the URL bar using the same one-off button as in step 2.
-
         select_location_bar()
         type('moz')
 
