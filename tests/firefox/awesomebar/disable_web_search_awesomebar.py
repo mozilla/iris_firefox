@@ -25,12 +25,10 @@ class Test(FirefoxTest):
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
         mozilla_tab_logo_pattern = Pattern('mozilla_tab_logo.png')
 
-        time.sleep(5)
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
         autofill_navigated = False
 
         # Make some browsing history to check it later in awesome bar
-
         new_tab()
         navigate('mozilla.org')
 
