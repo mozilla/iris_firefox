@@ -23,7 +23,7 @@ class Test(FirefoxTest):
 
         dock_region = Region(0, int(0.8 * Screen.SCREEN_HEIGHT), Screen.SCREEN_WIDTH, int(0.2 * Screen.SCREEN_HEIGHT))
 
-        # firefox.restart()
+        firefox.restart()
 
         private_window_opened = exists(PrivateWindow.private_window_pattern.similar(0.6))
         assert private_window_opened, "Private window loaded."
