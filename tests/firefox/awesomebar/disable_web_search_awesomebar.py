@@ -39,9 +39,6 @@ class Test(FirefoxTest):
         mozilla_page_opened = exists(mozilla_tab_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_page_opened, 'Mozilla page opened'
 
-        # expected = region.exists(amazon_logo_pattern , FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
-        # assert expected, 'Amazon website loaded successfully.'
-
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -94,15 +91,22 @@ class Test(FirefoxTest):
         select_location_bar()
         type('moz')
 
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
         one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                        region=top_two_thirds_region)
         assert one_off_button_exists, 'The \'Google\' one-off button found.'
 
-        click(google_one_off_button_pattern, 1)
+        google_one_off_button_location = find(google_one_off_button_pattern, Screen.LEFT_THIRD)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        click(google_one_off_button_location, 1)
 
         # - Firefox takes you to search results using the search provider of the selected one-off button
 
-        search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+                                          region=Screen.TOP_THIRD)
         assert search_results_available, 'Google search results are displayed.'
 
         close_tab()
@@ -116,7 +120,7 @@ class Test(FirefoxTest):
         select_location_bar()
         type('inputstring')
 
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
 
@@ -139,13 +143,18 @@ class Test(FirefoxTest):
         select_location_bar()
         type('moz')
 
-        click(google_one_off_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       )
+        assert one_off_button_exists, 'The \'Google\' one-off button found.'
+
+        click(google_one_off_button_location, 1)
 
         # The search is executed on using selected engine.
         # Firefox takes you to search results using the search provider of the selected one-off button
 
-        search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+                                          )
         assert search_results_available, 'Google search results are displayed. The search is executed on using ' \
                                          'selected engine.'
-
-        time.sleep(1234)
