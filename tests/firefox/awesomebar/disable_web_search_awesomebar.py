@@ -38,24 +38,24 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, 'Mozilla page loaded successfully.'
 
         bookmark_page()
 
-        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, 'Page was bookmarked.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, 'Firefox page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, 'Focus page loaded successfully.'
 
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
@@ -65,22 +65,26 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('m')
 
-        expected = region.exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
         assert expected, 'Bookmarked page found between search suggestions.'
 
         select_location_bar()
         paste('ox')
 
-        expected = region.exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
         assert expected, 'Opened tab found between search suggestions.'
 
         select_location_bar()
         paste('f')
 
-        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
         assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
-        expected = region.exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
         assert expected, 'Popular search suggestions from the default search engine found between search suggestions.'
 
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
