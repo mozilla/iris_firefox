@@ -664,6 +664,7 @@ def navigate(url):
     try:
         select_location_bar()
         paste(url)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         type(Key.ENTER)
     except Exception:
         raise APIHelperError(
