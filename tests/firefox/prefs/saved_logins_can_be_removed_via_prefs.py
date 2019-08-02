@@ -106,5 +106,5 @@ class Test(FirefoxTest):
         last_login_not_deleted = exists(last_saved_login_pattern)
         assert last_login_not_deleted, 'Last login was not deleted'
 
-        first_login_deleted = wait_vanish(first_saved_login_pattern, ui_timeout)
+        first_login_deleted = wait_vanish(first_saved_login_pattern.exact(), ui_timeout)
         assert first_login_deleted, 'Login was successfully deleted'
