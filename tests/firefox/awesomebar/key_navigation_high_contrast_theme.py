@@ -20,9 +20,10 @@ class Test(FirefoxTest):
         dark_theme_pattern = AboutAddons.Themes.DARK_THEME
         wear_theme_pattern = Pattern('wear_theme.png')
         moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png')
+        google_one_off_button_pattern = Pattern('google_one_off_button.png')
         search_wikipedia_dark_theme_pattern = Pattern('search_wikipedia_dark_theme.png')
 
-        region = Region(0, 0, Screen().width, 2*Screen().height / 3)
+        top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
         navigate(url)
 
@@ -40,10 +41,11 @@ class Test(FirefoxTest):
         expected = exists(dark_theme_pattern, 10)
         assert expected, 'Dark theme option found in the page.'
 
-        right_click(dark_theme_pattern)
+        click(dark_theme_pattern)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
         assert action_can_be_performed, 'Theme can be enabled/disabled.'
+
         click(AboutAddons.Themes.ACTION_BUTTON)
 
         expected = exists(AboutAddons.Themes.ENABLE_BUTTON, 10)
@@ -60,21 +62,19 @@ class Test(FirefoxTest):
         type(Key.SPACE)
 
         expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
-        assert expected, 'The searched string is highlighted.'
+        assert expected, 'The autocomplete drop-down is opened.'
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        # Using the "Up/Down" arrow keys navigate through the suggestion list.
 
-        repeat_key_up(2)
-        key_to_one_off_search(search_wikipedia_dark_theme_pattern)
+        awesomebar_opened = exists(google_one_off_button_pattern, 10, region=top_two_thirds_region)
+        assert awesomebar_opened, 'Awesomebar available.'
 
-        expected = region.exists(search_wikipedia_dark_theme_pattern, 10)
-        assert expected, 'The \'Wikipedia\' one-off button is highlighted.'
+        # The website in focus is highlighted.
 
-        max_attempts = 16
+        max_attempts = 20
 
         while max_attempts > 0:
-            scroll_up()
+            type(Key.UP)
             if exists(moz_search_highlight_dark_theme_pattern, 1):
                 max_attempts = 0
             max_attempts -= 1
