@@ -9,36 +9,36 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-            description='This test case performs key navigation in the URL drop-down in high contrast theme.',
+            description='Bug 1363692 - Key navigation in the URL drop-down in high contrast theme',
             locale=['en-US'],
             test_case_id='120136',
-            test_suite_id='1902'
-        )
+            test_suite_id='1902',
+            blocked_by={'id': 'issue_2771', 'platform': OSPlatform.ALL}
+    )
     def run(self, firefox):
-        url = LocalWeb.FIREFOX_TEST_SITE
         themes_pattern = Pattern('themes.png')
         dark_theme_pattern = AboutAddons.Themes.DARK_THEME
-        wear_theme_pattern = Pattern('wear_theme.png')
-        moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png')
+        moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png').similar(.6)
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
-        search_wikipedia_dark_theme_pattern = Pattern('search_wikipedia_dark_theme.png')
-
+        url = LocalWeb.FIREFOX_TEST_SITE
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
+
+        max_attempts = 0
 
         navigate(url)
 
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
+        expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Page successfully loaded, firefox logo found.'
 
         # The OS must have a high contrast theme activated.
         open_addons()
 
-        expected = region.exists(themes_pattern, 10)
+        expected = exists(themes_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, 'Add-ons page successfully loaded.'
 
         click(themes_pattern)
 
-        expected = exists(dark_theme_pattern, 10)
+        expected = exists(dark_theme_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Dark theme option found in the page.'
 
         click(dark_theme_pattern)
@@ -48,7 +48,7 @@ class Test(FirefoxTest):
 
         click(AboutAddons.Themes.ACTION_BUTTON)
 
-        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, 10)
+        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'ENABLE button found in the page.'
 
         click(AboutAddons.Themes.ENABLE_BUTTON)
@@ -61,23 +61,23 @@ class Test(FirefoxTest):
         paste('moz')
         type(Key.SPACE)
 
-        expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
+        expected = exists(moz_search_highlight_dark_theme_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
         assert expected, 'The autocomplete drop-down is opened.'
 
         # Using the "Up/Down" arrow keys navigate through the suggestion list.
 
-        awesomebar_opened = exists(google_one_off_button_pattern, 10, region=top_two_thirds_region)
+        awesomebar_opened = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                   region=top_two_thirds_region)
         assert awesomebar_opened, 'Awesomebar available.'
 
         # The website in focus is highlighted.
 
-        max_attempts = 20
-
-        while max_attempts > 0:
+        for max_attempts in range(20):
             type(Key.UP)
             if exists(moz_search_highlight_dark_theme_pattern, 1):
-                max_attempts = 0
-            max_attempts -= 1
+                break
 
-        expected = region.exists(moz_search_highlight_dark_theme_pattern, 10)
-        assert expected, 'The searched string is highlighted.'
+        expected = exists(moz_search_highlight_dark_theme_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
+        assert expected, 'The website in focus is highlighted.'
