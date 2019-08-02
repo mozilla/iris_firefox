@@ -24,6 +24,7 @@ class LocationBar(object):
     URLBAR_ZOOM_BUTTON_300 = Pattern('urlbar_zoom_button_300.png')
 
     SEARCH_BAR = Pattern('search_bar.png')
+    SEARCH_BAR_MAGNIFYING_GLASS = Pattern('search_bar_magnifying_glass.png')
     URL_BAR_DEFAULT_ZOOM_LEVEL = Pattern('url_bar_default_zoom_level.png')
 
     TRACKING_PROTECTION_SHIELD_ACTIVATED = Pattern('tracking_protection_icon_enabled.png')
