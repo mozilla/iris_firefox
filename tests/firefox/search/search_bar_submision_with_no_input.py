@@ -19,19 +19,20 @@ class Test(FirefoxTest):
         google_search_no_input_pattern = Pattern('google_search_no_input.png')
 
         navigate('about:preferences#search')
+
         expected = exists(add_search_bar_in_toolbar_pattern, 10)
         assert expected is True, 'Option found in the page.'
 
         click(add_search_bar_in_toolbar_pattern)
 
-        expected = exists(LocationBar.SEARCH_BAR.exact(), 10, region=Screen.TOP_THIRD)
+        expected = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, 10)
         assert expected is True, 'Search bar successfully enabled in the page.'
 
-        search_bar_location = find(LocationBar.SEARCH_BAR.exact())
+        click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(.7))
 
-        click(search_bar_location.offset(5, 5))
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
+
         expected = exists(google_search_no_input_pattern, 10)
         assert expected is True, 'The search engine page is opened with no searches performed.'
