@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         test_search_wikipedia_pattern = Pattern('test_search_wikipedia.png')
         bing_search_bar_pattern = Pattern('bing_search_bar.png')
         amazon_search_bar_pattern = Pattern('amazon_search_bar.png')
-        duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png')
+        duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png').similar(0.6)
         wikipedia_search_bar_pattern = Pattern('wikipedia_search_bar.png').similar(0.6)
 
         one_click_engines_list = [bing_search_bar_pattern, amazon_search_bar_pattern, duckduckgo_search_bar_pattern,
@@ -39,15 +39,15 @@ class Test(FirefoxTest):
 
             if i == 0:
                 paste('test')
-                expected = exists(test_bold_pattern, 10)
-                assert expected is True, 'Search suggestions are shown for the input in question.'
+                suggestions_shown = exists(test_bold_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+                assert suggestions_shown is True, 'Search suggestions are shown for the input in question.'
 
-            expected = exists(one_click_engines_list[i], 10)
-            assert expected is True, 'The %s search engine is visible.' % \
-                                     str(one_click_engines_list[i].get_filename()).split('_')[0].upper()
+            search_engine = exists(one_click_engines_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
+            assert search_engine is True, 'The %s search engine is visible.' % \
+                                          str(one_click_engines_list[i].get_filename()).split('_')[0].upper()
 
             click(one_click_engines_list[i])
-            expected = exists(test_search_list[i], 10)
+            test_search = exists(test_search_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
 
-            assert expected is True, 'Search results are displayed for the %s engine.' % \
-                                     str(one_click_engines_list[i].get_filename()).split('_')[0].upper()
+            assert test_search is True, 'Search results are displayed for the %s engine.' % \
+                                        str(one_click_engines_list[i].get_filename()).split('_')[0].upper()

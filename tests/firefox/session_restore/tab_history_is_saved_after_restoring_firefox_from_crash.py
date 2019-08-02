@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id='114828',
         test_suite_id='68',
         locales=Locales.ENGLISH,
+        blocked_by={'id': 'issue_3222', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         restore_previous_session_checkbox_pattern = Pattern('restore_previous_session_checkbox.png')

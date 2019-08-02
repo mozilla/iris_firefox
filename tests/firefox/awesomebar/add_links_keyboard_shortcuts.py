@@ -17,7 +17,6 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         cnn_tab_pattern = Pattern('cnn_tab.png')
-        cnn_icon_pattern = Pattern('cnn_icon.png')
         facebook_tab_pattern = Pattern('facebook_tab.png')
 
         region = Region(0, 0, Screen().width / 2, Screen().height / 3)
@@ -29,7 +28,9 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         key_up(Key.CTRL)
 
-        expected = region.exists(cnn_icon_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        close_content_blocking_pop_up()
+
+        expected = region.exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected, 'CNN page successfully loaded .'
 
         new_tab()
