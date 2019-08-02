@@ -27,7 +27,7 @@ class Test(FirefoxTest):
         expected = exists(LocationBar.SEARCH_BAR, 10)
         assert expected is True, 'Search bar successfully enabled in the page.'
 
-        click(LocationBar.SEARCH_BAR)
+        click(LocationBar.SEARCH_BAR.similar(.7))
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
