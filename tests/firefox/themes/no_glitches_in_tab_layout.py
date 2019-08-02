@@ -29,31 +29,35 @@ class Test(FirefoxTest):
         close_tab()
 
         expected = exists(AboutAddons.THEMES, 10)
-        assert expected is True, 'Add-ons page successfully loaded.'
+        assert expected, 'Add-ons page successfully loaded.'
 
         click(AboutAddons.THEMES)
 
         expected = exists(AboutAddons.Themes.DARK_THEME, 10)
-        assert expected is True, 'Dark theme option found in the page.'
+        assert expected, 'Dark theme option found in the page.'
 
         expected = exists(AboutAddons.Themes.LIGHT_THEME, 10)
-        assert expected is True, 'Dark theme option found in the page.'
+        assert expected, 'Dark theme option found in the page.'
 
         expected = exists(AboutAddons.Themes.DEFAULT_THEME, 10)
-        assert expected is True, 'Dark theme option found in the page.'
+        assert expected, 'Dark theme option found in the page.'
 
         # DEFAULT theme.
         click(AboutAddons.Themes.DEFAULT_THEME)
 
-        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, 5)
-        assert expected is True, 'ENABLE button NOT found in the page.'
+        action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
+        assert action_can_be_performed, 'Theme can be enabled/disabled.'
+        click(AboutAddons.Themes.ACTION_BUTTON)
+
+        expected = not exists(AboutAddons.Themes.ENABLE_BUTTON, 5)
+        assert expected, 'ENABLE button NOT found in the page.'
 
         # Open at least 10 tabs and load pages in each one.
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
             expected = exists(LocalWeb.MOZILLA_LOGO, 120)
-            assert expected is True, 'Mozilla page loaded successfully.'
+            assert expected, 'Mozilla page loaded successfully.'
 
         max_attempts = 9
 
@@ -61,24 +65,40 @@ class Test(FirefoxTest):
             expected = exists(mozilla_tab_not_focused, 3)
 
             if expected:
-                tab = find(mozilla_tab_not_focused)
-                region = Region(tab.x - 10, tab.y - 10, 220, 80)
-                region.hover(tab)
+                inactive_tab_location = find(mozilla_tab_not_focused)
 
-                expected = exists(mozilla_hover, 10)
-                assert expected is True, 'Mozilla page is hovered.'
+                tab_title_width, tab_title_height = mozilla_tab_not_focused.get_size()
 
-                region.click(mozilla_tab_not_focused)
+                active_tab_region = Region(inactive_tab_location.x - 5, inactive_tab_location.y - tab_title_height,
+                                           tab_title_width * 4, tab_title_height * 10)
 
-                expected = exists(close_tab_button, 10)
-                assert expected is True, 'Close tab button is visible.'
+                hover(inactive_tab_location)
 
-                hover(close_tab_button, align=Alignment.CENTER)
+                expected = exists(mozilla_hover, 10, region=active_tab_region)
+                assert expected, 'Mozilla page is hovered.'
 
-                expected = exists(close_tab_hover, 10)
-                assert expected is True, 'Close button is hovered.'
+                click(inactive_tab_location)
 
-                region.click(close_tab_button)
+                expected = exists(close_tab_button, 10, region=active_tab_region)
+                assert expected, 'Close tab button is visible.'
+
+                close_width, close_height = close_tab_button.get_size()
+
+                close_tab_button_location = find(close_tab_button, active_tab_region)
+                close_click_location = Location(close_tab_button_location.x + close_width / 2,
+                                                close_tab_button_location.y + close_width / 2)
+
+                close_tab_hover_text_region = Region(close_tab_button_location.x-close_width,
+                                                     close_tab_button_location.y,
+                                                     close_width * 10, close_height*10)
+
+                hover(close_click_location)
+
+                expected = exists(close_tab_hover, 10, close_tab_hover_text_region)
+                assert expected, 'Close button is hovered.'
+
+                click(close_click_location)
+
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -89,26 +109,34 @@ class Test(FirefoxTest):
 
         # LIGHT theme.
         expected = exists(AboutAddons.THEMES, 10)
-        assert expected is True, 'Add-ons page is in focus.'
+        assert expected, 'Add-ons page is in focus.'
 
         click(AboutAddons.THEMES)
 
         click(AboutAddons.Themes.LIGHT_THEME)
 
+        action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
+        assert action_can_be_performed, 'Theme can be enabled/disabled.'
+        click(AboutAddons.Themes.ACTION_BUTTON)
+
         expected = exists(AboutAddons.Themes.ENABLE_BUTTON, 5)
-        assert expected is True, 'ENABLE button found in the page.'
+        assert expected, 'ENABLE button found in the page.'
 
         click(AboutAddons.Themes.ENABLE_BUTTON)
 
+        action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
+        assert action_can_be_performed, 'Theme can be enabled/disabled.'
+        click(AboutAddons.Themes.ACTION_BUTTON)
+
         expected = exists(AboutAddons.Themes.DISABLE_BUTTON, 10)
-        assert expected is True, 'DISABLE button found in the page.'
+        assert expected, 'DISABLE button found in the page.'
 
         # Open at least 10 tabs and load pages in each one.
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
             expected = exists(LocalWeb.MOZILLA_LOGO, 120)
-            assert expected is True, 'Mozilla page loaded successfully.'
+            assert expected, 'Mozilla page loaded successfully.'
 
         max_attempts = 9
 
@@ -116,24 +144,41 @@ class Test(FirefoxTest):
             expected = exists(mozilla_tab_not_focused_light_theme, 3)
 
             if expected:
-                tab = find(mozilla_tab_not_focused_light_theme)
-                region = Region(tab.x, tab.y - 10, 220, 80)
-                region.hover(tab)
+                inactive_tab_location = find(mozilla_tab_not_focused_light_theme)
 
-                expected = exists(mozilla_hover, 10)
-                assert expected is True, 'Mozilla page is hovered.'
+                tab_title_width, tab_title_height = mozilla_tab_not_focused_light_theme.get_size()
 
-                region.click(mozilla_tab_not_focused_light_theme)
+                active_tab_region = Region(inactive_tab_location.x-5, inactive_tab_location.y - tab_title_height,
+                                           tab_title_width * 4, tab_title_height * 10)
 
-                expected = exists(close_tab_button, 10)
-                assert expected is True, 'Close tab button is visible.'
+                hover(inactive_tab_location)
 
-                hover(close_tab_button, align=Alignment.CENTER)
+                expected = exists(mozilla_hover, 10, region=active_tab_region)
+                assert expected, 'Mozilla page is hovered.'
 
-                expected = exists(close_tab_hover, 10)
-                assert expected is True, 'Close button is hovered.'
+                click(inactive_tab_location)
 
-                region.click(close_tab_button.similar(0.6))
+                expected = exists(close_tab_button, 10, region=active_tab_region)
+                assert expected, 'Close tab button is visible.'
+
+                close_tab_button_location = find(close_tab_button, active_tab_region)
+
+                close_width, close_height = close_tab_button.get_size()
+
+                close_click_location = Location(close_tab_button_location.x + close_width / 2,
+                                                close_tab_button_location.y + close_width / 2)
+
+                close_tab_hover_text_region = Region(close_tab_button_location.x-close_width,
+                                                     close_tab_button_location.y,
+                                                     close_width * 10, close_height*10)
+
+                hover(close_click_location)
+
+                expected = exists(close_tab_hover, 10, close_tab_hover_text_region)
+                assert expected, 'Close button is hovered.'
+
+                click(close_click_location)
+
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1
@@ -144,26 +189,34 @@ class Test(FirefoxTest):
 
         # DARK theme.
         expected = exists(AboutAddons.THEMES, 10)
-        assert expected is True, 'Add-ons page is in focus.'
+        assert expected, 'Add-ons page is in focus.'
 
         click(AboutAddons.THEMES)
 
         click(AboutAddons.Themes.DARK_THEME)
 
+        action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
+        assert action_can_be_performed, 'Theme can be enabled/disabled.'
+        click(AboutAddons.Themes.ACTION_BUTTON)
+
         expected = exists(AboutAddons.Themes.ENABLE_BUTTON, 10)
-        assert expected is True, 'ENABLE button found in the page.'
+        assert expected, 'ENABLE button found in the page.'
 
         click(AboutAddons.Themes.ENABLE_BUTTON)
 
+        action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
+        assert action_can_be_performed, 'Theme can be enabled/disabled.'
+        click(AboutAddons.Themes.ACTION_BUTTON)
+
         expected = exists(AboutAddons.Themes.DISABLE_BUTTON, 10)
-        assert expected is True, 'DISABLE button found in the page.'
+        assert expected, 'DISABLE button found in the page.'
 
         # Open at least 10 tabs and load pages in each one.
         for i in range(10):
             new_tab()
             navigate(LocalWeb.MOZILLA_TEST_SITE)
             expected = exists(LocalWeb.MOZILLA_LOGO, 120)
-            assert expected is True, 'Mozilla page loaded successfully.'
+            assert expected, 'Mozilla page loaded successfully.'
 
         max_attempts = 9
 
@@ -171,24 +224,41 @@ class Test(FirefoxTest):
             expected = exists(mozilla_tab_not_focused, 3)
 
             if expected:
-                tab = find(mozilla_tab_not_focused)
-                region = Region(tab.x - 10, tab.y - 10, 220, 80)
-                region.hover(tab)
+                inactive_tab_location = find(mozilla_tab_not_focused)
 
-                expected = exists(mozilla_hover_dark_theme, 10)
-                assert expected is True, 'Mozilla page is hovered.'
+                tab_title_width, tab_title_height = mozilla_tab_not_focused.get_size()
 
-                region.click(mozilla_tab_not_focused)
+                active_tab_region = Region(inactive_tab_location.x-5, inactive_tab_location.y - tab_title_height,
+                                           tab_title_width * 4, tab_title_height * 10)
 
-                expected = exists(close_tab_button_dark_theme, 10)
-                assert expected is True, 'Close tab button is visible.'
+                hover(inactive_tab_location)
 
-                hover(close_tab_button_dark_theme, align=Alignment.CENTER)
+                expected = exists(mozilla_hover_dark_theme, 10, region=active_tab_region)
+                assert expected, 'Mozilla page is hovered.'
 
-                expected = exists(close_tab_hover_dark_theme, 10)
-                assert expected is True, 'Close button is hovered.'
+                click(inactive_tab_location)
 
-                region.click(close_tab_button_dark_theme)
+                expected = exists(close_tab_button_dark_theme, 10, region=active_tab_region)
+                assert expected, 'Close tab button is visible.'
+
+                close_tab_dark_button_location = find(close_tab_button_dark_theme, active_tab_region)
+
+                close_width, close_height = close_tab_button_dark_theme.get_size()
+
+                close_dark_click_location = Location(close_tab_dark_button_location.x + close_width / 2,
+                                                     close_tab_dark_button_location.y + close_width / 2)
+
+                close_tab_hover_text_region = Region(close_tab_dark_button_location.x-close_width,
+                                                     close_tab_dark_button_location.y,
+                                                     close_width * 10, close_height*10)
+
+                hover(close_dark_click_location)
+
+                expected = exists(close_tab_hover_dark_theme, 10, close_tab_hover_text_region)
+                assert expected, 'Close button is hovered.'
+
+                click(close_dark_click_location)
+
                 time.sleep(Settings.DEFAULT_UI_DELAY)
 
                 max_attempts -= 1

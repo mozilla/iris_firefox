@@ -306,8 +306,8 @@ class FXRunner:
                         for proc in process.children(recursive=True):
                             proc.kill()
 
-                    if psutil.pid_exists(process):
-                        logger.debug('Terminating PID :%s' % process)
+                    if psutil.pid_exists(process.pid):
+                        logger.debug('Terminating PID :%s' % process.pid)
                         process.terminate()
 
                 except psutil.NoSuchProcess:

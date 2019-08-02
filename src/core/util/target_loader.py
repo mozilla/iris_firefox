@@ -36,7 +36,6 @@ def collect_tests():
     if load_target(target):
         include = core_args.test
         exclude = core_args.exclude
-
         if os.path.isfile(include):
             with open(include, 'r') as f:
                 for line in f:
@@ -71,7 +70,6 @@ def collect_tests():
                                                 if exclude_param not in current_full_path:
                                                     if not current_full_path in test_list:
                                                         test_list.append(current_full_path)
-
             if len(test_list) == 0:
                 logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
             else:

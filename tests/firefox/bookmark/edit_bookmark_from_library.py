@@ -38,7 +38,9 @@ class Test(FirefoxTest):
         assert name_field_displayed is True, 'Name field is displayed'
 
         fields_location = find(name_field_pattern)
-        fields_region = Region(0, fields_location.y, Screen.SCREEN_WIDTH * 2 // 3, Screen.SCREEN_HEIGHT * 2 // 3)
+        fields_width, fields_height = name_field_pattern.get_size()
+        fields_region = Region(fields_location.x - fields_width, fields_location.y, fields_width * 10,
+                               fields_height * 15)
 
         click(name_field_pattern, region=fields_region)
 
@@ -82,8 +84,10 @@ class Test(FirefoxTest):
         new_name_bookmark_created = exists(bookmark_new_name_pattern)
         assert new_name_bookmark_created is True, '"New Name" bookmark exists'
 
-        bookmark_name_location = find(bookmark_new_name_pattern)
-        fields_region = Region(0, bookmark_name_location.y, Screen.SCREEN_WIDTH * 2 // 3, Screen.SCREEN_HEIGHT * 2 // 3)
+        fields_location = find(name_field_pattern)
+        fields_width, fields_height = name_field_pattern.get_size()
+        fields_region = Region(fields_location.x - fields_width, fields_location.y-fields_height, fields_width * 10,
+                               fields_height * 16)
 
         click(bookmark_new_name_pattern)
 
