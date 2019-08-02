@@ -37,17 +37,13 @@ class Test(FirefoxTest):
         assert expected, 'Dark theme option found in the page.'
 
         expected = exists(AboutAddons.Themes.LIGHT_THEME, 10)
-        assert expected, 'Dark theme option found in the page.'
+        assert expected, 'Light theme option found in the page.'
 
         expected = exists(AboutAddons.Themes.DEFAULT_THEME, 10)
-        assert expected, 'Dark theme option found in the page.'
+        assert expected, 'Default theme option found in the page.'
 
         # DEFAULT theme.
         click(AboutAddons.Themes.DEFAULT_THEME)
-
-        action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
-        assert action_can_be_performed, 'Theme can be enabled/disabled.'
-        click(AboutAddons.Themes.ACTION_BUTTON)
 
         expected = not exists(AboutAddons.Themes.ENABLE_BUTTON, 5)
         assert expected, 'ENABLE button NOT found in the page.'
