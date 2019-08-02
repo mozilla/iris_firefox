@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         themes_pattern = Pattern('themes.png')
-        dark_theme_pattern = Pattern('dark_theme.png')
+        dark_theme_pattern = AboutAddons.Themes.DARK_THEME
         wear_theme_pattern = Pattern('wear_theme.png')
         moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png')
         search_wikipedia_dark_theme_pattern = Pattern('search_wikipedia_dark_theme.png')
@@ -29,6 +29,7 @@ class Test(FirefoxTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
         assert expected, 'Page successfully loaded, firefox logo found.'
 
+        # The OS must have a high contrast theme activated.
         open_addons()
 
         expected = region.exists(themes_pattern, 10)
@@ -41,21 +42,18 @@ class Test(FirefoxTest):
 
         right_click(dark_theme_pattern)
 
-        expected = exists(wear_theme_pattern, 10)
-        assert expected, 'The \'Wear theme\' option found in the page.'
+        action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
+        assert action_can_be_performed, 'Theme can be enabled/disabled.'
+        click(AboutAddons.Themes.ACTION_BUTTON)
 
-        # Select the 'Wear theme' option.
-        click(wear_theme_pattern)
+        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, 10)
+        assert expected, 'ENABLE button found in the page.'
 
-        # Check that 'Wear theme' option successfully selected.
-        right_click(dark_theme_pattern)
-        # try:
-        #     expected = region.exists(stop_wear_theme, 10)
-        #     assert  expected, 'The \'Wear theme\' option not found in the page.'
-        # except FindError:
-        #     raise FindError('The \'Wear theme\' option found in the page.')
+        click(AboutAddons.Themes.ENABLE_BUTTON)
 
         type(Key.ESC)
+
+        #  Start typing in the Awesome Bar.
 
         select_location_bar()
         paste('moz')
