@@ -24,10 +24,12 @@ class Test(FirefoxTest):
 
         click(add_search_bar_in_toolbar_pattern)
 
-        expected = exists(LocationBar.SEARCH_BAR, 10)
+        expected = exists(LocationBar.SEARCH_BAR.exact(), 10, region=Screen.TOP_THIRD)
         assert expected is True, 'Search bar successfully enabled in the page.'
 
-        click(LocationBar.SEARCH_BAR.similar(.7))
+        search_bar_location = find(LocationBar.SEARCH_BAR.exact())
+
+        click(search_bar_location.offset(5, 5))
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
