@@ -38,9 +38,6 @@ class Test(FirefoxTest):
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
         assert action_can_be_performed is False, 'Theme can be enabled/disabled.'
 
-        expected = not exists(AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert expected, 'ENABLE button NOT found in the page.'
-
         previous_tab()
 
         expected = exists(AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
