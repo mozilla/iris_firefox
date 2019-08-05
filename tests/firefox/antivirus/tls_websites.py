@@ -94,7 +94,7 @@ class Test(FirefoxTest):
 
         cdn_button_location = find(cdn77_logo_pattern)
         cdn_width, cdn_height = cdn77_logo_pattern.get_size()
-        cdn_region = Region(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
+        cdn_region = Rectangle(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
 
         click(LocationBar.IDENTITY_ICON)
 
