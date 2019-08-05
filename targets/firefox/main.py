@@ -182,9 +182,9 @@ class Target(BaseTarget):
                                                                     values.get('description'),
                                                                     ', '.join(skip_reason_list)))
                 test_instance = (item, 'SKIPPED', None)
-
                 test_result = create_result_object(test_instance, 0, 0)
                 self.completed_tests.append(test_result)
+                Target.index += 1
                 pytest.skip(item)
 
     def pytest_runtest_call(self, item):
