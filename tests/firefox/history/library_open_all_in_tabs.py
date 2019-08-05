@@ -19,25 +19,31 @@ class Test(FirefoxTest):
         mozilla_tab_icon = Pattern('mozilla_logo_tab.png')
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        history_today_pattern = Library.HISTORY_TODAY
+        history_today_pattern = Library.LIBRARY_POPUP_HISTORY_TODAY
         new_tab_pattern = Pattern('new_tab.png')
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
         firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo_for_bookmarks.png')
+        library_toolbar_icon = Pattern('library_icon.png')
+        firefox_toolbar_icon = Pattern('firefox_icon.png')
+        close_auxiliary_window = False
 
         # Open a page to create some history.
+        new_tab()
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         expected = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected is True, 'Mozilla page loaded successfully.'
 
-        new_tab()
-        previous_tab()
         close_tab()
 
-        navigate(privacy_url)
         new_tab()
-        previous_tab()
+
+        navigate(privacy_url)
+
         close_tab()
+
+        new_tab()
 
         # Open History and check if it is populated with the Iris page.
         open_library_menu('History')
@@ -54,10 +60,10 @@ class Test(FirefoxTest):
         assert expected is True, 'Today history option is available.'
 
         # Right click on History time range and select the Open All in Tabs button.
-        right_click(history_today_pattern)
-        type(text='o')
 
-        close_auxiliary_window = False
+        right_click_and_type(history_today_pattern, delay=FirefoxSettings.SHORT_FIREFOX_TIMEOUT, keyboard_action='o')
+
+        # Close potentially existing library window
         if OSHelper.is_mac() or exists(Library.TITLE, 10):
             click_window_control('close')
             time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -77,12 +83,12 @@ class Test(FirefoxTest):
         expected = exists(new_tab_pattern, 10)
         assert expected is True, 'about:newtab page loaded successfully.'
 
-        # Close potentially existing background library window
+        # Close potentially existing library window
         if close_auxiliary_window:
-            library_toolbar_icon = Pattern('library_icon.png')
-            firefox_toolbar_icon = Pattern('firefox_icon.png')
             click(firefox_toolbar_icon)
+
             time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
             click(library_toolbar_icon)
 
             click_window_control('close')
