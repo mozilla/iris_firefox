@@ -39,6 +39,7 @@ class LocalWeb(object):
     MOZILLA_IMAGE = Pattern('mozilla_full.png')
     MOZILLA_BOOKMARK = Pattern('mozilla_bookmark.png')
     MOZILLA_BOOKMARK_SMALL = Pattern('mozilla_bookmark_small.png')
+    MOZILLA_BOOKMARK_HISTORY_SIDEBAR = Pattern('mozilla_bookmark_history_sidebar.png')
 
     """Local Pocket site."""
     POCKET_TEST_SITE = 'http://%s:%s/pocket/' % (_ip_host, _port)
