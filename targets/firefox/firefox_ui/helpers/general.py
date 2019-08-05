@@ -664,6 +664,7 @@ def navigate(url):
     try:
         select_location_bar()
         paste(url)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         type(Key.ENTER)
     except Exception:
         raise APIHelperError(
@@ -826,9 +827,10 @@ def repeat_key_down(num):
     """
     for i in range(num):
         type(Key.DOWN)
+        time.sleep(1)
 
 
-def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=1):
     """
     Press the Key Down button until specified image pattern is found.
 
@@ -862,9 +864,10 @@ def repeat_key_up(num):
     """
     for i in range(num):
         type(Key.UP)
+        time.sleep(1)
 
 
-def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=1):
     """
     Press the Key Up button until specified image pattern is found.
 

@@ -144,37 +144,46 @@ class BaseTarget:
             :py:class:`_pytest.runner.CallInfo`.
 
             Stops at first non-None result
-            """
+        """
 
         if call.when == "call" and call.excinfo is not None:
+            # Examine the last line of the call stack.
+            tb = call.excinfo.traceback.pop()
 
-            if str(item.__dict__.get('fspath')) in str(call.excinfo):
-                logger.debug('Test failed with assert')
-                outcome = "FAILED"
+            if str(item.__dict__.get('fspath')) in str(tb):
+                if 'AssertionError' in str(call.excinfo):
+                    logger.debug('Test failed with assert')
+                    outcome = "FAILED"
+                else:
+                    logger.debug('Test failed with error')
+                    outcome = "ERROR"
             else:
                 logger.debug('Test failed with error')
                 outcome = "ERROR"
 
-            assert_object = (item, outcome, call.excinfo)
+            # We have found that call.excinfo can be turned to a string, but its
+            # format can vary. Therefore, we build an exception string from more
+            # predictable values.
 
+            file_name = str(tb).split('\'')[1]
+            line_number = str(tb).split('\':')[1].split(' ')[0]
+            exception_error_class = call.excinfo.exconly(True).split(':')[0]
+            message_only = str(call.excinfo.value).split('\n')[0]
+            exc_str = '%s:%s: %s: %s' % (file_name, line_number, exception_error_class, message_only)
+            assert_object = (item, outcome, exc_str, call.excinfo.traceback)
             test_result = create_result_object(assert_object, call.start, call.stop)
-
             self.completed_tests.append(test_result)
 
-        elif call.when == "call" and call.excinfo is None:
+        elif call.when == 'call' and call.excinfo is None:
             outcome = 'PASSED'
             test_instance = (item, outcome, None)
-
             test_result = create_result_object(test_instance, call.start, call.stop)
-
             self.completed_tests.append(test_result)
 
-        elif call.when == "setup" and item._skipped_by_mark:
+        elif call.when == 'setup' and item._skipped_by_mark:
             outcome = 'SKIPPED'
             test_instance = (item, outcome, None)
-
             test_result = create_result_object(test_instance, call.start, call.stop)
-
             self.completed_tests.append(test_result)
 
 
