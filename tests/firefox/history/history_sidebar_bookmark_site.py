@@ -53,7 +53,7 @@ class Test(FirefoxTest):
         expected_5 = exists(save_bookmark_button_pattern, 10)
         assert expected_5, 'New Bookmark popup displayed properly.'
 
-        click(save_bookmark_button_pattern)
+        click(save_bookmark_button_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         try:
             expected_6 = wait_vanish(save_bookmark_button_pattern, 10)
