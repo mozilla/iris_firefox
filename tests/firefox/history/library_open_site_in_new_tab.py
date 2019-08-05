@@ -18,7 +18,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        history_today_pattern = Library.HISTORY_TODAY
+        history_today_pattern = Library.LIBRARY_POPUP_HISTORY_TODAY
+        mozilla_bookmark_history_pattern = LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR
         iris_tab_icon = Pattern('iris_logo_tab.png')
 
         # Open a page to create some today's history.
@@ -50,11 +51,11 @@ class Test(FirefoxTest):
 
         # Verify if Mozilla page is present in Today's History.
 
-        mozilla_displayed_in_history = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, FirefoxSettings.FIREFOX_TIMEOUT)
+        mozilla_displayed_in_history = exists(mozilla_bookmark_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_displayed_in_history is True, 'Mozilla page is displayed successfully in the History list.'
 
         # Open the Mozilla page using the 'Open in a New Tab' button from the context menu.
-        right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
+        right_click(mozilla_bookmark_history_pattern)
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
@@ -62,8 +63,11 @@ class Test(FirefoxTest):
 
         # Close the library.
         open_library()
+
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+
         click_window_control('close')
+
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         # Check that the Mozilla page loaded successfully in a new tab.
