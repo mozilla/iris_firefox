@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         more_information_button_pattern = Pattern('more_information_button.png')
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
         theregister_logo_pattern = Pattern('theregister_logo.png')
-        cdn77_logo_pattern = Pattern('cdn77_logo.png')
+        cdn77_logo_pattern = Pattern('cdn77_logo.png').similar(0.6)
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
         the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png')
