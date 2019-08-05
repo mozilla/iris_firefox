@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         page_info_window_pattern = Pattern('technical_details.png')
-        tls_check_pattern = Pattern('tls_check.png')
+        tls_check_pattern = Pattern('tls_check.png').similar(0.7)
         show_connection_details_button_pattern = Pattern('show_connection_details_button.png')
         more_information_button_pattern = Pattern('more_information_button.png')
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
@@ -24,8 +24,8 @@ class Test(FirefoxTest):
         cdn77_logo_pattern = Pattern('cdn77_logo.png').similar(0.6)
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
-        the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png')
-        the_register_log_in_page_pattern = Pattern('the_register_log_in_page.png')
+        the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png').similar(0.6)
+        the_register_log_in_page_pattern = Pattern('the_register_log_in_page.png').similar(0.6)
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
 
         navigate('https://www.cloudflare.com/')
