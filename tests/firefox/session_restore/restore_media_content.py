@@ -30,12 +30,9 @@ class Test(FirefoxTest):
         assert first_label_exists, 'Page loaded'
 
         right_click(first_label_pattern)
-        if OSHelper.is_linux():
-            time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-            type('t')
-        else:
-            type(Key.DOWN)
-            type(Key.ENTER)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
+        type('t')
 
         blocked_media_icon_exists = exists(blocked_media_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert blocked_media_icon_exists, 'Blocked media tab opened'
@@ -44,12 +41,9 @@ class Test(FirefoxTest):
         assert second_label_exists, 'Second link exists'
 
         right_click(second_label_pattern)
-        if Settings.is_linux():
-            time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-            type('t')
-        else:
-            type(Key.DOWN)
-            type(Key.ENTER)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
+        type('t')
 
         new_tab()
         navigate('https://videos.cdn.mozilla.net/uploads/Web_Developer_Tools_in_Firefox_Aurora_10.webm')
