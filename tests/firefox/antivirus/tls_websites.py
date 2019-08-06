@@ -89,10 +89,10 @@ class Test(FirefoxTest):
 
         navigate('https://www.cdn77.com/')
 
-        assert exists(cdn77_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'CDN77 page is successfully downloaded.'
-
         cdn_logo_region = Screen().top_half().left_third().top_half()
+
+        assert exists(cdn77_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT, cdn_logo_region), \
+            'CDN77 page is successfully downloaded.'
 
         cdn_button_location = find(cdn77_logo_pattern, region=cdn_logo_region)
         cdn_width, cdn_height = cdn77_logo_pattern.get_size()
