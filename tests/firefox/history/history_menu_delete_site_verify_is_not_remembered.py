@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         mozilla_bookmark_focus_pattern = Pattern('mozilla_bookmark_focus.png')
-        mozilla_autocomplete_pattern = Pattern('mozilla_autocomplete.png')
+        mozilla_autocomplete_pattern = Pattern('mozilla_autocomplete.png').similar(0.7)
 
         # Visit a page at least two times to make sure that auto-fill is working in the URL bar.
         new_tab()
