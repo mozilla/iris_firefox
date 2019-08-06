@@ -22,19 +22,21 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#search')
 
-        expected = exists(about_preferences_search_page_pattern, 10)
-        assert expected is True, 'The \'about:preferences#search\' page successfully loaded.'
+        expected = exists(about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'The \'about:preferences#search\' page successfully loaded.'
 
+        search_field_loaded = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_field_loaded, 'Search field is loaded'
         paste('keyword')
 
-        expected = exists(keyword_field_pattern, 10)
-        assert expected is True, 'The keyword field is visible.'
+        expected = exists(keyword_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'The keyword field is visible.'
 
         double_click(keyword_field_pattern)
         paste('bn')
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
         select_location_bar()
         paste('bn moz')
 
-        expected = exists(moz_search_bing_pattern, 10)
-        assert expected is True, 'Results from URL bar state that the search will be performed with \'Bing\'.'
+        expected = exists(moz_search_bing_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, 'Results from URL bar state that the search will be performed with \'Bing\'.'
