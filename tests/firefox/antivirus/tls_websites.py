@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         more_information_button_pattern = Pattern('more_information_button.png')
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
         theregister_logo_pattern = Pattern('theregister_logo.png')
-        cdn77_logo_pattern = Pattern('cdn77_logo.png').similar(0.6)
+        cdn77_logo_pattern = Pattern('cdn77_logo.png')
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
         the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png')
@@ -92,7 +92,9 @@ class Test(FirefoxTest):
         assert exists(cdn77_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'CDN77 page is successfully downloaded.'
 
-        cdn_button_location = find(cdn77_logo_pattern)
+        cdn_logo_region = Screen().top_half().left_third().top_half()
+
+        cdn_button_location = find(cdn77_logo_pattern, region=cdn_logo_region)
         cdn_width, cdn_height = cdn77_logo_pattern.get_size()
         cdn_region = Region(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
 
