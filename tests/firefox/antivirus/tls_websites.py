@@ -73,7 +73,7 @@ class Test(FirefoxTest):
 
         click(more_information_button_pattern)
 
-        assert exists(page_info_window_pattern), 'The Register page info window is opened.'
+        assert exists(page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT), 'The Register page info window is opened.'
 
         assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
             'The Technical Details section states that the connection is encrypted via TLS 1.3.'
@@ -109,8 +109,8 @@ class Test(FirefoxTest):
             'More information button displayed.'
 
         click(more_information_button_pattern)
-        assert exists(page_info_window_pattern), 'CDN77 page info window is opened.'
-        assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
+        assert exists(page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT), 'CDN77 page info window is opened.'
+        assert exists(tls_check_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
             'The Technical Details section states that the connection is encrypted via TLS 1.3.'
 
         close_window_control('auxiliary')
