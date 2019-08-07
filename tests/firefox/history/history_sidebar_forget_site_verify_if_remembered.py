@@ -78,7 +78,7 @@ class Test(FirefoxTest):
 
         # Check that the local server is not auto-completed in the URL bar.
         select_location_bar()
-        paste('127')
+        type('127')
 
         expected_8 = exists(local_server_autocomplete_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_8 is not True, 'Local server is not auto-completed in the URL bar.'
