@@ -25,10 +25,10 @@ class Test(FirefoxTest):
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
 
-        search_bar_enabled = exists(LocationBar.SEARCH_BAR.similar(.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        search_bar_enabled = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_bar_enabled is True, 'The search bar is successfully enabled.'
 
-        right_click(LocationBar.SEARCH_BAR.similar(.7))
+        right_click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
 
         show_suggestions_available = exists(show_suggestions_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert show_suggestions_available is True, 'The \'Show Suggestions\' option is visible.'
