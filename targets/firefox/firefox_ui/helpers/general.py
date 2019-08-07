@@ -664,6 +664,7 @@ def navigate(url):
     try:
         select_location_bar()
         paste(url)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         type(Key.ENTER)
     except Exception:
         raise APIHelperError(
@@ -826,9 +827,10 @@ def repeat_key_down(num):
     """
     for i in range(num):
         type(Key.DOWN)
+        time.sleep(1)
 
 
-def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=1):
     """
     Press the Key Down button until specified image pattern is found.
 
@@ -862,9 +864,10 @@ def repeat_key_up(num):
     """
     for i in range(num):
         type(Key.UP)
+        time.sleep(1)
 
 
-def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=1):
     """
     Press the Key Up button until specified image pattern is found.
 
@@ -1120,3 +1123,32 @@ class ZoomType(object):
 
     IN = 300 if OSHelper.is_windows() else 1
     OUT = -300 if OSHelper.is_windows() else -1
+
+
+def find_in_region_from_pattern(outer_pattern: Pattern, inner_pattern: Pattern,
+                                outer_pattern_timeout=Settings.auto_wait_timeout,
+                                inner_pattern_timeout=Settings.auto_wait_timeout):
+    """ Finds pattern in region created from another pattern
+    :param outer_pattern: Pattern for region creation
+    :param inner_pattern: Pattern to find in region
+    :param outer_pattern_timeout: Time to finding outer_pattern
+    :param inner_pattern_timeout: Time to finding inner_pattern,
+    :return: Boolean. True if inner_pattern found in outer_pattern region
+    :raises: ValueError and APIHelperError
+    """
+    if not isinstance(outer_pattern, Pattern) or not isinstance(inner_pattern, Pattern):
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    try:
+        wait(outer_pattern, outer_pattern_timeout)
+        logger.debug('Outer pattern found.')
+
+    except FindError:
+        raise APIHelperError('Can\'t find the outer pattern.')
+
+    width, height = outer_pattern.get_size()
+    region = Region(image_find(outer_pattern).x, image_find(outer_pattern).y, width, height)
+
+    pattern_found = exists(inner_pattern, inner_pattern_timeout, region=region)
+
+    return pattern_found

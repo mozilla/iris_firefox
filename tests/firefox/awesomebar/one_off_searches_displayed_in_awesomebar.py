@@ -17,12 +17,12 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
-        amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
+        amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png').similar(0.7)
         bing_one_off_button_pattern = Pattern('bing_one_off_button.png')
         duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         twitter_one_off_button_pattern = Pattern('twitter_one_off_button.png')
-        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png')
+        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(0.6)
         moz_pattern = Pattern('moz.png')
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
@@ -41,7 +41,7 @@ class Test(FirefoxTest):
         expected = region.exists(search_settings_pattern, 10)
         assert expected, 'The \'Search settings\' button is displayed in the awesomebar.'
 
-        expected = region.exists(amazon_one_off_button_pattern.similar(0.7), 10)
+        expected = region.exists(amazon_one_off_button_pattern, 10)
         assert expected, 'The \'Amazon\' one-off button found.'
 
         expected = region.exists(bing_one_off_button_pattern, 10)

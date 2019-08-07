@@ -18,18 +18,27 @@ class Test(FirefoxTest):
         local_server_autocomplete_pattern = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_focus_pattern = Pattern('mozilla_bookmark_focus.png')
         pocket_autocomplete_pattern = Pattern('pocket_autocomplete.png')
-        mozilla_autocomplete_pattern = Pattern('mozilla_autocomplete.png')
+        mozilla_autocomplete_pattern = Pattern('mozilla_autocomplete.png').similar(.7)
 
         # Visit two pages from the same domain at least two times to make sure that auto-fill is working in the URL bar.
         new_tab()
 
         navigate(LocalWeb.POCKET_TEST_SITE)
-        navigate(LocalWeb.POCKET_TEST_SITE)
-        navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        pocket_page_opened = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert pocket_page_opened, 'Pocket page opened'
+
+        new_tab()
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
+        mozilla_page_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert mozilla_page_opened, 'Mozilla page opened'
+
+        new_tab()
+
         select_location_bar()
-        type('127.0.0.1:2000/p')
+        type('127.0.0.1:2000/p',  interval=0.2)
 
         pocket_autocomplete_exists = exists(pocket_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pocket_autocomplete_exists, 'Pocket page is auto-completed successfully.'
@@ -37,7 +46,7 @@ class Test(FirefoxTest):
         click(NavBar.FORWARD_BUTTON.target_offset(-50, 0), align=Alignment.TOP_LEFT)
 
         select_location_bar()
-        type('127.0.0.1:2000/m')
+        type('127.0.0.1:2000/m', interval=0.2)
 
         mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_autocomplete_exists, 'Mozilla page is auto-completed successfully.'

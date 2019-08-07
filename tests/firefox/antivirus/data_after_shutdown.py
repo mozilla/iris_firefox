@@ -18,11 +18,9 @@ class Test(FirefoxTest):
         restore_previous_session_button_pattern = Pattern('restore_previous_session.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
-        twitter_logo_pattern = Pattern('twitter_favicon.png').similar(0.75)
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png')
+        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png').similar(.7)
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
-        twitter_logo_unactive_tab_pattern = Pattern('twitter_logo_unactive_tab.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
@@ -32,6 +30,8 @@ class Test(FirefoxTest):
         new_tab()
 
         navigate('https://edition.cnn.com')
+
+        close_content_blocking_pop_up()
 
         cnn_page_opened = exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert cnn_page_opened is True, 'The CNN site successfully opened'
@@ -66,19 +66,24 @@ class Test(FirefoxTest):
 
         bookmarks_toolbar_region = Screen().new_region(0, bookmarks_toolbar_location.y, Screen.SCREEN_WIDTH,
                                                        home_height * 3)
-        tabs_region = Screen().new_region(0, 0, int(Screen.SCREEN_WIDTH * 0.75), home_height * 3)
-
-        stardialog_region = Screen().new_region(Screen.SCREEN_WIDTH/2, 0, Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT)
+        tabs_region = Region(0, 0, int(Screen.SCREEN_WIDTH * 0.75), home_height * 4)
 
         bookmark_page()
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), region=stardialog_region)
+        type('CNN')
 
-        cnn_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6),
-                                                       region=stardialog_region)
-        assert cnn_bookmark_toolbar_folder_displayed is True, 'Bookmark toolbar folder displayed'
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6), region=stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert toolbar_option_button_exists, 'Toolbar option button exists'
+
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
+        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
+        assert panel_option_button_exists, 'Panel option button exists'
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -86,13 +91,20 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), region=stardialog_region)
+        type('Wiki')
 
-        wiki_bookmark_toolbar_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6),
-                                                        region=stardialog_region)
-        assert wiki_bookmark_toolbar_folder_displayed is True, 'Bookmark toolbar folder displayed'
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6), region=stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        assert toolbar_option_button_exists, 'Toolbar option button exists'
+
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+
+        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
+        assert panel_option_button_exists, 'Panel option button exists'
 
         click(Bookmarks.StarDialog.DONE)
 
@@ -113,12 +125,12 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        navigate('https://twitter.com/')
+        navigate(LocalWeb.POCKET_TEST_SITE)
 
-        twitter_opened = exists(twitter_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert twitter_opened is True, 'The Twitter site successfully opened'
+        pocket_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert pocket_opened, 'The Pocket site successfully opened'
 
-        firefox.restart()
+        firefox.restart(url='', image=NavBar.HOME_BUTTON)
 
         firefox_is_restarted = exists(NavBar.HOME_BUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_is_restarted is True, 'Firefox is successfully restarted'
@@ -148,8 +160,8 @@ class Test(FirefoxTest):
         history_restored_youtube = exists(youtube_logo_pattern, region=history_sidebar_region)
         assert history_restored_youtube is True, 'The Youtube site is added to history'
 
-        history_restored_twitter = exists(twitter_logo_pattern, region=history_sidebar_region)
-        assert history_restored_twitter is True, 'The Twitter site is added to history'
+        history_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL, region=history_sidebar_region)
+        assert history_restored_pocket, 'The Pocket site is added to history'
 
         tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern.similar(0.6), region=tabs_region)
         assert tab_restored_cnn is True, 'The CNN tab is restored'
@@ -160,8 +172,8 @@ class Test(FirefoxTest):
         tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern.similar(0.6), region=tabs_region)
         assert tab_restored_youtube is True, 'The Youtube tab is restored'
 
-        tab_restored_twitter = exists(twitter_logo_unactive_tab_pattern, region=tabs_region)
-        assert tab_restored_twitter is True, 'The Twitter tab is restored'
+        tab_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL.similar(0.7), region=tabs_region)
+        assert tab_restored_pocket, 'The Pocket tab is restored'
 
         cnn_bookmark_still_displayed = exists(LocalWeb.CNN_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT,
                                               region=bookmarks_toolbar_region)

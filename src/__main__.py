@@ -23,7 +23,7 @@ from src.core.api.keyboard.keyboard_util import check_keyboard_state
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
 from src.core.util.cleanup import *
-from src.core.util.target_loader import get_target_test_directory
+from src.core.util.target_loader import collect_tests
 from src.core.util.arg_parser import get_core_args, set_core_arg
 from src.core.util.json_utils import create_target_json
 from src.core.util.local_web_server import LocalWebServer
@@ -87,8 +87,11 @@ def main():
 
 
 def show_control_center():
-    if get_core_args().control or get_core_args().target is None:
+    if get_core_args().control:
         return True
+    elif get_core_args().target is None:
+        exit_iris('No target specified, e.g.: \n\niris your_target\n\nClosing Iris.', status=1)
+        return False
     else:
         return False
 
@@ -119,7 +122,7 @@ def initialize_platform(args):
 
 
 def get_test_params():
-    tests_to_execute = get_target_test_directory()
+    tests_to_execute = collect_tests()
     pytest_args = []
     if get_core_args().rerun:
         failed_tests_file = os.path.join(PathManager.get_working_dir(), 'lastfail.txt')

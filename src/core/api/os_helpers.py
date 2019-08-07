@@ -83,14 +83,18 @@ class OSHelper:
 
     @staticmethod
     def get_os_version():
-        """Get the version string of the operating system your script is running on."""
+        """
+        Get the version string of the operating system your script is running on.
+
+        :return: String value of the current operating system.
+        """
         current_os = OSHelper.get_os()
         if current_os is OSPlatform.WINDOWS and OS_VERSION == '6.1':
             return 'win7'
         elif current_os is OSPlatform.MAC:
             return 'osx_%s' % 'retina ' if OSHelper.is_high_def_display() else 'non_retina'
         else:
-            return current_os
+            return current_os.value
 
     @staticmethod
     def get_os_bits():

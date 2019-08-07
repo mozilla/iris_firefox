@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         description='Zooming in and out of a PDF file works properly using pdf.js',
         locale=[Locales.ENGLISH],
         test_case_id='3928',
-        test_suite_id='65',
-        blocked_by='get_asset_path() not supported, change preference works incorrectly'
+        test_suite_id='65'
     )
     def test_run(self, firefox):
         pdf_file_page_contents_zoomed_in_pattern = Pattern('pdf_file_page_contents_zoomed_in.png')

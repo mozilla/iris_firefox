@@ -17,12 +17,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         remember_history_selected_pattern = Pattern('remember_history_selected.png')
         never_remember_history_pattern = Pattern('never_remember_history.png')
-        restart_browser_pattern = Pattern('restart_browser.png').similar(0.9)
+        restart_browser_pattern = Pattern('restart_browser.png')
         ui_timeout = 1
-
-        select_location_bar()
-        edit_copy()
-        start_url = get_clipboard()
 
         navigate('about:preferences#privacy')
 
@@ -39,6 +35,9 @@ class Test(FirefoxTest):
         assert history_settings_menu_opened, 'History settings menu is opened'
 
         click(never_remember_history_pattern)
+
+        restart_browser_opened = exists(restart_browser_pattern)
+        assert restart_browser_opened, 'restart_browser_pattern'
 
         click(restart_browser_pattern)
 
@@ -58,10 +57,6 @@ class Test(FirefoxTest):
         iris_page_loaded = exists(LocalWeb.POCKET_IMAGE, Settings.site_load_timeout)
         assert iris_page_loaded, 'Iris local page is loaded'
 
-        navigate(start_url)
-        start_page_opened = exists(LocalWeb.IRIS_LOGO)
-        assert start_page_opened, 'Start page is opened'
-
         library_menu_button_reachable = exists(NavBar.LIBRARY_MENU)
         assert library_menu_button_reachable, 'Library menu button is reachable'
 
@@ -75,13 +70,13 @@ class Test(FirefoxTest):
         hist = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR)
         assert hist, 'History submenu is opened'
 
-        firefox_page_visited = not exists(LocalWeb.FIREFOX_BOOKMARK, ui_timeout)
+        firefox_page_visited = not exists(LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout)
         assert firefox_page_visited, 'Firefox local page visit was saved in history'
 
-        focus_page_visited = not exists(LocalWeb.FOCUS_BOOKMARK, ui_timeout)
+        focus_page_visited = not exists(LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout)
         assert focus_page_visited, 'Focus local page visit was saved in history'
 
-        pocket_page_visited = not exists(LocalWeb.POCKET_BOOKMARK, ui_timeout)
+        pocket_page_visited = not exists(LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout)
         assert pocket_page_visited, 'Pocket local page visit was saved in history'
 
         restore_firefox_focus()

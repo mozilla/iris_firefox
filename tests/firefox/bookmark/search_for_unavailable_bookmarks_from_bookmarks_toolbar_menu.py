@@ -20,10 +20,8 @@ class Test(FirefoxTest):
         bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
         search_bookmarks_pattern = LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS
         focused_search_field_pattern = Pattern('focused_search_field.png')
-        search_with_default_engine_pattern = Pattern('search_with_default_engine.png').similar(.6)
         bookmarked_site_icon_under_url_pattern = Pattern('bookmarked_site_icon.png').similar(0.9)
-
-        website_name = 'Telegram'
+        search_with_default_engine_pattern = Pattern('search_with_default_engine.png')
 
         library_button_exists = exists(library_button_pattern)
         assert library_button_exists is True, 'View history, saved bookmarks and more section exists'
@@ -48,6 +46,8 @@ class Test(FirefoxTest):
 
         focused_search_field_exists = exists(focused_search_field_pattern)
         assert focused_search_field_exists is True, 'The focus is in the URL address bar after a \'* \'.'
+
+        website_name = 'Telegram'
 
         paste(website_name)
 

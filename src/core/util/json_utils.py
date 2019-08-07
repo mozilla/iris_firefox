@@ -96,7 +96,7 @@ def create_run_log(app):
     args = get_core_args()
     meta = {'run_id': PathManager.get_run_id(),
             'platform': OSHelper.get_os().value,
-            'config': '%s, %s-bit, %s' % (OSHelper.get_os().value, OSHelper.get_os_bits(),
+            'config': '%s, %s-bit, %s' % (OSHelper.get_os_version(), OSHelper.get_os_bits(),
                                           OSHelper.get_processor()),
             'locale': args.locale,
             'args': ' '.join(sys.argv),
@@ -110,7 +110,13 @@ def create_run_log(app):
     repo = git.Repo(PathManager.get_module_dir())
     meta['iris_version'] = 2.0
     meta['iris_repo'] = repo.working_tree_dir
-    meta['iris_branch'] = repo.active_branch.name
+    try:
+        meta['iris_branch'] = repo.active_branch.name
+    except:
+        # If we're on a detached head, the active_branch is
+        # undefined and raises an exception. This at least
+        # allows the test run to finish
+        meta['iris_branch'] = "detached"
     meta['iris_branch_head'] = repo.head.object.hexsha
     meta['python_version'] = get_python_version()
 

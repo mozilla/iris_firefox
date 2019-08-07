@@ -20,6 +20,10 @@ class Test(FirefoxTest):
 
         navigate('about:preferences')
 
+        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
+                             FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert page_loaded, 'about:preferences page loaded'
+
         paste('asdasdasd')
 
         no_results_in_preferences = exists(no_results_in_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -28,8 +32,8 @@ class Test(FirefoxTest):
         click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
 
         no_results_in_preferences = exists(no_results_in_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert no_results_in_preferences, 'The "Sorry! There are no results in Options for..." message disappears and ' \
-                                          'only the content of the selected section is displayed. NOTE: In the ' \
+        assert no_results_in_preferences, 'The "Sorry! There are no results in Options for..." message disappears and' \
+                                          ' only the content of the selected section is displayed. \nNOTE: In the ' \
                                           'builds affected by this bug the message "Sorry! There are no results in ' \
                                           'Options for..." still appeared and the options for the selected section' \
                                           ' was displayed underneath it. '

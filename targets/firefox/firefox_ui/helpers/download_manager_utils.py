@@ -171,25 +171,24 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     return steps
 
 
-def download_file(file_to_download, accept_download):
+def download_file(file_to_download, accept_download, max_number_of_attempts=20):
     """
-    :param file_to_download: File to be downloaded.
+    :param file_to_download: Pattern of file to be downloaded.
     :param accept_download: Accept download pattern.
+    :param max_number_of_attempts: Max number of attempts to locate file_to_download pattern.
     :return: None.
     """
-    file_found = exists(file_to_download, 2)
-    if file_found:
-        click(file_to_download)
-    else:
-        while not file_found:
-            type(Key.PAGE_DOWN)
-            try:
-                click(file_to_download)
-                file_found = True
-            except FindError:
-                file_found = False
-            if exists(DownloadFiles.ABOUT, 2):
-                raise APIHelperError('File to be downloaded not found.')
+    for _ in range(max_number_of_attempts):
+        file_found = exists(file_to_download, Settings.FIREFOX_TIMEOUT)
+
+        if file_found:
+            click(file_to_download)
+            break
+
+        type(Key.PAGE_DOWN)
+
+        if exists(DownloadFiles.ABOUT, Settings.DEFAULT_UI_DELAY_LONG):
+            raise APIHelperError('File to be downloaded not found.')
 
     try:
         wait(DownloadFiles.SAVE_FILE, 90)

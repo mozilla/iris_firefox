@@ -29,6 +29,9 @@ def get_core_args():
         return log_level_int
 
     parser = argparse.ArgumentParser(description='Iris core arguments', prog='iris')
+    repo_root = os.path.realpath(os.path.split(__file__)[0] + '/../../..')
+    target_dir = os.path.join(repo_root, 'targets')
+    repo_name = os.path.basename(repo_root)
     target_dir = os.path.join(os.path.realpath(os.path.split(__file__)[0] + '/../../..'), 'targets')
     target_list = [f.path for f in os.scandir(target_dir) if f.is_dir()]
     for idx, target in enumerate(target_list):
@@ -46,6 +49,10 @@ def get_core_args():
                         help='Clear run data',
                         default=False,
                         action='store_true')
+    parser.add_argument('-d', '--directory',
+                        help='Directory name containing tests to execute',
+                        action='store',
+                        default='')
     parser.add_argument('-e', '--email',
                         help='Submit email report',
                         action='store_true')
@@ -85,7 +92,7 @@ def get_core_args():
                         help='Path to working directory',
                         type=os.path.abspath,
                         action='store',
-                        default='%s/.iris' % home)
+                        default='%s/.%s' % (home, repo_name))
     parser.add_argument('-x', '--exclude',
                         help='Partial or full test names or paths to exclude',
                         action='store',

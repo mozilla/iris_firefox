@@ -16,94 +16,152 @@ class Test(FirefoxTest):
         preferences={'browser.contentblocking.enabled': False}
     )
     def run(self, firefox):
+        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         google_search_results_pattern = Pattern('google_search_results.png')
-        search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
-        default_status_pattern = Pattern('default_status.png')
-        modified_status_pattern = Pattern('modified_status.png')
-        mozilla_support_url_pattern = Pattern('mozilla_support_url.png')
-        true_value_pattern = Pattern('true_value.png')
-        false_value_pattern = Pattern('false_value.png')
-        amazon_logo_pattern = Pattern('amazon_logo.png')
-        accept_risk_pattern = Pattern('accept_risk.png')
+        search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png').similar(.6)
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.6)
+        search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.6)
+        popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
+        mozilla_tab_logo_pattern = Pattern('mozilla_tab_logo.png')
 
-        region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
+        top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
+        autofill_navigated = False
 
-        navigate('www.amazon.com')
+        # Make some browsing history to check it later in awesome bar
+        new_tab()
+        navigate('mozilla.org')
 
-        expected = exists(amazon_logo_pattern, 10)
-        assert expected, 'Page successfully loaded, amazon logo found.'
+        mozilla_page_opened = exists(mozilla_tab_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert mozilla_page_opened, 'Mozilla page opened'
+
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        expected = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
+        assert expected, 'Mozilla page loaded successfully.'
+
+        bookmark_page()
+
+        expected = exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
+        assert expected, 'Page was bookmarked.'
+
+        new_tab()
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
+
+        expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
+        assert expected, 'Firefox page loaded successfully.'
+
+        new_tab()
+        navigate(LocalWeb.FOCUS_TEST_SITE)
+
+        expected = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
+        assert expected, 'Focus page loaded successfully.'
+
+        # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
+        new_tab()
+
+        # The autocomplete drop-down with matching results for: bookmarks, open tabs, history, suggestions is displayed.
+        select_location_bar()
+        paste('m')
+
+        expected = exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
+        assert expected, 'Bookmarked page found between search suggestions.'
 
         select_location_bar()
-        paste('moz')
+        paste('ox')
 
-        expected = region.exists(google_one_off_button_pattern, 10)
-        assert expected, 'The \'Google\' one-off button found.'
+        expected = exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
+        assert expected, 'Opened tab found between search suggestions.'
 
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        select_location_bar()
+        paste('f')
 
-        click(google_one_off_button_pattern)
+        expected = exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
+        assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        expected = exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=top_two_thirds_region)
+        assert expected, 'Popular search suggestions from the default search engine found between search suggestions.'
 
-        expected = region.exists(mozilla_support_url_pattern, 10)
-        if expected:
+        # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
+
+        select_location_bar()
+        type('moz')
+
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       region=top_two_thirds_region)
+        assert one_off_button_exists, 'The \'Google\' one-off button found.'
+
+        google_one_off_button_location = find(google_one_off_button_pattern, Screen.LEFT_THIRD)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        click(google_one_off_button_location, 1)
+
+        # - Firefox takes you to search results using the search provider of the selected one-off button
+
+        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+                                          region=Screen.TOP_THIRD)
+        assert search_results_available, 'Google search results are displayed.'
+
+        close_tab()
+
+        # 3. Go to about:config and set the preference keyword.enabled to false.
+        change_preference('keyword.enabled', 'false')
+
+        # 4. Enter a search in the URL bar and hit enter.
+        new_tab()
+
+        select_location_bar()
+        type('inputstring')
+
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        type(Key.ENTER)
+
+        # The search is executed with URL autocomplete.
+
+        for page_not_found_rendered in range(3):
             select_location_bar()
-            paste('moz')
-            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-            click(google_one_off_button_pattern)
-            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(google_search_results_pattern, 10)
-        assert expected, 'Google search results are displayed.'
+            edit_select_all()
 
-        navigate('about:config')
+            edit_copy()
 
-        if OSHelper.get_os() == OSPlatform.WINDOWS or OSHelper.get_os() == OSPlatform.LINUX:
-            click(NavBar.HAMBURGER_MENU.target_offset(-170, 15))
-            type(Key.ENTER)
-        else:
-            click(accept_risk_pattern)
+            url_text = get_clipboard()
 
-        expected = region.exists(default_status_pattern, 10)
-        assert expected, 'The \'about:config\' page successfully loaded and default status is correct.'
+            autofill_navigated = 'http://www.inputstring.com/' in url_text
+            if autofill_navigated:
+                break
 
-        paste('keyword.enabled')
-        type(Key.ENTER)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = region.exists(default_status_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has status \'default\' by default.'
+        assert 'http://www.inputstring.com/' in url_text, 'The search is executed with URL autocomplete.'
 
-        expected = region.exists(true_value_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has value \'true\' by default.'
+        # 5. Perform a search in the URL bar using the same one-off button as in step 2.
+        # The search is executed on using selected engine.
 
-        double_click(default_status_pattern)
-
-        expected = region.exists(modified_status_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has status \'modified\' after the preference has changed.'
-
-        expected = region.exists(false_value_pattern, 10)
-        assert expected, 'The \'keyword.enabled\' preference has value \'false\' after the preference has changed.'
-
+        new_tab()
         select_location_bar()
-        paste('amaz')
+        type('moz')
 
-        expected = region.exists(search_with_url_autocomplete_pattern, 10)
-        assert expected, 'Search is performed with url autocomplete for pages where you have been before.'
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        type(Key.ENTER)
+        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       )
+        assert one_off_button_exists, 'The \'Google\' one-off button found.'
 
-        expected = exists(amazon_logo_pattern, 10)
-        assert expected, 'Page successfully loaded, amazon logo found.'
+        click(google_one_off_button_location, 1)
 
-        select_location_bar()
-        paste('test')
+        # The search is executed on using selected engine.
+        # Firefox takes you to search results using the search provider of the selected one-off button
 
-        expected = region.exists(google_one_off_button_pattern, 10)
-        assert expected, 'The \'Google\' one-off button found.'
-
-        click(google_one_off_button_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
-        expected = region.exists(google_search_results_pattern, 10)
-        assert expected, 'Google search results are displayed.'
+        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+                                          )
+        assert search_results_available, 'Google search results are displayed. The search is executed on using ' \
+                                         'selected engine.'

@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='127263',
         test_suite_id='2085',
-        blocked_by='id: 913536',
-        exclude=[OSPlatform.LINUX, OSPlatform.WINDOWS]
+        blocked_by={'id': '913536', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         new_tab_icon_pattern = Tabs.NEW_TAB_HIGHLIGHTED

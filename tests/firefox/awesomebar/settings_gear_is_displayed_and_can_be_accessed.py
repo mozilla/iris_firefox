@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='108260',
         test_suite_id='1902',
-        blocked_by='1542729',
         preferences={'browser.contentblocking.enabled': False}
     )
     def run(self, firefox):
@@ -34,17 +33,6 @@ class Test(FirefoxTest):
 
         expected = region.exists(search_settings_pattern, 10)
         assert expected, 'The \'Search settings\' button is displayed in the awesomebar.'
-
-        right_click(search_settings_pattern)
-
-        expected = exists(settings_gear_options_pattern, 10)
-        assert not expected, 'The \'Search in new tab\' and \'Set as default search engine\' options not found.'
-
-        # Click the Settings gear button to close the menu opened.
-        if OSHelper.is_linux() or OSHelper.is_mac():
-            click(NavBar.HAMBURGER_MENU.target_offset(-370, 15))
-        else:
-            click(search_settings_pattern)
 
         # Click the Settings gear button to navigate to the 'about:preferences#search' page.
         click(search_settings_pattern)

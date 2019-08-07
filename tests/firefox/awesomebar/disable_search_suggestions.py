@@ -19,9 +19,9 @@ class Test(FirefoxTest):
         search_settings_pattern = Pattern('search_settings.png')
         about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
         show_search_suggestions_in_address_bar_results_checked_pattern = Pattern(
-            'show_search_suggestions_in_address_bar_results_checked.png')
+            'show_search_suggestions_in_address_bar_results_checked.png').similar(0.6)
         show_search_suggestions_in_address_bar_results_unchecked_pattern = Pattern(
-            'show_search_suggestions_in_address_bar_results_unchecked.png')
+            'show_search_suggestions_in_address_bar_results_unchecked.png').similar(0.6)
         search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
@@ -52,7 +52,7 @@ class Test(FirefoxTest):
         expected = exists(about_preferences_search_page_pattern, 10)
         assert expected, 'The \'about:preferences#search\' page successfully loaded.'
 
-        expected = exists(show_search_suggestions_in_address_bar_results_checked_pattern.similar(0.9), 10)
+        expected = exists(show_search_suggestions_in_address_bar_results_checked_pattern, 10)
         assert expected, 'Checkbox displayed in front of the \'Show search suggestions in address bar ' \
                          'results\' text is checked by default.'
 
@@ -60,7 +60,7 @@ class Test(FirefoxTest):
         click(show_search_suggestions_in_address_bar_results_checked_pattern.target_offset(-100, 15),
               align=Alignment.TOP_LEFT)
 
-        expected = exists(show_search_suggestions_in_address_bar_results_unchecked_pattern.similar(0.9), 10)
+        expected = exists(show_search_suggestions_in_address_bar_results_unchecked_pattern, 10)
         assert expected, 'Checkbox displayed in front of the \'Show search suggestions in address bar ' \
                          'results\' text is unchecked.'
 
