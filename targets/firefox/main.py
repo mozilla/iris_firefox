@@ -67,14 +67,33 @@ class Target(BaseTarget):
         parser.add_argument('-r', '--report',
                             help='Report tests to TestRail',
                             action='store_true')
-        parser.add_argument('-u', '--update_channel',
-                            help='Update channel profile preference',
-                            action='store')
         parser.add_argument('-s', '--save',
                             help='Save Firefox profiles on disk',
                             action='store_true')
-
+        parser.add_argument('-u', '--update_channel',
+                            help='Update channel profile preference',
+                            action='store')
+        parser.add_argument('-y', '--treeherder',
+                            help='Enable Treeherder output in CI environment',
+                            default=False,
+                            action='store_true')
         return parser.parse_known_args()[0]
+
+    def create_ci_report(self):
+        ci_report_str = ''
+        for test in self.completed_tests:
+            if test.outcome == 'FAILED' or test.outcome == 'ERROR':
+                fail_str = 'FAIL' if 'FAIL' in test.outcome else 'ERROR'
+                local_test_dir = '%stests%s' % (os.sep, os.sep)
+                local_path = test.file_name.split(local_test_dir)[1]
+                temp_path = local_path.split(os.sep)
+                test_name = temp_path.pop()
+                temp_path.pop(0)
+                ci_report_str += 'TEST-UNEXPECTED-%s | ' % fail_str
+                for section in temp_path:
+                    ci_report_str += '%s | ' % section
+                ci_report_str += '%s | %s\n' % (test_name, test.message)
+        logger.info('CI Test results:\n%s' % ci_report_str)
 
     def validate_config(self):
         if self.args.report:
@@ -127,6 +146,8 @@ class Target(BaseTarget):
         logger.debug('Finishing Firefox session')
         if target_args.report:
             report_test_results(self)
+        if target_args.treeherder:
+            self.create_ci_report()
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
