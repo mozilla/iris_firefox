@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='Delete history from Library context menu',
+        description='Bug 1385883 - Cannot delete history with IDN',
         locale=['en-US'],
         test_case_id='178346',
         test_suite_id='2000',
@@ -26,27 +26,30 @@ class Test(FirefoxTest):
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_1, 'Mozilla page loaded successfully.'
 
-        # Open History.
+        # 3. Open the Library (Ctrl+Shift+B) and go to History section.
         open_library()
 
         expected_2 = exists(history_pattern, 10)
         assert expected_2, 'History section is displayed.'
 
-        # Expand History.
+        # 4. Open the Today section from History and right click on the opened website from step two.
         double_click(history_pattern)
 
         expected_3 = exists(history_today_pattern.similar(0.6), 10)
         assert expected_3, 'Today history option is available.'
 
-        # Verify if Mozilla page is present in Today History.
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
         double_click(history_today_pattern)
 
-        expected_4 = exists(history_mozilla_pattern, 10)
+
+        expected_4 = exists(history_mozilla_pattern, 100)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        # Delete Mozilla page from Today's History.
-        right_click_and_type(history_mozilla_pattern, keyboard_action='d')
+        # 5. Click on Delete Page button.
+        # The page is correctly deleted from the list.
+        # Note that the website was not deleted on the affected builds.
+
+        right_click_and_type(history_mozilla_pattern, keyboard_action='d', delay=FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         try:
             expected_5 = wait_vanish(history_mozilla_pattern.similar(0.9), 10)
