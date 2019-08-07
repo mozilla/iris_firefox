@@ -45,7 +45,7 @@ class Test(FirefoxTest):
         if not OSHelper.is_mac():
             minimize_window()
 
-        default_window_location = Location(x=(Screen.SCREEN_WIDTH / 10), y=(Screen.SCREEN_HEIGHT / 20))
+        default_window_location = Location(x=(Screen.SCREEN_WIDTH // 10), y=(iris_icon_height * 4))
 
         if OSHelper.is_linux():
             default_window_location.offset(iris_tab_offset, 0)
@@ -66,8 +66,15 @@ class Test(FirefoxTest):
         assert tab_two_loaded, 'Second tab loaded'
 
         open_browser_console()
+
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened.'
+
         paste('window.resizeTo(1000, 400)')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
 
         close_tab()
 
@@ -81,7 +88,7 @@ class Test(FirefoxTest):
         default_tabs_region = Region(0, default_tabs_position.y, width=Screen.SCREEN_WIDTH,
                                      height=Screen.SCREEN_HEIGHT / 10)
 
-        tab_two_drop_location = Location(x=0, y=(default_tabs_position.y + 2 * Screen.SCREEN_HEIGHT / 5))
+        tab_two_drop_location = Location(x=0, y=(default_tabs_position.y + 2 * Screen.SCREEN_HEIGHT / 4))
 
         drag_drop(default_tabs_position, tab_two_drop_location, duration=click_duration)
 
@@ -226,10 +233,17 @@ class Test(FirefoxTest):
 
         paste('window.innerHeight')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
+
         test_site_window_height_matched = exists(console_output_height_500)
 
         paste('window.innerWidth')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
 
         test_site_window_width_matched = exists(console_output_width_500)
         assert test_site_window_width_matched and test_site_window_height_matched, 'First window size matched'
