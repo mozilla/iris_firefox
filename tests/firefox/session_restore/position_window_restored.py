@@ -12,7 +12,9 @@ class Test(FirefoxTest):
         description='Width, height and position of each window are restored.',
         test_case_id='114826',
         test_suite_id='68',
-        locales=Locales.ENGLISH
+        locales=Locales.ENGLISH,
+        preferences={'devtools.chrome.enabled': True},
+
     )
     def run(self, firefox):
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png').similar(0.9)
@@ -23,6 +25,8 @@ class Test(FirefoxTest):
         console_output_width_1000 = Pattern('console_output_width_1000.png')
         console_output_width_500 = Pattern('console_output_width_500.png')
         console_output_width_600 = Pattern('console_output_width_600.png')
+        browser_console_title_pattern = Pattern('browser_console_title.png')
+        browser_console_empty_line_pattern = Pattern('browser_console_empty_line.png')
 
         hamburger_menu_quit_item_pattern = None
         if not OSHelper.is_mac():
@@ -87,11 +91,21 @@ class Test(FirefoxTest):
         click(LocalWeb.FOCUS_LOGO)
 
         open_browser_console()
+
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened.'
+
         paste('window.resizeTo(600, 400)')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
+
         close_tab()
 
-        tab_two_relocated = not exists(focus_test_site_tab_pattern, region=default_tabs_region)
+        tab_two_relocated = exists(focus_test_site_tab_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+                                   region=default_tabs_region)
+
         active_tab_switched = exists(firefox_test_site_tab_pattern)
         assert tab_two_relocated and active_tab_switched, 'Second tab relocated'
 
@@ -110,8 +124,16 @@ class Test(FirefoxTest):
         click(LocalWeb.FIREFOX_LOGO)
 
         open_browser_console()
+
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened.'
+
         paste('window.resizeTo(500, 500)')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
+
         close_tab()
 
         tab_one_drop_location.offset(Screen.SCREEN_WIDTH / 10, Screen.SCREEN_HEIGHT / 20)
@@ -198,6 +220,10 @@ class Test(FirefoxTest):
         click(firefox_test_site_tab_pattern, click_duration)
 
         open_browser_console()
+
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened.'
+
         paste('window.innerHeight')
         type(Key.ENTER)
         test_site_window_height_matched = exists(console_output_height_500)
@@ -212,8 +238,16 @@ class Test(FirefoxTest):
         click(focus_test_site_tab_pattern, click_duration)
 
         open_browser_console()
+
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened.'
+
         paste('window.innerHeight')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
+
         focus_site_window_height_matched = exists(console_output_height_400)
 
         paste('window.innerWidth')
@@ -227,12 +261,23 @@ class Test(FirefoxTest):
 
         open_browser_console()
 
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened.'
+
         paste('window.innerHeight')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
+
         iris_window_height_matched = exists(console_output_height_400)
 
         paste('window.innerWidth')
         type(Key.ENTER)
+
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
+
         iris_window_width_matched = exists(console_output_width_1000)
 
         assert iris_window_height_matched and iris_window_width_matched, \
