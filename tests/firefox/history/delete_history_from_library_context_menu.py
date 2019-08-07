@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW
     )
     def run(self, firefox):
-        history_mozilla_pattern = Pattern('mozilla_bookmark_focus.png')
+        mozilla_bookmark_focus_pattern = Pattern('mozilla_bookmark_focus.png')
         history_pattern = Library.HISTORY
         history_today_pattern = Library.HISTORY_TODAY
 
@@ -45,13 +45,13 @@ class Test(FirefoxTest):
         # The page is correctly deleted from the list.
         # Note that the website was not deleted on the affected builds.
 
-        expected_4 = exists(history_mozilla_pattern, 100)
+        expected_4 = exists(mozilla_bookmark_focus_pattern, 100)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type(history_mozilla_pattern, keyboard_action='d', delay=FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+        right_click_and_type(mozilla_bookmark_focus_pattern, keyboard_action='d', delay=FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         try:
-            expected_5 = wait_vanish(history_mozilla_pattern.similar(0.9), 10)
+            expected_5 = wait_vanish(mozilla_bookmark_focus_pattern.similar(0.9), 10)
             assert expected_5, 'Mozilla page was deleted successfully from the history.'
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
