@@ -47,6 +47,8 @@ class Test(FirefoxTest):
 
         double_click(history_today_pattern, region=history_today_region, align=Alignment.CENTER)
 
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+
         type(Key.TAB)
 
         # 5. Click on Delete Page button.
