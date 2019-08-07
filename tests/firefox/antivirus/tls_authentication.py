@@ -29,6 +29,9 @@ class Test(FirefoxTest):
         cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
         cdn77_tab_logo_pattern = Pattern('cdn77_tab_logo.png')
 
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
+
         if OSHelper.is_windows():
             mouse_wheel_steps = 500
         elif OSHelper.is_linux():
@@ -80,7 +83,7 @@ class Test(FirefoxTest):
             assert tls_certificate_found_white, 'TLS Certificate is imported.'
 
         navigate('https://www.cdn77.com/')
-        assert exists(cdn77_tab_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
+        assert exists(cdn77_tab_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT, tabs_region), \
             'CDN77 page is successfully downloaded.'
 
         assert exists(cdn77_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
