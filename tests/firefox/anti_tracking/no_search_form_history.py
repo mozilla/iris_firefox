@@ -32,7 +32,8 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#privacy')
 
-        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_opened, 'The page is successfully displayed.'
 
         paste('remember')
