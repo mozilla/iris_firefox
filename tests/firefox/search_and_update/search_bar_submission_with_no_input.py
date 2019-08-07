@@ -16,21 +16,23 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         add_search_bar_in_toolbar_pattern = Pattern('add_search_bar_in_toolbar.png').similar(0.6)
-        search_bar_pattern = Pattern('search_bar.png')
         google_search_no_input_pattern = Pattern('google_search_no_input.png')
 
         navigate('about:preferences#search')
+
         expected = exists(add_search_bar_in_toolbar_pattern, 10)
         assert expected is True, 'Option found in the page.'
 
         click(add_search_bar_in_toolbar_pattern)
 
-        expected = exists(search_bar_pattern, 10)
+        expected = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, 10)
         assert expected is True, 'Search bar successfully enabled in the page.'
 
-        click(search_bar_pattern)
+        click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(.7))
+
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
+
         expected = exists(google_search_no_input_pattern, 10)
         assert expected is True, 'The search engine page is opened with no searches performed.'
