@@ -39,7 +39,7 @@ class Test(FirefoxTest):
         else:
             mouse_wheel_steps = 5
 
-        # change_preference('security.enterprise_roots.enabled', 'True')
+        change_preference('security.enterprise_roots.enabled', 'True')
 
         navigate('https://www.digicert.com/digicert-root-certificates.htm')
 
