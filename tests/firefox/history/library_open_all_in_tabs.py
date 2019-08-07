@@ -23,9 +23,6 @@ class Test(FirefoxTest):
         new_tab_pattern = Pattern('new_tab.png')
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
         firefox_privacy_logo_pattern = Pattern('firefox_privacy_logo_for_bookmarks.png')
-        library_toolbar_icon = Pattern('library_icon.png')
-        firefox_toolbar_icon = Pattern('firefox_icon.png')
-        close_auxiliary_window = False
 
         # Open a page to create some history.
         new_tab()
@@ -63,12 +60,13 @@ class Test(FirefoxTest):
 
         right_click_and_type(history_today_pattern, delay=FirefoxSettings.SHORT_FIREFOX_TIMEOUT, keyboard_action='o')
 
-        # Close potentially existing library window
-        if OSHelper.is_mac() or exists(Library.TITLE, 10):
-            click_window_control('close')
-            time.sleep(Settings.DEFAULT_UI_DELAY)
-        else:
-            close_auxiliary_window = True
+        open_library()
+
+        library_opened = exists(Library.TITLE)
+        assert library_opened, 'Library visible'
+
+        click(Library.TITLE)
+        close_window_control('auxiliary')
 
         # Make sure that all the pages from the selected history time range are opened in the current window.
         expected = exists(iris_tab_icon, 10)
@@ -82,16 +80,3 @@ class Test(FirefoxTest):
 
         expected = exists(new_tab_pattern, 10)
         assert expected is True, 'about:newtab page loaded successfully.'
-
-        # Close potentially existing library window
-        if close_auxiliary_window:
-            click(firefox_toolbar_icon)
-
-            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
-            click(library_toolbar_icon)
-
-            click_window_control('close')
-            time.sleep(Settings.DEFAULT_UI_DELAY)
-
-            click(firefox_privacy_logo_pattern)
