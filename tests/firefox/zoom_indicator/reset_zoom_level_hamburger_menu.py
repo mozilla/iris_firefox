@@ -30,8 +30,9 @@ class Test(FirefoxTest):
         expected = exists(hamburger_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Page successfully loaded, hamburger menu found.'
 
-        expected = exists(search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT) or \
-                   exists(search_bar_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        if OSHelper.is_windows():
+            expected = expected or exists(search_bar_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Zoom indicator not displayed by default in the url bar.'
 
         navigate(url2)
