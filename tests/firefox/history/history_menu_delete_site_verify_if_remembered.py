@@ -57,13 +57,13 @@ class Test(FirefoxTest):
         # Open History and check if is populated with Mozilla page.
         open_history_library_window()
 
-        library_title = exists(Library.HISTORY, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert library_title, 'Library popup window available'
+        library_history = exists(Library.HISTORY, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert library_history, 'Library popup window available'
 
-        library_title_location = find(Library.HISTORY)
-        bookmarks_region = Region(library_title_location.x, library_title_location.y,
-                                  Screen.SCREEN_WIDTH - library_title_location.x,
-                                  Screen.SCREEN_HEIGHT - library_title_location.y)
+        library_history_location = find(Library.HISTORY)
+        bookmarks_region = Region(library_history_location.x, library_history_location.y,
+                                  Screen.SCREEN_WIDTH - library_history_location.x,
+                                  Screen.SCREEN_HEIGHT - library_history_location.y)
 
         mozilla_bookmark_focus_exists = exists(mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                                region=bookmarks_region)
