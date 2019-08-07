@@ -78,6 +78,9 @@ class Test(FirefoxTest):
                                                                    (-scroll_length,), timeout=ui_timeout)
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
 
+        saved_logins_button_after_scroll = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert saved_logins_button_after_scroll, 'Saved logins button is found after scroll animation'
+
         click(saved_logins_button_pattern)
 
         saved_logins_opened = exists(first_saved_login_pattern)
