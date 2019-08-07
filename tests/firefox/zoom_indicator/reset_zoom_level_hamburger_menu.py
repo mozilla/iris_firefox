@@ -31,7 +31,7 @@ class Test(FirefoxTest):
 
         expected = exists(search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         if OSHelper.is_windows():  # fix issue when on hover on navbar image is not being recognized
-            search_bar_hover_pattern = Pattern("search_bar_hover.png")
+            search_bar_hover_pattern = Pattern("navigation_bar_hover.png")
             expected = expected or exists(search_bar_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert expected, 'Zoom indicator not displayed by default in the url bar.'
