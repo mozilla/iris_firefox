@@ -72,7 +72,7 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        search_bar_is_not_empty = exists(search_bar_not_empty_pattern)
+        search_bar_is_not_empty = exists(search_bar_not_empty_pattern.similar(0.7), region=Screen.TOP_HALF)
         assert search_bar_is_not_empty, 'Search button isn\'t empty'
 
         if OSHelper.is_linux():
