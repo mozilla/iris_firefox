@@ -18,6 +18,7 @@ class Test(FirefoxTest):
         url1 = 'about:home'
         url2 = LocalWeb.FIREFOX_TEST_SITE
         search_bar_pattern = LocationBar.SEARCH_BAR
+        search_bar_hover_pattern = Pattern("search_bar_hover.png")
         url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
         hamburger_menu_zoom_indicator_pattern = HamburgerMenu.HAMBURGER_MENU_ZOOM_INDICATOR
         zoom_control_toolbar_increase_pattern = NavBar.ZOOM_IN
@@ -29,7 +30,8 @@ class Test(FirefoxTest):
         expected = exists(hamburger_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Page successfully loaded, hamburger menu found.'
 
-        expected = exists(search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT) or \
+                   exists(search_bar_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Zoom indicator not displayed by default in the url bar.'
 
         navigate(url2)
@@ -74,7 +76,8 @@ class Test(FirefoxTest):
 
         select_location_bar()
 
-        expected = exists(hamburger_menu_zoom_indicator_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region_default)
+        expected = exists(hamburger_menu_zoom_indicator_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=new_region_default)
         assert expected, 'Zoom indicator is successfully reset to default in hamburger menu.'
 
         reg_url = create_region_for_url_bar()
