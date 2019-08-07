@@ -32,23 +32,30 @@ class Test(FirefoxTest):
         expected_2 = exists(history_pattern, 10)
         assert expected_2, 'History section is displayed.'
 
+        history_location = find(history_pattern)
+
+        history_width, history_height = history_pattern.get_size()
+        history_today_region = Region(history_location.x, history_location.y, history_width * 3, history_height * 20)
+
         # 4. Open the Today section from History and right click on the opened website from step two.
         double_click(history_pattern)
 
-        expected_3 = exists(history_today_pattern.similar(0.6), 10)
+        expected_3 = exists(history_today_pattern.similar(0.6), 10, region=history_today_region)
         assert expected_3, 'Today history option is available.'
 
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        double_click(history_today_pattern)
+
+        double_click(history_today_pattern, region=history_today_region, align=Alignment.CENTER)
 
         # 5. Click on Delete Page button.
         # The page is correctly deleted from the list.
         # Note that the website was not deleted on the affected builds.
 
-        expected_4 = exists(mozilla_bookmark_focus_pattern, 100)
+        expected_4 = exists(mozilla_bookmark_focus_pattern, 10)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type(mozilla_bookmark_focus_pattern, keyboard_action='d', delay=FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+        right_click_and_type(mozilla_bookmark_focus_pattern, keyboard_action='d',
+                             delay=FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         try:
             expected_5 = wait_vanish(mozilla_bookmark_focus_pattern.similar(0.9), 10)
