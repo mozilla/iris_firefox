@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW
     )
     def run(self, firefox):
-        history_mozilla_pattern = Pattern('library_bookmarks_mozilla.png')
+        history_mozilla_pattern = Pattern('mozilla_bookmark_focus.png')
         history_pattern = Library.HISTORY
         history_today_pattern = Library.HISTORY_TODAY
 
@@ -41,13 +41,12 @@ class Test(FirefoxTest):
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
         double_click(history_today_pattern)
 
-
-        expected_4 = exists(history_mozilla_pattern, 100)
-        assert expected_4, 'Mozilla page is displayed in the History list successfully.'
-
         # 5. Click on Delete Page button.
         # The page is correctly deleted from the list.
         # Note that the website was not deleted on the affected builds.
+
+        expected_4 = exists(history_mozilla_pattern, 100)
+        assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
         right_click_and_type(history_mozilla_pattern, keyboard_action='d', delay=FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
