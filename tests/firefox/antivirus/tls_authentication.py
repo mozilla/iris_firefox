@@ -69,13 +69,13 @@ class Test(FirefoxTest):
         Mouse().move(certificate_manager_window_location)
 
         tls_certificate_found_grey = scroll_until_pattern_found(tls_certificate_name_pattern,
-                                                                scroll_down, (mouse_wheel_steps,), 1,
+                                                                scroll, (-mouse_wheel_steps,), 50,
                                                                 timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
         if tls_certificate_found_grey:
             assert tls_certificate_found_grey, 'TLS Certificate is imported.'
         else:
             tls_certificate_found_white = scroll_until_pattern_found(tls_certificate_name_pattern_1,
-                                                                     Mouse.scroll_up, (mouse_wheel_steps,), 50,
+                                                                     scroll, (mouse_wheel_steps,), 50,
                                                                      timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
             assert tls_certificate_found_white, 'TLS Certificate is imported.'
 
