@@ -23,12 +23,8 @@ class Test(FirefoxTest):
         console_output_500 = Pattern('console_output_height_500.png')
         console_output_height_400 = Pattern('console_output_height_400.png')
         console_output_width_1000 = Pattern('console_output_width_1000.png')
-        console_output_width_500 = Pattern('console_output_width_500.png')
-        console_output_width_600 = Pattern('console_output_width_600.png')
         browser_console_title_pattern = Pattern('browser_console_title.png')
         browser_console_empty_line_pattern = Pattern('browser_console_empty_line.png')
-        firefox_tab_pattern = Pattern('firefox_tab.png')
-        focus_tab_pattern = Pattern('focus_tab.png')
 
         if not OSHelper.is_mac():
             hamburger_menu_quit_item_pattern = Pattern('hamburger_menu_quit_item.png').similar(0.9)
@@ -149,7 +145,7 @@ class Test(FirefoxTest):
         click(restore_previous_session_pattern, click_duration)
 
         firefox_test_site_restored = exists(firefox_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert firefox_test_site_restored, 'Firefox window with Focus webpage is opened'
+        assert firefox_test_site_restored, 'Firefox webpage is opened'
 
         firefox_tab_location = find(firefox_test_site_tab_pattern)
 
