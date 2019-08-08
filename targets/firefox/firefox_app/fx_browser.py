@@ -206,6 +206,9 @@ class FirefoxApp:
             candidate = PathManager.get_local_firefox_path()
             if candidate is None:
                 logger.critical('Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/')
+            return candidate
+        elif os.path.isfile(version):
+            return version
         else:
             try:
                 s_t, s_d = _get_scraper_details(version, CHANNELS,
