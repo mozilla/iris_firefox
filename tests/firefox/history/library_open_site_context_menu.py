@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        history_today_pattern = Library.LIBRARY_POPUP_HISTORY_TODAY
+        history_today_pattern = Library.LIBRARY_WINDOW_HISTORY_TODAY
         mozilla_bookmark_history_list_pattern = LocalWeb.MOZILLA_BOOKMARK_LIBRARY_HISTORY_LIST
         iris_logo_tab_pattern = Pattern('iris_logo_tab.png')
         iris_bookmark_pattern = Pattern('iris_bookmark.png')
