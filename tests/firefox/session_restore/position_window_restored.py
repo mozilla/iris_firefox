@@ -47,10 +47,10 @@ class Test(FirefoxTest):
         paste('window.resizeTo(1000, 400)')
         type(Key.ENTER)
 
+        open_browser_console()
+
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
-
-        open_browser_console()
 
         close_tab()
 
