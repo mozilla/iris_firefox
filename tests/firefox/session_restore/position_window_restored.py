@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png').similar(0.9)
         focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png').similar(0.9)
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
-        console_output_height_500 = Pattern('console_output_height_500.png')
+        console_output_500 = Pattern('console_output_height_500.png')
         console_output_height_400 = Pattern('console_output_height_400.png')
         console_output_width_1000 = Pattern('console_output_width_1000.png')
         console_output_width_500 = Pattern('console_output_width_500.png')
@@ -39,6 +39,7 @@ class Test(FirefoxTest):
         iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB,
                                     region=Screen.TOP_THIRD)
         assert iris_tab_displayed, 'Iris tab is displayed properly'
+
         iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
 
         # - Drag some tags outside the main browser window.
@@ -57,32 +58,28 @@ class Test(FirefoxTest):
 
         close_tab()
 
+        # open another websites and change their windows
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         tab_one_loaded = exists(firefox_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert tab_one_loaded, 'First tab loaded'
 
-        firefox_tab_location = find(firefox_tab_pattern)
+        firefox_tab_location = find(firefox_test_site_tab_pattern)
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
         tab_two_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert tab_two_loaded, 'Second tab loaded'
 
-        focus_tab_location = find(focus_tab_pattern)
+        # drop second tab
+        drag_drop(focus_test_site_tab_pattern, drop_location)
 
         open_browser_console()
 
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
-        paste('window.resizeTo(1000, 400)')
-        type(Key.ENTER)
-
-        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert browser_console_empty_line, 'Value entered in browser console.'
-
-        paste('window.moveTo(0, ' + str(Screen.SCREEN_HEIGHT / 4)
+        paste('window.moveTo(0, ' + str(Screen.SCREEN_HEIGHT / 2 + 200)
               + ')')
         type(Key.ENTER)
 
@@ -90,6 +87,11 @@ class Test(FirefoxTest):
         assert browser_console_empty_line, 'Value entered in browser console.'
 
         close_tab()
+
+        focus_tab = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert focus_tab, 'Focus tab loaded'
+
+        focus_tab_location = find(focus_test_site_tab_pattern)
 
         # drop second tab
 
@@ -149,8 +151,10 @@ class Test(FirefoxTest):
         firefox_test_site_restored = exists(firefox_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_test_site_restored, 'Firefox window with Focus webpage is opened'
 
+        firefox_tab_location = find(firefox_test_site_tab_pattern)
+
         # check first tab 
-        click(firefox_tab_location, click_duration)
+        click(firefox_test_site_tab_pattern, click_duration)
 
         open_browser_console()
 
@@ -160,19 +164,22 @@ class Test(FirefoxTest):
         paste('window.innerHeight')
         type(Key.ENTER)
 
-        test_site_window_height_matched = exists(console_output_height_500, 
+        test_site_window_height_matched = exists(console_output_500,
                                                  FirefoxSettings.FIREFOX_TIMEOUT)
 
         paste('window.innerWidth')
         type(Key.ENTER)
 
-        test_site_window_width_matched = exists(console_output_width_500,
+        test_site_window_width_matched = exists(console_output_500,
                                                 FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_site_window_width_matched and test_site_window_height_matched, 'First window size matched'
         close_tab()
         
         # check second tab 
         click(focus_tab_location, click_duration)
+
+        tab_two_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert tab_two_loaded, 'Focus tab is selected'
 
         open_browser_console()
 
@@ -186,12 +193,14 @@ class Test(FirefoxTest):
 
         paste('window.innerWidth')
         type(Key.ENTER)
-        focus_site_window_width_matched = exists(console_output_width_600)
+        focus_site_window_width_matched = exists(console_output_width_1000)
         assert focus_site_window_height_matched and focus_site_window_width_matched, 'Second window size matched'
 
         close_tab()
 
         click(iris_tab_location, click_duration)
+        iris_tab_active = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+        assert iris_tab_active, 'Iris tab is active'
 
         open_browser_console()
 
@@ -211,8 +220,8 @@ class Test(FirefoxTest):
             'Iris window size matched.'
 
         # check positioning of windows after restart
-        iris_tab_top = iris_tab_location.y > firefox_tab_location.y > focus_tab_location.y
-        firefox_tab_right = (iris_tab_location.x or focus_tab_location.x) < firefox_tab_location.x
+        iris_tab_top = iris_tab_location.y < firefox_tab_location.y < focus_tab_location.y
+        firefox_tab_right = iris_tab_location.x and focus_tab_location.x < firefox_tab_location.x
         assert iris_tab_top and firefox_tab_right, 'The previous session is successfully restored and ' \
                                                    'the width, height and position of each tab is displayed as ' \
                                                    'in the previous session.'
