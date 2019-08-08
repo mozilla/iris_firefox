@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
-        download_button_pattern = Pattern('download_button.png')
+        download_button_pattern = Pattern('download_button.png').similar(.7)
         view_certificates_button_pattern = Pattern('view_certificates_button.png')
         certificate_manager_window_title_pattern = Pattern('certificate_manager_window_title.png')
         tls_certificate_name_pattern_1 = Pattern('tls_certificate_name_1.png')
@@ -102,7 +102,8 @@ class Test(FirefoxTest):
             'TLS client certificate authentication mechanism will not be broken. No errors occur.'
 
         navigate('https://www.cloudflare.com/')
-        assert exists(cloudflare_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
+
+        assert exists(cloudflare_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT, tabs_region), \
             'Cloudflare page is successfully downloaded.'
         assert exists(cloudflare_support_button_pattern), 'Cloudflare Support button is displayed.'
 
