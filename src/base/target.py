@@ -37,6 +37,7 @@ class BaseTarget:
             {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting'},
             {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'}
         ]
+        self.clean_run = True
 
     def get_target_args(self):
         parser = argparse.ArgumentParser(description='Target-specific arguments', prog='iris')
@@ -148,6 +149,8 @@ class BaseTarget:
         """
 
         if call.when == "call" and call.excinfo is not None:
+            self.clean_run = False
+
             # Examine the last line of the call stack.
             tb = call.excinfo.traceback.pop()
 

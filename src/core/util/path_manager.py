@@ -223,11 +223,16 @@ class PathManager:
     @staticmethod
     def get_git_details():
         repo_details = {}
-        repo = git.Repo(PathManager.get_module_dir())
         repo_details['iris_version'] = 2.0
-        repo_details['iris_repo'] = repo.working_tree_dir
-        repo_details['iris_branch'] = repo.active_branch.name
-        repo_details['iris_branch_head'] = repo.head.object.hexsha
+        try:
+            repo = git.Repo(PathManager.get_module_dir())
+            repo_details['iris_repo'] = repo.working_tree_dir
+            repo_details['iris_branch'] = repo.active_branch.name
+            repo_details['iris_branch_head'] = repo.head.object.hexsha
+        except:
+            repo_details['iris_repo'] = 'n/a'
+            repo_details['iris_branch'] = 'n/a'
+            repo_details['iris_branch_head'] = 'n/a'
         return repo_details
 
     @staticmethod
