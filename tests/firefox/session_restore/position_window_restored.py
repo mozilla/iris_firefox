@@ -36,8 +36,6 @@ class Test(FirefoxTest):
                                     region=Screen.TOP_THIRD)
         assert iris_tab_displayed, 'Iris tab is displayed properly'
 
-        iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
-
         # - Drag some tags outside the main browser window.
         # - Position them in different places.
         # - Perform some changes to their height and width.
@@ -52,7 +50,11 @@ class Test(FirefoxTest):
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
+        open_browser_console()
+
         close_tab()
+
+        iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
 
         # open another websites and change their windows
         new_tab()
@@ -75,8 +77,7 @@ class Test(FirefoxTest):
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
-        paste('window.moveTo(0, ' + str(Screen.SCREEN_HEIGHT / 2 + 200)
-              + ')')
+        paste('window.moveTo(0, ' + str(Screen.SCREEN_HEIGHT / 2 + 200) + ')')
         type(Key.ENTER)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -104,8 +105,7 @@ class Test(FirefoxTest):
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
-        paste('window.moveTo(' + str(Screen.SCREEN_WIDTH / 2) + ','
-              + str(Screen.SCREEN_HEIGHT / 20) + ')')
+        paste('window.moveTo(' + str(Screen.SCREEN_WIDTH / 2) + ',' + str(Screen.SCREEN_HEIGHT / 20) + ')')
         type(Key.ENTER)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
