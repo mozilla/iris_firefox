@@ -83,12 +83,12 @@ class Test(FirefoxTest):
 
         close_tab()
 
-        focus_tab = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert focus_tab, 'Focus tab loaded'
-
         # drop second tab
 
-        drag_drop(focus_test_site_tab_pattern, drop_location)
+        firefox_tab = exists(firefox_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert firefox_tab, 'Firefox tab available.'
+
+        drag_drop(firefox_test_site_tab_pattern, drop_location)
 
         open_browser_console()
 
