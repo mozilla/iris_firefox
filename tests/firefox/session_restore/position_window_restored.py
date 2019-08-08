@@ -62,8 +62,6 @@ class Test(FirefoxTest):
         tab_one_loaded = exists(firefox_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert tab_one_loaded, 'First tab loaded'
 
-        firefox_tab_location = find(firefox_test_site_tab_pattern)
-
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
         tab_two_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
@@ -88,11 +86,9 @@ class Test(FirefoxTest):
         focus_tab = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert focus_tab, 'Focus tab loaded'
 
-        focus_tab_location = find(focus_test_site_tab_pattern)
-
         # drop second tab
 
-        drag_drop(firefox_tab_location, drop_location)
+        drag_drop(focus_test_site_tab_pattern, drop_location)
 
         open_browser_console()
 
@@ -149,7 +145,7 @@ class Test(FirefoxTest):
 
         firefox_tab_location = find(firefox_test_site_tab_pattern)
 
-        # check first tab 
+        # check first tab
         click(firefox_test_site_tab_pattern, click_duration)
 
         open_browser_console()
@@ -170,12 +166,14 @@ class Test(FirefoxTest):
                                                 FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_site_window_width_matched and test_site_window_height_matched, 'First window size matched'
         close_tab()
-        
-        # check second tab 
+
+        # check second tab
         click(focus_tab_location, click_duration)
 
-        tab_two_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert tab_two_loaded, 'Focus tab is selected'
+        focus_tab_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert focus_tab_loaded, 'Focus tab loaded'
+
+        focus_tab_location = find(focus_test_site_tab_pattern, region=Screen.RIGHT_HALF)
 
         open_browser_console()
 
@@ -195,6 +193,7 @@ class Test(FirefoxTest):
         close_tab()
 
         click(iris_tab_location, click_duration)
+
         iris_tab_active = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         assert iris_tab_active, 'Iris tab is active'
 
