@@ -17,8 +17,8 @@ class Test(FirefoxTest):
 
     )
     def run(self, firefox):
-        firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png').similar(0.9)
-        focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png').similar(0.9)
+        firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png').similar(0.8)
+        focus_test_site_tab_pattern = Pattern('focus_test_site_tab.png').similar(0.8)
         restore_previous_session_pattern = Pattern('restore_previous_session_item.png')
         console_output_500 = Pattern('console_output_height_500.png')
         console_output_height_400 = Pattern('console_output_height_400.png')
