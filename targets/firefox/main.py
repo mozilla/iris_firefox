@@ -148,6 +148,8 @@ class Target(BaseTarget):
             report_test_results(self)
         if target_args.treeherder:
             self.create_ci_report()
+        if self.clean_run is not True:
+            exit(1)
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
