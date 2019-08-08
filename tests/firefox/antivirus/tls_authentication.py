@@ -105,7 +105,7 @@ class Test(FirefoxTest):
 
         assert exists(cloudflare_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT, tabs_region), \
             'Cloudflare page is successfully downloaded.'
-        assert exists(cloudflare_support_button_pattern), 'Cloudflare Support button is displayed.'
+        assert exists(cloudflare_support_button_pattern.similar(.7)), 'Cloudflare Support button is displayed.'
 
         click(cloudflare_support_button_pattern)
         assert exists(cloudflare_support_page_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
