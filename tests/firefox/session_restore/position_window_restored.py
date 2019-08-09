@@ -168,8 +168,6 @@ class Test(FirefoxTest):
         close_tab()
 
         # check second tab
-        click(focus_tab_location, click_duration)
-
         focus_tab_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert focus_tab_loaded, 'Focus tab loaded'
 
