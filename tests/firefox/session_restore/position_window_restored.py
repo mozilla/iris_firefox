@@ -81,6 +81,7 @@ class Test(FirefoxTest):
 
         # drop second tab
         drag_drop(focus_test_site_tab_pattern, drop_location)
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         open_browser_console()
 
@@ -101,6 +102,7 @@ class Test(FirefoxTest):
         assert firefox_tab, 'Firefox tab available.'
 
         drag_drop(firefox_test_site_tab_pattern, drop_location)
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         open_browser_console()
 
