@@ -113,7 +113,7 @@ class Test(FirefoxTest):
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
-        paste('window.moveTo(' + str(Screen.SCREEN_WIDTH / 2) + ',' + str(Screen.SCREEN_HEIGHT / 20) + ')')
+        paste('window.moveTo(' + str(Screen.SCREEN_WIDTH / 2) + ',' + str(Screen.SCREEN_HEIGHT / 15) + ')')
         type(Key.ENTER)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -205,10 +205,11 @@ class Test(FirefoxTest):
 
         close_tab()
 
-        click(iris_tab_location, click_duration)
-
         iris_tab_active = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         assert iris_tab_active, 'Iris tab is active'
+
+        click(iris_tab_location, 1)
+        iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
 
         open_browser_console()
 
