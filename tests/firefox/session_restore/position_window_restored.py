@@ -171,7 +171,7 @@ class Test(FirefoxTest):
         focus_tab_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert focus_tab_loaded, 'Focus tab loaded'
 
-        focus_tab_location = find(focus_test_site_tab_pattern, region=Screen.RIGHT_HALF)
+        focus_tab_location = find(focus_test_site_tab_pattern, region=Screen.LEFT_HALF)
 
         open_browser_console()
 
