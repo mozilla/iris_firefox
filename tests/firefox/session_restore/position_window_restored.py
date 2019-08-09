@@ -173,6 +173,8 @@ class Test(FirefoxTest):
 
         focus_tab_location = find(focus_test_site_tab_pattern, region=Screen.LEFT_HALF)
 
+        click(focus_test_site_tab_pattern)
+
         open_browser_console()
 
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
