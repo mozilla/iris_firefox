@@ -24,7 +24,7 @@ class Test(FirefoxTest):
 
         privacy_page_assert = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
                                      FirefoxSettings.FIREFOX_TIMEOUT)
-        assert privacy_page_assert is True, 'Privacy page has been accessed.'
+        assert privacy_page_assert, 'Privacy page has been accessed.'
 
         paste('remember')
 
@@ -43,21 +43,17 @@ class Test(FirefoxTest):
             raise FindError('Never Remember History option is NOT present in the dropdown list, aborting')
 
         restart_browser_popup_assert = exists(restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert restart_browser_popup_assert is True, 'History option can be changed.'
+        assert restart_browser_popup_assert, 'History option can be changed.'
 
         click(restart_browser_pattern)
 
-        # wait_for_firefox_restart()
-
-        time.sleep(5)
-
-        firefox_restarted = exists(NavBar.HOME_BUTTON)
-        assert firefox_restarted is True, 'Firefox successfully restarted'
+        firefox_restarted = exists(NavBar.HOME_BUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert firefox_restarted, 'Firefox successfully restarted'
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert mozilla_page_assert is True, 'Mozilla page loaded successfully.'
+        assert mozilla_page_assert, 'Mozilla page loaded successfully.'
 
         try:
             wait(bookmark_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -67,4 +63,4 @@ class Test(FirefoxTest):
             raise FindError('Bookmark star is not present on the page, aborting.')
 
         page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert page_bookmarked_assert is True, 'The page was successfully bookmarked via star button.'
+        assert page_bookmarked_assert, 'The page was successfully bookmarked via star button.'
