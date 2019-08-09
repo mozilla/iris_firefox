@@ -36,6 +36,7 @@ class Test(FirefoxTest):
                                     region=Screen.TOP_THIRD)
         assert iris_tab_displayed, 'Iris tab is displayed properly'
 
+        iris_start_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         # - Drag some tags outside the main browser window.
         # - Position them in different places.
         # - Perform some changes to their height and width.
@@ -47,14 +48,25 @@ class Test(FirefoxTest):
         paste('window.resizeTo(1000, 400)')
         type(Key.ENTER)
 
+        browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_empty_line, 'Value entered in browser console.'
+
+        # prevent Linux to overlap windows
+        iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+        click(iris_tab_location, 1)
         open_browser_console()
+
+        # deal with Linux error log first time blocks input
+        paste('window.resizeTo(1000, 400)')
+        type(Key.ENTER)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
-        close_tab()
+        paste('window.moveTo('+ str(iris_start_location.x) + ',' + str(iris_start_location.y) + ')')
+        type(Key.ENTER)
 
-        iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+        close_tab()
 
         # open another websites and change their windows
         new_tab()
@@ -164,14 +176,14 @@ class Test(FirefoxTest):
 
         test_site_window_width_matched = exists(console_output_500,
                                                 FirefoxSettings.FIREFOX_TIMEOUT)
-        assert test_site_window_width_matched and test_site_window_height_matched, 'First window size matched'
+        assert test_site_window_width_matched and test_site_window_height_matched, 'First window (Firefox) size matched'
         close_tab()
 
         # check second tab
         focus_tab_loaded = exists(focus_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert focus_tab_loaded, 'Focus tab loaded'
 
-        focus_tab_location = find(focus_test_site_tab_pattern, region=Screen.LEFT_HALF)
+        focus_tab_location = find(focus_test_site_tab_pattern)
 
         click(focus_test_site_tab_pattern)
 
@@ -188,7 +200,8 @@ class Test(FirefoxTest):
         paste('window.innerWidth')
         type(Key.ENTER)
         focus_site_window_width_matched = exists(console_output_width_1000)
-        assert focus_site_window_height_matched and focus_site_window_width_matched, 'Second window size matched'
+        assert focus_site_window_height_matched and focus_site_window_width_matched, \
+            'Second window (Focus) size matched'
 
         close_tab()
 
