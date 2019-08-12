@@ -20,18 +20,24 @@ class Test(FirefoxTest):
         google4_row_pattern = Pattern('google4_row.png')
         trigger_update_button_pattern = Pattern('trigger_update_button.png')
         success_status_pattern = Pattern('success_status.png')
-        local_directory_row_pattern = Pattern('local_directory_row.png').similar(.6)
+        local_directory_row_pattern = Pattern('local_directory_row.png')
         show_in_button_pattern = Pattern('show_in_button.png').similar(.7)
+        profile_default_title_pattern = Pattern('profile_default_title.png')
 
         navigate('about:profiles')
 
-        about_profiles_page_opened = exists(local_directory_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        about_profiles_page_opened = exists(profile_default_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert about_profiles_page_opened, 'About profiles page opened'
 
-        local_directory_row_location = find(local_directory_row_pattern)
+        profile_default_title_location = find(profile_default_title_pattern)
+        profile_default_title_width, profile_default_title_height = profile_default_title_pattern.get_size()
+        profile_default_region = Region(profile_default_title_location.x, profile_default_title_location.y,
+                                        profile_default_title_width, profile_default_title_height * 9)
+
+        local_directory_row_location = find(local_directory_row_pattern, profile_default_region)
         local_directory_row_width, local_directory_row_height = local_directory_row_pattern.get_size()
         local_directory_row_region = Region(local_directory_row_location.x, local_directory_row_location.y,
-                                            local_directory_row_width, local_directory_row_height)
+                                            local_directory_row_width * 6, local_directory_row_height)
 
         show_in_button_found = exists(show_in_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
                                       local_directory_row_region)
