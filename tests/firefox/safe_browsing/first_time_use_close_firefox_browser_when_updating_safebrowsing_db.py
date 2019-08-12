@@ -37,7 +37,7 @@ class Test(FirefoxTest):
         local_directory_row_location = find(local_directory_row_pattern, profile_default_region)
         local_directory_row_width, local_directory_row_height = local_directory_row_pattern.get_size()
         local_directory_row_region = Region(local_directory_row_location.x, local_directory_row_location.y,
-                                            local_directory_row_width * 6, local_directory_row_height)
+                                            local_directory_row_width * 10, local_directory_row_height)
 
         show_in_button_found = exists(show_in_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
                                       local_directory_row_region)
