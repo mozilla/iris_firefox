@@ -9,8 +9,8 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='',
-        test_case_id='',
+        description='Bug 1357098 - Pinned tabs are not restored after browser restart',
+        test_case_id='114816',
         test_suite_id='68',
         locales=Locales.ENGLISH
     )
@@ -61,94 +61,7 @@ class Test(FirefoxTest):
         firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_test_tab_pinned, 'Firefox tab successfully pinned.'
 
-        # if OSPlatform.MAC:
-        #     quit_firefox()
-        # elif OSPlatform.LINUX:
-        #     click_hamburger_menu_option('Quit')
-        # else:
-        #     click_hamburger_menu_option('Exit')
-
         firefox.restart(url='', image=NavBar.HOME_BUTTON)
-
-        time.sleep(FirefoxSettings.FIREFOX_TIMEOUT)
-
-        # if not OSHelper.is_linux():  # windows with tabs on Linux can be on random order after restart
-        #     firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        #     assert firefox_restarted, 'Firefox restarted successfully'
-        #
-        #     close_tab()
-        #
-        #     firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #     assert firefox_test_tab_pinned, 'Firefox tab is pinned after restart.'
-        #
-        #     firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        #     assert firefox_test_site_opened, 'Firefox website is properly opened.'
-        #
-        #     close_window()
-        #
-        #     focus_tab_pinned = exists(focus_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #     assert focus_tab_pinned, 'Focus tab is pinned after restart.'
-        #
-        #     focus_site_opened = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        #     assert focus_site_opened, 'Focus website is properly opened.'
-        #
-        # elif OSHelper.is_linux():
-        #     firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        #     focus_site_restored = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        #     iris_tab_restored = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
-        #
-        #     if firefox_test_site_restored:
-        #         assert firefox_test_site_restored, 'Firefox website is properly restored after restart.'
-        #
-        #         firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert firefox_test_tab_pinned, 'Firefox tab is pinned after restart.'
-        #
-        #         close_window()
-        #
-        #         iris_tab_restored = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         if iris_tab_restored:
-        #             assert iris_tab_restored, 'Iris tab restored successfully'
-        #
-        #             close_tab()
-        #
-        #         focus_site_restored = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert focus_site_restored, 'Focus website is properly restored.'
-        #
-        #         focus_tab_pinned = exists(focus_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert focus_tab_pinned, 'Focus tab is pinned after restart.'
-        #
-        #     elif focus_site_restored:
-        #         assert focus_site_restored, 'Focus website is properly restored.'
-        #
-        #         focus_tab_pinned = exists(focus_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert focus_tab_pinned, 'Focus tab is pinned after restart.'
-        #
-        #         close_window()
-        #
-        #         firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        #         assert firefox_test_site_restored, 'Firefox website is properly restored.'
-        #
-        #         firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert firefox_test_tab_pinned, 'Firefox tab is pinned after restart.'
-        #
-        #     elif iris_tab_restored:
-        #         assert iris_tab_restored, 'Firefox restarted successfully'
-        #
-        #         close_tab()
-        #
-        #         focus_site_restored = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert focus_site_restored, 'Focus website is properly restored.'
-        #
-        #         focus_tab_pinned = exists(focus_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert focus_tab_pinned, 'Focus tab is pinned after restart.'
-        #
-        #         close_window()
-        #
-        #         firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        #         assert firefox_test_site_restored, 'Firefox website is properly restored.'
-        #
-        #         firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        #         assert firefox_test_tab_pinned, 'Firefox tab is pinned after restart.'
 
         firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         focus_site_restored = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
