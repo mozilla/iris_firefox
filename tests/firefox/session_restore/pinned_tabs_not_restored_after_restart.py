@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH
     )
     def run(self, firefox):
-        focus_tab_pattern = Pattern('focus_tab.png').similar(0.7)
+        focus_tab_pattern = Pattern('focus_tab.png')
         focus_pinned_tab_pattern = Pattern('focus_pinned_tab.png')
         firefox_tab_pattern = Pattern('firefox_tab.png')
         firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
@@ -61,17 +61,17 @@ class Test(FirefoxTest):
         firefox_test_tab_pinned = exists(firefox_pinned_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_test_tab_pinned, 'Firefox tab successfully pinned.'
 
-        if OSPlatform.MAC:
-            quit_firefox()
-        elif OSPlatform.LINUX:
-            click_hamburger_menu_option('Quit')
-        else:
-            click_hamburger_menu_option('Exit')
+        # if OSPlatform.MAC:
+        #     quit_firefox()
+        # elif OSPlatform.LINUX:
+        #     click_hamburger_menu_option('Quit')
+        # else:
+        #     click_hamburger_menu_option('Exit')
 
-        firefox.restart()
+        firefox.restart(url='', image=NavBar.HOME_BUTTON)
 
-        if not OSPlatform.LINUX:  # windows with tabs on Linux can be on random order after restart
-            firefox_restarted = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        if not OSHelper.is_linux():  # windows with tabs on Linux can be on random order after restart
+            firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert firefox_restarted, 'Firefox restarted successfully'
 
             close_tab()
@@ -90,10 +90,10 @@ class Test(FirefoxTest):
             focus_site_opened = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
             assert focus_site_opened, 'Focus website is properly opened.'
 
-        elif OSPlatform.LINUX:
+        elif OSHelper.is_linux():
             firefox_test_site_restored = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
             focus_site_restored = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-            iris_tab_restored = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+            iris_tab_restored = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
 
             if firefox_test_site_restored:
                 assert firefox_test_site_restored, 'Firefox website is properly restored after restart.'
@@ -103,7 +103,7 @@ class Test(FirefoxTest):
 
                 close_window()
 
-                iris_tab_restored = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+                iris_tab_restored = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
                 if iris_tab_restored:
                     assert iris_tab_restored, 'Iris tab restored successfully'
 
