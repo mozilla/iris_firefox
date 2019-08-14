@@ -106,13 +106,18 @@ class Target(BaseTarget):
             logger.warning('{}. \nJSON report cannot be sent - no report URL found in config file.'.format(report_s))
         else:
             run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
-            with open(run_file, 'r') as f:
-                run_file_data = json.load(f)
-            f.close()
             url = get_config_property('Report_URL', 'url')
             if url is not None:
-                r = requests.post(url=url, json=run_file_data)
-                logger.debug('Sent JSON report status: %s' % r.text)
+                try:
+                    with open(run_file, 'rb') as file:
+                        r = requests.post(url=url, files={'file': file})
+
+                    if not r.ok:
+                        logger.error('Report was not sent to URL: %s \nResponse text: %s' % url, r.text)
+
+                    logger.debug('Sent JSON report status: %s' % r.text)
+                except requests.RequestException as ex:
+                    logger.error('Failed to send run report to URL: %s \nException data: %s' % url, ex)
             else:
                 logger.error('Bad URL for JSON report.')
 
