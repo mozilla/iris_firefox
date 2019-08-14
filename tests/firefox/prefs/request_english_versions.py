@@ -48,7 +48,7 @@ class Test(FirefoxTest):
 
         assert request_checkbox_unchecked, '"Request English versions..." is unchecked.'
 
-        click(request_english_versions_unchecked_pattern, 1)
+        click(request_english_versions_unchecked_pattern, Settings.DEFAULT_CLICK_DELAY)
 
         request_checkbox_checked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
                                                                AboutPreferences.CHECKED_BOX,
@@ -56,7 +56,7 @@ class Test(FirefoxTest):
 
         assert request_checkbox_checked, '"Request English versions..." checked.'
 
-        click(request_english_versions_unchecked_pattern, 1)
+        click(request_english_versions_unchecked_pattern, Settings.DEFAULT_CLICK_DELAY)
 
         restore_firefox_focus()
 
