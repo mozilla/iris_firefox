@@ -38,7 +38,7 @@ class Test(FirefoxTest):
 
         # Check the 'Request English versions…' checkbox, then uncheck it, then click 'OK'.
 
-        request_english_version_unchecked = exists(request_english_versions_unchecked_pattern,
+        request_english_version_unchecked = exists(request_english_versions_unchecked_pattern.similar(0.6),
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_english_version_unchecked, '"Request English versions..." found.'
 
