@@ -77,7 +77,7 @@ def select_location_bar():
     else:
         type(text='l', modifier=KeyModifier.CTRL)
     # Wait to allow the location bar to become responsive.
-    time.sleep(Settings.DEFAULT_UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
 
 def select_folder_location_bar():
@@ -334,6 +334,7 @@ def select_search_bar():
         type(text='k', modifier=KeyModifier.CMD)
     else:
         type(text='k', modifier=KeyModifier.CTRL)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
 
 def change_search_next():
