@@ -5,13 +5,14 @@
 
 from src.core.util.arg_parser import get_core_args
 from targets.firefox.fx_testcase import *
+from targets.firefox.main import *
 
 
 class Test(FirefoxTest):
     # Set the region from command line argument, if given. Otherwise, set the region based on Firefox locale.
     # Use -g <region> for testing the English locales of Firefox in the four Yandex regions; RU, BY, KZ and TR.
     global fx_region_code
-    region_arg = get_core_args().region
+    region_arg = Target().get_target_args().region
     if region_arg != '':
         fx_region_code = region_arg
     else:
