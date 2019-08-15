@@ -19,6 +19,9 @@ class Test(FirefoxTest):
 
         navigate('about:preferences')
 
+        preferences_page_loaded = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert preferences_page_loaded, 'Preferences page is loaded'
+
         paste('find more')
 
         find_more_highlighted = exists(find_more_highlighted_pattern.similar(0.9 if OSHelper.is_linux() else 0.99),
