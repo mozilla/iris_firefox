@@ -66,6 +66,10 @@ class Target(BaseTarget):
                             help='Firefox version to test',
                             action='store',
                             default='latest-beta')
+        parser.add_argument('-g', '--region',
+                            help='Region code for Firefox',
+                            action='store',
+                            default='')
         parser.add_argument('-j', '--sendjson',
                             help='Send JSON report at end of run',
                             action='store_true')
