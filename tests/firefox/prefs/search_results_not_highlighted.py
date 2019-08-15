@@ -24,7 +24,7 @@ class Test(FirefoxTest):
 
         paste('find more')
 
-        find_more_highlighted = exists(find_more_highlighted_pattern.similar(0.9 if OSHelper.is_linux() else 0.99),
+        find_more_highlighted = exists(find_more_highlighted_pattern,
                                        FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert find_more_highlighted, '"Find more (search engine)" link is highlighted.'
