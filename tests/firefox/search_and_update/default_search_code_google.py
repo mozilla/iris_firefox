@@ -5,6 +5,7 @@
 
 from src.core.util.arg_parser import get_core_args
 from targets.firefox.fx_testcase import *
+from targets.firefox.main import *
 
 
 class Test(FirefoxTest):
@@ -12,7 +13,7 @@ class Test(FirefoxTest):
     # Command line flag is for testing en-US locale in IN, ID and CA regions, de locale in RU and ru locale in DE.
     # Otherwise, we'll automatically set the region based on the Firefox locale under test.
     global fx_region_code
-    region_arg = get_core_args().region
+    region_arg = Target().get_target_args().region
     if region_arg != '':
         fx_region_code = region_arg
     else:
