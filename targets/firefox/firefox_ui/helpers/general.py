@@ -34,6 +34,7 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
+from targets.firefox.settings import FirefoxSettings
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
@@ -795,7 +796,7 @@ def remove_zoom_indicator_from_toolbar():
     remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
     try:
-        wait(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait(zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         logger.debug('\'Decrease\' zoom control found.')
         right_click(zoom_control_toolbar_decrease_pattern)
     except FindError:
@@ -804,7 +805,7 @@ def remove_zoom_indicator_from_toolbar():
             aborting.')
 
     try:
-        wait(remove_from_toolbar_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait(remove_from_toolbar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         logger.debug('\'Remove from Toolbar\' option found.')
         click(remove_from_toolbar_pattern)
     except FindError:
@@ -813,7 +814,7 @@ def remove_zoom_indicator_from_toolbar():
             aborting.')
 
     try:
-        wait_vanish(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait_vanish(zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
     except FindError:
         raise APIHelperError(
             'Zoom indicator not removed from toolbar, aborting.')
