@@ -66,7 +66,7 @@ class Test(FirefoxTest):
 
         new_private_window()
 
-        private_window_opened = exists(PrivateWindow.PRIVATE_TAB, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        private_window_opened = exists(PrivateWindow.PRIVATE_TAB, FirefoxSettings.FIREFOX_TIMEOUT)
         assert private_window_opened, 'A new private window is successfully loaded.'
 
         navigate('https://mystor.github.io/dragndrop/')
@@ -95,7 +95,7 @@ class Test(FirefoxTest):
         open_library()
 
         # open and drag library window
-        library_popup_open = exists(library_import_backup_pattern.similar(0.6), Settings.DEFAULT_FIREFOX_TIMEOUT)
+        library_popup_open = exists(library_import_backup_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT)
         assert library_popup_open, 'Library popup window is correctly opened.'
 
         library_popup_tab_before = find(library_popup_pattern)
@@ -123,7 +123,7 @@ class Test(FirefoxTest):
 
         click(library_import_choose_file_submenu_pattern)
 
-        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert select_bookmark_popup_available, '"Select a bookmark backup" window is available'
 
         select_bookmark_popup_location = find(select_bookmark_popup_pattern)

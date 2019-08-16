@@ -21,16 +21,17 @@ from mozinstall import install, get_binary
 from mozrunner import FirefoxRunner, errors as run_errors
 from mozprofile import Profile as MozProfile
 
+from src.core.api.errors import APIHelperError
 from src.core.api.mouse.mouse import mouse_reset
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
+from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
 from src.core.util.system import shutdown_process
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window, quit_firefox
-from src.core.util.arg_parser import get_core_args
+from targets.firefox.settings import FirefoxSettings
 
-from src.core.api.errors import APIHelperError
 
 logger = logging.getLogger(__name__)
 CHANNELS = ('beta', 'release', 'nightly', 'esr', 'dev')
@@ -135,7 +136,7 @@ class FirefoxProfile(MozProfile):
 
         if preferences is None:
             if profile_type is Profiles.BRAND_NEW:
-                preferences = Settings.default_fx_prefs
+                preferences = FirefoxSettings.DEFAULT_FX_PREFS
             else:
                 preferences = {}
 
