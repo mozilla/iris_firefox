@@ -9,7 +9,6 @@ class FirefoxSettings:
     FIREFOX_TIMEOUT = 10
     SITE_LOAD_TIMEOUT = 30
     HEAVY_SITE_LOAD_TIMEOUT = 90
-    DEFAULT_FIREFOX_TIMEOUT = 10
     DEFAULT_FX_PREFS = {
         # Don't automatically update the application
         'app.update.disabledForTesting': True,
