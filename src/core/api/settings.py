@@ -56,47 +56,6 @@ class _Settings:
     DEFAULT_UI_DELAY_SHORT = 0.5
     DEFAULT_UI_DELAY_LONG = 2.5
     DEFAULT_SYSTEM_DELAY = 5
-    DEFAULT_FIREFOX_TIMEOUT = 10
-    DEFAULT_FX_PREFS = {
-        # Don't automatically update the application
-        'app.update.disabledForTesting': True,
-        # Don't restore the last open set of tabs if the browser has crashed
-        'browser.sessionstore.resume_from_crash': False,
-        # Don't check for the default web browser during startup
-        'browser.shell.checkDefaultBrowser': False,
-        # Don't warn on exit when multiple tabs are open
-        'browser.tabs.warnOnClose': False,
-        # Don't warn when exiting the browser
-        'browser.warnOnQuit': False,
-        # Don't send Firefox health reports to the production server
-        'datareporting.healthreport.documentServerURI': 'http://%(server)s/healthreport/',
-        # Skip data reporting policy notifications
-        'datareporting.policy.dataSubmissionPolicyBypassNotification': False,
-        # Only install add-ons from the profile and the application scope
-        # Also ensure that those are not getting disabled.
-        # see: https://developer.mozilla.org/en/Installing_extensions
-        'extensions.enabledScopes': 5,
-        'extensions.autoDisableScopes': 10,
-        # Don't send the list of installed addons to AMO
-        'extensions.getAddons.cache.enabled': False,
-        # Don't install distribution add-ons from the app folder
-        'extensions.installDistroAddons': False,
-        # Don't automatically update add-ons
-        'extensions.update.enabled': False,
-        # Don't open a dialog to show available add-on updates
-        'extensions.update.notifyUser': False,
-        # Enable test mode to run multiple tests in parallel
-        'focusmanager.testmode': True,
-        # Enable test mode to not raise an OS level dialog for location sharing
-        'geo.provider.testing': True,
-        # Suppress delay for main action in popup notifications
-        'security.notification_enable_delay': 0,
-        # Suppress automatic safe mode after crashes
-        'toolkit.startup.max_resumed_crashes': -1,
-        # Don't send Telemetry reports to the production server. This is
-        # needed as Telemetry sends pings also if FHR upload is enabled.
-        'toolkit.telemetry.server': 'http://%(server)s/telemetry-dummy/',
-    }
 
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
                  move_mouse_delay=DEFAULT_MOVE_MOUSE_DELAY, click_delay=DEFAULT_CLICK_DELAY,
@@ -112,10 +71,8 @@ class _Settings:
                  highlight_color=DEFAULT_HIGHLIGHT_COLOR,
                  highlight_thickness=DEFAULT_HIGHLIGHT_THICKNESS,
                  mouse_scroll_step=DEFAULT_MOUSE_SCROLL_STEP,
-                 firefox_timeout=DEFAULT_FIREFOX_TIMEOUT,
                  key_shortcut_delay=DEFAULT_KEY_SHORTCUT_DELAY,
-                 site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT,
-                 default_fx_prefs=DEFAULT_FX_PREFS):
+                 site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT):
 
         self.wait_scan_rate = wait_scan_rate
         self._type_delay = type_delay
@@ -135,17 +92,11 @@ class _Settings:
         self.highlight_thickness = highlight_thickness
         self.mouse_scroll_step = mouse_scroll_step
         self.key_shortcut_delay = key_shortcut_delay
-        self.firefox_timeout = firefox_timeout
-        self.default_fx_prefs = default_fx_prefs
         self.site_load_timeout = site_load_timeout
 
     @property
     def type_delay(self):
         return self._type_delay
-
-    @property
-    def FIREFOX_TIMEOUT(self):
-        return self.firefox_timeout
 
     @property
     def SYSTEM_DELAY(self):
