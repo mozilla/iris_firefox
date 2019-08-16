@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW
     )
     def run(self, firefox):
-        history_sidebar_mozilla_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
+        history_sidebar_mozilla_pattern = LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         save_bookmark_button_pattern = Pattern('save_bookmark_name.png')
@@ -53,7 +53,7 @@ class Test(FirefoxTest):
         expected_5 = exists(save_bookmark_button_pattern, 10)
         assert expected_5, 'New Bookmark popup displayed properly.'
 
-        click(save_bookmark_button_pattern)
+        click(save_bookmark_button_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         try:
             expected_6 = wait_vanish(save_bookmark_button_pattern, 10)

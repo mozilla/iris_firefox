@@ -149,7 +149,7 @@ def check_preference(pref_name, value):
 
 def click_cancel_button():
     """Click cancel button."""
-    cancel_button_pattern = Pattern('cancel_button.png')
+    cancel_button_pattern = Pattern('cancel_button.png').similar(.7)
     try:
         wait(cancel_button_pattern, 10)
         logger.debug('Cancel button found.')
@@ -827,7 +827,7 @@ def repeat_key_down(num):
     """
     for i in range(num):
         type(Key.DOWN)
-        time.sleep(1)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
 
 
 def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=1):

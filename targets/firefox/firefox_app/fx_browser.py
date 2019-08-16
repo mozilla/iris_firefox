@@ -206,6 +206,9 @@ class FirefoxApp:
             candidate = PathManager.get_local_firefox_path()
             if candidate is None:
                 logger.critical('Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/')
+            return candidate
+        elif os.path.isfile(version):
+            return version
         else:
             try:
                 s_t, s_d = _get_scraper_details(version, CHANNELS,
@@ -464,12 +467,12 @@ class FirefoxUtils:
             return None
 
         fx_channel = FirefoxUtils.get_firefox_info(build_path)['application_repository']
-        if 'beta' in fx_channel:
+        if 'esr' in fx_channel:
+            return 'esr'
+        elif 'beta' in fx_channel:
             return 'beta'
         elif 'release' in fx_channel:
             return 'release'
-        elif 'esr' in fx_channel:
-            return 'esr'
         else:
             return 'nightly'
 
