@@ -54,7 +54,7 @@ class Test(FirefoxTest):
             hover(window_controls_maximize_pattern)
             assert exists(hover_maximize_control_pattern, 10), \
                 'Hover over the \'maximize\' button works correctly; Window successfully restored.'
-        if OSHelper:
+        if OSHelper.is_mac():
             hover(Pattern('home_button.png'))
         click_window_control('minimize', 'main')
         time.sleep(Settings.DEFAULT_UI_DELAY)
