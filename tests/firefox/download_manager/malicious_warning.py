@@ -32,7 +32,7 @@ class Test(FirefoxTest):
         width, height = DownloadFiles.MALICIOUS.get_size()
 
         download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                      accept_download_available=False)
+                      expect_accept_download_available=False if (OSHelper.get_os_version() == 'win7') else True)
 
         expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Blocked download icon is displayed.'
@@ -120,7 +120,7 @@ class Test(FirefoxTest):
         width, height = DownloadFiles.MALICIOUS.get_size()
 
         download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                      accept_download_available=False)
+                      expect_accept_download_available=False if (OSHelper.get_os_version() == 'win7') else True)
 
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Malicious downloads button is displayed.'
