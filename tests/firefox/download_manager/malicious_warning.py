@@ -24,6 +24,11 @@ class Test(FirefoxTest):
     def run(self, firefox):
         malicious_file_download_library = Pattern('malicious_file_download_library.png')
 
+        if OSHelper.is_windows():
+            download_available = False
+        else:
+            download_available = True
+
         navigate('https://testsafebrowsing.appspot.com')
 
         expected = exists(DownloadFiles.MALICIOUS, 10)
@@ -32,7 +37,7 @@ class Test(FirefoxTest):
         width, height = DownloadFiles.MALICIOUS.get_size()
 
         download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True)
+                      expect_accept_download_available=download_available)
 
         expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Blocked download icon is displayed.'
@@ -120,7 +125,7 @@ class Test(FirefoxTest):
         width, height = DownloadFiles.MALICIOUS.get_size()
 
         download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True)
+                      expect_accept_download_available=download_available)
 
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Malicious downloads button is displayed.'
