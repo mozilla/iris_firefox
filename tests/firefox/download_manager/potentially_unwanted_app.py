@@ -31,7 +31,7 @@ class Test(FirefoxTest):
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
 
         download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                      accept_download_available=False)
+                      expect_accept_download_available=False if (OSHelper.get_os_version() == 'win7') else True)
 
         expected = exists(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Unwanted download icon is displayed.'
@@ -106,7 +106,7 @@ class Test(FirefoxTest):
 
         # Repeat steps 1-4 and click on Remove file.
         download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
-                      accept_download_available=False)
+                      expect_accept_download_available=False if (OSHelper.get_os_version() == 'win7') else True)
 
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Uncommon downloads button is displayed.'
