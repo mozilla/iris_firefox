@@ -30,7 +30,7 @@ class Test(FirefoxTest):
         prefs_unchecked_box_pattern = Pattern('prefs_unchecked_box.png')
         restart_browser_pattern = Pattern('restart_browser.png')
         download_pdf_pattern = Pattern('download_pdf_button.png')
-        pdf_downloaded = Pattern('downloaded_pdf.png')
+        pdf_downloaded = Pattern('downloaded_pdf.png').similar(.7)
         name_field_pattern = Pattern('name_field.png')
         password_field_pattern = Pattern('password_field.png')
 
@@ -197,7 +197,7 @@ class Test(FirefoxTest):
 
         click(download_pdf_pattern)
 
-        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON)
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert save_file_dialog_exists, 'Save file dialog opened'
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)

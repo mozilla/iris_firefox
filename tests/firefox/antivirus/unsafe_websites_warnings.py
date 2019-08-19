@@ -15,7 +15,8 @@ class Test(FirefoxTest):
         test_suite_id='3063',
         preferences={'browser.download.dir': PathManager.get_downloads_dir(),
                      'browser.download.folderList': 2,
-                     'browser.download.useDownloadDir': True}
+                     'browser.download.useDownloadDir': True},
+        blocked_by={'id': '3460', 'platform': OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         url_classifier_title_pattern = Pattern('url_classifier_title.png')

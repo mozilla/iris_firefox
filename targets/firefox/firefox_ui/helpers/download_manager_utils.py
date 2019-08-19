@@ -171,11 +171,13 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     return steps
 
 
-def download_file(file_to_download, accept_download, max_number_of_attempts=20):
+def download_file(file_to_download, accept_download, max_number_of_attempts=20, expect_accept_download_available=True):
     """
     :param file_to_download: Pattern of file to be downloaded.
     :param accept_download: Accept download pattern.
     :param max_number_of_attempts: Max number of attempts to locate file_to_download pattern.
+    :param expect_accept_download_available: True if we expect accept_download button, False - if we don't;
+            (in Windows 7 download UI don't have extra accept button in certain cases)
     :return: None.
     """
     for _ in range(max_number_of_attempts):
@@ -191,19 +193,23 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20):
             raise APIHelperError('File to be downloaded not found.')
 
     try:
-        wait(DownloadFiles.SAVE_FILE, 90)
+        wait(DownloadFiles.SAVE_FILE, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         logger.debug('The \'Save file\' option is present in the page.')
+
+        time.sleep(Settings.DEFAULT_SYSTEM_DELAY) # prevent click on inactive button on windows
+
         click(DownloadFiles.SAVE_FILE)
+
     except FindError:
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
-    try:
-        ok_button = exists(accept_download, 5)
-        if ok_button:
-            logger.debug('The OK button found in the page.')
+    if expect_accept_download_available:
+        accept_download_button = exists(accept_download, Settings.FIREFOX_TIMEOUT)
+        if accept_download_button:
+            logger.debug('The accept download button found in the page.')
             click(accept_download)
-    except FindError:
-        raise APIHelperError('The OK button is not found in the page.')
+        else:
+            raise APIHelperError('The accept download button was not found in the page.')
 
 
 def downloads_cleanup():

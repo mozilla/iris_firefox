@@ -6,6 +6,7 @@ from argparse import Namespace
 import argparse
 import logging
 import os
+import shutil
 import time
 
 import pytest
@@ -36,6 +37,7 @@ class BaseTarget:
             {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting'},
             {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'}
         ]
+        self.clean_run = True
 
     def get_target_args(self):
         parser = argparse.ArgumentParser(description='Target-specific arguments', prog='iris')
@@ -65,7 +67,7 @@ class BaseTarget:
         :param _pytest.main.Session session: the pytest session object.
         """
         self.start_time = time.time()
-        logger.info('\n' + 'Test session {} started'.format(session.name).center(os.get_terminal_size().columns, '-'))
+        logger.info('\n' + 'Test session {} started'.format(session.name).center(shutil.get_terminal_size().columns, '-'))
 
         core_settings_list = []
         for arg in vars(core_args):
@@ -93,7 +95,7 @@ class BaseTarget:
         result = footer.print_report_footer()
         create_run_log(self)
 
-        logger.info('\n' + 'Test session {} complete'.format(session.name).center(os.get_terminal_size().columns, '-'))
+        logger.info('\n' + 'Test session {} complete'.format(session.name).center(shutil.get_terminal_size().columns, '-'))
 
         if core_args.email:
             try:
@@ -144,37 +146,51 @@ class BaseTarget:
             :py:class:`_pytest.runner.CallInfo`.
 
             Stops at first non-None result
-            """
+        """
 
         if call.when == "call" and call.excinfo is not None:
+            self.clean_run = False
 
-            if str(item.__dict__.get('fspath')) in str(call.excinfo):
-                logger.debug('Test failed with assert')
-                outcome = "FAILED"
+            # Examine the last line of the call stack.
+            tb = call.excinfo.traceback.pop()
+
+            # Convert extra backslashes that appear on Windows
+            tb_str = str(tb).replace('\\\\', '\\')
+
+            if str(item.__dict__.get('fspath')) in tb_str:
+                if 'AssertionError' in str(call.excinfo):
+                    logger.debug('Test failed with assert')
+                    outcome = "FAILED"
+                else:
+                    logger.debug('Test failed with error')
+                    outcome = "ERROR"
             else:
                 logger.debug('Test failed with error')
                 outcome = "ERROR"
 
-            assert_object = (item, outcome, call.excinfo)
+            # We have found that call.excinfo can be turned to a string, but its
+            # format can vary. Therefore, we build an exception string from more
+            # predictable values.
 
+            file_name = tb_str.split('\'')[1]
+            line_number = tb_str.split('\':')[1].split(' ')[0]
+            exception_error_class = call.excinfo.exconly(True).split(':')[0]
+            message_only = str(call.excinfo.value).split('\n')[0]
+            exc_str = '%s:%s: %s: %s' % (file_name, line_number, exception_error_class, message_only)
+            assert_object = (item, outcome, exc_str, call.excinfo.traceback)
             test_result = create_result_object(assert_object, call.start, call.stop)
-
             self.completed_tests.append(test_result)
 
-        elif call.when == "call" and call.excinfo is None:
+        elif call.when == 'call' and call.excinfo is None:
             outcome = 'PASSED'
             test_instance = (item, outcome, None)
-
             test_result = create_result_object(test_instance, call.start, call.stop)
-
             self.completed_tests.append(test_result)
 
-        elif call.when == "setup" and item._skipped_by_mark:
+        elif call.when == 'setup' and item._skipped_by_mark:
             outcome = 'SKIPPED'
             test_instance = (item, outcome, None)
-
             test_result = create_result_object(test_instance, call.start, call.stop)
-
             self.completed_tests.append(test_result)
 
 

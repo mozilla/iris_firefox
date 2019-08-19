@@ -31,10 +31,9 @@ class Test(FirefoxTest):
             'Youtube is properly loaded.'
         assert exists(sound_on_pattern, 10), 'The video is properly loaded and displayed.'
 
-        navigate('https://soundcloud.com/')
+        navigate('https://soundcloud.com/martycanfly-1/never-gonna-give-you-up-rick')
         assert exists(soundcloud_logo_pattern, 100), 'Soundcloud is properly loaded.'
 
-        type(Key.SPACE)
         assert exists(sound_on_pattern, 10), 'The sound is properly loaded and played.'
 
         navigate('https://images.google.com/?gws_rd=ssl&hl=en')

@@ -89,7 +89,7 @@ class Test(FirefoxTest):
         open_library()
 
         # open and drag library window
-        library_popup_open = exists(library_import_backup_pattern.similar(0.6), Settings.DEFAULT_FIREFOX_TIMEOUT)
+        library_popup_open = exists(library_import_backup_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT)
         assert library_popup_open, 'Library popup window is correctly opened.'
 
         library_popup_tab_before = find(library_popup_pattern)
@@ -116,13 +116,13 @@ class Test(FirefoxTest):
 
         click(library_import_choose_file_submenu_pattern)
 
-        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert select_bookmark_popup_available, '\'Select a bookmark backup\' window is available'
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
         if OSHelper.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # open folder in Finder
+            type('g', modifier=[KeyModifier.CMD, KeyModifier.SHIFT])  # open folder in Finder
             paste(folderpath)
             type(Key.ENTER)
             type('2', KeyModifier.CMD)  # change view of finder
@@ -149,10 +149,10 @@ class Test(FirefoxTest):
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
-        test_file_jpg_located = exists(jpg_bak_file_pattern)
+        test_file_jpg_located = exists(jpg_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_jpg_located, 'JPG test file is available'
 
-        drop_here_available = exists(drop_here_pattern)
+        drop_here_available = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here_available, '"Drop here" pattern is available'
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
@@ -161,10 +161,10 @@ class Test(FirefoxTest):
         assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
                                            'result is identical to result.'
 
-        test_file_png_located = exists(png_bak_file_pattern)
+        test_file_png_located = exists(png_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_png_located, 'PNG test file is available'
 
-        drop_here_available = exists(drop_here_pattern)
+        drop_here_available = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here_available, '"Drop here" pattern is available'
 
         drag_drop(png_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)

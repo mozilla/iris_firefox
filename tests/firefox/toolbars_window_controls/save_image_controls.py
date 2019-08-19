@@ -17,22 +17,21 @@ class Test(FirefoxTest):
         test_pattern = Pattern('sleepy_head_nose.png')
         save_as_pattern = Pattern('save_as.png')
 
-        navigate(PathManager.get_web_asset_dir('overworked.jpeg'))
+        url = PathManager.get_web_asset_dir('overworked.jpeg')
 
-        try:
-            wait(test_pattern, 5)
-        except FindError:
-            raise FindError('Test Image not loaded.')
-        else:
-            right_click(test_pattern, 1)
+        navigate(url)
 
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        test_pattern_found = exists(test_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert test_pattern_found, 'Test page are loaded and image displays'
+
+        right_click(test_pattern, 1)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.DOWN)
         type(Key.ENTER)
 
-        assert exists(save_as_pattern, 10), 'Save Image dialog is present.'
+        assert exists(save_as_pattern, FirefoxSettings.FIREFOX_TIMEOUT), 'Save Image dialog is present.'
 
         if OSHelper.is_windows():
             click_window_control('close')
@@ -42,6 +41,6 @@ class Test(FirefoxTest):
             click_cancel_button()
 
         try:
-            assert wait_vanish(save_as_pattern, 5), 'Save Image dialog was closed.'
+            assert wait_vanish(save_as_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), 'Save Image dialog was closed.'
         except FindError:
             raise FindError('Save Image dialog is still present.')

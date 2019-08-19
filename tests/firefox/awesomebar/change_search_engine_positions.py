@@ -43,15 +43,12 @@ class Test(FirefoxTest):
 
         # Check that the one-off list is displayed in the awesomebar.
         for i in range(pattern_list.__len__()):
-            try:
-                if OSHelper.is_mac():
-                    expected = region.exists(pattern_list[i].similar(0.7), 10)
-                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
-                else:
-                    expected = region.exists(pattern_list[i].similar(0.9), 10)
-                    assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
-            except FindError:
-                raise FindError('Element found at position ' + i.__str__() + ' in the list not found.')
+            if OSHelper.is_mac():
+                expected = region.exists(pattern_list[i].similar(0.7), 10)
+                assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
+            else:
+                expected = region.exists(pattern_list[i].similar(0.9), 10)
+                assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
