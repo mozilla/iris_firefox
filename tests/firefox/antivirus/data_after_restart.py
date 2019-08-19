@@ -18,9 +18,8 @@ class Test(FirefoxTest):
         browser_console_pattern = Pattern('browser_console_opened.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
         youtube_logo_pattern = Pattern('youtube_logo.png')
-        twitter_logo_pattern = Pattern('twitter_favicon.png').similar(.75)
         cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png').similar(.7)
+        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png').similar(.6)
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -31,6 +30,8 @@ class Test(FirefoxTest):
         new_tab()
 
         navigate('https://edition.cnn.com')
+
+        close_content_blocking_pop_up()
 
         cnn_page_opened = exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert cnn_page_opened, 'The CNN site successfully opened'
@@ -116,10 +117,10 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        navigate('https://twitter.com/')
+        navigate(LocalWeb.POCKET_TEST_SITE)
 
-        twitter_opened = exists(twitter_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert twitter_opened, 'The Twitter site successfully opened'
+        pocket_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert pocket_opened, 'The Pocket site successfully opened'
 
         for _ in range(3):
             open_browser_console()
@@ -131,12 +132,14 @@ class Test(FirefoxTest):
 
         restart_via_console()
 
-        browser_console_reopened = exists(browser_console_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert browser_console_reopened, 'Browser console reopened'
+        browser_console_reopened = exists(browser_console_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
-        click(browser_console_pattern)
+        if browser_console_reopened:
+            assert browser_console_reopened, 'Browser console reopened'
 
-        close_window_control('auxiliary')
+            click(browser_console_pattern)
+
+            close_window_control('auxiliary')
 
         firefox_is_restarted = exists(NavBar.HOME_BUTTON, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert firefox_is_restarted, 'Firefox is successfully restarted'
@@ -158,8 +161,8 @@ class Test(FirefoxTest):
         history_restored_youtube = exists(youtube_logo_pattern, region=history_sidebar_region)
         assert history_restored_youtube, 'The Youtube site is added to history'
 
-        history_restored_twitter = exists(twitter_logo_pattern, region=history_sidebar_region)
-        assert history_restored_twitter, 'The Twitter site is added to history'
+        history_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL, region=history_sidebar_region)
+        assert history_restored_pocket, 'The Pocket site is added to history'
 
         tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern.similar(.6), region=tabs_region)
         assert tab_restored_cnn, 'The CNN tab is restored'
@@ -170,5 +173,5 @@ class Test(FirefoxTest):
         tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern, region=tabs_region)
         assert tab_restored_youtube, 'The Youtube tab is restored'
 
-        tab_restored_twitter = exists(twitter_logo_pattern, region=tabs_region)
-        assert tab_restored_twitter, 'The Twitter tab is restored'
+        tab_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL, region=tabs_region)
+        assert tab_restored_pocket, 'The Pocket tab is restored'

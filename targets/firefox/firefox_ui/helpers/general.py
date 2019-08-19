@@ -34,6 +34,7 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
+from targets.firefox.settings import FirefoxSettings
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
@@ -149,7 +150,7 @@ def check_preference(pref_name, value):
 
 def click_cancel_button():
     """Click cancel button."""
-    cancel_button_pattern = Pattern('cancel_button.png')
+    cancel_button_pattern = Pattern('cancel_button.png').similar(.7)
     try:
         wait(cancel_button_pattern, 10)
         logger.debug('Cancel button found.')
@@ -664,6 +665,7 @@ def navigate(url):
     try:
         select_location_bar()
         paste(url)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         type(Key.ENTER)
     except Exception:
         raise APIHelperError(
@@ -794,7 +796,7 @@ def remove_zoom_indicator_from_toolbar():
     remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
     try:
-        wait(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait(zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         logger.debug('\'Decrease\' zoom control found.')
         right_click(zoom_control_toolbar_decrease_pattern)
     except FindError:
@@ -803,7 +805,7 @@ def remove_zoom_indicator_from_toolbar():
             aborting.')
 
     try:
-        wait(remove_from_toolbar_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait(remove_from_toolbar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         logger.debug('\'Remove from Toolbar\' option found.')
         click(remove_from_toolbar_pattern)
     except FindError:
@@ -812,7 +814,7 @@ def remove_zoom_indicator_from_toolbar():
             aborting.')
 
     try:
-        wait_vanish(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait_vanish(zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
     except FindError:
         raise APIHelperError(
             'Zoom indicator not removed from toolbar, aborting.')
@@ -826,7 +828,7 @@ def repeat_key_down(num):
     """
     for i in range(num):
         type(Key.DOWN)
-        time.sleep(1)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
 
 
 def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=1):

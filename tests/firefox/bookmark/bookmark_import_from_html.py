@@ -36,7 +36,7 @@ class Test(FirefoxTest):
         click(library_import_bookmarks_from_html_pattern)
 
         if OSHelper.is_mac():
-            type('g', modifier=KeyModifier.CMD + KeyModifier.SHIFT)  # go to folder
+            type('g', modifier=[KeyModifier.CMD, KeyModifier.SHIFT])  # go to folder
             paste(test_bookmarks_path)
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 

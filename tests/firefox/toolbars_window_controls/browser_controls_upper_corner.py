@@ -26,6 +26,9 @@ class Test(FirefoxTest):
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         assert exists(LocalWeb.FIREFOX_LOGO, 10), 'Page successfully loaded, firefox logo found.'
 
+        if OSHelper.is_linux():
+            Mouse().move(Location(0, 0))
+
         hover(window_controls_minimize_pattern)
         assert exists(hover_minimize_control_pattern, 10), 'Hover over the \'minimize\' button works correctly.'
 
