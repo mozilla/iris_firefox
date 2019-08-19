@@ -46,6 +46,7 @@ class Test(FirefoxTest):
         assert browser_console_opened, 'Browser console opened.'
 
         paste('window.resizeTo(1000, 400)')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
         type(Key.ENTER)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -125,10 +126,11 @@ class Test(FirefoxTest):
 
         if not OSHelper.is_mac():
 
-            click(NavBar.HAMBURGER_MENU, click_duration)
+            click(NavBar.HAMBURGER_MENU, click_duration, region=Screen.TOP_THIRD)
 
             hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert hamburger_menu_quit_displayed, 'Close Firefox from the "Hamburger" menu.'
+
             click(hamburger_menu_quit_item_pattern, click_duration)
         else:
             quit_firefox()
