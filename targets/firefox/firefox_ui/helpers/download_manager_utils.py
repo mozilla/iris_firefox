@@ -204,13 +204,9 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
     if expect_accept_download_available:
-        try:
-            accept_download_button = exists(accept_download, Settings.FIREFOX_TIMEOUT)
-            if accept_download_button:
-                logger.debug('The accept download button found in the page.')
-                click(accept_download)
-        except FindError:
-            raise APIHelperError('The \'accept_download\' button is not found in the page.')
+        accept_download_button = exists(accept_download, Settings.FIREFOX_TIMEOUT)
+        logger.debug('The accept download button found in the page.')
+        click(accept_download)
 
 
 def downloads_cleanup():
