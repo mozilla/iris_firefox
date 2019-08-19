@@ -83,7 +83,7 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.FIREFOX_TIMEOUT/4)
 
-        toolbar_bookmarks_sorted_by_name_assert = exists(toolbar_bookmarks_sorted_by_name.similar(0.87),
+        toolbar_bookmarks_sorted_by_name_assert = exists(toolbar_bookmarks_sorted_by_name,
                                                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert toolbar_bookmarks_sorted_by_name_assert is True, 'The items from the Bookmarks Toolbar has been ' \
                                                                 'successfully sorted by name.'
