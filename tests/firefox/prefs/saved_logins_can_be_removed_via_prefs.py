@@ -78,12 +78,15 @@ class Test(FirefoxTest):
                                                                    (-scroll_length,), timeout=ui_timeout)
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
 
+        saved_logins_button_after_scroll = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert saved_logins_button_after_scroll, 'Saved logins button is found after scroll animation'
+
         click(saved_logins_button_pattern)
 
-        saved_logins_opened = exists(first_saved_login_pattern)
+        saved_logins_opened = exists(first_saved_login_pattern.similar(0.7))
         assert saved_logins_opened, 'Saved logins sub-window is opened. The list is successfully populated'
 
-        second_login_saved = exists(last_saved_login_pattern)
+        second_login_saved = exists(last_saved_login_pattern.similar(0.7))
         assert second_login_saved, 'Second login was saved. The list is successfully populated. '
 
         click(first_saved_login_pattern)
@@ -103,5 +106,5 @@ class Test(FirefoxTest):
         last_login_not_deleted = exists(last_saved_login_pattern)
         assert last_login_not_deleted, 'Last login was not deleted'
 
-        first_login_deleted = wait_vanish(first_saved_login_pattern, ui_timeout)
+        first_login_deleted = wait_vanish(first_saved_login_pattern.exact(), ui_timeout)
         assert first_login_deleted, 'Login was successfully deleted'

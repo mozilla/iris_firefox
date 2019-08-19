@@ -16,11 +16,14 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW
     )
     def run(self, firefox):
-        history_sidebar_focus_pattern = Pattern('history_sidebar_focus.png')
+        history_sidebar_focus_pattern = Pattern('history_sidebar_focus.png').similar(0.7)
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         x_button_search_history_box_pattern = Sidebar.SidebarHeader.CLEAR_SEARCH_BOX
         history_sidebar_items_pattern = Pattern('history_sidebar_items.png')
+
+        if OSHelper.is_windows():
+            x_button_search_history_box_pattern = Pattern('x_button_search_history.png')
 
         # Open a page to create some history.
         navigate(LocalWeb.FOCUS_TEST_SITE)
@@ -32,7 +35,7 @@ class Test(FirefoxTest):
         history_sidebar()
 
         search_history_box_exists = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert search_history_box_exists, 'Sidebar was opened successfully.'
+        assert search_history_box_exists, 'History Sidebar is opened.'
 
         history_today_sidebar_exists = exists(history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_today_sidebar_exists, 'Expand history button displayed properly.'
@@ -44,7 +47,8 @@ class Test(FirefoxTest):
         paste('focus')
         type(Key.TAB)
 
-        history_sidebar_focus_exists = exists(history_sidebar_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        history_sidebar_focus_exists = exists(history_sidebar_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                              region=Screen().top_half().left_third())
         assert history_sidebar_focus_exists, 'Focus page was found in the History list successfully.'
 
         # Clear the History search box.
@@ -57,7 +61,5 @@ class Test(FirefoxTest):
         history_sidebar_items_exists = exists(history_sidebar_items_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_sidebar_items_exists, 'History sidebar item exists'
 
-        history_sidebar_items_exists = exists(history_sidebar_items_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         search_history_box_exists = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert history_sidebar_items_exists and search_history_box_exists, \
-            'The expected items are displayed in the History list.'
+        assert search_history_box_exists, 'The search field is empty and all the History is displayed below.'
