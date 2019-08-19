@@ -205,8 +205,11 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
 
     if expect_accept_download_available:
         accept_download_button = exists(accept_download, Settings.FIREFOX_TIMEOUT)
-        logger.debug('The accept download button found in the page.')
-        click(accept_download)
+        if accept_download_button:
+            logger.debug('The accept download button found in the page.')
+            click(accept_download)
+        else:
+            raise APIHelperError('The accept download button was not found in the page.')
 
 
 def downloads_cleanup():
