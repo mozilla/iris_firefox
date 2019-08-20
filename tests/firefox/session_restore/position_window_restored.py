@@ -124,17 +124,6 @@ class Test(FirefoxTest):
 
         close_tab()
 
-        if not OSHelper.is_mac():
-
-            click(NavBar.HAMBURGER_MENU, click_duration, region=Screen.TOP_THIRD)
-
-            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert hamburger_menu_quit_displayed, 'Close Firefox from the "Hamburger" menu.'
-
-            click(hamburger_menu_quit_item_pattern, click_duration)
-        else:
-            quit_firefox()
-
         firefox.restart()
 
         # 4. Close Firefox from the "Hamburger" menu.
