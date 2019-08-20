@@ -38,7 +38,8 @@ class Test(FirefoxTest):
                 logger.info('Current version: %s, updating to version: %s.' % (current_version, update_step))
 
                 open_about_firefox()
-                wait(update_restart_pattern.similar(.7), 200)
+                expected = exists(update_restart_pattern.similar(.7), 200)
+                assert expected, 'Restart for application update button found.'
                 type(Key.ESC)
 
                 firefox.restart()
@@ -47,7 +48,8 @@ class Test(FirefoxTest):
                 current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
         open_about_firefox()
-        wait(firefox_up_to_date_pattern, 20)
+        expected = exists(firefox_up_to_date_pattern, 20)
+        assert expected, 'Firefox up to date message found.'
         type(Key.ESC)
 
         assert current_version in FirefoxUtils.get_firefox_version(firefox.application.path), \
