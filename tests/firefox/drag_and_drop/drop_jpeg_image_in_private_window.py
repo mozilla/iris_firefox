@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         description='Drop single and multiple .jpeg images in demopage opened in Private Window',
         locale=['en-US'],
         test_case_id='165085',
-        test_suite_id='102',
+        test_suite_id='5259',
         set_profile_pref={'devtools.chrome.enabled': True},
     )
     def run(self, firefox):

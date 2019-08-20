@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         description='Drop html data in demopage opened in Private Window',
         locale=['en-US'],
         test_case_id='165089',
-        test_suite_id='102',
+        test_suite_id='5259',
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
