@@ -32,7 +32,7 @@ class Test(FirefoxTest):
             this_firefox = exists('This Firefox', FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_HALF)
             assert this_firefox, '"This Firefox" button available.'
 
-            click('This Firefox', 1)
+            click('This Firefox', 1, Screen.LEFT_THIRD)
 
         debugging_page_loaded = exists(load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert debugging_page_loaded is True,\
@@ -66,6 +66,11 @@ class Test(FirefoxTest):
 
         popup_opened = exists(popup_open_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert popup_opened is True, '\'Load temporary add-on\' popup is opened.'
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        paste(assets_path)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.ENTER)
 
         addon_file_is_available = exists(addon_file_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert addon_file_is_available is True, 'Addon file is available.'
