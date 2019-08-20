@@ -66,7 +66,7 @@ class EmailClient:
                     repo_details.get('iris_branch'), 
                     repo_details.get('iris_branch_head'), 
                     test_status)
-                ))
+                )) 
         else:
             raise EmailError("Invalid Body Message")
 
