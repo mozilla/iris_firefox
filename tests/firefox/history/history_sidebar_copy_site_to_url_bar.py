@@ -31,20 +31,25 @@ class Test(FirefoxTest):
         # Open the History sidebar.
         history_sidebar()
 
-        expected_2 = exists(search_history_box_pattern, 10)
-        assert expected_2, 'Sidebar was opened successfully.'
+        expected_3 = exists(search_history_box_pattern, 10)
+        assert expected_3 is True, 'Sidebar was opened successfully.'
 
-        expected_3 = exists(history_today_sidebar_pattern, 10)
-        assert expected_3, 'Expand history button displayed properly.'
+        expected_4 = exists(history_today_sidebar_pattern, 10)
+        assert expected_4 is True, 'Expand history button displayed properly.'
+
+        history_today_location = find(history_today_sidebar_pattern)
+        history_today_width, history_today_height = history_today_sidebar_pattern.get_size()
+        history_sidebar_region = Region(0, history_today_location.y, history_today_width * 3, history_today_height * 10)
 
         click(history_today_sidebar_pattern)
 
         # Copy a website from the History sidebar and paste it into the URL bar.
-        expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        expected_4 = exists('Mozilla', 10, history_sidebar_region)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_SMALL, keyboard_action='c')
-
+        right_click_and_type('Mozilla', keyboard_action='c')
 
         select_location_bar()
         edit_paste()
