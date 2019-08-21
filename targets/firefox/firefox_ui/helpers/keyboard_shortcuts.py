@@ -708,4 +708,17 @@ def delete_selected_file():
     else:
         type(text=Key.DELETE)
 
+
+def release_often_used_keys():
+    """
+    Releases often used keys
+    """
+    key_up(KeyModifier.SHIFT)
+    key_up(KeyModifier.CTRL)
+    key_up(KeyModifier.ALT)
+    if OSHelper.is_mac():
+        key_up(KeyModifier.CMD)
+    if OSHelper.is_windows():
+        key_up(KeyModifier.WIN)
+
 # End Tools keyboard shortcuts
