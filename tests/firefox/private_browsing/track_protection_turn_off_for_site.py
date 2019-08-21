@@ -28,6 +28,8 @@ class Test(FirefoxTest):
         blocked_tracker_label_pattern = Pattern('blocked_tracker_label.png')
         trackers_icon_pattern = Pattern('trackers_icon.png')
 
+        restore_firefox_focus()
+
         new_private_window()
 
         private_browsing_window_loaded = exists(PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
