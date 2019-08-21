@@ -76,7 +76,7 @@ def change_preference(pref_name, value):
     try:
         new_tab()
         navigate('about:config')
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         type(Key.SPACE)
         time.sleep(Settings.DEFAULT_UI_DELAY)

@@ -43,6 +43,7 @@ class Test(FirefoxTest):
         assert current_version in FirefoxUtils.get_firefox_version(firefox.application.path), \
             'Incorrect Firefox version.'
 
+        restore_firefox_focus()
         change_preference('browser.search.widget.inNavBar', True)
         change_preference('browser.tabs.warnOnClose', True)
 
@@ -71,6 +72,7 @@ class Test(FirefoxTest):
                     'Incorrect Firefox update.'
                 current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
+        restore_firefox_focus()
         open_about_firefox()
         expected = exists(firefox_up_to_date_pattern, 20)
         assert expected, 'Firefox up to date message found.'
