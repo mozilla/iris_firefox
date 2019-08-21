@@ -12,7 +12,7 @@ class Test(BaseTest):
         description='Drop image data in demopage',
         locale=['en-US'],
         test_case_id='165086',
-        test_suite_id='102',
+        test_suite_id='5259',
         preferences={'devtools.chrome.enabled': True},
         blocked_by={'id': '1288773', 'platform': OSPlatform.ALL}
     )
