@@ -64,6 +64,9 @@ class Test(FirefoxTest):
 
         click(load_temporary_addon_button_pattern)
 
+        if OSHelper.is_mac():
+            popup_open_button_pattern = Pattern('popup_open_blue_button.png')
+
         popup_opened = exists(popup_open_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert popup_opened is True, '\'Load temporary add-on\' popup is opened.'
 
