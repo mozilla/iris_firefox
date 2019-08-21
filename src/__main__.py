@@ -183,7 +183,7 @@ def launch_control_center():
 
     args = ['http://127.0.0.1:%s' % get_core_args().port]
     process_args = {'stream': None}
-    profile = MozProfile(profile=profile_path, preferences=Settings.default_fx_prefs)
+    profile = MozProfile(profile=profile_path, preferences={})
     if OSHelper.is_windows():
         process = subprocess.Popen(
             [fx_path, '-no-remote', '-new-tab', args, '--wait-for-browser', '-foreground', '-profile',
