@@ -62,8 +62,9 @@ class Test(FirefoxTest):
         expected_5 = history_sidebar_region.exists('Mozilla', FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_5 is True, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type('Mozilla', delay=FirefoxSettings.TINY_FIREFOX_TIMEOUT,
-                             keyboard_action='f')
+        right_click('Mozilla', region=history_sidebar_region)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+        type('f')
 
         try:
             expected_6 = history_sidebar_region.exists('Mozilla', FirefoxSettings.FIREFOX_TIMEOUT)
