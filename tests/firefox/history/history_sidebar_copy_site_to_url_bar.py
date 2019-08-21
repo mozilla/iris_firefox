@@ -49,7 +49,9 @@ class Test(FirefoxTest):
         expected_4 = exists('Mozilla', 10, history_sidebar_region)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type('Mozilla', keyboard_action='c')
+        right_click('Mozilla', region=history_sidebar_region)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+        type('c')
 
         select_location_bar()
         edit_paste()
