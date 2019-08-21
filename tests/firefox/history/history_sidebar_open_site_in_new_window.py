@@ -18,7 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         history_sidebar_mozilla = LocalWeb.MOZILLA_BOOKMARK_SMALL
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
-        sidebar_history_today_pattern = Sidebar.HistorySidebar.Timeline.TODAY
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
 
         left_upper_corner = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
@@ -40,17 +40,23 @@ class Test(FirefoxTest):
         expected_3 = exists(search_history_box_pattern, 10)
         assert expected_3 is True, 'Sidebar was opened successfully.'
 
-        expected_4 = exists(sidebar_history_today_pattern, 10)
+        expected_4 = exists(history_today_sidebar_pattern, 10)
         assert expected_4 is True, 'Expand history button displayed properly.'
 
-        click(sidebar_history_today_pattern)
+        history_today_location = find(history_today_sidebar_pattern)
+        history_today_width, history_today_height = history_today_sidebar_pattern.get_size()
+        history_sidebar_region = Region(0, history_today_location.y, history_today_width * 3, history_today_height * 10)
+
+        click(history_today_sidebar_pattern)
 
         # Open a page from the History sidebar using the 'Open in a New Window' button from the context menu.
 
-        expected_5 = left_upper_corner.exists(history_sidebar_mozilla.similar(0.7), 10)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        expected_5 = history_sidebar_region.exists('Mozilla', 10)
         assert expected_5 is True, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click(history_sidebar_mozilla.similar(0.7), 1)
+        right_click('Mozilla', 1, region=history_sidebar_region)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         type(text='n')
 
