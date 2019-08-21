@@ -18,6 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
         text_pattern = Pattern('focus_text.png')
+        text_pattern_selected = Pattern('focus_text_selected.png')
         default_search_engine_baidu_pattern = Pattern('default_search_engine_baidu.png')
 
         change_preference('browser.search.widget.inNavBar', True)
@@ -61,7 +62,7 @@ class Test(FirefoxTest):
 
         double_click(text_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-        right_click(text_pattern)
+        right_click(text_pattern_selected)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         repeat_key_down(3)
         type(Key.ENTER)
