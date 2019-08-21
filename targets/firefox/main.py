@@ -277,7 +277,6 @@ class Target(BaseTarget):
                 else:
                     logger.error('Invalid Path: %s' % profile_instance.profile)
 
-            release_often_used_keys()
         except (AttributeError, KeyError):
             pass
 
