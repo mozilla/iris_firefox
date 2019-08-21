@@ -25,8 +25,6 @@ class Test(FirefoxTest):
             popup_open_blue_button_pattern = Pattern('popup_open_blue_button.png')
         load_temporary_addon_button_pattern = Pattern('load_temporary_addon_button.png')
 
-        popup_open_button_height = popup_open_button_pattern.get_size()[1]
-
         navigate('about:debugging')
 
         debugging_page_loaded = exists(load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
@@ -106,9 +104,6 @@ class Test(FirefoxTest):
         paste(assets_path)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
-
-        # if OSHelper.is_mac():
-        #     click(deselect_file_location, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         addon_file_is_available = exists(addon_file_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert addon_file_is_available is True, 'Addon file is available.'
