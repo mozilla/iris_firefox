@@ -25,6 +25,7 @@ class Test(FirefoxTest):
         firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
         update_restart_pattern = Pattern('manual_restart_to_update_button.png')
         text_pattern = Pattern('focus_text.png')
+        text_pattern_selected = Pattern('focus_text_selected.png')
 
         version = firefox.application.version
         current_version = version if '-dev' not in version else version.replace('-dev', '')
@@ -65,6 +66,7 @@ class Test(FirefoxTest):
                     'Incorrect Firefox update.'
                 current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
+        type(Key.ENTER)
         restore_firefox_focus()
         open_about_firefox()
         expected = exists(firefox_up_to_date_pattern, 20)
@@ -117,7 +119,7 @@ class Test(FirefoxTest):
 
         double_click(text_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-        right_click(text_pattern)
+        right_click(text_pattern_selected)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         repeat_key_down(3)
         type(Key.ENTER)

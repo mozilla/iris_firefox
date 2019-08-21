@@ -696,6 +696,7 @@ def open_about_firefox():
 
     else:
         type(Key.F10)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         if args.locale != 'ar':
             type(Key.LEFT)
         else:

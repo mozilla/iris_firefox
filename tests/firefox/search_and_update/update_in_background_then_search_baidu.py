@@ -29,8 +29,9 @@ class Test(FirefoxTest):
         url = LocalWeb.FOCUS_TEST_SITE
         default_search_engine_baidu_pattern = Pattern('default_search_engine_baidu.png')
         text_pattern = Pattern('focus_text.png')
+        text_pattern_selected = Pattern('focus_text_selected.png')
         update_restart_pattern = Pattern('background_update_menu_notification.png')
-        firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png')
+        firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png').similar(.7)
         version = firefox.application.version
         current_version = version if '-dev' not in version else version.replace('-dev', '')
         channel = firefox.application.channel
@@ -48,7 +49,8 @@ class Test(FirefoxTest):
         change_preference('browser.tabs.warnOnClose', True)
 
         navigate('about:preferences#search')
-        expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=Screen.MIDDLE_THIRD_HORIZONTAL)
         assert expected, 'Baidu is the default search engine prior to the browser update'
 
         # Perform a background browser update
@@ -72,6 +74,7 @@ class Test(FirefoxTest):
                     'Incorrect Firefox update.'
                 current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
+        type(Key.ENTER)
         restore_firefox_focus()
         open_about_firefox()
         expected = exists(firefox_up_to_date_pattern, 20)
@@ -87,7 +90,8 @@ class Test(FirefoxTest):
 
         # Perform the Baidu default search engine code checks
         navigate('about:preferences#search')
-        expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=Screen.MIDDLE_THIRD_HORIZONTAL)
         assert expected, 'Baidu is the default search engine after the browser update.'
 
         # Perform a search using the awesome bar and then clear the content from it.
@@ -123,7 +127,7 @@ class Test(FirefoxTest):
 
         double_click(text_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-        right_click(text_pattern)
+        right_click(text_pattern_selected)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         repeat_key_down(3)
         type(Key.ENTER)
