@@ -43,10 +43,10 @@ class Test(FirefoxTest):
         # Open the History sidebar.
         history_sidebar()
 
-        expected_3 = exists(search_history_box_pattern, 10)
+        expected_3 = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_3 is True, 'Sidebar was opened successfully.'
 
-        expected_4 = exists(history_today_sidebar_pattern, 10)
+        expected_4 = exists(history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_4 is True, 'Expand history button displayed properly.'
 
         history_today_location = find(history_today_sidebar_pattern)
