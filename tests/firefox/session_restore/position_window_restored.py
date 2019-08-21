@@ -164,6 +164,8 @@ class Test(FirefoxTest):
 
         click(restore_previous_session_pattern, click_duration)
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         firefox_test_site_restored = exists(firefox_test_site_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert firefox_test_site_restored, 'Firefox webpage is opened'
 
