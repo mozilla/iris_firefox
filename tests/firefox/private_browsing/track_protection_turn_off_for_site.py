@@ -24,7 +24,6 @@ class Test(FirefoxTest):
         tracking_content_detected_message_pattern = Pattern('tracking_content_detected_message.png')
         tracking_attempts_blocked_message_pattern = Pattern('tracking_attempts_blocked_message.png')
         trackers_popup_title_pattern = Pattern('trackers_popup_title.png')
-        cnn_restore_focus_pattern = Pattern('cnn_restore_focus.png')
         trackers_button_pattern = Pattern('trackers_button.png')
         blocked_tracker_label_pattern = Pattern('blocked_tracker_label.png')
         trackers_icon_pattern = Pattern('trackers_icon.png')
@@ -97,10 +96,10 @@ class Test(FirefoxTest):
                                                                     ' tooltip message'
 
         #  click on focus pattern as method restore_firefox_focus() doesn't work as expected
-        cnn_restore_focus_pattern_exists = exists(cnn_restore_focus_pattern)
-        assert cnn_restore_focus_pattern_exists is True, 'Restore focus patter displayed'
+        website_displayed = exists(cnn_site_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        assert website_displayed is True, 'The website is successfully displayed'
 
-        click(cnn_restore_focus_pattern, region=Screen.LEFT_THIRD)
+        restore_firefox_focus()
 
         cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,),
                                                                    timeout=FirefoxSettings.FIREFOX_TIMEOUT)
@@ -153,10 +152,10 @@ class Test(FirefoxTest):
                                                                     ' tooltip message'
 
         #  click on focus pattern as method restore_firefox_focus() doesn't work as expected
-        cnn_restore_focus_pattern_exists = exists(cnn_restore_focus_pattern)
-        assert cnn_restore_focus_pattern_exists is True, 'Restore focus patter displayed'
+        website_displayed = exists(cnn_site_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        assert website_displayed is True, 'The website is successfully displayed'
 
-        click(cnn_restore_focus_pattern, region=Screen.LEFT_THIRD)
+        restore_firefox_focus()
 
         cnn_blocked_content_not_displayed = \
             scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,), 10)
