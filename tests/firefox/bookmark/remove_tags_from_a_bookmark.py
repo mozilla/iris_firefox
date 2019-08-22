@@ -59,6 +59,8 @@ class Test(FirefoxTest):
 
         bookmarks_sidebar('open')
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         paste('iris')
 
         tagged_bookmark_assert = exists(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
