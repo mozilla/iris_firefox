@@ -53,6 +53,8 @@ class Test(FirefoxTest):
 
         click(save_pattern)
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         bookmarks_sidebar('close')
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
