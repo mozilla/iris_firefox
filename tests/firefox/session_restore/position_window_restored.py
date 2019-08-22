@@ -36,7 +36,11 @@ class Test(FirefoxTest):
                                     region=Screen.TOP_THIRD)
         assert iris_tab_displayed, 'Iris tab is displayed properly'
 
-        iris_start_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+        iris_tab_start_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+
+        click(LocalWeb.IRIS_LOGO_ACTIVE_TAB, 1)
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         # - Drag some tags outside the main browser window.
         # - Position them in different places.
         # - Perform some changes to their height and width.
@@ -45,31 +49,51 @@ class Test(FirefoxTest):
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.resizeTo(1000, 400)')
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
         # prevent Linux to overlap windows
-        iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
-        click(iris_tab_location, 1)
+        click(iris_tab_start_location, 1)
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         open_browser_console()
 
+        iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB,
+                                    region=Screen.TOP_THIRD)
+        assert iris_tab_displayed, 'Iris tab is displayed properly'
+
+        click(LocalWeb.IRIS_LOGO_ACTIVE_TAB, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        open_browser_console()
+
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened.'
+
         # deal with Linux error log first time blocks input
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.resizeTo(1000, 400)')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
-        paste('window.moveTo('+ str(iris_start_location.x) + ',' + str(iris_start_location.y) + ')')
+        paste('window.moveTo(' + str(iris_tab_start_location.x) + ',' + str(iris_tab_start_location.y) + ')')
         type(Key.ENTER)
 
         close_tab()
 
         # open another websites and change their windows
+
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         tab_one_loaded = exists(firefox_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
@@ -89,8 +113,13 @@ class Test(FirefoxTest):
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.moveTo(0, ' + str(Screen.SCREEN_HEIGHT / 2 + 200) + ')')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
@@ -110,30 +139,29 @@ class Test(FirefoxTest):
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.resizeTo(500, 500)')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.moveTo(' + str(Screen.SCREEN_WIDTH / 2) + ',' + str(Screen.SCREEN_HEIGHT / 15) + ')')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         browser_console_empty_line = exists(browser_console_empty_line_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_empty_line, 'Value entered in browser console.'
 
         close_tab()
-
-        if not OSHelper.is_mac():
-
-            click(NavBar.HAMBURGER_MENU, click_duration, region=Screen.TOP_THIRD)
-
-            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert hamburger_menu_quit_displayed, 'Close Firefox from the "Hamburger" menu.'
-
-            click(hamburger_menu_quit_item_pattern, click_duration)
-        else:
-            quit_firefox()
 
         firefox.restart()
 
@@ -156,26 +184,36 @@ class Test(FirefoxTest):
 
         click(restore_previous_session_pattern, click_duration)
 
-        firefox_test_site_restored = exists(firefox_test_site_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
+        firefox_test_site_restored = exists(firefox_test_site_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert firefox_test_site_restored, 'Firefox webpage is opened'
 
         firefox_tab_location = find(firefox_test_site_tab_pattern)
 
         # check first tab
-        click(firefox_test_site_tab_pattern, click_duration)
+        click(firefox_tab_location, click_duration)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         open_browser_console()
 
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.innerHeight')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        test_site_window_height_matched = exists(console_output_500,
-                                                 FirefoxSettings.FIREFOX_TIMEOUT)
+        test_site_window_height_matched = exists(console_output_500, FirefoxSettings.FIREFOX_TIMEOUT)
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.innerWidth')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
 
         test_site_window_width_matched = exists(console_output_500,
@@ -189,44 +227,59 @@ class Test(FirefoxTest):
 
         focus_tab_location = find(focus_test_site_tab_pattern)
 
-        click(focus_test_site_tab_pattern)
+        click(focus_tab_location)
 
         open_browser_console()
 
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.innerHeight')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
 
-        focus_site_window_height_matched = exists(console_output_height_400)
+        focus_site_window_height_matched = exists(console_output_height_400, FirefoxSettings.FIREFOX_TIMEOUT)
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.innerWidth')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
-        focus_site_window_width_matched = exists(console_output_width_1000)
+        focus_site_window_width_matched = exists(console_output_width_1000, FirefoxSettings.FIREFOX_TIMEOUT)
         assert focus_site_window_height_matched and focus_site_window_width_matched, \
             'Second window (Focus) size matched'
 
         close_tab()
 
-        iris_tab_active = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+        iris_tab_active = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert iris_tab_active, 'Iris tab is active'
 
-        click(iris_tab_location, 1)
         iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
+
+        click(iris_tab_location, 1)
 
         open_browser_console()
 
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, 'Browser console opened.'
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.innerHeight')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         iris_window_height_matched = exists(console_output_height_400)
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         paste('window.innerWidth')
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         type(Key.ENTER)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         iris_window_width_matched = exists(console_output_width_1000)
         assert iris_window_height_matched and iris_window_width_matched, \
