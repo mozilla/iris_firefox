@@ -58,7 +58,16 @@ class Test(FirefoxTest):
         iris_tab_location = find(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         click(iris_tab_location, 1)
 
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        open_browser_console()
+
+        iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB,
+                                    region=Screen.TOP_THIRD)
+        assert iris_tab_displayed, 'Iris tab is displayed properly'
+
+        click(LocalWeb.IRIS_LOGO_ACTIVE_TAB, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         open_browser_console()
 
         browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
