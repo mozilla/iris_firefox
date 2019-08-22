@@ -40,5 +40,7 @@ class Test(FirefoxTest):
 
         drag_drop(pocket_bookmark_pattern, mozilla_bookmark_location)
 
+        restore_firefox_focus()
+
         bookmarks_not_reordered = exists(reordered_sidebar_bookmarks_pattern)
         assert bookmarks_not_reordered is True, 'The bookmarks order is correctly modified.'
