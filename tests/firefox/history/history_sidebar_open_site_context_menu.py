@@ -17,11 +17,8 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW
     )
     def run(self, firefox):
-        history_sidebar_mozilla = LocalWeb.MOZILLA_BOOKMARK_SMALL
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
-
-        left_upper_corner = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
