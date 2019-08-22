@@ -26,7 +26,7 @@ class Test(FirefoxTest):
         assert test_page_opened, 'Test page is opened'
 
         select_location_bar()
-        type('http://127.0.0.1:2000/m')
+        type('http://127.0.0.1:2000/m', interval=0.2)
 
         mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_autocomplete_exists, 'Mozilla page is auto-completed successfully.'
