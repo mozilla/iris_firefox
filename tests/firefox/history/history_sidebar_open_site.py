@@ -15,11 +15,8 @@ class Test(BaseTest):
         test_suite_id='2000'
     )
     def run(self, firefox):
-        history_sidebar_mozilla = LocalWeb.MOZILLA_BOOKMARK_SMALL
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
-        sidebar_history_today_pattern = Sidebar.HistorySidebar.Timeline.TODAY
-
-        left_upper_corner = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -28,27 +25,30 @@ class Test(BaseTest):
         assert expected_1 is True, 'Mozilla page loaded successfully.'
 
         new_tab()
-        navigate(LocalWeb.FIREFOX_TEST_SITE)
-
-        expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected_2 is True, 'Firefox page loaded successfully.'
 
         # Open the History sidebar.
         history_sidebar()
 
-        expected_3 = exists(search_history_box_pattern, 10)
+        expected_3 = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_3 is True, 'Sidebar was opened successfully.'
 
-        expected_4 = exists(sidebar_history_today_pattern, 10)
+        expected_4 = exists(history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_4 is True, 'Expand history button displayed properly.'
 
-        click(sidebar_history_today_pattern)
+        history_today_location = find(history_today_sidebar_pattern)
+        history_today_width, history_today_height = history_today_sidebar_pattern.get_size()
+        history_sidebar_region = Region(0, history_today_location.y, history_today_width * 3, history_today_height * 10)
 
-        # Open a page from the History sidebar.
-        expected_5 = left_upper_corner.exists(history_sidebar_mozilla.similar(0.7), 10)
+        click(history_today_sidebar_pattern)
+
+        # Forget a page from the History sidebar.
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
+        expected_5 = history_sidebar_region.exists('Mozilla', FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_5 is True, 'Mozilla page is displayed in the History list successfully.'
 
-        click(history_sidebar_mozilla)
+        click('Mozilla', region=history_sidebar_region)
 
         expected_6 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_6 is True, 'Mozilla page loaded successfully.'
