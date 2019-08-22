@@ -12,7 +12,7 @@ class Test(BaseTest):
         description='Drop image data in demopage',
         locale=['en-US'],
         test_case_id='165086',
-        test_suite_id='102',
+        test_suite_id='5259',
         preferences={'devtools.chrome.enabled': True},
         blocked_by={'id': '1288773', 'platform': OSPlatform.ALL}
     )
@@ -60,7 +60,7 @@ class Test(BaseTest):
 
         drag_drop(opened_tab_location, new_window_drop_location)
 
-        drop_position_visible = exists(drop_here_pattern)
+        drop_position_visible = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_position_visible, 'Drop position can be reached.'
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -69,17 +69,17 @@ class Test(BaseTest):
 
         drag_drop(image_from_page_pattern, drop_here_pattern)
 
-        not_matching_message_appears = exists(not_matching_message_pattern)
+        not_matching_message_appears = exists(not_matching_message_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert not_matching_message_appears, \
             '"Matching" appears under the "Drop Stuff Here" area, the expected result is ' \
             'identical to result and the image is displayed lower in the page.'
 
-        link_displayed = exists(link_from_page_pattern)
+        link_displayed = exists(link_from_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert link_displayed, 'Wiki page contains link that will be dropped into \'Drop stuff here\' area'
 
         drag_drop(link_from_page_pattern, drop_here_pattern)
 
-        not_matching_message_appears = exists(not_matching_message_pattern)
+        not_matching_message_appears = exists(not_matching_message_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert not_matching_message_appears, '"Not Matching" appears under the Drop Stuff Here ' \
                                              'area, the expected result is different to result.'
 

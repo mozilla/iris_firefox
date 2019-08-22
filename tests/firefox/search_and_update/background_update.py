@@ -45,7 +45,8 @@ class Test(FirefoxTest):
 
                 try:
                     Mouse().move(Location(0, 0))
-                    wait(update_restart_pattern, 120)
+                    expected = exists(update_restart_pattern, 120)
+                    assert expected, 'Restart for application update button found.'
                 except FindError:
                     raise FindError('Background update hamburger menu icon notification did not appear, aborting.')
 
@@ -54,8 +55,10 @@ class Test(FirefoxTest):
                     'Incorrect Firefox update.'
                 current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
+        restore_firefox_focus()
         open_about_firefox()
-        wait(firefox_up_to_date_pattern, 20)
+        expected = exists(firefox_up_to_date_pattern, 20)
+        assert expected, 'Firefox up to date message found.'
         type(Key.ESC)
         assert current_version in FirefoxUtils.get_firefox_version(firefox.application.path), \
             'Incorrect Firefox version.'

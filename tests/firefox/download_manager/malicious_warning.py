@@ -1,6 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
+
+
 from src.core.api.mouse import mouse
 from targets.firefox.firefox_ui.helpers.download_manager_utils import *
 from targets.firefox.fx_testcase import *
@@ -22,13 +24,20 @@ class Test(FirefoxTest):
     def run(self, firefox):
         malicious_file_download_library = Pattern('malicious_file_download_library.png')
 
+        if OSHelper.is_windows():
+            download_available = False
+        else:
+            download_available = True
+
         navigate('https://testsafebrowsing.appspot.com')
 
         expected = exists(DownloadFiles.MALICIOUS, 10)
         assert expected is True, 'Malicious file has been found.'
 
         width, height = DownloadFiles.MALICIOUS.get_size()
-        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=download_available)
 
         expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Blocked download icon is displayed.'
@@ -91,39 +100,56 @@ class Test(FirefoxTest):
         # Clear the download panel.
         expected = exists(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY, 10)
         assert expected is True, '\'Remove from history\' option is available.'
+
         click(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY)
 
-        # Check the malicious download button.
+        # Delete downloads folder
+        downloads_cleanup()
+
+        # Use a dirty profile with at least one previous downloaded item!
+        download_image = self.get_asset_path('download_image.html')
+
+        new_tab()
+        navigate(download_image)
+
+        type(Key.ESC)
+
+        download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert download_image_site_loaded, 'Focus site loaded'
+
+        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK, max_number_of_attempts=10)
+
+        close_tab()
+
+        # Repeat steps 1-4 and click on Remove file.
         width, height = DownloadFiles.MALICIOUS.get_size()
-        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=download_available)
+
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Malicious downloads button is displayed.'
 
         # Remove the file from the download panel.
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
+
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW)
-        click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON)
 
-        # Check that there are no downloads displayed in Downloads Library window.
-        for step in open_show_all_downloads_window_from_library_menu():
-            assert expected is True, (step.resolution, step.message)
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
+        assert expected is True, 'Remove file button is displayed.'
 
-        expected = exists(malicious_file_download_library, 10)
-        assert expected is False, 'Malicious file was deleted from Downloads Library.'
-        click_window_control('close')
+        click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 1)
 
-        # Check that there are no downloads displayed in the 'about:downloads' page.
-        navigate('about:downloads')
-        expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
-        assert expected is True, 'There are no downloads displayed in the \'about:downloads\' page.'
+        # The file is deleted from the Panel.
+        type(Key.ESC)
 
-        # Check that there are no downloads displayed in the downloads folder.
-        open_directory(PathManager.get_downloads_dir())
-        expected = exists(malicious_file_download_library, 10)
-        assert expected is False, 'Malicious file was deleted from the download folder.'
-        click_window_control('close')
+        downloads_button = exists(NavBar.DOWNLOADS_BUTTON)
+        assert downloads_button, 'Downloads button available.'
 
-        click(DownloadManager.AboutDownloads.NO_DOWNLOADS)
+        click(NavBar.DOWNLOADS_BUTTON)
+
+        malicious_file = exists(malicious_file_download_library)
+        assert malicious_file is False, 'Malicious file is deleted from the Panel'
 
     def teardown(self):
         downloads_cleanup()

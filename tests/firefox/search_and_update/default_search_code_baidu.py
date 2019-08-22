@@ -13,26 +13,17 @@ class Test(FirefoxTest):
         test_case_id='218337',
         test_suite_id='83',
         profile=Profiles.BRAND_NEW,
-        blocked_by={'id': 'issue_3509', 'platform': OSPlatform.ALL}
+        preferences={'browser.search.region': 'CN'}
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
         text_pattern = Pattern('focus_text.png')
+        text_pattern_selected = Pattern('focus_text_selected.png')
         default_search_engine_baidu_pattern = Pattern('default_search_engine_baidu.png')
 
         change_preference('browser.search.widget.inNavBar', True)
-        change_preference('browser.search.region', 'CN')
-
-        # Remove the file 'search.json.mozlz4' from the profile directory.
-        profile_temp = PathManager.get_temp_dir()
-        parent, test = PathManager.parse_module_path()
-        search_json_mozlz4_path = os.path.join(profile_temp, '%s_%s' % (parent, test))
-        if os.path.isfile(search_json_mozlz4_path):
-            os.remove(os.path.join(search_json_mozlz4_path, 'search.json.mozlz4'))
-
-        firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE,
-                        image=LocalWeb.FIREFOX_LOGO)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        change_preference('browser.tabs.warnOnClose', True)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         navigate('about:preferences#search')
         expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -42,14 +33,12 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('test')
         type(Key.ENTER)
-
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
         select_location_bar()
         url_text = copy_to_clipboard()
 
         assert '/baidu?wd=test&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
-                                                                                  '\'monline_7_dg\' string.'
+                                                             '\'monline_7_dg\' string.'
 
         select_location_bar()
         type(Key.DELETE)
@@ -63,7 +52,7 @@ class Test(FirefoxTest):
         url_text = copy_to_clipboard()
 
         assert '/baidu?wd=test&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
-                                                                                  '\'monline_7_dg\' string.'
+                                                             '\'monline_7_dg\' string.'
 
         # Highlight some text and right click it.
         new_tab()
@@ -72,14 +61,14 @@ class Test(FirefoxTest):
         assert expected, 'Page successfully loaded, focus text found.'
 
         double_click(text_pattern)
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
-        right_click(text_pattern)
-        time.sleep(Settings.DEFAULT_FX_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        right_click(text_pattern_selected)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         repeat_key_down(3)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert '/baidu?wd=focus&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
-                                                                                   '\'monline_7_dg\' string.'
+        assert '/baidu?wd=Focus&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
+                                                              '\'monline_7_dg\' string.'
