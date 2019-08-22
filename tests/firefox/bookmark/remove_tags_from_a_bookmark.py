@@ -55,6 +55,8 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
+        restore_firefox_focus()
+
         bookmarks_sidebar('close')
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
