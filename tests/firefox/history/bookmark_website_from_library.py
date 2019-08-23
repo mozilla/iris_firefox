@@ -43,6 +43,8 @@ class Test(FirefoxTest):
 
         right_click_and_type(iris_bookmark_focus_pattern, keyboard_action='b')
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         # Bookmark the website.
         expected = exists(save_bookmark_button_pattern, 10)
         assert expected, 'New Bookmark popup displayed properly.'
