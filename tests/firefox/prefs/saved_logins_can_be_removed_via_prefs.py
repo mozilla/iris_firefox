@@ -83,6 +83,8 @@ class Test(FirefoxTest):
 
         click(saved_logins_button_pattern)
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         saved_logins_opened = exists(first_saved_login_pattern.similar(0.7))
         assert saved_logins_opened, 'Saved logins sub-window is opened. The list is successfully populated'
 
@@ -102,6 +104,8 @@ class Test(FirefoxTest):
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
 
         click(saved_logins_button_pattern)
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         last_login_not_deleted = exists(last_saved_login_pattern)
         assert last_login_not_deleted, 'Last login was not deleted'
