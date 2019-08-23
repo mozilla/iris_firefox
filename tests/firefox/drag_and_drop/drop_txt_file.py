@@ -37,7 +37,7 @@ class Test(FirefoxTest):
         description='Drop .txt File in demopage',
         locale=['en-US'],
         test_case_id='165086',
-        test_suite_id='102',
+        test_suite_id='5259',
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -61,14 +61,14 @@ class Test(FirefoxTest):
         paste_delay = 0.5
         navigate('https://mystor.github.io/dragndrop/')
 
-        drop_html_data_button_displayed = exists(drop_txt_file_button_pattern,)
+        drop_html_data_button_displayed = exists(drop_txt_file_button_pattern, )
         assert drop_html_data_button_displayed, 'The demo website loaded successfully'
 
         click(drop_txt_file_button_pattern)
 
         drop_txt_option_selected = exists(drop_txt_file_selected_button_pattern)
-        assert drop_txt_option_selected, 'The drop-txt-file changed color to red which indicates that it '\
-                                                    'has been selected.'
+        assert drop_txt_option_selected, 'The drop-txt-file changed color to red which indicates that it ' \
+                                         'has been selected.'
 
         matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll_down, (5,), 30, 1)
         assert matching_block_available, 'The drop result verification area is displayed on the page'
@@ -108,7 +108,7 @@ class Test(FirefoxTest):
         click(Library.ImportAndBackup.RESTORE)
 
         choose_file = exists(Library.ImportAndBackup.Restore.CHOOSE_FILE)
-        assert  choose_file, 'Choose file option from context menu available'
+        assert choose_file, 'Choose file option from context menu available'
 
         click(Library.ImportAndBackup.Restore.CHOOSE_FILE)
 
@@ -145,26 +145,26 @@ class Test(FirefoxTest):
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
-        test_file_txt = exists(txt_bak_file_pattern)
+        test_file_txt = exists(txt_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_txt, 'TXT test file is available'
 
-        drop_here = exists(drop_here_pattern)
+        drop_here = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here, '"Drop here" pattern available'
 
         drag_drop(txt_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         matching_message_displayed = exists(matching_message_pattern, region=matching_region)
-        assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected '\
-                                                      'result is identical to result. '
+        assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
+                                           'result is identical to result. '
 
-        test_file_jpg = exists(jpg_bak_file_pattern)
+        test_file_jpg = exists(jpg_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_jpg, 'JPG test file is available'
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
         not_matching_message_displayed = exists(not_matching_message_pattern, region=not_matching_region)
-        assert not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and '\
-                                                          'expected result is different from result.'
+        assert not_matching_message_displayed, 'Not Matching appears under the "Drop Stuff Here" area and ' \
+                                               'expected result is different from result.'
 
         type(Key.ESC)
         close_tab()

@@ -57,15 +57,28 @@ class Test(FirefoxTest):
         # Open History and check if is populated with Mozilla page.
         open_history_library_window()
 
-        mozilla_bookmark_focus_exists = exists(mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        library_history = exists(Library.HISTORY, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert library_history, 'Library popup window available'
+
+        library_history_location = find(Library.HISTORY)
+        bookmarks_region = Region(library_history_location.x, library_history_location.y,
+                                  Screen.SCREEN_WIDTH - library_history_location.x,
+                                  Screen.SCREEN_HEIGHT - library_history_location.y)
+
+        mozilla_bookmark_focus_exists = exists(mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                               region=bookmarks_region)
         assert mozilla_bookmark_focus_exists, 'Mozilla page is displayed in the History list successfully.'
 
         # Delete Mozilla page.
-        right_click_and_type(mozilla_bookmark_focus_pattern, keyboard_action='d')
+        right_click(mozilla_bookmark_focus_pattern, region=bookmarks_region)
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+
+        type('d')
 
         try:
             mozilla_bookmark_focus_vanished = wait_vanish(mozilla_bookmark_focus_pattern,
-                                                          FirefoxSettings.FIREFOX_TIMEOUT)
+                                                          FirefoxSettings.FIREFOX_TIMEOUT, region=bookmarks_region)
             assert mozilla_bookmark_focus_vanished, 'Mozilla page was deleted successfully from the history.'
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')

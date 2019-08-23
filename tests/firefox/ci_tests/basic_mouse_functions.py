@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         description="This test will verify if PyAutoGUI mouse is working properly in a frame buffer environment."
     )
     def run(self, firefox):
-
         try:
             pyautogui.moveTo(300, 300)
             mouse_position = pyautogui.position()

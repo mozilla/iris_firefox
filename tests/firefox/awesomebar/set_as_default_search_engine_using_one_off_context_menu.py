@@ -52,14 +52,6 @@ class Test(FirefoxTest):
         wiki_button_displayed = region.exists(wikipedia_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert wiki_button_displayed, 'wikipedia_one_off_button_pattern'
 
-        hover(wikipedia_one_off_button_pattern)
-
-        try:
-            wiki_is_highlighted = region.wait_vanish(moz_pattern)
-            assert wiki_is_highlighted, 'The \'Wikipedia\' one-off button is highlighted.'
-        except FindError:
-            raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
-
         right_click(wikipedia_one_off_button_pattern)
 
         search_in_new_tab_displayed = exists(search_in_new_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)

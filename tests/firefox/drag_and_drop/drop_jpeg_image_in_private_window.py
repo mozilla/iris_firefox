@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         description='Drop single and multiple .jpeg images in demopage opened in Private Window',
         locale=['en-US'],
         test_case_id='165085',
-        test_suite_id='102',
+        test_suite_id='5259',
         set_profile_pref={'devtools.chrome.enabled': True},
     )
     def run(self, firefox):
@@ -62,12 +62,11 @@ class Test(FirefoxTest):
             file_type_json_pattern = Pattern('file_type_json.png')
 
         drag_and_drop_duration = 3
-        paste_delay = 0.5
         folderpath = self.get_asset_path('copies')
 
         new_private_window()
 
-        private_window_opened = exists(PrivateWindow.PRIVATE_TAB, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        private_window_opened = exists(PrivateWindow.PRIVATE_TAB, FirefoxSettings.FIREFOX_TIMEOUT)
         assert private_window_opened, 'A new private window is successfully loaded.'
 
         navigate('https://mystor.github.io/dragndrop/')
@@ -77,7 +76,7 @@ class Test(FirefoxTest):
 
         click(drop_jpg_file_button_pattern)
 
-        drop_jpg_option_selected = exists(drop_jpg_file_selected_button_pattern)
+        drop_jpg_option_selected = exists(drop_jpg_file_selected_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_jpg_option_selected, 'The drop-jpeg-file changed color to red which indicates that it ' \
                                          'has been selected.'
 
@@ -96,7 +95,7 @@ class Test(FirefoxTest):
         open_library()
 
         # open and drag library window
-        library_popup_open = exists(library_import_backup_pattern.similar(0.6), Settings.DEFAULT_FIREFOX_TIMEOUT)
+        library_popup_open = exists(library_import_backup_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT)
         assert library_popup_open, 'Library popup window is correctly opened.'
 
         library_popup_tab_before = find(library_popup_pattern)
@@ -113,18 +112,18 @@ class Test(FirefoxTest):
 
         click(library_import_backup_pattern)
 
-        restore_context_available = exists(library_import_restore_submenu_pattern)
+        restore_context_available = exists(library_import_restore_submenu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert restore_context_available, '"Restore" option from "Import and Backup"context menu is ' \
                                           'available'
 
         click(library_import_restore_submenu_pattern)
 
-        choose_file_available = exists(library_import_choose_file_submenu_pattern)
+        choose_file_available = exists(library_import_choose_file_submenu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert choose_file_available, 'Choose file option from context menu is available'
 
         click(library_import_choose_file_submenu_pattern)
 
-        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert select_bookmark_popup_available, '"Select a bookmark backup" window is available'
 
         select_bookmark_popup_location = find(select_bookmark_popup_pattern)
@@ -136,31 +135,31 @@ class Test(FirefoxTest):
             type('2', KeyModifier.CMD)  # change view of finder
         else:
             paste(folderpath)
-            type(Key.ENTER, interval=paste_delay)
+            type(Key.ENTER)
 
         if OSHelper.is_linux():
-            json_option_available = exists(file_type_json_pattern)
+            json_option_available = exists(file_type_json_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert json_option_available, '"File type JSON" option in file picker window is available'
 
             click(file_type_json_pattern)
 
-            all_files_option_available = exists(file_type_all_files_pattern)
+            all_files_option_available = exists(file_type_all_files_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert all_files_option_available, '"All Files" option in file picker window is available'
 
             click(file_type_all_files_pattern)
 
         else:
             type('*')  # Show all files in Windows Explorer
-            type(Key.ENTER, interval=paste_delay)
+            type(Key.ENTER)
 
         select_bookmark_popup_location_final = Location(Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_location.right(library_title_width), select_bookmark_popup_location_final)
 
-        test_file_jpg_located = exists(jpg_bak_file_pattern)
+        test_file_jpg_located = exists(jpg_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_jpg_located, 'JPG test file is available'
 
-        drop_here_available = exists(drop_here_pattern)
+        drop_here_available = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here_available, '"Drop here" pattern is available'
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
@@ -169,10 +168,10 @@ class Test(FirefoxTest):
         assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
                                            'result is identical to result.'
 
-        test_file_png_located = exists(png_bak_file_pattern)
+        test_file_png_located = exists(png_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_png_located, 'PNG test file is available'
 
-        drop_here_available = exists(drop_here_pattern)
+        drop_here_available = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here_available, '"Drop here" pattern is available'
 
         drag_drop(png_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)

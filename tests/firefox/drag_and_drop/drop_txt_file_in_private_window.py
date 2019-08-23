@@ -37,7 +37,7 @@ class Test(FirefoxTest):
         description='Drop single and multiple .txt files in demopage opened in Private Window.',
         locale=['en-US'],
         test_case_id='165086',
-        test_suite_id='102',
+        test_suite_id='5259',
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -152,10 +152,10 @@ class Test(FirefoxTest):
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
-        test_file_txt = exists(txt_bak_file_pattern)
+        test_file_txt = exists(txt_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_txt, 'TXT test file is available'
 
-        drop_here = exists(drop_here_pattern)
+        drop_here = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here, '"Drop here" pattern available'
 
         drag_drop(txt_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
@@ -164,7 +164,7 @@ class Test(FirefoxTest):
         assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
                                            'result is identical to result. '
 
-        test_file_jpg = exists(jpg_bak_file_pattern)
+        test_file_jpg = exists(jpg_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_jpg, 'JPG test file is available'
 
         drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)

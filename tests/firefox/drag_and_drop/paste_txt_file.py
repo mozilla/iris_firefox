@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         description='Paste .txt File in demopage',
         locale=['en-US'],
         test_case_id='165090',
-        test_suite_id='102',
+        test_suite_id='5259',
         blocked_by={'id': '1288773', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
