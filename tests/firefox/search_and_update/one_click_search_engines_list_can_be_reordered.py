@@ -54,7 +54,10 @@ class Test(FirefoxTest):
         expected = exists(bing_search_bar_pattern, 10)
         assert expected is True, 'The \'Bing\' search engine found in the page.'
 
-        drag_drop(amazon_search_bar_pattern, bing_search_bar_pattern, duration=0.5)
+        bing_search_bar_location = find(bing_search_bar_pattern)
+        drop_location = Location(bing_search_bar_location.x, bing_search_bar_location.y)
+
+        drag_drop(amazon_search_bar_pattern, drop_location, duration=0.5)
 
         expected = exists(amazon_bing_pattern, 10)
         assert expected is True, 'The drag and drop successfully performed.'
