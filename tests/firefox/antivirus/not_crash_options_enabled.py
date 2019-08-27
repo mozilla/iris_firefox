@@ -39,7 +39,8 @@ class Test(FirefoxTest):
             'The sound is properly loaded and played.'
 
         navigate('https://images.google.com/?gws_rd=ssl&hl=en')
-        assert exists(google_images_page_mark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), 'Google images site is properly loaded.'
+        assert exists(google_images_page_mark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT),\
+            'Google images site is properly loaded.'
 
         paste('cute kittens:3')
         type(Key.ENTER)
