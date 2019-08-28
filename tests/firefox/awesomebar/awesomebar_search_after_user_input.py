@@ -37,9 +37,10 @@ class Test(FirefoxTest):
         localhost_string_exists = exists(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
         assert localhost_string_exists, 'Searched string found at the bottom of the drop-down list.'
 
-        time.sleep(FirefoxSettings.FIREFOX_TIMEOUT)
+        twitter_one_off_region = Screen().top_half().left_third()
 
-        twitter_one_off_button_exists = exists(twitter_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        twitter_one_off_button_exists = exists(twitter_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT,
+                                               region=twitter_one_off_region)
         assert twitter_one_off_button_exists, 'The \'Twitter\' one-off button found.'
 
         hover(twitter_one_off_button)
