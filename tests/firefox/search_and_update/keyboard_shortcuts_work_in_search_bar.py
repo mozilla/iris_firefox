@@ -42,7 +42,7 @@ class Test(FirefoxTest):
         assert search_using_google is True, '\'Search using Google\' is shown as tooltip.'
 
         # Start typing inside the Search Bar.
-        type('mozilla')
+        type('mozilla', interval=0.5)
 
         # Hover the mouse over the one-click search engines.
         duckduckgo_search_bar = exists(duckduckgo_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
