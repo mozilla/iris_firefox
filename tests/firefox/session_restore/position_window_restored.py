@@ -14,8 +14,7 @@ class Test(FirefoxTest):
         test_suite_id='68',
         locales=Locales.ENGLISH,
         preferences={'devtools.chrome.enabled': True},
-        blocked_by={'id': 'issue_2925', 'platform': OSPlatform.LINUX},
-        exclude=[OSPlatform.LINUX, OSPlatform.WINDOWS],
+        blocked_by={'id': 'issue_2925', 'platform': [OSPlatform.LINUX, OSPlatform.WINDOWS]},
     )
     def run(self, firefox):
         firefox_test_site_tab_pattern = Pattern('firefox_test_site_tab.png').similar(0.8)
