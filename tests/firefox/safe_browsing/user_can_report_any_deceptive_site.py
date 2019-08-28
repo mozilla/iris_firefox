@@ -28,11 +28,11 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        report_deceptive_site_option_exists = exists('Report', FirefoxSettings.FIREFOX_TIMEOUT,
+        report_deceptive_site_option_exists = exists('Report Deceptive', FirefoxSettings.FIREFOX_TIMEOUT,
                                                      Screen.RIGHT_THIRD)
         assert report_deceptive_site_option_exists, '"Report Deceptive Site..." option exists'
 
-        click('Report Deceptive Site', region=Screen.RIGHT_THIRD)
+        click('Report Deceptive', region=Screen.RIGHT_THIRD)
 
         report_web_page_loaded = exists(google_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert report_web_page_loaded, 'Report Web Forgery page is loaded.'
