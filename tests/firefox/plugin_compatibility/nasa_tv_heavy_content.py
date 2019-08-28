@@ -34,13 +34,21 @@ class Test(FirefoxTest):
 
         navigate('http://www.nasa.gov/multimedia/nasatv/index.html#public')
 
-        nasa_tv_page_loaded = exists(nasa_tv_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        nasa_tv_page_loaded = scroll_until_pattern_found(nasa_tv_page_pattern, type, (Key.DOWN,), 10)
         assert nasa_tv_page_loaded is True, 'The specified website is successfully loaded.'
 
         video_playing = exists(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert video_playing is True, 'The video is playing and the speaker icon is displayed'
 
-        click(media_button_pattern.target_offset(0, -250))
+        media_button = scroll_until_pattern_found(media_button_pattern, type, (Key.DOWN,), 10, 1)
+        assert media_button, 'Media button found.'
+
+        media_button = exists(media_button_pattern, 10)
+        assert media_button, 'Media button available'
+
+        media_button_location = find(media_button_pattern)
+
+        click(Location(media_button_location.x, media_button_location.y -250))
 
         try:
             speaker_icon_vanished = wait_vanish(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
@@ -56,7 +64,7 @@ class Test(FirefoxTest):
 
         page_home()
 
-        click(media_button_pattern.target_offset(0, -250))
+        click(Location(media_button_location.x, media_button_location.y-250))
 
         speaker_icon_appear = exists(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert speaker_icon_appear is True, 'The video is playing and the page is scrolling successfully.'
