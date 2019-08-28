@@ -108,6 +108,9 @@ class Test(FirefoxTest):
 
         drag_drop(library_popup_tab_before, library_popup_tab_after, duration=drag_and_drop_duration)
 
+        prevent_window_change_position = Location(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
+        move(prevent_window_change_position, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         library_popup_dropped = exists(library_popup_pattern, region=library_tab_region_after)
         assert library_popup_dropped, 'Library popup dropped to right half of screen successfully'
 

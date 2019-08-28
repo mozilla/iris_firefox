@@ -57,6 +57,7 @@ class Test(FirefoxTest):
         file_type_all_files_pattern = None
         file_type_json_pattern = None
 
+        time.sleep(7)
         if OSHelper.is_linux():
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
@@ -155,6 +156,9 @@ class Test(FirefoxTest):
         select_bookmark_popup_location_final = Location(Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_location.right(library_title_width), select_bookmark_popup_location_final)
+
+        prevent_window_change_position = Location(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
+        move(prevent_window_change_position, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         test_file_jpg_located = exists(jpg_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_jpg_located, 'JPG test file is available'
