@@ -24,8 +24,6 @@ class Test(FirefoxTest):
             prosport_cookies_0_pattern = Pattern('prosport_cookies_0.png')
         manage_cookies_window_label_pattern = Pattern('manage_cookies_window_label.png')
 
-        time.sleep(6)
-
         navigate('about:preferences#privacy')
 
         preferences_privacy_page_opened = exists(preferences_privacy_page_pattern,
