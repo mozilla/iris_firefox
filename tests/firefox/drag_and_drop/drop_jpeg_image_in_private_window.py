@@ -156,6 +156,9 @@ class Test(FirefoxTest):
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_location.right(library_title_width), select_bookmark_popup_location_final)
 
+        prevent_window_change_position = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
+        move(prevent_window_change_position, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         test_file_jpg_located = exists(jpg_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_jpg_located, 'JPG test file is available'
 
