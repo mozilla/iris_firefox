@@ -57,7 +57,6 @@ class Test(FirefoxTest):
         file_type_all_files_pattern = None
         file_type_json_pattern = None
 
-        time.sleep(7)
         if OSHelper.is_linux():
             file_type_all_files_pattern = Pattern('file_type_all_files.png')
             file_type_json_pattern = Pattern('file_type_json.png')
