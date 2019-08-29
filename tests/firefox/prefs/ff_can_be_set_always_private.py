@@ -71,7 +71,7 @@ class Test(FirefoxTest):
 
         click(prefs_unchecked_box_pattern, region=always_private_region)
 
-        restart_dialog_appeared = exists(restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        restart_dialog_appeared = exists(restart_browser_pattern)
         assert restart_dialog_appeared, '"Restart firefox now" dialog window opened'
 
         click(restart_browser_pattern)
@@ -83,6 +83,10 @@ class Test(FirefoxTest):
         assert browser_restarted, 'Browser restarted'
 
         navigate('about:preferences#privacy')
+
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+                                    FirefoxSettings.FIREFOX_TIMEOUT)
+        assert preferences_opened, 'Preferences page is opened'
 
         paste('Firefox will')
 
@@ -109,14 +113,12 @@ class Test(FirefoxTest):
                                                   remember_browsing_history_width + box_width * 2,
                                                   remember_browsing_history_height)
 
-        remember_browsing_history_unchecked = exists(prefs_unchecked_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                                     region=remember_browsing_history_region)
+        remember_browsing_history_unchecked = exists(prefs_unchecked_box_pattern, region=remember_browsing_history_region)
         assert remember_browsing_history_unchecked, '"Always use private browsing mode" is off'
 
         click(prefs_unchecked_box_pattern, quick_click_duration, remember_browsing_history_region)
 
-        remember_browsing_history_grayed_out = exists(prefs_unchecked_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                                      region=remember_browsing_history_region)
+        remember_browsing_history_grayed_out = exists(prefs_unchecked_box_pattern, region=remember_browsing_history_region)
         assert remember_browsing_history_grayed_out, '"Always use private browsing mode" is grayed out'
 
         remember_search_history_displayed = exists(remember_search_history_pattern)
