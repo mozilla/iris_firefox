@@ -42,7 +42,8 @@ class Test(FirefoxTest):
         box_width, box_heigth = prefs_checked_box_pattern.get_size()
 
         navigate('about:preferences#privacy')
-        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_opened, 'Preferences page is opened'
 
         paste('Firefox will')
@@ -75,7 +76,7 @@ class Test(FirefoxTest):
 
         click(restart_browser_pattern)
 
-        browser_closed = wait_vanish(NavBar.SIDEBAR_MENU)
+        browser_closed = wait_vanish(NavBar.SIDEBAR_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_closed, 'Browser is closed'
 
         browser_restarted = exists(NavBar.SIDEBAR_MENU.similar(0.9), Settings.site_load_timeout)
@@ -85,7 +86,7 @@ class Test(FirefoxTest):
 
         paste('Firefox will')
 
-        always_private_option_displayed = exists(always_private_pattern)
+        always_private_option_displayed = exists(always_private_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert always_private_option_displayed, '"Always private" option is reachable'
 
         always_private_location = find(always_private_pattern)
@@ -197,7 +198,7 @@ class Test(FirefoxTest):
 
         click(download_pdf_pattern)
 
-        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert save_file_dialog_exists, 'Save file dialog opened'
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
