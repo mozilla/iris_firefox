@@ -56,7 +56,7 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        expected = exists(history_bookmarks_toolbar_pattern)
+        expected = exists(history_bookmarks_toolbar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'History section is displayed in the Bookmarks Toolbar.'
 
         click(history_bookmarks_toolbar_pattern)
