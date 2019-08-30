@@ -57,14 +57,18 @@ class Test(FirefoxTest):
 
         # Forget a page from the History sidebar.
 
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         expected_5 = history_sidebar_region.exists('Mozilla', FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_5 is True, 'Mozilla page is displayed in the History list successfully.'
 
         right_click('Mozilla', region=history_sidebar_region)
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
+
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
         type('f')
+
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         try:
             expected_6 = history_sidebar_region.exists('Mozilla', FirefoxSettings.FIREFOX_TIMEOUT)
