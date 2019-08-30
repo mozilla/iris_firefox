@@ -39,6 +39,10 @@ class Test(FirefoxTest):
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_search_bar_in_toolbar_selected, 'The option "Add search bar in toolbar" is successfully selected.'
 
+        search_bar_displayed = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                                      region=Screen.RIGHT_HALF)
+        assert search_bar_displayed, 'Search bar is displayed'
+
         # 3 Go to about:preferences, "Search" section.
         new_tab()
 
