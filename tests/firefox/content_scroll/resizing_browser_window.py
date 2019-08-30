@@ -32,13 +32,23 @@ class Test(FirefoxTest):
 
         open_browser_console()
 
+        browser_console_opened = exists(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened successfully'
+
         click(browser_console_opened_pattern)
 
         paste('window.resizeTo(400, 500)')
         type(Key.ENTER)
 
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
         resizing_confirmed_exists = exists(resizing_confirmed_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert resizing_confirmed_exists is True, 'The browser window is successfully resized.'
+
+        open_browser_console()
+
+        browser_console_opened = exists(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console opened successfully'
 
         click(browser_console_opened_pattern)
         close_tab()
