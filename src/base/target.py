@@ -10,6 +10,7 @@ import shutil
 import time
 
 import pytest
+from _pytest.reports import TestReport
 
 from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import get_core_args, set_core_arg
@@ -25,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 class BaseTarget:
     completed_tests = []
+    rerun_tests = {}
     values = {}
 
     def __init__(self):
@@ -179,19 +181,35 @@ class BaseTarget:
             exc_str = '%s:%s: %s: %s' % (file_name, line_number, exception_error_class, message_only)
             assert_object = (item, outcome, exc_str, call.excinfo.traceback)
             test_result = create_result_object(assert_object, call.start, call.stop)
-            self.completed_tests.append(test_result)
+            self.add_test_result(test_result)
 
         elif call.when == 'call' and call.excinfo is None:
             outcome = 'PASSED'
             test_instance = (item, outcome, None)
             test_result = create_result_object(test_instance, call.start, call.stop)
-            self.completed_tests.append(test_result)
+            self.add_test_result(test_result)
 
         elif call.when == 'setup' and item._skipped_by_mark:
             outcome = 'SKIPPED'
             test_instance = (item, outcome, None)
             test_result = create_result_object(test_instance, call.start, call.stop)
-            self.completed_tests.append(test_result)
+            self.add_test_result(test_result)
+
+    def add_test_result(self, test_result):
+        if len(self.completed_tests) > 0:
+
+            # If a result for this test already exists, and we have run it again:
+            # 1. Keep track of the test and how many times it was rerun.
+            # 2. Remove the previous result.
+            # 3. Add the new result.
+
+            if self.completed_tests[-1].file_name == test_result.file_name:
+                if self.rerun_tests.get(test_result.file_name) is not None and test_result.outcome is not 'PASSED':
+                    self.rerun_tests[test_result.file_name] += 1
+                else:
+                    self.rerun_tests[test_result.file_name] = 1
+                self.completed_tests.pop()
+        self.completed_tests.append(test_result)
 
 
 def reason_for_failure(report):
