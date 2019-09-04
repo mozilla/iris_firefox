@@ -22,6 +22,7 @@ class Test(FirefoxTest):
         first_saved_login_pattern = Pattern('name0_login.png').similar(0.95)
         last_saved_login_pattern = Pattern('name9_login.png').similar(0.95)
         remove_password_pattern = Pattern('remove_password.png')
+        remove_confirm_pattern = Pattern('remove_confirmation.png')
         login_form = self.get_asset_path('form.html')
         ui_timeout = 1
 
@@ -97,6 +98,11 @@ class Test(FirefoxTest):
         assert credentials_can_be_removed, '"Remove" button is reachable'
 
         click(remove_password_pattern)
+
+        confirmation_window_available = exists(remove_confirm_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert confirmation_window_available, 'Entry can be removed'
+
+        click(remove_confirm_pattern)
 
         # type(Key.ESC)
         close_tab()
