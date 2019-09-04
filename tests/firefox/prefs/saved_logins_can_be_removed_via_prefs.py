@@ -30,7 +30,7 @@ class Test(FirefoxTest):
             scroll_length = 3
 
         navigate(login_form)
-        name_field_displayed = exists(name_field_pattern)
+        name_field_displayed = exists(name_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert name_field_displayed, 'Login form is opened'
 
         click(name_field_pattern)
@@ -50,7 +50,7 @@ class Test(FirefoxTest):
 
         click(save_login_button_pattern)
 
-        name_field_displayed = exists(name_field_pattern)
+        name_field_displayed = exists(name_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert name_field_displayed, 'Login form is opened'
 
         click(name_field_pattern)
