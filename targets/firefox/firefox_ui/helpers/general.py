@@ -314,20 +314,20 @@ def create_region_for_hamburger_menu():
         wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
         time.sleep(0.5)
-        sign_in_to_sync = Pattern('sign_in_to_sync.png')
+        sign_in_to_firefox = Pattern('sign_in_to_firefox.png')
         if OSHelper.is_linux():
             quit_menu_pattern = Pattern('quit.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox,
                                                            quit_menu_pattern, None,
                                                            padding_right=20)
         elif OSHelper.is_mac():
             help_menu_pattern = Pattern('help.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox,
                                                            help_menu_pattern, None,
                                                            padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox,
                                                            exit_menu_pattern, None,
                                                            padding_right=20)
     except (FindError, ValueError):
@@ -359,10 +359,10 @@ def create_region_from_image(image):
         from src.core.api.enums import Alignment
         m = image_find(image)
         if m:
-            sync_pattern = Pattern('sync_hamburger_menu.png')
-            sync_width, sync_height = sync_pattern.get_size()
-            sync_image = image_find(sync_pattern)
-            top_left = Rectangle(sync_image.x, sync_image.y, sync_width, sync_width). \
+            sign_in_pattern = Pattern('sign_in_to_firefox.png')
+            sign_in_width, sign_in_height = sign_in_pattern.get_size()
+            sign_in_image = image_find(sign_in_pattern)
+            top_left = Rectangle(sign_in_image.x, sign_in_image.y, sign_in_width, sign_in_width). \
                 apply_alignment(Alignment.TOP_RIGHT)
             if OSHelper.is_mac():
                 exit_pattern = Pattern('help_hamburger_menu.png')
