@@ -98,6 +98,7 @@ class _Settings:
         'toolkit.telemetry.server': 'http://%(server)s/telemetry-dummy/',
     }
 
+
     def __init__(self, wait_scan_rate=DEFAULT_WAIT_SCAN_RATE, type_delay=DEFAULT_TYPE_DELAY,
                  move_mouse_delay=DEFAULT_MOVE_MOUSE_DELAY, click_delay=DEFAULT_CLICK_DELAY,
                  min_similarity=DEFAULT_MIN_SIMILARITY, auto_wait_timeout=DEFAULT_AUTO_WAIT_TIMEOUT,
@@ -116,6 +117,7 @@ class _Settings:
                  key_shortcut_delay=DEFAULT_KEY_SHORTCUT_DELAY,
                  site_load_timeout=DEFAULT_SITE_LOAD_TIMEOUT,
                  default_fx_prefs=DEFAULT_FX_PREFS):
+
 
         self.wait_scan_rate = wait_scan_rate
         self._type_delay = type_delay
