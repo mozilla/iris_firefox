@@ -98,7 +98,8 @@ class Test(FirefoxTest):
 
         click(remove_password_pattern)
 
-        type(Key.ESC)
+        # type(Key.ESC)
+        close_tab()
 
         saved_logins_button_displayed = exists(saved_logins_button_pattern)
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
