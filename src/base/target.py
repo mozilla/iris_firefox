@@ -10,7 +10,6 @@ import shutil
 import time
 
 import pytest
-from _pytest.reports import TestReport
 
 from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import get_core_args, set_core_arg
