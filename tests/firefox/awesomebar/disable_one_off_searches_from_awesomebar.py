@@ -33,8 +33,8 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('127')
 
-        localhost_string_exists = exists(this_time_search_with, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert localhost_string_exists, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
+        one_off_bar_displayed = exists(this_time_search_with, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         twitter_one_off_button_exists = exists(twitter_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
         assert twitter_one_off_button_exists, 'The \'Twitter\' one-off button found.'
