@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         search_using_google_pattern = Pattern('search_using_google.png')
         duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png').similar(.6)
-        search_duckduckgo_pattern = Pattern('search_duckduckgo.png')
+        search_duckduckgo_hover_pattern = Pattern('search_duckduckgo.png')
         bing_search_engine_pattern = Pattern('bing_search_engine.png')
         google_search_engine_pattern = Pattern('google_search_engine.png')
 
@@ -51,7 +51,7 @@ class Test(FirefoxTest):
 
         hover(duckduckgo_search_bar_pattern)
 
-        search_duckduckgo = exists(search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT, search_bar_region)
+        search_duckduckgo = exists(search_duckduckgo_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT, search_bar_region)
         assert search_duckduckgo is True, 'Search engine is highlighted.'
 
         # While the cursor is on the search toolbar, select the arrow DOWN and then the arrow UP keys.
