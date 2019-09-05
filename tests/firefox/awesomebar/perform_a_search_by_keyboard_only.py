@@ -25,7 +25,6 @@ class Test(FirefoxTest):
         duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png')
         duck_go_search_result_pattern = Pattern('duck_go_search_resul.png')
 
-
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
         select_location_bar()
@@ -35,7 +34,7 @@ class Test(FirefoxTest):
         assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         assert scroll_until_pattern_found(twitter_one_off_button_highlight_pattern, type, (Key.UP,), 20, 1),\
-            'The \'Search settings\' button is highlighted.'
+            'The \'Twitter\' button is highlighted.'
 
         type(Key.ENTER)
 
@@ -53,7 +52,7 @@ class Test(FirefoxTest):
         assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         assert scroll_until_pattern_found(bing_one_off_button_highlight_pattern, type, (Key.UP,), 20, 1),\
-            'The \'Search settings\' button is highlighted.'
+            'The \'Bing\' button is highlighted.'
 
         type(Key.ENTER)
 
@@ -67,7 +66,7 @@ class Test(FirefoxTest):
         assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         assert scroll_until_pattern_found(duck_one_off_button_highlight_pattern, type, (Key.UP,), 20, 1),\
-            'The \'Search settings\' button is highlighted.'
+            'The \'Duck-duck-go\' button is highlighted.'
 
         type(Key.ENTER)
 
