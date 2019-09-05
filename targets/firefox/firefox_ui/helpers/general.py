@@ -21,6 +21,7 @@ from src.core.api.keyboard.keyboard_util import get_clipboard
 from src.core.api.location import Location
 from src.core.api.mouse.mouse import click, hover, Mouse, scroll_down, right_click
 from src.core.api.os_helpers import OSHelper, OSPlatform
+from src.core.api.rectangle import Rectangle
 from src.core.api.screen.region import Region
 from src.core.api.screen.screen import Screen
 from src.core.api.settings import Settings
@@ -167,16 +168,14 @@ def click_hamburger_menu_option(option):
     """
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
-        wait(hamburger_menu_pattern, 10)
+        wait(hamburger_menu_pattern, 5)
         logger.debug('Hamburger menu found.')
     except FindError:
         raise APIHelperError(
             'Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
-        click(hamburger_menu_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
         try:
-            region = create_region_from_image(hamburger_menu_pattern)
+            region = create_region_for_hamburger_menu()
             region.click(option)
             return region
         except FindError:
@@ -311,28 +310,31 @@ def create_region_for_hamburger_menu():
 
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
-        wait(hamburger_menu_pattern, 10)
+        wait(hamburger_menu_pattern, 5)
         click(hamburger_menu_pattern)
-        time.sleep(0.5)
-        sign_in_to_firefox = Pattern('sign_in_to_firefox.png')
+        sign_in_to_firefox_pattern = Pattern('sign_in_to_firefox.png')
+        wait(sign_in_to_firefox_pattern, 5)
         if OSHelper.is_linux():
             quit_menu_pattern = Pattern('quit.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox,
+            wait(quit_menu_pattern, 5)
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox_pattern,
                                                            quit_menu_pattern, None,
                                                            padding_right=20)
         elif OSHelper.is_mac():
             help_menu_pattern = Pattern('help.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox,
+            wait(help_menu_pattern, 5)
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox_pattern,
                                                            help_menu_pattern, None,
                                                            padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox,
+            wait(exit_menu_pattern, 5)
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox_pattern,
                                                            exit_menu_pattern, None,
                                                            padding_right=20)
     except (FindError, ValueError):
         raise APIHelperError(
-            'Can\'t find the hamburger menu in the page, aborting test.')
+            'Can\'t create a region for the hamburger menu, aborting test.')
 
 
 def create_region_for_url_bar():
@@ -346,43 +348,6 @@ def create_region_for_url_bar():
                                                        padding_bottom=20)
     except FindError:
         raise APIHelperError('Could not create region for URL bar.')
-
-
-def create_region_from_image(image):
-    """Create region starting from a pattern.
-
-    :param image: Pattern used to create a region.
-    :return: None.
-    """
-    try:
-        from src.core.api.rectangle import Rectangle
-        from src.core.api.enums import Alignment
-        m = image_find(image)
-        if m:
-            sign_in_pattern = Pattern('sign_in_to_firefox.png')
-            sign_in_width, sign_in_height = sign_in_pattern.get_size()
-            sign_in_image = image_find(sign_in_pattern)
-            top_left = Rectangle(sign_in_image.x, sign_in_image.y, sign_in_width, sign_in_width). \
-                apply_alignment(Alignment.TOP_RIGHT)
-            if OSHelper.is_mac():
-                exit_pattern = Pattern('help_hamburger_menu.png')
-            else:
-                exit_pattern = Pattern('exit_hamburger_menu.png')
-            exit_width, exit_height = exit_pattern.get_size()
-            exit_image = image_find(exit_pattern)
-            bottom_left = Rectangle(exit_image.x, exit_image.y, exit_width, exit_height). \
-                apply_alignment(Alignment.BOTTOM_RIGHT)
-
-            x0 = top_left.x + 2
-            y0 = top_left.y
-            height = bottom_left.y - top_left.y
-            width = Screen().width - top_left.x - 2
-            region = Region(x0, y0, width, height)
-            return region
-        else:
-            raise APIHelperError('No matching found.')
-    except FindError:
-        raise APIHelperError('Image not present.')
 
 
 def find_window_controls(window_type):

@@ -57,7 +57,7 @@ class Test(FirefoxTest):
         click(NavBar.HAMBURGER_MENU)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
 
-        hamburger_menu_region = create_region_from_image(NavBar.HAMBURGER_MENU)
+        hamburger_menu_region = create_region_for_hamburger_menu()
 
-        assert hamburger_menu_region.exists('Sign in to Sync'), '"Sign in to Sync" found'
+        assert hamburger_menu_region.exists('Sign in to Firefox'), '"Sign in to Firefox" found'
         assert hamburger_menu_region.exists('Content Blocking'), '"Content Blocking" found'
