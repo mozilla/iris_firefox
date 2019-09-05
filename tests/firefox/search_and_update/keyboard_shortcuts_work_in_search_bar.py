@@ -30,7 +30,7 @@ class Test(FirefoxTest):
         search_bar_location = find(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
         search_bar_width, search_bar_height = LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.get_size()
         search_bar_region = Region(search_bar_location.x, search_bar_location.y, search_bar_width * 3,
-                                   search_bar_height * 10)
+                                   search_bar_height * 20)
 
         # Press ctrl/cmd + k keys.
         select_search_bar()
@@ -76,12 +76,17 @@ class Test(FirefoxTest):
         # Use the tab key to navigate.
         select_search_bar()
 
+        duckduckgo_search_bar = exists(duckduckgo_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       search_bar_region)
+        assert duckduckgo_search_bar is True, 'Search engine is visible.'
+
         for _ in range(3):
             type(Key.TAB)
 
-        search_duckduckgo = exists(search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT, search_bar_region)
-        assert search_duckduckgo is True, 'Pressing tab selects the one-click search engines while the search ' \
-                                          'suggestions are skipped.'
+        duckduckgo_search_bar_hovered = exists(duckduckgo_search_bar_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+                                               search_bar_region)
+        assert duckduckgo_search_bar_hovered is False, 'Pressing tab selects the one-click search engines while ' \
+                                                       'the search suggestions are skipped.'
 
         # Select ctrl/cmd + arrow UP and arrow DOWN keys.
         change_search_next()
