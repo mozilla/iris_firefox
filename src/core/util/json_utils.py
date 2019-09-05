@@ -155,7 +155,7 @@ def create_run_log(app):
 
     tests = {'all_tests': convert_test_list(app.completed_tests),
              'failed_tests': convert_test_list(app.completed_tests, only_failures=True),
-             'rerun_tests': app.rerun_tests}
+             'flaky_tests': app.flaky_tests}
 
     run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
     run_file_data = {'meta': meta, 'tests': tests}

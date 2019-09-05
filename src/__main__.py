@@ -75,7 +75,8 @@ def main():
             pytest_args.append('-s')
 
             # Using the pytest-rerunfailures plugin, we set max tries to 5.
-            pytest_args.append('--reruns')
+            pytest_args.append('--force-flaky')
+            pytest_args.append('--max-runs')
             pytest_args.append('5')
 
             target_plugin = get_target(args.target)

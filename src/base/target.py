@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 class BaseTarget:
     completed_tests = []
     rerun_tests = {}
+    flaky_tests = []
     values = {}
 
     def __init__(self):
@@ -202,11 +203,16 @@ class BaseTarget:
             # 2. Remove the previous result.
             # 3. Add the new result.
 
-            if self.completed_tests[-1].file_name == test_result.file_name:
-                if self.rerun_tests.get(test_result.file_name) is not None and test_result.outcome is not 'PASSED':
-                    self.rerun_tests[test_result.file_name] += 1
+            prev_test_path = str(self.completed_tests[-1].node_name)
+            test_path = str(test_result.node_name)
+
+            if prev_test_path == test_path:
+                if self.rerun_tests.get(test_path) is not None:
+                    self.rerun_tests[test_path] += 1
                 else:
-                    self.rerun_tests[test_result.file_name] = 1
+                    self.rerun_tests[test_path] = 1
+                if test_result.outcome is 'PASSED':
+                    self.flaky_tests.append((test_path, self.rerun_tests[test_path]))
                 self.completed_tests.pop()
         self.completed_tests.append(test_result)
 
