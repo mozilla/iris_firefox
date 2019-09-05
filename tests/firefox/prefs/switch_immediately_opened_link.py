@@ -61,8 +61,8 @@ class Test(FirefoxTest):
 
         middle_click(page_two_button_pattern)
 
-        page_two_loaded = exists(navigate_load_listener_page_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert page_two_loaded, 'The browser navigated to page two.'
+        # page_two_loaded = exists(navigate_load_listener_page_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        # assert page_two_loaded, 'The browser navigated to page two.'
 
         page_one_inactive_tab = exists(page_one_inactive_tab_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         assert page_one_inactive_tab, 'Tab one is inactive.'
