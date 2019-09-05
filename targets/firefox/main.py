@@ -238,7 +238,7 @@ class Target(BaseTarget):
                                                                     ', '.join(skip_reason_list)))
                 test_instance = (item, 'SKIPPED', None)
                 test_result = create_result_object(test_instance, 0, 0)
-                self.completed_tests.append(test_result)
+                self.add_test_result(self, test_result)
                 Target.index += 1
                 pytest.skip(item)
 
@@ -279,6 +279,11 @@ class Target(BaseTarget):
 
         except (AttributeError, KeyError):
             pass
+
+    def add_test_result(self, test_result):
+        BaseTarget.add_test_result(self, test_result)
+        if self.completed_tests[-1].file_name == test_result.file_name:
+            Target.index -= 1
 
     @pytest.fixture()
     def firefox(self, request):

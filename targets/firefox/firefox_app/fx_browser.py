@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
+import datetime
 import logging
 import os
 import shutil
@@ -106,10 +106,24 @@ class FirefoxProfile(MozProfile):
         logger.debug('7zip succeeded: %s' % repr(output))
 
         from_directory = os.path.join(staged_profiles, profile_name.value)
-        to_directory = path
+        to_directory = '%s_%s' % (path, datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+
+        #logger.debug('Profile path already exists: %s' % os.path.exists(path))
+        if os.path.exists(path):
+            try:
+                shutil.rmtree(path)
+                time.sleep(3)
+            except Exception as e:
+                logger.debug('Error, can\'t remove previous profile: %s' % e)
+
         logger.debug('Creating new profile: %s' % to_directory)
 
-        dir_util.copy_tree(from_directory, to_directory)
+        try:
+            logger.debug('From directory: %s' % from_directory)
+            logger.debug('To directory: %s' % to_directory)
+            dir_util.copy_tree(from_directory, to_directory)
+        except Exception as e:
+            logger.error('Error upon creating profile: %s' % e)
 
         try:
             shutil.rmtree(from_directory)
@@ -145,8 +159,8 @@ class FirefoxProfile(MozProfile):
         test_path = current_test.split(test_root)[1].split('.py')[0][1:]
         profile_path = os.path.join(PathManager.get_current_run_dir(), test_path, 'profile')
 
-        if not os.path.exists(profile_path):
-            os.makedirs(profile_path)
+        #if not os.path.exists(profile_path):
+        #    os.makedirs(profile_path)
 
         if profile_type is Profiles.BRAND_NEW:
             logger.debug('Creating brand new profile: %s' % profile_path)
