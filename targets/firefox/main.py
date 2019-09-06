@@ -238,7 +238,7 @@ class Target(BaseTarget):
                                                                     ', '.join(skip_reason_list)))
                 test_instance = (item, 'SKIPPED', None)
                 test_result = create_result_object(test_instance, 0, 0)
-                self.add_test_result(self, test_result)
+                BaseTarget.add_test_result(self, test_result)
                 Target.index += 1
                 pytest.skip(item)
 
