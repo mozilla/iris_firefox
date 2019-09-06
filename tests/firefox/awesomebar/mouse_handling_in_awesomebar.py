@@ -20,6 +20,8 @@ class Test(FirefoxTest):
         search_settings_pattern = Pattern('search_settings.png')
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
 
+        region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
+
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -33,11 +35,13 @@ class Test(FirefoxTest):
         paste('127')
 
         # Press "Alt" and arrow up keys to select an one-off button and hover over it.
+        if OSHelper.is_linux():
+            repeat_key_up(3)
+        else:
+            type(text=Key.UP, modifier=KeyModifier.ALT)
+            type(text=Key.UP, modifier=KeyModifier.ALT)
 
-        type(text=Key.UP, modifier=KeyModifier.ALT)
-        type(text=Key.UP, modifier=KeyModifier.ALT)
-
-        expected = exists(twitter_one_off_button_highlight_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(twitter_one_off_button_highlight_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region)
         assert expected, 'The \'Twitter\' one-off button is highlighted.'
 
         hover(twitter_one_off_button_highlight_pattern)
@@ -51,7 +55,7 @@ class Test(FirefoxTest):
 
         hover(search_settings_pattern)
 
-        expected = exists(settings_gear_highlighted_pattern)
+        expected = exists(settings_gear_highlighted_pattern.similar(.9))
         assert expected is False, 'Successfully hovered over the \'Search settings\'  one off.'
 
         # Hover over an autocomplete result that is not selected and click on it.
