@@ -28,8 +28,6 @@ class Test(FirefoxTest):
         assert expected, 'Firefox page loaded successfully.'
 
         new_tab()
-        previous_tab()
-        close_tab()
 
         select_location_bar()
         paste('127')
