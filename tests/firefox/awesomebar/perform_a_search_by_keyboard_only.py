@@ -19,8 +19,12 @@ class Test(FirefoxTest):
         this_time_search_with_pattern = Pattern('this_time_search_with.png')
         twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
         twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
-        twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.99)
-        bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.99)
+        if OSHelper.is_linux():
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.99)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.99)
+        else:
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png')
         bing_search_results_pattern = Pattern('bing_search_results_localhost.png')
         duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png')
         duck_go_search_result_pattern = Pattern('duck_go_search_resul.png')
