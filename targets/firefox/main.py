@@ -281,9 +281,10 @@ class Target(BaseTarget):
             pass
 
     def add_test_result(self, test_result):
+        if len(self.completed_tests):
+            if self.completed_tests[-1].file_name == test_result.file_name:
+                Target.index -= 1
         BaseTarget.add_test_result(self, test_result)
-        if self.completed_tests[-1].file_name == test_result.file_name:
-            Target.index -= 1
 
     @pytest.fixture()
     def firefox(self, request):
