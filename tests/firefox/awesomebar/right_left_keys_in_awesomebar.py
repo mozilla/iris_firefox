@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         search_with_google_one_off_string_pattern = Pattern('google_one_off_highlighted.png')
-        settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
+        settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png').similar(.9)
 
         select_location_bar()
         paste('moz')
