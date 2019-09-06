@@ -185,7 +185,6 @@ class Target(BaseTarget):
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
-
         if OSHelper.is_mac():
             mouse_reset()
         if item.name == 'run' and not core_args.override:
@@ -238,17 +237,25 @@ class Target(BaseTarget):
                                                                     ', '.join(skip_reason_list)))
                 test_instance = (item, 'SKIPPED', None)
                 test_result = create_result_object(test_instance, 0, 0)
-                BaseTarget.add_test_result(self, test_result)
+                self.add_test_result(test_result)
                 Target.index += 1
                 pytest.skip(item)
+            else:
+                is_rerun = False
+                if len(self.completed_tests):
+                    if self.completed_tests[-1].file_name == item.fspath:
+                        logger.debug('Rerun detected:')
+                        logger.debug(self.completed_tests[-1].file_name)
+                        logger.debug(item.fspath)
+                        is_rerun = True
+                if not is_rerun and len(self.completed_tests) > 0:
+                    Target.index += 1
 
     def pytest_runtest_call(self, item):
         """ called to execute the test ``item``. """
-
         logger.info(
             'Executing %s: - [%s]: %s' % (Target.index,
                 item.nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
-        Target.index += 1
         try:
             if item.funcargs['firefox']:
                 item.funcargs['firefox'].start()
@@ -279,12 +286,6 @@ class Target(BaseTarget):
 
         except (AttributeError, KeyError):
             pass
-
-    def add_test_result(self, test_result):
-        if len(self.completed_tests):
-            if self.completed_tests[-1].file_name == test_result.file_name:
-                Target.index -= 1
-        BaseTarget.add_test_result(self, test_result)
 
     @pytest.fixture()
     def firefox(self, request):
