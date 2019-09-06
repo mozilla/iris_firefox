@@ -52,5 +52,7 @@ class Test(FirefoxTest):
 
         click(restore_default_search_engine_pattern)
 
+        type(Key.UP)
+
         expected = exists(wikipedia_search_bar_pattern, 10)
         assert expected is True, 'The \'Wikipedia\' search engine is restored.'
