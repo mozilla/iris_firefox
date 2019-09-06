@@ -63,7 +63,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
-        google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        google_page_opened = region.exists(magnifying_glass_pattern.similar(.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_page_opened, 'The default search engine is \'Google\', page successfully loaded.'
 
         searched_item_found = region.exists('moz', FirefoxSettings.FIREFOX_TIMEOUT)
