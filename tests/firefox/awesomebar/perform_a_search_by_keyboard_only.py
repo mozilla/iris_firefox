@@ -19,9 +19,9 @@ class Test(FirefoxTest):
         this_time_search_with_pattern = Pattern('this_time_search_with.png')
         twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
         twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
-        if OSHelper.is_linux():
+        if OSHelper.is_linux() or OSHelper.is_windows():
             twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.99)
-            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.99)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
         else:
             twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
             bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png')
