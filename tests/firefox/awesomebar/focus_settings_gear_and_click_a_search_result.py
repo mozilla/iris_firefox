@@ -16,60 +16,31 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         search_settings_pattern = Pattern('search_settings.png')
-        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
+        this_time_search_with_pattern = Pattern('this_time_search_with.png')
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
-        search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.7)
+        google_one_off_button_pattern = Pattern('google_one_off_button.png')
+        google_search_results_pattern = Pattern('google_search_results.png')
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
-        navigate(LocalWeb.MOZILLA_TEST_SITE)
-
-        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Mozilla page loaded successfully.'
-
-        bookmark_page()
-
-        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page was bookmarked.'
-
-        new_tab()
-        navigate(LocalWeb.FIREFOX_TEST_SITE)
-
-        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Firefox page loaded successfully.'
-
-        new_tab()
-        navigate(LocalWeb.FOCUS_TEST_SITE)
-
-        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Focus page loaded successfully.'
-
-        firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
-
-        new_tab()
-
         select_location_bar()
-        paste('fo')
+        paste('abc')
+
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         expected = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'The \'Search settings\' button is displayed in the awesomebar.'
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        assert scroll_until_pattern_found(settings_gear_highlighted_pattern, type, (Key.DOWN,), 20, 1),\
+            'The \'Search settings\' button is highlighted.'
 
-        repeat_key_down(16)
-        key_to_one_off_search(settings_gear_highlighted_pattern, "right")
+        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_button_exists, 'The \'Google\' one-off button found.'
 
-        expected = region.exists(settings_gear_highlighted_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert expected, 'The \'Search settings\' button has focus.'
+        click(google_one_off_button_pattern)
 
-        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Web pages from personal browsing history found between search suggestions.'
+        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_results_available, 'The page corresponding to the search result is opened NOT the ' \
+                                         'about:preferences page'
 
-        # Find the coordinates of the above search suggestion.
-
-        click(search_suggestion_history_pattern)
-
-        # The page corresponding to the search result is opened and NOT the about:preferences#search page.
-        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Focus page loaded successfully.'
