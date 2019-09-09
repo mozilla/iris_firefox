@@ -27,7 +27,9 @@ class Test(FirefoxTest):
         ui_timeout = 1
 
         scroll_length = Screen.SCREEN_HEIGHT // 10
-        if not OSHelper.is_windows():
+        if OSHelper.is_mac():
+            scroll_length = 10
+        if OSHelper.is_linux():
             scroll_length = 3
 
         navigate(login_form)
@@ -114,5 +116,5 @@ class Test(FirefoxTest):
         last_login_not_deleted = exists(last_saved_login_pattern)
         assert last_login_not_deleted, 'Last login was not deleted'
 
-        first_login_deleted = not exists(first_saved_login_pattern.exact(), ui_timeout)
+        first_login_deleted = wait_vanish(first_saved_login_pattern.exact(), FirefoxSettings.FIREFOX_TIMEOUT)
         assert first_login_deleted, 'Login was successfully deleted'

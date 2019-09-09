@@ -16,7 +16,6 @@ class Test(FirefoxTest):
         preferences={'browser.tabs.loadinBackground': False},
     )
     def run(self, firefox):
-        navigate_load_listener_page_title_pattern = Pattern('navigate_page_title.png').similar(0.6)
         when_you_open_link_checked_pattern = Pattern('when_you_open_link_checked.png')
         when_you_open_link_unchecked_pattern = Pattern('when_you_open_link_unchecked.png')
         page_one_active_tab_pattern = Pattern('page_one_active_tab.png')
@@ -60,9 +59,6 @@ class Test(FirefoxTest):
         # The link opens in a new tab that is immediately focused.
 
         middle_click(page_two_button_pattern)
-
-        page_two_loaded = exists(navigate_load_listener_page_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert page_two_loaded, 'The browser navigated to page two.'
 
         page_one_inactive_tab = exists(page_one_inactive_tab_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         assert page_one_inactive_tab, 'Tab one is inactive.'
