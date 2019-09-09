@@ -39,7 +39,7 @@ class Test(FirefoxTest):
 
         click(change_search_settings_pattern, 1)
 
-        about_preferences_page_loaded = exists(about_preferences_search_page_pattern, Settings.DEFAULT_UI_DELAY)
+        about_preferences_page_loaded = exists(about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert about_preferences_page_loaded is True, 'The \'about:preferences#search\' page opened.'
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
