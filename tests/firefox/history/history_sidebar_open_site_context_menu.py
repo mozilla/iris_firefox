@@ -54,8 +54,14 @@ class Test(FirefoxTest):
         assert expected_5 is True, 'Mozilla page is displayed in the History list successfully.'
 
         right_click('Mozilla', region=history_sidebar_region)
+
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
-        type(text='o')
+
+        if OSHelper.is_mac():
+            type(Key.DOWN)
+            type(Key.ENTER)
+        else:
+            type(text='o')
 
         expected_6 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_6 is True, 'Mozilla page loaded successfully.'
