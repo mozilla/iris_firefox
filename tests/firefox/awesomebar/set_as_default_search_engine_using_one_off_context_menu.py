@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         assert test_page_opened, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
         type(Key.ENTER)
 
         google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -46,7 +46,7 @@ class Test(FirefoxTest):
                                     'search engine.'
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
         one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
@@ -67,7 +67,7 @@ class Test(FirefoxTest):
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
 
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
         type(Key.ENTER)
 
         wiki_page_opened = exists(wikipedia_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)

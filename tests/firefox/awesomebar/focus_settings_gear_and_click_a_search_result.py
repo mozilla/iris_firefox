@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
         select_location_bar()
-        paste('abc')
+        type('abc', interval=0.25)
 
         one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'

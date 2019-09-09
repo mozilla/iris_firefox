@@ -58,7 +58,7 @@ class Test(FirefoxTest):
         #  Start typing in the Awesome Bar.
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
         type(Key.SPACE)
 
         expected = exists(moz_search_highlight_dark_theme_pattern, FirefoxSettings.FIREFOX_TIMEOUT,

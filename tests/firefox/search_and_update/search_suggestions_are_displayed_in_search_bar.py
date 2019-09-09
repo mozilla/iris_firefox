@@ -38,7 +38,7 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY)
 
             if i == 0:
-                paste('test')
+                type('test', interval=0.25)
                 suggestions_shown = exists(test_bold_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
                 assert suggestions_shown is True, 'Search suggestions are shown for the input in question.'
 

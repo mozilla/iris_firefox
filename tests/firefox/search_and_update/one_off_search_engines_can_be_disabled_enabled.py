@@ -119,7 +119,7 @@ class Test(FirefoxTest):
         new_tab()
 
         select_search_bar()
-        paste('test')
+        type('test', interval=0.25)
 
         for i in range(pattern_list.__len__()):
             try:
