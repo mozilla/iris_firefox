@@ -33,6 +33,8 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('127')
 
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
         one_off_bar_displayed = exists(this_time_search_with, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
