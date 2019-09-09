@@ -240,16 +240,6 @@ class Target(BaseTarget):
                 self.add_test_result(test_result)
                 Target.index += 1
                 pytest.skip(item)
-            else:
-                is_rerun = False
-                if len(self.completed_tests):
-                    if self.completed_tests[-1].file_name == item.fspath:
-                        logger.debug('Rerun detected:')
-                        logger.debug(self.completed_tests[-1].file_name)
-                        logger.debug(item.fspath)
-                        is_rerun = True
-                if not is_rerun and len(self.completed_tests) > 0:
-                    Target.index += 1
 
     def pytest_runtest_call(self, item):
         """ called to execute the test ``item``. """
@@ -303,6 +293,17 @@ class Target(BaseTarget):
 
         if target_args.update_channel:
             FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
+
+        is_rerun = False
+        if len(Target.completed_tests):
+            if Target.completed_tests[-1].file_name == request.node.fspath:
+                logger.debug('Rerun detected:')
+                logger.debug(Target.completed_tests[-1].file_name)
+                logger.debug(request.node.fspath)
+                is_rerun = True
+        if not is_rerun and len(Target.completed_tests) > 0:
+            logger.debug('Incrementing index')
+            Target.index += 1
 
         args = {'total': len(request.node.session.items), 'current': Target.index,
                 'title': os.path.basename(request.node.fspath)}
