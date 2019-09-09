@@ -92,8 +92,6 @@ class Test(FirefoxTest):
         second_login_saved = exists(last_saved_login_pattern.similar(0.7))
         assert second_login_saved, 'Second login was saved. The list is successfully populated. '
 
-        click(first_saved_login_pattern)
-
         credentials_can_be_removed = exists(remove_password_pattern)
         assert credentials_can_be_removed, '"Remove" button is reachable'
 
@@ -104,7 +102,6 @@ class Test(FirefoxTest):
 
         click(remove_confirm_pattern)
 
-        # type(Key.ESC)
         close_tab()
 
         saved_logins_button_displayed = exists(saved_logins_button_pattern)
