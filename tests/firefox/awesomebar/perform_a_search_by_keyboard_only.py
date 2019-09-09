@@ -19,15 +19,15 @@ class Test(FirefoxTest):
         this_time_search_with_pattern = Pattern('this_time_search_with.png')
         twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
         twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
-        if OSHelper.is_linux() or OSHelper.is_windows():
+        if OSHelper.is_mac() or OSHelper.is_windows():
             twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.99)
             bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
         else:
-            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
-            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png')
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.9)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
         bing_search_results_pattern = Pattern('bing_search_results_localhost.png')
-        duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png')
-        duck_go_search_result_pattern = Pattern('duck_go_search_resul.png')
+        duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png').similar(.9)
+        duck_go_search_result_pattern = Pattern('duck_go_search_result.png')
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
@@ -49,7 +49,8 @@ class Test(FirefoxTest):
         assert twitter_search_results_localhost_exists, 'A new tab with \'Twitter\' search results' \
                                                         ' for the searched string is opened.'
 
-        select_location_bar()
+        click(NavBar.HOME_BUTTON.target_offset(400, 0))
+        edit_select_all()
         paste('127.0')
 
         one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
