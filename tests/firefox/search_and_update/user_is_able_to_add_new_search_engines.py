@@ -115,7 +115,7 @@ class Test(FirefoxTest):
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is added to Firefox.'
 
         # Search using the search bar, the content search field and the location bar.
-        paste('test')
+        type('test', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
@@ -134,7 +134,7 @@ class Test(FirefoxTest):
 
         click(google_logo_content_search_field_pattern)
 
-        paste('test')
+        type('test', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
@@ -148,7 +148,7 @@ class Test(FirefoxTest):
 
         select_location_bar()
 
-        paste('test')
+        type('test', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,

@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         change_preference('browser.search.widget.inNavBar', True)
 
         select_search_bar()
-        paste('testing')
+        type('testing', interval=0.25)
 
         expected = exists(change_search_settings_pattern, 10)
         assert expected is True, 'The \'Change Search Settings\' button found in the page.'

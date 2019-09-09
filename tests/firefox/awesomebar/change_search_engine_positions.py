@@ -31,7 +31,7 @@ class Test(FirefoxTest):
         region = Region(0, 0, Screen().width, 2*Screen().height / 3)
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
         pattern_list = [google_one_off_button_pattern, bing_one_off_button_pattern, twitter_one_off_button_pattern,
                         wikipedia_one_off_button_pattern, amazon_one_off_button_pattern,
@@ -72,7 +72,7 @@ class Test(FirefoxTest):
 
         select_location_bar()
         type(Key.DELETE)
-        type('moz')
+        type('moz', interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)

@@ -31,7 +31,7 @@ class Test(FirefoxTest):
 
         # Type a partial part of the above address and perform a search, in a new tab, using an one-off.
         select_location_bar()
-        paste('127')
+        type('127', interval=0.25)
 
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
@@ -55,7 +55,7 @@ class Test(FirefoxTest):
         change_preference('browser.urlbar.oneOffSearches', 'false')
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
         localhost_string_exists = exists(this_time_search_with)
         assert localhost_string_exists is False, 'The one-off bar is displayed at the bottom of awesomebar drop-down'

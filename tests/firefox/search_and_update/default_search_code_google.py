@@ -49,7 +49,7 @@ class Test(FirefoxTest):
 
         # Perform a search using the awesome bar and then clear the content from it.
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
@@ -77,7 +77,7 @@ class Test(FirefoxTest):
 
         # Perform a search using the search bar.
         select_search_bar()
-        paste('test')
+        type('test', interval=0.25)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
@@ -144,7 +144,7 @@ class Test(FirefoxTest):
 
         click(google_logo_content_search_field_pattern)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
-        paste('beats')
+        type('beats', interval=0.25)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)

@@ -65,7 +65,7 @@ class Test(FirefoxTest):
         # Open the drop down menu from the search fields available in about:newtab and from the Search Bar.
         new_tab()
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
 
         expected = exists(amazon_bing_location_bar_pattern, 10)
         assert expected is True, 'The search engine is placed correctly in location bar.'
