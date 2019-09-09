@@ -203,16 +203,17 @@ class BaseTarget:
             # 2. Remove the previous result.
             # 3. Add the new result.
 
-            prev_test_path = str(self.completed_tests[-1].node_name)
-            test_path = str(test_result.node_name)
+            prev_test_path = str(self.completed_tests[-1].file_name)
+            test_path_1 = str(test_result.file_name)
+            test_path_2 = str(test_result.node_name)
 
-            if prev_test_path == test_path:
-                if self.rerun_tests.get(test_path) is not None:
-                    self.rerun_tests[test_path] += 1
+            if prev_test_path == test_path_1 or prev_test_path == test_path_2:
+                if self.rerun_tests.get(test_path_1) is not None:
+                    self.rerun_tests[test_path_1] += 1
                 else:
-                    self.rerun_tests[test_path] = 1
+                    self.rerun_tests[test_path_1] = 1
                 if test_result.outcome is 'PASSED':
-                    self.flaky_tests.append((test_path, self.rerun_tests[test_path]))
+                    self.flaky_tests.append((test_path_1, self.rerun_tests[test_path_1]))
                 self.completed_tests.pop()
         self.completed_tests.append(test_result)
 
