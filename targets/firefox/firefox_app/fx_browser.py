@@ -108,7 +108,6 @@ class FirefoxProfile(MozProfile):
         from_directory = os.path.join(staged_profiles, profile_name.value)
         to_directory = '%s_%s' % (path, datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
 
-        #logger.debug('Profile path already exists: %s' % os.path.exists(path))
         if os.path.exists(path):
             try:
                 shutil.rmtree(path)
@@ -158,9 +157,6 @@ class FirefoxProfile(MozProfile):
         current_test = os.environ.get('CURRENT_TEST')
         test_path = current_test.split(test_root)[1].split('.py')[0][1:]
         profile_path = os.path.join(PathManager.get_current_run_dir(), test_path, 'profile')
-
-        #if not os.path.exists(profile_path):
-        #    os.makedirs(profile_path)
 
         if profile_type is Profiles.BRAND_NEW:
             logger.debug('Creating brand new profile: %s' % profile_path)
