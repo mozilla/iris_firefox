@@ -19,9 +19,12 @@ class Test(FirefoxTest):
         youtube_subscribe_button_pattern = Pattern('subscribe_button.png')
         youtube_autoplay_switch_pattern = Pattern('youtube_autoplay_switch.png')
 
-        mouse_wheel_steps = 100
         if OSHelper.is_windows():
             mouse_wheel_steps = 1000
+        elif OSHelper.is_linux():
+            mouse_wheel_steps = 10
+        else:
+            mouse_wheel_steps = 100
 
         change_preference('media.autoplay.default', '0')
 

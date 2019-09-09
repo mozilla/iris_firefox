@@ -37,10 +37,13 @@ class Test(FirefoxTest):
         localhost_string_exists = exists(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
         assert localhost_string_exists, 'Searched string found at the bottom of the drop-down list.'
 
-        twitter_one_off_button_exists = exists(twitter_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        twitter_one_off_region = Screen().top_half().left_third()
+
+        twitter_one_off_button_exists = exists(twitter_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT,
+                                               region=twitter_one_off_region)
         assert twitter_one_off_button_exists, 'The \'Twitter\' one-off button found.'
 
-        hover(twitter_one_off_button)
+        hover(twitter_one_off_button, region=twitter_one_off_region)
 
         try:
             localhost_string_vanished = wait_vanish(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -48,7 +51,7 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('The \'Twitter\' one-off button is not highlighted.')
 
-        right_click(twitter_one_off_button)
+        right_click(twitter_one_off_button, region=twitter_one_off_region)
 
         search_in_new_tab_exists = exists(search_in_new_tab, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_in_new_tab_exists, 'The \'Search in New Tab\' option found.'

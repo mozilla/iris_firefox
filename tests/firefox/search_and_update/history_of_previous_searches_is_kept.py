@@ -63,6 +63,10 @@ class Test(FirefoxTest):
 
         navigate('about:newtab')
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
+        expected = exists(google_logo_content_search_field_pattern, 10)
+        assert expected is True, 'Google logo from content search field found.'
+
         click(google_logo_content_search_field_pattern)
         type(Key.DOWN)
 
