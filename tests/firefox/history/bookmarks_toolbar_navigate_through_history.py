@@ -66,6 +66,11 @@ class Test(FirefoxTest):
         # Navigate to a page from Today's history, in our case the Iris page.
         type(Key.DOWN)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+
+        if OSHelper.is_mac():
+            type(Key.RIGHT)
+            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+
         type(Key.RIGHT)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         type(Key.ENTER)
