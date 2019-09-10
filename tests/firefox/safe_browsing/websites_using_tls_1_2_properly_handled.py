@@ -36,7 +36,7 @@ class Test(FirefoxTest):
         assert text_displayed in 'tls-v1-2.badssl.com', 'The URL is properly loaded and green background page is ' \
                                                         'displayed, containing a string saying: tls-v1-2.badssl.com'
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.SECURE_CONNECTION_LOCK)
 
         show_connection_details_button_displayed = exists(show_connection_details_button_pattern,
                                                           FirefoxSettings.FIREFOX_TIMEOUT)
