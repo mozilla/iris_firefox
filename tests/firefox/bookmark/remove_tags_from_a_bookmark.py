@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS
     )
     def run(self, firefox):
-        moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
+        moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png').similar(0.95)
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
         done_button_from_star_menu = Bookmarks.StarDialog.DONE
