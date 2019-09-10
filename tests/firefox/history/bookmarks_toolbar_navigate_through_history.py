@@ -67,9 +67,8 @@ class Test(FirefoxTest):
         type(Key.DOWN)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
-        if OSHelper.is_mac() or OSHelper.is_windows():
-            type(Key.RIGHT)
-            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+        type(Key.RIGHT)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
         type(Key.RIGHT)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
