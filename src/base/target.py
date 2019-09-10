@@ -207,14 +207,21 @@ class BaseTarget:
             test_path_1 = str(test_result.file_name)
             test_path_2 = str(test_result.node_name)
 
-            if prev_test_path == test_path_1 or prev_test_path == test_path_2:
-                if self.rerun_tests.get(test_path_1) is not None:
-                    self.rerun_tests[test_path_1] += 1
-                else:
-                    self.rerun_tests[test_path_1] = 1
-                if test_result.outcome is 'PASSED':
-                    self.flaky_tests.append((test_path_1, self.rerun_tests[test_path_1]))
-                self.completed_tests.pop()
+            if prev_test_path != 'None':
+                if prev_test_path == test_path_1 or prev_test_path == test_path_2:
+                    if self.rerun_tests.get(prev_test_path) is not None:
+                        self.rerun_tests[prev_test_path] += 1
+                    else:
+                        self.rerun_tests[prev_test_path] = 1
+
+                    if test_result.outcome == 'PASSED':
+                        self.flaky_tests.append((prev_test_path, self.rerun_tests[prev_test_path]))
+
+                    logger.debug('Previous test: %s' % prev_test_path)
+                    logger.debug('Current test file name: %s' % test_path_1)
+                    logger.debug('Current test node name: %s' % test_path_2)
+                    removed_test = self.completed_tests.pop()
+                    logger.debug('\nRemoved test: %s' % removed_test.file_name)
         self.completed_tests.append(test_result)
 
 
