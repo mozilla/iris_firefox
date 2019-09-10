@@ -14,7 +14,8 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='120119',
         test_suite_id='2000',
-        profile=Profiles.BRAND_NEW
+        profile=Profiles.BRAND_NEW,
+        blocked_by={'id': '1579898', 'platform': [OSPlatform.LINUX, OSPlatform.WINDOWS]},
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
