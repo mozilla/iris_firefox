@@ -29,6 +29,8 @@ class Test(FirefoxTest):
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
+        mouse_reset()
+
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_1, 'Mozilla page loaded successfully.'
 
