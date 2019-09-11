@@ -107,7 +107,7 @@ class Test(FirefoxTest):
         click(site_cookie_two_pattern)
         type(Key.DELETE)
 
-        type(Key.DELETE)  # There are two cookies must be left after visiting prosport.ro
+        type(Key.DELETE)  # There are two default cookies from mozilla
         type(Key.DELETE)  # So it's needed to press "Delete" key twice to remove this site's cookies from list
 
         cookies_list_is_empty = exists(cookies_list_empty_pattern)
