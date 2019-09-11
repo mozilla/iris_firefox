@@ -28,7 +28,8 @@ class Test(FirefoxTest):
             Pattern('simulated_first_party_tracker_correctly_blocked_text.png')
         dnt_signal_correctly_sent_pattern = Pattern('dnt_signal_correctly_sent_text.png')
         open_trackers_list_pattern = Pattern('open_trackers_list.png')
-        tracker_site_in_list_pattern = Pattern('tracker_testsite_in_list.png')
+        tracker_site_in_list_pattern = Pattern('tracker_testsite_in_list.png').similar(0.6)
+        tracking_content_detected_pattern = Pattern('tracking_protection_is_off.png')
 
         new_private_window()
         private_window_opened = exists(PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -59,6 +60,7 @@ class Test(FirefoxTest):
 
         click(blocking_turn_off_pattern)
 
+        type(Key.ESC)
         tracking_protection_shield_deactivated_exists = exists(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
         assert tracking_protection_shield_deactivated_exists is True, 'The tracking protection shield is displayed' \
                                                                       ' as deactivated (strikethrough).'
@@ -69,7 +71,7 @@ class Test(FirefoxTest):
         restore_firefox_focus()
         hover(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
 
-        tracking_message_appeared = exists(LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE)
+        tracking_message_appeared = exists(tracking_content_detected_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert tracking_message_appeared is True, 'A "Tracking content detected" tooltip message displayed.'
 
         incorrectly_loaded_third_party_tracker = exists(incorrectly_loaded_third_party_tracker_pattern)
