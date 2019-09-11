@@ -53,7 +53,9 @@ class Test(FirefoxTest):
         block_cookies_location = find(block_cookies_ticked_pattern)
 
         option_width, option_height = block_cookies_ticked_pattern.get_size()
-        click(Location(block_cookies_location.x + (option_width * 5), block_cookies_location.y))
+        block_cookies_option_list = Location(block_cookies_location.x + (option_width * 5), block_cookies_location.y)
+
+        click(block_cookies_option_list)
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
