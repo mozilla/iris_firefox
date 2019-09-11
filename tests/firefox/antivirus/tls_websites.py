@@ -28,64 +28,64 @@ class Test(FirefoxTest):
         the_register_log_in_page_pattern = Pattern('the_register_log_in_page.png').similar(0.6)
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
 
-        navigate('https://www.cloudflare.com/')
-        assert exists(cloudflare_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'Cloudflare page is successfully downloaded.'
-
-        click(LocationBar.SECURE_CONNECTION_LOCK)
-        assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
-            'Show Connection Details button displayed.'
-
-        click(show_connection_details_button_pattern)
-
-        assert exists(more_information_button_pattern), 'More information button displayed.'
-
-        click(more_information_button_pattern)
-
-        assert exists(page_info_window_pattern), 'Cloudflare page info window is opened.'
-
-        assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
-            'The Technical Details section states that the connection is encrypted via TLS 1.3.'
-
-        close_window_control('auxiliary')
-
-        assert exists(cloudflare_support_button_pattern), 'Cloudflare support login button exists.'
-
-        click(cloudflare_support_button_pattern)
-
-        assert exists(cloudflare_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'There are no issues, crashes while navigating on the website.'
-
-        navigate('https://www.theregister.co.uk/')
-
-        assert exists(theregister_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'The Register page is successfully downloaded.'
-
-        click(LocationBar.SECURE_CONNECTION_LOCK)
-
-        assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT),\
-            'Show Connection Details button displayed.'
-
-        click(show_connection_details_button_pattern)
-
-        assert exists(more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
-            'More information button displayed.'
-
-        click(more_information_button_pattern)
-
-        assert exists(page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT), 'The Register page info window is opened.'
-
-        assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
-            'The Technical Details section states that the connection is encrypted via TLS 1.3.'
-
-        close_window_control('auxiliary')
-
-        assert exists(the_regiter_log_in_button_pattern), 'The Register Log In button exists.'
-
-        click(the_regiter_log_in_button_pattern)
-
-        assert exists(the_register_log_in_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'There are no issues, crashes while navigating on the website.'
+        # navigate('https://www.cloudflare.com/')
+        # assert exists(cloudflare_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
+        #     'Cloudflare page is successfully downloaded.'
+        #
+        # click(LocationBar.SECURE_CONNECTION_LOCK)
+        # assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
+        #     'Show Connection Details button displayed.'
+        #
+        # click(show_connection_details_button_pattern)
+        #
+        # assert exists(more_information_button_pattern), 'More information button displayed.'
+        #
+        # click(more_information_button_pattern)
+        #
+        # assert exists(page_info_window_pattern), 'Cloudflare page info window is opened.'
+        #
+        # assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
+        #     'The Technical Details section states that the connection is encrypted via TLS 1.3.'
+        #
+        # close_window_control('auxiliary')
+        #
+        # assert exists(cloudflare_support_button_pattern), 'Cloudflare support login button exists.'
+        #
+        # click(cloudflare_support_button_pattern)
+        #
+        # assert exists(cloudflare_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
+        #     'There are no issues, crashes while navigating on the website.'
+        #
+        # navigate('https://www.theregister.co.uk/')
+        #
+        # assert exists(theregister_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
+        #     'The Register page is successfully downloaded.'
+        #
+        # click(LocationBar.SECURE_CONNECTION_LOCK)
+        #
+        # assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT),\
+        #     'Show Connection Details button displayed.'
+        #
+        # click(show_connection_details_button_pattern)
+        #
+        # assert exists(more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
+        #     'More information button displayed.'
+        #
+        # click(more_information_button_pattern)
+        #
+        # assert exists(page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT), 'The Register page info window is opened.'
+        #
+        # assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
+        #     'The Technical Details section states that the connection is encrypted via TLS 1.3.'
+        #
+        # close_window_control('auxiliary')
+        #
+        # assert exists(the_regiter_log_in_button_pattern), 'The Register Log In button exists.'
+        #
+        # click(the_regiter_log_in_button_pattern)
+        #
+        # assert exists(the_register_log_in_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
+        #     'There are no issues, crashes while navigating on the website.'
 
         navigate('https://www.cdn77.com/')
 
@@ -115,10 +115,10 @@ class Test(FirefoxTest):
 
         close_window_control('auxiliary')
 
-        assert exists("Support", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
-            'CDN77 Support button is displayed.'
+        assert exists("Help", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
+            'CDN77 Help Center button is displayed.'
 
-        click("Support", region=cdn_region)
+        click("Help", region=cdn_region)
 
         assert exists(cdn77_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'TLS client certificate authentication mechanism will not be broken. No errors occur.'
