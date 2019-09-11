@@ -38,20 +38,20 @@ class Test(FirefoxTest):
 
         # Check the 'Request English versions…' checkbox, then uncheck it, then click 'OK'.
 
-        request_english_version_unchecked = exists(request_english_versions_unchecked_pattern,
+        request_english_version_unchecked = exists(request_english_versions_unchecked_pattern.similar(.6),
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_english_version_unchecked, '"Request English versions..." found.'
 
-        request_checkbox_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
-                                                                 AboutPreferences.UNCHECKED_BOX.similar(0.7),
+        request_checkbox_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern.similar(.6),
+                                                                 AboutPreferences.UNCHECKED_BOX.similar(.7),
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert request_checkbox_unchecked, '"Request English versions..." is unchecked.'
 
         click(request_english_versions_unchecked_pattern, 1)
 
-        request_checkbox_checked = find_in_region_from_pattern(request_english_versions_unchecked_pattern,
-                                                               AboutPreferences.CHECKED_BOX,
+        request_checkbox_checked = find_in_region_from_pattern(request_english_versions_unchecked_pattern.similar(.6),
+                                                               AboutPreferences.CHECKED_BOX.similar(.7),
                                                                FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert request_checkbox_checked, '"Request English versions..." checked.'
@@ -61,7 +61,7 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         request_version_unchecked = find_in_region_from_pattern(request_english_versions_unchecked_pattern.similar(0.7),
-                                                                AboutPreferences.UNCHECKED_BOX.similar(0.7),
+                                                                AboutPreferences.UNCHECKED_BOX.similar(.7),
                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
         assert request_version_unchecked, '"Request English versions..." unchecked.'
 

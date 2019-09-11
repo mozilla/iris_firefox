@@ -53,11 +53,17 @@ class Test(FirefoxTest):
 
         click(save_pattern)
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
+        restore_firefox_focus()
+
         bookmarks_sidebar('close')
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         bookmarks_sidebar('open')
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         paste('iris')
 

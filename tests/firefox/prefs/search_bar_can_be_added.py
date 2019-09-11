@@ -18,23 +18,20 @@ class Test(FirefoxTest):
         preferences_search_pattern = AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
         add_search_bar_in_toolbar_deselected_pattern = Pattern('add_search_bar_in_toolbar_deselected.png')
         add_search_bar_in_toolbar_selected_pattern = Pattern('add_search_bar_in_toolbar_selected.png')
-        search_result_default_pattern = Pattern('search_result_default.png')
         use_address_bar_deselected_pattern = Pattern('use_address_bar_deselected.png')
         use_address_bar_selected_pattern = Pattern('use_address_bar_selected.png')
 
+        # Open Firefox and go to about:preferences, "Search" section.
         navigate('about:preferences#search')
 
         preferences_search_loaded = exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert preferences_search_loaded, 'The about:preferences page is successfully loaded.'
 
-        url_bar_location = find(preferences_search_pattern)
-        url_bar_height = preferences_search_pattern.get_size()[1]
-        test_search_region = Region(0, url_bar_location.y + url_bar_height,
-                                    Screen.SCREEN_WIDTH // 3, Screen.SCREEN_HEIGHT // 3)
-
         add_search_bar_in_toolbar_deselected = exists(add_search_bar_in_toolbar_deselected_pattern,
                                                       FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_search_bar_in_toolbar_deselected, 'Option "Add search bar in toolbar" is deselected.'
+
+        #  2 From "Search Bar" select the option "Add search bar in toolbar".
 
         click(add_search_bar_in_toolbar_deselected_pattern, 1)
 
@@ -42,20 +39,19 @@ class Test(FirefoxTest):
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_search_bar_in_toolbar_selected, 'The option "Add search bar in toolbar" is successfully selected.'
 
+        search_bar_displayed = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                                      region=Screen.RIGHT_HALF)
+        assert search_bar_displayed, 'Search bar is displayed'
+
+        # 3 Go to about:preferences, "Search" section.
         new_tab()
 
-        select_search_bar()
+        navigate('about:preferences#search')
 
-        paste('test search')
+        preferences_search_loaded = exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert preferences_search_loaded, 'The about:preferences page is successfully loaded.'
 
-        type(Key.ENTER)
-
-        assert exists(search_result_default_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), \
-            'Search results displayed, with the known/selected search-engine.'
-
-        search_is_done = exists('test search', FirefoxSettings.FIREFOX_TIMEOUT * 2, region=test_search_region)
-        assert search_is_done, 'The search is done without any issues. '
-
+        # 4 From "Search Bar" select the option "Use the address bar for search and navigation".
         navigate('about:preferences#search')
 
         preferences_search_loaded = exists(preferences_search_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)

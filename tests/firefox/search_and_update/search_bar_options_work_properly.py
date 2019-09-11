@@ -34,7 +34,7 @@ class Test(FirefoxTest):
 
         # Enter a word in the Search Bar and press enter.
         select_search_bar()
-        paste('test')
+        type('test', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
 
@@ -76,7 +76,7 @@ class Test(FirefoxTest):
 
         # Perform a search from the location bar.
         select_location_bar()
-        paste('testing')
+        type('testing', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
@@ -103,7 +103,7 @@ class Test(FirefoxTest):
         assert expected is True, 'Search button found.'
 
         region.click(search_button_pattern.target_offset(-50, 0))
-        paste('mozilla')
+        type('mozilla', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)

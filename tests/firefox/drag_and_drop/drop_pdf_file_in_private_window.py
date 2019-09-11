@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         description='Drop .pdf File in demopage',
         locale=['en-US'],
         test_case_id='165080',
-        test_suite_id='102',
+        test_suite_id='5259',
     )
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
@@ -67,7 +67,7 @@ class Test(FirefoxTest):
 
         new_private_window()
 
-        private_window_opened = exists(PrivateWindow.private_window_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        private_window_opened = exists(PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert private_window_opened, 'A new private window is successfully loaded.'
 
         navigate('https://mystor.github.io/dragndrop/')
@@ -96,7 +96,7 @@ class Test(FirefoxTest):
         open_library()
 
         # open and drag library window
-        library_popup_open = exists(library_import_backup_pattern.similar(0.6), Settings.DEFAULT_FIREFOX_TIMEOUT)
+        library_popup_open = exists(library_import_backup_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT)
         assert library_popup_open, 'Library popup window is correctly opened.'
 
         library_popup_tab_before = find(library_popup_pattern)
@@ -107,6 +107,9 @@ class Test(FirefoxTest):
         library_popup_tab_after = Location(Screen.SCREEN_WIDTH / 2, library_popup_tab_before.y)
 
         drag_drop(library_popup_tab_before, library_popup_tab_after, duration=drag_and_drop_duration)
+
+        prevent_window_change_position = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
+        move(prevent_window_change_position, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         library_popup_dropped = exists(library_popup_pattern, region=library_tab_region_after)
         assert library_popup_dropped, 'Library popup dropped to right half of screen successfully'
@@ -124,7 +127,7 @@ class Test(FirefoxTest):
 
         click(library_import_choose_file_submenu_pattern)
 
-        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        select_bookmark_popup_available = exists(select_bookmark_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert select_bookmark_popup_available, '"Select a bookmark backup" window is available'
 
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
@@ -157,10 +160,10 @@ class Test(FirefoxTest):
         #  drag-n-drop right to prevent fails on osx
         drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
-        test_file_pdf_located = exists(pdf_bak_file_pattern)
+        test_file_pdf_located = exists(pdf_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_pdf_located, 'PDF test file is available'
 
-        drop_here_available = exists(drop_here_pattern)
+        drop_here_available = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here_available, '"Drop here" pattern is available'
 
         drag_drop(pdf_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
@@ -169,10 +172,10 @@ class Test(FirefoxTest):
         assert matching_message_displayed, 'Matching appears under the "Drop Stuff Here" area and expected ' \
                                            'result is identical to result.'
 
-        test_file_txt_located = exists(txt_bak_file_pattern)
+        test_file_txt_located = exists(txt_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_txt_located, 'TXT test file is available'
 
-        drop_here_available = exists(drop_here_pattern)
+        drop_here_available = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here_available, '"Drop here" pattern is available'
 
         drag_drop(txt_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)

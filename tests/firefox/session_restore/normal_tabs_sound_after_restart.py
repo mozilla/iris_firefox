@@ -29,7 +29,7 @@ class Test(FirefoxTest):
         youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert youtube_page_is_downloaded, 'Youtube is properly loaded'
 
-        tabs_region = Rectangle(0, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 10)
+        tabs_region = Rectangle(0, 0, Screen.SCREEN_WIDTH//3, Screen.SCREEN_HEIGHT // 10)
 
         youtube_tab = exists(youtube_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT, tabs_region)
         assert youtube_tab, 'Youtube tab is available'
@@ -50,9 +50,9 @@ class Test(FirefoxTest):
 
         firefox.restart()
 
-        click_hamburger_menu_option('Restore Previous Session')
+        click_hamburger_menu_option('Restore')
 
-        youtube_logo_inactive = exists(youtube_logo_inactive_tab_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+        youtube_logo_inactive = exists(youtube_logo_inactive_tab_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT,
                                        tabs_region)
         assert youtube_logo_inactive, 'Youtube inactive tab found.'
 
