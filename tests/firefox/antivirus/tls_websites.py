@@ -32,7 +32,7 @@ class Test(FirefoxTest):
         assert exists(cloudflare_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'Cloudflare page is successfully downloaded.'
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.SECURE_CONNECTION_LOCK)
         assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
             'Show Connection Details button displayed.'
 
@@ -61,7 +61,7 @@ class Test(FirefoxTest):
         assert exists(theregister_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'The Register page is successfully downloaded.'
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.SECURE_CONNECTION_LOCK)
 
         assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT),\
             'Show Connection Details button displayed.'
@@ -98,7 +98,7 @@ class Test(FirefoxTest):
         cdn_width, cdn_height = cdn77_logo_pattern.get_size()
         cdn_region = Rectangle(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.SECURE_CONNECTION_LOCK)
 
         assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
             'Show Connection Details button displayed.'
