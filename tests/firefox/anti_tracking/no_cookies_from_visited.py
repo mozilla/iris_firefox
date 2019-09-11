@@ -15,8 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='1826',
     )
     def run(self, firefox):
-        block_all_cookies_pattern = Pattern('block_all_cookies.png')
-        cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
+        all_cookies_will_cause_pattern = Pattern('all_cookies_will_cause.png')
         block_cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.9)
         block_cookies_unticked_pattern = Pattern('block_cookies_unticked.png').similar(0.9)
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
@@ -51,15 +50,19 @@ class Test(FirefoxTest):
         cookies_blocking_ticked = exists(block_cookies_ticked_pattern.similar(0.6))
         assert cookies_blocking_ticked, 'Ticked blocking cookies checkbox'
 
-        strictness_menu_appeared = exists(cookies_blocking_strictness_menu_pattern)
-        assert strictness_menu_appeared, 'Strictness menu appeared.'
+        block_cookies_location = find(block_cookies_ticked_pattern)
 
-        click(cookies_blocking_strictness_menu_pattern)
+        option_width, option_height = block_cookies_ticked_pattern.get_size()
+        click(Location(block_cookies_location.x + (option_width * 5), block_cookies_location.y))
 
-        dropdown_opened = exists(block_all_cookies_pattern)
-        assert dropdown_opened, 'Strictness dropdown menu opened'
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        click(block_all_cookies_pattern)
+        repeat_key_down(3)
+
+        type(Key.ENTER)
+
+        all_cookies_will_cause_websites_to_break = exists(all_cookies_will_cause_pattern)
+        assert all_cookies_will_cause_websites_to_break, '"All cookies (will cause websites to break) option is checked'
 
         navigate('https://www.youtube.com/')
 
