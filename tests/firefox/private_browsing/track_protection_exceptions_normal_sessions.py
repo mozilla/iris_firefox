@@ -20,12 +20,8 @@ class Test(FirefoxTest):
         privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
         tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
-        tracking_content_detected_pattern = LocationBar.TRACKING_CONTENT_DETECTED_MESSAGE
 
-        exceptions_content_blocking_panel_pattern = AboutPreferences.Privacy.\
-            Exceptions.EXCEPTIONS_CONTENT_BLOCKING_LABEL
-
-        turn_off_blocking_pattern = Pattern('turn_off_blocking_for_this_site.png')
+        turn_off_blocking_pattern = Pattern('turn_off_blocking_for_site_button.png')
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
         privacy_strict_checkbox_unchecked_pattern = Pattern('privacy_strict_checkbox_unchecked.png')
         privacy_strict_checkbox_checked_pattern = Pattern('privacy_strict_checkbox_checked.png')
@@ -36,6 +32,8 @@ class Test(FirefoxTest):
         third_party_tracker_incorrectly_loaded_text = \
             Pattern('simulated_third_party_tracker_incorrectly_loaded_text.png')
         itstrap_site_exception_selected_pattern = Pattern('itstrap_site_exception_selected.png')
+        tracking_content_detected_pattern = Pattern('tracking_protection_is_off.png')
+        exceptions_content_blocking_panel_pattern = Pattern('exceptions_content_blocking_label.png')
 
         navigate('about:preferences#privacy')
         navigated_to_preferences = exists(privacy_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -89,6 +87,7 @@ class Test(FirefoxTest):
         tracking_protection_shield_deactivated_displayed = exists(tracking_protection_shield_deactivated_pattern)
         assert tracking_protection_shield_deactivated_displayed is True, 'The tracking protection shield is displayed' \
                                                                          ' as deactivated (strikethrough).'
+        type(Key.ESC)
 
         move(tracking_protection_shield_deactivated_pattern)
         tracking_content_detected_pattern_displayed = exists(tracking_content_detected_pattern,
