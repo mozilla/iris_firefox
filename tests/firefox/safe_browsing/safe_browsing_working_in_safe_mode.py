@@ -63,7 +63,8 @@ class Test(FirefoxTest):
 
         click(restart_button_pattern)
 
-        start_in_safe_mode_button_displayed = exists(start_in_safe_mode_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        start_in_safe_mode_button_displayed = exists(start_in_safe_mode_button_pattern,
+                                                     FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert start_in_safe_mode_button_displayed, 'Start in safe mode button displayed'
 
         click(start_in_safe_mode_button_pattern)
