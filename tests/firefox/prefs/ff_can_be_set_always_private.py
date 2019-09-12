@@ -46,6 +46,7 @@ class Test(FirefoxTest):
                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_opened, 'Preferences page is opened'
 
+        time.sleep(ui_timeout)
         paste('Firefox will')
         history_preferences_reachable = exists(remember_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_preferences_reachable, 'History menu is reachable'
@@ -88,8 +89,8 @@ class Test(FirefoxTest):
                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_opened, 'Preferences page is opened'
 
+        time.sleep(ui_timeout)
         paste('Firefox will')
-
         always_private_option_displayed = exists(always_private_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert always_private_option_displayed, '"Always private" option is reachable'
 
