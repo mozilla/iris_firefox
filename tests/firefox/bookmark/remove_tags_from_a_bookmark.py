@@ -32,9 +32,9 @@ class Test(FirefoxTest):
         paste('mozilla')
 
         try:
-            wait(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            wait(moz_bookmark_pattern.similar(0.8), FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug('Moz bookmark is present in the Bookmark sidebar.')
-            right_click(moz_bookmark_pattern)
+            right_click(moz_bookmark_pattern.similar(0.8))
         except FindError:
             raise FindError('Moz bookmark is NOT present in the Bookmark sidebar, aborting.')
 
