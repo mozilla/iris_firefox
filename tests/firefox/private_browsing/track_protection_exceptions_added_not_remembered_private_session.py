@@ -30,6 +30,7 @@ class Test(FirefoxTest):
         open_trackers_list_pattern = Pattern('open_trackers_list.png')
         tracker_site_in_list_pattern = Pattern('tracker_testsite_in_list.png').similar(0.6)
         tracking_content_detected_pattern = Pattern('tracking_protection_is_off.png')
+        tracking_protection_shield_activated_pattern = Pattern('tracking_protection_shield_activated.png')
 
         new_private_window()
         private_window_opened = exists(PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -39,7 +40,7 @@ class Test(FirefoxTest):
         tracked_site_loaded = exists(firefox_tracker_site_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert tracked_site_loaded is True, 'The website is successfully displayed.'
 
-        tracking_protection_shield_displayed = exists(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
+        tracking_protection_shield_displayed = exists(tracking_protection_shield_activated_pattern)
         assert tracking_protection_shield_displayed is True, 'The tracking protection shield is displayed.'
 
         third_party_trackers_blocked = exists(third_party_tracker_correctly_blocked_pattern)
@@ -53,7 +54,7 @@ class Test(FirefoxTest):
         dnt_sent_correctly = exists(dnt_signal_correctly_sent_pattern)
         assert dnt_sent_correctly is True, 'The "DNT signal was correctly send" phrase is displayed.'
 
-        click(LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED)
+        click(tracking_protection_shield_activated_pattern)
 
         protection_popup_opened = exists(blocking_turn_off_pattern)
         assert protection_popup_opened is True, "The site information panel is displayed."

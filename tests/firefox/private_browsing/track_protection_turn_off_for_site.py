@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         locales=['en-US']
     )
     def run(self, firefox):
-        tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
+        tracking_protection_shield_pattern = Pattern('tracking_protection_shield_activated.png')
         tracking_protection_shield_deactivated_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED
         cnn_site_logo_pattern = LocalWeb.CNN_LOGO
         cnn_blocked_content_pattern = LocalWeb.CNN_BLOCKED_CONTENT_ADV
@@ -37,7 +37,7 @@ class Test(FirefoxTest):
 
         navigate('https://edition.cnn.com/?refresh=1')
 
-        website_displayed = exists(cnn_site_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        website_displayed = exists(cnn_site_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT + 100)
         assert website_displayed, 'The website is successfully displayed'
 
         tracking_protection_shield_displayed = exists(tracking_protection_shield_pattern,
@@ -47,7 +47,7 @@ class Test(FirefoxTest):
         restore_firefox_focus()
         cnn_blocked_content_displayed = \
             scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,), 10,
-                                       timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+                                       timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
         assert cnn_blocked_content_displayed is False, 'Websites content that contain tracking' \
                                                        ' elements are not displayed on the page'
         page_home()
@@ -59,7 +59,7 @@ class Test(FirefoxTest):
 
         trackers_button_available = exists(trackers_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert trackers_button_available, '\'Trackers\' button is displayed' \
-                                                  ' on the \'Site information\' panel'
+                                          ' on the \'Site information\' panel'
 
         click(trackers_button_pattern)
 
@@ -87,15 +87,15 @@ class Test(FirefoxTest):
 
         tracking_protection_shield_deactivated_displayed = exists(tracking_protection_shield_deactivated_pattern)
         assert tracking_protection_shield_deactivated_displayed, 'The \'tracking protection shield\'' \
-                                                                         ' is displayed as deactivated (strikethrough)'
+                                                                 ' is displayed as deactivated (strikethrough)'
 
         move(tracking_protection_shield_deactivated_pattern)
 
         tracking_content_detected_message_displayed = exists(tracking_content_detected_message_pattern,
                                                              FirefoxSettings.FIREFOX_TIMEOUT)
         assert tracking_content_detected_message_displayed, 'On hover, the tracking protection shield' \
-                                                                    ' displays a \'Tracking content detected\'' \
-                                                                    ' tooltip message'
+                                                            ' displays a \'Tracking content detected\'' \
+                                                            ' tooltip message'
 
         #  click on focus pattern as method restore_firefox_focus() doesn't work as expected
         website_displayed = exists(cnn_site_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
@@ -106,7 +106,7 @@ class Test(FirefoxTest):
         cnn_blocked_content_displayed = scroll_until_pattern_found(cnn_blocked_content_pattern, type, (Key.PAGE_DOWN,),
                                                                    timeout=FirefoxSettings.FIREFOX_TIMEOUT)
         assert cnn_blocked_content_displayed, 'Websites content that contain tracking elements' \
-                                                      ' are displayed on the page'
+                                              ' are displayed on the page'
 
         page_home()
 
@@ -147,8 +147,8 @@ class Test(FirefoxTest):
 
         tracking_attempts_blocked_message_displayed = exists(tracking_attempts_blocked_message_pattern)
         assert tracking_attempts_blocked_message_displayed, 'On hover, the tracking protection shield' \
-                                                                    ' displays a \'Tracking attempts blocked\'' \
-                                                                    ' tooltip message'
+                                                            ' displays a \'Tracking attempts blocked\'' \
+                                                            ' tooltip message'
 
         #  click on focus pattern as method restore_firefox_focus() doesn't work as expected
         website_displayed = exists(cnn_site_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
