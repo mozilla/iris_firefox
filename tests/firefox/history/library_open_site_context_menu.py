@@ -16,10 +16,11 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS
     )
     def run(self, firefox):
-        iris_bookmark_pattern = Pattern('iris_bookmark.png')
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        history_today_pattern = Library.HISTORY_TODAY
+        history_today_pattern = Library.LIBRARY_WINDOW_HISTORY_TODAY
+        mozilla_bookmark_history_list_pattern = LocalWeb.MOZILLA_BOOKMARK_LIBRARY_HISTORY_LIST
         iris_logo_tab_pattern = Pattern('iris_logo_tab.png')
+        iris_bookmark_pattern = Pattern('iris_bookmark.png')
 
         # Open a page to create some today's history.
         new_tab()
@@ -48,11 +49,11 @@ class Test(FirefoxTest):
 
         type(Key.DOWN)
 
-        expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected_4 = exists(mozilla_bookmark_history_list_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_4 is True, 'Mozilla page is displayed successfully in the History list.'
 
         # Open the Mozilla page using the 'Open' button from the context menu.
-        right_click(LocalWeb.MOZILLA_BOOKMARK_SMALL)
+        right_click(mozilla_bookmark_history_list_pattern)
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         type(text='o')

@@ -16,57 +16,31 @@ class Test(FirefoxTest):
         test_suite_id='1902'
     )
     def run(self, firefox):
-        url = LocalWeb.FIREFOX_TEST_SITE
-        search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
-        settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
-
-        region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
-
-        navigate(url)
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        search_with_google_one_off_string_pattern = Pattern('google_one_off_highlighted.png')
+        settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png').similar(.9)
 
         select_location_bar()
-
         paste('moz')
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert scroll_until_pattern_found(search_with_google_one_off_string_pattern, type, (Key.DOWN,), 20, 1),\
+            'The \'Google\' button is highlighted when hitting the DOWN button.'
 
-        # Without closing the autocomplete drop-down hit the arrow DOWN key until you reach the first one-off button.
-        repeat_key_down(10)
-        key_to_one_off_search(search_with_google_one_off_string_pattern)
-
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Google\'.'
-
-        # Once the first one-off is selected, arrow key until the first one-off is selected again.
-        repeat_key_up(14)
-        key_to_one_off_search(search_with_google_one_off_string_pattern)
-
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Google\'.'
-
-        # Make sure that the settings gear gets in focus before the first one-off is focused again.
-        type(Key.LEFT)
-
-        expected = region.exists(settings_gear_highlighted_pattern, 10)
-        assert expected, 'The settings gear is in focus.'
+        assert scroll_until_pattern_found(settings_gear_highlighted_pattern, type, (Key.DOWN,), 20, 1),\
+            'The \'Google\' button is highlighted when hitting the DOWN button.'
 
         type(Key.RIGHT)
 
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Google\'.'
+        one_off_first_highlighted = exists(search_with_google_one_off_string_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_first_highlighted, 'The first one-off bar is selected again'
 
-        # Once the first one-off is selected, arrow key until the first one-off is selected again.
+        assert scroll_until_pattern_found(settings_gear_highlighted_pattern, type, (Key.RIGHT,), 20, 1),\
+            'The \'Google\' button is highlighted when hitting the RIGHT button..'
 
-        type(Key.LEFT)
+        assert scroll_until_pattern_found(search_with_google_one_off_string_pattern, type, (Key.RIGHT,), 20, 1),\
+            'The \'Google\' button is highlighted when hitting the RIGHT button.'
 
-        expected = region.exists(settings_gear_highlighted_pattern, 10)
-        assert expected, 'The settings gear is in focus.'
+        assert scroll_until_pattern_found(settings_gear_highlighted_pattern, type, (Key.LEFT,), 20, 1), \
+            'The \'Google\' button is highlighted when hitting the LEFT button..'
 
-        repeat_key_up(6)
-        key_to_one_off_search(search_with_google_one_off_string_pattern)
-
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Google\'.'
+        assert scroll_until_pattern_found(search_with_google_one_off_string_pattern.similar(.9), type, (Key.LEFT,),
+                                          20, 1), 'The \'Google\' button is highlighted when hitting the LEFT button.'

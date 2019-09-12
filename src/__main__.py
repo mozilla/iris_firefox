@@ -87,8 +87,11 @@ def main():
 
 
 def show_control_center():
-    if get_core_args().control or get_core_args().target is None:
+    if get_core_args().control:
         return True
+    elif get_core_args().target is None:
+        exit_iris('No target specified, e.g.: \n\niris your_target\n\nClosing Iris.', status=1)
+        return False
     else:
         return False
 
@@ -180,7 +183,7 @@ def launch_control_center():
 
     args = ['http://127.0.0.1:%s' % get_core_args().port]
     process_args = {'stream': None}
-    profile = MozProfile(profile=profile_path, preferences=Settings.default_fx_prefs)
+    profile = MozProfile(profile=profile_path, preferences={})
     if OSHelper.is_windows():
         process = subprocess.Popen(
             [fx_path, '-no-remote', '-new-tab', args, '--wait-for-browser', '-foreground', '-profile',

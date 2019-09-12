@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         description="This test will verify if PyAutoGUI mouse is working properly in a frame buffer environment."
     )
     def run(self, firefox):
-
         try:
             pyautogui.moveTo(300, 300)
             mouse_position = pyautogui.position()
@@ -56,13 +55,13 @@ class Test(FirefoxTest):
                 exit(1)
 
         try:
-            pyautogui.click(x=850, y=850)
+            pyautogui.click(x=400, y=400)
             mouse_position = pyautogui.position()
         except:
             raise Exception('PyAutoGUI error.')
 
         else:
-            if mouse_position[0] == 850 and mouse_position[1] == 850:
+            if mouse_position[0] == 400 and mouse_position[1] == 400:
                 logger.debug(
                     'Mouse successfully moved to position ({}, {}).'.format(mouse_position[0], mouse_position[1]))
             else:

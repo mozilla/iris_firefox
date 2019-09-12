@@ -21,16 +21,17 @@ from mozinstall import install, get_binary
 from mozrunner import FirefoxRunner, errors as run_errors
 from mozprofile import Profile as MozProfile
 
+from src.core.api.errors import APIHelperError
 from src.core.api.mouse.mouse import mouse_reset
 from src.core.api.os_helpers import OSHelper
 from src.core.api.settings import Settings
+from src.core.util.arg_parser import get_core_args
 from src.core.util.path_manager import PathManager
 from src.core.util.system import shutdown_process
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window, quit_firefox
-from src.core.util.arg_parser import get_core_args
+from targets.firefox.settings import FirefoxSettings
 
-from src.core.api.errors import APIHelperError
 
 logger = logging.getLogger(__name__)
 CHANNELS = ('beta', 'release', 'nightly', 'esr', 'dev')
@@ -135,7 +136,7 @@ class FirefoxProfile(MozProfile):
 
         if preferences is None:
             if profile_type is Profiles.BRAND_NEW:
-                preferences = Settings.default_fx_prefs
+                preferences = FirefoxSettings.DEFAULT_FX_PREFS
             else:
                 preferences = {}
 
@@ -206,6 +207,9 @@ class FirefoxApp:
             candidate = PathManager.get_local_firefox_path()
             if candidate is None:
                 logger.critical('Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/')
+            return candidate
+        elif os.path.isfile(version):
+            return version
         else:
             try:
                 s_t, s_d = _get_scraper_details(version, CHANNELS,
@@ -300,29 +304,19 @@ class FXRunner:
             quit_firefox()
             if FXRunner.process.pid is not None:
                 logger.debug('Closing Firefox process ID: %s' % FXRunner.process.pid)
-                if OSHelper.is_windows():
-                    import ctypes
-                    process_terminate = 1
-                    handle = ctypes.windll.kernel32.OpenProcess(process_terminate, False, FXRunner.process.pid)
-                    ctypes.windll.kernel32.TerminateProcess(handle, -1)
-                    ctypes.windll.kernel32.CloseHandle(handle)
-                else:
+                try:
                     process = psutil.Process(pid=FXRunner.process.pid)
-                    try:
-                        if process.children() is not None:
-                            for proc in process.children(recursive=True):
-                                proc.kill()
-                        try:
-                            if psutil.pid_exists(process):
-                                logger.debug('Terminating PID :%s' % process)
-                                process.terminate()
-                            else:
-                                pass
-                        except ProcessLookupError:
-                            pass
-                    except subprocess.CalledProcessError:
-                        logger.error('Failed to close Firefox PID process. Closing Firefox process by name.')
-                        shutdown_process('firefox')
+                    if process.children() is not None:
+                        for proc in process.children(recursive=True):
+                            proc.kill()
+
+                    if psutil.pid_exists(process.pid):
+                        logger.debug('Terminating PID :%s' % process.pid)
+                        process.terminate()
+
+                except psutil.NoSuchProcess:
+                    logger.debug('Failed to find and close Firefox PID: %s' % FXRunner.process.pid)
+                    # shutdown_process('firefox')
         else:
 
             if self.runner and self.runner.process_handler:
@@ -474,12 +468,12 @@ class FirefoxUtils:
             return None
 
         fx_channel = FirefoxUtils.get_firefox_info(build_path)['application_repository']
-        if 'beta' in fx_channel:
+        if 'esr' in fx_channel:
+            return 'esr'
+        elif 'beta' in fx_channel:
             return 'beta'
         elif 'release' in fx_channel:
             return 'release'
-        elif 'esr' in fx_channel:
-            return 'esr'
         else:
             return 'nightly'
 

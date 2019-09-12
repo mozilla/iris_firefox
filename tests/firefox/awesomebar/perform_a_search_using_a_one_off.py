@@ -77,5 +77,6 @@ class Test(FirefoxTest):
         click(google_one_off_button_pattern)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=Screen.TOP_THIRD)
         assert expected, 'Google search results are displayed.'

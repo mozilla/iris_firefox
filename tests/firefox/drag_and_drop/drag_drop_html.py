@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         description='Bookmark a website from the Library - History menu.',
         locale=['en-US'],
         test_case_id='165088',
-        test_suite_id='102',
+        test_suite_id='5259',
         preferences={'devtools.chrome.enabled': True},
     )
     def run(self, firefox):

@@ -39,7 +39,15 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('Browser Console not minimized.')
 
-        restore_window_from_taskbar('browser_console')
+        if OSHelper.get_os_version() == 'win7':
+            try:
+                Screen().bottom_half().bottom_half().click(Pattern('firefox_start_bar.png'))
+                click(Pattern('firefox_start_bar_browser_console.png'))
+            except FindError:
+                raise APIHelperError('Restore window from taskbar unsuccessful.')
+        else:
+            restore_window_from_taskbar('browser_console')
+
         click_window_control('maximize')
         top_page = Screen.TOP_THIRD
         try:

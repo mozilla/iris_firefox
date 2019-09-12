@@ -49,6 +49,10 @@ def get_core_args():
                         help='Clear run data',
                         default=False,
                         action='store_true')
+    parser.add_argument('-d', '--directory',
+                        help='Directory name containing tests to execute',
+                        action='store',
+                        default='')
     parser.add_argument('-e', '--email',
                         help='Submit email report',
                         action='store_true')

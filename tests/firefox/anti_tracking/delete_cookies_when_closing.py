@@ -20,6 +20,8 @@ class Test(FirefoxTest):
         delete_cookies_after_close_marked_pattern = Pattern('delete_cookies_after_close_marked.png')
         manage_data_button_pattern = Pattern('manage_data_button.png')
         prosport_cookies_pattern = Pattern('prosport_cookies.png')
+        if OSHelper.is_windows():
+            prosport_cookies_0_pattern = Pattern('prosport_cookies_0.png')
         manage_cookies_window_label_pattern = Pattern('manage_cookies_window_label.png')
 
         navigate('about:preferences#privacy')
@@ -72,5 +74,8 @@ class Test(FirefoxTest):
 
         paste('cnn')
 
-        cookies_is_not_saved = exists(prosport_cookies_pattern)
+        if OSHelper.is_windows():
+            cookies_is_not_saved = exists(prosport_cookies_pattern) or exists(prosport_cookies_0_pattern)
+        else:
+            cookies_is_not_saved = exists(prosport_cookies_pattern)
         assert cookies_is_not_saved, 'No cookies are displayed from the previously accessed website.'
