@@ -34,8 +34,8 @@ class BaseTarget:
         self.target_name = 'Default target'
         self.cc_settings = [
             {'name': 'locale', 'type': 'list', 'label': 'Locale', 'value': OSHelper.LOCALES, 'default': 'en-US'},
-            {'name': 'mouse', 'type': 'list', 'label': 'Mouse speed', 'value': ['0.0', '0.5', '1.0', '2.0'],
-             'default': '0.5'},
+            {'name': 'max_tries', 'type': 'list', 'label': 'Maximum tries per test', 'value': ['1', '2', '3', '4', '5'],
+             'default': '3'},
             {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting'},
             {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'}
         ]
@@ -213,10 +213,8 @@ class BaseTarget:
                         self.rerun_tests[prev_test_path] += 1
                     else:
                         self.rerun_tests[prev_test_path] = 1
-
                     if test_result.outcome == 'PASSED':
                         self.flaky_tests.append((prev_test_path, self.rerun_tests[prev_test_path]))
-
                     logger.debug('Previous test: %s' % prev_test_path)
                     logger.debug('Current test file name: %s' % test_path_1)
                     logger.debug('Current test node name: %s' % test_path_2)
