@@ -50,7 +50,7 @@ class Test(FirefoxTest):
 
         certificate_additional_details_region = Region(connection_lock_location.x,
                                                        connection_lock_location.y + connection_lock_height,
-                                                       connection_lock_width * 10, connection_lock_height * 20)
+                                                       connection_lock_width * 20, connection_lock_height * 20)
 
         certificate_additional_details_popup_displayed = exists(more_information_button_pattern,
                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
