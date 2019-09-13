@@ -84,7 +84,7 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        max_attempts = 10
+        max_attempts = 15
 
         while max_attempts > 0:
             type(Key.TAB)
