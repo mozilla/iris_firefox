@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         test_suite_id='1902'
     )
     def run(self, firefox):
-        moz_pattern = Pattern('moz.png')
+        this_time_search_with_pattern = Pattern('this_time_search_with.png')
         search_engine_pattern = Pattern('search_engine.png')
         check_engine_pattern = Pattern('check_engine.png')
         search_settings_pattern = Pattern('search_settings.png')
@@ -38,7 +38,10 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('moz')
 
-        pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
+
+        pattern_list = [search_settings_pattern, amazon_one_off_button_pattern,
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, google_one_off_button_pattern,
                         twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 

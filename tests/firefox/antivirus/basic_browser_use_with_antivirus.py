@@ -1,8 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-
-
+from src.core.api.finder.pattern import Pattern
 from targets.firefox.fx_testcase import *
 
 
@@ -22,9 +21,19 @@ class Test(FirefoxTest):
         home_icon_with_applied_theme_pattern = Pattern('home_icon_theme_applied.png')
         theme_file_icon_pattern = Pattern('theme_file_icon.png')
         popup_open_button_pattern = Pattern('popup_open_button.png')
+        if OSHelper.is_mac():
+            popup_open_blue_button_pattern = Pattern('popup_open_blue_button.png')
         load_temporary_addon_button_pattern = Pattern('load_temporary_addon_button.png')
 
         navigate('about:debugging')
+
+        debugging_page_loaded = exists(load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
+
+        if debugging_page_loaded is False:
+            this_firefox = exists('This Firefox', FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_HALF)
+            assert this_firefox, '"This Firefox" button available.'
+
+            click('This Firefox', 1, Screen.LEFT_THIRD)
 
         debugging_page_loaded = exists(load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
         assert debugging_page_loaded is True,\
@@ -32,8 +41,27 @@ class Test(FirefoxTest):
 
         click(load_temporary_addon_button_pattern)
 
-        popup_opened = exists(popup_open_button_pattern, Settings.FIREFOX_TIMEOUT)
-        assert popup_opened is True, '\'Load temporary add-on\' popup is opened'
+        popup_opened = exists(popup_open_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+
+        if OSHelper.is_mac():
+            if popup_opened:
+                grey_button_location = find(popup_open_button_pattern)
+                deselect_file_location = \
+                    Location(grey_button_location.x, grey_button_location.y - 100)
+
+            popup_opened_blue = exists(popup_open_blue_button_pattern,
+                                       FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
+            if popup_opened_blue:
+                blue_button_location = find(popup_open_blue_button_pattern)
+                deselect_file_location = \
+                    Location(blue_button_location.x, blue_button_location.y - 100)
+
+            assert popup_opened is True or popup_opened_blue is True, \
+                '\'Load temporary add-on\' popup is opened.'
+
+        else:
+            assert popup_opened is True, '\'Load temporary add-on\' popup is opened.'
 
         assets_path = self.get_asset_path('')
 
@@ -42,6 +70,9 @@ class Test(FirefoxTest):
         paste(assets_path)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
+
+        if OSHelper.is_mac():
+            click(deselect_file_location)
 
         theme_file_is_available = exists(theme_file_icon_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         assert theme_file_is_available is True, 'Theme file is available.'
@@ -57,7 +88,22 @@ class Test(FirefoxTest):
         click(load_temporary_addon_button_pattern)
 
         popup_opened = exists(popup_open_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert popup_opened is True, '\'Load temporary add-on\' popup is opened.'
+
+        if OSHelper.is_mac():
+            popup_opened_blue = exists(popup_open_blue_button_pattern,
+                                       FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+            assert popup_opened is True or popup_opened_blue is True, \
+                '\'Load temporary add-on\' popup is opened.'
+
+        else:
+            assert popup_opened is True, '\'Load temporary add-on\' popup is opened.'
+
+        select_folder_location_bar()
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        paste(assets_path)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.ENTER)
 
         addon_file_is_available = exists(addon_file_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert addon_file_is_available is True, 'Addon file is available.'
@@ -68,7 +114,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         addon_installed = exists(adblock_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT) \
-            or exists('theme.images.theme_frame')
+            or exists('theme.images.theme_frame') or exists('orangegold')
         assert addon_installed is True, 'Addon successfully installed.'
 
         click(home_icon_with_applied_theme_pattern)

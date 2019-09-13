@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         description='Paste .jpeg File in demopage opened in Private Window',
         locale=['en-US'],
         test_case_id='165097',
-        test_suite_id='102',
+        test_suite_id='5259',
         blocked_by={'id': '1288773', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):

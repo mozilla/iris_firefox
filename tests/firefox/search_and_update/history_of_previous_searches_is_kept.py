@@ -34,7 +34,7 @@ class Test(FirefoxTest):
                 assert expected is True, 'Google logo from content search field found.'
 
             click(google_logo_content_search_field_pattern)
-            paste(text_list[i])
+            type(text_list[i], interval=0.25)
 
             region = Screen.RIGHT_THIRD
             if i == 0:
@@ -47,7 +47,7 @@ class Test(FirefoxTest):
         # Make history from the search bar field.
         for i in range(int(len(text_list) / 2)):
             select_search_bar()
-            paste(text_list[i + 2])
+            type(text_list[i + 2], interval=0.25)
 
             region = Screen.UPPER_RIGHT_CORNER
             if i == 0:
@@ -63,6 +63,10 @@ class Test(FirefoxTest):
 
         navigate('about:newtab')
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
+        expected = exists(google_logo_content_search_field_pattern, 10)
+        assert expected is True, 'Google logo from content search field found.'
+
         click(google_logo_content_search_field_pattern)
         type(Key.DOWN)
 

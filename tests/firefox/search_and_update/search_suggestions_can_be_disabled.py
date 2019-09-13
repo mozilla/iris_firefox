@@ -15,7 +15,6 @@ class Test(FirefoxTest):
         test_suite_id='83',
     )
     def run(self, firefox):
-        search_bar_pattern = Pattern('search_bar.png')
         provide_search_suggestions_pattern = Pattern('provide_search_suggestions.png')
         show_suggestions_pattern = Pattern('show_suggestions.png')
         google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
@@ -26,10 +25,10 @@ class Test(FirefoxTest):
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
 
-        search_bar_enabled = exists(search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        search_bar_enabled = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_bar_enabled is True, 'The search bar is successfully enabled.'
 
-        right_click(search_bar_pattern)
+        right_click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
 
         show_suggestions_available = exists(show_suggestions_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert show_suggestions_available is True, 'The \'Show Suggestions\' option is visible.'
@@ -48,7 +47,7 @@ class Test(FirefoxTest):
 
         select_search_bar()
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_search_not_displayed = exists(search_suggestions_not_displayed_search_bar_pattern,
                                                   FirefoxSettings.FIREFOX_TIMEOUT)
@@ -60,7 +59,7 @@ class Test(FirefoxTest):
 
         click(google_logo_content_search_field_pattern)
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_content_not_displayed = exists(search_suggestions_not_displayed_content_search_pattern,
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
@@ -79,7 +78,7 @@ class Test(FirefoxTest):
 
         select_search_bar()
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_search_displayed = exists(search_suggestions_not_displayed_search_bar_pattern,
                                               FirefoxSettings.SITE_LOAD_TIMEOUT)
@@ -90,7 +89,7 @@ class Test(FirefoxTest):
 
         click(google_logo_content_search_field_pattern)
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_content_displayed = exists(search_suggestions_not_displayed_content_search_pattern,
                                                FirefoxSettings.FIREFOX_TIMEOUT)

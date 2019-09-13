@@ -3,8 +3,10 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
+import json
 import logging
 import os
+import requests
 import sqlite3
 from multiprocessing import Process
 import shutil
@@ -22,11 +24,11 @@ from src.core.util.test_assert import create_result_object
 logger = logging.getLogger(__name__)
 logger.info('Loading test images...')
 
-from src.configuration.config_parser import validate_section
+from src.configuration.config_parser import get_config_property, validate_section
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.firefox.firefox_app.fx_collection import FX_Collection
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import quit_firefox, release_often_used_keys
 from targets.firefox.firefox_ui.helpers.version_parser import check_version
 from targets.firefox.testrail.testrail_client import report_test_results
 
@@ -64,17 +66,64 @@ class Target(BaseTarget):
                             help='Firefox version to test',
                             action='store',
                             default='latest-beta')
+        parser.add_argument('-g', '--region',
+                            help='Region code for Firefox',
+                            action='store',
+                            default='')
+        parser.add_argument('-j', '--sendjson',
+                            help='Send JSON report at end of run',
+                            action='store_true')
         parser.add_argument('-r', '--report',
                             help='Report tests to TestRail',
+                            action='store_true')
+        parser.add_argument('-s', '--save',
+                            help='Save Firefox profiles on disk',
                             action='store_true')
         parser.add_argument('-u', '--update_channel',
                             help='Update channel profile preference',
                             action='store')
-        parser.add_argument('-s', '--save',
-                            help='Save Firefox profiles on disk',
+        parser.add_argument('-y', '--treeherder',
+                            help='Enable Treeherder output in CI environment',
+                            default=False,
                             action='store_true')
-
         return parser.parse_known_args()[0]
+
+    def create_ci_report(self):
+        ci_report_str = ''
+        for test in self.completed_tests:
+            if test.outcome == 'FAILED' or test.outcome == 'ERROR':
+                fail_str = 'FAIL' if 'FAIL' in test.outcome else 'ERROR'
+                local_test_dir = '%stests%s' % (os.sep, os.sep)
+                local_path = test.file_name.split(local_test_dir)[1]
+                temp_path = local_path.split(os.sep)
+                test_name = temp_path.pop()
+                temp_path.pop(0)
+                ci_report_str += 'TEST-UNEXPECTED-%s | ' % fail_str
+                for section in temp_path:
+                    ci_report_str += '%s | ' % section
+                ci_report_str += '%s | %s\n' % (test_name, test.message)
+        logger.info('CI Test results:\n%s' % ci_report_str)
+
+    def send_json_report(self):
+        report_s = validate_section('Report_URL')
+        if len(report_s) > 0:
+            logger.warning('{}. \nJSON report cannot be sent - no report URL found in config file.'.format(report_s))
+        else:
+            run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
+            url = get_config_property('Report_URL', 'url')
+            if url is not None:
+                try:
+                    with open(run_file, 'rb') as file:
+                        r = requests.post(url=url, files={'file': file})
+
+                    if not r.ok:
+                        logger.error('Report was not sent to URL: %s \nResponse text: %s' % url, r.text)
+
+                    logger.debug('Sent JSON report status: %s' % r.text)
+                except requests.RequestException as ex:
+                    logger.error('Failed to send run report to URL: %s \nException data: %s' % url, ex)
+            else:
+                logger.error('Bad URL for JSON report.')
 
     def validate_config(self):
         if self.args.report:
@@ -127,6 +176,12 @@ class Target(BaseTarget):
         logger.debug('Finishing Firefox session')
         if target_args.report:
             report_test_results(self)
+        if target_args.sendjson:
+            self.send_json_report()
+        if target_args.treeherder:
+            self.create_ci_report()
+        if self.clean_run is not True:
+            exit(1)
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
@@ -221,6 +276,7 @@ class Target(BaseTarget):
                         pass
                 else:
                     logger.error('Invalid Path: %s' % profile_instance.profile)
+
         except (AttributeError, KeyError):
             pass
 

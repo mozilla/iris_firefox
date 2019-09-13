@@ -30,7 +30,7 @@ class Test(FirefoxTest):
         assert local_url_loaded, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
         search_engine_logo_icon = exists(duck_duck_go_one_off_button.similar(0.7), Settings.FIREFOX_TIMEOUT,
                                          region=top_two_third_screen_region)
@@ -48,7 +48,7 @@ class Test(FirefoxTest):
         select_location_bar()
 
         # Type a partial part of the above address.
-        type('127')
+        type('127', interval=0.25)
 
         # Type "bug" in the awesomebar to search for the page from step 2 (bookmarked page).
         # Search results are listed.

@@ -141,7 +141,7 @@ class Test(FirefoxTest):
 
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        assert 'http://www.inputstring.com/' in url_text, 'The search is executed with URL autocomplete.'
+        assert autofill_navigated, 'The search is executed with URL autocomplete.'
 
         # 5. Perform a search in the URL bar using the same one-off button as in step 2.
         # The search is executed on using selected engine.
@@ -152,8 +152,7 @@ class Test(FirefoxTest):
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
-                                       )
+        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_off_button_exists, 'The \'Google\' one-off button found.'
 
         click(google_one_off_button_location, 1)
@@ -161,7 +160,6 @@ class Test(FirefoxTest):
         # The search is executed on using selected engine.
         # Firefox takes you to search results using the search provider of the selected one-off button
 
-        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
-                                          )
+        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_results_available, 'Google search results are displayed. The search is executed on using ' \
                                          'selected engine.'
