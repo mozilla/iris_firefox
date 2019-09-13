@@ -15,13 +15,14 @@ class Test(FirefoxTest):
         test_suite_id='1826',
     )
     def run(self, firefox):
+        all_third_party_cookies_pattern = Pattern('all_third_party_cookies.png')
         block_all_third_party_cookies_pattern = Pattern('block_all_third_party_cookies.png')
         clear_data_button_pattern = Pattern('clear_button.png')
         confirm_clear_data_pattern = Pattern('confirm_clear_data.png')
         cookies_blocking_strictness_menu_pattern = Pattern('cookies_blocking_strictness_menu.png')
         cookies_list_empty_pattern = Pattern('cookies_list_empty.png')
-        cookies_blocking_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.9)
-        cookies_blocking_unticked_pattern = Pattern('block_cookies_unticked.png').similar(0.9)
+        block_cookies_ticked_pattern = Pattern('block_cookies_ticked.png').similar(0.9)
+        block_cookies_unticked_pattern = Pattern('block_cookies_unticked.png').similar(0.9)
         cookies_window_title_pattern = Pattern('cookies_window_title.png')
         custom_content_blocking_unticked_pattern = Pattern('custom_content_blocking_unticked.png')
         custom_content_blocking_ticked_pattern = Pattern('custom_content_blocking_ticked.png')
@@ -47,50 +48,37 @@ class Test(FirefoxTest):
 
         click(custom_content_blocking_unticked_pattern)
 
-        cookies_blocking_unticked = exists(cookies_blocking_unticked_pattern)
+        cookies_blocking_unticked = exists(block_cookies_unticked_pattern)
 
         if cookies_blocking_unticked:
-            click(cookies_blocking_unticked_pattern, 1)
 
-        cookies_blocking_ticked = exists(cookies_blocking_ticked_pattern.similar(0.6))
-        assert cookies_blocking_ticked, 'The "Cookies and Site Data" options are properly displayed.'
+            click(block_cookies_unticked_pattern, 1)
 
-        strictness_menu_appeared = exists(cookies_blocking_strictness_menu_pattern)
-        assert strictness_menu_appeared, 'Cookies blocking strictness menu appear.'
+        cookies_blocking_ticked = exists(block_cookies_ticked_pattern.similar(0.6))
+        assert cookies_blocking_ticked, 'Ticked blocking cookies checkbox'
 
-        click(cookies_blocking_strictness_menu_pattern)
+        block_cookies_location = find(block_cookies_ticked_pattern)
 
-        strictness_dropdown_displayed = exists(block_all_third_party_cookies_pattern)
-        assert strictness_dropdown_displayed, 'Block all third party cookies blocking dropdown menu displayed.'
+        option_width, option_height = block_cookies_ticked_pattern.get_size()
+        block_cookies_option_list = Location(block_cookies_location.x + (option_width * 5), block_cookies_location.y)
 
-        click(block_all_third_party_cookies_pattern)
+        click(block_cookies_option_list)
 
-        reload_page()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        preferences_opened = exists(custom_content_blocking_ticked_pattern)
-        assert preferences_opened, 'The privacy preferences page is successfully displayed.'
+        repeat_key_down(2)
 
-        paste('clear data')
+        type(Key.ENTER)
 
-        open_clear_data_button_displayed = exists(open_clear_data_window_pattern)
-        assert open_clear_data_button_displayed, '"Clear data" button displayed.'
-
-        click(open_clear_data_window_pattern)
-
-        clear_data_window_displayed = exists(clear_data_button_pattern.similar(0.9))
-        assert clear_data_window_displayed, 'Clear data window displayed.'
-
-        click(clear_data_button_pattern)
-
-        message_window_displayed = exists(confirm_clear_data_pattern)
-        assert message_window_displayed, '"Clear data" message window displayed.'
-
-        click(confirm_clear_data_pattern)
+        all_third_party_cookies = exists(all_third_party_cookies_pattern)
+        assert all_third_party_cookies, 'All third-party cookies (may cause websites to break)'
 
         navigate('https://www.prosport.ro/')
 
         site_loaded = exists(site_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert site_loaded, 'The "Prosport" website is successfully displayed.'
+
+        new_tab()
 
         navigate('about:preferences#privacy')
 
@@ -98,6 +86,7 @@ class Test(FirefoxTest):
         assert preferences_opened, 'The page is successfully displayed.'
 
         paste('manage data')
+
         cookies_data_button_located = exists(manage_cookies_data_pattern)
         assert cookies_data_button_located, '"Manage Data..." button displayed.'
 
@@ -109,12 +98,16 @@ class Test(FirefoxTest):
         site_cookie_one_saved = exists(site_cookie_one_pattern)
         assert site_cookie_one_saved, 'Target site cookie saved.'
 
+        click(site_cookie_one_pattern)
+        type(Key.DELETE)
+
         site_cookie_two_saved = exists(site_cookie_two_pattern)
         assert site_cookie_two_saved, 'Other target cookie saved.'
 
-        click(site_cookie_one_pattern)
+        click(site_cookie_two_pattern)
+        type(Key.DELETE)
 
-        type(Key.DELETE)  # There are two cookies must be left after visiting prosport.ro
+        type(Key.DELETE)  # There are two default cookies from mozilla
         type(Key.DELETE)  # So it's needed to press "Delete" key twice to remove this site's cookies from list
 
         cookies_list_is_empty = exists(cookies_list_empty_pattern)
