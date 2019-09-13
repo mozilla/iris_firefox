@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         remove_website_button_pattern = AboutPreferences.Privacy.Exceptions.REMOVE_WEBSITE_BUTTON
         privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
-        tracking_protection_shield_deactivated_pattern = Pattern('tracking_protection_shield_activated.png')
+        tracking_protection_shield_deactivated_pattern = Pattern('tracking_protection_shield_deactivated.png')
 
         turn_off_blocking_pattern = Pattern('turn_off_blocking_for_site_button.png')
         manage_exceptions_button_pattern = Pattern('manage_exceptions_button.png')
