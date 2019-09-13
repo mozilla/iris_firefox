@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='168926',
         test_suite_id='2525',
+        blocked_by={'id': '1579898', 'platform': OSPlatform.ALL},
         profile=Profiles.TEN_BOOKMARKS
     )
     def run(self, firefox):
