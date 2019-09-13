@@ -115,6 +115,8 @@ class Test(FirefoxTest):
 
         close_window_control('auxiliary')
 
+        time.sleep(Settings.DEFAULT_UI_DELAY * 3)
+
         assert exists("Help", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
             'CDN77 Help Center button is displayed.'
 
