@@ -25,7 +25,7 @@ class Test(FirefoxTest):
 
         new_tab()
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -57,7 +57,7 @@ class Test(FirefoxTest):
 
         new_tab()
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -88,7 +88,7 @@ class Test(FirefoxTest):
                 max_attempts += 1
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)

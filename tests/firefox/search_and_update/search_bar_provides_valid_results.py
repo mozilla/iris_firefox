@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         change_preference('browser.search.widget.inNavBar', True)
 
         select_search_bar()
-        paste('test')
+        type('test', interval=0.25)
 
         region = Screen.UPPER_RIGHT_CORNER
         expected = region.exists(search_button_pattern, 10)

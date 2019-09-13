@@ -23,6 +23,7 @@ class Test(FirefoxTest):
         search_in_new_tab_pattern = Pattern('search_in_new_tab.png')
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
         new_tab_twitter_search_results_2_pattern = Pattern('new_tab_twitter_search_results_2.png')
+        this_time_search_with_pattern = Pattern('this_time_search_with.png')
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
@@ -32,11 +33,10 @@ class Test(FirefoxTest):
         assert expected, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
-        expected = region.exists(moz_pattern, 10)
-        assert expected, 'Searched string found at the bottom of the drop-down list.'
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         hover(google_one_off_button_pattern)
 

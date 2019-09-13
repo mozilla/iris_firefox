@@ -36,7 +36,7 @@ class Test(FirefoxTest):
         paste('bn')
 
         select_location_bar()
-        paste('bn moz')
+        type('bn moz', interval=0.25)
 
         expected = exists(moz_search_bing_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'Results from URL bar state that the search will be performed with \'Bing\'.'

@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
         type(Key.ENTER)
 
         test_search_bing_exists = exists(test_search_bing_pattern, FirefoxSettings.FIREFOX_TIMEOUT)

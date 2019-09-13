@@ -22,6 +22,9 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#privacy')
 
+        about_preferences_opened = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert about_preferences_opened, 'The about:preferences page is successfully loaded'
+
         paste('firefox will remember')
 
         history_dropdown = exists(history_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
