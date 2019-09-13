@@ -14,7 +14,8 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='120119',
         test_suite_id='2000',
-        profile=Profiles.BRAND_NEW
+        profile=Profiles.BRAND_NEW,
+        blocked_by={'id': '1579898', 'platform': [OSPlatform.LINUX, OSPlatform.WINDOWS]},
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
@@ -54,8 +55,14 @@ class Test(FirefoxTest):
         assert expected_5 is True, 'Mozilla page is displayed in the History list successfully.'
 
         right_click('Mozilla', region=history_sidebar_region)
+
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
-        type(text='o')
+
+        if OSHelper.is_mac():
+            type(Key.DOWN)
+            type(Key.ENTER)
+        else:
+            type(text='o')
 
         expected_6 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_6 is True, 'Mozilla page loaded successfully.'
