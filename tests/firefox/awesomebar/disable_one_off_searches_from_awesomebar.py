@@ -60,6 +60,9 @@ class Test(FirefoxTest):
         localhost_string_exists = exists(this_time_search_with)
         assert localhost_string_exists is False, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
+        type('moz', interval=0.25)
+        type('moz', interval=0.25)
+
         type(Key.ENTER)
 
         expected = region.exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
