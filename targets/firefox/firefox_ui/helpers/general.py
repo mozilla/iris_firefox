@@ -225,6 +225,7 @@ def close_customize_page():
         wait(customize_done_button_pattern, 10)
         logger.debug('Done button found.')
         click(customize_done_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
     except FindError:
         raise APIHelperError(
             'Can\'t find the Done button in the page, aborting.')
