@@ -97,7 +97,6 @@ class EmailClient:
                 logger.info('Email successfully sent to {}'.format(self.targets))
 
 
-
 def submit_email_report(target, result):
 
     """ PLACEHOLDER FOR EMAIL REPORT

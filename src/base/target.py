@@ -213,10 +213,10 @@ class BaseTarget:
                         self.rerun_tests[prev_test_path] += 1
                     else:
                         self.rerun_tests[prev_test_path] = 1
-
+                        
                     if test_result.outcome == 'PASSED':
                         self.flaky_tests.append((prev_test_path, self.rerun_tests[prev_test_path]))
-
+                        
                     logger.debug('Previous test: %s' % prev_test_path)
                     logger.debug('Current test file name: %s' % test_path_1)
                     logger.debug('Current test node name: %s' % test_path_2)
