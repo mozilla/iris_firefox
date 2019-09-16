@@ -23,7 +23,7 @@ class Test(FirefoxTest):
 
         change_preference('browser.search.widget.inNavBar', True)
 
-        text_list = ['test', 'moz', 'testing', 'mozilla']
+        text_list = ['test', 'moz ', 'testing', 'mozilla']
 
         # Make history from the content search field.
         for i in range(int(len(text_list) / 2)):
@@ -58,27 +58,33 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY)
 
         firefox.restart()
-        navigate(LocalWeb.FIREFOX_TEST_SITE)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 3)
+
+        open_library_menu('History')
+
+        expected = exists(recent_history_pattern, 10)
+        assert expected is True, 'The previous searches are kept in history.'
+
+        type(Key.ESC)
 
         navigate('about:newtab')
+
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         expected = exists(google_logo_content_search_field_pattern, 10)
         assert expected is True, 'Google logo from content search field found.'
 
         click(google_logo_content_search_field_pattern)
+
         type(Key.DOWN)
 
         expected = exists(history_pattern, 10)
         assert expected is True, 'The previous searches are visible in the content search field.'
 
         select_search_bar()
+
         type(Key.DOWN)
 
         expected = exists(history_search_bar_pattern, 10)
         assert expected is True, 'The previous searches are visible in the search bar.'
-
-        open_library_menu('History')
-        expected = exists(recent_history_pattern, 10)
-        assert expected is True, 'The previous searches are kept in history.'
