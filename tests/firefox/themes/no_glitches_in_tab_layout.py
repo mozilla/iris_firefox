@@ -107,7 +107,10 @@ class Test(FirefoxTest):
         expected = exists(AboutAddons.THEMES, 10)
         assert expected, 'Add-ons page is in focus.'
 
-        click(AboutAddons.THEMES)
+        navigate_back()
+
+        expected = exists(AboutAddons.Themes.LIGHT_THEME, 10)
+        assert expected, 'Light theme option found in the page.'
 
         click(AboutAddons.Themes.LIGHT_THEME)
 
@@ -187,7 +190,10 @@ class Test(FirefoxTest):
         expected = exists(AboutAddons.THEMES, 10)
         assert expected, 'Add-ons page is in focus.'
 
-        click(AboutAddons.THEMES)
+        navigate_back()
+
+        expected = exists(AboutAddons.Themes.DEFAULT_THEME, 10)
+        assert expected, 'Default theme option found in the page.'
 
         click(AboutAddons.Themes.DARK_THEME)
 
