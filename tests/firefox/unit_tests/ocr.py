@@ -54,10 +54,7 @@ class Test(FirefoxTest):
         assert left_half_page_region.exists('Find in This Page'), 'Phrase found'
         assert left_half_page_region.exists('New Private Window'), 'Phrase found'
 
-        click(NavBar.HAMBURGER_MENU)
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-
         hamburger_menu_region = create_region_for_hamburger_menu()
 
-        assert hamburger_menu_region.exists('Sign in to Firefox'), '"Sign in to Firefox" found'
-        assert hamburger_menu_region.exists('Content Blocking'), '"Content Blocking" found'
+        assert hamburger_menu_region.exists('Sign in to Firefox'), '"Sign in to Firefox" found in hmaburger menu'
+        assert hamburger_menu_region.exists('Preferences'), '"Preferences" found in hamburger menu'
