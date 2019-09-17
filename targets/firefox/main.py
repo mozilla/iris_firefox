@@ -51,8 +51,8 @@ class Target(BaseTarget):
             {'name': 'firefox', 'type': 'list', 'label': 'Firefox',
              'value': ['local', 'latest', 'latest-esr', 'latest-beta', 'nightly'], 'default': 'beta'},
             {'name': 'locale', 'type': 'list', 'label': 'Locale', 'value': OSHelper.LOCALES, 'default': 'en-US'},
-            {'name': 'mouse', 'type': 'list', 'label': 'Mouse speed', 'value': ['0.0', '0.5', '1.0', '2.0'],
-             'default': '0.5'},
+            {'name': 'max_tries', 'type': 'list', 'label': 'Maximum tries per test', 'value': ['1', '2', '3', '4', '5'],
+             'default': '3'},
             {'name': 'highlight', 'type': 'checkbox', 'label': 'Debug using highlighting'},
             {'name': 'override', 'type': 'checkbox', 'label': 'Run disabled tests'},
             {'name': 'email', 'type': 'checkbox', 'label': 'Email results'},
@@ -185,7 +185,6 @@ class Target(BaseTarget):
 
     def pytest_runtest_setup(self, item):
         BaseTarget.pytest_runtest_setup(self, item)
-
         if OSHelper.is_mac():
             mouse_reset()
         if item.name == 'run' and not core_args.override:
@@ -238,17 +237,15 @@ class Target(BaseTarget):
                                                                     ', '.join(skip_reason_list)))
                 test_instance = (item, 'SKIPPED', None)
                 test_result = create_result_object(test_instance, 0, 0)
-                self.completed_tests.append(test_result)
+                self.add_test_result(test_result)
                 Target.index += 1
                 pytest.skip(item)
 
     def pytest_runtest_call(self, item):
         """ called to execute the test ``item``. """
-
         logger.info(
             'Executing %s: - [%s]: %s' % (Target.index,
                 item.nodeid.split(':')[0], item.own_markers[0].kwargs.get('description')))
-        Target.index += 1
         try:
             if item.funcargs['firefox']:
                 item.funcargs['firefox'].start()
@@ -296,6 +293,17 @@ class Target(BaseTarget):
 
         if target_args.update_channel:
             FirefoxUtils.set_update_channel_pref(app.path, target_args.update_channel)
+
+        is_rerun = False
+        if len(Target.completed_tests):
+            if Target.completed_tests[-1].file_name == request.node.fspath:
+                logger.debug('Rerun detected:')
+                logger.debug(Target.completed_tests[-1].file_name)
+                logger.debug(request.node.fspath)
+                is_rerun = True
+        if not is_rerun and len(Target.completed_tests) > 0:
+            logger.debug('Incrementing index')
+            Target.index += 1
 
         args = {'total': len(request.node.session.items), 'current': Target.index,
                 'title': os.path.basename(request.node.fspath)}

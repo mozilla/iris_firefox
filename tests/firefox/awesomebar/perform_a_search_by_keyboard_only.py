@@ -16,165 +16,68 @@ class Test(FirefoxTest):
         profile_preferences={'browser.contentblocking.enabled': False}
     )
     def run(self, firefox):
-        search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
-        search_with_duckduckgo_one_off_string_pattern = Pattern('search_with_DuckDuckGo_one_off_string.png')
-        search_with_amazon_one_off_string_pattern = Pattern('search_with_Amazon_one_off_string.png')
-        search_with_bing_one_off_string_pattern = Pattern('search_with_Bing_one_off_string.png')
-        search_with_twitter_one_off_string_pattern = Pattern('search_with_Twitter_one_off_string.png')
-        search_with_wikipedia_one_off_string_pattern = Pattern('search_with_Wikipedia_one_off_string.png')
-        new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
-        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png')
-        wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
-        google_search_results_moz_pattern_pattern = Pattern('google_search_results_moz.png')
-        bing_search_results_moz_pattern = Pattern('bing_search_results_moz.png')
-        amazon_search_results_moz_pattern = Pattern('amazon_search_results_moz.png')
-        duckduckgo_search_results_pattern = Pattern('duckduckgo_search_results.png')
-        moz_search_duckduckgo_pattern = Pattern('moz_search_duckduckgo.png')
-        moz_search_pattern = Pattern('moz_search.png')
+        this_time_search_with_pattern = Pattern('this_time_search_with.png')
+        twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
+        twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
+        if OSHelper.is_mac() or OSHelper.is_windows():
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.99)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
+        elif OSHelper.is_windows():
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.9)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
+        else:
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.9)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
+        bing_search_results_pattern = Pattern('bing_search_results_localhost.png')
+        duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png').similar(.9)
+        duck_go_search_result_pattern = Pattern('duck_go_search_result.png').similar(.7)
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
-        navigate(LocalWeb.FIREFOX_TEST_SITE)
-
-        expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
-
-        # Perform a search by keyboard only with 'Google' search engine.
         select_location_bar()
+        paste('127')
 
-        paste('moz')
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-
-        repeat_key_up(7)
-        key_to_one_off_search(search_with_google_one_off_string_pattern)
-
-        expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Google\'.'
+        assert scroll_until_pattern_found(twitter_one_off_button_highlight_pattern, type, (Key.UP,), 20, 1),\
+            'The \'Twitter\' button is highlighted.'
 
         type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(google_search_results_moz_pattern_pattern, 10)
-        assert expected, 'Search results performed with \'Google\' search engine.'
+        twitter_search_results_localhost_exists = exists(twitter_search_results_localhost,
+                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT) or \
+                                                  exists(twitter_search_results_localhost_2,
+                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert twitter_search_results_localhost_exists, 'A new tab with \'Twitter\' search results' \
+                                                        ' for the searched string is opened.'
 
-        close_content_blocking_pop_up()
+        click(NavBar.HOME_BUTTON.target_offset(400, 0))
+        edit_select_all()
+        paste('127.0')
 
-        expected = region.exists(moz_search_pattern, 10)
-        assert expected, 'Searched text successfully found in the loaded page.'
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
-        # Perform a search by keyboard only with 'Bing' search engine.
-        new_tab()
-
-        select_location_bar()
-        paste('moz')
-
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-
-        repeat_key_up(6)
-        key_to_one_off_search(search_with_bing_one_off_string_pattern)
-
-        expected = exists(search_with_bing_one_off_string_pattern, 5)
-        assert expected, 'The search engine in focus is \'Bing\'.'
+        assert scroll_until_pattern_found(bing_one_off_button_highlight_pattern, type, (Key.UP,), 20, 1),\
+            'The \'Bing\' button is highlighted.'
 
         type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(bing_search_results_moz_pattern, 10)
-        assert expected, 'Search results performed with \'Bing\' search engine.'
-
-        # Perform a search by keyboard only with 'Amazon' search engine.
-        new_tab()
+        bing_search_results_localhost_exists = exists(bing_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bing_search_results_localhost_exists, '\'Bing\' search results are opened in the same tab.'
 
         select_location_bar()
-        paste('moz')
+        paste('127.0')
 
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
-        repeat_key_up(5)
-        key_to_one_off_search(search_with_amazon_one_off_string_pattern)
-
-        expected = region.exists(search_with_amazon_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Amazon\'.'
+        assert scroll_until_pattern_found(duck_one_off_button_highlight_pattern, type, (Key.UP,), 20, 1),\
+            'The \'Duck-duck-go\' button is highlighted.'
 
         type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        expected = region.exists(amazon_search_results_moz_pattern, 10)
-        assert expected, 'Search results performed with \'Amazon\' search engine.'
+        bing_search_results_localhost_exists = exists(duck_go_search_result_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bing_search_results_localhost_exists, '\'Duck-duck-go\' search results are opened in the same tab.'
 
-        # Perform a search by keyboard only with 'DuckDuckGo' search engine.
-        new_tab()
-
-        select_location_bar()
-        paste('moz')
-
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-
-        repeat_key_up(4)
-        key_to_one_off_search(search_with_duckduckgo_one_off_string_pattern)
-
-        expected = region.exists(search_with_duckduckgo_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'DuckDuckGo\'.'
-
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
-        expected = region.exists(duckduckgo_search_results_pattern.similar(0.5), 10)
-        assert expected, 'Search results performed with \'DuckDuckGo\' search engine.'
-
-        expected = region.exists(moz_search_duckduckgo_pattern, 10)
-        assert expected, 'Searched text successfully found in the loaded page.'
-
-        # Perform a search by keyboard only with 'eBay' search engine.
-        new_tab()
-
-        select_location_bar()
-        paste('moz')
-
-        # Perform a search by keyboard only with 'Twitter' search engine.
-        new_tab()
-
-        select_location_bar()
-        paste('moz')
-
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-
-        repeat_key_up(3)
-        key_to_one_off_search(search_with_twitter_one_off_string_pattern)
-
-        expected = region.exists(search_with_twitter_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Twitter\'.'
-
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
-        expected = region.exists(new_tab_twitter_search_results_pattern, 10) \
-            or exists(new_tab_twitter_search_results_pattern2, 5)
-        assert expected, 'Search results performed with \'Twitter\' search engine.'
-
-        # Perform a search by keyboard only with 'Wikipedia' search engine.
-        new_tab()
-
-        select_location_bar()
-        paste('moz')
-
-        # Wait a moment for the suggests list to fully populate before stepping down through it.
-        time.sleep(Settings.DEFAULT_UI_DELAY)
-
-        repeat_key_up(2)
-        key_to_one_off_search(search_with_wikipedia_one_off_string_pattern)
-
-        expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)
-        assert expected, 'The search engine in focus is \'Wikipedia\'.'
-
-        type(Key.ENTER)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
-        expected = region.exists(wikipedia_search_results_moz_pattern.similar(0.7), 10)
-        assert expected, 'Search results performed with \'Wikipedia\' search engine.'

@@ -16,8 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
-        localhost = Pattern('localhost.png')
-        localhost_2 = Pattern('localhost_2.png')
+        this_time_search_with = Pattern('this_time_search_with.png')
         twitter_one_off_button = Pattern('twitter_one_off_button.png')
         bing_one_off_button = Pattern('bing_one_off_button.png')
         search_in_new_tab = Pattern('search_in_new_tab.png')
@@ -34,19 +33,11 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('127')
 
-        localhost_string_exists = exists(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert localhost_string_exists, 'Searched string found at the bottom of the drop-down list.'
+        one_off_bar_displayed = exists(this_time_search_with, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         twitter_one_off_button_exists = exists(twitter_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
         assert twitter_one_off_button_exists, 'The \'Twitter\' one-off button found.'
-
-        hover(twitter_one_off_button)
-
-        try:
-            localhost_string_vanished = wait_vanish(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert localhost_string_vanished, 'The \'Twitter\' one-off button is highlighted.'
-        except FindError:
-            raise FindError('The \'Twitter\' one-off button is not highlighted.')
 
         right_click(twitter_one_off_button)
 
@@ -73,19 +64,11 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('127.0')
 
-        localhost_string_exists = exists(localhost_2, FirefoxSettings.FIREFOX_TIMEOUT)
+        localhost_string_exists = exists(this_time_search_with, FirefoxSettings.FIREFOX_TIMEOUT)
         assert localhost_string_exists, 'Searched string found at the bottom of the drop-down list.'
 
         bing_one_off_button_exists = exists(bing_one_off_button, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bing_one_off_button_exists, '\'Bing\' one-off button not found.'
-
-        hover(bing_one_off_button)
-
-        try:
-            localhost_string_vanished = wait_vanish(localhost, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert localhost_string_vanished, 'The \'Bing\' one-off button is highlighted.'
-        except FindError:
-            raise FindError('The \'Bing\' one-off button is not highlighted.')
 
         click(bing_one_off_button)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)

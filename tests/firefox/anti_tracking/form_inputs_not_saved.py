@@ -70,8 +70,8 @@ class Test(FirefoxTest):
 
         close_window()
 
-        private_browsing_image_exists = exists(private_browsing_image_pattern)
-        assert private_browsing_image_exists is not True, 'Normal browsing session is displayed'
+        private_browsing_image_exists = exists(private_browsing_image_pattern, region=Screen.TOP_THIRD)
+        assert private_browsing_image_exists is False, 'Normal browsing session is displayed'
 
         navigate('about:preferences#privacy')
 

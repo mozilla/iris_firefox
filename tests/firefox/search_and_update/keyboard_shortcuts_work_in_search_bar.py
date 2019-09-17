@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         search_using_google_pattern = Pattern('search_using_google.png')
         duckduckgo_search_bar_pattern = Pattern('duckduckgo_search_bar.png').similar(.6)
-        search_duckduckgo_pattern = Pattern('search_duckduckgo.png')
+        search_duckduckgo_hover_pattern = Pattern('search_duckduckgo.png')
         bing_search_engine_pattern = Pattern('bing_search_engine.png')
         google_search_engine_pattern = Pattern('google_search_engine.png')
 
@@ -30,7 +30,7 @@ class Test(FirefoxTest):
         search_bar_location = find(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
         search_bar_width, search_bar_height = LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.get_size()
         search_bar_region = Region(search_bar_location.x, search_bar_location.y, search_bar_width * 3,
-                                   search_bar_height * 10)
+                                   search_bar_height * 20)
 
         # Press ctrl/cmd + k keys.
         select_search_bar()
@@ -42,7 +42,7 @@ class Test(FirefoxTest):
         assert search_using_google is True, '\'Search using Google\' is shown as tooltip.'
 
         # Start typing inside the Search Bar.
-        type('mozilla')
+        type('mozilla', interval=0.5)
 
         # Hover the mouse over the one-click search engines.
         duckduckgo_search_bar = exists(duckduckgo_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
@@ -51,7 +51,7 @@ class Test(FirefoxTest):
 
         hover(duckduckgo_search_bar_pattern)
 
-        search_duckduckgo = exists(search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT, search_bar_region)
+        search_duckduckgo = exists(search_duckduckgo_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT, search_bar_region)
         assert search_duckduckgo is True, 'Search engine is highlighted.'
 
         # While the cursor is on the search toolbar, select the arrow DOWN and then the arrow UP keys.
@@ -76,12 +76,17 @@ class Test(FirefoxTest):
         # Use the tab key to navigate.
         select_search_bar()
 
+        duckduckgo_search_bar = exists(duckduckgo_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       search_bar_region)
+        assert duckduckgo_search_bar is True, 'Search engine is visible.'
+
         for _ in range(3):
             type(Key.TAB)
 
-        search_duckduckgo = exists(search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT, search_bar_region)
-        assert search_duckduckgo is True, 'Pressing tab selects the one-click search engines while the search ' \
-                                          'suggestions are skipped.'
+        duckduckgo_search_bar_hovered = exists(duckduckgo_search_bar_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+                                               search_bar_region)
+        assert duckduckgo_search_bar_hovered is False, 'Pressing tab selects the one-click search engines while ' \
+                                                       'the search suggestions are skipped.'
 
         # Select ctrl/cmd + arrow UP and arrow DOWN keys.
         change_search_next()

@@ -56,7 +56,7 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        expected = exists(history_bookmarks_toolbar_pattern)
+        expected = exists(history_bookmarks_toolbar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, 'History section is displayed in the Bookmarks Toolbar.'
 
         click(history_bookmarks_toolbar_pattern)
@@ -66,6 +66,10 @@ class Test(FirefoxTest):
         # Navigate to a page from Today's history, in our case the Iris page.
         type(Key.DOWN)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+
+        type(Key.RIGHT)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
+
         type(Key.RIGHT)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         type(Key.ENTER)

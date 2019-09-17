@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         change_preference('browser.search.widget.inNavBar', True)
 
         select_search_bar()
-        paste('test')
+        type('test', interval=0.25)
 
         expected = exists(bing_search_bar_pattern, 10)
         assert expected is True, 'Wikipedia search engine is successfully displayed.'

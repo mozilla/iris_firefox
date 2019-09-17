@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         change_preference('browser.search.widget.inNavBar', True)
 
         select_search_bar()
-        paste('test')
+        type('test', interval=0.25)
         key_down(Key.ALT)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)

@@ -19,7 +19,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         default_zoom_level_toolbar_customize_page_pattern = NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE
         zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
-        hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU.similar(0.95)
+        hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
         toolbar_pattern = NavBar.TOOLBAR
         restore_previous_session_pattern = Pattern('hamburger_restore_previous_session.png')
         firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
@@ -132,9 +132,7 @@ class Test(FirefoxTest):
         close_customize_page()
 
         # Quit via Hamburger menu
-        if OSHelper.is_mac():
-            type('q', KeyModifier.CMD)
-        else:
+        if not OSHelper.is_mac():
             click(hamburger_menu_button_location, click_duration)
 
             click(hamburger_menu_quit_item_location, click_duration)

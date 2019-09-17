@@ -24,7 +24,7 @@ class Test(FirefoxTest):
             Pattern('remember_browsing_search_clear_history_unticked.png')
 
         if OSHelper.is_windows():
-            scroll_length = Screen.SCREEN_HEIGHT // 2
+            scroll_length = Screen.SCREEN_HEIGHT // 2 + 100
         elif OSHelper.is_linux():
             scroll_length = 5
         else:
@@ -52,7 +52,9 @@ class Test(FirefoxTest):
 
         click(remember_history_pattern)
 
-        use_custom_settings_for_history = exists(use_custom_settings_for_history_pattern)
+        use_custom_settings_for_history = scroll_until_pattern_found(use_custom_settings_for_history_pattern,
+                                                                     Mouse().scroll, (0, -scroll_length), 100)
+
         assert use_custom_settings_for_history, 'The option "Use custom settings for history" found.'
 
         click(use_custom_settings_for_history_pattern)

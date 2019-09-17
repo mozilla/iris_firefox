@@ -47,7 +47,7 @@ class Test(FirefoxTest):
 
         select_search_bar()
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_search_not_displayed = exists(search_suggestions_not_displayed_search_bar_pattern,
                                                   FirefoxSettings.FIREFOX_TIMEOUT)
@@ -59,7 +59,7 @@ class Test(FirefoxTest):
 
         click(google_logo_content_search_field_pattern)
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_content_not_displayed = exists(search_suggestions_not_displayed_content_search_pattern,
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
@@ -78,7 +78,7 @@ class Test(FirefoxTest):
 
         select_search_bar()
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_search_displayed = exists(search_suggestions_not_displayed_search_bar_pattern,
                                               FirefoxSettings.SITE_LOAD_TIMEOUT)
@@ -89,7 +89,7 @@ class Test(FirefoxTest):
 
         click(google_logo_content_search_field_pattern)
 
-        paste('test')
+        type('test', interval=0.25)
 
         suggestions_content_displayed = exists(search_suggestions_not_displayed_content_search_pattern,
                                                FirefoxSettings.FIREFOX_TIMEOUT)

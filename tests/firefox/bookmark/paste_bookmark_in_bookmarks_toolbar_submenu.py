@@ -75,7 +75,7 @@ class Test(FirefoxTest):
         hover(firefox_menu_bookmarks_toolbar_pattern)
 
         mozilla_about_us_bookmark_exists = exists(mozilla_about_us_bookmark_pattern,
-                                                  FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_about_us_bookmark_exists is True, 'Mozilla About Us bookmark is displayed in Firefox menu > ' \
                                                          'Bookmarks > Bookmarks Toolbar'
 
@@ -86,6 +86,6 @@ class Test(FirefoxTest):
         open_bookmarks_toolbar()
 
         bookmark_exists_in_toolbar = exists(mozilla_about_us_bookmark_toolbar_pattern,
-                                            FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+                                            FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmark_exists_in_toolbar is True, 'The copied file/folder is correctly pasted in the ' \
                                                    '**Bookmarks Toolbar** section.'

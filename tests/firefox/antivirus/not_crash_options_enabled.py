@@ -32,12 +32,15 @@ class Test(FirefoxTest):
         assert exists(sound_on_pattern, 10), 'The video is properly loaded and displayed.'
 
         navigate('https://soundcloud.com/martycanfly-1/never-gonna-give-you-up-rick')
-        assert exists(soundcloud_logo_pattern, 100), 'Soundcloud is properly loaded.'
+        assert exists(soundcloud_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT),\
+            'Soundcloud is properly loaded.'
 
-        assert exists(sound_on_pattern, 10), 'The sound is properly loaded and played.'
+        assert exists(sound_on_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT),\
+            'The sound is properly loaded and played.'
 
         navigate('https://images.google.com/?gws_rd=ssl&hl=en')
-        assert exists(google_images_page_mark_pattern, 20), 'Google images site is properly loaded.'
+        assert exists(google_images_page_mark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT),\
+            'Google images site is properly loaded.'
 
         paste('cute kittens:3')
         type(Key.ENTER)

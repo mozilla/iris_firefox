@@ -88,7 +88,7 @@ class Test(FirefoxTest):
 
         # Perform a search using the awesome bar and then clear the content from it.
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
@@ -102,7 +102,7 @@ class Test(FirefoxTest):
 
         # Perform a search using the search bar.
         select_search_bar()
-        paste('test')
+        type('test', interval=0.25)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()

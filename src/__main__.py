@@ -73,6 +73,10 @@ def main():
             pytest_args.append('-vs')
             pytest_args.append('-r ')
             pytest_args.append('-s')
+            pytest_args.append('--force-flaky')
+            pytest_args.append('--max-runs')
+            pytest_args.append(str(get_core_args().max_tries))
+
             target_plugin = get_target(args.target)
             if settings is not None:
                 logger.debug('Passing settings to target: %s' % settings)

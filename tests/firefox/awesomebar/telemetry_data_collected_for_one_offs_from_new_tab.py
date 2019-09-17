@@ -33,7 +33,7 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('Search Bar is NOT present on the page, aborting.')
 
-        paste('moz')
+        type('moz', interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
