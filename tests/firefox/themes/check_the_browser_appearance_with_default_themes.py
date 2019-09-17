@@ -52,8 +52,14 @@ class Test(FirefoxTest):
 
         # Enable the LIGHT theme and check that options from menu bar work correctly using the selected theme.
         next_tab()
-        click(AboutAddons.THEMES)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        expected = exists(AboutAddons.THEMES, 10)
+        assert expected, 'Add-ons page is in focus.'
+
+        navigate_back()
+
+        expected = exists(AboutAddons.Themes.LIGHT_THEME, 10)
+        assert expected, 'Light theme option found in the page.'
+
         click(AboutAddons.Themes.LIGHT_THEME)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
@@ -86,7 +92,14 @@ class Test(FirefoxTest):
 
         # Enable the DARK theme and check that options from menu bar work correctly using the selected theme.
         next_tab()
-        click(AboutAddons.THEMES)
+        expected = exists(AboutAddons.THEMES, 10)
+        assert expected, 'Add-ons page is in focus.'
+
+        navigate_back()
+
+        expected = exists(AboutAddons.Themes.DARK_THEME, 10)
+        assert expected, 'Dark theme option found in the page.'
+
         click(AboutAddons.Themes.DARK_THEME)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
