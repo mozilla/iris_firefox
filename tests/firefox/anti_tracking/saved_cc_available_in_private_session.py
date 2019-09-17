@@ -84,7 +84,8 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('Entered data did not vanish after clicking the \'Submit button\'')
 
-        saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern,
+                                                  FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert saved_credit_cards_button_exists, '\'Saved credit cards\' button is displayed on the Preferences page'
 
         click(saved_credit_cards_button_pattern)
@@ -118,7 +119,8 @@ class Test(FirefoxTest):
 
         paste('Maria')
 
-        expiration_month_dropdown_exists = exists(expiration_month_dropdown_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        expiration_month_dropdown_exists = exists(expiration_month_dropdown_pattern,
+                                                  FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert expiration_month_dropdown_exists, '\'Expiration month\' dropdown is displayed on the ' \
                                                  '\'Edit Credit Card\' popup'
 
@@ -143,7 +145,8 @@ class Test(FirefoxTest):
 
         click(expiration_year_dropdown_item_pattern)
 
-        billing_address_dropdown_exists = exists(billing_address_dropdown_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        billing_address_dropdown_exists = exists(billing_address_dropdown_pattern,
+                                                 FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert billing_address_dropdown_exists, '\'Billing address\' dropdown is displayed on the ' \
                                                 '\'Edit Credit Card\' popup'
 
