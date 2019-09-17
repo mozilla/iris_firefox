@@ -19,21 +19,24 @@ class Test(FirefoxTest):
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
 
-        search_bar_displayed = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        search_bar_displayed = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(.7),
+                                      FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert search_bar_displayed, 'Search bar is displayed'
         search_bar_location = find(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
         search_bar_width, search_bar_height = LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.get_size()
+        suggestions_region = Region(search_bar_location.x, search_bar_location.y + search_bar_height,
+                                    search_bar_width * 2, Screen.SCREEN_HEIGHT/2)
 
         select_search_bar()
         type('test', interval=0.25)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        click(search_bar_location.offset(search_bar_width, 5))
+        # click(search_bar_location.offset(search_bar_width, 5))
 
-        expected = exists(test_bold_pattern, 10)
+        expected = exists('test', 10, suggestions_region)
         assert expected is True, 'Search suggestions are displayed in the search bar.'
 
-        middle_click(test_bold_pattern)
+        middle_click('test', region=suggestions_region)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         expected = exists(test_bold_pattern, 10)
