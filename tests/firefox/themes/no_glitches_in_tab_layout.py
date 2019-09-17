@@ -192,8 +192,8 @@ class Test(FirefoxTest):
 
         navigate_back()
 
-        expected = exists(AboutAddons.Themes.DEFAULT_THEME, 10)
-        assert expected, 'Default theme option found in the page.'
+        expected = exists(AboutAddons.Themes.DARK_THEME, 10)
+        assert expected, 'Dark theme option found in the page.'
 
         click(AboutAddons.Themes.DARK_THEME)
 
