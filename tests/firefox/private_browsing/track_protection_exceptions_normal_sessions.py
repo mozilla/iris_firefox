@@ -133,10 +133,11 @@ class Test(FirefoxTest):
                                                  ' as exception inside the panel.'
 
         click(remove_website_button_pattern)
-        click(AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON)
         if OSHelper.is_mac():
             save_changes_button_pattern = Pattern('save_changes_button.png')
             click(save_changes_button_pattern)
+        else:
+            click(AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON)
         click(manage_exceptions_button_pattern)
 
         itstrap_site_exception_displayed = exists(itstrap_site_exception_selected_pattern)

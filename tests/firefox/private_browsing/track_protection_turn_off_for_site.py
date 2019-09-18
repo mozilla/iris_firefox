@@ -60,7 +60,8 @@ class Test(FirefoxTest):
         trackers_button_available = exists(trackers_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert trackers_button_available, '\'Trackers\' button is displayed' \
                                           ' on the \'Site information\' panel'
-
+        if OSHelper.is_mac():
+            time.sleep(1)  # to prevent clicks when pop-up is not fully loaded
         click(trackers_button_pattern)
 
         trackers_popup_displayed = exists(trackers_popup_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
