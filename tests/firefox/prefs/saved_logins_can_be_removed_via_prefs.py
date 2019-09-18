@@ -88,10 +88,10 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
-        saved_logins_opened = exists(first_saved_login_pattern.similar(0.7))
+        saved_logins_opened = exists(first_saved_login_pattern)
         assert saved_logins_opened, 'Saved logins sub-window is opened. The list is successfully populated'
 
-        second_login_saved = exists(last_saved_login_pattern.similar(0.7))
+        second_login_saved = exists(last_saved_login_pattern)
         assert second_login_saved, 'Second login was saved. The list is successfully populated. '
 
         credentials_can_be_removed = exists(remove_password_pattern)

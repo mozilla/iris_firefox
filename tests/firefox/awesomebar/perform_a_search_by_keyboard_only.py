@@ -30,7 +30,7 @@ class Test(FirefoxTest):
             bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
         bing_search_results_pattern = Pattern('bing_search_results_localhost.png')
         duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png').similar(.9)
-        duck_go_search_result_pattern = Pattern('duck_go_search_result.png').similar(.7)
+        duck_go_search_result_pattern = Pattern('duck_go_search_result.png')
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 

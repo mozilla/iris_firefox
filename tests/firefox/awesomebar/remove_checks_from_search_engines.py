@@ -47,7 +47,7 @@ class Test(FirefoxTest):
 
         for index, pattern in enumerate(pattern_list):
             if OSHelper.is_mac():
-                expected = region.exists(pattern.similar(0.7), 10)
+                expected = region.exists(pattern, 10)
                 assert expected, 'Element found at position {} in the list found.'.format(index)
             else:
                 expected = region.exists(pattern.similar(0.8), 10)

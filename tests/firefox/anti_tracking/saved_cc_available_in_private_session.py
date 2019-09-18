@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         card_type_dropdown_item_pattern = Pattern('card_type_dd_item.png')
         card_type_dropdown_pattern = Pattern('card_type_dropdown.png')
         card_number_field_pattern = Pattern('card_number_field.png')
-        visa_logo_pattern = Pattern('visa_logo.png').similar(0.7)
+        visa_logo_pattern = Pattern('visa_logo.png')
         submit_button_pattern = Pattern('submit_button.png')
         save_button_pattern = Pattern('save_button.png')
         add_button_pattern = Pattern('add_button.png')

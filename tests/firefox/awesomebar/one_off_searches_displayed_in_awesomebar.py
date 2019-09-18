@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         search_settings_pattern = Pattern('search_settings.png')
-        amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png').similar(0.7)
+        amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
         bing_one_off_button_pattern = Pattern('bing_one_off_button.png')
         duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
@@ -41,7 +41,7 @@ class Test(FirefoxTest):
         # Check that the one-off list is displayed in the awesomebar.
         for i in range(pattern_list.__len__()):
             if OSHelper.is_mac():
-                expected = region.exists(pattern_list[i].similar(0.7), 10)
+                expected = region.exists(pattern_list[i], 10)
                 assert expected, 'Element found at position ' + i.__str__() + ' in the list found.'
             else:
                 expected = region.exists(pattern_list[i].similar(0.9), 10)

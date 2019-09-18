@@ -68,7 +68,7 @@ class Test(FirefoxTest):
                                              FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert hamburger_menu_panel_exists is True, 'Hamburger menu panel is displayed'
 
-        hover(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(.7))
+        hover(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
         scroll_until_pattern_found(soap_scroll_content_pattern, Mouse().scroll, (None, -scroll_value), 100,
                                    FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
@@ -97,7 +97,7 @@ class Test(FirefoxTest):
                                                FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert site_information_panel_exists is True, 'Site information panel is displayed'
 
-        hover(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(.7))
+        hover(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
         scroll_until_pattern_found(soap_scroll_content_pattern, Mouse().scroll, (None, -scroll_value), 100,
                                    FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
@@ -125,7 +125,7 @@ class Test(FirefoxTest):
         star_panel_exists = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert star_panel_exists is True, 'Star panel is displayed'
 
-        hover(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(.7))
+        hover(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
         scroll_until_pattern_found(soap_scroll_content_pattern, Mouse().scroll, (None, -scroll_value), 100,
                                    FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)

@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         expected = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, 10)
         assert expected is True, 'Search bar successfully enabled in the page.'
 
-        click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(.7))
+        click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 

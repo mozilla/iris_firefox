@@ -30,7 +30,7 @@ class Test(FirefoxTest):
         prefs_unchecked_box_pattern = Pattern('prefs_unchecked_box.png')
         restart_browser_pattern = Pattern('restart_browser.png')
         download_pdf_pattern = Pattern('download_pdf_button.png')
-        pdf_downloaded = Pattern('downloaded_pdf.png').similar(.7)
+        pdf_downloaded = Pattern('downloaded_pdf.png')
         name_field_pattern = Pattern('name_field.png')
         password_field_pattern = Pattern('password_field.png')
 

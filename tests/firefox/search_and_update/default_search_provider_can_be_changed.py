@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         change_search_settings_pattern = Pattern('change_search_settings.png')
-        about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png').similar(0.7)
+        about_preferences_search_page_pattern = Pattern('about_preferences_search_page.png')
         default_search_engine_dropdown_pattern = Pattern('default_search_engine_dropdown.png')
 
         change_preference('browser.search.widget.inNavBar', True)

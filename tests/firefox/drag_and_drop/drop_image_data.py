@@ -20,7 +20,7 @@ class Test(BaseTest):
         drop_image_data_radiobutton_selected_pattern = Pattern('drop_image_data_selected.png')
         drop_image_data_radiobutton_pattern = Pattern('drop_image_data.png')
         browser_console_title_pattern = Pattern('browser_console_title.png')
-        drop_here_pattern = Pattern('drop_here.png').similar(0.7)
+        drop_here_pattern = Pattern('drop_here.png')
         image_from_page_pattern = Pattern('image_from_wiki.png')
         link_from_page_pattern = Pattern('link.png')
         not_matching_message_pattern = Pattern('drop_not_matching.png')

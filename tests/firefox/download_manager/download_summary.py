@@ -41,7 +41,7 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
         assert expected is True, 'The 1GB download in progress is properly displayed.'
 
-        expected = exists(DownloadManager.DownloadsPanel.TIME_LEFT.similar(0.7), 10)
+        expected = exists(DownloadManager.DownloadsPanel.TIME_LEFT, 10)
         assert expected is True, 'Time left information is displayed.'
 
         expected = exists(DownloadManager.DownloadsPanel.BYTES_SECOND, 10)
