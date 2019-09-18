@@ -78,6 +78,9 @@ class Test(FirefoxTest):
 
         click(tracking_protection_shield_pattern)
 
+        if OSHelper.is_mac():
+            time.sleep(1)  # wait for the pop-up loading, reasonable only for mac
+
         turn_off_blocking_displayed = exists(turn_off_blocking_pattern)
         assert turn_off_blocking_displayed, 'Turn off blocking for this site is displayed.'
 
@@ -132,6 +135,9 @@ class Test(FirefoxTest):
 
         click(remove_website_button_pattern)
         click(AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON)
+        if OSHelper.is_mac():
+            save_changes_button_pattern = Pattern('save_changes_button.png')
+            click(save_changes_button_pattern)
         click(manage_exceptions_button_pattern)
 
         itstrap_site_exception_displayed = exists(itstrap_site_exception_selected_pattern)

@@ -56,6 +56,9 @@ class Test(FirefoxTest):
 
         click(tracking_protection_shield_activated_pattern)
 
+        if OSHelper.is_mac():
+            time.sleep(1)  # wait for the pop-up loading, reasonable only for mac
+
         protection_popup_opened = exists(blocking_turn_off_pattern)
         assert protection_popup_opened, "The site information panel is displayed."
 
