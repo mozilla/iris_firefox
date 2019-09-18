@@ -23,6 +23,9 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
+        restore_firefox_focus()
+        reset_mouse()
+
         mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, 'Mozilla page loaded successfully.'
 
