@@ -38,7 +38,7 @@ class Test(FirefoxTest):
                 logger.info('Current version: %s, updating to version: %s.' % (current_version, update_step))
 
                 open_about_firefox()
-                expected = exists(update_restart_pattern, 200)
+                expected = exists(update_restart_pattern.similar(.7), 200)
                 assert expected, 'Restart for application update button found.'
                 type(Key.ESC)
 

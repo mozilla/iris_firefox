@@ -76,6 +76,6 @@ class Test(FirefoxTest):
 
         click(history_sidebar_sort_by_most_visited_pattern, 1)
 
-        history_sidebar_items_sorted = exists(history_sidebar_items_sorted_pattern,
+        history_sidebar_items_sorted = exists(history_sidebar_items_sorted_pattern.similar(0.7),
                                               Settings.SITE_LOAD_TIMEOUT)
         assert history_sidebar_items_sorted is True, 'History list is sorted properly by most visited.'

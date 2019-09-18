@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         page_info_window_pattern = Pattern('technical_details.png')
-        tls_check_pattern = Pattern('tls_check.png')
+        tls_check_pattern = Pattern('tls_check.png').similar(0.7)
         show_connection_details_button_pattern = Pattern('show_connection_details_button.png')
         more_information_button_pattern = Pattern('more_information_button.png')
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')

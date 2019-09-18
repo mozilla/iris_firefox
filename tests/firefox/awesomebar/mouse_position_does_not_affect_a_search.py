@@ -32,7 +32,7 @@ class Test(FirefoxTest):
         select_location_bar()
         type('moz', interval=0.25)
 
-        search_engine_logo_icon = exists(duck_duck_go_one_off_button, Settings.FIREFOX_TIMEOUT,
+        search_engine_logo_icon = exists(duck_duck_go_one_off_button.similar(0.7), Settings.FIREFOX_TIMEOUT,
                                          region=top_two_third_screen_region)
         assert search_engine_logo_icon, 'The \'DuckDuckGo\' one-off button found.'
 
@@ -53,7 +53,7 @@ class Test(FirefoxTest):
         # Type "bug" in the awesomebar to search for the page from step 2 (bookmarked page).
         # Search results are listed.
 
-        search_results_listed = exists(search_results_listed_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        search_results_listed = exists(search_results_listed_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_results_listed, 'Search results are listed.'
 
         # 5. Check the mouse cursor is over any of the search provider icons at the bottom of the results.
@@ -70,7 +70,7 @@ class Test(FirefoxTest):
         type(Key.DOWN)
 
         # The result is focused.
-        result_is_focused = exists(result_is_focused_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        result_is_focused = exists(result_is_focused_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert result_is_focused, 'The result is focused.'
 
         # Press Enter to perform the load of the page.

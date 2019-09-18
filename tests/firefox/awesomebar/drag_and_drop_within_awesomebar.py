@@ -38,7 +38,7 @@ class Test(FirefoxTest):
             raise FindError('The text is not present on the page, aborting.')
 
         try:
-            wait(highlighted_text, 10)
+            wait(highlighted_text.similar(0.7), 10)
             logger.debug('Selected text is present on the page.')
         except FindError:
             raise FindError('Selected text is not present on the page, aborting.')

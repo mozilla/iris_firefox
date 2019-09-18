@@ -30,7 +30,7 @@ class Test(FirefoxTest):
         prefs_unchecked_box_pattern = Pattern('prefs_unchecked_box.png')
         download_pdf_pattern = Pattern('download_pdf_button.png')
         pdf_downloaded_pattern = Pattern('downloaded_pdf.png')
-        clear_browsing_download_pattern = Pattern('clear_browsing_download.png')
+        clear_browsing_download_pattern = Pattern('clear_browsing_download.png').similar(.7)
         clear_form_search_patten = Pattern('clear_form_search.png')
 
         pdf_file = self.get_asset_path('Faust.pdf')

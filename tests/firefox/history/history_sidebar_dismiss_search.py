@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         profile=Profiles.BRAND_NEW
     )
     def run(self, firefox):
-        history_sidebar_focus_pattern = Pattern('history_sidebar_focus.png')
+        history_sidebar_focus_pattern = Pattern('history_sidebar_focus.png').similar(0.7)
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         x_button_search_history_box_pattern = Sidebar.SidebarHeader.CLEAR_SEARCH_BOX

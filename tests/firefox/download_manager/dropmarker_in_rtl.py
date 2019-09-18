@@ -26,7 +26,7 @@ class Test(FirefoxTest):
 
         # Change firefox alignment to be Right-To-Left.
         navigate('about:config')
-        click(AboutConfig.ACCEPT_RISK)
+        click(AboutConfig.ACCEPT_RISK.similar(0.7))
 
         expected = region.exists(AboutConfig.DEFAULT_STATUS_PATTERN, 10)
         assert expected is True, 'The \'about:config\' page successfully loaded and default status is correct.'

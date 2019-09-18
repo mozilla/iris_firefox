@@ -15,10 +15,10 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH
     )
     def run(self, firefox):
-        focus_tab_pattern = Pattern('focus_tab.png')
+        focus_tab_pattern = Pattern('focus_tab.png').similar(.7)
         focus_pinned_tab_pattern = Pattern('focus_pinned_tab.png')
         firefox_tab_pattern = Pattern('firefox_tab.png')
-        firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
+        firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png').similar(.7)
         pin_tab_item_pattern = Pattern('pin_tab_item.png')
 
         click_duration = 2

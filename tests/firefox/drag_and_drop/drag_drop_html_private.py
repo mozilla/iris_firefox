@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         drop_html_data_button_pattern = Pattern('drop_html_data_button.png')
         drop_html_data_selected_button_pattern = Pattern('drop_html_data_selected_button.png')
-        drop_here_pattern = Pattern('drop_here.png')
+        drop_here_pattern = Pattern('drop_here.png').similar(0.7)
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         link_to_drag_drop_pattern = Pattern('link_to_drag_drop.png')
         matching_message_pattern = Pattern('matching_message.png')

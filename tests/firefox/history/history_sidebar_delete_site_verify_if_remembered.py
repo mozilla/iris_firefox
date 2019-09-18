@@ -55,7 +55,7 @@ class Test(FirefoxTest):
         click(history_today_sidebar_pattern)
 
         # Delete a page from the History sidebar.
-        mozilla_bookmark_small_exists = left_upper_corner.exists(mozilla_bookmark_small_pattern,
+        mozilla_bookmark_small_exists = left_upper_corner.exists(mozilla_bookmark_small_pattern.similar(0.7),
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_bookmark_small_exists, 'Mozilla page is displayed in the History list successfully.'
 

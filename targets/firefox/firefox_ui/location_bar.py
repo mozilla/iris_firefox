@@ -19,7 +19,7 @@ class LocationBar(object):
     STAR_BUTTON_STARRED = Pattern('star_button_starred.png')
 
     URLBAR_ZOOM_BUTTON_30 = Pattern('urlbar_zoom_button_30.png')
-    URLBAR_ZOOM_BUTTON_90 = Pattern('urlbar_zoom_button_90.png')
+    URLBAR_ZOOM_BUTTON_90 = Pattern('urlbar_zoom_button_90.png').similar(0.7)
     URLBAR_ZOOM_BUTTON_110 = Pattern('urlbar_zoom_button_110.png')
     URLBAR_ZOOM_BUTTON_300 = Pattern('urlbar_zoom_button_300.png')
 

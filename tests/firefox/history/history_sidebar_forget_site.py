@@ -41,7 +41,7 @@ class Test(FirefoxTest):
         click(history_today_sidebar_pattern)
 
         # Forget a page from the History sidebar.
-        expected_4 = left_upper_corner.exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10)
+        expected_4 = left_upper_corner.exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR.similar(0.7), 10)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
         right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action='f')

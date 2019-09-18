@@ -42,7 +42,7 @@ class Test(FirefoxTest):
             assert exists(hover_maximize_control_pattern, 10), 'Hover over the \'maximize\' button works correctly.'
 
             Mouse().move(Location(middle.x - 35, middle.y + 5))
-            assert exists(hover_close_control_pattern, 10), \
+            assert exists(hover_close_control_pattern.similar(0.7), 10), \
                 'Hover over the \'close\' button works correctly.'
         else:
             hover(window_controls_close_pattern)
