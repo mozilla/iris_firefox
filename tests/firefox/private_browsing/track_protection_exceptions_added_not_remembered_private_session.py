@@ -56,15 +56,15 @@ class Test(FirefoxTest):
 
         click(tracking_protection_shield_activated_pattern)
 
-        if OSHelper.is_mac():
-            time.sleep(1)  # wait for the pop-up loading, reasonable only for mac
+        time.sleep(1)  # wait for the pop-up loading
 
         protection_popup_opened = exists(blocking_turn_off_pattern)
         assert protection_popup_opened, "The site information panel is displayed."
 
         click(blocking_turn_off_pattern)
 
-        type(Key.ESC)
+        type(Key.ESC)  # close protection pop-up
+
         tracking_protection_shield_deactivated_exists = exists(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
         assert tracking_protection_shield_deactivated_exists, 'The tracking protection shield is displayed' \
                                                               ' as deactivated (strikethrough).'
