@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         phrase_from_wiki_page_pattern = Pattern('wiki_article_header.png')
         image_from_wiki_article_pattern = Pattern("image_from_wiki.png")
         matching_message_pattern = Pattern('matching_message.png')
-        drop_stuff_here_area_pattern = Pattern('drop_here.png')
+        drop_stuff_here_area_pattern = Pattern('drop_here.png').similar(0.7)
 
         navigate('https://mystor.github.io/dragndrop/')
 

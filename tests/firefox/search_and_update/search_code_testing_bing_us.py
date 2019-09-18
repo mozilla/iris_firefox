@@ -23,7 +23,7 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#search')
 
-        default_search_engine_google_exists = exists(default_search_engine_google_pattern,
+        default_search_engine_google_exists = exists(default_search_engine_google_pattern.similar(0.7),
                                                      FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_search_engine_google_exists is True, 'Google is the default search engine.'
 

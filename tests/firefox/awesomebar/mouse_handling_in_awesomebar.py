@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
-        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.7)
         search_settings_pattern = Pattern('search_settings.png')
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
 

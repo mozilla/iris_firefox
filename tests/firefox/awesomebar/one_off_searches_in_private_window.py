@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png').similar(0.6)
         new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png').similar(0.6)
         google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
-        magnifying_glass_pattern = Pattern('magnifying_glass.png')
+        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
         test_pattern = Pattern('test.png')
         this_time_search_with_pattern = Pattern('this_time_search_with.png')
 

@@ -122,7 +122,7 @@ class Test(FirefoxTest):
 
         click(NavBar.DOWNLOADS_BUTTON_BLUE)
 
-        expected = exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED, 10)
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED.similar(0.7), 10)
         assert expected is True, 'The 10MB download is complete.'
 
         file_10_mb = find(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED)
