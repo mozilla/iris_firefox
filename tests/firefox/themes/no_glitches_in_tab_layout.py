@@ -24,6 +24,9 @@ class Test(FirefoxTest):
         close_tab_hover = Pattern('close_tab_hover.png').similar(0.7)
         close_tab_hover_dark_theme = Pattern('close_tab_hover_dark_theme.png')
 
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 5)
+
         open_addons()
         previous_tab()
         close_tab()
@@ -63,34 +66,25 @@ class Test(FirefoxTest):
             if expected:
                 inactive_tab_location = find(mozilla_tab_not_focused)
 
-                tab_title_width, tab_title_height = mozilla_tab_not_focused.get_size()
-
-                active_tab_region = Region(inactive_tab_location.x - 5, inactive_tab_location.y - tab_title_height,
-                                           tab_title_width * 4, tab_title_height * 10)
-
                 hover(inactive_tab_location)
 
-                expected = exists(mozilla_hover, 10, region=active_tab_region)
+                expected = exists(mozilla_hover, 10, region=tabs_region)
                 assert expected, 'Mozilla page is hovered.'
 
                 click(inactive_tab_location)
 
-                expected = exists(close_tab_button, 10, region=active_tab_region)
+                expected = exists(close_tab_button, 10, region=tabs_region)
                 assert expected, 'Close tab button is visible.'
 
                 close_width, close_height = close_tab_button.get_size()
 
-                close_tab_button_location = find(close_tab_button, active_tab_region)
+                close_tab_button_location = find(close_tab_button, tabs_region)
                 close_click_location = Location(close_tab_button_location.x + close_width / 2,
                                                 close_tab_button_location.y + close_width / 2)
 
-                close_tab_hover_text_region = Region(close_tab_button_location.x-close_width,
-                                                     close_tab_button_location.y,
-                                                     close_width * 10, close_height*10)
-
                 hover(close_click_location)
 
-                expected = exists(close_tab_hover, 10, close_tab_hover_text_region)
+                expected = exists(close_tab_hover, 10, tabs_region)
                 assert expected, 'Close button is hovered.'
 
                 click(close_click_location)
@@ -145,35 +139,26 @@ class Test(FirefoxTest):
             if expected:
                 inactive_tab_location = find(mozilla_tab_not_focused_light_theme)
 
-                tab_title_width, tab_title_height = mozilla_tab_not_focused_light_theme.get_size()
-
-                active_tab_region = Region(inactive_tab_location.x-5, inactive_tab_location.y - tab_title_height,
-                                           tab_title_width * 4, tab_title_height * 10)
-
                 hover(inactive_tab_location)
 
-                expected = exists(mozilla_hover, 10, region=active_tab_region)
+                expected = exists(mozilla_hover, 10, region=tabs_region)
                 assert expected, 'Mozilla page is hovered.'
 
                 click(inactive_tab_location)
 
-                expected = exists(close_tab_button, 10, region=active_tab_region)
+                expected = exists(close_tab_button, 10, region=tabs_region)
                 assert expected, 'Close tab button is visible.'
 
-                close_tab_button_location = find(close_tab_button, active_tab_region)
+                close_tab_button_location = find(close_tab_button, tabs_region)
 
                 close_width, close_height = close_tab_button.get_size()
 
                 close_click_location = Location(close_tab_button_location.x + close_width / 2,
                                                 close_tab_button_location.y + close_width / 2)
 
-                close_tab_hover_text_region = Region(close_tab_button_location.x-close_width,
-                                                     close_tab_button_location.y,
-                                                     close_width * 10, close_height*10)
-
                 hover(close_click_location)
 
-                expected = exists(close_tab_hover, 10, close_tab_hover_text_region)
+                expected = exists(close_tab_hover, 10, tabs_region)
                 assert expected, 'Close button is hovered.'
 
                 click(close_click_location)
@@ -228,35 +213,26 @@ class Test(FirefoxTest):
             if expected:
                 inactive_tab_location = find(mozilla_tab_not_focused)
 
-                tab_title_width, tab_title_height = mozilla_tab_not_focused.get_size()
-
-                active_tab_region = Region(inactive_tab_location.x-5, inactive_tab_location.y - tab_title_height,
-                                           tab_title_width * 4, tab_title_height * 10)
-
                 hover(inactive_tab_location)
 
-                expected = exists(mozilla_hover_dark_theme, 10, region=active_tab_region)
+                expected = exists(mozilla_hover_dark_theme, 10, region=tabs_region)
                 assert expected, 'Mozilla page is hovered.'
 
                 click(inactive_tab_location)
 
-                expected = exists(close_tab_button_dark_theme, 10, region=active_tab_region)
+                expected = exists(close_tab_button_dark_theme, 10, region=tabs_region)
                 assert expected, 'Close tab button is visible.'
 
-                close_tab_dark_button_location = find(close_tab_button_dark_theme, active_tab_region)
+                close_tab_dark_button_location = find(close_tab_button_dark_theme, tabs_region)
 
                 close_width, close_height = close_tab_button_dark_theme.get_size()
 
                 close_dark_click_location = Location(close_tab_dark_button_location.x + close_width / 2,
                                                      close_tab_dark_button_location.y + close_width / 2)
 
-                close_tab_hover_text_region = Region(close_tab_dark_button_location.x-close_width,
-                                                     close_tab_dark_button_location.y,
-                                                     close_width * 10, close_height*10)
-
                 hover(close_dark_click_location)
 
-                expected = exists(close_tab_hover_dark_theme, 10, close_tab_hover_text_region)
+                expected = exists(close_tab_hover_dark_theme, 10, tabs_region)
                 assert expected, 'Close button is hovered.'
 
                 click(close_dark_click_location)
