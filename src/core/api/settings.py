@@ -33,7 +33,7 @@ class _Settings:
     mouse_scroll_step           -   The number of pixels for a vertical/horizontal scroll event.
     """
 
-    DEFAULT_MIN_SIMILARITY = 0.7
+    DEFAULT_MIN_SIMILARITY = 0.8
     DEFAULT_SLOW_MOTION_DELAY = 2
     DEFAULT_OBSERVE_MIN_CHANGED_PIXELS = 50
     DEFAULT_TYPE_DELAY = 0
