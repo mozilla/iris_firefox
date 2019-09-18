@@ -73,6 +73,8 @@ class Test(FirefoxTest):
 
                 click(inactive_tab_location)
 
+                time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
                 expected = exists(close_tab_button, 10, region=tabs_region)
                 assert expected, 'Close tab button is visible.'
 
@@ -147,6 +149,8 @@ class Test(FirefoxTest):
                 assert expected, 'Mozilla page is hovered.'
 
                 click(inactive_tab_location)
+
+                time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
                 expected = exists(close_tab_button, 10, region=tabs_region)
                 assert expected, 'Close tab button is visible.'
@@ -223,6 +227,8 @@ class Test(FirefoxTest):
                 assert expected, 'Mozilla page is hovered.'
 
                 click(inactive_tab_location)
+
+                time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
                 expected = exists(close_tab_button_dark_theme, 10, region=tabs_region)
                 assert expected, 'Close tab button is visible.'
