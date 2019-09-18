@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         close_tab_hover_dark_theme = Pattern('close_tab_hover_dark_theme.png')
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
-        tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 5)
+        tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 6)
 
         open_addons()
         previous_tab()
@@ -95,6 +95,8 @@ class Test(FirefoxTest):
             else:
                 max_attempts = 0
 
+        open_addons()
+        previous_tab()
         close_tab()
 
         # LIGHT theme.
@@ -169,6 +171,8 @@ class Test(FirefoxTest):
             else:
                 max_attempts = 0
 
+        open_addons()
+        previous_tab()
         close_tab()
 
         # DARK theme.
