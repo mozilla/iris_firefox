@@ -82,7 +82,7 @@ class Test(FirefoxTest):
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Download button found in the page.'
         click(NavBar.DOWNLOADS_BUTTON)
-        expected = exists(DownloadFiles.DOWNLOADS_PANEL_BADREP_COMPLETED.similar(0.7), 10)
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_BADREP_COMPLETED, 10)
         assert expected is True, '\'"dangerous host" warning\' download file is completed.'
 
         expected = exists(DownloadFiles.UNCOMMON, 10)
@@ -177,7 +177,7 @@ class Test(FirefoxTest):
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
         assert expected is True, 'Downloads panel is displayed.'
-        downloaded_file = find(DownloadFiles.LIBRARY_DOWNLOADS_CONTENT1_RED.similar(0.7))
+        downloaded_file = find(DownloadFiles.LIBRARY_DOWNLOADS_CONTENT1_RED)
         region_file = Region(downloaded_file.x - 100, downloaded_file.y - 35, 500, 90)
         expected = region_file.exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Blocked download icon is displayed and file download is highlighted red.'
@@ -191,7 +191,7 @@ class Test(FirefoxTest):
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
         assert expected is True, 'Downloads panel is displayed.'
-        downloaded_file = find(DownloadFiles.LIBRARY_DOWNLOADS_BADREP_RED.similar(0.7))
+        downloaded_file = find(DownloadFiles.LIBRARY_DOWNLOADS_BADREP_RED)
         region_file = Region(downloaded_file.x - 100, downloaded_file.y - 35, 500, 90)
         expected = region_file.exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, 'Blocked download icon is displayed and file download is highlighted red.'

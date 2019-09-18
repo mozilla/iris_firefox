@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
 
         if OSHelper.is_mac():
-            mozilla_bookmark_history_sidebar_pattern = Pattern('mozilla_bookmark_history_sidebar.png').similar(0.7)
+            mozilla_bookmark_history_sidebar_pattern = Pattern('mozilla_bookmark_history_sidebar.png')
             bookmarks_toolbar_mozilla_pattern = Pattern('bookmarks_toolbar_mozilla.png')
 
         else:

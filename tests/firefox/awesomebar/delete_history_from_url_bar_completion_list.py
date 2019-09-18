@@ -17,8 +17,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         search_suggestion_bookmarked_tab_pattern = Pattern('search_suggestion_bookmarked_tab.png').similar(.6)
-        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.7)
-        search_suggestion_history_pattern = Pattern('search_suggestion_history.png').similar(.7)
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png')
+        search_suggestion_history_pattern = Pattern('search_suggestion_history.png')
         popular_search_suggestion_pattern = Pattern('popular_search_suggestion.png')
         focus_history_menu_pattern = Pattern('focus_history_menu.png')
         library_menu_pattern = NavBar.LIBRARY_MENU

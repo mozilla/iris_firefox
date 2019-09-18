@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         word_mozilla_first_selected_pattern = Pattern('word_mozilla_first_selected.png')
         word_mozilla_second_selected_pattern = Pattern('word_mozilla_second_selected.png')
-        word_mozilla_second_unselected_pattern = Pattern('word_mozilla_second_unselected.png').similar(.7)
+        word_mozilla_second_unselected_pattern = Pattern('word_mozilla_second_unselected.png')
 
         vertical_search_page_local = self.get_asset_path('findbug.html')
         navigate(vertical_search_page_local)

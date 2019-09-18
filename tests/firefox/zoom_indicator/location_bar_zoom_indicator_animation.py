@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
-        urlbar_zoom_button_30_pattern = LocationBar.URLBAR_ZOOM_BUTTON_30.similar(0.7)
+        urlbar_zoom_button_30_pattern = LocationBar.URLBAR_ZOOM_BUTTON_30
         urlbar_zoom_button_110_pattern = LocationBar.URLBAR_ZOOM_BUTTON_110
         urlbar_zoom_button_300_pattern = LocationBar.URLBAR_ZOOM_BUTTON_300
 

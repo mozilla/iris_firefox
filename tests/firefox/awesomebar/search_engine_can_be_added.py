@@ -54,7 +54,7 @@ class Test(FirefoxTest):
         # Check that the default one-off list is displayed in the awesomebar.
         for index, pattern in enumerate(pattern_list):
             if OSHelper.is_mac():
-                element_found = region.exists(pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+                element_found = region.exists(pattern, FirefoxSettings.FIREFOX_TIMEOUT)
                 assert element_found, 'Element found at position {} in the list found.'.format(index)
             else:
                 element_found = region.exists(pattern.similar(0.8), FirefoxSettings.FIREFOX_TIMEOUT)

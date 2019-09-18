@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         soap_bookmark_pattern = Pattern('soap_bookmark.png').similar(.6)
         new_bookmark_window_pattern = Pattern('new_bookmark_window.png')
-        keyword_suggestion_pattern = Pattern('keyword_suggestion.png').similar(.7)
+        keyword_suggestion_pattern = Pattern('keyword_suggestion.png')
         add_button_pattern = Pattern('add_button.png')
 
         open_library()

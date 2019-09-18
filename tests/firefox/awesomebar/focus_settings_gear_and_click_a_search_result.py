@@ -40,7 +40,7 @@ class Test(FirefoxTest):
 
         click(google_one_off_button_pattern)
 
-        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_results_available, 'The page corresponding to the search result is opened NOT the ' \
                                          'about:preferences page'
 

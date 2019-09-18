@@ -20,9 +20,9 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         first_bytes_label_pattern = Pattern('163_bytes_label.png')
-        first_bytes_label_pattern.similar(0.7)
+        first_bytes_label_pattern
         second_bytes_label_pattern = Pattern('724_bytes_label.png')
-        second_bytes_label_pattern.similar(0.7)
+        second_bytes_label_pattern
         about_downloads_label_pattern = Pattern('about_downloads_label.png')
 
         new_private_window()

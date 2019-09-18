@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         new_folder_button_pattern = Bookmarks.StarDialog.NEW_FOLDER
         new_folder_created_pattern = Bookmarks.StarDialog.NEW_FOLDER_CREATED
         done_button_pattern = Bookmarks.StarDialog.DONE
-        bookmark_folder_pattern = Pattern('moz_bookmark_folder.png').similar(0.7)
+        bookmark_folder_pattern = Pattern('moz_bookmark_folder.png')
         other_bookmarks_folder_pattern = Pattern('edit_bookmark_folder.png')
 
         if OSHelper.is_linux():

@@ -124,7 +124,7 @@ class Test(FirefoxTest):
 
         click(google_play_search_engine_pattern)
 
-        test_search_google_play = exists(test_search_google_play_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        test_search_google_play = exists(test_search_google_play_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_search_google_play is True, 'Search performed using the search bar works properly.'
 
         navigate('about:newtab')

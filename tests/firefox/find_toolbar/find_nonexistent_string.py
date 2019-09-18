@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         # Search for an inexistent String on the page
         type('merge', interval=1)
 
-        red_textbox_exists = exists(merge_red_textbox_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        red_textbox_exists = exists(merge_red_textbox_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert red_textbox_exists, 'Input field has a red background'
 
         label_not_found = exists(phrase_not_found_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)

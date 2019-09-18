@@ -105,7 +105,7 @@ class Test(FirefoxTest):
 
         # - Firefox takes you to search results using the search provider of the selected one-off button
 
-        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+        search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
                                           region=Screen.TOP_THIRD)
         assert search_results_available, 'Google search results are displayed.'
 
@@ -160,6 +160,6 @@ class Test(FirefoxTest):
         # The search is executed on using selected engine.
         # Firefox takes you to search results using the search provider of the selected one-off button
 
-        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        search_results_available = exists(google_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_results_available, 'Google search results are displayed. The search is executed on using ' \
                                          'selected engine.'

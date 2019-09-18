@@ -64,7 +64,7 @@ class Test(FirefoxTest):
         edit_select_all()
         paste('tags, test')
 
-        keyword_field_displayed = exists(keyword_field_pattern.similar(0.7), region=fields_region)
+        keyword_field_displayed = exists(keyword_field_pattern, region=fields_region)
         assert keyword_field_displayed is True, 'Keywords field is displayed'
 
         click(keyword_field_pattern, region=fields_region)
@@ -111,7 +111,7 @@ class Test(FirefoxTest):
         location_edited = exists(edited_location_pattern)
         assert location_edited is True, 'Bookmark\'s location is edited'
 
-        tags_edited = exists(edited_tags_pattern.similar(0.7))
+        tags_edited = exists(edited_tags_pattern)
         assert tags_edited is True, 'Bookmark\'s tags are edited'
 
         keyword_field_displayed = exists(keyword_field_pattern, region=fields_region)
