@@ -78,8 +78,7 @@ class Test(FirefoxTest):
 
         click(tracking_protection_shield_pattern)
 
-        if OSHelper.is_mac():
-            time.sleep(1)  # wait for the pop-up loading, reasonable only for mac
+        time.sleep(1)  # wait for the pop-up loading
 
         turn_off_blocking_displayed = exists(turn_off_blocking_pattern)
         assert turn_off_blocking_displayed, 'Turn off blocking for this site is displayed.'
