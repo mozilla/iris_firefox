@@ -113,8 +113,8 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        addon_installed = exists(adblock_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT) \
-            or exists('theme.images.theme_frame') or exists('rainbow')
+        addon_installed = exists('rainbow') or exists(adblock_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT) \
+            or exists('theme.images.theme_frame')
         assert addon_installed is True, 'Addon successfully installed.'
 
         click(home_icon_with_applied_theme_pattern)
