@@ -47,17 +47,15 @@ class Test(FirefoxTest):
         click(hide_previous_tabs_pattern)
 
         try:
-            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             hide_previous_tabs_not_exists = wait_vanish(hide_previous_tabs_pattern,
-                                                        FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+                                                        FirefoxSettings.SHORT_FIREFOX_TIMEOUT * 2)
             assert hide_previous_tabs_not_exists, '*Hide Previous Tabs* and label nearby is disappeared'
         except FindError:
             raise FindError('*Hide Previous Tabs* and label nearby still exists')
 
         try:
-            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             view_form_is_opened_not_exists = wait_vanish(view_form_is_opened_pattern,
-                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT * 2)
             assert view_form_is_opened_not_exists, 'View form is disappeared and hide button properly works'
         except FindError:
             raise FindError('View form still exists')
