@@ -59,5 +59,5 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        bookmark_added = exists(new_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        bookmark_added = exists(new_bookmark_pattern.similar(0.7), FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert bookmark_added is True, 'The new bookmark is displayed in the \'Bookmarks Toolbar\' menu.'

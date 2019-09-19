@@ -49,10 +49,10 @@ class Test(FirefoxTest):
         click(history_today_sidebar_pattern)
 
         # Copy a website from the History sidebar and paste it to the Bookmarks toolbar.
-        expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+        expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10)
         assert expected_5, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_SMALL, keyboard_action='c')
+        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action='c')
 
         history_sidebar()
 
@@ -61,6 +61,6 @@ class Test(FirefoxTest):
         if OSHelper.is_mac():
             expected_6 = exists(bookmarks_toolbar_mozilla_pattern)
         else:
-            expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL)
+            expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR)
 
         assert expected_6, 'Mozilla page was copied successfully to the Bookmarks toolbar.'

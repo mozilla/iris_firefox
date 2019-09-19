@@ -23,30 +23,9 @@ class Test(FirefoxTest):
         if OSHelper.is_mac():
             additional_saved_profiles_pattern = Pattern('additional_saved_profiles.png').similar(.6)
 
-        find_in_preferences_field_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        saved_addresses_button_pattern = Pattern('saved_addresses_button.png')
-        add_button_pattern = Pattern('add_button.png')
-
         change_preference('browser.search.region', 'US')
 
         firefox.restart()
-
-        navigate('about:preferences#privacy')
-
-        search_field_exists = exists(find_in_preferences_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert search_field_exists, 'Preferences page is opened'
-
-        type('Autofill')
-
-        saved_addresses_button_exists = exists(saved_addresses_button_pattern)
-        assert saved_addresses_button_exists, '\'Saved addresses\' button is displayed on the Preferences page'
-
-        click(saved_addresses_button_pattern)
-
-        add_button_exists = exists(add_button_pattern)
-        assert add_button_exists, '\'Add\' button is displayed on the \'Saved addresses\' popup'
-
-        click(add_button_pattern)
 
         navigate('https://luke-chang.github.io/autofill-demo/basic.html')
 

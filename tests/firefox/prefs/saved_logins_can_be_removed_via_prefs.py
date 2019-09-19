@@ -22,15 +22,18 @@ class Test(FirefoxTest):
         first_saved_login_pattern = Pattern('name0_login.png').similar(0.95)
         last_saved_login_pattern = Pattern('name9_login.png').similar(0.95)
         remove_password_pattern = Pattern('remove_password.png')
+        remove_confirm_pattern = Pattern('remove_confirmation.png')
         login_form = self.get_asset_path('form.html')
         ui_timeout = 1
 
         scroll_length = Screen.SCREEN_HEIGHT // 10
-        if not OSHelper.is_windows():
+        if OSHelper.is_mac():
+            scroll_length = 10
+        if OSHelper.is_linux():
             scroll_length = 3
 
         navigate(login_form)
-        name_field_displayed = exists(name_field_pattern)
+        name_field_displayed = exists(name_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert name_field_displayed, 'Login form is opened'
 
         click(name_field_pattern)
@@ -50,7 +53,7 @@ class Test(FirefoxTest):
 
         click(save_login_button_pattern)
 
-        name_field_displayed = exists(name_field_pattern)
+        name_field_displayed = exists(name_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert name_field_displayed, 'Login form is opened'
 
         click(name_field_pattern)
@@ -78,30 +81,40 @@ class Test(FirefoxTest):
                                                                    (-scroll_length,), timeout=ui_timeout)
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
 
+        saved_logins_button_after_scroll = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert saved_logins_button_after_scroll, 'Saved logins button is found after scroll animation'
+
         click(saved_logins_button_pattern)
 
-        saved_logins_opened = exists(first_saved_login_pattern)
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
+        saved_logins_opened = exists(first_saved_login_pattern.similar(0.7))
         assert saved_logins_opened, 'Saved logins sub-window is opened. The list is successfully populated'
 
-        second_login_saved = exists(last_saved_login_pattern)
+        second_login_saved = exists(last_saved_login_pattern.similar(0.7))
         assert second_login_saved, 'Second login was saved. The list is successfully populated. '
-
-        click(first_saved_login_pattern)
 
         credentials_can_be_removed = exists(remove_password_pattern)
         assert credentials_can_be_removed, '"Remove" button is reachable'
 
         click(remove_password_pattern)
 
-        type(Key.ESC)
+        confirmation_window_available = exists(remove_confirm_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert confirmation_window_available, 'Entry can be removed'
+
+        click(remove_confirm_pattern)
+
+        close_tab()
 
         saved_logins_button_displayed = exists(saved_logins_button_pattern)
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
 
         click(saved_logins_button_pattern)
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         last_login_not_deleted = exists(last_saved_login_pattern)
         assert last_login_not_deleted, 'Last login was not deleted'
 
-        first_login_deleted = wait_vanish(first_saved_login_pattern, ui_timeout)
+        first_login_deleted = wait_vanish(first_saved_login_pattern.exact(), FirefoxSettings.FIREFOX_TIMEOUT)
         assert first_login_deleted, 'Login was successfully deleted'

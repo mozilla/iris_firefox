@@ -15,12 +15,17 @@ class Test(FirefoxTest):
         test_suite_id='3063'
     )
     def run(self, firefox):
-        click_hamburger_menu_option('New Private Window')
+        new_private_window()
+
+        # time.sleep added to prevent navigation not in private window on low performance machines
+
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         private_window_opened = exists(PrivateWindow.private_window_pattern)
         assert private_window_opened, 'Private window opened.'
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+
         soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.DEFAULT_SITE_LOAD_TIMEOUT)
         assert soap_wiki_opened, 'Webpage is opened in tab'
 

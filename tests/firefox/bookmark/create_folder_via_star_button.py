@@ -47,6 +47,8 @@ class Test(FirefoxTest):
 
         click(choose_option_pattern)
 
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+
         bookmarks_toolbar_option_assert = exists(bookmarks_toolbar_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmarks_toolbar_option_assert, 'Bookmarks toolbar option present.'
 
