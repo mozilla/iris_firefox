@@ -21,7 +21,6 @@ class Test(FirefoxTest):
         proportional_dropdown_pattern = Pattern('proportional_dropdown.png').similar(0.6)
         proportional_font_size_pattern = Pattern('proportional_font_size.png')
         font_sans_serif_drop_pattern = Pattern('font_sans_serif_drop.png')
-        page_with_mod_font_size_pattern = Pattern('page_with_mod_font_size.png')
         unmodified_text_pattern = Pattern('unmodified_text_size.png')
 
         new_tab()
