@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         preferences_general_option_pattern = Pattern('preferences_general_option.png')
         advanced_button_pattern = Pattern('advanced_button.png')
         proportional_dropdown_pattern = Pattern('proportional_dropdown.png').similar(0.6)
-        proportional_font_size_pattern = Pattern('proportional_font_size.png').similar(0.6)
+        proportional_font_size_pattern = Pattern('proportional_font_size.png')
         font_drop_pattern = Pattern('font_sans_serif_drop.png')
         page_with_mod_font_size_pattern = Pattern('page_with_mod_font_size.png')
 
