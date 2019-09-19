@@ -54,6 +54,7 @@ class Test(FirefoxTest):
             raise FindError('*Hide Previous Tabs* and label nearby still exists')
 
         try:
+            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             view_form_is_opened_not_exists = wait_vanish(view_form_is_opened_pattern.similar(0.9),
                                                          FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
             assert view_form_is_opened_not_exists, 'View form is disappeared and hide button properly works'
