@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         advanced_button_pattern = Pattern('advanced_button.png')
         proportional_dropdown_pattern = Pattern('proportional_dropdown.png').similar(0.6)
         proportional_font_size_pattern = Pattern('proportional_font_size.png')
-        font_sans_serif_drop_pattern = Pattern('font_sans_serif_drop.png')
+        font_drop_pattern = Pattern('font_sans_serif_drop.png')
         page_with_mod_font_size_pattern = Pattern('page_with_mod_font_size.png')
 
         new_tab()
@@ -53,10 +53,10 @@ class Test(FirefoxTest):
         if OSHelper.is_mac():
             type(Key.ENTER)
 
-        font_sans_serif_drop_exists = exists(font_sans_serif_drop_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        font_sans_serif_drop_exists = exists(font_drop_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert font_sans_serif_drop_exists, 'Sans serif font can be changed'
 
-        click(font_sans_serif_drop_pattern)
+        click(font_drop_pattern)
         if OSHelper.is_mac():
             type(Key.DOWN)  # open drop-down
 
