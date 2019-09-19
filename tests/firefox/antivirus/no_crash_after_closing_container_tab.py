@@ -34,7 +34,7 @@ class Test(FirefoxTest):
         addons_page_opened = exists(addons_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert addons_page_opened, 'Firefox Add-ons page opened'
 
-        find_addons_field_displayed = exists(find_addons_pattern)
+        find_addons_field_displayed = exists(find_addons_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_addons_field_displayed, 'Find add-ons field displayed'
 
         click(find_addons_pattern)
@@ -50,7 +50,7 @@ class Test(FirefoxTest):
         multi_account_page_opened = exists(multi_account_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert multi_account_page_opened, 'Firefox Multi-Account Containers page opened'
 
-        add_to_firefox_button_displayed = exists(add_to_firefox_button_pattern)
+        add_to_firefox_button_displayed = exists(add_to_firefox_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_to_firefox_button_displayed, 'Add to Firefox button displayed'
 
         click(add_to_firefox_button_pattern)
@@ -72,12 +72,12 @@ class Test(FirefoxTest):
 
         right_click(youtube_top_sites_logo_pattern)
 
-        youtube_container_option_exists = exists(container_option_pattern)
+        youtube_container_option_exists = exists(container_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert youtube_container_option_exists, 'Container option exists'
 
         click(container_option_pattern)
 
-        youtube_personal_option_exists = exists(personal_option_pattern)
+        youtube_personal_option_exists = exists(personal_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert youtube_personal_option_exists, 'Container option exists'
 
         click(personal_option_pattern)
@@ -87,12 +87,12 @@ class Test(FirefoxTest):
 
         right_click(twitter_top_sites_logo_pattern)
 
-        twitter_container_option_exists = exists(container_option_pattern)
+        twitter_container_option_exists = exists(container_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert twitter_container_option_exists, 'Container option exists'
 
         click(container_option_pattern)
 
-        twitter_personal_option_exists = exists(personal_option_pattern)
+        twitter_personal_option_exists = exists(personal_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert twitter_personal_option_exists, 'Container option exists'
 
         click(personal_option_pattern)
@@ -102,7 +102,7 @@ class Test(FirefoxTest):
         youtube_opened = exists(yotube_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert youtube_opened, 'Youtube site is successfully loaded'
 
-        youtube_opened_in_container_tab = exists(personal_label_pattern)
+        youtube_opened_in_container_tab = exists(personal_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert youtube_opened_in_container_tab, 'Youtube site is opened in container tab'
 
         select_tab(3)
@@ -110,7 +110,7 @@ class Test(FirefoxTest):
         twitter_opened = exists(twitter_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert twitter_opened, 'Twitter site is successfully loaded'
 
-        twitter_opened_in_container_tab = exists(personal_label_pattern)
+        twitter_opened_in_container_tab = exists(personal_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert twitter_opened_in_container_tab, 'Twitter site is opened in container tab'
 
         close_tab()

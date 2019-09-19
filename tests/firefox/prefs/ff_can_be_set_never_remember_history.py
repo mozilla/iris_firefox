@@ -17,12 +17,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         remember_history_selected_pattern = Pattern('remember_history_selected.png')
         never_remember_history_pattern = Pattern('never_remember_history.png')
-        restart_browser_pattern = Pattern('restart_browser.png').similar(0.9)
+        restart_browser_pattern = Pattern('restart_browser.png')
         ui_timeout = 1
-
-        select_location_bar()
-        edit_copy()
-        start_url = get_clipboard()
 
         navigate('about:preferences#privacy')
 
@@ -39,6 +35,9 @@ class Test(FirefoxTest):
         assert history_settings_menu_opened, 'History settings menu is opened'
 
         click(never_remember_history_pattern)
+
+        restart_browser_opened = exists(restart_browser_pattern)
+        assert restart_browser_opened, 'restart_browser_pattern'
 
         click(restart_browser_pattern)
 
@@ -57,10 +56,6 @@ class Test(FirefoxTest):
         navigate(LocalWeb.POCKET_TEST_SITE)
         iris_page_loaded = exists(LocalWeb.POCKET_IMAGE, Settings.site_load_timeout)
         assert iris_page_loaded, 'Iris local page is loaded'
-
-        navigate(start_url)
-        start_page_opened = exists(LocalWeb.IRIS_LOGO)
-        assert start_page_opened, 'Start page is opened'
 
         library_menu_button_reachable = exists(NavBar.LIBRARY_MENU)
         assert library_menu_button_reachable, 'Library menu button is reachable'

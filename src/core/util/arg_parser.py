@@ -49,6 +49,10 @@ def get_core_args():
                         help='Clear run data',
                         default=False,
                         action='store_true')
+    parser.add_argument('-d', '--directory',
+                        help='Directory name containing tests to execute',
+                        action='store',
+                        default='')
     parser.add_argument('-e', '--email',
                         help='Submit email report',
                         action='store_true')
@@ -64,11 +68,11 @@ def get_core_args():
                         help='Locale to use for pattern search',
                         action='store',
                         default='en-US')
-    parser.add_argument('-m', '--mouse',
-                        help='Change mouse speed',
-                        type=float,
+    parser.add_argument('-m', '--max_tries',
+                        help='Maximum times a test can be run before failure',
+                        type=int,
                         action='store',
-                        default=0.5)
+                        default=3)
     parser.add_argument('-n', '--no_check',
                         help='Skip key lock check on startup',
                         action='store_true')

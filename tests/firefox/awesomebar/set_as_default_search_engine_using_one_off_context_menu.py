@@ -25,6 +25,8 @@ class Test(FirefoxTest):
         magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
         wikipedia_search_results_pattern = Pattern('wikipedia_search_results.png')
         test_pattern = Pattern('test.png')
+        this_time_search_with_pattern = Pattern('this_time_search_with.png')
+
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
         navigate(url)
@@ -33,7 +35,7 @@ class Test(FirefoxTest):
         assert test_page_opened, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
         type(Key.ENTER)
 
         google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -44,21 +46,13 @@ class Test(FirefoxTest):
                                     'search engine.'
 
         select_location_bar()
-        paste('moz')
+        type('moz', interval=0.25)
 
-        mozilla_pattern_displayed = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert mozilla_pattern_displayed, 'Searched string found at the bottom of the drop-down list.'
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         wiki_button_displayed = region.exists(wikipedia_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert wiki_button_displayed, 'wikipedia_one_off_button_pattern'
-
-        hover(wikipedia_one_off_button_pattern)
-
-        try:
-            wiki_is_highlighted = region.wait_vanish(moz_pattern)
-            assert wiki_is_highlighted, 'The \'Wikipedia\' one-off button is highlighted.'
-        except FindError:
-            raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
 
         right_click(wikipedia_one_off_button_pattern)
 
@@ -73,7 +67,7 @@ class Test(FirefoxTest):
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/2)
 
         select_location_bar()
-        paste('test')
+        type('test', interval=0.25)
         type(Key.ENTER)
 
         wiki_page_opened = exists(wikipedia_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT)

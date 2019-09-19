@@ -41,13 +41,13 @@ class Test(FirefoxTest):
         click(history_today_sidebar_pattern)
 
         # Forget a page from the History sidebar.
-        expected_4 = left_upper_corner.exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.7), 10)
+        expected_4 = left_upper_corner.exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR.similar(0.7), 10)
         assert expected_4, 'Mozilla page is displayed in the History list successfully.'
 
-        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_SMALL, keyboard_action='f')
+        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action='f')
 
         try:
-            expected_5 = left_upper_corner.wait_vanish(LocalWeb.MOZILLA_BOOKMARK_SMALL, 10)
+            expected_5 = left_upper_corner.wait_vanish(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10)
             assert expected_5, 'Mozilla page was deleted successfully from the history.'
         except FindError:
             raise FindError('Mozilla page is still displayed in the history.')
@@ -55,5 +55,5 @@ class Test(FirefoxTest):
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu('History')
 
-        expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_SMALL.similar(0.9), 10)
+        expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR.similar(0.9), 10)
         assert expected_6 is not True, 'Mozilla page is not displayed in the Recent History list.'

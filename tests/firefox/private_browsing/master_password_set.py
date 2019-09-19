@@ -26,6 +26,7 @@ class Test(FirefoxTest):
         remove_button_available_in_change_master_password_pattern = \
             Pattern('remove_button_available_in_change_master_password_pattern.png')
         master_password_deleted_pattern = Pattern('master_password_deleted.png')
+        remove_master_password_popup_pattern = Pattern('remove_master_password_popup.png')
 
         new_private_window()
 
@@ -94,8 +95,8 @@ class Test(FirefoxTest):
         click(master_password_box_is_checked_pattern)
 
         #  deactivate master password
-        change_master_password_popup = exists(change_master_password_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert change_master_password_popup is True, 'Master password popup exist'
+        remove_master_password_popup = exists(remove_master_password_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert remove_master_password_popup is True, 'Master password popup exist'
 
         type('123')
         type(Key.TAB)
