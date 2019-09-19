@@ -19,6 +19,7 @@ from src.core.api.os_helpers import OSHelper
 from src.core.util.arg_parser import get_core_args
 from src.core.util.local_web_server import LocalWebServer
 from src.core.util.path_manager import PathManager
+from src.core.util.run_report import create_footer
 from src.core.util.test_assert import create_result_object
 
 logger = logging.getLogger(__name__)
@@ -89,7 +90,16 @@ class Target(BaseTarget):
         return parser.parse_known_args()[0]
 
     def create_ci_report(self):
-        ci_report_str = 'TinderboxPrint: Iris Summary<br/>\n'
+        footer = create_footer(self)
+        results = footer.print_report_footer()
+        lines = results.split('\n')
+        result_str = ''
+
+        for line in lines:
+            if 'Passed:' in line and 'Total time:' in line:
+                result_str = line
+        ci_report_str = 'TinderboxPrint: Iris Summary<br/>\n%s\n' % result_str
+        
         for test in self.completed_tests:
             if test.outcome == 'FAILED' or test.outcome == 'ERROR':
                 fail_str = 'FAIL' if 'FAIL' in test.outcome else 'ERROR'
