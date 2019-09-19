@@ -98,8 +98,8 @@ class Target(BaseTarget):
         for line in lines:
             if 'Passed:' in line and 'Total time:' in line:
                 result_str = line
-        ci_report_str = 'TinderboxPrint: Iris Summary<br/>\n%s\n' % result_str
-        
+        ci_report_str = 'TinderboxPrint: Iris Summary<br/>%s\n' % result_str
+
         for test in self.completed_tests:
             if test.outcome == 'FAILED' or test.outcome == 'ERROR':
                 fail_str = 'FAIL' if 'FAIL' in test.outcome else 'ERROR'
