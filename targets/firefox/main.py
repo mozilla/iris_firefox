@@ -89,7 +89,7 @@ class Target(BaseTarget):
         return parser.parse_known_args()[0]
 
     def create_ci_report(self):
-        ci_report_str = ''
+        ci_report_str = 'TinderboxPrint: Iris Summary<br/>\n'
         for test in self.completed_tests:
             if test.outcome == 'FAILED' or test.outcome == 'ERROR':
                 fail_str = 'FAIL' if 'FAIL' in test.outcome else 'ERROR'
