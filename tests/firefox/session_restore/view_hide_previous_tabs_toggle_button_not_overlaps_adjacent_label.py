@@ -31,6 +31,7 @@ class Test(FirefoxTest):
         click(view_previous_tabs_pattern)
 
         try:
+            time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
             view_previous_tabs_not_exists = wait_vanish(view_previous_tabs_pattern,
                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
             assert view_previous_tabs_not_exists, '*View Previous Tabs* and label nearby is disappeared'
