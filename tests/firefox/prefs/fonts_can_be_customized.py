@@ -22,9 +22,13 @@ class Test(FirefoxTest):
         proportional_font_size_pattern = Pattern('proportional_font_size.png')
         font_sans_serif_drop_pattern = Pattern('font_sans_serif_drop.png')
         page_with_mod_font_size_pattern = Pattern('page_with_mod_font_size.png')
+        unmodified_text_size_pattern = Pattern('unmodified_text_size.png')
 
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+
+        unmodified_text_size_exists = exists(unmodified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert unmodified_text_size_exists, 'Default wiki page is opened'
 
         previous_tab()
         navigate('about:preferences#general')
@@ -77,6 +81,5 @@ class Test(FirefoxTest):
 
         next_tab()
 
-        font_is_changed_to_another = exists(page_with_mod_font_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-
+        font_is_changed_to_another = not exists(unmodified_text_size_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert font_is_changed_to_another, 'Font is successfully changed.'
