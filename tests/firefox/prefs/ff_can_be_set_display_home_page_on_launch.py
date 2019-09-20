@@ -19,7 +19,6 @@ class Test(FirefoxTest):
         homepage_preferences_pattern = Pattern('homepage_preferences.png')
         mozilla_tab_not_focused_pattern = Pattern('mozilla_tab_not_focused.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
-        top_sites_pattern = Pattern('top_sites.png')
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -51,7 +50,7 @@ class Test(FirefoxTest):
 
         firefox.start(url='', image=NavBar.HOME_BUTTON)
 
-        home_page_displayed = exists(top_sites_pattern, FirefoxSettings.FIREFOX_TIMEOUT) and \
+        home_page_displayed = exists(Utils.TOP_SITES, FirefoxSettings.FIREFOX_TIMEOUT) and \
                               exists(Tabs.NEW_TAB_HIGHLIGHTED)
 
         no_other_tabs_displayed = not exists(mozilla_tab_not_focused_pattern) and \
