@@ -101,7 +101,7 @@ class Test(FirefoxTest):
 
         firefox_bookmark_added = exists(firefox_toolbar_bookmark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT,
                                         region=bookmarks_toolbar_region)
-        assert firefox_bookmark_added is True, 'The CNN bookmark is successfully added'
+        assert firefox_bookmark_added is True, 'The Firefox bookmark is successfully added'
 
         wiki_bookmark_added = exists(wikipedia_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT,
                                      region=bookmarks_toolbar_region)
