@@ -37,7 +37,7 @@ class Test(FirefoxTest):
                                                         'displayed, containing a string saying: ' \
                                                         'tls-v1-1.badssl.com'
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.INSECURE_CONNECTION_LOCK)
 
         show_connection_details_button_displayed = exists(show_connection_details_button_pattern,
                                                           FirefoxSettings.FIREFOX_TIMEOUT)

@@ -20,6 +20,8 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
+        reset_mouse()
+
         mozilla_logo_exists = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_logo_exists, 'Mozilla page loaded successfully.'
 

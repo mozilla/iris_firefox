@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
 
         hover_duck_duck_go_one_off_button_pattern = Pattern('hover_duck_duck_go_one_off_button.png')
-        duck_duck_go_one_off_button_pattern = Pattern('duck_duck_go_one_off_button.png')
+        duck_duck_go_one_off_button_pattern = Pattern('duck_one_click_search.png')
         search_with_url_autocomplete_pattern = Pattern('search_with_url_autocomplete.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
         amazon_logo_pattern = Pattern('amazon_logo.png')

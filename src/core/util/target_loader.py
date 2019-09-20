@@ -36,19 +36,43 @@ def collect_tests():
     if load_target(target):
         include = core_args.test
         exclude = core_args.exclude
-
-        tests_dir = os.path.join(PathManager.get_tests_dir(), target)
-        logger.debug('Path %s found. Checking content ...', tests_dir)
-        for dir_path, sub_dirs, all_files in PathManager.sorted_walk(tests_dir):
-            for current_file in all_files:
-                current_full_path = os.path.join(dir_path, current_file)
-                if current_file.endswith('.py') and not current_file.startswith('__') and include in current_full_path:
-                    if exclude == '' or exclude not in current_full_path:
-                        test_list.append(current_full_path)
-
-        if len(test_list) == 0:
-            logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
+        if os.path.isfile(include):
+            with open(include, 'r') as f:
+                for line in f:
+                    test_list.append(line.rstrip('\n'))
+            f.close()
         else:
-            logger.debug('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
+            tests_dir = os.path.join(PathManager.get_tests_dir(), target)
+            logger.debug('Path %s found. Checking content ...', tests_dir)
+            for dir_path, sub_dirs, all_files in PathManager.sorted_walk(tests_dir):
+                for current_file in all_files:
+                    directory = '%s%s%s' % (os.sep, core_args.directory, os.sep)
+                    include_params = [include]
+                    exclude_params = [exclude]
+                    if ',' in include:
+                        include_params = include.split(',')
+                    if ',' in exclude:
+                        exclude_params = exclude.split(',')
+                    current_full_path = os.path.join(dir_path, current_file)
+                    if current_file.endswith('.py') and not current_file.startswith('__'):
+                        if include is '' and exclude is '' and directory is '':
+                            if not current_full_path in test_list:
+                                test_list.append(current_full_path)
+                        else:
+                            if core_args.directory is '' or directory in current_full_path:
+                                for include_param in include_params:
+                                    if include_param is '' or include_param in current_full_path:
+                                        for exclude_param in exclude_params:
+                                            if exclude_param is '':
+                                                if not current_full_path in test_list:
+                                                    test_list.append(current_full_path)
+                                            else:
+                                                if exclude_param not in current_full_path:
+                                                    if not current_full_path in test_list:
+                                                        test_list.append(current_full_path)
+            if len(test_list) == 0:
+                logger.error('\'%s\' does not contain tests based on your search criteria. Exiting program.' % tests_dir)
+            else:
+                logger.debug('List of all tests found: [%s]' % ', '.join(map(str, test_list)))
 
     return test_list

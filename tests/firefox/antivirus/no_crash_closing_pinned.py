@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         mozilla_pinned_tab_pattern = Pattern('mozilla_pinned_tab.png')
         firefox_tab_pattern = Pattern('firefox_tab.png')
         firefox_pinned_tab_pattern = Pattern('firefox_pinned_tab.png')
-        focus_tab_pattern = Pattern('focus_tab.png')
+        focus_tab_pattern = Pattern('focus_tab.png').similar(0.6)
         focus_pinned_tab_pattern = Pattern('focus_pinned_tab.png')
 
         new_tab()

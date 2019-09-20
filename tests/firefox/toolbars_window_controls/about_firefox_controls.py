@@ -17,6 +17,7 @@ class Test(FirefoxTest):
         firefox_in_about_pattern = Pattern('firefox_in_about.png')
 
         open_about_firefox()
+
         assert exists(firefox_in_about_pattern, 10), '\'About Firefox\' window was opened successfully.'
 
         click_window_control('close')

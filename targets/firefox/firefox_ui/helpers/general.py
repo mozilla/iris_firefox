@@ -21,6 +21,7 @@ from src.core.api.keyboard.keyboard_util import get_clipboard
 from src.core.api.location import Location
 from src.core.api.mouse.mouse import click, hover, Mouse, scroll_down, right_click
 from src.core.api.os_helpers import OSHelper, OSPlatform
+from src.core.api.rectangle import Rectangle
 from src.core.api.screen.region import Region
 from src.core.api.screen.screen import Screen
 from src.core.api.settings import Settings
@@ -34,6 +35,7 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
+from targets.firefox.settings import FirefoxSettings
 
 INVALID_GENERIC_INPUT = 'Invalid input'
 INVALID_NUMERIC_INPUT = 'Expected numeric value'
@@ -75,7 +77,7 @@ def change_preference(pref_name, value):
     try:
         new_tab()
         navigate('about:config')
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         type(Key.SPACE)
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -149,7 +151,7 @@ def check_preference(pref_name, value):
 
 def click_cancel_button():
     """Click cancel button."""
-    cancel_button_pattern = Pattern('cancel_button.png')
+    cancel_button_pattern = Pattern('cancel_button.png').similar(.7)
     try:
         wait(cancel_button_pattern, 10)
         logger.debug('Cancel button found.')
@@ -166,16 +168,14 @@ def click_hamburger_menu_option(option):
     """
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
-        wait(hamburger_menu_pattern, 10)
+        wait(hamburger_menu_pattern, 5)
         logger.debug('Hamburger menu found.')
     except FindError:
         raise APIHelperError(
             'Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
-        click(hamburger_menu_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
         try:
-            region = create_region_from_image(hamburger_menu_pattern)
+            region = create_region_for_hamburger_menu()
             region.click(option)
             return region
         except FindError:
@@ -220,11 +220,12 @@ def close_content_blocking_pop_up():
 
 def close_customize_page():
     """Close the 'Customize...' page by pressing the 'Done' button."""
-    customize_done_button_pattern = Pattern('customize_done_button.png')
+    customize_done_button_pattern = Pattern('customize_done_button.png').similar(0.7)
     try:
         wait(customize_done_button_pattern, 10)
         logger.debug('Done button found.')
         click(customize_done_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
     except FindError:
         raise APIHelperError(
             'Can\'t find the Done button in the page, aborting.')
@@ -310,28 +311,31 @@ def create_region_for_hamburger_menu():
 
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
-        wait(hamburger_menu_pattern, 10)
+        wait(hamburger_menu_pattern, 5)
         click(hamburger_menu_pattern)
-        time.sleep(0.5)
-        sign_in_to_sync = Pattern('sign_in_to_sync.png')
+        sign_in_to_firefox_pattern = Pattern('sign_in_to_firefox.png')
+        wait(sign_in_to_firefox_pattern, 5)
         if OSHelper.is_linux():
             quit_menu_pattern = Pattern('quit.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+            wait(quit_menu_pattern, 5)
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox_pattern,
                                                            quit_menu_pattern, None,
                                                            padding_right=20)
         elif OSHelper.is_mac():
             help_menu_pattern = Pattern('help.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+            wait(help_menu_pattern, 5)
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox_pattern,
                                                            help_menu_pattern, None,
                                                            padding_right=20)
         else:
             exit_menu_pattern = Pattern('exit.png')
-            return RegionUtils.create_region_from_patterns(None, sign_in_to_sync,
+            wait(exit_menu_pattern, 5)
+            return RegionUtils.create_region_from_patterns(None, sign_in_to_firefox_pattern,
                                                            exit_menu_pattern, None,
                                                            padding_right=20)
     except (FindError, ValueError):
         raise APIHelperError(
-            'Can\'t find the hamburger menu in the page, aborting test.')
+            'Can\'t create a region for the hamburger menu, aborting test.')
 
 
 def create_region_for_url_bar():
@@ -345,43 +349,6 @@ def create_region_for_url_bar():
                                                        padding_bottom=20)
     except FindError:
         raise APIHelperError('Could not create region for URL bar.')
-
-
-def create_region_from_image(image):
-    """Create region starting from a pattern.
-
-    :param image: Pattern used to create a region.
-    :return: None.
-    """
-    try:
-        from src.core.api.rectangle import Rectangle
-        from src.core.api.enums import Alignment
-        m = image_find(image)
-        if m:
-            sync_pattern = Pattern('sync_hamburger_menu.png')
-            sync_width, sync_height = sync_pattern.get_size()
-            sync_image = image_find(sync_pattern)
-            top_left = Rectangle(sync_image.x, sync_image.y, sync_width, sync_width). \
-                apply_alignment(Alignment.TOP_RIGHT)
-            if OSHelper.is_mac():
-                exit_pattern = Pattern('help_hamburger_menu.png')
-            else:
-                exit_pattern = Pattern('exit_hamburger_menu.png')
-            exit_width, exit_height = exit_pattern.get_size()
-            exit_image = image_find(exit_pattern)
-            bottom_left = Rectangle(exit_image.x, exit_image.y, exit_width, exit_height). \
-                apply_alignment(Alignment.BOTTOM_RIGHT)
-
-            x0 = top_left.x + 2
-            y0 = top_left.y
-            height = bottom_left.y - top_left.y
-            width = Screen().width - top_left.x - 2
-            region = Region(x0, y0, width, height)
-            return region
-        else:
-            raise APIHelperError('No matching found.')
-    except FindError:
-        raise APIHelperError('Image not present.')
 
 
 def find_window_controls(window_type):
@@ -664,6 +631,7 @@ def navigate(url):
     try:
         select_location_bar()
         paste(url)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         type(Key.ENTER)
     except Exception:
         raise APIHelperError(
@@ -694,6 +662,7 @@ def open_about_firefox():
 
     else:
         type(Key.F10)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         if args.locale != 'ar':
             type(Key.LEFT)
         else:
@@ -794,7 +763,7 @@ def remove_zoom_indicator_from_toolbar():
     remove_from_toolbar_pattern = Pattern('remove_from_toolbar.png')
 
     try:
-        wait(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait(zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         logger.debug('\'Decrease\' zoom control found.')
         right_click(zoom_control_toolbar_decrease_pattern)
     except FindError:
@@ -803,7 +772,7 @@ def remove_zoom_indicator_from_toolbar():
             aborting.')
 
     try:
-        wait(remove_from_toolbar_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait(remove_from_toolbar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         logger.debug('\'Remove from Toolbar\' option found.')
         click(remove_from_toolbar_pattern)
     except FindError:
@@ -812,7 +781,7 @@ def remove_zoom_indicator_from_toolbar():
             aborting.')
 
     try:
-        wait_vanish(zoom_control_toolbar_decrease_pattern, Settings.DEFAULT_FIREFOX_TIMEOUT)
+        wait_vanish(zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
     except FindError:
         raise APIHelperError(
             'Zoom indicator not removed from toolbar, aborting.')
@@ -826,9 +795,10 @@ def repeat_key_down(num):
     """
     for i in range(num):
         type(Key.DOWN)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
 
 
-def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=3):
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=1):
     """
     Press the Key Down button until specified image pattern is found.
 
@@ -862,9 +832,10 @@ def repeat_key_up(num):
     """
     for i in range(num):
         type(Key.UP)
+        time.sleep(1)
 
 
-def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=3):
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=1):
     """
     Press the Key Up button until specified image pattern is found.
 

@@ -22,6 +22,9 @@ class Test(FirefoxTest):
         # Open some pages to create some history.
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        reset_mouse()
+
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_1, 'Mozilla page loaded successfully.'
 
@@ -60,5 +63,7 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         # Check that all the history was cleared.
-        expected_4 = exists(history_empty_pattern.similar(0.9), 10)
+        expected_4 = exists(history_empty_pattern, 10)
         assert expected_4, 'All the history was cleared successfully.'
+
+        history_sidebar()

@@ -26,12 +26,14 @@ class Test(FirefoxTest):
         name_form_pattern = Pattern('name_form.png')
         password_form_pattern = Pattern('password_form.png').similar(.6)
         autocomplete_pattern = Pattern('word_autocomplete.png')
+        save_login_button_pattern = Pattern('save_login_button.png')
 
         form_address = self.get_asset_path('form.html')
 
         navigate('about:preferences#privacy')
 
-        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_opened, 'The page is successfully displayed.'
 
         paste('remember')
@@ -70,7 +72,7 @@ class Test(FirefoxTest):
 
         new_tab()
 
-        search_bar_is_not_empty = exists(search_bar_not_empty_pattern)
+        search_bar_is_not_empty = exists(search_bar_not_empty_pattern.similar(0.7), region=Screen.TOP_HALF)
         assert search_bar_is_not_empty, 'Search button isn\'t empty'
 
         if OSHelper.is_linux():
@@ -102,6 +104,13 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         navigate(form_address)
+
+        save_login_button = exists(save_login_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        if save_login_button:
+            type(Key.ESC)
+
+            no_autocomplete = not exists(autocomplete_pattern)
+            assert no_autocomplete, 'The form history is not saved.'
 
         click(name_form_pattern)
 

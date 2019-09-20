@@ -14,6 +14,7 @@ class Test(FirefoxTest):
         test_case_id='163208',
         test_suite_id='2525',
         profile=Profiles.TEN_BOOKMARKS,
+        blocked_by={'id': '1579898', 'platform': [OSPlatform.WINDOWS, OSPlatform.LINUX]},
         exclude=OSPlatform.MAC
     )
     def run(self, firefox):
