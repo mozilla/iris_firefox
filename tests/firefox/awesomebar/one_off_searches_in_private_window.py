@@ -12,7 +12,8 @@ class Test(FirefoxTest):
         description='This test case perform one-offs searches in private browsing.',
         locale=['en-US'],
         test_case_id='108253',
-        test_suite_id='1902'
+        test_suite_id='1902',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
