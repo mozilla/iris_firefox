@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         homepage_preferences_pattern = Pattern('homepage_preferences.png')
-        mozilla_tab_not_focused_pattern = Pattern('mozilla_tab_not_focused@2x.png')
+        mozilla_tab_not_focused_pattern = Pattern('mozilla_tab_not_focused.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
         top_sites_pattern = Pattern('top_sites.png')
 
