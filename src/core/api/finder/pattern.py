@@ -33,9 +33,9 @@ class Pattern:
     associate a specific similarity value, that will be used as the minimum value, when this pattern object is searched.
     """
 
-    def __init__(self, image_name: str, from_path: str = None, target: str = get_core_args().target):
+    def __init__(self, image_name: str, from_path: bool = False, target: str = get_core_args().target):
 
-        if from_path is None:
+        if from_path is False:
             path = _get_image_path(inspect.stack()[1][1], image_name, target)
         else:
             path = from_path

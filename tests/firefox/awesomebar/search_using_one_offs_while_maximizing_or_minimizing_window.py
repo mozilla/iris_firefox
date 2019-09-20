@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(.7)
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
         moz_wiki_item = Pattern('moz_wiki_item.png')
-        moz_pattern = Pattern('moz.png')
+        this_time_search_with_pattern = Pattern('this_time_search_with.png')
 
         left_upper_corner = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
@@ -54,8 +54,8 @@ class Test(FirefoxTest):
         paste('moz')
         type(Key.SPACE)
 
-        moz_pattern_found = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert moz_pattern_found, 'Searched string found at the bottom of the drop-down list.'
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         settings_button_displayed = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert settings_button_displayed, 'The \'Search settings\' button is displayed in the awesome bar.'
@@ -63,7 +63,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
-        google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        google_page_opened = region.exists(magnifying_glass_pattern.similar(.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_page_opened, 'The default search engine is \'Google\', page successfully loaded.'
 
         searched_item_found = region.exists('moz', FirefoxSettings.FIREFOX_TIMEOUT)
@@ -83,8 +83,8 @@ class Test(FirefoxTest):
         paste('moz')
         type(Key.SPACE)
 
-        moz_pattern_found = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert moz_pattern_found, 'Searched string found at the bottom of the drop-down list.'
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         settings_button_displayed = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert settings_button_displayed, 'The \'Search settings\' button is displayed in the awesome bar.'
@@ -92,16 +92,7 @@ class Test(FirefoxTest):
         wiki_button_displayed = region.exists(wikipedia_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert wiki_button_displayed, 'wikipedia_one_off_button_pattern'
 
-        hover(wikipedia_one_off_button_pattern)
-
-        try:
-            wiki_highlighted = region.wait_vanish(moz_pattern, 3)
-            assert wiki_highlighted, 'The \'Wikipedia\' one-off button is highlighted.'
-        except FindError:
-            raise FindError('The \'Wikipedia\' one-off button is not highlighted.')
-
         click(wikipedia_one_off_button_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         wiki_page_opened = region.exists(wikipedia_search_results_moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert wiki_page_opened, 'Wikipedia results are opened.'

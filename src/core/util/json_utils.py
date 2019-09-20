@@ -107,17 +107,25 @@ def create_run_log(app):
         values[i] = app.values[i]
     meta['values'] = values
 
-    repo = git.Repo(PathManager.get_module_dir())
     meta['iris_version'] = 2.0
-    meta['iris_repo'] = repo.working_tree_dir
     try:
-        meta['iris_branch'] = repo.active_branch.name
+        repo = git.Repo(PathManager.get_module_dir())
+        meta['iris_repo'] = repo.working_tree_dir
+        try:
+            meta['iris_branch'] = repo.active_branch.name
+        except:
+            # If we're on a detached head, the active_branch is
+            # undefined and raises an exception. This at least
+            # allows the test run to finish
+            meta['iris_branch'] = "detached"
+        meta['iris_branch_head'] = repo.head.object.hexsha
     except:
-        # If we're on a detached head, the active_branch is
-        # undefined and raises an exception. This at least
-        # allows the test run to finish
-        meta['iris_branch'] = "detached"
-    meta['iris_branch_head'] = repo.head.object.hexsha
+        # Iris is not running in a Git repo, so don't try to
+        # report on non-existent data.
+        meta['iris_repo'] = 'n/a'
+        meta['iris_branch'] = 'n/a'
+        meta['iris_branch_head'] = 'n/a'
+
     meta['python_version'] = get_python_version()
 
     failed = 0
@@ -146,7 +154,8 @@ def create_run_log(app):
     meta['total_time'] = app.end_time - app.start_time
 
     tests = {'all_tests': convert_test_list(app.completed_tests),
-             'failed_tests': convert_test_list(app.completed_tests, only_failures=True)}
+             'failed_tests': convert_test_list(app.completed_tests, only_failures=True),
+             'flaky_tests': app.flaky_tests}
 
     run_file = os.path.join(PathManager.get_current_run_dir(), 'run.json')
     run_file_data = {'meta': meta, 'tests': tests}

@@ -43,5 +43,5 @@ class Test(FirefoxTest):
         paste('focus')
         type(Key.TAB)
 
-        expected_4 = exists(history_sidebar_focus_pattern, 10)
+        expected_4 = exists(history_sidebar_focus_pattern.similar(0.7), 10)
         assert expected_4 is True, 'Focus page was found in the History list successfully.'

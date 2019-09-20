@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS
     )
     def run(self, firefox):
-        moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
+        moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png').similar(0.95)
         properties_pattern = Pattern('properties_option.png')
         save_pattern = Pattern('save_bookmark_name.png')
         done_button_from_star_menu = Bookmarks.StarDialog.DONE
@@ -32,9 +32,9 @@ class Test(FirefoxTest):
         paste('mozilla')
 
         try:
-            wait(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            wait(moz_bookmark_pattern.similar(0.8), FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug('Moz bookmark is present in the Bookmark sidebar.')
-            right_click(moz_bookmark_pattern)
+            right_click(moz_bookmark_pattern.similar(0.8))
         except FindError:
             raise FindError('Moz bookmark is NOT present in the Bookmark sidebar, aborting.')
 
@@ -53,11 +53,17 @@ class Test(FirefoxTest):
 
         click(save_pattern)
 
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
+        restore_firefox_focus()
+
         bookmarks_sidebar('close')
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         bookmarks_sidebar('open')
+
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         paste('iris')
 
@@ -78,7 +84,7 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        max_attempts = 10
+        max_attempts = 15
 
         while max_attempts > 0:
             type(Key.TAB)

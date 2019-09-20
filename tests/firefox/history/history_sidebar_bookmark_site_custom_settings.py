@@ -58,11 +58,14 @@ class Test(FirefoxTest):
             type(Key.DOWN)
             type(Key.RETURN)
             type(Key.TAB)
+            type(Key.TAB)
+
         else:
             type(Key.TAB)
             type(Key.DOWN)
             type(Key.TAB)
             type(Key.TAB)
+
         paste('Test_tag')
         click(save_bookmark_button_pattern)
 

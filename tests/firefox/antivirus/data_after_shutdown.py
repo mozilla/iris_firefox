@@ -172,7 +172,7 @@ class Test(FirefoxTest):
         tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern.similar(0.6), region=tabs_region)
         assert tab_restored_youtube is True, 'The Youtube tab is restored'
 
-        tab_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL, region=tabs_region)
+        tab_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL.similar(0.7), region=tabs_region)
         assert tab_restored_pocket, 'The Pocket tab is restored'
 
         cnn_bookmark_still_displayed = exists(LocalWeb.CNN_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT,

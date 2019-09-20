@@ -9,13 +9,13 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='[win & linux] Bug 1397387 - No longer able to edit bookmark item after  closing New Bookmark ' \
+        description='[win & linux] Bug 1397387 - No longer able to edit bookmark item after closing New Bookmark ' \
                     'or New Bookmark Folder dialog by [x] button',
         locale=['en-US'],
         test_case_id='171452',
         test_suite_id='2525',
         profile=Profiles.TEN_BOOKMARKS,
-        excluded=OSPlatform.MAC
+        exclude=OSPlatform.MAC
     )
     def run(self, firefox):
         getting_started_toolbar_bookmark_pattern = Pattern('getting_started_in_toolbar.png')

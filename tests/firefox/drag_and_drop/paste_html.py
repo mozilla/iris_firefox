@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         description='Paste html data in demopage',
         locale=['en-US'],
         test_case_id='165100',
-        test_suite_id='102',
+        test_suite_id='5259',
     )
     def run(self, firefox):
         paste_html_data_radiobutton_selected_pattern = Pattern('paste_html_data_selected.png')
