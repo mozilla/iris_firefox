@@ -19,6 +19,7 @@ class Test(FirefoxTest):
         homepage_preferences_pattern = Pattern('homepage_preferences.png')
         mozilla_tab_not_focused_pattern = Pattern('mozilla_tab_not_focused.png')
         wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
+        default_setting_home_pattern = Pattern('default_new_tab_setting_home.png')
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -38,13 +39,10 @@ class Test(FirefoxTest):
         preferences_page_opened = exists(homepage_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_page_opened, 'The about:preferences page is successfully loaded.'
 
-        homepage_preferences_location = find(homepage_preferences_pattern)
-        homepage_section_width, homepage_preferences_height = homepage_preferences_pattern.get_size()
-        homepage_section_region = Region(homepage_preferences_location.x, homepage_preferences_location.y,
-                                         homepage_section_width * 3, homepage_preferences_height)
+        home_option_displayed = exists(default_setting_home_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert home_option_displayed, 'The options for "Home" section are displayed.'
 
-        home_option_displayed = exists('Firefox Home', FirefoxSettings.FIREFOX_TIMEOUT, homepage_section_region)
-        assert home_option_displayed, 'The options for "Home" section are displayed and selected.'
+        click(default_setting_home_pattern)
 
         quit_firefox()
 
