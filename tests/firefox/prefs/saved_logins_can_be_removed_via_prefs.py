@@ -77,16 +77,20 @@ class Test(FirefoxTest):
         preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert preferences_opened, 'The about:preferences page is successfully loaded.'
 
-        saved_logins_button_displayed = scroll_until_pattern_found(saved_logins_button_pattern, scroll,
-                                                                   (-scroll_length,), timeout=ui_timeout)
+        saved_logins_button_displayed = scroll_until_pattern_found(saved_logins_button_pattern, type, (Key.DOWN,), 50,
+                                                                   timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
 
-        saved_logins_button_after_scroll = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert saved_logins_button_after_scroll, 'Saved logins button is found after scroll animation'
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 2)
 
-        click(saved_logins_button_pattern)
+        saved_logins_exists = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert saved_logins_exists, 'Saved logins button is fixed after scroll.'
 
-        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        saved_logins_location = find(saved_logins_button_pattern)
+
+        saved_click_location = Location(saved_logins_location.x+5, saved_logins_location.y+5)
+
+        click(saved_click_location)
 
         saved_logins_opened = exists(first_saved_login_pattern.similar(0.7))
         assert saved_logins_opened, 'Saved logins sub-window is opened. The list is successfully populated'
