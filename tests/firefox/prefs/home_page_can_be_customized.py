@@ -26,7 +26,13 @@ class Test(FirefoxTest):
         preferences_page_opened = exists(homepage_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_page_opened, 'The about:preferences page is successfully loaded.'
 
-        home_option_displayed = exists(default_setting_home_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        homepage_preferences_location = find(homepage_preferences_pattern)
+        homepage_preferences_width, homepage_preferences_height = homepage_preferences_pattern.get_size()
+        homepage_section_region = Region(homepage_preferences_location.x, homepage_preferences_location.y,
+                                         homepage_preferences_width*3, int(homepage_preferences_height*1.5))
+
+        home_option_displayed = exists(default_setting_home_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                                       homepage_section_region)
         assert home_option_displayed, 'The options for "Home" section are displayed.'
 
         click(default_setting_home_pattern)
