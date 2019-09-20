@@ -47,7 +47,7 @@ class Test(FirefoxTest):
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
-        history_updated_firefox = exists(LocalWeb.FIREFOX_BOOKMARK_SMALL, FirefoxSettings.FIREFOX_TIMEOUT,
+        history_updated_firefox = exists(LocalWeb.FIREFOX_BOOKMARK_SMALL.similar(.7), FirefoxSettings.FIREFOX_TIMEOUT,
                                          history_sidebar_region)
         assert history_updated_firefox is True, 'The Firefox site is added to history'
 
