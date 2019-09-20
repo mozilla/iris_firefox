@@ -24,13 +24,6 @@ class Test(FirefoxTest):
         remove_password_pattern = Pattern('remove_password.png')
         remove_confirm_pattern = Pattern('remove_confirmation.png')
         login_form = self.get_asset_path('form.html')
-        ui_timeout = 1
-
-        scroll_length = Screen.SCREEN_HEIGHT // 10
-        if OSHelper.is_mac():
-            scroll_length = 10
-        if OSHelper.is_linux():
-            scroll_length = 3
 
         navigate(login_form)
         name_field_displayed = exists(name_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -76,6 +69,8 @@ class Test(FirefoxTest):
         navigate('about:preferences#privacy')
         preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert preferences_opened, 'The about:preferences page is successfully loaded.'
+
+        type(Key.TAB) # change focus for correct scroll
 
         saved_logins_button_displayed = scroll_until_pattern_found(saved_logins_button_pattern, type, (Key.DOWN,), 50,
                                                                    timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
