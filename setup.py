@@ -49,9 +49,5 @@ setup(
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRE,
     extras_require={'dev': DEV_REQUIRES},  # For `pip install -e .[dev]`
-    entry_points={
-        'console_scripts': [
-            'iris = src.__main__:main'
-        ]
-    }
+    entry_points={}
 )
