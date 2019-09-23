@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         description='Firefox can be set to display the home page on launch',
         locale=['en-US'],
         test_case_id='2241',
-        test_suite_id='143543',
-        profile=Profiles.TEN_BOOKMARKS
+        test_suite_id='143543'
     )
     def run(self, firefox):
         homepage_preferences_pattern = Pattern('homepage_preferences.png')
