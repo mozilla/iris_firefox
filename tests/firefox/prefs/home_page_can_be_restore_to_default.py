@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         description='Home pages can be successfully restored to default',
         locale=['en-US'],
         test_case_id='2241',
-        test_suite_id='143548',
-        profile=Profiles.TEN_BOOKMARKS
+        test_suite_id='143548'
     )
     def run(self, firefox):
         homepage_preferences_pattern = Pattern('homepage_preferences.png')
