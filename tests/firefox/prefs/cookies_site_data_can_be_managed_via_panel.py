@@ -15,6 +15,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
     )
     def run(self, firefox):
+        browser_privacy_hover_pattern = Pattern('browser_privacy_hover.png')
         manage_data_button_pattern = Pattern('manage_data_button.png')
         manage_cookies_dialog_title_pattern = Pattern('manage_cookies_title.png')
         site_with_cookies_pattern = Pattern('site_with_cookies.png')
@@ -31,6 +32,8 @@ class Test(FirefoxTest):
             scroll_length = 10
 
         navigate('about:preferences#privacy')
+
+        hover(browser_privacy_hover_pattern)
 
         manage_data_button_found = scroll_until_pattern_found(manage_data_button_pattern, scroll, (-scroll_length,),
                                                               timeout=1)
