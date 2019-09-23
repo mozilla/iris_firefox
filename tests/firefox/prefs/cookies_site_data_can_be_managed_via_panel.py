@@ -71,7 +71,7 @@ class Test(FirefoxTest):
         confirmation_dialog_exists = exists(clear_now_dialog_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert confirmation_dialog_exists, "Clear all cookies and site data pop-up is displayed"
 
-        click(clear_now_dialog_button_pattern)
+        type(Key.ENTER)  # accept cookies clearing
 
         cookies_are_cleared = exists(cookies_cleared_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert cookies_are_cleared, "All the cookies and site data are deleted."
