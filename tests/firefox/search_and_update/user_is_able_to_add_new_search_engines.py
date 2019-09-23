@@ -28,6 +28,8 @@ class Test(FirefoxTest):
         google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
         google_play_store_loaded_pattern = Pattern('google_play_store_loaded.png')
 
+        unhover_search_engine_icon_location = Location(Screen.SCREEN_WIDTH//2, Screen.SCREEN_HEIGHT//2)
+
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
 
@@ -118,6 +120,8 @@ class Test(FirefoxTest):
         type('test', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
+        move(unhover_search_engine_icon_location)
+
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
                                                  FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
@@ -137,6 +141,8 @@ class Test(FirefoxTest):
         type('test', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
+        move(unhover_search_engine_icon_location)
+
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
                                                  FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert google_play_search_engine_added is True, 'The \'Google Play\' search engine is available.'
@@ -150,6 +156,8 @@ class Test(FirefoxTest):
 
         type('test', interval=0.25)
         time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        move(unhover_search_engine_icon_location)
 
         google_play_search_engine_added = exists(google_play_search_engine_pattern,
                                                  FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
