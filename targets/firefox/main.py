@@ -13,19 +13,19 @@ import shutil
 
 import pytest
 
-from src.base.target import BaseTarget
-from src.core.api.mouse.mouse import mouse_reset
-from src.core.api.os_helpers import OSHelper
-from src.core.util.arg_parser import get_core_args
-from src.core.util.local_web_server import LocalWebServer
-from src.core.util.path_manager import PathManager
-from src.core.util.run_report import create_footer
-from src.core.util.test_assert import create_result_object
+from moziris.base.target import BaseTarget
+from moziris.api.mouse.mouse import mouse_reset
+from moziris.api.os_helpers import OSHelper
+from moziris.util.arg_parser import get_core_args
+from moziris.util.local_web_server import LocalWebServer
+from moziris.util.path_manager import PathManager
+from moziris.util.run_report import create_footer
+from moziris.util.test_assert import create_result_object
 
 logger = logging.getLogger(__name__)
 logger.info('Loading test images...')
 
-from src.configuration.config_parser import get_config_property, validate_section
+from moziris.configuration.config_parser import get_config_property, validate_section
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.firefox.firefox_app.fx_collection import FX_Collection

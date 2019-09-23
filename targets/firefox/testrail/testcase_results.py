@@ -5,7 +5,7 @@
 
 import ast
 
-from src.configuration.config_parser import get_config_property
+from moziris.configuration.config_parser import get_config_property
 
 
 

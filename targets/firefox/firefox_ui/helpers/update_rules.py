@@ -5,8 +5,8 @@
 import ast
 import logging
 
-from src.configuration.config_parser import get_config_property
-from src.core.api.os_helpers import OSHelper
+from moziris.configuration.config_parser import get_config_property
+from moziris.api.os_helpers import OSHelper
 from targets.firefox.firefox_ui.helpers.version_parser import check_version
 
 logger = logging.getLogger(__name__)
