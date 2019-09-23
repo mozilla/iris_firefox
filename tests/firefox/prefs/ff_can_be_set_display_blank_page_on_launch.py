@@ -48,7 +48,7 @@ class Test(FirefoxTest):
                                        homepage_section_region)
         assert home_option_displayed, 'The options for "Home" section are displayed.'
 
-        click(default_setting_home_pattern)
+        click(default_setting_home_pattern, region=homepage_section_region)
 
         blank_page_option_displayed = exists(blank_page_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert blank_page_option_displayed, 'The \'Blank Page\' option for "Home" section is displayed.'
