@@ -20,7 +20,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         getting_started_toolbar_bookmark_pattern = Pattern('getting_started_in_toolbar.png')
         new_bookmark_option_pattern = Pattern('new_bookmark_option.png')
-        new_bookmark_window_pattern = Pattern('new_bookmark_window.png').similar(.6)
+        new_bookmark_window_pattern = Pattern('new_bookmark_window.png').similar(0.6)
         toolbar_new_bookmark_pattern = Pattern('new_bookmark.png')
         delete_option_pattern = Pattern('delete_bookmark.png')
 

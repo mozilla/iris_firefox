@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         search_with_google_one_off_string_pattern = Pattern('google_one_off_highlighted.png')
-        settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png').similar(.9)
+        settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png').similar(0.9)
 
         select_location_bar()
         paste('moz')
@@ -42,5 +42,5 @@ class Test(FirefoxTest):
         assert scroll_until_pattern_found(settings_gear_highlighted_pattern, type, (Key.LEFT,), 20, 1), \
             'The \'Google\' button is highlighted when hitting the LEFT button..'
 
-        assert scroll_until_pattern_found(search_with_google_one_off_string_pattern.similar(.9), type, (Key.LEFT,),
+        assert scroll_until_pattern_found(search_with_google_one_off_string_pattern.similar(0.9), type, (Key.LEFT,),
                                           20, 1), 'The \'Google\' button is highlighted when hitting the LEFT button.'

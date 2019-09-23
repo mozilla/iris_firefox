@@ -19,15 +19,15 @@ class Test(FirefoxTest):
     def run(self, firefox):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         visa_logo_pattern = Pattern('visa_logo.png')
-        card_number_field_pattern = Pattern('card_number_field.png').similar(.6)
-        expiration_month_field_pattern = Pattern('expiration_month_field.png').similar(.6)
-        expiration_year_field_pattern = Pattern('expiration_year_field.png').similar(.6)
-        csc_field_pattern = Pattern('csc_field.png').similar(.6)
-        submit_button_pattern = Pattern('submit_button.png').similar(.6)
-        entered_csc_pattern = Pattern('entered_csc.png').similar(.6)
-        find_in_preferences_field_pattern = Pattern('find_in_preferences_field.png').similar(.6)
-        saved_credit_cards_button_pattern = Pattern('saved_credit_cards_button.png').similar(.6)
-        name_field_pattern = Pattern('name_field.png').similar(.6)
+        card_number_field_pattern = Pattern('card_number_field.png').similar(0.6)
+        expiration_month_field_pattern = Pattern('expiration_month_field.png').similar(0.6)
+        expiration_year_field_pattern = Pattern('expiration_year_field.png').similar(0.6)
+        csc_field_pattern = Pattern('csc_field.png').similar(0.6)
+        submit_button_pattern = Pattern('submit_button.png').similar(0.6)
+        entered_csc_pattern = Pattern('entered_csc.png').similar(0.6)
+        find_in_preferences_field_pattern = Pattern('find_in_preferences_field.png').similar(0.6)
+        saved_credit_cards_button_pattern = Pattern('saved_credit_cards_button.png').similar(0.6)
+        name_field_pattern = Pattern('name_field.png').similar(0.6)
 
         change_preference('browser.search.region', 'US')
 
