@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         search_bar_not_empty_pattern = Pattern('search_bar_not_empty.png')
         search_form_suggestion_pattern = Pattern('search_form_suggestion.png')
         name_form_pattern = Pattern('name_form.png')
-        password_form_pattern = Pattern('password_form.png').similar(.6)
+        password_form_pattern = Pattern('password_form.png').similar(0.6)
         autocomplete_pattern = Pattern('word_autocomplete.png')
         save_login_button_pattern = Pattern('save_login_button.png')
 

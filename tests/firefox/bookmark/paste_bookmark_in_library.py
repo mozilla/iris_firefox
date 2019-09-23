@@ -18,8 +18,8 @@ class Test(FirefoxTest):
         soap_wiki_tab_pattern = Pattern('soap_wiki_tab.png')
         copy_option_pattern = Pattern('copy_option.png')
         paste_option_pattern = Pattern('paste_option.png')
-        other_bookmarks_option_pattern = Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6)
-        bookmarks_toolbar_option = Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6)
+        other_bookmarks_option_pattern = Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6)
+        bookmarks_toolbar_option = Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
