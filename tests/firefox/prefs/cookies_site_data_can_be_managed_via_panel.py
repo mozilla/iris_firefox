@@ -24,17 +24,16 @@ class Test(FirefoxTest):
         save_changes_button_pattern = Pattern('save_changes_button.png')
         cookies_cleared_pattern = Pattern('cookies_are_fully_cleared.png')
 
+        scroll_length = Screen.SCREEN_WIDTH // 3
         if OSHelper.is_linux():
             scroll_length = 5
         if OSHelper.is_mac():
             scroll_length = 10
-        else:
-            scroll_length = Screen.SCREEN_WIDTH // 3
 
         navigate('about:preferences#privacy')
 
         manage_data_button_found = scroll_until_pattern_found(manage_data_button_pattern, scroll, (-scroll_length,),
-                                                              timeout=Settings.DEFAULT_MOUSE_SCROLL_STEP)
+                                                              timeout=1)
         assert manage_data_button_found, 'Manage data can be opened'
 
         manage_data_button_exists = exists(manage_data_button_pattern)
