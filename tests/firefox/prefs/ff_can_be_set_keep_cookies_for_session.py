@@ -26,6 +26,8 @@ class Test(FirefoxTest):
         reddit_label_pattern = Pattern("reddit_label.png")
 
         scroll_step = 100
+        if OSHelper.is_linux():
+            scroll_step = 3
 
         navigate("about:preferences#privacy")
 
