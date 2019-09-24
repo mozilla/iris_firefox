@@ -20,6 +20,7 @@ class Test(FirefoxTest):
         custom_url_option_pattern = Pattern('custom_url_option.png')
         use_current_page_option_pattern = Pattern('use_current_page_option.png')
         use_bookmark_option_pattern = Pattern('use_bookmark_option.png')
+        url_field_pattern = Pattern('url_field.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -56,6 +57,11 @@ class Test(FirefoxTest):
 
         click(custom_url_option_pattern)
 
+        bookmark_option_displayed = exists(url_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_option_displayed, 'The \'Paste a URL... \' field is displayed.'
+
+        url_field_location = find(url_field_pattern)
+
         bookmark_option_displayed = exists(use_bookmark_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmark_option_displayed, 'The \'Use bookmark...\' button is displayed.'
 
@@ -64,7 +70,16 @@ class Test(FirefoxTest):
 
         click(use_current_page_option_pattern)
 
+        click(url_field_location)
+
+        edit_select_all()
+        copy_to_clipboard()
+
         time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        field_populated = get_clipboard()
+        assert 'http://127.0.0.1:2000/firefox/|http://127.0.0.1:2000/mozilla/' in field_populated, \
+            'The field is populated with all the URLs of the pages that are opened. The URLs are separated by \"|\"'
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
@@ -97,4 +112,4 @@ class Test(FirefoxTest):
         next_tab()
 
         home_page_displayed = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert home_page_displayed, 'The site chosen in step 3 is now the homepage..'
+        assert home_page_displayed, 'None of the pages opened in step 4 are displayed'
