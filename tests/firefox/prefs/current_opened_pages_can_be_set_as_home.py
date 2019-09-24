@@ -19,6 +19,7 @@ class Test(FirefoxTest):
         default_setting_home_pattern = Pattern('default_new_tab_setting_home.png')
         custom_url_option_pattern = Pattern('custom_url_option.png')
         use_current_page_option_pattern = Pattern('use_current_page_option.png')
+        use_bookmark_option_pattern = Pattern('use_bookmark_option.png')
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -54,6 +55,9 @@ class Test(FirefoxTest):
         assert custom_option_displayed, 'The \'Custom\' option for "Home" section is displayed.'
 
         click(custom_url_option_pattern)
+
+        bookmark_option_displayed = exists(use_bookmark_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_option_displayed, 'The \'Use bookmark...\' button is displayed.'
 
         custom_option_displayed = exists(use_current_page_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert custom_option_displayed, 'The \'Use current pages\' button is displayed.'
