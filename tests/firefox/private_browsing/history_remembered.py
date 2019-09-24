@@ -35,7 +35,6 @@ class Test(FirefoxTest):
         assert soap_label_exists is True, 'The page is successfully loaded.'
 
         close_window()
-        # close_window()
 
         all_windows_closed = exists(Tabs.NEW_TAB_HIGHLIGHTED, 1)
         assert all_windows_closed is False, 'The windows are closed'
@@ -48,7 +47,7 @@ class Test(FirefoxTest):
             firefox_icon_dock_exists = exists(dock_icon_pattern, region=dock_region)
             if firefox_icon_dock_exists:
                 break
-        # firefox_icon_dock_exists = exists(Docker.FIREFOX_DOCKER_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         assert firefox_icon_dock_exists is True, 'The Firefox icon is still visible in the dock.'
 
         right_click(dock_icon_pattern, region=dock_region)
@@ -75,11 +74,10 @@ class Test(FirefoxTest):
             firefox_icon_dock_exists = exists(dock_icon_pattern, region=dock_region)
             if firefox_icon_dock_exists:
                 break
-        # firefox_icon_dock_exists = exists(Docker.FIREFOX_DOCKER_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+
         assert firefox_icon_dock_exists is True, 'The Firefox icon is still visible in the dock.'
 
         right_click(dock_icon_pattern, region=dock_region)
-        # right_click(Docker.FIREFOX_DOCKER_ICON, region=dock_region)
 
         new_private_window_item_exists = exists(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM,
                                                 FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
@@ -94,6 +92,7 @@ class Test(FirefoxTest):
         history_sidebar()
 
         type('soap')
+
         wiki_soap_history_icon_exists = exists(wiki_soap_history_icon_pattern, 2)
         assert wiki_soap_history_icon_exists is False, 'The website is not displayed in the Recent History section.'
 
