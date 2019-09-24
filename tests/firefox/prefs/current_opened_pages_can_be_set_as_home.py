@@ -49,7 +49,7 @@ class Test(FirefoxTest):
                                        homepage_section_region)
         assert home_option_displayed, 'The options for "Home" section are displayed.'
 
-        click(default_setting_home_pattern)
+        click(default_setting_home_pattern, region=homepage_section_region)
 
         custom_option_displayed = exists(custom_url_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert custom_option_displayed, 'The \'Custom\' option for "Home" section is displayed.'
