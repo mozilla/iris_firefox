@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
         mozilla_history_item_pattern = Pattern('mozilla_history_item.png')
 
-        dock_region = Region(0, 0.8 * Screen.SCREEN_HEIGHT, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT)
+        dock_region = Region(0, int(0.8 * Screen.SCREEN_HEIGHT), Screen.SCREEN_WIDTH, int(0.2 * Screen.SCREEN_HEIGHT))
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -30,19 +30,28 @@ class Test(FirefoxTest):
         assert private_browsing_window_opened is True, 'Private Browsing window is successfully opened.'
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
+
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert soap_label_exists is True, 'The page is successfully loaded.'
 
         close_window()
-        close_window()
+        # close_window()
 
         all_windows_closed = exists(Tabs.NEW_TAB_HIGHLIGHTED, 1)
         assert all_windows_closed is False, 'The windows are closed'
 
-        firefox_icon_dock_exists = exists(Docker.FIREFOX_DOCKER_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        firefox_icon_dock_exists = False
+
+        for _ in range(13):
+            dock_icon_pattern = Pattern("firefox_dock_icon_size_" + str(_ + 1) + ".png")
+
+            firefox_icon_dock_exists = exists(dock_icon_pattern, region=dock_region)
+            if firefox_icon_dock_exists:
+                break
+        # firefox_icon_dock_exists = exists(Docker.FIREFOX_DOCKER_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert firefox_icon_dock_exists is True, 'The Firefox icon is still visible in the dock.'
 
-        right_click(Docker.FIREFOX_DOCKER_ICON, region=dock_region)
+        right_click(dock_icon_pattern, region=dock_region)
 
         new_window_item_exists = exists(Docker.NEW_WINDOW_MENU_ITEM, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_window_item_exists is True, 'New window menu item exists.'
@@ -60,13 +69,24 @@ class Test(FirefoxTest):
         assert mozilla_history_item_exists is True, 'Websites visited previously in the Normal ' \
                                                     'window are displayed in the History section'
 
-        right_click(Docker.FIREFOX_DOCKER_ICON, region=dock_region)
+        for _ in range(13):
+            dock_icon_pattern = Pattern("firefox_dock_icon_size_" + str(_+1) + ".png")
+
+            firefox_icon_dock_exists = exists(dock_icon_pattern, region=dock_region)
+            if firefox_icon_dock_exists:
+                break
+        # firefox_icon_dock_exists = exists(Docker.FIREFOX_DOCKER_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert firefox_icon_dock_exists is True, 'The Firefox icon is still visible in the dock.'
+
+        right_click(dock_icon_pattern, region=dock_region)
+        # right_click(Docker.FIREFOX_DOCKER_ICON, region=dock_region)
 
         new_private_window_item_exists = exists(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM,
                                                 FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_private_window_item_exists is True, 'New private window menu item exists.'
 
         click(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM)
+
         private_browsing_window_opened = exists(PrivateWindow.private_window_pattern,
                                                 FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert private_browsing_window_opened is True, 'Private Browsing window is successfully opened.'
@@ -81,6 +101,7 @@ class Test(FirefoxTest):
         edit_delete()
 
         type('Mozilla')
+
         mozilla_history_item_exists = exists(mozilla_history_item_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert mozilla_history_item_exists is True, 'Websites visited previously in the Normal ' \
                                                     'window are displayed in the History section'
