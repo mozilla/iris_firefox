@@ -28,6 +28,8 @@ class Test(FirefoxTest):
         scroll_step = 100
         if OSHelper.is_linux():
             scroll_step = 3
+        if OSHelper.is_mac():
+            scroll_step = 20
 
         navigate("about:preferences#privacy")
 
