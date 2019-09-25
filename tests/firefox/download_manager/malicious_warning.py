@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.mouse import mouse
+from moziris.api.mouse import mouse
 from targets.firefox.firefox_ui.helpers.download_manager_utils import *
 from targets.firefox.fx_testcase import *
 
