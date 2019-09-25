@@ -20,7 +20,8 @@ class Test(FirefoxTest):
         wiki_soap_history_icon_pattern = Pattern('wiki_soap_history_icon.png')
         mozilla_history_item_pattern = Pattern('mozilla_history_item.png')
 
-        dock_region = Region(0, int(0.8 * Screen.SCREEN_HEIGHT), Screen.SCREEN_WIDTH, int(0.2 * Screen.SCREEN_HEIGHT))
+        dock_region = Region(0 + Screen.SCREEN_WIDTH // 2, int(0.8 * Screen.SCREEN_HEIGHT), Screen.SCREEN_WIDTH // 2,
+                             int(0.2 * Screen.SCREEN_HEIGHT))
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -39,18 +40,42 @@ class Test(FirefoxTest):
         all_windows_closed = exists(Tabs.NEW_TAB_HIGHLIGHTED, 1)
         assert all_windows_closed is False, 'The windows are closed'
 
-        firefox_icon_dock_exists = False
+        firefox_dock_icon_size_1_pattern = Pattern("firefox_dock_icon_size_1.png")
+        firefox_dock_icon_size_2_pattern = Pattern("firefox_dock_icon_size_2.png")
+        firefox_dock_icon_size_3_pattern = Pattern("firefox_dock_icon_size_3.png")
+        firefox_dock_icon_size_4_pattern = Pattern("firefox_dock_icon_size_4.png")
+        firefox_dock_icon_size_5_pattern = Pattern("firefox_dock_icon_size_5.png")
+        firefox_dock_icon_size_6_pattern = Pattern("firefox_dock_icon_size_6.png")
+        firefox_dock_icon_size_7_pattern = Pattern("firefox_dock_icon_size_7.png")
+        firefox_dock_icon_size_8_pattern = Pattern("firefox_dock_icon_size_8.png")
+        firefox_dock_icon_size_9_pattern = Pattern("firefox_dock_icon_size_9.png")
+        firefox_dock_icon_size_10_pattern = Pattern("firefox_dock_icon_size_10.png")
+        firefox_dock_icon_size_11_pattern = Pattern("firefox_dock_icon_size_11.png")
+        firefox_dock_icon_size_12_pattern = Pattern("firefox_dock_icon_size_12.png")
+        firefox_dock_icon_size_13_pattern = Pattern("firefox_dock_icon_size_13.png")
+        firefox_dock_icon_size_14_pattern = Pattern("firefox_dock_icon_size_14.png")
 
-        for _ in range(13):
-            dock_icon_pattern = Pattern("firefox_dock_icon_size_" + str(_ + 1) + ".png")
+        dock_icon_patterns = [firefox_dock_icon_size_1_pattern, firefox_dock_icon_size_2_pattern, firefox_dock_icon_size_3_pattern,
+                              firefox_dock_icon_size_4_pattern, firefox_dock_icon_size_5_pattern, firefox_dock_icon_size_6_pattern,
+                              firefox_dock_icon_size_7_pattern, firefox_dock_icon_size_8_pattern, firefox_dock_icon_size_9_pattern,
+                              firefox_dock_icon_size_10_pattern, firefox_dock_icon_size_11_pattern, firefox_dock_icon_size_12_pattern,
+                              firefox_dock_icon_size_13_pattern, firefox_dock_icon_size_14_pattern,
+                              ]
+
+        firefox_icon_dock_exists = False
+        firefox_icon_dock_location = None
+
+        for dock_icon_pattern in dock_icon_patterns:
 
             firefox_icon_dock_exists = exists(dock_icon_pattern, region=dock_region)
-            if firefox_icon_dock_exists:
+
+            if firefox_icon_dock_exists is True:
+                firefox_icon_dock_location = find(dock_icon_pattern)
                 break
 
         assert firefox_icon_dock_exists is True, 'The Firefox icon is still visible in the dock.'
 
-        right_click(dock_icon_pattern, region=dock_region)
+        right_click(firefox_icon_dock_location, region=dock_region)
 
         new_window_item_exists = exists(Docker.NEW_WINDOW_MENU_ITEM, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_window_item_exists is True, 'New window menu item exists.'
@@ -68,12 +93,17 @@ class Test(FirefoxTest):
         assert mozilla_history_item_exists is True, 'Websites visited previously in the Normal ' \
                                                     'window are displayed in the History section'
 
-        for _ in range(13):
-            dock_icon_pattern = Pattern("firefox_dock_icon_size_" + str(_+1) + ".png")
+        for dock_icon_pattern in dock_icon_patterns:
 
             firefox_icon_dock_exists = exists(dock_icon_pattern, region=dock_region)
-            if firefox_icon_dock_exists:
+
+            if firefox_icon_dock_exists is True:
+                firefox_icon_dock_location = find(dock_icon_pattern)
                 break
+
+        assert firefox_icon_dock_exists is True, 'The Firefox icon is still visible in the dock.'
+
+        right_click(firefox_icon_dock_location, region=dock_region)
 
         assert firefox_icon_dock_exists is True, 'The Firefox icon is still visible in the dock.'
 
