@@ -33,16 +33,20 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#privacy')
 
+        browser_privacy_label_exists = exists(browser_privacy_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_privacy_label_exists, "Privacy page is loaded"
         hover(browser_privacy_hover_pattern)
 
         manage_data_button_found = scroll_until_pattern_found(manage_data_button_pattern, scroll, (-scroll_length,),
                                                               timeout=1)
         assert manage_data_button_found, 'Manage data can be opened'
 
+        time.sleep(0.5)  # to prevent clicking on wrong location due to fast execution
+
         manage_data_button_exists = exists(manage_data_button_pattern)
         assert manage_data_button_exists, 'Button is reached.'
 
-        click(manage_data_button_pattern, Settings.DEFAULT_CLICK_DELAY)
+        click(manage_data_button_pattern, 1)
 
         manage_cookies_dialog_opened = exists(manage_cookies_dialog_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert manage_cookies_dialog_opened, 'The "Manage Cookies and Site Data" subdialog opened.'
@@ -61,7 +65,7 @@ class Test(FirefoxTest):
         click(remove_all_button_pattern)
 
         try:
-            all_records_deleted = wait_vanish(site_with_cookies_pattern, Settings.DEFAULT_AUTO_WAIT_TIMEOUT)
+            all_records_deleted = wait_vanish(site_with_cookies_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert all_records_deleted, "All records was successfully deleted"
         except FindError:
             raise
