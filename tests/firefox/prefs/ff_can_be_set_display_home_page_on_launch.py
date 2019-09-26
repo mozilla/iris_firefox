@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        mozilla_test_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        mozilla_test_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_test_opened, 'Wiki test site opened'
 
         new_tab()
@@ -47,7 +47,7 @@ class Test(FirefoxTest):
                                        homepage_section_region)
         assert home_option_displayed, 'The options for "Home" section are displayed.'
 
-        click(default_setting_home_pattern)
+        click(default_setting_home_pattern, homepage_section_region)
 
         quit_firefox()
 
