@@ -47,8 +47,6 @@ class Test(FirefoxTest):
                                        homepage_section_region)
         assert home_option_displayed, 'The options for "Home" section are displayed.'
 
-        click(default_setting_home_pattern, homepage_section_region)
-
         quit_firefox()
 
         firefox.start(url='', image=NavBar.HOME_BUTTON)
