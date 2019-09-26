@@ -15,6 +15,8 @@ class Test(FirefoxTest):
         locale=['en-US'],
     )
     def run(self, firefox):
+        save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON
+
         browser_privacy_hover_pattern = Pattern('browser_privacy_hover.png')
         manage_data_button_pattern = Pattern('manage_data_button.png')
         manage_cookies_dialog_title_pattern = Pattern('manage_cookies_title.png')
@@ -22,7 +24,6 @@ class Test(FirefoxTest):
         remove_button_highlighted_pattern = Pattern('remove_button_highlighted.png')
         remove_all_button_pattern = Pattern('remove_all_button.png')
         clear_now_dialog_button_pattern = Pattern('clear_now_button.png')
-        save_changes_button_pattern = Pattern('save_changes_button.png')
         cookies_cleared_pattern = Pattern('cookies_are_fully_cleared.png')
 
         scroll_length = Screen.SCREEN_WIDTH // 3
