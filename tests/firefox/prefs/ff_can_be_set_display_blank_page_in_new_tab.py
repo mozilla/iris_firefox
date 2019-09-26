@@ -9,10 +9,10 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='Firefox can be set to display Firefox Home in new tabs ',
+        description='Firefox can be set to display blank pages in new tabs',
         locale=['en-US'],
         test_case_id='2241',
-        test_suite_id='161472'
+        test_suite_id='161473'
     )
     def run(self, firefox):
         new_tab_preferences_pattern = Pattern('new_tab_preferences.png')
