@@ -4,8 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-iris_firefox = {path = ".",editable = true}
-moziris = "==0.3"
+moziris = "==0.4"
 
 [dev-packages]
 pylint = "*"
