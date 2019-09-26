@@ -18,8 +18,9 @@ class Test(FirefoxTest):
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")
         browser_privacy_hover_pattern = Pattern('browser_privacy_hover.png')
         manage_data_button_pattern = Pattern('manage_data_button.png')
-        delete_cookies_option = Pattern('delete_cookies_checkbox.png')
-        empty_dialog_pattern = Pattern("empty_permissions_list.png")
+        delete_cookies_option_pattern = Pattern('delete_cookies_checkbox.png')
+        empty_dialog_pattern = Pattern("no_sites_listed_window.png")
+        browser_console_pattern = Pattern("browser_console.png")
 
         scroll_length = Screen.SCREEN_WIDTH // 3
         if OSHelper.is_linux():
@@ -38,15 +39,15 @@ class Test(FirefoxTest):
         assert browser_privacy_label_exists, "Privacy page is loaded"
         hover(browser_privacy_hover_pattern)
 
-        time.sleep(55)
+        delete_cookies_option_found = scroll_until_pattern_found(delete_cookies_option_pattern, scroll,
+                                                                 (-scroll_length,), 5)
+        assert delete_cookies_option_found, "Delete cookies checkbox is found"
+        click(delete_cookies_option_pattern)
+        time.sleep(5)
 
-        delete_cookies_option_found = scroll_until_pattern_found(delete_cookies_option, scroll, (-scroll_length,), 5)
-        click(delete_cookies_option)
+        firefox.restart('about:preferences#privacy', browser_privacy_hover_pattern)
 
-        open_browser_console()
-        restart_via_console()
-
-        navigate('about:preferences#privacy')
+        click(NavBar.RELOAD_BUTTON)
 
         browser_privacy_label_exists = exists(browser_privacy_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_privacy_label_exists, "Privacy page is loaded"
