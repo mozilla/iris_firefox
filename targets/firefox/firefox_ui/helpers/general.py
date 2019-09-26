@@ -151,7 +151,7 @@ def check_preference(pref_name, value):
 
 def click_cancel_button():
     """Click cancel button."""
-    cancel_button_pattern = Pattern('cancel_button.png').similar(.7)
+    cancel_button_pattern = Pattern('cancel_button.png').similar(0.7)
     try:
         wait(cancel_button_pattern, 10)
         logger.debug('Cancel button found.')
@@ -220,11 +220,12 @@ def close_content_blocking_pop_up():
 
 def close_customize_page():
     """Close the 'Customize...' page by pressing the 'Done' button."""
-    customize_done_button_pattern = Pattern('customize_done_button.png')
+    customize_done_button_pattern = Pattern('customize_done_button.png').similar(0.7)
     try:
         wait(customize_done_button_pattern, 10)
         logger.debug('Done button found.')
         click(customize_done_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
     except FindError:
         raise APIHelperError(
             'Can\'t find the Done button in the page, aborting.')

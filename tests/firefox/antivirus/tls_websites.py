@@ -27,12 +27,16 @@ class Test(FirefoxTest):
         the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png').similar(0.6)
         the_register_log_in_page_pattern = Pattern('the_register_log_in_page.png').similar(0.6)
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
+        cdn77_tab_logo_pattern = Pattern('cdn77_tab_logo.png')
+
+        home_width, home_height = NavBar.HOME_BUTTON.get_size()
+        tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
         navigate('https://www.cloudflare.com/')
         assert exists(cloudflare_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'Cloudflare page is successfully downloaded.'
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.SECURE_CONNECTION_LOCK)
         assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
             'Show Connection Details button displayed.'
 
@@ -61,7 +65,7 @@ class Test(FirefoxTest):
         assert exists(theregister_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'The Register page is successfully downloaded.'
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.SECURE_CONNECTION_LOCK)
 
         assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT),\
             'Show Connection Details button displayed.'
@@ -91,6 +95,11 @@ class Test(FirefoxTest):
 
         cdn_logo_region = Screen().top_half().left_third().top_half()
 
+        assert exists(cdn77_tab_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT, tabs_region), \
+            'CDN77 page is successfully downloaded.'
+
+        restore_firefox_focus()
+
         assert exists(cdn77_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT, cdn_logo_region), \
             'CDN77 page is successfully downloaded.'
 
@@ -98,7 +107,7 @@ class Test(FirefoxTest):
         cdn_width, cdn_height = cdn77_logo_pattern.get_size()
         cdn_region = Rectangle(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
 
-        click(LocationBar.IDENTITY_ICON)
+        click(LocationBar.SECURE_CONNECTION_LOCK)
 
         assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
             'Show Connection Details button displayed.'
@@ -115,10 +124,12 @@ class Test(FirefoxTest):
 
         close_window_control('auxiliary')
 
-        assert exists("Support", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
-            'CDN77 Support button is displayed.'
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        click("Support", region=cdn_region)
+        assert exists("Help", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
+            'CDN77 Help Center button is displayed.'
+
+        click("Help", region=cdn_region)
 
         assert exists(cdn77_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
             'TLS client certificate authentication mechanism will not be broken. No errors occur.'

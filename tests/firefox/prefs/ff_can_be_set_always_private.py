@@ -30,7 +30,7 @@ class Test(FirefoxTest):
         prefs_unchecked_box_pattern = Pattern('prefs_unchecked_box.png')
         restart_browser_pattern = Pattern('restart_browser.png')
         download_pdf_pattern = Pattern('download_pdf_button.png')
-        pdf_downloaded = Pattern('downloaded_pdf.png').similar(.7)
+        pdf_downloaded = Pattern('downloaded_pdf.png').similar(0.7)
         name_field_pattern = Pattern('name_field.png')
         password_field_pattern = Pattern('password_field.png')
 
@@ -46,6 +46,7 @@ class Test(FirefoxTest):
                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_opened, 'Preferences page is opened'
 
+        time.sleep(ui_timeout)
         paste('Firefox will')
         history_preferences_reachable = exists(remember_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_preferences_reachable, 'History menu is reachable'
@@ -88,8 +89,8 @@ class Test(FirefoxTest):
                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert preferences_opened, 'Preferences page is opened'
 
+        time.sleep(ui_timeout)
         paste('Firefox will')
-
         always_private_option_displayed = exists(always_private_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert always_private_option_displayed, '"Always private" option is reachable'
 

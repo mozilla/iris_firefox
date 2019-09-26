@@ -103,7 +103,7 @@ class Test(FirefoxTest):
 
         key_up(Key.CTRL)
 
-        ctrl_tab_focus_logo = exists(ctrl_tab_focus_logo_pattern)
+        ctrl_tab_focus_logo = exists(ctrl_tab_focus_logo_pattern.similar(0.9))
         assert ctrl_tab_focus_logo is False, 'The switcher disappears.'
 
         pocket_site = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)

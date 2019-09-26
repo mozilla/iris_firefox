@@ -30,13 +30,6 @@ class Test(FirefoxTest):
 
         connection_lock_location = find(LocationBar.SECURE_CONNECTION_LOCK)
         connection_lock_width, connection_lock_height = LocationBar.SECURE_CONNECTION_LOCK.get_size()
-        connection_lock_region = Region(connection_lock_location.x, connection_lock_location.y,
-                                        connection_lock_width * 20, connection_lock_height)
-
-        domain_owner_displayed = exists('Mozilla Foundation (US)', FirefoxSettings.FIREFOX_TIMEOUT,
-                                        connection_lock_region)
-        assert domain_owner_displayed, 'The owner of the domain is highlighted in green, next to the URL, e.g. ' \
-                                       'Mozilla Foundation (US).'
 
         edit_select_all()
 
@@ -47,12 +40,7 @@ class Test(FirefoxTest):
                                                                    'page is displayed, containing a string saying: ' \
                                                                    'extended-validation.badssl.com'
 
-        click(LocationBar.IDENTITY_ICON)
-
-        domain_owner_displayed_after_click = exists('Mozilla Foundation (US)', FirefoxSettings.FIREFOX_TIMEOUT,
-                                                    connection_lock_region)
-        assert domain_owner_displayed_after_click, 'Mozilla Foundation is displayed when the user clicks the icon ' \
-                                                   'next to the URL.'
+        click(LocationBar.SECURE_CONNECTION_LOCK)
 
         show_connection_details_button_displayed = exists(show_connection_details_button_pattern,
                                                           FirefoxSettings.FIREFOX_TIMEOUT)
@@ -62,7 +50,7 @@ class Test(FirefoxTest):
 
         certificate_additional_details_region = Region(connection_lock_location.x,
                                                        connection_lock_location.y + connection_lock_height,
-                                                       connection_lock_width * 10, connection_lock_height * 20)
+                                                       connection_lock_width * 20, connection_lock_height * 20)
 
         certificate_additional_details_popup_displayed = exists(more_information_button_pattern,
                                                                 FirefoxSettings.FIREFOX_TIMEOUT)

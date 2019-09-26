@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
         cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
         cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
-        download_button_pattern = Pattern('download_button.png').similar(.7)
+        download_button_pattern = Pattern('download_button.png').similar(0.7)
         view_certificates_button_pattern = Pattern('view_certificates_button.png')
         certificate_manager_window_title_pattern = Pattern('certificate_manager_window_title.png')
         tls_certificate_name_pattern_1 = Pattern('tls_certificate_name_1.png')
@@ -59,7 +59,9 @@ class Test(FirefoxTest):
         assert exists(DownloadDialog.OK_BUTTON, 10), 'Certificate trust dialog opened.'
 
         click(DownloadDialog.OK_BUTTON)
+
         navigate('about:preferences#privacy')
+
         assert exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED), 'Preferences opened.'
 
         paste('Certificates')
@@ -86,6 +88,8 @@ class Test(FirefoxTest):
         assert exists(cdn77_tab_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT, tabs_region), \
             'CDN77 page is successfully downloaded.'
 
+        restore_firefox_focus()
+
         assert exists(cdn77_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
             'CDN77 page is successfully downloaded.'
 
@@ -93,10 +97,10 @@ class Test(FirefoxTest):
         cdn_width, cdn_height = cdn77_logo_pattern.get_size()
         cdn_region = Region(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
 
-        assert exists("Support", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
+        assert exists("Help", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
             'CDN77 Support button is displayed.'
 
-        click("Support", region=cdn_region)
+        click("Help", region=cdn_region)
 
         assert exists(cdn77_support_page_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \
             'TLS client certificate authentication mechanism will not be broken. No errors occur.'
@@ -105,7 +109,7 @@ class Test(FirefoxTest):
 
         assert exists(cloudflare_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT, tabs_region), \
             'Cloudflare page is successfully downloaded.'
-        assert exists(cloudflare_support_button_pattern.similar(.7)), 'Cloudflare Support button is displayed.'
+        assert exists(cloudflare_support_button_pattern.similar(0.7)), 'Cloudflare Support button is displayed.'
 
         click(cloudflare_support_button_pattern)
         assert exists(cloudflare_support_page_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT), \

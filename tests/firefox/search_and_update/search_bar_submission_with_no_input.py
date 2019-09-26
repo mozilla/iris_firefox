@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='4263',
         test_suite_id='83',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         add_search_bar_in_toolbar_pattern = Pattern('add_search_bar_in_toolbar.png').similar(0.6)
@@ -28,7 +29,7 @@ class Test(FirefoxTest):
         expected = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, 10)
         assert expected is True, 'Search bar successfully enabled in the page.'
 
-        click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(.7))
+        click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(0.7))
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 

@@ -38,6 +38,9 @@ class Test(FirefoxTest):
 
         navigate(privacy_url)
 
+        expected = exists(firefox_privacy_logo_pattern, 10)
+        assert expected is True, 'Firefox Privacy Notice page loaded successfully.'
+
         close_tab()
 
         new_tab()

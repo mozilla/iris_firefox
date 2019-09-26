@@ -12,7 +12,8 @@ class Test(FirefoxTest):
         description='This test case checks that one-off searches are displayed in the awesomebar.',
         locale=['en-US'],
         test_case_id='108248',
-        test_suite_id='1902'
+        test_suite_id='1902',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         search_settings_pattern = Pattern('search_settings.png')

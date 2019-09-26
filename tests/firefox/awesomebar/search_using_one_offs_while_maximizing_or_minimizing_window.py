@@ -14,7 +14,8 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='108252',
         test_suite_id='1902',
-        preferences={'browser.contentblocking.enabled': False}
+        preferences={'browser.contentblocking.enabled': False},
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -22,7 +23,7 @@ class Test(FirefoxTest):
         window_controls_restore_pattern = Pattern('window_controls_restore.png')
         magnifying_glass_pattern = Pattern('magnifying_glass.png')
         window_controls_maximize_pattern = Pattern('window_controls_maximize.png')
-        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(.7)
+        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(0.7)
         wikipedia_search_results_moz_pattern = Pattern('wikipedia_search_results_moz.png')
         moz_wiki_item = Pattern('moz_wiki_item.png')
         this_time_search_with_pattern = Pattern('this_time_search_with.png')
@@ -63,7 +64,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
 
-        google_page_opened = region.exists(magnifying_glass_pattern.similar(.7), FirefoxSettings.FIREFOX_TIMEOUT)
+        google_page_opened = region.exists(magnifying_glass_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_page_opened, 'The default search engine is \'Google\', page successfully loaded.'
 
         searched_item_found = region.exists('moz', FirefoxSettings.FIREFOX_TIMEOUT)

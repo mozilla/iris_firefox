@@ -20,8 +20,8 @@ class Test(FirefoxTest):
         confirm_clear_data_pattern = Pattern('confirm_clear_data.png')
         open_clear_data_window_pattern = Pattern('open_clear_data_window.png')
         zero_bytes_cache_pattern = Pattern('zero_bytes_cache.png')
-        cached_web_content_item_pattern = Pattern('cached_web_content_item.png').similar(.6)
-        cookies_and_site_data_item_pattern = Pattern('cookies_and_site_data_item.png').similar(.6)
+        cached_web_content_item_pattern = Pattern('cached_web_content_item.png').similar(0.6)
+        cookies_and_site_data_item_pattern = Pattern('cookies_and_site_data_item.png').similar(0.6)
 
         navigate('about:preferences#privacy')
 

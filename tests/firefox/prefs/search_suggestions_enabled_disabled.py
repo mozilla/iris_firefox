@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id='143592',
         test_suite_id='2241',
         locale=['en-US'],
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')

@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         local_server_autocomplete_pattern = Pattern('local_server_autocomplete.png')
-        mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL
+        mozilla_bookmark_small_pattern = LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR
 
         left_upper_corner = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
