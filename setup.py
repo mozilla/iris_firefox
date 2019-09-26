@@ -4,7 +4,7 @@
 
 from setuptools import setup, find_packages
 
-PACKAGE_NAME = 'iris'
+PACKAGE_NAME = 'iris_firefox'
 PACKAGE_VERSION = '2.0'
 
 INSTALL_REQUIRES = [
@@ -49,9 +49,5 @@ setup(
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRE,
     extras_require={'dev': DEV_REQUIRES},  # For `pip install -e .[dev]`
-    entry_points={
-        "console_scripts": [
-            "moziris = main:test"
-        ]
-    }
+    entry_points={}
 )
