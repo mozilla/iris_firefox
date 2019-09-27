@@ -9,8 +9,8 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
 
     @pytest.mark.details(
-        description='Firefox can be successfully set to keep cookies for a specific session',
-        test_case_id='143634',
+        description='Firefox can be successfully set to keep cookies and site data until closing Firefox',
+        test_case_id='143636',
         test_suite_id='2241',
         locale=['en-US'],
         blocked_by={'id': '', 'platform': OSPlatform.ALL}
