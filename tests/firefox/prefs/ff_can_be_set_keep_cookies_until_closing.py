@@ -13,14 +13,14 @@ class Test(FirefoxTest):
         test_case_id='143634',
         test_suite_id='2241',
         locale=['en-US'],
+        blocked_by={'id': '', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")
-        browser_privacy_hover_pattern = Pattern('browser_privacy_hover.png')
-        manage_data_button_pattern = Pattern('manage_data_button.png')
-        delete_cookies_option_pattern = Pattern('delete_cookies_checkbox.png')
+        browser_privacy_hover_pattern = Pattern("browser_privacy_hover.png")
+        manage_data_button_pattern = Pattern("manage_data_button.png")
+        delete_cookies_option_pattern = Pattern("delete_cookies_checkbox.png")
         empty_dialog_pattern = Pattern("no_sites_listed_window.png")
-        browser_console_pattern = Pattern("browser_console.png")
 
         scroll_length = Screen.SCREEN_WIDTH // 3
         if OSHelper.is_linux():
@@ -43,7 +43,6 @@ class Test(FirefoxTest):
                                                                  (-scroll_length,), 5)
         assert delete_cookies_option_found, "Delete cookies checkbox is found"
         click(delete_cookies_option_pattern)
-        time.sleep(5)
 
         firefox.restart('about:preferences#privacy', browser_privacy_hover_pattern)
 
