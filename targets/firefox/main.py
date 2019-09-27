@@ -16,6 +16,7 @@ import pytest
 from moziris.base.target import BaseTarget
 from moziris.api.mouse.mouse import mouse_reset
 from moziris.api.os_helpers import OSHelper
+from moziris.api.settings import Settings
 from moziris.util.arg_parser import get_core_args
 from moziris.util.local_web_server import LocalWebServer
 from moziris.util.path_manager import PathManager
@@ -60,6 +61,8 @@ class Target(BaseTarget):
             {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report'}
         ]
         self.local_web_root = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'local_web')
+        if target_args.treeherder:
+            Settings.debug_image = False
 
     def get_target_args(self):
         parser = argparse.ArgumentParser(description='Firefox-specific arguments', prog='iris')
