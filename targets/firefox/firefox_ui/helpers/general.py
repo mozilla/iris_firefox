@@ -7,27 +7,27 @@ import json
 import time
 import os
 
-from src.core.api.enums import Alignment
-from src.core.api.errors import APIHelperError
-from src.core.api.errors import FindError
-from src.core.api.finder.finder import wait, exists, wait_vanish
-from src.core.api.finder.image_search import image_find
-from src.core.api.finder.pattern import Pattern
-from src.core.api.keyboard.key import *
-from src.core.api.keyboard.key import Key
-from src.core.api.keyboard.keyboard import type, key_up, key_down
-from src.core.api.keyboard.keyboard_api import paste
-from src.core.api.keyboard.keyboard_util import get_clipboard
-from src.core.api.location import Location
-from src.core.api.mouse.mouse import click, hover, Mouse, scroll_down, right_click
-from src.core.api.os_helpers import OSHelper, OSPlatform
-from src.core.api.rectangle import Rectangle
-from src.core.api.screen.region import Region
-from src.core.api.screen.screen import Screen
-from src.core.api.settings import Settings
-from src.core.util.arg_parser import get_core_args
-from src.core.util.logger_manager import logger
-from src.core.util.region_utils import RegionUtils
+from moziris.api.enums import Alignment
+from moziris.api.errors import APIHelperError
+from moziris.api.errors import FindError
+from moziris.api.finder.finder import wait, exists, wait_vanish
+from moziris.api.finder.image_search import image_find
+from moziris.api.finder.pattern import Pattern
+from moziris.api.keyboard.key import *
+from moziris.api.keyboard.key import Key
+from moziris.api.keyboard.keyboard import type, key_up, key_down
+from moziris.api.keyboard.keyboard_api import paste
+from moziris.api.keyboard.keyboard_util import get_clipboard
+from moziris.api.location import Location
+from moziris.api.mouse.mouse import click, hover, Mouse, scroll_down, right_click
+from moziris.api.os_helpers import OSHelper, OSPlatform
+from moziris.api.rectangle import Rectangle
+from moziris.api.screen.region import Region
+from moziris.api.screen.screen import Screen
+from moziris.api.settings import Settings
+from moziris.util.arg_parser import get_core_args
+from moziris.util.logger_manager import logger
+from moziris.util.region_utils import RegionUtils
 from targets.firefox.firefox_ui.content_blocking import ContentBlocking
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import select_location_bar

@@ -4,7 +4,7 @@
 
 from setuptools import setup, find_packages
 
-PACKAGE_NAME = 'iris'
+PACKAGE_NAME = 'iris_firefox'
 PACKAGE_VERSION = '2.0'
 
 INSTALL_REQUIRES = [
@@ -39,8 +39,8 @@ setup(
     keywords=['mozilla', 'firefox', 'automation', 'regression-testing', 'testing'],
     author='Mozilla',
     author_email='mwobensmith@mozilla.com',
-    url='https://github.com/mozilla/iris2',
-    download_url='https://github.com/mozilla/iris2/latest.tar.gz',
+    url='https://github.com/mozilla/iris_firefox',
+    download_url='https://github.com/mozilla/iris_firefox/latest.tar.gz',
     license='MPL2',
     packages=find_packages(),
     include_package_data=True,  # See MANIFEST.in
@@ -49,9 +49,5 @@ setup(
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRE,
     extras_require={'dev': DEV_REQUIRES},  # For `pip install -e .[dev]`
-    entry_points={
-        'console_scripts': [
-            'iris = src.__main__:main'
-        ]
-    }
+    entry_points={}
 )

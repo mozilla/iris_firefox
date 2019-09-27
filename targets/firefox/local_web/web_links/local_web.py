@@ -1,8 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from src.core.api.finder.pattern import Pattern
-from src.core.util.arg_parser import get_core_args
+from moziris.api.finder.pattern import Pattern
+from moziris.util.arg_parser import get_core_args
 
 
 class LocalWeb(object):
