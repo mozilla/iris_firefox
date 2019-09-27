@@ -35,12 +35,12 @@ class Test(FirefoxTest):
         assert edit_stardialog_displayed is True, 'The Edit This Bookmark popup is displayed under the star-shaped ' \
                                                   'icon.'
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), 0, stardialog_region)
 
-        choose_option_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(.6), region=stardialog_region)
+        choose_option_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(0.6), region=stardialog_region)
         assert choose_option_displayed is True, 'Bookmark toolbar folder displayed'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(.6), region=stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_OPTION_CHOOSE.similar(0.6), region=stardialog_region)
 
         destination_folders_displayed = exists(destination_folders_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert destination_folders_displayed, 'Edit This Bookmark panel is displayed with all the destination folders.'

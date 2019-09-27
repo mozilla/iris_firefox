@@ -57,7 +57,7 @@ class Test(FirefoxTest):
 
         paste('Focus')
 
-        folders_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(.6),
+        folders_expander_exists = exists(Bookmarks.StarDialog.PANEL_FOLDERS_EXPANDER.similar(0.6),
                                          FirefoxSettings.FIREFOX_TIMEOUT)
         assert folders_expander_exists is True, 'Folders expander is displayed'
 

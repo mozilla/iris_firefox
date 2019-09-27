@@ -47,7 +47,7 @@ class Test(FirefoxTest):
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
-        history_updated_firefox = exists(LocalWeb.FIREFOX_BOOKMARK_SMALL.similar(.7), FirefoxSettings.FIREFOX_TIMEOUT,
+        history_updated_firefox = exists(LocalWeb.FIREFOX_BOOKMARK_SMALL.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
                                          history_sidebar_region)
         assert history_updated_firefox is True, 'The Firefox site is added to history'
 
@@ -63,15 +63,15 @@ class Test(FirefoxTest):
 
         type('Firefox')
 
-        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
         assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
 
-        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
         assert toolbar_option_button_exists, 'Toolbar option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
 
         panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
         assert panel_option_button_exists, 'Panel option button exists'
@@ -84,15 +84,15 @@ class Test(FirefoxTest):
 
         type('Wiki')
 
-        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
         assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
 
-        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
         assert toolbar_option_button_exists, 'Toolbar option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
 
         panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
         assert panel_option_button_exists, 'Panel option button exists'
