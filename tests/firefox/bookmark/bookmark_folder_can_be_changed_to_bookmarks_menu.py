@@ -33,17 +33,17 @@ class Test(FirefoxTest):
         assert edit_stardialog_displayed is True, 'The Edit This Bookmark popup is displayed under the star-shaped ' \
                                                   'icon.'
 
-        panel_folder_default_option_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6),
+        panel_folder_default_option_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6),
                                                     region=stardialog_region)
         assert panel_folder_default_option_exists is True, 'Panel folder default option exists'
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6), 0, stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6), 0, stardialog_region)
 
-        bookmark_menu_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6),
+        bookmark_menu_folder_displayed = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(0.6),
                                                 region=stardialog_region)
         assert bookmark_menu_folder_displayed, 'Bookmark menu folder displayed'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(.6), region=stardialog_region)
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_MENU.similar(0.6), region=stardialog_region)
 
         stardialog_done_button_displayed = exists(Bookmarks.StarDialog.DONE, region=stardialog_region)
         assert stardialog_done_button_displayed is True, 'Stardialog Done button is displayed'

@@ -31,7 +31,7 @@ class Test(FirefoxTest):
         text_pattern = Pattern('focus_text.png')
         text_pattern_selected = Pattern('focus_text_selected.png')
         update_restart_pattern = Pattern('background_update_menu_notification.png')
-        firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png').similar(.7)
+        firefox_up_to_date_pattern = Pattern('firefox_up_to_date.png').similar(0.7)
         version = firefox.application.version
         current_version = version if '-dev' not in version else version.replace('-dev', '')
         channel = firefox.application.channel

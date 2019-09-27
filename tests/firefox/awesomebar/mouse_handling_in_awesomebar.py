@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
-        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(.7)
+        search_suggestion_opened_tab_pattern = Pattern('search_suggestion_opened_tab.png').similar(0.7)
         search_settings_pattern = Pattern('search_settings.png')
         settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
 
@@ -53,7 +53,7 @@ class Test(FirefoxTest):
 
         hover(search_settings_pattern)
 
-        expected = exists(settings_gear_highlighted_pattern.similar(.9))
+        expected = exists(settings_gear_highlighted_pattern.similar(0.9))
         assert expected is False, 'Successfully hovered over the \'Search settings\'  one off.'
 
         # Hover over an autocomplete result that is not selected and click on it.

@@ -22,7 +22,6 @@ class Test(FirefoxTest):
         first_saved_login_pattern = Pattern('name0_login.png').similar(0.95)
         last_saved_login_pattern = Pattern('name9_login.png').similar(0.95)
         login_form = self.get_asset_path('form.html')
-        ui_timeout = 1
 
         scroll_length = Screen.SCREEN_HEIGHT // 10
         if OSHelper.is_linux():
@@ -61,11 +60,22 @@ class Test(FirefoxTest):
         preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert preferences_opened, 'The about:preferences page is successfully loaded.'
 
-        saved_logins_button_displayed = scroll_until_pattern_found(saved_logins_button_pattern, scroll,
-                                                                   (-scroll_length,), timeout=ui_timeout)
+        type(Key.TAB)  # change focus for correct scroll
+
+        saved_logins_button_displayed = scroll_until_pattern_found(saved_logins_button_pattern, type, (Key.DOWN,), 50,
+                                                                   timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT//2)
         assert saved_logins_button_displayed, 'Saved logins button is displayed'
 
-        click(saved_logins_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 2)
+
+        saved_logins_exists = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert saved_logins_exists, 'Saved logins button is fixed after scroll.'
+
+        saved_logins_location = find(saved_logins_button_pattern)
+
+        saved_click_location = Location(saved_logins_location.x+5, saved_logins_location.y+5)
+
+        click(saved_click_location)
 
         saved_logins_opened = exists(first_saved_login_pattern)
         assert saved_logins_opened, 'Saved logins sub-window is opened. The list is successfully populated'

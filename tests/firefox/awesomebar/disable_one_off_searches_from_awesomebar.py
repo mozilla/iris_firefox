@@ -12,7 +12,8 @@ class Test(FirefoxTest):
         description='This test case disables one-off searches from the awesomebar.',
         locale=['en-US'],
         test_case_id='108258',
-        test_suite_id='1902'
+        test_suite_id='1902',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         google_search_results_pattern = Pattern('google_search_results.png')
@@ -55,7 +56,7 @@ class Test(FirefoxTest):
         change_preference('browser.urlbar.oneOffSearches', 'false')
 
         select_location_bar()
-        type('moz', interval=0.25)
+        type('moz test', interval=0.25)
 
         localhost_string_exists = exists(this_time_search_with)
         assert localhost_string_exists is False, 'The one-off bar is displayed at the bottom of awesomebar drop-down'

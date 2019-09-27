@@ -17,11 +17,11 @@ class Test(FirefoxTest):
         preferences={'extensions.formautofill.available': 'on'},
     )
     def run(self, firefox):
-        name_field_pattern = Pattern('name_field.png').similar(.6)
+        name_field_pattern = Pattern('name_field.png').similar(0.6)
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
-        saved_profiles_pattern = Pattern('saved_profiles.png').similar(.6)
+        saved_profiles_pattern = Pattern('saved_profiles.png').similar(0.6)
         if OSHelper.is_mac():
-            additional_saved_profiles_pattern = Pattern('additional_saved_profiles.png').similar(.6)
+            additional_saved_profiles_pattern = Pattern('additional_saved_profiles.png').similar(0.6)
 
         change_preference('browser.search.region', 'US')
 

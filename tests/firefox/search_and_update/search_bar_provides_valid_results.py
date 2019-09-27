@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='4264',
         test_suite_id='83',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         search_button_pattern = Pattern('search_button.png')

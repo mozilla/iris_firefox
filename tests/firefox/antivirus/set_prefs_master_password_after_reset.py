@@ -26,7 +26,7 @@ class Test(FirefoxTest):
             Pattern('remove_button_available_in_change_master_password_pattern.png')
         master_password_deleted_pattern = Pattern('master_password_deleted.png')
         name_form_pattern = Pattern('name_form.png')
-        password_form_pattern = Pattern('password_form.png').similar(.6)
+        password_form_pattern = Pattern('password_form.png').similar(0.6)
         save_login_button_pattern = Pattern('save_login_button.png')
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
         saved_logins_list_available_pattern = Pattern('saved_logins_list_available.png')

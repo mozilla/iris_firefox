@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         library_button_pattern = NavBar.LIBRARY_MENU
         bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
         search_bookmarks_pattern = LibraryMenu.BookmarksOption.SEARCH_BOOKMARKS
-        focused_search_field_pattern = Pattern('focused_search_field.png')
+        focused_search_field_pattern = Pattern('focused_search_field.png').similar(0.6)
         bookmarked_site_icon_under_url_pattern = Pattern('bookmarked_site_icon.png').similar(0.9)
         search_with_default_engine_pattern = Pattern('search_with_default_engine.png')
 
