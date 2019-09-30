@@ -92,12 +92,12 @@ class Test(FirefoxTest):
         restore_firefox_focus()
         click(LocationBar.TRACKING_PROTECTION_SHIELD_DEACTIVATED)
 
-        tracking_protection_popup_opened = exists(open_trackers_list_pattern)
+        tracking_protection_popup_opened = exists(open_trackers_list_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert tracking_protection_popup_opened, 'Tracking protection popup opened.'
 
         click(open_trackers_list_pattern)
 
-        trackers_list_opened = exists(tracker_site_in_list_pattern)
+        trackers_list_opened = exists(tracker_site_in_list_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert trackers_list_opened, 'A list of unblocked trackers is successfully displayed.'
 
         navigate('about:preferences#privacy')
