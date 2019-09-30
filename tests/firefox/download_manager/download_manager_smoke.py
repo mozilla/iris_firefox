@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         navigate('https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/')
 
         download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.8), DownloadFiles.OK,
-                      expect_accept_download_available = False)
+                      expect_accept_download_available=False)
 
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.8), FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected is True, 'Downloads button found.'
