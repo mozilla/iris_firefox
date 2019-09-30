@@ -79,7 +79,7 @@ def change_preference(pref_name, value):
         navigate('about:config')
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        type(Key.SPACE)
+        type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         paste(pref_name)
