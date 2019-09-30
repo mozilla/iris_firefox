@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="C4661",
         test_suite_id="102",
         locale=["en-US"],
+        blocked_by = {'id': 'issue_3761', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         show_more_results_button_pattern = Pattern('show_more_results_button.png')

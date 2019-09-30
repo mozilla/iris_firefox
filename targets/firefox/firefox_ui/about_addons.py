@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.finder.pattern import Pattern
+from moziris.api.finder.pattern import Pattern
 
 
 class AboutAddons(object):
@@ -13,6 +13,8 @@ class AboutAddons(object):
         DARK_THEME = Pattern('dark_theme.png')
         LIGHT_THEME = Pattern('light_theme.png')
         DEFAULT_THEME = Pattern('default_theme.png')
+
+        ACTION_BUTTON = Pattern('action_button.png')
 
         ENABLE_BUTTON = Pattern('enable_button.png')
         DISABLE_BUTTON = Pattern('disable_button.png')

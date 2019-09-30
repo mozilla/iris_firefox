@@ -17,19 +17,19 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
-        submit_button_pattern = Pattern('submit_button.png').similar(.6)
+        submit_button_pattern = Pattern('submit_button.png').similar(0.6)
         save_button_pattern = Pattern('save_button.png')
-        name_field_pattern = Pattern('name_field.png').similar(.6)
-        organization_field_pattern = Pattern('organization_field.png').similar(.6)
-        address_field_pattern = Pattern('street_address_field.png').similar(.6)
-        address_level_2_pattern = Pattern('address_level_2_field.png').similar(.6)
-        address_level_1_pattern = Pattern('address_level_1_field.png').similar(.6)
-        postal_code_pattern = Pattern('postal_code_field.png').similar(.6)
-        country_code_field_pattern = Pattern('country_code_field.png').similar(.6)
-        telephone_field_pattern = Pattern('telephone_field.png').similar(.6)
-        email_field_pattern = Pattern('email_field.png').similar(.6)
-        find_in_prefs_field_pattern = Pattern('find_in_prefs_field.png').similar(.6)
-        saved_addresses_button_pattern = Pattern('saved_addresses_button.png').similar(.6)
+        name_field_pattern = Pattern('name_field.png').similar(0.6)
+        organization_field_pattern = Pattern('organization_field.png').similar(0.6)
+        address_field_pattern = Pattern('street_address_field.png').similar(0.6)
+        address_level_2_pattern = Pattern('address_level_2_field.png').similar(0.6)
+        address_level_1_pattern = Pattern('address_level_1_field.png').similar(0.6)
+        postal_code_pattern = Pattern('postal_code_field.png').similar(0.6)
+        country_code_field_pattern = Pattern('country_code_field.png').similar(0.6)
+        telephone_field_pattern = Pattern('telephone_field.png').similar(0.6)
+        email_field_pattern = Pattern('email_field.png').similar(0.6)
+        find_in_prefs_field_pattern = Pattern('find_in_prefs_field.png').similar(0.6)
+        saved_addresses_button_pattern = Pattern('saved_addresses_button.png').similar(0.6)
         name_in_saved_addresses_pattern = Pattern('name_in_saved_addresses.png')
 
         change_preference('browser.search.region', 'US')
@@ -70,8 +70,8 @@ class Test(FirefoxTest):
 
         close_window()
 
-        private_browsing_image_exists = exists(private_browsing_image_pattern)
-        assert private_browsing_image_exists is not True, 'Normal browsing session is displayed'
+        private_browsing_image_exists = exists(private_browsing_image_pattern, region=Screen.TOP_THIRD)
+        assert private_browsing_image_exists is False, 'Normal browsing session is displayed'
 
         navigate('about:preferences#privacy')
 

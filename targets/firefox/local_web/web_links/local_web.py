@@ -1,8 +1,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from src.core.api.finder.pattern import Pattern
-from src.core.util.arg_parser import get_core_args
+from moziris.api.finder.pattern import Pattern
+from moziris.util.arg_parser import get_core_args
 
 
 class LocalWeb(object):
@@ -39,6 +39,8 @@ class LocalWeb(object):
     MOZILLA_IMAGE = Pattern('mozilla_full.png')
     MOZILLA_BOOKMARK = Pattern('mozilla_bookmark.png')
     MOZILLA_BOOKMARK_SMALL = Pattern('mozilla_bookmark_small.png')
+    MOZILLA_BOOKMARK_HISTORY_SIDEBAR = Pattern('mozilla_bookmark_history_sidebar.png')
+    MOZILLA_BOOKMARK_LIBRARY_HISTORY_LIST = Pattern('mozilla_bookmark_library_history_list.png')
 
     """Local Pocket site."""
     POCKET_TEST_SITE = 'http://%s:%s/pocket/' % (_ip_host, _port)

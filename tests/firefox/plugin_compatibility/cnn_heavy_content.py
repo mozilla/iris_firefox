@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         new_private_browsing_tab_pattern = PrivateWindow.private_window_pattern
         speaker_icon_pattern = Pattern('speaker_icon.png')
-        play_icon_pattern = Pattern('play_icon.png').similar(.75)
+        play_icon_pattern = Pattern('play_icon.png').similar(0.75)
         related_video_pattern = Pattern('related_video.png')
         north_text_mark_pattern = Pattern('north_text_mark.png')
         cnn_weather_page_tab_pattern = Pattern('cnn_logo_tab.png')

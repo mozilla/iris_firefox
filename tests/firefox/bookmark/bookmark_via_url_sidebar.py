@@ -15,13 +15,16 @@ class Test(FirefoxTest):
         test_suite_id='2525'
     )
     def run(self, firefox):
-        draggable_url_pattern = Pattern('moz_draggable_url.png').similar(.6)
+        draggable_url_pattern = Pattern('moz_draggable_url.png').similar(0.6)
         drag_area_pattern = Pattern('drag_area_moz.png')
         moz_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
         bookmark_selected_pattern = LocationBar.STAR_BUTTON_STARRED
         sidebar_bookmarks_pattern = SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        restore_firefox_focus()
+        reset_mouse()
 
         mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, 'Mozilla page loaded successfully.'

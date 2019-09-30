@@ -16,6 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         close_dev_tools_button_pattern = Pattern('close_dev_tools.png')
         dev_tools_window_pattern = Pattern('dev_tools_window.png')
+        dev_tools_window_active_pattern = Pattern('dev_tools_window_active.png')
         close_message_pattern = Pattern('close_message.png').similar(0.5)
         responsive_design_button_pattern = Pattern('responsive_design.png')
         customize_dev_tools_pattern = Pattern('customize_developer_tools.png')
@@ -76,7 +77,10 @@ class Test(FirefoxTest):
             click(separate_window_pattern)
         except FindError:
             raise FindError('Separate Window option not found, aborting.')
-        assert exists(dev_tools_window_pattern, 10), 'Separate Window option works as expected.'
+
+        dev_tools_window = exists(dev_tools_window_pattern, 10)
+        dev_tools_window_active = exists(dev_tools_window_active_pattern, 10)
+        assert dev_tools_window or dev_tools_window_active, 'Separate Window option works as expected.'
 
         click(customize_dev_tools_pattern)
         try:

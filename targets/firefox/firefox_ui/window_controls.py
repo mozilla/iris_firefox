@@ -3,8 +3,8 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.finder.pattern import Pattern
-from src.core.api.os_helpers import OSHelper
+from moziris.api.finder.pattern import Pattern
+from moziris.api.os_helpers import OSHelper
 
 
 class AuxiliaryWindow(object):

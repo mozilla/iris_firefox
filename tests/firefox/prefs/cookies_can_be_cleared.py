@@ -13,14 +13,15 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='106156',
         test_suite_id='1826',
+        blocked_by={'id': '1568911', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         clear_data_button_pattern = Pattern('clear_button.png')
         confirm_clear_data_pattern = Pattern('confirm_clear_data.png')
         open_clear_data_window_pattern = Pattern('open_clear_data_window.png')
         zero_bytes_cache_pattern = Pattern('zero_bytes_cache.png')
-        cached_web_content_item_pattern = Pattern('cached_web_content_item.png').similar(.6)
-        cookies_and_site_data_item_pattern = Pattern('cookies_and_site_data_item.png').similar(.6)
+        cached_web_content_item_pattern = Pattern('cached_web_content_item.png').similar(0.6)
+        cookies_and_site_data_item_pattern = Pattern('cookies_and_site_data_item.png').similar(0.6)
 
         navigate('about:preferences#privacy')
 
@@ -79,11 +80,6 @@ class Test(FirefoxTest):
                'web content. Clearing cache data will not affect your logins.' in warning_text_displayed, \
             '"Clearing all cookies and site data stored by Firefox may sign you out of websites and remove offline ' \
             'web content. Clearing cache data will not affect your logins." - warning test displayed'
-
-        # cookies_and_site_data_item_location = find(cookies_and_site_data_item_pattern)
-        # cookies_and_site_data_width, cookies_and_site_data_height = cookies_and_site_data_item_pattern.get_size()
-        # warning_text_region = Region(cookies_and_site_data_item_location.x, cookies_and_site_data_item_location.y,
-        #                              cookies_and_site_data_width * 3, -cookies_and_site_data_height*4)
 
         click(clear_data_button_pattern)
 

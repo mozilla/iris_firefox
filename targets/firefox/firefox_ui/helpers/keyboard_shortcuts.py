@@ -6,15 +6,15 @@
 import logging
 import time
 
-from src.core.api.errors import APIHelperError, FindError
-from src.core.api.finder.pattern import Pattern
-from src.core.api.keyboard.key import KeyModifier, Key
-from src.core.api.keyboard.keyboard import key_down, key_up, type
-from src.core.api.mouse.mouse import Mouse
-from src.core.api.location import Location
-from src.core.api.os_helpers import OSHelper
-from src.core.api.screen.region import click, drag_drop, find, wait, wait_vanish
-from src.core.api.settings import Settings
+from moziris.api.errors import APIHelperError, FindError
+from moziris.api.finder.pattern import Pattern
+from moziris.api.keyboard.key import KeyModifier, Key
+from moziris.api.keyboard.keyboard import key_down, key_up, type
+from moziris.api.mouse.mouse import Mouse
+from moziris.api.location import Location
+from moziris.api.os_helpers import OSHelper
+from moziris.api.screen.region import click, drag_drop, find, wait, wait_vanish
+from moziris.api.settings import Settings
 from targets.firefox.firefox_ui.location_bar import LocationBar
 from targets.firefox.firefox_ui.menus import SidebarBookmarks
 
@@ -77,7 +77,7 @@ def select_location_bar():
     else:
         type(text='l', modifier=KeyModifier.CTRL)
     # Wait to allow the location bar to become responsive.
-    time.sleep(Settings.DEFAULT_UI_DELAY)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
 
 def select_folder_location_bar():
@@ -334,6 +334,7 @@ def select_search_bar():
         type(text='k', modifier=KeyModifier.CMD)
     else:
         type(text='k', modifier=KeyModifier.CTRL)
+    time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
 
 def change_search_next():
@@ -706,5 +707,18 @@ def delete_selected_file():
         type(text='y')
     else:
         type(text=Key.DELETE)
+
+
+def release_often_used_keys():
+    """
+    Releases often used keys
+    """
+    key_up(KeyModifier.SHIFT)
+    key_up(KeyModifier.CTRL)
+    key_up(KeyModifier.ALT)
+    if OSHelper.is_mac():
+        key_up(KeyModifier.CMD)
+    if OSHelper.is_windows():
+        key_up(KeyModifier.WIN)
 
 # End Tools keyboard shortcuts

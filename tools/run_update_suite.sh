@@ -5,9 +5,12 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
 # TEST STRINGS
-SEARCH_CODE_TESTS='default_search_code_baidu,default_search_code_google,default_search_code_yandex'
-MANUAL_UPDATE_TESTS='manual_update,'$SEARCH_CODE_TESTS
-BACKGROUND_UPDATE_TESTS='background_update,'$SEARCH_CODE_TESTS
+# Disable search code tests per issue #3512 and issue #3509
+# SEARCH_CODE_TESTS='default_search_code_baidu,default_search_code_google,default_search_code_yandex'
+# MANUAL_UPDATE_TESTS='manual_update,'$SEARCH_CODE_TESTS
+# BACKGROUND_UPDATE_TESTS='background_update,'$SEARCH_CODE_TESTS
+MANUAL_UPDATE_TESTS='manual_update'
+BACKGROUND_UPDATE_TESTS='background_update'
 
 for i in "$@"
 do

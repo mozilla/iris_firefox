@@ -3,9 +3,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.enums import OSPlatform
-from src.core.api.finder.pattern import Pattern
-from src.core.api.os_helpers import OSHelper
+from moziris.api.enums import OSPlatform
+from moziris.api.finder.pattern import Pattern
+from moziris.api.os_helpers import OSHelper
 
 
 class Library(object):
@@ -67,6 +67,7 @@ class Library(object):
     HISTORY = Pattern('history.png')
     HISTORY_NAME = Pattern('history_name.png')
     HISTORY_TODAY = Pattern('history_today.png')
+    LIBRARY_WINDOW_HISTORY_TODAY = Pattern('library_window_history_today.png')
     TODAY_NAME = Pattern('today_name.png')
     HISTORY_OLDER_THAN_6_MONTHS = Pattern('history_older_than_6_months.png')
     OLDER_THAN_6_MONTHS_NAME = Pattern('older_than_6_months_name.png')

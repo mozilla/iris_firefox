@@ -12,18 +12,19 @@ class Test(FirefoxTest):
         description='This test case perform one-offs searches in private browsing.',
         locale=['en-US'],
         test_case_id='108253',
-        test_suite_id='1902'
+        test_suite_id='1902',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
-        moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern('search_settings.png')
         twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png')
-        new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png')
-        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png')
+        new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png').similar(0.6)
+        new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png').similar(0.6)
         google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
-        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
+        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(0.7)
         test_pattern = Pattern('test.png')
+        this_time_search_with_pattern = Pattern('this_time_search_with.png')
 
         new_private_window()
 
@@ -37,8 +38,8 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('moz')
 
-        string_found = region.exists(moz_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert string_found, 'Searched string found at the bottom of the drop-down list.'
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, 'The one-off bar is displayed at the bottom of awesomebar drop-down'
 
         search_settings_button_displayed = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_settings_button_displayed, 'The \'Search settings\' button is displayed in the awesome bar.'

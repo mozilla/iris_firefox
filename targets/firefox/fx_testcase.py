@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.base.testcase import *
+from moziris.base.testcase import *
 from targets.firefox.test_dependencies import *
 import inspect
 import os

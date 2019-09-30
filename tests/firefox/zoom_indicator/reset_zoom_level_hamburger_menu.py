@@ -30,6 +30,10 @@ class Test(FirefoxTest):
         assert expected, 'Page successfully loaded, hamburger menu found.'
 
         expected = exists(search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        if OSHelper.is_windows():  # fix issue when on hover on navbar image is not being recognized
+            search_bar_hover_pattern = Pattern("navigation_bar_hover.png")
+            expected = expected or exists(search_bar_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+
         assert expected, 'Zoom indicator not displayed by default in the url bar.'
 
         navigate(url2)
@@ -74,7 +78,8 @@ class Test(FirefoxTest):
 
         select_location_bar()
 
-        expected = exists(hamburger_menu_zoom_indicator_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region_default)
+        expected = exists(hamburger_menu_zoom_indicator_pattern, FirefoxSettings.FIREFOX_TIMEOUT,
+                          region=new_region_default)
         assert expected, 'Zoom indicator is successfully reset to default in hamburger menu.'
 
         reg_url = create_region_for_url_bar()

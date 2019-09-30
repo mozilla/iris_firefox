@@ -16,7 +16,6 @@ class Test(FirefoxTest):
         test_suite_id='1902'
     )
     def run(self, firefox):
-        moz_pattern = Pattern('moz.png')
         search_engine_pattern = Pattern('search_engine.png')
         search_settings_pattern = Pattern('search_settings.png')
         amazon_one_off_button_pattern = Pattern('amazon_one_off_button.png')
@@ -46,7 +45,7 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('moz')
 
-        pattern_list = [moz_pattern, search_settings_pattern, amazon_one_off_button_pattern,
+        pattern_list = [search_settings_pattern, amazon_one_off_button_pattern,
                         bing_one_off_button_pattern, duck_duck_go_one_off_button_pattern, google_one_off_button_pattern,
                         twitter_one_off_button_pattern, wikipedia_one_off_button_pattern]
 
@@ -63,7 +62,7 @@ class Test(FirefoxTest):
 
         click(search_settings_pattern)
 
-        pref_page_opened = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN.similar(.6),
+        pref_page_opened = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN.similar(0.6),
                                   FirefoxSettings.FIREFOX_TIMEOUT)
         assert pref_page_opened, 'The \'about:preferences#search\' page successfully loaded.'
 
