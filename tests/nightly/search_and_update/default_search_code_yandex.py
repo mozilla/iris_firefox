@@ -49,6 +49,7 @@ class Test(FirefoxTest):
         # Perform a search using the awesome bar and then clear the content from it.
         select_location_bar()
         type('test', interval=0.25)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
@@ -63,6 +64,7 @@ class Test(FirefoxTest):
         # Perform a search using the search bar.
         select_search_bar()
         type('test', interval=0.25)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
@@ -98,6 +100,7 @@ class Test(FirefoxTest):
         click(yandex_logo_content_search_field_pattern)
 
         type('beats', interval=0.25)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
