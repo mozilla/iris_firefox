@@ -21,13 +21,13 @@ from mozinstall import install, get_binary
 from mozrunner import FirefoxRunner, errors as run_errors
 from mozprofile import Profile as MozProfile
 
-from src.core.api.errors import APIHelperError
-from src.core.api.mouse.mouse import mouse_reset
-from src.core.api.os_helpers import OSHelper
-from src.core.api.settings import Settings
-from src.core.util.arg_parser import get_core_args
-from src.core.util.path_manager import PathManager
-from src.core.util.system import shutdown_process
+from moziris.api.errors import APIHelperError
+from moziris.api.mouse.mouse import mouse_reset
+from moziris.api.os_helpers import OSHelper
+from moziris.api.settings import Settings
+from moziris.util.arg_parser import get_core_args
+from moziris.util.path_manager import PathManager
+from moziris.util.system import shutdown_process
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
 from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window, quit_firefox
 from targets.firefox.settings import FirefoxSettings

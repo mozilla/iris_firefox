@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.util.arg_parser import get_core_args
+from moziris.util.arg_parser import get_core_args
 from targets.firefox.fx_testcase import *
 from targets.firefox.main import *
 

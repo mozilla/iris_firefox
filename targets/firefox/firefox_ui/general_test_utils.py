@@ -1,10 +1,10 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from src.core.api.errors import FindError, APIHelperError
-from src.core.api.finder.finder import wait
-from src.core.api.mouse.mouse import click
-from src.core.util.logger_manager import logger
+from moziris.api.errors import FindError, APIHelperError
+from moziris.api.finder.finder import wait
+from moziris.api.mouse.mouse import click
+from moziris.util.logger_manager import logger
 
 
 

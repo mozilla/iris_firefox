@@ -6,15 +6,15 @@
 import logging
 import time
 
-from src.core.api.errors import APIHelperError, FindError
-from src.core.api.finder.pattern import Pattern
-from src.core.api.keyboard.key import KeyModifier, Key
-from src.core.api.keyboard.keyboard import key_down, key_up, type
-from src.core.api.mouse.mouse import Mouse
-from src.core.api.location import Location
-from src.core.api.os_helpers import OSHelper
-from src.core.api.screen.region import click, drag_drop, find, wait, wait_vanish
-from src.core.api.settings import Settings
+from moziris.api.errors import APIHelperError, FindError
+from moziris.api.finder.pattern import Pattern
+from moziris.api.keyboard.key import KeyModifier, Key
+from moziris.api.keyboard.keyboard import key_down, key_up, type
+from moziris.api.mouse.mouse import Mouse
+from moziris.api.location import Location
+from moziris.api.os_helpers import OSHelper
+from moziris.api.screen.region import click, drag_drop, find, wait, wait_vanish
+from moziris.api.settings import Settings
 from targets.firefox.firefox_ui.location_bar import LocationBar
 from targets.firefox.firefox_ui.menus import SidebarBookmarks
 

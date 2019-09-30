@@ -5,14 +5,14 @@
 import logging
 import shutil
 
-from src.core.api.errors import FindError, APIHelperError
-from src.core.api.finder.finder import find, exists, wait
-from src.core.api.finder.pattern import Pattern
-from src.core.api.keyboard.keyboard import *
-from src.core.api.mouse.mouse import click, scroll_down, hover
-from src.core.api.screen.region import Region
-from src.core.api.screen.screen import Screen
-from src.core.util.path_manager import PathManager
+from moziris.api.errors import FindError, APIHelperError
+from moziris.api.finder.finder import find, exists, wait
+from moziris.api.finder.pattern import Pattern
+from moziris.api.keyboard.keyboard import *
+from moziris.api.mouse.mouse import click, scroll_down, hover
+from moziris.api.screen.region import Region
+from moziris.api.screen.screen import Screen
+from moziris.util.path_manager import PathManager
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.general_test_utils import Step, access_and_check_pattern
 from targets.firefox.firefox_ui.helpers.general import click_window_control
