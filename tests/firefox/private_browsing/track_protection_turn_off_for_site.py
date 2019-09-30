@@ -67,7 +67,8 @@ class Test(FirefoxTest):
         trackers_popup_displayed = exists(trackers_popup_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert trackers_popup_displayed, 'Trackers popup window is displayed on screen'
 
-        successfully_blocked_trackers_displayed = exists(blocked_tracker_label_pattern)
+        successfully_blocked_trackers_displayed = exists(blocked_tracker_label_pattern,
+                                                         FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert successfully_blocked_trackers_displayed, 'A list of successfully blocked trackers is displayed.'
 
         type(Key.ESC)
