@@ -2,9 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from moziris.api.mouse import mouse
-from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import *
-from targets.firefox.fx_testcase import *
+from targets.nightly.firefox_ui.download_manager import DownloadManager
+from targets.nightly.firefox_ui.helpers.download_manager_utils import *
+from targets.nightly.fx_testcase import *
 
 
 class Test(FirefoxTest):
