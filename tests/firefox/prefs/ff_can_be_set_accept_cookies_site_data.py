@@ -72,7 +72,10 @@ class Test(FirefoxTest):
         assert allow_button_exists, "Permission for site can be granted"
 
         click(allow_button_pattern)
-        type(Key.ENTER)  # save changes
+        if OSHelper.is_mac():
+            click(save_changes_button_pattern)
+        else:
+            type(Key.ENTER)  # save changes
 
         new_tab()
         navigate("https://www.reddit.com")
