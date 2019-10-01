@@ -30,7 +30,7 @@ class Test(FirefoxTest):
 
         paste('Cache')
 
-        providers_displays = exists(google4_row_pattern, Settings.FIREFOX_TIMEOUT)
+        providers_displays = exists(google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert providers_displays, 'The providers are displayed'
 
         google4_row_location = find(google4_row_pattern)
@@ -53,7 +53,7 @@ class Test(FirefoxTest):
 
         paste('Cache')
 
-        providers_displays = exists(google4_row_pattern, Settings.FIREFOX_TIMEOUT)
+        providers_displays = exists(google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert providers_displays, 'The providers are displayed'
 
         google4_row_location = find(google4_row_pattern)

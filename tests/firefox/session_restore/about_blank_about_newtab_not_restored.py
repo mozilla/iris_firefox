@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         center_region = middle_vertical_region.middle_third_horizontal()
 
         navigate('about:newtab')
-        top_sites_available = exists(Utils.TOP_SITES, Settings.FIREFOX_TIMEOUT)
+        top_sites_available = exists(Utils.TOP_SITES, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_available, 'about:newtab website loaded successfully'
 
         new_tab()

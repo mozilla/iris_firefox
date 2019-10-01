@@ -26,13 +26,13 @@ class Test(FirefoxTest):
 
         navigate(local_url)
 
-        local_url_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.FIREFOX_TIMEOUT)
+        local_url_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert local_url_loaded, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
         type('moz', interval=0.25)
 
-        search_engine_logo_icon = exists(duck_duck_go_one_off_button.similar(0.7), Settings.FIREFOX_TIMEOUT,
+        search_engine_logo_icon = exists(duck_duck_go_one_off_button.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
                                          region=top_two_third_screen_region)
         assert search_engine_logo_icon, 'The \'DuckDuckGo\' one-off button found.'
 

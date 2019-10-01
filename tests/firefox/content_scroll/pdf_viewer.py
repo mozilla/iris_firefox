@@ -36,7 +36,7 @@ class Test(FirefoxTest):
         navigate(pdf_file)
 
         # Normal mode scrolling
-        pdf_logo_exists = exists(pdf_logo_pattern, Settings.FIREFOX_TIMEOUT)
+        pdf_logo_exists = exists(pdf_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pdf_logo_exists is True, 'PDF url loaded successfully'
 
         click(pdf_logo_pattern)
