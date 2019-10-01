@@ -72,10 +72,7 @@ class Test(FirefoxTest):
         assert block_button_exists, "Permission for site can be denied"
 
         click(block_button_pattern)
-        if OSHelper.is_mac():
-            click(save_changes_button_pattern)
-        else:
-            type(Key.ENTER)  # save changes
+        click(save_changes_button_pattern)
 
         new_tab()
         navigate("https://www.reddit.com")
