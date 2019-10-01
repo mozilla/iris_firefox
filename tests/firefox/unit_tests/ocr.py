@@ -57,4 +57,7 @@ class Test(FirefoxTest):
         hamburger_menu_region = create_region_for_hamburger_menu()
 
         assert hamburger_menu_region.exists('Sign in to Firefox'), '"Sign in to Firefox" found in hamburger menu'
-        assert hamburger_menu_region.exists('Preferences'), '"Preferences" found in hamburger menu'
+        if OSHelper.is_windows():
+            assert hamburger_menu_region.exists('Options'), '"Options" found in hamburger menu'
+        else:
+            assert hamburger_menu_region.exists('Preferences'), '"Preferences" found in hamburger menu'
