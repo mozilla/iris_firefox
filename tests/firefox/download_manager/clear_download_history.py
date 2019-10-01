@@ -21,6 +21,7 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
+        time.sleep(15)
         download_files_list = [DownloadFiles.SMALL_FILE_10MB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
         downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
 
