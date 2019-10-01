@@ -17,7 +17,8 @@ class Test(FirefoxTest):
         preferences={'browser.download.dir': PathManager.get_downloads_dir(),
                      'browser.download.folderList': 2,
                      'browser.download.useDownloadDir': True,
-                     'browser.warnOnQuit': False}
+                     'browser.warnOnQuit': False},
+        blocked_by={'id': '1585326', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         navigate('https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/')
