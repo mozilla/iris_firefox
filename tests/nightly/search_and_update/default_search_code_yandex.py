@@ -98,6 +98,7 @@ class Test(FirefoxTest):
         assert expected, 'Yandex logo from content search field found.'
 
         click(yandex_logo_content_search_field_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type('beats', interval=0.25)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
