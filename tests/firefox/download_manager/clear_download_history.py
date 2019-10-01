@@ -39,8 +39,8 @@ class Test(FirefoxTest):
         # Open the Downloads Panel and select Show All Downloads.
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
         assert expected is True, '\'Downloads\' button found.'
-        mouse.move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        click(NavBar.DOWNLOADS_BUTTON_BLUE)
+        Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
+        click(NavBar.DOWNLOADS_BUTTON_BLUE, 5)
 
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
         assert expected is True, '\'Show all downloads\' button found.'
