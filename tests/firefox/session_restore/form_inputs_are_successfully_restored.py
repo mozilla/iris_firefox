@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH
     )
     def run(self, firefox):
-        title_field_pattern = Pattern('title_field.png').similar(.6)
+        title_field_pattern = Pattern('title_field.png').similar(0.6)
 
         input_data = ['Maria V. Griggs', 'Loblaws', '1223 Rainbow Drive']
 

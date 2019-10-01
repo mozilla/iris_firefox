@@ -13,18 +13,20 @@ import shutil
 
 import pytest
 
-from src.base.target import BaseTarget
-from src.core.api.mouse.mouse import mouse_reset
-from src.core.api.os_helpers import OSHelper
-from src.core.util.arg_parser import get_core_args
-from src.core.util.local_web_server import LocalWebServer
-from src.core.util.path_manager import PathManager
-from src.core.util.test_assert import create_result_object
+from moziris.base.target import BaseTarget
+from moziris.api.mouse.mouse import mouse_reset
+from moziris.api.os_helpers import OSHelper
+from moziris.api.settings import Settings
+from moziris.util.arg_parser import get_core_args
+from moziris.util.local_web_server import LocalWebServer
+from moziris.util.path_manager import PathManager
+from moziris.util.run_report import create_footer
+from moziris.util.test_assert import create_result_object
 
 logger = logging.getLogger(__name__)
 logger.info('Loading test images...')
 
-from src.configuration.config_parser import get_config_property, validate_section
+from moziris.configuration.config_parser import get_config_property, validate_section
 from targets.firefox.bug_manager import is_blocked
 from targets.firefox.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.firefox.firefox_app.fx_collection import FX_Collection
@@ -59,6 +61,8 @@ class Target(BaseTarget):
             {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report'}
         ]
         self.local_web_root = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'local_web')
+        if target_args.treeherder:
+            Settings.debug_image = False
 
     def get_target_args(self):
         parser = argparse.ArgumentParser(description='Firefox-specific arguments', prog='iris')
@@ -89,7 +93,16 @@ class Target(BaseTarget):
         return parser.parse_known_args()[0]
 
     def create_ci_report(self):
-        ci_report_str = ''
+        footer = create_footer(self)
+        results = footer.print_report_footer()
+        lines = results.split('\n')
+        result_str = ''
+
+        for line in lines:
+            if 'Passed:' in line and 'Total time:' in line:
+                result_str = line
+        ci_report_str = 'TinderboxPrint: Iris Summary<br/>%s\n' % result_str
+
         for test in self.completed_tests:
             if test.outcome == 'FAILED' or test.outcome == 'ERROR':
                 fail_str = 'FAIL' if 'FAIL' in test.outcome else 'ERROR'

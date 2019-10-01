@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         local_server_autocomplete_pattern = Pattern('local_server_autocomplete.png')
         mozilla_bookmark_focus_pattern = Pattern('mozilla_bookmark_focus.png')
         pocket_autocomplete_pattern = Pattern('pocket_autocomplete.png')
-        mozilla_autocomplete_pattern = Pattern('mozilla_autocomplete.png').similar(.7)
+        mozilla_autocomplete_pattern = Pattern('mozilla_autocomplete.png').similar(0.7)
 
         # Visit two pages from the same domain at least two times to make sure that auto-fill is working in the URL bar.
         new_tab()

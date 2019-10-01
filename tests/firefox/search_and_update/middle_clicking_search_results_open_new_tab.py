@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='111373',
         test_suite_id='83',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         test_bold_pattern = Pattern('test_bold.png')
@@ -19,7 +20,7 @@ class Test(FirefoxTest):
         # Enable the search bar.
         change_preference('browser.search.widget.inNavBar', True)
 
-        search_bar_displayed = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(.7),
+        search_bar_displayed = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(0.7),
                                       FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert search_bar_displayed, 'Search bar is displayed'
         search_bar_location = find(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)

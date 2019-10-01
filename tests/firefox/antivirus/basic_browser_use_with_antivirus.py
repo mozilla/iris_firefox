@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from src.core.api.finder.pattern import Pattern
+from moziris.api.finder.pattern import Pattern
 from targets.firefox.fx_testcase import *
 
 
@@ -113,8 +113,8 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        addon_installed = exists(adblock_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT) \
-            or exists('theme.images.theme_frame') or exists('orangegold')
+        addon_installed = exists('rainbow') or exists(adblock_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT) \
+            or exists('theme.images.theme_frame')
         assert addon_installed is True, 'Addon successfully installed.'
 
         click(home_icon_with_applied_theme_pattern)

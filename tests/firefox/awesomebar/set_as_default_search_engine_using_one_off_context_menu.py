@@ -14,15 +14,16 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='108251',
         test_suite_id='1902',
-        preferences={'browser.contentblocking.enabled': False}
+        preferences={'browser.contentblocking.enabled': False},
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         moz_pattern = Pattern('moz.png')
         url = LocalWeb.FIREFOX_TEST_SITE
-        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(.7)
+        wikipedia_one_off_button_pattern = Pattern('wikipedia_one_off_button.png').similar(0.7)
         set_as_default_search_engine_pattern = Pattern('set_as_default_search_engine.png')
         search_in_new_tab_pattern = Pattern('search_in_new_tab.png')
-        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
+        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(0.7)
         wikipedia_search_results_pattern = Pattern('wikipedia_search_results.png')
         test_pattern = Pattern('test.png')
         this_time_search_with_pattern = Pattern('this_time_search_with.png')

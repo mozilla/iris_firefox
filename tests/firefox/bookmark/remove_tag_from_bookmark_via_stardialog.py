@@ -18,7 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         iris_tag_pattern = Pattern('iris_tag.png')
         if OSHelper.is_mac():
-            tags_expander_closed_pattern = Pattern('tags_expander_closed.png').similar(.95)
+            tags_expander_closed_pattern = Pattern('tags_expander_closed.png').similar(0.95)
         else:
             tags_expander_closed_pattern = Bookmarks.StarDialog.PANEL_TAGS_EXPANDER
 

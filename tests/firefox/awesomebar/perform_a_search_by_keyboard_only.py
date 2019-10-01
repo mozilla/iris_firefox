@@ -13,24 +13,25 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='108268',
         test_suite_id='1902',
-        profile_preferences={'browser.contentblocking.enabled': False}
+        profile_preferences={'browser.contentblocking.enabled': False},
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         this_time_search_with_pattern = Pattern('this_time_search_with.png')
         twitter_search_results_localhost = Pattern('twitter_search_results_localhost.png')
         twitter_search_results_localhost_2 = Pattern('twitter_search_results_localhost_2.png')
         if OSHelper.is_mac() or OSHelper.is_windows():
-            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.99)
-            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(0.99)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(0.95)
         elif OSHelper.is_windows():
-            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.9)
-            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(0.9)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(0.95)
         else:
-            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(.9)
-            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(.95)
+            twitter_one_off_button_highlight_pattern = Pattern('twitter_one_off_button_highlight.png').similar(0.9)
+            bing_one_off_button_highlight_pattern = Pattern('bing_one_off_button_highlight.png').similar(0.95)
         bing_search_results_pattern = Pattern('bing_search_results_localhost.png')
-        duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png').similar(.9)
-        duck_go_search_result_pattern = Pattern('duck_go_search_result.png').similar(.7)
+        duck_one_off_button_highlight_pattern = Pattern('duck_one_off_button_highlight.png').similar(0.9)
+        duck_go_search_result_pattern = Pattern('duck_go_search_result.png').similar(0.7)
 
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 

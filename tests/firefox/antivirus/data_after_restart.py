@@ -17,64 +17,61 @@ class Test(FirefoxTest):
     def run(self, firefox):
         browser_console_pattern = Pattern('browser_console_opened.png')
         wikipedia_logo_pattern = Pattern('wiki_logo.png')
-        youtube_logo_pattern = Pattern('youtube_logo.png')
-        cnn_logo_unactive_tab_pattern = Pattern('cnn_logo_unactive_tab.png')
-        youtube_logo_unactive_tab_pattern = Pattern('youtube_logo_unactive_tab.png').similar(.6)
-        wiki_logo_unactive_tab_pattern = Pattern('wiki_logo_unactive_tab.png')
+        firefox_toolbar_bookmark_pattern = Pattern('firefox_toolbar_bookmark.png')
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
         soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert soap_wiki_opened, 'SOAP Wiki site successfully opened'
+        assert soap_wiki_opened is True, 'SOAP Wiki site successfully opened'
 
         new_tab()
 
-        navigate('https://edition.cnn.com')
+        navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        close_content_blocking_pop_up()
-
-        cnn_page_opened = exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
-        assert cnn_page_opened, 'The CNN site successfully opened'
+        firefox_page_opened = exists(LocalWeb.FIREFOX_IMAGE, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
+        assert firefox_page_opened is True, 'The Firefox site successfully opened'
 
         history_sidebar()
 
-        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert history_sidebar_opened, 'History sidebar opened'
+        history_sidebar_opened = exists(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.similar(0.6))
+        assert history_sidebar_opened is True, 'History sidebar opened'
 
         history_sidebar_location = find(Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE)
         history_width, history_height = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE.get_size()
-        history_sidebar_region = Region(0, history_sidebar_location.y, history_width * 3, Screen.SCREEN_HEIGHT / 2)
+
+        history_sidebar_region = Screen().new_region(0, history_sidebar_location.y, history_width * 3,
+                                                     Screen.SCREEN_HEIGHT / 2)
 
         today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY)
-        assert today_timeline_exists, 'The Today timeline displayed'
+        assert today_timeline_exists is True, 'The Today timeline displayed'
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
 
-        history_updated_cnn = exists(LocalWeb.CNN_LOGO.similar(.6), FirefoxSettings.FIREFOX_TIMEOUT,
-                                     region=history_sidebar_region)
-        assert history_updated_cnn, 'The CNN site is added to history'
+        history_updated_firefox = exists(LocalWeb.FIREFOX_BOOKMARK_SMALL.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+                                         history_sidebar_region)
+        assert history_updated_firefox is True, 'The Firefox site is added to history'
 
         history_updated_wiki = exists(wikipedia_logo_pattern, region=history_sidebar_region)
-        assert history_updated_wiki, 'The Wikipedia site is added to history'
+        assert history_updated_wiki is True, 'The Wikipedia site is added to history'
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         bookmarks_toolbar_location = find(NavBar.HOME_BUTTON)
-        bookmarks_toolbar_region = Region(0, bookmarks_toolbar_location.y, Screen.SCREEN_WIDTH, home_height * 4)
-        tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
+        bookmarks_toolbar_region = Screen().new_region(0, bookmarks_toolbar_location.y, Screen.SCREEN_WIDTH,
+                                                       home_height * 3)
         bookmark_page()
 
-        type('CNN')
+        type('Firefox')
 
-        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
         assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
 
-        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
         assert toolbar_option_button_exists, 'Toolbar option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
 
         panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
         assert panel_option_button_exists, 'Panel option button exists'
@@ -87,35 +84,35 @@ class Test(FirefoxTest):
 
         type('Wiki')
 
-        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6),
-                                             FirefoxSettings.FIREFOX_TIMEOUT)
+        folder_option_button_exists = exists(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
         assert folder_option_button_exists, 'Folder option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_FOLDER_DEFAULT_OPTION.similar(0.6))
 
-        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6),
-                                              FirefoxSettings.FIREFOX_TIMEOUT)
+        toolbar_option_button_exists = exists(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
         assert toolbar_option_button_exists, 'Toolbar option button exists'
 
-        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(.6))
+        click(Bookmarks.StarDialog.PANEL_OPTION_BOOKMARK_TOOLBAR.similar(0.6))
 
-        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
+        panel_option_button_exists = exists(Bookmarks.StarDialog.DONE)
         assert panel_option_button_exists, 'Panel option button exists'
 
         click(Bookmarks.StarDialog.DONE)
 
-        cnn_bookmark_added = exists(LocalWeb.CNN_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, bookmarks_toolbar_region)
-        assert cnn_bookmark_added, 'The CNN bookmark is successfully added'
+        firefox_bookmark_added = exists(firefox_toolbar_bookmark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT,
+                                        region=bookmarks_toolbar_region)
+        assert firefox_bookmark_added is True, 'The Firefox bookmark is successfully added'
 
-        wiki_bookmark_added = exists(LocalWeb.CNN_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, bookmarks_toolbar_region)
-        assert wiki_bookmark_added, 'The Wikipedia bookmark is successfully added'
+        wiki_bookmark_added = exists(wikipedia_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT,
+                                     region=bookmarks_toolbar_region)
+        assert wiki_bookmark_added is True, 'The Wikipedia bookmark is successfully added'
 
         new_tab()
 
-        navigate('https://www.youtube.com/')
+        navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        youtube_opened = exists(youtube_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert youtube_opened, 'The Youtube site successfully opened'
+        mozilla_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert mozilla_opened is True, 'The Mozilla test site successfully opened'
 
         new_tab()
 
@@ -148,41 +145,42 @@ class Test(FirefoxTest):
 
         restore_firefox_focus()
 
-        cnn_bookmark_restored = exists(LocalWeb.CNN_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, bookmarks_toolbar_region)
-        assert cnn_bookmark_restored, 'The CNN bookmark is successfully restored'
+        firefox_bookmark_restored = exists(firefox_toolbar_bookmark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT,
+                                       bookmarks_toolbar_region)
+        assert firefox_bookmark_restored is True, 'The Firefox bookmark is successfully restored'
 
-        wiki_bookmark_restored = exists(LocalWeb.CNN_LOGO,
-                                        FirefoxSettings.FIREFOX_TIMEOUT, region=bookmarks_toolbar_region)
-        assert wiki_bookmark_restored, 'The Wikipedia bookmark is successfully restored'
+        wiki_bookmark_restored = exists(wikipedia_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT,
+                                        bookmarks_toolbar_region)
+        assert wiki_bookmark_restored is True, 'The Wikipedia bookmark is successfully restored'
 
-        history_restored_cnn = exists(LocalWeb.CNN_LOGO.similar(.6),
-                                      FirefoxSettings.FIREFOX_TIMEOUT, region=history_sidebar_region)
-        assert history_restored_cnn, 'The CNN site is added to history'
+        history_restored_cnn = exists(LocalWeb.FIREFOX_BOOKMARK_SMALL, region=history_sidebar_region)
+        assert history_restored_cnn is True, 'The Firefox site is added to history'
 
-        history_restored_wiki = exists(wikipedia_logo_pattern,
-                                       FirefoxSettings.FIREFOX_TIMEOUT, region=history_sidebar_region)
-        assert history_restored_wiki, 'The Wikipedia site is added to history'
+        history_restored_wiki = exists(wikipedia_logo_pattern, region=history_sidebar_region)
+        assert history_restored_wiki is True, 'The Wikipedia site is added to history'
 
-        history_restored_youtube = exists(youtube_logo_pattern,
-                                          FirefoxSettings.FIREFOX_TIMEOUT, region=history_sidebar_region)
-        assert history_restored_youtube, 'The Youtube site is added to history'
+        history_restored_mozilla = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, region=history_sidebar_region)
+        assert history_restored_mozilla is True, 'The Mozilla site is added to history'
 
-        history_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL,
-                                         FirefoxSettings.FIREFOX_TIMEOUT, region=history_sidebar_region)
+        history_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL, region=history_sidebar_region)
         assert history_restored_pocket, 'The Pocket site is added to history'
 
-        tab_restored_cnn = exists(cnn_logo_unactive_tab_pattern.similar(.6),
-                                  FirefoxSettings.FIREFOX_TIMEOUT, region=tabs_region)
-        assert tab_restored_cnn, 'The CNN tab is restored'
+        select_tab('1')
 
-        tab_restored_wiki = exists(wiki_logo_unactive_tab_pattern,
-                                   FirefoxSettings.FIREFOX_TIMEOUT, region=tabs_region)
-        assert tab_restored_wiki, 'The Wikipedia tab is restored'
+        tab_restored_wiki = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert tab_restored_wiki is True, 'The Wikipedia tab is restored'
 
-        tab_restored_youtube = exists(youtube_logo_unactive_tab_pattern,
-                                      FirefoxSettings.FIREFOX_TIMEOUT, region=tabs_region)
-        assert tab_restored_youtube, 'The Youtube tab is restored'
+        next_tab()
 
-        tab_restored_pocket = exists(LocalWeb.POCKET_BOOKMARK_SMALL,
-                                     FirefoxSettings.FIREFOX_TIMEOUT, region=tabs_region)
+        tab_restored_firefox = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert tab_restored_firefox is True, 'The Firefox tab is restored'
+
+        next_tab()
+
+        tab_restored_mozilla = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert tab_restored_mozilla is True, 'The Mozilla tab is restored'
+
+        next_tab()
+
+        tab_restored_pocket = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert tab_restored_pocket, 'The Pocket tab is restored'

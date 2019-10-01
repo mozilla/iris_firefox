@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         locale=['en-US'],
         test_case_id='4271',
         test_suite_id='83',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         google_search_no_input_pattern = Pattern('google_search_no_input.png')

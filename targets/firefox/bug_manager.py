@@ -8,8 +8,8 @@ import logging
 import bugzilla
 from github import Github
 
-from src.configuration.config_parser import get_config_property, validate_section
-from src.core.api.os_helpers import OSHelper
+from moziris.configuration.config_parser import get_config_property, validate_section
+from moziris.api.os_helpers import OSHelper
 from targets.firefox.errors import BugManagerError
 
 logger = logging.getLogger(__name__)

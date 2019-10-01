@@ -18,7 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         themes_pattern = Pattern('themes.png')
         dark_theme_pattern = AboutAddons.Themes.DARK_THEME
-        moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png').similar(.6)
+        moz_search_highlight_dark_theme_pattern = Pattern('moz_search_highlight_dark_theme.png').similar(0.6)
         google_one_off_button_pattern = Pattern('google_one_off_button.png')
         url = LocalWeb.FIREFOX_TEST_SITE
         top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)

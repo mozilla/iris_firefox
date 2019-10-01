@@ -12,7 +12,8 @@ class Test(FirefoxTest):
         description='This test case perform one-offs searches in private browsing.',
         locale=['en-US'],
         test_case_id='108253',
-        test_suite_id='1902'
+        test_suite_id='1902',
+        blocked_by = {'id': 'issue_3845', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -21,7 +22,7 @@ class Test(FirefoxTest):
         new_tab_twitter_search_results_pattern = Pattern('new_tab_twitter_search_results.png').similar(0.6)
         new_tab_twitter_search_results_pattern2 = Pattern('new_tab_twitter_search_results_2.png').similar(0.6)
         google_on_off_button_private_window_pattern = Pattern('google_on_off_button_private_window.png')
-        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(.7)
+        magnifying_glass_pattern = Pattern('magnifying_glass.png').similar(0.7)
         test_pattern = Pattern('test.png')
         this_time_search_with_pattern = Pattern('this_time_search_with.png')
 

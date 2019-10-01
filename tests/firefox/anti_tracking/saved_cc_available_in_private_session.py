@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         find_in_preferences_field_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
         suggested_card_number_from_dropdown_pattern = Pattern('suggested_cc_number_from_dropdown.png')
-        popup_name_on_card_field_pattern = Pattern('popup_name_on_card_field.png').similar(.6)
+        popup_name_on_card_field_pattern = Pattern('popup_name_on_card_field.png').similar(0.6)
         expiration_month_dropdown_item_pattern = Pattern('expiration_month_dd_item.png')
         billing_address_dropdown_item_pattern = Pattern('billing_address_dd_item.png')
         expiration_year_dropdown_item_pattern = Pattern('expiration_year_dd_item.png')

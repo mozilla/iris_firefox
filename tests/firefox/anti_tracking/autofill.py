@@ -5,7 +5,7 @@
 
 from targets.firefox.fx_testcase import *
 from targets.firefox.firefox_ui.private_window import PrivateWindow
-from src.configuration.config_parser import *
+from moziris.configuration.config_parser import *
 
 
 class Test(FirefoxTest):

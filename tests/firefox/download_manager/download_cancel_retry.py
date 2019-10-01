@@ -1,7 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from src.core.api.mouse import mouse
+from moziris.api.mouse import mouse
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.helpers.download_manager_utils import *
 from targets.firefox.fx_testcase import *
@@ -36,7 +36,7 @@ class Test(FirefoxTest):
             expected = exists(DownloadManager.DownloadState.RETRY_DOWNLOAD, 10)
             assert expected is True, 'Retry download message is displayed.'
 
-        mouse.move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
+        Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
         expected = exists(DownloadManager.DownloadState.CANCELED, 10)
         assert expected is True, 'Download was cancelled.'
 
@@ -44,7 +44,7 @@ class Test(FirefoxTest):
         assert expected is True, 'Retry button is displayed.'
 
         click(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
-        mouse.move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
+        Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
         expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert expected is True, 'Download was restarted.'
 

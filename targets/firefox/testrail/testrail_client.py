@@ -6,11 +6,11 @@
 import ast
 from datetime import date
 
-from src.configuration.config_parser import get_config_property, logger
-from src.core.util.test_assert import TestResult
+from moziris.configuration.config_parser import get_config_property, logger
+from moziris.util.test_assert import TestResult
 from targets.firefox.errors import TestRailError
-from src.core.api.os_helpers import OSHelper
-from src.core.util.report_utils import Color
+from moziris.api.os_helpers import OSHelper
+from moziris.util.report_utils import Color
 from targets.firefox.testrail import api_client
 from targets.firefox.testrail.testcase_results import TestSuiteMap, TestRailTests
 
