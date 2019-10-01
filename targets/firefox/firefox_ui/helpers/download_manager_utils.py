@@ -20,6 +20,7 @@ from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import close_tab, ope
 from targets.firefox.firefox_ui.library import Library
 from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
+from targets.firefox.settings import FirefoxSettings
 
 logger = logging.getLogger(__name__)
 
@@ -176,12 +177,12 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
     :param file_to_download: Pattern of file to be downloaded.
     :param accept_download: Accept download pattern.
     :param max_number_of_attempts: Max number of attempts to locate file_to_download pattern.
-    :param expect_accept_download_available: True if we expect accept_download button (often its OK),
-            False - if we don't; (in Windows 7 download UI don't have extra accept button in certain cases)
+    :param expect_accept_download_available: True if we expect accept_download button, False - if we don't;
+            (in Windows 7 download UI don't have extra accept button in certain cases)
     :return: None.
     """
     for _ in range(max_number_of_attempts):
-        file_found = exists(file_to_download, Settings.DEFAULT_UI_DELAY_LONG * 4)
+        file_found = exists(file_to_download, FirefoxSettings.FIREFOX_TIMEOUT)
 
         if file_found:
             click(file_to_download)
@@ -189,14 +190,14 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
 
         type(Key.PAGE_DOWN)
 
-        if exists(DownloadFiles.ABOUT, Settings.DEFAULT_UI_DELAY_LONG):
+        if exists(DownloadFiles.ABOUT, FirefoxSettings.FIREFOX_TIMEOUT):
             raise APIHelperError('File to be downloaded not found.')
 
     try:
-        wait(DownloadFiles.SAVE_FILE, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
+        wait(DownloadFiles.SAVE_FILE, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         logger.debug('The \'Save file\' option is present in the page.')
 
-        time.sleep(Settings.DEFAULT_SYSTEM_DELAY) # prevent click on inactive button on windows
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT) # prevent click on inactive button on windows
 
         click(DownloadFiles.SAVE_FILE)
 
@@ -204,7 +205,7 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
     if expect_accept_download_available:
-        accept_download_button = exists(accept_download, Settings.DEFAULT_UI_DELAY_LONG * 4)
+        accept_download_button = exists(accept_download, FirefoxSettings.FIREFOX_TIMEOUT)
         if accept_download_button:
             logger.debug('The accept download button found in the page.')
             click(accept_download)
