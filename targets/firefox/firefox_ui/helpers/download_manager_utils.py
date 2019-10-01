@@ -177,12 +177,12 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
     :param file_to_download: Pattern of file to be downloaded.
     :param accept_download: Accept download pattern.
     :param max_number_of_attempts: Max number of attempts to locate file_to_download pattern.
-    :param expect_accept_download_available: True if we expect accept_download button, False - if we don't;
-            (in Windows 7 download UI don't have extra accept button in certain cases)
+    :param expect_accept_download_available: True if we expect accept_download button (often its OK button),
+            False - if we don't; (in Windows 7 download UI don't have extra accept button in certain cases)
     :return: None.
     """
     for _ in range(max_number_of_attempts):
-        file_found = exists(file_to_download, FirefoxSettings.FIREFOX_TIMEOUT)
+        file_found = exists(file_to_download, Settings.DEFAULT_UI_DELAY_LONG * 4)
 
         if file_found:
             click(file_to_download)
@@ -205,7 +205,7 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
         raise APIHelperError('The \'Save file\' option is not present in the page, aborting.')
 
     if expect_accept_download_available:
-        accept_download_button = exists(accept_download, FirefoxSettings.FIREFOX_TIMEOUT)
+        accept_download_button = exists(accept_download, Settings.DEFAULT_UI_DELAY_LONG * 4)
         if accept_download_button:
             logger.debug('The accept download button found in the page.')
             click(accept_download)
