@@ -49,7 +49,9 @@ class Test(FirefoxTest):
         assert expected is True, 'Virus or malware message is displayed.'
 
         width, height = DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.get_size()
-        mouse.move(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.target_offset(width / 2 + 10, 0))
+        arrow_location = find(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW)
+        offset_arrow_location = Location(arrow_location.x + width/2 + 10, arrow_location.y)
+        Mouse().move(offset_arrow_location)
 
         expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD, 10)
         assert expected is True, 'Download is highlighted red.'
@@ -95,7 +97,7 @@ class Test(FirefoxTest):
             hover(DownloadManager.SHOW_ALL_DOWNLOADS)
             expected = exists(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, 10)
             assert expected is True, '\'This file contains a virus or malware\' message is displayed.'
-            right_click(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD)
+            right_click(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, 5)
 
         # Clear the download panel.
         expected = exists(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY, 10)
