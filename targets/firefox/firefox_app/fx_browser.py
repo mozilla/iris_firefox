@@ -193,7 +193,6 @@ class FirefoxApp:
         self.path = path
         self.channel = FirefoxUtils.get_firefox_channel(path)
         self.version = FirefoxUtils.get_firefox_version(path)
-        self.latest_version = FirefoxUtils.get_firefox_latest_version(path)
         self.build_id = FirefoxUtils.get_firefox_build_id(path)
         self.locale = locale
 
@@ -203,6 +202,10 @@ class FirefoxApp:
                                                                                     self.version,
                                                                                     self.build_id,
                                                                                     self.locale)
+
+    @property
+    def latest_version(self):
+        return FirefoxUtils.get_firefox_latest_version(self.path)
 
     @staticmethod
     def _get_test_candidate(version: str, locale: str) -> str or None:
