@@ -29,7 +29,8 @@ class Test(FirefoxTest):
         assert expected is True, 'Uncommon file has been found.'
 
         width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
-        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False)
 
         expected = exists(DownloadManager.DownloadsPanel.UNCOMMON_DOWNLOAD_ICON, 10)
         assert expected is True, 'Uncommon download icon is displayed.'
@@ -100,7 +101,7 @@ class Test(FirefoxTest):
         download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO)
         assert download_image_site_loaded, 'Focus site loaded'
 
-        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK)
+        download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK, expect_accept_download_available=False)
 
         close_tab()
 
