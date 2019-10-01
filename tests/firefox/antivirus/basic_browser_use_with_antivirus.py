@@ -27,7 +27,7 @@ class Test(FirefoxTest):
 
         navigate('about:debugging')
 
-        debugging_page_loaded = exists(load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
+        debugging_page_loaded = exists(load_temporary_addon_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
         if debugging_page_loaded is False:
             this_firefox = exists('This Firefox', FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_HALF)
@@ -35,7 +35,7 @@ class Test(FirefoxTest):
 
             click('This Firefox', 1, Screen.LEFT_THIRD)
 
-        debugging_page_loaded = exists(load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT)
+        debugging_page_loaded = exists(load_temporary_addon_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert debugging_page_loaded is True,\
             'Debugging page is successfully loaded and contains \'Load temporary addon\' button.'
 
