@@ -12,7 +12,8 @@ class Test(FirefoxTest):
         description='Navigating through a PDF file works properly via pdf.js',
         test_case_id='3927',
         test_suite_id='65',
-        locales=Locales.ENGLISH
+        locales=Locales.ENGLISH,
+        preferences={'pdfjs.defaultZoomValue': '100'}
     )
     def test_run(self, firefox):
         pdf_file_last_page_contents_rotated_pattern = Pattern('last_page_contents_rotated.png')
@@ -35,8 +36,6 @@ class Test(FirefoxTest):
         text_selected_pattern = Pattern('text_selected.png')
         hand_tool_button_pattern = Pattern('hand_tool.png')
         tools_button_pattern = Pattern('tools_button.png')
-
-        change_preference('pdfjs.defaultZoomValue', '100')
 
         pdf_file_path = self.get_asset_path('pdf.pdf')
         navigate(pdf_file_path)
