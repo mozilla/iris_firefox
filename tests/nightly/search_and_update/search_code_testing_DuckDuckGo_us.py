@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         navigate('about:preferences#search')
 
         default_search_engine_google_exists = exists(default_search_engine_google_pattern.similar(0.7),
-                                                     FirefoxSettings.FIREFOX_TIMEOUT)
+                                                     FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert default_search_engine_google_exists is True, 'Google is the default search engine.'
 
         # Change the default search engine to DuckDuckGo.
@@ -35,12 +35,13 @@ class Test(FirefoxTest):
         click(default_search_engine_dropdown_pattern)
         repeat_key_down(3)
         type(Key.ENTER)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         select_location_bar()
         type('test', interval=0.25)
         type(Key.ENTER)
 
-        test_search_duckduckgo_exists = exists(test_search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        test_search_duckduckgo_exists = exists(test_search_duckduckgo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_search_duckduckgo_exists is True, 'The search is performed with the DuckDuckGo engine.'
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
