@@ -25,56 +25,56 @@ class Test(FirefoxTest):
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        mozilla_test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_test_site_loaded is True, 'Mozilla page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        mozilla_test_site_loaded = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_test_site_loaded is True, 'Mozilla page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_test_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        firefox_test_site_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_test_site_loaded is True, 'Firefox page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        focus_test_site_loaded = exists(LocalWeb.FOCUS_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        focus_test_site_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert focus_test_site_loaded is True, 'Focus page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.POCKET_TEST_SITE)
 
-        pocket_test_site_loaded = exists(LocalWeb.POCKET_LOGO, Settings.SITE_LOAD_TIMEOUT)
+        pocket_test_site_loaded = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert pocket_test_site_loaded is True, 'Pocket page loaded successfully.'
 
         # Open the History sidebar.
         history_sidebar()
 
-        history_today_sidebar = exists(history_today_sidebar_pattern, Settings.FIREFOX_TIMEOUT)
+        history_today_sidebar = exists(history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_today_sidebar is True, 'Expand history sidebar button displayed properly.'
 
         click(history_today_sidebar_pattern)
 
         # Sort by date by default.
-        history_sidebar_view_button = exists(history_sidebar_view_button_pattern, Settings.FIREFOX_TIMEOUT)
+        history_sidebar_view_button = exists(history_sidebar_view_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_sidebar_view_button is True, 'View button displayed properly.'
 
         click(history_sidebar_view_button_pattern)
 
-        history_sidebar_sort_by_date = exists(history_sidebar_sort_by_date_pattern, Settings.FIREFOX_TIMEOUT)
+        history_sidebar_sort_by_date = exists(history_sidebar_sort_by_date_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_sidebar_sort_by_date is True, 'Default sorting option - sort by date - is selected properly.'
 
         # Sort by site.
-        history_sidebar_sort_by_site = exists(history_sidebar_sort_by_site_pattern, Settings.FIREFOX_TIMEOUT)
+        history_sidebar_sort_by_site = exists(history_sidebar_sort_by_site_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_sidebar_sort_by_site is True, 'Sort by site option is displayed properly.'
 
         click(history_sidebar_sort_by_site_pattern)
 
         history_sidebar_items_sort_by_site = exists(history_sidebar_items_sort_by_site_pattern,
-                                                    Settings.FIREFOX_TIMEOUT)
+                                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_sidebar_items_sort_by_site is True, 'History list is sorted properly by site.'

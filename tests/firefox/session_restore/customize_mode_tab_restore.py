@@ -38,12 +38,12 @@ class Test(FirefoxTest):
 
         restart_via_console()
 
-        browser_console_reopened = exists(browser_console_pattern, Settings.SITE_LOAD_TIMEOUT)
+        browser_console_reopened = exists(browser_console_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert browser_console_reopened, 'Browser console reopened'
 
         click(browser_console_pattern)
 
         close_window_control('auxiliary')
 
-        customize_page_opened = exists(customize_option_pattern, Settings.FIREFOX_TIMEOUT, tabs_region)
+        customize_page_opened = exists(customize_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT, tabs_region)
         assert customize_page_opened, 'Firefox is restarted and "Customize..." mode is properly restored.'
