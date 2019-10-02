@@ -7,27 +7,28 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
         description='Empty "Other Bookmarks" section from Bookmarks menu',
-        locale=['en-US'],
-        test_case_id='163206',
-        test_suite_id='2525'
+        locale=["en-US"],
+        test_case_id="163206",
+        test_suite_id="2525",
     )
     def run(self, firefox):
-        bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
-        empty_folder_stub_pattern = Pattern('empty_folder.png')
-        other_bookmarks_item_pattern = Pattern('other_bookmarks.png')
+        bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
+        empty_folder_stub_pattern = Pattern("empty_folder.png")
+        other_bookmarks_item_pattern = Pattern("other_bookmarks.png")
 
         open_firefox_menu()
 
         top_menu_displayed = exists(bookmarks_top_menu_pattern)
-        assert top_menu_displayed is True, 'Firefox menu is properly displayed'
+        assert top_menu_displayed is True, "Firefox menu is properly displayed"
 
         click(bookmarks_top_menu_pattern)
 
         bookmarks_dropdown_displayed = exists(other_bookmarks_item_pattern)
-        assert bookmarks_dropdown_displayed is True, 'Bookmarks menu is properly displayed'
+        assert (
+            bookmarks_dropdown_displayed is True
+        ), "Bookmarks menu is properly displayed"
 
         click(other_bookmarks_item_pattern)
 

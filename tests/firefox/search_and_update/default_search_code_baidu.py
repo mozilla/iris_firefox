@@ -8,57 +8,61 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description='Default Search Code: Baidu - China.',
-        locale=['zh-CN'],
-        test_case_id='218337',
-        test_suite_id='83',
+        description="Default Search Code: Baidu - China.",
+        locale=["zh-CN"],
+        test_case_id="218337",
+        test_suite_id="83",
         profile=Profiles.BRAND_NEW,
-        preferences={'browser.search.region': 'CN'}
+        preferences={"browser.search.region": "CN"},
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
-        text_pattern = Pattern('focus_text.png')
-        text_pattern_selected = Pattern('focus_text_selected.png')
-        default_search_engine_baidu_pattern = Pattern('default_search_engine_baidu.png')
+        text_pattern = Pattern("focus_text.png")
+        text_pattern_selected = Pattern("focus_text_selected.png")
+        default_search_engine_baidu_pattern = Pattern("default_search_engine_baidu.png")
 
-        change_preference('browser.search.widget.inNavBar', True)
-        change_preference('browser.tabs.warnOnClose', True)
+        change_preference("browser.search.widget.inNavBar", True)
+        change_preference("browser.tabs.warnOnClose", True)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        navigate('about:preferences#search')
-        expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Baidu is the default search engine.'
+        navigate("about:preferences#search")
+        expected = exists(
+            default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "Baidu is the default search engine."
 
         # Perform a search using the awesome bar and then clear the content from it.
         select_location_bar()
-        type('test', interval=0.25)
+        type("test", interval=0.25)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert '/baidu?wd=test&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
-                                                             '\'monline_7_dg\' string.'
+        assert "/baidu?wd=test&tn=monline_7_dg" in url_text, (
+            "The resulting URL contains the " "'monline_7_dg' string."
+        )
 
         select_location_bar()
         type(Key.DELETE)
 
         # Perform a search using the search bar.
         select_search_bar()
-        type('test', interval=0.25)
+        type("test", interval=0.25)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert '/baidu?wd=test&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
-                                                             '\'monline_7_dg\' string.'
+        assert "/baidu?wd=test&tn=monline_7_dg" in url_text, (
+            "The resulting URL contains the " "'monline_7_dg' string."
+        )
 
         # Highlight some text and right click it.
         new_tab()
         navigate(url)
         expected = exists(text_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert expected, 'Page successfully loaded, focus text found.'
+        assert expected, "Page successfully loaded, focus text found."
 
         double_click(text_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
@@ -70,5 +74,6 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert '/baidu?wd=Focus&tn=monline_7_dg' in url_text, 'The resulting URL contains the ' \
-                                                              '\'monline_7_dg\' string.'
+        assert "/baidu?wd=Focus&tn=monline_7_dg" in url_text, (
+            "The resulting URL contains the " "'monline_7_dg' string."
+        )

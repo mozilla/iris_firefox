@@ -7,7 +7,6 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
         description="This test will verify if PyAutoGUI mouse is working properly in a frame buffer environment."
     )
@@ -16,54 +15,81 @@ class Test(FirefoxTest):
             pyautogui.moveTo(300, 300)
             mouse_position = pyautogui.position()
         except:
-            raise Exception('PyAutoGUI error.')
+            raise Exception("PyAutoGUI error.")
 
         else:
             if mouse_position[0] == 300 and mouse_position[1] == 300:
                 logger.debug(
-                    'Mouse successfully moved to position ({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                    "Mouse successfully moved to position ({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
             else:
-                logger.error('Invalid mouse position: ({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                logger.error(
+                    "Invalid mouse position: ({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
                 exit(1)
 
         try:
             pyautogui.moveTo(None, 700)
             mouse_position = pyautogui.position()
         except:
-            raise Exception('PyAutoGUI error.')
+            raise Exception("PyAutoGUI error.")
         else:
             if mouse_position[0] == 300 and mouse_position[1] == 700:
                 logger.debug(
-                    'Mouse successfully changed to position ({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                    "Mouse successfully changed to position ({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
             else:
-                logger.error('Invalid mouse position: ({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                logger.error(
+                    "Invalid mouse position: ({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
                 exit(1)
 
         try:
             pyautogui.moveRel(0, 50)
             mouse_position = pyautogui.position()
         except:
-            raise Exception('PyAutoGUI error.')
+            raise Exception("PyAutoGUI error.")
 
         else:
             if mouse_position[0] == 300 and mouse_position[1] == 750:
                 logger.debug(
-                    'Mouse successfully moved to position ({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                    "Mouse successfully moved to position ({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
             else:
                 logger.error(
-                    'Invalid mouse position: ({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                    "Invalid mouse position: ({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
                 exit(1)
 
         try:
             pyautogui.click(x=400, y=400)
             mouse_position = pyautogui.position()
         except:
-            raise Exception('PyAutoGUI error.')
+            raise Exception("PyAutoGUI error.")
 
         else:
             if mouse_position[0] == 400 and mouse_position[1] == 400:
                 logger.debug(
-                    'Mouse successfully moved to position ({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                    "Mouse successfully moved to position ({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
             else:
-                logger.error('Invalid mouse position:({}, {}).'.format(mouse_position[0], mouse_position[1]))
+                logger.error(
+                    "Invalid mouse position:({}, {}).".format(
+                        mouse_position[0], mouse_position[1]
+                    )
+                )
                 exit(1)

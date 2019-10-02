@@ -7,12 +7,11 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='This test case checks the position of the bookmark drop down for a highlighted link.',
-        locale=['en-US'],
-        test_case_id='117526',
-        test_suite_id='1902'
+        description="This test case checks the position of the bookmark drop down for a highlighted link.",
+        locale=["en-US"],
+        test_case_id="117526",
+        test_suite_id="1902",
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -20,11 +19,13 @@ class Test(FirefoxTest):
 
         navigate(url)
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         select_location_bar()
 
         click(bookmark_button_pattern)
 
-        expected = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'The bookmark drop down is displayed under the bookmark icon.'
+        expected = exists(
+            Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "The bookmark drop down is displayed under the bookmark icon."

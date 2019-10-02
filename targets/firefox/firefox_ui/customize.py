@@ -7,7 +7,7 @@ from moziris.api.finder.pattern import Pattern
 
 
 class Customize(object):
-    THEMES_DEFAULT_SET = Pattern('themes_default_set.png')
-    DARK_THEME_OPTION = Pattern('dark_theme_option.png')
-    DARK_THEME_SET = Pattern('dark_theme_set.png')
-    RESTORE_DEFAULTS = Pattern('restore_defaults.png')
+    THEMES_DEFAULT_SET = Pattern("themes_default_set.png")
+    DARK_THEME_OPTION = Pattern("dark_theme_option.png")
+    DARK_THEME_SET = Pattern("dark_theme_set.png")
+    RESTORE_DEFAULTS = Pattern("restore_defaults.png")

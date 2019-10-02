@@ -8,13 +8,15 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description='This is a test case that checks the Hamburger menu > Customize opens the customize page.',
-        locale=['en-US']
+        description="This is a test case that checks the Hamburger menu > Customize opens the customize page.",
+        locale=["en-US"],
     )
     def run(self, firefox):
-        navigate('about:home')
+        navigate("about:home")
 
-        click_hamburger_menu_option('Customize...')
+        click_hamburger_menu_option("Customize...")
 
-        assert exists(NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE, 10), '\'Customize\' page present.'
+        assert exists(
+            NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE, 10
+        ), "'Customize' page present."
         close_customize_page()

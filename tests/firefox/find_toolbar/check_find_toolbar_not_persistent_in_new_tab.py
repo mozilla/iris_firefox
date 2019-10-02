@@ -8,10 +8,10 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description='Check Find Toolbar is not persistent in a new tab / window',
-        locale=['en-US'],
-        test_case_id='127262',
-        test_suite_id='2085'
+        description="Check Find Toolbar is not persistent in a new tab / window",
+        locale=["en-US"],
+        test_case_id="127262",
+        test_suite_id="2085",
     )
     def run(self, firefox):
         new_tab_icon_pattern = Tabs.NEW_TAB_HIGHLIGHTED
@@ -21,25 +21,39 @@ class Test(FirefoxTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert find_toolbar_is_opened, 'The find toolbar is opened'
+        find_toolbar_is_opened = exists(
+            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert find_toolbar_is_opened, "The find toolbar is opened"
 
         # Open another tab
         new_tab()
 
-        new_tab_is_opened = exists(new_tab_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert new_tab_is_opened, 'New tab is opened'
+        new_tab_is_opened = exists(
+            new_tab_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert new_tab_is_opened, "New tab is opened"
 
-        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert find_toolbar_is_opened is not True, 'The find toolbar is not opened on a new tab'
+        find_toolbar_is_opened = exists(
+            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert (
+            find_toolbar_is_opened is not True
+        ), "The find toolbar is not opened on a new tab"
 
         # Open a new window
         new_window()
 
-        new_tab_is_opened = exists(new_tab_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert new_tab_is_opened, 'New tab is opened'
+        new_tab_is_opened = exists(
+            new_tab_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert new_tab_is_opened, "New tab is opened"
 
-        find_toolbar_is_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert find_toolbar_is_opened is not True, 'The find toolbar is not opened in a new window'
+        find_toolbar_is_opened = exists(
+            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert (
+            find_toolbar_is_opened is not True
+        ), "The find toolbar is not opened in a new window"
 
         close_window()
