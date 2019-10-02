@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         navigate('about:preferences#search')
 
         default_search_engine_google_exists = exists(default_search_engine_google_pattern.similar(0.7),
-                                                     FirefoxSettings.FIREFOX_TIMEOUT)
+                                                     FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert default_search_engine_google_exists is True, 'Google is the default search engine.'
 
         # Change the default search engine to Bing.
@@ -36,12 +36,13 @@ class Test(FirefoxTest):
         click(default_search_engine_dropdown_pattern)
         repeat_key_down(1)
         type(Key.ENTER)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         select_location_bar()
         type('test', interval=0.25)
         type(Key.ENTER)
 
-        test_search_bing_exists = exists(test_search_bing_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        test_search_bing_exists = exists(test_search_bing_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_search_bing_exists is True, 'The search is performed with the Bing engine.'
 
         select_location_bar()
