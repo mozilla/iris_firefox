@@ -39,7 +39,7 @@ class Test(FirefoxTest):
         change_preference('browser.search.widget.inNavBar', True)
         change_preference('browser.tabs.warnOnClose', True)
 
-        default_search_engine_google_pattern = Pattern('default_search_engine_google.png')
+        default_search_engine_google_pattern = Pattern('default_search_engine_google.png')similar(0.6)
         google_logo_content_search_field_pattern = Pattern('google_logo_content_search_field.png')
 
         navigate('about:preferences#search')
