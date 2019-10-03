@@ -1,10 +1,9 @@
 # iris-firefox
 
-![Travis (.com)](https://img.shields.io/travis/com/mozilla/iris)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/moziris)
-![GitHub](https://img.shields.io/github/license/mozilla/iris)
-![GitHub repo size](https://img.shields.io/github/repo-size/mozilla/iris)
-![GitHub issues](https://img.shields.io/github/issues/mozilla/iris)
+![Travis (.com)](https://img.shields.io/travis/com/mozilla/iris_firefox)
+![GitHub](https://img.shields.io/github/license/mozilla/iris_firefox)
+![GitHub repo size](https://img.shields.io/github/repo-size/mozilla/iris_firefox)
+![GitHub issues](https://img.shields.io/github/issues/mozilla/iris_firefox)
 
 Iris Firefox is a suite of tests specific to Firefox, using the [iris](https://github.com/mozilla/iris) test harness.
 
