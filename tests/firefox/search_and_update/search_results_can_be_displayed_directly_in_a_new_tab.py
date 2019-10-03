@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="4266",
         test_suite_id="83",
-        blocked_by={"id": "issue_3845", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         iris_logo_tab_pattern = Pattern("iris_logo_tab.png")

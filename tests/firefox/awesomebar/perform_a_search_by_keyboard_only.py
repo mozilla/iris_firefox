@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         test_case_id="108268",
         test_suite_id="1902",
         profile_preferences={"browser.contentblocking.enabled": False},
-        blocked_by={"id": "issue_3845", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
