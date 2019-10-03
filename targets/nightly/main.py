@@ -61,8 +61,8 @@ class Target(BaseTarget):
             {'name': 'report', 'type': 'checkbox', 'label': 'Create TestRail report'}
         ]
         self.local_web_root = os.path.join(PathManager.get_module_dir(), 'targets', 'firefox', 'local_web')
-        if target_args.treeherder:
-            Settings.debug_image = False
+        # if target_args.treeherder:
+        #     Settings.debug_image = False
 
     def get_target_args(self):
         parser = argparse.ArgumentParser(description='Firefox-specific arguments', prog='iris')

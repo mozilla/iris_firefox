@@ -43,7 +43,7 @@ class Test(FirefoxTest):
 
         navigate('about:preferences#search')
 
-        expected = exists(default_search_engine_yandex_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(default_search_engine_yandex_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Yandex is the default search engine.'
 
         # Perform a search using the awesome bar and then clear the content from it.
@@ -76,7 +76,7 @@ class Test(FirefoxTest):
         # Highlight some text and right click it.
         new_tab()
         navigate(url)
-        expected = exists(LocalWeb.FOCUS_LOGO, 10)
+        expected = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Page successfully loaded, Focus logo found.'
 
         double_click(text_pattern)
@@ -94,11 +94,11 @@ class Test(FirefoxTest):
 
         # Perform a search from about:newtab page, content search field.
         new_tab()
-        expected = exists(yandex_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = exists(yandex_logo_content_search_field_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Yandex logo from content search field found.'
 
         click(yandex_logo_content_search_field_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         type('beats', interval=0.25)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)

@@ -69,6 +69,7 @@ class Test(FirefoxTest):
         assert hamburger_menu_region.exists(
             "Sign in to Firefox"
         ), '"Sign in to Firefox" found in hamburger menu'
+        
         if OSHelper.is_windows():
             assert hamburger_menu_region.exists(
                 "Options"
