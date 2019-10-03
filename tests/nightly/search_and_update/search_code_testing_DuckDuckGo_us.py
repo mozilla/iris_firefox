@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         test_suite_id='83',
     )
     def run(self, firefox):
-        default_search_engine_google_pattern = Pattern('default_search_engine_google.png')similar(0.6)
+        default_search_engine_google_pattern = Pattern('default_search_engine_google.png').similar(0.6)
         default_search_engine_dropdown_pattern = Pattern('default_search_engine_dropdown.png')
         test_search_duckduckgo_pattern = Pattern('test_search_duckduckgo.png')
 
