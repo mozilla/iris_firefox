@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="108274",
         test_suite_id="1902",
-        blocked_by={"id": "issue_3845", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

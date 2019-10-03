@@ -14,7 +14,6 @@ class Test(FirefoxTest):
         test_case_id="108252",
         test_suite_id="1902",
         preferences={"browser.contentblocking.enabled": False},
-        blocked_by={"id": "issue_3845", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE

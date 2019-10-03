@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="4263",
         test_suite_id="83",
-        blocked_by={"id": "issue_3845", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         add_search_bar_in_toolbar_pattern = Pattern(
