@@ -7,22 +7,23 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Form inputs are successfully restored',
-        test_case_id='114830',
-        test_suite_id='68',
-        locales=Locales.ENGLISH
+        description="Form inputs are successfully restored",
+        test_case_id="114830",
+        test_suite_id="68",
+        locales=Locales.ENGLISH,
     )
     def run(self, firefox):
-        title_field_pattern = Pattern('title_field.png').similar(0.6)
+        title_field_pattern = Pattern("title_field.png").similar(0.6)
 
-        input_data = ['Maria V. Griggs', 'Loblaws', '1223 Rainbow Drive']
+        input_data = ["Maria V. Griggs", "Loblaws", "1223 Rainbow Drive"]
 
-        navigate('https://www.roboform.com/filling-test-all-fields')
+        navigate("https://www.roboform.com/filling-test-all-fields")
 
-        test_site_loaded = exists(title_field_pattern, Settings.SITE_LOAD_TIMEOUT, region=Screen.LEFT_HALF)
-        assert test_site_loaded, 'The test website is successfully displayed.'
+        test_site_loaded = exists(
+            title_field_pattern, Settings.SITE_LOAD_TIMEOUT, region=Screen.LEFT_HALF
+        )
+        assert test_site_loaded, "The test website is successfully displayed."
 
         title_field_width, title_field_height = title_field_pattern.get_size()
 
@@ -44,26 +45,30 @@ class Test(FirefoxTest):
             entered_data.append(str(field_data))
             type(Key.TAB)
 
-        assert entered_data == input_data, 'The data is displayed successfully.'
+        assert entered_data == input_data, "The data is displayed successfully."
 
         if OSPlatform.MAC:
             quit_firefox()
         elif OSPlatform.MAC:
-            click_hamburger_menu_option('Quit')
+            click_hamburger_menu_option("Quit")
         else:
-            click_hamburger_menu_option('Exit')
+            click_hamburger_menu_option("Exit")
 
         firefox.restart()
 
-        firefox_restarted = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert firefox_restarted, 'Firefox restarted successfully'
+        firefox_restarted = exists(
+            LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
+        )
+        assert firefox_restarted, "Firefox restarted successfully"
 
-        click_hamburger_menu_option('Restore')
+        click_hamburger_menu_option("Restore")
 
         next_tab()
 
-        test_site_loaded = exists(title_field_pattern, Settings.SITE_LOAD_TIMEOUT, region=Screen.LEFT_HALF)
-        assert test_site_loaded, 'The test website is successfully displayed.'
+        test_site_loaded = exists(
+            title_field_pattern, Settings.SITE_LOAD_TIMEOUT, region=Screen.LEFT_HALF
+        )
+        assert test_site_loaded, "The test website is successfully displayed."
 
         click(in_field_focus)
 
@@ -75,5 +80,7 @@ class Test(FirefoxTest):
             restored_data.append(str(field_data))
             type(Key.TAB)
 
-        assert restored_data == input_data, 'The previous session is restored. The previously ' \
-                                            'entered data is restored inside the form fields.'
+        assert restored_data == input_data, (
+            "The previous session is restored. The previously "
+            "entered data is restored inside the form fields."
+        )

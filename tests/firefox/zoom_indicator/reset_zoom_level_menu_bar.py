@@ -7,12 +7,11 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='This is a test case that resets the zoom level from the menu bar.',
-        locale=['en-US'],
-        test_case_id='7460',
-        test_suite_id='242',
+        description="This is a test case that resets the zoom level from the menu bar.",
+        locale=["en-US"],
+        test_case_id="7460",
+        test_suite_id="242",
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -22,21 +21,32 @@ class Test(FirefoxTest):
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         select_location_bar()
 
-        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Zoom indicator not displayed by default in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "Zoom indicator not displayed by default in the url bar."
 
         select_zoom_menu_option(Option.ZOOM_IN)
 
-        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Zoom level successfully increased, zoom indicator found in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert (
+            expected
+        ), "Zoom level successfully increased, zoom indicator found in the url bar."
 
         select_zoom_menu_option(Option.RESET)
 
         region = create_region_for_url_bar()
-        expected = exists(url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT,
-                          region=region)
-        assert expected, 'Zoom indicator not displayed in the url bar after zoom level reset.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern.similar(0.92),
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert (
+            expected
+        ), "Zoom indicator not displayed in the url bar after zoom level reset."
