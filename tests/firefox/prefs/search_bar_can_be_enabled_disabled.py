@@ -63,9 +63,22 @@ class Test(FirefoxTest):
         navigate('about:home')
 
         google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
-        assert google_logo_content_search_field is False, 'The search bar is not displayed anymore. '
+        assert google_logo_content_search_field is False, 'The search bar is not displayed anymore on the Home page.'
 
         navigate('about:newtab')
 
         google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
-        assert google_logo_content_search_field is False, 'Google logo from the content search found.'
+        assert google_logo_content_search_field is False, 'The search bar is not displayed anymore on the New Tab page.'
+
+        new_window()
+
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
+        assert google_logo_content_search_field is False, 'The search bar is not displayed anymore on the Home page.'
+
+        new_private_window()
+
+        private_window_opened = exists(PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert private_window_opened, 'Private window opened'
+
+        google_logo_content_search_field = exists(google_logo_content_search_field_pattern)
+        assert google_logo_content_search_field is False, 'The search bar is not displayed anymore on the New Tab page.'
