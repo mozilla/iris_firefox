@@ -7,35 +7,38 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Open the Library from the Bookmarks menu',
-        locale=['en-US'],
-        test_case_id='165493',
-        test_suite_id='2525',
-        profile=Profiles.TEN_BOOKMARKS
+        description="Open the Library from the Bookmarks menu",
+        locale=["en-US"],
+        test_case_id="165493",
+        test_suite_id="2525",
+        profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        show_all_bookmarks_button_pattern = Pattern('show_all_bookmarks_button.png')
+        show_all_bookmarks_button_pattern = Pattern("show_all_bookmarks_button.png")
 
         library_button_exists = exists(NavBar.LIBRARY_MENU)
-        assert library_button_exists, 'View history, saved bookmarks and more section exists'
+        assert (
+            library_button_exists
+        ), "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION)
-        assert bookmarks_menu_option_exists is True, 'The Bookmarks option exists'
+        assert bookmarks_menu_option_exists is True, "The Bookmarks option exists"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         show_all_bookmarks_button_exists = exists(show_all_bookmarks_button_pattern)
-        assert show_all_bookmarks_button_exists is True, 'The Bookmarks menu is correctly displayed'
+        assert (
+            show_all_bookmarks_button_exists is True
+        ), "The Bookmarks menu is correctly displayed"
 
         click(show_all_bookmarks_button_pattern)
 
         library_exists = exists(Library.TITLE)
-        assert library_exists is True, 'The Library is opened'
+        assert library_exists is True, "The Library is opened"
 
         click(Library.TITLE)
 
-        close_window_control('auxiliary')
+        close_window_control("auxiliary")

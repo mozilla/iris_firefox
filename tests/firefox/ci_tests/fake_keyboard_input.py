@@ -5,24 +5,23 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Created to test fake keyboard inputs',
-        locale=['en-US'],
-        platform=OSPlatform.LINUX
+        description="Created to test fake keyboard inputs",
+        locale=["en-US"],
+        platform=OSPlatform.LINUX,
     )
     def run(self, firefox):
-        history_empty_pattern = Pattern('history_empty.png')
+        history_empty_pattern = Pattern("history_empty.png")
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert expected_1, 'Mozilla page loaded successfully.'
+        assert expected_1, "Mozilla page loaded successfully."
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected_2, 'Firefox page loaded successfully.'
+        assert expected_2, "Firefox page loaded successfully."
 
         history_sidebar()
 
@@ -32,20 +31,20 @@ class Test(FirefoxTest):
         for i in range(4):
             type(Key.DOWN)
 
-        logger.debug('TAB')
+        logger.debug("TAB")
         type(Key.TAB)
-        logger.debug('TAB')
+        logger.debug("TAB")
         type(Key.TAB)
         for i in range(5):
             type(Key.DOWN)
-        logger.debug('SPACE')
+        logger.debug("SPACE")
         type(Key.SPACE)
         type(Key.DOWN)
         type(Key.SPACE)
-        logger.debug('ENTER')
+        logger.debug("ENTER")
         type(Key.ENTER)
 
         restore_firefox_focus()
 
         expected_4 = exists(history_empty_pattern.similar(0.9), 10)
-        assert expected_4, 'All the history was cleared successfully.'
+        assert expected_4, "All the history was cleared successfully."

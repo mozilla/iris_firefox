@@ -7,38 +7,39 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Open a bookmark in a New Tab using contextual menu from '
-                    '\'Other Bookmarks\' section from Bookmarks menu',
-        locale=['en-US'],
-        test_case_id='163209',
-        test_suite_id='2525',
+        description="Open a bookmark in a New Tab using contextual menu from "
+        "'Other Bookmarks' section from Bookmarks menu",
+        locale=["en-US"],
+        test_case_id="163209",
+        test_suite_id="2525",
         profile=Profiles.TEN_BOOKMARKS,
-        exclude=OSPlatform.MAC
+        exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
-        bookmarks_top_menu_pattern = Pattern('bookmarks_top_menu.png')
-        firefox_bookmark_top_menu_pattern = Pattern('firefox_bookmark_top_menu.png')
-        open_bookmark_new_tab_pattern = Pattern('open_bookmark_in_new_tab.png')
-        other_bookmarks_pattern = Pattern('other_bookmarks.png')
+        bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
+        firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png")
+        open_bookmark_new_tab_pattern = Pattern("open_bookmark_in_new_tab.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks.png")
 
         open_firefox_menu()
 
         top_menu_located = exists(bookmarks_top_menu_pattern)
-        assert top_menu_located is True, 'Firefox menu is located'
+        assert top_menu_located is True, "Firefox menu is located"
 
         click(bookmarks_top_menu_pattern)
 
         bookmarks_dropdown_opened = exists(other_bookmarks_pattern)
-        assert bookmarks_dropdown_opened is True, 'Bookmarks menu is opened'
+        assert bookmarks_dropdown_opened is True, "Bookmarks menu is opened"
 
         other_bookmarks_location = find(other_bookmarks_pattern)
 
         click(other_bookmarks_pattern)
 
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
-        assert firefox_bookmark_top_menu_located is True, 'Bookmarks are displayed in top menu'
+        assert (
+            firefox_bookmark_top_menu_located is True
+        ), "Bookmarks are displayed in top menu"
 
         # Required to guarantee bookmarks list will not disappear
         firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
@@ -50,12 +51,14 @@ class Test(FirefoxTest):
         right_click(firefox_bookmark_top_menu_pattern)
 
         context_menu_opened = exists(open_bookmark_new_tab_pattern)
-        assert context_menu_opened is True, 'Context menu is opened'
+        assert context_menu_opened is True, "Context menu is opened"
 
         click(open_bookmark_new_tab_pattern)
 
-        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert webpage_opened is True, 'Expected webpage is opened'
+        webpage_opened = exists(
+            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
+        )
+        assert webpage_opened is True, "Expected webpage is opened"
 
         opened_in_new_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
-        assert opened_in_new_tab is True, 'Webpage is opened in new tab of start window'
+        assert opened_in_new_tab is True, "Webpage is opened in new tab of start window"

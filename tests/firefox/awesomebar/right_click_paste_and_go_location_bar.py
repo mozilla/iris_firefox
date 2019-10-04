@@ -7,19 +7,18 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='This test case checks the \'Paste & Go\' option if CRLF exists at the end of clipboard url.',
-        locale=['en-US'],
-        test_case_id='117523',
-        test_suite_id='1902'
+        description="This test case checks the 'Paste & Go' option if CRLF exists at the end of clipboard url.",
+        locale=["en-US"],
+        test_case_id="117523",
+        test_suite_id="1902",
     )
     def run(self, firefox):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         select_location_bar()
         edit_copy()
@@ -31,4 +30,6 @@ class Test(FirefoxTest):
         select_location_bar_option(RightClickLocationBar.PASTE_GO)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected, 'Page successfully loaded after \'Paste & Go\' option is selected.'
+        assert (
+            expected
+        ), "Page successfully loaded after 'Paste & Go' option is selected."

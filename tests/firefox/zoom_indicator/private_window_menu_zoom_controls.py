@@ -7,13 +7,12 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='This is a test case that checks the zoom indicator in a private window when applying the Firefox' \
-                    ' Menu Zoom Controls.',
-        locale=['en-US'],
-        test_case_id='7463',
-        test_suite_id='242',
+        description="This is a test case that checks the zoom indicator in a private window when applying the Firefox"
+        " Menu Zoom Controls.",
+        locale=["en-US"],
+        test_case_id="7463",
+        test_suite_id="242",
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -28,29 +27,39 @@ class Test(FirefoxTest):
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         region = create_region_for_url_bar()
 
-        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
-        assert expected, 'Zoom indicator not displayed by default in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert expected, "Zoom indicator not displayed by default in the url bar."
 
         new_region = create_region_for_hamburger_menu()
 
-        expected = exists('100%', FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
-        assert expected, 'By default zoom indicator is 100% in hamburger menu.'
+        expected = exists("100%", FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "By default zoom indicator is 100% in hamburger menu."
 
         click(zoom_control_toolbar_increase_pattern)
 
         new_reg = create_region_for_url_bar()
 
-        expected = exists('110%', FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
-        assert expected, 'Zoom level successfully increased in hamburger menu.'
+        expected = exists("110%", FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased in hamburger menu."
 
         click(hamburger_menu_pattern)
 
-        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
-        assert expected, 'Zoom level successfully increased, zoom indicator displayed in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_110_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_reg,
+        )
+        assert (
+            expected
+        ), "Zoom level successfully increased, zoom indicator displayed in the url bar."
 
         click(hamburger_menu_pattern)
 
@@ -61,10 +70,16 @@ class Test(FirefoxTest):
 
         new_region_90 = create_region_for_hamburger_menu()
 
-        expected = exists('90%', FirefoxSettings.FIREFOX_TIMEOUT, region=new_region_90)
-        assert expected, 'Zoom level successfully decreased in hamburger menu.'
+        expected = exists("90%", FirefoxSettings.FIREFOX_TIMEOUT, region=new_region_90)
+        assert expected, "Zoom level successfully decreased in hamburger menu."
 
         click(hamburger_menu_pattern)
 
-        expected = exists(urlbar_zoom_button_90_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
-        assert expected, 'Zoom level successfully decreased, zoom indicator displayed in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_90_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_reg,
+        )
+        assert (
+            expected
+        ), "Zoom level successfully decreased, zoom indicator displayed in the url bar."

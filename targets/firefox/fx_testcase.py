@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class FirefoxTest(BaseTest):
-    outcome = ''
+    outcome = ""
     test_results = []
 
     @classmethod
@@ -41,15 +41,27 @@ class FirefoxTest(BaseTest):
     def add_results(self, result):
         """Create test result object."""
         self.add_result(result)
-        if 'ERROR' == result.outcome:
-            logger.error('>>> ERROR <<< Error encountered in test %s' % '\n' + result.error if
-                         result.error else '')
-        elif 'FAILED' == result.outcome:
-            logger.warning('>>> FAILED <<< Step %s: %s - [Actual]: %s [Expected]: %s %s'
-                           % (len(self.test_results), result.message, result.actual, result.expected,
-                              '\n' + result.error if result.error else ''))
-        elif 'PASSED' == result.outcome:
-            logger.info('>>> PASSED <<< Step %s: %s' % (len(self.test_results), result.message))
+        if "ERROR" == result.outcome:
+            logger.error(
+                ">>> ERROR <<< Error encountered in test %s" % "\n" + result.error
+                if result.error
+                else ""
+            )
+        elif "FAILED" == result.outcome:
+            logger.warning(
+                ">>> FAILED <<< Step %s: %s - [Actual]: %s [Expected]: %s %s"
+                % (
+                    len(self.test_results),
+                    result.message,
+                    result.actual,
+                    result.expected,
+                    "\n" + result.error if result.error else "",
+                )
+            )
+        elif "PASSED" == result.outcome:
+            logger.info(
+                ">>> PASSED <<< Step %s: %s" % (len(self.test_results), result.message)
+            )
 
         self.outcome = result.outcome
 
@@ -58,5 +70,5 @@ class FirefoxTest(BaseTest):
         """Returns a fully-resolved local file path to the test asset."""
         test_path = inspect.stack()[1][1]
         module_path = os.path.split(test_path)[0]
-        module_name = os.path.split(test_path)[1].split('.py')[0]
-        return os.path.join(module_path, 'assets', module_name, asset_file)
+        module_name = os.path.split(test_path)[1].split(".py")[0]
+        return os.path.join(module_path, "assets", module_name, asset_file)
