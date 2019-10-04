@@ -14,9 +14,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         soap_wiki_page_article_header_pattern = Pattern("wiki_article_header.png")
-        new_tab_highlighted_with_theme_applied_pattern = Pattern(
-            "new_tab_highlighted_theme_applied.png"
-        )
+        new_tab_highlighted_with_theme_applied_pattern = Pattern("new_tab_highlighted_theme_applied.png")
         adblock_icon_pattern = Pattern("adblock_icon.png")
         addon_file_icon_pattern = Pattern("addon_file_icon.png")
         home_icon_with_applied_theme_pattern = Pattern("home_icon_theme_applied.png")
@@ -29,7 +27,7 @@ class Test(FirefoxTest):
         navigate("about:debugging")
 
         debugging_page_loaded = exists(
-            load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT
+            load_temporary_addon_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
 
         if debugging_page_loaded is False:
@@ -41,7 +39,7 @@ class Test(FirefoxTest):
             click("This Firefox", 1, Screen.LEFT_THIRD)
 
         debugging_page_loaded = exists(
-            load_temporary_addon_button_pattern, Settings.FIREFOX_TIMEOUT
+            load_temporary_addon_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             debugging_page_loaded is True
