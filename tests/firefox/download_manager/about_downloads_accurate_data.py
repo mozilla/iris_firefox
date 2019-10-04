@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file, \
-    cancel_and_clear_downloads, cancel_in_progress_downloads_from_the_library
+    cancel_and_clear_downloads, cancel_in_progress_downloads_from_the_library, downloads_retry
 from targets.firefox.fx_testcase import *
 
 
@@ -26,7 +26,7 @@ class Test(FirefoxTest):
         downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED, DownloadFiles.LIBRARY_DOWNLOADS_10MB,
                                   DownloadFiles.LIBRARY_DOWNLOADS_20MB]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com')
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
@@ -37,6 +37,9 @@ class Test(FirefoxTest):
                 assert expected is True, 'Download button found in the page.'
 
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
+
+        # #  sometimes download time is Unknown. Retry download few times to get file downloaded
+        downloads_retry()
 
         # Open the Library - Downloads section.
         open_downloads()
@@ -62,7 +65,7 @@ class Test(FirefoxTest):
             raise FindError('The page did not load, aborting.')
 
         for pattern in downloads_library_list:
-            if pattern == DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED.similar(0.75):
+            if pattern == DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED.similar(0.8):
                 # Sometimes the 5MB file is highlighted and sometimes not. Focusing it to make the test case stable.
                 click(DownloadFiles.LIBRARY_DOWNLOADS_20MB)
                 repeat_key_up(3)
