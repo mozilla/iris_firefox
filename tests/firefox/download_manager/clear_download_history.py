@@ -3,7 +3,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from moziris.api.mouse import mouse
 from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file, \
+    cancel_in_progress_downloads_from_the_library, downloads_retry
+
 from targets.firefox.fx_testcase import *
 
 
@@ -23,9 +25,9 @@ class Test(FirefoxTest):
     def run(self, firefox):
         time.sleep(15)
         download_files_list = [DownloadFiles.SMALL_FILE_10MB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
-        downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
+        downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com')
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
@@ -36,6 +38,9 @@ class Test(FirefoxTest):
                 assert expected is True, 'Download button found in the page.'
 
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
+            time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 2)
+
+        downloads_retry()
 
         # Open the Downloads Panel and select Show All Downloads.
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
@@ -57,7 +62,7 @@ class Test(FirefoxTest):
             assert expected is True, ('%s file found in the Library, Downloads section.'
                                       % str(pattern.get_filename()).replace('_library_downloads.png', ''))
 
-        right_click(DownloadFiles.LIBRARY_DOWNLOADS_5MB)
+        right_click(DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED)
         type(text='d')
 
         # Check that all the downloads are removed from the Library.
