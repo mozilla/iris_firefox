@@ -64,7 +64,10 @@ class Test(FirefoxTest):
         )
         assert arrow_up_navigation_works, "Navigation via 'Arrow up' key works properly"
 
-        [type(Key.RIGHT) for _ in range(2)]
+        type(Key.RIGHT)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.RIGHT)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.DOWN)
 
         arrow_right_navigation_works = exists(history_chapter_pattern)
@@ -104,7 +107,10 @@ class Test(FirefoxTest):
         previous_page_button_available = exists(previous_page_button_pattern)
         assert previous_page_button_available, "'Previous page' button available"
 
-        [click(previous_page_button_pattern) for _ in range(2)]
+        click(previous_page_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        click(previous_page_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.DOWN)
 
         navigation_via_previous_page_button_works = exists(history_chapter_pattern)
@@ -115,7 +121,10 @@ class Test(FirefoxTest):
         next_page_button_available = exists(next_page_button_pattern)
         assert next_page_button_available, "'Next page' button available"
 
-        [click(next_page_button_pattern) for _ in range(2)]
+        click(next_page_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        click(next_page_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         navigation_via_next_page_button_works = exists(
             pdf_file_last_page_contents_pattern
@@ -212,6 +221,7 @@ class Test(FirefoxTest):
         assert hand_tool_available, "'Hand tool' button available in 'Tools' menu"
 
         click(hand_tool_button_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         drag_drop(
             pdf_file_last_page_contents_pattern,
@@ -291,8 +301,10 @@ class Test(FirefoxTest):
         assert jump_to_page_field_available, "'Jump to page' field available"
 
         click(jump_to_page_field_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         paste("1")
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         type(Key.ENTER)
 
