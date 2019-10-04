@@ -16,7 +16,7 @@ from moziris.util.path_manager import PathManager
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.general_test_utils import Step, access_and_check_pattern
 from targets.firefox.firefox_ui.helpers.general import click_window_control
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import close_tab, open_web_console
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import close_tab, open_web_console, open_downloads
 from targets.firefox.firefox_ui.library import Library
 from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
@@ -217,6 +217,31 @@ def downloads_cleanup():
     path = PathManager.get_downloads_dir()
     logger.debug('Clean the downloads folder: "%s"' % path)
     PathManager.remove_dir_contents(path)
+
+
+def downloads_retry():
+    open_downloads()
+
+    for _ in range(10):
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 3)
+
+        download_progress_unknown = exists(DownloadManager.DownloadState.PROGRESS)
+
+        if download_progress_unknown:
+            wait(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+            logger.debug('The \'X\' button is properly displayed.')
+
+            click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+
+            wait(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
+            logger.debug('The \'Download retry\' button is properly displayed.')
+
+            click(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
+
+        else:
+            break
+
+    click_window_control('close')
 
 
 def force_delete_folder(path):
