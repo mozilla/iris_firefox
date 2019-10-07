@@ -30,8 +30,6 @@ class Test(FirefoxTest):
         )
         assert test_site_opened, "Pocket test website is opened"
 
-        quit_firefox()
-        time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
         firefox.restart()
 
         firefox_restarted = exists(
