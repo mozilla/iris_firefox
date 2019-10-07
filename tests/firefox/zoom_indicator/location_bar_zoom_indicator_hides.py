@@ -7,12 +7,25 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='This test case checks that zoom indicator hides in the url bar.',
-        locale=['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja'],
-        test_case_id='7447',
-        test_suite_id='242',
+        description="This test case checks that zoom indicator hides in the url bar.",
+        locale=[
+            "en-US",
+            "zh-CN",
+            "es-ES",
+            "de",
+            "fr",
+            "ru",
+            "ko",
+            "pt-PT",
+            "vi",
+            "pl",
+            "tr",
+            "ro",
+            "ja",
+        ],
+        test_case_id="7447",
+        test_suite_id="242",
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -23,35 +36,60 @@ class Test(FirefoxTest):
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         region = create_region_for_url_bar()
 
-        expected = exists(url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT,
-                          region=region)
-        assert expected, 'Zoom indicator not displayed by default in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern.similar(0.92),
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert expected, "Zoom indicator not displayed by default in the url bar."
 
         zoom_in()
 
         new_region = create_region_for_url_bar()
 
-        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
-        assert expected, 'Zoom level successfully increased, zoom indicator found in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_110_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_region,
+        )
+        assert (
+            expected
+        ), "Zoom level successfully increased, zoom indicator found in the url bar."
 
         zoom_out()
 
-        expected = exists(url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT,
-                          region=new_region)
-        assert expected, 'Zoom level successfully decreased, zoom indicator not found in the url bar ' \
-                         'for 100% zoom level.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern.similar(0.92),
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_region,
+        )
+        assert expected, (
+            "Zoom level successfully decreased, zoom indicator not found in the url bar "
+            "for 100% zoom level."
+        )
 
         zoom_out()
 
-        expected = exists(urlbar_zoom_button_90_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
-        assert expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_90_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_region,
+        )
+        assert (
+            expected
+        ), "Zoom level successfully decreased, zoom indicator found in the url bar."
 
         zoom_in()
 
-        expected = exists(url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT,
-                          region=new_region)
-        assert expected, 'Zoom level successfully increased, zoom indicator not found in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern.similar(0.92),
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_region,
+        )
+        assert (
+            expected
+        ), "Zoom level successfully increased, zoom indicator not found in the url bar."

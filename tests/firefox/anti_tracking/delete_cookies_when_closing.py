@@ -7,75 +7,103 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Firefox can be set to delete cookies when closed.',
-        locale=['en-US'],
-        test_case_id='106157',
-        test_suite_id='1826'
+        description="Firefox can be set to delete cookies when closed.",
+        locale=["en-US"],
+        test_case_id="106157",
+        test_suite_id="1826",
     )
     def run(self, firefox):
-        preferences_privacy_page_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        delete_cookies_after_close_pattern = Pattern('delete_cookies_after_close.png')
-        delete_cookies_after_close_marked_pattern = Pattern('delete_cookies_after_close_marked.png')
-        manage_data_button_pattern = Pattern('manage_data_button.png')
-        prosport_cookies_pattern = Pattern('prosport_cookies.png')
+        preferences_privacy_page_pattern = (
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
+        )
+        delete_cookies_after_close_pattern = Pattern("delete_cookies_after_close.png")
+        delete_cookies_after_close_marked_pattern = Pattern(
+            "delete_cookies_after_close_marked.png"
+        )
+        manage_data_button_pattern = Pattern("manage_data_button.png")
+        prosport_cookies_pattern = Pattern("prosport_cookies.png")
         if OSHelper.is_windows():
-            prosport_cookies_0_pattern = Pattern('prosport_cookies_0.png')
-        manage_cookies_window_label_pattern = Pattern('manage_cookies_window_label.png')
+            prosport_cookies_0_pattern = Pattern("prosport_cookies_0.png")
+        manage_cookies_window_label_pattern = Pattern("manage_cookies_window_label.png")
 
-        navigate('about:preferences#privacy')
+        navigate("about:preferences#privacy")
 
-        preferences_privacy_page_opened = exists(preferences_privacy_page_pattern,
-                                                 FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
-        assert preferences_privacy_page_opened, 'The Preferences > Privacy page is successfully displayed'
+        preferences_privacy_page_opened = exists(
+            preferences_privacy_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+        )
+        assert (
+            preferences_privacy_page_opened
+        ), "The Preferences > Privacy page is successfully displayed"
 
-        paste('Delete cookies')
+        paste("Delete cookies")
 
-        delete_cookies_after_close_checkbox_exists = exists(delete_cookies_after_close_pattern)
-        assert delete_cookies_after_close_checkbox_exists, '"Delete cookies and site data when Firefox is closed" ' \
-                                                           'is displayed'
+        delete_cookies_after_close_checkbox_exists = exists(
+            delete_cookies_after_close_pattern
+        )
+        assert delete_cookies_after_close_checkbox_exists, (
+            '"Delete cookies and site data when Firefox is closed" ' "is displayed"
+        )
 
         delete_cookies_after_close_location = find(delete_cookies_after_close_pattern)
-        delete_cookies_checkbox_width, delete_cookies_checkbox_height = delete_cookies_after_close_pattern.get_size()
-        delete_cookies_region = Rectangle(delete_cookies_after_close_location.x, delete_cookies_after_close_location.y,
-                                          delete_cookies_checkbox_width, delete_cookies_checkbox_height)
+        delete_cookies_checkbox_width, delete_cookies_checkbox_height = (
+            delete_cookies_after_close_pattern.get_size()
+        )
+        delete_cookies_region = Rectangle(
+            delete_cookies_after_close_location.x,
+            delete_cookies_after_close_location.y,
+            delete_cookies_checkbox_width,
+            delete_cookies_checkbox_height,
+        )
 
         click(delete_cookies_after_close_pattern)
 
-        delete_cookies_after_close_marked_exists = exists(delete_cookies_after_close_marked_pattern,
-                                                          region=delete_cookies_region)
-        assert delete_cookies_after_close_marked_exists, 'The option is successfully selected and remembered.'
+        delete_cookies_after_close_marked_exists = exists(
+            delete_cookies_after_close_marked_pattern, region=delete_cookies_region
+        )
+        assert (
+            delete_cookies_after_close_marked_exists
+        ), "The option is successfully selected and remembered."
 
         new_tab()
 
-        navigate('https://edition.cnn.com')
+        navigate("https://edition.cnn.com")
 
-        website_opened = exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
-        assert website_opened, 'The website is successfully displayed.'
+        website_opened = exists(
+            LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+        )
+        assert website_opened, "The website is successfully displayed."
 
         close_tab()
 
-        firefox.restart(url='about:preferences#privacy', image=preferences_privacy_page_pattern)
+        firefox.restart(
+            url="about:preferences#privacy", image=preferences_privacy_page_pattern
+        )
 
         time.sleep(FirefoxSettings.FIREFOX_TIMEOUT)
 
         open_find()
 
-        paste('Delete cookies')
+        paste("Delete cookies")
 
-        manage_data_button_exists = exists(manage_data_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert manage_data_button_exists, 'The manage data button exists.'
+        manage_data_button_exists = exists(
+            manage_data_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert manage_data_button_exists, "The manage data button exists."
 
         click(manage_data_button_pattern)
 
         manage_cookies_window_exists = exists(manage_cookies_window_label_pattern)
-        assert manage_cookies_window_exists, 'The manage data button exists.'
+        assert manage_cookies_window_exists, "The manage data button exists."
 
-        paste('cnn')
+        paste("cnn")
 
         if OSHelper.is_windows():
-            cookies_is_not_saved = exists(prosport_cookies_pattern) or exists(prosport_cookies_0_pattern)
+            cookies_is_not_saved = exists(prosport_cookies_pattern) or exists(
+                prosport_cookies_0_pattern
+            )
         else:
             cookies_is_not_saved = exists(prosport_cookies_pattern)
-        assert cookies_is_not_saved, 'No cookies are displayed from the previously accessed website.'
+        assert (
+            cookies_is_not_saved
+        ), "No cookies are displayed from the previously accessed website."

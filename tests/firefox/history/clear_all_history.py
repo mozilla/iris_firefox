@@ -7,17 +7,18 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Clear all the History.',
-        locale=['en-US'],
-        test_case_id='172045',
-        test_suite_id='2000'
+        description="Clear all the History.",
+        locale=["en-US"],
+        test_case_id="172045",
+        test_suite_id="2000",
     )
     def run(self, firefox):
-        history_empty_pattern = Pattern('history_empty.png')
+        history_empty_pattern = Pattern("history_empty.png")
         if OSHelper.is_mac():
-            clear_recent_history_last_hour_pattern = History.CLearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
+            clear_recent_history_last_hour_pattern = (
+                History.CLearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
+            )
 
         # Open some pages to create some history.
         new_tab()
@@ -26,12 +27,12 @@ class Test(FirefoxTest):
         reset_mouse()
 
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert expected_1, 'Mozilla page loaded successfully.'
+        assert expected_1, "Mozilla page loaded successfully."
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert expected_2, 'Firefox page loaded successfully.'
+        assert expected_2, "Firefox page loaded successfully."
 
         # Open the History sidebar.
         history_sidebar()
@@ -64,6 +65,6 @@ class Test(FirefoxTest):
 
         # Check that all the history was cleared.
         expected_4 = exists(history_empty_pattern, 10)
-        assert expected_4, 'All the history was cleared successfully.'
+        assert expected_4, "All the history was cleared successfully."
 
         history_sidebar()

@@ -91,7 +91,9 @@ grep -q -F 'export LC_ALL=en_US.UTF-8' ~/.zshrc || echo 'export LC_ALL=en_US.UTF
 grep -q -F 'export LANG=en_US.UTF-8' ~/.zshrc || echo 'export LANG=en_US.UTF-8' >> ~/.zshrc
 
 # Create download files
+echo -e "\n${GREEN}  --->  Create download files ${NC}\n"
 mkdir -p targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
+mkdir -p targets/nightly/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
 cd targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
 
 dd if=/dev/zero of=1GB.zip bs=1024 count=1024000
@@ -102,5 +104,6 @@ dd if=/dev/zero of=50MB.zip bs=1024 count=51200
 dd if=/dev/zero of=20MB.zip bs=1024 count=20500
 dd if=/dev/zero of=10MB.zip bs=1024 count=10200
 dd if=/dev/zero of=5MB.zip bs=1024 count=5100
+cp -R * ../../../../../nightly/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
 
-cd ../../../../../
+cd ../../../../../../

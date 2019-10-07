@@ -5,17 +5,18 @@
 
 import ast
 
-from src.configuration.config_parser import get_config_property
-
-
-
-
+from moziris.configuration.config_parser import get_config_property
 
 
 class TestRailTests:
-
-    def __init__(self, test_case_name: str, suite_id: int, blocked_by: int, test_case_id: int,
-                 outcome):
+    def __init__(
+        self,
+        test_case_name: str,
+        suite_id: int,
+        blocked_by: int,
+        test_case_id: int,
+        outcome,
+    ):
 
         """
         :param test_case_name: name of the test case
@@ -39,7 +40,6 @@ class TestRailTests:
         """
         return self.outcome
 
-
     def get_test_case_name(self):
         """
         Method that will retrieve the test case_name
@@ -60,9 +60,11 @@ class TestRailTests:
 
 
 class TestSuiteMap:
-    suite_dictionary = ast.literal_eval(get_config_property("Test_rail", "suite_dictionary"))
+    suite_dictionary = ast.literal_eval(
+        get_config_property("Test_rail", "suite_dictionary")
+    )
 
-    suite_name = ''
+    suite_name = ""
 
     def __init__(self, suite_id, test_results_list):
 
