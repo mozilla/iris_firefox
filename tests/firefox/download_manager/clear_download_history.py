@@ -55,20 +55,9 @@ class Test(FirefoxTest):
         expected = exists(Library.DOWNLOADS, 10)
         assert expected is True, 'The Downloads section from Library is displayed.'
 
-        # click(Library.DOWNLOADS)
-
-        # Check that all the downloads are successful and displayed in the Downloads category.
-        # for pattern in downloads_library_list:
-        #     expected = exists(pattern, 10)
-        #     assert expected is True, ('%s file found in the Library, Downloads section.'
-        #                               % str(pattern.get_filename()).replace('_library_downloads.png', ''))
-
         right_click(DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED)
 
-        if OSHelper.is_mac() or OSHelper.is_linux():
-            type(text='d')
-        elif OSHelper.is_windows():
-            type(text='e')
+        type(text='d')
 
         # Check that all the downloads are removed from the Library.
         for pattern in downloads_library_list:
