@@ -8,5 +8,5 @@ from moziris.api.finder.pattern import Pattern
 
 class MenuBar(object):
     class Edit(object):
-        EDIT_PATTERN = Pattern('menu_bar_edit_pattern.png')
-        EDIT_FIND_IN_PAGE = Pattern('menu_bar_edit_find_in_page_pattern.png')
+        EDIT_PATTERN = Pattern("menu_bar_edit_pattern.png")
+        EDIT_FIND_IN_PAGE = Pattern("menu_bar_edit_find_in_page_pattern.png")

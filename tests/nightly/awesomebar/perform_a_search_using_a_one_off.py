@@ -26,7 +26,7 @@ class Test(FirefoxTest):
         region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = region.exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Mozilla page loaded successfully.'
 
         bookmark_page()
@@ -37,13 +37,13 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = region.exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Firefox page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Focus page loaded successfully.'
 
         firefox.restart(LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
@@ -53,19 +53,19 @@ class Test(FirefoxTest):
         select_location_bar()
         paste('m')
 
-        expected = region.exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = region.exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Bookmarked page found between search suggestions.'
 
         select_location_bar()
         paste('o')
 
-        expected = region.exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = region.exists(search_suggestion_opened_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Opened tab found between search suggestions.'
 
         select_location_bar()
         paste('f')
 
-        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        expected = region.exists(search_suggestion_history_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, 'Web pages from personal browsing history found between search suggestions.'
 
         expected = region.exists(popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -77,6 +77,6 @@ class Test(FirefoxTest):
         click(google_one_off_button_pattern)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
+        expected = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.SITE_LOAD_TIMEOUT,
                           region=Screen.TOP_THIRD)
         assert expected, 'Google search results are displayed.'

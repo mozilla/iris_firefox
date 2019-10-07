@@ -7,12 +7,25 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='This test case verifies the zoom level on multiple tabs using multiple sites.',
-        locale=['en-US', 'zh-CN', 'es-ES', 'de', 'fr', 'ru', 'ko', 'pt-PT', 'vi', 'pl', 'tr', 'ro', 'ja'],
-        test_case_id='7448',
-        test_suite_id='242'
+        description="This test case verifies the zoom level on multiple tabs using multiple sites.",
+        locale=[
+            "en-US",
+            "zh-CN",
+            "es-ES",
+            "de",
+            "fr",
+            "ru",
+            "ko",
+            "pt-PT",
+            "vi",
+            "pl",
+            "tr",
+            "ro",
+            "ja",
+        ],
+        test_case_id="7448",
+        test_suite_id="242",
     )
     def run(self, firefox):
         url_1 = LocalWeb.FIREFOX_TEST_SITE
@@ -23,36 +36,52 @@ class Test(FirefoxTest):
         navigate(url_1)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         region = create_region_for_url_bar()
 
-        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
-        assert expected, 'Zoom indicator not displayed by default in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert expected, "Zoom indicator not displayed by default in the url bar."
 
         zoom_in()
 
-        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Zoom level successfully increased, zoom indicator found in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert (
+            expected
+        ), "Zoom level successfully increased, zoom indicator found in the url bar."
 
         new_tab()
 
         navigate(url_1)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
-        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Zoom indicator still displays 110% in the new tab opened for the site for which the zoom ' \
-                         'level was set.'
+        expected = exists(
+            urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, (
+            "Zoom indicator still displays 110% in the new tab opened for the site for which the zoom "
+            "level was set."
+        )
 
         new_tab()
         navigate(url_2)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         select_location_bar()
 
-        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
-        assert expected, 'Zoom indicator not displayed in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert expected, "Zoom indicator not displayed in the url bar."

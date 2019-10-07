@@ -7,6 +7,6 @@ from moziris.api.finder.pattern import Pattern
 
 
 class PrivateWindow(object):
-    private_window_pattern = Pattern('private_window.png')
-    SEE_HOW_IT_WORKS_BUTTON = Pattern('see_how_it_works_button.png')
-    PRIVATE_TAB = Pattern('private_tab.png')
+    private_window_pattern = Pattern("private_window.png")
+    SEE_HOW_IT_WORKS_BUTTON = Pattern("see_how_it_works_button.png")
+    PRIVATE_TAB = Pattern("private_tab.png")

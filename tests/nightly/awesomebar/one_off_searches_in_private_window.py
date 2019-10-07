@@ -31,7 +31,7 @@ class Test(FirefoxTest):
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
-        test_page_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        test_page_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_page_loaded, 'Page successfully loaded, firefox logo found.'
 
         select_location_bar()
@@ -54,8 +54,8 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        twitter_result_displayed = exists(new_tab_twitter_search_results_pattern, FirefoxSettings.FIREFOX_TIMEOUT) or\
-                                   exists(new_tab_twitter_search_results_pattern2, FirefoxSettings.FIREFOX_TIMEOUT)
+        twitter_result_displayed = exists(new_tab_twitter_search_results_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT) or\
+                                   exists(new_tab_twitter_search_results_pattern2, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert twitter_result_displayed, 'Twitter search results are opened in the same tab.'
 
         new_tab()
@@ -65,7 +65,7 @@ class Test(FirefoxTest):
         paste('test')
 
         google_button_found = region.exists(google_on_off_button_private_window_pattern,
-                                            FirefoxSettings.FIREFOX_TIMEOUT)
+                                            FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert google_button_found, 'The\'Google\' one-off button found.'
 
         if OSHelper.is_mac():
@@ -82,7 +82,7 @@ class Test(FirefoxTest):
 
         next_tab()
 
-        google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        google_page_opened = region.exists(magnifying_glass_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert google_page_opened, 'Page successfully loaded using the \'Google\' engine.'
 
         google_result_displayed = region.exists(test_pattern, FirefoxSettings.FIREFOX_TIMEOUT)

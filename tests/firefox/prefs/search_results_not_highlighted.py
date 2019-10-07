@@ -7,25 +7,29 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Bug 1388745 - Some search results are not highlighted',
-        locale=['en-US'],
-        test_case_id='145065',
-        test_suite_id='2241',
+        description="Bug 1388745 - Some search results are not highlighted",
+        locale=["en-US"],
+        test_case_id="145065",
+        test_suite_id="2241",
     )
     def run(self, firefox):
-        find_more_highlighted_pattern = Pattern('find_more_highlighted.png').similar(0.7)
+        find_more_highlighted_pattern = Pattern("find_more_highlighted.png").similar(
+            0.7
+        )
 
-        navigate('about:preferences')
+        navigate("about:preferences")
 
-        preferences_page_loaded = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert preferences_page_loaded, 'Preferences page is loaded'
+        preferences_page_loaded = exists(
+            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert preferences_page_loaded, "Preferences page is loaded"
 
-        paste('find more')
+        paste("find more")
 
-        find_more_highlighted = exists(find_more_highlighted_pattern,
-                                       FirefoxSettings.FIREFOX_TIMEOUT)
+        find_more_highlighted = exists(
+            find_more_highlighted_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
 
         assert find_more_highlighted, '"Find more (search engine)" link is highlighted.'
 
