@@ -7,5 +7,5 @@ from moziris.api.finder.pattern import Pattern
 
 
 class Tabs(object):
-    NEW_TAB_HIGHLIGHTED = Pattern('tab_content_selected_new_tab.png')
-    NEW_TAB_NOT_HIGHLIGHTED = Pattern('tab_content_new_tab.png')
+    NEW_TAB_HIGHLIGHTED = Pattern("tab_content_selected_new_tab.png")
+    NEW_TAB_NOT_HIGHLIGHTED = Pattern("tab_content_new_tab.png")

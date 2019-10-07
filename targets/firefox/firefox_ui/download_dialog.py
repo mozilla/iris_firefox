@@ -7,5 +7,5 @@ from moziris.api.finder.pattern import Pattern
 
 
 class DownloadDialog:
-    SAVE_FILE_RADIOBUTTON = Pattern('save_file_radiobutton.png')
-    OK_BUTTON = Pattern('ok_save_file_button.png')
+    SAVE_FILE_RADIOBUTTON = Pattern("save_file_radiobutton.png")
+    OK_BUTTON = Pattern("ok_save_file_button.png")

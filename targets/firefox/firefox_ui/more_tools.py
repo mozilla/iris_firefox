@@ -7,6 +7,6 @@ from moziris.api.finder.pattern import Pattern
 
 
 class MoreTools:
-    DOWNLOADS = Pattern('downloads_more_tools.png')
-    DOWNLOADS_OPTION = Pattern('downloads_option.png')
-    CUSTOMIZE_TOOLBAR = Pattern('customize_toolbar.png')
+    DOWNLOADS = Pattern("downloads_more_tools.png")
+    DOWNLOADS_OPTION = Pattern("downloads_option.png")
+    CUSTOMIZE_TOOLBAR = Pattern("customize_toolbar.png")

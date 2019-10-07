@@ -10,14 +10,13 @@ class Test(FirefoxTest):
 
     @pytest.mark.details(
         description="Scrolling works properly on image-rich websites.",
-        test_case_id="C4661",
+        test_case_id="4661",
         test_suite_id="102",
         locale=["en-US"],
-        # blocked_by = {'id': 'issue_3761', 'platform': OSPlatform.ALL}
     )
     def run(self, firefox):
         image_site_loaded_pattern = Pattern('image_site_loaded.png')
-        image_site_next_page_pattern = Pattern('image_site_next_page.png')
+        pixbay_site_loaded_pattern = Pattern('pixbay_site_loaded.png')
 
         mouse_wheel_steps = 200
         if OSHelper.is_windows():
@@ -31,7 +30,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 5)  # wait until image content loaded
 
         # Scroll by mouse wheel
-        bottom_page_button_destinated = scroll_until_pattern_found(image_site_next_page_pattern,
+        bottom_page_button_destinated = scroll_until_pattern_found(pixbay_site_loaded_pattern,
                                                                    Mouse().scroll, (0, -mouse_wheel_steps,), 100,
                                                                    FirefoxSettings.TINY_FIREFOX_TIMEOUT/3)
         assert bottom_page_button_destinated is True, 'Successfully scrolled to footer by mouse scroll'
