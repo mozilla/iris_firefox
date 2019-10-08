@@ -3,7 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file, \
-    cancel_and_clear_downloads
+    cancel_and_clear_downloads, downloads_retry
 from targets.firefox.fx_testcase import *
 
 
@@ -21,9 +21,11 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
+
+        downloads_retry()
 
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
         assert expected is True, 'Downloads button found.'
