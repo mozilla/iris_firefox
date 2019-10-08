@@ -3,6 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.helpers.download_manager_utils import *
+from targets.firefox.firefox_ui.helpers.download_manager_utils import select_throttling, NetworkOption
 from targets.firefox.fx_testcase import *
 
 
@@ -22,7 +23,11 @@ class Test(FirefoxTest):
     def run(self, firefox):
         navigate('https://irisfirefoxtestfiles.netlify.com')
 
-        download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
+        select_throttling(NetworkOption.GOOD_2G)
+
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 4)
+
+        download_file(DownloadFiles.EXTRA_LARGE_FILE_512MB, DownloadFiles.OK)
 
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10, region=Screen.RIGHT_THIRD)
         assert expected is True, 'Downloads button found.'
@@ -40,11 +45,12 @@ class Test(FirefoxTest):
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, 10, region=Screen.RIGHT_THIRD)
         assert expected is True, 'The Retry button is highlighted properly.'
 
-        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_512MB, 10)
         assert expected is True, 'The downloaded file name is properly displayed.'
 
         # Hover the file name.
-        hover(DownloadFiles.DOWNLOAD_FILE_NAME_1GB)
+        hover(DownloadFiles.DOWNLOAD_FILE_NAME_512MB)
+
         expected = exists(DownloadFiles.DOWNLOAD_CANCELED, 10)
         assert expected is True, 'The status and the source page are properly displayed when hovering the downloaded'
         ' file name.'
