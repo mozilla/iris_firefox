@@ -143,17 +143,26 @@ class Test(FirefoxTest):
             image_rich_pdf_third_page_contents_pattern
         ), "'Jump to page' field works as expected"
 
-        assert exists(zoom_in_button_pattern), "'Zoom in' button available"
+        home_button_location = find(NavBar.HOME_BUTTON)
+        zoom_buttons_region = Region(
+            0, home_button_location.y, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT / 4
+        )
 
-        [click(zoom_in_button_pattern) for _ in range(3)]
+        assert exists(
+            zoom_in_button_pattern, region=zoom_buttons_region
+        ), "'Zoom in' button available"
+
+        [click(zoom_in_button_pattern, region=zoom_buttons_region) for _ in range(3)]
 
         assert exists(
             image_rich_pdf_zoomed_in_pattern
         ), "'Zoom in' button works as expected"
 
-        assert exists(zoom_out_button_pattern), "'Zoom out' button available"
+        assert exists(
+            zoom_out_button_pattern, region=zoom_buttons_region
+        ), "'Zoom out' button available"
 
-        [click(zoom_out_button_pattern) for _ in range(3)]
+        [click(zoom_out_button_pattern, region=zoom_buttons_region) for _ in range(3)]
 
         assert exists(
             image_rich_pdf_third_page_contents_pattern
