@@ -12,8 +12,7 @@ class Test(FirefoxTest):
         description='Firefox can be successfully set to keep cookies and site data until closing Firefox',
         test_case_id='143636',
         test_suite_id='2241',
-        locale=['en-US'],
-        blocked_by={'id': '', 'platform': OSPlatform.ALL}
+        locale=['en-US']
     )
     def run(self, firefox):
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")
