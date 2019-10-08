@@ -36,7 +36,9 @@ class Test(FirefoxTest):
         expected = exists(NavBar.CUSTOM_DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Custom Download button is available in tabs bar.'
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
+
+        select_throttling(NetworkOption.GOOD_2G)
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
