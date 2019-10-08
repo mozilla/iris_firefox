@@ -19,7 +19,7 @@ class Test(FirefoxTest):
             0.6
         )
         search_duckduckgo_hover_pattern = Pattern("search_duckduckgo.png")
-        bing_search_engine_pattern = Pattern("bing_search_engine.png")
+        bing_search_engine_pattern = Pattern("bing_search_engine.png").similar(0.7)
         google_search_engine_pattern = Pattern("google_search_engine.png")
 
         # Enable the search bar.
