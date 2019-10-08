@@ -1,11 +1,11 @@
-# iris-firefox
+# iris_firefox
 
 ![Travis (.com)](https://img.shields.io/travis/com/mozilla/iris_firefox)
 ![GitHub](https://img.shields.io/github/license/mozilla/iris_firefox)
 ![GitHub repo size](https://img.shields.io/github/repo-size/mozilla/iris_firefox)
 ![GitHub issues](https://img.shields.io/github/issues/mozilla/iris_firefox)
 
-Iris Firefox is a suite of tests specific to Firefox, using the [iris](https://github.com/mozilla/iris) test harness.
+Iris Firefox is a suite of tests specific to Firefox, using the [Mozilla Iris](https://github.com/mozilla/iris) test framework.
 
 For more detailed information and troubleshooting tips, please [view our wiki](https://github.com/mozilla/iris_firefox/wiki).
 
@@ -84,13 +84,15 @@ iris firefox
 
 ## Usage
 
-`# to do`
+For examples of using Iris Firefox, see our [wiki and documentation](https://github.com/mozilla/iris_firefox/wiki/Basic-Workflow).
 
-## Contributing [WIP]
+## Contributing
+
+To contribute to the Iris Firefox project, more details are available on our [wiki](https://github.com/mozilla/iris_firefox/wiki/Contributions).
 
 ### Enable Pre-Commit Hooks
 
-In version [x.x.x], pre-commit hooks were added to iris for flake8 linting and [black code formatting](https://pypi.org/project/black/). These hooks will run  black and flake8 *prior to* committing your changes.
+Iris has pre-commit hooks for flake8 linting and [black code formatting](https://pypi.org/project/black/). These hooks will run black and flake8 *prior to* committing your changes.
 
 This means that black will format all python files in-place, and flake8 will lint your code for any errors.
 If there are flake8 violations, *your changes will not be committed*. The list of ignored rules is documented in the
