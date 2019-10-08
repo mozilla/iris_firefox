@@ -19,7 +19,9 @@ class Test(FirefoxTest):
             0.7
         )
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
-        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY.similar(.7)
+        history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY.similar(
+            0.7
+        )
         x_button_search_history_box_pattern = Sidebar.SidebarHeader.CLEAR_SEARCH_BOX
         history_sidebar_items_pattern = Pattern("history_sidebar_items.png")
 
