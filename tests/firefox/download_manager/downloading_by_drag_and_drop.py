@@ -26,7 +26,7 @@ class Test(FirefoxTest):
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Downloads button successfully activated in the nav bar.'
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:
@@ -35,7 +35,9 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('File is not present in the page.')
 
-        select_throttling(NetworkOption.GPRS)
+        select_throttling(NetworkOption.GOOD_3G)
+
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 4)
 
         max_attempts = 10
         while max_attempts > 0:
@@ -51,10 +53,10 @@ class Test(FirefoxTest):
         assert expected is True, 'The downloaded file name is properly displayed in the Downloads panel.'
 
         # Cancel the download.
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10, region=Screen.RIGHT_THIRD)
         assert expected is True, 'The \'X\' button is found in the Downloads panel.'
 
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, region=Screen.RIGHT_THIRD)
 
     def teardown(self):
         downloads_cleanup()
