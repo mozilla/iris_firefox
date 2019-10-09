@@ -4,54 +4,47 @@
 
 from setuptools import setup, find_packages
 
-PACKAGE_NAME = 'iris'
-PACKAGE_VERSION = '2.0'
+PACKAGE_NAME = "iris_firefox"
+PACKAGE_VERSION = "2.0"
 
-INSTALL_REQUIRES = [
-]
+INSTALL_REQUIRES = []
 
-TESTS_REQUIRE = [
-]
+TESTS_REQUIRE = []
 
-DEV_REQUIRES = [
-]
+DEV_REQUIRES = []
 
 setup(
     name=PACKAGE_NAME,
     version=PACKAGE_VERSION,
-    description='Visual Test Suite for Mozilla Firefox',
+    description="Visual Test Suite for Mozilla Firefox",
     classifiers=[
-        'Environment :: Console',
-        'Development Status :: 1 - Planning Development Status',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)',
-        'Natural Language :: English',
-        'Operating System :: MacOS :: MacOS X',
-        'Operating System :: Microsoft :: Windows :: Windows 10',
-        'Operating System :: Microsoft :: Windows :: Windows 7',
-        'Operating System :: Microsoft :: Windows :: Windows 8',
-        'Operating System :: Microsoft :: Windows :: Windows 8.1',
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python :: 3.7',
-        'Topic :: Software Development :: Quality Assurance',
-        'Topic :: Software Development :: Testing'
+        "Environment :: Console",
+        "Development Status :: 1 - Planning Development Status",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+        "Natural Language :: English",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows :: Windows 10",
+        "Operating System :: Microsoft :: Windows :: Windows 7",
+        "Operating System :: Microsoft :: Windows :: Windows 8",
+        "Operating System :: Microsoft :: Windows :: Windows 8.1",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Software Development :: Quality Assurance",
+        "Topic :: Software Development :: Testing",
     ],
-    keywords=['mozilla', 'firefox', 'automation', 'regression-testing', 'testing'],
-    author='Mozilla',
-    author_email='mwobensmith@mozilla.com',
-    url='https://github.com/mozilla/iris2',
-    download_url='https://github.com/mozilla/iris2/latest.tar.gz',
-    license='MPL2',
+    keywords=["mozilla", "firefox", "automation", "regression-testing", "testing"],
+    author="Mozilla",
+    author_email="mwobensmith@mozilla.com",
+    url="https://github.com/mozilla/iris_firefox",
+    download_url="https://github.com/mozilla/iris_firefox/latest.tar.gz",
+    license="MPL2",
     packages=find_packages(),
     include_package_data=True,  # See MANIFEST.in
     zip_safe=False,
     use_2to3=False,
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRE,
-    extras_require={'dev': DEV_REQUIRES},  # For `pip install -e .[dev]`
-    entry_points={
-        'console_scripts': [
-            'iris = src.__main__:main'
-        ]
-    }
+    extras_require={"dev": DEV_REQUIRES},  # For `pip install -e .[dev]`
+    entry_points={},
 )
