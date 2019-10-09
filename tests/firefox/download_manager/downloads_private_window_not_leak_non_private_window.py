@@ -102,6 +102,6 @@ class Test(FirefoxTest):
         assert expected is True, 'There are no downloads displayed in the Downloads Panel.'
 
     def teardown(self):
-        downloads_cleanup()
+        cancel_and_clear_downloads()
 
-        close_cancel_all_downloads_popup()
+        downloads_cleanup()
