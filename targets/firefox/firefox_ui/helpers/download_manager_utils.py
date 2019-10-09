@@ -247,17 +247,6 @@ def downloads_retry(private_window=False):
         click_window_control('close')
 
 
-def close_cancel_all_downloads_popup():
-    """ Cancel active downloads before end of test to prevent error window.
-    """
-    cancel_all_downloads_popup_pattern = DownloadFiles.CANCEL_ALL_DOWNLOADS_POP_UP
-
-    downloads_popup = exists(cancel_all_downloads_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-
-    if downloads_popup:
-        type(Key.ENTER)
-
-
 def force_delete_folder(path):
     shutil.rmtree(path, ignore_errors=True)
 
