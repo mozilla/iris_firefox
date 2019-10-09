@@ -7,27 +7,26 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Ctrl+Click/Command awesomebar entry with \'Switch to Tab\' doesn\'t open new tab.',
-        locale=['en-US'],
-        test_case_id='111374',
-        test_suite_id='83',
+        description="Ctrl+Click/Command awesomebar entry with 'Switch to Tab' doesn't open new tab.",
+        locale=["en-US"],
+        test_case_id="111374",
+        test_suite_id="83",
     )
     def run(self, firefox):
-        mozilla_page_unfocused_pattern = Pattern('mozilla_page_unfocused.png')
-        mozilla_suggestion_pattern = Pattern('mozilla_suggestion.png')
+        mozilla_page_unfocused_pattern = Pattern("mozilla_page_unfocused.png")
+        mozilla_suggestion_pattern = Pattern("mozilla_suggestion.png")
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         expected = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert expected is True, 'Mozilla page loaded successfully.'
+        assert expected is True, "Mozilla page loaded successfully."
 
         new_tab()
-        paste('127.0.0.1')
+        paste("127.0.0.1")
 
         expected = exists(mozilla_suggestion_pattern, 10)
-        assert expected is True, 'Search suggestions successfully displayed.'
+        assert expected is True, "Search suggestions successfully displayed."
 
         if OSHelper.is_mac():
             key_down(Key.COMMAND)
@@ -39,7 +38,7 @@ class Test(FirefoxTest):
             key_up(Key.CTRL)
 
         expected = exists(mozilla_page_unfocused_pattern, 10)
-        assert expected is True, 'Mozilla tab unfocused is visible.'
+        assert expected is True, "Mozilla tab unfocused is visible."
 
         expected = exists(LocalWeb.MOZILLA_LOGO, 10)
-        assert expected is True, 'Mozilla page is in focus.'
+        assert expected is True, "Mozilla page is in focus."

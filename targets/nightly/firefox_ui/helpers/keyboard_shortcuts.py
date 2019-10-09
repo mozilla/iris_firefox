@@ -554,6 +554,7 @@ def history_sidebar():
         type(text='h', modifier=[KeyModifier.CMD, KeyModifier.SHIFT])
     else:
         type(text='h', modifier=KeyModifier.CTRL)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def clear_recent_history():
@@ -609,6 +610,7 @@ def bookmarks_sidebar(option: str):
             raise APIHelperError('Sidebar is NOT closed, aborting.')
     else:
         raise APIHelperError('Option is not supported, aborting')
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def open_library():
@@ -619,6 +621,7 @@ def open_library():
         type(text='b', modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
     else:
         type(text='o', modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 # End History & Bookmarks keyboard shortcuts.

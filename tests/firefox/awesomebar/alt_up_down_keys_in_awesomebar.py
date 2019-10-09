@@ -7,25 +7,28 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Alt+UP/DOWN Keys - in the Awesome Bar.',
-        locale=['en-US'],
-        test_case_id='108278',
-        test_suite_id='1902',
-        blocked_by={'id': '1488708', 'platform': OSPlatform.ALL}
+        description="Alt+UP/DOWN Keys - in the Awesome Bar.",
+        locale=["en-US"],
+        test_case_id="108278",
+        test_suite_id="1902",
+        blocked_by={"id": "1488708", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
-        search_with_google_one_off_string_pattern = Pattern('search_with_Google_one_off_string.png')
-        search_with_wikipedia_one_off_string_pattern = Pattern('search_with_Wikipedia_one_off_string.png')
-        settings_gear_highlighted_pattern = Pattern('settings_gear_highlighted.png')
-        moz_search_wikipedia_pattern = Pattern('moz_search_wikipedia.png')
+        search_with_google_one_off_string_pattern = Pattern(
+            "search_with_Google_one_off_string.png"
+        )
+        search_with_wikipedia_one_off_string_pattern = Pattern(
+            "search_with_Wikipedia_one_off_string.png"
+        )
+        settings_gear_highlighted_pattern = Pattern("settings_gear_highlighted.png")
+        moz_search_wikipedia_pattern = Pattern("moz_search_wikipedia.png")
 
         region = Region(0, 0, Screen().width / 2, Screen().height / 2)
 
         new_tab()
         select_location_bar()
-        type('moz', interval=0.25)
+        type("moz", interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -38,16 +41,18 @@ class Test(FirefoxTest):
         key_up(Key.ALT)
 
         expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)
-        assert expected, "Wikipedia is the first one-off in focus when navigating with 'ALT and arrow UP keys."
+        assert (
+            expected
+        ), "Wikipedia is the first one-off in focus when navigating with 'ALT and arrow UP keys."
 
         expected = not region.exists(settings_gear_highlighted_pattern, 5)
-        assert expected, 'Settings gear icon is not in focus.'
+        assert expected, "Settings gear icon is not in focus."
 
         max_attempts = 10
 
         while max_attempts > 0:
             if region.exists(search_with_wikipedia_one_off_string_pattern, 1):
-                assert expected, '\'Wikipedia\' is the one-off in focus.'
+                assert expected, "'Wikipedia' is the one-off in focus."
                 max_attempts = 0
             else:
                 key_down(Key.ALT)
@@ -57,7 +62,7 @@ class Test(FirefoxTest):
 
         new_tab()
         select_location_bar()
-        type('moz', interval=0.25)
+        type("moz", interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -70,16 +75,18 @@ class Test(FirefoxTest):
         key_up(Key.ALT)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'Google is the first one-off in focus when navigating with ALT and arrow DOWN keys.'
+        assert (
+            expected
+        ), "Google is the first one-off in focus when navigating with ALT and arrow DOWN keys."
 
         expected = not region.exists(settings_gear_highlighted_pattern, 5)
-        assert expected, 'Settings gear icon is not in focus.'
+        assert expected, "Settings gear icon is not in focus."
 
         max_attempts = 10
 
         while max_attempts > 0:
             if region.exists(search_with_google_one_off_string_pattern, 1):
-                assert expected, '\'Google\' is the one-off in focus.'
+                assert expected, "'Google' is the one-off in focus."
                 max_attempts = 0
             else:
                 key_down(Key.ALT)
@@ -88,7 +95,7 @@ class Test(FirefoxTest):
                 max_attempts += 1
 
         select_location_bar()
-        type('moz', interval=0.25)
+        type("moz", interval=0.25)
 
         # Wait a moment for the suggests list to fully populate before stepping down through it.
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -105,13 +112,16 @@ class Test(FirefoxTest):
         key_up(Key.ALT)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, 'Google\' is the first one-off in focus when navigating with \'ALT\' and arrow ''DOWN keys.'
+        assert expected, (
+            "Google' is the first one-off in focus when navigating with 'ALT' and arrow "
+            "DOWN keys."
+        )
 
         max_attempts = 10
 
         while max_attempts > 0:
             if region.exists(search_with_google_one_off_string_pattern, 1):
-                assert expected, '\'Google\' is the one-off in focus.'
+                assert expected, "'Google' is the one-off in focus."
                 max_attempts = 0
             else:
                 key_down(Key.ALT)
@@ -128,8 +138,10 @@ class Test(FirefoxTest):
             key_up(Key.ALT)
 
         expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)
-        assert expected, '\'Wikipedia\' is the one-off in focus.'
+        assert expected, "'Wikipedia' is the one-off in focus."
 
         expected = region.exists(moz_search_wikipedia_pattern, 10)
-        assert expected, 'Previously autocomplete result in focus is still highlighted after navigating back ' \
-                         'and forth using the \'ALT\' and arrow UP/DOWN keys.'
+        assert expected, (
+            "Previously autocomplete result in focus is still highlighted after navigating back "
+            + "and forth using the 'ALT' and arrow UP/DOWN keys."
+        )

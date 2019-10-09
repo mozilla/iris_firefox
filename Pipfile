@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 moziris = "==0.5"
+pre-commit = "==1.18.3"
 
 [dev-packages]
 pylint = "*"

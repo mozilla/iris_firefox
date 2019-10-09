@@ -25,12 +25,12 @@ class Test(FirefoxTest):
 
         reset_mouse()
 
-        expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
+        expected_1 = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected_1, 'Mozilla page loaded successfully.'
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        expected_2 = exists(LocalWeb.FIREFOX_LOGO, 10)
+        expected_2 = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected_2, 'Firefox page loaded successfully.'
 
         # Open the History sidebar.
