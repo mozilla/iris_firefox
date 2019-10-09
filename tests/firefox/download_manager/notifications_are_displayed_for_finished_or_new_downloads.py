@@ -19,7 +19,7 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:
@@ -28,12 +28,12 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError('File is not present in the page.')
 
-        select_throttling(NetworkOption.GOOD_3G)
+        select_throttling(NetworkOption.GPRS)
 
         if OSHelper.is_linux():
-            download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
+            download_file(DownloadFiles.MEDIUM_FILE_100MB, DownloadFiles.OK)
         else:
-            download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
+            download_file(DownloadFiles.MEDIUM_FILE_100MB, DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert expected is True, 'Progress information is displayed.'
@@ -56,4 +56,6 @@ class Test(FirefoxTest):
         click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()
