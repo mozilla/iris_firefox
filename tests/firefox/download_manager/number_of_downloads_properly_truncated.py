@@ -25,7 +25,7 @@ class Test(FirefoxTest):
                                DownloadFiles.MEDIUM_FILE_100MB, DownloadFiles.MEDIUM_FILE_50MB,
                                DownloadFiles.SMALL_FILE_20MB]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:
