@@ -66,7 +66,7 @@ class Test(FirefoxTest):
 
         click_window_control('close')
 
-        downloads_retry()
+        downloads_retry(private_window=True)
 
         close_window()
 
@@ -103,3 +103,5 @@ class Test(FirefoxTest):
 
     def teardown(self):
         downloads_cleanup()
+
+        close_cancel_all_downloads_popup()
