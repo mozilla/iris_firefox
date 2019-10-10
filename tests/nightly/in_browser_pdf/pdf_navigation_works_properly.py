@@ -30,7 +30,9 @@ class Test(FirefoxTest):
         ).similar(0.6)
         introduction_chapter_pattern = Pattern("introduction_chapter_headline.png")
         last_page_text_contents_pattern = Pattern("last_page_text_contents.png")
-        go_to_first_page_button_pattern = Pattern("go_to_first_page_button.png")
+        go_to_first_page_button_pattern = Pattern(
+            "go_to_first_page_button.png"
+        ).similar(0.6)
         rotate_clockwise_button_pattern = Pattern("rotate_clockwise_button.png")
         pdf_file_last_page_contents_pattern = Pattern("last_page_contents.png")
         go_to_last_page_button_pattern = Pattern("go_to_last_page_button.png")
@@ -43,6 +45,9 @@ class Test(FirefoxTest):
         text_selected_pattern = Pattern("text_selected.png")
         hand_tool_button_pattern = Pattern("hand_tool.png")
         tools_button_pattern = Pattern("tools_button.png")
+
+        region_top = Screen.TOP_THIRD
+        region_right = Screen.RIGHT_THIRD
 
         pdf_file_path = self.get_asset_path("pdf.pdf")
         navigate(pdf_file_path)
@@ -114,7 +119,7 @@ class Test(FirefoxTest):
         )
         assert end_button_navigation_works, "Navigation via 'End' key works properly"
 
-        previous_page_button_available = exists(
+        previous_page_button_available = region_top.exists(
             previous_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert previous_page_button_available, "'Previous page' button available"
@@ -132,7 +137,7 @@ class Test(FirefoxTest):
             navigation_via_previous_page_button_works
         ), "By clicking the 'Previous page' button, the current view moves to the previous page"
 
-        next_page_button_available = exists(
+        next_page_button_available = region_top.exists(
             next_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert next_page_button_available, "'Next page' button available"
@@ -149,7 +154,7 @@ class Test(FirefoxTest):
             navigation_via_next_page_button_works
         ), "By clicking the 'Previous page' button, the current view moves to the previous page"
 
-        tools_button_available = exists(
+        tools_button_available = region_right.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -158,7 +163,7 @@ class Test(FirefoxTest):
 
         click(tools_button_pattern)
 
-        go_to_first_page_button_available = exists(
+        go_to_first_page_button_available = region_right.exists(
             go_to_first_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -174,7 +179,7 @@ class Test(FirefoxTest):
             navigation_via_go_to_first_page_button_works
         ), "Navigation via 'Go to first page' button from 'Tools' menu works properly"
 
-        tools_button_available = exists(
+        tools_button_available = region_right.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -183,7 +188,7 @@ class Test(FirefoxTest):
 
         click(tools_button_pattern)
 
-        go_to_last_page_button_available = exists(
+        go_to_last_page_button_available = region_right.exists(
             go_to_last_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -199,7 +204,7 @@ class Test(FirefoxTest):
             navigation_via_go_to_last_page_button_works
         ), "Navigation via 'Go to last page' button from 'Tools' menu works properly"
 
-        tools_button_available = exists(
+        tools_button_available = region_right.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -208,7 +213,7 @@ class Test(FirefoxTest):
 
         click(tools_button_pattern)
 
-        rotate_clockwise_button_available = exists(
+        rotate_clockwise_button_available = region_right.exists(
             rotate_clockwise_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -224,7 +229,7 @@ class Test(FirefoxTest):
             page_contents_rotated
         ), "Page contents rotated via 'Rotate clockwise' button"
 
-        rotate_counterclockwise_button_available = exists(
+        rotate_counterclockwise_button_available = region_right.exists(
             rotate_counterclockwise_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -242,7 +247,7 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
 
-        tools_button_available = exists(
+        tools_button_available = region_right.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -251,7 +256,7 @@ class Test(FirefoxTest):
 
         click(tools_button_pattern)
 
-        hand_tool_available = exists(
+        hand_tool_available = region_right.exists(
             hand_tool_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert hand_tool_available, "'Hand tool' button available in 'Tools' menu"
@@ -275,7 +280,7 @@ class Test(FirefoxTest):
             content_scrolled_via_hand_tool
         ), "Scrolling via 'Hand tool' works properly"
 
-        tools_button_available = exists(
+        tools_button_available = region_right.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -284,7 +289,7 @@ class Test(FirefoxTest):
 
         click(tools_button_pattern)
 
-        text_selection_tool_available = exists(
+        text_selection_tool_available = region_right.exists(
             text_selection_tool_button, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -305,7 +310,7 @@ class Test(FirefoxTest):
         )
         assert text_selection_tool_works, "'Text selection tool' works"
 
-        tools_button_available = exists(
+        tools_button_available = region_right.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -314,7 +319,7 @@ class Test(FirefoxTest):
 
         click(tools_button_pattern)
 
-        document_properties_button_available = exists(
+        document_properties_button_available = region_right.exists(
             document_properties_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -349,7 +354,7 @@ class Test(FirefoxTest):
             document_properties_opened is not True
         ), "'Document properties' popup successfully closed"
 
-        jump_to_page_field_available = exists(
+        jump_to_page_field_available = region_top.exists(
             jump_to_page_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert jump_to_page_field_available, "'Jump to page' field available"
