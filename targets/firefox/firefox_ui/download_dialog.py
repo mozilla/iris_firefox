@@ -3,9 +3,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.finder.pattern import Pattern
+from moziris.api.finder.pattern import Pattern
 
 
 class DownloadDialog:
-    SAVE_FILE_RADIOBUTTON = Pattern('save_file_radiobutton.png')
-    OK_BUTTON = Pattern('ok_save_file_button.png')
+    SAVE_FILE_RADIOBUTTON = Pattern("save_file_radiobutton.png")
+    OK_BUTTON = Pattern("ok_save_file_button.png")

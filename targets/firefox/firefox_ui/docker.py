@@ -2,10 +2,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from src.core.api.finder.pattern import Pattern
+from moziris.api.finder.pattern import Pattern
 
 
 class Docker:
-    FIREFOX_DOCKER_ICON = Pattern('firefox_logo_dock.png')
-    NEW_PRIVATE_WINDOW_MENU_ITEM = Pattern('new_private_window_menu_item.png')
-    NEW_WINDOW_MENU_ITEM = Pattern('new_window_menu_item.png')
+    FIREFOX_DOCKER_ICON = Pattern("firefox_logo_dock.png")
+    NEW_PRIVATE_WINDOW_MENU_ITEM = Pattern("new_private_window_menu_item.png")
+    NEW_WINDOW_MENU_ITEM = Pattern("new_window_menu_item.png")

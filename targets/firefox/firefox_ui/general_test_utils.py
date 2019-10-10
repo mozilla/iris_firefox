@@ -1,15 +1,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from src.core.api.errors import FindError, APIHelperError
-from src.core.api.finder.finder import wait
-from src.core.api.mouse.mouse import click
-from src.core.util.logger_manager import logger
-
+from moziris.api.errors import FindError, APIHelperError
+from moziris.api.finder.finder import wait
+from moziris.api.mouse.mouse import click
+from moziris.util.logger_manager import logger
 
 
 class Step(object):
-
     def __init__(self, resolution, message):
         self.resolution = resolution
         self.message = message
@@ -33,18 +31,21 @@ def access_and_check_pattern(access_pattern, msg, check_pattern=None, access_typ
 
     try:
         exists = wait(access_pattern, 10)
-        logger.debug('%s pattern is displayed properly.' % access_pattern)
-        if access_type and access_type == 'click':
+        logger.debug("%s pattern is displayed properly." % access_pattern)
+        if access_type and access_type == "click":
             click(access_pattern)
     except FindError:
         raise APIHelperError(
-            'Can\'t find the %s pattern, aborting.' % access_pattern.get_filename())
+            "Can't find the %s pattern, aborting." % access_pattern.get_filename()
+        )
 
     if check_pattern:
         try:
             exists = wait(check_pattern, 15)
-            logger.debug('%s pattern has been found.' % check_pattern.get_filename())
+            logger.debug("%s pattern has been found." % check_pattern.get_filename())
         except FindError:
-            raise APIHelperError('Can\'t find the %s option, aborting.' % check_pattern.get_filename())
+            raise APIHelperError(
+                "Can't find the %s option, aborting." % check_pattern.get_filename()
+            )
 
-    return Step(exists, '%s was accessed and displayed properly.' % msg)
+    return Step(exists, "%s was accessed and displayed properly." % msg)

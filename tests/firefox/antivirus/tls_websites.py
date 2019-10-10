@@ -7,129 +7,169 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='ebsites using TLS 1.3.',
-        locale=['en-US'],
-        test_case_id='217857',
-        test_suite_id='3063'
+        description="ebsites using TLS 1.3.",
+        locale=["en-US"],
+        test_case_id="217857",
+        test_suite_id="3063",
     )
     def run(self, firefox):
-        page_info_window_pattern = Pattern('technical_details.png')
-        tls_check_pattern = Pattern('tls_check.png').similar(0.7)
-        show_connection_details_button_pattern = Pattern('show_connection_details_button.png')
-        more_information_button_pattern = Pattern('more_information_button.png')
-        cloudflare_logo_pattern = Pattern('cloudflare_logo.png')
-        theregister_logo_pattern = Pattern('theregister_logo.png')
-        cdn77_logo_pattern = Pattern('cdn77_logo.png')
-        cloudflare_support_page_pattern = Pattern('cloudflare_support_page.png')
-        cloudflare_support_button_pattern = Pattern('cloudflare_support_button.png')
-        the_regiter_log_in_button_pattern = Pattern('the_regiter_log_in_button.png').similar(0.6)
-        the_register_log_in_page_pattern = Pattern('the_register_log_in_page.png').similar(0.6)
-        cdn77_support_page_pattern = Pattern('cdn77_support_page.png')
-        cdn77_tab_logo_pattern = Pattern('cdn77_tab_logo.png')
+        page_info_window_pattern = Pattern("technical_details.png")
+        tls_check_pattern = Pattern("tls_check.png").similar(0.7)
+        show_connection_details_button_pattern = Pattern(
+            "show_connection_details_button.png"
+        )
+        more_information_button_pattern = Pattern("more_information_button.png")
+        cloudflare_logo_pattern = Pattern("cloudflare_logo.png")
+        theregister_logo_pattern = Pattern("theregister_logo.png")
+        cdn77_logo_pattern = Pattern("cdn77_logo.png")
+        cloudflare_support_page_pattern = Pattern("cloudflare_support_page.png")
+        cloudflare_support_button_pattern = Pattern("cloudflare_support_button.png")
+        the_regiter_log_in_button_pattern = Pattern(
+            "the_regiter_log_in_button.png"
+        ).similar(0.6)
+        the_register_log_in_page_pattern = Pattern(
+            "the_register_log_in_page.png"
+        ).similar(0.6)
+        cdn77_support_page_pattern = Pattern("cdn77_support_page.png")
+        cdn77_tab_logo_pattern = Pattern("cdn77_tab_logo.png")
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
-        navigate('https://www.cloudflare.com/')
-        assert exists(cloudflare_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'Cloudflare page is successfully downloaded.'
+        navigate("https://www.cloudflare.com/")
+        assert exists(
+            cloudflare_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+        ), "Cloudflare page is successfully downloaded."
 
         click(LocationBar.SECURE_CONNECTION_LOCK)
-        assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
-            'Show Connection Details button displayed.'
+        assert exists(
+            show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "Show Connection Details button displayed."
 
         click(show_connection_details_button_pattern)
 
-        assert exists(more_information_button_pattern), 'More information button displayed.'
+        assert exists(
+            more_information_button_pattern
+        ), "More information button displayed."
 
         click(more_information_button_pattern)
 
-        assert exists(page_info_window_pattern), 'Cloudflare page info window is opened.'
+        assert exists(
+            page_info_window_pattern
+        ), "Cloudflare page info window is opened."
 
-        assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
-            'The Technical Details section states that the connection is encrypted via TLS 1.3.'
+        assert exists(
+            tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        ), "The Technical Details section states that the connection is encrypted via TLS 1.3."
 
-        close_window_control('auxiliary')
+        close_window_control("auxiliary")
 
-        assert exists(cloudflare_support_button_pattern), 'Cloudflare support login button exists.'
+        assert exists(
+            cloudflare_support_button_pattern
+        ), "Cloudflare support login button exists."
 
         click(cloudflare_support_button_pattern)
 
-        assert exists(cloudflare_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'There are no issues, crashes while navigating on the website.'
+        assert exists(
+            cloudflare_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+        ), "There are no issues, crashes while navigating on the website."
 
-        navigate('https://www.theregister.co.uk/')
+        navigate("https://www.theregister.co.uk/")
 
-        assert exists(theregister_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'The Register page is successfully downloaded.'
+        assert exists(
+            theregister_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+        ), "The Register page is successfully downloaded."
 
         click(LocationBar.SECURE_CONNECTION_LOCK)
 
-        assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT),\
-            'Show Connection Details button displayed.'
+        assert exists(
+            show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "Show Connection Details button displayed."
 
         click(show_connection_details_button_pattern)
 
-        assert exists(more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
-            'More information button displayed.'
+        assert exists(
+            more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "More information button displayed."
 
         click(more_information_button_pattern)
 
-        assert exists(page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT), 'The Register page info window is opened.'
+        assert exists(
+            page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "The Register page info window is opened."
 
-        assert exists(tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), \
-            'The Technical Details section states that the connection is encrypted via TLS 1.3.'
+        assert exists(
+            tls_check_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        ), "The Technical Details section states that the connection is encrypted via TLS 1.3."
 
-        close_window_control('auxiliary')
+        close_window_control("auxiliary")
 
-        assert exists(the_regiter_log_in_button_pattern), 'The Register Log In button exists.'
+        assert exists(
+            the_regiter_log_in_button_pattern
+        ), "The Register Log In button exists."
 
         click(the_regiter_log_in_button_pattern)
 
-        assert exists(the_register_log_in_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'There are no issues, crashes while navigating on the website.'
+        assert exists(
+            the_register_log_in_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+        ), "There are no issues, crashes while navigating on the website."
 
-        navigate('https://www.cdn77.com/')
+        navigate("https://www.cdn77.com/")
 
         cdn_logo_region = Screen().top_half().left_third().top_half()
 
-        assert exists(cdn77_tab_logo_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT, tabs_region), \
-            'CDN77 page is successfully downloaded.'
+        assert exists(
+            cdn77_tab_logo_pattern,
+            Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT,
+            tabs_region,
+        ), "CDN77 page is successfully downloaded."
 
         restore_firefox_focus()
 
-        assert exists(cdn77_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT, cdn_logo_region), \
-            'CDN77 page is successfully downloaded.'
+        assert exists(
+            cdn77_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT, cdn_logo_region
+        ), "CDN77 page is successfully downloaded."
 
         cdn_button_location = find(cdn77_logo_pattern, region=cdn_logo_region)
         cdn_width, cdn_height = cdn77_logo_pattern.get_size()
-        cdn_region = Rectangle(cdn_button_location.x, cdn_button_location.y, Screen.SCREEN_WIDTH*0.7, cdn_height)
+        cdn_region = Rectangle(
+            cdn_button_location.x,
+            cdn_button_location.y,
+            Screen.SCREEN_WIDTH * 0.7,
+            cdn_height,
+        )
 
         click(LocationBar.SECURE_CONNECTION_LOCK)
 
-        assert exists(show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
-            'Show Connection Details button displayed.'
+        assert exists(
+            show_connection_details_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "Show Connection Details button displayed."
 
         click(show_connection_details_button_pattern)
 
-        assert exists(more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
-            'More information button displayed.'
+        assert exists(
+            more_information_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "More information button displayed."
 
         click(more_information_button_pattern)
-        assert exists(page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT), 'CDN77 page info window is opened.'
-        assert exists(tls_check_pattern, FirefoxSettings.FIREFOX_TIMEOUT), \
-            'The Technical Details section states that the connection is encrypted via TLS 1.3.'
+        assert exists(
+            page_info_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "CDN77 page info window is opened."
+        assert exists(
+            tls_check_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        ), "The Technical Details section states that the connection is encrypted via TLS 1.3."
 
-        close_window_control('auxiliary')
+        close_window_control("auxiliary")
 
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        assert exists("Help", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region), \
-            'CDN77 Help Center button is displayed.'
+        assert exists(
+            "Help", FirefoxSettings.FIREFOX_TIMEOUT, region=cdn_region
+        ), "CDN77 Help Center button is displayed."
 
         click("Help", region=cdn_region)
 
-        assert exists(cdn77_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT), \
-            'TLS client certificate authentication mechanism will not be broken. No errors occur.'
+        assert exists(
+            cdn77_support_page_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+        ), "TLS client certificate authentication mechanism will not be broken. No errors occur."

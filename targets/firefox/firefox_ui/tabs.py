@@ -3,9 +3,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.finder.pattern import Pattern
+from moziris.api.finder.pattern import Pattern
 
 
 class Tabs(object):
-    NEW_TAB_HIGHLIGHTED = Pattern('tab_content_selected_new_tab.png')
-    NEW_TAB_NOT_HIGHLIGHTED = Pattern('tab_content_new_tab.png')
+    NEW_TAB_HIGHLIGHTED = Pattern("tab_content_selected_new_tab.png")
+    NEW_TAB_NOT_HIGHLIGHTED = Pattern("tab_content_new_tab.png")

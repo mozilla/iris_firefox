@@ -3,20 +3,22 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.finder.pattern import Pattern
+from moziris.api.finder.pattern import Pattern
 
 
 class AboutAddons(object):
-    THEMES = Pattern('themes.png')
+    THEMES = Pattern("themes.png")
 
     class Themes(object):
-        DARK_THEME = Pattern('dark_theme.png')
-        LIGHT_THEME = Pattern('light_theme.png')
-        DEFAULT_THEME = Pattern('default_theme.png')
+        DARK_THEME = Pattern("dark_theme.png")
+        LIGHT_THEME = Pattern("light_theme.png")
+        DEFAULT_THEME = Pattern("default_theme.png")
 
-        ACTION_BUTTON = Pattern('action_button.png')
+        ACTION_BUTTON = Pattern("action_button.png")
 
-        ENABLE_BUTTON = Pattern('enable_button.png')
-        DISABLE_BUTTON = Pattern('disable_button.png')
-        IRIS_TAB_LIGHT_OR_DEFAULT_THEME = Pattern('iris_tab_light_theme.png').similar(0.75)
-        IRIS_TAB_DARK_THEME = Pattern('iris_tab_dark_theme.png').similar(0.75)
+        ENABLE_BUTTON = Pattern("enable_button.png")
+        DISABLE_BUTTON = Pattern("disable_button.png")
+        IRIS_TAB_LIGHT_OR_DEFAULT_THEME = Pattern("iris_tab_light_theme.png").similar(
+            0.75
+        )
+        IRIS_TAB_DARK_THEME = Pattern("iris_tab_dark_theme.png").similar(0.75)

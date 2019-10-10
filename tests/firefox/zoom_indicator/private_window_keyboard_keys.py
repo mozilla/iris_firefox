@@ -7,13 +7,12 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='This is a test case that checks the zoom indicator in a private window when applying ' \
-                    'keyboard keys.',
-        locale=['en-US'],
-        test_case_id='7462',
-        test_suite_id='242',
+        description="This is a test case that checks the zoom indicator in a private window when applying "
+        "keyboard keys.",
+        locale=["en-US"],
+        test_case_id="7462",
+        test_suite_id="242",
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
@@ -26,39 +25,65 @@ class Test(FirefoxTest):
         navigate(url)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Page successfully loaded, firefox logo found.'
+        assert expected, "Page successfully loaded, firefox logo found."
 
         region = create_region_for_url_bar()
 
-        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
-        assert expected, 'Zoom indicator not displayed by default in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert expected, "Zoom indicator not displayed by default in the url bar."
 
         zoom_in()
 
         new_region = create_region_for_url_bar()
 
-        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
-        assert expected, 'Zoom level successfully increased, zoom indicator found in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_110_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_region,
+        )
+        assert (
+            expected
+        ), "Zoom level successfully increased, zoom indicator found in the url bar."
 
         restore_zoom()
 
-        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
-        assert expected, 'Zoom indicator not displayed by default in the url bar.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert expected, "Zoom indicator not displayed by default in the url bar."
 
         new_reg = create_region_for_hamburger_menu()
 
-        expected = exists('100%', FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
-        assert expected, 'By default zoom indicator is 100% in hamburger menu.'
+        expected = exists("100%", FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
+        assert expected, "By default zoom indicator is 100% in hamburger menu."
 
         zoom_out()
 
-        expected = exists(urlbar_zoom_button_90_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
-        assert expected, 'Zoom level successfully decreased, zoom indicator found in the url bar.'
+        expected = exists(
+            urlbar_zoom_button_90_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_region,
+        )
+        assert (
+            expected
+        ), "Zoom level successfully decreased, zoom indicator found in the url bar."
 
         restore_zoom()
 
-        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
-        assert expected, 'Zoom indicator not displayed in the url bar after zoom level reset.'
+        expected = exists(
+            url_bar_default_zoom_level_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=region,
+        )
+        assert (
+            expected
+        ), "Zoom indicator not displayed in the url bar after zoom level reset."
 
-        expected = exists('100%', FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
-        assert expected, 'By default zoom indicator is 100% in hamburger menu.'
+        expected = exists("100%", FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
+        assert expected, "By default zoom indicator is 100% in hamburger menu."

@@ -3,14 +3,14 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-from src.core.api.finder.pattern import Pattern
+from moziris.api.finder.pattern import Pattern
 
 
 class AboutConfig(object):
-    ACCEPT_RISK = Pattern('accept_risk.png')
-    DEFAULT_STATUS_PATTERN = Pattern('default_status.png')
-    MODIFIED_STATUS_PATTERN = Pattern('modified_status.png')
-    ENTER_INTEGER_VALUE = Pattern('enter_integer_value.png')
+    ACCEPT_RISK = Pattern("accept_risk.png")
+    DEFAULT_STATUS_PATTERN = Pattern("default_status.png")
+    MODIFIED_STATUS_PATTERN = Pattern("modified_status.png")
+    ENTER_INTEGER_VALUE = Pattern("enter_integer_value.png")
 
     class PreferenceName(object):
-        INTL_UIDIRECTION = Pattern('intl_uidirection.png')
+        INTL_UIDIRECTION = Pattern("intl_uidirection.png")

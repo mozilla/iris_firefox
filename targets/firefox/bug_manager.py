@@ -8,24 +8,29 @@ import logging
 import bugzilla
 from github import Github
 
-from src.configuration.config_parser import get_config_property, validate_section
-from src.core.api.os_helpers import OSHelper
+from moziris.configuration.config_parser import get_config_property, validate_section
+from moziris.api.os_helpers import OSHelper
 from targets.firefox.errors import BugManagerError
 
 logger = logging.getLogger(__name__)
 
-bugzilla_os = {'win': 'Windows 10', 'win7': 'Windows 7', 'linux': 'Linux', 'osx': 'macOS'}
+bugzilla_os = {
+    "win": "Windows 10",
+    "win7": "Windows 7",
+    "linux": "Linux",
+    "osx": "macOS",
+}
 
 
 def get_github_issue(bug_id):
     """Get Github issues details."""
-    if len(validate_section('GitHub')) > 0:
+    if len(validate_section("GitHub")) > 0:
         return None
 
-    github_api_key = Github(get_config_property('GitHub', 'github_key'))
+    github_api_key = Github(get_config_property("GitHub", "github_key"))
 
     try:
-        repo = [x for x in github_api_key.get_user().get_repos() if x.name == 'iris2']
+        repo = [x for x in github_api_key.get_user().get_repos() if x.name == "iris2"]
         return repo[0].get_issue(bug_id)
     except Exception:
         return None
@@ -33,11 +38,11 @@ def get_github_issue(bug_id):
 
 def get_bugzilla_bug(bug_id):
     """Get Bugzilla bug details."""
-    if len(validate_section('Bugzilla')) > 0:
+    if len(validate_section("Bugzilla")) > 0:
         return None
 
-    bugzilla_api_key = get_config_property('Bugzilla', 'api_key')
-    base_url = get_config_property('Bugzilla', 'bugzilla_url')
+    bugzilla_api_key = get_config_property("Bugzilla", "api_key")
+    base_url = get_config_property("Bugzilla", "bugzilla_url")
 
     try:
         b = bugzilla.Bugzilla(url=base_url, api_key=bugzilla_api_key)
@@ -49,11 +54,11 @@ def get_bugzilla_bug(bug_id):
 def is_blocked(bug_id):
     """Checks if a Github issue/Bugzilla bug is blocked or not."""
     try:
-        if 'issue_' in bug_id:
+        if "issue_" in bug_id:
             bug = get_github_issue(bug_id)
             if bug is None:
                 return True
-            if bug.state == 'closed':
+            if bug.state == "closed":
                 return False
             else:
                 if OSHelper.get_os() in bug.title:
@@ -63,10 +68,12 @@ def is_blocked(bug_id):
             bug = get_bugzilla_bug(bug_id)
             if bug is None:
                 return True
-            if bug.status in ['CLOSED', 'RESOLVED']:
+            if bug.status in ["CLOSED", "RESOLVED"]:
                 return False
             else:
-                if bugzilla_os[OSHelper.get_os().value] == bug.op_sys or bug.platform in ['All', 'Unspecified']:
+                if bugzilla_os[
+                    OSHelper.get_os().value
+                ] == bug.op_sys or bug.platform in ["All", "Unspecified"]:
                     return True
                 return False
     except BugManagerError as e:
