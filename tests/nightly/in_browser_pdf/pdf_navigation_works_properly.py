@@ -20,12 +20,14 @@ class Test(FirefoxTest):
         )
         rotate_counterclockwise_button_pattern = Pattern(
             "rotate_counterclockwise_button.png"
-        )
+        ).similar(0.6)
         doc_properties_close_button_pattern = Pattern(
             "document_properties_close_button.png"
         )
         document_properties_filename_pattern = Pattern("document_properties_info.png")
-        document_properties_button_pattern = Pattern("document_properties_button.png")
+        document_properties_button_pattern = Pattern(
+            "document_properties_button.png"
+        ).similar(0.6)
         introduction_chapter_pattern = Pattern("introduction_chapter_headline.png")
         last_page_text_contents_pattern = Pattern("last_page_text_contents.png")
         go_to_first_page_button_pattern = Pattern("go_to_first_page_button.png")
@@ -70,14 +72,18 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.DOWN)
 
-        arrow_right_navigation_works = exists(history_chapter_pattern)
+        arrow_right_navigation_works = exists(
+            history_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             arrow_right_navigation_works
         ), "Navigation via 'Arrow right' key works properly"
 
         type(Key.LEFT)
 
-        arrow_left_navigation_works = exists(introduction_chapter_pattern)
+        arrow_left_navigation_works = exists(
+            introduction_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             arrow_left_navigation_works
         ), "Navigation via 'Arrow left' key works properly"
@@ -96,15 +102,21 @@ class Test(FirefoxTest):
 
         type(Key.HOME)
 
-        home_button_navigation_works = exists(pdf_file_page_contents_pattern)
+        home_button_navigation_works = exists(
+            pdf_file_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert home_button_navigation_works, "Navigation via 'Home' key works properly"
 
         type(Key.END)
 
-        end_button_navigation_works = exists(pdf_file_last_page_contents_pattern)
+        end_button_navigation_works = exists(
+            pdf_file_last_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert end_button_navigation_works, "Navigation via 'End' key works properly"
 
-        previous_page_button_available = exists(previous_page_button_pattern)
+        previous_page_button_available = exists(
+            previous_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert previous_page_button_available, "'Previous page' button available"
 
         click(previous_page_button_pattern)
@@ -113,12 +125,16 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.DOWN)
 
-        navigation_via_previous_page_button_works = exists(history_chapter_pattern)
+        navigation_via_previous_page_button_works = exists(
+            history_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             navigation_via_previous_page_button_works
         ), "By clicking the 'Previous page' button, the current view moves to the previous page"
 
-        next_page_button_available = exists(next_page_button_pattern)
+        next_page_button_available = exists(
+            next_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert next_page_button_available, "'Next page' button available"
 
         click(next_page_button_pattern)
@@ -133,14 +149,18 @@ class Test(FirefoxTest):
             navigation_via_next_page_button_works
         ), "By clicking the 'Previous page' button, the current view moves to the previous page"
 
-        tools_button_available = exists(tools_button_pattern)
+        tools_button_available = exists(
+            tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
-        go_to_first_page_button_available = exists(go_to_first_page_button_pattern)
+        go_to_first_page_button_available = exists(
+            go_to_first_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             go_to_first_page_button_available
         ), "'Go to first page' button available in 'Tools' menu"
@@ -148,20 +168,24 @@ class Test(FirefoxTest):
         click(go_to_first_page_button_pattern)
 
         navigation_via_go_to_first_page_button_works = exists(
-            pdf_file_page_contents_pattern
+            pdf_file_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             navigation_via_go_to_first_page_button_works
         ), "Navigation via 'Go to first page' button from 'Tools' menu works properly"
 
-        tools_button_available = exists(tools_button_pattern)
+        tools_button_available = exists(
+            tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
-        go_to_last_page_button_available = exists(go_to_last_page_button_pattern)
+        go_to_last_page_button_available = exists(
+            go_to_last_page_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             go_to_last_page_button_available
         ), "'Go to last page' button available in 'Tools' menu"
@@ -169,33 +193,39 @@ class Test(FirefoxTest):
         click(go_to_last_page_button_pattern)
 
         navigation_via_go_to_last_page_button_works = exists(
-            pdf_file_last_page_contents_pattern
+            pdf_file_last_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             navigation_via_go_to_last_page_button_works
         ), "Navigation via 'Go to last page' button from 'Tools' menu works properly"
 
-        tools_button_available = exists(tools_button_pattern)
+        tools_button_available = exists(
+            tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
-        rotate_clockwise_button_available = exists(rotate_clockwise_button_pattern)
+        rotate_clockwise_button_available = exists(
+            rotate_clockwise_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             rotate_clockwise_button_available
         ), "'Rotate clockwise' button available in 'Tools' menu"
 
         click(rotate_clockwise_button_pattern)
 
-        page_contents_rotated = exists(pdf_file_last_page_contents_rotated_pattern)
+        page_contents_rotated = exists(
+            pdf_file_last_page_contents_rotated_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             page_contents_rotated
         ), "Page contents rotated via 'Rotate clockwise' button"
 
         rotate_counterclockwise_button_available = exists(
-            rotate_counterclockwise_button_pattern
+            rotate_counterclockwise_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             rotate_counterclockwise_button_available
@@ -203,21 +233,27 @@ class Test(FirefoxTest):
 
         click(rotate_counterclockwise_button_pattern)
 
-        page_rotated_back = exists(pdf_file_last_page_contents_pattern)
+        page_rotated_back = exists(
+            pdf_file_last_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             page_rotated_back
         ), "Page contents rotated via 'Rotate counterclockwise' button"
 
         type(Key.ESC)
 
-        tools_button_available = exists(tools_button_pattern)
+        tools_button_available = exists(
+            tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
-        hand_tool_available = exists(hand_tool_button_pattern)
+        hand_tool_available = exists(
+            hand_tool_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert hand_tool_available, "'Hand tool' button available in 'Tools' menu"
 
         click(hand_tool_button_pattern)
@@ -230,7 +266,7 @@ class Test(FirefoxTest):
 
         try:
             content_scrolled_via_hand_tool = wait_vanish(
-                pdf_file_last_page_contents_pattern
+                pdf_file_last_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
         except FindError:
             raise FindError("Page contents didn't scroll using 'Hand tool'")
@@ -239,29 +275,39 @@ class Test(FirefoxTest):
             content_scrolled_via_hand_tool
         ), "Scrolling via 'Hand tool' works properly"
 
-        tools_button_available = exists(tools_button_pattern)
+        tools_button_available = exists(
+            tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
-        text_selection_tool_available = exists(text_selection_tool_button)
+        text_selection_tool_available = exists(
+            text_selection_tool_button, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             text_selection_tool_available
         ), "'Text selection tool' button available in 'Tools' menu"
 
         click(text_selection_tool_button)
 
-        text_to_select_present_on_page = exists(last_page_text_contents_pattern)
+        text_to_select_present_on_page = exists(
+            last_page_text_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert text_to_select_present_on_page, "Text to select is available on the page"
 
         double_click(last_page_text_contents_pattern)
 
-        text_selection_tool_works = exists(text_selected_pattern)
+        text_selection_tool_works = exists(
+            text_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert text_selection_tool_works, "'Text selection tool' works"
 
-        tools_button_available = exists(tools_button_pattern)
+        tools_button_available = exists(
+            tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
@@ -269,7 +315,7 @@ class Test(FirefoxTest):
         click(tools_button_pattern)
 
         document_properties_button_available = exists(
-            document_properties_button_pattern
+            document_properties_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             document_properties_button_available
@@ -277,12 +323,16 @@ class Test(FirefoxTest):
 
         click(document_properties_button_pattern)
 
-        document_properties_opened = exists(document_properties_filename_pattern)
+        document_properties_opened = exists(
+            document_properties_filename_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             document_properties_opened
         ), "'Document properties' popup successfully opened"
 
-        close_button_available = exists(doc_properties_close_button_pattern)
+        close_button_available = exists(
+            doc_properties_close_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             close_button_available
         ), "'Close' button available in 'Document properties' popup"
@@ -292,12 +342,16 @@ class Test(FirefoxTest):
             FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )  # To prevent matching popup being opened while it closes
 
-        document_properties_opened = exists(document_properties_filename_pattern)
+        document_properties_opened = exists(
+            document_properties_filename_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             document_properties_opened is not True
         ), "'Document properties' popup successfully closed"
 
-        jump_to_page_field_available = exists(jump_to_page_field_pattern)
+        jump_to_page_field_available = exists(
+            jump_to_page_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert jump_to_page_field_available, "'Jump to page' field available"
 
         click(jump_to_page_field_pattern)
@@ -308,7 +362,9 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        first_page_opened = exists(pdf_file_page_contents_pattern)
+        first_page_opened = exists(
+            pdf_file_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert (
             first_page_opened
         ), "The requested page number is shown using 'Jump to page' field"
