@@ -25,7 +25,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         download_files_list = [DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.VERY_LARGE_FILE_1GB]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:

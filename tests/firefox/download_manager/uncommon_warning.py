@@ -134,4 +134,6 @@ class Test(FirefoxTest):
         assert uncommon_file is False, 'Uncommon file is deleted from the Panel'
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

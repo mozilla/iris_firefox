@@ -67,4 +67,6 @@ class Test(FirefoxTest):
         assert expected is True, '\'Show All Downloads \' is clearly displayed in white color.'
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

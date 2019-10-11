@@ -21,7 +21,7 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:

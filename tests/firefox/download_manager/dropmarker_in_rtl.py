@@ -70,7 +70,7 @@ class Test(FirefoxTest):
         expected = region_left.exists(NavBar.LIBRARY_MENU)
         assert expected is True, '\'Library Menu dialog\' button is aligned RTL.'
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
         download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
                                DownloadFiles.EXTRA_SMALL_FILE_5MB]
 
@@ -147,4 +147,6 @@ class Test(FirefoxTest):
         assert expected is True, '5 MB file Containing folder button is aligned RTL.'
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

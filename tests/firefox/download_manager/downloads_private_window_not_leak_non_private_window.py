@@ -40,7 +40,7 @@ class Test(FirefoxTest):
 
         # Perform 5 downloads of your choice and go to the Downloads category from the Library.
         new_tab()
-        navigate('https://irisfirefoxtestfiles.netlify.com')
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
@@ -65,15 +65,7 @@ class Test(FirefoxTest):
                                      % str(pattern.get_filename()).replace('_library_downloads.png', '')
 
         click_window_control('close')
-
-        downloads_retry(private_window=True)
-
         close_window()
-
-        downloads_popup = exists(DownloadFiles.CANCEL_ALL_DOWNLOADS_POP_UP, FirefoxSettings.FIREFOX_TIMEOUT)
-
-        if downloads_popup:
-            type(Key.ENTER)
 
         # In the non-private window, open the Downloads Panel and the Downloads category from the Library.
         open_library()
@@ -102,6 +94,4 @@ class Test(FirefoxTest):
         assert expected is True, 'There are no downloads displayed in the Downloads Panel.'
 
     def teardown(self):
-        cancel_and_clear_downloads()
-
         downloads_cleanup()

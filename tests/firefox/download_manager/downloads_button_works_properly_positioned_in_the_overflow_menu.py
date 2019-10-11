@@ -52,7 +52,7 @@ class Test(FirefoxTest):
 
         click(MoreTools.DOWNLOADS.target_offset(-50, 0))
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
@@ -82,4 +82,6 @@ class Test(FirefoxTest):
 
 
 def teardown(self):
+    cancel_and_clear_downloads()
+
     downloads_cleanup()

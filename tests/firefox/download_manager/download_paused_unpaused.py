@@ -22,7 +22,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         download_file(file_to_download, DownloadFiles.OK)
 

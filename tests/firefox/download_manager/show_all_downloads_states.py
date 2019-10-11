@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         download_files_list = [DownloadFiles.EXTRA_LARGE_FILE_512MB,
                                DownloadFiles.MEDIUM_FILE_100MB, DownloadFiles.VERY_LARGE_FILE_1GB]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:
@@ -102,4 +102,6 @@ class Test(FirefoxTest):
         click_window_control('close')
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

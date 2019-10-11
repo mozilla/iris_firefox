@@ -154,4 +154,6 @@ class Test(FirefoxTest):
         assert malicious_file is False, 'Malicious file is deleted from the Panel'
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

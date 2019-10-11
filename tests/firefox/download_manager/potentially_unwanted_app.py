@@ -133,4 +133,6 @@ class Test(FirefoxTest):
         assert potentially_unwanted_file is False, 'Potentially unwanted file is deleted from the Panel'
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

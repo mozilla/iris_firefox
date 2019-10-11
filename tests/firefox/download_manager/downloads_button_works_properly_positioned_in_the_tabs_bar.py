@@ -38,8 +38,6 @@ class Test(FirefoxTest):
 
         navigate('https://irisfirefoxtestfiles.netlify.com/')
 
-        select_throttling(NetworkOption.GOOD_2G)
-
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
 
@@ -68,4 +66,6 @@ class Test(FirefoxTest):
         click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

@@ -21,7 +21,7 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
-        navigate('https://irisfirefoxtestfiles.netlify.com')
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:
@@ -79,7 +79,7 @@ class Test(FirefoxTest):
 
         time.sleep(10)
 
-        navigate('https://irisfirefoxtestfiles.netlify.com')
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         # Wait for the page to be loaded.
         try:

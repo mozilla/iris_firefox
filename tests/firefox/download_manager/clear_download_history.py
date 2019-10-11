@@ -3,9 +3,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from moziris.api.mouse import mouse
 from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file, \
-    cancel_in_progress_downloads_from_the_library, downloads_retry
-
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file
 from targets.firefox.fx_testcase import *
 
 
@@ -23,11 +21,10 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
-        time.sleep(15)
         download_files_list = [DownloadFiles.SMALL_FILE_10MB, DownloadFiles.EXTRA_SMALL_FILE_5MB]
-        downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
+        downloads_library_list = [DownloadFiles.LIBRARY_DOWNLOADS_5MB, DownloadFiles.LIBRARY_DOWNLOADS_10MB]
 
-        navigate('https://irisfirefoxtestfiles.netlify.com')
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
@@ -38,25 +35,28 @@ class Test(FirefoxTest):
                 assert expected is True, 'Download button found in the page.'
 
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
-            time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 2)
-
-        downloads_retry()
 
         # Open the Downloads Panel and select Show All Downloads.
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
         assert expected is True, '\'Downloads\' button found.'
-        Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        click(NavBar.DOWNLOADS_BUTTON_BLUE, 5)
+        mouse.move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
+        click(NavBar.DOWNLOADS_BUTTON_BLUE)
 
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
         assert expected is True, '\'Show all downloads\' button found.'
         click(DownloadManager.SHOW_ALL_DOWNLOADS)
 
         expected = exists(Library.DOWNLOADS, 10)
-        assert expected is True, 'The Downloads section from Library is displayed.'
+        assert expected is True, 'The Downloads button is displayed in the Library.'
+        click(Library.DOWNLOADS)
 
-        right_click(DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED)
+        # Check that all the downloads are successful and displayed in the Downloads category.
+        for pattern in downloads_library_list:
+            expected = exists(pattern, 10)
+            assert expected is True, ('%s file found in the Library, Downloads section.'
+                                      % str(pattern.get_filename()).replace('_library_downloads.png', ''))
 
+        right_click(DownloadFiles.LIBRARY_DOWNLOADS_5MB)
         type(text='d')
 
         # Check that all the downloads are removed from the Library.

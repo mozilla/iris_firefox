@@ -59,4 +59,6 @@ class Test(FirefoxTest):
         click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, region=Screen.RIGHT_THIRD)
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

@@ -2,8 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file, \
-    downloads_retry
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file
 from targets.firefox.fx_testcase import *
 
 
@@ -25,7 +24,7 @@ class Test(FirefoxTest):
         download_files_list = [DownloadFiles.SMALL_FILE_20MB, DownloadFiles.SMALL_FILE_10MB,
                                DownloadFiles.EXTRA_SMALL_FILE_5MB]
 
-        navigate('https://irisfirefoxtestfiles.netlify.com')
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
@@ -36,8 +35,6 @@ class Test(FirefoxTest):
                 assert expected is True, 'Download button found in the page.'
 
             click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON.target_offset(-50, 0))
-
-        downloads_retry()
 
         # Open the Downloads Panel.
         expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 30)

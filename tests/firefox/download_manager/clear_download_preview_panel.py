@@ -48,4 +48,6 @@ class Test(FirefoxTest):
         assert expected is True, 'All downloads were cleared.'
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

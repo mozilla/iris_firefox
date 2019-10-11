@@ -3,7 +3,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.helpers.download_manager_utils import *
-from targets.firefox.firefox_ui.helpers.download_manager_utils import select_throttling, NetworkOption
 from targets.firefox.fx_testcase import *
 
 
@@ -21,39 +20,36 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
-        navigate('https://irisfirefoxtestfiles.netlify.com')
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
-        select_throttling(NetworkOption.GOOD_2G)
+        download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
 
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 4)
-
-        download_file(DownloadFiles.EXTRA_LARGE_FILE_512MB, DownloadFiles.OK)
-
-        expected = exists(NavBar.DOWNLOADS_BUTTON, 10, region=Screen.RIGHT_THIRD)
+        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, 'Downloads button found.'
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10, region=Screen.RIGHT_THIRD)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert expected is True, 'The \'X\' button is properly displayed.'
 
         # Hover the 'X' button.
-        hover(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, region=Screen.RIGHT_THIRD)
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, 10, region=Screen.RIGHT_THIRD)
+        hover(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, 10)
         assert expected is True, 'The \'X\' button is highlighted properly.'
 
         # Click the 'X' button.
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, region=Screen.RIGHT_THIRD)
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, 10, region=Screen.RIGHT_THIRD)
+        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY_HIGHLIGHTED, 10)
         assert expected is True, 'The Retry button is highlighted properly.'
 
-        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_512MB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
         assert expected is True, 'The downloaded file name is properly displayed.'
 
         # Hover the file name.
-        hover(DownloadFiles.DOWNLOAD_FILE_NAME_512MB)
-
+        hover(DownloadFiles.DOWNLOAD_FILE_NAME_1GB)
         expected = exists(DownloadFiles.DOWNLOAD_CANCELED, 10)
         assert expected is True, 'The status and the source page are properly displayed when hovering the downloaded'
         ' file name.'
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()

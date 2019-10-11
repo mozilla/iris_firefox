@@ -19,7 +19,7 @@ class Test(FirefoxTest):
                      'browser.warnOnQuit': False}
     )
     def run(self, firefox):
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com/')
 
         download_file(DownloadFiles.EXTRA_SMALL_FILE_5MB, DownloadFiles.OK)
 
@@ -58,4 +58,6 @@ class Test(FirefoxTest):
         click(LocationBar.STAR_BUTTON_UNSTARRED.target_offset(+30, 0))
 
     def teardown(self):
+        cancel_and_clear_downloads()
+
         downloads_cleanup()
