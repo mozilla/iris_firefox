@@ -43,7 +43,9 @@ class Test(FirefoxTest):
         assert (
             zoom_in_button_available
         ), "'Zoom in (+)' button available in In-browser PDF viewer"
-        zoom_in_region = find(zoom_in_button_pattern)  # to avoid clicks on 'new tab' plus sign
+        zoom_in_region = find(
+            zoom_in_button_pattern
+        )  # to avoid clicks on 'new tab' plus sign
 
         [click(zoom_in_region) for _ in range(3)]
 
