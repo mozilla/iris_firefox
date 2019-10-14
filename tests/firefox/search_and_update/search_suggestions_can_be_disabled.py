@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         )
         search_suggestions_not_displayed_search_bar_pattern = Pattern(
             "search_suggestions_are_disabled_search_bar.png"
-        )
+        ).similar(0.6)
         search_suggestions_not_displayed_content_search_pattern = Pattern(
             "search_suggestions_are_disabled_content_search.png"
         )
