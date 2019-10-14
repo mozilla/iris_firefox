@@ -34,6 +34,7 @@ class Test(FirefoxTest):
         cross_mark_on_footer_message = Pattern('cross_mark_on_footer_message.png')
         scroll_down_icon = Pattern('scroll_down_icon.png')
         top_sites_section_as_a_reference = Pattern('top_sites_section_as_a_reference.png')
+        clear_console_data = Pattern('clear_console_data.png')
 
         navigate('about:preferences#home')
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
@@ -68,114 +69,93 @@ class Test(FirefoxTest):
         assert top_sites_most_visit_default_value_exists, 'Default number of rows for "Top Sites" is not selected as 1'
 
         # Top Sites section is displayed underneath the search bar and there are 8 cells displayed in a single row
-        # The sites Youtube, Facebook, Amazon, Reddit, Wikipedia and Twitter are listed by default.
+        # The sites Youtube, Facebook, Amazon, Reddit, Wiki and Twitter are listed by default.
         new_tab()
         top_sites_section_underneath_search_bar_exists = exists(top_sites_section_underneath_search_bar,
                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_underneath_search_bar_exists, 'In new tab, 8 cells are not displayed in a single row'
 
         # if the browser is resized there are only 6 cells and in one row
-        open_browser_console()
-        browser_console_opened = exists(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert browser_console_opened, 'Browser console could not open'
-
-        click(browser_console_opened_pattern)
-        paste('window.resizeTo(1000, 700)')
-        type(Key.ENTER)
-
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
+        self.resize_browser(browser_console_opened_pattern,clear_console_data)
         top_sites_section_resized_browser_exists = exists(top_sites_section_resized_browser,
                                                           FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_exists, 'After resizing, 6 cells are not displayed in a single row'
 
         # change the value from the doorhanger from 1 row to 2 rows.
-        maximize_window()
-        navigate('about:preferences#home')
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-        click(home_section_top_sites_most_visit_default_value, None, region=test_search_region)
-        type(Key.NUM2)
-        type(Key.ENTER)
+        self.top_site_dropdown(home_section_top_sites_most_visit_default_value, test_search_region, Key.NUM2)
 
         # The Top Sites section is displayed underneath the search bar and there are 16 cells displayed in 2 rows
-        # The sites Youtube, Facebook, Amazon, Reddit, Wikipedia and Twitter are listed by default.
+        # The sites Youtube, Facebook, Amazon, Reddit, Wiki and Twitter are listed by default.
         new_tab()
         top_sites_section_2_rows_exists = exists(top_sites_section_2_rows, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_2_rows_exists, 'In new tab, 16 cells are not displayed in a two rows'
 
         # if the browser is resized there are 12 cells displayed in 2 rows
-        open_browser_console()
-        browser_console_opened = exists(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert browser_console_opened, 'Browser console could not open'
-
-        click(browser_console_opened_pattern)
-
-        paste('window.resizeTo(1000, 700)')
-        type(Key.ENTER)
-
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
+        self.resize_browser(browser_console_opened_pattern,clear_console_data)
         top_sites_section_resized_browser_2_rows_exists = exists(top_sites_section_resized_browser_2_rows,
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_2_rows_exists, 'After resizing, 12 cells are not displayed in two rows'
 
         # change the value from the doorhanger from 2 row to 3 rows.
-        maximize_window()
-        navigate('about:preferences#home')
-        click(home_section_top_sites_most_visit_2_row)
-        type(Key.NUM3)
-        type(Key.ENTER)
+        self.top_site_dropdown(home_section_top_sites_most_visit_2_row, test_search_region, Key.NUM3)
 
         # The Top Sites section is displayed underneath the search bar and there are 24 cells displayed in 3 rows
-        # The sites Youtube, Facebook, Amazon, Reddit, Wikipedia and Twitter are listed by default.
+        # The sites Youtube, Facebook, Amazon, Reddit, Wiki and Twitter are listed by default.
         new_tab()
         top_sites_section_3_rows_exists = exists(top_sites_section_3_rows, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_3_rows_exists, 'In new tab, 24 cells are not displayed in a three rows'
 
         # if the browser is resized there are 18 cells displayed in 3 rows
-        open_browser_console()
-        browser_console_opened = exists(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert browser_console_opened, 'Browser console could not open'
-        click(browser_console_opened_pattern)
-        paste('window.resizeTo(1000, 700)')
-        type(Key.ENTER)
-
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
+        self.resize_browser(browser_console_opened_pattern,clear_console_data)
         top_sites_section_resized_browser_3_rows_exists = exists(top_sites_section_resized_browser_3_rows,
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_3_rows_exists, 'After resizing, 18 cells are not displayed in three ' \
-                                                                'rows '
-
+                                                                'rows'
         # change the value from the doorhanger from 3 row to 4 rows.
-        maximize_window()
-        navigate('about:preferences#home')
-        click(home_section_top_sites_most_visit_3_row)
-        type(Key.NUM4)
-        type(Key.ENTER)
+        self.top_site_dropdown(home_section_top_sites_most_visit_3_row, test_search_region, Key.NUM4)
 
         # The Top Sites section is displayed underneath the search bar and there are 32 cells displayed in 4 rows
-        # The sites Youtube, Facebook, Amazon, Reddit, Wikipedia and Twitter are listed by default.
+        # The sites Youtube, Facebook, Amazon, Reddit, Wiki and Twitter are listed by default.
         new_tab()
         hover(optional_footer_message_from_firefox)
         click(cross_mark_on_footer_message)
+
         top_sites_section_4_rows_exists = exists(top_sites_section_4_rows, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_4_rows_exists, 'In new tab, 32 cells are not displayed in a four rows'
 
         # if the browser is resized there are 18 cells displayed in 4 rows
-        open_browser_console()
-        browser_console_opened = exists(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert browser_console_opened, 'Browser console could not open'
-
-        click(browser_console_opened_pattern)
-
-        paste('window.resizeTo(1000, 700)')
-        type(Key.ENTER)
-
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
+        self.resize_browser(browser_console_opened_pattern,clear_console_data)
         click(scroll_down_icon)
         top_sites_section_resized_browser_4_rows_exists = exists(top_sites_section_resized_browser_4_rows,
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_4_rows_exists, 'After resizing, 24 cells are not displayed in four ' \
                                                                 'rows '
+
+    def top_site_dropdown(self, dropdown_image: Pattern, test_region: Pattern, key_val):
+        """Locate 'Top Sites' drop-down and change dropdown .
+        :param dropdown_image: image Pattern.
+        :param test_region: image Pattern, locator for sub-region of top site drop-down .
+        :param key_val: Numeric key value from class Key(Enum).
+        :return: None.
+        """
+        maximize_window()
+        navigate('about:preferences#home')
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        click(dropdown_image, None, region=test_region)
+        type(key_val)
+        type(Key.ENTER)
+
+    def resize_browser(self, browser_console_opened_pattern , clear_console_data):
+        """resize browser - window.resizeTo(1000, 700).
+        :param browser_console_opened_pattern: image Pattern.
+        :param clear_console_data: image Pattern.
+        :return: None.
+        """
+        open_browser_console()
+        browser_console_opened = exists(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert browser_console_opened, 'Browser console could not open'
+        click(clear_console_data)
+        click(browser_console_opened_pattern)
+        paste('window.resizeTo(1000, 700)')
+        type(Key.ENTER)
+        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
