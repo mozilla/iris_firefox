@@ -7,17 +7,39 @@ from targets.firefox.firefox_ui.nav_bar import NavBar
 
 def open_clear_recent_history_window():
     return [
-        access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.HISTORY_BUTTON, 'click'),
-        access_and_check_pattern(LibraryMenu.HISTORY_BUTTON, '\"History menu\"',
-                                 History.HistoryMenu.CLEAR_RECENT_HISTORY, 'click'),
-        access_and_check_pattern(History.HistoryMenu.CLEAR_RECENT_HISTORY, '\"Clear recent History\"',
-                                 History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE, 'click')]
+        access_and_check_pattern(
+            NavBar.LIBRARY_MENU, '"Library menu"', LibraryMenu.HISTORY_BUTTON, "click"
+        ),
+        access_and_check_pattern(
+            LibraryMenu.HISTORY_BUTTON,
+            '"History menu"',
+            History.HistoryMenu.CLEAR_RECENT_HISTORY,
+            "click",
+        ),
+        access_and_check_pattern(
+            History.HistoryMenu.CLEAR_RECENT_HISTORY,
+            '"Clear recent History"',
+            History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE,
+            "click",
+        ),
+    ]
 
 
 def open_history_library_window():
     return [
-        access_and_check_pattern(NavBar.LIBRARY_MENU, '\"Library menu\"', LibraryMenu.HISTORY_BUTTON, 'click'),
-        access_and_check_pattern(LibraryMenu.HISTORY_BUTTON, '\"History menu\"',
-                                 History.HistoryMenu.SHOW_ALL_HISTORY, 'click'),
-        access_and_check_pattern(History.HistoryMenu.SHOW_ALL_HISTORY, '\"History menu\"',
-                                 Library.TITLE, 'click')]
+        access_and_check_pattern(
+            NavBar.LIBRARY_MENU, '"Library menu"', LibraryMenu.HISTORY_BUTTON, "click"
+        ),
+        access_and_check_pattern(
+            LibraryMenu.HISTORY_BUTTON,
+            '"History menu"',
+            History.HistoryMenu.SHOW_ALL_HISTORY,
+            "click",
+        ),
+        access_and_check_pattern(
+            History.HistoryMenu.SHOW_ALL_HISTORY,
+            '"History menu"',
+            Library.TITLE,
+            "click",
+        ),
+    ]
