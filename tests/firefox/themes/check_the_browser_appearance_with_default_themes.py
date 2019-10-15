@@ -7,125 +7,142 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Check the appearance of browser with Default Themes applied in Menu Bar.',
-        locale=['en-US'],
-        test_case_id='15267',
-        test_suite_id='494'
+        description="Check the appearance of browser with Default Themes applied in Menu Bar.",
+        locale=["en-US"],
+        test_case_id="15267",
+        test_suite_id="494",
     )
     def run(self, firefox):
         open_addons()
 
         expected = exists(AboutAddons.THEMES, 10)
-        assert expected, 'Add-ons page successfully loaded.'
+        assert expected, "Add-ons page successfully loaded."
 
         click(AboutAddons.THEMES)
 
-        expected = exists(AboutAddons.Themes.DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Dark theme option found in the page.'
+        expected = exists(
+            AboutAddons.Themes.DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "Dark theme option found in the page."
 
-        expected = exists(AboutAddons.Themes.LIGHT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Light theme option found in the page.'
+        expected = exists(
+            AboutAddons.Themes.LIGHT_THEME, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "Light theme option found in the page."
 
-        expected = exists(AboutAddons.Themes.DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Default theme option found in the page.'
+        expected = exists(
+            AboutAddons.Themes.DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "Default theme option found in the page."
 
         # Using the DEFAULT theme check that options from menu bar work correctly.
         click(AboutAddons.Themes.DEFAULT_THEME)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
-        assert action_can_be_performed is False, 'Theme can be enabled/disabled.'
+        assert action_can_be_performed is False, "Theme can be enabled/disabled."
 
         previous_tab()
 
-        expected = exists(AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Tab information is correctly displayed for DEFAULT theme.'
+        expected = exists(
+            AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+        )
+        assert expected, "Tab information is correctly displayed for DEFAULT theme."
 
         open_library()
 
         expected = exists(Library.BOOKMARKS_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Expand bookmarks menu button displayed properly.'
+        assert expected, "Expand bookmarks menu button displayed properly."
 
-        click_window_control('close')
+        click_window_control("close")
 
         # Enable the LIGHT theme and check that options from menu bar work correctly using the selected theme.
         next_tab()
         expected = exists(AboutAddons.THEMES, 10)
-        assert expected, 'Add-ons page is in focus.'
+        assert expected, "Add-ons page is in focus."
 
         navigate_back()
 
         expected = exists(AboutAddons.Themes.LIGHT_THEME, 10)
-        assert expected, 'Light theme option found in the page.'
+        assert expected, "Light theme option found in the page."
 
         click(AboutAddons.Themes.LIGHT_THEME)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
-        assert action_can_be_performed, 'Theme can be enabled.'
+        assert action_can_be_performed, "Theme can be enabled."
         click(AboutAddons.Themes.ACTION_BUTTON)
 
-        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'ENABLE button found in the page.'
+        expected = exists(
+            AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "ENABLE button found in the page."
 
         click(AboutAddons.Themes.ENABLE_BUTTON)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
-        assert action_can_be_performed, 'Theme can be disabled.'
+        assert action_can_be_performed, "Theme can be disabled."
         click(AboutAddons.Themes.ACTION_BUTTON)
 
-        expected = exists(AboutAddons.Themes.DISABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'DISABLE button found in the page.'
+        expected = exists(
+            AboutAddons.Themes.DISABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "DISABLE button found in the page."
 
         previous_tab()
 
-        expected = exists(AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'LIGHT theme successfully applied.'
+        expected = exists(
+            AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+        )
+        assert expected, "LIGHT theme successfully applied."
 
         open_library()
 
         expected = exists(Library.BOOKMARKS_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'Expand bookmarks menu button displayed properly.'
+        assert expected, "Expand bookmarks menu button displayed properly."
 
-        click_window_control('close')
+        click_window_control("close")
 
         # Enable the DARK theme and check that options from menu bar work correctly using the selected theme.
         next_tab()
         expected = exists(AboutAddons.THEMES, 10)
-        assert expected, 'Add-ons page is in focus.'
+        assert expected, "Add-ons page is in focus."
 
         navigate_back()
 
         expected = exists(AboutAddons.Themes.DARK_THEME, 10)
-        assert expected, 'Dark theme option found in the page.'
+        assert expected, "Dark theme option found in the page."
 
         click(AboutAddons.Themes.DARK_THEME)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
-        assert action_can_be_performed, 'Theme can be enabled.'
+        assert action_can_be_performed, "Theme can be enabled."
         click(AboutAddons.Themes.ACTION_BUTTON)
 
-        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert expected, 'ENABLE button found in the page.'
+        expected = exists(
+            AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert expected, "ENABLE button found in the page."
 
         click(AboutAddons.Themes.ENABLE_BUTTON)
 
         action_can_be_performed = exists(AboutAddons.Themes.ACTION_BUTTON)
-        assert action_can_be_performed, 'Theme can be disabled.'
+        assert action_can_be_performed, "Theme can be disabled."
         click(AboutAddons.Themes.ACTION_BUTTON)
 
         expected = exists(AboutAddons.Themes.DISABLE_BUTTON, 10)
-        assert expected, 'DISABLE button found in the page.'
+        assert expected, "DISABLE button found in the page."
 
         previous_tab()
 
         expected = exists(AboutAddons.Themes.IRIS_TAB_DARK_THEME, 10)
-        assert expected, 'DARK theme successfully applied.'
+        assert expected, "DARK theme successfully applied."
 
         open_library()
 
         expected = exists(Library.BOOKMARKS_MENU, 10)
-        assert expected, 'Expand bookmarks menu button displayed properly.'
+        assert expected, "Expand bookmarks menu button displayed properly."
 
-        click_window_control('close')
+        click_window_control("close")

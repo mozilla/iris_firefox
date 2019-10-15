@@ -29,7 +29,8 @@ class Test(FirefoxTest):
         password_form_pattern = Pattern('password_form.png').similar(0.6)
         save_login_button_pattern = Pattern('save_login_button.png')
         saved_logins_button_pattern = Pattern('saved_logins_button.png')
-        saved_logins_list_available_pattern = Pattern('saved_logins_list_available.png')
+        saved_logins_list_available_first_pattern = Pattern('saved_logins_list_available_first_login.png')
+        saved_logins_list_available_second_pattern = Pattern('saved_logins_list_available_second_login.png')
         master_password_required_popup_pattern = Pattern('master_password_required_popup.png')
         remove_master_password_popup_pattern = Pattern('remove_master_password_popup.png')
 
@@ -152,8 +153,12 @@ class Test(FirefoxTest):
         type('123')
         type(Key.ENTER)
 
-        saved_logins_list_available = exists(saved_logins_list_available_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert saved_logins_list_available, 'All saved logins are displayed.'
+        saved_logins_list_available_first = exists(saved_logins_list_available_first_pattern,
+                                                   FirefoxSettings.FIREFOX_TIMEOUT)
+        saved_logins_list_available_second = exists(saved_logins_list_available_second_pattern,
+                                                    FirefoxSettings.FIREFOX_TIMEOUT)
+        assert saved_logins_list_available_first and saved_logins_list_available_second, \
+            'All saved logins are displayed.'
 
         change_preference('security.enterprise_roots.enabled', 'false')
 
@@ -175,8 +180,12 @@ class Test(FirefoxTest):
         type('123')
         type(Key.ENTER)
 
-        saved_logins_list_available = exists(saved_logins_list_available_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert saved_logins_list_available, 'All saved logins are displayed.'
+        saved_logins_list_available_first = exists(saved_logins_list_available_first_pattern,
+                                                   FirefoxSettings.FIREFOX_TIMEOUT)
+        saved_logins_list_available_second = exists(saved_logins_list_available_second_pattern,
+                                                    FirefoxSettings.FIREFOX_TIMEOUT)
+        assert saved_logins_list_available_first and saved_logins_list_available_second, \
+            'All saved logins are displayed.'
 
         type(Key.ESC)
 

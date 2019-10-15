@@ -7,34 +7,39 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Change the bookmarks order by drag&drop in \'Bookmarks Sidebar\'',
-        locale=['en-US'],
-        test_case_id='168938',
-        test_suite_id='2525',
-        profile=Profiles.TEN_BOOKMARKS
+        description="Change the bookmarks order by drag&drop in 'Bookmarks Sidebar'",
+        locale=["en-US"],
+        test_case_id="168938",
+        test_suite_id="2525",
+        profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        reordered_sidebar_bookmarks_pattern = Pattern('sidebar_bookmarks_reordered.png')
-        pocket_bookmark_pattern = Pattern('pocket_sidebar_bookmark.png')
-        mozilla_bookmark_pattern = Pattern('moz_sidebar_bookmark.png')
-        other_bookmarks_pattern = Pattern('other_bookmarks_sidebar.png')
+        reordered_sidebar_bookmarks_pattern = Pattern("sidebar_bookmarks_reordered.png")
+        pocket_bookmark_pattern = Pattern("pocket_sidebar_bookmark.png")
+        mozilla_bookmark_pattern = Pattern("moz_sidebar_bookmark.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks_sidebar.png")
 
-        bookmarks_sidebar('open')
+        bookmarks_sidebar("open")
 
-        sidebar_opened = exists(other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert sidebar_opened is True, '\'Bookmarks Sidebar\' is correctly displayed.'
+        sidebar_opened = exists(
+            other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert sidebar_opened is True, "'Bookmarks Sidebar' is correctly displayed."
 
         click(other_bookmarks_pattern)
 
         pocket_bookmark_available = exists(pocket_bookmark_pattern)
-        assert pocket_bookmark_available is True, '\'Pocket\' bookmark is available in \'Other bookmarks\' ' \
-                                                  'folder in \'Bookmarks sidebar\''
+        assert pocket_bookmark_available is True, (
+            "'Pocket' bookmark is available in 'Other bookmarks' "
+            "folder in 'Bookmarks sidebar'"
+        )
 
         mozilla_bookmark_available = exists(mozilla_bookmark_pattern)
-        assert mozilla_bookmark_available is True, '\'Mozilla\' bookmark is available in \'Other bookmarks\' ' \
-                                                   'folder in \'Bookmarks sidebar\''
+        assert mozilla_bookmark_available is True, (
+            "'Mozilla' bookmark is available in 'Other bookmarks' "
+            "folder in 'Bookmarks sidebar'"
+        )
 
         mozilla_bookmark_location = find(mozilla_bookmark_pattern)
 
@@ -43,4 +48,6 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         bookmarks_not_reordered = exists(reordered_sidebar_bookmarks_pattern)
-        assert bookmarks_not_reordered is True, 'The bookmarks order is correctly modified.'
+        assert (
+            bookmarks_not_reordered is True
+        ), "The bookmarks order is correctly modified."
