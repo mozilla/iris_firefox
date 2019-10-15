@@ -19,7 +19,7 @@ class LocalWeb(object):
     """Local Firefox site."""
     FIREFOX_TEST_SITE = "http://%s:%s/firefox/" % (_ip_host, _port)
     FIREFOX_TEST_SITE_2 = "http://%s:%s/firefox/" % (_domain_host, _port)
-    FIREFOX_LOGO = Pattern("firefox_logo.png")
+    FIREFOX_LOGO = Pattern("firefox_logo.png").similar(0.6)
     FIREFOX_IMAGE = Pattern("firefox_full.png")
     FIREFOX_BOOKMARK = Pattern("firefox_bookmark.png")
     FIREFOX_BOOKMARK_SMALL = Pattern("firefox_bookmark_small.png")
