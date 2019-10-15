@@ -30,9 +30,8 @@ class Test(FirefoxTest):
         )
         google_search_results_pattern = Pattern("google_search_results.png")
 
-        region = Screen().new_region(
-            0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3
-        )
+        region = Screen.TOP_THIRD
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         expected = region.exists(
@@ -50,15 +49,13 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = region.exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Firefox page loaded successfully."
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        expected = region.exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        expected = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Focus page loaded successfully."
 
         firefox.restart(LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
@@ -99,7 +96,7 @@ class Test(FirefoxTest):
             expected
         ), "Popular search suggestions from the default search engine found between search suggestions."
 
-        expected = region.exists(
+        expected = exists(
             google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert expected, "The 'Google' one-off button found."
