@@ -33,10 +33,10 @@ class Test(FirefoxTest):
         try:
             assert wait_vanish(close_multiple_tabs_warning_pattern, 10) and exists(
                 home_button_pattern, 10
-            ), "Close multiple tabs warning was canceled successfully."
+            ), "Close multiple tabs warning was cancelled successfully."
         except FindError:
             raise FindError(
-                "Close multiple tabs warning was not canceled successfully."
+                "Close multiple tabs warning was not cancelled successfully."
             )
 
         close_window()

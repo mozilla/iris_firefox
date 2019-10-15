@@ -27,7 +27,7 @@ class Test(FirefoxTest):
             DownloadFiles.VERY_LARGE_FILE_1GB,
         ]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         # Wait for the page to be loaded.
         try:
@@ -70,14 +70,14 @@ class Test(FirefoxTest):
         #
         click(NavBar.DOWNLOADS_BUTTON)
         expected = Screen.UPPER_RIGHT_CORNER.exists(
-            DownloadManager.DownloadState.CANCELED.similar(0.9), 10
+            DownloadManager.DownloadState.CANCELLED.similar(0.9), 10
         ) or Screen.UPPER_RIGHT_CORNER.exists(
             DownloadManager.DownloadState.COMPLETED.similar(0.9), 10
         )
         remove_file_pattern = (
-            DownloadManager.DownloadState.CANCELED
+            DownloadManager.DownloadState.CANCELLED
             if Screen.UPPER_RIGHT_CORNER.exists(
-                DownloadManager.DownloadState.CANCELED.similar(0.9), 5
+                DownloadManager.DownloadState.CANCELLED.similar(0.9), 5
             )
             else DownloadManager.DownloadState.COMPLETED
         )
@@ -89,10 +89,10 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY)
 
             if Screen.UPPER_RIGHT_CORNER.exists(
-                DownloadManager.DownloadState.CANCELED.similar(0.9), 5
+                DownloadManager.DownloadState.CANCELLED.similar(0.9), 5
             ):
                 expected = True
-                remove_file_pattern = DownloadManager.DownloadState.CANCELED
+                remove_file_pattern = DownloadManager.DownloadState.CANCELLED
             elif Screen.UPPER_RIGHT_CORNER.exists(
                 DownloadManager.DownloadState.COMPLETED.similar(0.9), 5
             ):

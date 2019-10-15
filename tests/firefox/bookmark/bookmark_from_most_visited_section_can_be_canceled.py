@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description="Bookmark a page from the 'Most Visited' section using the option from the contextual menu can "
-        "be canceled",
+        "be cancelled",
         locale=["en-US"],
         test_case_id="163397",
         test_suite_id="2525",
