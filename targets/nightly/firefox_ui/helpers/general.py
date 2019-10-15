@@ -171,8 +171,9 @@ def click_hamburger_menu_option(option):
     :return: The region created starting from the hamburger menu pattern.
     """
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    region = Screen.UPPER_RIGHT_CORNER
     try:
-        wait(hamburger_menu_pattern, 5)
+        region.wait(hamburger_menu_pattern, 5)
         logger.debug("Hamburger menu found.")
     except FindError:
         raise APIHelperError(
@@ -180,11 +181,14 @@ def click_hamburger_menu_option(option):
         )
     else:
         try:
-            region = create_region_for_hamburger_menu()
-            region.click(option)
-            return region
+            ham_region = create_region_for_hamburger_menu()
+            ham_region.click(option)
         except FindError:
-            raise APIHelperError("Can't find the option in the page, aborting test.")
+            raise APIHelperError(
+                "Can't find the option: "
+                + option
+                + " in the hamburger menu. Aborting test."
+            )
 
 
 def click_window_control(button, window_type="auxiliary"):
@@ -317,11 +321,12 @@ def create_region_for_hamburger_menu():
     """Create region for hamburger menu pop up."""
 
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    region = Screen.UPPER_RIGHT_CORNER
     try:
-        wait(hamburger_menu_pattern, 5)
-        click(hamburger_menu_pattern)
+        region.wait(hamburger_menu_pattern, 5)
+        region.click(hamburger_menu_pattern)
         sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
-        wait(sign_in_to_firefox_pattern, 10)
+        region.wait(sign_in_to_firefox_pattern, 10)
         if OSHelper.is_linux():
             quit_menu_pattern = Pattern("quit.png")
             wait(quit_menu_pattern, 5)
