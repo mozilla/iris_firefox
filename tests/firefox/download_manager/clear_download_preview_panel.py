@@ -25,7 +25,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         file_to_download = DownloadFiles.EXTRA_SMALL_FILE_5MB
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         download_file(file_to_download, DownloadFiles.OK)
 
