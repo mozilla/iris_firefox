@@ -66,7 +66,7 @@ class Test(FirefoxTest):
         select_location_bar()
         paste("m")
 
-        expected = region.exists(
+        expected = exists(
             search_suggestion_bookmarked_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert expected, "Bookmarked page found between search suggestions."
@@ -74,7 +74,7 @@ class Test(FirefoxTest):
         select_location_bar()
         paste("o")
 
-        expected = region.exists(
+        expected = exists(
             search_suggestion_opened_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert expected, "Opened tab found between search suggestions."
@@ -82,14 +82,14 @@ class Test(FirefoxTest):
         select_location_bar()
         paste("f")
 
-        expected = region.exists(
+        expected = exists(
             search_suggestion_history_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert (
             expected
         ), "Web pages from personal browsing history found between search suggestions."
 
-        expected = region.exists(
+        expected = exists(
             popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
