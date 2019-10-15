@@ -30,13 +30,6 @@ class Test(FirefoxTest):
         )
         assert test_site_opened, "Pocket test website is opened"
 
-        if OSHelper.is_mac():
-            quit_firefox()
-        elif OSHelper.is_linux():
-            click_hamburger_menu_option("Quit")
-        else:
-            click_hamburger_menu_option("Exit")
-
         firefox.restart()
 
         firefox_restarted = exists(

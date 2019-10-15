@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         )
         pdf_file_page_contents_pattern = Pattern("pdf_file_page_contents.png")
         zoom_out_button_pattern = Pattern("zoom_out_button.png")
-        zoom_in_button_pattern = Pattern("zoom_in_button.png")
+        zoom_in_button_pattern = Pattern("zoom_in_button.png").similar(0.75)
 
         change_preference("pdfjs.defaultZoomValue", "100")
 
@@ -43,8 +43,11 @@ class Test(FirefoxTest):
         assert (
             zoom_in_button_available
         ), "'Zoom in (+)' button available in In-browser PDF viewer"
+        zoom_in_region = find(
+            zoom_in_button_pattern
+        )  # to avoid clicks on 'new tab' plus sign
 
-        [click(zoom_in_button_pattern) for _ in range(3)]
+        [click(zoom_in_region) for _ in range(3)]
 
         pdf_document_zoomed_in = exists(pdf_file_page_contents_zoomed_in_pattern)
         assert (

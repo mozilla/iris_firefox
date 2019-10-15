@@ -43,7 +43,7 @@ class Test(FirefoxTest):
         tools_button_pattern = Pattern("tools_button.png")
 
         pdf_file_path = self.get_asset_path("pdf.pdf")
-        
+
         navigate(pdf_file_path)
 
         pdf_document_opened = exists(
