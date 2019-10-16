@@ -35,7 +35,7 @@ class Test(FirefoxTest):
             DownloadFiles.LIBRARY_DOWNLOADS_10MB,
         ]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)

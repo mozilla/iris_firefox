@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         download_file(DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.OK)
 
@@ -48,7 +48,7 @@ class Test(FirefoxTest):
 
         # Hover the file name.
         hover(DownloadFiles.DOWNLOAD_FILE_NAME_1GB)
-        expected = exists(DownloadFiles.DOWNLOAD_CANCELED, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_CANCELLED, 10)
         assert (
             expected is True
         ), "The status and the source page are properly displayed when hovering the downloaded"

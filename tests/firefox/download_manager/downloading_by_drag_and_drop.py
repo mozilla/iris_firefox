@@ -29,7 +29,7 @@ class Test(FirefoxTest):
             expected is True
         ), "Downloads button successfully activated in the nav bar."
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         # Wait for the page to be loaded.
         try:

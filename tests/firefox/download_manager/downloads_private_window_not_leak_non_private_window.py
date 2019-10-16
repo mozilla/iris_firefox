@@ -51,7 +51,7 @@ class Test(FirefoxTest):
 
         # Perform 5 downloads of your choice and go to the Downloads category from the Library.
         new_tab()
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
