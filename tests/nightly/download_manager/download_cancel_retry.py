@@ -22,14 +22,14 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        file_to_download = DownloadFiles.EXTRA_LARGE_FILE_512MB
+        file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
         region = Screen.UPPER_RIGHT_CORNER
 
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         download_file(file_to_download, DownloadFiles.OK)
 
-        expected = region.exists(NavBar.DOWNLOADS_BUTTON, 10)
+        expected = region.exists(NavBar.DOWNLOADS_BUTTON, 5)
         assert expected is True, "Downloads button is displayed."
         region.click(NavBar.DOWNLOADS_BUTTON)
 
