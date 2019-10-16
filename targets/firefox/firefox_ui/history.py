@@ -13,7 +13,7 @@ class History(object):
         RECENTLY_CLOSED_WINDOWS = Pattern("recently_closed_windows.png")
         SHOW_ALL_HISTORY = Pattern("show_all_history.png")
 
-    class CLearRecentHistory(object):
+    class ClearRecentHistory(object):
         CLEAR_ALL_HISTORY_TITLE = Pattern("sanitize_dialog_title.png")
         CLEAR_RECENT_HISTORY_TITLE = Pattern("sanitize_dialog_non_everything_title.png")
 

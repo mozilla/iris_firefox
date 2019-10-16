@@ -16,10 +16,10 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         clear_recent_history_window_pattern = (
-            History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
+            History.ClearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
         )
         dismiss_clear_recent_history_window_button_pattern = (
-            History.CLearRecentHistory.CANCEL
+            History.ClearRecentHistory.CANCEL
         )
 
         # Open the 'Clear Recent History' window and uncheck all the items.

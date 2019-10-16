@@ -19,7 +19,7 @@ def open_clear_recent_history_window():
         access_and_check_pattern(
             History.HistoryMenu.CLEAR_RECENT_HISTORY,
             '"Clear recent History"',
-            History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE,
+            History.ClearRecentHistory.CLEAR_RECENT_HISTORY_TITLE,
             "click",
         ),
     ]

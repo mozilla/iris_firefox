@@ -13,7 +13,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         checked_box = Utils.CHECKEDBOX
-        clear_now_button_disabled = History.CLearRecentHistory.DISABLED_CLEAR_NOW
+        clear_now_button_disabled = History.ClearRecentHistory.DISABLED_CLEAR_NOW
 
         # Open some pages to create some history.
         new_tab()

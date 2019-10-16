@@ -18,9 +18,9 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         clear_recent_history_window_pattern = (
-            History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
+            History.ClearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
         )
-        clear_now_button_pattern = History.CLearRecentHistory.CLEAR_NOW
+        clear_now_button_pattern = History.ClearRecentHistory.CLEAR_NOW
         search_uncheked_box_pattern = Utils.UNCHECKEDBOX
         history_pattern = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE
         searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON
@@ -51,16 +51,16 @@ class Test(FirefoxTest):
             expected = exists(search_uncheked_box_pattern.similar(0.9), 10)
 
         try:
-            wait(History.CLearRecentHistory.TimeRange.LAST_HOUR, 10)
+            wait(History.ClearRecentHistory.TimeRange.LAST_HOUR, 10)
             logger.debug("Last Hour option found.")
-            click(History.CLearRecentHistory.TimeRange.LAST_HOUR)
+            click(History.ClearRecentHistory.TimeRange.LAST_HOUR)
         except FindError:
             raise FindError("Last Hour option NOT found, aborting")
 
         try:
-            wait(History.CLearRecentHistory.TimeRange.EVERYTHING, 10)
+            wait(History.ClearRecentHistory.TimeRange.EVERYTHING, 10)
             logger.debug("Everything option found.")
-            click(History.CLearRecentHistory.TimeRange.EVERYTHING)
+            click(History.ClearRecentHistory.TimeRange.EVERYTHING)
         except FindError:
             raise FindError("Everything option NOT found, aborting")
 
