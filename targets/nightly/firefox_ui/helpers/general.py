@@ -325,10 +325,10 @@ def create_region_for_hamburger_menu():
     try:
         region.wait(hamburger_menu_pattern, 5)
         region.click(hamburger_menu_pattern)
-        sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
+        sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png").similar(0.6)
         region.wait(sign_in_to_firefox_pattern, 10)
         if OSHelper.is_linux():
-            quit_menu_pattern = Pattern("quit.png")
+            quit_menu_pattern = Pattern("quit.png").similar(0.6)
             wait(quit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
@@ -348,7 +348,7 @@ def create_region_for_hamburger_menu():
                 padding_right=20,
             )
         else:
-            exit_menu_pattern = Pattern("exit.png")
+            exit_menu_pattern = Pattern("exit.png").similar(0.6)
             wait(exit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,

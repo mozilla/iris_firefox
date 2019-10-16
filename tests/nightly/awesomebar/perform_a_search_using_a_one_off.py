@@ -30,19 +30,17 @@ class Test(FirefoxTest):
         )
         google_search_results_pattern = Pattern("google_search_results.png")
 
-        region = Screen.TOP_THIRD
-
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected = region.exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        expected = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Mozilla page loaded successfully."
 
         bookmark_page()
 
-        expected = region.exists(
-            page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        expected = exists(
+            page_bookmarked_pattern,
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=Screen.TOP_THIRD,
         )
         assert expected, "Page was bookmarked."
 

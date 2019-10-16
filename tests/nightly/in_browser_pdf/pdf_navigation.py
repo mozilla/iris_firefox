@@ -75,30 +75,6 @@ class Test(FirefoxTest):
         )
         assert arrow_up_navigation_works, "Navigation via 'Arrow up' key works properly"
 
-        click(pdf_file_page_contents_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.RIGHT)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.RIGHT)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.DOWN)
-
-        arrow_right_navigation_works = exists(
-            history_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            arrow_right_navigation_works
-        ), "Navigation via 'Arrow right' key works properly"
-
-        type(Key.LEFT)
-
-        arrow_left_navigation_works = exists(
-            introduction_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            arrow_left_navigation_works
-        ), "Navigation via 'Arrow left' key works properly"
-
         page_up_navigation_works = scroll_until_pattern_found(
             pdf_file_page_contents_pattern, type, (Key.PAGE_UP,)
         )
