@@ -33,18 +33,22 @@ class Test(FirefoxTest):
         go_to_first_page_button_pattern = Pattern(
             "go_to_first_page_button.png"
         ).similar(0.6)
-        rotate_clockwise_button_pattern = Pattern("rotate_clockwise_button.png")
+        rotate_clockwise_button_pattern = Pattern(
+            "rotate_clockwise_button.png"
+        ).similar(0.6)
         pdf_file_last_page_contents_pattern = Pattern("last_page_contents.png")
-        go_to_last_page_button_pattern = Pattern("go_to_last_page_button.png")
+        go_to_last_page_button_pattern = Pattern("go_to_last_page_button.png").similar(
+            0.6
+        )
         pdf_file_page_contents_pattern = Pattern("first_page_contents.png")
         previous_page_button_pattern = Pattern("previous_page_button.png")
         history_chapter_pattern = Pattern("history_chapter_headline.png")
-        text_selection_tool_button = Pattern("text_selection_tool.png")
+        text_selection_tool_button = Pattern("text_selection_tool.png").similar(0.6)
         jump_to_page_field_pattern = Pattern("jump_to_page_field.png")
         next_page_button_pattern = Pattern("next_page_button.png")
         text_selected_pattern = Pattern("text_selected.png")
-        hand_tool_button_pattern = Pattern("hand_tool.png")
-        tools_button_pattern = Pattern("tools_button.png")
+        hand_tool_button_pattern = Pattern("hand_tool.png").similar(0.6)
+        tools_button_pattern = Pattern("tools_button.png").similar(0.6)
 
         region_top = Screen.TOP_THIRD
         region_right = Screen.RIGHT_THIRD
@@ -356,15 +360,6 @@ class Test(FirefoxTest):
             assert expected is True, "'Document properties' popup successfully closed"
         except FindError:
             raise FindError("The 'Document properties' popup did not close.")
-
-        """
-        document_properties_opened = exists(
-            document_properties_filename_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            document_properties_opened is not True
-        ), "'Document properties' popup successfully closed"
-        """
 
         jump_to_page_field_available = region_top.exists(
             jump_to_page_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
