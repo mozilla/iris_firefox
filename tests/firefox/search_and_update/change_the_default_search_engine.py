@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         set_as_default_search_engine_pattern = Pattern(
             "set_as_default_search_engine.png"
         )
-        bing_search_engine_pattern = Pattern("bing_search_engine.png")
+        bing_search_engine_pattern = Pattern("bing_search_engine.png").similar(0.7)
         test_search_bing_pattern = Pattern("test_search_bing.png")
 
         # Enable the search bar.

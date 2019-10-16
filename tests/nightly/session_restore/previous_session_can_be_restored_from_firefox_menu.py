@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         assert firefox_restarted, "Firefox restarted successfully"
 
         click_hamburger_menu_option("Restore")
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
 
         next_tab()
 

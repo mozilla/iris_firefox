@@ -17,12 +17,13 @@ class Test(FirefoxTest):
             "browser.download.folderList": 2,
             "browser.download.useDownloadDir": True,
         },
-        blocked_by={"id": "3460", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         url_classifier_title_pattern = Pattern("url_classifier_title.png")
         google4_row_pattern = Pattern("google4_row.png")
-        trigger_update_button_pattern = Pattern("trigger_update_button.png")
+        trigger_update_button_pattern = Pattern("trigger_update_button.png").similar(
+            0.4
+        )
         success_status_pattern = Pattern("success_status.png")
         desktop_download_warning_title_pattern = Pattern(
             "desktop_download_warning_title.png"
@@ -45,7 +46,9 @@ class Test(FirefoxTest):
 
         paste("Cache")
 
-        providers_displays = exists(google4_row_pattern, Settings.FIREFOX_TIMEOUT)
+        providers_displays = exists(
+            google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert providers_displays is True, "The providers are displayed"
 
         google4_row_location = find(google4_row_pattern)
