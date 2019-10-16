@@ -17,7 +17,7 @@ class Test(FirefoxTest):
         history_title_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         if OSHelper.is_mac():
             clear_recent_history_last_hour_pattern = (
-                History.CLearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
+                History.ClearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
             )
 
         new_tab()

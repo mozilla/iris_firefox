@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         site_with_cookies_pattern = Pattern("site_with_cookies.png")
         remove_button_highlighted_pattern = Pattern("remove_button_highlighted.png")
         remove_all_button_pattern = Pattern("remove_all_button.png")
-        clear_now_dialog_button_pattern = History.CLearRecentHistory.CLEAR_NOW
+        clear_now_dialog_button_pattern = History.ClearRecentHistory.CLEAR_NOW
         cookies_cleared_pattern = Pattern("cookies_are_fully_cleared.png")
 
         scroll_length = Screen.SCREEN_WIDTH // 3
