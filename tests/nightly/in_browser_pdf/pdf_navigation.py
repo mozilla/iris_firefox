@@ -111,6 +111,10 @@ class Test(FirefoxTest):
         click(previous_page_button_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.DOWN)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.DOWN)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.DOWN)
 
         navigation_via_previous_page_button_works = exists(
             history_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT

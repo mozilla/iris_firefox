@@ -171,7 +171,7 @@ def click_hamburger_menu_option(option):
     :return: The region created starting from the hamburger menu pattern.
     """
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    region = Screen.UPPER_RIGHT_CORNER
+    region = Screen.RIGHT_THIRD
     try:
         region.wait(hamburger_menu_pattern, 5)
         logger.debug("Hamburger menu found.")
