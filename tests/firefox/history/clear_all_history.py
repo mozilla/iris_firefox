@@ -17,7 +17,7 @@ class Test(FirefoxTest):
         history_empty_pattern = Pattern("history_empty.png")
         if OSHelper.is_mac():
             clear_recent_history_last_hour_pattern = (
-                History.CLearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
+                History.ClearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
             )
 
         # Open some pages to create some history.
