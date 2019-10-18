@@ -35,7 +35,11 @@ class Test(FirefoxTest):
         top_sites_section_as_a_reference = Pattern('top_sites_section_as_a_reference.png')
 
         navigate('about:preferences#home')
-        wait(about_preferences_home_url_pattern)
+        try:
+            wait(about_preferences_home_url_pattern)
+        except FindError:
+            raise FindError('about:preferences#home page could not loaded successfully')
+
         about_preferences_home_url_exists = exists(about_preferences_home_url_pattern,
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
         assert about_preferences_home_url_exists, 'Home section of about:preferences page could not loaded successfully'
@@ -100,7 +104,10 @@ class Test(FirefoxTest):
         new_tab()
         hover(optional_footer_message_from_firefox)
         click(cross_mark_on_footer_message)
-        wait(top_sites_section_4_rows)
+        try:
+            wait(top_sites_section_4_rows)
+        except FindError:
+            raise FindError('optional footer message from firefox could not get closed  ' )
 
         top_sites_section_4_rows_exists = exists(top_sites_section_4_rows, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_4_rows_exists, 'In new tab, 32 cells are not displayed in a four rows'
