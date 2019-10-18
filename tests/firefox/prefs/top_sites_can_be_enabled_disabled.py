@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         top_sites_option_pattern = Pattern("top_sites_option.png")
-        top_sites_reddit_pattern = Pattern("top_sites_reddit.png")
+        top_sites_reddit_pattern = Pattern("top_sites_reddit.png").similar(0.7)
         top_sites_amazon_pattern = Pattern("top_sites_amazon.png")
         top_sites_twitter_pattern = Pattern("top_sites_twitter.png")
         top_sites_facebook_pattern = Pattern("top_sites_facebook.png")
