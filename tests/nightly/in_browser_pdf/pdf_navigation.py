@@ -183,7 +183,7 @@ class Test(FirefoxTest):
 
         click(go_to_last_page_button_pattern)
 
-        navigation_via_go_to_last_page_button_works = region_right.exists(
+        navigation_via_go_to_last_page_button_works = exists(
             pdf_file_last_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -284,7 +284,7 @@ class Test(FirefoxTest):
 
         click(text_selection_tool_button)
 
-        text_to_select_present_on_page = region_right.exists(
+        text_to_select_present_on_page = exists(
             last_page_text_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert text_to_select_present_on_page, "Text to select is available on the page"
