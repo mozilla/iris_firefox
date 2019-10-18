@@ -140,7 +140,7 @@ class Test(FirefoxTest):
             navigation_via_next_page_button_works
         ), "By clicking the 'Previous page' button, the current view moves to the previous page"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -165,7 +165,7 @@ class Test(FirefoxTest):
             navigation_via_go_to_first_page_button_works
         ), "Navigation via 'Go to first page' button from 'Tools' menu works properly"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -183,14 +183,14 @@ class Test(FirefoxTest):
 
         click(go_to_last_page_button_pattern)
 
-        navigation_via_go_to_last_page_button_works = exists(
+        navigation_via_go_to_last_page_button_works = region_right.exists(
             pdf_file_last_page_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             navigation_via_go_to_last_page_button_works
         ), "Navigation via 'Go to last page' button from 'Tools' menu works properly"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -233,7 +233,7 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -266,7 +266,7 @@ class Test(FirefoxTest):
             content_scrolled_via_hand_tool
         ), "Scrolling via 'Hand tool' works properly"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -284,7 +284,7 @@ class Test(FirefoxTest):
 
         click(text_selection_tool_button)
 
-        text_to_select_present_on_page = exists(
+        text_to_select_present_on_page = region_right.exists(
             last_page_text_contents_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert text_to_select_present_on_page, "Text to select is available on the page"
@@ -296,7 +296,7 @@ class Test(FirefoxTest):
         )
         assert text_selection_tool_works, "'Text selection tool' works"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (

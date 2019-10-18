@@ -70,7 +70,7 @@ class Test(FirefoxTest):
         assert expected, "Bookmarked page found between search suggestions."
 
         select_location_bar()
-        paste("o")
+        paste("fi")
 
         expected = exists(
             search_suggestion_opened_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
