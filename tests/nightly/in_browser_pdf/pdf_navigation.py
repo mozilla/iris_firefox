@@ -75,30 +75,6 @@ class Test(FirefoxTest):
         )
         assert arrow_up_navigation_works, "Navigation via 'Arrow up' key works properly"
 
-        click(pdf_file_page_contents_pattern)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.RIGHT)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.RIGHT)
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.DOWN)
-
-        arrow_right_navigation_works = exists(
-            history_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            arrow_right_navigation_works
-        ), "Navigation via 'Arrow right' key works properly"
-
-        type(Key.LEFT)
-
-        arrow_left_navigation_works = exists(
-            introduction_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            arrow_left_navigation_works
-        ), "Navigation via 'Arrow left' key works properly"
-
         page_up_navigation_works = scroll_until_pattern_found(
             pdf_file_page_contents_pattern, type, (Key.PAGE_UP,)
         )
@@ -135,6 +111,10 @@ class Test(FirefoxTest):
         click(previous_page_button_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.DOWN)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.DOWN)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.DOWN)
 
         navigation_via_previous_page_button_works = exists(
             history_chapter_pattern, FirefoxSettings.FIREFOX_TIMEOUT
@@ -160,7 +140,7 @@ class Test(FirefoxTest):
             navigation_via_next_page_button_works
         ), "By clicking the 'Previous page' button, the current view moves to the previous page"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -185,7 +165,7 @@ class Test(FirefoxTest):
             navigation_via_go_to_first_page_button_works
         ), "Navigation via 'Go to first page' button from 'Tools' menu works properly"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -210,7 +190,7 @@ class Test(FirefoxTest):
             navigation_via_go_to_last_page_button_works
         ), "Navigation via 'Go to last page' button from 'Tools' menu works properly"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -253,7 +233,7 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -286,7 +266,7 @@ class Test(FirefoxTest):
             content_scrolled_via_hand_tool
         ), "Scrolling via 'Hand tool' works properly"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -316,7 +296,7 @@ class Test(FirefoxTest):
         )
         assert text_selection_tool_works, "'Text selection tool' works"
 
-        tools_button_available = region_right.exists(
+        tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (

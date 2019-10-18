@@ -171,9 +171,8 @@ def click_hamburger_menu_option(option):
     :return: The region created starting from the hamburger menu pattern.
     """
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    region = Screen.UPPER_RIGHT_CORNER
     try:
-        region.wait(hamburger_menu_pattern, 5)
+        wait(hamburger_menu_pattern, 10)
         logger.debug("Hamburger menu found.")
     except FindError:
         raise APIHelperError(
@@ -321,15 +320,15 @@ def create_region_for_hamburger_menu():
     """Create region for hamburger menu pop up."""
 
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    region = Screen.UPPER_RIGHT_CORNER
+    region = Screen.RIGHT_THIRD
     try:
-        region.wait(hamburger_menu_pattern, 5)
+        region.wait(hamburger_menu_pattern, 10)
         region.click(hamburger_menu_pattern)
-        sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
+        sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png").similar(0.6)
         region.wait(sign_in_to_firefox_pattern, 10)
         if OSHelper.is_linux():
-            quit_menu_pattern = Pattern("quit.png")
-            wait(quit_menu_pattern, 5)
+            quit_menu_pattern = Pattern("quit.png").similar(0.6)
+            region.wait(quit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
                 sign_in_to_firefox_pattern,
@@ -339,7 +338,7 @@ def create_region_for_hamburger_menu():
             )
         elif OSHelper.is_mac():
             help_menu_pattern = Pattern("help.png")
-            wait(help_menu_pattern, 5)
+            region.wait(help_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
                 sign_in_to_firefox_pattern,
@@ -348,8 +347,8 @@ def create_region_for_hamburger_menu():
                 padding_right=20,
             )
         else:
-            exit_menu_pattern = Pattern("exit.png")
-            wait(exit_menu_pattern, 5)
+            exit_menu_pattern = Pattern("exit.png").similar(0.6)
+            region.wait(exit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
                 sign_in_to_firefox_pattern,
