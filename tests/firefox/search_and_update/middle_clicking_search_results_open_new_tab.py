@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        test_bold_pattern = Pattern("test_bold.png")
+        test_bold_pattern = Pattern("test_bold.png").similar(0.7)
 
         # Enable the search bar.
         change_preference("browser.search.widget.inNavBar", True)
