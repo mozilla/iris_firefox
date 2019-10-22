@@ -78,6 +78,8 @@ def change_preference(pref_name, value):
     :param value: Preference's value after the change.
     :return: None.
     """
+    if not isinstance(value, str):
+        value = str(value).lower()
     try:
         new_tab()
         navigate("about:config")
