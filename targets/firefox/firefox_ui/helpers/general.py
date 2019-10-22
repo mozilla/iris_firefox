@@ -103,7 +103,7 @@ def change_preference(pref_name, value):
             return None
         else:
             type(Key.ENTER)
-            if not value == "true" or value == "false":
+            if not (value == "true" or value == "false"):
                 try:
                     paste(value)
                     type(Key.ENTER)
