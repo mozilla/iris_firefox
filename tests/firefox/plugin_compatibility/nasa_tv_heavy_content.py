@@ -24,7 +24,6 @@ class Test(FirefoxTest):
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Rectangle(0, 0, Screen.SCREEN_WIDTH / 2, home_height * 4)
 
-        # change_preference("media.autoplay.default", "0")
         check_preference("media.autoplay.default", "0")
 
         new_private_window()
