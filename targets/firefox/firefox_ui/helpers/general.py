@@ -142,7 +142,7 @@ def check_preference(pref_name, value):
     time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
     try:
-        retrieved_value = copy_to_clipboard().split(";"[0])[1]
+        retrieved_value = copy_to_clipboard().split("\t"[0])[1]
 
     except Exception as e:
         raise APIHelperError("Failed to retrieve preference value. %s" % e.message)
