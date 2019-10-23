@@ -14,14 +14,20 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        edit_bookmark_name_before_pattern = Pattern("edit_bookmark_name.png")
-        edit_bookmark_name_after_pattern = Pattern("edit_bookmark_name_modified.png")
+        edit_bookmark_name_before_pattern = Pattern("edit_bookmark_name.png").similar(
+            0.7
+        )
+        edit_bookmark_name_after_pattern = Pattern(
+            "edit_bookmark_name_modified.png"
+        ).similar(0.7)
         edit_bookmark_folder_before_pattern = Pattern("edit_bookmark_folder.png")
         edit_bookmark_folder_after_pattern = Pattern(
             "edit_bookmark_folder_modified.png"
         )
         edit_bookmark_tags_before_pattern = Pattern("tags_before.png")
-        edit_bookmark_tags_after_pattern = Pattern("edit_bookmark_tags_modified.png")
+        edit_bookmark_tags_after_pattern = Pattern(
+            "edit_bookmark_tags_modified.png"
+        ).similar(0.6)
         if not OSHelper.is_windows():
             edit_this_bookmark_pattern = Pattern("edit_this_bookmark.png")
         else:
