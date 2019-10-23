@@ -16,10 +16,10 @@ class Test(FirefoxTest):
     def run(self, firefox):
         restore_previous_session_checked_pattern = Pattern(
             "restore_previous_session_checked.png"
-        )
+        ).similar(0.7)
         restore_previous_session_unchecked_pattern = Pattern(
             "restore_previous_session_unchecked.png"
-        )
+        ).similar(0.7)
         iris_icon_title_pattern = Pattern("iris_tab.png")
 
         navigate("about:preferences")
