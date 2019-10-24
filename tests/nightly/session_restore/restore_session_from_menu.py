@@ -30,7 +30,12 @@ class Test(FirefoxTest):
         )
         assert test_site_opened, "Pocket test website is opened"
 
-        firefox.restart()
+        if OSHelper.is_windows():
+            minimize_window()
+            firefox.restart()
+            maximize_window()
+        else:
+            firefox.restart()
 
         firefox_restarted = exists(
             LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
