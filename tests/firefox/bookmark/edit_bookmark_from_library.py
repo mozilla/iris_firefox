@@ -22,7 +22,9 @@ class Test(FirefoxTest):
         bookmark_new_name_pattern = Pattern("bookmark_new_name.png")
         edited_name_pattern = Pattern("edited_bookmark_name_library.png")
         edited_tags_pattern = Pattern("edited_bookmark_tags_library.png")
-        edited_location_pattern = Pattern("edited_bookmark_location_library.png")
+        edited_location_pattern = Pattern(
+            "edited_bookmark_location_library.png"
+        ).similar(0.7)
         edited_keyword_pattern = Pattern("edited_bookmark_keyword_library.png")
         linkedin_logo = Pattern("linkedin_logo.png")
 
