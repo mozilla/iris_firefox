@@ -321,7 +321,7 @@ def create_region_for_hamburger_menu():
     """Create region for hamburger menu pop up."""
 
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    region = Screen.RIGHT_THIRD
+    region = Screen.RIGHT_HALF
     try:
         region.wait(hamburger_menu_pattern, 10)
         region.click(hamburger_menu_pattern)
