@@ -16,12 +16,12 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         location_field_pattern = Pattern("location_field_label.png")
-        name_field_pattern = Pattern("name_bookmark_field.png").similar(0.85)
+        name_field_pattern = Pattern("name_bookmark_field.png").similar(0.7)
         tags_field_pattern = Pattern("tags_field_label.png")
         keyword_field_pattern = Pattern("keyword_field_label.png")
         bookmark_new_name_pattern = Pattern("bookmark_new_name.png")
-        edited_name_pattern = Pattern("edited_bookmark_name_library.png")
-        edited_tags_pattern = Pattern("edited_bookmark_tags_library.png")
+        edited_name_pattern = Pattern("edited_bookmark_name_library.png").similar(0.7)
+        edited_tags_pattern = Pattern("edited_bookmark_tags_library.png").similar(0.7)
         edited_location_pattern = Pattern(
             "edited_bookmark_location_library.png"
         ).similar(0.7)
@@ -122,7 +122,11 @@ class Test(FirefoxTest):
         location_edited = exists(edited_location_pattern)
         assert location_edited is True, "Bookmark's location is edited"
 
-        tags_edited = exists(edited_tags_pattern.similar(0.7))
+        type(Key.TAB)
+
+        edit_select_all()
+
+        tags_edited = exists(edited_tags_pattern)
         assert tags_edited is True, "Bookmark's tags are edited"
 
         keyword_field_displayed = exists(keyword_field_pattern, region=fields_region)
