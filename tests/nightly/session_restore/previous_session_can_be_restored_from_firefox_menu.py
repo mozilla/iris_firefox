@@ -37,6 +37,8 @@ class Test(FirefoxTest):
         )
         assert firefox_restarted, "Firefox restarted successfully"
 
+        restore_firefox_focus()
+
         click_hamburger_menu_option("Restore")
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
 
