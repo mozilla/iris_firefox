@@ -69,11 +69,12 @@ class Test(FirefoxTest):
             new_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert new_bookmark_window_exists is True, "New Bookmark window is displayed"
-
+        if OSHelper.get_os_version() == "win7":  # wait until new bookmark window will fully load
+            time.sleep(3)
         click_cancel_button()
 
         try:
-            new_bookmark_window_dismissed = wait_vanish(new_window_pattern)
+            new_bookmark_window_dismissed = wait_vanish(new_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert new_bookmark_window_dismissed is True, "The popup is dismissed"
         except FindError:
             raise FindError("The popup is not dismissed.")
