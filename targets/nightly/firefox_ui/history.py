@@ -15,7 +15,9 @@ class History(object):
 
     class ClearRecentHistory(object):
         CLEAR_ALL_HISTORY_TITLE = Pattern("sanitize_dialog_title.png").similar(0.6)
-        CLEAR_RECENT_HISTORY_TITLE = Pattern("sanitize_dialog_non_everything_title.png")
+        CLEAR_RECENT_HISTORY_TITLE = Pattern(
+            "sanitize_dialog_non_everything_title.png"
+        ).similar(0.6)
 
         class TimeRange(object):
             LAST_HOUR = Pattern("last_hour.png")
