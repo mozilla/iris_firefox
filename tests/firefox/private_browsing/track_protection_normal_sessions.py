@@ -14,9 +14,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        preferences_privacy_find_field_pattern = Pattern(
-            "preferences_privacy_find_field.png"
-        )
+        preferences_privacy_find_field_pattern = AboutPreferences.FIND_IN_OPTIONS
         send_track_data_pattern = Pattern("send_websites_do_not_track_data_option.png")
         do_not_track_unselected_pattern = Pattern(
             "do_not_track_option_always_unselected_radio.png"
