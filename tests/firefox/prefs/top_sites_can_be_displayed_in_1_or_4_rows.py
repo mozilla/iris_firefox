@@ -137,7 +137,10 @@ class Test(FirefoxTest):
         :param test_region: image Pattern, locator for sub-region of top site drop-down .
         :return: None.
         """
-        click(MainWindow.MAXIMIZE_BUTTON)
+        if OSHelper.is_mac():
+            maximize_window()
+        else:
+            click(MainWindow.MAXIMIZE_BUTTON)
         previous_tab()
         click(dropdown_image, None, region=test_region)
         type(Key.DOWN)
