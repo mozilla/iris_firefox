@@ -57,7 +57,6 @@ class Profiles(str, Enum):
     LIKE_NEW = "like_new"
     TEN_BOOKMARKS = "ten_bookmarks"
     DEFAULT = "like_new"
-    Bookmarks_Downloads_Visited_Pockets = "Bookmarks_Downloads_Visited_Pockets"
 
 
 class FirefoxProfile(MozProfile):
