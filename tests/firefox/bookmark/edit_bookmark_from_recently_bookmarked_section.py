@@ -18,9 +18,9 @@ class Test(FirefoxTest):
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")
         new_modified_bookmark_pattern = Pattern("wiki_new_name_bookmark.png")
-        name_before_editing_pattern = Pattern("name_field.png").similar(.7)
+        name_before_editing_pattern = Pattern("name_field.png").similar(.07)
         location_before_editing_pattern = Pattern("location_field.png")
-        tags_before_editing_pattern = Pattern("tags_field.png").similar(.7)
+        tags_before_editing_pattern = Pattern("tags_field.png").similar(0.7)
         keyword_before_editing_pattern = Pattern("keyword_field.png")
 
         if OSHelper.is_mac():
@@ -41,13 +41,13 @@ class Test(FirefoxTest):
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(
-            LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
         assert (
             bookmarks_menu_option_exists is True
         ), "The Bookmarks menu is correctly displayed"
 
-        click(LibraryMenu.BOOKMARKS_OPTION)
+        click(Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON)
 
         bookmark_getting_started_exists = exists(
             bookmark_getting_started_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
