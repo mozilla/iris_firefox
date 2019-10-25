@@ -18,7 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")
         new_modified_bookmark_pattern = Pattern("wiki_new_name_bookmark.png")
-        name_before_editing_pattern = Pattern("name_field.png").similar(.07)
+        name_before_editing_pattern = Pattern("name_field.png").similar(0.07)
         location_before_editing_pattern = Pattern("location_field.png")
         tags_before_editing_pattern = Pattern("tags_field.png").similar(0.7)
         keyword_before_editing_pattern = Pattern("keyword_field.png")
@@ -41,7 +41,8 @@ class Test(FirefoxTest):
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(
-            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON,
+            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
         )
         assert (
             bookmarks_menu_option_exists is True
@@ -119,7 +120,15 @@ class Test(FirefoxTest):
 
         click(NavBar.LIBRARY_MENU)
 
-        click(LibraryMenu.BOOKMARKS_OPTION)
+        bookmarks_menu_option_exists = exists(
+            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON,
+            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+        )
+        assert (
+            bookmarks_menu_option_exists is True
+        ), "The Bookmarks menu is correctly displayed"
+
+        click(Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON)
 
         new_modified_bookmark_exists = exists(
             new_modified_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
@@ -144,7 +153,7 @@ class Test(FirefoxTest):
         location_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
         assert (
-                location_edited == "http://wikipedia.org/"
+            location_edited == "http://wikipedia.org/"
         ), "Bookmark's location is edited"
 
         type(Key.TAB)
@@ -153,7 +162,10 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
         assert tags_edited == "Tag", "Bookmark's tags are edited"
 
-        type(Key.TAB)
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         keyword_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
