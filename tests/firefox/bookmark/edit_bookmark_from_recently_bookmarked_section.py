@@ -18,14 +18,10 @@ class Test(FirefoxTest):
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")
         new_modified_bookmark_pattern = Pattern("wiki_new_name_bookmark.png")
-        name_before_editing_pattern = Pattern("name_field.png")
+        name_before_editing_pattern = Pattern("name_field.png").similar(.7)
         location_before_editing_pattern = Pattern("location_field.png")
-        tags_before_editing_pattern = Pattern("tags_field.png")
+        tags_before_editing_pattern = Pattern("tags_field.png").similar(.7)
         keyword_before_editing_pattern = Pattern("keyword_field.png")
-        name_after_editing_pattern = Pattern("name_saved.png")
-        location_after_editing_pattern = Pattern("location_saved.png")
-        tags_after_editing_pattern = Pattern("tags_saved.png")
-        keyword_after_editing_pattern = Pattern("keyword_saved.png")
 
         if OSHelper.is_mac():
             bookmark_getting_started_pattern = Pattern(
@@ -139,35 +135,26 @@ class Test(FirefoxTest):
 
         click(properties_option_pattern)
 
-        name_after_exists = exists(
-            name_after_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert name_after_exists is True, "Name field changes are correctly saved"
+        name_is_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert name_is_edited == "New Name", "Bookmark's name is edited"
 
         type(Key.TAB)
 
-        location_after_exists = exists(
-            location_after_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        location_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         assert (
-            location_after_exists is True
-        ), "Location field changes are correctly saved"
+                location_edited == "http://wikipedia.org/"
+        ), "Bookmark's location is edited"
 
         type(Key.TAB)
 
-        tags_after_exists = exists(
-            tags_after_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert tags_after_exists is True, "Tags field changes are correctly saved"
+        tags_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert tags_edited == "Tag", "Bookmark's tags are edited"
 
-        if OSHelper.is_mac():
-            type(Key.TAB)
-        else:
-            [type(Key.TAB) for _ in range(2)]
+        type(Key.TAB)
 
-        keyword_after_exists = exists(
-            keyword_after_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert keyword_after_exists is True, "Keyword field changes are correctly saved"
-
-        type(Key.ENTER)
+        keyword_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert keyword_edited == "test", "Bookmark's keywords are edited"
