@@ -2,7 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from targets.firefox.fx_testcase import *
 
 
@@ -17,7 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         about_preferences_home_url_pattern = Pattern('about_preferences_home_url.png')
         home_section_top_sites_four_squares = Pattern('about_preferences_home_top_sites_four_squares.png')
-        home_section_top_sites_selected = Pattern('about_preferences_home_top_sites_selected.png').similar(0.97)
+        home_section_top_sites_selected = Pattern('about_preferences_home_top_sites_selected.png')
         home_section_top_sites_most_visit_default_value = Pattern('home_top_sites_most_visit_default_value.png')
         home_section_top_sites_most_visit_2_row = Pattern('home_top_sites_most_visit_2_row.png')
         home_section_top_sites_most_visit_3_row = Pattern('home_top_sites_most_visit_3_row.png')
@@ -31,7 +30,6 @@ class Test(FirefoxTest):
         top_sites_section_resized_browser_4_rows = Pattern('top_sites_section_resized_browser_4_row.png')
         optional_footer_message_from_firefox = Pattern('optional_footer_message_from_firefox.png')
         cross_mark_on_footer_message = Pattern('cross_mark_on_footer_message.png')
-        scroll_down_icon = Pattern('scroll_down_icon.png')
         top_sites_section_as_a_reference = Pattern('top_sites_section_as_a_reference.png')
 
         navigate('about:preferences#home')
@@ -46,25 +44,31 @@ class Test(FirefoxTest):
 
         # Create Region for top site
         top_site_location = find(top_sites_section_as_a_reference)
-        test_search_region = Region(
+        top_site_reference_region = Region(
             top_site_location.x,
             top_site_location.y,
             Screen.SCREEN_WIDTH // 2,
-            Screen.SCREEN_HEIGHT // 6,
+            Screen.SCREEN_HEIGHT // 7,
         )
+
+        try:
+            wait(home_section_top_sites_four_squares)
+        except FindError:
+            raise FindError('Content and Images of about:preferences#home page could not loaded')
 
         top_sites_four_squares_exists = exists(home_section_top_sites_four_squares,
                                                FirefoxSettings.FIREFOX_TIMEOUT,
-                                               region=test_search_region)
+                                               region=top_site_reference_region)
         assert top_sites_four_squares_exists, 'Four Squares icon is not present beside "Top Sites"'
 
         home_section_top_sites_selected_exists = exists(home_section_top_sites_selected,
                                                         FirefoxSettings.FIREFOX_TIMEOUT,
-                                                        region=test_search_region)
+                                                        region=top_site_reference_region)
         assert home_section_top_sites_selected_exists, 'Checkbox option present in "Top Sites" is not selected'
 
         top_sites_most_visit_default_value_exists = exists(home_section_top_sites_most_visit_default_value,
-                                                           FirefoxSettings.FIREFOX_TIMEOUT, region=test_search_region)
+                                                           FirefoxSettings.FIREFOX_TIMEOUT,
+                                                           region=top_site_reference_region)
         assert top_sites_most_visit_default_value_exists, 'Default number of rows for "Top Sites" is not selected as 1'
 
         new_tab()
@@ -77,9 +81,9 @@ class Test(FirefoxTest):
                                                           FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_exists, 'After resizing, 6 cells are not displayed in a single row'
 
-        self.top_site_dropdown(home_section_top_sites_most_visit_default_value, test_search_region, Key.NUM2)
+        self.top_site_dropdown(home_section_top_sites_most_visit_default_value, top_site_reference_region)
 
-        new_tab()
+        previous_tab()
         top_sites_section_2_rows_exists = exists(top_sites_section_2_rows, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_2_rows_exists, 'In new tab, 16 cells are not displayed in a two rows'
 
@@ -88,9 +92,9 @@ class Test(FirefoxTest):
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_2_rows_exists, 'After resizing, 12 cells are not displayed in two rows'
 
-        self.top_site_dropdown(home_section_top_sites_most_visit_2_row, test_search_region, Key.NUM3)
+        self.top_site_dropdown(home_section_top_sites_most_visit_2_row, top_site_reference_region)
 
-        new_tab()
+        previous_tab()
         top_sites_section_3_rows_exists = exists(top_sites_section_3_rows, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_3_rows_exists, 'In new tab, 24 cells are not displayed in a three rows'
 
@@ -99,38 +103,44 @@ class Test(FirefoxTest):
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_3_rows_exists, 'After resizing, 18 cells are not displayed in three ' \
                                                                 'rows'
-        self.top_site_dropdown(home_section_top_sites_most_visit_3_row, test_search_region, Key.NUM4)
+        self.top_site_dropdown(home_section_top_sites_most_visit_3_row, top_site_reference_region)
 
-        new_tab()
+        previous_tab()
         hover(optional_footer_message_from_firefox)
-        click(cross_mark_on_footer_message)
+        # Create Region for firefox footer message
+        footer_message_location = find(optional_footer_message_from_firefox)
+        footer_message_region = Region(
+            footer_message_location.x,
+            footer_message_location.y,
+            Screen.SCREEN_WIDTH,
+            Screen.SCREEN_HEIGHT // 6,
+        )
         try:
-            wait(top_sites_section_4_rows)
+            wait(cross_mark_on_footer_message, region=footer_message_region)
         except FindError:
-            raise FindError('optional footer message from firefox could not get closed  ' )
-
+            raise FindError('Cross mark does not appear post hovering on firefox footer message')
+        click(cross_mark_on_footer_message, region=footer_message_region)
+        type(Key.DOWN)
         top_sites_section_4_rows_exists = exists(top_sites_section_4_rows, FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_4_rows_exists, 'In new tab, 32 cells are not displayed in a four rows'
 
         self.resize_browser('1000', '700')
-        click(scroll_down_icon)
+        type(Key.DOWN)
         top_sites_section_resized_browser_4_rows_exists = exists(top_sites_section_resized_browser_4_rows,
                                                                  FirefoxSettings.FIREFOX_TIMEOUT)
         assert top_sites_section_resized_browser_4_rows_exists, 'After resizing, 24 cells are not displayed in four ' \
-                                                                'rows '
+                                                                'rows'
 
-    def top_site_dropdown(self, dropdown_image: Pattern, test_region: Pattern, key_val):
+    def top_site_dropdown(self, dropdown_image: Pattern, test_region: Pattern):
         """Locate 'Top Sites' drop-down and change dropdown .
         :param dropdown_image: image Pattern.
         :param test_region: image Pattern, locator for sub-region of top site drop-down .
-        :param key_val: Numeric key value from class Key(Enum).
         :return: None.
         """
-        maximize_window()
-        navigate('about:preferences#home')
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        click(MainWindow.MAXIMIZE_BUTTON)
+        previous_tab()
         click(dropdown_image, None, region=test_region)
-        type(key_val)
+        type(Key.DOWN)
         type(Key.ENTER)
 
     def resize_browser(self, width, height):
@@ -141,7 +151,6 @@ class Test(FirefoxTest):
         """
         browser_console_opened_pattern = Pattern('browser_console_opened.png')
         clear_console_data = Pattern('clear_console_data.png')
-
         open_browser_console()
         try:
             wait(browser_console_opened_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -152,3 +161,5 @@ class Test(FirefoxTest):
         paste('window.resizeTo(' + width + ',' + height + ')')
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        if OSHelper.is_mac():
+            click(Pattern('browser_navigation_bar_mac.png'))
