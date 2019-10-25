@@ -33,6 +33,7 @@ class Test(FirefoxTest):
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
 
         new_private_window()
+        time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
 
         navigate(url)
 
