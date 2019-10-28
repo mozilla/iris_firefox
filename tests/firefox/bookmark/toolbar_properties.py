@@ -54,7 +54,10 @@ class Test(FirefoxTest):
 
         type('Tag')
 
-        type(Key.TAB)
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         type('keyword')
 
@@ -96,7 +99,10 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
         assert tags_edited == "Tag", "Bookmark's tags are edited"
 
-        type(Key.TAB)
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         keyword_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
