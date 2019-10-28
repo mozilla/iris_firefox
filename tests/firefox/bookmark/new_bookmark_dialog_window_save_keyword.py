@@ -78,8 +78,11 @@ class Test(FirefoxTest):
 
         type("y")
 
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.ENTER)
+
         suggestion_exists = exists(
-            keyword_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             suggestion_exists is True
