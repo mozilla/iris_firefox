@@ -32,12 +32,11 @@ class Test(FirefoxTest):
         test_pattern = Pattern("test.png")
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
 
-        new_private_window()
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-
-        navigate(url)
-
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
+
+        new_private_window()
+        restore_firefox_focus()
+        navigate(url)
 
         test_page_loaded = exists(
             LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
