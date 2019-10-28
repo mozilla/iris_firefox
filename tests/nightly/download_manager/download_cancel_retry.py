@@ -23,7 +23,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
-        region = Screen.UPPER_RIGHT_CORNER
+        region = Screen.TOP_THIRD
 
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 

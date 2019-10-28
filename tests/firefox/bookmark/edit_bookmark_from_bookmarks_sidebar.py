@@ -17,14 +17,14 @@ class Test(FirefoxTest):
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")
         new_modified_bookmark_pattern = Pattern("bookmark_modified.png")
-        name_before_editing_pattern = Pattern("name_field.png")
+        name_before_editing_pattern = Pattern("name_field.png").similar(0.7)
         location_before_editing_pattern = Pattern("location_field.png")
-        tags_before_editing_pattern = Pattern("tags_field.png")
+        tags_before_editing_pattern = Pattern("tags_field.png").similar(0.7)
         keyword_before_editing_pattern = Pattern("keyword_field.png")
-        name_after_editing_pattern = Pattern("name_saved.png")
+        name_after_editing_pattern = Pattern("name_saved.png").similar(0.7)
         location_after_editing_pattern = Pattern("location_saved.png")
-        tags_after_editing_pattern = Pattern("tags_saved.png")
-        keyword_after_editing_pattern = Pattern("keyword_saved.png")
+        tags_after_editing_pattern = Pattern("tags_saved.png").similar(0.7)
+        keyword_after_editing_pattern = Pattern("keyword_saved.png").similar(0.7)
 
         if OSHelper.is_mac():
             other_bookmarks_pattern = Pattern("bookmarks_toolbar.png")
@@ -109,10 +109,7 @@ class Test(FirefoxTest):
 
         paste("Tag")
 
-        if OSHelper.is_mac():
-            type(Key.TAB)
-        else:
-            [type(Key.TAB) for _ in range(2)]
+        [type(Key.TAB) for _ in range(2)]
 
         paste("test")
 
@@ -153,10 +150,7 @@ class Test(FirefoxTest):
         )
         assert tags_after_exists is True, "Tags field changes are correctly saved"
 
-        if OSHelper.is_mac():
-            type(Key.TAB)
-        else:
-            [type(Key.TAB) for _ in range(2)]
+        [type(Key.TAB) for _ in range(2)]
 
         keyword_after_exists = exists(
             keyword_after_editing_pattern, FirefoxSettings.FIREFOX_TIMEOUT
