@@ -32,6 +32,7 @@ class Test(FirefoxTest):
         expected = region.exists(NavBar.DOWNLOADS_BUTTON, 5)
         assert expected is True, "Downloads button is displayed."
         region.click(NavBar.DOWNLOADS_BUTTON)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert expected is True, "Cancel button is displayed."

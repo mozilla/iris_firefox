@@ -48,6 +48,8 @@ class Test(FirefoxTest):
             select_location_bar()
             type(Key.TAB)
             time.sleep(DELAY)
+            type(Key.TAB)
+            timee.sleep(DELAY)
             type(Key.RIGHT)
             time.sleep(DELAY)
             type(Key.RIGHT)
