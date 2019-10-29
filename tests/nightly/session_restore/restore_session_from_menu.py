@@ -49,7 +49,7 @@ class Test(FirefoxTest):
             type(Key.TAB)
             time.sleep(DELAY)
             type(Key.TAB)
-            timee.sleep(DELAY)
+            time.sleep(DELAY)
             type(Key.RIGHT)
             time.sleep(DELAY)
             type(Key.RIGHT)
