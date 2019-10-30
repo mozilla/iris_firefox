@@ -80,7 +80,7 @@ class DownloadFiles(object):
     ABOUT = Pattern("about.png")
     SAVE_FILE = Pattern("save_file.png")
     DOWNLOAD_CANCELLED = Pattern("download_cancelled.png")
-    OK = Pattern("ok.png")
+    OK = Pattern("ok.png").similar(0.6)
     CANCEL_ALL_DOWNLOADS_POP_UP = Pattern("cancel_all_downloads.png")
 
     # Safe Browsing Testing patterns.

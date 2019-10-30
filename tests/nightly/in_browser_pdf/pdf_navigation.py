@@ -23,8 +23,10 @@ class Test(FirefoxTest):
         ).similar(0.6)
         doc_properties_close_button_pattern = Pattern(
             "document_properties_close_button.png"
-        )
-        document_properties_filename_pattern = Pattern("document_properties_info.png")
+        ).similar(0.6)
+        document_properties_filename_pattern = Pattern(
+            "document_properties_info.png"
+        ).similar(0.6)
         document_properties_button_pattern = Pattern(
             "document_properties_button.png"
         ).similar(0.6)
