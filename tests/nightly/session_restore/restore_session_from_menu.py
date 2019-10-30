@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="114837",
         test_suite_id="68",
         locales=Locales.ENGLISH,
+        blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
