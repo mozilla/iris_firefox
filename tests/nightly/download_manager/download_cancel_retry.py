@@ -23,6 +23,9 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
+        download_cancelled_pattern = DownloadManager.DownloadState.CANCELLED.similar(
+            0.6
+        )
         region = Screen.TOP_THIRD
 
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
@@ -43,7 +46,7 @@ class Test(FirefoxTest):
             assert expected is True, "Retry download message is displayed."
 
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        expected = region.exists(DownloadManager.DownloadState.CANCELLED, 10)
+        expected = region.exists(download_cancelled_pattern, 10)
         assert expected is True, "Download was cancelled."
 
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY, 10)

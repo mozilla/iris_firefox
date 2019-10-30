@@ -46,20 +46,17 @@ class Test(FirefoxTest):
             click(clear_recent_history_last_hour_pattern)
             for i in range(4):
                 type(Key.DOWN)
+                time.sleep(Settings.DEFAULT_UI_DELAY)
             type(Key.ENTER)
+            time.sleep(Settings.DEFAULT_UI_DELAY)
 
         else:
             for i in range(4):
                 type(Key.DOWN)
+                time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        type(Key.TAB)
-        type(Key.TAB)
-        for i in range(5):
-            type(Key.DOWN)
-        type(Key.SPACE)
-        type(Key.DOWN)
-        type(Key.SPACE)
         type(Key.ENTER)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         # Sometimes Firefox is in a state where it can't receive keyboard input
         # and we need to restore the focus manually.
