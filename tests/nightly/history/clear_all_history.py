@@ -8,7 +8,7 @@ from targets.nightly.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Clear all of the browser History.",
+        description="Clear all of the browser history.",
         locale=["en-US"],
         test_case_id="172045",
         test_suite_id="2000",

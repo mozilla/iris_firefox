@@ -8,7 +8,7 @@ from targets.nightly.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Navigating through a PDF file works properly via pdf.js",
+        description="Navigating through a PDF file in pdf.js",
         test_case_id="3927",
         test_suite_id="65",
         locales=Locales.ENGLISH,

@@ -9,7 +9,7 @@ from targets.nightly.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="The download can be cancelled and retried.",
+        description="A download can be cancelled and retried.",
         locale=["en-US"],
         test_case_id="99470",
         test_suite_id="1827",
