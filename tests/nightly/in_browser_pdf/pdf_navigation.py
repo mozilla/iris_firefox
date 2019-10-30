@@ -46,7 +46,7 @@ class Test(FirefoxTest):
         previous_page_button_pattern = Pattern("previous_page_button.png")
         history_chapter_pattern = Pattern("history_chapter_headline.png")
         text_selection_tool_button = Pattern("text_selection_tool.png").similar(0.6)
-        jump_to_page_field_pattern = Pattern("jump_to_page_field.png")
+        jump_to_page_field_pattern = Pattern("jump_to_page_field.png").similar(0.6)
         next_page_button_pattern = Pattern("next_page_button.png")
         text_selected_pattern = Pattern("text_selected.png")
         hand_tool_button_pattern = Pattern("hand_tool.png").similar(0.6)
@@ -331,10 +331,9 @@ class Test(FirefoxTest):
         ), "'Close' button available in 'Document properties' popup"
 
         click(doc_properties_close_button_pattern)
-        time.sleep(
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )  # To prevent matching popup being opened while it closes
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
+        # To prevent matching popup being opened while it closes
         try:
             expected = wait_vanish(
                 document_properties_filename_pattern, FirefoxSettings.FIREFOX_TIMEOUT

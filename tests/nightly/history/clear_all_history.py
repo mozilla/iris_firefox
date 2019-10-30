@@ -37,7 +37,7 @@ class Test(FirefoxTest):
         assert expected_2, "Firefox page loaded successfully."
 
         # Open the History sidebar.
-        history_sidebar()
+        # history_sidebar()
 
         # Open the Clear Recent History window and select 'Everything'.
         for step in open_clear_recent_history_window():
@@ -61,6 +61,9 @@ class Test(FirefoxTest):
         # Sometimes Firefox is in a state where it can't receive keyboard input
         # and we need to restore the focus manually.
         restore_firefox_focus()
+
+        # Open the History sidebar.
+        history_sidebar()
 
         # Check that all the history was cleared.
         region_left = Screen.LEFT_THIRD
