@@ -125,33 +125,19 @@ else
 fi
 
 # Create download files
-128	
 echo -e "\n${GREEN}  --->  Create download files ${NC}\n"
-129	
 mkdir -p targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
-130	
 mkdir -p targets/nightly/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
-131	
 cd targets/firefox/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
-132	
-133	
+
 dd if=/dev/zero of=1GB.zip bs=1024 count=1024000
-134	
 dd if=/dev/zero of=512MB.zip bs=1024 count=524000
-135	
 dd if=/dev/zero of=200MB.zip bs=1024 count=205000
-136	
 dd if=/dev/zero of=100MB.zip bs=1024 count=102400
-137	
 dd if=/dev/zero of=50MB.zip bs=1024 count=51200
-138	
 dd if=/dev/zero of=20MB.zip bs=1024 count=20500
-139	
 dd if=/dev/zero of=10MB.zip bs=1024 count=10200
-140	
 dd if=/dev/zero of=5MB.zip bs=1024 count=5100
-141	
 cp -R * ../../../../../nightly/local_web/thinkbroadband/thinkbroadband_files/downloaded_archives
-142	
-143	
+
 cd ../../../../../../
