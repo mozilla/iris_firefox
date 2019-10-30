@@ -18,10 +18,10 @@ class Test(FirefoxTest):
         clear_web_console = Pattern("clear.png")
 
         navigate("about:blank")
-        pop_up_region = click_hamburger_menu_option("Web Developer")
+        click_hamburger_menu_option("Web Developer")
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        pop_up_region.click("Browser Console")
+        click("Browser Console")
         time.sleep(Settings.DEFAULT_UI_DELAY)
         assert exists(browser_console, 10), "Browser Console successfully displayed."
         assert exists(clear_web_console, 10), "Clear the web console option is present."
