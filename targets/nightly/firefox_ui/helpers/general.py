@@ -321,15 +321,14 @@ def create_region_for_hamburger_menu():
     """Create region for hamburger menu pop up."""
 
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    region = Screen.RIGHT_THIRD
     try:
-        region.wait(hamburger_menu_pattern, 10)
-        region.click(hamburger_menu_pattern)
+        wait(hamburger_menu_pattern, 10)
+        click(hamburger_menu_pattern)
         sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png").similar(0.6)
-        region.wait(sign_in_to_firefox_pattern, 10)
+        wait(sign_in_to_firefox_pattern, 10)
         if OSHelper.is_linux():
             quit_menu_pattern = Pattern("quit.png").similar(0.6)
-            region.wait(quit_menu_pattern, 5)
+            wait(quit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
                 sign_in_to_firefox_pattern,
@@ -339,7 +338,7 @@ def create_region_for_hamburger_menu():
             )
         elif OSHelper.is_mac():
             help_menu_pattern = Pattern("help.png")
-            region.wait(help_menu_pattern, 5)
+            wait(help_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
                 sign_in_to_firefox_pattern,
@@ -349,7 +348,7 @@ def create_region_for_hamburger_menu():
             )
         else:
             exit_menu_pattern = Pattern("exit.png").similar(0.6)
-            region.wait(exit_menu_pattern, 5)
+            wait(exit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
                 sign_in_to_firefox_pattern,
@@ -724,8 +723,9 @@ def navigate(url):
     """
     try:
         select_location_bar()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste(url)
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
     except Exception:
         raise APIHelperError("No active window found, cannot navigate to page.")

@@ -30,12 +30,19 @@ class Test(FirefoxTest):
         )
         assert test_site_opened, "Pocket test website is opened"
 
-        firefox.restart()
+        if OSHelper.is_windows():
+            minimize_window()
+            firefox.restart()
+            maximize_window()
+        else:
+            firefox.restart()
 
         firefox_restarted = exists(
             LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert firefox_restarted, "Firefox restarted successfully"
+
+        restore_firefox_focus()
 
         click_hamburger_menu_option("Restore")
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
