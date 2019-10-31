@@ -332,11 +332,8 @@ class Test(FirefoxTest):
             close_button_available
         ), "'Close' button available in 'Document properties' popup"
 
-        if OSHelper.is_linux():
-            type(Key.ENTER)
-        else:
-            click(doc_properties_close_button_pattern)
-            time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        region_bottom.click(doc_properties_close_button_pattern)
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         # To prevent matching popup being opened while it closes
         try:
