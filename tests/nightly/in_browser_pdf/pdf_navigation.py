@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         ).similar(0.6)
         doc_properties_close_button_pattern = Pattern(
             "document_properties_close_button.png"
-        ).similar(0.6)
+        ).similar(0.7)
         document_properties_filename_pattern = Pattern(
             "document_properties_info.png"
         ).similar(0.6)
@@ -54,6 +54,7 @@ class Test(FirefoxTest):
 
         region_top = Screen.TOP_THIRD
         region_right = Screen.RIGHT_HALF
+        region_bottom = Screen.BOTTOM_HALF
 
         pdf_file_path = self.get_asset_path("pdf.pdf")
         navigate(pdf_file_path)
@@ -324,7 +325,7 @@ class Test(FirefoxTest):
                 document_properties_opened
             ), "'Document properties' popup successfully opened"
 
-        close_button_available = exists(
+        close_button_available = region_bottom.exists(
             doc_properties_close_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
@@ -336,7 +337,7 @@ class Test(FirefoxTest):
 
         # To prevent matching popup being opened while it closes
         try:
-            expected = wait_vanish(
+            expected = region_bottom.wait_vanish(
                 doc_properties_close_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert expected is True, "'Document properties' popup successfully closed"
