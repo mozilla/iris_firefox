@@ -317,12 +317,13 @@ class Test(FirefoxTest):
 
         click(document_properties_button_pattern)
 
-        document_properties_opened = exists(
-            document_properties_filename_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            document_properties_opened
-        ), "'Document properties' popup successfully opened"
+        if not OSHelper.is_linux():
+            document_properties_opened = exists(
+                document_properties_filename_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            )
+            assert (
+                document_properties_opened
+            ), "'Document properties' popup successfully opened"
 
         close_button_available = exists(
             doc_properties_close_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
@@ -337,7 +338,7 @@ class Test(FirefoxTest):
         # To prevent matching popup being opened while it closes
         try:
             expected = wait_vanish(
-                document_properties_filename_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+                doc_properties_close_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert expected is True, "'Document properties' popup successfully closed"
         except FindError:
