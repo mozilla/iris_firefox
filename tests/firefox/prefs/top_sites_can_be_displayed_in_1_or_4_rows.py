@@ -48,7 +48,7 @@ class Test(FirefoxTest):
             top_site_location.x,
             top_site_location.y,
             Screen.SCREEN_WIDTH // 2,
-            Screen.SCREEN_HEIGHT // 7,
+            Screen.SCREEN_HEIGHT // 11,
         )
 
         try:
@@ -137,13 +137,14 @@ class Test(FirefoxTest):
         :param test_region: image Pattern, locator for sub-region of top site drop-down .
         :return: None.
         """
-        if OSHelper.is_mac():
-            maximize_window()
-        else:
+        if OSHelper.is_linux():
             click(MainWindow.MAXIMIZE_BUTTON)
+        else:
+            maximize_window()
         previous_tab()
         click(dropdown_image, None, region=test_region)
         type(Key.DOWN)
+        time.sleep(Settings.DEFAULT_KEY_SHORTCUT_DELAY)
         type(Key.ENTER)
 
     def resize_browser(self, width, height):
@@ -165,4 +166,4 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         if OSHelper.is_mac():
-            click(Pattern('browser_navigation_bar_mac.png'))
+            click(Pattern('new_tab_icon.png'))
