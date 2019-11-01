@@ -109,7 +109,10 @@ class Test(FirefoxTest):
 
         paste("Tag")
 
-        [type(Key.TAB) for _ in range(2)]
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         paste("test")
 
@@ -150,7 +153,10 @@ class Test(FirefoxTest):
         )
         assert tags_after_exists is True, "Tags field changes are correctly saved"
 
-        [type(Key.TAB) for _ in range(2)]
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         keyword_after_exists = exists(
             keyword_after_editing_pattern, FirefoxSettings.FIREFOX_TIMEOUT
