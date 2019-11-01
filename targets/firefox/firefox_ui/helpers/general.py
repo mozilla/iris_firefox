@@ -526,7 +526,7 @@ def get_pref_value(pref_name):
     time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
     try:
-        value = copy_to_clipboard().split(";"[0])[1]
+        value = copy_to_clipboard().split("\t")[1]
     except Exception as e:
         raise APIHelperError("Failed to retrieve preference value.\n{}".format(e))
 
