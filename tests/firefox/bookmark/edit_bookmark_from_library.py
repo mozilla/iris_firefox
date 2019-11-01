@@ -79,7 +79,7 @@ class Test(FirefoxTest):
 
         open_library()
 
-        library_opened = exists(Library.TAGS)
+        library_opened = exists(Library.TITLE)
         assert library_opened is True, "Library window is reopened"
 
         new_name_bookmark_created = exists(bookmark_new_name_pattern)
