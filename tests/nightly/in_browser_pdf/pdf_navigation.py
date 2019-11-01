@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         ).similar(0.6)
         doc_properties_close_button_pattern = Pattern(
             "document_properties_close_button.png"
-        ).similar(0.6)
+        ).similar(0.5)
         document_properties_filename_pattern = Pattern(
             "document_properties_info.png"
         ).similar(0.6)
@@ -55,6 +55,7 @@ class Test(FirefoxTest):
 
         region_top = Screen.TOP_THIRD
         region_right = Screen.RIGHT_HALF
+        region_bottom = Screen.BOTTOM_HALF
 
         pdf_file_path = self.get_asset_path("pdf.pdf")
         navigate(pdf_file_path)
@@ -302,6 +303,9 @@ class Test(FirefoxTest):
         tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
+
+        page_end()
+
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
@@ -325,19 +329,19 @@ class Test(FirefoxTest):
                 document_properties_opened
             ), "'Document properties' popup successfully opened"
 
-        close_button_available = exists(
+        close_button_available = region_bottom.exists(
             doc_properties_close_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             close_button_available
         ), "'Close' button available in 'Document properties' popup"
 
-        click(doc_properties_close_button_pattern)
+        region_bottom.click(doc_properties_close_button_pattern)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         # To prevent matching popup being opened while it closes
         try:
-            expected = wait_vanish(
+            expected = region_bottom.wait_vanish(
                 doc_properties_close_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert expected is True, "'Document properties' popup successfully closed"
