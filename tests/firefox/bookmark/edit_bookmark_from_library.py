@@ -79,7 +79,7 @@ class Test(FirefoxTest):
 
         open_library()
 
-        library_opened = exists(Library.TAGS)
+        library_opened = exists(Library.TITLE)
         assert library_opened is True, "Library window is reopened"
 
         new_name_bookmark_created = exists(bookmark_new_name_pattern)
@@ -110,8 +110,10 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
         assert tags_edited == "tags, test", "Bookmark's tags are edited"
 
-        type(Key.TAB)
-        type(Key.TAB)
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
         keyword_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
