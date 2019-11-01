@@ -113,8 +113,7 @@ class Test(FirefoxTest):
         if OSHelper.is_mac():
             type(Key.TAB)
         else:
-            type(Key.TAB)
-            type(Key.TAB)
+            [type(Key.TAB) for _ in range(2)]
 
         keyword_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
