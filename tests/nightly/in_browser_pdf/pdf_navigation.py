@@ -302,6 +302,9 @@ class Test(FirefoxTest):
         tools_button_available = region_top.exists(
             tools_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
+
+        page_end()
+
         assert (
             tools_button_available
         ), "'Tools' button available in In-browser PDF viewer"
