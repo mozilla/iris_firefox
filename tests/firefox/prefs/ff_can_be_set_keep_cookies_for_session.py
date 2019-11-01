@@ -33,7 +33,7 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        custom_level_option_exists = exists(custom_level_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        custom_level_option_exists = scroll_until_pattern_found(custom_level_option_pattern, scroll, (-scroll_step,), 5)
         assert custom_level_option_exists, "Custom option exists"
         custom_level_option_loc = find(custom_level_option_pattern)
 

@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         manage_data_button_pattern = Pattern('manage_data_button.png')
         manage_permissions_pattern = Pattern("manage_permissions.png")
         empty_dialog_pattern = Pattern("empty_permissions_list.png")
-        empty_sites_pattern = Pattern("no_sites_listed_window.png")
+        empty_sites_pattern = Pattern("empty_site_list.png")
         allow_button_pattern = Pattern("allow_button.png")
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")
         remove_all_button_pattern = Pattern('remove_all_button.png')
@@ -53,7 +53,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)  # to prevent clicking on wrong location due to fast execution
         click(manage_data_button_pattern)
 
-        empty_dialog_exists = exists(empty_sites_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        empty_dialog_exists = not exists(empty_sites_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert empty_dialog_exists, "The dialog is opened and it is contains only addons site"
 
         type(Key.ESC)  # dismiss current window
