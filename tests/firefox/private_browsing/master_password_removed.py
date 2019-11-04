@@ -17,9 +17,6 @@ class Test(FirefoxTest):
         change_master_password_popup_pattern = Pattern(
             "change_master_password_popup.png"
         )
-        preferences_privacy_find_field_pattern = Pattern(
-            "preferences_privacy_find_field.png"
-        ).similar(0.6)
         master_password_box_is_checked_pattern = Pattern(
             "master_password_box_is_checked.png"
         )
@@ -53,7 +50,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#privacy")
 
         navigated_to_preferences = exists(
-            preferences_privacy_find_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             navigated_to_preferences is True
@@ -124,13 +121,13 @@ class Test(FirefoxTest):
         navigate("about:preferences#privacy")
 
         navigated_to_preferences = exists(
-            preferences_privacy_find_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             navigated_to_preferences is True
         ), "Preferences/privacy page successfully loaded."
 
-        click(preferences_privacy_find_field_pattern)
+        click(AboutPreferences.FIND_IN_OPTIONS)
 
         paste("Use a master password")
 
@@ -196,7 +193,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#privacy")
 
         navigated_to_preferences = exists(
-            preferences_privacy_find_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             navigated_to_preferences is True

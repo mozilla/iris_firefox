@@ -27,7 +27,6 @@ class Test(FirefoxTest):
         country_code_field_pattern = Pattern("country_code_field.png").similar(0.6)
         telephone_field_pattern = Pattern("telephone_field.png").similar(0.6)
         email_field_pattern = Pattern("email_field.png").similar(0.6)
-        find_in_prefs_field_pattern = Pattern("find_in_prefs_field.png").similar(0.6)
         saved_addresses_button_pattern = Pattern("saved_addresses_button.png").similar(
             0.6
         )
@@ -85,10 +84,10 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        find_in_prefs_field_exists = exists(find_in_prefs_field_pattern)
+        find_in_prefs_field_exists = exists(AboutPreferences.FIND_IN_OPTIONS)
         assert find_in_prefs_field_exists, "Preferences search field is available"
 
-        click(find_in_prefs_field_pattern)
+        click(AboutPreferences.FIND_IN_OPTIONS)
 
         type("Autofill")
 
