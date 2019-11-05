@@ -16,14 +16,10 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         location_field_pattern = Pattern("location_field_label.png")
-        name_field_pattern = Pattern("name_bookmark_field.png").similar(0.85)
+        name_field_pattern = Pattern("name_bookmark_field.png").similar(0.7)
         tags_field_pattern = Pattern("tags_field_label.png")
         keyword_field_pattern = Pattern("keyword_field_label.png")
         bookmark_new_name_pattern = Pattern("bookmark_new_name.png")
-        edited_name_pattern = Pattern("edited_bookmark_name_library.png")
-        edited_tags_pattern = Pattern("edited_bookmark_tags_library.png")
-        edited_location_pattern = Pattern("edited_bookmark_location_library.png")
-        edited_keyword_pattern = Pattern("edited_bookmark_keyword_library.png")
         linkedin_logo = Pattern("linkedin_logo.png")
 
         open_library()
@@ -83,20 +79,11 @@ class Test(FirefoxTest):
 
         open_library()
 
-        library_opened = exists(Library.TAGS)
+        library_opened = exists(Library.TITLE)
         assert library_opened is True, "Library window is reopened"
 
         new_name_bookmark_created = exists(bookmark_new_name_pattern)
         assert new_name_bookmark_created is True, '"New Name" bookmark exists'
-
-        fields_location = find(name_field_pattern)
-        fields_width, fields_height = name_field_pattern.get_size()
-        fields_region = Region(
-            fields_location.x - fields_width,
-            fields_location.y - fields_height,
-            fields_width * 10,
-            fields_height * 16,
-        )
 
         click(bookmark_new_name_pattern)
 
@@ -105,32 +92,31 @@ class Test(FirefoxTest):
 
         click(name_field_pattern)
 
-        edit_select_all()
+        name_is_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert name_is_edited == "New Name", "Bookmark's name is edited"
 
-        name_is_edited = exists(edited_name_pattern, region=fields_region)
-        assert name_is_edited is True, "Bookmark's name is edited"
+        type(Key.TAB)
 
-        location_field_displayed = exists(location_field_pattern, region=fields_region)
-        assert location_field_displayed is True, "Location field is displayed"
+        location_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert (
+            location_edited == "http://wikipedia.org/"
+        ), "Bookmark's location is edited"
 
-        click(location_field_pattern, region=fields_region)
+        type(Key.TAB)
 
-        edit_select_all()
+        tags_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert tags_edited == "tags, test", "Bookmark's tags are edited"
 
-        location_edited = exists(edited_location_pattern)
-        assert location_edited is True, "Bookmark's location is edited"
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
 
-        tags_edited = exists(edited_tags_pattern.similar(0.7))
-        assert tags_edited is True, "Bookmark's tags are edited"
+        keyword_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert keyword_edited == "test", "Bookmark's keywords are edited"
 
-        keyword_field_displayed = exists(keyword_field_pattern, region=fields_region)
-        assert keyword_field_displayed is True, "Keywords field is displayed"
-
-        click(keyword_field_pattern, region=fields_region)
-
-        edit_select_all()
-
-        keyword_edited = exists(edited_keyword_pattern)
-        assert keyword_edited is True, "Bookmark's keywords are edited"
-
-        close_tab()
+        close_window_control("auxiliary")

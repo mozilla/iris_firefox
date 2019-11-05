@@ -17,14 +17,14 @@ class Test(FirefoxTest):
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")
         new_modified_bookmark_pattern = Pattern("bookmark_modified.png")
-        name_before_editing_pattern = Pattern("name_field.png")
+        name_before_editing_pattern = Pattern("name_field.png").similar(0.7)
         location_before_editing_pattern = Pattern("location_field.png")
-        tags_before_editing_pattern = Pattern("tags_field.png")
+        tags_before_editing_pattern = Pattern("tags_field.png").similar(0.7)
         keyword_before_editing_pattern = Pattern("keyword_field.png")
-        name_after_editing_pattern = Pattern("name_saved.png")
+        name_after_editing_pattern = Pattern("name_saved.png").similar(0.7)
         location_after_editing_pattern = Pattern("location_saved.png")
-        tags_after_editing_pattern = Pattern("tags_saved.png")
-        keyword_after_editing_pattern = Pattern("keyword_saved.png")
+        tags_after_editing_pattern = Pattern("tags_saved.png").similar(0.7)
+        keyword_after_editing_pattern = Pattern("keyword_saved.png").similar(0.7)
 
         if OSHelper.is_mac():
             other_bookmarks_pattern = Pattern("bookmarks_toolbar.png")

@@ -33,8 +33,12 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        custom_level_option_exists = exists(custom_level_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        hover_location = Location(Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT/2)
+        hover(hover_location)
+
+        custom_level_option_exists = scroll_until_pattern_found(custom_level_option_pattern, scroll, (-scroll_step,), 5)
         assert custom_level_option_exists, "Custom option exists"
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         custom_level_option_loc = find(custom_level_option_pattern)
 
         click(custom_level_option_pattern)

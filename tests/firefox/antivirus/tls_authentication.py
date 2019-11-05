@@ -36,7 +36,7 @@ class Test(FirefoxTest):
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
         if OSHelper.is_windows():
-            mouse_wheel_steps = 500
+            mouse_wheel_steps = 100
         elif OSHelper.is_linux():
             mouse_wheel_steps = 1
         else:
