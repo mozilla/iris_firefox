@@ -379,7 +379,7 @@ class Target(BaseTarget):
                     quit_firefox()
                     status = item.funcargs["firefox"].runner.process_handler.wait(10)
                     if status is None:
-                        item.funcargs["firefox"].browser.runner.stop()
+                        item.funcargs["firefox"].runner.stop()
             else:
                 item.funcargs["firefox"].stop()
             if not target_args.save:
