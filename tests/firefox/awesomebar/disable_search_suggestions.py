@@ -123,5 +123,5 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         assert (
-            "abc" not in get_clipboard()
+            "abc" == get_clipboard()
         ), "Search suggestion are not listed in the Awesomebar"
