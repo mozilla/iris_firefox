@@ -70,6 +70,7 @@ class Test(FirefoxTest):
         ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         type(Key.DOWN)
+        type(Key.DOWN)
         edit_select_all()
         edit_copy()
 
@@ -114,6 +115,7 @@ class Test(FirefoxTest):
             one_off_bar_displayed
         ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
+        type(Key.DOWN)
         type(Key.DOWN)
         edit_select_all()
         edit_copy()

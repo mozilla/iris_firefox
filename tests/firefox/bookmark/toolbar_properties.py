@@ -17,13 +17,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         getting_started_toolbar_bookmark_pattern = Pattern("toolbar_bookmark_icon.png")
         renamed_toolbar_bookmark_pattern = Pattern("renamed_toolbar_bookmark.png")
-        properties_popup_save_button_pattern = Pattern("save_bookmark_name.png")
-        properties_keyword_field_pattern = Pattern("keyword_field.png")
+        properties_popup_save_button_pattern = Pattern("save_bookmark_name.png").similar(0.7)
         bookmark_properties_option = Pattern("properties_option.png")
-        keyword_modified_pattern = Pattern("keyword_modified.png")
-        properties_tags_field_pattern = Pattern("tags_field.png")
-        name_modified_pattern = Pattern("name_modified.png")
-        tags_modified_pattern = Pattern("tags_modified.png")
 
         open_bookmarks_toolbar()
 
@@ -55,60 +50,35 @@ class Test(FirefoxTest):
 
         paste("New Name")
 
-        name_modified = exists(name_modified_pattern)
-        assert (
-            name_modified is True
-        ), "Another value successfully entered into the 'Name' field"
+        [type(Key.TAB) for _ in range(2)]
 
-        keyword_field_available = exists(
-            properties_keyword_field_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        type('Tag')
+
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
+
+        type('keyword')
+
+        type(Key.ENTER)
+
+        bookmarks_folder_available_in_toolbar = exists(
+            renamed_toolbar_bookmark_pattern
         )
         assert (
-            keyword_field_available is True
-        ), "'Keyword' field is available in properties window."
-
-        click(properties_keyword_field_pattern)
-
-        paste("test")
-
-        keyword_edited = exists(keyword_modified_pattern)
-        assert (
-            keyword_edited is True
-        ), "Another value successfully entered into the 'Keyword' field"
-
-        tags_field_available = exists(properties_tags_field_pattern)
-        assert (
-            tags_field_available is True
-        ), "'Tags' field is available in properties window."
-
-        click(properties_tags_field_pattern)
-
-        paste("Tag")
-
-        tags_edited = exists(tags_modified_pattern)
-        assert (
-            tags_edited is True
-        ), "Another value successfully entered into the 'Tags' field"
-
-        click(properties_popup_save_button_pattern)
-
-        bookmark_renamed = exists(
-            renamed_toolbar_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_renamed is True
-        ), "The bookmark information is correctly updated."
-
-        firefox.restart()
-
-        bookmark_renamed = exists(
-            renamed_toolbar_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_renamed is True
-        ), "The bookmark name persists modified after restarting Firefox."
+            bookmarks_folder_available_in_toolbar is True
+        ), "The 'Bookmarks Toolbar' is enabled."
 
         right_click(renamed_toolbar_bookmark_pattern)
+
+        properties_option_available = exists(
+            bookmark_properties_option, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert properties_option_available is True, (
+            "'Properties' option in available in context menu after "
+            "right-click at the bookmark in toolbar."
+        )
 
         click(bookmark_properties_option)
 
@@ -119,14 +89,23 @@ class Test(FirefoxTest):
             properties_opened is True
         ), "Properties for 'Getting Started' window is opened."
 
-        keyword_edited = exists(keyword_modified_pattern)
-        assert (
-            keyword_edited is True
-        ), "'Keyword' value persists modified after restarting Firefox."
+        name_is_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert name_is_edited == "New Name", "Bookmark's name is edited"
 
-        tags_edited = exists(tags_modified_pattern)
-        assert (
-            tags_edited is True
-        ), "'Tags' value persists modified after restarting Firefox."
+        [type(Key.TAB) for _ in range(2)]
+
+        tags_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert tags_edited == "Tag", "Bookmark's tags are edited"
+
+        if OSHelper.is_mac():
+            type(Key.TAB)
+        else:
+            [type(Key.TAB) for _ in range(2)]
+
+        keyword_edited = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        assert keyword_edited == "keyword", "Bookmark's keywords are edited"
 
         type(Key.ESC)

@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         # Click the Settings gear button to navigate to the 'about:preferences#search' page.
         click(search_settings_pattern)
 
-        expected = exists(search_engine_pattern, 10)
+        expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
         assert (
             expected
         ), "Successfully navigated to the 'about:preferences#search' page."
@@ -55,7 +55,7 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        expected = exists(search_engine_pattern, 10)
+        expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
         assert (
             expected
         ), "Successfully navigated to the 'about:preferences#search' page."

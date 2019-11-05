@@ -78,12 +78,14 @@ def change_preference(pref_name, value):
     :param value: Preference's value after the change.
     :return: None.
     """
+    if not isinstance(value, str):
+        value = str(value).lower()
     try:
         new_tab()
         navigate("about:config")
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        type(Key.ENTER)
+        type(Key.SPACE)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         paste(pref_name)
@@ -92,7 +94,7 @@ def change_preference(pref_name, value):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
-            retrieved_value = copy_to_clipboard()
+            retrieved_value = copy_to_clipboard().split("\t")[1]
         except Exception:
             raise APIHelperError("Failed to retrieve preference value.")
 
@@ -101,13 +103,12 @@ def change_preference(pref_name, value):
             return None
         else:
             type(Key.ENTER)
-            dialog_box_pattern = Pattern("preference_dialog_icon.png")
-            try:
-                wait(dialog_box_pattern, 3)
-                paste(value)
-                type(Key.ENTER)
-            except FindError:
-                pass
+            if not (value == "true" or value == "false"):
+                try:
+                    paste(value)
+                    type(Key.ENTER)
+                except FindError:
+                    pass
 
         close_tab()
     except Exception:
@@ -142,7 +143,7 @@ def check_preference(pref_name, value):
     time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
     try:
-        retrieved_value = copy_to_clipboard().split(";"[0])[1]
+        retrieved_value = copy_to_clipboard().split("\t")[1]
 
     except Exception as e:
         raise APIHelperError("Failed to retrieve preference value. %s" % e.message)
@@ -172,7 +173,7 @@ def click_hamburger_menu_option(option):
     """
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
-        wait(hamburger_menu_pattern, 5)
+        wait(hamburger_menu_pattern, 10)
         logger.debug("Hamburger menu found.")
     except FindError:
         raise APIHelperError(
@@ -180,11 +181,14 @@ def click_hamburger_menu_option(option):
         )
     else:
         try:
-            region = create_region_for_hamburger_menu()
-            region.click(option)
-            return region
+            ham_region = create_region_for_hamburger_menu()
+            ham_region.click(option)
         except FindError:
-            raise APIHelperError("Can't find the option in the page, aborting test.")
+            raise APIHelperError(
+                "Can't find the option: "
+                + option
+                + " in the hamburger menu. Aborting test."
+            )
 
 
 def click_window_control(button, window_type="auxiliary"):
@@ -318,12 +322,12 @@ def create_region_for_hamburger_menu():
 
     hamburger_menu_pattern = NavBar.HAMBURGER_MENU
     try:
-        wait(hamburger_menu_pattern, 5)
+        wait(hamburger_menu_pattern, 10)
         click(hamburger_menu_pattern)
-        sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
+        sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png").similar(0.6)
         wait(sign_in_to_firefox_pattern, 10)
         if OSHelper.is_linux():
-            quit_menu_pattern = Pattern("quit.png")
+            quit_menu_pattern = Pattern("quit.png").similar(0.6)
             wait(quit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
@@ -343,7 +347,7 @@ def create_region_for_hamburger_menu():
                 padding_right=20,
             )
         else:
-            exit_menu_pattern = Pattern("exit.png")
+            exit_menu_pattern = Pattern("exit.png").similar(0.6)
             wait(exit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
                 None,
@@ -719,8 +723,9 @@ def navigate(url):
     """
     try:
         select_location_bar()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste(url)
-        time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
     except Exception:
         raise APIHelperError("No active window found, cannot navigate to page.")

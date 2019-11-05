@@ -103,11 +103,11 @@ if command -v python3 &>/dev/null; then
         echo -e "\n${GREEN} ---> Verified for specific python3.7. Skipped install. Already installed. ${NC}\n"
     else
         echo -e "${GREEN}  --->  Update to Python 3.7 . ${NC}\n"
-        powershell -Command "scoop update python" | grep 'bucket already exists.' &> /dev/null
+        powershell -Command "scoop update python37" | grep 'bucket already exists.' &> /dev/null
     fi
 else
     echo -e "\n${GREEN}  --->  Installing Python 3.7 #####${NC}\n"
-    powershell -Command "scoop install python" | grep 'bucket already exists.' &> /dev/null
+    powershell -Command "scoop install python37" | grep 'bucket already exists.' &> /dev/null
     if [ $? != 0 ]; then
        echo -e "\n${RED} --->  Python 3.7 now installed. You need to restart the terminal one more time and run the bootstrap.sh again to complete the install.${NC}\n"
        echo -e "\n${RED} --->  Last restart needed in order to use 'python3' and install python3 dependent packages ${NC}\n"
@@ -118,10 +118,10 @@ fi
 
 echo -e "\n${GREEN}  --->  installing/upgrading pipenv ${NC}\n"
 if command -v pipenv &>/dev/null; then
-    powershell -Command "pip3.7 install --upgrade pip"
-    powershell -Command "pip3.7 install --upgrade pipenv"
+    powershell -Command "pip install --upgrade pip"
+    powershell -Command "pip install --upgrade pipenv"
 else
-    powershell -Command "pip3.7 install pipenv"
+    powershell -Command "pip install pipenv"
 fi
 
 # Create download files

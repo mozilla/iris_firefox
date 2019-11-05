@@ -17,9 +17,7 @@ class Test(FirefoxTest):
         change_master_password_popup_pattern = Pattern(
             "change_master_password_popup.png"
         )
-        preferences_privacy_find_field_pattern = Pattern(
-            "preferences_privacy_find_field.png"
-        ).similar(0.6)
+        preferences_privacy_find_field_pattern = AboutPreferences.FIND_IN_OPTIONS
         master_password_box_is_checked_pattern = Pattern(
             "master_password_box_is_checked.png"
         )

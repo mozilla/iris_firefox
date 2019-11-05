@@ -74,7 +74,7 @@ class Test(FirefoxTest):
         expected = region_left.exists(NavBar.LIBRARY_MENU)
         assert expected is True, "'Library Menu dialog' button is aligned RTL."
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
         download_files_list = [
             DownloadFiles.SMALL_FILE_20MB,
             DownloadFiles.SMALL_FILE_10MB,
