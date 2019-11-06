@@ -15,6 +15,8 @@ class Test(FirefoxTest):
         # blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         test_site_opened = exists(
@@ -44,7 +46,11 @@ class Test(FirefoxTest):
         assert firefox_restarted, "Firefox restarted successfully"
 
         restore_firefox_focus()
-        click_hamburger_menu_option("Restore")
+        # click_hamburger_menu_option("Restore")
+        menu_button_present = exists(
+            hamburger_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert menu_button_present, "The hamburger menu is present"
 
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
         next_tab()
