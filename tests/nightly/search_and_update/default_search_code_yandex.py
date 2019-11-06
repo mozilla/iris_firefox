@@ -46,7 +46,7 @@ class Test(FirefoxTest):
         text_pattern_selected = Pattern("focus_text_selected.png")
 
         change_preference("browser.search.widget.inNavBar", True)
-        change_preference("browser.tabs.warnOnClose", True)
+        change_preference("browser.tabs.warnOnClose", False)
 
         default_search_engine_yandex_pattern = Pattern(
             "default_search_engine_yandex.png"

@@ -16,6 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+        restore_option_pattern = Pattern("restore_option.png").similar(0.9)
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -45,12 +46,19 @@ class Test(FirefoxTest):
         )
         assert firefox_restarted, "Firefox restarted successfully"
 
-        restore_firefox_focus()
-        # click_hamburger_menu_option("Restore")
         menu_button_present = exists(
             hamburger_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
         assert menu_button_present, "The hamburger menu is present"
+
+        click(hamburger_menu_pattern)
+
+        restore_option_present = exists(
+            hamburger_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert restore_option_present, "The Restore Previous Session option is present"
+
+        click(restore_option_pattern)
 
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
         next_tab()
