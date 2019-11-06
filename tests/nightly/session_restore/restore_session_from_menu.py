@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         test_case_id="114837",
         test_suite_id="68",
         locales=Locales.ENGLISH,
-        blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
+        # blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -43,29 +43,8 @@ class Test(FirefoxTest):
         )
         assert firefox_restarted, "Firefox restarted successfully"
 
-        if OSHelper.is_linux():
-            DELAY = 0.5
-            restore_firefox_focus()
-            select_location_bar()
-            type(Key.TAB)
-            time.sleep(DELAY)
-            type(Key.TAB)
-            time.sleep(DELAY)
-            type(Key.RIGHT)
-            time.sleep(DELAY)
-            type(Key.RIGHT)
-            time.sleep(DELAY)
-            type(Key.RIGHT)
-            time.sleep(DELAY)
-            type(Key.ENTER)
-            time.sleep(DELAY)
-            try:
-                region = Screen.RIGHT_HALF
-                region.click("Restore")
-            except FindError:
-                raise FindError("Failed to click the Restore option.")
-        else:
-            click_hamburger_menu_option("Restore")
+        restore_firefox_focus()
+        click_hamburger_menu_option("Restore")
 
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
         next_tab()
