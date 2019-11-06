@@ -33,7 +33,6 @@ class Test(FirefoxTest):
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         download_file(file_to_download, DownloadFiles.OK)
-        time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
 
         expected = region.exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Downloads button is displayed."

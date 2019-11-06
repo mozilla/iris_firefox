@@ -226,7 +226,7 @@ def download_file(
         logger.debug("The 'Save file' option is present in the page.")
 
         # prevent click on inactive button on windows
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         click(DownloadFiles.SAVE_FILE)
 
