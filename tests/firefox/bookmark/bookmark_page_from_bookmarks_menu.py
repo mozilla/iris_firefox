@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        bookmark_this_page_pattern = Pattern("bookmark_this_page.png")
+        bookmark_this_page_pattern = Pattern("bookmark_this_page.png").similar(.7)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
