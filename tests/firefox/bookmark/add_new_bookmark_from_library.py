@@ -56,6 +56,8 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
+        breakpoint()
+
         bookmark_exists = exists(soap_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert (
             bookmark_exists is True
