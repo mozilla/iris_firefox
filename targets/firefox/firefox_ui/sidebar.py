@@ -37,7 +37,7 @@ class Sidebar(object):
             VIEW_BY_MOST_VISITED_CHECKED = Pattern("by_most_visited_checked.png")
 
         class Timeline(object):
-            TODAY = Pattern("history_today.png")
+            TODAY = Pattern("history_today.png").similar(0.7)
             YESTERDAY = Pattern("history_yesterday.png")
             LAST_7_DAYS = Pattern("history_last_7_days.png")
             JANUARY = Pattern("history_january.png")
