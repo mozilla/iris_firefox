@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        soap_bookmark_pattern = Pattern("soap_bookmark.png").similar(0.6)
+        soap_bookmark_pattern = Pattern("soap_bookmark.png")
         new_bookmark_window_pattern = Pattern("new_bookmark_window.png")
 
         open_library()
@@ -55,8 +55,6 @@ class Test(FirefoxTest):
         paste("SOAP")
 
         type(Key.ENTER)
-
-        breakpoint()
 
         bookmark_exists = exists(soap_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert (
