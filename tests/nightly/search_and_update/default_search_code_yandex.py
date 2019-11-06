@@ -38,7 +38,7 @@ class Test(FirefoxTest):
             "browser.search.region": fx_region_code,
             "browser.search.cohort": "jan18-1",
         },
-        blocked_by={"id": "issue_4010", "platform": OSPlatform.ALL},
+        # blocked_by={"id": "issue_4010", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE

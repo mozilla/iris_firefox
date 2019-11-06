@@ -225,9 +225,8 @@ def download_file(
         wait(DownloadFiles.SAVE_FILE, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         logger.debug("The 'Save file' option is present in the page.")
 
-        time.sleep(
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )  # prevent click on inactive button on windows
+        # prevent click on inactive button on windows
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         click(DownloadFiles.SAVE_FILE)
 
