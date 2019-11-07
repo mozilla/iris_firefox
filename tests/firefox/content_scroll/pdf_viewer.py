@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         presentation_mode_content_pattern = Pattern(
             "presentation_mode_content.png"
         ).similar(0.6)
-        presentation_mode_enabled_pattern = Pattern("presentation_mode_enabled.png")
+        presentation_mode_enabled_pattern = Pattern("presentation_mode_enabled.png").similar(0.7)
         after_scroll_content_presentation_mode_pattern = Pattern(
             "pdf_content_presentation_mode.png"
         ).similar(0.6)
