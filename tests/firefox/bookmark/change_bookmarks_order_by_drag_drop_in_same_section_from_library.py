@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         get_involved_bookmark_pattern = Pattern("library_get_involved_bookmark.png")
         help_and_tutorials_bookmark_pattern = Pattern(
             "library_help_and_tutorials_bookmark.png"
-        )
+        ).similar(0.7)
         help_and_tutorial_first_line_pattern = Pattern(
             "help_and_tutorial_first_line.png"
         )

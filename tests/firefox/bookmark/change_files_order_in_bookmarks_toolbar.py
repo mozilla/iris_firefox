@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         exclude=[OSPlatform.MAC, OSPlatform.LINUX],
     )
     def run(self, firefox):
-        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR.similar(0.7)
         bookmarks_most_visited = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         mozilla_bookmark_icon_pattern = Pattern("mozilla_bookmark_icon.png")
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
