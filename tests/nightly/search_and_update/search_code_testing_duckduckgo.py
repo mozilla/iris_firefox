@@ -49,7 +49,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         select_location_bar()
-        type("eve", interval=0.25)
+        type("test", interval=0.25)
         type(Key.ENTER)
 
         test_search_duckduckgo_exists = exists(
