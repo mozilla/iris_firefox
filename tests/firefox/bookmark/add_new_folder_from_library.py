@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        iris_new_folder_pattern = Pattern("iris_new_folder.png")
+        iris_new_folder_pattern = Pattern("iris_new_folder.png").similar(0.6)
         if OSHelper.is_linux():
             new_folder_bookmark_bookmark = Pattern("new_folder_bookmark.png")
 

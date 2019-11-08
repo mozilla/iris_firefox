@@ -46,7 +46,7 @@ class Test(FirefoxTest):
         text_pattern_selected = Pattern("focus_text_selected.png")
 
         change_preference("browser.search.widget.inNavBar", True)
-        change_preference("browser.tabs.warnOnClose", True)
+        change_preference("browser.tabs.warnOnClose", False)
 
         default_search_engine_yandex_pattern = Pattern(
             "default_search_engine_yandex.png"
@@ -64,14 +64,14 @@ class Test(FirefoxTest):
 
         # Perform a search using the awesome bar and then clear the content from it.
         select_location_bar()
-        type("test", interval=0.25)
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        type("taylor", interval=0.25)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?text=test&clid=2186621" in url_text, (
+        assert "/search/?text=taylor&clid=2186621" in url_text, (
             "Client search code is correct for searches from"
             "awesomebar, region " + fx_region_code + "."
         )
@@ -81,14 +81,14 @@ class Test(FirefoxTest):
 
         # Perform a search using the search bar.
         select_search_bar()
-        type("test", interval=0.25)
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        type("bridge", interval=0.25)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?text=test&clid=2186618" in url_text, (
+        assert "/search/?text=bridge&clid=2186618" in url_text, (
             "Client search code is correct for searches from "
             "search bar, region " + fx_region_code + "."
         )
@@ -124,14 +124,14 @@ class Test(FirefoxTest):
         click(yandex_logo_content_search_field_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        type("beats", interval=0.25)
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        type("vlad", interval=0.25)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/search/?text=beats&clid=2186620" in url_text, (
+        assert "/search/?text=vlad&clid=2186621" in url_text, (
             "Client search code is correct for searches "
-            "from content search field, region " + fx_region_code + "."
+            "from content search field, region " + fx_region_code + ". Got " + url_text
         )

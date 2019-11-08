@@ -12,6 +12,10 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="108253",
         test_suite_id="1902",
+        preferences={
+            "extensions.privatebrowsing.notification": True,
+            "browser.warnOnQuit": False,
+        },
         blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):

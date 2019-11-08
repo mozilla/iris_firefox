@@ -15,8 +15,10 @@ class Test(FirefoxTest):
         test_suite_id="1827",
         profile=Profiles.BRAND_NEW,
         preferences={
+            "browser.download.autohideButton": False,
             "browser.download.dir": PathManager.get_downloads_dir(),
             "browser.download.folderList": 2,
+            "browser.download.panel.shown": True,
             "browser.download.useDownloadDir": True,
             "browser.warnOnQuit": False,
         },
@@ -32,7 +34,7 @@ class Test(FirefoxTest):
 
         download_file(file_to_download, DownloadFiles.OK)
 
-        expected = region.exists(NavBar.DOWNLOADS_BUTTON, 5)
+        expected = region.exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Downloads button is displayed."
         region.click(NavBar.DOWNLOADS_BUTTON)
         time.sleep(Settings.DEFAULT_UI_DELAY)

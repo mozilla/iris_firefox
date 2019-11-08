@@ -15,6 +15,9 @@ class Test(FirefoxTest):
         blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
+        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+        restore_option_pattern = Pattern("restore_option.png").similar(0.9)
+
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         test_site_opened = exists(
@@ -43,29 +46,19 @@ class Test(FirefoxTest):
         )
         assert firefox_restarted, "Firefox restarted successfully"
 
-        if OSHelper.is_linux():
-            DELAY = 0.5
-            restore_firefox_focus()
-            select_location_bar()
-            type(Key.TAB)
-            time.sleep(DELAY)
-            type(Key.TAB)
-            time.sleep(DELAY)
-            type(Key.RIGHT)
-            time.sleep(DELAY)
-            type(Key.RIGHT)
-            time.sleep(DELAY)
-            type(Key.RIGHT)
-            time.sleep(DELAY)
-            type(Key.ENTER)
-            time.sleep(DELAY)
-            try:
-                region = Screen.RIGHT_HALF
-                region.click("Restore")
-            except FindError:
-                raise FindError("Failed to click the Restore option.")
-        else:
-            click_hamburger_menu_option("Restore")
+        menu_button_present = exists(
+            hamburger_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert menu_button_present, "The hamburger menu is present"
+
+        click(hamburger_menu_pattern)
+
+        restore_option_present = exists(
+            hamburger_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
+        assert restore_option_present, "The Restore Previous Session option is present"
+
+        click(restore_option_pattern)
 
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
         next_tab()
