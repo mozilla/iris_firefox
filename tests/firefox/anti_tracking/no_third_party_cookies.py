@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         all_third_party_cookies_pattern = Pattern("all_third_party_cookies.png")
-        cookies_list_empty_pattern = Pattern("cookies_list_empty.png")
+        cookies_list_empty_pattern = Pattern("cookies_list_empty.png").similar(0.7)
         block_cookies_ticked_pattern = Pattern("block_cookies_ticked.png").similar(0.9)
         block_cookies_unticked_pattern = Pattern("block_cookies_unticked.png").similar(
             0.9
