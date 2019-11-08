@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         cursor_keys_to_navigate_checkbox_pattern = Pattern(
             "always use the cursor keys to navigate.png"
-        )
+        ).similar(0.6)
         general_prefs_section_pattern = Pattern("general_preferences_section.png")
         soap_wiki_local_text_with_cursor = Pattern("soap_wiki_local_text_with_cursor.png")
         soap_wiki_local_text_without_cursor_reference = Pattern("soap_wiki_local_text_without_cursor_reference.png")
@@ -59,16 +59,16 @@ class Test(FirefoxTest):
         )
 
         cursor_keys_to_navigate_unchecked = exists(
-            AboutPreferences.UNCHECKED_BOX, region=cursor_keys_to_navigate_region
+            AboutPreferences.UNCHECKED_BOX, region = cursor_keys_to_navigate_region
         )
         assert (
             cursor_keys_to_navigate_unchecked
         ), "'Always use the cursor keys to navigate within pages' checkbox is checked"
 
-        click(AboutPreferences.UNCHECKED_BOX, region=cursor_keys_to_navigate_region)
+        click(AboutPreferences.UNCHECKED_BOX, region = cursor_keys_to_navigate_region)
 
         cursor_keys_to_navigate_checked = exists(
-            AboutPreferences.CHECKED_BOX, region=cursor_keys_to_navigate_region
+            AboutPreferences.CHECKED_BOX, region = cursor_keys_to_navigate_region
         )
         assert (
             cursor_keys_to_navigate_checked
@@ -97,16 +97,18 @@ class Test(FirefoxTest):
 
         click(soap_wiki_local_text_without_cursor_reference)
         cursor_keys_appears_on_click = exists(soap_wiki_local_text_with_cursor, FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-                                              region=soap_local_text_location_region)
+                                              region = soap_local_text_location_region)
         assert cursor_keys_appears_on_click, "The cursor keys (the '|' symbol) does not appear in the text"
 
         # Move cursor key out of text
-        for x in range(5):
+        for x in range(8):
             type(Key.RIGHT)
 
-        cursor_keys_appears_on_click = not exists(soap_wiki_local_text_with_cursor,
-                                              region=soap_local_text_location_region)
-        assert cursor_keys_appears_on_click, "The cursor keys (the '|' symbol) does not appear in the text"
+        cursor_keys_should_not_appears_on_click = exists(soap_wiki_local_text_without_cursor,
+                                                       FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                                                       region = soap_local_text_location_region)
+        assert cursor_keys_should_not_appears_on_click, "The cursor keys (the '|' symbol) is still appearing " \
+                                                        "in the referenced text"
 
         navigate("about:preferences#general")
 
@@ -128,19 +130,19 @@ class Test(FirefoxTest):
            "in 'General' preferences section"
 
         cursor_keys_to_navigate_checked = exists(
-            AboutPreferences.CHECKED_BOX, region=cursor_keys_to_navigate_region
+            AboutPreferences.CHECKED_BOX, region = cursor_keys_to_navigate_region
         )
         assert (
             cursor_keys_to_navigate_checked
         ), "'Always use the cursor keys to navigate within pages' checkbox is unchecked"
 
-        click(AboutPreferences.CHECKED_BOX, region=cursor_keys_to_navigate_region)
+        click(AboutPreferences.CHECKED_BOX, region = cursor_keys_to_navigate_region)
 
         cursor_keys_to_navigate_unchecked = exists(
-            AboutPreferences.UNCHECKED_BOX, region=cursor_keys_to_navigate_region
+            AboutPreferences.UNCHECKED_BOX, region = cursor_keys_to_navigate_region
         )
         assert (
-            cursor_keys_to_navigate_checked
+            cursor_keys_to_navigate_unchecked
         ), "'Always use the cursor keys to navigate within pages' checkbox is checked"
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
@@ -154,9 +156,5 @@ class Test(FirefoxTest):
 
         cursor_keys_does_not_appears_on_click = exists(soap_wiki_local_text_without_cursor,
                                                        FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-                                                       region=soap_local_text_location_region)
+                                                       region = soap_local_text_location_region)
         assert cursor_keys_does_not_appears_on_click, "The cursor keys (the '|' symbol) appear in the text"
-
-
-
-
