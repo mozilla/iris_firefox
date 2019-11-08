@@ -19,9 +19,13 @@ class Test(FirefoxTest):
             "always use the cursor keys to navigate.png"
         ).similar(0.6)
         general_prefs_section_pattern = Pattern("general_preferences_section.png")
-        soap_wiki_local_text_with_cursor = Pattern("soap_wiki_local_text_with_cursor.png")
         soap_wiki_local_text_without_cursor_reference = Pattern("soap_wiki_local_text_without_cursor_reference.png")
         soap_wiki_local_text_without_cursor = Pattern("soap_wiki_local_text_without_cursor.png")
+
+        if OSHelper.is_linux():
+            soap_wiki_local_text_with_cursor = Pattern("soap_wiki_local_text_with_cursor.png").similar(0.6)
+        else:
+            soap_wiki_local_text_with_cursor = Pattern("soap_wiki_local_text_with_cursor.png")
 
         box_width, box_height = AboutPreferences.UNCHECKED_BOX.get_size()
 
