@@ -87,6 +87,8 @@ class Test(FirefoxTest):
 
         right_click_and_type(console_warning_label_pattern, Settings.DEFAULT_UI_DELAY, "c")
 
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
         console_warning_displayed = "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was " \
                                     "blocked by Safe Browsing." in get_clipboard().replace("\n", "").replace("\r", "")
         assert console_warning_displayed, "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was " \
