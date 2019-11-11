@@ -24,8 +24,8 @@ class Test(FirefoxTest):
         bookmarks_toolbar_most_visited_pattern = (
             SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         )
-        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png")
-        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png")
+        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png").similar(0.7)
+        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png").similar(0.7)
         iris_tab_icon = Pattern("iris_logo_tab.png")
         mozilla_tab_icon = Pattern("mozilla_logo_tab.png")
 
