@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         hover_restore_control_pattern = Pattern("hover_restore_control.png")
         window_controls_maximize_pattern = Pattern("window_controls_maximize.png")
         hover_maximize_control_pattern = Pattern("hover_maximize_control.png")
-        window_controls_close_pattern = Pattern("window_controls_close.png")
+        window_controls_close_pattern = AuxiliaryWindow.CLOSE_BUTTON
         hover_close_control_pattern = Pattern("hover_close_control.png")
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
