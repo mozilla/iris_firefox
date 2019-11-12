@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="65",
         locales=Locales.ENGLISH,
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         dialogue_window_cancel_button = History.ClearRecentHistory.CANCEL.similar(0.75)
         introduction_chapter_headline_pattern = Pattern(
             "introduction_chapter_headline_pres_mode.png"

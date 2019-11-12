@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         preferences={"pdfjs.defaultZoomValue": "100"},
         blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         pdf_file_last_page_contents_rotated_pattern = Pattern(
             "last_page_contents_rotated.png"
         )

@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id="3928",
         test_suite_id="65",
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         pdf_file_page_contents_zoomed_in_pattern = Pattern(
             "pdf_file_page_contents_zoomed_in.png"
         )
