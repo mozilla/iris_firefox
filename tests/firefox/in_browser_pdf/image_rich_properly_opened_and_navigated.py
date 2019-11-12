@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_case_id="3933",
         test_suite_id="65",
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         zoom_in_button_pattern = Pattern("zoom_in_button.png").similar(0.7)
         zoom_out_button_pattern = Pattern("zoom_out_button.png")
         next_page_button_pattern = Pattern("next_page_button.png")

@@ -13,7 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="65",
         locales=Locales.ENGLISH,
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         actual_size_zoom_level_option_pattern = Pattern(
             "actual_size_zoom_level_option.png"
         )
