@@ -96,12 +96,10 @@ class Test(FirefoxTest):
         bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
         new_tab()
         navigate('https://mozillians.org/en-US/')
-        try:
-            wait(bookmark_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            logger.debug("Bookmark star is present on the page.")
-            click(bookmark_button_pattern)
-        except FindError:
-            raise FindError("Bookmark star is not present on the page, aborting.")
+
+        bookmark_button_pattern_exists= exists(bookmark_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_button_pattern_exists, "Bookmark star is not present on the page"
+        click(bookmark_button_pattern)
 
         page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert page_bookmarked_assert, "The page was successfully bookmarked via the star button."
