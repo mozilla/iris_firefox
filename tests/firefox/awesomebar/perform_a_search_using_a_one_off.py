@@ -66,15 +66,12 @@ class Test(FirefoxTest):
         assert expected, "Bookmarked page found between search suggestions."
 
         select_location_bar()
-        paste("o")
+        paste("f")
 
         expected = region.exists(
             search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert expected, "Opened tab found between search suggestions."
-
-        select_location_bar()
-        paste("f")
 
         expected = region.exists(
             search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT
