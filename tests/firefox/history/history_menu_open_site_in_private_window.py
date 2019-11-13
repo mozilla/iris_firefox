@@ -13,6 +13,10 @@ class Test(FirefoxTest):
         test_case_id="118808",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
+        preferences={
+            "browser.warnOnQuit": False,
+            "extensions.privatebrowsing.notification": True,
+        },
     )
     def run(self, firefox):
         recent_history_mozilla_pattern = LocalWeb.MOZILLA_BOOKMARK

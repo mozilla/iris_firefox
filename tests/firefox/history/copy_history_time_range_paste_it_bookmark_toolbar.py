@@ -23,8 +23,8 @@ class Test(FirefoxTest):
         view_bookmarks_toolbar = (
             LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         )
-        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png")
-        history_today_pattern = Library.HISTORY_TODAY
+        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png").similar(0.7)
+        history_today_pattern = Library.HISTORY_TODAY.similar(0.7)
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
@@ -61,7 +61,7 @@ class Test(FirefoxTest):
 
         right_click_and_type(history_today_pattern, keyboard_action="c")
 
-        click_window_control("close")
+        close_window_control("auxiliary")
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 

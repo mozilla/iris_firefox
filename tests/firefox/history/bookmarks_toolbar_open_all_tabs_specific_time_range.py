@@ -21,14 +21,14 @@ class Test(FirefoxTest):
         history_today_pattern = Library.HISTORY_TODAY
         new_tab_pattern = Pattern("new_tab.png")
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
-        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png")
+        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png").similar(0.7)
         view_bookmarks_toolbar = (
             LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         )
         bookmarks_toolbar_most_visited_pattern = (
             SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         )
-        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png")
+        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png").similar(0.7)
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)

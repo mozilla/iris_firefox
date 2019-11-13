@@ -18,6 +18,7 @@ class Test(FirefoxTest):
         console_element_picker_pattern = Pattern("console_element_picker.png")
         testsafebrowsing_tab_pattern = Pattern("testsafebrowsing_tab.png")
         mozilla_tab_logo_pattern = Pattern("mozilla_tab_logo.png")
+        console_warning_label_pattern = Pattern('console_warning_label.png')
 
         home_button_displayed = exists(
             NavBar.HOME_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
@@ -72,22 +73,23 @@ class Test(FirefoxTest):
 
         click(warning_frame_location)
 
-        edit_select_all()
+        copy_to_clipboard()
 
-        edit_copy()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         text_displayed = get_clipboard().replace("\n", "").replace("\r", "")
         assert (
             "Visiting this website may harm your computer" in text_displayed
         ), "The Red warning page and warning message displayed"
 
-        console_warning_displayed = exists(
-            "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was "
-            + "blocked by Safe Browsing.",
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            console_region,
-        )
-        assert console_warning_displayed, (
-            "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was "
-            + "blocked by Safe Browsing. warning message displayed"
-        )
+        console_warning_label_displayed = exists(console_warning_label_pattern)
+        assert console_warning_label_displayed, 'console_warning_label_displayed'
+
+        right_click_and_type(console_warning_label_pattern, Settings.DEFAULT_UI_DELAY, "c")
+
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        console_warning_displayed = "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was " \
+                                    "blocked by Safe Browsing." in get_clipboard().replace("\n", "").replace("\r", "")
+        assert console_warning_displayed, "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was " \
+                                          "blocked by Safe Browsing. warning message displayed"

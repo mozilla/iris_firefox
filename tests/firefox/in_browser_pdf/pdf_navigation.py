@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH,
         preferences={"pdfjs.defaultZoomValue": "100"},
     )
-    def test_run(self, firefox):
+    def run(self, firefox):
         pdf_file_last_page_contents_rotated_pattern = Pattern(
             "last_page_contents_rotated.png"
         )

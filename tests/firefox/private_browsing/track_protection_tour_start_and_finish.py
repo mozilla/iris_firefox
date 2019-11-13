@@ -14,6 +14,10 @@ class Test(FirefoxTest):
         locales=["en-US"],
         fx_version="<=65",
         profile=Profiles.BRAND_NEW,
+        preferences={
+            "browser.warnOnQuit": False,
+            "extensions.privatebrowsing.notification": True,
+        },
     )
     def run(self, firefox):
         see_how_it_works_button_pattern = PrivateWindow.SEE_HOW_IT_WORKS_BUTTON
