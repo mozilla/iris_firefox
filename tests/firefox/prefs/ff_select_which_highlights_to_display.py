@@ -40,7 +40,7 @@ class Test(FirefoxTest):
         navigate("about:newtab")
         navigate("https://github.com/")
 
-        github_page_loaded = exists(github_logo, FirefoxSettings.FIREFOX_TIMEOUT)
+        github_page_loaded = exists(github_logo, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert github_page_loaded, "Github page could not be loaded successfully"
 
         navigate("about:preferences#home")
@@ -117,24 +117,17 @@ class Test(FirefoxTest):
         previous_tab()
         navigate('https://www.mozilla.org/en-US/')
 
-        mozilla_logo_full_exists = exists(mozilla_logo_full, FirefoxSettings.FIREFOX_TIMEOUT)
+        mozilla_logo_full_exists = exists(mozilla_logo_full, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_logo_full_exists, "Mozilla URL https://www.mozilla.org/en-US/' couldn't load"
 
-        if OSHelper.is_mac():
-            type(text='s', modifier=KeyModifier.CMD)
-        else:
-            type(text='s', modifier=KeyModifier.CTRL)
-
+        open_save_page()
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         type(Key.ENTER)
         if OSHelper.is_mac() or OSHelper.is_linux():
-            try:
-                wait(replace_button_duplicate_check)
+            replace_button_duplicate_check_exists = exists(replace_button_duplicate_check,
+                                                           FirefoxSettings.FIREFOX_TIMEOUT)
+            if replace_button_duplicate_check_exists:
                 click(replace_button_duplicate_check)
-            except FindError:
-                # No exception handling needed here as replace button only appear in case of duplicate download
-                # If the replace button doesn't appear, it means first-time download, hence proceed to next step
-                pass
         else:
             type(text='y', modifier=KeyModifier.ALT)
         download_history_button_exists = exists(download_history_button, FirefoxSettings.FIREFOX_TIMEOUT)
