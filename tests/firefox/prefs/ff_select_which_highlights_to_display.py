@@ -38,31 +38,21 @@ class Test(FirefoxTest):
         ]
         # Pre-requisite for "Visited Pages" validation
         navigate("about:newtab")
-        navigate('https://github.com/')
-        try:
-            wait(github_logo, FirefoxSettings.FIREFOX_TIMEOUT)
-        except FindError:
-            raise FindError('Github page could not loaded successfully')
+        navigate("https://github.com/")
+
+        github_page_loaded = exists(github_logo, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert github_page_loaded, "Github page could not be loaded successfully"
 
         navigate("about:preferences#home")
-        try:
-            wait(about_preferences_home_url_pattern)
-        except FindError:
-            raise FindError('about:preferences#home page could not loaded successfully')
-
         about_preferences_home_url_exists = exists(about_preferences_home_url_pattern,
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
-        assert about_preferences_home_url_exists, 'Home section of about:preferences page could not loaded successfully'
+        assert about_preferences_home_url_exists, 'Home section of about:preferences page could not be loaded successfully'
 
         click(AboutPreferences.FIND_IN_OPTIONS)
         paste('Highlights')
 
-        preferences_page_opened = exists(
-            highlights_options_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            preferences_page_opened
-        ), "The about:preferences page couldn't be loaded successfully loaded."
+        preferences_page_opened = exists(highlights_options_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert preferences_page_opened, "Highlights section is not present in the about:preferences page."
 
         highlights_option_location = find(highlights_options_pattern)
         highlights_option_width, highlights_option_height = (
@@ -84,14 +74,13 @@ class Test(FirefoxTest):
 
         for highlights in highlight_options:
             highlights_option_checkbox = exists(highlights)
-            assert highlights_option_checkbox, 'Checkbox option is not present in for any one of Visited Pages, ' \
-                                               'Bookmarks, Most Recent Download and Pages Saved to Pocket'
+            assert highlights_option_checkbox, 'Checkbox option is not present either of Visited Pages or ' \
+                                               'Bookmarks or Most Recent Download or Pages Saved to Pocket'
 
         # "Visited Pages" validation
         click(bookmarks_checkbox)
         click(most_recent_download_checkbox)
         click(pages_saved_to_pocket_checkbox)
-
         navigate("about:newtab")
         recent_visited_highlights_new_tab_exists = exists(recent_visited_highlights_new_tab,
                                                           FirefoxSettings.FIREFOX_TIMEOUT)
@@ -114,15 +103,10 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError("Bookmark star is not present on the page, aborting.")
 
-        page_bookmarked_assert = exists(
-            Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            page_bookmarked_assert
-        ), "The page was successfully bookmarked via star button."
+        page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert page_bookmarked_assert, "The page was successfully bookmarked via the star button."
 
         navigate("about:newtab")
-        time.sleep(0.5)
         bookmark_highlights_new_tab_exists = exists(bookmark_highlights_new_tab, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmark_highlights_new_tab_exists, "Bookmarks page is not displayed in Highlights"
 
@@ -132,10 +116,9 @@ class Test(FirefoxTest):
         click(most_recent_download_checkbox)
         previous_tab()
         navigate('https://www.mozilla.org/en-US/')
-        try:
-            wait(mozilla_logo_full, timeout=20)
-        except FindError:
-            raise FindError("Mozilla URL https://www.mozilla.org/en-US/' couldn't load")
+
+        mozilla_logo_full_exists = exists(mozilla_logo_full, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_logo_full_exists, "Mozilla URL https://www.mozilla.org/en-US/' couldn't load"
 
         if OSHelper.is_mac():
             type(text='s', modifier=KeyModifier.CMD)
@@ -146,21 +129,21 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         if OSHelper.is_mac() or OSHelper.is_linux():
             try:
-                time.sleep(0.5)
-                find(replace_button_duplicate_check)
+                wait(replace_button_duplicate_check)
                 click(replace_button_duplicate_check)
             except FindError:
+                # No exception handling needed here as replace button only appear in case of duplicate download
+                # If the replace button doesn't appear, it means first-time download, hence proceed to next step
                 pass
         else:
             type(text='y', modifier=KeyModifier.ALT)
-        try:
-            wait(download_history_button)
-        except FindError:
-            raise FindError("Download button doesn't appeared")
+        download_history_button_exists = exists(download_history_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert download_history_button_exists, "Download button doesn't appear"
+        click(download_history_button)
         navigate("about:newtab")
         most_recent_download_highlights_new_tab_exists = exists(most_recent_download_highlights_new_tab,
                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
         assert most_recent_download_highlights_new_tab_exists, \
             'Downloaded page or Saved page is not displayed in Highlights'
 
-    # Pocket testing has been removed from scope of this test case.
+    # Pocket testing has been removed from the scope of this test case.
