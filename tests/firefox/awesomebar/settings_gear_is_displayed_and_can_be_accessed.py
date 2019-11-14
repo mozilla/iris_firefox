@@ -17,7 +17,6 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
         search_settings_pattern = Pattern("search_settings.png")
-        search_engine_pattern = Pattern("search_engine.png")
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 

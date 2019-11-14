@@ -17,7 +17,9 @@ class Test(FirefoxTest):
     def run(self, firefox):
         getting_started_toolbar_bookmark_pattern = Pattern("toolbar_bookmark_icon.png")
         renamed_toolbar_bookmark_pattern = Pattern("renamed_toolbar_bookmark.png")
-        properties_popup_save_button_pattern = Pattern("save_bookmark_name.png").similar(0.7)
+        properties_popup_save_button_pattern = Pattern(
+            "save_bookmark_name.png"
+        ).similar(0.7)
         bookmark_properties_option = Pattern("properties_option.png")
 
         open_bookmarks_toolbar()
@@ -52,20 +54,18 @@ class Test(FirefoxTest):
 
         [type(Key.TAB) for _ in range(2)]
 
-        type('Tag')
+        type("Tag")
 
         if OSHelper.is_mac():
             type(Key.TAB)
         else:
             [type(Key.TAB) for _ in range(2)]
 
-        type('keyword')
+        type("keyword")
 
         type(Key.ENTER)
 
-        bookmarks_folder_available_in_toolbar = exists(
-            renamed_toolbar_bookmark_pattern
-        )
+        bookmarks_folder_available_in_toolbar = exists(renamed_toolbar_bookmark_pattern)
         assert (
             bookmarks_folder_available_in_toolbar is True
         ), "The 'Bookmarks Toolbar' is enabled."

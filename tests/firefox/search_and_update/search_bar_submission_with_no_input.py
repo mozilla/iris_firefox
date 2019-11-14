@@ -35,7 +35,9 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        expected = exists(google_search_no_input_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        expected = exists(
+            google_search_no_input_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
+        )
         assert (
             expected is True
         ), "The search engine page is opened with no searches performed."

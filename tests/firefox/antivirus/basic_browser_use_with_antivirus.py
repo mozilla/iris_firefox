@@ -14,7 +14,9 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         soap_wiki_page_article_header_pattern = Pattern("wiki_article_header.png")
-        new_tab_highlighted_with_theme_applied_pattern = Pattern("new_tab_highlighted_theme_applied.png")
+        new_tab_highlighted_with_theme_applied_pattern = Pattern(
+            "new_tab_highlighted_theme_applied.png"
+        )
         adblock_icon_pattern = Pattern("adblock_icon.png")
         addon_file_icon_pattern = Pattern("addon_file_icon.png")
         home_icon_with_applied_theme_pattern = Pattern("home_icon_theme_applied.png")

@@ -50,7 +50,9 @@ class Test(FirefoxTest):
             0, history_sidebar_location.y, history_width * 3, Screen.SCREEN_HEIGHT / 2
         )
 
-        today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY.similar(0.7))
+        today_timeline_exists = exists(
+            Sidebar.HistorySidebar.Timeline.TODAY.similar(0.7)
+        )
         assert today_timeline_exists is True, "The Today timeline displayed"
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)

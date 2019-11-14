@@ -7,8 +7,8 @@ from packaging.version import Version, InvalidVersion
 
 logger = logging.getLogger(__name__)
 
-version_key = 'versions'
-operator_key = 'operator'
+version_key = "versions"
+operator_key = "operator"
 
 
 def find_str(s, char):
@@ -24,7 +24,7 @@ def find_str(s, char):
         c = char[0]
         for ch in s:
             if ch == c:
-                if s[index:index + len(char)] == char:
+                if s[index : index + len(char)] == char:
                     return index
 
             index += 1
@@ -48,13 +48,13 @@ def parse_versions(input_str):
     """
 
     result = {}
-    valid_operators = ['>', '<', '>=', '<=', '!=']
+    valid_operators = [">", "<", ">=", "<=", "!="]
 
-    if input_str is None or input_str == '':
+    if input_str is None or input_str == "":
         return
 
-    if '-' in input_str:
-        versions_list = input_str.split('-')
+    if "-" in input_str:
+        versions_list = input_str.split("-")
         if len(versions_list) > 2:
             return
         else:
@@ -62,7 +62,7 @@ def parse_versions(input_str):
 
                 v_list = [Version(versions_list[0]), Version(versions_list[1])]
                 result[version_key] = v_list
-                result[operator_key] = '-'
+                result[operator_key] = "-"
                 return result
 
             except InvalidVersion:
@@ -70,7 +70,7 @@ def parse_versions(input_str):
     try:
 
         result[version_key] = Version(input_str)
-        result[operator_key] = '='
+        result[operator_key] = "="
         return result
 
     except InvalidVersion:
@@ -81,7 +81,7 @@ def parse_versions(input_str):
 
         op = max(op_list)
         try:
-            result[version_key] = Version(input_str.replace(op, '', 1))
+            result[version_key] = Version(input_str.replace(op, "", 1))
             result[operator_key] = op
 
         except InvalidVersion:
@@ -102,18 +102,21 @@ def check_version(version, running_condition):
     version_dict = parse_versions(running_condition)
 
     if version_dict is not None:
-        if version_dict[operator_key] == '>':
+        if version_dict[operator_key] == ">":
             return current_version > version_dict[version_key]
-        if version_dict[operator_key] == '<':
+        if version_dict[operator_key] == "<":
             return current_version < version_dict[version_key]
-        if version_dict[operator_key] == '>=':
+        if version_dict[operator_key] == ">=":
             return current_version >= version_dict[version_key]
-        if version_dict[operator_key] == '<=':
+        if version_dict[operator_key] == "<=":
             return current_version <= version_dict[version_key]
-        if version_dict[operator_key] == '!=':
+        if version_dict[operator_key] == "!=":
             return current_version != version_dict[version_key]
-        if version_dict[operator_key] == '-':
-            return version_dict[version_key][0] <= current_version <= version_dict[version_key][1]
+        if version_dict[operator_key] == "-":
+            return (
+                version_dict[version_key][0]
+                <= current_version
+                <= version_dict[version_key][1]
+            )
 
     return False
-
