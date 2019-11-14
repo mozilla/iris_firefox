@@ -22,10 +22,12 @@ class Test(FirefoxTest):
         bookmarks_toolbar_most_visited_pattern = (
             SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         )
-        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png")
+        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png").similar(0.7)
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        reset_mouse()
 
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_1, "Mozilla page loaded successfully."

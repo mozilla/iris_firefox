@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
-        edit_this_bookmark_option_pattern = Pattern("edit_this_bookmark_option.png")
+        edit_this_bookmark_option_pattern = Pattern("edit_this_bookmark_option.png").similar(0.7)
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 

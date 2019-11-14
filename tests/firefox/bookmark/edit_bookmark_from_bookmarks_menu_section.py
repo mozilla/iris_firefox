@@ -29,7 +29,7 @@ class Test(FirefoxTest):
         edit_bookmark_tags_before_pattern = Pattern("tags_before.png").similar(0.7)
         edit_bookmark_tags_after_pattern = Pattern(
             "edit_bookmark_tags_modified.png"
-        ).similar(0.6)
+        ).similar(0.7)
         if not OSHelper.is_windows():
             edit_this_bookmark_pattern = Pattern("edit_this_bookmark.png")
         else:

@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         bookmark_folder_pattern = Pattern("moz_bookmark_folder.png").similar(0.7)
         other_bookmarks_folder_pattern = Pattern("edit_bookmark_folder.png")
 
-        if OSHelper.is_linux():
+        if OSHelper.is_linux() or OSHelper.is_windows():
             new_folder_created_pattern = Pattern("new_folder_created.png")
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)

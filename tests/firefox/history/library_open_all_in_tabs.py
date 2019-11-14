@@ -18,10 +18,10 @@ class Test(FirefoxTest):
         mozilla_tab_icon = Pattern("mozilla_logo_tab.png")
         iris_bookmark_pattern = Pattern("iris_bookmark.png")
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        history_today_pattern = Library.LIBRARY_WINDOW_HISTORY_TODAY
+        history_today_pattern = Library.LIBRARY_WINDOW_HISTORY_TODAY.similar(0.7)
         new_tab_pattern = Pattern("new_tab.png")
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
-        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png")
+        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png").similar(0.7)
 
         # Open a page to create some history.
         new_tab()
