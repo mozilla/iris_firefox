@@ -43,6 +43,25 @@ class Test(FirefoxTest):
         github_page_loaded = exists(github_logo, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert github_page_loaded, "Github page could not be loaded successfully"
 
+        # Pre-requisite for "Most Recent Download" validation
+        navigate("about:newtab")
+        navigate('https://www.mozilla.org/en-US/')
+        mozilla_logo_full_exists = exists(mozilla_logo_full, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert mozilla_logo_full_exists, "Mozilla URL https://www.mozilla.org/en-US/' couldn't load"
+        open_save_page()
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        type(Key.ENTER)
+        if OSHelper.is_mac() or OSHelper.is_linux():
+            replace_button_duplicate_check_exists = exists(replace_button_duplicate_check,
+                                                           FirefoxSettings.FIREFOX_TIMEOUT)
+            if replace_button_duplicate_check_exists:
+                click(replace_button_duplicate_check)
+        else:
+            type(text='y', modifier=KeyModifier.ALT)
+        download_history_button_exists = exists(download_history_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert download_history_button_exists, "Download button doesn't appear"
+        click(download_history_button)
+
         navigate("about:preferences#home")
         about_preferences_home_url_exists = exists(about_preferences_home_url_pattern,
                                                    FirefoxSettings.FIREFOX_TIMEOUT)
@@ -112,25 +131,6 @@ class Test(FirefoxTest):
         previous_tab()
         click(bookmarks_checkbox)
         click(most_recent_download_checkbox)
-        previous_tab()
-        navigate('https://www.mozilla.org/en-US/')
-
-        mozilla_logo_full_exists = exists(mozilla_logo_full, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert mozilla_logo_full_exists, "Mozilla URL https://www.mozilla.org/en-US/' couldn't load"
-
-        open_save_page()
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
-        type(Key.ENTER)
-        if OSHelper.is_mac() or OSHelper.is_linux():
-            replace_button_duplicate_check_exists = exists(replace_button_duplicate_check,
-                                                           FirefoxSettings.FIREFOX_TIMEOUT)
-            if replace_button_duplicate_check_exists:
-                click(replace_button_duplicate_check)
-        else:
-            type(text='y', modifier=KeyModifier.ALT)
-        download_history_button_exists = exists(download_history_button, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert download_history_button_exists, "Download button doesn't appear"
-        click(download_history_button)
         navigate("about:newtab")
         most_recent_download_highlights_new_tab_exists = exists(most_recent_download_highlights_new_tab,
                                                                 FirefoxSettings.FIREFOX_TIMEOUT)
