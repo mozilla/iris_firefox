@@ -28,7 +28,7 @@ class Test(FirefoxTest):
             "custom_content_blocking_ticked.png"
         )
         manage_cookies_data_pattern = Pattern("manage_cookies_data.png")
-        site_cookie_one_pattern = Pattern("site_cookie_one.png")
+        site_cookie_one_pattern = Pattern("site_cookie_one.png").similar(0.6)
         site_cookie_two_pattern = Pattern("site_cookie_two.png")
         site_tab_pattern = Pattern("prosport_tab.png")
 
