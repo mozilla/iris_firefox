@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         expiration_month_dropdown_pattern = Pattern("expiration_month_dropdown.png")
         saved_credit_cards_button_pattern = Pattern("saved_credit_cards_button.png")
         billing_address_dropdown_pattern = Pattern("billing_address_dropdown.png")
-        address_first_name_field_pattern = Pattern("address_first_name_field.png")
+        address_first_name_field_pattern = Pattern("address_first_name_field.png").similar(0.7)
         expiration_year_dropdown_pattern = Pattern("expiration_year_dropdown.png")
         popup_card_number_field_pattern = Pattern("popup_card_number_field.png")
         saved_addresses_button_pattern = Pattern("saved_addresses_button.png")
