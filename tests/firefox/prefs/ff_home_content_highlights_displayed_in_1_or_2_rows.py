@@ -112,6 +112,15 @@ class Test(FirefoxTest):
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert home_page_highlights_pattern_found, "The Highlights section is not displayed on the Homepage."
 
+        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
+        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
+        highlights_region_1_row_4_cells = Region(
+            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
+            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
+            highlights_cell_width * 5.5,
+            highlights_cell_height * 4.5,
+        )
+
         bookmark_sites_default_view_1_row = [
             highlights_bookmark_facebook,
             highlights_bookmark_mozilla,
@@ -119,27 +128,49 @@ class Test(FirefoxTest):
             highlights_bookmark_google
         ]
         for site in bookmark_sites_default_view_1_row:
-            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert top_sites_listed, "For default view, 4 highlight cells are not displayed in new_tab/home page"
+            site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
+                                                  region=highlights_region_1_row_4_cells)
+            assert site_displayed_in_highlights, \
+                "{} image is not displayed in default highlight view when number of row is 1 with 4 cells".format(site)
 
-        # Resize browser - 3 highlights cell in a row
+        # Resize browser - 3 highlights cell in 1 row
         bookmark_sites_highlights_reduced_view_3_cells = [
             highlights_bookmark_facebook,
             highlights_bookmark_mozilla,
             highlights_bookmark_github
         ]
         self.resize_browser('1000', '700')
+        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
+        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
+        highlights_region_1_row_3_cells = Region(
+            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
+            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
+            highlights_cell_width * 4.125,
+            highlights_cell_height * 4.5,
+        )
         for site in bookmark_sites_highlights_reduced_view_3_cells:
-            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert top_sites_listed, "For reduced default view, " \
-                                     "3 highlight cells are not displayed in 1 row"
+            site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
+                                                  region=highlights_region_1_row_3_cells)
+            assert site_displayed_in_highlights, \
+                "{} image is not displayed in resized highlight view when number of row is 1 with 3 cells".format(site)
 
-        # Resize browser - 3 highlights cell in two rows
+        # Resize browser - 3 highlights cell in 2 rows
         self.resize_browser('750', '800')
+        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
+        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
+
+        highlights_region_2_rows_3_cells = Region(
+            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
+            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
+            highlights_cell_width * 2.75,
+            highlights_cell_height * 9,
+        )
         for site in bookmark_sites_highlights_reduced_view_3_cells:
-            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert top_sites_listed, "For further reduced default view, " \
-                                     "3 highlight cells are not displayed in 2 row"
+            site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
+                                                  region=highlights_region_2_rows_3_cells)
+            assert site_displayed_in_highlights, \
+                "{} image is not displayed in resized highlight view " \
+                "when number of rows are 2 with 3 cells".format(site)
 
         self.highlights_option_drop_down(highlights_no_of_row_drop_down_1_row,
                                          highlights_option_drop_down_region)
@@ -156,9 +187,20 @@ class Test(FirefoxTest):
             highlights_bookmark_outlook,
             highlights_bookmark_twitter
         ]
+        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
+        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
+        highlights_region_2_rows_8_cells = Region(
+            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
+            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
+            highlights_cell_width * 5.5,
+            highlights_cell_height * 9,
+        )
         for site in bookmark_sites_modified_view_8_cells:
-            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert top_sites_listed, "For 2 highlights rows, 8 cells are not displayed in new_tab/home page"
+            site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
+                                                  region=highlights_region_2_rows_8_cells)
+            assert site_displayed_in_highlights, \
+                "{} image is not displayed in modified highlight view " \
+                "when number of rows are 2 with 8 cells".format(site)
 
         # Resize browser - 6 highlights cell in 2 rows
         bookmark_sites_modified_view_6_cells = [
@@ -170,10 +212,20 @@ class Test(FirefoxTest):
             highlights_bookmark_twitter
         ]
         self.resize_browser('1000', '700')
+        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
+        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
+        highlights_region_2_rows_6_cells = Region(
+            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
+            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
+            highlights_cell_width * 4.125,
+            highlights_cell_height * 9,
+        )
         for site in bookmark_sites_modified_view_6_cells:
-            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert top_sites_listed, "For reduced modified view, " \
-                                     "6 highlight cells are not displayed in 2 rows"
+            site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
+                                                  region=highlights_region_2_rows_6_cells)
+            assert site_displayed_in_highlights, \
+                "{} image is not displayed in modified highlight view " \
+                "when number of rows are 2 with 6 cells".format(site)
 
         # Resize browser - 6 highlights cells in 3 rows
         self.resize_browser('750', '800')
@@ -191,11 +243,23 @@ class Test(FirefoxTest):
                                                          FirefoxSettings.FIREFOX_TIMEOUT, region=footer_message_region)
             if cross_mark_on_footer_message_exists:
                 click(cross_mark_on_footer_message, region=footer_message_region)
-        type(Key.PAGE_DOWN)
+                click(cross_mark_on_footer_message, region=footer_message_region)
+        type(Key.DOWN)
+        type(Key.DOWN)
+        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
+        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
+        highlights_region_3_rows_6_cells = Region(
+            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
+            highlights_option_1st_cell_location.y - highlights_cell_height * 1,
+            highlights_cell_width * 3.25,
+            highlights_cell_height * 13,
+        )
         for site in bookmark_sites_modified_view_6_cells:
-            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
-            assert top_sites_listed, "For further reduced modified view, " \
-                                     "6 highlight cells are not displayed in 3 rows"
+            site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
+                                                  region=highlights_region_3_rows_6_cells)
+            assert site_displayed_in_highlights, \
+                "{} image is not displayed in modified highlight view " \
+                "when number of rows are 3 with 6 cells".format(site)
 
     @staticmethod
     def highlights_option_drop_down(drop_down_image: Pattern, test_region: Pattern):
@@ -237,3 +301,4 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         click(Pattern('new_tab_icon.png'))
+        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
