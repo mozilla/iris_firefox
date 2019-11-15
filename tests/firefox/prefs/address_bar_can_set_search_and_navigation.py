@@ -18,7 +18,7 @@ class Test(FirefoxTest):
             AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
         )
         use_address_bar_deselected_pattern = Pattern("use_address_bar_deselected.png")
-        use_address_bar_selected_pattern = Pattern("use_address_bar_selected.png")
+        use_address_bar_selected_pattern = Pattern("use_address_bar_selected.png").similar(0.7)
         search_result_default_pattern = Pattern("search_result_default.png")
 
         navigate("about:preferences#search")

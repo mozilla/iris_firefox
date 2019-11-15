@@ -19,7 +19,7 @@ class Test(FirefoxTest):
             "about_preferences_general_url.png"
         )
         preferences_general_option_pattern = Pattern("preferences_general_option.png")
-        use_autoscrolling_checked_pattern = Pattern("use_autoscrolling_checked.png")
+        use_autoscrolling_checked_pattern = Pattern("use_autoscrolling_checked.png").similar(0.7)
         use_autoscrolling_unchecked_pattern = Pattern("use_autoscrolling_unchecked.png")
         autoscrolling_enabled_pattern = Pattern("autoscrolling_enabled.png")
 
