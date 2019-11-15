@@ -42,11 +42,13 @@ class Test(FirefoxTest):
         use_address_bar_deselected = exists(
             use_address_bar_deselected_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            use_address_bar_deselected
-        ), '"Use the address bar for search bar and navigation" is not active.'
 
-        click(use_address_bar_deselected_pattern)
+        if use_address_bar_deselected:
+            assert (
+                use_address_bar_deselected
+            ), '"Use the address bar for search bar and navigation" is not active.'
+
+            click(use_address_bar_deselected_pattern)
 
         use_address_bar_selected = exists(
             use_address_bar_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT
