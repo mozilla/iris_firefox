@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         search_history_unticked_pattern = Pattern(
             "remember_search_history_unticked.png"
         )
-        add_search_bar_pattern = Pattern("add_search_bar.png")
+        add_search_bar_pattern = Pattern("add_search_bar.png").similar(0.6)
         search_tab_pattern = Pattern("google_tab.png")
         search_bar_not_empty_pattern = Pattern("search_bar_not_empty.png")
         search_form_suggestion_pattern = Pattern("search_form_suggestion.png")
