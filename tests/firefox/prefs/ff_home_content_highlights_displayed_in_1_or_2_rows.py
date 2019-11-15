@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         about_preferences_home_url_pattern = Pattern('about_preferences_home_url.png')
-        home_page_highlights_pattern = Pattern('home_page_highlights.png').similar(0.6)
+        home_page_highlights_pattern = Pattern('home_page_highlights.png').similar(0.7)
         highlights_no_of_row_drop_down_1_row = Pattern('home_top_sites_most_visit_default_value.png')
         top_site_option = Pattern('top_sites_option.png')
         web_search_options = Pattern('web_search_options.png')
@@ -27,7 +27,10 @@ class Test(FirefoxTest):
         highlights_bookmark_firefox = Pattern('highlights_bookmark_firefox.png')
         highlights_bookmark_amazon = Pattern('highlights_bookmark_amazon.png')
         highlights_bookmark_outlook = Pattern('highlights_bookmark_outlook.png')
-        highlights_bookmark_youtube = Pattern('highlights_bookmark_youtube.png')
+        highlights_bookmark_twitter = Pattern('highlights_bookmark_twitter.png')
+        cross_mark_on_footer_message = Pattern('cross_mark_on_footer_message.png')
+        optional_footer_message_from_firefox = Pattern('optional_footer_message_from_firefox.png')
+
         if OSHelper.is_linux():
             highlights_options_pattern = Pattern("highlights_search_result.png")
         else:
@@ -36,7 +39,7 @@ class Test(FirefoxTest):
         bookmark_sites_url = [
             'https://www.amazon.com/',
             'https://outlook.live.com/owa/',
-            'https://www.youtube.com/',
+            'https://twitter.com/',
             'https://www.mozilla.org/en-US/firefox/new/',
             'https://www.google.com/',
             'https://github.com/',
@@ -116,7 +119,7 @@ class Test(FirefoxTest):
             highlights_bookmark_google
         ]
         for site in bookmark_sites_default_view_1_row:
-            top_sites_listed = exists(site)
+            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
             assert top_sites_listed, "For default view, 4 highlight cells are not displayed in new_tab/home page"
 
         # Resize browser - 3 highlights cell in a row
@@ -127,14 +130,14 @@ class Test(FirefoxTest):
         ]
         self.resize_browser('1000', '700')
         for site in bookmark_sites_highlights_reduced_view_3_cells:
-            top_sites_listed = exists(site)
+            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
             assert top_sites_listed, "For reduced default view, " \
                                      "3 highlight cells are not displayed in 1 row"
 
         # Resize browser - 3 highlights cell in two rows
-        self.resize_browser('750', '700')
+        self.resize_browser('750', '800')
         for site in bookmark_sites_highlights_reduced_view_3_cells:
-            top_sites_listed = exists(site)
+            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
             assert top_sites_listed, "For further reduced default view, " \
                                      "3 highlight cells are not displayed in 2 row"
 
@@ -151,10 +154,10 @@ class Test(FirefoxTest):
             highlights_bookmark_firefox,
             highlights_bookmark_amazon,
             highlights_bookmark_outlook,
-            highlights_bookmark_youtube
+            highlights_bookmark_twitter
         ]
         for site in bookmark_sites_modified_view_8_cells:
-            top_sites_listed = exists(site)
+            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
             assert top_sites_listed, "For 2 highlights rows, 8 cells are not displayed in new_tab/home page"
 
         # Resize browser - 6 highlights cell in 2 rows
@@ -164,19 +167,33 @@ class Test(FirefoxTest):
             highlights_bookmark_github,
             highlights_bookmark_google,
             highlights_bookmark_firefox,
-            highlights_bookmark_youtube
+            highlights_bookmark_twitter
         ]
         self.resize_browser('1000', '700')
         for site in bookmark_sites_modified_view_6_cells:
-            top_sites_listed = exists(site)
+            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
             assert top_sites_listed, "For reduced modified view, " \
                                      "6 highlight cells are not displayed in 2 rows"
 
         # Resize browser - 6 highlights cells in 3 rows
-        self.resize_browser('750', '700')
+        self.resize_browser('750', '800')
+        optional_footer_message_from_firefox_exists = exists(optional_footer_message_from_firefox)
+        if optional_footer_message_from_firefox_exists:
+            hover(optional_footer_message_from_firefox)
+            footer_message_location = find(optional_footer_message_from_firefox)
+            footer_message_region = Region(
+                footer_message_location.x,
+                footer_message_location.y,
+                Screen.SCREEN_WIDTH,
+                Screen.SCREEN_HEIGHT // 5,
+            )
+            cross_mark_on_footer_message_exists = exists(cross_mark_on_footer_message,
+                                                         FirefoxSettings.FIREFOX_TIMEOUT, region=footer_message_region)
+            if cross_mark_on_footer_message_exists:
+                click(cross_mark_on_footer_message, region=footer_message_region)
         type(Key.PAGE_DOWN)
         for site in bookmark_sites_modified_view_6_cells:
-            top_sites_listed = exists(site)
+            top_sites_listed = exists(site, FirefoxSettings.FIREFOX_TIMEOUT)
             assert top_sites_listed, "For further reduced modified view, " \
                                      "6 highlight cells are not displayed in 3 rows"
 
