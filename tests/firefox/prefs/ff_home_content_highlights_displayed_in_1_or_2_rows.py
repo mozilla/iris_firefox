@@ -112,15 +112,7 @@ class Test(FirefoxTest):
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert home_page_highlights_pattern_found, "The Highlights section is not displayed on the Homepage."
 
-        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
-        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
-        highlights_region_1_row_4_cells = Region(
-            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
-            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
-            highlights_cell_width * 5.5,
-            highlights_cell_height * 4.5,
-        )
-
+        highlights_region_1_row_4_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 5.5, 4.5)
         bookmark_sites_default_view_1_row = [
             highlights_bookmark_facebook,
             highlights_bookmark_mozilla,
@@ -133,38 +125,23 @@ class Test(FirefoxTest):
             assert site_displayed_in_highlights, \
                 "{} image is not displayed in default highlight view when number of row is 1 with 4 cells".format(site)
 
-        # Resize browser - 3 highlights cell in 1 row
         bookmark_sites_highlights_reduced_view_3_cells = [
             highlights_bookmark_facebook,
             highlights_bookmark_mozilla,
             highlights_bookmark_github
         ]
         self.resize_browser('1000', '700')
-        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
-        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
-        highlights_region_1_row_3_cells = Region(
-            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
-            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
-            highlights_cell_width * 4.125,
-            highlights_cell_height * 4.5,
-        )
+
+        highlights_region_1_row_3_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 4.125, 4.5)
         for site in bookmark_sites_highlights_reduced_view_3_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_1_row_3_cells)
             assert site_displayed_in_highlights, \
                 "{} image is not displayed in resized highlight view when number of row is 1 with 3 cells".format(site)
 
-        # Resize browser - 3 highlights cell in 2 rows
         self.resize_browser('750', '800')
-        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
-        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
 
-        highlights_region_2_rows_3_cells = Region(
-            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
-            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
-            highlights_cell_width * 2.75,
-            highlights_cell_height * 9,
-        )
+        highlights_region_2_rows_3_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 2.75, 9)
         for site in bookmark_sites_highlights_reduced_view_3_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_2_rows_3_cells)
@@ -176,7 +153,6 @@ class Test(FirefoxTest):
                                          highlights_option_drop_down_region)
         previous_tab()
 
-        # 8 highlight cells in two rows
         bookmark_sites_modified_view_8_cells = [
             highlights_bookmark_facebook,
             highlights_bookmark_mozilla,
@@ -187,14 +163,8 @@ class Test(FirefoxTest):
             highlights_bookmark_outlook,
             highlights_bookmark_twitter
         ]
-        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
-        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
-        highlights_region_2_rows_8_cells = Region(
-            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
-            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
-            highlights_cell_width * 5.5,
-            highlights_cell_height * 9,
-        )
+
+        highlights_region_2_rows_8_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 5.5, 9)
         for site in bookmark_sites_modified_view_8_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_2_rows_8_cells)
@@ -202,7 +172,6 @@ class Test(FirefoxTest):
                 "{} image is not displayed in modified highlight view " \
                 "when number of rows are 2 with 8 cells".format(site)
 
-        # Resize browser - 6 highlights cell in 2 rows
         bookmark_sites_modified_view_6_cells = [
             highlights_bookmark_facebook,
             highlights_bookmark_mozilla,
@@ -212,14 +181,7 @@ class Test(FirefoxTest):
             highlights_bookmark_twitter
         ]
         self.resize_browser('1000', '700')
-        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
-        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
-        highlights_region_2_rows_6_cells = Region(
-            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
-            highlights_option_1st_cell_location.y - highlights_cell_height * 3.25,
-            highlights_cell_width * 4.125,
-            highlights_cell_height * 9,
-        )
+        highlights_region_2_rows_6_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 3.25, 4.125, 9)
         for site in bookmark_sites_modified_view_6_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_2_rows_6_cells)
@@ -227,7 +189,6 @@ class Test(FirefoxTest):
                 "{} image is not displayed in modified highlight view " \
                 "when number of rows are 2 with 6 cells".format(site)
 
-        # Resize browser - 6 highlights cells in 3 rows
         self.resize_browser('750', '800')
         optional_footer_message_from_firefox_exists = exists(optional_footer_message_from_firefox)
         if optional_footer_message_from_firefox_exists:
@@ -246,14 +207,7 @@ class Test(FirefoxTest):
                 click(cross_mark_on_footer_message, region=footer_message_region)
         type(Key.DOWN)
         type(Key.DOWN)
-        highlights_option_1st_cell_location = find(highlights_bookmark_facebook)
-        highlights_cell_width, highlights_cell_height = highlights_bookmark_facebook.get_size()
-        highlights_region_3_rows_6_cells = Region(
-            highlights_option_1st_cell_location.x - highlights_cell_width / 2,
-            highlights_option_1st_cell_location.y - highlights_cell_height * 1,
-            highlights_cell_width * 3.25,
-            highlights_cell_height * 13,
-        )
+        highlights_region_3_rows_6_cells = self.region_creation_highlights(highlights_bookmark_facebook, 2, 1, 3.25, 13)
         for site in bookmark_sites_modified_view_6_cells:
             site_displayed_in_highlights = exists(site, FirefoxSettings.FIREFOX_TIMEOUT,
                                                   region=highlights_region_3_rows_6_cells)
@@ -302,3 +256,23 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         click(Pattern('new_tab_icon.png'))
         time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
+
+    @staticmethod
+    def region_creation_highlights(first_highlights_cell_image, x, y, width, height):
+        """resize browser to a specific width and height
+        :param first_highlights_cell_image: image Pattern, Image pattern for First highlight cell
+        :param x: Integer Number, Value to change 'x' Coordinate position of first_highlights_cell_image
+        :param y: floating point number, Value to change 'y' Coordinate position of first_highlights_cell_image
+        :param width: floating point number,  Value to increase width of the region, in pixels.
+        :param height: floating point number, Value to increase height of the region, in pixels.
+        :return: None.
+        """
+        highlights_option_1st_cell_location = find(first_highlights_cell_image)
+        highlights_cell_width, highlights_cell_height = first_highlights_cell_image.get_size()
+        highlights_region = Region(
+            highlights_option_1st_cell_location.x - highlights_cell_width / x,
+            highlights_option_1st_cell_location.y - highlights_cell_height * y,
+            highlights_cell_width * width,
+            highlights_cell_height * height,
+        )
+        return highlights_region
