@@ -47,6 +47,7 @@ class Test(FirefoxTest):
         assert private_window_opened, "Private window opened."
 
         navigate("https://itisatrap.org/firefox/its-a-tracker.html")
+
         tracked_site_loaded = exists(
             firefox_tracker_site_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
