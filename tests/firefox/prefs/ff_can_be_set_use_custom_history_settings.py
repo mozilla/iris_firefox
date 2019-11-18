@@ -19,7 +19,9 @@ class Test(FirefoxTest):
         remember_browsing_history_pattern = Pattern(
             "remember_browsing_download_history.png"
         )
-        clear_history_closing_pattern = Pattern("clear_history_when_closes.png")
+        clear_history_closing_pattern = Pattern(
+            "clear_history_when_closes.png"
+        ).similar(0.7)
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
         remember_search_history_pattern = Pattern("remember_search_form_history.png")
         prefs_checked_box_pattern = Pattern("prefs_checked_box.png")

@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         search_for_text_start_typing_checkbox_pattern = Pattern(
             "search_for_text_start_typing_checkbox.png"
-        )
+        ).similar(0.7)
         general_prefs_section_pattern = Pattern("general_preferences_section.png")
         search_text_highlighted_pattern = Pattern("search_text_highlighted.png")
         quick_find_toolbar_pattern = Pattern("quick_find_toolbar.png")

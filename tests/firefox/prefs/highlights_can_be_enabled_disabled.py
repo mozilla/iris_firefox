@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         highlights_options_pattern = Pattern("highlights_option.png")
-        home_page_highlights_pattern = Pattern("home_page_highlights.png")
+        home_page_highlights_pattern = Pattern("home_page_highlights.png").similar(0.7)
 
         navigate("about:preferences#home")
 

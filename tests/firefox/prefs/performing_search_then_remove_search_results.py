@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         firefox_data_collection_and_use_pattern = Pattern(
             "firefox_data_collection_and_use.png"
-        )
+        ).similar(0.7)
 
         navigate("about:preferences")
 

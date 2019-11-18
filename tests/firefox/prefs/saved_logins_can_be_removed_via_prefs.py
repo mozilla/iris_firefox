@@ -16,8 +16,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         name_field_pattern = Pattern("name_field.png")
         password_field_pattern = Pattern("password_field.png")
-        save_login_button_pattern = Pattern("save_login_button.png")
-        saved_logins_button_pattern = Pattern("saved_logins_button.png")
+        save_login_button_pattern = Pattern("save_login_button.png").similar(0.7)
+        saved_logins_button_pattern = Pattern("saved_logins_button.png").similar(0.7)
         first_saved_login_pattern = Pattern("name0_login.png").similar(0.95)
         last_saved_login_pattern = Pattern("name9_login.png").similar(0.95)
         remove_password_pattern = Pattern("remove_password.png")
