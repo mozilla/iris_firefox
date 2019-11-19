@@ -34,7 +34,7 @@ class Test(FirefoxTest):
         )
         assert search_bar_enabled is True, "The search bar is successfully enabled."
 
-        right_click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
+        right_click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(0.7))
 
         show_suggestions_available = exists(
             show_suggestions_pattern, FirefoxSettings.FIREFOX_TIMEOUT
