@@ -44,18 +44,6 @@ class Test(FirefoxTest):
         # Press ctrl/cmd + k keys.
         select_search_bar()
 
-        # Hover the mouse over the Search Bar.
-        Mouse().move(
-            search_bar_location.offset(search_bar_width, search_bar_height // 2)
-        )
-
-        search_using_google = exists(
-            search_using_google_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            search_bar_region,
-        )
-        assert search_using_google is True, "'Search using Google' is shown as tooltip."
-
         # Start typing inside the Search Bar.
         type("mozilla", interval=0.5)
 
@@ -82,9 +70,10 @@ class Test(FirefoxTest):
         searchbar_text = copy_to_clipboard()
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
         assert (
-            searchbar_text == "mozilla"
+            "mozilla" in searchbar_text
         ), "Pressing the arrow DOWN key will slide in the search menu."
 
+        type(Key.DOWN)
         type(Key.DOWN)
 
         searchbar_text = copy_to_clipboard()
@@ -94,11 +83,12 @@ class Test(FirefoxTest):
         ), "Pressing the arrow DOWN key will slide in the search menu."
 
         type(Key.UP)
+        type(Key.UP)
 
         searchbar_text = copy_to_clipboard()
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
         assert (
-            searchbar_text == "mozilla"
+            "mozilla" in searchbar_text
         ), "Pressing the arrow UP key will slide in the search menu."
 
         # Use the tab key to navigate.
