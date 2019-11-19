@@ -18,7 +18,9 @@ class Test(FirefoxTest):
             "search_for_text_start_typing_checkbox.png"
         ).similar(0.7)
         general_prefs_section_pattern = Pattern("general_preferences_section.png")
-        search_text_highlighted_pattern = Pattern("search_text_highlighted.png")
+        search_text_highlighted_pattern = Pattern(
+            "search_text_highlighted.png"
+        ).similar(0.7)
         quick_find_toolbar_pattern = Pattern("quick_find_toolbar.png")
 
         box_width, box_heigth = AboutPreferences.UNCHECKED_BOX.get_size()
