@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         open_in_new_window_option_pattern = Pattern("open_in_new_private_window.png")
 
         if OSHelper.is_mac():
-            other_bookmarks_pattern = Pattern("other_bookmarks.png")
+            other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
         else:
             other_bookmarks_pattern = Library.OTHER_BOOKMARKS
 

@@ -18,7 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         bookmark_location_field_pattern = Pattern("location_field_label.png")
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
-        other_bookmarks_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
         firefox_bookmark_top_menu_pattern = Pattern(
             "firefox_bookmark_top_menu.png"
         ).similar(0.9)

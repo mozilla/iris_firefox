@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         added_bookmark_pattern = Pattern("manually_added_bookmark_top_menu.png")
         name_bookmark_field_pattern = Pattern("name_bookmark_field.png")
         new_bookmark_item_top_menu_pattern = Pattern("new_bookmark_item_top_menu.png")
-        other_bookmarks_item_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_item_pattern = Pattern("other_bookmarks.png").similar(0.7)
 
         open_firefox_menu()
 

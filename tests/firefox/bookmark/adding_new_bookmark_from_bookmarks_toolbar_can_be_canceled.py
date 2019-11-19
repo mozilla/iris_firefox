@@ -16,7 +16,7 @@ class Test(FirefoxTest):
         exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
         firefox_menu_bookmarks_toolbar_pattern = Pattern(
             "firefox_menu_bookmarks_toolbar.png"
         )
@@ -69,12 +69,16 @@ class Test(FirefoxTest):
             new_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert new_bookmark_window_exists is True, "New Bookmark window is displayed"
-        if OSHelper.get_os_version() == "win7":  # wait until new bookmark window will fully load
+        if (
+            OSHelper.get_os_version() == "win7"
+        ):  # wait until new bookmark window will fully load
             time.sleep(3)
         click_cancel_button()
 
         try:
-            new_bookmark_window_dismissed = wait_vanish(new_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            new_bookmark_window_dismissed = wait_vanish(
+                new_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            )
             assert new_bookmark_window_dismissed is True, "The popup is dismissed"
         except FindError:
             raise FindError("The popup is not dismissed.")

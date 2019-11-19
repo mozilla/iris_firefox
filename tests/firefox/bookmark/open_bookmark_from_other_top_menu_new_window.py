@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png")
         open_bookmark_new_window_pattern = Pattern("open_bookmark_in_new_window.png")
-        other_bookmarks_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
 
         open_firefox_menu()
 

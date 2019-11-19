@@ -17,7 +17,7 @@ class Test(FirefoxTest):
         blocked_by={"id": "1527258", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
         firefox_menu_bookmarks_toolbar_pattern = Pattern(
             "firefox_menu_bookmarks_toolbar.png"
         )
