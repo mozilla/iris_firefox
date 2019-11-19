@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         soap_wiki_page_article_header_pattern = Pattern("wiki_article_header.png")
         new_tab_highlighted_with_theme_applied_pattern = Pattern("new_tab_highlighted_theme_applied.png")
-        adblock_icon_pattern = Pattern("adblock_icon.png")
+        rainbow_theme_label_pattern = Pattern("rainbow_theme_label.png")
         addon_file_icon_pattern = Pattern("addon_file_icon.png")
         home_icon_with_applied_theme_pattern = Pattern("home_icon_theme_applied.png")
         theme_file_icon_pattern = Pattern("theme_file_icon.png")
@@ -46,6 +46,10 @@ class Test(FirefoxTest):
         ), "Debugging page is successfully loaded and contains 'Load temporary addon' button."
 
         click(load_temporary_addon_button_pattern)
+
+        # Maximize file browser dialog on Linux to make sure it isn't off screen
+        if OSHelper.is_linux():
+            type(Key.UP, modifier=[KeyModifier.META,KeyModifier.CTRL])
 
         popup_opened = exists(
             popup_open_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
@@ -103,6 +107,10 @@ class Test(FirefoxTest):
 
         click(load_temporary_addon_button_pattern)
 
+        # Maximize file browser dialog on Linux to make sure it isn't off screen
+        if OSHelper.is_linux():
+            type(Key.UP, modifier=[KeyModifier.META,KeyModifier.CTRL])
+
         popup_opened = exists(
             popup_open_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
@@ -136,9 +144,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         addon_installed = (
-            exists("rainbow")
-            or exists(adblock_icon_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            or exists("theme.images.theme_frame")
+            exists(rainbow_theme_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         )
         assert addon_installed is True, "Addon successfully installed."
 
