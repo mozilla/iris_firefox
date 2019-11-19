@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         bookmarks_top_menu_toolbar_menu_item_pattern = Pattern(
             "firefox_menu_bookmarks_toolbar.png"
         )
-        bookmarks_top_menu_option = Pattern("firefox_menu_bookmarks.png")
+        bookmarks_top_menu_option = Pattern("bookmarks_top_menu.png")
         pocket_bookmark_pattern = Pattern("pocket_most_visited.png")
 
         open_firefox_menu()

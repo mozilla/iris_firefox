@@ -22,6 +22,7 @@ class Test(FirefoxTest):
         navigate("about:blank")
 
         bookmarks_sidebar("open")
+        time.sleep(Settings.DEFAULT_UI_DELAY * 2)
 
         paste("mozilla")
 
