@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         view_certificates_button_pattern = Pattern("view_certificates_button.png")
         certificate_manager_window_title_pattern = Pattern(
             "certificate_manager_window_title.png"
-        )
+        ).similar(0.7)
         tls_certificate_name_pattern_1 = Pattern("tls_certificate_name_1.png")
         tls_certificate_name_pattern = Pattern("tls_certificate_name.png")
         tls_certificate_name_highlighted_pattern = Pattern(
@@ -150,6 +150,12 @@ class Test(FirefoxTest):
             Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT,
             tabs_region,
         ), "Cloudflare page is successfully downloaded."
+
+        scroll_by_mouse_wheel_to_show_page_menu = scroll_until_pattern_found(
+            cloudflare_support_button_pattern.similar(0.7),
+            Mouse().scroll,
+            (None, -mouse_wheel_steps)
+        )
         assert exists(
             cloudflare_support_button_pattern.similar(0.7)
         ), "Cloudflare Support button is displayed."
