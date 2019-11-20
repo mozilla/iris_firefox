@@ -62,7 +62,7 @@ class Library(object):
         class Restore(object):
             CHOOSE_FILE = Pattern("restoreFromFile.png")
 
-        IMPORT_BOOKMARKS_FROM_HTML = Pattern("fileImport.png")
+        IMPORT_BOOKMARKS_FROM_HTML = Pattern("fileImport.png").similar(0.7)
         EXPORT_BOOKMARKS_FROM_HTML = Pattern("fileExport.png")
         IMPORT_DATA_FROM_ANOTHER_BROWSER = Pattern("browserImport.png")
 

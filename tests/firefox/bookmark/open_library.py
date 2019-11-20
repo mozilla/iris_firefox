@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         if OSHelper.is_linux() or OSHelper.is_mac():
             ff_menu_show_all_bookmarks_pattern = Pattern(
                 "ff_menu_show_all_bookmarks.png"
-            )
+            ).similar(0.7)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 

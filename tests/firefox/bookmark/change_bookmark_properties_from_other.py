@@ -27,9 +27,7 @@ class Test(FirefoxTest):
         tags_field_pattern = Pattern("tags_field_label.png")
         keyword_field_pattern = Pattern("keyword_field_label.png")
         pocket_bookmark_name_pattern = Pattern("pocket_bookmark_name.png")
-        pocket_url_saved_pattern = Pattern("pocket_url.png")
-        tag_bookmark_saved_pattern = Pattern("tag_bookmark.png")
-        test_keyword_saved_pattern = Pattern("test_keyword.png")
+
         tag = "Tag_bookmark"
         keyword = "test"
 
@@ -81,6 +79,7 @@ class Test(FirefoxTest):
         click(name_bookmark_field_pattern)
 
         edit_select_all()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste("Pocket")
 
         tags_field_reachable = exists(bookmark_location_field_pattern)
@@ -89,6 +88,7 @@ class Test(FirefoxTest):
         click(bookmark_location_field_pattern)
 
         edit_select_all()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste(LocalWeb.POCKET_TEST_SITE)
 
         tags_field_reachable = exists(tags_field_pattern)
@@ -97,6 +97,7 @@ class Test(FirefoxTest):
         click(tags_field_pattern)
 
         edit_select_all()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste(tag)
 
         keywords_field_reachable = exists(keyword_field_pattern)
@@ -105,6 +106,7 @@ class Test(FirefoxTest):
         click(keyword_field_pattern)
 
         edit_select_all()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste(keyword)
 
         type(Key.ENTER)
@@ -147,42 +149,34 @@ class Test(FirefoxTest):
         location_field_reachable = exists(bookmark_location_field_pattern)
         assert location_field_reachable is True, "Location field is reachable"
 
-        location_field_location = find(bookmark_location_field_pattern)
-        location_region = Region(
-            location_field_location.x,
-            location_field_location.y,
-            Screen.SCREEN_WIDTH // 5,
-            Screen.SCREEN_HEIGHT // 10,
-        )
-
-        tags_edited = exists(pocket_url_saved_pattern, region=location_region)
-        assert tags_edited is True, "Location is changed"
+        click(bookmark_location_field_pattern)
+        edit_select_all()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        location_text = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        expected_text = LocalWeb.POCKET_TEST_SITE
+        assert location_text == expected_text, "Location is changed"
 
         tags_field_reachable = exists(tags_field_pattern)
         assert tags_field_reachable is True, "Tags field is reachable"
 
-        tags_field_location = find(tags_field_pattern)
-        tags_region = Region(
-            tags_field_location.x,
-            tags_field_location.y,
-            Screen.SCREEN_WIDTH // 10,
-            Screen.SCREEN_HEIGHT // 10,
-        )
-
-        tags_edited = exists(tag_bookmark_saved_pattern, region=tags_region)
-        assert tags_edited is True, "Tags are edited"
+        click(tags_field_pattern)
+        edit_select_all()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        tags_text = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        expected_text = tag
+        assert tags_text == expected_text, "Tags are edited"
 
         keywords_field_reachable = exists(keyword_field_pattern)
         assert keywords_field_reachable is True, "Keywords field is reachable"
 
-        keywords_field_location = find(keyword_field_pattern)
-        keywords_region = Region(
-            keywords_field_location.x,
-            keywords_field_location.y,
-            Screen.SCREEN_WIDTH // 10,
-            Screen.SCREEN_HEIGHT // 10,
-        )
-        keywords_edited = exists(test_keyword_saved_pattern, region=keywords_region)
-        assert keywords_edited is True, "Keywords are edited"
+        click(keyword_field_pattern)
+        edit_select_all()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        keyword_text = copy_to_clipboard()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        expected_text = keyword
+        assert keyword_text == expected_text, "Keywords are edited"
 
         type(Key.ESC)

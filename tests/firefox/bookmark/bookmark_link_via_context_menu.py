@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         moz_article = "https://developer.mozilla.org/en-US/docs/Learn"
         moz_page = Pattern("moz_article_page.png")
-        bookmark_link = Pattern("bookmark_link.png")
+        bookmark_link = Pattern("bookmark_link.png").similar(0.6)
         bookmark_this_link = Pattern("bookmark_this_link.png")
         save_bookmark_link = Pattern("save_bookmark_name.png")
         bookmarked_link = Pattern("bookmarked_link.png")

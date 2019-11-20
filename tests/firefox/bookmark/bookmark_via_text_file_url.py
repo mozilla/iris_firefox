@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         local_link = Pattern("local_link.png")
         selected_local_link = Pattern("selected_local_link.png")
         view_bookmarks_toolbar = Pattern("view_bookmarks_toolbar.png")
-        toolbar_bookmarked_link = Pattern("toolbar_bookmarked_link.png")
+        toolbar_bookmarked_link = Pattern("toolbar_bookmarked_link.png").similar(0.6)
         link_page = Pattern("moz_article_page.png")
 
         test_url = self.get_asset_path("bookmark_link.htm")
