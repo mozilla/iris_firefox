@@ -12,7 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="219663",
         test_suite_id="3063",
-        blocked_by={"id": "issue_4235", "platform": OSPlatform.LINUX},
+        blocked_by={"id": "issue_4235", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         picker_pattern = Pattern("search_engines_picker.png")
