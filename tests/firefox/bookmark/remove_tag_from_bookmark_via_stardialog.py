@@ -54,7 +54,7 @@ class Test(FirefoxTest):
         assert tags_field_exists is True, "The Tags field exists"
 
         click(Bookmarks.StarDialog.TAGS_FIELD)
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste("iris")
 
         done_button_exists = exists(Bookmarks.StarDialog.DONE)

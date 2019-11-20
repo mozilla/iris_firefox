@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         getting_started_toolbar_bookmark_pattern = Pattern("toolbar_bookmark_icon.png")
         copy_option_pattern = Pattern("copy_option.png")
         paste_option_pattern = Pattern("paste_option.png")
-        two_identical_bookmarks_pattern = Pattern("bookmark_copied.png")
+        two_identical_bookmarks_pattern = Pattern("bookmark_copied.png").similar(0.6)
 
         area_to_click = find(iris_tab_pattern)
         area_to_click.x += 300

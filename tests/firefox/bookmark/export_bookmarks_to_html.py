@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        export_bookmarks = Pattern("export_bookmarks_to_html.png")
+        export_bookmarks = Pattern("export_bookmarks_to_html.png").similar(0.7)
         file_format = Pattern("html_file_format.png")
         import_and_backup_button = Library.IMPORT_AND_BACKUP_BUTTON
         save = Pattern("save_button.png")
