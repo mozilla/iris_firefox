@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        url_classifier_title_pattern = Pattern("url_classifier_title.png")
+        url_classifier_title_pattern = Pattern("url_classifier_title.png").similar(0.7)
         google4_row_pattern = Pattern("google4_row.png")
         trigger_update_button_pattern = Pattern("trigger_update_button.png").similar(
             0.4
