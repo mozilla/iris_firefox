@@ -36,11 +36,13 @@ class Test(FirefoxTest):
         assert stardialog_displayed is True, "StarDialog opened"
 
         click(Bookmarks.StarDialog.DONE)
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         new_tab()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         previous_tab()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         close_tab()
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         open_library()
 
         library_opened = exists(Library.TITLE, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -71,6 +73,7 @@ class Test(FirefoxTest):
         ), "The selected bookmark page is opened in a new tab."
 
         open_library()
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         click(Library.TITLE)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         close_window_control("auxiliary")
