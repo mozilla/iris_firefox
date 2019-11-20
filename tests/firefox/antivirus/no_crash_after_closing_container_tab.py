@@ -26,7 +26,7 @@ class Test(FirefoxTest):
         personal_option_pattern = Pattern("personal_option.png")
         yotube_logo_pattern = Pattern("youtube_logo.png")
         twitter_logo_pattern = Pattern("twitter_favicon.png")
-        personal_label_pattern = Pattern("personal_label.png")
+        personal_label_pattern = Pattern("personal_label.png").similar(0.7)
         multi_account_logo_small_pattern = Pattern("multi_account_logo_small.png")
 
         navigate("https://addons.mozilla.org/en-US/firefox/")
