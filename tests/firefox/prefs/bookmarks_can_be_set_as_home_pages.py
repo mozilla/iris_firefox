@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         default_setting_home_pattern = Pattern('default_new_tab_setting_home.png')
         custom_url_option_pattern = Pattern('custom_url_option.png')
         use_current_page_option_pattern = Pattern('use_current_page_option.png')
-        use_bookmark_option_pattern = Pattern('use_bookmark_option.png')
+        use_bookmark_option_pattern = Pattern('use_bookmark_option.png').similar(0.7)
         url_field_pattern = Pattern('url_field.png')
         getting_started_bookmark_pattern = Pattern('getting_started_bookmark.png')
         bookmarks_toolbar_folder_pattern = Pattern('bookmarks_toolbar_prefs.png')

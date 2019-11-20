@@ -14,7 +14,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        text_editor_title_pattern = Pattern("text_editor_title.png")
+        text_editor_title_pattern = Pattern("text_editor_title.png").similar(0.7)
         check_your_spelling_unchecked_pattern = Pattern(
             "check_your_spelling_unchecked.png"
         ).similar(0.65)

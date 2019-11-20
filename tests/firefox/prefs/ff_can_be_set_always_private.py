@@ -207,7 +207,7 @@ class Test(FirefoxTest):
         ), '"Always use private browsing mode" is grayed out'
 
         clear_history_closing_displayed = exists(
-            clear_history_closing_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            clear_history_closing_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             clear_history_closing_displayed
