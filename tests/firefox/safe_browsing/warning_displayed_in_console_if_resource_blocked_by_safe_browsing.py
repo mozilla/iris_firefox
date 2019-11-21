@@ -20,6 +20,7 @@ class Test(FirefoxTest):
         mozilla_tab_logo_pattern = Pattern("mozilla_tab_logo.png")
         console_warning_label_pattern = Pattern('console_warning_label.png')
         blocked_by_safebrowsing_pattern = Pattern("blocked_by_sb.png")
+
         home_button_displayed = exists(
             NavBar.HOME_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
         )
