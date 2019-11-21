@@ -64,10 +64,10 @@ class Test(FirefoxTest):
             blocked_tests_area_pattern.get_size()
         )
         blocked_tests_region = Region(
-            blocked_tests_location.x,
-            blocked_tests_location.y,
-            blocked_tests_area_width,
-            blocked_tests_area_height,
+            blocked_tests_location.x - 10,
+            blocked_tests_location.y - 10,
+            blocked_tests_area_width + 20,
+            blocked_tests_area_height + 20,
         )
 
         blocked_tests = [
