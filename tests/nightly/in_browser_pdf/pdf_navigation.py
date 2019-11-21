@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         test_suite_id="65",
         locales=Locales.ENGLISH,
         preferences={"pdfjs.defaultZoomValue": "100"},
-        blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
         pdf_file_last_page_contents_rotated_pattern = Pattern(
