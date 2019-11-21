@@ -44,7 +44,7 @@ class Test(FirefoxTest):
         close_devtools_button_pattern = Pattern("close_devtools_button.png")
         save_page_as_option_pattern = Pattern("save_page_as_option.png")
         view_page_info_pattern = Pattern("view_page_info_option.png")
-        page_info_pattern = Pattern("page_info.png")
+        page_info_pattern = Pattern("page_info.png").similar(0.7)
 
         change_preference("pdfjs.defaultZoomValue", "100")
 
