@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         separator_line_pattern = Pattern("separator.png")
-        bookmark_site_pattern = Pattern("bookmark_site.png")
+        bookmark_site_pattern = Pattern("bookmark_site.png").similar(0.7)
         mozilla_bookmark_pattern = Pattern("mozilla_bookmark.png")
         new_separator_pattern = Library.Organize.NEW_SEPARATOR
 

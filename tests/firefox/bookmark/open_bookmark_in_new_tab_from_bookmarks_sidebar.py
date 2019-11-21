@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         iris_tab_pattern = Pattern("iris_tab.png")
 
         if OSHelper.is_mac():
-            other_bookmarks_pattern = Pattern("other_bookmarks.png")
+            other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
         else:
             other_bookmarks_pattern = Library.OTHER_BOOKMARKS
 

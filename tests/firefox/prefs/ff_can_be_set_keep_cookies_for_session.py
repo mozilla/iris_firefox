@@ -7,17 +7,16 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Firefox can be successfully set to keep cookies for a specific session',
-        test_case_id='143634',
-        test_suite_id='2241',
-        locale=['en-US'],
+        description="Firefox can be successfully set to keep cookies for a specific session",
+        test_case_id="143634",
+        test_suite_id="2241",
+        locale=["en-US"],
     )
     def run(self, firefox):
         custom_level_option_pattern = Pattern("custom_level_option.png")
         drop_down_default_pattern = Pattern("default_drop_down.png")
-        all_cookies_option_pattern = Pattern("all_cookies_option.png")
+        all_cookies_option_pattern = Pattern("all_cookies_option.png").similar(0.7)
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")
         manage_permissions_pattern = Pattern("manage_permissions.png")
         manage_data_pattern = Pattern("manage_data_button.png")
@@ -33,22 +32,28 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        hover_location = Location(Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT/2)
+        hover_location = Location(Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
         hover(hover_location)
 
-        custom_level_option_exists = scroll_until_pattern_found(custom_level_option_pattern, scroll, (-scroll_step,), 5)
+        custom_level_option_exists = scroll_until_pattern_found(
+            custom_level_option_pattern, scroll, (-scroll_step,), 5
+        )
         assert custom_level_option_exists, "Custom option exists"
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         custom_level_option_loc = find(custom_level_option_pattern)
 
         click(custom_level_option_pattern)
 
-        drop_down_default_exists = exists(drop_down_default_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        drop_down_default_exists = exists(
+            drop_down_default_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
         assert drop_down_default_exists, "Drop-down is available"
 
         click(drop_down_default_pattern)
 
-        all_cookies_option_exists = exists(all_cookies_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        all_cookies_option_exists = exists(
+            all_cookies_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
         assert all_cookies_option_exists, "Option is present"
 
         click(all_cookies_option_pattern)
@@ -56,24 +61,32 @@ class Test(FirefoxTest):
         new_tab()
         navigate("https://www.reddit.com")
 
-        reddit_tab_loaded = exists(reddit_tab_loaded_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        reddit_tab_loaded = exists(
+            reddit_tab_loaded_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
+        )
         assert reddit_tab_loaded, "Reddit site is loaded"
 
         previous_tab()
 
         scroll_down((-scroll_step), 5)
 
-        manage_permissions_exists = exists(manage_permissions_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        manage_permissions_exists = exists(
+            manage_permissions_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
         assert manage_permissions_exists, "Cookies menu can be opened"
 
         click(manage_permissions_pattern)
 
-        empty_dialog_exists = exists(empty_dialog_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        empty_dialog_exists = exists(
+            empty_dialog_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
         assert empty_dialog_exists, "The dialog is opened and it is empty"
 
         paste("https://www.reddit.com")
 
-        allow_for_session_button = exists(allow_for_session_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        allow_for_session_button = exists(
+            allow_for_session_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
         assert allow_for_session_button, "Allow for session button is active"
 
         click(allow_for_session_button_pattern)
@@ -85,7 +98,9 @@ class Test(FirefoxTest):
         click(NavBar.RELOAD_BUTTON)
         time.sleep(0.5)  # to prevent exists call before page reload
 
-        reddit_tab_loaded = exists(reddit_tab_loaded_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        reddit_tab_loaded = exists(
+            reddit_tab_loaded_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
+        )
         assert reddit_tab_loaded, "Reddit site is loaded"
 
         new_tab()
@@ -94,10 +109,14 @@ class Test(FirefoxTest):
         hover(custom_level_option_loc)
         scroll_down((-scroll_step), 5)
 
-        manage_data_exists = exists(manage_data_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        manage_data_exists = exists(
+            manage_data_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
         assert manage_data_exists, "Manage data button is still on the screen"
 
         click(manage_data_pattern)
 
-        reddit_label_exists = exists(reddit_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        reddit_label_exists = exists(
+            reddit_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
         assert reddit_label_exists, "Reddit page is displayed on the list"

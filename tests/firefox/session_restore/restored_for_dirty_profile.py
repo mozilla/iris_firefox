@@ -18,7 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         default_zoom_level_toolbar_customize_page_pattern = (
             NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE
-        )
+        ).similar(0.7)
         zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
         toolbar_pattern = NavBar.TOOLBAR

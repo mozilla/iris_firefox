@@ -21,7 +21,7 @@ class Test(FirefoxTest):
 
         if not OSHelper.is_mac():
             mozilla_bookmark_pattern = Pattern("mozilla_bookmark.png")
-            bookmark_site_pattern = Pattern("bookmark_site.png")
+            bookmark_site_pattern = Pattern("bookmark_site.png").similar(0.7)
         else:
             mozilla_bookmark_pattern = Pattern("mozilla_firefox_bookmark.png")
             bookmark_site_pattern = Pattern("website_bookmark_from_library.png")

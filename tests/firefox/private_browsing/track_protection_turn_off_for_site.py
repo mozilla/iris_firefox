@@ -31,7 +31,7 @@ class Test(FirefoxTest):
         )
         tracking_attempts_blocked_message_pattern = Pattern(
             "tracking_protection_is_on.png"
-        )
+        ).similar(0.7)
         trackers_popup_title_pattern = Pattern("trackers_popup_title.png")
         trackers_button_pattern = Pattern("open_trackers_list.png")
         blocked_tracker_label_pattern = Pattern("blocked_tracker_label.png")

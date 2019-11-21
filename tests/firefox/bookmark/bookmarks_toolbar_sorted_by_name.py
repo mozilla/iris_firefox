@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         firefox_bookmark = Pattern("firefox_bookmark.png").similar(0.5)
         pocket_bookmark = Pattern("pocket_sidebar_bookmark.png")
         firefox_toolbar_bookmark = Pattern("firefox_toolbar_bookmark.png")
-        pocket_toolbar_bookmark = Pattern("pocket_toolbar_bookmark.png")
+        pocket_toolbar_bookmark = Pattern("pocket_toolbar_bookmark.png").similar(0.7)
         sort_by_name = Pattern("sort_by_name_option.png")
         toolbar_bookmarks_sorted_by_name = Pattern(
             "toolbar_bookmarks_sorted_by_name.png"

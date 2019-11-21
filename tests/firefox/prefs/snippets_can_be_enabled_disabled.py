@@ -15,12 +15,12 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         snippets_options_pattern = Pattern("snippets_option.png")
-        home_page_snippets_pattern = Pattern("home_page_snippets.png")
+        home_page_snippets_pattern = Pattern("home_page_snippets.png").similar(0.7)
 
         navigate("about:preferences#home")
 
         preferences_page_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED.similar(0.7),
             FirefoxSettings.FIREFOX_TIMEOUT,
         )
         assert (

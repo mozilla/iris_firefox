@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         url = "about:blank"
-        draggable_url_pattern = Pattern("moz_draggable_url.png")
+        draggable_url_pattern = Pattern("moz_draggable_url.png").similar(0.6)
         toolbar_dragged_bookmark_pattern = Pattern("moz_toolbar_dragged_bookmark.png")
         drag_area_pattern = Pattern("drag_area.png")
         view_bookmarks_toolbar_pattern = (

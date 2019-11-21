@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
         mozilla_firefox_bookmarks_folder_pattern = Pattern(
             "mozilla_firefox_bookmarks_folder.png"
         )

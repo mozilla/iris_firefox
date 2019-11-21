@@ -18,10 +18,10 @@ class Test(FirefoxTest):
     def run(self, firefox):
         properties_option_pattern = Pattern("properties_option.png")
         new_modified_bookmark_pattern = Pattern("wiki_new_name_bookmark.png")
-        name_before_editing_pattern = Pattern("name_field.png").similar(0.07)
-        location_before_editing_pattern = Pattern("location_field.png")
+        name_before_editing_pattern = Pattern("name_field.png").similar(0.7)
+        location_before_editing_pattern = Pattern("location_field.png").similar(0.7)
         tags_before_editing_pattern = Pattern("tags_field.png").similar(0.7)
-        keyword_before_editing_pattern = Pattern("keyword_field.png")
+        keyword_before_editing_pattern = Pattern("keyword_field.png").similar(0.7)
 
         if OSHelper.is_mac():
             bookmark_getting_started_pattern = Pattern(
@@ -102,21 +102,24 @@ class Test(FirefoxTest):
         assert keyword_before_exists is True, "Keyword field exists"
 
         paste("New Name")
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.TAB)
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste("wikipedia.org")
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.TAB)
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste("Tag")
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         if OSHelper.is_mac():
             type(Key.TAB)
         else:
             [type(Key.TAB) for _ in range(2)]
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste("test")
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         click(NavBar.LIBRARY_MENU)
 

@@ -16,9 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         preferences_search_page = AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
-        suggestions_displayed_pattern = Pattern("suggestions_displayed.png").similar(
-            0.6
-        )
+        suggestions_displayed_pattern = Pattern("suggestions_displayed.png")
         browsing_history_search_bar_pattern = Pattern("browsing_history_search_bar.png")
         provide_search_suggestions_pattern = Pattern(
             "provide_search_suggestions_checked.png"

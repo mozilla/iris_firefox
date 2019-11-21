@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         firefox_home_default_pattern = Pattern("firefox_home_default.png")
         search_suggestions_default_pattern = Pattern("search_suggestions_default.png")
         search_result_default_pattern = Pattern("search_result_default.png")
-        top_sites_pattern = Pattern("top_sites.png")
+        top_sites_pattern = Pattern("top_sites.png").similar(0.6)
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
         ebay_one_off_button_pattern = Pattern("ebay_one_off_button.png")
 

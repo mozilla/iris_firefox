@@ -17,12 +17,12 @@ class Test(FirefoxTest):
         show_all_bookmarks_button_pattern = Pattern(
             "show_all_bookmarks_button.png"
         )  # Should be added to library_menu
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
         wiki_bookmark_logo_pattern = Pattern("wiki_bookmark_logo.png")
         if OSHelper.is_linux() or OSHelper.is_mac():
             ff_menu_show_all_bookmarks_pattern = Pattern(
                 "ff_menu_show_all_bookmarks.png"
-            )
+            ).similar(0.7)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 

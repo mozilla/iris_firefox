@@ -41,6 +41,7 @@ class Test(FirefoxTest):
         assert exists(
             cloudflare_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
         ), "Cloudflare page is successfully downloaded."
+        type(Key.DOWN)
 
         click(LocationBar.SECURE_CONNECTION_LOCK)
         assert exists(

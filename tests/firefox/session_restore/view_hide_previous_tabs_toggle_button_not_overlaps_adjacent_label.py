@@ -17,7 +17,7 @@ class Test(FirefoxTest):
         restore_session_button_pattern = Pattern("restore_session_button.png")
         view_previous_tabs_pattern = Pattern("view_previous_tabs_label.png")
         hide_previous_tabs_pattern = Pattern("hide_previous_tabs_label.png")
-        view_form_is_opened_pattern = Pattern("view_form_is_opened.png")
+        view_form_is_opened_pattern = Pattern("view_form_is_opened.png").similar(0.7)
 
         navigate("about:sessionrestore")
 

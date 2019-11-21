@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         most_visited_bookmarks_pattern = Pattern(
             "firefox_menu_most_visited_bookmarks.png"
         )
-        other_bookmarks_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
         paste_bookmark_pattern = Pattern("paste_bookmark.png")
 
         open_firefox_menu()
