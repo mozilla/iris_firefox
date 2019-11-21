@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         save_bookmark_button_pattern = Pattern("save_bookmark_name.png")
         library_bookmarks_mozilla_custom_settings_pattern = Pattern(
             "library_bookmarks_mozilla_custom_settings.png"
-        )
+        ).similar(0.7)
         if OSHelper.is_mac():
             new_bookmark_folder_bookmarks_menu_pattern = Pattern(
                 "new_bookmark_folder_bookmarks_menu.png"

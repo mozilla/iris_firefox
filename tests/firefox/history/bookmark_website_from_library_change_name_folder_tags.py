@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         iris_bookmark_focus_pattern = Pattern("iris_bookmark_focus.png")
         library_bookmarks_custom_iris_pattern = Pattern(
             "library_bookmarks_custom_iris.png"
-        )
+        ).similar(0.7)
         save_bookmark_button_pattern = Pattern("save_bookmark_name.png")
         library_other_bookmarks_pattern = Library.OTHER_BOOKMARKS
         if OSHelper.is_mac():

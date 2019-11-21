@@ -16,8 +16,8 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         mozilla_bookmark_focus_pattern = Pattern("mozilla_bookmark_focus.png")
-        history_pattern = Library.HISTORY
-        history_today_pattern = Library.HISTORY_TODAY
+        history_pattern = Library.HISTORY.similar(0.7)
+        history_today_pattern = Library.HISTORY_TODAY.similar(0.7)
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
