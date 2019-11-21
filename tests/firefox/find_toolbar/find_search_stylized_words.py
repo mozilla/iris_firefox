@@ -19,7 +19,7 @@ class Test(FirefoxTest):
             "style_text_first_not_selected.png"
         ).similar(0.6)
         style_text_first_selected_pattern = Pattern("style_text_first_selected.png")
-        style_text_second_selected_pattern = Pattern("style_text_second_selected.png")
+        style_text_second_selected_pattern = Pattern("style_text_second_selected.png").similar(0.6)
         style_text_last_selected_pattern = Pattern("style_text_last_selected.png")
 
         vertical_search_page_local = self.get_asset_path("findbar_stylized.html")
