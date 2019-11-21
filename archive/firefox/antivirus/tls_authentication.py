@@ -151,10 +151,10 @@ class Test(FirefoxTest):
             tabs_region,
         ), "Cloudflare page is successfully downloaded."
 
-        scroll_by_mouse_wheel_to_show_page_menu = scroll_until_pattern_found(
+        scroll_until_pattern_found(
             cloudflare_support_button_pattern.similar(0.7),
             Mouse().scroll,
-            (None, -mouse_wheel_steps)
+            (None, -mouse_wheel_steps),
         )
         assert exists(
             cloudflare_support_button_pattern.similar(0.7)
