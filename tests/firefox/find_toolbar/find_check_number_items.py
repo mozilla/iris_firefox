@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         of_4_matches_label_pattern = Pattern("of_4_matches_label.png")
         is_about_label_pattern = Pattern("is_about_label.png")
         help_about_label_pattern = Pattern("help_about_label.png")
-        about_errors_label_pattern = Pattern("about_errors_label.png")
+        about_errors_label_pattern = Pattern("about_errors_label.png").similar(0.7)
 
         # Open Firefox and navigate to a popular website
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
