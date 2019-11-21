@@ -15,7 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         long_word_selected_label_pattern = Pattern("long_word_selected_label.png")
-        long_word_unselected_label_pattern = Pattern("long_word_unselected_label.png")
+        long_word_unselected_label_pattern = Pattern("long_word_unselected_label.png").similar(0.6)
 
         # Open Firefox and navigate to a popular website
         test_page_local = self.get_asset_path("long_word.html")
