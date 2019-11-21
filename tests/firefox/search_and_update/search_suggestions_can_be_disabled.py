@@ -14,124 +14,84 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        provide_search_suggestions_pattern = Pattern("provide_search_suggestions.png")
-        show_suggestions_pattern = Pattern("show_suggestions.png")
-        google_logo_content_search_field_pattern = Pattern(
-            "google_logo_content_search_field.png"
-        )
-        search_suggestions_not_displayed_search_bar_pattern = Pattern(
-            "search_suggestions_are_disabled_search_bar.png"
-        ).similar(0.6)
-        search_suggestions_not_displayed_content_search_pattern = Pattern(
-            "search_suggestions_are_disabled_content_search.png"
-        )
+        provide_search_suggestions_checked_pattern = Pattern("provide_search_suggestions_checked.png")
+        provide_search_suggestions_unchecked_pattern = Pattern("provide_search_suggestions_unchecked.png")
+        search_suggestions_not_displayed_search_bar_pattern = \
+            Pattern("search_suggestions_are_disabled_search_bar.png").similar(0.7)
+        search_suggestions_not_displayed_new_tab_pattern = \
+            Pattern("search_suggestions_not_displayed_new_tab.png")
+        add_search_bar_in_toolbar = Pattern("add_search_bar_in_toolbar.png")
 
-        # Enable the search bar.
-        change_preference("browser.search.widget.inNavBar", True)
-
-        search_bar_enabled = exists(
-            LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert search_bar_enabled is True, "The search bar is successfully enabled."
-
-        right_click(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(0.7))
-
-        show_suggestions_available = exists(
-            show_suggestions_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            show_suggestions_available is True
-        ), "The 'Show Suggestions' option is visible."
-
-        # Uncheck the 'Show Suggestions' option.
-        click(show_suggestions_pattern, Settings.DEFAULT_UI_DELAY)
-
-        # Go to 'about:preferences#search' and check that the the 'Provide search suggestions' option is unchecked.
+        # Disable the search bar.
         navigate("about:preferences#search")
 
-        provide_search_suggestions = exists(
-            provide_search_suggestions_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
+        add_search_bar_in_toolbar_exists = exists(add_search_bar_in_toolbar, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert add_search_bar_in_toolbar_exists, "Add search bar in toolbar option is not present"
+        click(add_search_bar_in_toolbar)
+        time.sleep(Settings.DEFAULT_SLOW_MOTION_DELAY)
+
+        search_bar_enabled = exists(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert search_bar_enabled, "The search bar couldn't be enabled"
+
+        provide_search_suggestions_checked_exists = exists(
+            provide_search_suggestions_checked_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
-        assert (
-            provide_search_suggestions is True
-        ), "The 'Provide search suggestions' option is disabled."
+        assert provide_search_suggestions_checked_exists, "The 'Provide search suggestions' option couldn't be enabled."
+
+        click(provide_search_suggestions_checked_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        provide_search_suggestions_unchecked_pattern_exists = exists(
+            provide_search_suggestions_unchecked_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
+        )
+        assert provide_search_suggestions_unchecked_pattern_exists, \
+            "The 'Provide search suggestions' option couldn't be disabled."
 
         # Type in some random text in the Search Bar and content search field.
-        new_tab()
-
         select_search_bar()
-
         type("test", interval=0.25)
 
         suggestions_search_not_displayed = exists(
             search_suggestions_not_displayed_search_bar_pattern,
             FirefoxSettings.FIREFOX_TIMEOUT,
         )
-        assert suggestions_search_not_displayed is True, (
-            "Search suggestions are not displayed for any of these" " locations."
+        assert suggestions_search_not_displayed, (
+            "Search suggestions found for the input text in search bar, Assertion failed."
         )
 
-        google_logo_search_field = exists(
-            google_logo_content_search_field_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            google_logo_search_field is True
-        ), "Google logo from content search field found."
-
-        click(google_logo_content_search_field_pattern)
-
+        new_tab()
         type("test", interval=0.25)
 
         suggestions_content_not_displayed = exists(
-            search_suggestions_not_displayed_content_search_pattern,
+            search_suggestions_not_displayed_new_tab_pattern,
             FirefoxSettings.FIREFOX_TIMEOUT,
         )
-        assert (
-            suggestions_content_not_displayed is True
-        ), "Search suggestions are not shown for the input in question."
+        assert suggestions_content_not_displayed, \
+            "Search suggestions found for the input text in about:newtab, Assertion failed."
 
-        # Go to 'about:preferences#search' and check the 'Provide search suggestions' option.
+        # Enable Search bar
         navigate("about:preferences#search")
-
-        provide_search_suggestions = exists(
-            provide_search_suggestions_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
+        click(provide_search_suggestions_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        provide_search_suggestions_checked_exists = exists(
+            provide_search_suggestions_checked_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
-        assert (
-            provide_search_suggestions is True
-        ), "The 'Provide search suggestions' option is disabled."
-
-        click(provide_search_suggestions_pattern)
-
-        # Type in some random text in the Search Bar and content search field.
-        new_tab()
+        assert provide_search_suggestions_checked_exists, "The 'Provide search suggestions' option couldn't be enabled."
 
         select_search_bar()
-
         type("test", interval=0.25)
 
         suggestions_search_displayed = exists(
             search_suggestions_not_displayed_search_bar_pattern,
             FirefoxSettings.SITE_LOAD_TIMEOUT,
         )
-        assert (
-            suggestions_search_displayed is False
-        ), "Search suggestions are shown for the input in question."
+        assert suggestions_search_displayed, "Search suggestions couldn't found for the input text in search bar."
 
-        google_logo_search_field = exists(
-            google_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            google_logo_search_field is True
-        ), "Google logo from content search field found."
-
-        click(google_logo_content_search_field_pattern)
-
+        new_tab()
         type("test", interval=0.25)
 
         suggestions_content_displayed = exists(
-            search_suggestions_not_displayed_content_search_pattern,
+            search_suggestions_not_displayed_new_tab_pattern,
             FirefoxSettings.FIREFOX_TIMEOUT,
         )
-        assert (
-            suggestions_content_displayed is False
-        ), "Search suggestions are shown for the input in question."
+        assert suggestions_content_displayed , "Search suggestions couldn't found for the input text in 'about:newtab'."
