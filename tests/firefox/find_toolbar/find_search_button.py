@@ -17,7 +17,7 @@ class Test(FirefoxTest):
         google_search_button_pattern = Pattern("google_search_button.png")
         season_label_not_selected_pattern = Pattern("season_label_not_selected.png")
         season_label_selected_pattern = Pattern("season_label_selected.png")
-        settings_label_not_selected_pattern = Pattern("settings_label_not_selected.png")
+        settings_label_not_selected_pattern = Pattern("settings_label_not_selected.png").similar(0.7)
         settings_label_selected = Pattern("settings_label_selected.png")
 
         test_page_local = self.get_asset_path("google.htm")
