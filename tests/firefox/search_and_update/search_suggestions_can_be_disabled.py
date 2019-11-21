@@ -61,10 +61,15 @@ class Test(FirefoxTest):
 
         new_tab()
         type("test", interval=0.25)
-
+        new_tab_search_region = Region(
+            0,
+            0,
+            Screen.SCREEN_WIDTH / 2,
+            Screen.SCREEN_HEIGHT // 3,
+        )
         suggestions_content_not_displayed = exists(
             search_suggestions_not_displayed_new_tab_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            FirefoxSettings.FIREFOX_TIMEOUT,region=new_tab_search_region
         )
         assert suggestions_content_not_displayed, \
             "Search suggestions found for the input text in about:newtab, Assertion failed."
@@ -83,15 +88,18 @@ class Test(FirefoxTest):
 
         suggestions_search_displayed = exists(
             search_suggestions_not_displayed_search_bar_pattern,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
         )
-        assert suggestions_search_displayed, "Search suggestions couldn't found for the input text in search bar."
+        assert suggestions_search_displayed is False, \
+            "Search suggestions couldn't found for the input text in search bar."
 
         new_tab()
+
         type("test", interval=0.25)
 
         suggestions_content_displayed = exists(
             search_suggestions_not_displayed_new_tab_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            FirefoxSettings.TINY_FIREFOX_TIMEOUT, region=new_tab_search_region
         )
-        assert suggestions_content_displayed , "Search suggestions couldn't found for the input text in 'about:newtab'."
+        assert suggestions_content_displayed is False, \
+            "Search suggestions couldn't found for the input text in 'about:newtab'."
