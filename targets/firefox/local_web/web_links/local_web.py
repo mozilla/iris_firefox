@@ -57,9 +57,9 @@ class LocalWeb(object):
     SOAP_WIKI_1_OF_2_MATCHES = Pattern("1_of_2_matches.png")
     SOAP_WIKI_2_OF_2_MATCHES = Pattern("2_of_2_matches.png")
     SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL = Pattern("cleaning_see_selected_label.png").similar(0.7)
-    SOAP_WIKI_OPERATING_ALL = Pattern("operating_all.png")
-    SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED = Pattern("operating_all_highlighted.png")
-    SOAP_WIKI_OPERATING_DISPARATE = Pattern("operating_disparate.png")
+    SOAP_WIKI_OPERATING_ALL = Pattern("operating_all.png").similar(0.7)
+    SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED = Pattern("operating_all_highlighted.png").similar(0.7)
+    SOAP_WIKI_OPERATING_DISPARATE = Pattern("operating_disparate.png").similar(0.7)
     SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED = Pattern(
         "operating_disparate_highlighted.png"
     )
