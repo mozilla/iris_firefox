@@ -14,8 +14,8 @@ class Test(FirefoxTest):
         test_suite_id="2085",
     )
     def run(self, firefox):
-        tester_label_pattern = Pattern("tester_label.png")
-        test_selected_label_pattern = Pattern("test_selected_label.png")
+        tester_label_pattern = Pattern("tester_label.png").similar(0.7)
+        test_selected_label_pattern = Pattern("test_selected_label.png").similar(0.7)
         other_label_is_not_highlighted = Pattern("testex_label.png")
         second_selected_label_pattern = Pattern("text_label_selected_second.png")
 
