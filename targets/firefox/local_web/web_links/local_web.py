@@ -65,10 +65,10 @@ class LocalWeb(object):
     )
     SOAP_WIKI_SEE_LABEL = Pattern("see_label.png")
     SOAP_WIKI_SEE_LABEL_UNHIGHLITED = Pattern("see_label_unhighlited.png")
-    SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED = Pattern("soap_envelope_label_selected.png")
+    SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED = Pattern("soap_envelope_label_selected.png").similar(0.6)
     SOAP_WIKI_SOAP_LABEL = Pattern("soap_label.png")
     SOAP_WIKI_SOAP_LINK_HIGHLIGHTED = Pattern("soap_link_highlighted.png")
-    SOAP_WIKI_SOAP_XML_LABEL = Pattern("soap_xml_label.png")
+    SOAP_WIKI_SOAP_XML_LABEL = Pattern("soap_xml_label.png").similar(0.6)
     SOAP_WIKI_TEST_LABEL_PATTERN = Pattern("test_label_pattern.png")
 
     """Local files samples."""
