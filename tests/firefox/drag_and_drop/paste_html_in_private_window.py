@@ -25,6 +25,15 @@ class Test(FirefoxTest):
         copy_image_context_menu_pattern = Pattern("copy_image_option.png")
 
         new_private_window()
+        private_window_pattern_region = Region(
+            Screen.SCREEN_WIDTH / 2,
+            0,
+            Screen.SCREEN_WIDTH,
+            Screen.SCREEN_HEIGHT // 10,
+        )
+        private_window_opened = exists(PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region)
+        assert private_window_opened, "New Private Window couldn't open"
+
         navigate("https://mystor.github.io/dragndrop/")
         page_opened_in_private_mode = exists(
             paste_html_data_radiobutton_pattern, Settings.site_load_timeout

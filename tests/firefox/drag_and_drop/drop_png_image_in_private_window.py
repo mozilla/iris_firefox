@@ -66,9 +66,14 @@ class Test(FirefoxTest):
         folderpath = self.get_asset_path("copies")
 
         new_private_window()
-
-        private_window_opened = exists(PrivateWindow.private_window_pattern)
-        assert private_window_opened, "A new private window is successfully loaded."
+        private_window_pattern_region = Region(
+            Screen.SCREEN_WIDTH / 2,
+            0,
+            Screen.SCREEN_WIDTH,
+            Screen.SCREEN_HEIGHT // 10,
+        )
+        private_window_opened = exists(PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region)
+        assert private_window_opened, "New Private Window couldn't open"
 
         navigate("https://mystor.github.io/dragndrop/")
 
