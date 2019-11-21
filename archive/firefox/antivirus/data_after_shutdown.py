@@ -8,13 +8,15 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="No data loss after forced restart.",
+        description="No data loss after a shutdown (Ffx)",
         locale=["en-US"],
-        test_case_id="217874",
+        test_case_id="217880",
         test_suite_id="3063",
     )
     def run(self, firefox):
-        browser_console_pattern = Pattern("browser_console_opened.png")
+        restore_previous_session_button_pattern = Pattern(
+            "restore_previous_session.png"
+        )
         wikipedia_logo_pattern = Pattern("wiki_logo.png")
         firefox_toolbar_bookmark_pattern = Pattern("firefox_toolbar_bookmark.png")
 
@@ -50,7 +52,9 @@ class Test(FirefoxTest):
             0, history_sidebar_location.y, history_width * 3, Screen.SCREEN_HEIGHT / 2
         )
 
-        today_timeline_exists = exists(Sidebar.HistorySidebar.Timeline.TODAY.similar(0.7))
+        today_timeline_exists = exists(
+            Sidebar.HistorySidebar.Timeline.TODAY.similar(0.7)
+        )
         assert today_timeline_exists is True, "The Today timeline displayed"
 
         click(Sidebar.HistorySidebar.Timeline.TODAY)
@@ -155,43 +159,22 @@ class Test(FirefoxTest):
         pocket_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert pocket_opened, "The Pocket site successfully opened"
 
-        for _ in range(5):
-            open_browser_console()
-            browser_console_opened = exists(
-                browser_console_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-            )
-            if browser_console_opened:
-                break
-
-        assert browser_console_opened, "Browser console displayed"
-
-        restart_via_console()
-
-        browser_console_reopened = exists(
-            browser_console_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-
-        if browser_console_reopened:
-            assert browser_console_reopened, "Browser console reopened"
-
-            click(browser_console_pattern)
-
-            close_window_control("auxiliary")
+        firefox.restart(url="", image=NavBar.HOME_BUTTON)
 
         firefox_is_restarted = exists(
-            NavBar.HOME_BUTTON, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
+            NavBar.HOME_BUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
-        assert firefox_is_restarted, "Firefox is successfully restarted"
+        assert firefox_is_restarted is True, "Firefox is successfully restarted"
 
         restore_firefox_focus()
 
-        firefox_bookmark_restored = exists(
+        cnn_bookmark_restored = exists(
             firefox_toolbar_bookmark_pattern,
             FirefoxSettings.SITE_LOAD_TIMEOUT,
             bookmarks_toolbar_region,
         )
         assert (
-            firefox_bookmark_restored is True
+            cnn_bookmark_restored is True
         ), "The Firefox bookmark is successfully restored"
 
         wiki_bookmark_restored = exists(
@@ -202,6 +185,17 @@ class Test(FirefoxTest):
         assert (
             wiki_bookmark_restored is True
         ), "The Wikipedia bookmark is successfully restored"
+
+        click(NavBar.HAMBURGER_MENU)
+
+        restore_previous_session_button_displayed = exists(
+            restore_previous_session_button_pattern
+        )
+        assert (
+            restore_previous_session_button_displayed is True
+        ), "Restore previous session button displayed"
+
+        click(restore_previous_session_button_pattern)
 
         history_restored_cnn = exists(
             LocalWeb.FIREFOX_BOOKMARK_SMALL, region=history_sidebar_region
@@ -250,3 +244,21 @@ class Test(FirefoxTest):
             LocalWeb.POCKET_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert tab_restored_pocket, "The Pocket tab is restored"
+
+        cnn_bookmark_still_displayed = exists(
+            firefox_toolbar_bookmark_pattern,
+            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            region=bookmarks_toolbar_region,
+        )
+        assert (
+            cnn_bookmark_still_displayed is True
+        ), "The CNN bookmark is still displayed"
+
+        wiki_bookmark_still_displayed = exists(
+            wikipedia_logo_pattern,
+            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            region=bookmarks_toolbar_region,
+        )
+        assert (
+            wiki_bookmark_still_displayed is True
+        ), "The Wikipedia bookmark is still displayed"
