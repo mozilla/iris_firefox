@@ -17,7 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern("iris_bookmark.png")
-        history_pattern = Library.HISTORY
+        history_pattern = Library.HISTORY.similar(0.7)
         view_bookmarks_toolbar = (
             LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         )

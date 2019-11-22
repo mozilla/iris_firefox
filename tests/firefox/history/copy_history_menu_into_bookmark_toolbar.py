@@ -23,7 +23,7 @@ class Test(FirefoxTest):
             SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         )
         library_pattern = Library.TITLE
-        history_pattern = Library.HISTORY
+        history_pattern = Library.HISTORY.similar(0.7)
         copy_pattern = Pattern("copy.png")
         paste_pattern = Pattern("paste.png")
         history_bookmarks_toolbar_pattern = Pattern("history_bookmarks_toolbar.png")

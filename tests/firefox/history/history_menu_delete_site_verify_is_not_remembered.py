@@ -42,7 +42,9 @@ class Test(FirefoxTest):
         # Open History and check if is populated with Mozilla page.
         open_history_library_window()
 
-        library_history = exists(Library.HISTORY, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        library_history = exists(
+            Library.HISTORY.similar(0.7), FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+        )
         assert library_history, "Library popup window available"
 
         library_history_location = find(Library.HISTORY)
