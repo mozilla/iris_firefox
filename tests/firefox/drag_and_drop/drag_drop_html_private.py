@@ -25,8 +25,13 @@ class Test(FirefoxTest):
         not_matching_message_pattern = Pattern("not_matching_message.png")
 
         new_private_window()
-
-        private_window_opened = exists(PrivateWindow.private_window_pattern)
+        private_window_pattern_region = Region(
+            Screen.SCREEN_WIDTH / 2,
+            0,
+            Screen.SCREEN_WIDTH,
+            Screen.SCREEN_HEIGHT // 10,
+        )
+        private_window_opened = exists(PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region)
         assert private_window_opened, "New Private Window opened"
 
         navigate("https://mystor.github.io/dragndrop/")
