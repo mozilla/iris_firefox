@@ -14,11 +14,11 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        test_bold_pattern = Pattern("test_bold.png")
+        test_bold_pattern = Pattern("test_bold.png").similar(0.7)
         test_search_bing_pattern = Pattern("test_search_bing.png")
-        test_search_amazon_pattern = Pattern("test_search_amazon.png")
+        test_search_amazon_pattern = Pattern("test_search_amazon.png").similar(0.7)
         test_search_duckduckgo_pattern = Pattern("test_search_duckduckgo.png")
-        test_search_wikipedia_pattern = Pattern("test_search_wikipedia.png")
+        test_search_wikipedia_pattern = Pattern("test_search_wikipedia.png").similar(0.7)
         bing_search_bar_pattern = Pattern("bing_search_bar.png")
         amazon_search_bar_pattern = Pattern("amazon_search_bar.png")
         duckduckgo_search_bar_pattern = Pattern("duckduckgo_search_bar.png").similar(
@@ -64,7 +64,7 @@ class Test(FirefoxTest):
             )
 
             click(one_click_engines_list[i])
-            test_search = exists(test_search_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
+            test_search = exists(test_search_list[i], FirefoxSettings.SITE_LOAD_TIMEOUT)
 
             assert test_search is True, (
                 "Search results are displayed for the %s engine."

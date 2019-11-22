@@ -19,7 +19,7 @@ class Test(FirefoxTest):
             "about_preferences_search_page.png"
         )
         keyword_field_pattern = Pattern("keyword_field.png")
-        moz_search_bing_pattern = Pattern("moz_search_bing.png").similar(0.6)
+        moz_search_bing_pattern = Pattern("moz_search_bing.png").similar(0.7)
 
         navigate("about:preferences#search")
 

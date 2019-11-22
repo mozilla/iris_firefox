@@ -16,9 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         bing_search_bar_pattern = Pattern("bing_search_bar.png")
         search_in_new_tab_pattern = Pattern("search_in_new_tab.png")
-        set_as_default_search_engine_pattern = Pattern(
-            "set_as_default_search_engine.png"
-        )
+        set_as_default_search_engine_pattern = Pattern("set_as_default_search_engine.png").similar(0.7)
         bing_search_engine_pattern = Pattern("bing_search_engine.png").similar(0.7)
         test_search_bing_pattern = Pattern("test_search_bing.png")
 
