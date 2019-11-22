@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
         zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
         default_zoom_level_toolbar_customize_page_pattern = (
-            NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE
+            NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE.similar(0.7)
         )
         zoom_reset_button_100_pattern = NavBar.ZOOM_RESET_BUTTON
         zoom_control_toolbar_decrease_pattern = NavBar.ZOOM_OUT
