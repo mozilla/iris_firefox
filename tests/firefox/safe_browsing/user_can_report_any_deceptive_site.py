@@ -17,6 +17,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         google_logo_pattern = Pattern("google_logo.png")
         url_field_pattern = Pattern("url_field.png")
+        report_deceptive_pattern = Pattern("report_deceptive.png")
+        hamburger_help_pattern = Pattern("ham_help.png")
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
@@ -25,18 +27,18 @@ class Test(FirefoxTest):
         )
         assert test_site_opened, "Test site opened"
 
-        click_hamburger_menu_option("Help")
+        click_hamburger_menu_option(hamburger_help_pattern)
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         report_deceptive_site_option_exists = exists(
-            "Report Deceptive", FirefoxSettings.FIREFOX_TIMEOUT, Screen.RIGHT_THIRD
+            report_deceptive_pattern, FirefoxSettings.FIREFOX_TIMEOUT, Screen.RIGHT_THIRD
         )
         assert (
             report_deceptive_site_option_exists
         ), '"Report Deceptive Site..." option exists'
 
-        click("Report Deceptive", region=Screen.RIGHT_THIRD)
+        click(report_deceptive_pattern, region=Screen.RIGHT_THIRD)
 
         report_web_page_loaded = exists(
             google_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT

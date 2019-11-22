@@ -20,6 +20,7 @@ class Test(FirefoxTest):
             "show_connection_details_button.png"
         )
         more_information_button_pattern = Pattern("more_information_button.png")
+        certificate_additional_details = Pattern("cert_additional_details.png")
 
         navigate("https://extended-validation.badssl.com/")
 
@@ -74,26 +75,11 @@ class Test(FirefoxTest):
             certificate_additional_details_popup_displayed
         ), "Certificate additional details pop-up displayed."
 
-        certificate_additional_details = [
-            "Mozilla Foundation",
-            "Mountain View",
-            "California, US",
-        ]
-
-        detail_find = 0
-        certificate_additional_details_displayed = False
-
-        for text in certificate_additional_details:
-            details_displayed = exists(
-                text,
+        certificate_additional_details_displayed = exists(
+                certificate_additional_details,
                 FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
                 certificate_additional_details_region,
             )
-            if details_displayed:
-                detail_find += 1
-
-        if detail_find == 3:
-            certificate_additional_details_displayed = True
 
         assert certificate_additional_details_displayed, (
             "Additional details displayed regarding the certificate, "

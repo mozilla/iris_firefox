@@ -18,6 +18,8 @@ class Test(FirefoxTest):
         start_in_safe_mode_button_pattern = Pattern("start_in_safe_mode_button.png")
         about_support_title_pattern = Pattern("about_support_title.png")
         restart_button_pattern = Pattern("restart_button.png")
+        copy_raw_data_to_clipboard_pattern = Pattern("about_support_copy_raw_data_button.png")
+        restart_addons_disabled_pattern = Pattern("restart_w_addons_disabled.png")
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -51,24 +53,24 @@ class Test(FirefoxTest):
         )
 
         copy_text_button_exists = exists(
-            "Copy raw data to clipboard",
+            copy_raw_data_to_clipboard_pattern,
             FirefoxSettings.FIREFOX_TIMEOUT,
             region=buttons_region,
         )
         assert copy_text_button_exists, "Copy raw data to clipboard button exists"
 
-        click("Copy raw data to clipboard", region=buttons_region)
+        click(copy_raw_data_to_clipboard_pattern, region=buttons_region)
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         clipboard_before_restart = get_clipboard().partition("safeMode")
 
         restart_button_exists = exists(
-            "Restart with Add-ons Disabled", FirefoxSettings.FIREFOX_TIMEOUT
+            restart_addons_disabled_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert restart_button_exists, "Restart with Add-ons Disabled button displayed"
 
-        click("Restart with Add-ons Disabled")
+        click(restart_addons_disabled_pattern)
 
         restart_button_displayed = exists(
             restart_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
@@ -92,13 +94,13 @@ class Test(FirefoxTest):
         assert about_support_page_opened, "About Support page opened"
 
         copy_text_button_exists = exists(
-            "Copy raw data to clipboard",
+            copy_raw_data_to_clipboard_pattern,
             FirefoxSettings.FIREFOX_TIMEOUT,
             region=buttons_region,
         )
         assert copy_text_button_exists, "Copy raw data to clipboard button exists"
 
-        click("Copy raw data to clipboard", region=buttons_region)
+        click(copy_raw_data_to_clipboard_pattern, region=buttons_region)
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
