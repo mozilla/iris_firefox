@@ -18,6 +18,7 @@ class Test(FirefoxTest):
             "browser.download.useDownloadDir": True,
             "browser.download.folderList": 2,
         },
+        blocked_by={"id": "issue_4252", "platform": OSPlatform.WINDOWS},
     )
     def run(self, firefox):
         pdf_in_downloads_pattern = Pattern("pdf_document_filename_in_downloads.png")
