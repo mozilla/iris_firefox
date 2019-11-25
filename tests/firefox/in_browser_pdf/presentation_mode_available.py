@@ -33,6 +33,7 @@ class Test(FirefoxTest):
         last_page_document_contents_pattern = Pattern(
             "last_page_contents_pres_mode.png"
         )
+        exit_fullscreen_popup_pattern = Pattern("exit_fullscreen_popup.png")
         exit_fullscreen_button_pattern = Pattern("exit_fullscreen_popup_button.png").similar(0.6)
         first_page_document_contents_pattern = Pattern("first_page_contents.png")
         go_to_first_page_option_pattern = Pattern("go_to_first_page_option.png")
@@ -63,12 +64,9 @@ class Test(FirefoxTest):
 
         click(presentation_button_pattern)
 
-        full_screen_popup_displayed = exists(exit_fullscreen_button_pattern)
-        navigation_buttons_disappeared = not exists(presentation_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            full_screen_popup_displayed and navigation_buttons_disappeared
+        assert exists(exit_fullscreen_popup_pattern) and not exists(
+            presentation_button_pattern
         ), "Presentation mode can be successfully enabled"
-        assert (full_screen_popup_displayed), "Presentation mode can be successfully enabled"
 
         try:
             full_screen_popup_vanished = wait_vanish(
@@ -260,7 +258,7 @@ class Test(FirefoxTest):
 
         click(presentation_button_pattern)
 
-        assert exists(exit_fullscreen_button_pattern) and not exists(
+        assert exists(exit_fullscreen_popup_pattern) and not exists(
             presentation_button_pattern
         ), "Presentation mode can be enabled after clicking at 'Exit Full Screen' option"
 
