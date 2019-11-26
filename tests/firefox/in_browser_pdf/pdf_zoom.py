@@ -16,9 +16,11 @@ class Test(FirefoxTest):
     def run(self, firefox):
         pdf_file_page_contents_zoomed_in_pattern = Pattern(
             "pdf_file_page_contents_zoomed_in.png"
+        ).similar(0.7)
+        pdf_file_page_contents_pattern = Pattern("pdf_file_page_contents.png").similar(
+            0.7
         )
-        pdf_file_page_contents_pattern = Pattern("pdf_file_page_contents.png")
-        zoom_out_button_pattern = Pattern("zoom_out_button.png")
+        zoom_out_button_pattern = Pattern("zoom_out_button.png").similar(0.7)
         zoom_in_button_pattern = Pattern("zoom_in_button.png").similar(0.75)
 
         change_preference("pdfjs.defaultZoomValue", "100")

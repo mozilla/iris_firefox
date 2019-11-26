@@ -29,12 +29,16 @@ class Test(FirefoxTest):
         )
         dev_console_inspector_button_pattern = Pattern(
             "dev_console_inspector_button.png"
-        )
+        ).similar(0.7)
         last_page_document_contents_pattern = Pattern(
             "last_page_contents_pres_mode.png"
         )
-        exit_fullscreen_popup_pattern = Pattern("exit_fullscreen_popup.png")
-        exit_fullscreen_button_pattern = Pattern("exit_fullscreen_popup_button.png").similar(0.6)
+        exit_fullscreen_popup_pattern = Pattern("exit_fullscreen_popup.png").similar(
+            0.7
+        )
+        exit_fullscreen_button_pattern = Pattern(
+            "exit_fullscreen_popup_button.png"
+        ).similar(0.6)
         first_page_document_contents_pattern = Pattern("first_page_contents.png")
         go_to_first_page_option_pattern = Pattern("go_to_first_page_option.png")
         exit_full_screen_option_pattern = Pattern("exit_full_screen_option.png")
@@ -216,7 +220,7 @@ class Test(FirefoxTest):
         click(inspect_element_option_pattern)
 
         inspect_element_option_works = exists(
-            dev_console_inspector_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
+            dev_console_inspector_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert (
             inspect_element_option_works
