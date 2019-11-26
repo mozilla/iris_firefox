@@ -21,13 +21,9 @@ class Test(FirefoxTest):
         show_suggestions_ahead_of_history_unchecked_greyed_pattern = Pattern(
             "show_suggestions_ahead_of_history_unchecked_greyed.png"
         )
-        provide_search_suggestions_pattern = Pattern(
-            "provide_search_suggestions_checked.png"
-        )
+        provide_search_suggestions_pattern = Pattern("provide_search_suggestions_checked.png")
         show_search_suggestions_pattern = Pattern("show_search_suggestions_checked.png")
-        show_search_browsing_history_pattern = Pattern(
-            "show_search_browsing_history_checked.png"
-        )
+        show_search_browsing_history_pattern = Pattern("show_search_browsing_history_checked.png")
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -45,27 +41,17 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#search")
 
-        preferences_privacy_page = exists(
-            preferences_search_page, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            preferences_privacy_page
-        ), "The about:preferences#privacy page is successfully loaded."
+        preferences_privacy_page = exists(preferences_search_page, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert preferences_privacy_page, "The about:preferences#privacy page is successfully loaded."
 
         # From "Default Search Engine" make sure that the options "Provide search suggestions",
         # "Show search suggestions in address bar results" and
         # "Show search suggestions ahead of browsing history in address bar results" are selected.
 
         assert (
-            find_in_region_from_pattern(
-                provide_search_suggestions_pattern, AboutPreferences.CHECKED_BOX
-            )
-            and find_in_region_from_pattern(
-                show_search_suggestions_pattern, AboutPreferences.CHECKED_BOX
-            )
-            and find_in_region_from_pattern(
-                show_search_browsing_history_pattern, AboutPreferences.CHECKED_BOX
-            )
+            find_in_region_from_pattern(provide_search_suggestions_pattern, AboutPreferences.CHECKED_BOX)
+            and find_in_region_from_pattern(show_search_suggestions_pattern, AboutPreferences.CHECKED_BOX)
+            and find_in_region_from_pattern(show_search_browsing_history_pattern, AboutPreferences.CHECKED_BOX)
         ), (
             'The options "Provide search suggestions", "Show search suggestions in address bar results" and '
             + '"Show search suggestions ahead of browsing history in address bar results" are selected.'
@@ -78,14 +64,10 @@ class Test(FirefoxTest):
         paste("2000 ")
 
         # The suggestions are displayed for any of the available search engines.
-        suggestions_displayed = exists(
-            suggestions_displayed_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        suggestions_displayed = exists(suggestions_displayed_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
         # Underneath those the browsing history is displayed.
-        browsing_history_search_bar = exists(
-            browsing_history_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        browsing_history_search_bar = exists(browsing_history_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert (
             suggestions_displayed and browsing_history_search_bar
@@ -104,8 +86,7 @@ class Test(FirefoxTest):
         assert find_in_region_from_pattern(
             show_suggestions_unchecked_pattern, AboutPreferences.UNCHECKED_BOX
         ) and find_in_region_from_pattern(
-            show_suggestions_ahead_of_history_unchecked_greyed_pattern,
-            AboutPreferences.UNCHECKED_BOX,
+            show_suggestions_ahead_of_history_unchecked_greyed_pattern, AboutPreferences.UNCHECKED_BOX
         ), '"Show suggestions..." is greyed out.'
 
         new_tab()
@@ -113,14 +94,10 @@ class Test(FirefoxTest):
         paste("2000 ")
 
         # The suggestions are displayed for any of the available search engines.
-        suggestions_displayed = exists(
-            suggestions_displayed_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )
+        suggestions_displayed = exists(suggestions_displayed_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         # Underneath those the browsing history is displayed.
-        browsing_history_search_bar = exists(
-            browsing_history_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        browsing_history_search_bar = exists(browsing_history_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
 
         assert not suggestions_displayed and browsing_history_search_bar, (
             "The suggestions are no longer displayed for any of the available search engines. Only the browsing"

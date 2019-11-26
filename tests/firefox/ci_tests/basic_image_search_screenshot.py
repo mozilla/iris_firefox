@@ -19,14 +19,10 @@ class Test(FirefoxTest):
         try:
             image = pyautogui.screenshot()
         except:
-            raise Exception(
-                "Error occurred while taking screenshot with PyAutoGUI on full screen."
-            )
+            raise Exception("Error occurred while taking screenshot with PyAutoGUI on full screen.")
         else:
             if image:
-                logger.info(
-                    "PyAutoGUI Screenshot successfully created  for full screen region."
-                )
+                logger.info("PyAutoGUI Screenshot successfully created  for full screen region.")
             else:
                 logger.error("Invalid Screenshot object.")
                 exit(1)
@@ -34,14 +30,10 @@ class Test(FirefoxTest):
         try:
             image = pyautogui.screenshot(region=(0, 0, 300, 400))
         except:
-            raise Exception(
-                "Error occurred while taking screenshot with PyAutoGUI on a specific region "
-            )
+            raise Exception("Error occurred while taking screenshot with PyAutoGUI on a specific region ")
         else:
             if image:
-                logger.info(
-                    "PyAutoGUI Screenshot successfully created  for a specific region"
-                )
+                logger.info("PyAutoGUI Screenshot successfully created  for a specific region")
             else:
                 logger.error("Invalid Screenshot object")
                 exit(1)
@@ -49,20 +41,13 @@ class Test(FirefoxTest):
         try:
 
             sct = mss.mss()
-            monitor = {
-                "top": 0,
-                "left": 0,
-                "width": int(Screen().width),
-                "height": int(Screen().height),
-            }
+            monitor = {"top": 0, "left": 0, "width": int(Screen().width), "height": int(Screen().height)}
             image = sct.grab(monitor)
         except:
             raise Exception("Error occurred while taking screenshot with MSS!!!!")
         else:
             if image:
-                logger.info(
-                    "MSS Screenshot successfully created  for full screen region"
-                )
+                logger.info("MSS Screenshot successfully created  for full screen region")
             else:
                 logger.error("MSS Screenshot created  on full screen FAILED!!!")
                 exit(1)

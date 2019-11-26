@@ -8,18 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Mouse handling - in the awesomebar.",
-        locale=["en-US"],
-        test_case_id="108282",
-        test_suite_id="1902",
+        description="Mouse handling - in the awesomebar.", locale=["en-US"], test_case_id="108282", test_suite_id="1902"
     )
     def run(self, firefox):
-        twitter_one_off_button_highlight_pattern = Pattern(
-            "twitter_one_off_button_highlight.png"
-        )
-        search_suggestion_opened_tab_pattern = Pattern(
-            "search_suggestion_opened_tab.png"
-        ).similar(0.7)
+        twitter_one_off_button_highlight_pattern = Pattern("twitter_one_off_button_highlight.png")
+        search_suggestion_opened_tab_pattern = Pattern("search_suggestion_opened_tab.png").similar(0.7)
         search_settings_pattern = Pattern("search_settings.png")
         settings_gear_highlighted_pattern = Pattern("settings_gear_highlighted.png")
 
@@ -42,21 +35,13 @@ class Test(FirefoxTest):
             type(text=Key.UP, modifier=KeyModifier.ALT)
             type(text=Key.UP, modifier=KeyModifier.ALT)
 
-        expected = exists(
-            twitter_one_off_button_highlight_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region,
-        )
+        expected = exists(twitter_one_off_button_highlight_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region)
         assert expected, "The 'Twitter' one-off button is highlighted."
 
         hover(twitter_one_off_button_highlight_pattern)
 
-        expected = exists(
-            twitter_one_off_button_highlight_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            expected
-        ), "The 'Twitter' one-off button is still highlighted in the previous color."
+        expected = exists(twitter_one_off_button_highlight_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, "The 'Twitter' one-off button is still highlighted in the previous color."
 
         # Without closing the autocomplete drop-down, move mouse over an one-off button.
         expected = exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -65,19 +50,13 @@ class Test(FirefoxTest):
         hover(search_settings_pattern)
 
         expected = exists(settings_gear_highlighted_pattern.similar(0.9))
-        assert (
-            expected is False
-        ), "Successfully hovered over the 'Search settings'  one off."
+        assert expected is False, "Successfully hovered over the 'Search settings'  one off."
 
         # Hover over an autocomplete result that is not selected and click on it.
-        expected = exists(
-            search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Opened tab found between the search suggestions."
 
         click(search_suggestion_opened_tab_pattern)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            expected
-        ), "Clicking a result that is not the selected loads the clicked result, not the selected result."
+        assert expected, "Clicking a result that is not the selected loads the clicked result, not the selected result."

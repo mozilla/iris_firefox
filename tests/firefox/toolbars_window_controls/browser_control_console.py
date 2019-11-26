@@ -28,26 +28,20 @@ class Test(FirefoxTest):
 
         click_window_control("close")
         try:
-            assert wait_vanish(
-                browser_console, 10
-            ), "Browser Console successfully closed."
+            assert wait_vanish(browser_console, 10), "Browser Console successfully closed."
         except FindError:
             raise FindError("Browser Console not closed")
 
         open_browser_console()
         click_window_control("minimize")
         try:
-            assert wait_vanish(
-                browser_console, 10
-            ), "Browser Console successfully minimized."
+            assert wait_vanish(browser_console, 10), "Browser Console successfully minimized."
         except FindError:
             raise FindError("Browser Console not minimized.")
 
         if OSHelper.get_os_version() == "win7":
             try:
-                Screen().bottom_half().bottom_half().click(
-                    Pattern("firefox_start_bar.png")
-                )
+                Screen().bottom_half().bottom_half().click(Pattern("firefox_start_bar.png"))
                 click(Pattern("firefox_start_bar_browser_console.png"))
             except FindError:
                 raise APIHelperError("Restore window from taskbar unsuccessful.")
@@ -58,9 +52,7 @@ class Test(FirefoxTest):
         top_page = Screen.TOP_THIRD
         try:
             hover(clear_web_console)
-            assert top_page.exists(
-                browser_console, 10
-            ), "Browser Console successfully maximized."
+            assert top_page.exists(browser_console, 10), "Browser Console successfully maximized."
         except FindError:
             raise FindError("Browser Console not maximized.")
 

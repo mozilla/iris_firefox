@@ -18,41 +18,27 @@ class Test(FirefoxTest):
         navigate("about:preferences")
 
         page_loaded = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert page_loaded, "about:preferences page loaded"
 
         click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
 
         privacy_selected = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )
 
-        screen_center_location = Location(
-            Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2
-        )
+        screen_center_location = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
         hover(screen_center_location)
 
-        always_radio_not_selected_pattern = (
-            AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
-        )
+        always_radio_not_selected_pattern = AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
         page_displayed = scroll_until_pattern_found(
-            always_radio_not_selected_pattern,
-            scroll,
-            (-20,),
-            100,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT // 3,
+            always_radio_not_selected_pattern, scroll, (-20,), 100, FirefoxSettings.TINY_FIREFOX_TIMEOUT // 3
         )
 
-        assert (
-            privacy_selected and page_displayed
-        ), "The button is selected and the corresponding page is displayed."
+        assert privacy_selected and page_displayed, "The button is selected and the corresponding page is displayed."
 
-        empty_space_near_navigation_menu_location = find(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
+        empty_space_near_navigation_menu_location = find(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
 
         home_width = NavBar.HOME_BUTTON.get_size()[0]
 
@@ -64,8 +50,7 @@ class Test(FirefoxTest):
         click(empty_space_near_privacy_button_location)
 
         button_remains_selected = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED.similar(0.95),
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED.similar(0.95), FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert button_remains_selected, (
             "The selected button from step 3 remains selected and has a blue color. "

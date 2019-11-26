@@ -14,12 +14,8 @@ class Test(FirefoxTest):
         test_suite_id="65",
     )
     def run(self, firefox):
-        pdf_file_page_contents_zoomed_in_pattern = Pattern(
-            "pdf_file_page_contents_zoomed_in.png"
-        ).similar(0.7)
-        pdf_file_page_contents_pattern = Pattern("pdf_file_page_contents.png").similar(
-            0.7
-        )
+        pdf_file_page_contents_zoomed_in_pattern = Pattern("pdf_file_page_contents_zoomed_in.png").similar(0.7)
+        pdf_file_page_contents_pattern = Pattern("pdf_file_page_contents.png").similar(0.7)
         zoom_out_button_pattern = Pattern("zoom_out_button.png").similar(0.7)
         zoom_in_button_pattern = Pattern("zoom_in_button.png").similar(0.75)
 
@@ -34,53 +30,35 @@ class Test(FirefoxTest):
 
         navigate(pdf_file_path)
 
-        pdf_document_opened = exists(
-            pdf_file_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            pdf_document_opened
-        ), "The PDF file successfully opened in In-browser PDF viewer"
+        pdf_document_opened = exists(pdf_file_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert pdf_document_opened, "The PDF file successfully opened in In-browser PDF viewer"
 
         zoom_in_button_available = exists(zoom_in_button_pattern)
-        assert (
-            zoom_in_button_available
-        ), "'Zoom in (+)' button available in In-browser PDF viewer"
-        zoom_in_region = find(
-            zoom_in_button_pattern
-        )  # to avoid clicks on 'new tab' plus sign
+        assert zoom_in_button_available, "'Zoom in (+)' button available in In-browser PDF viewer"
+        zoom_in_region = find(zoom_in_button_pattern)  # to avoid clicks on 'new tab' plus sign
 
         [click(zoom_in_region) for _ in range(3)]
 
         pdf_document_zoomed_in = exists(pdf_file_page_contents_zoomed_in_pattern)
-        assert (
-            pdf_document_zoomed_in
-        ), "The PDF file is successfully zoomed in via '+' button"
+        assert pdf_document_zoomed_in, "The PDF file is successfully zoomed in via '+' button"
 
         zoom_out_button_available = exists(zoom_out_button_pattern)
-        assert (
-            zoom_out_button_available
-        ), "'Zoom out (-)' button available in In-browser PDF viewer"
+        assert zoom_out_button_available, "'Zoom out (-)' button available in In-browser PDF viewer"
 
         [click(zoom_out_button_pattern) for _ in range(3)]
 
         pdf_document_zoomed_out = exists(pdf_file_page_contents_pattern)
-        assert (
-            pdf_document_zoomed_out
-        ), "The PDF file is successfully zoomed out via '-' button"
+        assert pdf_document_zoomed_out, "The PDF file is successfully zoomed out via '-' button"
 
         [type("+", modifier=KeyModifier.CTRL) for _ in range(3)]
 
         pdf_document_zoomed_in = exists(pdf_file_page_contents_zoomed_in_pattern)
-        assert (
-            pdf_document_zoomed_in
-        ), "The PDF file is successfully zoomed in via shortcut ('Ctrl/Control' + '+')"
+        assert pdf_document_zoomed_in, "The PDF file is successfully zoomed in via shortcut ('Ctrl/Control' + '+')"
 
         [type("-", modifier=KeyModifier.CTRL) for _ in range(3)]
 
         pdf_document_zoomed_out = exists(pdf_file_page_contents_pattern)
-        assert (
-            pdf_document_zoomed_out
-        ), "The PDF file is successfully zoomed out via shortcut ('Ctrl/Control' + '-')"
+        assert pdf_document_zoomed_out, "The PDF file is successfully zoomed out via shortcut ('Ctrl/Control' + '-')"
 
         key_down(key_used_in_scroll_zoom)
         pdf_document_zoomed_in = scroll_until_pattern_found(
@@ -88,9 +66,7 @@ class Test(FirefoxTest):
         )
         key_up(key_used_in_scroll_zoom)
 
-        assert (
-            pdf_document_zoomed_in
-        ), "The PDF file is successfully zoomed in via Ctrl/Command + mouse scroll"
+        assert pdf_document_zoomed_in, "The PDF file is successfully zoomed in via Ctrl/Command + mouse scroll"
 
         key_down(key_used_in_scroll_zoom)
         pdf_document_zoomed_out = scroll_until_pattern_found(
@@ -98,6 +74,4 @@ class Test(FirefoxTest):
         )
         key_up(key_used_in_scroll_zoom)
 
-        assert (
-            pdf_document_zoomed_out
-        ), "The PDF file is successfully zoomed out via Ctrl/Command + mouse scroll"
+        assert pdf_document_zoomed_out, "The PDF file is successfully zoomed out via Ctrl/Command + mouse scroll"

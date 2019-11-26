@@ -16,12 +16,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         always_private_pattern = Pattern("always_private.png")
         remember_all_history_pattern = Pattern("remember_history.png")
-        remember_browsing_history_pattern = Pattern(
-            "remember_browsing_download_history.png"
-        )
-        clear_history_closing_pattern = Pattern(
-            "clear_history_when_closes.png"
-        ).similar(0.7)
+        remember_browsing_history_pattern = Pattern("remember_browsing_download_history.png")
+        clear_history_closing_pattern = Pattern("clear_history_when_closes.png").similar(0.7)
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
         remember_search_history_pattern = Pattern("remember_search_form_history.png")
         prefs_checked_box_pattern = Pattern("prefs_checked_box.png")
@@ -31,9 +27,7 @@ class Test(FirefoxTest):
         box_width, box_heigth = prefs_checked_box_pattern.get_size()
 
         navigate("about:preferences#privacy")
-        preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert preferences_opened, "Preferences page is opened"
 
         paste("Firefox will")
@@ -60,20 +54,14 @@ class Test(FirefoxTest):
             always_private_height,
         )
 
-        always_private_unchecked = exists(
-            prefs_unchecked_box_pattern, region=always_private_region
-        )
+        always_private_unchecked = exists(prefs_unchecked_box_pattern, region=always_private_region)
         assert always_private_unchecked, '"Always use private browsing mode" is off'
 
         remember_browsing_history_displayed = exists(remember_browsing_history_pattern)
-        assert (
-            remember_browsing_history_displayed
-        ), '"Remember browsing history" point is displayed'
+        assert remember_browsing_history_displayed, '"Remember browsing history" point is displayed'
 
         remember_browsing_location = find(remember_browsing_history_pattern)
-        remember_browsing_width, remember_browsing_height = (
-            remember_browsing_history_pattern.get_size()
-        )
+        remember_browsing_width, remember_browsing_height = remember_browsing_history_pattern.get_size()
         remember_browsing_region = Region(
             remember_browsing_location.x - box_width * 2,
             remember_browsing_location.y,
@@ -81,22 +69,14 @@ class Test(FirefoxTest):
             remember_browsing_height,
         )
 
-        remember_browsing_checked = exists(
-            prefs_checked_box_pattern, region=remember_browsing_region
-        )
-        assert (
-            remember_browsing_checked
-        ), '"Remember browsing and download history" point is checked'
+        remember_browsing_checked = exists(prefs_checked_box_pattern, region=remember_browsing_region)
+        assert remember_browsing_checked, '"Remember browsing and download history" point is checked'
 
         remember_search_history_reachable = exists(remember_search_history_pattern)
-        assert (
-            remember_search_history_reachable
-        ), '"Remember search and form history" point is displayed'
+        assert remember_search_history_reachable, '"Remember search and form history" point is displayed'
 
         remember_search_location = find(remember_search_history_pattern)
-        remember_search_width, remember_search_height = (
-            remember_search_history_pattern.get_size()
-        )
+        remember_search_width, remember_search_height = remember_search_history_pattern.get_size()
         remember_search_region = Region(
             remember_search_location.x - box_width * 2,
             remember_search_location.y,
@@ -104,22 +84,14 @@ class Test(FirefoxTest):
             remember_search_height,
         )
 
-        remember_search_checked = exists(
-            prefs_checked_box_pattern, region=remember_search_region
-        )
-        assert (
-            remember_search_checked
-        ), '"Remember search and forms history" point is checked'
+        remember_search_checked = exists(prefs_checked_box_pattern, region=remember_search_region)
+        assert remember_search_checked, '"Remember search and forms history" point is checked'
 
         clear_history_closing_reachable = exists(clear_history_closing_pattern)
-        assert (
-            clear_history_closing_reachable
-        ), '"Clear history when Firefox closed" point is displayed'
+        assert clear_history_closing_reachable, '"Clear history when Firefox closed" point is displayed'
 
         clear_history_location = find(clear_history_closing_pattern)
-        clear_history_width, clear_history_height = (
-            clear_history_closing_pattern.get_size()
-        )
+        clear_history_width, clear_history_height = clear_history_closing_pattern.get_size()
         clear_history_region = Region(
             clear_history_location.x - box_width * 2,
             clear_history_location.y,
@@ -127,9 +99,7 @@ class Test(FirefoxTest):
             clear_history_height,
         )
 
-        remember_search_checked = exists(
-            prefs_unchecked_box_pattern, region=clear_history_region
-        )
+        remember_search_checked = exists(prefs_unchecked_box_pattern, region=clear_history_region)
         assert remember_search_checked, '"Clear history" point is unchecked'
 
         new_tab()
@@ -150,9 +120,7 @@ class Test(FirefoxTest):
 
         select_tab(1)
         clear_history_closing_reachable = exists(clear_history_closing_pattern)
-        assert (
-            clear_history_closing_reachable
-        ), '"Clear history when Firefox closed" point is displayed'
+        assert clear_history_closing_reachable, '"Clear history when Firefox closed" point is displayed'
 
         click(clear_history_closing_pattern)
 
@@ -171,23 +139,13 @@ class Test(FirefoxTest):
         history_submenu_opened = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR)
         assert history_submenu_opened, "History submenu is opened"
 
-        firefox_page_not_visited = not exists(
-            LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout
-        )
-        assert (
-            firefox_page_not_visited
-        ), "Firefox local page visit was'nt saved in history"
+        firefox_page_not_visited = not exists(LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout)
+        assert firefox_page_not_visited, "Firefox local page visit was'nt saved in history"
 
-        focus_page_not_visited = not exists(
-            LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout
-        )
+        focus_page_not_visited = not exists(LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout)
         assert focus_page_not_visited, "Focus local page visit was'nt saved in history"
 
-        pocket_page_not_visited = not exists(
-            LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout
-        )
-        assert (
-            pocket_page_not_visited
-        ), "Pocket local page visit was'nt saved in history"
+        pocket_page_not_visited = not exists(LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout)
+        assert pocket_page_not_visited, "Pocket local page visit was'nt saved in history"
 
         restore_firefox_focus()

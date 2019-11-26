@@ -14,9 +14,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        default_search_engine_google_pattern = Pattern(
-            "default_search_engine_google.png"
-        )
+        default_search_engine_google_pattern = Pattern("default_search_engine_google.png")
         amazon_search_engine_pattern = Pattern("amazon_search_engine.png").similar(0.9)
 
         navigate("about:preferences#search")
@@ -24,9 +22,7 @@ class Test(FirefoxTest):
         default_search_engine_google = exists(default_search_engine_google_pattern)
         assert default_search_engine_google, '"Default Search Engine" option available.'
 
-        default_search_engine_google_location = find(
-            default_search_engine_google_pattern
-        )
+        default_search_engine_google_location = find(default_search_engine_google_pattern)
         default_search_engine_amazon_region = Region(
             default_search_engine_google_location.x - 10,
             default_search_engine_google_location.y - 10,
@@ -36,14 +32,10 @@ class Test(FirefoxTest):
 
         click(default_search_engine_google_pattern, 1)
 
-        amazon_search_engine = exists(
-            amazon_search_engine_pattern, region=default_search_engine_amazon_region
-        )
+        amazon_search_engine = exists(amazon_search_engine_pattern, region=default_search_engine_amazon_region)
         assert amazon_search_engine, "A different default search engine available."
 
-        click(
-            amazon_search_engine_pattern, 1, region=default_search_engine_amazon_region
-        )
+        click(amazon_search_engine_pattern, 1, region=default_search_engine_amazon_region)
 
         new_tab()
 
@@ -58,15 +50,9 @@ class Test(FirefoxTest):
             amazon_search_engine_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         ), "Search results displayed, with the known/selected search-engine."
 
-        test_search_region = Region(
-            0, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 2
-        )
+        test_search_region = Region(0, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 2)
 
-        search_is_done = exists(
-            "test search",
-            FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT,
-            region=test_search_region,
-        )
+        search_is_done = exists("test search", FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT, region=test_search_region)
         assert search_is_done, "The search is made successfully."
 
         select_location_bar()
@@ -75,6 +61,4 @@ class Test(FirefoxTest):
 
         search_engine_changed = "amazon.com" in get_clipboard()
 
-        assert (
-            search_engine_changed
-        ), "The search is made by the selected search engine."
+        assert search_engine_changed, "The search is made by the selected search engine."

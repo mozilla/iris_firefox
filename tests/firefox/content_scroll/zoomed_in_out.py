@@ -25,29 +25,19 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        web_page_loaded_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            web_page_loaded_exists is True
-        ), "The website in question is properly loaded."
+        web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert web_page_loaded_exists is True, "The website in question is properly loaded."
 
         # Scrolling after zoomed in the page
         [zoom_in() for _ in range(2)]
-        after_zooming_in_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        after_zooming_in_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert after_zooming_in_content_exists is True, "Zoom in action works properly"
 
         click(after_zooming_in_content_pattern)
 
         # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using mouse wheel is on the page"
+        before_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using mouse wheel is on the page"
 
         [Mouse().scroll(0, -scroll_height) for _ in range(2)]
         try:
@@ -55,29 +45,18 @@ class Test(FirefoxTest):
                 after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert after_scroll_down_content_not_exists is True, (
-                "After zooming in and scrolling down"
-                " using mouse wheel content is gone"
+                "After zooming in and scrolling down" " using mouse wheel content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming in and scrolling down using mouse wheel content still exists"
-            )
+            raise FindError("After zooming in and scrolling down using mouse wheel content still exists")
         [Mouse().scroll(0, scroll_height) for _ in range(5)]
 
-        after_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using mouse wheel is successful."
+        after_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using mouse wheel is successful."
 
         # Scroll up and down using arrow keys
-        before_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using arrow keys is on the page"
+        before_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using arrow keys is on the page"
 
         repeat_key_down(10)
         try:
@@ -85,29 +64,18 @@ class Test(FirefoxTest):
                 after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert after_scroll_down_content_not_exists is True, (
-                "After zooming in and scrolling down"
-                " using arrow keys content is gone"
+                "After zooming in and scrolling down" " using arrow keys content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming in and scrolling down using arrow keys content still exists"
-            )
+            raise FindError("After zooming in and scrolling down using arrow keys content still exists")
         repeat_key_up(10)
 
-        after_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using arrow keys is successful."
+        after_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using arrow keys is successful."
 
         # Scroll up and down using page up/down keys
-        before_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using page up/down is on the page"
+        before_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using page up/down is on the page"
 
         [type(Key.PAGE_DOWN) for _ in range(4)]
         try:
@@ -115,29 +83,18 @@ class Test(FirefoxTest):
                 after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert after_scroll_down_content_not_exists is True, (
-                "After zooming in and scrolling down "
-                "using page up/down keys content is gone"
+                "After zooming in and scrolling down " "using page up/down keys content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming in and scrolling down using page up/down keys content still exists"
-            )
+            raise FindError("After zooming in and scrolling down using page up/down keys content still exists")
         [type(Key.PAGE_UP) for _ in range(4)]
 
-        after_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using page up/down keys is successful."
+        after_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using page up/down keys is successful."
 
         # Scroll up and down using ctrl + up/down keys
-        before_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using ctrl + up/down is on the page"
+        before_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using ctrl + up/down is on the page"
 
         if OSHelper.is_mac():
             type(Key.DOWN, modifier=KeyModifier.CMD)
@@ -149,33 +106,22 @@ class Test(FirefoxTest):
                 after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert after_scroll_down_content_not_exists is True, (
-                "After zooming in and scrolling down "
-                "using ctrl + up/down keys content is gone"
+                "After zooming in and scrolling down " "using ctrl + up/down keys content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming in and scrolling down using ctrl + up/down keys content still exists"
-            )
+            raise FindError("After zooming in and scrolling down using ctrl + up/down keys content still exists")
 
         if OSHelper.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
         else:
             type(Key.UP, modifier=KeyModifier.CTRL)
 
-        after_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using ctrl + up/down keys is successful."
+        after_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using ctrl + up/down keys is successful."
 
         # Scroll up and down using space bar
-        before_scroll_content_exists = exists(
-            after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using space bar is on the page"
+        before_scroll_content_exists = exists(after_zooming_in_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using space bar is on the page"
 
         [type(Key.SPACE) for _ in range(5)]
         try:
@@ -186,9 +132,7 @@ class Test(FirefoxTest):
                 "After zooming in and scrolling down" " using space bar content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming in and scrolling down using space bar content still exists"
-            )
+            raise FindError("After zooming in and scrolling down using space bar content still exists")
         page_home()
 
         restore_zoom()
@@ -196,20 +140,12 @@ class Test(FirefoxTest):
         # Scrolling after zoomed out the page
         [zoom_out() for _ in range(2)]
 
-        after_zooming_out_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_zooming_out_content_exists is True
-        ), "Zoom out action works properly"
+        after_zooming_out_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_zooming_out_content_exists is True, "Zoom out action works properly"
 
         # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using mouse wheel is on the page"
+        before_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using mouse wheel is on the page"
 
         [Mouse().scroll(0, -scroll_height) for _ in range(2)]
         try:
@@ -217,29 +153,18 @@ class Test(FirefoxTest):
                 after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert after_scroll_up_content_not_exists is True, (
-                "After zooming out and scrolling up"
-                " using mouse wheel content is gone"
+                "After zooming out and scrolling up" " using mouse wheel content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming out and scrolling up using mouse wheel content still exists"
-            )
+            raise FindError("After zooming out and scrolling up using mouse wheel content still exists")
         [Mouse().scroll(0, scroll_height) for _ in range(5)]
 
-        after_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using mouse wheel is successful."
+        after_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using mouse wheel is successful."
 
         # Scroll up and down using arrow keys
-        before_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using arrow keys is on the page"
+        before_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using arrow keys is on the page"
 
         repeat_key_down(10)
         try:
@@ -250,25 +175,15 @@ class Test(FirefoxTest):
                 "After zooming out and scrolling up" " using arrow keys content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming out and scrolling up using arrow keys content still exists"
-            )
+            raise FindError("After zooming out and scrolling up using arrow keys content still exists")
         repeat_key_up(10)
 
-        after_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using arrow keys is successful."
+        after_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using arrow keys is successful."
 
         # Scroll up and down using page up/down keys
-        before_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using page up/down is on the page"
+        before_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using page up/down is on the page"
 
         [type(Key.PAGE_DOWN) for _ in range(4)]
         try:
@@ -276,29 +191,18 @@ class Test(FirefoxTest):
                 after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert after_scroll_up_content_not_exists is True, (
-                "After zooming out and scrolling up"
-                " using page up/down keys content is gone"
+                "After zooming out and scrolling up" " using page up/down keys content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming out and scrolling up using page up/down keys content still exists"
-            )
+            raise FindError("After zooming out and scrolling up using page up/down keys content still exists")
         [type(Key.PAGE_UP) for _ in range(4)]
 
-        after_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using page up/down keys is successful."
+        after_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using page up/down keys is successful."
 
         # Scroll up and down using ctrl + up/down keys
-        before_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using ctrl + up/down is on the page"
+        before_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using ctrl + up/down is on the page"
 
         if OSHelper.is_mac():
             type(Key.DOWN, modifier=KeyModifier.CMD)
@@ -310,33 +214,22 @@ class Test(FirefoxTest):
                 after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert after_scroll_up_content_not_exists is True, (
-                "After zooming out and scrolling up"
-                " using ctrl + up/down keys content is gone"
+                "After zooming out and scrolling up" " using ctrl + up/down keys content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming out and scrolling up using ctrl + up/down keys content still exists"
-            )
+            raise FindError("After zooming out and scrolling up using ctrl + up/down keys content still exists")
 
         if OSHelper.is_mac():
             type(Key.UP, modifier=KeyModifier.CMD)
         else:
             type(Key.UP, modifier=KeyModifier.CTRL)
 
-        after_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up and down using ctrl + up/down keys is successful."
+        after_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert after_scroll_content_exists is True, "Scroll up and down using ctrl + up/down keys is successful."
 
         # Scroll up and down using space bar
-        before_scroll_content_exists = exists(
-            after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            before_scroll_content_exists is True
-        ), "Content before scrolling using space bar is on the page"
+        before_scroll_content_exists = exists(after_zooming_out_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert before_scroll_content_exists is True, "Content before scrolling using space bar is on the page"
 
         [type(Key.SPACE) for _ in range(5)]
 
@@ -348,6 +241,4 @@ class Test(FirefoxTest):
                 "After zooming out and scrolling up" " using space bar content is gone"
             )
         except FindError:
-            raise FindError(
-                "After zooming out and scrolling up using space bar content still exists"
-            )
+            raise FindError("After zooming out and scrolling up using space bar content still exists")

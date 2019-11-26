@@ -8,18 +8,15 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Search suggestions can be disabled.",
-        locale=["en-US"],
-        test_case_id="4273",
-        test_suite_id="83",
+        description="Search suggestions can be disabled.", locale=["en-US"], test_case_id="4273", test_suite_id="83"
     )
     def run(self, firefox):
         provide_search_suggestions_checked_pattern = Pattern("provide_search_suggestions_checked.png")
         provide_search_suggestions_unchecked_pattern = Pattern("provide_search_suggestions_unchecked.png")
-        search_suggestions_not_displayed_search_bar_pattern = \
-            Pattern("search_suggestions_are_disabled_search_bar.png").similar(0.7)
-        search_suggestions_not_displayed_new_tab_pattern = \
-            Pattern("search_suggestions_not_displayed_new_tab.png")
+        search_suggestions_not_displayed_search_bar_pattern = Pattern(
+            "search_suggestions_are_disabled_search_bar.png"
+        ).similar(0.7)
+        search_suggestions_not_displayed_new_tab_pattern = Pattern("search_suggestions_not_displayed_new_tab.png")
         add_search_bar_in_toolbar = Pattern("add_search_bar_in_toolbar.png")
 
         # Disable the search bar.
@@ -44,35 +41,32 @@ class Test(FirefoxTest):
         provide_search_suggestions_unchecked_pattern_exists = exists(
             provide_search_suggestions_unchecked_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
-        assert provide_search_suggestions_unchecked_pattern_exists, \
-            "The 'Provide search suggestions' option couldn't be disabled."
+        assert (
+            provide_search_suggestions_unchecked_pattern_exists
+        ), "The 'Provide search suggestions' option couldn't be disabled."
 
         # Type in some random text in the Search Bar and content search field.
         select_search_bar()
         type("test", interval=0.25)
 
         suggestions_search_not_displayed = exists(
-            search_suggestions_not_displayed_search_bar_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            search_suggestions_not_displayed_search_bar_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert suggestions_search_not_displayed, (
-            "Search suggestions found for the input text in search bar, Assertion failed."
-        )
+        assert (
+            suggestions_search_not_displayed
+        ), "Search suggestions found for the input text in search bar, Assertion failed."
 
         new_tab()
         type("test", interval=0.25)
-        new_tab_search_region = Region(
-            0,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT // 3,
-        )
+        new_tab_search_region = Region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT // 3)
         suggestions_content_not_displayed = exists(
             search_suggestions_not_displayed_new_tab_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,region=new_tab_search_region
+            FirefoxSettings.FIREFOX_TIMEOUT,
+            region=new_tab_search_region,
         )
-        assert suggestions_content_not_displayed, \
-            "Search suggestions found for the input text in about:newtab, Assertion failed."
+        assert (
+            suggestions_content_not_displayed
+        ), "Search suggestions found for the input text in about:newtab, Assertion failed."
 
         # Enable Search bar
         navigate("about:preferences#search")
@@ -87,11 +81,11 @@ class Test(FirefoxTest):
         type("test", interval=0.25)
 
         suggestions_search_displayed = exists(
-            search_suggestions_not_displayed_search_bar_pattern,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            search_suggestions_not_displayed_search_bar_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )
-        assert suggestions_search_displayed is False, \
-            "Search suggestions couldn't found for the input text in search bar."
+        assert (
+            suggestions_search_displayed is False
+        ), "Search suggestions couldn't found for the input text in search bar."
 
         new_tab()
 
@@ -99,7 +93,9 @@ class Test(FirefoxTest):
 
         suggestions_content_displayed = exists(
             search_suggestions_not_displayed_new_tab_pattern,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT, region=new_tab_search_region
+            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            region=new_tab_search_region,
         )
-        assert suggestions_content_displayed is False, \
-            "Search suggestions couldn't found for the input text in 'about:newtab'."
+        assert (
+            suggestions_content_displayed is False
+        ), "Search suggestions couldn't found for the input text in 'about:newtab'."

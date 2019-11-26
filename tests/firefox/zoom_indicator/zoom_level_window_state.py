@@ -26,37 +26,21 @@ class Test(FirefoxTest):
 
         region = create_region_for_url_bar()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
         zoom_in()
 
         new_region = create_region_for_url_bar()
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."
 
         for i in range(7):
             zoom_in()
 
-        expected = exists(
-            urlbar_zoom_button_300_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, maximum zoom level(300%) reached."
+        expected = exists(urlbar_zoom_button_300_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased, maximum zoom level(300%) reached."
 
         minimize_window()
 
@@ -64,9 +48,7 @@ class Test(FirefoxTest):
             minimize_window()
 
         try:
-            expected = wait_vanish(
-                LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-            )
+            expected = wait_vanish(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
             assert expected, "Window successfully minimized."
         except FindError:
             raise FindError("Window not minimized.")
@@ -79,9 +61,5 @@ class Test(FirefoxTest):
         expected = exists(NavBar.HAMBURGER_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Window successfully opened again."
 
-        expected = exists(
-            urlbar_zoom_button_300_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
+        expected = exists(urlbar_zoom_button_300_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
         assert expected, "Zoom indicator still display 300%."

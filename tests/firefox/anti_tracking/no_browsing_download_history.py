@@ -29,12 +29,8 @@ class Test(FirefoxTest):
         new_tab()
         navigate("about:preferences#privacy")
 
-        preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
-        assert (
-            preferences_opened
-        ), 'The "about:preferences#privacy" page is successfully displayed'
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        assert preferences_opened, 'The "about:preferences#privacy" page is successfully displayed'
 
         paste("remember")
 
@@ -46,25 +42,19 @@ class Test(FirefoxTest):
         click(custom_history_settings_pattern)
 
         use_custom_settings_selected = exists(custom_history_settings_pattern)
-        assert (
-            use_custom_settings_selected
-        ), 'The "Use custom settings for history" option is successfully selected.'
+        assert use_custom_settings_selected, 'The "Use custom settings for history" option is successfully selected.'
 
         click(remember_browsing_download_pattern)
 
         point_unpinned = exists(unticked_browsing_download_pattern)
-        assert (
-            point_unpinned
-        ), 'The "Remember my browsing and download history" checkbox is successfully unticked.'
+        assert point_unpinned, 'The "Remember my browsing and download history" checkbox is successfully unticked.'
 
         close_tab()
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_test_site_opened = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_test_site_opened, "Firefox test site opened."
 
         close_tab()
@@ -72,9 +62,7 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        focus_test_site_opened = exists(
-            LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        focus_test_site_opened = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert focus_test_site_opened, "Focus test site opened."
 
         close_tab()
@@ -82,9 +70,7 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.POCKET_TEST_SITE)
 
-        pocket_site_opened = exists(
-            LocalWeb.POCKET_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        pocket_site_opened = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pocket_site_opened, "Pocket site opened"
 
         close_tab()
@@ -108,25 +94,19 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         new_tab()
-        navigate(
-            "https://www.stmarys-ca.edu/sites/default/files/attachments/files/Faust.pdf"
-        )
+        navigate("https://www.stmarys-ca.edu/sites/default/files/attachments/files/Faust.pdf")
 
         pdf_bar_located = exists(download_pdf_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pdf_bar_located, "PDF loaded"
 
         click(download_pdf_pattern)
 
-        save_file_dialog_exists = exists(
-            DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert save_file_dialog_exists, "Save file dialog opened"
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
 
-        ok_button_exists = exists(
-            DownloadDialog.OK_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        ok_button_exists = exists(DownloadDialog.OK_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert ok_button_exists, "Button OK exists"
 
         click(DownloadDialog.OK_BUTTON)
@@ -139,9 +119,7 @@ class Test(FirefoxTest):
         open_downloads()
 
         file_not_in_downloads = not exists(pdf_downloaded)
-        assert (
-            file_not_in_downloads
-        ), "The previously downloaded pdf file is not displayed in Firefox download history."
+        assert file_not_in_downloads, "The previously downloaded pdf file is not displayed in Firefox download history."
 
         click_window_control("close")
 

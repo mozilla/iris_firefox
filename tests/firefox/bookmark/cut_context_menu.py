@@ -18,28 +18,19 @@ class Test(FirefoxTest):
         toolbar_bookmark_pattern = Pattern("moz_toolbar_dragged_bookmark.png")
         moz_sidebar_bookmark = Pattern("moz_sidebar_bookmark.png")
         drag_area = Pattern("drag_area.png")
-        moz_location_changed = Pattern(
-            "moz_sidebar_bookmark_location_changed.png"
-        ).similar(0.6)
+        moz_location_changed = Pattern("moz_sidebar_bookmark_location_changed.png").similar(0.6)
         cut_option_pattern = Pattern("cut_option.png")
         paste_option_pattern = Pattern("paste_option.png")
         bookmarks_sidebar_menu_pattern = SidebarBookmarks.BOOKMARKS_MENU
-        bookmarks_sidebar_menu_selected_pattern = (
-            SidebarBookmarks.BOOKMARKS_MENU_SELECTED
-        )
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
+        bookmarks_sidebar_menu_selected_pattern = SidebarBookmarks.BOOKMARKS_MENU_SELECTED
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
 
         navigate("about:blank")
 
         access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
         try:
-            wait(
-                SidebarBookmarks.BookmarksToolbar.MOST_VISITED,
-                FirefoxSettings.FIREFOX_TIMEOUT,
-            )
+            wait(SidebarBookmarks.BookmarksToolbar.MOST_VISITED, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug("Toolbar has been activated.")
         except FindError:
             raise FindError("Toolbar can not be activated, aborting.")
@@ -48,21 +39,13 @@ class Test(FirefoxTest):
 
         paste("mozilla")
 
-        sidebar_bookmark_assert = exists(
-            moz_sidebar_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            sidebar_bookmark_assert is True
-        ), "Moz Bookmark is present inside the sidebar."
+        sidebar_bookmark_assert = exists(moz_sidebar_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert sidebar_bookmark_assert is True, "Moz Bookmark is present inside the sidebar."
 
         drag_drop(moz_sidebar_bookmark, drag_area, duration=0.5)
 
-        toolbar_bookmark_assert = exists(
-            toolbar_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            toolbar_bookmark_assert is True
-        ), "Moz bookmark is present in the Bookmarks Toolbar."
+        toolbar_bookmark_assert = exists(toolbar_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert toolbar_bookmark_assert is True, "Moz bookmark is present in the Bookmarks Toolbar."
 
         right_click(toolbar_bookmark_pattern)
 
@@ -83,10 +66,7 @@ class Test(FirefoxTest):
 
         click(paste_option_pattern)
 
-        pasted_bookmark_assertion = exists(
-            moz_location_changed, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        pasted_bookmark_assertion = exists(moz_location_changed, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pasted_bookmark_assertion is True, (
-            "Moz Bookmark has been moved to a different directory, cut option "
-            "works as expected."
+            "Moz Bookmark has been moved to a different directory, cut option " "works as expected."
         )

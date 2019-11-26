@@ -17,29 +17,20 @@ class Test(FirefoxTest):
     def run(self, firefox):
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_label_exists, "The page is successfully loaded."
 
         type("/")
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.QUICK_FIND_LABEL, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.QUICK_FIND_LABEL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         type("see", interval=1)
 
-        selected_label_exists = exists(
-            LocalWeb.SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-        )
-        assert (
-            selected_label_exists
-        ), "The first one has a green background highlighted."
+        selected_label_exists = exists(LocalWeb.SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert selected_label_exists, "The first one has a green background highlighted."
 
         type(Key.F3)
 

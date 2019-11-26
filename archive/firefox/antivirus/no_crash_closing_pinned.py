@@ -54,17 +54,13 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_webpage_loaded = exists(
-            mozilla_tab_pattern, Settings.DEFAULT_SITE_LOAD_TIMEOUT
-        )
+        mozilla_webpage_loaded = exists(mozilla_tab_pattern, Settings.DEFAULT_SITE_LOAD_TIMEOUT)
         assert mozilla_webpage_loaded, "First webpage is loaded."
 
         right_click(mozilla_tab_pattern)
 
         unpinned_dropdown_opened_second_time = exists(pin_tab_pattern)
-        assert (
-            unpinned_dropdown_opened_second_time
-        ), "Right-click menu for unpinned displayed"
+        assert unpinned_dropdown_opened_second_time, "Right-click menu for unpinned displayed"
 
         click(pin_tab_pattern)
 

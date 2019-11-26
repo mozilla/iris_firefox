@@ -23,31 +23,21 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_logo_assert = exists(
-            firefox_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_logo_assert = exists(firefox_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_logo_assert is True, "Previously bookmarked page loaded."
 
-        blue_star_button_assert = exists(
-            blue_star_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        blue_star_button_assert = exists(blue_star_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert blue_star_button_assert is True, "Star button is blue."
 
         click(blue_star_button_pattern)
 
-        edit_bookmark_assert = exists(
-            edit_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        edit_bookmark_assert = exists(edit_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert edit_bookmark_assert is True, "Edit bookmark panel opened."
 
-        remove_button_assert = exists(
-            remove_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        remove_button_assert = exists(remove_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert remove_button_assert is True, "Remove button is present."
 
         click(remove_button_pattern)
 
-        white_star_button_assert = exists(
-            white_star_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        white_star_button_assert = exists(white_star_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert white_star_button_assert is True, "Star button turned white."

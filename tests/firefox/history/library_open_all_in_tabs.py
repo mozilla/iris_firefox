@@ -48,10 +48,7 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
 
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
@@ -64,11 +61,7 @@ class Test(FirefoxTest):
 
         # Right click on History time range and select the Open All in Tabs button.
 
-        right_click_and_type(
-            history_today_pattern,
-            delay=FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-            keyboard_action="o",
-        )
+        right_click_and_type(history_today_pattern, delay=FirefoxSettings.SHORT_FIREFOX_TIMEOUT, keyboard_action="o")
 
         open_library()
 

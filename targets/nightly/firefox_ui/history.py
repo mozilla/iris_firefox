@@ -15,9 +15,7 @@ class History(object):
 
     class ClearRecentHistory(object):
         CLEAR_ALL_HISTORY_TITLE = Pattern("sanitize_dialog_title.png").similar(0.6)
-        CLEAR_RECENT_HISTORY_TITLE = Pattern(
-            "sanitize_dialog_non_everything_title.png"
-        ).similar(0.6)
+        CLEAR_RECENT_HISTORY_TITLE = Pattern("sanitize_dialog_non_everything_title.png").similar(0.6)
 
         class TimeRange(object):
             LAST_HOUR = Pattern("last_hour.png")
@@ -28,12 +26,8 @@ class History(object):
 
             # Focused time ranges.
             CLEAR_CHOICE_LAST_HOUR = Pattern("sanitize_duration_choice_last_hour.png")
-            CLEAR_CHOICE_LAST_TWO_HOURS = Pattern(
-                "sanitize_duration_choice_last_two_hours.png"
-            )
-            CLEAR_CHOICE_LAST_FOUR_HOURS = Pattern(
-                "sanitize_duration_choice_last_four_hours.png"
-            )
+            CLEAR_CHOICE_LAST_TWO_HOURS = Pattern("sanitize_duration_choice_last_two_hours.png")
+            CLEAR_CHOICE_LAST_FOUR_HOURS = Pattern("sanitize_duration_choice_last_four_hours.png")
             CLEAR_CHOICE_TODAY = Pattern("sanitize_duration_choice_today.png")
             CLEAR_CHOICE_EVERYTHING = Pattern("sanitize_duration_choice_everything.png")
 

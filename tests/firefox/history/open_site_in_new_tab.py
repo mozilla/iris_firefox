@@ -28,6 +28,4 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         expected_2 = exists(recent_history_mozilla_pattern, 10)
-        assert (
-            expected_2 is True
-        ), "Mozilla page displayed in the History list successfully."
+        assert expected_2 is True, "Mozilla page displayed in the History list successfully."

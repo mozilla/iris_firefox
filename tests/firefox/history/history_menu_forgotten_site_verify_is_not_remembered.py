@@ -28,12 +28,8 @@ class Test(FirefoxTest):
 
         type("http://127.0.0.1:2000/m", interval=0.1)
 
-        mozilla_autocomplete_exists = exists(
-            mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            mozilla_autocomplete_exists
-        ), "Mozilla page is auto-completed successfully."
+        mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_autocomplete_exists, "Mozilla page is auto-completed successfully."
 
         close_tab()
         new_tab()
@@ -42,32 +38,21 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
 
         recent_history_mozilla_exists = right_upper_corner.exists(
             recent_history_mozilla_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            recent_history_mozilla_exists
-        ), "Mozilla page is displayed in the Recent History list."
+        assert recent_history_mozilla_exists, "Mozilla page is displayed in the Recent History list."
 
-        show_all_history_exists = exists(
-            show_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        show_all_history_exists = exists(show_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert show_all_history_exists, "Show All History option found."
 
         click(show_all_history_pattern)
 
-        mozilla_bookmark_focus_exists = exists(
-            mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            mozilla_bookmark_focus_exists
-        ), "Mozilla page is displayed in the History list successfully."
+        mozilla_bookmark_focus_exists = exists(mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_bookmark_focus_exists, "Mozilla page is displayed in the History list successfully."
 
         right_click_and_type(mozilla_bookmark_focus_pattern, keyboard_action="f")
 
@@ -75,9 +60,7 @@ class Test(FirefoxTest):
             mozilla_bookmark_focus_vanished = wait_vanish(
                 mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
-            assert (
-                mozilla_bookmark_focus_vanished
-            ), "Mozilla page was deleted successfully from the Library."
+            assert mozilla_bookmark_focus_vanished, "Mozilla page was deleted successfully from the Library."
         except FindError:
             raise FindError("Mozilla page is still displayed in the Library.")
 
@@ -86,20 +69,12 @@ class Test(FirefoxTest):
         # Check that Mozilla page is not displayed in the Recent History list.
         open_library_menu("History")
 
-        recent_history_mozilla_exists = exists(
-            recent_history_mozilla_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            recent_history_mozilla_exists is False
-        ), "Mozilla page is not displayed in the Recent History list."
+        recent_history_mozilla_exists = exists(recent_history_mozilla_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert recent_history_mozilla_exists is False, "Mozilla page is not displayed in the Recent History list."
 
         # Check that the forgotten page is not auto-completed in the URL bar.
         select_location_bar()
         type("http://127.0.0.1:2000/m", interval=0.1)
 
-        mozilla_autocomplete_exists = exists(
-            mozilla_autocomplete_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            mozilla_autocomplete_exists is False
-        ), "Mozilla page is not auto-completed in the URL bar."
+        mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_autocomplete_exists is False, "Mozilla page is not auto-completed in the URL bar."

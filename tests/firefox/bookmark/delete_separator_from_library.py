@@ -25,32 +25,24 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_test_site_opened = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_test_site_opened is True, "Firefox Test page opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "StarDialog displayed"
 
         click(Bookmarks.StarDialog.DONE)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened is True, "Soap wiki page opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "StarDialog displayed"
 
         click(Bookmarks.StarDialog.DONE)
@@ -77,9 +69,7 @@ class Test(FirefoxTest):
         click(Library.Organize.NEW_SEPARATOR)
 
         separator_added = exists(separator_added_pattern)
-        assert (
-            separator_added is True
-        ), "A new separator is displayed above the selected bookmark."
+        assert separator_added is True, "A new separator is displayed above the selected bookmark."
 
         right_click(separator_added_pattern)
 

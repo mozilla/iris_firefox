@@ -36,8 +36,6 @@ class Test(FirefoxTest):
 
         try:
             website_bookmark_not_exists = wait_vanish(getting_started_bookmark_pattern)
-            assert (
-                website_bookmark_not_exists is True
-            ), "The selected website is correctly deleted."
+            assert website_bookmark_not_exists is True, "The selected website is correctly deleted."
         except FindError:
             raise FindError("The selected website is not deleted")

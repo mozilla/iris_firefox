@@ -40,9 +40,7 @@ class LocalWeb(object):
     MOZILLA_BOOKMARK = Pattern("mozilla_bookmark.png")
     MOZILLA_BOOKMARK_SMALL = Pattern("mozilla_bookmark_small.png")
     MOZILLA_BOOKMARK_HISTORY_SIDEBAR = Pattern("mozilla_bookmark_history_sidebar.png")
-    MOZILLA_BOOKMARK_LIBRARY_HISTORY_LIST = Pattern(
-        "mozilla_bookmark_library_history_list.png"
-    )
+    MOZILLA_BOOKMARK_LIBRARY_HISTORY_LIST = Pattern("mozilla_bookmark_library_history_list.png")
 
     """Local Pocket site."""
     POCKET_TEST_SITE = "http://%s:%s/pocket/" % (_ip_host, _port)
@@ -60,9 +58,7 @@ class LocalWeb(object):
     SOAP_WIKI_OPERATING_ALL = Pattern("operating_all.png").similar(0.7)
     SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED = Pattern("operating_all_highlighted.png").similar(0.7)
     SOAP_WIKI_OPERATING_DISPARATE = Pattern("operating_disparate.png").similar(0.7)
-    SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED = Pattern(
-        "operating_disparate_highlighted.png"
-    )
+    SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED = Pattern("operating_disparate_highlighted.png")
     SOAP_WIKI_SEE_LABEL = Pattern("see_label.png")
     SOAP_WIKI_SEE_LABEL_UNHIGHLITED = Pattern("see_label_unhighlited.png")
     SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED = Pattern("soap_envelope_label_selected.png").similar(0.6)

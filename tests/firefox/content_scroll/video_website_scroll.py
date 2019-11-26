@@ -29,14 +29,10 @@ class Test(FirefoxTest):
 
         navigate("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
-        youtube_page_is_downloaded = exists(
-            youtube_autoplay_switch_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert youtube_page_is_downloaded is True, "Youtube is properly loaded"
 
-        speaker_icon_displayed = exists(
-            speaker_icon_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        speaker_icon_displayed = exists(speaker_icon_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert speaker_icon_displayed is True, "The video content is playing"
 
         focusing_inside_the_page = find(NavBar.HOME_BUTTON).offset(300, 300)
@@ -46,29 +42,18 @@ class Test(FirefoxTest):
         youtube_subscribe_button_displayed = scroll_until_pattern_found(
             youtube_subscribe_button_pattern, Mouse().scroll, (None, -mouse_wheel_steps)
         )
-        assert (
-            youtube_subscribe_button_displayed is True
-        ), "The Youtube subscribe button is displayed"
+        assert youtube_subscribe_button_displayed is True, "The Youtube subscribe button is displayed"
 
         for times_scroll_down in range(20):
             Mouse().scroll(None, -mouse_wheel_steps)
-            youtube_subscribe_button_disappeared = exists(
-                youtube_subscribe_button_pattern
-            )
+            youtube_subscribe_button_disappeared = exists(youtube_subscribe_button_pattern)
             if not youtube_subscribe_button_disappeared:
                 break
 
         youtube_subscribe_button_disappeared = exists(youtube_subscribe_button_pattern)
-        assert (
-            youtube_subscribe_button_disappeared is False
-        ), "Successfully scrolled to comment section by mouse scroll"
+        assert youtube_subscribe_button_disappeared is False, "Successfully scrolled to comment section by mouse scroll"
 
         top_of_the_page_destinated = scroll_until_pattern_found(
-            youtube_autoplay_switch_pattern,
-            Mouse().scroll,
-            (None, mouse_wheel_steps),
-            25,
+            youtube_autoplay_switch_pattern, Mouse().scroll, (None, mouse_wheel_steps), 25
         )
-        assert (
-            top_of_the_page_destinated is True
-        ), "Successfully scrolled to the top of the page by mouse scroll"
+        assert top_of_the_page_destinated is True, "Successfully scrolled to the top of the page by mouse scroll"

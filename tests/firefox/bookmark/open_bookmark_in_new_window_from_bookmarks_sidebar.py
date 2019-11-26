@@ -29,27 +29,19 @@ class Test(FirefoxTest):
         bookmarks_sidebar_menu_exists = exists(
             bookmarks_sidebar_menu_header_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_sidebar_menu_exists is True
-        ), "Bookmarks Sidebar is correctly displayed."
+        assert bookmarks_sidebar_menu_exists is True, "Bookmarks Sidebar is correctly displayed."
 
-        other_bookmarks_exists = exists(
-            other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        other_bookmarks_exists = exists(other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert other_bookmarks_exists, "Other bookmarks exists"
 
         click(other_bookmarks_pattern)
 
-        firefox_sidebar_logo_exists = exists(
-            firefox_sidebar_logo_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert firefox_sidebar_logo_exists is True, "Firefox bookmark exists"
 
         right_click(firefox_sidebar_logo_pattern)
 
-        open_option_exists = exists(
-            open_in_new_window_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        open_option_exists = exists(open_in_new_window_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert open_option_exists is True, "Open in New Window option exists"
 
         click(open_in_new_window_option_pattern)

@@ -28,10 +28,7 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
 
         expected_2 = right_upper_corner.exists(recent_history_mozilla_pattern, 10)

@@ -26,9 +26,7 @@ class Test(FirefoxTest):
         click(bookmarks_top_menu_pattern)
 
         bookmarks_dropdown_displayed = exists(other_bookmarks_item_pattern)
-        assert (
-            bookmarks_dropdown_displayed is True
-        ), "Bookmarks menu is properly displayed"
+        assert bookmarks_dropdown_displayed is True, "Bookmarks menu is properly displayed"
 
         click(other_bookmarks_item_pattern)
 

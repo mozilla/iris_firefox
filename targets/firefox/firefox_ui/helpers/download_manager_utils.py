@@ -16,10 +16,7 @@ from moziris.util.path_manager import PathManager
 from targets.firefox.firefox_ui.download_manager import DownloadManager
 from targets.firefox.firefox_ui.general_test_utils import Step, access_and_check_pattern
 from targets.firefox.firefox_ui.helpers.general import click_window_control
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import (
-    close_tab,
-    open_web_console,
-)
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import close_tab, open_web_console
 from targets.firefox.firefox_ui.library import Library
 from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
@@ -67,12 +64,8 @@ class DownloadFiles(object):
     DOWNLOADS_PANEL_5MB_COMPLETED_RTL = Pattern("completed_5mb_file_rtl.png")
     DOWNLOADS_PANEL_10MB_COMPLETED_RTL = Pattern("completed_10mb_file_rtl.png")
     DOWNLOADS_PANEL_20MB_COMPLETED_RTL = Pattern("completed_20mb_file_rtl.png")
-    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern("5MB_folder_view_highlighted.png").similar(
-        0.79
-    )
-    FOLDER_VIEW_10MB_HIGHLIGHTED = Pattern("10MB_folder_view_highlighted.png").similar(
-        0.79
-    )
+    FOLDER_VIEW_5MB_HIGHLIGHTED = Pattern("5MB_folder_view_highlighted.png").similar(0.79)
+    FOLDER_VIEW_10MB_HIGHLIGHTED = Pattern("10MB_folder_view_highlighted.png").similar(0.79)
     FIREFOX_INSTALLER = Pattern("firefox_installer.png")
     FIREFOX_INSTALLER_HIGHLIGHTED = Pattern("firefox_installer_highlighted.png")
     STATUS_200 = Pattern("status_200.png")
@@ -126,12 +119,7 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
         except FindError:
             raise FindError("Could not get the coordinates of the hamburger menu.")
 
-        region = Region(
-            find_back_button.x - 10,
-            find_back_button.y,
-            Screen.SCREEN_WIDTH,
-            Screen.SCREEN_HEIGHT,
-        )
+        region = Region(find_back_button.x - 10, find_back_button.y, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT)
     else:
         steps = open_show_all_downloads_window_from_library_menu()
         logger.debug("Creating a region for Non-private Library window.")
@@ -141,20 +129,14 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
         try:
             find_library = find(Library.TITLE)
         except FindError:
-            raise FindError(
-                "Could not get the x-coordinate of the library window title."
-            )
+            raise FindError("Could not get the x-coordinate of the library window title.")
 
         try:
             find_clear_downloads = find(Library.CLEAR_DOWNLOADS)
         except FindError:
-            raise FindError(
-                "Could not get the x-coordinate of the clear_downloads button."
-            )
+            raise FindError("Could not get the x-coordinate of the clear_downloads button.")
 
-        clear_downloads_width, clear_downloads_height = (
-            Library.CLEAR_DOWNLOADS.get_size()
-        )
+        clear_downloads_width, clear_downloads_height = Library.CLEAR_DOWNLOADS.get_size()
         region = Region(
             find_library.x - 10,
             find_library.y,
@@ -164,13 +146,9 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
 
     # Cancel all 'in progress' downloads.
     expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 5)
-    expected_highlighted = region.exists(
-        DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED
-    )
+    expected_highlighted = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED)
     if expected or expected_highlighted:
-        steps.append(
-            Step(expected, "The Cancel Download button is displayed properly.")
-        )
+        steps.append(Step(expected, "The Cancel Download button is displayed properly."))
         cancel_downloads = True
         expected_cancel = True
     else:
@@ -200,12 +178,7 @@ def cancel_in_progress_downloads_from_the_library(private_window=False):
     return steps
 
 
-def download_file(
-    file_to_download,
-    accept_download,
-    max_number_of_attempts=20,
-    expect_accept_download_available=True,
-):
+def download_file(file_to_download, accept_download, max_number_of_attempts=20, expect_accept_download_available=True):
     """
     :param file_to_download: Pattern of file to be downloaded.
     :param accept_download: Accept download pattern.
@@ -230,28 +203,20 @@ def download_file(
         wait(DownloadFiles.SAVE_FILE, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         logger.debug("The 'Save file' option is present in the page.")
 
-        time.sleep(
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )  # prevent click on inactive button on windows
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # prevent click on inactive button on windows
 
         click(DownloadFiles.SAVE_FILE)
 
     except FindError:
-        raise APIHelperError(
-            "The 'Save file' option is not present in the page, aborting."
-        )
+        raise APIHelperError("The 'Save file' option is not present in the page, aborting.")
 
     if expect_accept_download_available:
-        accept_download_button = exists(
-            accept_download, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        accept_download_button = exists(accept_download, FirefoxSettings.FIREFOX_TIMEOUT)
         if accept_download_button:
             logger.debug("The accept download button found in the page.")
             click(accept_download)
         else:
-            raise APIHelperError(
-                "The accept download button was not found in the page."
-            )
+            raise APIHelperError("The accept download button was not found in the page.")
 
 
 def downloads_cleanup():
@@ -266,20 +231,12 @@ def force_delete_folder(path):
 
 def open_show_all_downloads_window_from_library_menu():
     return [
+        access_and_check_pattern(NavBar.LIBRARY_MENU, '"Library menu"', LibraryMenu.DOWNLOADS, "click"),
         access_and_check_pattern(
-            NavBar.LIBRARY_MENU, '"Library menu"', LibraryMenu.DOWNLOADS, "click"
+            LibraryMenu.DOWNLOADS, '"Downloads menu"', DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, "click"
         ),
         access_and_check_pattern(
-            LibraryMenu.DOWNLOADS,
-            '"Downloads menu"',
-            DownloadManager.Downloads.SHOW_ALL_DOWNLOADS,
-            "click",
-        ),
-        access_and_check_pattern(
-            DownloadManager.Downloads.SHOW_ALL_DOWNLOADS,
-            '"Downloads library"',
-            Library.DOWNLOADS,
-            "click",
+            DownloadManager.Downloads.SHOW_ALL_DOWNLOADS, '"Downloads library"', Library.DOWNLOADS, "click"
         ),
     ]
 
@@ -287,16 +244,10 @@ def open_show_all_downloads_window_from_library_menu():
 def open_show_downloads_window_using_download_panel():
     return [
         access_and_check_pattern(
-            NavBar.DOWNLOADS_BUTTON,
-            '"Downloads panel"',
-            DownloadManager.SHOW_ALL_DOWNLOADS,
-            "click",
+            NavBar.DOWNLOADS_BUTTON, '"Downloads panel"', DownloadManager.SHOW_ALL_DOWNLOADS, "click"
         ),
         access_and_check_pattern(
-            DownloadManager.SHOW_ALL_DOWNLOADS,
-            '"Show all downloads"',
-            Library.DOWNLOADS,
-            "click",
+            DownloadManager.SHOW_ALL_DOWNLOADS, '"Show all downloads"', Library.DOWNLOADS, "click"
         ),
         access_and_check_pattern(Library.DOWNLOADS, '"Downloads library"'),
     ]
@@ -315,9 +266,7 @@ def select_throttling(option):
         wait(Pattern("no_throttling.png"), 10)
         click(Pattern("no_throttling.png"))
     except FindError:
-        raise APIHelperError(
-            "Can't find the throttling menu in the page, aborting test."
-        )
+        raise APIHelperError("Can't find the throttling menu in the page, aborting test.")
 
     for i in range(option + 1):
         type(Key.DOWN)
@@ -326,14 +275,9 @@ def select_throttling(option):
 
 def show_all_downloads_from_library_menu_private_window():
     return [
+        access_and_check_pattern(NavBar.LIBRARY_MENU, '"Library menu"', LibraryMenu.DOWNLOADS, "click"),
         access_and_check_pattern(
-            NavBar.LIBRARY_MENU, '"Library menu"', LibraryMenu.DOWNLOADS, "click"
-        ),
-        access_and_check_pattern(
-            LibraryMenu.DOWNLOADS,
-            '"Downloads menu"',
-            DownloadManager.SHOW_ALL_DOWNLOADS,
-            "click",
+            LibraryMenu.DOWNLOADS, '"Downloads menu"', DownloadManager.SHOW_ALL_DOWNLOADS, "click"
         ),
         access_and_check_pattern(
             DownloadManager.SHOW_ALL_DOWNLOADS,

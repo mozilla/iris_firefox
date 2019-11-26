@@ -18,9 +18,7 @@ class Test(FirefoxTest):
         show_all_bookmarks_button_pattern = Pattern("show_all_bookmarks_button.png")
 
         library_button_exists = exists(NavBar.LIBRARY_MENU)
-        assert (
-            library_button_exists
-        ), "View history, saved bookmarks and more section exists"
+        assert library_button_exists, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
@@ -30,9 +28,7 @@ class Test(FirefoxTest):
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         show_all_bookmarks_button_exists = exists(show_all_bookmarks_button_pattern)
-        assert (
-            show_all_bookmarks_button_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert show_all_bookmarks_button_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(show_all_bookmarks_button_pattern)
 

@@ -25,17 +25,13 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.DEFAULT_SITE_LOAD_TIMEOUT
-        )
+        soap_wiki_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.DEFAULT_SITE_LOAD_TIMEOUT)
         assert soap_wiki_opened, "Webpage is opened in tab"
 
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_test_site_opened = exists(
-            LocalWeb.MOZILLA_LOGO, Settings.DEFAULT_SITE_LOAD_TIMEOUT
-        )
+        mozilla_test_site_opened = exists(LocalWeb.MOZILLA_LOGO, Settings.DEFAULT_SITE_LOAD_TIMEOUT)
         assert mozilla_test_site_opened, "Webpage opened in second tab"
 
         close_tab()

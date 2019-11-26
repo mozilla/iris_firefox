@@ -23,21 +23,13 @@ class Test(FirefoxTest):
         google_one_off_button_pattern = Pattern("google_one_off_button.png")
         twitter_one_off_button_pattern = Pattern("twitter_one_off_button.png")
         wikipedia_one_off_button_pattern = Pattern("wikipedia_one_off_button.png")
-        default_search_engine_dropdown_pattern = Pattern(
-            "default_search_engine_dropdown.png"
-        )
-        moz_search_amazon_search_engine_pattern = Pattern(
-            "moz_search_amazon_search_engine.png"
-        )
-        add_startpage_https_privacy_search_engine_pattern = Pattern(
-            "add_startpage_https_privacy_search_engine.png"
-        )
+        default_search_engine_dropdown_pattern = Pattern("default_search_engine_dropdown.png")
+        moz_search_amazon_search_engine_pattern = Pattern("moz_search_amazon_search_engine.png")
+        add_startpage_https_privacy_search_engine_pattern = Pattern("add_startpage_https_privacy_search_engine.png")
         find_more_search_engines_pattern = Pattern("find_more_search_engines.png")
         add_to_firefox_pattern = Pattern("add_to_firefox.png")
         add_button_pattern = Pattern("add_button.png")
-        startpage_https_search_engine_pattern = Pattern(
-            "startpage_https_search_engine.png"
-        )
+        startpage_https_search_engine_pattern = Pattern("startpage_https_search_engine.png")
         startpage_one_off_button_pattern = Pattern("startpage_one_off_button.png")
         find_add_ons = Pattern("find_add_ons.png")
         google_one_click_search_pattern = Pattern("google_one_click_search.png")
@@ -46,9 +38,7 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_site_opened, "Page successfully loaded, firefox logo found."
 
         select_location_bar()
@@ -69,33 +59,20 @@ class Test(FirefoxTest):
         # Check that the default one-off list is displayed in the awesomebar.
         for index, pattern in enumerate(pattern_list):
             if OSHelper.is_mac():
-                element_found = region.exists(
-                    pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT
-                )
-                assert (
-                    element_found
-                ), "Element found at position {} in the list found.".format(index)
+                element_found = region.exists(pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
+                assert element_found, "Element found at position {} in the list found.".format(index)
             else:
-                element_found = region.exists(
-                    pattern.similar(0.8), FirefoxSettings.FIREFOX_TIMEOUT
-                )
-                assert (
-                    element_found
-                ), "Element found at position {} in the list found.".format(index)
+                element_found = region.exists(pattern.similar(0.8), FirefoxSettings.FIREFOX_TIMEOUT)
+                assert element_found, "Element found at position {} in the list found.".format(index)
 
         click(search_settings_pattern)
 
         pref_page_opened = exists(
-            AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN.similar(0.6),
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            pref_page_opened
-        ), "The 'about:preferences#search' page successfully loaded."
+        assert pref_page_opened, "The 'about:preferences#search' page successfully loaded."
 
-        dropdown_found = exists(
-            default_search_engine_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        dropdown_found = exists(default_search_engine_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert dropdown_found, "Default search engine dropdown found."
 
         click(default_search_engine_dropdown_pattern)
@@ -115,9 +92,7 @@ class Test(FirefoxTest):
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2)
         type(Key.SPACE)
 
-        search_engine_changed = exists(
-            moz_search_amazon_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        search_engine_changed = exists(moz_search_amazon_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_engine_changed, "Default search engine successfully changed."
 
         # Remove the 'Google' search engine.
@@ -127,14 +102,10 @@ class Test(FirefoxTest):
 
         type("One-click")
 
-        one_click_section_found = exists(
-            search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        one_click_section_found = exists(search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_click_section_found, "One-Click Search Engines section found."
 
-        google_one_click_search_found = exists(
-            google_one_click_search_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        google_one_click_search_found = exists(google_one_click_search_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_one_click_search_found, "Google One-Click Search Engines found."
 
         google_width, google_height = google_one_click_search_pattern.get_size()
@@ -153,40 +124,28 @@ class Test(FirefoxTest):
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             try:
-                unchecked_engine_removed = wait_vanish(
-                    google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-                )
+                unchecked_engine_removed = wait_vanish(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
                 assert unchecked_engine_removed, (
-                    "Unchecked search engine successfully removed from the one-off "
-                    "searches bar."
+                    "Unchecked search engine successfully removed from the one-off " "searches bar."
                 )
             except FindError:
-                raise FindError(
-                    "Unchecked search engine not removed from the one-off searches bar."
-                )
+                raise FindError("Unchecked search engine not removed from the one-off searches bar.")
         else:
             unchecked_engine_removed = exists(
-                google_one_off_button_pattern.similar(0.9),
-                FirefoxSettings.FIREFOX_TIMEOUT,
+                google_one_off_button_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert not unchecked_engine_removed, (
-                "Unchecked search engine successfully removed from the one-off "
-                "searches bar."
+                "Unchecked search engine successfully removed from the one-off " "searches bar."
             )
 
         next_tab()
 
         pref_page_opened = exists(
-            AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            pref_page_opened
-        ), "The 'about:preferences#search' page successfully loaded."
+        assert pref_page_opened, "The 'about:preferences#search' page successfully loaded."
 
-        find_more_link_found = exists(
-            find_more_search_engines_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_more_link_found = exists(find_more_search_engines_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_more_link_found, "'Find more search engines' link found."
 
         click(find_more_search_engines_pattern)
@@ -201,18 +160,13 @@ class Test(FirefoxTest):
         paste("startpage")
 
         startpage_engine_found = exists(
-            add_startpage_https_privacy_search_engine_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            add_startpage_https_privacy_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            startpage_engine_found
-        ), "'Startpage HTTPS Privacy Search Engine' engine successfully found."
+        assert startpage_engine_found, "'Startpage HTTPS Privacy Search Engine' engine successfully found."
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
-        add_to_firefox_button_found = exists(
-            add_to_firefox_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        add_to_firefox_button_found = exists(add_to_firefox_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert add_to_firefox_button_found, "'Add to Firefox' button found."
 
         click(add_to_firefox_pattern)
@@ -224,12 +178,8 @@ class Test(FirefoxTest):
 
         previous_tab()
 
-        startpage_engine_added = exists(
-            startpage_https_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            startpage_engine_added
-        ), "The search engine added in the 'One-Click Search Engines' section."
+        startpage_engine_added = exists(startpage_https_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert startpage_engine_added, "The search engine added in the 'One-Click Search Engines' section."
 
         # Perform a new search in the url bar and make sure that everything looks ok after all the above changes.
         previous_tab()
@@ -239,32 +189,21 @@ class Test(FirefoxTest):
         paste("moz")
         type(Key.SPACE)
 
-        dafault_engine_still_changed = exists(
-            moz_search_amazon_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        dafault_engine_still_changed = exists(moz_search_amazon_search_engine_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert dafault_engine_still_changed, "Default search engine is still changed."
 
-        new_engine_found = exists(
-            startpage_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            new_engine_found
-        ), "Newly added search engine successfully found in the one-off searches bar."
+        new_engine_found = exists(startpage_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert new_engine_found, "Newly added search engine successfully found in the one-off searches bar."
 
         if OSHelper.is_mac():
             unchecked_engine_still_removed = exists(
-                google_one_off_button_pattern.similar(0.9),
-                FirefoxSettings.FIREFOX_TIMEOUT,
+                google_one_off_button_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT
             )
             assert not unchecked_engine_still_removed, (
-                "Unchecked search engine is still removed from the one-off "
-                "searches bar."
+                "Unchecked search engine is still removed from the one-off " "searches bar."
             )
         else:
-            unchecked_engine_still_removed = exists(
-                google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-            )
+            unchecked_engine_still_removed = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert not unchecked_engine_still_removed, (
-                "Unchecked search engine is still removed from the one-off "
-                "searches bar."
+                "Unchecked search engine is still removed from the one-off " "searches bar."
             )

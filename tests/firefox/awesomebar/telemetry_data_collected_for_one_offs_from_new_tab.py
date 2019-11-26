@@ -46,17 +46,11 @@ class Test(FirefoxTest):
         expected = exists(bing_search_results_moz_pattern, 10)
         assert expected, "Search results performed with 'Bing' search engine."
 
-        info = get_telemetry_info()["payload"]["stores"]["main"]["parent"][
-            "keyedHistograms"
-        ]["SEARCH_COUNTS"]
+        info = get_telemetry_info()["payload"]["stores"]["main"]["parent"]["keyedHistograms"]["SEARCH_COUNTS"]
 
         assert str(info["bing.newtab"]["range"]) == "[1, 2]", "Range is correct."
-        assert (
-            str(info["bing.newtab"]["bucket_count"]) == "3"
-        ), "Bucket count is correct."
-        assert (
-            str(info["bing.newtab"]["histogram_type"]) == "4"
-        ), "Histogram type is correct."
+        assert str(info["bing.newtab"]["bucket_count"]) == "3", "Bucket count is correct."
+        assert str(info["bing.newtab"]["histogram_type"]) == "4", "Histogram type is correct."
         assert str(info["bing.newtab"]["values"]["1"]) == "0", "Values[1] is correct."
         assert str(info["bing.newtab"]["values"]["0"]) == "1", "Values[0] is correct."
         assert str(info["bing.newtab"]["sum"]), "1" == "Sum is correct."

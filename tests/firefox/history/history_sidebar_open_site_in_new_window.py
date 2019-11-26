@@ -40,15 +40,8 @@ class Test(FirefoxTest):
         assert expected_4 is True, "Expand history button displayed properly."
 
         history_today_location = find(history_today_sidebar_pattern)
-        history_today_width, history_today_height = (
-            history_today_sidebar_pattern.get_size()
-        )
-        history_sidebar_region = Region(
-            0,
-            history_today_location.y,
-            history_today_width * 3,
-            history_today_height * 10,
-        )
+        history_today_width, history_today_height = history_today_sidebar_pattern.get_size()
+        history_sidebar_region = Region(0, history_today_location.y, history_today_width * 3, history_today_height * 10)
 
         click(history_today_sidebar_pattern)
 
@@ -57,9 +50,7 @@ class Test(FirefoxTest):
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         expected_5 = history_sidebar_region.exists("Mozilla", 10)
-        assert (
-            expected_5 is True
-        ), "Mozilla page is displayed in the History list successfully."
+        assert expected_5 is True, "Mozilla page is displayed in the History list successfully."
 
         right_click("Mozilla", 1, region=history_sidebar_region)
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)

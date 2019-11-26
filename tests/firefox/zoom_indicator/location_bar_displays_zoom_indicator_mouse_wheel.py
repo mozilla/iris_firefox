@@ -10,21 +10,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description="This test case verifies the presence of the zoom indicator in the location bar "
         "using the mousewheel.",
-        locale=[
-            "en-US",
-            "zh-CN",
-            "es-ES",
-            "de",
-            "fr",
-            "ru",
-            "ko",
-            "pt-PT",
-            "vi",
-            "pl",
-            "tr",
-            "ro",
-            "ja",
-        ],
+        locale=["en-US", "zh-CN", "es-ES", "de", "fr", "ru", "ko", "pt-PT", "vi", "pl", "tr", "ro", "ja"],
         test_case_id="7450",
         test_suite_id="242",
     )
@@ -45,22 +31,12 @@ class Test(FirefoxTest):
         region = create_region_for_url_bar()
         click(LocalWeb.FIREFOX_LOGO)
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
         new_region = create_region_for_url_bar()
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."

@@ -19,9 +19,7 @@ class Test(FirefoxTest):
         blogspot_logo_pattern = Pattern("blogspot_logo.png")
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        assert exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, 10
-        ), "Wikipedia is properly loaded, no display issues."
+        assert exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 10), "Wikipedia is properly loaded, no display issues."
 
         new_tab()
         navigate("https://www.youtube.com/")

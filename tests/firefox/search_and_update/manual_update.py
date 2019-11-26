@@ -8,26 +8,18 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="This is a test for Firefox manual update.",
-        preferences={"app.update.auto": True},
-        enabled=False,
+        description="This is a test for Firefox manual update.", preferences={"app.update.auto": True}, enabled=False
     )
     def run(self, firefox):
         update_restart_pattern = Pattern("manual_restart_to_update_button.png")
         firefox_up_to_date_pattern = Pattern("firefox_up_to_date.png")
 
         version = firefox.application.version
-        current_version = (
-            version if "-dev" not in version else version.replace("-dev", "")
-        )
+        current_version = version if "-dev" not in version else version.replace("-dev", "")
         channel = firefox.application.channel
         rules_dict = get_rule_for_channel(channel, current_version)
 
-        assert (
-            rules_dict is not None
-        ), "No rules found for {} channel. Please update config.ini file.".format(
-            channel
-        )
+        assert rules_dict is not None, "No rules found for {} channel. Please update config.ini file.".format(channel)
 
         starting_condition = rules_dict["starting_condition"]
         update_steps_list = rules_dict["steps"].split(",")
@@ -41,10 +33,7 @@ class Test(FirefoxTest):
                 if update_step == "latest":
                     update_step = firefox.application.latest_version
 
-                logger.info(
-                    "Current version: %s, updating to version: %s."
-                    % (current_version, update_step)
-                )
+                logger.info("Current version: %s, updating to version: %s." % (current_version, update_step))
 
                 open_about_firefox()
                 expected = exists(update_restart_pattern.similar(0.7), 200)
@@ -53,12 +42,9 @@ class Test(FirefoxTest):
 
                 firefox.restart()
                 assert (
-                    FirefoxUtils.get_firefox_version(firefox.application.path)
-                    in update_step
+                    FirefoxUtils.get_firefox_version(firefox.application.path) in update_step
                 ), "Incorrect Firefox update."
-                current_version = FirefoxUtils.get_firefox_version(
-                    firefox.application.path
-                )
+                current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
         restore_firefox_focus()
         open_about_firefox()

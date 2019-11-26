@@ -27,9 +27,7 @@ class Test(FirefoxTest):
         country_code_field_pattern = Pattern("country_code_field.png").similar(0.6)
         telephone_field_pattern = Pattern("telephone_field.png").similar(0.6)
         email_field_pattern = Pattern("email_field.png").similar(0.6)
-        saved_addresses_button_pattern = Pattern("saved_addresses_button.png").similar(
-            0.6
-        )
+        saved_addresses_button_pattern = Pattern("saved_addresses_button.png").similar(0.6)
         name_in_saved_addresses_pattern = Pattern("name_in_saved_addresses.png")
 
         change_preference("browser.search.region", "US")
@@ -40,12 +38,10 @@ class Test(FirefoxTest):
 
         navigate("https://luke-chang.github.io/autofill-demo/basic.html")
 
-        page_opened_in_private_browsing_mode = exists(
-            private_browsing_image_pattern
-        ) and exists(submit_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            page_opened_in_private_browsing_mode
-        ), "Test page is opened in a new private window."
+        page_opened_in_private_browsing_mode = exists(private_browsing_image_pattern) and exists(
+            submit_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+        )
+        assert page_opened_in_private_browsing_mode, "Test page is opened in a new private window."
 
         input_data = {
             name_field_pattern: ["Maria V. Griggs", "Name"],
@@ -69,18 +65,13 @@ class Test(FirefoxTest):
 
         tooltip_displayed = exists(save_button_pattern)
         assert tooltip_displayed is not True, (
-            'The form gets successfully submitted but no "tooltip" to save the input '
-            "is displayed."
+            'The form gets successfully submitted but no "tooltip" to save the input ' "is displayed."
         )
 
         close_window()
 
-        private_browsing_image_exists = exists(
-            private_browsing_image_pattern, region=Screen.TOP_THIRD
-        )
-        assert (
-            private_browsing_image_exists is False
-        ), "Normal browsing session is displayed"
+        private_browsing_image_exists = exists(private_browsing_image_pattern, region=Screen.TOP_THIRD)
+        assert private_browsing_image_exists is False, "Normal browsing session is displayed"
 
         navigate("about:preferences#privacy")
 
@@ -98,8 +89,7 @@ class Test(FirefoxTest):
 
         saved_address_exists = exists(name_in_saved_addresses_pattern)
         assert saved_address_exists is not True, (
-            "The submitted information in the private session is not displayed "
-            "in the saved Addresses panel"
+            "The submitted information in the private session is not displayed " "in the saved Addresses panel"
         )
 
         close_window()

@@ -14,10 +14,7 @@ class Test(FirefoxTest):
         test_case_id="120119",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
-        blocked_by={
-            "id": "1579898",
-            "platform": [OSPlatform.LINUX, OSPlatform.WINDOWS],
-        },
+        blocked_by={"id": "1579898", "platform": [OSPlatform.LINUX, OSPlatform.WINDOWS]},
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
@@ -41,33 +38,20 @@ class Test(FirefoxTest):
         expected_3 = exists(search_history_box_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_3 is True, "Sidebar was opened successfully."
 
-        expected_4 = exists(
-            history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected_4 = exists(history_today_sidebar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected_4 is True, "Expand history button displayed properly."
 
         history_today_location = find(history_today_sidebar_pattern)
-        history_today_width, history_today_height = (
-            history_today_sidebar_pattern.get_size()
-        )
-        history_sidebar_region = Region(
-            0,
-            history_today_location.y,
-            history_today_width * 3,
-            history_today_height * 10,
-        )
+        history_today_width, history_today_height = history_today_sidebar_pattern.get_size()
+        history_sidebar_region = Region(0, history_today_location.y, history_today_width * 3, history_today_height * 10)
 
         click(history_today_sidebar_pattern)
 
         # Open a page from the History sidebar using the 'Open' button from the context menu.
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected_5 = history_sidebar_region.exists(
-            "Mozilla", FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            expected_5 is True
-        ), "Mozilla page is displayed in the History list successfully."
+        expected_5 = history_sidebar_region.exists("Mozilla", FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected_5 is True, "Mozilla page is displayed in the History list successfully."
 
         right_click("Mozilla", region=history_sidebar_region)
 

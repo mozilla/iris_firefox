@@ -8,10 +8,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Firefox hijacking.",
-        locale=["en-US"],
-        test_case_id="217858",
-        test_suite_id="3063",
+        description="Firefox hijacking.", locale=["en-US"], test_case_id="217858", test_suite_id="3063"
     )
     def run(self, firefox):
         about_preferences_search_pattern = Pattern("about_preferences_search.png")
@@ -26,52 +23,33 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#search")
 
-        assert exists(
-            about_preferences_search_pattern, 10
-        ), "About preferences search page is successfully opened."
-        assert exists(
-            default_search_engine_pattern.similar(0.6), 10
-        ), "The default search engine is not changed."
+        assert exists(about_preferences_search_pattern, 10), "About preferences search page is successfully opened."
+        assert exists(default_search_engine_pattern.similar(0.6), 10), "The default search engine is not changed."
 
         new_tab()
 
         navigate("about:preferences#home")
 
-        assert exists(
-            about_preferences_home_pattern, 10
-        ), "About preferences home page is successfully opened."
-        assert exists(
-            firefox_home_default_pattern.similar(0.6), 10
-        ), "The default home page is not changed."
+        assert exists(about_preferences_home_pattern, 10), "About preferences home page is successfully opened."
+        assert exists(firefox_home_default_pattern.similar(0.6), 10), "The default home page is not changed."
 
         click(NavBar.HOME_BUTTON)
 
-        assert exists(Tabs.NEW_TAB_HIGHLIGHTED, 10) and exists(
-            top_sites_pattern
-        ), "The set homepage is opened."
+        assert exists(Tabs.NEW_TAB_HIGHLIGHTED, 10) and exists(top_sites_pattern), "The set homepage is opened."
 
         paste("text")
 
-        one_off_bar_displayed = exists(
-            this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            one_off_bar_displayed
-        ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         this_time_search_location = find(this_time_search_with_pattern)
         this_time_width, this_time_height = this_time_search_with_pattern.get_size()
         this_time_search_region = Region(
-            this_time_search_location.x,
-            this_time_search_location.y,
-            this_time_width * 3,
-            this_time_height,
+            this_time_search_location.x, this_time_search_location.y, this_time_width * 3, this_time_height
         )
 
         ebay_one_off_displayed = exists(
-            ebay_one_off_button_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-            this_time_search_region,
+            ebay_one_off_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT, this_time_search_region
         )
 
         if ebay_one_off_displayed:

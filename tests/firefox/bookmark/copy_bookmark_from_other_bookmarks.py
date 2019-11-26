@@ -19,12 +19,8 @@ class Test(FirefoxTest):
         bookmark_toolbar_top_menu_pattern = Pattern("bookmark_toolbar_top_menu.png")
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         copy_option_pattern = Pattern("copy_option.png")
-        firefox_bookmark_top_menu_pattern = Pattern(
-            "firefox_bookmark_top_menu.png"
-        ).similar(0.9)
-        most_visited_bookmarks_pattern = Pattern(
-            "firefox_menu_most_visited_bookmarks.png"
-        )
+        firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png").similar(0.9)
+        most_visited_bookmarks_pattern = Pattern("firefox_menu_most_visited_bookmarks.png")
         other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
         paste_bookmark_pattern = Pattern("paste_bookmark.png")
 
@@ -41,9 +37,7 @@ class Test(FirefoxTest):
         click(other_bookmarks_pattern)
 
         other_bookmarks_displayed = exists(firefox_bookmark_top_menu_pattern)
-        assert (
-            other_bookmarks_displayed is True
-        ), '"Other bookmarks" section is displayed'
+        assert other_bookmarks_displayed is True, '"Other bookmarks" section is displayed'
 
         other_bookmarks_location_y = find(other_bookmarks_pattern).y
         firefox_bookmark_item_y = find(firefox_bookmark_top_menu_pattern).y
@@ -55,9 +49,7 @@ class Test(FirefoxTest):
         right_click(firefox_bookmark_top_menu_pattern)
 
         bookmark_context_menu_displayed = exists(copy_option_pattern)
-        assert (
-            bookmark_context_menu_displayed is True
-        ), "Bookmark context menu is displayed"
+        assert bookmark_context_menu_displayed is True, "Bookmark context menu is displayed"
 
         click(copy_option_pattern)
 
@@ -67,16 +59,12 @@ class Test(FirefoxTest):
         click(bookmark_toolbar_top_menu_pattern)
 
         most_visited_bookmarks_displayed = exists(most_visited_bookmarks_pattern)
-        assert (
-            most_visited_bookmarks_displayed is True
-        ), '"Most visited bookmarks" item is displayed'
+        assert most_visited_bookmarks_displayed is True, '"Most visited bookmarks" item is displayed'
 
         right_click(most_visited_bookmarks_pattern)
 
         bookmark_context_menu_displayed = exists(paste_bookmark_pattern)
-        assert (
-            bookmark_context_menu_displayed is True
-        ), "Bookmark context menu is displayed"
+        assert bookmark_context_menu_displayed is True, "Bookmark context menu is displayed"
 
         click(paste_bookmark_pattern)
 

@@ -22,24 +22,14 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        )
-        default_search_engine_dropdown_pattern = Pattern(
-            "default_search_engine_dropdown.png"
-        )
-        moz_search_amazon_search_engine_pattern = Pattern(
-            "moz_search_amazon_search_engine.png"
-        )
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png")
+        default_search_engine_dropdown_pattern = Pattern("default_search_engine_dropdown.png")
+        moz_search_amazon_search_engine_pattern = Pattern("moz_search_amazon_search_engine.png")
         find_more_search_engines_pattern = Pattern("find_more_search_engines.png")
-        add_startpage_https_privacy_search_engine_pattern = Pattern(
-            "add_startpage_https_privacy_search_engine.png"
-        )
+        add_startpage_https_privacy_search_engine_pattern = Pattern("add_startpage_https_privacy_search_engine.png")
         add_to_firefox_pattern = Pattern("add_to_firefox.png")
         add_button_pattern = Pattern("add_button.png")
-        startpage_https_search_engine_pattern = Pattern(
-            "startpage_https_search_engine.png"
-        )
+        startpage_https_search_engine_pattern = Pattern("startpage_https_search_engine.png")
         search_engine_pattern = Pattern("search_engine.png")
         google_one_off_button_pattern = Pattern("google_one_off_button.png")
 
@@ -104,19 +94,12 @@ class Test(FirefoxTest):
         if OSHelper.is_windows() or OSHelper.is_linux():
             try:
                 expected = wait_vanish(google_one_off_button_pattern, 10)
-                assert expected, (
-                    "Unchecked search engine successfully removed from the one-off searches"
-                    " bar."
-                )
+                assert expected, "Unchecked search engine successfully removed from the one-off searches" " bar."
             except FindError:
-                raise FindError(
-                    "Unchecked search engine not removed from the one-off searches bar."
-                )
+                raise FindError("Unchecked search engine not removed from the one-off searches bar.")
         else:
             expected = exists(google_one_off_button_pattern.similar(0.9), 10)
-            assert (
-                expected
-            ), "Unchecked search engine successfully removed from the one-off searches bar."
+            assert expected, "Unchecked search engine successfully removed from the one-off searches bar."
 
         # Add a new search engine.
         next_tab()
@@ -134,9 +117,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         expected = exists(add_startpage_https_privacy_search_engine_pattern, 10)
-        assert (
-            expected
-        ), "'Start page HTTPS Privacy Search Engine' engine successfully found."
+        assert expected, "'Start page HTTPS Privacy Search Engine' engine successfully found."
 
         click(add_startpage_https_privacy_search_engine_pattern)
 
@@ -153,24 +134,16 @@ class Test(FirefoxTest):
         previous_tab()
 
         expected = exists(startpage_https_search_engine_pattern, 10)
-        assert (
-            expected
-        ), "The search engine added found in the 'One-Click Search Engines' section."
+        assert expected, "The search engine added found in the 'One-Click Search Engines' section."
 
-        update_restart_pattern = Pattern(
-            "background_update_menu_notification.png"
-        ).similar(0.5)
+        update_restart_pattern = Pattern("background_update_menu_notification.png").similar(0.5)
         firefox_up_to_date_pattern = Pattern("firefox_up_to_date.png")
 
         current_version = firefox.application.version
         channel = firefox.application.channel
         rules_dict = get_rule_for_channel(channel, current_version)
 
-        assert (
-            rules_dict is not None
-        ), "No rules found for {} channel. Please update config.ini file.".format(
-            channel
-        )
+        assert rules_dict is not None, "No rules found for {} channel. Please update config.ini file.".format(channel)
 
         starting_condition = rules_dict["starting_condition"]
         update_steps_list = rules_dict["steps"].split(",")
@@ -181,10 +154,7 @@ class Test(FirefoxTest):
 
         if is_update_required(current_version, starting_condition):
             for update_step in update_steps_list:
-                logger.info(
-                    "Current version: %s, updating to version: %s."
-                    % (current_version, update_step)
-                )
+                logger.info("Current version: %s, updating to version: %s." % (current_version, update_step))
 
                 open_about_firefox()
                 wait(update_restart_pattern, 200)
@@ -209,9 +179,7 @@ class Test(FirefoxTest):
         paste("moz")
 
         expected = exists(moz_search_amazon_search_engine_pattern, 10)
-        assert (
-            expected
-        ), "The default search engine persist after Firefox version update."
+        assert expected, "The default search engine persist after Firefox version update."
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             try:

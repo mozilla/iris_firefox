@@ -21,19 +21,11 @@ class Test(FirefoxTest):
 
         navigate("about:sessionrestore")
 
-        about_session_restore_exists = exists(
-            restore_session_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            about_session_restore_exists
-        ), "The *about:sessionrestore* is successfully displayed"
+        about_session_restore_exists = exists(restore_session_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert about_session_restore_exists, "The *about:sessionrestore* is successfully displayed"
 
-        view_previous_tabs_exists = exists(
-            view_previous_tabs_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            view_previous_tabs_exists
-        ), "*View Previous Tabs* and label nearby is displayed correctly"
+        view_previous_tabs_exists = exists(view_previous_tabs_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert view_previous_tabs_exists, "*View Previous Tabs* and label nearby is displayed correctly"
 
         click(view_previous_tabs_pattern)
 
@@ -42,25 +34,15 @@ class Test(FirefoxTest):
             view_previous_tabs_not_exists = wait_vanish(
                 view_previous_tabs_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
-            assert (
-                view_previous_tabs_not_exists
-            ), "*View Previous Tabs* and label nearby is disappeared"
+            assert view_previous_tabs_not_exists, "*View Previous Tabs* and label nearby is disappeared"
         except FindError:
             raise FindError("*View Previous Tabs* and label nearby still exists")
 
-        hide_previous_tabs_exists = exists(
-            hide_previous_tabs_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            hide_previous_tabs_exists
-        ), "*Hide Previous Tabs* and label nearby is displayed correctly"
+        hide_previous_tabs_exists = exists(hide_previous_tabs_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert hide_previous_tabs_exists, "*Hide Previous Tabs* and label nearby is displayed correctly"
 
-        view_form_is_opened_exists = exists(
-            view_form_is_opened_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            view_form_is_opened_exists
-        ), "View form is displayed and view button properly works"
+        view_form_is_opened_exists = exists(view_form_is_opened_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert view_form_is_opened_exists, "View form is displayed and view button properly works"
 
         click(hide_previous_tabs_pattern)
 
@@ -68,9 +50,7 @@ class Test(FirefoxTest):
             hide_previous_tabs_not_exists = wait_vanish(
                 hide_previous_tabs_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT * 2
             )
-            assert (
-                hide_previous_tabs_not_exists
-            ), "*Hide Previous Tabs* and label nearby is disappeared"
+            assert hide_previous_tabs_not_exists, "*Hide Previous Tabs* and label nearby is disappeared"
         except FindError:
             raise FindError("*Hide Previous Tabs* and label nearby still exists")
 
@@ -78,8 +58,6 @@ class Test(FirefoxTest):
             view_form_is_opened_not_exists = wait_vanish(
                 view_form_is_opened_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT * 2
             )
-            assert (
-                view_form_is_opened_not_exists
-            ), "View form is disappeared and hide button properly works"
+            assert view_form_is_opened_not_exists, "View form is disappeared and hide button properly works"
         except FindError:
             raise FindError("View form still exists")

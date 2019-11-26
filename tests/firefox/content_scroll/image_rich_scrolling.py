@@ -25,23 +25,15 @@ class Test(FirefoxTest):
 
         navigate("https://www.google.com/preferences?hl=en#languages")
 
-        google_save_button_exists = exists(
-            google_save_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            google_save_button_exists is True
-        ), "Google language preferences page is opened"
+        google_save_button_exists = exists(google_save_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert google_save_button_exists is True, "Google language preferences page is opened"
 
         click(google_save_button_pattern)
 
         navigate("http://images.google.com/?gws_rd=ssl")
 
-        google_images_page_opened = exists(
-            google_images_page_mark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            google_images_page_opened is True
-        ), "Google images site is properly loaded"
+        google_images_page_opened = exists(google_images_page_mark_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert google_images_page_opened is True, "Google images site is properly loaded"
 
         paste("cute kittens:3")
         type(Key.ENTER)
@@ -54,9 +46,7 @@ class Test(FirefoxTest):
             100,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
         )
-        assert (
-            show_more_results_button_destinated is True
-        ), "Successfully scrolled to footer by mouse scroll"
+        assert show_more_results_button_destinated is True, "Successfully scrolled to footer by mouse scroll"
 
         google_images_page_mark_destinated = scroll_until_pattern_found(
             google_images_page_mark_pattern,
@@ -65,6 +55,4 @@ class Test(FirefoxTest):
             100,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
         )
-        assert (
-            google_images_page_mark_destinated is True
-        ), "Successfully scrolled from footer to header by mouse scroll"
+        assert google_images_page_mark_destinated is True, "Successfully scrolled from footer to header by mouse scroll"

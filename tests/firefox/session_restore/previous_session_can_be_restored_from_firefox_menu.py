@@ -16,25 +16,19 @@ class Test(FirefoxTest):
     def run(self, firefox):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Mozilla test website is opened"
 
         new_tab()
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Pocket test website is opened"
 
         firefox.restart()
 
-        firefox_restarted = exists(
-            LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        firefox_restarted = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_restarted, "Firefox restarted successfully"
 
         restore_firefox_focus()
@@ -44,16 +38,12 @@ class Test(FirefoxTest):
 
         next_tab()
 
-        first_tab_restored = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        first_tab_restored = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert first_tab_restored, "Mozilla test website is restored"
 
         next_tab()
 
-        second_tab_restored = exists(
-            LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        second_tab_restored = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert second_tab_restored, "Pocket test website is restored"
 
         all_tab_restored = first_tab_restored and second_tab_restored

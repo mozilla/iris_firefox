@@ -41,13 +41,9 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         expected = exists(bing_search_engine_pattern, 10)
-        assert (
-            expected is True
-        ), "The selected search engine is properly set as a new default search engine."
+        assert expected is True, "The selected search engine is properly set as a new default search engine."
 
         type(Key.ENTER)
 
         expected = exists(test_search_bing_pattern, 10)
-        assert (
-            expected is True
-        ), "The search is performed using the newly added search engine."
+        assert expected is True, "The search is performed using the newly added search engine."

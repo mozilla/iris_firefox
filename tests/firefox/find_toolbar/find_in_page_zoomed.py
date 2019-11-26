@@ -22,9 +22,7 @@ class Test(FirefoxTest):
 
         # Open Firefox and navigate to a popular website
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        soap_label_exists = exists(
-            soap_label_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_label_exists = exists(soap_label_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_label_exists, "The page is successfully loaded."
 
         # Open the Find Toolbar
@@ -32,44 +30,30 @@ class Test(FirefoxTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         # Search for a term that appears more than once in the page
         type("see", interval=1)
         type(Key.ENTER)
 
-        selected_label_exists = exists(
-            see_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            selected_label_exists
-        ), "The first one has a green background highlighted."
+        selected_label_exists = exists(see_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert selected_label_exists, "The first one has a green background highlighted."
 
-        unhighlighted_label_exists = exists(
-            see_label_unhighlighted_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        unhighlighted_label_exists = exists(see_label_unhighlighted_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert unhighlighted_label_exists, "The others are not highlighted."
 
         # Zoom the page in/out and check the highlighted items
         zoom_in()
 
-        selected_label_exists = exists(
-            see_label_zoom_in_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        selected_label_exists = exists(see_label_zoom_in_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert selected_label_exists, (
-            "Zoom in: The highlight of the found items does not affect the visibility "
-            "of other words/letters"
+            "Zoom in: The highlight of the found items does not affect the visibility " "of other words/letters"
         )
         zoom_out()
         zoom_out()
 
-        selected_label_exists = exists(
-            see_label_zoom_out_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        selected_label_exists = exists(see_label_zoom_out_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert selected_label_exists, (
-            "Zoom out: The highlight of the found items does not affect the visibility "
-            "of other words/letters"
+            "Zoom out: The highlight of the found items does not affect the visibility " "of other words/letters"
         )

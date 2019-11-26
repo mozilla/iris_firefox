@@ -22,38 +22,24 @@ class Test(FirefoxTest):
         open_bookmarks_toolbar()
 
         bookmark_available_in_toolbar = exists(
-            getting_started_toolbar_bookmark_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            getting_started_toolbar_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmark_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmark_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         right_click(getting_started_toolbar_bookmark_pattern)
 
-        new_separator_option_available = exists(
-            new_separator_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        new_separator_option_available = exists(new_separator_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_separator_option_available is True, (
-            "'New separator' option is available in context menu after "
-            "right click at the bookmark"
+            "'New separator' option is available in context menu after " "right click at the bookmark"
         )
 
         click(new_separator_option_pattern)
 
         try:
             context_menu_closed = wait_vanish(new_separator_option_pattern)
-            assert (
-                context_menu_closed is True
-            ), "Context menu successfully closed after adding the separator"
+            assert context_menu_closed is True, "Context menu successfully closed after adding the separator"
         except FindError:
-            raise FindError(
-                "Context menu didn't close after adding the separator for a bookmark"
-            )
+            raise FindError("Context menu didn't close after adding the separator for a bookmark")
 
-        separator_added = exists(
-            bookmark_separator_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            separator_added is True
-        ), "A separator is displayed in front of the selected bookmark."
+        separator_added = exists(bookmark_separator_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert separator_added is True, "A separator is displayed in front of the selected bookmark."

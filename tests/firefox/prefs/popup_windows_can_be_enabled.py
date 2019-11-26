@@ -28,9 +28,7 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        browser_privacy_label_exists = exists(
-            browser_privacy_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        browser_privacy_label_exists = exists(browser_privacy_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_privacy_label_exists, "Privacy page is loaded"
         hover(browser_privacy_hover_pattern)
 
@@ -43,16 +41,12 @@ class Test(FirefoxTest):
 
         navigate("pinterest.com")
 
-        facebook_login_is_available = exists(
-            facebook_login_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        facebook_login_is_available = exists(facebook_login_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert facebook_login_is_available, "Website is opened"
 
         click(facebook_login_pattern)
 
-        popups_blocked_message_displayed = exists(
-            popup_blocked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        popups_blocked_message_displayed = exists(popup_blocked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert popups_blocked_message_displayed, (
             "A yellow banner is displayed underneath the URL bar with the "
             'message "Firefox prevented this site from opening a pop-up window"'
@@ -63,19 +57,11 @@ class Test(FirefoxTest):
         next_tab()
         click(NavBar.RELOAD_BUTTON)
 
-        facebook_login_is_available = exists(
-            facebook_login_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        facebook_login_is_available = exists(facebook_login_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert facebook_login_is_available, "Website is opened"
 
         click(facebook_login_pattern)
 
-        popups_blocked_message_not_displayed = not exists(
-            popup_blocked_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        login_window_opened = exists(
-            facebook_login_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            popups_blocked_message_not_displayed and login_window_opened
-        ), "The sign in pop-up window is displayed."
+        popups_blocked_message_not_displayed = not exists(popup_blocked_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        login_window_opened = exists(facebook_login_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert popups_blocked_message_not_displayed and login_window_opened, "The sign in pop-up window is displayed."

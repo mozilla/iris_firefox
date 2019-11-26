@@ -21,20 +21,14 @@ class Test(FirefoxTest):
         new_tab()
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        test_page_opened = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_page_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_page_opened, "Test page is opened"
 
         select_location_bar()
         type("http://127.0.0.1:2000/m", interval=0.2)
 
-        mozilla_autocomplete_exists = exists(
-            mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            mozilla_autocomplete_exists
-        ), "Mozilla page is auto-completed successfully."
+        mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_autocomplete_exists, "Mozilla page is auto-completed successfully."
 
         close_tab()
         new_tab()
@@ -42,9 +36,7 @@ class Test(FirefoxTest):
         # Open History and check if is populated with Mozilla page.
         open_history_library_window()
 
-        library_history = exists(
-            Library.HISTORY.similar(0.7), FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        library_history = exists(Library.HISTORY.similar(0.7), FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert library_history, "Library popup window available"
 
         library_history_location = find(Library.HISTORY)
@@ -56,13 +48,9 @@ class Test(FirefoxTest):
         )
 
         mozilla_bookmark_focus_exists = exists(
-            mozilla_bookmark_focus_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=bookmarks_region,
+            mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=bookmarks_region
         )
-        assert (
-            mozilla_bookmark_focus_exists
-        ), "Mozilla page is displayed in the History list successfully."
+        assert mozilla_bookmark_focus_exists, "Mozilla page is displayed in the History list successfully."
 
         # Delete Mozilla page.
         right_click(mozilla_bookmark_focus_pattern, region=bookmarks_region)
@@ -73,13 +61,9 @@ class Test(FirefoxTest):
 
         try:
             mozilla_bookmark_focus_vanished = wait_vanish(
-                mozilla_bookmark_focus_pattern,
-                FirefoxSettings.FIREFOX_TIMEOUT,
-                region=bookmarks_region,
+                mozilla_bookmark_focus_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=bookmarks_region
             )
-            assert (
-                mozilla_bookmark_focus_vanished
-            ), "Mozilla page was deleted successfully from the history."
+            assert mozilla_bookmark_focus_vanished, "Mozilla page was deleted successfully from the history."
         except FindError:
             raise FindError("Mozilla page is still displayed in the history.")
 
@@ -89,9 +73,5 @@ class Test(FirefoxTest):
         select_location_bar()
         type("http://127.0.0.1:2000/m")
 
-        mozilla_autocomplete_exists = exists(
-            mozilla_autocomplete_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            mozilla_autocomplete_exists is False
-        ), "Mozilla page is not auto-completed in URL bar."
+        mozilla_autocomplete_exists = exists(mozilla_autocomplete_pattern.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_autocomplete_exists is False, "Mozilla page is not auto-completed in URL bar."

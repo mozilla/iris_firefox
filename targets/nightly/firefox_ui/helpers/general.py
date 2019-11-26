@@ -29,12 +29,7 @@ from moziris.util.arg_parser import get_core_args
 from moziris.util.logger_manager import logger
 from moziris.util.region_utils import RegionUtils
 from targets.nightly.firefox_ui.content_blocking import ContentBlocking
-from targets.nightly.firefox_ui.helpers.keyboard_shortcuts import (
-    new_tab,
-    close_tab,
-    edit_select_all,
-    edit_copy,
-)
+from targets.nightly.firefox_ui.helpers.keyboard_shortcuts import new_tab, close_tab, edit_select_all, edit_copy
 from targets.nightly.firefox_ui.helpers.keyboard_shortcuts import select_location_bar
 from targets.nightly.firefox_ui.library_menu import LibraryMenu
 from targets.nightly.firefox_ui.nav_bar import NavBar
@@ -112,9 +107,7 @@ def change_preference(pref_name, value):
 
         close_tab()
     except Exception:
-        raise APIHelperError(
-            "Could not set value: %s to preference: %s" % (value, pref_name)
-        )
+        raise APIHelperError("Could not set value: %s to preference: %s" % (value, pref_name))
 
 
 def check_preference(pref_name, value):
@@ -176,19 +169,13 @@ def click_hamburger_menu_option(option):
         wait(hamburger_menu_pattern, 10)
         logger.debug("Hamburger menu found.")
     except FindError:
-        raise APIHelperError(
-            'Can\'t find the "hamburger menu" in the page, aborting test.'
-        )
+        raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
     else:
         try:
             ham_region = create_region_for_hamburger_menu()
             ham_region.click(option)
         except FindError:
-            raise APIHelperError(
-                "Can't find the option: "
-                + option
-                + " in the hamburger menu. Aborting test."
-            )
+            raise APIHelperError("Can't find the option: " + option + " in the hamburger menu. Aborting test.")
 
 
 def click_window_control(button, window_type="auxiliary"):
@@ -215,9 +202,7 @@ def click_window_control(button, window_type="auxiliary"):
 def close_content_blocking_pop_up():
     """Closes the content blocking pop up"""
 
-    pop_up_region = Screen().new_region(
-        0, 50, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
-    )
+    pop_up_region = Screen().new_region(0, 50, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
     try:
         pop_up_region.wait(ContentBlocking.POP_UP_ENABLED, 5)
@@ -310,9 +295,7 @@ def create_region_for_awesome_bar():
     try:
         identity_icon_pattern = LocationBar.IDENTITY_ICON
         page_action_pattern = LocationBar.PAGE_ACTION_BUTTON
-        return RegionUtils.create_region_from_patterns(
-            left=page_action_pattern, right=identity_icon_pattern
-        )
+        return RegionUtils.create_region_from_patterns(left=page_action_pattern, right=identity_icon_pattern)
     except FindError:
         raise APIHelperError("Could not create region for awesome bar.")
 
@@ -330,36 +313,22 @@ def create_region_for_hamburger_menu():
             quit_menu_pattern = Pattern("quit.png").similar(0.6)
             wait(quit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
-                None,
-                sign_in_to_firefox_pattern,
-                quit_menu_pattern,
-                None,
-                padding_right=20,
+                None, sign_in_to_firefox_pattern, quit_menu_pattern, None, padding_right=20
             )
         elif OSHelper.is_mac():
             help_menu_pattern = Pattern("help.png")
             wait(help_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
-                None,
-                sign_in_to_firefox_pattern,
-                help_menu_pattern,
-                None,
-                padding_right=20,
+                None, sign_in_to_firefox_pattern, help_menu_pattern, None, padding_right=20
             )
         else:
             exit_menu_pattern = Pattern("exit.png").similar(0.6)
             wait(exit_menu_pattern, 5)
             return RegionUtils.create_region_from_patterns(
-                None,
-                sign_in_to_firefox_pattern,
-                exit_menu_pattern,
-                None,
-                padding_right=20,
+                None, sign_in_to_firefox_pattern, exit_menu_pattern, None, padding_right=20
             )
     except (FindError, ValueError):
-        raise APIHelperError(
-            "Can't create a region for the hamburger menu, aborting test."
-        )
+        raise APIHelperError("Can't create a region for the hamburger menu, aborting test.")
 
 
 def create_region_for_url_bar():
@@ -370,10 +339,7 @@ def create_region_for_url_bar():
         show_history_pattern = LocationBar.HISTORY_DROPMARKER
         select_location_bar()
         return RegionUtils.create_region_from_patterns(
-            show_history_pattern,
-            hamburger_menu_pattern,
-            padding_top=20,
-            padding_bottom=20,
+            show_history_pattern, hamburger_menu_pattern, padding_top=20, padding_bottom=20
         )
     except FindError:
         raise APIHelperError("Could not create region for URL bar.")
@@ -404,9 +370,7 @@ def find_in_region_from_pattern(
         raise APIHelperError("Can't find the outer pattern.")
 
     width, height = outer_pattern.get_size()
-    region = Region(
-        image_find(outer_pattern).x, image_find(outer_pattern).y, width, height
-    )
+    region = Region(image_find(outer_pattern).x, image_find(outer_pattern).y, width, height)
 
     pattern_found = exists(inner_pattern, inner_pattern_timeout, region=region)
 
@@ -426,9 +390,7 @@ def find_window_controls(window_type):
                 wait(AuxiliaryWindow.RED_BUTTON_PATTERN.similar(0.9), 5)
                 logger.debug("Auxiliary window control found.")
             except FindError:
-                raise APIHelperError(
-                    "Can't find the auxiliary window controls, aborting."
-                )
+                raise APIHelperError("Can't find the auxiliary window controls, aborting.")
         else:
             if OSHelper.is_linux():
                 Mouse().move(Location(80, 0))
@@ -436,9 +398,7 @@ def find_window_controls(window_type):
                 wait(AuxiliaryWindow.CLOSE_BUTTON, 5)
                 logger.debug("Auxiliary window control found.")
             except FindError:
-                raise APIHelperError(
-                    "Can't find the auxiliary window controls, aborting."
-                )
+                raise APIHelperError("Can't find the auxiliary window controls, aborting.")
 
     elif window_type == "main":
         if OSHelper.is_mac():
@@ -471,17 +431,12 @@ def full_screen_control(window_type):
         if window_type == "auxiliary":
             width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
             click(
-                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(
-                    width - 10, height / 2
-                ),
+                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
                 align=Alignment.TOP_LEFT,
             )
         else:
             width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
-            click(
-                MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
-                align=Alignment.TOP_LEFT,
-            )
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
     else:
         raise APIHelperError("Full screen mode applicable only for MAC")
 
@@ -497,9 +452,7 @@ def get_firefox_build_id_from_about_config():
         try:
             return get_pref_value(pref_2)
         except APIHelperError:
-            raise APIHelperError(
-                "Could not retrieve firefox build id information from about:config page."
-            )
+            raise APIHelperError("Could not retrieve firefox build id information from about:config page.")
 
 
 def get_firefox_channel_from_about_config():
@@ -507,17 +460,13 @@ def get_firefox_channel_from_about_config():
     try:
         return get_pref_value("app.update.channel")
     except APIHelperError:
-        raise APIHelperError(
-            "Could not retrieve firefox channel information from about:config page."
-        )
+        raise APIHelperError("Could not retrieve firefox channel information from about:config page.")
 
 
 def get_firefox_locale_from_about_config():
     """Returns the Firefox locale from 'about:config' page."""
     try:
-        value_str = get_pref_value(
-            "browser.newtabpage.activity-stream.feeds.section.topstories.options"
-        )
+        value_str = get_pref_value("browser.newtabpage.activity-stream.feeds.section.topstories.options")
         logger.debug(value_str)
         temp = json.loads(value_str)
         return str(temp["stories_endpoint"]).split("&locale_lang=")[1].split("&")[0]
@@ -531,9 +480,7 @@ def get_firefox_version_from_about_config():
     try:
         return get_pref_value("extensions.lastAppVersion")
     except APIHelperError:
-        raise APIHelperError(
-            "Could not retrieve firefox version information from about:config page."
-        )
+        raise APIHelperError("Could not retrieve firefox version information from about:config page.")
 
 
 def get_pref_value(pref_name):
@@ -582,9 +529,7 @@ def get_support_info():
         json_text = get_clipboard()
         return json.loads(json_text)
     except Exception as e:
-        raise APIHelperError(
-            "Failed to retrieve support information value.\n{}".format(e)
-        )
+        raise APIHelperError("Failed to retrieve support information value.\n{}".format(e))
     finally:
         close_tab()
 
@@ -661,20 +606,14 @@ def minimize_window_control(window_type):
         if OSHelper.is_mac():
             width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
             click(
-                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(
-                    width / 2, height / 2
-                ),
-                align=Alignment.TOP_LEFT,
+                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width / 2, height / 2), align=Alignment.TOP_LEFT
             )
         else:
             click(AuxiliaryWindow.MINIMIZE_BUTTON)
     else:
         if OSHelper.is_mac():
             width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
-            click(
-                MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width / 2, height / 2),
-                align=Alignment.TOP_LEFT,
-            )
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width / 2, height / 2), align=Alignment.TOP_LEFT)
         else:
             click(MainWindow.MINIMIZE_BUTTON)
 
@@ -692,9 +631,7 @@ def maximize_window_control(window_type):
             key_down(Key.ALT)
             width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
             click(
-                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(
-                    width - 10, height / 2
-                ),
+                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
                 align=Alignment.TOP_LEFT,
             )
             key_up(Key.ALT)
@@ -706,10 +643,7 @@ def maximize_window_control(window_type):
         if OSHelper.is_mac():
             key_down(Key.ALT)
             width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
-            click(
-                MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
-                align=Alignment.TOP_LEFT,
-            )
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
             key_up(Key.ALT)
         else:
             click(MainWindow.MAXIMIZE_BUTTON)
@@ -775,13 +709,9 @@ def open_bookmarks_toolbar():
     try:
         right_click(navbar_context_menu)
         click(NavBar.ContextMenu.BOOKMARKS_TOOLBAR)
-        logger.debug(
-            "Click is performed successfully on Bookmarks Toolbar option from navigation bar context menu."
-        )
+        logger.debug("Click is performed successfully on Bookmarks Toolbar option from navigation bar context menu.")
     except FindError:
-        raise APIHelperError(
-            "Could not open the Bookmarks Toolbar using context menu from the navigation bar."
-        )
+        raise APIHelperError("Could not open the Bookmarks Toolbar using context menu from the navigation bar.")
 
     restore_firefox_focus()
 
@@ -881,9 +811,7 @@ def remove_zoom_indicator_from_toolbar():
         )
 
     try:
-        wait_vanish(
-            zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        wait_vanish(zoom_control_toolbar_decrease_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
     except FindError:
         raise APIHelperError("Zoom indicator not removed from toolbar, aborting.")
 
@@ -899,9 +827,7 @@ def repeat_key_down(num):
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
 
 
-def repeat_key_down_until_image_found(
-    image_pattern, num_of_key_down_presses=10, delay_between_presses=1
-):
+def repeat_key_down_until_image_found(image_pattern, num_of_key_down_presses=10, delay_between_presses=1):
     """
     Press the Key Down button until specified image pattern is found.
 
@@ -938,9 +864,7 @@ def repeat_key_up(num):
         time.sleep(1)
 
 
-def repeat_key_up_until_image_found(
-    image_pattern, num_of_key_up_presses=10, delay_between_presses=1
-):
+def repeat_key_up_until_image_found(image_pattern, num_of_key_up_presses=10, delay_between_presses=1):
     """
     Press the Key Up button until specified image pattern is found.
 
@@ -1000,9 +924,7 @@ def restore_window_control(window_type):
             key_down(Key.ALT)
             width, height = AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.get_size()
             click(
-                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(
-                    width - 10, height / 2
-                ),
+                AuxiliaryWindow.AUXILIARY_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
                 align=Alignment.TOP_LEFT,
             )
             key_up(Key.ALT)
@@ -1014,10 +936,7 @@ def restore_window_control(window_type):
         if OSHelper.is_mac():
             key_down(Key.ALT)
             width, height = MainWindow.MAIN_WINDOW_CONTROLS.get_size()
-            click(
-                MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2),
-                align=Alignment.TOP_LEFT,
-            )
+            click(MainWindow.MAIN_WINDOW_CONTROLS.target_offset(width - 10, height / 2), align=Alignment.TOP_LEFT)
             key_up(Key.ALT)
         else:
             if OSHelper.is_linux():

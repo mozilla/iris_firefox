@@ -1,10 +1,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-from targets.firefox.firefox_ui.helpers.download_manager_utils import (
-    DownloadFiles,
-    downloads_cleanup,
-)
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup
 from targets.firefox.fx_testcase import *
 
 
@@ -30,9 +27,7 @@ class Test(FirefoxTest):
             logger.debug("The 'Save file' option is present in the page.")
             click(DownloadFiles.SAVE_FILE)
         except FindError:
-            raise FindError(
-                "The 'Save file' option is not present in the page, aborting."
-            )
+            raise FindError("The 'Save file' option is not present in the page, aborting.")
 
         try:
             wait(DownloadFiles.OK, 10)
@@ -45,9 +40,7 @@ class Test(FirefoxTest):
         assert expected is True, "Downloads button found."
 
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_FREETDS_PATCHED, 90)
-        assert (
-            expected is True
-        ), "The 'freetds-patched' file is successfully downloaded."
+        assert expected is True, "The 'freetds-patched' file is successfully downloaded."
 
     def teardown(self):
         # Remove downloads folder

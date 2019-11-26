@@ -32,15 +32,11 @@ class Test(FirefoxTest):
         assert private_browsing_window_opened is True, "Private Browsing Window opened"
 
         navigate(LocalWeb.SAMPLE_FILES + "1.zip")
-        save_file_dialog_exists = exists(
-            DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert save_file_dialog_exists is True, "Save file dialog opened"
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
-        ok_button_exists = exists(
-            DownloadDialog.OK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        ok_button_exists = exists(DownloadDialog.OK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert ok_button_exists is True, "Button OK exists"
 
         click(DownloadDialog.OK_BUTTON)
@@ -48,37 +44,27 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         navigate(LocalWeb.SAMPLE_FILES + "2.zip")
-        save_file_dialog_exists = exists(
-            DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert save_file_dialog_exists is True, "Save file dialog opened"
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
-        ok_button_exists = exists(
-            DownloadDialog.OK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        ok_button_exists = exists(DownloadDialog.OK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert ok_button_exists is True, "Button OK exists"
 
         click(DownloadDialog.OK_BUTTON)
 
         open_downloads()
 
-        about_downloads_label_exists = exists(
-            about_downloads_label_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        about_downloads_label_exists = exists(about_downloads_label_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert about_downloads_label_exists is True, "Downloads opened"
 
         if OSHelper.is_mac():
             click(about_downloads_label_pattern)
 
-        first_file_downloaded = exists(
-            first_bytes_label_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        first_file_downloaded = exists(first_bytes_label_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert first_file_downloaded is True, "First file saved"
 
-        second_file_downloaded = exists(
-            second_bytes_label_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        second_file_downloaded = exists(second_bytes_label_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert second_file_downloaded is True, "Second file saved"
 
         close_window()

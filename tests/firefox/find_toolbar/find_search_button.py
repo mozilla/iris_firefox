@@ -23,18 +23,14 @@ class Test(FirefoxTest):
         test_page_local = self.get_asset_path("google.htm")
         navigate(test_page_local)
 
-        google_search_button_exists = exists(
-            google_search_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        google_search_button_exists = exists(google_search_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert google_search_button_exists, "The page is successfully loaded."
 
         open_find()
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         type("se", interval=1)
@@ -60,9 +56,7 @@ class Test(FirefoxTest):
         assert button_not_selected, "Submit button is not highlighted."
 
         find_previous_button_region = Screen.BOTTOM_THIRD
-        find_previous_button = exists(
-            FindToolbar.FIND_PREVIOUS, region=find_previous_button_region
-        )
+        find_previous_button = exists(FindToolbar.FIND_PREVIOUS, region=find_previous_button_region)
         assert find_previous_button, "Find previous button available."
 
         click(FindToolbar.FIND_PREVIOUS, duration=1, region=find_previous_button_region)

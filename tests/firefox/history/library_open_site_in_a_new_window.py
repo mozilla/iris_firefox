@@ -33,10 +33,7 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
 
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
@@ -56,9 +53,7 @@ class Test(FirefoxTest):
         assert expected is True, "Mozilla page loaded successfully."
 
         expected = exists(new_tab_pattern, 5)
-        assert (
-            expected is False
-        ), "about:newtab page is not visible in the new opened window."
+        assert expected is False, "about:newtab page is not visible in the new opened window."
 
         close_window()
         click_window_control("close")

@@ -21,13 +21,9 @@ class Test(FirefoxTest):
     def run(self, firefox):
         url_classifier_title_pattern = Pattern("url_classifier_title.png").similar(0.7)
         google4_row_pattern = Pattern("google4_row.png")
-        trigger_update_button_pattern = Pattern("trigger_update_button.png").similar(
-            0.4
-        )
+        trigger_update_button_pattern = Pattern("trigger_update_button.png").similar(0.4)
         success_status_pattern = Pattern("success_status.png")
-        desktop_download_warning_title_pattern = Pattern(
-            "desktop_download_warning_title.png"
-        )
+        desktop_download_warning_title_pattern = Pattern("desktop_download_warning_title.png")
         first_test_label_pattern = Pattern("first_test_label.png").similar(0.6)
         link_pattern = Pattern("link_image.png").similar(0.6)
         mozilla_row_pattern = Pattern("mozilla_row.png")
@@ -35,20 +31,14 @@ class Test(FirefoxTest):
 
         navigate("about:url-classifier")
 
-        url_classifier_page_opened = exists(
-            url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            url_classifier_page_opened is True
-        ), "URL Classifier page is successfully opened"
+        url_classifier_page_opened = exists(url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert url_classifier_page_opened is True, "URL Classifier page is successfully opened"
 
         open_find()
 
         paste("Cache")
 
-        providers_displays = exists(
-            google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        providers_displays = exists(google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert providers_displays is True, "The providers are displayed"
 
         google4_row_location = find(google4_row_pattern)
@@ -66,9 +56,7 @@ class Test(FirefoxTest):
         google4_success_status_displaying = exists(
             success_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT, google4_row_region
         )
-        assert (
-            google4_success_status_displaying is True
-        ), "The last google4 update status is changed to success."
+        assert google4_success_status_displaying is True, "The last google4 update status is changed to success."
 
         mozilla_row_region = Screen().new_region(
             mozilla_row_location.x,
@@ -82,18 +70,12 @@ class Test(FirefoxTest):
         mozilla_success_status_displaying = exists(
             success_status_pattern, FirefoxSettings.FIREFOX_TIMEOUT, mozilla_row_region
         )
-        assert (
-            mozilla_success_status_displaying is True
-        ), "The last mozilla update status is changed to success."
+        assert mozilla_success_status_displaying is True, "The last mozilla update status is changed to success."
 
         navigate("http://testsafebrowsing.appspot.com/")
 
-        test_page_opened = exists(
-            desktop_download_warning_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            test_page_opened is True
-        ), "The 'testsafebrowsing' page is properly loaded"
+        test_page_opened = exists(desktop_download_warning_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert test_page_opened is True, "The 'testsafebrowsing' page is properly loaded"
 
         desktop_download_warning_location = find(desktop_download_warning_title_pattern)
         desktop_download_warning_width, desktop_download_warning_height = (
@@ -107,12 +89,8 @@ class Test(FirefoxTest):
             desktop_download_warning_height,
         )
 
-        first_test_label_width, first_test_label_height = (
-            first_test_label_pattern.get_size()
-        )
-        first_test_label_location = find(
-            first_test_label_pattern, desktop_download_warning_region
-        )
+        first_test_label_width, first_test_label_height = first_test_label_pattern.get_size()
+        first_test_label_location = find(first_test_label_pattern, desktop_download_warning_region)
 
         download_button = find(NavBar.LIBRARY_MENU).left(15)
 
@@ -129,16 +107,12 @@ class Test(FirefoxTest):
             region_to_click.click(link_pattern)
 
             if OSHelper.is_windows():
-                download_dialog_opened = exists(
-                    save_file_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-                )
+                download_dialog_opened = exists(save_file_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
                 assert download_dialog_opened is True, "Download dialog opened"
 
                 click(save_file_button_pattern)
             else:
-                download_dialog_opened = exists(
-                    DownloadDialog.OK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-                )
+                download_dialog_opened = exists(DownloadDialog.OK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
                 assert download_dialog_opened is True, "Download dialog opened"
 
                 click(DownloadDialog.OK_BUTTON)

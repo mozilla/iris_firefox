@@ -24,12 +24,8 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#home")
 
-        preferences_page_opened = exists(
-            top_sites_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            preferences_page_opened
-        ), "The about:preferences page is successfully loaded."
+        preferences_page_opened = exists(top_sites_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert preferences_page_opened, "The about:preferences page is successfully loaded."
 
         top_sites = [
             top_sites_reddit_pattern,
@@ -41,9 +37,7 @@ class Test(FirefoxTest):
         ]
 
         top_sites_option_location = find(top_sites_option_pattern)
-        top_sites_option_width, top_sites_option_height = (
-            top_sites_option_pattern.get_size()
-        )
+        top_sites_option_width, top_sites_option_height = top_sites_option_pattern.get_size()
         top_sites_option_region = Region(
             top_sites_option_location.x - top_sites_option_width,
             top_sites_option_location.y,
@@ -52,9 +46,7 @@ class Test(FirefoxTest):
         )
 
         top_sites_selected = exists(
-            AboutPreferences.CHECKED_BOX,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            top_sites_option_region,
+            AboutPreferences.CHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT, top_sites_option_region
         )
         assert top_sites_selected, "The option is selected by default."
 
@@ -74,30 +66,20 @@ class Test(FirefoxTest):
             assert top_sites_listed, "The site is listed by default"
 
         top_sites_displayed = exists(Utils.TOP_SITES, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            top_sites_displayed is True
-        ), "The Top Sites section is displayed in the New Tab"
+        assert top_sites_displayed is True, "The Top Sites section is displayed in the New Tab"
 
         navigate("about:preferences#home")
 
-        preferences_page_opened = exists(
-            top_sites_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            preferences_page_opened
-        ), "The about:preferences page is successfully loaded."
+        preferences_page_opened = exists(top_sites_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert preferences_page_opened, "The about:preferences page is successfully loaded."
 
         top_sites_selected = exists(
-            AboutPreferences.CHECKED_BOX,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            top_sites_option_region,
+            AboutPreferences.CHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT, top_sites_option_region
         )
         assert top_sites_selected, "The option is selected by default."
 
         top_sites_option_location = find(top_sites_option_pattern)
-        top_sites_option_width, top_sites_option_height = (
-            top_sites_option_pattern.get_size()
-        )
+        top_sites_option_width, top_sites_option_height = top_sites_option_pattern.get_size()
         top_sites_option_region = Region(
             top_sites_option_location.x - top_sites_option_width,
             top_sites_option_location.y,
@@ -108,9 +90,7 @@ class Test(FirefoxTest):
         click(AboutPreferences.CHECKED_BOX, region=top_sites_option_region)
 
         top_sites_selected = exists(
-            AboutPreferences.UNCHECKED_BOX,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            top_sites_option_region,
+            AboutPreferences.UNCHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT, top_sites_option_region
         )
 
         assert top_sites_selected, "The options is not selected anymore."
@@ -118,22 +98,16 @@ class Test(FirefoxTest):
         navigate("about:home")
 
         google_logo_content_search_field = exists(Utils.TOP_SITES)
-        assert (
-            google_logo_content_search_field is False
-        ), "The Top Sites section is not displayed on the Home Page"
+        assert google_logo_content_search_field is False, "The Top Sites section is not displayed on the Home Page"
 
         navigate("about:newtab")
 
         google_logo_content_search_field = exists(Utils.TOP_SITES)
-        assert (
-            google_logo_content_search_field is False
-        ), "The Top Sites section is not displayed in the New Tab"
+        assert google_logo_content_search_field is False, "The Top Sites section is not displayed in the New Tab"
 
         new_window()
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         google_logo_content_search_field = exists(Utils.TOP_SITES)
-        assert (
-            google_logo_content_search_field is False
-        ), "The Top Sites section is displayed in the New Window"
+        assert google_logo_content_search_field is False, "The Top Sites section is displayed in the New Window"

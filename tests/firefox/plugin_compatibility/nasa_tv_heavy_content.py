@@ -28,32 +28,18 @@ class Test(FirefoxTest):
 
         new_private_window()
 
-        private_window_opened = exists(
-            new_private_browsing_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            private_window_opened is True
-        ), "A new private window is successfully opened"
+        private_window_opened = exists(new_private_browsing_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert private_window_opened is True, "A new private window is successfully opened"
 
         navigate("http://www.nasa.gov/multimedia/nasatv/index.html#public")
 
-        nasa_tv_page_loaded = scroll_until_pattern_found(
-            nasa_tv_page_pattern, type, (Key.DOWN,), 10
-        )
-        assert (
-            nasa_tv_page_loaded is True
-        ), "The specified website is successfully loaded."
+        nasa_tv_page_loaded = scroll_until_pattern_found(nasa_tv_page_pattern, type, (Key.DOWN,), 10)
+        assert nasa_tv_page_loaded is True, "The specified website is successfully loaded."
 
-        video_playing = exists(
-            speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
-        assert (
-            video_playing is True
-        ), "The video is playing and the speaker icon is displayed"
+        video_playing = exists(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
+        assert video_playing is True, "The video is playing and the speaker icon is displayed"
 
-        media_button = scroll_until_pattern_found(
-            media_button_pattern, type, (Key.DOWN,), 10, 1
-        )
+        media_button = scroll_until_pattern_found(media_button_pattern, type, (Key.DOWN,), 10, 1)
         assert media_button, "Media button found."
 
         media_button = exists(media_button_pattern, 10)
@@ -64,34 +50,22 @@ class Test(FirefoxTest):
         click(Location(media_button_location.x, media_button_location.y - 250))
 
         try:
-            speaker_icon_vanished = wait_vanish(
-                speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-            )
-            play_icon_appeared = exists(
-                play_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-            )
-            assert (
-                speaker_icon_vanished and play_icon_appeared
-            ) is True, "Video is stopped"
+            speaker_icon_vanished = wait_vanish(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
+            play_icon_appeared = exists(play_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+            assert (speaker_icon_vanished and play_icon_appeared) is True, "Video is stopped"
         except FindError:
             raise FindError("Video is not stopped")
 
         page_end()
 
-        page_scrolled = exists(
-            page_bottom_marker_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        page_scrolled = exists(page_bottom_marker_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert page_scrolled is True, "The page is successfully scrolling"
 
         page_home()
 
         click(Location(media_button_location.x, media_button_location.y - 250))
 
-        speaker_icon_appear = exists(
-            speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
-        assert (
-            speaker_icon_appear is True
-        ), "The video is playing and the page is scrolling successfully."
+        speaker_icon_appear = exists(speaker_icon_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
+        assert speaker_icon_appear is True, "The video is playing and the page is scrolling successfully."
 
         close_window()
