@@ -20,18 +20,24 @@ class Test(FirefoxTest):
         page_width_zoom_level_option_pattern = Pattern(
             "page_width_zoom_level_option.png"
         )
-        automatic_zoom_level_option_pattern = Pattern("automatic_zoom_level_option.png").similar(0.7)
+        automatic_zoom_level_option_pattern = Pattern(
+            "automatic_zoom_level_option.png"
+        ).similar(0.7)
         page_fit_zoom_level_option_pattern = Pattern("page_fit_zoom_level_option.png")
         pdf_file_first_page_contents_pattern = Pattern("pdf_file_page_contents.png")
         zoom_levels_dropdown_pattern = Pattern("zoom_levels_dropdown.png")
         actual_size_zoom_selected_pattern = Pattern("actual_size_dropdown.png")
         automatic_zoom_selected_pattern = Pattern("automatic_zoom_dropdown.png")
         page_fit_zoom_selected_pattern = Pattern("page_fit_dropdown.png")
-        page_width_zoom_selected_pattern = Pattern("page_width_dropdown.png").similar(0.7)
+        page_width_zoom_selected_pattern = Pattern("page_width_dropdown.png").similar(
+            0.6
+        )
         page_width_document_contents_pattern = Pattern(
             "page_width_document_contents.png"
-        )
-        page_fit_document_contents_pattern = Pattern("page_fit_document_contents.png").similar(0.6)
+        ).similar(0.6)
+        page_fit_document_contents_pattern = Pattern(
+            "page_fit_document_contents.png"
+        ).similar(0.5)
         automatic_zoom_document_contents_pattern = Pattern(
             "auto_zoom_document_contents.png"
         )
