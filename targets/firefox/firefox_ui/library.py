@@ -47,9 +47,7 @@ class Library(object):
             SORT_BY_MOST_RECENT_VISIT = Pattern("sort_by_menucol_placesContentDate.png")
             SORT_BY_VISIT_COUNT = Pattern("sort_by_menucol_placesContentVisitCount.png")
             SORT_BY_ADDED = Pattern("sort_by_menucol_placesContentDateAdded.png")
-            SORT_BY_LAST_MODIFIED = Pattern(
-                "sort_by_menucol_placesContentLastModified.png"
-            )
+            SORT_BY_LAST_MODIFIED = Pattern("sort_by_menucol_placesContentLastModified.png")
             AZ_SORT_ORDER = Pattern("viewSortAscending.png")
             ZA_SORT_ORDER = Pattern("viewSortDescending.png")
 

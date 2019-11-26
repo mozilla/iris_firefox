@@ -22,12 +22,8 @@ class Test(FirefoxTest):
         new_tab_pattern = Pattern("new_tab.png")
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
         firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png").similar(0.7)
-        view_bookmarks_toolbar = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        bookmarks_toolbar_most_visited_pattern = (
-            SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        )
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png").similar(0.7)
 
         # Open the Bookmarks toolbar.
@@ -55,10 +51,7 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
         assert expected, "Iris page is displayed in the History menu list."
@@ -68,9 +61,7 @@ class Test(FirefoxTest):
             logger.debug("Show All History option found.")
             click(show_all_history_pattern)
         except FindError:
-            raise FindError(
-                "Show All History option is not present on the page, aborting."
-            )
+            raise FindError("Show All History option is not present on the page, aborting.")
 
         expected = exists(history_today_pattern.similar(0.6), 10)
         assert expected, "Today history option is available."
@@ -80,14 +71,10 @@ class Test(FirefoxTest):
         click_window_control("close")
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        right_click_and_type(
-            bookmarks_toolbar_most_visited_pattern, keyboard_action="p"
-        )
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action="p")
 
         expected = exists(today_bookmarks_toolbar_pattern)
-        assert (
-            expected
-        ), "Today time range was copied successfully to the Bookmarks toolbar."
+        assert expected, "Today time range was copied successfully to the Bookmarks toolbar."
 
         # Right click on Today time range and select the Open All in Tabs button.
         right_click_and_type(today_bookmarks_toolbar_pattern, keyboard_action="o")

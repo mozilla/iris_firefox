@@ -17,20 +17,12 @@ class Test(FirefoxTest):
         library_button_pattern = NavBar.LIBRARY_MENU
         bookmarks_menu_option_pattern = LibraryMenu.BOOKMARKS_OPTION
         bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
-        view_bookmarks_sidebar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_SIDEBAR
-        )
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        add_bookmarks_menu_to_toolbar_pattern = Pattern(
-            "add_bookmarks_menu_to_toolbar.png"
-        )
+        view_bookmarks_sidebar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_SIDEBAR
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        add_bookmarks_menu_to_toolbar_pattern = Pattern("add_bookmarks_menu_to_toolbar.png")
 
         library_button_exists = exists(library_button_pattern)
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(library_button_pattern)
 
@@ -44,19 +36,11 @@ class Test(FirefoxTest):
 
         click(bookmarking_tools_pattern)
 
-        add_bookmarks_menu_to_toolbar_exists = exists(
-            add_bookmarks_menu_to_toolbar_pattern
-        )
-        assert (
-            add_bookmarks_menu_to_toolbar_exists is True
-        ), "Add Bookmarks Menu to Toolbar is displayed"
+        add_bookmarks_menu_to_toolbar_exists = exists(add_bookmarks_menu_to_toolbar_pattern)
+        assert add_bookmarks_menu_to_toolbar_exists is True, "Add Bookmarks Menu to Toolbar is displayed"
 
         view_bookmarks_sidebar_exists = exists(view_bookmarks_sidebar_pattern)
-        assert (
-            view_bookmarks_sidebar_exists is True
-        ), "View Bookmarks Sidebar is displayed"
+        assert view_bookmarks_sidebar_exists is True, "View Bookmarks Sidebar is displayed"
 
         view_bookmarks_toolbar_exists = exists(view_bookmarks_toolbar_pattern)
-        assert (
-            view_bookmarks_toolbar_exists is True
-        ), "View Bookmarks Toolbar is displayed"
+        assert view_bookmarks_toolbar_exists is True, "View Bookmarks Toolbar is displayed"

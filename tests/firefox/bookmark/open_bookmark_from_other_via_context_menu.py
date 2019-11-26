@@ -13,10 +13,7 @@ class Test(FirefoxTest):
         test_case_id="163208",
         test_suite_id="2525",
         profile=Profiles.TEN_BOOKMARKS,
-        blocked_by={
-            "id": "1579898",
-            "platform": [OSPlatform.WINDOWS, OSPlatform.LINUX],
-        },
+        blocked_by={"id": "1579898", "platform": [OSPlatform.WINDOWS, OSPlatform.LINUX]},
         exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
@@ -33,18 +30,14 @@ class Test(FirefoxTest):
         click(bookmarks_top_menu_pattern)
 
         bookmarks_dropdown_opened = exists(other_bookmarks_pattern)
-        assert (
-            bookmarks_dropdown_opened is True
-        ), "Bookmarks dropdown firefox menu is opened"
+        assert bookmarks_dropdown_opened is True, "Bookmarks dropdown firefox menu is opened"
 
         other_bookmarks_item_location = find(other_bookmarks_pattern)
 
         click(other_bookmarks_pattern)
 
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
-        assert (
-            firefox_bookmark_top_menu_located is True
-        ), "Bookmarks are displayed in top menu"
+        assert firefox_bookmark_top_menu_located is True, "Bookmarks are displayed in top menu"
 
         # Required to guarantee bookmarks list will not disappear
         firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
@@ -58,12 +51,8 @@ class Test(FirefoxTest):
 
         click(open_bookmark_pattern)
 
-        webpage_opened = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert webpage_opened is True, "Bookmarked webpage is opened"
 
         webpage_opened_in_current_tab = not exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
-        assert (
-            webpage_opened_in_current_tab is True
-        ), "Bookmarked webpage was opened in current tab"
+        assert webpage_opened_in_current_tab is True, "Bookmarked webpage was opened in current tab"

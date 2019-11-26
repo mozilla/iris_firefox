@@ -22,21 +22,14 @@ class Test(FirefoxTest):
         open_bookmarks_toolbar()
 
         bookmarks_folder_available_in_toolbar = exists(
-            most_visited_toolbar_bookmarks_folder_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            most_visited_toolbar_bookmarks_folder_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         area_to_drop = find(most_visited_toolbar_bookmarks_folder_pattern)
         area_to_drop.x -= 1
 
         drag_drop(getting_started_toolbar_bookmark_pattern, area_to_drop)
 
-        bookmarks_reordered = exists(
-            toolbar_bookmarks_reordered_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmarks_reordered is True
-        ), "The position of the selected bookmark is changed as expected."
+        bookmarks_reordered = exists(toolbar_bookmarks_reordered_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert bookmarks_reordered is True, "The position of the selected bookmark is changed as expected."

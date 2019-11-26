@@ -22,12 +22,9 @@ class Test(FirefoxTest):
         open_bookmarks_toolbar()
 
         bookmarks_folder_available_in_toolbar = exists(
-            most_visited_toolbar_bookmarks_folder_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            most_visited_toolbar_bookmarks_folder_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         click(most_visited_toolbar_bookmarks_folder_pattern)
 
@@ -40,22 +37,15 @@ class Test(FirefoxTest):
 
         open_in_new_window_option_available = exists(open_in_new_window_option_pattern)
         assert open_in_new_window_option_available is True, (
-            "'Open in new window' option in available in context "
-            "menu after right-click at the bookmark in toolbar."
+            "'Open in new window' option in available in context " "menu after right-click at the bookmark in toolbar."
         )
 
         click(open_in_new_window_option_pattern)
 
-        website_loaded = exists(
-            LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            website_loaded is True
-        ), "The selected website is correctly opened in a new window."
+        website_loaded = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert website_loaded is True, "The selected website is correctly opened in a new window."
 
         close_window()
 
         iris_tab_displayed = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
-        assert (
-            iris_tab_displayed is True
-        ), "'Iris' tab remains available in the non-private window"
+        assert iris_tab_displayed is True, "'Iris' tab remains available in the non-private window"

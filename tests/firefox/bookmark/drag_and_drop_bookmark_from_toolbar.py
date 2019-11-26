@@ -22,30 +22,20 @@ class Test(FirefoxTest):
         open_bookmarks_toolbar()
 
         bookmarks_folder_available_in_toolbar = exists(
-            most_visited_toolbar_bookmarks_folder_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            most_visited_toolbar_bookmarks_folder_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         click(most_visited_toolbar_bookmarks_folder_pattern)
 
-        bookmark_available_in_folder = exists(
-            pocket_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        bookmark_available_in_folder = exists(pocket_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert bookmark_available_in_folder is True, (
-            "'Pocket' bookmark is displayed in 'Most visited' bookmarks "
-            "folder in toolbar"
+            "'Pocket' bookmark is displayed in 'Most visited' bookmarks " "folder in toolbar"
         )
 
         drop_location = Location(Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
         drag_drop(pocket_bookmark_pattern, drop_location, duration=3)
 
-        bookmarked_website_loaded = exists(
-            pocket_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            bookmarked_website_loaded is True
-        ), "The selected website is correctly opened."
+        bookmarked_website_loaded = exists(pocket_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert bookmarked_website_loaded is True, "The selected website is correctly opened."

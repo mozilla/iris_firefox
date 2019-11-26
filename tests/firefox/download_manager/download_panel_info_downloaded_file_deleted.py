@@ -77,9 +77,7 @@ class Test(FirefoxTest):
         assert expected is True, "Previously downloaded file is displayed."
 
         expected = exists(DownloadManager.Downloads.FILE_MOVED_OR_MISSING, 10)
-        assert (
-            expected is True
-        ), "Previously downloaded file has status: 'File moved or missing'."
+        assert expected is True, "Previously downloaded file has status: 'File moved or missing'."
 
     def teardown(self):
         downloads_cleanup()

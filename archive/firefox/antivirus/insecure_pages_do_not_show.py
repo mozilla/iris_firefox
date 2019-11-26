@@ -27,9 +27,7 @@ class Test(FirefoxTest):
         twitter_page_loaded = exists(twitter_logo_pattern, 10)
         assert twitter_page_loaded, "Twitter webpage is loaded successfully"
 
-        connection_insecure_not_displayed_twitter = not exists(
-            insecure_connection_pattern, 10
-        )
+        connection_insecure_not_displayed_twitter = not exists(insecure_connection_pattern, 10)
         assert (
             connection_insecure_not_displayed_twitter
         ), 'No error stating that the "connection is not secured" is displayed for twitter page'
@@ -39,9 +37,7 @@ class Test(FirefoxTest):
         tracker_site_loaded = exists(tracker_site_pattern, 10)
         assert tracker_site_loaded, '"It\'s a tracker" site loaded'
 
-        connection_insecure_not_displayed_tracker_site = not exists(
-            insecure_connection_pattern, 10
-        )
+        connection_insecure_not_displayed_tracker_site = not exists(insecure_connection_pattern, 10)
         assert (
             connection_insecure_not_displayed_tracker_site
         ), 'No error stating that the "connection is not secured" is displayed for default tracker site'

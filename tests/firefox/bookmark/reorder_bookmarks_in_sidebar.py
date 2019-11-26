@@ -22,23 +22,19 @@ class Test(FirefoxTest):
 
         bookmarks_sidebar("open")
 
-        sidebar_opened = exists(
-            other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        sidebar_opened = exists(other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert sidebar_opened is True, "'Bookmarks Sidebar' is correctly displayed."
 
         click(other_bookmarks_pattern)
 
         pocket_bookmark_available = exists(pocket_bookmark_pattern)
         assert pocket_bookmark_available is True, (
-            "'Pocket' bookmark is available in 'Other bookmarks' "
-            "folder in 'Bookmarks sidebar'"
+            "'Pocket' bookmark is available in 'Other bookmarks' " "folder in 'Bookmarks sidebar'"
         )
 
         mozilla_bookmark_available = exists(mozilla_bookmark_pattern)
         assert mozilla_bookmark_available is True, (
-            "'Mozilla' bookmark is available in 'Other bookmarks' "
-            "folder in 'Bookmarks sidebar'"
+            "'Mozilla' bookmark is available in 'Other bookmarks' " "folder in 'Bookmarks sidebar'"
         )
 
         mozilla_bookmark_location = find(mozilla_bookmark_pattern)
@@ -48,6 +44,4 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         bookmarks_not_reordered = exists(reordered_sidebar_bookmarks_pattern)
-        assert (
-            bookmarks_not_reordered is True
-        ), "The bookmarks order is correctly modified."
+        assert bookmarks_not_reordered is True, "The bookmarks order is correctly modified."

@@ -22,12 +22,7 @@ class Test(FirefoxTest):
         bookmark_tags = Pattern("bookmark_tags_selected.png")
         bookmark_button_pattern = LocationBar.STAR_BUTTON_STARRED
 
-        right_upper_corner = Region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
-        )
+        right_upper_corner = Region(Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
         navigate("about:blank")
 
@@ -40,9 +35,7 @@ class Test(FirefoxTest):
             logger.debug("Moz bookmark is present in the Bookmark sidebar.")
             right_click(moz_bookmark_pattern.similar(0.8))
         except FindError:
-            raise FindError(
-                "Moz bookmark is NOT present in the Bookmark sidebar, aborting."
-            )
+            raise FindError("Moz bookmark is NOT present in the Bookmark sidebar, aborting.")
 
         option_assert = exists(properties_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert option_assert is True, "Properties option is present on the page."
@@ -50,9 +43,7 @@ class Test(FirefoxTest):
         click(properties_pattern)
 
         properties_window_assert = exists(save_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            properties_window_assert is True
-        ), "Properties window is present on the page."
+        assert properties_window_assert is True, "Properties window is present on the page."
 
         for i in range(2):
             type(Key.TAB)
@@ -75,24 +66,16 @@ class Test(FirefoxTest):
 
         paste("iris")
 
-        tagged_bookmark_assert = exists(
-            moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            tagged_bookmark_assert
-        ), "Moz bookmark was successfully tagged via bookmark sidebar."
+        tagged_bookmark_assert = exists(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert tagged_bookmark_assert, "Moz bookmark was successfully tagged via bookmark sidebar."
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."
 
         try:
-            right_upper_corner.wait(
-                bookmark_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-            )
+            right_upper_corner.wait(bookmark_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug("Bookmark star is present on the page.")
             right_upper_corner.click(bookmark_button_pattern)
         except FindError:
@@ -119,9 +102,5 @@ class Test(FirefoxTest):
 
         paste("iris")
 
-        removed_tags_assert = exists(
-            moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            removed_tags_assert is False
-        ), "Tags has been successfully removed from Moz bookmark."
+        removed_tags_assert = exists(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert removed_tags_assert is False, "Tags has been successfully removed from Moz bookmark."

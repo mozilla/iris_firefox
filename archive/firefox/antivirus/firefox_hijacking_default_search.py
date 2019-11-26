@@ -17,9 +17,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         picker_pattern = Pattern("search_engines_picker.png")
         about_preferences_search_pattern = Pattern("about_preferences_search.png")
-        default_search_engines_list_small_pattern = Pattern(
-            "default_search_engines_list_small.png"
-        )
+        default_search_engines_list_small_pattern = Pattern("default_search_engines_list_small.png")
         default_search_engines_list_pattern = Pattern("default_search_engines_list.png")
         one_click_search_engines_pattern = Pattern("one_click_search_engines.png")
 
@@ -38,9 +36,7 @@ class Test(FirefoxTest):
 
         open_find()
         paste("One-click")
-        assert exists(
-            one_click_search_engines_pattern
-        ), "The default One-click search engine list is not changed."
+        assert exists(one_click_search_engines_pattern), "The default One-click search engine list is not changed."
 
         firefox.restart()
         navigate("about:preferences#search")

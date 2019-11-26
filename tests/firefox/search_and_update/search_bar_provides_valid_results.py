@@ -30,6 +30,4 @@ class Test(FirefoxTest):
 
         region = Screen.UPPER_LEFT_CORNER
         expected = region.exists(test_pattern, 10)
-        assert (
-            expected is True
-        ), "The search engine page is opened with the search results for that term."
+        assert expected is True, "The search engine page is opened with the search results for that term."

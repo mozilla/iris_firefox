@@ -21,6 +21,4 @@ class Test(FirefoxTest):
         assert exists(site_logo_pattern, 10), "Logo is loaded properly."
 
         close_content_blocking_pop_up()
-        assert exists(
-            site_content_pattern
-        ), "Page loads properly, there's no obvious stall."
+        assert exists(site_content_pattern), "Page loads properly, there's no obvious stall."

@@ -14,21 +14,13 @@ class Test(FirefoxTest):
         test_suite_id="3063",
     )
     def run(self, firefox):
-        change_master_password_popup_pattern = Pattern(
-            "change_master_password_popup.png"
-        )
-        master_password_box_is_checked_pattern = Pattern(
-            "master_password_box_is_checked.png"
-        )
-        master_password_box_is_unchecked_pattern = Pattern(
-            "master_password_box_is_unchecked.png"
-        )
+        change_master_password_popup_pattern = Pattern("change_master_password_popup.png")
+        master_password_box_is_checked_pattern = Pattern("master_password_box_is_checked.png")
+        master_password_box_is_unchecked_pattern = Pattern("master_password_box_is_unchecked.png")
         ok_button_available_in_change_master_password_pattern = Pattern(
             "ok_button_available_in_change_master_password.png"
         )
-        button_ok_password_change_succeeded_pattern = Pattern(
-            "button_ok_password_change_succeeded.png"
-        )
+        button_ok_password_change_succeeded_pattern = Pattern("button_ok_password_change_succeeded.png")
         password_change_succeeded_pattern = Pattern("password_change_succeeded.png")
         remove_button_available_in_change_master_password_pattern = Pattern(
             "remove_button_available_in_change_master_password_pattern.png"
@@ -38,18 +30,10 @@ class Test(FirefoxTest):
         password_form_pattern = Pattern("password_form.png").similar(0.6)
         save_login_button_pattern = Pattern("save_login_button.png")
         saved_logins_button_pattern = Pattern("saved_logins_button.png")
-        saved_logins_list_available_first_pattern = Pattern(
-            "saved_logins_list_available_first_login.png"
-        ).similar(0.7)
-        saved_logins_list_available_second_pattern = Pattern(
-            "saved_logins_list_available_second_login.png"
-        )
-        master_password_required_popup_pattern = Pattern(
-            "master_password_required_popup.png"
-        )
-        remove_master_password_popup_pattern = Pattern(
-            "remove_master_password_popup.png"
-        )
+        saved_logins_list_available_first_pattern = Pattern("saved_logins_list_available_first_login.png").similar(0.7)
+        saved_logins_list_available_second_pattern = Pattern("saved_logins_list_available_second_login.png")
+        master_password_required_popup_pattern = Pattern("master_password_required_popup.png")
+        remove_master_password_popup_pattern = Pattern("remove_master_password_popup.png")
 
         test_form_1 = self.get_asset_path("test_1_sign_in.htm")
         test_form_2 = self.get_asset_path("test_2_sign_in.htm")
@@ -59,9 +43,7 @@ class Test(FirefoxTest):
         else:
             scroll_length = -25
 
-        change_preference(
-            "signon.autofillForms", "false"
-        )  # prevent autocomplete in site #2
+        change_preference("signon.autofillForms", "false")  # prevent autocomplete in site #2
 
         # saving password for site #1
         navigate(test_form_1)
@@ -83,9 +65,7 @@ class Test(FirefoxTest):
         paste("test")
         type(Key.ENTER)
 
-        save_login_button_available = exists(
-            save_login_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        save_login_button_available = exists(save_login_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert save_login_button_available, "Save login button is available"
 
         click(save_login_button_pattern, 1)
@@ -110,18 +90,14 @@ class Test(FirefoxTest):
         paste("test")
         type(Key.ENTER)
 
-        save_login_button_available = exists(
-            save_login_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        save_login_button_available = exists(save_login_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert save_login_button_available, "Save login button is available"
 
         click(save_login_button_pattern, 1)
 
         navigate("about:preferences#privacy")
 
-        navigated_to_preferences = exists(
-            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        navigated_to_preferences = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert navigated_to_preferences, "Preferences/privacy page successfully loaded."
 
         paste("Use a master password")
@@ -129,17 +105,13 @@ class Test(FirefoxTest):
         unchecked_use_master_password_checkbox_exists = exists(
             master_password_box_is_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            unchecked_use_master_password_checkbox_exists
-        ), "Master Password checkbox is unchecked."
+        assert unchecked_use_master_password_checkbox_exists, "Master Password checkbox is unchecked."
 
         hover(master_password_box_is_unchecked_pattern)
 
         click(master_password_box_is_unchecked_pattern)
 
-        change_master_password_popup = exists(
-            change_master_password_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        change_master_password_popup = exists(change_master_password_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert change_master_password_popup, "Master password popup exist"
 
         type("123")
@@ -147,8 +119,7 @@ class Test(FirefoxTest):
         type("123")
 
         ok_button_available_in_change_master_password = exists(
-            ok_button_available_in_change_master_password_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            ok_button_available_in_change_master_password_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert ok_button_available_in_change_master_password, "Button OK is available"
 
@@ -156,9 +127,7 @@ class Test(FirefoxTest):
 
         click(ok_button_available_in_change_master_password_pattern)
 
-        password_change_succeeded = exists(
-            password_change_succeeded_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        password_change_succeeded = exists(password_change_succeeded_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert password_change_succeeded, "Password change succeeded."
 
         available_button_ok_password_change_succeeded = exists(
@@ -168,17 +137,12 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        master_password_box_is_checked = exists(
-            master_password_box_is_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        master_password_box_is_checked = exists(master_password_box_is_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert master_password_box_is_checked, "Master password checkbox is checked"
 
         change_preference("security.enterprise_roots.enabled", "true")
 
-        firefox.restart(
-            url="about:preferences#privacy",
-            image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS,
-        )
+        firefox.restart(url="about:preferences#privacy", image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
         saved_logins_button_exists = scroll_until_pattern_found(
             saved_logins_button_pattern, Mouse().scroll, (0, scroll_length), 30, 1
@@ -187,9 +151,7 @@ class Test(FirefoxTest):
 
         click(saved_logins_button_pattern, 1)
 
-        enter_master_password = exists(
-            master_password_required_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        enter_master_password = exists(master_password_required_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert enter_master_password, "Enter master password successfully loaded."
 
         type("123")
@@ -207,46 +169,31 @@ class Test(FirefoxTest):
 
         change_preference("security.enterprise_roots.enabled", "false")
 
-        firefox.restart(
-            url="about:preferences#privacy",
-            image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS,
-        )
+        firefox.restart(url="about:preferences#privacy", image=LocalWeb.ABOUT_PREFERENCES_PRIVACY_ADDRESS)
 
-        scroll_until_pattern_found(
-            saved_logins_button_pattern, scroll, (scroll_length,), 30, 1
-        )
+        scroll_until_pattern_found(saved_logins_button_pattern, scroll, (scroll_length,), 30, 1)
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        saved_logins_button_exists = exists(
-            saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        saved_logins_button_exists = exists(saved_logins_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert saved_logins_button_exists, "Saved logins button exists"
 
         click(saved_logins_button_pattern, 1)
 
-        enter_master_password = exists(
-            master_password_required_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        enter_master_password = exists(master_password_required_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert enter_master_password, "Enter master password successfully loaded."
 
         type("123")
         type(Key.ENTER)
 
-        saved_logins_region = Rectangle(
-            0, 0, Screen.SCREEN_WIDTH / 4, Screen.SCREEN_HEIGHT
-        )
+        saved_logins_region = Rectangle(0, 0, Screen.SCREEN_WIDTH / 4, Screen.SCREEN_HEIGHT)
         saved_logins_list_available_first = exists(
-            saved_logins_list_available_first_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            saved_logins_region,
+            saved_logins_list_available_first_pattern, FirefoxSettings.FIREFOX_TIMEOUT, saved_logins_region
         )
         assert saved_logins_list_available_first, "First saved login is displayed"
 
         saved_logins_list_available_second = exists(
-            saved_logins_list_available_second_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            saved_logins_region,
+            saved_logins_list_available_second_pattern, FirefoxSettings.FIREFOX_TIMEOUT, saved_logins_region
         )
         assert saved_logins_list_available_second, "Second saved login is displayed"
 
@@ -256,9 +203,7 @@ class Test(FirefoxTest):
         new_tab()
         navigate("about:preferences#privacy")
 
-        navigated_to_preferences = exists(
-            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        navigated_to_preferences = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert navigated_to_preferences, "Preferences/privacy page successfully loaded."
 
         paste("Use a Master Password")
@@ -266,36 +211,27 @@ class Test(FirefoxTest):
         checked_use_master_password_checkbox_exists = exists(
             master_password_box_is_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            checked_use_master_password_checkbox_exists
-        ), "Master Password checkbox is unchecked."
+        assert checked_use_master_password_checkbox_exists, "Master Password checkbox is unchecked."
 
         click(master_password_box_is_checked_pattern)
 
         #  deactivate master password
-        remove_master_password_popup = exists(
-            remove_master_password_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        remove_master_password_popup = exists(remove_master_password_popup_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert remove_master_password_popup is True, "Master password popup exist"
 
         type("123")
         type(Key.TAB)
 
         remove_button_available_in_change_master_password = exists(
-            remove_button_available_in_change_master_password_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            remove_button_available_in_change_master_password_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            remove_button_available_in_change_master_password
-        ), "Button remove is available"
+        assert remove_button_available_in_change_master_password, "Button remove is available"
 
         hover(remove_button_available_in_change_master_password_pattern)
 
         click(remove_button_available_in_change_master_password_pattern)
 
-        master_password_deleted = exists(
-            master_password_deleted_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        master_password_deleted = exists(master_password_deleted_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert master_password_deleted, "Master password deleted."
 
         available_button_ok_password_change_succeeded = exists(
@@ -310,6 +246,4 @@ class Test(FirefoxTest):
         unchecked_use_master_password_checkbox_exists = exists(
             master_password_box_is_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            unchecked_use_master_password_checkbox_exists
-        ), "Master Password checkbox is unchecked."
+        assert unchecked_use_master_password_checkbox_exists, "Master Password checkbox is unchecked."

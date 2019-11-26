@@ -23,39 +23,29 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Firefox test site opened"
 
         next_tab()
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Pocket test site opened"
 
         new_tab()
 
         navigate("about:support")
 
-        about_support_page_opened = exists(
-            about_support_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        about_support_page_opened = exists(about_support_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert about_support_page_opened, "About Support page opened"
 
         about_support_title_loc = find(about_support_title_pattern)
         width, height = about_support_title_pattern.get_size()
-        buttons_region = Region(
-            about_support_title_loc.x, about_support_title_loc.y, width * 2, height * 5
-        )
+        buttons_region = Region(about_support_title_loc.x, about_support_title_loc.y, width * 2, height * 5)
 
         copy_text_button_exists = exists(
-            copy_raw_data_to_clipboard_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=buttons_region,
+            copy_raw_data_to_clipboard_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=buttons_region
         )
         assert copy_text_button_exists, "Copy raw data to clipboard button exists"
 
@@ -65,16 +55,12 @@ class Test(FirefoxTest):
 
         clipboard_before_restart = get_clipboard().partition("safeMode")
 
-        restart_button_exists = exists(
-            restart_addons_disabled_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        restart_button_exists = exists(restart_addons_disabled_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert restart_button_exists, "Restart with Add-ons Disabled button displayed"
 
         click(restart_addons_disabled_pattern)
 
-        restart_button_displayed = exists(
-            restart_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        restart_button_displayed = exists(restart_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert restart_button_displayed, "Restart button displayed"
 
         click(restart_button_pattern)
@@ -82,21 +68,15 @@ class Test(FirefoxTest):
         start_in_safe_mode_button_displayed = exists(
             start_in_safe_mode_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
-        assert (
-            start_in_safe_mode_button_displayed
-        ), "Start in safe mode button displayed"
+        assert start_in_safe_mode_button_displayed, "Start in safe mode button displayed"
 
         click(start_in_safe_mode_button_pattern)
 
-        about_support_page_opened = exists(
-            about_support_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        about_support_page_opened = exists(about_support_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert about_support_page_opened, "About Support page opened"
 
         copy_text_button_exists = exists(
-            copy_raw_data_to_clipboard_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=buttons_region,
+            copy_raw_data_to_clipboard_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=buttons_region
         )
         assert copy_text_button_exists, "Copy raw data to clipboard button exists"
 
@@ -111,14 +91,10 @@ class Test(FirefoxTest):
 
         select_tab("1")
 
-        test_site_opened = exists(
-            LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Firefox test site opened"
 
         select_tab("2")
 
-        test_site_opened = exists(
-            LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Pocket test site opened"

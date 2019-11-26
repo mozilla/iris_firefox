@@ -21,20 +21,14 @@ class Test(FirefoxTest):
 
         navigate("about:url-classifier")
 
-        url_classifier_page_opened = exists(
-            url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            url_classifier_page_opened is True
-        ), "URL Classifier page is successfully opened"
+        url_classifier_page_opened = exists(url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert url_classifier_page_opened is True, "URL Classifier page is successfully opened"
 
         open_find()
 
         paste("Cache")
 
-        providers_displays = exists(
-            google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        providers_displays = exists(google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert providers_displays, "The providers are displayed"
 
         google4_row_location = find(google4_row_pattern)
@@ -54,20 +48,14 @@ class Test(FirefoxTest):
 
         navigate("about:url-classifier")
 
-        url_classifier_page_opened = exists(
-            url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            url_classifier_page_opened is True
-        ), "URL Classifier page is successfully opened"
+        url_classifier_page_opened = exists(url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert url_classifier_page_opened is True, "URL Classifier page is successfully opened"
 
         open_find()
 
         paste("Cache")
 
-        providers_displays = exists(
-            google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        providers_displays = exists(google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert providers_displays, "The providers are displayed"
 
         google4_row_location = find(google4_row_pattern)
@@ -82,8 +70,6 @@ class Test(FirefoxTest):
         click(trigger_update_button_pattern, region=google4_row_region)
 
         success_status_displayed = exists(
-            success_status_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-            google4_row_region,
+            success_status_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT, google4_row_region
         )
         assert success_status_displayed, "Safe browsing v4 DB is updated."

@@ -46,17 +46,11 @@ class Test(FirefoxTest):
         try:
             wait(selected_local_link, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug("Selected link is present on the page.")
-            drag_drop(
-                selected_local_link,
-                SidebarBookmarks.BookmarksToolbar.MOST_VISITED,
-                duration=2,
-            )
+            drag_drop(selected_local_link, SidebarBookmarks.BookmarksToolbar.MOST_VISITED, duration=2)
         except FindError:
             raise FindError("Selected link is not present on the page, aborting.")
 
-        toolbar_link_assert = exists(
-            toolbar_bookmarked_link, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        toolbar_link_assert = exists(toolbar_bookmarked_link, FirefoxSettings.FIREFOX_TIMEOUT)
         assert toolbar_link_assert is True, "The link has been successfully bookmarked."
 
         click(toolbar_bookmarked_link)

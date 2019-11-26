@@ -18,23 +18,17 @@ class Test(FirefoxTest):
         open_in_new_tab_option_pattern = Pattern("open_in_new_tab.png")
 
         library_button_exists = exists(NavBar.LIBRARY_MENU)
-        assert (
-            library_button_exists
-        ), "View history, saved bookmarks and more section exists"
+        assert library_button_exists, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION)
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         recently_firefox_bookmark_exists = exists(LocalWeb.FIREFOX_BOOKMARK)
-        assert (
-            recently_firefox_bookmark_exists is True
-        ), "Firefox bookmark exists in recently bookmarked section"
+        assert recently_firefox_bookmark_exists is True, "Firefox bookmark exists in recently bookmarked section"
 
         right_click(LocalWeb.FIREFOX_BOOKMARK)
 
@@ -44,14 +38,11 @@ class Test(FirefoxTest):
         click(open_in_new_tab_option_pattern)
 
         firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE)
-        assert (
-            firefox_full_logo_exists is True
-        ), "Bookmark is correctly opened in the New Tab."
+        assert firefox_full_logo_exists is True, "Bookmark is correctly opened in the New Tab."
 
         select_tab("1")
 
         bookmark_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         assert bookmark_opened_in_current_tab is True, (
-            "The page that was previously open in current tab exists"
-            " after new tab worked the proper way"
+            "The page that was previously open in current tab exists" " after new tab worked the proper way"
         )

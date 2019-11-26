@@ -15,15 +15,9 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         google_search_no_input_pattern = Pattern("google_search_no_input.png")
-        change_search_settings_pattern = Pattern("change_search_settings.png").similar(
-            0.6
-        )
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        ).similar(0.6)
-        default_search_engine_dropdown_pattern = Pattern(
-            "default_search_engine_dropdown.png"
-        )
+        change_search_settings_pattern = Pattern("change_search_settings.png").similar(0.6)
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png").similar(0.6)
+        default_search_engine_dropdown_pattern = Pattern("default_search_engine_dropdown.png")
         search_button_pattern = Pattern("search_button.png")
         test_pattern = Pattern("test.png")
 
@@ -35,9 +29,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         expected = exists(google_search_no_input_pattern, 10)
-        assert (
-            expected is True
-        ), "The search engine page is opened with no searches performed."
+        assert expected is True, "The search engine page is opened with no searches performed."
 
         # Enter a word in the Search Bar and press enter.
         select_search_bar()
@@ -47,16 +39,13 @@ class Test(FirefoxTest):
 
         expected = exists(test_pattern, 10)
         assert expected is True, (
-            "The search engine page is opened with search results available for the term in "
-            "question."
+            "The search engine page is opened with search results available for the term in " "question."
         )
 
         # Change the default search engine.
         select_search_bar()
         expected = exists(change_search_settings_pattern, 10)
-        assert (
-            expected is True
-        ), "The 'Change Search Settings' button found in the page."
+        assert expected is True, "The 'Change Search Settings' button found in the page."
 
         click(change_search_settings_pattern)
 
@@ -81,9 +70,7 @@ class Test(FirefoxTest):
         url_text = get_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        assert (
-            "https://www.amazon.com/" in url_text
-        ), "Search results are displayed using the newly search provider."
+        assert "https://www.amazon.com/" in url_text, "Search results are displayed using the newly search provider."
 
         assert "test" in url_text, "Search results are displayed for the searched term."
 
@@ -103,13 +90,9 @@ class Test(FirefoxTest):
         url_text = get_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        assert (
-            "https://www.amazon.com/" in url_text
-        ), "Search results are displayed using the newly search provider."
+        assert "https://www.amazon.com/" in url_text, "Search results are displayed using the newly search provider."
 
-        assert (
-            "testing" in url_text
-        ), "Search results are displayed for the searched term."
+        assert "testing" in url_text, "Search results are displayed for the searched term."
 
         # Perform a search from about:newtab page, content search field.
         new_tab()
@@ -134,13 +117,9 @@ class Test(FirefoxTest):
         url_text = get_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        assert (
-            "https://www.amazon.com/" in url_text
-        ), "Search results are displayed using the newly search provider."
+        assert "https://www.amazon.com/" in url_text, "Search results are displayed using the newly search provider."
 
-        assert (
-            "mozilla" in url_text
-        ), "Search results are displayed for the searched term."
+        assert "mozilla" in url_text, "Search results are displayed for the searched term."
 
         # Restart Firefox and check the default search engine.
         firefox.restart()
@@ -154,6 +133,4 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert (
-            url_text == "https://www.amazon.com/"
-        ), "The default search provider is kept after restart."
+        assert url_text == "https://www.amazon.com/", "The default search provider is kept after restart."

@@ -22,12 +22,9 @@ class Test(FirefoxTest):
         open_bookmarks_toolbar()
 
         bookmarks_folder_available_in_toolbar = exists(
-            most_visited_toolbar_bookmarks_folder_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            most_visited_toolbar_bookmarks_folder_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         click(most_visited_toolbar_bookmarks_folder_pattern)
 
@@ -40,20 +37,13 @@ class Test(FirefoxTest):
 
         open_in_new_tab_option_available = exists(open_in_new_tab_option_pattern)
         assert open_in_new_tab_option_available is True, (
-            "'Open in new tab' option in available in context "
-            "menu after right-click at the bookmark in toolbar."
+            "'Open in new tab' option in available in context " "menu after right-click at the bookmark in toolbar."
         )
 
         click(open_in_new_tab_option_pattern)
 
-        website_opened_in_new_tab = exists(
-            LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            website_opened_in_new_tab is True
-        ), "The selected website is opened in a new tab."
+        website_opened_in_new_tab = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert website_opened_in_new_tab is True, "The selected website is opened in a new tab."
 
-        iris_tab_exists = exists(
-            LocalWeb.IRIS_LOGO_INACTIVE_TAB, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        iris_tab_exists = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert iris_tab_exists is True, "'Iris' tab is still displayed on the screen"

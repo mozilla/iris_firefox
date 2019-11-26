@@ -14,9 +14,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        preferences_search_pattern = (
-            AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
-        )
+        preferences_search_pattern = AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN
         find_more_search_engines_pattern = Pattern("find_more_search_engines.png")
         google_one_click_search_pattern = Pattern("google_one_click_search.png")
         bing_one_click_search_pattern = Pattern("bing_one_click_search.png")
@@ -34,9 +32,7 @@ class Test(FirefoxTest):
 
         hover(Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2))
 
-        search_engines_list = scroll_until_pattern_found(
-            find_more_search_engines_pattern, scroll, (-25,), 20, 1
-        )
+        search_engines_list = scroll_until_pattern_found(find_more_search_engines_pattern, scroll, (-25,), 20, 1)
 
         assert search_engines_list, 'The "One-click Search Engines" is available.'
 
@@ -65,9 +61,7 @@ class Test(FirefoxTest):
 
         click(bing_one_click_search_pattern, 1)
 
-        assert exists(
-            "Remove", FirefoxSettings.FIREFOX_TIMEOUT, Screen.BOTTOM_THIRD
-        ), "Remove button available."
+        assert exists("Remove", FirefoxSettings.FIREFOX_TIMEOUT, Screen.BOTTOM_THIRD), "Remove button available."
 
         click("Remove", region=Screen.BOTTOM_THIRD)
 
@@ -89,7 +83,5 @@ class Test(FirefoxTest):
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         assert not exists(
-            bing_one_click_search_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=Screen.LEFT_HALF,
+            bing_one_click_search_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.LEFT_HALF
         ), "At the bottom of the dropdown, the deleted search engine is not listed among the others."

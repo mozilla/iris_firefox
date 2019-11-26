@@ -8,10 +8,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Add a new folder from Library",
-        locale=["en-US"],
-        test_case_id="169262",
-        test_suite_id="2525",
+        description="Add a new folder from Library", locale=["en-US"], test_case_id="169262", test_suite_id="2525"
     )
     def run(self, firefox):
         iris_new_folder_pattern = Pattern("iris_new_folder.png").similar(0.6)
@@ -26,9 +23,7 @@ class Test(FirefoxTest):
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
         assert other_bookmarks_folder_exists is True, "Other Bookmarks folder exists"
 
-        other_bookmarks_width, other_bookmarks_height = (
-            Library.OTHER_BOOKMARKS.get_size()
-        )
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
 
         right_click(Library.OTHER_BOOKMARKS.target_offset(other_bookmarks_width * 2, 0))
 
@@ -49,9 +44,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         bookmark_exists = exists(iris_new_folder_pattern)
-        assert (
-            bookmark_exists is True
-        ), "The New Folder is added in the selected section"
+        assert bookmark_exists is True, "The New Folder is added in the selected section"
 
         click(Library.TITLE)
 

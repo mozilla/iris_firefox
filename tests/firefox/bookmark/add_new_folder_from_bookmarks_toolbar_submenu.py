@@ -17,9 +17,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
-        firefox_menu_bookmarks_toolbar_pattern = Pattern(
-            "firefox_menu_bookmarks_toolbar.png"
-        )
+        firefox_menu_bookmarks_toolbar_pattern = Pattern("firefox_menu_bookmarks_toolbar.png")
         firefox_menu_most_visited_pattern = Pattern("firefox_menu_most_visited.png")
         new_folder_pattern = Pattern("folder_in_bookmarks_toolbar.png")
         getting_started_pattern = Pattern("getting_started_top_menu.png")
@@ -30,51 +28,36 @@ class Test(FirefoxTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert firefox_menu_bookmarks_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
 
         bookmarks_toolbar_folder_exists = exists(
-            firefox_menu_bookmarks_toolbar_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            firefox_menu_bookmarks_toolbar_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_toolbar_folder_exists is True
-        ), "Firefox menu > Bookmarks > Bookmarks Toolbar folder exists"
+        assert bookmarks_toolbar_folder_exists is True, "Firefox menu > Bookmarks > Bookmarks Toolbar folder exists"
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(
-            firefox_menu_most_visited_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert most_visited_folder_exists is True, (
-            "Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited "
-            "folder exists"
+            "Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited " "folder exists"
         )
 
-        getting_started_exists = exists(
-            getting_started_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        getting_started_exists = exists(getting_started_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert getting_started_exists is True, (
-            "Firefox menu > Bookmarks > Bookmarks Toolbar > Getting Started "
-            "bookmark exists"
+            "Firefox menu > Bookmarks > Bookmarks Toolbar > Getting Started " "bookmark exists"
         )
 
         right_click(firefox_menu_most_visited_pattern)
 
-        new_bookmark_option_exists = exists(
-            Library.Organize.NEW_FOLDER, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        new_bookmark_option_exists = exists(Library.Organize.NEW_FOLDER, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_bookmark_option_exists is True, "New Folder option exists"
 
         click(Library.Organize.NEW_FOLDER)
 
-        new_folder_window_exists = exists(
-            new_folder_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        new_folder_window_exists = exists(new_folder_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert new_folder_window_exists is True, "New Folder window is displayed"
 
         type(Key.ENTER)
@@ -88,6 +71,4 @@ class Test(FirefoxTest):
         open_bookmarks_toolbar()
 
         new_folder_added = exists(new_folder_pattern)
-        assert (
-            new_folder_added is True
-        ), "The Folder is correctly added in the Bookmark Toolbar."
+        assert new_folder_added is True, "The Folder is correctly added in the Bookmark Toolbar."

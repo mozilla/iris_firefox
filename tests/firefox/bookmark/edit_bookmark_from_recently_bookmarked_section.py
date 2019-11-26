@@ -24,81 +24,52 @@ class Test(FirefoxTest):
         keyword_before_editing_pattern = Pattern("keyword_field.png").similar(0.7)
 
         if OSHelper.is_mac():
-            bookmark_getting_started_pattern = Pattern(
-                "bookmark_from_recently_bookmarked.png"
-            )
+            bookmark_getting_started_pattern = Pattern("bookmark_from_recently_bookmarked.png")
         else:
             properties_window_pattern = Pattern("properties_window.png")
             bookmark_getting_started_pattern = Pattern("toolbar_bookmark_icon.png")
 
-        library_button_exists = exists(
-            NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        library_button_exists = exists(NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(
-            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON)
 
         bookmark_getting_started_exists = exists(
             bookmark_getting_started_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmark_getting_started_exists is True
-        ), "Getting started bookmark exists"
+        assert bookmark_getting_started_exists is True, "Getting started bookmark exists"
 
         right_click(bookmark_getting_started_pattern)
 
-        properties_option_exists = exists(
-            properties_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        properties_option_exists = exists(properties_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert properties_option_exists is True, "Properties option exists"
 
         click(properties_option_pattern)
 
         if not OSHelper.is_mac():
-            properties_window_exists = exists(
-                properties_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-            )
-            assert (
-                properties_window_exists is True
-            ), 'Properties for "Getting Started" window is opened'
+            properties_window_exists = exists(properties_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+            assert properties_window_exists is True, 'Properties for "Getting Started" window is opened'
         else:
-            properties_window_exists = exists(
-                name_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-            )
-            assert (
-                properties_window_exists is True
-            ), 'Properties for "Getting Started" window is opened'
+            properties_window_exists = exists(name_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+            assert properties_window_exists is True, 'Properties for "Getting Started" window is opened'
 
-        name_before_exists = exists(
-            name_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        name_before_exists = exists(name_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert name_before_exists is True, "Name field exists"
 
-        location_before_exists = exists(
-            location_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        location_before_exists = exists(location_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert location_before_exists is True, "Location field exists"
 
-        tags_before_exists = exists(
-            tags_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        tags_before_exists = exists(tags_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert tags_before_exists is True, "Tags field exists"
 
-        keyword_before_exists = exists(
-            keyword_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        keyword_before_exists = exists(keyword_before_editing_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert keyword_before_exists is True, "Keyword field exists"
 
         paste("New Name")
@@ -124,25 +95,18 @@ class Test(FirefoxTest):
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(
-            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(Sidebar.BookmarksSidebar.SIDEBAR_BOOKMARKS_ICON)
 
-        new_modified_bookmark_exists = exists(
-            new_modified_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        new_modified_bookmark_exists = exists(new_modified_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_modified_bookmark_exists is True, "New modified bookmark exists"
 
         right_click(new_modified_bookmark_pattern)
 
-        properties_option_exists = exists(
-            properties_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        properties_option_exists = exists(properties_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert properties_option_exists is True, "Properties option exists"
 
         click(properties_option_pattern)
@@ -155,9 +119,7 @@ class Test(FirefoxTest):
 
         location_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
-        assert (
-            location_edited == "http://wikipedia.org/"
-        ), "Bookmark's location is edited"
+        assert location_edited == "http://wikipedia.org/", "Bookmark's location is edited"
 
         type(Key.TAB)
 

@@ -31,9 +31,7 @@ class Test(FirefoxTest):
         type(Key.DOWN)
         type(Key.ENTER)
 
-        assert exists(
-            save_as_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        ), "Save Image dialog is present."
+        assert exists(save_as_pattern, FirefoxSettings.FIREFOX_TIMEOUT), "Save Image dialog is present."
 
         if OSHelper.is_windows():
             click_window_control("close")
@@ -43,8 +41,6 @@ class Test(FirefoxTest):
             click_cancel_button()
 
         try:
-            assert wait_vanish(
-                save_as_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-            ), "Save Image dialog was closed."
+            assert wait_vanish(save_as_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT), "Save Image dialog was closed."
         except FindError:
             raise FindError("Save Image dialog is still present.")

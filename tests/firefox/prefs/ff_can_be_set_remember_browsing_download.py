@@ -22,12 +22,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         always_private_pattern = Pattern("always_private.png")
         remember_all_history_pattern = Pattern("remember_history.png")
-        remember_browsing_history_pattern = Pattern(
-            "remember_browsing_download_history.png"
-        )
-        clear_history_closing_pattern = Pattern(
-            "clear_history_when_closes.png"
-        ).similar(0.7)
+        remember_browsing_history_pattern = Pattern("remember_browsing_download_history.png")
+        clear_history_closing_pattern = Pattern("clear_history_when_closes.png").similar(0.7)
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
         remember_search_history_pattern = Pattern("remember_search_form_history.png")
         prefs_checked_box_pattern = Pattern("prefs_checked_box.png")
@@ -41,9 +37,7 @@ class Test(FirefoxTest):
         box_width, box_heigth = prefs_checked_box_pattern.get_size()
 
         navigate("about:preferences#privacy")
-        preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert preferences_opened, "Preferences page is opened"
 
         paste("Firefox will")
@@ -70,9 +64,7 @@ class Test(FirefoxTest):
             always_private_height,
         )
 
-        always_private_unchecked = exists(
-            prefs_unchecked_box_pattern, region=always_private_region
-        )
+        always_private_unchecked = exists(prefs_unchecked_box_pattern, region=always_private_region)
         assert always_private_unchecked, '"Always use private browsing mode" is off'
 
         remember_browsing_displayed = exists(remember_browsing_history_pattern)
@@ -80,9 +72,7 @@ class Test(FirefoxTest):
 
         remember_browsing_history_location = find(remember_browsing_history_pattern)
 
-        remember_browsing_history_width, remember_browsing_history_height = (
-            remember_browsing_history_pattern.get_size()
-        )
+        remember_browsing_history_width, remember_browsing_history_height = remember_browsing_history_pattern.get_size()
         remember_browsing_history_region = Region(
             remember_browsing_history_location.x - box_width * 2,
             remember_browsing_history_location.y,
@@ -90,21 +80,15 @@ class Test(FirefoxTest):
             remember_browsing_history_height,
         )
 
-        remember_browsing_history_checked = exists(
-            prefs_checked_box_pattern, region=remember_browsing_history_region
-        )
-        assert (
-            remember_browsing_history_checked
-        ), '"Always use private browsing mode" is off'
+        remember_browsing_history_checked = exists(prefs_checked_box_pattern, region=remember_browsing_history_region)
+        assert remember_browsing_history_checked, '"Always use private browsing mode" is off'
 
         remember_search_history_displayed = exists(remember_search_history_pattern)
         assert remember_search_history_displayed, '"Remember browsing" is displayed'
 
         remember_search_history_location = find(remember_search_history_pattern)
 
-        remember_search_history_width, remember_search_history_height = (
-            remember_search_history_pattern.get_size()
-        )
+        remember_search_history_width, remember_search_history_height = remember_search_history_pattern.get_size()
         remember_search_history_region = Region(
             remember_search_history_location.x - box_width * 2,
             remember_search_history_location.y,
@@ -112,25 +96,17 @@ class Test(FirefoxTest):
             remember_search_history_height,
         )
 
-        remember_search_history_checked = exists(
-            prefs_checked_box_pattern, region=remember_search_history_region
-        )
-        assert (
-            remember_search_history_checked
-        ), '"Always use private browsing mode" is off'
+        remember_search_history_checked = exists(prefs_checked_box_pattern, region=remember_search_history_region)
+        assert remember_search_history_checked, '"Always use private browsing mode" is off'
 
         click(prefs_checked_box_pattern, region=remember_search_history_region)
 
         clear_history_closing_displayed = exists(clear_history_closing_pattern)
-        assert (
-            clear_history_closing_displayed
-        ), '"Clear history when closed" is displayed'
+        assert clear_history_closing_displayed, '"Clear history when closed" is displayed'
 
         clear_history_closing_location = find(clear_history_closing_pattern)
 
-        clear_history_closing_width, clear_history_closing_height = (
-            clear_history_closing_pattern.get_size()
-        )
+        clear_history_closing_width, clear_history_closing_height = clear_history_closing_pattern.get_size()
         clear_history_closing_region = Region(
             clear_history_closing_location.x - box_width * 2,
             clear_history_closing_location.y,
@@ -138,9 +114,7 @@ class Test(FirefoxTest):
             clear_history_closing_height,
         )
 
-        clear_history_unchecked = exists(
-            prefs_unchecked_box_pattern, region=clear_history_closing_region
-        )
+        clear_history_unchecked = exists(prefs_unchecked_box_pattern, region=clear_history_closing_region)
         assert clear_history_unchecked, '"Clear history" is unchecked'
 
         navigate(pdf_file)
@@ -205,9 +179,7 @@ class Test(FirefoxTest):
         focus_page_not_visited = exists(LocalWeb.FOCUS_BOOKMARK, ui_timeout)
         assert focus_page_not_visited, "Focus local page visit was saved in history"
 
-        pocket_page_not_visited = exists(
-            LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout
-        )
+        pocket_page_not_visited = exists(LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout)
         assert pocket_page_not_visited, "Pocket local page visit was saved in history"
 
         restore_firefox_focus()
@@ -219,9 +191,7 @@ class Test(FirefoxTest):
         click(Library.DOWNLOADS)
 
         file_in_downloads = exists(pdf_downloaded)
-        assert (
-            file_in_downloads
-        ), "The previously downloaded pdf file is displayed in Firefox download history."
+        assert file_in_downloads, "The previously downloaded pdf file is displayed in Firefox download history."
 
         click_window_control("close")
 

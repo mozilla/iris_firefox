@@ -28,57 +28,35 @@ class Test(FirefoxTest):
 
         bookmarks_sidebar("open")
 
-        iris_tab_available = exists(
-            iris_tab_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            iris_tab_available is True
-        ), "'Iris' tab is opened after launching Firefox"
+        iris_tab_available = exists(iris_tab_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert iris_tab_available is True, "'Iris' tab is opened after launching Firefox"
 
         bookmarks_sidebar_menu_exists = exists(
             bookmarks_sidebar_menu_header_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_sidebar_menu_exists is True
-        ), "'Bookmarks Sidebar' is correctly displayed."
+        assert bookmarks_sidebar_menu_exists is True, "'Bookmarks Sidebar' is correctly displayed."
 
-        other_bookmarks_exists = exists(
-            other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            other_bookmarks_exists is True
-        ), "'Other bookmarks' folder is available on the sidebar"
+        other_bookmarks_exists = exists(other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert other_bookmarks_exists is True, "'Other bookmarks' folder is available on the sidebar"
 
         click(other_bookmarks_pattern)
 
-        firefox_sidebar_logo_exists = exists(
-            firefox_sidebar_logo_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert firefox_sidebar_logo_exists is True, "Firefox bookmark exists"
 
         right_click(firefox_sidebar_logo_pattern)
 
-        open_option_exists = exists(
-            open_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        open_option_exists = exists(open_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert open_option_exists is True, (
-            "'Open' option displayed after right click on the bookmark "
-            "from the Sidebar"
+            "'Open' option displayed after right click on the bookmark " "from the Sidebar"
         )
 
         click(open_option_pattern)
 
-        firefox_full_logo_exists = exists(
-            LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            firefox_full_logo_exists is True
-        ), "Bookmark is correctly opened in the current tab."
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert firefox_full_logo_exists is True, "Bookmark is correctly opened in the current tab."
 
-        bookmark_opened_in_current_tab = exists(
-            iris_tab_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        bookmark_opened_in_current_tab = exists(iris_tab_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert bookmark_opened_in_current_tab is False, (
-            "The page that was previously displayed in the current "
-            "tab is no longer displayed"
+            "The page that was previously displayed in the current " "tab is no longer displayed"
         )

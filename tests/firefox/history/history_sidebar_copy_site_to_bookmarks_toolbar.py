@@ -16,12 +16,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
-        view_bookmarks_toolbar = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        bookmarks_toolbar_most_visited_pattern = (
-            SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        )
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         if OSHelper.is_mac():
             bookmarks_toolbar_mozilla_pattern = Pattern("bookmarks_toolbar_mozilla.png")
 
@@ -55,21 +51,15 @@ class Test(FirefoxTest):
         expected_5 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10)
         assert expected_5, "Mozilla page is displayed in the History list successfully."
 
-        right_click_and_type(
-            LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action="c"
-        )
+        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action="c")
 
         history_sidebar()
 
-        right_click_and_type(
-            bookmarks_toolbar_most_visited_pattern, keyboard_action="p"
-        )
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action="p")
 
         if OSHelper.is_mac():
             expected_6 = exists(bookmarks_toolbar_mozilla_pattern)
         else:
             expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR)
 
-        assert (
-            expected_6
-        ), "Mozilla page was copied successfully to the Bookmarks toolbar."
+        assert expected_6, "Mozilla page was copied successfully to the Bookmarks toolbar."

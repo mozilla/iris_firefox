@@ -16,9 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
-        firefox_menu_bookmarks_toolbar_pattern = Pattern(
-            "firefox_menu_bookmarks_toolbar.png"
-        )
+        firefox_menu_bookmarks_toolbar_pattern = Pattern("firefox_menu_bookmarks_toolbar.png")
         firefox_menu_most_visited_pattern = Pattern("firefox_menu_most_visited.png")
         firefox_pocket_bookmark_pattern = Pattern("pocket_most_visited.png")
 
@@ -30,16 +28,13 @@ class Test(FirefoxTest):
         click(firefox_menu_bookmarks_pattern)
 
         bookmarks_toolbar_folder_exists = exists(firefox_menu_bookmarks_toolbar_pattern)
-        assert (
-            bookmarks_toolbar_folder_exists is True
-        ), "Firefox menu > Bookmarks > Bookmarks Toolbar folder exists"
+        assert bookmarks_toolbar_folder_exists is True, "Firefox menu > Bookmarks > Bookmarks Toolbar folder exists"
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
         most_visited_folder_exists = exists(firefox_menu_most_visited_pattern)
         assert most_visited_folder_exists is True, (
-            "Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited "
-            "folder exists"
+            "Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited " "folder exists"
         )
 
         click(firefox_menu_most_visited_pattern)
@@ -49,12 +44,8 @@ class Test(FirefoxTest):
 
         click(firefox_pocket_bookmark_pattern, 0)
 
-        firefox_pocket_site_opened = exists(
-            LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        firefox_pocket_site_opened = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_pocket_site_opened is True, "The website is opened"
 
         site_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
-        assert (
-            site_opened_in_current_tab is False
-        ), "The selected website is opened in the current tab."
+        assert site_opened_in_current_tab is False, "The selected website is opened in the current tab."

@@ -17,24 +17,17 @@ class Test(FirefoxTest):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern("iris_bookmark.png")
         iris_bookmark_focus_pattern = Pattern("iris_bookmark_focus.png")
-        library_bookmarks_custom_iris_pattern = Pattern(
-            "library_bookmarks_custom_iris.png"
-        ).similar(0.7)
+        library_bookmarks_custom_iris_pattern = Pattern("library_bookmarks_custom_iris.png").similar(0.7)
         save_bookmark_button_pattern = Pattern("save_bookmark_name.png")
         library_other_bookmarks_pattern = Library.OTHER_BOOKMARKS
         if OSHelper.is_mac():
-            new_bookmark_folder_bookmarks_menu_pattern = Pattern(
-                "new_bookmark_folder_bookmarks_menu.png"
-            )
+            new_bookmark_folder_bookmarks_menu_pattern = Pattern("new_bookmark_folder_bookmarks_menu.png")
 
         # Open History and check if it is populated with the Iris page.
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
         assert expected, "Iris page is displayed in the History menu list."
@@ -44,9 +37,7 @@ class Test(FirefoxTest):
             logger.debug("Show All History option found.")
             click(show_all_history_pattern)
         except FindError:
-            raise FindError(
-                "Show All History option is not present on the page, aborting."
-            )
+            raise FindError("Show All History option is not present on the page, aborting.")
 
         expected = exists(iris_bookmark_focus_pattern, 10)
         assert expected, "Iris page is displayed in the Recent History list."
@@ -92,8 +83,6 @@ class Test(FirefoxTest):
         click(library_other_bookmarks_pattern)
 
         expected = exists(library_bookmarks_custom_iris_pattern, 10)
-        assert (
-            expected
-        ), "The website is bookmarked in the Other Bookmarks folder, with custom name and custom tag."
+        assert expected, "The website is bookmarked in the Other Bookmarks folder, with custom name and custom tag."
 
         click_window_control("close")

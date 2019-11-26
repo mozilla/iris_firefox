@@ -15,22 +15,16 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        )
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png")
         keyword_field_pattern = Pattern("keyword_field.png")
         moz_search_bing_pattern = Pattern("moz_search_bing.png").similar(0.7)
 
         navigate("about:preferences#search")
 
-        expected = exists(
-            about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "The 'about:preferences#search' page successfully loaded."
 
-        search_field_loaded = exists(
-            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        search_field_loaded = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_field_loaded, "Search field is loaded"
         paste("keyword")
 
@@ -44,6 +38,4 @@ class Test(FirefoxTest):
         type("bn moz", interval=0.25)
 
         expected = exists(moz_search_bing_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            expected
-        ), "Results from URL bar state that the search will be performed with 'Bing'."
+        assert expected, "Results from URL bar state that the search will be performed with 'Bing'."

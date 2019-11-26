@@ -15,9 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         search_settings_pattern = Pattern("search_settings.png")
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        )
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png")
         show_search_suggestions_in_address_bar_results_checked_pattern = Pattern(
             "show_search_suggestions_in_address_bar_results_checked.png"
         ).similar(0.6)
@@ -26,19 +24,13 @@ class Test(FirefoxTest):
         ).similar(0.6)
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
 
-        region = Screen().new_region(
-            0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3
-        )
+        region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
         select_location_bar()
         paste("abc")
 
-        one_off_bar_displayed = exists(
-            this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            one_off_bar_displayed
-        ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         expected = region.exists(search_settings_pattern, 10)
         assert expected, "The 'Search settings' button is displayed in the awesomebar."
@@ -48,9 +40,7 @@ class Test(FirefoxTest):
         expected = exists(about_preferences_search_page_pattern, 10)
         assert expected, "The 'about:preferences#search' page successfully loaded."
 
-        expected = exists(
-            show_search_suggestions_in_address_bar_results_checked_pattern, 10
-        )
+        expected = exists(show_search_suggestions_in_address_bar_results_checked_pattern, 10)
         assert expected, (
             "Checkbox displayed in front of the 'Show search suggestions in address bar "
             + "results' text is checked by default."
@@ -62,12 +52,8 @@ class Test(FirefoxTest):
         type(Key.DELETE)
         paste("abc")
 
-        one_off_bar_displayed = exists(
-            this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            one_off_bar_displayed
-        ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         type(Key.DOWN)
         type(Key.DOWN)
@@ -76,18 +62,14 @@ class Test(FirefoxTest):
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        assert (
-            "abc" in get_clipboard() and get_clipboard() != "abc"
-        ), "Search suggestion are listed in the Awesomebar"
+        assert "abc" in get_clipboard() and get_clipboard() != "abc", "Search suggestion are listed in the Awesomebar"
 
         next_tab()
 
         expected = exists(about_preferences_search_page_pattern, 10)
         assert expected, "The 'about:preferences#search' page successfully loaded."
 
-        expected = exists(
-            show_search_suggestions_in_address_bar_results_checked_pattern, 10
-        )
+        expected = exists(show_search_suggestions_in_address_bar_results_checked_pattern, 10)
         assert expected, (
             "Checkbox displayed in front of the 'Show search suggestions in address bar "
             + "results' text is checked by default."
@@ -95,12 +77,9 @@ class Test(FirefoxTest):
 
         click(show_search_suggestions_in_address_bar_results_checked_pattern)
 
-        expected = exists(
-            show_search_suggestions_in_address_bar_results_unchecked_pattern, 10
-        )
+        expected = exists(show_search_suggestions_in_address_bar_results_unchecked_pattern, 10)
         assert expected, (
-            "Checkbox displayed in front of the 'Show search suggestions in address bar "
-            "results' text is unchecked."
+            "Checkbox displayed in front of the 'Show search suggestions in address bar " "results' text is unchecked."
         )
 
         previous_tab()
@@ -108,12 +87,8 @@ class Test(FirefoxTest):
         type(Key.DELETE)
         paste("abc")
 
-        one_off_bar_displayed = exists(
-            this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            one_off_bar_displayed
-        ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         type(Key.DOWN)
         type(Key.DOWN)
@@ -122,6 +97,4 @@ class Test(FirefoxTest):
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        assert (
-            "abc" == get_clipboard()
-        ), "Search suggestion are not listed in the Awesomebar"
+        assert "abc" == get_clipboard(), "Search suggestion are not listed in the Awesomebar"

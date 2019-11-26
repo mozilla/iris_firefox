@@ -28,42 +28,28 @@ class Test(FirefoxTest):
 
         open_library()
 
-        library_is_displayed = exists(
-            bookmark_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        library_is_displayed = exists(bookmark_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert library_is_displayed is True, "Library is correctly open"
 
         click(bookmark_menu_pattern)
 
-        mozilla_bookmark_exists = exists(
-            mozilla_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_bookmark_exists = exists(mozilla_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_bookmark_exists is True, "Mozilla bookmark exists"
 
         double_click(mozilla_bookmark_pattern)
 
-        bookmark_site_exists = exists(
-            bookmark_site_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmark_site_exists = exists(bookmark_site_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmark_site_exists is True, "Website bookmark exists"
 
         right_click(bookmark_site_pattern)
 
-        open_new_private_window_exists = exists(
-            open_new_private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            open_new_private_window_exists is True
-        ), "Open new private window button exists"
+        open_new_private_window_exists = exists(open_new_private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert open_new_private_window_exists is True, "Open new private window button exists"
 
         click(open_new_private_window_pattern)
 
-        private_window_exists = exists(
-            private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            private_window_exists is True
-        ), "The selected bookmark page is opened in a new private window."
+        private_window_exists = exists(private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert private_window_exists is True, "The selected bookmark page is opened in a new private window."
 
         close_window()
         close_window_control("auxiliary")

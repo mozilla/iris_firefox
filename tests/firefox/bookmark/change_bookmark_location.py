@@ -15,16 +15,12 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         drag_area_pattern = Pattern("drag_area.png")
         save_pattern = Pattern("save_bookmark_name.png")
         changed_toolbar_bookmark_pattern = Pattern("moz_changed_toolbar_bookmark.png")
         moz_bookmark_pattern = Pattern("moz_sidebar_bookmark.png")
-        sidebar_bookmark_location_changed_pattern = Pattern(
-            "moz_sidebar_bookmark_location_changed.png"
-        ).similar(0.6)
+        sidebar_bookmark_location_changed_pattern = Pattern("moz_sidebar_bookmark_location_changed.png").similar(0.6)
         moz_page = Pattern("moz_article_page.png")
         bookmark_changed_location_pattern = Pattern("moz_changed_location_bookmark.png")
         properties_option = Pattern("properties_option.png")
@@ -35,21 +31,15 @@ class Test(FirefoxTest):
 
         paste("mozilla")
 
-        sidebar_bookmark_assert = exists(
-            moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            sidebar_bookmark_assert is True
-        ), "Moz bookmark is present in the sidebar."
+        sidebar_bookmark_assert = exists(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert sidebar_bookmark_assert is True, "Moz bookmark is present in the sidebar."
 
         right_click(moz_bookmark_pattern)
 
         click(properties_option)
 
         properties_window_assert = exists(save_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            properties_window_assert is True
-        ), "Properties window is present on the page."
+        assert properties_window_assert is True, "Properties window is present on the page."
 
         type(Key.TAB)
 
@@ -67,9 +57,7 @@ class Test(FirefoxTest):
         close_content_blocking_pop_up()
 
         bookmark_location_assert = exists(moz_page, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            bookmark_location_assert is True
-        ), "The URL of the bookmark is successfully modified."
+        assert bookmark_location_assert is True, "The URL of the bookmark is successfully modified."
 
         navigate("about:blank")
 
@@ -84,9 +72,7 @@ class Test(FirefoxTest):
             logger.debug("Bookmark is present in Bookmark Toolbar section.")
             right_click(changed_toolbar_bookmark_pattern)
         except FindError:
-            raise FindError(
-                "Can't find the bookmark in Bookmark Toolbar section, aborting."
-            )
+            raise FindError("Can't find the bookmark in Bookmark Toolbar section, aborting.")
 
         click(properties_option)
 
@@ -104,13 +90,7 @@ class Test(FirefoxTest):
             logger.debug("Bookmark is present in Bookmark Toolbar section.")
             click(changed_toolbar_bookmark_pattern)
         except FindError:
-            raise FindError(
-                "Can't find the bookmark in Bookmark Toolbar section, aborting."
-            )
+            raise FindError("Can't find the bookmark in Bookmark Toolbar section, aborting.")
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            mozilla_page_assert
-        ), "The URL has been successfully modified, Moz page loaded successfully."
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_page_assert, "The URL has been successfully modified, Moz page loaded successfully."

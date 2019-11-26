@@ -21,9 +21,7 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."
 
         try:
@@ -33,12 +31,8 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError("Bookmark star is not present on the page, aborting.")
 
-        page_bookmarked_assert = exists(
-            Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            page_bookmarked_assert is True
-        ), "The page was successfully bookmarked via star button."
+        page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert page_bookmarked_assert is True, "The page was successfully bookmarked via star button."
 
         try:
             wait(tags_field, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -60,9 +54,5 @@ class Test(FirefoxTest):
 
         paste("Iris")
 
-        tagged_bookmark_assert = exists(
-            moz_tagged_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            tagged_bookmark_assert is True
-        ), "Moz bookmark has been successfully tagged."
+        tagged_bookmark_assert = exists(moz_tagged_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert tagged_bookmark_assert is True, "Moz bookmark has been successfully tagged."

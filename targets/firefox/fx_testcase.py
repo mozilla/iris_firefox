@@ -42,11 +42,7 @@ class FirefoxTest(BaseTest):
         """Create test result object."""
         self.add_result(result)
         if "ERROR" == result.outcome:
-            logger.error(
-                ">>> ERROR <<< Error encountered in test %s" % "\n" + result.error
-                if result.error
-                else ""
-            )
+            logger.error(">>> ERROR <<< Error encountered in test %s" % "\n" + result.error if result.error else "")
         elif "FAILED" == result.outcome:
             logger.warning(
                 ">>> FAILED <<< Step %s: %s - [Actual]: %s [Expected]: %s %s"
@@ -59,9 +55,7 @@ class FirefoxTest(BaseTest):
                 )
             )
         elif "PASSED" == result.outcome:
-            logger.info(
-                ">>> PASSED <<< Step %s: %s" % (len(self.test_results), result.message)
-            )
+            logger.info(">>> PASSED <<< Step %s: %s" % (len(self.test_results), result.message))
 
         self.outcome = result.outcome
 

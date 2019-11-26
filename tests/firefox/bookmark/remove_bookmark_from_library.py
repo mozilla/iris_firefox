@@ -23,9 +23,7 @@ class Test(FirefoxTest):
 
         open_library()
 
-        bookmarks_menu_library_assert = exists(
-            library_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmarks_menu_library_assert = exists(library_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmarks_menu_library_assert, "Bookmarks menu has been found."
 
         click(library_bookmarks_pattern)
@@ -43,15 +41,9 @@ class Test(FirefoxTest):
         click(delete_pattern)
 
         try:
-            deleted_bookmark_assert = wait_vanish(
-                moz_library_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-            )
-            assert (
-                deleted_bookmark_assert is True
-            ), "Moz bookmark has been removed from the Library."
+            deleted_bookmark_assert = wait_vanish(moz_library_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert deleted_bookmark_assert is True, "Moz bookmark has been removed from the Library."
         except FindError:
-            raise FindError(
-                "MOz bookmark can NOT be removed from the Library, aborting."
-            )
+            raise FindError("MOz bookmark can NOT be removed from the Library, aborting.")
 
         click_window_control("close")

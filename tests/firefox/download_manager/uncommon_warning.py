@@ -30,10 +30,7 @@ class Test(FirefoxTest):
         assert expected is True, "Uncommon file has been found."
 
         width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
-        download_file(
-            DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
 
         expected = exists(DownloadManager.DownloadsPanel.UNCOMMON_DOWNLOAD_ICON, 10)
         assert expected is True, "Uncommon download icon is displayed."
@@ -46,34 +43,22 @@ class Test(FirefoxTest):
         expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.HEADER, 10)
         assert expected is True, "Download details header is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.UNCOMMON_DOWNLOAD_TITLE, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNCOMMON_DOWNLOAD_TITLE, 10)
         assert expected is True, "Download details title is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.UNCOMMON_DETAILS_1, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNCOMMON_DETAILS_1, 10)
         assert expected is True, "Download details 1 are displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10)
         assert expected is True, "Download details 2 are displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_BADGE, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_BADGE, 10)
         assert expected is True, "Download details uncommon icon is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10)
         assert expected is True, "Open file button is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, "Remove file button is displayed."
 
         # Open the uncommon file.
@@ -93,9 +78,7 @@ class Test(FirefoxTest):
             click(DownloadManager.DownloadsPanel.DownloadDetails.DOWNLOADS_BACK_ARROW)
             hover(DownloadManager.SHOW_ALL_DOWNLOADS)
             expected = exists(DownloadManager.DownloadsPanel.UNCOMMON_DOWNLOAD, 10)
-            assert (
-                expected is True
-            ), "'The file is not commonly downloaded.' message is displayed."
+            assert expected is True, "'The file is not commonly downloaded.' message is displayed."
             right_click(DownloadManager.DownloadsPanel.UNCOMMON_DOWNLOAD)
 
         # Clear the download panel.
@@ -123,10 +106,7 @@ class Test(FirefoxTest):
         close_tab()
 
         # Repeat steps 1-4 and click on Remove file.
-        download_file(
-            DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
 
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
         assert expected is True, "Uncommon downloads button is displayed."
@@ -136,9 +116,7 @@ class Test(FirefoxTest):
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_ARROW)
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, "Remove file button is displayed."
 
         click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON)

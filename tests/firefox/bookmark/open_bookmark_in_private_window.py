@@ -15,9 +15,7 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        open_in_private_window_option_pattern = Pattern(
-            "open_in_private_window_option.png"
-        )
+        open_in_private_window_option_pattern = Pattern("open_in_private_window_option.png")
         pocket_bookmark_icon_pattern = Pattern("pocket_bookmark_icon.png")
         most_visited_toolbar_bookmark_pattern = Pattern("drag_area.png")
 
@@ -26,15 +24,11 @@ class Test(FirefoxTest):
         bookmark_available_in_toolbar = exists(
             most_visited_toolbar_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmark_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmark_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         click(most_visited_toolbar_bookmark_pattern)
 
-        pocket_bookmark_available = exists(
-            pocket_bookmark_icon_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        pocket_bookmark_available = exists(pocket_bookmark_icon_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert pocket_bookmark_available is True, (
             "'Pocket' bookmark is available in 'Most visited'" " folder in toolbar"
         )
@@ -45,8 +39,7 @@ class Test(FirefoxTest):
             open_in_private_window_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
         assert open_in_private_window_option_available is True, (
-            "'Open in Private window' option is available in "
-            "context menu after right-click at the bookmark"
+            "'Open in Private window' option is available in " "context menu after right-click at the bookmark"
         )
 
         click(open_in_private_window_option_pattern)
@@ -54,13 +47,9 @@ class Test(FirefoxTest):
         bookmark_opened_in_private_window = exists(
             PrivateWindow.private_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmark_opened_in_private_window is True
-        ), "The window in which the bookmark is opened is Private"
+        assert bookmark_opened_in_private_window is True, "The window in which the bookmark is opened is Private"
 
         page_loaded = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert (
-            page_loaded is True
-        ), "The selected website is correctly opened in a new private window."
+        assert page_loaded is True, "The selected website is correctly opened in a new private window."
 
         close_window()

@@ -21,19 +21,13 @@ class Test(FirefoxTest):
 
         click(AboutAddons.THEMES)
 
-        expected = exists(
-            AboutAddons.Themes.DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(AboutAddons.Themes.DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Dark theme option found in the page."
 
-        expected = exists(
-            AboutAddons.Themes.LIGHT_THEME, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(AboutAddons.Themes.LIGHT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Light theme option found in the page."
 
-        expected = exists(
-            AboutAddons.Themes.DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(AboutAddons.Themes.DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Default theme option found in the page."
 
         # Using the DEFAULT theme check that options from menu bar work correctly.
@@ -45,10 +39,7 @@ class Test(FirefoxTest):
 
         previous_tab()
 
-        expected = exists(
-            AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-        )
+        expected = exists(AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Tab information is correctly displayed for DEFAULT theme."
 
         open_library()
@@ -74,9 +65,7 @@ class Test(FirefoxTest):
         assert action_can_be_performed, "Theme can be enabled."
         click(AboutAddons.Themes.ACTION_BUTTON)
 
-        expected = exists(
-            AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "ENABLE button found in the page."
 
         click(AboutAddons.Themes.ENABLE_BUTTON)
@@ -85,17 +74,12 @@ class Test(FirefoxTest):
         assert action_can_be_performed, "Theme can be disabled."
         click(AboutAddons.Themes.ACTION_BUTTON)
 
-        expected = exists(
-            AboutAddons.Themes.DISABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(AboutAddons.Themes.DISABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "DISABLE button found in the page."
 
         previous_tab()
 
-        expected = exists(
-            AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-        )
+        expected = exists(AboutAddons.Themes.IRIS_TAB_LIGHT_OR_DEFAULT_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "LIGHT theme successfully applied."
 
         open_library()
@@ -121,9 +105,7 @@ class Test(FirefoxTest):
         assert action_can_be_performed, "Theme can be enabled."
         click(AboutAddons.Themes.ACTION_BUTTON)
 
-        expected = exists(
-            AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(AboutAddons.Themes.ENABLE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "ENABLE button found in the page."
 
         click(AboutAddons.Themes.ENABLE_BUTTON)

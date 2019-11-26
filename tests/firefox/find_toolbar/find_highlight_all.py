@@ -23,9 +23,7 @@ class Test(FirefoxTest):
 
         # Open Firefox and navigate to a popular website
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        soap_label_exists = exists(
-            soap_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT * 9
-        )
+        soap_label_exists = exists(soap_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT * 9)
         assert soap_label_exists, "The page is successfully loaded."
 
         # Open the Find Toolbar
@@ -33,54 +31,34 @@ class Test(FirefoxTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         # Enter a search term and press ENTER
         type("see", interval=1)
         type(Key.ENTER)
 
-        selected_label_exists = exists(
-            see_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            selected_label_exists
-        ), "The first one has a green background highlighted."
+        selected_label_exists = exists(see_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert selected_label_exists, "The first one has a green background highlighted."
 
-        unhighlighted_label_exists = exists(
-            see_label_unhighlited_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        unhighlighted_label_exists = exists(see_label_unhighlited_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert unhighlighted_label_exists, "The others are not highlighted."
 
         # Click on "Highlight All"
         click(FindToolbar.HIGHLIGHT)
 
-        first_label_is_green = exists(
-            see_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        first_label_is_green = exists(see_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert first_label_is_green, "The first one has a green background highlighted"
 
-        other_label_pink = exists(
-            see_label_pink_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        other_label_pink = exists(see_label_pink_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert other_label_pink, "The other one has a pink background highlighted"
 
         # Navigate through the results
         find_next()
         find_next()
 
-        next_matching_green_exists = exists(
-            see_label_capital_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            next_matching_green_exists
-        ), "The next matching words/characters have a green background highlighted"
+        next_matching_green_exists = exists(see_label_capital_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert next_matching_green_exists, "The next matching words/characters have a green background highlighted"
 
-        next_matching_pink_exists = exists(
-            see_also_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            next_matching_pink_exists
-        ), "The other ones have a pink background highlighted"
+        next_matching_pink_exists = exists(see_also_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert next_matching_pink_exists, "The other ones have a pink background highlighted"

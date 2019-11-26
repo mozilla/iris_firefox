@@ -29,9 +29,7 @@ class Test(FirefoxTest):
             0, home_button_location.y, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT / 5
         )
 
-        mozilla_bookmark_icon = exists(
-            mozilla_bookmark_icon_pattern, region=proper_mozilla_bookmark_icon_region
-        )
+        mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern, region=proper_mozilla_bookmark_icon_region)
         assert mozilla_bookmark_icon is True, "Mozilla bookmark icon displayed"
 
         right_click(mozilla_bookmark_icon_pattern)

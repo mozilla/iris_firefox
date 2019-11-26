@@ -24,19 +24,13 @@ class Test(FirefoxTest):
         else:
             click_window_control("maximize")
             if OSHelper.is_windows():
-                assert exists(
-                    Pattern("library_restore_button.png"), 10
-                ), "The library was maximized successfully."
+                assert exists(Pattern("library_restore_button.png"), 10), "The library was maximized successfully."
             else:
-                assert exists(
-                    Pattern("restore_button.png"), 10
-                ), "The library was maximized successfully."
+                assert exists(Pattern("restore_button.png"), 10), "The library was maximized successfully."
             click_window_control("minimize")
 
         try:
-            assert wait_vanish(
-                library_title_pattern, 10
-            ), "Window successfully minimized."
+            assert wait_vanish(library_title_pattern, 10), "Window successfully minimized."
         except FindError:
             raise FindError("Window not minimized, aborting test.")
 
@@ -44,14 +38,10 @@ class Test(FirefoxTest):
             open_library()
         else:
             restore_window_from_taskbar("library_menu")
-        assert exists(
-            library_title_pattern, 10
-        ), "The library was restored successfully."
+        assert exists(library_title_pattern, 10), "The library was restored successfully."
 
         click_window_control("close")
         try:
-            assert wait_vanish(
-                library_title_pattern, 10
-            ), "The library was closed successfully."
+            assert wait_vanish(library_title_pattern, 10), "The library was closed successfully."
         except FindError:
             raise FindError("The library didn't close successfully.")

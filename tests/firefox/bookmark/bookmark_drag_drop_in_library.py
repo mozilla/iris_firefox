@@ -25,17 +25,11 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened is True, "Soap wiki page opened"
 
-        point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(
-            Screen.SCREEN_WIDTH / 5
-        )
-        location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(
-            Screen.SCREEN_WIDTH
-        )
+        point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(Screen.SCREEN_WIDTH / 5)
+        location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(Screen.SCREEN_WIDTH)
 
         drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
 
@@ -47,12 +41,8 @@ class Test(FirefoxTest):
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
         assert other_bookmarks_folder_exists is True, "Other bookmarks folder exists"
 
-        other_bookmarks_width, other_bookmarks_height = (
-            Library.OTHER_BOOKMARKS.get_size()
-        )
-        other_bookmarks_location = find(Library.OTHER_BOOKMARKS).right(
-            other_bookmarks_width * 3
-        )
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
+        other_bookmarks_location = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 3)
 
         drag_drop(soap_wiki_tab_pattern, other_bookmarks_location)
 

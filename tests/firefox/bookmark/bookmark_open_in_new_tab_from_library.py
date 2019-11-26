@@ -23,16 +23,12 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened is True, "The test page is opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "StarDialog opened"
 
         click(Bookmarks.StarDialog.DONE)
@@ -55,22 +51,16 @@ class Test(FirefoxTest):
 
         right_click(soap_wiki_tab_pattern)
 
-        open_in_new_tab_option_exists = exists(
-            open_in_new_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
+        open_in_new_tab_option_exists = exists(open_in_new_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2)
         assert open_in_new_tab_option_exists is True, "Open in New Tab option exists"
 
         click(open_in_new_tab_pattern)
 
-        soap_wiki_opened_from_bookmarks = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened_from_bookmarks is True, "The test page is downloaded"
 
         new_tab_exists = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
-        assert (
-            new_tab_exists is True
-        ), "The selected bookmark page is opened in a new tab."
+        assert new_tab_exists is True, "The selected bookmark page is opened in a new tab."
 
         open_library()
         time.sleep(Settings.DEFAULT_UI_DELAY)

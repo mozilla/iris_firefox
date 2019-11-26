@@ -29,9 +29,7 @@ class Test(FirefoxTest):
         assert exists(
             youtube_autoplay_switch_pattern, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT
         ), "Youtube is properly loaded."
-        assert exists(
-            sound_on_pattern, 10
-        ), "The video is properly loaded and displayed."
+        assert exists(sound_on_pattern, 10), "The video is properly loaded and displayed."
 
         navigate("https://soundcloud.com/martycanfly-1/never-gonna-give-you-up-rick")
         assert exists(
@@ -53,9 +51,5 @@ class Test(FirefoxTest):
         hover(google_images_page_mark_pattern)
 
         assert scroll_until_pattern_found(
-            show_more_results_button_pattern,
-            scroll_down,
-            (mouse_wheel_steps,),
-            100,
-            timeout=Settings.DEFAULT_UI_DELAY,
+            show_more_results_button_pattern, scroll_down, (mouse_wheel_steps,), 100, timeout=Settings.DEFAULT_UI_DELAY
         ), "The images are properly displayed."

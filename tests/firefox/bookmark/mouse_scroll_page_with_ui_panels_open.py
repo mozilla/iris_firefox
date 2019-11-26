@@ -27,24 +27,16 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_wiki_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_wiki_label_exists is True, "Soap page is opened"
 
-        library_icon_exists = exists(
-            NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        library_icon_exists = exists(NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert library_icon_exists is True, "The Library menu icon exists"
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(
-            LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Library menu is correctly displayed"
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert bookmarks_menu_option_exists is True, "The Library menu is correctly displayed"
 
         hover(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
@@ -58,8 +50,7 @@ class Test(FirefoxTest):
 
         try:
             soap_wiki_label_not_exists = wait_vanish(
-                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9),
-                FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9), FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
             assert soap_wiki_label_not_exists is True, (
                 "Scroll using mouse wheel is successful with " "library pop upped panel"
@@ -74,16 +65,13 @@ class Test(FirefoxTest):
         else:
             type(text=Key.UP, modifier=KeyModifier.CMD)
 
-        hamburger_menu_icon_exists = exists(
-            NavBar.HAMBURGER_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        hamburger_menu_icon_exists = exists(NavBar.HAMBURGER_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert hamburger_menu_icon_exists is True, "Hamburger menu icon exists"
 
         click(NavBar.HAMBURGER_MENU)
 
         hamburger_menu_panel_exists = exists(
-            HamburgerMenu.HAMBURGER_MENU_ZOOM_INDICATOR,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            HamburgerMenu.HAMBURGER_MENU_ZOOM_INDICATOR, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
         assert hamburger_menu_panel_exists is True, "Hamburger menu panel is displayed"
 
@@ -99,12 +87,10 @@ class Test(FirefoxTest):
 
         try:
             soap_wiki_label_not_exists = wait_vanish(
-                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9),
-                FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9), FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
             assert soap_wiki_label_not_exists is True, (
-                "Scroll using mouse wheel is successful with "
-                "hamburger menu pop upped panel"
+                "Scroll using mouse wheel is successful with " "hamburger menu pop upped panel"
             )
         except FindError:
             raise FindError("Content is still on the page")
@@ -116,19 +102,13 @@ class Test(FirefoxTest):
         else:
             type(text=Key.UP, modifier=KeyModifier.CMD)
 
-        site_information_icon_exists = exists(
-            site_information_panel_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        site_information_icon_exists = exists(site_information_panel_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert site_information_icon_exists is True, "Site information icon exists"
 
         click(site_information_panel_pattern)
 
-        site_information_panel_exists = exists(
-            site_information_panel_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            site_information_panel_exists is True
-        ), "Site information panel is displayed"
+        site_information_panel_exists = exists(site_information_panel_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert site_information_panel_exists is True, "Site information panel is displayed"
 
         hover(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.7))
 
@@ -142,12 +122,10 @@ class Test(FirefoxTest):
 
         try:
             soap_wiki_label_not_exists = wait_vanish(
-                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9),
-                FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9), FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
             assert soap_wiki_label_not_exists is True, (
-                "Scroll using mouse wheel is successful with "
-                "hamburger menu pop upped panel"
+                "Scroll using mouse wheel is successful with " "hamburger menu pop upped panel"
             )
         except FindError:
             raise FindError("Content is still on the page")
@@ -159,16 +137,12 @@ class Test(FirefoxTest):
         else:
             type(text=Key.UP, modifier=KeyModifier.CMD)
 
-        star_button_exists = exists(
-            LocationBar.STAR_BUTTON_UNSTARRED, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        star_button_exists = exists(LocationBar.STAR_BUTTON_UNSTARRED, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert star_button_exists is True, "Star button icon exists"
 
         click(LocationBar.STAR_BUTTON_UNSTARRED)
 
-        star_panel_exists = exists(
-            Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        star_panel_exists = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert star_panel_exists is True, "Star panel is displayed"
 
         hover(LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.7))
@@ -183,12 +157,10 @@ class Test(FirefoxTest):
 
         try:
             soap_wiki_label_not_exists = wait_vanish(
-                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9),
-                FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                LocalWeb.SOAP_WIKI_SOAP_LABEL.similar(0.9), FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
             assert soap_wiki_label_not_exists is True, (
-                "Scroll using mouse wheel is successful with star "
-                "panel pop upped panel"
+                "Scroll using mouse wheel is successful with star " "panel pop upped panel"
             )
         except FindError:
             raise FindError("Content is still on the page")

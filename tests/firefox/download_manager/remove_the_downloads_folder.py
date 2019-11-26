@@ -67,28 +67,20 @@ class Test(FirefoxTest):
         downloads_button = find(NavBar.DOWNLOADS_BUTTON)
 
         file_20_mb = find(DownloadFiles.DOWNLOAD_FILE_NAME_20MB)
-        region_20_mb = Region(
-            file_20_mb.x - 10, file_20_mb.y, downloads_button.x - file_20_mb.x, 100
-        )
+        region_20_mb = Region(file_20_mb.x - 10, file_20_mb.y, downloads_button.x - file_20_mb.x, 100)
         expected = region_20_mb.exists(DownloadManager.DownloadState.MISSING_FILE, 10)
         assert expected is True, "20 MB file removed."
 
         file_10_mb = find(DownloadFiles.DOWNLOAD_FILE_NAME_10MB)
         region_10_mb = Region(
-            file_10_mb.x - 10,
-            file_10_mb.y,
-            downloads_button.x - file_10_mb.x,
-            file_20_mb.y - file_10_mb.y,
+            file_10_mb.x - 10, file_10_mb.y, downloads_button.x - file_10_mb.x, file_20_mb.y - file_10_mb.y
         )
         expected = region_10_mb.exists(DownloadManager.DownloadState.MISSING_FILE, 10)
         assert expected is True, "10 MB file was removed."
 
         file_5_mb = find(DownloadFiles.DOWNLOAD_FILE_NAME_5MB)
         region_5_mb = Region(
-            file_5_mb.x - 10,
-            file_5_mb.y,
-            downloads_button.x - file_5_mb.x,
-            file_10_mb.y - file_5_mb.y,
+            file_5_mb.x - 10, file_5_mb.y, downloads_button.x - file_5_mb.x, file_10_mb.y - file_5_mb.y
         )
         expected = region_5_mb.exists(DownloadManager.DownloadState.MISSING_FILE, 10)
         assert expected is True, "5 MB file removed."

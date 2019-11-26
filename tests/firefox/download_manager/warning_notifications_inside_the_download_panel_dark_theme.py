@@ -48,9 +48,7 @@ class Test(FirefoxTest):
             logger.debug("The 'Save file' option is present in the page.")
             click(DownloadFiles.SAVE_FILE)
         except FindError:
-            raise FindError(
-                "The 'Save file' option is not present in the page, aborting."
-            )
+            raise FindError("The 'Save file' option is not present in the page, aborting.")
 
         if OSHelper.get_os() != OSPlatform.WINDOWS:
             try:
@@ -63,21 +61,12 @@ class Test(FirefoxTest):
         region_upper_right = Screen.UPPER_RIGHT_CORNER.top_half()
 
         expected = region_upper_right.exists(
-            DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD_DARK_THEME.similar(
-                0.99
-            ),
-            10,
+            DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD_DARK_THEME.similar(0.99), 10
         )
-        assert (
-            expected is True
-        ), "The warning message is clearly displayed in red color."
+        assert expected is True, "The warning message is clearly displayed in red color."
 
-        expected = region_upper_right.exists(
-            DownloadManager.SHOW_ALL_DOWNLOADS_DARK_THEME.similar(0.99), 10
-        )
-        assert (
-            expected is True
-        ), "'Show All Downloads ' is clearly displayed in white color."
+        expected = region_upper_right.exists(DownloadManager.SHOW_ALL_DOWNLOADS_DARK_THEME.similar(0.99), 10)
+        assert expected is True, "'Show All Downloads ' is clearly displayed in white color."
 
     def teardown(self):
         downloads_cleanup()

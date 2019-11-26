@@ -25,16 +25,12 @@ class Test(FirefoxTest):
         paste_option_pattern = Pattern("paste_option.png")
 
         library_button_exists = exists(library_button_pattern)
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(library_button_pattern)
 
         bookmarks_menu_option_exists = exists(bookmarks_menu_option_pattern)
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(bookmarks_menu_option_pattern)
 
@@ -78,6 +74,4 @@ class Test(FirefoxTest):
         click(sidebar_bookmarks_toolbar_pattern)
 
         wiki_sidebar_bookmark_exists = exists(wiki_sidebar_bookmark_pattern)
-        assert (
-            wiki_sidebar_bookmark_exists is True
-        ), "The bookmark is correctly pasted in the selected section"
+        assert wiki_sidebar_bookmark_exists is True, "The bookmark is correctly pasted in the selected section"

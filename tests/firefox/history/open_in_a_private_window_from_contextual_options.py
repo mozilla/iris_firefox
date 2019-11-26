@@ -23,37 +23,25 @@ class Test(FirefoxTest):
 
         click(NavBar.LIBRARY_MENU)
 
-        history_button_exists = exists(
-            LibraryMenu.HISTORY_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        history_button_exists = exists(LibraryMenu.HISTORY_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert history_button_exists is True, "History button exists"
 
         click(LibraryMenu.HISTORY_BUTTON)
 
-        show_all_history_exists = exists(
-            show_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        show_all_history_exists = exists(show_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert show_all_history_exists is True, '"Show All History" option exists.'
 
         click(show_all_history_pattern)
 
         # Open the last searched item in a new private window.
-        last_searched_item_exists = exists(
-            last_searched_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        last_searched_item_exists = exists(last_searched_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert last_searched_item_exists is True, "Last searched item was found."
 
-        right_click_and_type(
-            last_searched_item_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT, "p"
-        )
+        right_click_and_type(last_searched_item_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT, "p")
 
         # Assert the newly opened window.
-        private_window_exists = exists(
-            PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            private_window_exists is True
-        ), "The private window was successfully opened."
+        private_window_exists = exists(PrivateWindow.private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert private_window_exists is True, "The private window was successfully opened."
 
         iris_logo_exists = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert iris_logo_exists is True, "The page was successfully opened."

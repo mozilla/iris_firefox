@@ -82,9 +82,7 @@ class Test(FirefoxTest):
         click(other_bookmarks_top_menu_pattern)
 
         folder_saved = exists(folder_bookmarks_top_menu_pattern)
-        assert (
-            folder_saved is True
-        ), "The new folder is available in the Other Bookmarks section."
+        assert folder_saved is True, "The new folder is available in the Other Bookmarks section."
 
         click(NavBar.HAMBURGER_MENU)
 

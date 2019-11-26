@@ -14,12 +14,7 @@ from targets.firefox.errors import BugManagerError
 
 logger = logging.getLogger(__name__)
 
-bugzilla_os = {
-    "win": "Windows 10",
-    "win7": "Windows 7",
-    "linux": "Linux",
-    "osx": "macOS",
-}
+bugzilla_os = {"win": "Windows 10", "win7": "Windows 7", "linux": "Linux", "osx": "macOS"}
 
 
 def get_github_issue(bug_id):
@@ -71,9 +66,7 @@ def is_blocked(bug_id):
             if bug.status in ["CLOSED", "RESOLVED"]:
                 return False
             else:
-                if bugzilla_os[
-                    OSHelper.get_os().value
-                ] == bug.op_sys or bug.platform in ["All", "Unspecified"]:
+                if bugzilla_os[OSHelper.get_os().value] == bug.op_sys or bug.platform in ["All", "Unspecified"]:
                     return True
                 return False
     except BugManagerError as e:

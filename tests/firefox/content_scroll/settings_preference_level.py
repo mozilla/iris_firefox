@@ -14,12 +14,8 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        checked_use_smooth_scrolling_pattern = Pattern(
-            "checked_use_smooth_scrolling.png"
-        )
-        unchecked_use_smooth_scrolling_pattern = Pattern(
-            "unchecked_use_smooth_scrolling.png"
-        )
+        checked_use_smooth_scrolling_pattern = Pattern("checked_use_smooth_scrolling.png")
+        unchecked_use_smooth_scrolling_pattern = Pattern("unchecked_use_smooth_scrolling.png")
         history_paragraph_pattern = Pattern("history_paragraph.png")
         soap_wiki_header_pattern = Pattern("soap_wiki_header.png")
 
@@ -32,8 +28,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#general")
 
         preferences_page_downloaded = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert preferences_page_downloaded is True, "The Preferences page is downloaded"
 
@@ -42,27 +37,19 @@ class Test(FirefoxTest):
         checked_use_smooth_scrolling_exists = exists(
             checked_use_smooth_scrolling_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            checked_use_smooth_scrolling_exists is True
-        ), "Use smooth scrolling option is displayed on the page"
+        assert checked_use_smooth_scrolling_exists is True, "Use smooth scrolling option is displayed on the page"
 
         click(checked_use_smooth_scrolling_pattern)
 
         unchecked_use_smooth_scrolling_exists = exists(
             unchecked_use_smooth_scrolling_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            unchecked_use_smooth_scrolling_exists is True
-        ), "Use smooth scrolling option is disabled"
+        assert unchecked_use_smooth_scrolling_exists is True, "Use smooth scrolling option is disabled"
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_test_site_opened = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            soap_wiki_test_site_opened is True
-        ), "The Soap Wiki test site is properly loaded"
+        soap_wiki_test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert soap_wiki_test_site_opened is True, "The Soap Wiki test site is properly loaded"
 
         click(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
@@ -74,9 +61,7 @@ class Test(FirefoxTest):
             20,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
         )
-        assert (
-            scroll_by_mouse_wheel_to_footer is True
-        ), "Successfully scrolled to footer by mouse scroll"
+        assert scroll_by_mouse_wheel_to_footer is True, "Successfully scrolled to footer by mouse scroll"
 
         scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(
             soap_wiki_header_pattern,
@@ -85,31 +70,20 @@ class Test(FirefoxTest):
             20,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
         )
-        assert (
-            scroll_by_mouse_wheel_to_header is True
-        ), "Successfully scrolled to header by mouse scroll"
+        assert scroll_by_mouse_wheel_to_header is True, "Successfully scrolled to header by mouse scroll"
 
         # Scroll by pressing arrows
-        scroll_by_arrows_to_footer = scroll_until_pattern_found(
-            history_paragraph_pattern, repeat_key_down, (20,)
-        )
-        assert (
-            scroll_by_arrows_to_footer is True
-        ), "Successfully scrolled to footer by pressing key down button"
+        scroll_by_arrows_to_footer = scroll_until_pattern_found(history_paragraph_pattern, repeat_key_down, (20,))
+        assert scroll_by_arrows_to_footer is True, "Successfully scrolled to footer by pressing key down button"
 
-        scroll_by_arrows_to_header = scroll_until_pattern_found(
-            soap_wiki_header_pattern, repeat_key_up, (20,)
-        )
-        assert (
-            scroll_by_arrows_to_header is True
-        ), "Successfully scrolled to header by pressing key up button"
+        scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_pattern, repeat_key_up, (20,))
+        assert scroll_by_arrows_to_header is True, "Successfully scrolled to header by pressing key up button"
 
         # Use smooth scrolling is disabled
         navigate("about:preferences#general")
 
         preferences_page_downloaded = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert preferences_page_downloaded is True, "The Preferences page is downloaded"
 
@@ -118,27 +92,19 @@ class Test(FirefoxTest):
         unchecked_use_smooth_scrolling_exists = exists(
             unchecked_use_smooth_scrolling_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            unchecked_use_smooth_scrolling_exists is True
-        ), "Use smooth scrolling option is enabled"
+        assert unchecked_use_smooth_scrolling_exists is True, "Use smooth scrolling option is enabled"
 
         click(unchecked_use_smooth_scrolling_pattern)
 
         checked_use_smooth_scrolling_exists = exists(
             checked_use_smooth_scrolling_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            checked_use_smooth_scrolling_exists is True
-        ), "Use smooth scrolling option is displayed on the page"
+        assert checked_use_smooth_scrolling_exists is True, "Use smooth scrolling option is displayed on the page"
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_test_site_opened_again = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            soap_wiki_test_site_opened_again is True
-        ), "The Soap Wiki test site is properly loaded"
+        soap_wiki_test_site_opened_again = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert soap_wiki_test_site_opened_again is True, "The Soap Wiki test site is properly loaded"
 
         click(LocalWeb.SOAP_WIKI_SOAP_LABEL)
 
@@ -150,9 +116,7 @@ class Test(FirefoxTest):
             20,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
         )
-        assert (
-            scroll_by_mouse_wheel_to_footer is True
-        ), "Successfully scrolled to footer by mouse scroll"
+        assert scroll_by_mouse_wheel_to_footer is True, "Successfully scrolled to footer by mouse scroll"
 
         scroll_by_mouse_wheel_to_header = scroll_until_pattern_found(
             soap_wiki_header_pattern,
@@ -161,21 +125,11 @@ class Test(FirefoxTest):
             20,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
         )
-        assert (
-            scroll_by_mouse_wheel_to_header is True
-        ), "Successfully scrolled to header by mouse scroll"
+        assert scroll_by_mouse_wheel_to_header is True, "Successfully scrolled to header by mouse scroll"
 
         # Scroll by pressing arrows
-        scroll_by_arrows_to_footer = scroll_until_pattern_found(
-            history_paragraph_pattern, repeat_key_down, (20,)
-        )
-        assert (
-            scroll_by_arrows_to_footer is True
-        ), "Successfully scrolled to footer by pressing key down button"
+        scroll_by_arrows_to_footer = scroll_until_pattern_found(history_paragraph_pattern, repeat_key_down, (20,))
+        assert scroll_by_arrows_to_footer is True, "Successfully scrolled to footer by pressing key down button"
 
-        scroll_by_arrows_to_header = scroll_until_pattern_found(
-            soap_wiki_header_pattern, repeat_key_up, (20,)
-        )
-        assert (
-            scroll_by_arrows_to_header is True
-        ), "Successfully scrolled to header by pressing key up button"
+        scroll_by_arrows_to_header = scroll_until_pattern_found(soap_wiki_header_pattern, repeat_key_up, (20,))
+        assert scroll_by_arrows_to_header is True, "Successfully scrolled to header by pressing key up button"

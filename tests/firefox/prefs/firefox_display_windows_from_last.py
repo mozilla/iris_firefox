@@ -14,12 +14,8 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        restore_previous_session_checked_pattern = Pattern(
-            "restore_previous_session_checked.png"
-        ).similar(0.7)
-        restore_previous_session_unchecked_pattern = Pattern(
-            "restore_previous_session_unchecked.png"
-        ).similar(0.7)
+        restore_previous_session_checked_pattern = Pattern("restore_previous_session_checked.png").similar(0.7)
+        restore_previous_session_unchecked_pattern = Pattern("restore_previous_session_unchecked.png").similar(0.7)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -35,19 +31,13 @@ class Test(FirefoxTest):
         new_tab()
         navigate("about:preferences")
 
-        general_tab_loaded = exists(
-            restore_previous_session_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        general_tab_loaded = exists(restore_previous_session_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert general_tab_loaded, 'The options for "General" section are displayed.'
 
         click(restore_previous_session_unchecked_pattern)
 
-        restore_session_checked = exists(
-            restore_previous_session_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            restore_session_checked
-        ), 'The option "Restore previous session" from "Startup" is successfully selected.'
+        restore_session_checked = exists(restore_previous_session_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert restore_session_checked, 'The option "Restore previous session" from "Startup" is successfully selected.'
 
         firefox.restart()
 
@@ -61,9 +51,7 @@ class Test(FirefoxTest):
 
         select_tab(3)
 
-        general_tab_loaded = exists(
-            restore_previous_session_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        general_tab_loaded = exists(restore_previous_session_checked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert (
             general_tab_loaded and firefox_site_loaded and focus_site_loaded
         ), "The browser opens successfully and all the pages from the last session are loaded."

@@ -16,23 +16,15 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
-        mozilla_firefox_predefined_bookmarks_pattern = Pattern(
-            "mozilla_firefox_predefined_bookmarks.png"
-        )
-        mozilla_firefox_bookmarks_folder_pattern = Pattern(
-            "mozilla_firefox_bookmarks_folder.png"
-        )
+        mozilla_firefox_predefined_bookmarks_pattern = Pattern("mozilla_firefox_predefined_bookmarks.png")
+        mozilla_firefox_bookmarks_folder_pattern = Pattern("mozilla_firefox_bookmarks_folder.png")
         mozilla_about_us_bookmark_pattern = Pattern("mozilla_about_us_bookmark.png")
         mozilla_about_us_page_pattern = Pattern("mozilla_about_us_page.png")
-        context_menu_open_in_a_new_tab_pattern = Pattern(
-            "context_menu_open_in_a_new_tab.png"
-        )
+        context_menu_open_in_a_new_tab_pattern = Pattern("context_menu_open_in_a_new_tab.png")
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_menu_bookmarks_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
@@ -46,8 +38,7 @@ class Test(FirefoxTest):
         click(mozilla_firefox_bookmarks_folder_pattern)
 
         mozilla_firefox_predefined_bookmarks_exists = exists(
-            mozilla_firefox_predefined_bookmarks_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            mozilla_firefox_predefined_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert mozilla_firefox_predefined_bookmarks_exists is True, (
             "Predefined Mozilla Firefox related bookmarks " "displayed"
@@ -66,10 +57,7 @@ class Test(FirefoxTest):
 
         select_tab("2")
 
-        mozilla_about_us_page_displayed = exists(
-            mozilla_about_us_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_about_us_page_displayed is True, (
-            "The website related to the selected bookmark is opened in"
-            " the a new tab."
+            "The website related to the selected bookmark is opened in" " the a new tab."
         )

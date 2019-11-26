@@ -15,12 +15,8 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         change_search_settings_pattern = Pattern("change_search_settings.png")
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        ).similar(0.7)
-        default_search_engine_dropdown_pattern = Pattern(
-            "default_search_engine_dropdown.png"
-        )
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png").similar(0.7)
+        default_search_engine_dropdown_pattern = Pattern("default_search_engine_dropdown.png")
 
         change_preference("browser.search.widget.inNavBar", True)
 
@@ -28,9 +24,7 @@ class Test(FirefoxTest):
         type("testing", interval=0.25)
 
         expected = exists(change_search_settings_pattern, 10)
-        assert (
-            expected is True
-        ), "The 'Change Search Settings' button found in the page."
+        assert expected is True, "The 'Change Search Settings' button found in the page."
 
         click(change_search_settings_pattern)
 
@@ -52,6 +46,4 @@ class Test(FirefoxTest):
             "Search results are displayed for the newly set default search " "provider."
         )
 
-        assert (
-            "testing" in url_text
-        ), "Search results are displayed for that search term."
+        assert "testing" in url_text, "Search results are displayed for that search term."

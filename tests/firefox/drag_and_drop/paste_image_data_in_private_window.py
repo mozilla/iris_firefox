@@ -15,9 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         paste_image_data_radiobutton_pattern = Pattern("paste_image_data.png")
-        paste_image_data_radiobutton_selected_pattern = Pattern(
-            "paste_image_data_selected.png"
-        )
+        paste_image_data_radiobutton_selected_pattern = Pattern("paste_image_data_selected.png")
         matching_message_pattern = Pattern("matching_message.png")
         first_picture_pattern = Pattern("first_pocket_image.png")
         second_picture_pattern = Pattern("second_pocket_image.png")
@@ -26,64 +24,51 @@ class Test(FirefoxTest):
         new_private_window()
 
         private_window_pattern_region = Region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH,
-            Screen.SCREEN_HEIGHT // 10,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 10
         )
-        private_window_opened = exists(PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region)
+        private_window_opened = exists(
+            PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region
+        )
         assert private_window_opened, "New Private Window couldn't open"
 
         navigate("https://mystor.github.io/dragndrop/")
 
-        page_opened_in_private_mode = exists(
-            paste_image_data_radiobutton_pattern, Settings.site_load_timeout
-        )
-        assert (
-            page_opened_in_private_mode
-        ), "Firefox started and page loaded successfully."
+        page_opened_in_private_mode = exists(paste_image_data_radiobutton_pattern, Settings.site_load_timeout)
+        assert page_opened_in_private_mode, "Firefox started and page loaded successfully."
 
         click(paste_image_data_radiobutton_pattern)
-        paste_image_data_selected = exists(
-            paste_image_data_radiobutton_selected_pattern
-        )
+        paste_image_data_selected = exists(paste_image_data_radiobutton_selected_pattern)
         assert paste_image_data_selected, (
-            'The "paste-image-data" changed color to red which indicates that it has '
-            "been selected."
+            'The "paste-image-data" changed color to red which indicates that it has ' "been selected."
         )
 
         new_tab()
         select_tab("2")
         navigate(LocalWeb.POCKET_TEST_SITE)
-        page_opened = exists(
-            first_picture_pattern, Settings.site_load_timeout
-        ) and exists(second_picture_pattern, Settings.site_load_timeout)
+        page_opened = exists(first_picture_pattern, Settings.site_load_timeout) and exists(
+            second_picture_pattern, Settings.site_load_timeout
+        )
         assert page_opened, "Web page successfully loads."
 
         right_click(first_picture_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
         assert copy_image_option_available, (
-            '"Copy Image" option is available in the context menu after right '
-            "clicking at the first image"
+            '"Copy Image" option is available in the context menu after right ' "clicking at the first image"
         )
 
         click(copy_image_context_menu_pattern)
         select_tab("1")
         edit_paste()
-        matching_message_appears = scroll_until_pattern_found(
-            matching_message_pattern, type, (Key.DOWN,)
-        )
+        matching_message_appears = scroll_until_pattern_found(matching_message_pattern, type, (Key.DOWN,))
         assert matching_message_appears, (
-            '"Matching" appears under the "Drop Stuff Here" area, the expected result '
-            "is identical to the result."
+            '"Matching" appears under the "Drop Stuff Here" area, the expected result ' "is identical to the result."
         )
 
         select_tab("2")
         right_click(second_picture_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
         assert copy_image_option_available, (
-            '"Copy Image" option is available in the context menu after right '
-            "clicking at the second image"
+            '"Copy Image" option is available in the context menu after right ' "clicking at the second image"
         )
 
         click(copy_image_context_menu_pattern)
@@ -91,8 +76,7 @@ class Test(FirefoxTest):
         edit_paste()
         matching_message_appears = exists(matching_message_pattern)
         assert matching_message_appears, (
-            '"Matching" appears under the "Drop Stuff Here" area, the expected result '
-            "is identical to the result."
+            '"Matching" appears under the "Drop Stuff Here" area, the expected result ' "is identical to the result."
         )
 
         close_window()

@@ -7,12 +7,7 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    @pytest.mark.details(
-        description="Perform a search",
-        locale=["en-US"],
-        test_case_id="127239",
-        test_suite_id="2085",
-    )
+    @pytest.mark.details(description="Perform a search", locale=["en-US"], test_case_id="127239", test_suite_id="2085")
     def run(self, firefox):
         soap_label_pattern = LocalWeb.SOAP_WIKI_SOAP_LABEL
         from_wikipedia_label_pattern = Pattern("from_wikipedia_label.png")
@@ -28,16 +23,12 @@ class Test(FirefoxTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         # Enter a search term and press ENTER
         paste("From Wikipedia")
         type(Key.ENTER)
 
-        selected_label_exists = exists(
-            from_wikipedia_label_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        selected_label_exists = exists(from_wikipedia_label_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT)
         assert selected_label_exists, "All the matching words/characters are found."

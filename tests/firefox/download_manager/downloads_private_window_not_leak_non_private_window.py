@@ -44,9 +44,7 @@ class Test(FirefoxTest):
         open_downloads()
 
         expected = exists(DownloadManager.AboutDownloads.NO_DOWNLOADS, 10)
-        assert (
-            expected is True
-        ), "The downloads category is brought to view and the following message is displayed "
+        assert expected is True, "The downloads category is brought to view and the following message is displayed "
         "in the tab: 'There are no downloads'."
 
         # Perform 5 downloads of your choice and go to the Downloads category from the Library.
@@ -72,13 +70,9 @@ class Test(FirefoxTest):
         # Check that all the downloads are successful and displayed in the Downloads category.
         for pattern in downloads_library_list:
             expected = exists(pattern, 50)
-            assert (
-                expected is True
-            ), "%s file found in the Library, Downloads section." % str(
+            assert expected is True, "%s file found in the Library, Downloads section." % str(
                 pattern.get_filename()
-            ).replace(
-                "_library_downloads.png", ""
-            )
+            ).replace("_library_downloads.png", "")
 
         click_window_control("close")
         close_window()
@@ -93,13 +87,9 @@ class Test(FirefoxTest):
         # Check that downloads from the private window are not displayed in non private window.
         for pattern in downloads_library_list:
             expected = exists(pattern, 2)
-            assert (
-                expected is False
-            ), "%s file not found in the Library, Downloads section." % str(
+            assert expected is False, "%s file not found in the Library, Downloads section." % str(
                 pattern.get_filename()
-            ).replace(
-                "_library_downloads.png", ""
-            )
+            ).replace("_library_downloads.png", "")
 
         click_window_control("close")
 
@@ -111,12 +101,8 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
-        expected = exists(
-            DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, 10
-        )
-        assert (
-            expected is True
-        ), "There are no downloads displayed in the Downloads Panel."
+        expected = exists(DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, 10)
+        assert expected is True, "There are no downloads displayed in the Downloads Panel."
 
     def teardown(self):
         downloads_cleanup()

@@ -16,15 +16,13 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        default_zoom_level_toolbar_customize_page_pattern = (
-            NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE
-        ).similar(0.7)
+        default_zoom_level_toolbar_customize_page_pattern = (NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE).similar(
+            0.7
+        )
         zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
         hamburger_menu_button_pattern = NavBar.HAMBURGER_MENU
         toolbar_pattern = NavBar.TOOLBAR
-        restore_previous_session_pattern = Pattern(
-            "hamburger_restore_previous_session.png"
-        )
+        restore_previous_session_pattern = Pattern("hamburger_restore_previous_session.png")
         firefox_pinned_tab_pattern = Pattern("firefox_pinned_tab.png")
         firefox_tab_pattern = Pattern("firefox_tab.png")
         iris_tab_logo_pattern = Pattern("iris_tab.png")
@@ -47,34 +45,22 @@ class Test(FirefoxTest):
         )
 
         hamburger_menu_button_exists = exists(
-            hamburger_menu_button_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            proper_hamburger_menu_region,
+            hamburger_menu_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT, proper_hamburger_menu_region
         )
         assert hamburger_menu_button_exists, "Hamburger menu appears on screen."
 
-        hamburger_menu_button_location = find(
-            hamburger_menu_button_pattern, proper_hamburger_menu_region
-        )
+        hamburger_menu_button_location = find(hamburger_menu_button_pattern, proper_hamburger_menu_region)
 
         click(hamburger_menu_button_location, click_duration)
 
-        restore_previous_session_exists = exists(
-            restore_previous_session_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            restore_previous_session_exists
-        ), "'Restore previous session' item located"
+        restore_previous_session_exists = exists(restore_previous_session_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert restore_previous_session_exists, "'Restore previous session' item located"
 
         restore_previous_session_location = find(restore_previous_session_pattern)
 
         if not OSHelper.is_mac():
-            hamburger_menu_quit_displayed = exists(
-                hamburger_menu_quit_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-            )
-            assert (
-                hamburger_menu_quit_displayed
-            ), "Close Firefox from the 'Hamburger' menu."
+            hamburger_menu_quit_displayed = exists(hamburger_menu_quit_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert hamburger_menu_quit_displayed, "Close Firefox from the 'Hamburger' menu."
 
             hamburger_menu_quit_item_location = find(hamburger_menu_quit_item_pattern)
 
@@ -83,39 +69,23 @@ class Test(FirefoxTest):
         #  Step 2: Customize Firefox: change few buttons position
 
         zoom_indicator_not_displayed = exists(
-            NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
-            top_screen_region,
+            NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE, FirefoxSettings.TINY_FIREFOX_TIMEOUT, top_screen_region
         )
-        assert (
-            zoom_indicator_not_displayed is not True
-        ), "Zoom indicator not displayed by default in the URL bar."
+        assert zoom_indicator_not_displayed is not True, "Zoom indicator not displayed by default in the URL bar."
 
         click_hamburger_menu_option("Customize...")
 
-        zoom_controls_customize_exists = exists(
-            zoom_controls_customize_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            zoom_controls_customize_exists
-        ), "Zoom controls found in the 'Customize' page."
+        zoom_controls_customize_exists = exists(zoom_controls_customize_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert zoom_controls_customize_exists, "Zoom controls found in the 'Customize' page."
 
-        drag_drop(
-            zoom_controls_customize_page_pattern,
-            toolbar_pattern,
-            duration=click_duration,
-        )
+        drag_drop(zoom_controls_customize_page_pattern, toolbar_pattern, duration=click_duration)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         reset_mouse()
 
         zoom_toolbar_dragged = exists(
-            default_zoom_level_toolbar_customize_page_pattern,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
-            top_screen_region,
+            default_zoom_level_toolbar_customize_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, top_screen_region
         )
-        assert (
-            zoom_toolbar_dragged
-        ), "Zoom controls successfully dragged and dropped in toolbar."
+        assert zoom_toolbar_dragged, "Zoom controls successfully dragged and dropped in toolbar."
 
         close_customize_page()
 
@@ -123,9 +93,7 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_tab_opened = exists(
-            firefox_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        firefox_tab_opened = exists(firefox_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_tab_opened, "Firefox webpage is opened"
 
         right_click(firefox_tab_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
@@ -145,37 +113,27 @@ class Test(FirefoxTest):
         for _ in range(2):
             new_tab()
             navigate(local_url[_])
-            website_loaded = exists(
-                local_url_logo_pattern[_], FirefoxSettings.SITE_LOAD_TIMEOUT
-            )
+            website_loaded = exists(local_url_logo_pattern[_], FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert website_loaded, "Website {0} loaded".format(_ + 1)
 
         # Customize Firefox: set a theme, change a few button position, pin a tab, etc.
         click_hamburger_menu_option("Customize...")
 
         theme_button_available = exists(
-            Customize.THEMES_DEFAULT_SET,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            bottom_half_region,
+            Customize.THEMES_DEFAULT_SET, FirefoxSettings.FIREFOX_TIMEOUT, bottom_half_region
         )
         assert theme_button_available, "Themes button is available."
 
         click(Customize.THEMES_DEFAULT_SET)
 
         dark_theme_option_available = exists(
-            Customize.DARK_THEME_OPTION,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            bottom_half_region,
+            Customize.DARK_THEME_OPTION, FirefoxSettings.FIREFOX_TIMEOUT, bottom_half_region
         )
         assert dark_theme_option_available, "Dark theme option is available."
 
         click(Customize.DARK_THEME_OPTION)
 
-        dark_theme_is_set = exists(
-            Customize.DARK_THEME_SET,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            bottom_half_region,
-        )
+        dark_theme_is_set = exists(Customize.DARK_THEME_SET, FirefoxSettings.FIREFOX_TIMEOUT, bottom_half_region)
         assert dark_theme_is_set, "Dark theme is set."
 
         close_customize_page()
@@ -188,16 +146,10 @@ class Test(FirefoxTest):
 
         firefox.restart(image=NavBar.HAMBURGER_MENU_DARK_THEME)
 
-        time.sleep(
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )  # wait while Linux maximizes window
+        time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)  # wait while Linux maximizes window
 
-        hamburger_menu_button_exists = exists(
-            NavBar.HAMBURGER_MENU_DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            hamburger_menu_button_exists
-        ), "The Hamburger menu is successfully displayed."
+        hamburger_menu_button_exists = exists(NavBar.HAMBURGER_MENU_DARK_THEME, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert hamburger_menu_button_exists, "The Hamburger menu is successfully displayed."
 
         click(NavBar.HAMBURGER_MENU_DARK_THEME, click_duration)
 
@@ -205,12 +157,8 @@ class Test(FirefoxTest):
 
         select_tab("1")
 
-        firefox_page_content_restored = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            firefox_page_content_restored
-        ), "Firefox pinned tab restored successfully."
+        firefox_page_content_restored = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert firefox_page_content_restored, "Firefox pinned tab restored successfully."
 
         select_tab("3")
 

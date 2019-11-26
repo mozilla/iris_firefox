@@ -14,18 +14,12 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        view_bookmarks_sidebar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_SIDEBAR
-        )
+        view_bookmarks_sidebar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_SIDEBAR
         sidebar_other_bookmarks_pattern = SidebarBookmarks.OTHER_BOOKMARKS
 
         navigate("about:blank")
 
         access_bookmarking_tools(view_bookmarks_sidebar_pattern)
 
-        enabled_sidebar_assert = exists(
-            sidebar_other_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            enabled_sidebar_assert is True
-        ), "Bookmarks Sidebar has been enabled from the Bookmarks Menu."
+        enabled_sidebar_assert = exists(sidebar_other_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert enabled_sidebar_assert is True, "Bookmarks Sidebar has been enabled from the Bookmarks Menu."

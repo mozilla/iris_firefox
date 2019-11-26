@@ -17,47 +17,32 @@ class Test(FirefoxTest):
     def run(self, firefox):
         open_in_new_window_option_pattern = Pattern("open_in_new_window.png")
 
-        library_button_exists = exists(
-            NavBar.LIBRARY_MENU, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        library_button_exists = exists(NavBar.LIBRARY_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION)
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         recently_firefox_bookmark_exists = exists(LocalWeb.FIREFOX_BOOKMARK)
-        assert (
-            recently_firefox_bookmark_exists is True
-        ), "Firefox bookmark exists in recently bookmarked section"
+        assert recently_firefox_bookmark_exists is True, "Firefox bookmark exists in recently bookmarked section"
 
         right_click(LocalWeb.FIREFOX_BOOKMARK)
 
         open_in_new_window_option_exists = exists(open_in_new_window_option_pattern)
-        assert (
-            open_in_new_window_option_exists is True
-        ), "'Open in New Window' option exists"
+        assert open_in_new_window_option_exists is True, "'Open in New Window' option exists"
 
         click(open_in_new_window_option_pattern)
 
-        firefox_full_logo_exists = exists(
-            LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            firefox_full_logo_exists is True
-        ), "Bookmark is correctly opened in the New Window."
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert firefox_full_logo_exists is True, "Bookmark is correctly opened in the New Window."
 
         close_window()
 
         iris_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB)
         assert iris_opened_in_current_tab is True, (
-            "The page that was previously displayed in the current tab is "
-            "opened again after new window closing"
+            "The page that was previously displayed in the current tab is " "opened again after new window closing"
         )

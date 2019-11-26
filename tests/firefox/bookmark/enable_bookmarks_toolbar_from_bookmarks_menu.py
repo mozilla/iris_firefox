@@ -14,18 +14,12 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        bookmarks_toolbar_most_visited_pattern = (
-            SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        )
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
 
         navigate("about:blank")
 
         access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
-        enabled_toolbar_assert = exists(
-            bookmarks_toolbar_most_visited_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        enabled_toolbar_assert = exists(bookmarks_toolbar_most_visited_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert enabled_toolbar_assert is True, "Bookmarks Toolbar has been activated."

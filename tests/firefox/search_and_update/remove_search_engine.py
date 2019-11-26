@@ -14,21 +14,15 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        ).similar(0.6)
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png").similar(0.6)
         wikipedia_search_bar_pattern = Pattern("wikipedia_search_bar.png")
-        restore_default_search_engine_pattern = Pattern(
-            "restore_default_search_engine.png"
-        )
+        restore_default_search_engine_pattern = Pattern("restore_default_search_engine.png")
         remove_pattern = Pattern("remove.png")
 
         navigate("about:preferences#search")
 
         expected = exists(about_preferences_search_page_pattern, 10)
-        assert (
-            expected is True
-        ), "The 'about:preferences#search' page successfully loaded."
+        assert expected is True, "The 'about:preferences#search' page successfully loaded."
 
         paste("one-click")
 
@@ -53,9 +47,7 @@ class Test(FirefoxTest):
             wait(restore_default_search_engine_pattern, 10)
             logger.debug("The 'Restore Default Search Engines' button is enabled.")
         except FindError:
-            raise FindError(
-                "The 'Restore Default Search Engines' button is not enabled."
-            )
+            raise FindError("The 'Restore Default Search Engines' button is not enabled.")
 
         click(restore_default_search_engine_pattern)
 
