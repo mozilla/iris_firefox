@@ -48,16 +48,16 @@ class Test(FirefoxTest):
         if OSPlatform.MAC:
             quit_firefox()
         elif OSPlatform.MAC:
-            click_hamburger_menu_option("Quit")
+            open_hamburger_menu("Quit")
         else:
-            click_hamburger_menu_option("Exit")
+            open_hamburger_menu("Exit")
 
         firefox.restart()
 
         firefox_restarted = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_restarted, "Firefox restarted successfully"
 
-        click_hamburger_menu_option("Restore")
+        open_hamburger_menu("Restore Previous Session")
 
         next_tab()
 

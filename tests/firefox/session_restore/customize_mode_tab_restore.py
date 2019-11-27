@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Rectangle(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         customize_page_opened = exists(customize_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT, tabs_region)
         assert customize_page_opened, '"Customize..." mode is properly open.'

@@ -39,7 +39,7 @@ class Test(FirefoxTest):
         )
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         expected = exists(zoom_controls_customize_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Zoom controls found in the 'Customize' page."

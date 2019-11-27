@@ -29,7 +29,7 @@ class Test(FirefoxTest):
         web_page_loaded_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert web_page_loaded_exists is True, "The website is properly loaded."
 
-        click_hamburger_menu_option("Print...")
+        open_hamburger_menu("Print")
 
         print_preview_mode_exists = exists(print_preview_mode_enabled_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert print_preview_mode_exists is True, "Print-preview mode is successfully enabled."

@@ -63,7 +63,7 @@ class Test(FirefoxTest):
 
         firefox.restart()
 
-        click_hamburger_menu_option("Restore Previous Session")
+        open_hamburger_menu("Restore Previous Session")
 
         last_tab_restored = exists(web_developer_tools_tab_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         blocked_media_icon_exists = exists(double_icons, FirefoxSettings.FIREFOX_TIMEOUT)

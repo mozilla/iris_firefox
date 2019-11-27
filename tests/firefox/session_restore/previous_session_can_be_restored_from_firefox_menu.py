@@ -33,7 +33,7 @@ class Test(FirefoxTest):
 
         restore_firefox_focus()
 
-        click_hamburger_menu_option("Restore")
+        open_hamburger_menu("Restore Previous Session")
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
 
         next_tab()

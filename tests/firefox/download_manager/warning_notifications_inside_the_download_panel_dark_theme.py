@@ -22,7 +22,7 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         region_bottom_half = Screen.BOTTOM_HALF
 

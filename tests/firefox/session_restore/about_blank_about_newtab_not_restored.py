@@ -31,7 +31,7 @@ class Test(FirefoxTest):
 
         firefox.restart(image=LocalWeb.IRIS_LOGO_ACTIVE_TAB)
 
-        click_hamburger_menu_option("Restore Previous Session")
+        open_hamburger_menu("Restore Previous Session")
 
         close_tab()
 

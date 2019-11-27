@@ -18,7 +18,7 @@ class Test(FirefoxTest):
         clear_web_console = Pattern("clear.png")
 
         navigate("about:blank")
-        click_hamburger_menu_option("Web Developer")
+        open_hamburger_menu("Web Developer")
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         click("Browser Console")

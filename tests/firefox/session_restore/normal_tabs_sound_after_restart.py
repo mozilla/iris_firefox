@@ -50,7 +50,7 @@ class Test(FirefoxTest):
 
         firefox.restart()
 
-        click_hamburger_menu_option("Restore")
+        open_hamburger_menu("Restore Previous Session")
 
         youtube_logo_inactive = exists(
             youtube_logo_inactive_tab_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT, tabs_region

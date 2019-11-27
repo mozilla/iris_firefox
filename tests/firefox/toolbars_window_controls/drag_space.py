@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
 
         navigate("about:home")
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         region = Region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
         assert region.exists(zoom_controls_customize_page_pattern, 10), "'Customize' page successfully loaded."

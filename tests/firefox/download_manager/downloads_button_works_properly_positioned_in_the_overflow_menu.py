@@ -34,7 +34,7 @@ class Test(FirefoxTest):
             DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED,
         ]
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button is available."
