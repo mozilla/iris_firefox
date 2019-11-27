@@ -8,7 +8,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Update History list is successfully displayed ",
+        description="The 'Remove Selected' button is not grayed out after a website is deselected.",
         test_case_id="145301",
         test_suite_id="2241",
         locale=["en-US"],
