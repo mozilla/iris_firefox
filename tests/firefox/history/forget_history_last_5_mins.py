@@ -34,7 +34,7 @@ class Test(FirefoxTest):
         expected = exists(history_today_sidebar_pattern, 10)
         assert expected, "Expand history button for 'Today' history is displayed properly."
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         expected = exists(forget_customize_page_pattern, 10)
         assert expected, "Forget pattern found in the 'Customize' page."

@@ -25,7 +25,7 @@ class Test(FirefoxTest):
         test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Test site opened"
 
-        click_hamburger_menu_option(hamburger_help_pattern)
+        open_hamburger_menu(hamburger_help_pattern)
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 

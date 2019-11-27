@@ -73,7 +73,7 @@ class Test(FirefoxTest):
         )
         assert zoom_indicator_not_displayed is not True, "Zoom indicator not displayed by default in the URL bar."
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         zoom_controls_customize_exists = exists(zoom_controls_customize_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert zoom_controls_customize_exists, "Zoom controls found in the 'Customize' page."
@@ -117,7 +117,7 @@ class Test(FirefoxTest):
             assert website_loaded, "Website {0} loaded".format(_ + 1)
 
         # Customize Firefox: set a theme, change a few button position, pin a tab, etc.
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         theme_button_available = exists(
             Customize.THEMES_DEFAULT_SET, FirefoxSettings.FIREFOX_TIMEOUT, bottom_half_region

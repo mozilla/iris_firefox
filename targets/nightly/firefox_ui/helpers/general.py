@@ -158,7 +158,7 @@ def click_cancel_button():
         raise APIHelperError("Can't find the cancel button, aborting.")
 
 
-def click_hamburger_menu_option(option):
+def open_hamburger_menu(option):
     """Click on a specific option from the hamburger menu.
 
     :param option: Hamburger menu option to be clicked.

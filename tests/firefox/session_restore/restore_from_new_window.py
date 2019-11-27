@@ -27,7 +27,7 @@ class Test(FirefoxTest):
 
         firefox.restart()
 
-        click_hamburger_menu_option("Restore Previous Session")
+        open_hamburger_menu("Restore Previous Session")
 
         select_tab("5")
         website_one_loaded = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
