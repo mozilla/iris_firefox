@@ -158,26 +158,6 @@ def click_cancel_button():
         raise APIHelperError("Can't find the cancel button, aborting.")
 
 
-def open_hamburger_menu(option):
-    """Click on a specific option from the hamburger menu.
-
-    :param option: Hamburger menu option to be clicked.
-    :return: The region created starting from the hamburger menu pattern.
-    """
-    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    try:
-        wait(hamburger_menu_pattern, 10)
-        logger.debug("Hamburger menu found.")
-    except FindError:
-        raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
-    else:
-        try:
-            ham_region = create_region_for_hamburger_menu()
-            ham_region.click(option)
-        except FindError:
-            raise APIHelperError("Can't find the option: " + option + " in the hamburger menu. Aborting test.")
-
-
 def click_window_control(button, window_type="auxiliary"):
     """Click window with options: close, minimize, maximize, restore, full_screen.
 
@@ -723,6 +703,46 @@ def open_directory(directory):
         os.system('xdg-open "' + directory + '"')
     else:
         os.system('open "' + directory + '"')
+
+
+def open_hamburger_menu(option=None):
+    """Open a specific option from the hamburger menu. If no option is given, just open the menu.
+    In that case, the calling test must close the menu on its own.
+
+    :param option: Hamburger menu option to be selected.
+    :return: None.
+    """
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    region = Screen.UPPER_RIGHT_CORNER
+    sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
+
+    option_list = {'Restore Previous Session': 5,
+                   'Customize': 14,
+                   'Print': 17,
+                   'Web Developer': 20,
+                   'Exit': 23,
+                   'Quit': 23}
+
+    try:
+        region.wait(hamburger_menu_pattern, 5)
+        logger.debug("Hamburger menu found.")
+    except FindError:
+        raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
+    else:
+        try:
+            region.click(hamburger_menu_pattern)
+            region.wait(sign_in_to_firefox_pattern, 10)
+            if option is not None:
+                reps = option_list[option]
+                count = 0
+                while (count < reps):
+                    time.sleep(0.5)
+                    type(Key.DOWN)
+                    count = count + 1
+                time.sleep(1)
+                type(Key.ENTER)
+        except FindError:
+            raise APIHelperError("Can't click the menu button. Aborting test.")
 
 
 def open_library_menu(option):
