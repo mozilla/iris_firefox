@@ -40,17 +40,11 @@ class Test(FirefoxTest):
         firefox_restarted = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_restarted, "Firefox restarted successfully"
 
-        menu_button_present = exists(hamburger_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert menu_button_present, "The hamburger menu is present"
+        restore_firefox_focus()
 
-        click(hamburger_menu_pattern)
-
-        restore_option_present = exists(hamburger_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert restore_option_present, "The Restore Previous Session option is present"
-
-        click(restore_option_pattern)
-
+        open_hamburger_menu("Restore Previous Session")
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
+
         next_tab()
 
         first_tab_restored = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
