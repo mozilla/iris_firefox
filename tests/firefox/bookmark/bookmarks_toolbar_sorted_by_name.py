@@ -39,7 +39,7 @@ class Test(FirefoxTest):
         try:
             wait(moz_draggable_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug("Moz bookmark is present inside the Bookmarks Sidebar.")
-            drag_drop(moz_draggable_pattern, drag_area_pattern, duration=0.5)
+            drag_drop(moz_draggable_pattern, drag_area_pattern, duration=1)
         except FindError:
             raise FindError("Moz bookmark is NOT present inside the Bookmarks Sidebar, aborting.")
 
@@ -49,7 +49,7 @@ class Test(FirefoxTest):
         try:
             wait(firefox_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug("Firefox bookmark is present inside the Bookmarks Sidebar.")
-            drag_drop(firefox_bookmark, drag_area_pattern, duration=0.5)
+            drag_drop(firefox_bookmark, drag_area_pattern, duration=1)
         except FindError:
             raise FindError("Firefox bookmark is NOT present inside the Bookmarks Sidebar, aborting.")
 
@@ -59,7 +59,7 @@ class Test(FirefoxTest):
         try:
             wait(pocket_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug("Pocket bookmark is present inside the Bookmarks Sidebar.")
-            drag_drop(pocket_bookmark, drag_area_pattern, duration=0.5)
+            drag_drop(pocket_bookmark, drag_area_pattern, duration=1)
         except FindError:
             raise FindError("Pocket bookmark is NOT present inside the Bookmarks Sidebar, aborting.")
 
