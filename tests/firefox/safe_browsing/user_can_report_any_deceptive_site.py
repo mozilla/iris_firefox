@@ -18,14 +18,13 @@ class Test(FirefoxTest):
         google_logo_pattern = Pattern("google_logo.png")
         url_field_pattern = Pattern("url_field.png")
         report_deceptive_pattern = Pattern("report_deceptive.png")
-        hamburger_help_pattern = Pattern("ham_help.png")
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
         test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Test site opened"
 
-        open_hamburger_menu(hamburger_help_pattern)
+        open_hamburger_menu("Help")
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 

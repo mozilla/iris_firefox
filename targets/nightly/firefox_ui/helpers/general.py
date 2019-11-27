@@ -720,6 +720,7 @@ def open_hamburger_menu(option=None):
                    'Customize': 14,
                    'Print': 17,
                    'Web Developer': 20,
+                   'Help': 22,
                    'Exit': 23,
                    'Quit': 23}
 
