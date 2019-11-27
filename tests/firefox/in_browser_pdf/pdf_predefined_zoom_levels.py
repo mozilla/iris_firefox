@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         automatic_zoom_level_option_pattern = Pattern("automatic_zoom_level_option.png").similar(0.7)
         page_fit_zoom_level_option_pattern = Pattern("page_fit_zoom_level_option.png")
         pdf_file_first_page_contents_pattern = Pattern("pdf_file_page_contents.png")
-        zoom_levels_dropdown_pattern = Pattern("zoom_levels_dropdown.png")
+        zoom_levels_dropdown_pattern = Pattern("zoom_levels_dropdown.png").similar(0.7)
         actual_size_zoom_selected_pattern = Pattern("actual_size_dropdown.png")
         automatic_zoom_selected_pattern = Pattern("automatic_zoom_dropdown.png")
         page_fit_zoom_selected_pattern = Pattern("page_fit_dropdown.png")
