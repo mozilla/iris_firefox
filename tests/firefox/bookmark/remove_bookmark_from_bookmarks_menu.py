@@ -23,7 +23,7 @@ class Test(FirefoxTest):
 
         navigate("about:blank")
 
-        open_library_menu(bookmarks_menu_pattern)
+        open_library_menu("Bookmarks")
 
         try:
             right_upper_corner.wait(menu_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)

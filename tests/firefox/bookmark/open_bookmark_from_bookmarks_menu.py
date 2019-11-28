@@ -22,7 +22,7 @@ class Test(FirefoxTest):
 
         navigate("about:blank")
 
-        open_library_menu(bookmarks_menu_pattern)
+        open_library_menu("Bookmarks")
 
         moz_bookmark_menu_right_corner_assert = right_upper_corner.exists(
             menu_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
