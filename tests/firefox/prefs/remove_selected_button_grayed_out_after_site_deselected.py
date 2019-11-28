@@ -32,8 +32,7 @@ class Test(FirefoxTest):
         manage_data_button_exists = exists(manage_data_button, FirefoxSettings.FIREFOX_TIMEOUT)
         assert manage_data_button_exists, "manage data button not found in #aboutpreference's search result."
 
-        click(manage_data_button)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
+        click(manage_data_button, duration=1)
         manage_cookies_and_site_data_pop_up_exists = exists(manage_cookies_and_site_data_pop_up,
                                                             FirefoxSettings.FIREFOX_TIMEOUT)
         assert manage_cookies_and_site_data_pop_up_exists, "Manage Cookies and Site Data pop-up couldn't be displayed."
@@ -51,7 +50,6 @@ class Test(FirefoxTest):
         self.verify_remove_selected_button_is_disabled(remove_selected_button_disabled,
                                                        select_a_site_from_manage_data_pop_up)
         click(select_a_site_from_manage_data_pop_up)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
 
         remove_selected_button_enabled_exists = exists(remove_selected_button_enabled,
                                                        FirefoxSettings.TINY_FIREFOX_TIMEOUT,
@@ -60,7 +58,6 @@ class Test(FirefoxTest):
 
         # Verifying "Remove Selected" button enabled
         click(remove_selected_button_enabled)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
         selected_site_could_not_be_removed = exists(select_a_site_from_manage_data_pop_up,
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert selected_site_could_not_be_removed is False, \
@@ -68,16 +65,14 @@ class Test(FirefoxTest):
 
         # Close and reopen site data
         click(cancel_button_manage_cookies_site_data)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
-        click(manage_data_button)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
+        manage_data_button_exists = exists(manage_data_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert manage_data_button_exists, "manage data button not found in #aboutpreference's search result."
+        click(manage_data_button,duration=1)
         manage_cookies_and_site_data_pop_up_exists = exists(manage_cookies_and_site_data_pop_up,
                                                             FirefoxSettings.FIREFOX_TIMEOUT)
         assert manage_cookies_and_site_data_pop_up_exists, "Manage Cookies and Site Data pop-up couldn't be displayed."
         click(select_a_site_from_manage_data_pop_up)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
         click(site_column_in_site_data)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
 
         self.verify_remove_selected_button_is_disabled(remove_selected_button_disabled,
                                                        select_a_site_from_manage_data_pop_up)
@@ -93,7 +88,6 @@ class Test(FirefoxTest):
             :return: None.
             """
         click(remove_selected_button_disabled)
-        time.sleep(Settings.DEFAULT_MOVE_MOUSE_DELAY)
         selected_site_could_not_be_removed = exists(select_a_site_from_manage_data_pop_up,
                                                     FirefoxSettings.FIREFOX_TIMEOUT)
         assert selected_site_could_not_be_removed, "Selected Site removed as 'Remove Selected' button is not disabled."
