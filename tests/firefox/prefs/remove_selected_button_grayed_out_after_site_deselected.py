@@ -23,7 +23,7 @@ class Test(FirefoxTest):
         site_column_in_site_data = Pattern("site_column_in_site_data.png")
 
         navigate("about:preferences")
-        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
+        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert page_loaded, "about:preferences page couldn't loaded."
 
         click(AboutPreferences.FIND_IN_OPTIONS)
