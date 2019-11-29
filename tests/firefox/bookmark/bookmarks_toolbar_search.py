@@ -33,16 +33,10 @@ class Test(FirefoxTest):
         star_search_assert = exists(search_star, FirefoxSettings.FIREFOX_TIMEOUT)
         assert star_search_assert is True, "Star search is present on the page."
 
-        searched_bookmark_assert = exists(
-            searched_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            searched_bookmark_assert is True
-        ), "Searched bookmark is present in the Search List."
+        searched_bookmark_assert = exists(searched_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert searched_bookmark_assert is True, "Searched bookmark is present in the Search List."
 
         click(searched_bookmark)
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."

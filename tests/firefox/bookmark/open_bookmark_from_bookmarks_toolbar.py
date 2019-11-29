@@ -19,16 +19,10 @@ class Test(FirefoxTest):
 
         open_bookmarks_toolbar()
 
-        getting_started_bookmark_exists = exists(
-            getting_started_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            getting_started_bookmark_exists is True
-        ), "Bookmarks Toolbar enabled. Getting started bookmark exists"
+        getting_started_bookmark_exists = exists(getting_started_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert getting_started_bookmark_exists is True, "Bookmarks Toolbar enabled. Getting started bookmark exists"
 
         click(getting_started_bookmark_pattern)
 
-        get_started_page_opened = exists(
-            get_started_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        get_started_page_opened = exists(get_started_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert get_started_page_opened is True, "Get started page successfully opened"

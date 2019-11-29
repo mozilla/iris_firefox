@@ -12,29 +12,20 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="165437",
         test_suite_id="2525",
-        blocked_by={
-            "id": "1579898",
-            "platform": [OSPlatform.WINDOWS, OSPlatform.LINUX],
-        },
+        blocked_by={"id": "1579898", "platform": [OSPlatform.WINDOWS, OSPlatform.LINUX]},
         exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
-        mozilla_firefox_predefined_bookmarks_pattern = Pattern(
-            "mozilla_firefox_predefined_bookmarks.png"
-        )
-        mozilla_firefox_bookmarks_folder_pattern = Pattern(
-            "mozilla_firefox_bookmarks_folder.png"
-        )
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
+        mozilla_firefox_predefined_bookmarks_pattern = Pattern("mozilla_firefox_predefined_bookmarks.png")
+        mozilla_firefox_bookmarks_folder_pattern = Pattern("mozilla_firefox_bookmarks_folder.png")
         mozilla_about_us_bookmark_pattern = Pattern("mozilla_about_us_bookmark.png")
         mozilla_about_us_page_pattern = Pattern("mozilla_about_us_page.png")
         context_menu_open_pattern = Pattern("context_menu_open.png")
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_menu_bookmarks_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
@@ -48,8 +39,7 @@ class Test(FirefoxTest):
         click(mozilla_firefox_bookmarks_folder_pattern)
 
         mozilla_firefox_predefined_bookmarks_exists = exists(
-            mozilla_firefox_predefined_bookmarks_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            mozilla_firefox_predefined_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert mozilla_firefox_predefined_bookmarks_exists is True, (
             "Predefined Mozilla Firefox related bookmarks " "displayed"
@@ -57,19 +47,12 @@ class Test(FirefoxTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        context_menu_open_option_displayed = exists(
-            context_menu_open_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            context_menu_open_option_displayed is True
-        ), "Context menu Open option is displayed"
+        context_menu_open_option_displayed = exists(context_menu_open_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert context_menu_open_option_displayed is True, "Context menu Open option is displayed"
 
         click(context_menu_open_pattern)
 
-        mozilla_about_us_page_displayed = exists(
-            mozilla_about_us_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_about_us_page_displayed is True, (
-            "The website related to the selected bookmark is opened in "
-            "the current tab"
+            "The website related to the selected bookmark is opened in " "the current tab"
         )

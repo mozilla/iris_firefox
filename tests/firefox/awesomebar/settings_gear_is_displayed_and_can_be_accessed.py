@@ -36,9 +36,7 @@ class Test(FirefoxTest):
         click(search_settings_pattern)
 
         expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
-        assert (
-            expected
-        ), "Successfully navigated to the 'about:preferences#search' page."
+        assert expected, "Successfully navigated to the 'about:preferences#search' page."
 
         # Close the 'about:preferences#search' page.
         close_tab()
@@ -56,6 +54,4 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
-        assert (
-            expected
-        ), "Successfully navigated to the 'about:preferences#search' page."
+        assert expected, "Successfully navigated to the 'about:preferences#search' page."

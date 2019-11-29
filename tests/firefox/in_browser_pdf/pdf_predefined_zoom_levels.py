@@ -13,28 +13,20 @@ class Test(FirefoxTest):
         test_suite_id="65",
         locales=Locales.ENGLISH,
     )
-    def test_run(self, firefox):
-        actual_size_zoom_level_option_pattern = Pattern(
-            "actual_size_zoom_level_option.png"
-        )
-        page_width_zoom_level_option_pattern = Pattern(
-            "page_width_zoom_level_option.png"
-        )
-        automatic_zoom_level_option_pattern = Pattern("automatic_zoom_level_option.png")
+    def run(self, firefox):
+        actual_size_zoom_level_option_pattern = Pattern("actual_size_zoom_level_option.png")
+        page_width_zoom_level_option_pattern = Pattern("page_width_zoom_level_option.png")
+        automatic_zoom_level_option_pattern = Pattern("automatic_zoom_level_option.png").similar(0.7)
         page_fit_zoom_level_option_pattern = Pattern("page_fit_zoom_level_option.png")
         pdf_file_first_page_contents_pattern = Pattern("pdf_file_page_contents.png")
-        zoom_levels_dropdown_pattern = Pattern("zoom_levels_dropdown.png")
+        zoom_levels_dropdown_pattern = Pattern("zoom_levels_dropdown.png").similar(0.7)
         actual_size_zoom_selected_pattern = Pattern("actual_size_dropdown.png")
         automatic_zoom_selected_pattern = Pattern("automatic_zoom_dropdown.png")
         page_fit_zoom_selected_pattern = Pattern("page_fit_dropdown.png")
-        page_width_zoom_selected_pattern = Pattern("page_width_dropdown.png")
-        page_width_document_contents_pattern = Pattern(
-            "page_width_document_contents.png"
-        )
-        page_fit_document_contents_pattern = Pattern("page_fit_document_contents.png")
-        automatic_zoom_document_contents_pattern = Pattern(
-            "auto_zoom_document_contents.png"
-        )
+        page_width_zoom_selected_pattern = Pattern("page_width_dropdown.png").similar(0.6)
+        page_width_document_contents_pattern = Pattern("page_width_document_contents.png").similar(0.6)
+        page_fit_document_contents_pattern = Pattern("page_fit_document_contents.png").similar(0.5)
+        automatic_zoom_document_contents_pattern = Pattern("auto_zoom_document_contents.png")
         actual_size_document_contents_pattern = Pattern("first_page_contents.png")
 
         change_preference("pdfjs.defaultZoomValue", "100")
@@ -42,9 +34,7 @@ class Test(FirefoxTest):
         pdf_file_path = self.get_asset_path("pdf.pdf")
         navigate(pdf_file_path)
 
-        pdf_file_opened = exists(
-            pdf_file_first_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        pdf_file_opened = exists(pdf_file_first_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert pdf_file_opened, "PDF document successfully opened in pdf.js"
 
         zoom_levels_dropdown_available = exists(zoom_levels_dropdown_pattern)
@@ -53,16 +43,12 @@ class Test(FirefoxTest):
         click(zoom_levels_dropdown_pattern)
 
         page_width_zoom_option_available = exists(page_width_zoom_level_option_pattern)
-        assert (
-            page_width_zoom_option_available
-        ), "'Page Width' zoom option available in 'Zoom' dropdown"
+        assert page_width_zoom_option_available, "'Page Width' zoom option available in 'Zoom' dropdown"
 
         click(page_width_zoom_level_option_pattern)
 
         page_width_zoom_level_applied = exists(page_width_document_contents_pattern)
-        assert (
-            page_width_zoom_level_applied
-        ), "'Page Width' zoom level successfully applied"
+        assert page_width_zoom_level_applied, "'Page Width' zoom level successfully applied"
 
         page_width_zoom_selected_on_dropdown = exists(page_width_zoom_selected_pattern)
         assert (
@@ -72,9 +58,7 @@ class Test(FirefoxTest):
         click(page_width_zoom_selected_pattern)
 
         page_fit_zoom_option_available = exists(page_fit_zoom_level_option_pattern)
-        assert (
-            page_fit_zoom_option_available
-        ), "'Page Fit' zoom option available in 'Zoom' dropdown"
+        assert page_fit_zoom_option_available, "'Page Fit' zoom option available in 'Zoom' dropdown"
 
         click(page_fit_zoom_level_option_pattern)
 
@@ -88,19 +72,13 @@ class Test(FirefoxTest):
 
         click(page_fit_zoom_selected_pattern)
 
-        actual_size_zoom_option_available = exists(
-            actual_size_zoom_level_option_pattern
-        )
-        assert (
-            actual_size_zoom_option_available
-        ), "'Actual Size' zoom option available in 'Zoom' dropdown"
+        actual_size_zoom_option_available = exists(actual_size_zoom_level_option_pattern)
+        assert actual_size_zoom_option_available, "'Actual Size' zoom option available in 'Zoom' dropdown"
 
         click(actual_size_zoom_level_option_pattern)
 
         actual_size_zoom_level_applied = exists(actual_size_document_contents_pattern)
-        assert (
-            actual_size_zoom_level_applied
-        ), "'Actual Size' zoom level successfully applied"
+        assert actual_size_zoom_level_applied, "'Actual Size' zoom level successfully applied"
 
         page_width_zoom_selected_on_dropdown = exists(actual_size_zoom_selected_pattern)
         assert (
@@ -110,16 +88,12 @@ class Test(FirefoxTest):
         click(actual_size_zoom_selected_pattern)
 
         automatic_zoom_option_available = exists(automatic_zoom_level_option_pattern)
-        assert (
-            automatic_zoom_option_available
-        ), "'Automatic zoom' option available in 'Zoom' dropdown"
+        assert automatic_zoom_option_available, "'Automatic zoom' option available in 'Zoom' dropdown"
 
         click(automatic_zoom_level_option_pattern)
 
         automatic_zoom_level_applied = exists(automatic_zoom_document_contents_pattern)
-        assert (
-            automatic_zoom_level_applied
-        ), "'Automatic zoom' zoom level successfully applied"
+        assert automatic_zoom_level_applied, "'Automatic zoom' zoom level successfully applied"
 
         automatic_zoom_selected_on_dropdown = exists(automatic_zoom_selected_pattern)
         assert (

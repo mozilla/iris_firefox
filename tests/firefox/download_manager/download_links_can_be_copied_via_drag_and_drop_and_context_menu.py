@@ -2,11 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import (
-    DownloadFiles,
-    downloads_cleanup,
-    download_file,
-)
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file
 from targets.firefox.fx_testcase import *
 
 

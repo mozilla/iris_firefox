@@ -23,9 +23,7 @@ class Test(FirefoxTest):
         add_button = Pattern("add_button.png")
         moz_bookmark = Pattern("moz_bookmark_folder.png")
         delete = Pattern("delete_bookmark.png")
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
 
         navigate("about:blank")
 
@@ -36,20 +34,14 @@ class Test(FirefoxTest):
         click(new_folder)
 
         new_folder_window_assert = exists(add_button, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            new_folder_window_assert is True
-        ), "New Folder window is present on the page."
+        assert new_folder_window_assert is True, "New Folder window is present on the page."
 
         paste("moz_bookmark")
 
         click(add_button)
 
-        moz_bookmark_folder_assert = exists(
-            moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            moz_bookmark_folder_assert is True
-        ), "Moz Bookmark folder is present on the page."
+        moz_bookmark_folder_assert = exists(moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert moz_bookmark_folder_assert is True, "Moz Bookmark folder is present on the page."
 
         bookmarks_sidebar("open")
 
@@ -57,12 +49,8 @@ class Test(FirefoxTest):
 
         drag_drop(moz_draggable_pattern, moz_bookmark, duration=0.5)
 
-        bookmark_drag_assert = exists(
-            dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_drag_assert is True
-        ), "Moz Bookmark was dragged successfully inside the bookmark folder."
+        bookmark_drag_assert = exists(dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_drag_assert is True, "Moz Bookmark was dragged successfully inside the bookmark folder."
 
         bookmarks_sidebar("close")
 
@@ -70,16 +58,12 @@ class Test(FirefoxTest):
 
         click(delete)
 
-        deleted_bookmark_assert = wait_vanish(
-            moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        deleted_bookmark_assert = wait_vanish(moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
         assert deleted_bookmark_assert is True, "Bookmark folder has been deleted."
 
         edit_undo()
 
-        undo_bookmarks_folder_removal_assert = exists(
-            moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        undo_bookmarks_folder_removal_assert = exists(moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
         assert undo_bookmarks_folder_removal_assert is True, (
             "The removal of bookmarks folder action has" " been successfully undone."
         )

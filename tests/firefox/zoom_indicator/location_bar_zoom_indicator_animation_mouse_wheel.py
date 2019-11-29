@@ -9,21 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description="This test case checks the zoom indicator animation from the url bar using the mousewheel.",
-        locale=[
-            "en-US",
-            "zh-CN",
-            "es-ES",
-            "de",
-            "fr",
-            "ru",
-            "ko",
-            "pt-PT",
-            "vi",
-            "pl",
-            "tr",
-            "ro",
-            "ja",
-        ],
+        locale=["en-US", "zh-CN", "es-ES", "de", "fr", "ru", "ko", "pt-PT", "vi", "pl", "tr", "ro", "ja"],
         test_case_id="7446",
         test_suite_id="242",
     )
@@ -42,9 +28,7 @@ class Test(FirefoxTest):
         region = create_region_for_url_bar()
 
         expected = exists(
-            url_bar_default_zoom_level_pattern.similar(0.92),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
+            url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT, region=region
         )
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
@@ -54,89 +38,49 @@ class Test(FirefoxTest):
 
         new_region = create_region_for_url_bar()
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."
 
         firefox.restart(url=LocalWeb.FIREFOX_TEST_SITE, image=LocalWeb.FIREFOX_LOGO)
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."
 
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
         select_location_bar()
 
         expected = exists(
-            url_bar_default_zoom_level_pattern.similar(0.92),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
+            url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT, region=new_region
         )
-        assert (
-            expected
-        ), "Zoom controls not found in the url bar after browser restore its zoom level."
+        assert expected, "Zoom controls not found in the url bar after browser restore its zoom level."
 
         zoom_with_mouse_wheel(20, ZoomType.IN)
 
-        expected = exists(
-            urlbar_zoom_button_300_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, maximum zoom level (300%) reached."
+        expected = exists(urlbar_zoom_button_300_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased, maximum zoom level (300%) reached."
 
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
-        expected = exists(
-            urlbar_zoom_button_300_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
+        expected = exists(urlbar_zoom_button_300_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
         assert expected, "Zoom indicator still displays 300%."
 
         # zoom out until the default zoom level(100%) is reached.
         restore_zoom()
 
         expected = exists(
-            url_bar_default_zoom_level_pattern.similar(0.92),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
+            url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT, region=new_region
         )
-        assert (
-            expected
-        ), "Zoom indicator not found in the url bar after browser restore its zoom level."
+        assert expected, "Zoom indicator not found in the url bar after browser restore its zoom level."
 
         # zoom out until de minimum zoom level(30%) is reached.
         zoom_with_mouse_wheel(7, ZoomType.OUT)
 
-        expected = exists(
-            urlbar_zoom_button_30_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully decreased, minimum zoom level (30%) reached."
+        expected = exists(urlbar_zoom_button_30_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully decreased, minimum zoom level (30%) reached."
 
         # zoom out ONE more time.
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
-        expected = exists(
-            urlbar_zoom_button_30_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
+        expected = exists(urlbar_zoom_button_30_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
         assert expected, "Zoom indicator still displays 30%."

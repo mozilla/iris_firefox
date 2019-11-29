@@ -45,9 +45,7 @@ class Test(FirefoxTest):
         expected = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Downloads button has been found."
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
-        expected = exists(
-            DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, 10)
         assert expected is True, "All downloads were cleared."
 
     def teardown(self):

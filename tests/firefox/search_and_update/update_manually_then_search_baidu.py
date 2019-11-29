@@ -29,17 +29,11 @@ class Test(FirefoxTest):
         text_pattern_selected = Pattern("focus_text_selected.png")
 
         version = firefox.application.version
-        current_version = (
-            version if "-dev" not in version else version.replace("-dev", "")
-        )
+        current_version = version if "-dev" not in version else version.replace("-dev", "")
         channel = firefox.application.channel
         rules_dict = get_rule_for_channel(channel, current_version)
 
-        assert (
-            rules_dict is not None
-        ), "No rules found for {} channel. Please update config.ini file.".format(
-            channel
-        )
+        assert rules_dict is not None, "No rules found for {} channel. Please update config.ini file.".format(channel)
 
         starting_condition = rules_dict["starting_condition"]
         update_steps_list = rules_dict["steps"].split(",")
@@ -52,9 +46,7 @@ class Test(FirefoxTest):
         change_preference("browser.tabs.warnOnClose", True)
 
         navigate("about:preferences#search")
-        expected = exists(
-            default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Baidu is the default search engine."
 
         # Perform the manual browser update
@@ -64,10 +56,7 @@ class Test(FirefoxTest):
                 if update_step == "latest":
                     update_step = firefox.application.latest_version
 
-                logger.info(
-                    "Current version: %s, updating to version: %s."
-                    % (current_version, update_step)
-                )
+                logger.info("Current version: %s, updating to version: %s." % (current_version, update_step))
 
                 open_about_firefox()
                 expected = exists(update_restart_pattern.similar(0.7), 200)
@@ -76,12 +65,9 @@ class Test(FirefoxTest):
 
                 firefox.restart()
                 assert (
-                    FirefoxUtils.get_firefox_version(firefox.application.path)
-                    in update_step
+                    FirefoxUtils.get_firefox_version(firefox.application.path) in update_step
                 ), "Incorrect Firefox update."
-                current_version = FirefoxUtils.get_firefox_version(
-                    firefox.application.path
-                )
+                current_version = FirefoxUtils.get_firefox_version(firefox.application.path)
 
         type(Key.ENTER)
         restore_firefox_focus()
@@ -101,9 +87,7 @@ class Test(FirefoxTest):
 
         # Perform the Baidu default search engine code checks
         navigate("about:preferences#search")
-        expected = exists(
-            default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(default_search_engine_baidu_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Baidu is the default search engine."
 
         # Perform a search using the awesome bar and then clear the content from it.
@@ -114,9 +98,7 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/baidu?wd=test&tn=monline_7_dg" in url_text, (
-            "The resulting URL contains the " "'monline_7_dg' string."
-        )
+        assert "/baidu?wd=test&tn=monline_7_dg" in url_text, "The resulting URL contains the " "'monline_7_dg' string."
 
         select_location_bar()
         type(Key.DELETE)
@@ -129,9 +111,7 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/baidu?wd=test&tn=monline_7_dg" in url_text, (
-            "The resulting URL contains the " "'monline_7_dg' string."
-        )
+        assert "/baidu?wd=test&tn=monline_7_dg" in url_text, "The resulting URL contains the " "'monline_7_dg' string."
 
         # Highlight some text and right click it.
         new_tab()
@@ -149,6 +129,4 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "/baidu?wd=Focus&tn=monline_7_dg" in url_text, (
-            "The resulting URL contains the " "'monline_7_dg' string."
-        )
+        assert "/baidu?wd=Focus&tn=monline_7_dg" in url_text, "The resulting URL contains the " "'monline_7_dg' string."

@@ -7,9 +7,7 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-    @pytest.mark.details(
-        description="This is a unit test to verify basic Firefox build info."
-    )
+    @pytest.mark.details(description="This is a unit test to verify basic Firefox build info.")
     def run(self, firefox):
         assert (
             firefox.application.version == get_firefox_version_from_about_config()
@@ -20,9 +18,7 @@ class Test(FirefoxTest):
         assert (
             firefox.application.channel == get_firefox_channel_from_about_config()
         ), "API for Firefox channel is correct"
-        assert (
-            firefox.application.locale == get_firefox_locale_from_about_config()
-        ), "API for Firefox locale is correct"
+        assert firefox.application.locale == get_firefox_locale_from_about_config(), "API for Firefox locale is correct"
 
         assert (
             firefox.application.version in get_support_info()["application"]["version"]
@@ -31,12 +27,10 @@ class Test(FirefoxTest):
             firefox.application.build_id == get_support_info()["application"]["buildID"]
         ), "API for Firefox build ID is correct"
         assert (
-            firefox.application.channel
-            == get_support_info()["application"]["updateChannel"]
+            firefox.application.channel == get_support_info()["application"]["updateChannel"]
         ), "API for Firefox channel is correct"
         assert (
-            firefox.application.locale
-            == get_support_info()["intl"]["localeService"]["defaultLocale"]
+            firefox.application.locale == get_support_info()["intl"]["localeService"]["defaultLocale"]
         ), "API for Firefox locale is correct"
 
         assert firefox.application.version == FirefoxUtils.get_firefox_version(

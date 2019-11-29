@@ -19,14 +19,11 @@ class Test(FirefoxTest):
         change_preference("browser.search.widget.inNavBar", True)
 
         search_bar_displayed = exists(
-            LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(0.7),
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.similar(0.7), FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
         assert search_bar_displayed, "Search bar is displayed"
         search_bar_location = find(LocationBar.SEARCH_BAR_MAGNIFYING_GLASS)
-        search_bar_width, search_bar_height = (
-            LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.get_size()
-        )
+        search_bar_width, search_bar_height = LocationBar.SEARCH_BAR_MAGNIFYING_GLASS.get_size()
         suggestions_region = Region(
             search_bar_location.x,
             search_bar_location.y + search_bar_height,

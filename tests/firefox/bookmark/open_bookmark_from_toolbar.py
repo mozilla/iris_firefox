@@ -25,43 +25,28 @@ class Test(FirefoxTest):
         bookmarks_folder_available_in_toolbar = exists(
             most_visited_folder_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         click(most_visited_folder_pattern)
 
-        pocket_bookmark_available = exists(
-            pocket_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        pocket_bookmark_available = exists(pocket_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert pocket_bookmark_available is True, (
-            "'Pocket' bookmark is available in the 'Most visited' "
-            "folder from the toolbar"
+            "'Pocket' bookmark is available in the 'Most visited' " "folder from the toolbar"
         )
 
         right_click(pocket_bookmark_pattern)
 
-        open_option_available = exists(
-            open_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        open_option_available = exists(open_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert open_option_available is True, (
-            "'Open' option is available in context menu after right-click "
-            "at the bookmark"
+            "'Open' option is available in context menu after right-click " "at the bookmark"
         )
 
         click(open_option_pattern)
 
-        website_opened_in_current_tab = exists(
-            LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            website_opened_in_current_tab is True
-        ), "The website is correctly opened in the current tab."
+        website_opened_in_current_tab = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert website_opened_in_current_tab is True, "The website is correctly opened in the current tab."
 
-        bookmark_opened_in_current_tab = exists(
-            LocalWeb.IRIS_LOGO_ACTIVE_TAB, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        bookmark_opened_in_current_tab = exists(LocalWeb.IRIS_LOGO_ACTIVE_TAB, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert bookmark_opened_in_current_tab is False, (
-            "The page that was previously displayed in the current tab "
-            "is no longer displayed"
+            "The page that was previously displayed in the current tab " "is no longer displayed"
         )

@@ -30,6 +30,4 @@ class Test(FirefoxTest):
         select_location_bar_option(RightClickLocationBar.PASTE_GO)
 
         expected = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert (
-            expected
-        ), "Page successfully loaded after 'Paste & Go' option is selected."
+        assert expected, "Page successfully loaded after 'Paste & Go' option is selected."

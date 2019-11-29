@@ -19,13 +19,9 @@ class Test(FirefoxTest):
         after_scroll_content_pattern = Pattern("pdf_content_normal_mode.png")
         pdf_logo_pattern = Pattern("pdf_logo.png")
         presentation_mode_icon_pattern = Pattern("presentation_mode_icon.png")
-        presentation_mode_content_pattern = Pattern(
-            "presentation_mode_content.png"
-        ).similar(0.6)
+        presentation_mode_content_pattern = Pattern("presentation_mode_content.png").similar(0.6)
         presentation_mode_enabled_pattern = Pattern("presentation_mode_enabled.png").similar(0.7)
-        after_scroll_content_presentation_mode_pattern = Pattern(
-            "pdf_content_presentation_mode.png"
-        ).similar(0.6)
+        after_scroll_content_presentation_mode_pattern = Pattern("pdf_content_presentation_mode.png").similar(0.6)
 
         if OSHelper.is_windows():
             screen_height = Screen.SCREEN_HEIGHT
@@ -51,20 +47,12 @@ class Test(FirefoxTest):
             100,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
         )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll Down using mouse wheel is successful"
+        assert after_scroll_content_exists is True, "Scroll Down using mouse wheel is successful"
 
         before_scroll_content_exists = scroll_until_pattern_found(
-            content_scroll_pattern,
-            Mouse().scroll,
-            (None, screen_height),
-            100,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+            content_scroll_pattern, Mouse().scroll, (None, screen_height), 100, FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
         )
-        assert (
-            before_scroll_content_exists is True
-        ), "Scroll Up using mouse wheel is successful"
+        assert before_scroll_content_exists is True, "Scroll Up using mouse wheel is successful"
 
         # Presentation mode scrolling
         presentation_mode_icon_exists = exists(presentation_mode_icon_pattern)
@@ -73,9 +61,7 @@ class Test(FirefoxTest):
         click(presentation_mode_icon_pattern)
 
         presentation_mode_enabled_exists = exists(presentation_mode_enabled_pattern)
-        assert (
-            presentation_mode_enabled_exists is True
-        ), "Presentation Mode is successfully enabled"
+        assert presentation_mode_enabled_exists is True, "Presentation Mode is successfully enabled"
 
         if OSHelper.is_linux():
             value = FirefoxSettings.TINY_FIREFOX_TIMEOUT
@@ -84,21 +70,11 @@ class Test(FirefoxTest):
             value = FirefoxSettings.TINY_FIREFOX_TIMEOUT
 
         after_scroll_content_exists = scroll_until_pattern_found(
-            after_scroll_content_presentation_mode_pattern,
-            Mouse().scroll,
-            (0, -screen_height),
-            100,
-            value,
+            after_scroll_content_presentation_mode_pattern, Mouse().scroll, (0, -screen_height), 100, value
         )
-        assert (
-            after_scroll_content_exists
-        ), "Scroll Down using mouse wheel is successful"
+        assert after_scroll_content_exists, "Scroll Down using mouse wheel is successful"
 
         before_scroll_content_exists = scroll_until_pattern_found(
-            presentation_mode_content_pattern,
-            Mouse().scroll,
-            (0, screen_height),
-            100,
-            value,
+            presentation_mode_content_pattern, Mouse().scroll, (0, screen_height), 100, value
         )
         assert before_scroll_content_exists, "Scroll Up using mouse wheel is successful"

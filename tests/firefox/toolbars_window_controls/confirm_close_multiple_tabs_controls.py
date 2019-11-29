@@ -22,9 +22,7 @@ class Test(FirefoxTest):
         new_tab()
         close_window()
 
-        assert exists(
-            close_multiple_tabs_warning_pattern, 10
-        ), "Close multiple tabs warning was displayed successfully"
+        assert exists(close_multiple_tabs_warning_pattern, 10), "Close multiple tabs warning was displayed successfully"
         if OSHelper.is_mac():
             click(Pattern("cancel_multiple_tabs_warning.png"))
         else:
@@ -35,30 +33,19 @@ class Test(FirefoxTest):
                 home_button_pattern, 10
             ), "Close multiple tabs warning was cancelled successfully."
         except FindError:
-            raise FindError(
-                "Close multiple tabs warning was not cancelled successfully."
-            )
+            raise FindError("Close multiple tabs warning was not cancelled successfully.")
 
         close_window()
 
         if OSHelper.is_linux():
             maximize_window()
-            hover(
-                Pattern("close_multiple_tabs_warning_logo.png").target_offset(0, -100),
-                align=Alignment.TOP_LEFT,
-            )
-            assert exists(
-                MainWindow.RESIZE_BUTTON, 10
-            ), "Close multiple tabs warning was maximized successfully."
+            hover(Pattern("close_multiple_tabs_warning_logo.png").target_offset(0, -100), align=Alignment.TOP_LEFT)
+            assert exists(MainWindow.RESIZE_BUTTON, 10), "Close multiple tabs warning was maximized successfully."
 
             minimize_window()
-            assert exists(
-                Pattern("maximize_button.png"), 10
-            ), "Close multiple tabs warning was restored successfully."
+            assert exists(Pattern("maximize_button.png"), 10), "Close multiple tabs warning was restored successfully."
 
-        assert exists(
-            close_multiple_tabs_warning_pattern, 10
-        ), "Close multiple tabs warning was displayed successfully"
+        assert exists(close_multiple_tabs_warning_pattern, 10), "Close multiple tabs warning was displayed successfully"
         click(close_multiple_tabs_warning_pattern)
         try:
             assert wait_vanish(close_multiple_tabs_warning_pattern, 10) and wait_vanish(

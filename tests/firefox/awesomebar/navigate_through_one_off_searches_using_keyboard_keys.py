@@ -16,9 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         url = LocalWeb.FIREFOX_TEST_SITE
-        search_with_google_one_off_string_pattern = Pattern(
-            "search_with_Google_one_off_string.png"
-        )
+        search_with_google_one_off_string_pattern = Pattern("search_with_Google_one_off_string.png")
         settings_gear_highlighted_pattern = Pattern("settings_gear_highlighted.png")
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)

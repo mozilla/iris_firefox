@@ -8,22 +8,15 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="There are no glitches in tab layout.",
-        locale=["en-US"],
-        test_case_id="15268",
-        test_suite_id="494",
+        description="There are no glitches in tab layout.", locale=["en-US"], test_case_id="15268", test_suite_id="494"
     )
     def run(self, firefox):
         mozilla_tab_not_focused = Pattern("mozilla_tab_not_focused.png").similar(0.7)
-        mozilla_tab_not_focused_light_theme = Pattern(
-            "mozilla_tab_not_focused_light_theme.png"
-        ).similar(0.7)
+        mozilla_tab_not_focused_light_theme = Pattern("mozilla_tab_not_focused_light_theme.png").similar(0.7)
         mozilla_hover = Pattern("mozilla_hover.png").similar(0.7)
         mozilla_hover_dark_theme = Pattern("mozilla_hover_dark_theme.png").similar(0.7)
         close_tab_button = Pattern("close_tab_button.png").similar(0.7)
-        close_tab_button_dark_theme = Pattern(
-            "close_tab_button_dark_theme.png"
-        ).similar(0.7)
+        close_tab_button_dark_theme = Pattern("close_tab_button_dark_theme.png").similar(0.7)
         close_tab_hover = Pattern("close_tab_hover.png").similar(0.7)
         close_tab_hover_dark_theme = Pattern("close_tab_hover_dark_theme.png")
 
@@ -85,8 +78,7 @@ class Test(FirefoxTest):
 
                 close_tab_button_location = find(close_tab_button, tabs_region)
                 close_click_location = Location(
-                    close_tab_button_location.x + close_width / 2,
-                    close_tab_button_location.y + close_width / 2,
+                    close_tab_button_location.x + close_width / 2, close_tab_button_location.y + close_width / 2
                 )
 
                 hover(close_click_location)
@@ -165,8 +157,7 @@ class Test(FirefoxTest):
                 close_width, close_height = close_tab_button.get_size()
 
                 close_click_location = Location(
-                    close_tab_button_location.x + close_width / 2,
-                    close_tab_button_location.y + close_width / 2,
+                    close_tab_button_location.x + close_width / 2, close_tab_button_location.y + close_width / 2
                 )
 
                 hover(close_click_location)
@@ -240,9 +231,7 @@ class Test(FirefoxTest):
                 expected = exists(close_tab_button_dark_theme, 10, region=tabs_region)
                 assert expected, "Close tab button is visible."
 
-                close_tab_dark_button_location = find(
-                    close_tab_button_dark_theme, tabs_region
-                )
+                close_tab_dark_button_location = find(close_tab_button_dark_theme, tabs_region)
 
                 close_width, close_height = close_tab_button_dark_theme.get_size()
 

@@ -17,19 +17,11 @@ class Test(FirefoxTest):
         moz_pattern = Pattern("moz.png")
         url = LocalWeb.FIREFOX_TEST_SITE
         google_one_off_button_pattern = Pattern("google_one_off_button.png")
-        twitter_one_off_button_highlight_pattern = Pattern(
-            "twitter_one_off_button_highlight.png"
-        )
-        set_as_default_search_engine_pattern = Pattern(
-            "set_as_default_search_engine.png"
-        )
+        twitter_one_off_button_highlight_pattern = Pattern("twitter_one_off_button_highlight.png")
+        set_as_default_search_engine_pattern = Pattern("set_as_default_search_engine.png")
         search_in_new_tab_pattern = Pattern("search_in_new_tab.png")
-        new_tab_twitter_search_results_pattern = Pattern(
-            "new_tab_twitter_search_results.png"
-        )
-        new_tab_twitter_search_results_2_pattern = Pattern(
-            "new_tab_twitter_search_results_2.png"
-        )
+        new_tab_twitter_search_results_pattern = Pattern("new_tab_twitter_search_results.png")
+        new_tab_twitter_search_results_2_pattern = Pattern("new_tab_twitter_search_results_2.png")
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
@@ -42,12 +34,8 @@ class Test(FirefoxTest):
         select_location_bar()
         type("moz", interval=0.25)
 
-        one_off_bar_displayed = exists(
-            this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            one_off_bar_displayed
-        ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         hover(google_one_off_button_pattern)
 

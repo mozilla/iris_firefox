@@ -25,16 +25,9 @@ from moziris.util.test_assert import create_result_object
 
 from moziris.configuration.config_parser import get_config_property, validate_section
 from targets.nightly.bug_manager import is_blocked
-from targets.nightly.firefox_app.fx_browser import (
-    FXRunner,
-    FirefoxProfile,
-    FirefoxUtils,
-)
+from targets.nightly.firefox_app.fx_browser import FXRunner, FirefoxProfile, FirefoxUtils
 from targets.nightly.firefox_app.fx_collection import FX_Collection
-from targets.nightly.firefox_ui.helpers.keyboard_shortcuts import (
-    quit_firefox,
-    release_often_used_keys,
-)
+from targets.nightly.firefox_ui.helpers.keyboard_shortcuts import quit_firefox, release_often_used_keys
 from targets.nightly.firefox_ui.helpers.version_parser import check_version
 from targets.nightly.testrail.testrail_client import report_test_results
 
@@ -64,13 +57,7 @@ class Target(BaseTarget):
                 "value": ["local", "latest", "nightly"],
                 "default": "nightly",
             },
-            {
-                "name": "locale",
-                "type": "list",
-                "label": "Locale",
-                "value": OSHelper.LOCALES,
-                "default": "en-US",
-            },
+            {"name": "locale", "type": "list", "label": "Locale", "value": OSHelper.LOCALES, "default": "en-US"},
             {
                 "name": "max_tries",
                 "type": "list",
@@ -78,59 +65,25 @@ class Target(BaseTarget):
                 "value": ["1", "2", "3", "4", "5"],
                 "default": "3",
             },
-            {
-                "name": "highlight",
-                "type": "checkbox",
-                "label": "Debug using highlighting",
-            },
+            {"name": "highlight", "type": "checkbox", "label": "Debug using highlighting"},
             {"name": "override", "type": "checkbox", "label": "Run disabled tests"},
             {"name": "email", "type": "checkbox", "label": "Email results"},
             {"name": "report", "type": "checkbox", "label": "Create TestRail report"},
         ]
-        self.local_web_root = os.path.join(
-            PathManager.get_module_dir(), "targets", "firefox", "local_web"
-        )
+        self.local_web_root = os.path.join(PathManager.get_module_dir(), "targets", "firefox", "local_web")
         # if target_args.treeherder:
         #     Settings.debug_image = False
 
     def get_target_args(self):
-        parser = argparse.ArgumentParser(
-            description="Firefox-specific arguments", prog="iris"
-        )
+        parser = argparse.ArgumentParser(description="Firefox-specific arguments", prog="iris")
+        parser.add_argument("-f", "--firefox", help="Firefox version to test", action="store", default="latest-beta")
+        parser.add_argument("-g", "--region", help="Region code for Firefox", action="store", default="")
+        parser.add_argument("-j", "--sendjson", help="Send JSON report at end of run", action="store_true")
+        parser.add_argument("-r", "--report", help="Report tests to TestRail", action="store_true")
+        parser.add_argument("-s", "--save", help="Save Firefox profiles on disk", action="store_true")
+        parser.add_argument("-u", "--update_channel", help="Update channel profile preference", action="store")
         parser.add_argument(
-            "-f",
-            "--firefox",
-            help="Firefox version to test",
-            action="store",
-            default="latest-beta",
-        )
-        parser.add_argument(
-            "-g", "--region", help="Region code for Firefox", action="store", default=""
-        )
-        parser.add_argument(
-            "-j",
-            "--sendjson",
-            help="Send JSON report at end of run",
-            action="store_true",
-        )
-        parser.add_argument(
-            "-r", "--report", help="Report tests to TestRail", action="store_true"
-        )
-        parser.add_argument(
-            "-s", "--save", help="Save Firefox profiles on disk", action="store_true"
-        )
-        parser.add_argument(
-            "-u",
-            "--update_channel",
-            help="Update channel profile preference",
-            action="store",
-        )
-        parser.add_argument(
-            "-y",
-            "--treeherder",
-            help="Enable Treeherder output in CI environment",
-            default=False,
-            action="store_true",
+            "-y", "--treeherder", help="Enable Treeherder output in CI environment", default=False, action="store_true"
         )
         return parser.parse_known_args()[0]
 
@@ -162,11 +115,7 @@ class Target(BaseTarget):
     def send_json_report(self):
         report_s = validate_section("Report_URL")
         if len(report_s) > 0:
-            logger.warning(
-                "{}. \nJSON report cannot be sent - no report URL found in config file.".format(
-                    report_s
-                )
-            )
+            logger.warning("{}. \nJSON report cannot be sent - no report URL found in config file.".format(report_s))
         else:
             run_file = os.path.join(PathManager.get_current_run_dir(), "run.json")
             url = get_config_property("Report_URL", "url")
@@ -176,18 +125,11 @@ class Target(BaseTarget):
                         r = requests.post(url=url, files={"file": file})
 
                     if not r.ok:
-                        logger.error(
-                            "Report was not sent to URL: %s \nResponse text: %s" % url,
-                            r.text,
-                        )
+                        logger.error("Report was not sent to URL: %s \nResponse text: %s" % url, r.text)
 
                     logger.debug("Sent JSON report status: %s" % r.text)
                 except requests.RequestException as ex:
-                    logger.error(
-                        "Failed to send run report to URL: %s \nException data: %s"
-                        % url,
-                        ex,
-                    )
+                    logger.error("Failed to send run report to URL: %s \nException data: %s" % url, ex)
             else:
                 logger.error("Bad URL for JSON report.")
 
@@ -195,26 +137,16 @@ class Target(BaseTarget):
         if self.args.report:
             rep_s = validate_section("Test_rail")
             if len(rep_s) > 0:
-                logger.warning(
-                    "{}. Report tests to TestRail was disabled.".format(rep_s)
-                )
+                logger.warning("{}. Report tests to TestRail was disabled.".format(rep_s))
                 self.args.report = False
 
         bugzilla_s = validate_section("Bugzilla")
         if len(bugzilla_s) > 0:
-            logger.warning(
-                "{}. Tests blocked by Bugzilla issues will be automatically skipped.".format(
-                    bugzilla_s
-                )
-            )
+            logger.warning("{}. Tests blocked by Bugzilla issues will be automatically skipped.".format(bugzilla_s))
 
         git_hub_s = validate_section("GitHub")
         if len(bugzilla_s) > 0:
-            logger.warning(
-                "{}. Tests blocked by GitHub issues will be automatically skipped.".format(
-                    git_hub_s
-                )
-            )
+            logger.warning("{}. Tests blocked by GitHub issues will be automatically skipped.".format(git_hub_s))
 
     def pytest_sessionstart(self, session):
         global core_args
@@ -225,13 +157,8 @@ class Target(BaseTarget):
         try:
             port = core_args.port
 
-            logger.info(
-                "Starting local web server on port %s for directory %s"
-                % (port, self.local_web_root)
-            )
-            web_server_process = Process(
-                target=LocalWebServer, args=(self.local_web_root, port)
-            )
+            logger.info("Starting local web server on port %s for directory %s" % (port, self.local_web_root))
+            web_server_process = Process(target=LocalWebServer, args=(self.local_web_root, port))
             self.process_list.append(web_server_process)
             web_server_process.start()
 
@@ -242,11 +169,7 @@ class Target(BaseTarget):
             if not app:
                 FX_Collection.add(fx, locale)
                 app = FX_Collection.get(fx, locale)
-            self.values = {
-                "fx_version": app.version,
-                "fx_build_id": app.build_id,
-                "channel": app.channel,
-            }
+            self.values = {"fx_version": app.version, "fx_build_id": app.build_id, "channel": app.channel}
         except IOError:
             logger.critical("Unable to launch local web server, aborting Iris.")
             exit(1)
@@ -275,32 +198,18 @@ class Target(BaseTarget):
         if item.name == "run" and not core_args.override:
             skip_reason_list = []
             values = item.own_markers[0].kwargs
-            is_disabled = (
-                "enabled" in values
-                and not values.get("enabled")
-                and not core_args.override
-            )
-            is_excluded = "exclude" in values and OSHelper.get_os() in values.get(
-                "exclude"
-            )
-            incorrect_locale = (
-                "locale" in values and core_args.locale not in values.get("locale")
-            )
-            incorrect_platform = "platform" in values and OSHelper.get_os() not in values.get(
-                "platform"
-            )
+            is_disabled = "enabled" in values and not values.get("enabled") and not core_args.override
+            is_excluded = "exclude" in values and OSHelper.get_os() in values.get("exclude")
+            incorrect_locale = "locale" in values and core_args.locale not in values.get("locale")
+            incorrect_platform = "platform" in values and OSHelper.get_os() not in values.get("platform")
             fx_version = self.values.get("fx_version")
-            incorrect_fx_version = "fx_version" in values and not check_version(
-                fx_version, values.get("fx_version")
-            )
+            incorrect_fx_version = "fx_version" in values and not check_version(fx_version, values.get("fx_version"))
 
             if is_disabled:
                 skip_reason_list.append("Test is disabled")
 
             if is_excluded:
-                skip_reason_list.append(
-                    "Test is excluded for {}".format(OSHelper.get_os())
-                )
+                skip_reason_list.append("Test is excluded for {}".format(OSHelper.get_os()))
 
             if "blocked_by" in values:
                 bug_id = ""
@@ -318,31 +227,21 @@ class Target(BaseTarget):
                 logger.debug("Test has blocking issue: %s" % is_blocked(bug_id))
                 logger.debug("Test is blocked on this platform: %s" % blocked_platform)
                 if is_blocked(bug_id) and blocked_platform:
-                    skip_reason_list.append(
-                        "Test is blocked by [{}] on this platform.".format(bug_id)
-                    )
+                    skip_reason_list.append("Test is blocked by [{}] on this platform.".format(bug_id))
 
             if incorrect_locale:
-                skip_reason_list.append(
-                    "Test doesn't support locale [{}]".format(core_args.locale)
-                )
+                skip_reason_list.append("Test doesn't support locale [{}]".format(core_args.locale))
 
             if incorrect_platform:
-                skip_reason_list.append(
-                    "Test doesn't support platform [{}]".format(OSHelper.get_os())
-                )
+                skip_reason_list.append("Test doesn't support platform [{}]".format(OSHelper.get_os()))
 
             if incorrect_fx_version:
-                skip_reason_list.append(
-                    "Test doesn't support Firefox version [{}]".format(fx_version)
-                )
+                skip_reason_list.append("Test doesn't support Firefox version [{}]".format(fx_version))
 
             if len(skip_reason_list) > 0:
                 logger.info(
                     "Test skipped: - [{}]: {} Reason(s): {}".format(
-                        item.nodeid.split(":")[0],
-                        values.get("description"),
-                        ", ".join(skip_reason_list),
+                        item.nodeid.split(":")[0], values.get("description"), ", ".join(skip_reason_list)
                     )
                 )
                 test_instance = (item, "SKIPPED", None)
@@ -355,11 +254,7 @@ class Target(BaseTarget):
         """ called to execute the test ``item``. """
         logger.info(
             "Executing %s: - [%s]: %s"
-            % (
-                Target.index,
-                item.nodeid.split(":")[0],
-                item.own_markers[0].kwargs.get("description"),
-            )
+            % (Target.index, item.nodeid.split(":")[0], item.own_markers[0].kwargs.get("description"))
         )
         try:
             if item.funcargs["firefox"]:
@@ -372,10 +267,7 @@ class Target(BaseTarget):
 
         try:
             if not OSHelper.is_windows():
-                if (
-                    item.funcargs["firefox"].runner
-                    and item.funcargs["firefox"].runner.process_handler
-                ):
+                if item.funcargs["firefox"].runner and item.funcargs["firefox"].runner.process_handler:
                     quit_firefox()
                     status = item.funcargs["firefox"].runner.process_handler.wait(10)
                     if status is None:

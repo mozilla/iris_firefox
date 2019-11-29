@@ -16,24 +16,16 @@ class Test(FirefoxTest):
         exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
-        mozilla_firefox_predefined_bookmarks_pattern = Pattern(
-            "mozilla_firefox_predefined_bookmarks.png"
-        )
-        mozilla_firefox_bookmarks_folder_pattern = Pattern(
-            "mozilla_firefox_bookmarks_folder.png"
-        )
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
+        mozilla_firefox_predefined_bookmarks_pattern = Pattern("mozilla_firefox_predefined_bookmarks.png")
+        mozilla_firefox_bookmarks_folder_pattern = Pattern("mozilla_firefox_bookmarks_folder.png")
         mozilla_about_us_bookmark_pattern = Pattern("mozilla_about_us_bookmark.png")
         mozilla_about_us_page_pattern = Pattern("mozilla_about_us_page.png")
-        context_menu_open_in_a_new_window_pattern = Pattern(
-            "context_menu_open_in_a_new_window.png"
-        )
+        context_menu_open_in_a_new_window_pattern = Pattern("context_menu_open_in_a_new_window.png")
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_menu_bookmarks_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
@@ -47,8 +39,7 @@ class Test(FirefoxTest):
         click(mozilla_firefox_bookmarks_folder_pattern)
 
         mozilla_firefox_predefined_bookmarks_exists = exists(
-            mozilla_firefox_predefined_bookmarks_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            mozilla_firefox_predefined_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert mozilla_firefox_predefined_bookmarks_exists is True, (
             "Predefined Mozilla Firefox related bookmarks " "displayed"
@@ -65,18 +56,10 @@ class Test(FirefoxTest):
 
         click(context_menu_open_in_a_new_window_pattern)
 
-        mozilla_about_us_page_displayed = exists(
-            mozilla_about_us_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            mozilla_about_us_page_displayed is True
-        ), "The website related to the selected bookmark is opened"
+        mozilla_about_us_page_displayed = exists(mozilla_about_us_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert mozilla_about_us_page_displayed is True, "The website related to the selected bookmark is opened"
 
         close_window()
 
-        bookmark_has_been_opened_in_new_window = exists(
-            LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            bookmark_has_been_opened_in_new_window is True
-        ), "The bookmark has been opened in new window"
+        bookmark_has_been_opened_in_new_window = exists(LocalWeb.IRIS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert bookmark_has_been_opened_in_new_window is True, "The bookmark has been opened in new window"

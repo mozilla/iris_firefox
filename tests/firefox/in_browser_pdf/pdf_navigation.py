@@ -14,16 +14,10 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH,
         preferences={"pdfjs.defaultZoomValue": "100"},
     )
-    def test_run(self, firefox):
-        pdf_file_last_page_contents_rotated_pattern = Pattern(
-            "last_page_contents_rotated.png"
-        )
-        rotate_counterclockwise_button_pattern = Pattern(
-            "rotate_counterclockwise_button.png"
-        )
-        doc_properties_close_button_pattern = Pattern(
-            "document_properties_close_button.png"
-        )
+    def run(self, firefox):
+        pdf_file_last_page_contents_rotated_pattern = Pattern("last_page_contents_rotated.png")
+        rotate_counterclockwise_button_pattern = Pattern("rotate_counterclockwise_button.png")
+        doc_properties_close_button_pattern = Pattern("document_properties_close_button.png")
         document_properties_filename_pattern = Pattern("document_properties_info.png")
         document_properties_button_pattern = Pattern("document_properties_button.png")
         introduction_chapter_pattern = Pattern("introduction_chapter_headline.png")
@@ -46,19 +40,13 @@ class Test(FirefoxTest):
 
         navigate(pdf_file_path)
 
-        pdf_document_opened = exists(
-            pdf_file_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            pdf_document_opened
-        ), "The PDF file successfully opened in In-browser PDF viewer"
+        pdf_document_opened = exists(pdf_file_page_contents_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert pdf_document_opened, "The PDF file successfully opened in In-browser PDF viewer"
 
         arrow_down_navigation_works = scroll_until_pattern_found(
             introduction_chapter_pattern, type, (Key.DOWN,), num_of_scroll_iterations=20
         )
-        assert (
-            arrow_down_navigation_works
-        ), "Navigation via 'Arrow down' key works properly"
+        assert arrow_down_navigation_works, "Navigation via 'Arrow down' key works properly"
 
         arrow_up_navigation_works = scroll_until_pattern_found(
             pdf_file_page_contents_pattern, type, (Key.UP,), num_of_scroll_iterations=20
@@ -69,28 +57,18 @@ class Test(FirefoxTest):
         type(Key.DOWN)
 
         arrow_right_navigation_works = exists(history_chapter_pattern)
-        assert (
-            arrow_right_navigation_works
-        ), "Navigation via 'Arrow right' key works properly"
+        assert arrow_right_navigation_works, "Navigation via 'Arrow right' key works properly"
 
         type(Key.LEFT)
 
         arrow_left_navigation_works = exists(introduction_chapter_pattern)
-        assert (
-            arrow_left_navigation_works
-        ), "Navigation via 'Arrow left' key works properly"
+        assert arrow_left_navigation_works, "Navigation via 'Arrow left' key works properly"
 
-        page_up_navigation_works = scroll_until_pattern_found(
-            pdf_file_page_contents_pattern, type, (Key.PAGE_UP,)
-        )
+        page_up_navigation_works = scroll_until_pattern_found(pdf_file_page_contents_pattern, type, (Key.PAGE_UP,))
         assert page_up_navigation_works, "Navigation via 'Page Up' key works properly"
 
-        page_down_navigation_works = scroll_until_pattern_found(
-            introduction_chapter_pattern, type, (Key.PAGE_DOWN,)
-        )
-        assert (
-            page_down_navigation_works
-        ), "Navigation via 'Page Down' key works properly"
+        page_down_navigation_works = scroll_until_pattern_found(introduction_chapter_pattern, type, (Key.PAGE_DOWN,))
+        assert page_down_navigation_works, "Navigation via 'Page Down' key works properly"
 
         type(Key.HOME)
 
@@ -118,77 +96,55 @@ class Test(FirefoxTest):
 
         [click(next_page_button_pattern) for _ in range(2)]
 
-        navigation_via_next_page_button_works = exists(
-            pdf_file_last_page_contents_pattern
-        )
+        navigation_via_next_page_button_works = exists(pdf_file_last_page_contents_pattern)
         assert (
             navigation_via_next_page_button_works
         ), "By clicking the 'Previous page' button, the current view moves to the previous page"
 
         tools_button_available = exists(tools_button_pattern)
-        assert (
-            tools_button_available
-        ), "'Tools' button available in In-browser PDF viewer"
+        assert tools_button_available, "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
         go_to_first_page_button_available = exists(go_to_first_page_button_pattern)
-        assert (
-            go_to_first_page_button_available
-        ), "'Go to first page' button available in 'Tools' menu"
+        assert go_to_first_page_button_available, "'Go to first page' button available in 'Tools' menu"
 
         click(go_to_first_page_button_pattern)
 
-        navigation_via_go_to_first_page_button_works = exists(
-            pdf_file_page_contents_pattern
-        )
+        navigation_via_go_to_first_page_button_works = exists(pdf_file_page_contents_pattern)
         assert (
             navigation_via_go_to_first_page_button_works
         ), "Navigation via 'Go to first page' button from 'Tools' menu works properly"
 
         tools_button_available = exists(tools_button_pattern)
-        assert (
-            tools_button_available
-        ), "'Tools' button available in In-browser PDF viewer"
+        assert tools_button_available, "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
         go_to_last_page_button_available = exists(go_to_last_page_button_pattern)
-        assert (
-            go_to_last_page_button_available
-        ), "'Go to last page' button available in 'Tools' menu"
+        assert go_to_last_page_button_available, "'Go to last page' button available in 'Tools' menu"
 
         click(go_to_last_page_button_pattern)
 
-        navigation_via_go_to_last_page_button_works = exists(
-            pdf_file_last_page_contents_pattern
-        )
+        navigation_via_go_to_last_page_button_works = exists(pdf_file_last_page_contents_pattern)
         assert (
             navigation_via_go_to_last_page_button_works
         ), "Navigation via 'Go to last page' button from 'Tools' menu works properly"
 
         tools_button_available = exists(tools_button_pattern)
-        assert (
-            tools_button_available
-        ), "'Tools' button available in In-browser PDF viewer"
+        assert tools_button_available, "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
         rotate_clockwise_button_available = exists(rotate_clockwise_button_pattern)
-        assert (
-            rotate_clockwise_button_available
-        ), "'Rotate clockwise' button available in 'Tools' menu"
+        assert rotate_clockwise_button_available, "'Rotate clockwise' button available in 'Tools' menu"
 
         click(rotate_clockwise_button_pattern)
 
         page_contents_rotated = exists(pdf_file_last_page_contents_rotated_pattern)
-        assert (
-            page_contents_rotated
-        ), "Page contents rotated via 'Rotate clockwise' button"
+        assert page_contents_rotated, "Page contents rotated via 'Rotate clockwise' button"
 
-        rotate_counterclockwise_button_available = exists(
-            rotate_counterclockwise_button_pattern
-        )
+        rotate_counterclockwise_button_available = exists(rotate_counterclockwise_button_pattern)
         assert (
             rotate_counterclockwise_button_available
         ), "'Tools' menu didn't close after rotating page clockwise and contains 'Rotate counterclockwise' button"
@@ -196,16 +152,12 @@ class Test(FirefoxTest):
         click(rotate_counterclockwise_button_pattern)
 
         page_rotated_back = exists(pdf_file_last_page_contents_pattern)
-        assert (
-            page_rotated_back
-        ), "Page contents rotated via 'Rotate counterclockwise' button"
+        assert page_rotated_back, "Page contents rotated via 'Rotate counterclockwise' button"
 
         type(Key.ESC)
 
         tools_button_available = exists(tools_button_pattern)
-        assert (
-            tools_button_available
-        ), "'Tools' button available in In-browser PDF viewer"
+        assert tools_button_available, "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
@@ -214,33 +166,22 @@ class Test(FirefoxTest):
 
         click(hand_tool_button_pattern)
 
-        drag_drop(
-            pdf_file_last_page_contents_pattern,
-            Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT),
-        )
+        drag_drop(pdf_file_last_page_contents_pattern, Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT))
 
         try:
-            content_scrolled_via_hand_tool = wait_vanish(
-                pdf_file_last_page_contents_pattern
-            )
+            content_scrolled_via_hand_tool = wait_vanish(pdf_file_last_page_contents_pattern)
         except FindError:
             raise FindError("Page contents didn't scroll using 'Hand tool'")
 
-        assert (
-            content_scrolled_via_hand_tool
-        ), "Scrolling via 'Hand tool' works properly"
+        assert content_scrolled_via_hand_tool, "Scrolling via 'Hand tool' works properly"
 
         tools_button_available = exists(tools_button_pattern)
-        assert (
-            tools_button_available
-        ), "'Tools' button available in In-browser PDF viewer"
+        assert tools_button_available, "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
         text_selection_tool_available = exists(text_selection_tool_button)
-        assert (
-            text_selection_tool_available
-        ), "'Text selection tool' button available in 'Tools' menu"
+        assert text_selection_tool_available, "'Text selection tool' button available in 'Tools' menu"
 
         click(text_selection_tool_button)
 
@@ -253,40 +194,26 @@ class Test(FirefoxTest):
         assert text_selection_tool_works, "'Text selection tool' works"
 
         tools_button_available = exists(tools_button_pattern)
-        assert (
-            tools_button_available
-        ), "'Tools' button available in In-browser PDF viewer"
+        assert tools_button_available, "'Tools' button available in In-browser PDF viewer"
 
         click(tools_button_pattern)
 
-        document_properties_button_available = exists(
-            document_properties_button_pattern
-        )
-        assert (
-            document_properties_button_available
-        ), "'Document properties' button available in 'Tools' menu"
+        document_properties_button_available = exists(document_properties_button_pattern)
+        assert document_properties_button_available, "'Document properties' button available in 'Tools' menu"
 
         click(document_properties_button_pattern)
 
         document_properties_opened = exists(document_properties_filename_pattern)
-        assert (
-            document_properties_opened
-        ), "'Document properties' popup successfully opened"
+        assert document_properties_opened, "'Document properties' popup successfully opened"
 
         close_button_available = exists(doc_properties_close_button_pattern)
-        assert (
-            close_button_available
-        ), "'Close' button available in 'Document properties' popup"
+        assert close_button_available, "'Close' button available in 'Document properties' popup"
 
         click(doc_properties_close_button_pattern)
-        time.sleep(
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )  # To prevent matching popup being opened while it closes
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # To prevent matching popup being opened while it closes
 
         document_properties_opened = exists(document_properties_filename_pattern)
-        assert (
-            document_properties_opened is not True
-        ), "'Document properties' popup successfully closed"
+        assert document_properties_opened is not True, "'Document properties' popup successfully closed"
 
         jump_to_page_field_available = exists(jump_to_page_field_pattern)
         assert jump_to_page_field_available, "'Jump to page' field available"
@@ -298,6 +225,4 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         first_page_opened = exists(pdf_file_page_contents_pattern)
-        assert (
-            first_page_opened
-        ), "The requested page number is shown using 'Jump to page' field"
+        assert first_page_opened, "The requested page number is shown using 'Jump to page' field"

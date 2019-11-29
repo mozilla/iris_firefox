@@ -18,10 +18,8 @@ class Test(FirefoxTest):
     def run(self, firefox):
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         delete_option_pattern = Pattern("delete_bookmark.png")
-        firefox_bookmark_top_menu_pattern = Pattern(
-            "firefox_bookmark_top_menu.png"
-        ).similar(0.9)
-        other_bookmarks_pattern = Pattern("other_bookmarks.png")
+        firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png").similar(0.9)
+        other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
 
         open_firefox_menu()
 
@@ -36,9 +34,7 @@ class Test(FirefoxTest):
         click(other_bookmarks_pattern)
 
         other_bookmarks_displayed = exists(firefox_bookmark_top_menu_pattern)
-        assert (
-            other_bookmarks_displayed is True
-        ), '"Other bookmarks" section is displayed'
+        assert other_bookmarks_displayed is True, '"Other bookmarks" section is displayed'
 
         other_bookmarks_location_y = find(other_bookmarks_pattern).y
         firefox_bookmark_item_y = find(firefox_bookmark_top_menu_pattern).y
@@ -50,9 +46,7 @@ class Test(FirefoxTest):
         right_click(firefox_bookmark_top_menu_pattern)
 
         bookmark_context_menu_displayed = exists(delete_option_pattern)
-        assert (
-            bookmark_context_menu_displayed is True
-        ), "Bookmark context menu is displayed"
+        assert bookmark_context_menu_displayed is True, "Bookmark context menu is displayed"
 
         click(delete_option_pattern)
 

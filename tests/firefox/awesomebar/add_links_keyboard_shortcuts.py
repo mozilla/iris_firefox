@@ -28,9 +28,7 @@ class Test(FirefoxTest):
 
         close_content_blocking_pop_up()
 
-        expected = region.exists(
-            LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        expected = region.exists(LocalWeb.CNN_LOGO, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected, "CNN page successfully loaded ."
 
         new_tab()
@@ -42,9 +40,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         key_up(Key.CTRL)
 
-        expected = region.exists(
-            facebook_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        expected = region.exists(facebook_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected, "Facebook page successfully loaded."
 
         previous_tab()
@@ -54,7 +50,5 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         key_up(Key.CTRL)
 
-        expected = region.exists(
-            cnn_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        expected = region.exists(cnn_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected, "CNN page successfully reloaded."

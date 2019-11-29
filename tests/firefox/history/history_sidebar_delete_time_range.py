@@ -37,6 +37,4 @@ class Test(FirefoxTest):
         right_click_and_type(history_today_sidebar_pattern, keyboard_action="d")
 
         expected_4 = exists(history_today_sidebar_pattern, 5)
-        assert (
-            expected_4 is not True
-        ), "Time range was deleted successfully from the history sidebar."
+        assert expected_4 is not True, "Time range was deleted successfully from the history sidebar."

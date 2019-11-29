@@ -8,36 +8,25 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Delete a bookmark from Library",
-        locale=["en-US"],
-        test_case_id="169267",
-        test_suite_id="2525",
+        description="Delete a bookmark from Library", locale=["en-US"], test_case_id="169267", test_suite_id="2525"
     )
     def run(self, firefox):
         soap_wiki_tab_pattern = Pattern("soap_wiki_tab.png")
         delete_bookmark_pattern = Pattern("delete_bookmark.png")
 
-        stardialog_region = Region(
-            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT
-        )
+        stardialog_region = Region(Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT)
 
         home_width, home_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened is True, "Soap wiki page opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            stardialog_region,
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT, stardialog_region)
         assert stardialog_displayed is True, "Bookmark page dialog displayed"
 
         click(Bookmarks.StarDialog.DONE, 0, stardialog_region)
@@ -56,12 +45,8 @@ class Test(FirefoxTest):
 
         click(Library.OTHER_BOOKMARKS)
 
-        wiki_bookmark_added = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            wiki_bookmark_added is True
-        ), "The Wikipedia bookmark is successfully added"
+        wiki_bookmark_added = exists(soap_wiki_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert wiki_bookmark_added is True, "The Wikipedia bookmark is successfully added"
 
         right_click(soap_wiki_tab_pattern)
 

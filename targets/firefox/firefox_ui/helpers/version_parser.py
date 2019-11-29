@@ -113,10 +113,6 @@ def check_version(version, running_condition):
         if version_dict[operator_key] == "!=":
             return current_version != version_dict[version_key]
         if version_dict[operator_key] == "-":
-            return (
-                version_dict[version_key][0]
-                <= current_version
-                <= version_dict[version_key][1]
-            )
+            return version_dict[version_key][0] <= current_version <= version_dict[version_key][1]
 
     return False

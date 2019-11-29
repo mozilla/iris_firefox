@@ -33,23 +33,15 @@ class Test(FirefoxTest):
         Mouse().general_click(location_to_open)
 
         # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(
-            scroll_content_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        before_scroll_content_exists = exists(scroll_content_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert before_scroll_content_exists is True, "The page content is loaded"
 
         click(scroll_content_pattern)
 
         after_scroll_content_exists = scroll_until_pattern_found(
-            after_scroll_content_pattern,
-            Mouse().scroll,
-            (0, -value),
-            100,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
+            after_scroll_content_pattern, Mouse().scroll, (0, -value), 100, FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3
         )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll down using mouse wheel on the long web page is successful"
+        assert after_scroll_content_exists is True, "Scroll down using mouse wheel on the long web page is successful"
 
         [zoom_in() for _ in range(2)]
 
@@ -60,6 +52,4 @@ class Test(FirefoxTest):
             100,
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
         )
-        assert (
-            after_scroll_content_exists is True
-        ), "Scroll up using mouse wheel after zooming is successful"
+        assert after_scroll_content_exists is True, "Scroll up using mouse wheel after zooming is successful"

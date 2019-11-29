@@ -24,33 +24,21 @@ class Test(FirefoxTest):
 
         new_tab()
         navigate("about:blank")
-        time.sleep(
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )  # Pattern of new tab will be found before loading about:blank
+        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)  # Pattern of new tab will be found before loading about:blank
 
-        about_blank_tab = exists(
-            blank_white_squre_400_200_pattern,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
-            center_region,
-        )
+        about_blank_tab = exists(blank_white_squre_400_200_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT, center_region)
         assert about_blank_tab, "about:blank website loaded successfully"
 
         firefox.restart(image=LocalWeb.IRIS_LOGO_ACTIVE_TAB)
 
-        click_hamburger_menu_option("Restore Previous Session")
+        open_hamburger_menu("Restore Previous Session")
 
         close_tab()
 
-        top_sites_available = exists(
-            Utils.TOP_SITES, FirefoxSettings.TINY_FIREFOX_TIMEOUT, Screen.LEFT_HALF
-        )
+        top_sites_available = exists(Utils.TOP_SITES, FirefoxSettings.TINY_FIREFOX_TIMEOUT, Screen.LEFT_HALF)
         assert top_sites_available, "about:newtab website restored successfully"
 
         next_tab()
 
-        about_blank_tab = exists(
-            blank_white_squre_400_200_pattern,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
-            center_region,
-        )
+        about_blank_tab = exists(blank_white_squre_400_200_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT, center_region)
         assert about_blank_tab, "about:blank website restored successfully"

@@ -23,9 +23,7 @@ class Test(FirefoxTest):
         always_private_pattern = Pattern("always_private.png")
         autocomplete_pattern = Pattern("word_autocomplete.png")
         remember_all_history_pattern = Pattern("remember_history.png")
-        remember_browsing_history_pattern = Pattern(
-            "remember_browsing_download_history.png"
-        )
+        remember_browsing_history_pattern = Pattern("remember_browsing_download_history.png")
         clear_history_closing_pattern = Pattern("clear_history_when_closes.png")
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
         remember_search_history_pattern = Pattern("remember_search_form_history.png")
@@ -46,30 +44,23 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
         preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert preferences_opened, "Preferences page is opened"
 
         time.sleep(ui_timeout)
         paste("Firefox will")
-        history_preferences_reachable = exists(
-            remember_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        history_preferences_reachable = exists(remember_all_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_preferences_reachable, "History menu is reachable"
 
         click(remember_all_history_pattern)
 
-        history_menu_opened = exists(
-            custom_history_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        history_menu_opened = exists(custom_history_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_menu_opened, "History preferences menu is opened"
 
         click(custom_history_settings_pattern)
 
-        custom_history_settings_opened = exists(
-            always_private_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        custom_history_settings_opened = exists(always_private_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert custom_history_settings_opened, "Custom history list is displayed"
 
         always_private_location = find(always_private_pattern)
@@ -82,9 +73,7 @@ class Test(FirefoxTest):
             always_private_height,
         )
 
-        always_private_unchecked = exists(
-            prefs_unchecked_box_pattern, region=always_private_region
-        )
+        always_private_unchecked = exists(prefs_unchecked_box_pattern, region=always_private_region)
         assert always_private_unchecked, '"Always use private browsing mode" is off'
 
         click(prefs_unchecked_box_pattern, region=always_private_region)
@@ -94,29 +83,22 @@ class Test(FirefoxTest):
 
         click(restart_browser_pattern)
 
-        browser_closed = wait_vanish(
-            NavBar.SIDEBAR_MENU, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        browser_closed = wait_vanish(NavBar.SIDEBAR_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_closed, "Browser is closed"
 
-        browser_restarted = exists(
-            NavBar.SIDEBAR_MENU.similar(0.9), Settings.site_load_timeout
-        )
+        browser_restarted = exists(NavBar.SIDEBAR_MENU.similar(0.9), Settings.site_load_timeout)
         assert browser_restarted, "Browser restarted"
 
         navigate("about:preferences#privacy")
 
         preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert preferences_opened, "Preferences page is opened"
 
         time.sleep(ui_timeout)
         paste("Firefox will")
-        always_private_option_displayed = exists(
-            always_private_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        always_private_option_displayed = exists(always_private_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert always_private_option_displayed, '"Always private" option is reachable'
 
         always_private_location = find(always_private_pattern)
@@ -129,21 +111,15 @@ class Test(FirefoxTest):
             always_private_height,
         )
 
-        always_private_checked = exists(
-            prefs_checked_box_pattern, region=always_private_region
-        )
+        always_private_checked = exists(prefs_checked_box_pattern, region=always_private_region)
         assert always_private_checked, '"Always use private browsing mode" is on'
 
-        remember_browsing_displayed = exists(
-            remember_browsing_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        remember_browsing_displayed = exists(remember_browsing_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert remember_browsing_displayed, '"Remember browsing" is displayed'
 
         remember_browsing_history_location = find(remember_browsing_history_pattern)
 
-        remember_browsing_history_width, remember_browsing_history_height = (
-            remember_browsing_history_pattern.get_size()
-        )
+        remember_browsing_history_width, remember_browsing_history_height = remember_browsing_history_pattern.get_size()
         remember_browsing_history_region = Region(
             remember_browsing_history_location.x - box_width * 2,
             remember_browsing_history_location.y,
@@ -154,31 +130,21 @@ class Test(FirefoxTest):
         remember_browsing_history_unchecked = exists(
             prefs_unchecked_box_pattern, region=remember_browsing_history_region
         )
-        assert (
-            remember_browsing_history_unchecked
-        ), '"Always use private browsing mode" is off'
+        assert remember_browsing_history_unchecked, '"Always use private browsing mode" is off'
 
-        click(
-            prefs_unchecked_box_pattern,
-            quick_click_duration,
-            remember_browsing_history_region,
-        )
+        click(prefs_unchecked_box_pattern, quick_click_duration, remember_browsing_history_region)
 
         remember_browsing_history_grayed_out = exists(
             prefs_unchecked_box_pattern, region=remember_browsing_history_region
         )
-        assert (
-            remember_browsing_history_grayed_out
-        ), '"Always use private browsing mode" is grayed out'
+        assert remember_browsing_history_grayed_out, '"Always use private browsing mode" is grayed out'
 
         remember_search_history_displayed = exists(remember_search_history_pattern)
         assert remember_search_history_displayed, '"Remember browsing" is displayed'
 
         remember_search_history_location = find(remember_search_history_pattern)
 
-        remember_search_history_width, remember_search_history_height = (
-            remember_search_history_pattern.get_size()
-        )
+        remember_search_history_width, remember_search_history_height = remember_search_history_pattern.get_size()
         remember_search_history_region = Region(
             remember_search_history_location.x - box_width * 2,
             remember_search_history_location.y,
@@ -186,38 +152,22 @@ class Test(FirefoxTest):
             remember_search_history_height,
         )
 
-        remember_search_history_unchecked = exists(
-            prefs_unchecked_box_pattern, region=remember_search_history_region
-        )
-        assert (
-            remember_search_history_unchecked
-        ), '"Always use private browsing mode" is off'
+        remember_search_history_unchecked = exists(prefs_unchecked_box_pattern, region=remember_search_history_region)
+        assert remember_search_history_unchecked, '"Always use private browsing mode" is off'
 
-        click(
-            prefs_unchecked_box_pattern,
-            quick_click_duration,
-            remember_search_history_region,
-        )
+        click(prefs_unchecked_box_pattern, quick_click_duration, remember_search_history_region)
 
-        remember_search_history_grayed_out = exists(
-            prefs_unchecked_box_pattern, region=remember_search_history_region
-        )
-        assert (
-            remember_search_history_grayed_out
-        ), '"Always use private browsing mode" is grayed out'
+        remember_search_history_grayed_out = exists(prefs_unchecked_box_pattern, region=remember_search_history_region)
+        assert remember_search_history_grayed_out, '"Always use private browsing mode" is grayed out'
 
         clear_history_closing_displayed = exists(
-            clear_history_closing_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            clear_history_closing_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            clear_history_closing_displayed
-        ), '"Clear history when closed" is displayed'
+        assert clear_history_closing_displayed, '"Clear history when closed" is displayed'
 
         clear_history_closing_location = find(clear_history_closing_pattern)
 
-        clear_history_closing_width, clear_history_closing_height = (
-            clear_history_closing_pattern.get_size()
-        )
+        clear_history_closing_width, clear_history_closing_height = clear_history_closing_pattern.get_size()
         clear_history_closing_region = Region(
             clear_history_closing_location.x - box_width * 2,
             clear_history_closing_location.y,
@@ -225,20 +175,12 @@ class Test(FirefoxTest):
             clear_history_closing_height,
         )
 
-        clear_history_unchecked = exists(
-            prefs_unchecked_box_pattern, region=clear_history_closing_region
-        )
+        clear_history_unchecked = exists(prefs_unchecked_box_pattern, region=clear_history_closing_region)
         assert clear_history_unchecked, '"Clear history" is unchecked'
 
-        click(
-            prefs_unchecked_box_pattern,
-            quick_click_duration,
-            clear_history_closing_region,
-        )
+        click(prefs_unchecked_box_pattern, quick_click_duration, clear_history_closing_region)
 
-        clear_history_grayed_out = exists(
-            prefs_unchecked_box_pattern, region=clear_history_closing_region
-        )
+        clear_history_grayed_out = exists(prefs_unchecked_box_pattern, region=clear_history_closing_region)
         assert clear_history_grayed_out, '"Clear history" is grayed out'
 
         navigate(html_form)
@@ -249,9 +191,7 @@ class Test(FirefoxTest):
 
         paste("random")
 
-        password_field_reachable = exists(
-            password_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        password_field_reachable = exists(password_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert password_field_reachable, "Password field is reachable"
 
         click(password_field_pattern)
@@ -260,9 +200,7 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        name_field_still_visible = exists(
-            name_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        name_field_still_visible = exists(name_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert name_field_still_visible, "Name field is still visible"
 
         click(name_field_pattern)
@@ -286,9 +224,7 @@ class Test(FirefoxTest):
 
         click(download_pdf_pattern)
 
-        save_file_dialog_exists = exists(
-            DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert save_file_dialog_exists, "Save file dialog opened"
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)
@@ -334,29 +270,17 @@ class Test(FirefoxTest):
 
         click(Sidebar.HistorySidebar.SIDEBAR_HISTORY_ICON)
 
-        history_submenu_opened = exists(
-            History.HistoryMenu.VIEW_HISTORY_SIDEBAR, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        history_submenu_opened = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_submenu_opened, "History submenu is opened"
 
-        firefox_page_not_visited = not exists(
-            LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout
-        )
-        assert (
-            firefox_page_not_visited
-        ), "Firefox local page visit was'nt saved in history"
+        firefox_page_not_visited = not exists(LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout)
+        assert firefox_page_not_visited, "Firefox local page visit was'nt saved in history"
 
-        focus_page_not_visited = not exists(
-            LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout
-        )
+        focus_page_not_visited = not exists(LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout)
         assert focus_page_not_visited, "Focus local page visit was'nt saved in history"
 
-        pocket_page_not_visited = not exists(
-            LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout
-        )
-        assert (
-            pocket_page_not_visited
-        ), "Pocket local page visit was'nt saved in history"
+        pocket_page_not_visited = not exists(LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout)
+        assert pocket_page_not_visited, "Pocket local page visit was'nt saved in history"
 
         restore_firefox_focus()
 

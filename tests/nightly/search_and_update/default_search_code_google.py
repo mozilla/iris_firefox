@@ -38,10 +38,7 @@ class Test(FirefoxTest):
         test_case_id="218333",
         test_suite_id="83",
         profile=Profiles.BRAND_NEW,
-        preferences={
-            "browser.search.region": fx_region_code,
-            "browser.search.cohort": "nov17-1",
-        },
+        preferences={"browser.search.region": fx_region_code, "browser.search.cohort": "nov17-1"},
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
@@ -51,18 +48,12 @@ class Test(FirefoxTest):
         change_preference("browser.search.widget.inNavBar", True)
         change_preference("browser.tabs.warnOnClose", True)
 
-        default_search_engine_google_pattern = Pattern(
-            "default_search_engine_google.png"
-        ).similar(0.6)
-        google_logo_content_search_field_pattern = Pattern(
-            "google_logo_content_search_field.png"
-        )
+        default_search_engine_google_pattern = Pattern("default_search_engine_google.png").similar(0.6)
+        google_logo_content_search_field_pattern = Pattern("google_logo_content_search_field.png")
 
         navigate("about:preferences#search")
 
-        default_search_engine_check = exists(
-            default_search_engine_google_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        default_search_engine_check = exists(default_search_engine_google_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert default_search_engine_check, "Google is the default search engine."
 
         # Perform a search using the awesome bar and then clear the content from it.
@@ -79,41 +70,21 @@ class Test(FirefoxTest):
             or FirefoxUtils.get_firefox_channel(firefox.application.path) == "release"
         ):
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-d&q=lincoln"
-                ), (
-                    "Client search code is correct for searches from awesome bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-d&q=lincoln", (
+                    "Client search code is correct for searches from awesome bar, region " + fx_region_code + "."
                 )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-d&q=lincoln"
-                ), (
-                    "Client search code is correct for searches from awesome bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-d&q=lincoln", (
+                    "Client search code is correct for searches from awesome bar, region " + fx_region_code + "."
                 )
         elif FirefoxUtils.get_firefox_channel(firefox.application.path) == "esr":
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-e&q=lincoln"
-                ), (
-                    "Client search code is correct for searches from awesome bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-e&q=lincoln", (
+                    "Client search code is correct for searches from awesome bar, region " + fx_region_code + "."
                 )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-e&q=lincoln"
-                ), (
-                    "Client search code is correct for searches from awesome bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-e&q=lincoln", (
+                    "Client search code is correct for searches from awesome bar, region " + fx_region_code + "."
                 )
 
         select_location_bar()
@@ -133,42 +104,22 @@ class Test(FirefoxTest):
             or FirefoxUtils.get_firefox_channel(firefox.application.path) == "release"
         ):
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-d&q=atom"
-                ), (
-                    "Client search code is correct for searches from search bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-d&q=atom", (
+                    "Client search code is correct for searches from search bar, region " + fx_region_code + "."
                 )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-d&q=atom"
-                ), (
-                    "Client search code is correct for searches from search bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-d&q=atom", (
+                    "Client search code is correct for searches from search bar, region " + fx_region_code + "."
                 )
 
         elif FirefoxUtils.get_firefox_channel(firefox.application.path) == "esr":
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-e&q=atom"
-                ), (
-                    "Client search code is correct for searches from search bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-e&q=atom", (
+                    "Client search code is correct for searches from search bar, region " + fx_region_code + "."
                 )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-e&q=atom"
-                ), (
-                    "Client search code is correct for searches from search bar, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-e&q=atom", (
+                    "Client search code is correct for searches from search bar, region " + fx_region_code + "."
                 )
 
         # Highlight some text and right click it.
@@ -176,9 +127,7 @@ class Test(FirefoxTest):
 
         navigate(url)
 
-        focus_page_loaded = exists(
-            text_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        focus_page_loaded = exists(text_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert focus_page_loaded, "Page successfully loaded, focus text found."
 
         double_click(text_pattern)
@@ -196,33 +145,27 @@ class Test(FirefoxTest):
             or FirefoxUtils.get_firefox_channel(firefox.application.path) == "release"
         ):
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-d&q=Focus"
-                ), ("Client search code is correct, region " + fx_region_code + ".")
+                assert url_text == "https://www.google.com/search?client=firefox-b-d&q=Focus", (
+                    "Client search code is correct, region " + fx_region_code + "."
+                )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-d&q=Focus"
-                ), ("Client search code is correct, region " + fx_region_code + ".")
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-d&q=Focus", (
+                    "Client search code is correct, region " + fx_region_code + "."
+                )
         elif FirefoxUtils.get_firefox_channel(firefox.application.path) == "esr":
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-e&q=Focus"
-                ), ("Client search code is correct, region " + fx_region_code + ".")
+                assert url_text == "https://www.google.com/search?client=firefox-b-e&q=Focus", (
+                    "Client search code is correct, region " + fx_region_code + "."
+                )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-e&q=Focus"
-                ), ("Client search code is correct, region " + fx_region_code + ".")
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-e&q=Focus", (
+                    "Client search code is correct, region " + fx_region_code + "."
+                )
 
         # Perform a search from about:newtab page, content search field.
         new_tab()
 
-        google_logo_found = exists(
-            google_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        google_logo_found = exists(google_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert google_logo_found, "Google logo from content search field found."
 
         click(google_logo_content_search_field_pattern)
@@ -239,37 +182,21 @@ class Test(FirefoxTest):
             or FirefoxUtils.get_firefox_channel(firefox.application.path) == "release"
         ):
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-d&q=boat"
-                ), (
+                assert url_text == "https://www.google.com/search?client=firefox-b-d&q=boat", (
                     "Client search code is correct for searches from about:newtab page, content search field, "
                     "region " + fx_region_code + "."
                 )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-d&q=boat"
-                ), (
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-d&q=boat", (
                     "Client search code is correct for searches from about:newtab page, content search field, "
                     "region " + fx_region_code + "."
                 )
         elif FirefoxUtils.get_firefox_channel(firefox.application.path) == "esr":
             if fx_region_code != "US":
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-e&q=boat"
-                ), (
-                    "Client search code is correct for searches from about:newtab pageq, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-e&q=boat", (
+                    "Client search code is correct for searches from about:newtab pageq, region " + fx_region_code + "."
                 )
             else:
-                assert (
-                    url_text
-                    == "https://www.google.com/search?client=firefox-b-1-e&q=boat"
-                ), (
-                    "Client search code is correct for searches from about:newtab page, region "
-                    + fx_region_code
-                    + "."
+                assert url_text == "https://www.google.com/search?client=firefox-b-1-e&q=boat", (
+                    "Client search code is correct for searches from about:newtab page, region " + fx_region_code + "."
                 )

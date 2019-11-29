@@ -40,19 +40,13 @@ class Test(FirefoxTest):
         for index in range(6):
             new_tab()
             navigate(local_url[index])
-            website_loaded = exists(
-                website_image_pattern[index], FirefoxSettings.SITE_LOAD_TIMEOUT
-            )
+            website_loaded = exists(website_image_pattern[index], FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert website_loaded, f"Website {index + 1} loaded"
 
         [close_tab() for _ in range(5)]
 
-        one_tab_exists = exists(
-            website_image_pattern[0], FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            one_tab_exists
-        ), "One opened tab left. All 5 tabs were successfully closed."
+        one_tab_exists = exists(website_image_pattern[0], FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert one_tab_exists, "One opened tab left. All 5 tabs were successfully closed."
 
         # show menu bar
         key_down(Key.ALT)
@@ -64,24 +58,17 @@ class Test(FirefoxTest):
             [type(Key.RIGHT) for tab_index in range(5)]
             type(Key.ENTER)
         else:
-            history_menu_bar_exists = exists(
-                history_menu_bar_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-            )
+            history_menu_bar_exists = exists(history_menu_bar_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert history_menu_bar_exists, "History menu bar is visible."
             click(history_menu_bar_pattern)
 
-        recently_closed_menu = exists(
-            recently_closed_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            recently_closed_menu
-        ), "The History's button context menu is opened. Recently Closed Tabs is visible."
+        recently_closed_menu = exists(recently_closed_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert recently_closed_menu, "The History's button context menu is opened. Recently Closed Tabs is visible."
 
         click(recently_closed_pattern)
         tabs_list_exists = exists(tabs_list_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert tabs_list_exists, (
-            "Previously Opened Tabs list exists. A new menu "
-            "is displayed containing the recently closed tabs"
+            "Previously Opened Tabs list exists. A new menu " "is displayed containing the recently closed tabs"
         )
 
         restore_tabs = exists(restore_tabs_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -97,19 +84,11 @@ class Test(FirefoxTest):
         tabs_count = len(website_image_pattern)
         for tab_index in range(6):
             if len(website_image_pattern) == 1:
-                one_tab_left = exists(
-                    website_image_pattern[0], FirefoxSettings.SITE_LOAD_TIMEOUT
-                )
-                assert (
-                    one_tab_left
-                ), f"All {tabs_count - 1} closed tabs are successfully reopened."
+                one_tab_left = exists(website_image_pattern[0], FirefoxSettings.SITE_LOAD_TIMEOUT)
+                assert one_tab_left, f"All {tabs_count - 1} closed tabs are successfully reopened."
 
             else:
-                tab_exists = exists(
-                    website_image_pattern.pop(), FirefoxSettings.SITE_LOAD_TIMEOUT
-                )
-                assert (
-                    tab_exists
-                ), f"Tab {tabs_count - tab_index} successfully reopened."
+                tab_exists = exists(website_image_pattern.pop(), FirefoxSettings.SITE_LOAD_TIMEOUT)
+                assert tab_exists, f"Tab {tabs_count - tab_index} successfully reopened."
 
                 previous_tab()

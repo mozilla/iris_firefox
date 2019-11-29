@@ -8,18 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Search Code Testing: DuckDuckGo - US.",
-        locale=["en-US"],
-        test_case_id="218335",
-        test_suite_id="83",
+        description="Search Code Testing: DuckDuckGo - US.", locale=["en-US"], test_case_id="218335", test_suite_id="83"
     )
     def run(self, firefox):
-        default_search_engine_google_pattern = Pattern(
-            "default_search_engine_google.png"
-        )
-        default_search_engine_dropdown_pattern = Pattern(
-            "default_search_engine_dropdown.png"
-        )
+        default_search_engine_google_pattern = Pattern("default_search_engine_google.png")
+        default_search_engine_dropdown_pattern = Pattern("default_search_engine_dropdown.png")
         test_search_duckduckgo_pattern = Pattern("test_search_duckduckgo.png")
 
         change_preference("browser.search.widget.inNavBar", True)
@@ -27,20 +20,15 @@ class Test(FirefoxTest):
         navigate("about:preferences#search")
 
         default_search_engine_google_exists = exists(
-            default_search_engine_google_pattern.similar(0.7),
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            default_search_engine_google_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            default_search_engine_google_exists is True
-        ), "Google is the default search engine."
+        assert default_search_engine_google_exists is True, "Google is the default search engine."
 
         # Change the default search engine to DuckDuckGo.
         default_search_engine_dropdown_exists = exists(
             default_search_engine_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            default_search_engine_dropdown_exists is True
-        ), "Default search engine dropdown exists"
+        assert default_search_engine_dropdown_exists is True, "Default search engine dropdown exists"
 
         click(default_search_engine_dropdown_pattern)
         repeat_key_down(3)
@@ -50,12 +38,8 @@ class Test(FirefoxTest):
         type("test", interval=0.25)
         type(Key.ENTER)
 
-        test_search_duckduckgo_exists = exists(
-            test_search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            test_search_duckduckgo_exists is True
-        ), "The search is performed with the DuckDuckGo engine."
+        test_search_duckduckgo_exists = exists(test_search_duckduckgo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert test_search_duckduckgo_exists is True, "The search is performed with the DuckDuckGo engine."
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 

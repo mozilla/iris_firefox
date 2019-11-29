@@ -16,9 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         when_you_open_link_checked_pattern = Pattern("when_you_open_link_checked.png")
-        when_you_open_link_unchecked_pattern = Pattern(
-            "when_you_open_link_unchecked.png"
-        )
+        when_you_open_link_unchecked_pattern = Pattern("when_you_open_link_unchecked.png")
         page_one_active_tab_pattern = Pattern("page_one_active_tab.png")
         page_two_active_tab_pattern = Pattern("page_two_active_tab.png")
         page_one_inactive_tab_pattern = Pattern("page_one_inactive_tab.png")
@@ -48,17 +46,14 @@ class Test(FirefoxTest):
             when_you_open_link_checked_pattern, AboutPreferences.CHECKED_BOX
         )
         assert when_you_open_link_checked, (
-            '"When you open a link in a new tab, switch to it immediately"'
-            " is checked."
+            '"When you open a link in a new tab, switch to it immediately"' " is checked."
         )
 
         new_tab()
 
         navigate(page_one)
 
-        page_one_active_tab = exists(
-            page_one_active_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        page_one_active_tab = exists(page_one_active_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert page_one_active_tab, "The page is successfully loaded."
 
         page_two_button = exists(page_two_button_pattern)
@@ -68,12 +63,8 @@ class Test(FirefoxTest):
 
         middle_click(page_two_button_pattern)
 
-        page_one_inactive_tab = exists(
-            page_one_inactive_tab_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )
+        page_one_inactive_tab = exists(page_one_inactive_tab_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
         assert page_one_inactive_tab, "Tab one is inactive."
 
         page_two_active_tab = exists(page_two_active_tab_pattern)
-        assert (
-            page_two_active_tab
-        ), "Tab two is active. \n The link opens in a new tab that is immediately focused."
+        assert page_two_active_tab, "Tab two is active. \n The link opens in a new tab that is immediately focused."

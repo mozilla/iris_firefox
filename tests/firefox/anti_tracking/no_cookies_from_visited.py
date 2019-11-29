@@ -16,16 +16,10 @@ class Test(FirefoxTest):
     def run(self, firefox):
         all_cookies_will_cause_pattern = Pattern("all_cookies_will_cause.png")
         block_cookies_ticked_pattern = Pattern("block_cookies_ticked.png").similar(0.9)
-        block_cookies_unticked_pattern = Pattern("block_cookies_unticked.png").similar(
-            0.9
-        )
+        block_cookies_unticked_pattern = Pattern("block_cookies_unticked.png").similar(0.9)
         cookies_window_title_pattern = Pattern("cookies_window_title.png")
-        custom_content_blocking_unticked_pattern = Pattern(
-            "custom_content_blocking_unticked.png"
-        )
-        custom_content_blocking_ticked_patten = Pattern(
-            "custom_content_blocking_ticked.png"
-        ).similar(0.9)
+        custom_content_blocking_unticked_pattern = Pattern("custom_content_blocking_unticked.png")
+        custom_content_blocking_ticked_patten = Pattern("custom_content_blocking_ticked.png").similar(0.9)
         manage_cookies_data_pattern = Pattern("manage_cookies_data.png")
         site_cookies_pattern = Pattern("site_cookies.png")
         youtube_logo_pattern = Pattern("youtube_logo.png")
@@ -38,16 +32,13 @@ class Test(FirefoxTest):
         navigate("about:preferences#privacy")
 
         Mouse().move(
-            Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2),
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2), FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )
 
         preferences_opened = scroll_until_pattern_found(
             custom_content_blocking_unticked_pattern, Mouse().scroll, (0, -value), 100
         )
-        assert (
-            preferences_opened
-        ), 'The "about:preferences#privacy" page is successfully displayed.'
+        assert preferences_opened, 'The "about:preferences#privacy" page is successfully displayed.'
 
         click(custom_content_blocking_unticked_pattern)
 
@@ -63,9 +54,7 @@ class Test(FirefoxTest):
         block_cookies_location = find(block_cookies_ticked_pattern)
 
         option_width, option_height = block_cookies_ticked_pattern.get_size()
-        block_cookies_option_list = Location(
-            block_cookies_location.x + (option_width * 5), block_cookies_location.y
-        )
+        block_cookies_option_list = Location(block_cookies_location.x + (option_width * 5), block_cookies_location.y)
 
         click(block_cookies_option_list)
 
@@ -75,26 +64,18 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        all_cookies_will_cause_websites_to_break = exists(
-            all_cookies_will_cause_pattern
-        )
-        assert (
-            all_cookies_will_cause_websites_to_break
-        ), '"All cookies (will cause websites to break) option is checked'
+        all_cookies_will_cause_websites_to_break = exists(all_cookies_will_cause_pattern)
+        assert all_cookies_will_cause_websites_to_break, '"All cookies (will cause websites to break) option is checked'
 
         navigate("https://www.youtube.com/")
 
-        site_loaded = exists(
-            youtube_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        site_loaded = exists(youtube_logo_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert site_loaded, "The website is successfully displayed."
 
         navigate("about:preferences#privacy")
 
         preferences_opened = exists(custom_content_blocking_ticked_patten)
-        assert (
-            preferences_opened
-        ), 'The "about:preferences#privacy" page is successfully displayed.'
+        assert preferences_opened, 'The "about:preferences#privacy" page is successfully displayed.'
 
         paste("manage data")
 

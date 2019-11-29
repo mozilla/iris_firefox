@@ -25,9 +25,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
-        download_cancelled_pattern = DownloadManager.DownloadState.CANCELLED.similar(
-            0.6
-        )
+        download_cancelled_pattern = DownloadManager.DownloadState.CANCELLED.similar(0.6)
         region = Screen.TOP_THIRD
 
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)

@@ -15,44 +15,29 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        getting_started_toolbar_bookmark_pattern = Pattern(
-            "getting_started_in_toolbar.png"
-        )
+        getting_started_toolbar_bookmark_pattern = Pattern("getting_started_in_toolbar.png")
         mozilla_support_logo_pattern = Pattern("mozilla_support_logo.png")
         open_all_in_tabs_option_pattern = Pattern("open_all_in_tabs.png")
 
         open_bookmarks_toolbar()
 
-        toolbar_opened = exists(
-            getting_started_toolbar_bookmark_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-        )
+        toolbar_opened = exists(getting_started_toolbar_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert toolbar_opened, "The Bookmarks Toolbar is successfully enabled."
 
-        getting_started_bookmark_location = find(
-            getting_started_toolbar_bookmark_pattern
-        )
+        getting_started_bookmark_location = find(getting_started_toolbar_bookmark_pattern)
         click_location_x_offset = Screen.SCREEN_WIDTH // 2
-        click_location_y_offset = (
-            getting_started_toolbar_bookmark_pattern.get_size()[1] // 2
-        )
+        click_location_y_offset = getting_started_toolbar_bookmark_pattern.get_size()[1] // 2
 
-        getting_started_bookmark_location.offset(
-            click_location_x_offset, click_location_y_offset
-        )
+        getting_started_bookmark_location.offset(click_location_x_offset, click_location_y_offset)
 
         right_click(getting_started_bookmark_location)
 
         open_all_in_tabs_option_available = exists(open_all_in_tabs_option_pattern)
-        assert (
-            open_all_in_tabs_option_available
-        ), "Context menu is opened, 'Open all in tabs' option available"
+        assert open_all_in_tabs_option_available, "Context menu is opened, 'Open all in tabs' option available"
 
         click(open_all_in_tabs_option_pattern)
 
-        getting_started_page_opened = exists(
-            mozilla_support_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        getting_started_page_opened = exists(mozilla_support_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         getting_started_opened_in_separate_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
         assert (
             getting_started_page_opened and getting_started_opened_in_separate_tab

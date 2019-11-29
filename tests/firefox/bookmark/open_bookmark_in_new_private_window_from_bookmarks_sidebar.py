@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         open_in_new_window_option_pattern = Pattern("open_in_new_private_window.png")
 
         if OSHelper.is_mac():
-            other_bookmarks_pattern = Pattern("other_bookmarks.png")
+            other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
         else:
             other_bookmarks_pattern = Library.OTHER_BOOKMARKS
 
@@ -30,41 +30,27 @@ class Test(FirefoxTest):
         bookmarks_sidebar_menu_exists = exists(
             bookmarks_sidebar_menu_header_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_sidebar_menu_exists is True
-        ), "Bookmarks Sidebar is correctly displayed."
+        assert bookmarks_sidebar_menu_exists is True, "Bookmarks Sidebar is correctly displayed."
 
-        other_bookmarks_exists = exists(
-            other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        other_bookmarks_exists = exists(other_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert other_bookmarks_exists is True, "Other bookmarks exists"
 
         click(other_bookmarks_pattern)
 
-        firefox_sidebar_logo_exists = exists(
-            firefox_sidebar_logo_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        firefox_sidebar_logo_exists = exists(firefox_sidebar_logo_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert firefox_sidebar_logo_exists is True, "Firefox bookmark exists"
 
         right_click(firefox_sidebar_logo_pattern)
 
-        open_option_exists = exists(
-            open_in_new_window_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        open_option_exists = exists(open_in_new_window_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert open_option_exists is True, "Open in New Private Window option exists"
 
         click(open_in_new_window_option_pattern)
 
-        firefox_full_logo_exists = exists(
-            LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        firefox_full_logo_exists = exists(LocalWeb.FIREFOX_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_full_logo_exists is True, "Firefox content exists"
 
-        new_private_window_exists = exists(
-            new_private_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            new_private_window_exists is True
-        ), "The page is correctly opened in a new private window."
+        new_private_window_exists = exists(new_private_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert new_private_window_exists is True, "The page is correctly opened in a new private window."
 
         close_window()

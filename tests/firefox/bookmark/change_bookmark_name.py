@@ -21,15 +21,11 @@ class Test(FirefoxTest):
         save_pattern = Pattern("save_bookmark_name.png")
         toolbar_bookmark_pattern = Pattern("moz_toolbar_bookmark.png")
         modified_toolbar_bookmark_pattern = Pattern("moz_modified_toolbar_bookmark.png")
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."
 
         bookmark_page()
@@ -46,12 +42,8 @@ class Test(FirefoxTest):
 
         paste("iris")
 
-        bookmark_name_assert = exists(
-            modified_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_name_assert is True
-        ), "The name of the bookmark is successfully modified."
+        bookmark_name_assert = exists(modified_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_name_assert is True, "The name of the bookmark is successfully modified."
 
         right_click(modified_bookmark_pattern)
 
@@ -61,20 +53,14 @@ class Test(FirefoxTest):
         click(properties_pattern)
 
         properties_window_assert = exists(save_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            properties_window_assert is True
-        ), "Properties window is present on the page."
+        assert properties_window_assert is True, "Properties window is present on the page."
 
         paste("iris_sidebar")
 
         click(save_pattern)
 
-        bookmark_name_sidebar = exists(
-            modified_bookmark_2_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_name_sidebar is True
-        ), "The name of the bookmark is successfully modified."
+        bookmark_name_sidebar = exists(modified_bookmark_2_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_name_sidebar is True, "The name of the bookmark is successfully modified."
 
         access_bookmarking_tools(view_bookmarks_toolbar_pattern)
 
@@ -83,12 +69,8 @@ class Test(FirefoxTest):
         navigate("about:blank")
         bookmarks_sidebar("close")
 
-        toolbar_bookmark_assert = exists(
-            toolbar_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            toolbar_bookmark_assert is True
-        ), "Name of the bookmark can be changed from the toolbar."
+        toolbar_bookmark_assert = exists(toolbar_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert toolbar_bookmark_assert is True, "Name of the bookmark can be changed from the toolbar."
 
         right_click(toolbar_bookmark_pattern)
 
@@ -98,17 +80,11 @@ class Test(FirefoxTest):
         click(properties_pattern)
 
         properties_window_assert = exists(save_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            properties_window_assert is True
-        ), "Properties window is present on the page."
+        assert properties_window_assert is True, "Properties window is present on the page."
 
         paste("iris_toolbar")
 
         click(save_pattern)
 
-        bookmark_name_toolbar = exists(
-            modified_toolbar_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_name_toolbar is True
-        ), "The name of the bookmark is successfully modified."
+        bookmark_name_toolbar = exists(modified_toolbar_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_name_toolbar is True, "The name of the bookmark is successfully modified."

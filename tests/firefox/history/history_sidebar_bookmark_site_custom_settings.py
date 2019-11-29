@@ -21,11 +21,9 @@ class Test(FirefoxTest):
         save_bookmark_button_pattern = Pattern("save_bookmark_name.png")
         library_bookmarks_mozilla_custom_settings_pattern = Pattern(
             "library_bookmarks_mozilla_custom_settings.png"
-        )
+        ).similar(0.7)
         if OSHelper.is_mac():
-            new_bookmark_folder_bookmarks_menu_pattern = Pattern(
-                "new_bookmark_folder_bookmarks_menu.png"
-            )
+            new_bookmark_folder_bookmarks_menu_pattern = Pattern("new_bookmark_folder_bookmarks_menu.png")
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -80,8 +78,6 @@ class Test(FirefoxTest):
         open_library()
 
         expected_7 = exists(library_bookmarks_mozilla_custom_settings_pattern, 10)
-        assert (
-            expected_7
-        ), "Mozilla page is bookmarked with custom name and tags in a different folder."
+        assert expected_7, "Mozilla page is bookmarked with custom name and tags in a different folder."
 
         click_window_control("close")

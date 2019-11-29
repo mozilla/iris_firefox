@@ -30,9 +30,7 @@ class Test(FirefoxTest):
         click(AboutConfig.ACCEPT_RISK.similar(0.7))
 
         expected = region.exists(AboutConfig.DEFAULT_STATUS_PATTERN, 10)
-        assert (
-            expected is True
-        ), "The 'about:config' page successfully loaded and default status is correct."
+        assert expected is True, "The 'about:config' page successfully loaded and default status is correct."
 
         paste("intl.uidirection")
         type(Key.ENTER)
@@ -104,80 +102,54 @@ class Test(FirefoxTest):
         downloads_button = find(NavBar.DOWNLOADS_BUTTON)
         show_all_downloads_button = find(DownloadManager.SHOW_ALL_DOWNLOADS)
 
-        expected = region_left.exists(
-            DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL, 10
-        )
+        expected = region_left.exists(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL, 10)
         assert expected is True, "The 20MB download is complete and aligned RTL."
 
         file_20_mb = find(DownloadFiles.DOWNLOADS_PANEL_20MB_COMPLETED_RTL)
-        region_20_mb = Region(
-            file_20_mb.x,
-            file_20_mb.y - 10,
-            file_20_mb.x,
-            show_all_downloads_button.y - file_20_mb.y,
-        )
+        region_20_mb = Region(file_20_mb.x, file_20_mb.y - 10, file_20_mb.x, show_all_downloads_button.y - file_20_mb.y)
 
-        expected = region_20_mb.exists(
-            DownloadFiles.DOWNLOAD_TYPE_ICON, 10
-        ) or region_20_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10)
+        expected = region_20_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10) or region_20_mb.exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10
+        )
         assert expected is True, "20 MB file icon is aligned RTL."
         region_20_mb_containing_folder = Region(
-            downloads_button.x,
-            file_20_mb.y,
-            file_20_mb.x,
-            show_all_downloads_button.y - file_20_mb.y,
+            downloads_button.x, file_20_mb.y, file_20_mb.x, show_all_downloads_button.y - file_20_mb.y
         )
 
-        expected = region_20_mb_containing_folder.exists(
-            DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10
-        )
+        expected = region_20_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
         assert expected is True, "20 MB file Containing folder button is aligned RTL."
 
-        expected = region_left.exists(
-            DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL, 10
-        )
+        expected = region_left.exists(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL, 10)
         assert expected is True, "The 10MB download is complete and aligned RTL."
 
         file_10_mb = find(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED_RTL)
-        region_10_mb = Region(
-            file_10_mb.x, file_10_mb.y - 10, file_10_mb.x, file_20_mb.y - file_10_mb.y
-        )
+        region_10_mb = Region(file_10_mb.x, file_10_mb.y - 10, file_10_mb.x, file_20_mb.y - file_10_mb.y)
 
-        expected = region_10_mb.exists(
-            DownloadFiles.DOWNLOAD_TYPE_ICON, 10
-        ) or region_10_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10)
+        expected = region_10_mb.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10) or region_10_mb.exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10
+        )
         assert expected is True, "10 MB file icon is aligned RTL."
 
         region_10_mb_containing_folder = Region(
             downloads_button.x, file_10_mb.y, file_10_mb.x, file_20_mb.y - file_10_mb.y
         )
 
-        expected = region_10_mb_containing_folder.exists(
-            DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10
-        )
+        expected = region_10_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
         assert expected is True, "10 MB file Containing folder button is aligned RTL."
 
-        expected = region_left.exists(
-            DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL, 10
-        )
+        expected = region_left.exists(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL, 10)
         assert expected is True, "The 5MB download is complete and aligned RTL."
 
         file_5_mb = find(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED_RTL)
-        region_5_mb_icon = Region(
-            file_5_mb.x, file_5_mb.y - 10, file_5_mb.x, file_10_mb.y - file_5_mb.y
-        )
+        region_5_mb_icon = Region(file_5_mb.x, file_5_mb.y - 10, file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
-        expected = region_5_mb_icon.exists(
-            DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10
-        ) or region_5_mb_icon.exists(DownloadFiles.DOWNLOAD_TYPE_ICON, 10)
+        expected = region_5_mb_icon.exists(DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP, 10) or region_5_mb_icon.exists(
+            DownloadFiles.DOWNLOAD_TYPE_ICON, 10
+        )
         assert expected is True, "5 MB file icon is aligned RTL."
-        region_5_mb_containing_folder = Region(
-            downloads_button.x, file_5_mb.y, file_5_mb.x, file_10_mb.y - file_5_mb.y
-        )
+        region_5_mb_containing_folder = Region(downloads_button.x, file_5_mb.y, file_5_mb.x, file_10_mb.y - file_5_mb.y)
 
-        expected = region_5_mb_containing_folder.exists(
-            DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10
-        )
+        expected = region_5_mb_containing_folder.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
         assert expected is True, "5 MB file Containing folder button is aligned RTL."
 
     def teardown(self):

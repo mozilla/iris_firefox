@@ -21,42 +21,28 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        about_preferences_opened = exists(
-            AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            about_preferences_opened
-        ), "The about:preferences page is successfully loaded"
+        about_preferences_opened = exists(AboutPreferences.FIND_IN_OPTIONS, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert about_preferences_opened, "The about:preferences page is successfully loaded"
 
         paste("firefox will remember")
 
-        history_dropdown = exists(
-            history_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        history_dropdown = exists(history_dropdown_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert history_dropdown, "History dropdown list can be accessed."
 
         click(history_dropdown_pattern)
 
-        never_remember_history = exists(
-            never_remember_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            never_remember_history
-        ), "Never Remember History option is present in the dropdown list."
+        never_remember_history = exists(never_remember_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert never_remember_history, "Never Remember History option is present in the dropdown list."
 
         click(never_remember_history_pattern)
 
-        restart_browser_popup_assert = exists(
-            restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        restart_browser_popup_assert = exists(restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert restart_browser_popup_assert is True, "History option can be changed."
 
         type(Key.ESC)
 
         try:
-            restart_browser_dismissed = wait_vanish(
-                restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-            )
+            restart_browser_dismissed = wait_vanish(restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
             assert restart_browser_dismissed, "Restart browser popup was dismissed."
 
         except FindError:
@@ -66,23 +52,16 @@ class Test(FirefoxTest):
             never_remember_history_not_saved = wait_vanish(
                 never_remember_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT
             )
-            assert (
-                never_remember_history_not_saved
-            ), "Never Remember History option was not saved."
+            assert never_remember_history_not_saved, "Never Remember History option was not saved."
 
         except FindError:
             raise FindError("Never Remember History option was changed")
 
         firefox_not_restarted = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
 
-        assert (
-            restart_browser_dismissed
-            and firefox_not_restarted
-            and never_remember_history_not_saved
-        ), (
+        assert restart_browser_dismissed and firefox_not_restarted and never_remember_history_not_saved, (
             "Restart browser popup was dismissed. Never Remember History option was not saved. "
             + "Firefox was not restarted. NOTE: On the builds affected by this bug Firefox restarted after Esc was "
             + "pressed and all the history was deleted."

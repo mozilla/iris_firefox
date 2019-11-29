@@ -23,26 +23,20 @@ class Test(FirefoxTest):
         test_page_local = self.get_asset_path("symbols.htm")
         navigate(test_page_local)
 
-        page_loaded_anchor_exists = exists(
-            LocalWeb.SOAP_WIKI_TEST_LABEL_PATTERN, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        page_loaded_anchor_exists = exists(LocalWeb.SOAP_WIKI_TEST_LABEL_PATTERN, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert page_loaded_anchor_exists, "The page is successfully loaded."
 
         open_find()
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         paste("#$%^&*(+-<>")
 
         selected_label_exists = exists(first_symbols_highlighted_pattern)
-        assert (
-            selected_label_exists
-        ), "The first one has a green background highlighted."
+        assert selected_label_exists, "The first one has a green background highlighted."
 
         not_selected_label_exists = exists(symbols_not_highlighted_pattern)
         assert not_selected_label_exists, "The second one is not highlighted."
@@ -50,6 +44,4 @@ class Test(FirefoxTest):
         find_next()
 
         second_highlighted_exists = exists(second_symbols_highlighted_pattern)
-        assert (
-            second_highlighted_exists
-        ), "The green box is moved with the current item."
+        assert second_highlighted_exists, "The green box is moved with the current item."

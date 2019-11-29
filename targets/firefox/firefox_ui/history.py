@@ -26,12 +26,8 @@ class History(object):
 
             # Focused time ranges.
             CLEAR_CHOICE_LAST_HOUR = Pattern("sanitize_duration_choice_last_hour.png")
-            CLEAR_CHOICE_LAST_TWO_HOURS = Pattern(
-                "sanitize_duration_choice_last_two_hours.png"
-            )
-            CLEAR_CHOICE_LAST_FOUR_HOURS = Pattern(
-                "sanitize_duration_choice_last_four_hours.png"
-            )
+            CLEAR_CHOICE_LAST_TWO_HOURS = Pattern("sanitize_duration_choice_last_two_hours.png")
+            CLEAR_CHOICE_LAST_FOUR_HOURS = Pattern("sanitize_duration_choice_last_four_hours.png")
             CLEAR_CHOICE_TODAY = Pattern("sanitize_duration_choice_today.png")
             CLEAR_CHOICE_EVERYTHING = Pattern("sanitize_duration_choice_everything.png")
 

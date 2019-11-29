@@ -18,9 +18,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         wiki_soap_history_icon_pattern = Pattern("wiki_soap_history_icon.png")
         mozilla_history_item_pattern = LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR
-        mozilla_history_item_gray_pattern = Pattern(
-            "mozilla_bookmark_history_sidebar_grey.png"
-        )
+        mozilla_history_item_gray_pattern = Pattern("mozilla_bookmark_history_sidebar_grey.png")
 
         dock_region = Region(
             0 + Screen.SCREEN_WIDTH // 2,
@@ -35,15 +33,11 @@ class Test(FirefoxTest):
         private_browsing_window_opened = exists(
             PrivateWindow.private_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            private_browsing_window_opened is True
-        ), "Private Browsing window is successfully opened."
+        assert private_browsing_window_opened is True, "Private Browsing window is successfully opened."
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert soap_label_exists is True, "The page is successfully loaded."
 
         close_window()
@@ -88,100 +82,72 @@ class Test(FirefoxTest):
 
         for dock_icon_pattern in dock_icon_patterns:
 
-            firefox_icon_dock_exists = dock_region.exists(
-                dock_icon_pattern.similar(0.81), timeout=1
-            )
+            firefox_icon_dock_exists = dock_region.exists(dock_icon_pattern.similar(0.81), timeout=1)
 
             if firefox_icon_dock_exists is True:
                 firefox_icon_dock_location = find(dock_icon_pattern.similar(0.81))
                 break
 
-        assert (
-            firefox_icon_dock_exists is True
-        ), "The Firefox icon is still visible in the dock."
+        assert firefox_icon_dock_exists is True, "The Firefox icon is still visible in the dock."
 
         right_click(firefox_icon_dock_location)
 
-        new_window_item_exists = exists(
-            Docker.NEW_WINDOW_MENU_ITEM, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        new_window_item_exists = exists(Docker.NEW_WINDOW_MENU_ITEM, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_window_item_exists is True, "New window menu item exists."
 
         click(Docker.NEW_WINDOW_MENU_ITEM, 1)
 
-        new_window_opened = exists(
-            Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            new_window_opened is True
-        ), "The Normal Browsing window is successfully opened."
+        new_window_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert new_window_opened is True, "The Normal Browsing window is successfully opened."
 
         history_sidebar()
 
         type("Mozilla")
 
-        mozilla_history_item_exists = exists(
-            mozilla_history_item_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        mozilla_history_item_gray = exists(
-            mozilla_history_item_gray_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        mozilla_history_item_exists = exists(mozilla_history_item_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        mozilla_history_item_gray = exists(mozilla_history_item_gray_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert (
             mozilla_history_item_exists or mozilla_history_item_gray
         ), "Websites visited previously in the Normal window are displayed in the History section"
 
         for dock_icon_pattern in dock_icon_patterns:
 
-            firefox_icon_dock_exists = dock_region.exists(
-                dock_icon_pattern.similar(0.81), timeout=1
-            )
+            firefox_icon_dock_exists = dock_region.exists(dock_icon_pattern.similar(0.81), timeout=1)
 
             if firefox_icon_dock_exists is True:
                 firefox_icon_dock_location = find(dock_icon_pattern)
                 break
 
-        assert (
-            firefox_icon_dock_exists is True
-        ), "The Firefox icon is still visible in the dock."
+        assert firefox_icon_dock_exists is True, "The Firefox icon is still visible in the dock."
 
         right_click(firefox_icon_dock_location)
 
         new_private_window_item_exists = exists(
             Docker.NEW_PRIVATE_WINDOW_MENU_ITEM, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            new_private_window_item_exists is True
-        ), "New private window menu item exists."
+        assert new_private_window_item_exists is True, "New private window menu item exists."
 
         click(Docker.NEW_PRIVATE_WINDOW_MENU_ITEM, 1)
 
         private_browsing_window_opened = exists(
             PrivateWindow.private_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            private_browsing_window_opened is True
-        ), "Private Browsing window is successfully opened."
+        assert private_browsing_window_opened is True, "Private Browsing window is successfully opened."
 
         history_sidebar()
 
         type("soap")
 
         wiki_soap_history_icon_exists = exists(wiki_soap_history_icon_pattern, 2)
-        assert (
-            wiki_soap_history_icon_exists is False
-        ), "The website is not displayed in the Recent History section."
+        assert wiki_soap_history_icon_exists is False, "The website is not displayed in the Recent History section."
 
         edit_select_all()
         edit_delete()
 
         type("Mozilla")
 
-        mozilla_history_item_exists = exists(
-            mozilla_history_item_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        mozilla_history_item_gray = exists(
-            mozilla_history_item_gray_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        mozilla_history_item_exists = exists(mozilla_history_item_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        mozilla_history_item_gray = exists(mozilla_history_item_gray_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 
         assert (
             mozilla_history_item_exists or mozilla_history_item_gray

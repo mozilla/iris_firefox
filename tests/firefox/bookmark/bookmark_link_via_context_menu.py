@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         moz_article = "https://developer.mozilla.org/en-US/docs/Learn"
         moz_page = Pattern("moz_article_page.png")
-        bookmark_link = Pattern("bookmark_link.png")
+        bookmark_link = Pattern("bookmark_link.png").similar(0.6)
         bookmark_this_link = Pattern("bookmark_this_link.png")
         save_bookmark_link = Pattern("save_bookmark_name.png")
         bookmarked_link = Pattern("bookmarked_link.png")
@@ -24,9 +24,7 @@ class Test(FirefoxTest):
         navigate(moz_article)
 
         moz_article_assert = exists(moz_page, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            moz_article_assert is True
-        ), "The Moz article page has been successfully loaded."
+        assert moz_article_assert is True, "The Moz article page has been successfully loaded."
 
         try:
             wait(bookmark_link, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -40,9 +38,7 @@ class Test(FirefoxTest):
             logger.debug("Bookmark this link option is present on the page.")
             click(bookmark_this_link)
         except FindError:
-            raise FindError(
-                "Bookmark this link option is not present on the page, aborting."
-            )
+            raise FindError("Bookmark this link option is not present on the page, aborting.")
 
         try:
             wait(save_bookmark_link, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -57,12 +53,8 @@ class Test(FirefoxTest):
 
         paste("CSS")
 
-        bookmarked_link_assert = exists(
-            bookmarked_link, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmarked_link_assert is True
-        ), "The link has been successfully bookmarked."
+        bookmarked_link_assert = exists(bookmarked_link, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmarked_link_assert is True, "The link has been successfully bookmarked."
 
         click(bookmarked_link)
 

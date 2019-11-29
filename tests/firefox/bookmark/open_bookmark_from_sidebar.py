@@ -28,11 +28,7 @@ class Test(FirefoxTest):
             logger.debug("Moz bookmark is present in the Bookmark sidebar.")
             click(moz_bookmark_pattern)
         except FindError:
-            raise FindError(
-                "Moz bookmark is NOT present in the Bookmark sidebar, aborting."
-            )
+            raise FindError("Moz bookmark is NOT present in the Bookmark sidebar, aborting.")
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."

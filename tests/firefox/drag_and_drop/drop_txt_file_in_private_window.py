@@ -41,9 +41,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         library_import_backup_pattern = Library.IMPORT_AND_BACKUP_BUTTON
         drop_txt_file_button_pattern = Pattern("drop_txt_file_button.png")
-        drop_txt_file_selected_button_pattern = Pattern(
-            "drop_txt_file_selected_button.png"
-        )
+        drop_txt_file_selected_button_pattern = Pattern("drop_txt_file_selected_button.png")
         library_popup_pattern = Pattern("library_popup.png")
         select_bookmark_popup_pattern = Pattern("select_bookmark_tab_popup.png")
         drop_here_pattern = Pattern("drop_here.png")
@@ -63,9 +61,13 @@ class Test(FirefoxTest):
         drag_and_drop_duration = 2
         paste_delay = 0.5
         new_private_window()
-
-        private_window_opened = exists(PrivateWindow.private_window_pattern)
-        assert private_window_opened, "A new private window is successfully loaded."
+        private_window_pattern_region = Region(
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 10
+        )
+        private_window_opened = exists(
+            PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region
+        )
+        assert private_window_opened, "New Private Window couldn't open"
 
         navigate("https://mystor.github.io/dragndrop/")
 
@@ -76,21 +78,14 @@ class Test(FirefoxTest):
 
         drop_txt_option_selected = exists(drop_txt_file_selected_button_pattern)
         assert drop_txt_option_selected, (
-            "The drop-txt-file changed color to red which indicates that it "
-            "has been selected."
+            "The drop-txt-file changed color to red which indicates that it " "has been selected."
         )
 
-        matching_block_available = scroll_until_pattern_found(
-            not_matching_message_pattern, scroll_down, (5,), 30, 1
-        )
-        assert (
-            matching_block_available
-        ), "The drop result verification area is displayed on the page"
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll_down, (5,), 30, 1)
+        assert matching_block_available, "The drop result verification area is displayed on the page"
 
         not_matching_message_location = find(not_matching_message_pattern)
-        not_matching_message_width, not_matching_message_height = (
-            not_matching_message_pattern.get_size()
-        )
+        not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
         not_matching_region = Region(
             not_matching_message_location.x,
             not_matching_message_location.y,
@@ -98,9 +93,7 @@ class Test(FirefoxTest):
             height=not_matching_message_height,
         )
 
-        matching_message_width, matching_message_height = (
-            matching_message_pattern.get_size()
-        )
+        matching_message_width, matching_message_height = matching_message_pattern.get_size()
         matching_region = Region(
             not_matching_message_location.x,
             not_matching_message_location.y,
@@ -122,29 +115,17 @@ class Test(FirefoxTest):
             width=library_title_width * 2,
             height=library_title_height * 3,
         )
-        library_popup_tab_after = Location(
-            Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y
-        )
+        library_popup_tab_after = Location(Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y)
 
-        drag_drop(
-            library_popup_tab_before,
-            library_popup_tab_after,
-            duration=drag_and_drop_duration,
-        )
+        drag_drop(library_popup_tab_before, library_popup_tab_after, duration=drag_and_drop_duration)
 
-        library_popup_dropped = exists(
-            library_popup_pattern, region=library_tab_region_after
-        )
-        assert (
-            library_popup_dropped
-        ), "Library popup dropped to right half of screen successfully"
+        library_popup_dropped = exists(library_popup_pattern, region=library_tab_region_after)
+        assert library_popup_dropped, "Library popup dropped to right half of screen successfully"
 
         click(library_import_backup_pattern)
 
         restore_context = exists(Library.ImportAndBackup.RESTORE)
-        assert (
-            restore_context
-        ), '"Restore" option from "Import and Backup"context menu available'
+        assert restore_context, '"Restore" option from "Import and Backup"context menu available'
 
         click(Library.ImportAndBackup.RESTORE)
 
@@ -159,9 +140,7 @@ class Test(FirefoxTest):
         select_bookmark_popup_before = find(select_bookmark_popup_pattern)
 
         if OSHelper.is_mac():
-            type(
-                "g", modifier=[KeyModifier.CMD, KeyModifier.SHIFT]
-            )  # open folder in file picker
+            type("g", modifier=[KeyModifier.CMD, KeyModifier.SHIFT])  # open folder in file picker
             paste(folderpath)
             type(Key.ENTER)
             type("1", KeyModifier.CMD)
@@ -171,16 +150,12 @@ class Test(FirefoxTest):
 
         if OSHelper.is_linux():
             json_option = exists(file_type_json_pattern)
-            assert (
-                json_option
-            ), '"File type JSON" option in file picker window available'
+            assert json_option, '"File type JSON" option in file picker window available'
 
             click(file_type_json_pattern)
 
             all_files_option = exists(file_type_all_files_pattern)
-            assert (
-                all_files_option
-            ), '"All Files" option in file picker window available'
+            assert all_files_option, '"All Files" option in file picker window available'
 
             click(file_type_all_files_pattern)
 
@@ -188,18 +163,11 @@ class Test(FirefoxTest):
             type("*")
             type(Key.ENTER, interval=paste_delay)
 
-        select_bookmark_popup_location_final = Location(
-            Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y
-        )
+        select_bookmark_popup_location_final = Location(Screen.SCREEN_WIDTH // 2, library_popup_tab_before.y)
         #  drag-n-drop right to prevent fails on osx
-        drag_drop(
-            select_bookmark_popup_before.right(library_title_width),
-            select_bookmark_popup_location_final,
-        )
+        drag_drop(select_bookmark_popup_before.right(library_title_width), select_bookmark_popup_location_final)
 
-        prevent_window_change_position = Location(
-            Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2
-        )
+        prevent_window_change_position = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
         move(prevent_window_change_position, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         test_file_txt = exists(txt_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
@@ -208,31 +176,21 @@ class Test(FirefoxTest):
         drop_here = exists(drop_here_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert drop_here, '"Drop here" pattern available'
 
-        drag_drop(
-            txt_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration
-        )
+        drag_drop(txt_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
-        matching_message_displayed = exists(
-            matching_message_pattern, region=matching_region
-        )
+        matching_message_displayed = exists(matching_message_pattern, region=matching_region)
         assert matching_message_displayed, (
-            'Matching appears under the "Drop Stuff Here" area and expected '
-            "result is identical to result. "
+            'Matching appears under the "Drop Stuff Here" area and expected ' "result is identical to result. "
         )
 
         test_file_jpg = exists(jpg_bak_file_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert test_file_jpg, "JPG test file is available"
 
-        drag_drop(
-            jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration
-        )
+        drag_drop(jpg_bak_file_pattern, drop_here_pattern, duration=drag_and_drop_duration)
 
-        not_matching_message_displayed = exists(
-            not_matching_message_pattern, region=not_matching_region
-        )
+        not_matching_message_displayed = exists(not_matching_message_pattern, region=not_matching_region)
         assert not_matching_message_displayed, (
-            'Not Matching appears under the "Drop Stuff Here" area and '
-            "expected result is different from result."
+            'Not Matching appears under the "Drop Stuff Here" area and ' "expected result is different from result."
         )
 
         type(Key.ESC)

@@ -15,13 +15,9 @@ class Test(FirefoxTest):
         exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
-        mozilla_firefox_predefined_bookmarks_pattern = Pattern(
-            "mozilla_firefox_predefined_bookmarks.png"
-        )
-        mozilla_firefox_bookmarks_folder_pattern = Pattern(
-            "mozilla_firefox_bookmarks_folder.png"
-        )
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
+        mozilla_firefox_predefined_bookmarks_pattern = Pattern("mozilla_firefox_predefined_bookmarks.png")
+        mozilla_firefox_bookmarks_folder_pattern = Pattern("mozilla_firefox_bookmarks_folder.png")
         mozilla_about_us_bookmark_pattern = Pattern("mozilla_about_us_bookmark.png")
         iris_new_folder_pattern = Pattern("ff_menu_iris_new_folder.png")
         if OSHelper.is_linux():
@@ -31,9 +27,7 @@ class Test(FirefoxTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_menu_bookmarks_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
@@ -47,8 +41,7 @@ class Test(FirefoxTest):
         click(mozilla_firefox_bookmarks_folder_pattern)
 
         mozilla_firefox_predefined_bookmarks_exists = exists(
-            mozilla_firefox_predefined_bookmarks_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            mozilla_firefox_predefined_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert mozilla_firefox_predefined_bookmarks_exists is True, (
             "Predefined Mozilla Firefox related bookmarks " "displayed"
@@ -56,16 +49,12 @@ class Test(FirefoxTest):
 
         right_click(mozilla_about_us_bookmark_pattern)
 
-        new_folder_option_exists = exists(
-            Library.Organize.NEW_FOLDER, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        new_folder_option_exists = exists(Library.Organize.NEW_FOLDER, FirefoxSettings.FIREFOX_TIMEOUT)
         assert new_folder_option_exists is True, "New Folder option exists"
 
         click(Library.Organize.NEW_FOLDER)
 
-        new_folder_window_opened = exists(
-            new_folder_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        new_folder_window_opened = exists(new_folder_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert new_folder_window_opened is True, "New Folder window is displayed"
 
         paste("Iris New Folder")
@@ -73,12 +62,8 @@ class Test(FirefoxTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_second_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            firefox_menu_bookmarks_second_exists is True
-        ), "Firefox menu > Bookmarks exists"
+        firefox_menu_bookmarks_second_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert firefox_menu_bookmarks_second_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
 
@@ -91,8 +76,6 @@ class Test(FirefoxTest):
         click(mozilla_firefox_bookmarks_folder_pattern)
 
         folder_exists = exists(iris_new_folder_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            folder_exists is True
-        ), "A new folder is added in Mozilla Firefox section."
+        assert folder_exists is True, "A new folder is added in Mozilla Firefox section."
 
         restore_firefox_focus()

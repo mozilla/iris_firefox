@@ -22,6 +22,7 @@ class Test(FirefoxTest):
         navigate("about:blank")
 
         bookmarks_sidebar("open")
+        time.sleep(Settings.DEFAULT_UI_DELAY * 2)
 
         paste("mozilla")
 
@@ -30,9 +31,7 @@ class Test(FirefoxTest):
             logger.debug("Moz bookmark is present in the Bookmark sidebar.")
             right_click(moz_bookmark_pattern)
         except FindError:
-            raise FindError(
-                "Moz bookmark is NOT present in the Bookmark sidebar, aborting."
-            )
+            raise FindError("Moz bookmark is NOT present in the Bookmark sidebar, aborting.")
 
         option_assert = exists(properties_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert option_assert is True, "Properties option is present on the page."
@@ -40,9 +39,7 @@ class Test(FirefoxTest):
         click(properties_pattern)
 
         properties_window_assert = exists(save_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            properties_window_assert is True
-        ), "Properties window is present on the page."
+        assert properties_window_assert is True, "Properties window is present on the page."
 
         for i in range(2):
             type(Key.TAB)
@@ -57,9 +54,5 @@ class Test(FirefoxTest):
 
         paste("iris")
 
-        tagged_bookmark_assert = exists(
-            moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            tagged_bookmark_assert is True
-        ), "Moz bookmark was successfully tagged via bookmark sidebar."
+        tagged_bookmark_assert = exists(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert tagged_bookmark_assert is True, "Moz bookmark was successfully tagged via bookmark sidebar."

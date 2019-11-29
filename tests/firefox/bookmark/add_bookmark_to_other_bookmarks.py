@@ -21,7 +21,7 @@ class Test(FirefoxTest):
         added_bookmark_pattern = Pattern("manually_added_bookmark_top_menu.png")
         name_bookmark_field_pattern = Pattern("name_bookmark_field.png")
         new_bookmark_item_top_menu_pattern = Pattern("new_bookmark_item_top_menu.png")
-        other_bookmarks_item_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_item_pattern = Pattern("other_bookmarks.png").similar(0.7)
 
         open_firefox_menu()
 
@@ -36,16 +36,12 @@ class Test(FirefoxTest):
         click(other_bookmarks_item_pattern)
 
         other_bookmarks_empty = exists(empty_folder_stub_pattern)
-        assert (
-            other_bookmarks_empty is True
-        ), "No bookmarks are saved in 'Other bookmarks'"
+        assert other_bookmarks_empty is True, "No bookmarks are saved in 'Other bookmarks'"
 
         right_click(empty_folder_stub_pattern)
 
         context_menu_displayed = exists(new_bookmark_item_top_menu_pattern)
-        assert (
-            context_menu_displayed is True
-        ), "Context menu for bookmark top menu item is displayed"
+        assert context_menu_displayed is True, "Context menu for bookmark top menu item is displayed"
 
         click(new_bookmark_item_top_menu_pattern)
 
@@ -74,9 +70,7 @@ class Test(FirefoxTest):
         click(bookmarks_top_menu_pattern)
 
         bookmarks_menu_displayed_again = exists(other_bookmarks_item_pattern)
-        assert (
-            bookmarks_menu_displayed_again is True
-        ), "Bookmarks menu is displayed second time"
+        assert bookmarks_menu_displayed_again is True, "Bookmarks menu is displayed second time"
 
         click(other_bookmarks_item_pattern)
 

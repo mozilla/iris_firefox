@@ -18,9 +18,7 @@ class Test(FirefoxTest):
         use_custom_settings_for_history_pattern = Pattern("custom_history_settings.png")
         remember_history_pattern = Pattern("remember_history.png")
         restart_browser_pattern = Pattern("restart_browser.png")
-        always_use_private_browsing_mode_unticked_pattern = Pattern(
-            "always_use_private_browsing_mode_unticked.png"
-        )
+        always_use_private_browsing_mode_unticked_pattern = Pattern("always_use_private_browsing_mode_unticked.png")
         remember_browsing_search_clear_history_unticked_pattern = Pattern(
             "remember_browsing_search_clear_history_unticked.png"
         )
@@ -34,87 +32,62 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        page_loaded = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
-        )
+        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert page_loaded, "about:preferences#privacy page loaded"
 
         click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
 
         privacy_selected = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )
         assert privacy_selected, (
             "The about:preferences page is successfully loaded. The options"
             + ' for "Privacy & Security" section are displayed.'
         )
 
-        center_screen_location = Location(
-            Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2
-        )
+        center_screen_location = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
         move(center_screen_location)
 
         remember_history = scroll_until_pattern_found(
             remember_history_pattern, Mouse().scroll, (0, -scroll_length), 100
         )
 
-        assert (
-            remember_history
-        ), '"Remember history" option from the History dropdown list found.'
+        assert remember_history, '"Remember history" option from the History dropdown list found.'
 
         click(remember_history_pattern)
 
         use_custom_settings_for_history = scroll_until_pattern_found(
-            use_custom_settings_for_history_pattern,
-            Mouse().scroll,
-            (0, -scroll_length),
-            100,
+            use_custom_settings_for_history_pattern, Mouse().scroll, (0, -scroll_length), 100
         )
 
-        assert (
-            use_custom_settings_for_history
-        ), 'The option "Use custom settings for history" found.'
+        assert use_custom_settings_for_history, 'The option "Use custom settings for history" found.'
 
         click(use_custom_settings_for_history_pattern)
 
-        always_use_private_browsing_unticked = exists(
-            always_use_private_browsing_mode_unticked_pattern
-        )
-        assert (
-            always_use_private_browsing_unticked
-        ), '"Always use private browsing mode" checkbox.'
+        always_use_private_browsing_unticked = exists(always_use_private_browsing_mode_unticked_pattern)
+        assert always_use_private_browsing_unticked, '"Always use private browsing mode" checkbox.'
 
         click(always_use_private_browsing_mode_unticked_pattern)
 
-        restart_browser = exists(
-            restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        restart_browser = exists(restart_browser_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert restart_browser, "Restart browser button available"
 
         click(restart_browser_pattern)
 
-        firefox_restarted = exists(
-            Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert firefox_restarted, "Firefox is successfully restarted."
 
         navigate("about:preferences#privacy")
 
         privacy_selected = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )
         assert privacy_selected, "The about:preferences page is successfully loaded."
 
         move(center_screen_location)
 
         remember_browsing_search_clear_history_unticked = scroll_until_pattern_found(
-            remember_browsing_search_clear_history_unticked_pattern,
-            Mouse().scroll,
-            (0, -scroll_length),
-            100,
+            remember_browsing_search_clear_history_unticked_pattern, Mouse().scroll, (0, -scroll_length), 100
         )
 
         assert remember_browsing_search_clear_history_unticked, (

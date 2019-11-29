@@ -21,42 +21,30 @@ class Test(FirefoxTest):
 
         new_tab()
         navigate(url_first)
-        website_one_loaded = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert website_one_loaded, "Page 1 successfully loaded, firefox logo found."
 
         new_tab()
         navigate(url_second)
-        website_two_loaded = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        website_two_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert website_two_loaded, "Page 2 successfully loaded, firefox logo found."
 
         firefox.restart()
 
         previous_tab()
-        website_one_loaded = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert website_one_loaded, "Page 1 successfully loaded after restart."
 
         previous_tab()
-        website_two_loaded = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        website_two_loaded = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert website_two_loaded, "Page 2 successfully loaded after restart."
 
         firefox.restart()
 
         previous_tab()
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO)
-        assert (
-            website_one_loaded is False
-        ), "Page 1 was not loaded after second restart."
+        assert website_one_loaded is False, "Page 1 was not loaded after second restart."
 
         previous_tab()
         website_two_loaded = exists(LocalWeb.FIREFOX_LOGO)
-        assert (
-            website_two_loaded is False
-        ), "Page 2 was not loaded after second restart."
+        assert website_two_loaded is False, "Page 2 was not loaded after second restart."

@@ -31,11 +31,7 @@ class Test(FirefoxTest):
 
         region = create_region_for_url_bar()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
         new_region = create_region_for_hamburger_menu()
@@ -52,14 +48,8 @@ class Test(FirefoxTest):
 
         click(hamburger_menu_pattern)
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_reg,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, zoom indicator displayed in the url bar."
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
+        assert expected, "Zoom level successfully increased, zoom indicator displayed in the url bar."
 
         click(hamburger_menu_pattern)
 
@@ -75,11 +65,5 @@ class Test(FirefoxTest):
 
         click(hamburger_menu_pattern)
 
-        expected = exists(
-            urlbar_zoom_button_90_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_reg,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully decreased, zoom indicator displayed in the url bar."
+        expected = exists(urlbar_zoom_button_90_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_reg)
+        assert expected, "Zoom level successfully decreased, zoom indicator displayed in the url bar."

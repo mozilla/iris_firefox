@@ -6,9 +6,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Created to test fake keyboard inputs",
-        locale=["en-US"],
-        platform=OSPlatform.LINUX,
+        description="Created to test fake keyboard inputs", locale=["en-US"], platform=OSPlatform.LINUX
     )
     def run(self, firefox):
         history_empty_pattern = Pattern("history_empty.png")

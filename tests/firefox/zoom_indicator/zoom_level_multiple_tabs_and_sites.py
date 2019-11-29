@@ -9,21 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description="This test case verifies the zoom level on multiple tabs using multiple sites.",
-        locale=[
-            "en-US",
-            "zh-CN",
-            "es-ES",
-            "de",
-            "fr",
-            "ru",
-            "ko",
-            "pt-PT",
-            "vi",
-            "pl",
-            "tr",
-            "ro",
-            "ja",
-        ],
+        locale=["en-US", "zh-CN", "es-ES", "de", "fr", "ru", "ko", "pt-PT", "vi", "pl", "tr", "ro", "ja"],
         test_case_id="7448",
         test_suite_id="242",
     )
@@ -40,21 +26,13 @@ class Test(FirefoxTest):
 
         region = create_region_for_url_bar()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
         zoom_in()
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."
 
         new_tab()
 
@@ -63,12 +41,9 @@ class Test(FirefoxTest):
         expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Page successfully loaded, firefox logo found."
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, (
-            "Zoom indicator still displays 110% in the new tab opened for the site for which the zoom "
-            "level was set."
+            "Zoom indicator still displays 110% in the new tab opened for the site for which the zoom " "level was set."
         )
 
         new_tab()
@@ -79,9 +54,5 @@ class Test(FirefoxTest):
 
         select_location_bar()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed in the url bar."

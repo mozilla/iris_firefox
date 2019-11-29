@@ -23,9 +23,7 @@ class Test(FirefoxTest):
         google_one_off_button_pattern = Pattern("google_one_off_button.png")
         twitter_one_off_button_pattern = Pattern("twitter_one_off_button.png")
         wikipedia_one_off_button_pattern = Pattern("wikipedia_one_off_button.png")
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        )
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png")
         google_search_engine_pattern = Pattern("google_search_engine.png")
         duckduckgo_search_engine_pattern = Pattern("duckduckgo_search_engine.png")
 
@@ -49,22 +47,16 @@ class Test(FirefoxTest):
         for i in range(pattern_list.__len__()):
             if OSHelper.is_mac():
                 expected = region.exists(pattern_list[i].similar(0.7), 10)
-                assert expected, (
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                assert expected, "Element found at position " + i.__str__() + " in the list found."
             else:
                 expected = region.exists(pattern_list[i].similar(0.9), 10)
-                assert expected, (
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                assert expected, "Element found at position " + i.__str__() + " in the list found."
 
         google_one_off_location = find(google_one_off_button_pattern)
         bing_one_off_location = find(bing_one_off_button_pattern)
 
         # Navigate to the about:preferences#search page and reorder the search engines.
-        search_settings_button_displayed = exists(
-            search_settings_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        search_settings_button_displayed = exists(search_settings_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert search_settings_button_displayed, "Search settings button displayed"
 
         click(search_settings_pattern)
@@ -91,9 +83,7 @@ class Test(FirefoxTest):
 
         google_one_off_reoredered_location = find(google_one_off_button_pattern)
         bing_one_off_reoredered_location = find(bing_one_off_button_pattern)
-        duck_duck_go_one_off_reoredered_location = find(
-            duck_duck_go_one_off_button_pattern
-        )
+        duck_duck_go_one_off_reoredered_location = find(duck_duck_go_one_off_button_pattern)
 
         assert (
             google_one_off_reoredered_location.x == google_one_off_location.x
@@ -104,8 +94,6 @@ class Test(FirefoxTest):
         ), "The 'Bing' one-off search engine changed position in the one-offs list after reorder."
 
         assert (
-            duck_duck_go_one_off_reoredered_location.x
-            > google_one_off_reoredered_location.x
-            and duck_duck_go_one_off_reoredered_location.x
-            < bing_one_off_reoredered_location.x
+            duck_duck_go_one_off_reoredered_location.x > google_one_off_reoredered_location.x
+            and duck_duck_go_one_off_reoredered_location.x < bing_one_off_reoredered_location.x
         ), "The 'DuckDuckGo' one-off search engine holds the second position in the one-offs list after reorder."

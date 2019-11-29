@@ -46,26 +46,16 @@ class Test(FirefoxTest):
         expected = exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
         assert expected is True, "Blocked download icon is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW, 10)
         assert expected is True, "Open malicious download arrow is displayed."
 
         expected = exists(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, 10)
         assert expected is True, "Virus or malware message is displayed."
 
-        width, height = (
-            DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.get_size()
-        )
-        mouse.move(
-            DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.target_offset(
-                width / 2 + 10, 0
-            )
-        )
+        width, height = DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.get_size()
+        mouse.move(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW.target_offset(width / 2 + 10, 0))
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD, 10)
         assert expected is True, "Download is highlighted red."
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_WHITE_ARROW)
@@ -73,34 +63,22 @@ class Test(FirefoxTest):
         expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.HEADER, 10)
         assert expected is True, "Download details header is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD_TITLE, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DOWNLOAD_TITLE, 10)
         assert expected is True, "Download details title is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_1, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_1, 10)
         assert expected is True, "Download details 1 are displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10)
         assert expected is True, "Download details 2 are displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_BADGE, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_BADGE, 10)
         assert expected is True, "Download details blocked icon is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10)
         assert expected is True, "Open file button is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, "Remove file button is displayed."
 
         # Open the malicious file.
@@ -119,12 +97,8 @@ class Test(FirefoxTest):
         else:
             click(DownloadManager.DownloadsPanel.DownloadDetails.DOWNLOADS_BACK_ARROW)
             hover(DownloadManager.SHOW_ALL_DOWNLOADS)
-            expected = exists(
-                DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, 10
-            )
-            assert (
-                expected is True
-            ), "'This file contains a virus or malware' message is displayed."
+            expected = exists(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD, 10)
+            assert expected is True, "'This file contains a virus or malware' message is displayed."
             right_click(DownloadManager.DownloadsPanel.VIRUS_OR_MALWARE_DOWNLOAD)
 
         # Clear the download panel.
@@ -144,9 +118,7 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
 
-        download_image_site_loaded = exists(
-            LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert download_image_site_loaded, "Focus site loaded"
 
         download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK, max_number_of_attempts=10)
@@ -170,9 +142,7 @@ class Test(FirefoxTest):
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_RED_ARROW)
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, "Remove file button is displayed."
 
         click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 1)

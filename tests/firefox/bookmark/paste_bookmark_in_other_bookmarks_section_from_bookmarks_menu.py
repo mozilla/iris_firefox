@@ -19,11 +19,9 @@ class Test(FirefoxTest):
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         bookmark_toolbar_top_menu_pattern = Pattern("bookmark_toolbar_top_menu.png")
         cut_option_pattern = Pattern("cut_option.png")
-        firefox_bookmark_top_menu_pattern = Pattern(
-            "firefox_bookmark_top_menu.png"
-        ).similar(0.9)
+        firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png").similar(0.9)
         getting_started_pattern = Pattern("getting_started_top_menu.png")
-        other_bookmarks_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
         paste_option_pattern = Pattern("paste_option.png")
         click_timeout = 1
 
@@ -40,15 +38,11 @@ class Test(FirefoxTest):
         click(bookmark_toolbar_top_menu_pattern)
 
         bookmarks_content_displayed = exists(getting_started_pattern)
-        assert (
-            bookmarks_content_displayed is True
-        ), '"Bookmarks toolbar" folder content is displayed'
+        assert bookmarks_content_displayed is True, '"Bookmarks toolbar" folder content is displayed'
 
         bookmark_toolbar_top_menu_location = find(bookmark_toolbar_top_menu_pattern)
         getting_started_bookmark_location = find(getting_started_pattern)
-        loop_location = Location(
-            Screen.SCREEN_WIDTH, bookmark_toolbar_top_menu_location.y
-        )
+        loop_location = Location(Screen.SCREEN_WIDTH, bookmark_toolbar_top_menu_location.y)
 
         hover(loop_location, click_timeout)
 
@@ -59,23 +53,17 @@ class Test(FirefoxTest):
         right_click(getting_started_pattern)
 
         context_menu_cut_displayed = exists(cut_option_pattern)
-        assert (
-            context_menu_cut_displayed is True
-        ), 'Context menu "Cut" option is displayed'
+        assert context_menu_cut_displayed is True, 'Context menu "Cut" option is displayed'
 
         click(cut_option_pattern)
 
         bookmarks_menu_still_displayed = exists(other_bookmarks_pattern)
-        assert (
-            bookmarks_menu_still_displayed is True
-        ), "Bookmarks menu still displayed after bookmark was cut"
+        assert bookmarks_menu_still_displayed is True, "Bookmarks menu still displayed after bookmark was cut"
 
         click(other_bookmarks_pattern)
 
         other_bookmarks_displayed = exists(firefox_bookmark_top_menu_pattern)
-        assert (
-            other_bookmarks_displayed is True
-        ), '"Other bookmarks" folder content is displayed'
+        assert other_bookmarks_displayed is True, '"Other bookmarks" folder content is displayed'
 
         other_bookmarks_location = find(bookmark_toolbar_top_menu_pattern)
         firefox_bookmark_location = find(firefox_bookmark_top_menu_pattern)
@@ -90,16 +78,12 @@ class Test(FirefoxTest):
         right_click(firefox_bookmark_top_menu_pattern)
 
         context_menu_paste_displayed = exists(paste_option_pattern)
-        assert (
-            context_menu_paste_displayed is True
-        ), 'Context menu "Paste" option is displayed'
+        assert context_menu_paste_displayed is True, 'Context menu "Paste" option is displayed'
 
         click(paste_option_pattern)
 
         bookmark_pasted = exists(getting_started_pattern)
-        assert (
-            bookmark_pasted is True
-        ), 'Expected bookmark was pasted into "Other bookmarks" folder'
+        assert bookmark_pasted is True, 'Expected bookmark was pasted into "Other bookmarks" folder'
 
         click(NavBar.HAMBURGER_MENU)
 

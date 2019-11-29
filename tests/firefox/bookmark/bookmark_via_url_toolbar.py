@@ -15,12 +15,10 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         url = "about:blank"
-        draggable_url_pattern = Pattern("moz_draggable_url.png")
+        draggable_url_pattern = Pattern("moz_draggable_url.png").similar(0.6)
         toolbar_dragged_bookmark_pattern = Pattern("moz_toolbar_dragged_bookmark.png")
         drag_area_pattern = Pattern("drag_area.png")
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
         bookmark_selected_pattern = LocationBar.STAR_BUTTON_STARRED
 
         navigate(url)
@@ -29,9 +27,7 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."
 
         select_location_bar()
@@ -40,19 +36,12 @@ class Test(FirefoxTest):
 
         drag_drop(draggable_url_pattern, drag_area_pattern, duration=0.5)
 
-        star_shaped_button_assert = exists(
-            bookmark_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            star_shaped_button_assert is True
-        ), "Star-shaped button has changed its color to blue."
+        star_shaped_button_assert = exists(bookmark_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert star_shaped_button_assert is True, "Star-shaped button has changed its color to blue."
 
         navigate(url)
 
-        bookmarked_url_assert = exists(
-            toolbar_dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmarked_url_assert = exists(toolbar_dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmarked_url_assert is True, (
-            "Moz page has been successfully bookmarked via URL onto the "
-            "Bookmarks Toolbar."
+            "Moz page has been successfully bookmarked via URL onto the " "Bookmarks Toolbar."
         )

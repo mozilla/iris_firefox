@@ -36,12 +36,8 @@ class Test(FirefoxTest):
         upload_pattern = Pattern("ut-upload.png")
         save_pattern = Pattern("ut-save.png")
 
-        last_hover_region = RegionUtils.generate_region_by_markers(
-            hover_t_left, hover_b_right
-        )
-        last_click_region = RegionUtils.generate_region_by_markers(
-            click_t_left, click_b_right
-        )
+        last_hover_region = RegionUtils.generate_region_by_markers(hover_t_left, hover_b_right)
+        last_click_region = RegionUtils.generate_region_by_markers(click_t_left, click_b_right)
 
         # ---- HOVER TESTS ----
 

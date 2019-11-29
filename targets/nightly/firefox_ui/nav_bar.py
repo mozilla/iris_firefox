@@ -30,9 +30,7 @@ class NavBar(object):
     ZOOM_OUT = Pattern("zoom_out_button.png")
     ZOOM_IN = Pattern("zoom_in_button.png")
 
-    DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE = Pattern(
-        "default_zoom_level_toolbar_customize_page.png"
-    )
+    DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE = Pattern("default_zoom_level_toolbar_customize_page.png")
     ZOOM_CONTROLS_CUSTOMIZE_PAGE = Pattern("wrapper_zoom_controls.png")
     TOOLBAR = Pattern("toolbar.png")
 
