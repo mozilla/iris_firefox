@@ -757,7 +757,7 @@ def open_library_menu(option):
             option_number_in_library_list = library_option_list[option]
             for x in range(option_number_in_library_list):
                 time.sleep(0.5)
-                type(Key.DOWN)
+                type(Key.TAB)
             time.sleep(1)
             type(Key.ENTER)
 
