@@ -738,7 +738,7 @@ def open_hamburger_menu(option=None):
                 count = 0
                 while (count < reps):
                     time.sleep(0.5)
-                    type(Key.DOWN)
+                    type(Key.TAB)
                     count = count + 1
                 time.sleep(1)
                 type(Key.ENTER)
