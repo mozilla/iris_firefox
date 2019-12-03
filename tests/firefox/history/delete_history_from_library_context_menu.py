@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="178346",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         mozilla_bookmark_focus_pattern = Pattern("mozilla_bookmark_focus.png")

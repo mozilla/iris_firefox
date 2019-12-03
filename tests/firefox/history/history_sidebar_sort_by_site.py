@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="119445",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY

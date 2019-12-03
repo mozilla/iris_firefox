@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         test_case_id="171423",
         test_suite_id="69",
         locale=["en-US"],
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         google_logo_pattern = Pattern("google_logo.png")
