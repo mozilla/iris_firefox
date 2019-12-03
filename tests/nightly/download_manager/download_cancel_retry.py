@@ -39,18 +39,20 @@ class Test(FirefoxTest):
 
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert expected is True, "Cancel button is displayed."
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         region.click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
         if OSHelper.get_os() != OSPlatform.LINUX:
-            expected = exists(DownloadManager.DownloadState.RETRY_DOWNLOAD, 10)
+            expected = exists(DownloadManager.DownloadState.RETRY_DOWNLOAD, 15)
             assert expected is True, "Retry download message is displayed."
 
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        expected = region.exists(download_cancelled_pattern, 10)
+        expected = region.exists(download_cancelled_pattern, 15)
         assert expected is True, "Download was cancelled."
 
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY, 10)
         assert expected is True, "Retry button is displayed."
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         region.click(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
@@ -60,6 +62,8 @@ class Test(FirefoxTest):
         # Cancel 'in progress' download.
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert expected is True, "Cancel button is displayed."
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
         region.click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
 
     def teardown(self):
