@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="120117",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo.png")
