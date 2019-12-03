@@ -24,9 +24,17 @@ class Test(FirefoxTest):
         test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Test site opened"
 
-        open_hamburger_menu("Help")
-
-        time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        click(NavBar.HAMBURGER_MENU)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+        if OSHelper.is_mac():
+            type(Key.UP)
+            time.sleep(Settings.DEFAULT_UI_DELAY)
+            type(Key.ENTER)
+        else:
+            type(Key.UP)
+            type(Key.UP)
+            time.sleep(Settings.DEFAULT_UI_DELAY)
+            type(Key.ENTER)
 
         report_deceptive_site_option_exists = exists(
             report_deceptive_pattern, FirefoxSettings.FIREFOX_TIMEOUT, Screen.RIGHT_THIRD
@@ -48,4 +56,4 @@ class Test(FirefoxTest):
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
         assert filled_url in LocalWeb.POCKET_TEST_SITE, "The deceptive URL is auto filled."
 
-        # Possibility reporting the phishing website doesn't checked because of re-captcha
+        # Possibility of the reporting the phishing website doesn't checked because of re-captcha
