@@ -139,7 +139,7 @@ class FirefoxProfile(MozProfile):
 
         return to_directory
 
-    def make_profile(profile_type: Profiles = None, preferences: dict = None):
+    def make_profile(profile_type: Profiles = None, prefs: dict = None):
         """Internal-only method used to create profiles on disk.
 
         :param profile_type: Profiles.BRAND_NEW, Profiles.LIKE_NEW, Profiles.TEN_BOOKMARKS, Profiles.DEFAULT
@@ -148,11 +148,14 @@ class FirefoxProfile(MozProfile):
         if profile_type is None:
             profile_type = Profiles.DEFAULT
 
-        if preferences is None:
-            if profile_type is Profiles.BRAND_NEW:
-                preferences = FirefoxSettings.DEFAULT_FX_PREFS
-            else:
-                preferences = {}
+        if profile_type is Profiles.BRAND_NEW:
+            preferences = {}
+        else:
+            preferences = FirefoxSettings.DEFAULT_FX_PREFS
+
+        if prefs is not None:
+            for pref in prefs:
+                preferences[pref] = prefs[pref]
 
         test_root = PathManager.get_current_tests_directory()
         current_test = os.environ.get("CURRENT_TEST")
