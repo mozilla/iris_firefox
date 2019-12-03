@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        image_site_loaded_pattern = Pattern('image_site_loaded.png')
+        image_site_loaded_pattern = Pattern('image_site_loaded.png').similar(0.7)
         pixbay_site_loaded_pattern = Pattern('pixbay_site_loaded.png')
 
         mouse_wheel_steps = 200
