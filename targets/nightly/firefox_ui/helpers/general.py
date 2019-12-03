@@ -787,7 +787,7 @@ def open_library_menu(option):
             time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
             region.wait(LibraryMenu.BOOKMARKS_OPTION,10)
             option_number_in_library_list = library_option_list[option]
-            for x in range(option_number_in_library_list):
+            for _ in range(option_number_in_library_list):
                 time.sleep(0.5)
                 type(Key.TAB)
             time.sleep(1)
