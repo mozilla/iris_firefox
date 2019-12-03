@@ -7,17 +7,16 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Firefox can be successfully set to keep cookies for a specific session',
-        test_case_id='143634',
-        test_suite_id='2241',
-        locale=['en-US'],
+        description="Firefox can be successfully set to keep cookies for a specific session",
+        test_case_id="143634",
+        test_suite_id="2241",
+        locale=["en-US"],
     )
     def run(self, firefox):
         custom_level_option_pattern = Pattern("custom_level_option.png")
         drop_down_default_pattern = Pattern("default_drop_down.png")
-        all_cookies_option_pattern = Pattern("all_cookies_option.png")
+        all_cookies_option_pattern = Pattern("all_cookies_option.png").similar(0.7)
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")
         manage_permissions_pattern = Pattern("manage_permissions.png")
         manage_data_pattern = Pattern("manage_data_button.png")
@@ -33,8 +32,12 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        custom_level_option_exists = exists(custom_level_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        hover_location = Location(Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
+        hover(hover_location)
+
+        custom_level_option_exists = scroll_until_pattern_found(custom_level_option_pattern, scroll, (-scroll_step,), 5)
         assert custom_level_option_exists, "Custom option exists"
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         custom_level_option_loc = find(custom_level_option_pattern)
 
         click(custom_level_option_pattern)

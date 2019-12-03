@@ -18,36 +18,30 @@ class Test(FirefoxTest):
         clear_web_console = Pattern("clear.png")
 
         navigate("about:blank")
-        pop_up_region = click_hamburger_menu_option("Web Developer")
+        open_hamburger_menu("Web Developer")
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        pop_up_region.click("Browser Console")
+        click("Browser Console")
         time.sleep(Settings.DEFAULT_UI_DELAY)
         assert exists(browser_console, 10), "Browser Console successfully displayed."
         assert exists(clear_web_console, 10), "Clear the web console option is present."
 
         click_window_control("close")
         try:
-            assert wait_vanish(
-                browser_console, 10
-            ), "Browser Console successfully closed."
+            assert wait_vanish(browser_console, 10), "Browser Console successfully closed."
         except FindError:
             raise FindError("Browser Console not closed")
 
         open_browser_console()
         click_window_control("minimize")
         try:
-            assert wait_vanish(
-                browser_console, 10
-            ), "Browser Console successfully minimized."
+            assert wait_vanish(browser_console, 10), "Browser Console successfully minimized."
         except FindError:
             raise FindError("Browser Console not minimized.")
 
         if OSHelper.get_os_version() == "win7":
             try:
-                Screen().bottom_half().bottom_half().click(
-                    Pattern("firefox_start_bar.png")
-                )
+                Screen().bottom_half().bottom_half().click(Pattern("firefox_start_bar.png"))
                 click(Pattern("firefox_start_bar_browser_console.png"))
             except FindError:
                 raise APIHelperError("Restore window from taskbar unsuccessful.")
@@ -58,9 +52,7 @@ class Test(FirefoxTest):
         top_page = Screen.TOP_THIRD
         try:
             hover(clear_web_console)
-            assert top_page.exists(
-                browser_console, 10
-            ), "Browser Console successfully maximized."
+            assert top_page.exists(browser_console, 10), "Browser Console successfully maximized."
         except FindError:
             raise FindError("Browser Console not maximized.")
 

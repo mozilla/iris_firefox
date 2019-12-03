@@ -2,9 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from moziris.api.mouse import mouse
-from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import *
-from targets.firefox.fx_testcase import *
+from targets.nightly.firefox_ui.download_manager import DownloadManager
+from targets.nightly.firefox_ui.helpers.download_manager_utils import *
+from targets.nightly.fx_testcase import *
 
 
 class Test(FirefoxTest):
@@ -22,34 +22,41 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        file_to_download = DownloadFiles.VERY_LARGE_FILE_1GB
+        file_to_download = DownloadFiles.EXTRA_LARGE_FILE_512MB
+        region = Screen.UPPER_RIGHT_CORNER
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         download_file(file_to_download, DownloadFiles.OK)
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+        expected = region.exists(NavBar.DOWNLOADS_BUTTON, 10)
+        assert expected is True, "Downloads button is displayed."
+        region.click(NavBar.DOWNLOADS_BUTTON)
+
+        expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert expected is True, "Cancel button is displayed."
 
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        region.click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
         if OSHelper.get_os() != OSPlatform.LINUX:
             expected = exists(DownloadManager.DownloadState.RETRY_DOWNLOAD, 10)
             assert expected is True, "Retry download message is displayed."
 
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        expected = exists(DownloadManager.DownloadState.CANCELED, 10)
+        expected = region.exists(DownloadManager.DownloadState.CANCELLED, 10)
         assert expected is True, "Download was cancelled."
 
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY, 10)
+        expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY, 10)
         assert expected is True, "Retry button is displayed."
 
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
+        region.click(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
-        expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
+        expected = region.exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert expected is True, "Download was restarted."
 
         # Cancel 'in progress' download.
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
+        expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
+        assert expected is True, "Cancel button is displayed."
+        region.click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
 
     def teardown(self):
         downloads_cleanup()

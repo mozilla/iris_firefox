@@ -25,13 +25,9 @@ class Test(FirefoxTest):
         google_one_off_button_pattern = Pattern("google_one_off_button.png")
         twitter_one_off_button_pattern = Pattern("twitter_one_off_button.png")
         wikipedia_one_off_button_pattern = Pattern("wikipedia_one_off_button.png")
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        )
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png")
 
-        region = Screen().new_region(
-            0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3
-        )
+        region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
@@ -41,12 +37,8 @@ class Test(FirefoxTest):
         select_location_bar()
         paste("moz")
 
-        one_off_bar_displayed = exists(
-            this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            one_off_bar_displayed
-        ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         pattern_list = [
             search_settings_pattern,
@@ -61,14 +53,10 @@ class Test(FirefoxTest):
         for index, pattern in enumerate(pattern_list):
             if OSHelper.is_mac():
                 expected = region.exists(pattern.similar(0.7), 10)
-                assert (
-                    expected
-                ), "Element found at position {} in the list found.".format(index)
+                assert expected, "Element found at position {} in the list found.".format(index)
             else:
                 expected = region.exists(pattern.similar(0.8), 10)
-                assert (
-                    expected
-                ), "Element found at position {} in the list found.".format(index)
+                assert expected, "Element found at position {} in the list found.".format(index)
 
         click(search_settings_pattern)
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -97,6 +85,4 @@ class Test(FirefoxTest):
         # Check that the one-off list is not displayed in the awesomebar after each search engine was unchecked.
         for index, pattern in enumerate(pattern_list):
             expected = exists(pattern.similar(0.9), 1)
-            assert (
-                not expected
-            ), "Element found at position {} in the list not found.".format(index)
+            assert not expected, "Element found at position {} in the list not found.".format(index)

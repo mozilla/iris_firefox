@@ -16,14 +16,10 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        view_bookmarks_toolbar = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        bookmarks_toolbar_most_visited_pattern = (
-            SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        )
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         library_pattern = Library.TITLE
-        history_pattern = Library.HISTORY
+        history_pattern = Library.HISTORY.similar(0.7)
         copy_pattern = Pattern("copy.png")
         paste_pattern = Pattern("paste.png")
         history_bookmarks_toolbar_pattern = Pattern("history_bookmarks_toolbar.png")
@@ -42,9 +38,7 @@ class Test(FirefoxTest):
             logger.debug("Show All History option found.")
             click(show_all_history_pattern)
         except FindError:
-            raise FindError(
-                "Show All History option is not present on the page, aborting."
-            )
+            raise FindError("Show All History option is not present on the page, aborting.")
 
         expected = exists(library_pattern, 10)
         assert expected, '"Library" window was displayed properly.'
@@ -79,9 +73,7 @@ class Test(FirefoxTest):
 
         # Check that the history was copied.
         time.sleep(Settings.DEFAULT_UI_DELAY)
-        region = Screen().new_region(
-            0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
-        )
+        region = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
         expected = region.exists(history_bookmarks_toolbar_pattern, 10)
         assert expected, "History was successfully copied."

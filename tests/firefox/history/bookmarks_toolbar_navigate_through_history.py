@@ -17,35 +17,24 @@ class Test(FirefoxTest):
     def run(self, firefox):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern("iris_bookmark.png")
-        history_pattern = Library.HISTORY
-        view_bookmarks_toolbar = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        bookmarks_toolbar_most_visited_pattern = (
-            SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        )
+        history_pattern = Library.HISTORY.similar(0.7)
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         history_bookmarks_toolbar_pattern = Pattern("history_bookmarks_toolbar.png")
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
 
-        expected = exists(
-            bookmarks_toolbar_most_visited_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(bookmarks_toolbar_most_visited_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Bookmarks Toolbar has been activated."
 
         # Open History and check if it is populated with the Iris page.
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
-        expected = right_upper_corner.exists(
-            iris_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = right_upper_corner.exists(iris_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Iris page is displayed in the History menu list."
 
         try:
@@ -53,9 +42,7 @@ class Test(FirefoxTest):
             logger.debug("Show All History option found.")
             click(show_all_history_pattern)
         except FindError:
-            raise FindError(
-                "Show All History option is not present on the page, aborting."
-            )
+            raise FindError("Show All History option is not present on the page, aborting.")
 
         expected = exists(history_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "History section is visible."
@@ -65,15 +52,11 @@ class Test(FirefoxTest):
         click_window_control("close")
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
 
-        right_click_and_type(
-            bookmarks_toolbar_most_visited_pattern, keyboard_action="p"
-        )
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action="p")
 
         new_tab()
 
-        expected = exists(
-            history_bookmarks_toolbar_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(history_bookmarks_toolbar_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "History section is displayed in the Bookmarks Toolbar."
 
         click(history_bookmarks_toolbar_pattern)

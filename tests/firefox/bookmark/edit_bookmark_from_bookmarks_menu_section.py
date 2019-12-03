@@ -14,14 +14,12 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        edit_bookmark_name_before_pattern = Pattern("edit_bookmark_name.png")
-        edit_bookmark_name_after_pattern = Pattern("edit_bookmark_name_modified.png")
-        edit_bookmark_folder_before_pattern = Pattern("edit_bookmark_folder.png")
-        edit_bookmark_folder_after_pattern = Pattern(
-            "edit_bookmark_folder_modified.png"
-        )
-        edit_bookmark_tags_before_pattern = Pattern("tags_before.png")
-        edit_bookmark_tags_after_pattern = Pattern("edit_bookmark_tags_modified.png")
+        edit_bookmark_name_before_pattern = Pattern("edit_bookmark_name.png").similar(0.7)
+        edit_bookmark_name_after_pattern = Pattern("edit_bookmark_name_modified.png").similar(0.7)
+        edit_bookmark_folder_before_pattern = Pattern("edit_bookmark_folder.png").similar(0.7)
+        edit_bookmark_folder_after_pattern = Pattern("edit_bookmark_folder_modified.png").similar(0.7)
+        edit_bookmark_tags_before_pattern = Pattern("tags_before.png").similar(0.7)
+        edit_bookmark_tags_after_pattern = Pattern("edit_bookmark_tags_modified.png").similar(0.7)
         if not OSHelper.is_windows():
             edit_this_bookmark_pattern = Pattern("edit_this_bookmark.png")
         else:
@@ -32,48 +30,31 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            test_site_opened is True
-        ), "Previously bookmarked Mozilla website is opened"
+        test_site_opened = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert test_site_opened is True, "Previously bookmarked Mozilla website is opened"
 
         bookmark_page()
 
         time.sleep(FirefoxSettings.FIREFOX_TIMEOUT)
 
-        library_button_exists = exists(
-            NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        library_button_exists = exists(NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(
-            LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert bookmarks_menu_option_exists is True, "Bookmarks menu option exists"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        edit_this_bookmark_exists = exists(
-            edit_this_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            edit_this_bookmark_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert edit_this_bookmark_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(edit_this_bookmark_pattern)
 
-        edit_bookmark_title_exists = exists(
-            Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        edit_bookmark_title_exists = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert edit_bookmark_title_exists is True, (
-            "Edit This Bookmark window is displayed under the star-shaped "
-            "button from the URL bar"
+            "Edit This Bookmark window is displayed under the star-shaped " "button from the URL bar"
         )
 
         edit_bookmark_name_before_exists = exists(
@@ -101,19 +82,14 @@ class Test(FirefoxTest):
             edit_bookmark_folder_after_exists = exists(
                 edit_bookmark_folder_option, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
-            assert (
-                edit_bookmark_folder_after_exists is True
-            ), "Needed option from folder field exists"
+            assert edit_bookmark_folder_after_exists is True, "Needed option from folder field exists"
 
             click(edit_bookmark_folder_option)
         else:
             edit_bookmark_folder_after_exists = exists(
-                edit_bookmark_folder_after_pattern,
-                FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+                edit_bookmark_folder_after_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
-            assert (
-                edit_bookmark_folder_after_exists is True
-            ), "Needed option from folder field exists"
+            assert edit_bookmark_folder_after_exists is True, "Needed option from folder field exists"
 
             click(edit_bookmark_folder_after_pattern)
 
@@ -127,37 +103,24 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        library_button_exists = exists(
-            NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        library_button_exists = exists(NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(
-            LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert bookmarks_menu_option_exists is True, "Bookmarks menu option exists"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        edit_this_bookmark_exists = exists(
-            edit_this_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            edit_this_bookmark_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        edit_this_bookmark_exists = exists(edit_this_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert edit_this_bookmark_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(edit_this_bookmark_pattern)
 
-        edit_bookmark_title_exists = exists(
-            Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        edit_bookmark_title_exists = exists(Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert edit_bookmark_title_exists is True, (
-            "Edit This Bookmark window is displayed under the star-shaped"
-            " button from the URL bar"
+            "Edit This Bookmark window is displayed under the star-shaped" " button from the URL bar"
         )
 
         edit_bookmark_name_after_exists = exists(
@@ -168,9 +131,7 @@ class Test(FirefoxTest):
         edit_bookmark_folder_after_exists = exists(
             edit_bookmark_folder_after_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            edit_bookmark_folder_after_exists is True
-        ), "Folder field was correctly saved"
+        assert edit_bookmark_folder_after_exists is True, "Folder field was correctly saved"
 
         edit_bookmark_tags_after_exists = exists(
             edit_bookmark_tags_after_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT

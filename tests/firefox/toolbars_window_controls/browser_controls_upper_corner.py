@@ -8,10 +8,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Browser controls work as expected.",
-        locale=["en-US"],
-        test_case_id="119481",
-        test_suite_id="1998",
+        description="Browser controls work as expected.", locale=["en-US"], test_case_id="119481", test_suite_id="1998"
     )
     def run(self, firefox):
         window_controls_minimize_pattern = Pattern("window_controls_minimize.png")
@@ -20,34 +17,26 @@ class Test(FirefoxTest):
         hover_restore_control_pattern = Pattern("hover_restore_control.png")
         window_controls_maximize_pattern = Pattern("window_controls_maximize.png")
         hover_maximize_control_pattern = Pattern("hover_maximize_control.png")
-        window_controls_close_pattern = Pattern("window_controls_close.png")
+        window_controls_close_pattern = AuxiliaryWindow.CLOSE_BUTTON
         hover_close_control_pattern = Pattern("hover_close_control.png")
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
-        assert exists(
-            LocalWeb.FIREFOX_LOGO, 10
-        ), "Page successfully loaded, firefox logo found."
+        assert exists(LocalWeb.FIREFOX_LOGO, 10), "Page successfully loaded, firefox logo found."
 
         if OSHelper.is_linux():
             Mouse().move(Location(0, 0))
 
         hover(window_controls_minimize_pattern)
-        assert exists(
-            hover_minimize_control_pattern, 10
-        ), "Hover over the 'minimize' button works correctly."
+        assert exists(hover_minimize_control_pattern, 10), "Hover over the 'minimize' button works correctly."
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             hover(window_controls_restore_pattern)
-            assert exists(
-                hover_restore_control_pattern, 10
-            ), "Hover over the 'restore' button works correctly."
+            assert exists(hover_restore_control_pattern, 10), "Hover over the 'restore' button works correctly."
 
         if OSHelper.is_mac():
             middle = find(hover_maximize_control_pattern)
             Mouse().move(Location(middle.x + 7, middle.y + 5))
-            assert exists(
-                hover_maximize_control_pattern, 10
-            ), "Hover over the 'maximize' button works correctly."
+            assert exists(hover_maximize_control_pattern, 10), "Hover over the 'maximize' button works correctly."
 
             Mouse().move(Location(middle.x - 35, middle.y + 5))
             assert exists(
@@ -55,9 +44,7 @@ class Test(FirefoxTest):
             ), "Hover over the 'close' button works correctly."
         else:
             hover(window_controls_close_pattern)
-            assert exists(
-                hover_close_control_pattern, 10
-            ), "Hover over the 'close' button works correctly."
+            assert exists(hover_close_control_pattern, 10), "Hover over the 'close' button works correctly."
 
         if OSHelper.is_windows() or OSHelper.is_linux():
             click_window_control("restore", "main")
@@ -72,9 +59,7 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
-            assert wait_vanish(
-                LocalWeb.FIREFOX_LOGO, 10
-            ), "Window successfully minimized."
+            assert wait_vanish(LocalWeb.FIREFOX_LOGO, 10), "Window successfully minimized."
         except FindError:
             raise FindError("Window not minimized.")
 

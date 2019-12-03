@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png")
         open_bookmark_new_window_pattern = Pattern("open_bookmark_in_new_window.png")
-        other_bookmarks_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
 
         open_firefox_menu()
 
@@ -30,18 +30,14 @@ class Test(FirefoxTest):
         click(bookmarks_top_menu_pattern)
 
         bookmarks_dropdown_opened = exists(other_bookmarks_pattern)
-        assert (
-            bookmarks_dropdown_opened is True
-        ), "Bookmarks dropdown firefox menu is opened"
+        assert bookmarks_dropdown_opened is True, "Bookmarks dropdown firefox menu is opened"
 
         other_bookmarks_location = find(other_bookmarks_pattern)
 
         click(other_bookmarks_pattern)
 
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
-        assert (
-            firefox_bookmark_top_menu_located is True
-        ), "Bookmarks are displayed in top menu"
+        assert firefox_bookmark_top_menu_located is True, "Bookmarks are displayed in top menu"
 
         # Required to guarantee bookmarks list will not disappear
         firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
@@ -57,9 +53,7 @@ class Test(FirefoxTest):
 
         click(open_bookmark_new_window_pattern)
 
-        webpage_opened = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert webpage_opened is True, "Expected webpage is properly displayed"
 
         iris_tab_not_visible = not exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
@@ -68,6 +62,4 @@ class Test(FirefoxTest):
         close_window()
 
         previous_window_opened = exists(LocalWeb.IRIS_LOGO)
-        assert (
-            previous_window_opened is True
-        ), "The Test page was opened in the new window"
+        assert previous_window_opened is True, "The Test page was opened in the new window"

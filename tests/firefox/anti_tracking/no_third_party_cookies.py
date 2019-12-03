@@ -14,21 +14,15 @@ class Test(FirefoxTest):
         test_suite_id="1826",
     )
     def run(self, firefox):
-        all_third_party_cookies_pattern = Pattern("all_third_party_cookies.png")
-        cookies_list_empty_pattern = Pattern("cookies_list_empty.png")
+        all_third_party_cookies_pattern = Pattern("all_third_party_cookies.png").similar(0.6)
+        cookies_list_empty_pattern = Pattern("cookies_list_empty.png").similar(0.7)
         block_cookies_ticked_pattern = Pattern("block_cookies_ticked.png").similar(0.9)
-        block_cookies_unticked_pattern = Pattern("block_cookies_unticked.png").similar(
-            0.9
-        )
+        block_cookies_unticked_pattern = Pattern("block_cookies_unticked.png").similar(0.9)
         cookies_window_title_pattern = Pattern("cookies_window_title.png")
-        custom_content_blocking_unticked_pattern = Pattern(
-            "custom_content_blocking_unticked.png"
-        )
-        custom_content_blocking_ticked_pattern = Pattern(
-            "custom_content_blocking_ticked.png"
-        )
+        custom_content_blocking_unticked_pattern = Pattern("custom_content_blocking_unticked.png")
+        custom_content_blocking_ticked_pattern = Pattern("custom_content_blocking_ticked.png")
         manage_cookies_data_pattern = Pattern("manage_cookies_data.png")
-        site_cookie_one_pattern = Pattern("site_cookie_one.png")
+        site_cookie_one_pattern = Pattern("site_cookie_one.png").similar(0.6)
         site_cookie_two_pattern = Pattern("site_cookie_two.png")
         site_tab_pattern = Pattern("prosport_tab.png")
 
@@ -40,16 +34,13 @@ class Test(FirefoxTest):
         navigate("about:preferences#privacy")
 
         Mouse().move(
-            Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2),
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2), FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )
 
         preferences_opened = scroll_until_pattern_found(
             custom_content_blocking_unticked_pattern, Mouse().scroll, (0, -value), 100
         )
-        assert (
-            preferences_opened
-        ), "The privacy preferences page is successfully displayed."
+        assert preferences_opened, "The privacy preferences page is successfully displayed."
 
         click(custom_content_blocking_unticked_pattern)
 
@@ -65,9 +56,7 @@ class Test(FirefoxTest):
         block_cookies_location = find(block_cookies_ticked_pattern)
 
         option_width, option_height = block_cookies_ticked_pattern.get_size()
-        block_cookies_option_list = Location(
-            block_cookies_location.x + (option_width * 5), block_cookies_location.y
-        )
+        block_cookies_option_list = Location(block_cookies_location.x + (option_width * 5), block_cookies_location.y)
 
         click(block_cookies_option_list)
 
@@ -78,9 +67,7 @@ class Test(FirefoxTest):
         type(Key.ENTER)
 
         all_third_party_cookies = exists(all_third_party_cookies_pattern)
-        assert (
-            all_third_party_cookies
-        ), "All third-party cookies (may cause websites to break)"
+        assert all_third_party_cookies, "All third-party cookies (may cause websites to break)"
 
         navigate("https://www.prosport.ro/")
 
@@ -117,9 +104,7 @@ class Test(FirefoxTest):
         type(Key.DELETE)
 
         type(Key.DELETE)  # There are two default cookies from mozilla
-        type(
-            Key.DELETE
-        )  # So it's needed to press "Delete" key twice to remove this site's cookies from list
+        type(Key.DELETE)  # So it's needed to press "Delete" key twice to remove this site's cookies from list
 
         cookies_list_is_empty = exists(cookies_list_empty_pattern)
         assert cookies_list_is_empty, "No third-party cookies are saved"

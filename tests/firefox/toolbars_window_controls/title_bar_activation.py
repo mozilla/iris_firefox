@@ -20,16 +20,14 @@ class Test(FirefoxTest):
         active_title_bar_pattern = Pattern("active_title_bar.png")
         deactivate_title_bar_pattern = Pattern("deactivate_title_bar.png")
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         if OSHelper.is_linux():
             assert exists(active_title_bar_pattern, 10), "Title Bar can be deactivated."
             click(deactivate_title_bar_pattern)
 
             try:
-                assert wait_vanish(
-                    deactivate_title_bar_pattern, 10
-                ), "Title Bar has been successfully deactivated."
+                assert wait_vanish(deactivate_title_bar_pattern, 10), "Title Bar has been successfully deactivated."
             except FindError:
                 raise FindError("Title Bar can not be closed")
         else:
@@ -42,8 +40,6 @@ class Test(FirefoxTest):
             click(deactivate_title_bar_pattern)
 
             try:
-                assert wait_vanish(
-                    active_title_bar_pattern, 10
-                ), "Title Bar has been successfully deactivated."
+                assert wait_vanish(active_title_bar_pattern, 10), "Title Bar has been successfully deactivated."
             except FindError:
                 raise FindError("Title Bar can not be closed")

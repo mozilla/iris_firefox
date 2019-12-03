@@ -28,12 +28,9 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        download_files_list = [
-            DownloadFiles.VERY_LARGE_FILE_1GB,
-            DownloadFiles.EXTRA_LARGE_FILE_512MB,
-        ]
+        download_files_list = [DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.EXTRA_LARGE_FILE_512MB]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         # Wait for the page to be loaded.
         try:

@@ -18,68 +18,42 @@ class Test(FirefoxTest):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
         google_one_off_button_pattern = Pattern("google_one_off_button.png")
         google_search_results_pattern = Pattern("google_search_results.png")
-        search_suggestion_bookmarked_tab_pattern = Pattern(
-            "search_suggestion_bookmarked_tab.png"
-        ).similar(0.6)
-        search_suggestion_opened_tab_pattern = Pattern(
-            "search_suggestion_opened_tab.png"
-        ).similar(0.6)
-        search_suggestion_history_pattern = Pattern(
-            "search_suggestion_history.png"
-        ).similar(0.6)
+        search_suggestion_bookmarked_tab_pattern = Pattern("search_suggestion_bookmarked_tab.png").similar(0.6)
+        search_suggestion_opened_tab_pattern = Pattern("search_suggestion_opened_tab.png").similar(0.6)
+        search_suggestion_history_pattern = Pattern("search_suggestion_history.png").similar(0.6)
         popular_search_suggestion_pattern = Pattern("popular_search_suggestion.png")
         mozilla_tab_logo_pattern = Pattern("mozilla_tab_logo.png")
 
-        top_two_thirds_region = Region(
-            0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3
-        )
+        top_two_thirds_region = Region(0, 0, Screen.SCREEN_WIDTH, 2 * Screen.SCREEN_HEIGHT / 3)
         autofill_navigated = False
 
         # Make some browsing history to check it later in awesome bar
         new_tab()
         navigate("mozilla.org")
 
-        mozilla_page_opened = exists(
-            mozilla_tab_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        mozilla_page_opened = exists(mozilla_tab_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_page_opened, "Mozilla page opened"
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        expected = exists(
-            LocalWeb.MOZILLA_LOGO,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
-        )
+        expected = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, "Mozilla page loaded successfully."
 
         bookmark_page()
 
-        expected = exists(
-            page_bookmarked_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
-        )
+        expected = exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, "Page was bookmarked."
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        expected = exists(
-            LocalWeb.FIREFOX_LOGO,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
-        )
+        expected = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, "Firefox page loaded successfully."
 
         new_tab()
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        expected = exists(
-            LocalWeb.FOCUS_LOGO,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
-        )
+        expected = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region)
         assert expected, "Focus page loaded successfully."
 
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
@@ -90,9 +64,7 @@ class Test(FirefoxTest):
         paste("m")
 
         expected = exists(
-            search_suggestion_bookmarked_tab_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
+            search_suggestion_bookmarked_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region
         )
         assert expected, "Bookmarked page found between search suggestions."
 
@@ -100,9 +72,7 @@ class Test(FirefoxTest):
         paste("ox")
 
         expected = exists(
-            search_suggestion_opened_tab_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
+            search_suggestion_opened_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region
         )
         assert expected, "Opened tab found between search suggestions."
 
@@ -110,22 +80,14 @@ class Test(FirefoxTest):
         paste("f")
 
         expected = exists(
-            search_suggestion_history_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
+            search_suggestion_history_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region
         )
-        assert (
-            expected
-        ), "Web pages from personal browsing history found between search suggestions."
+        assert expected, "Web pages from personal browsing history found between search suggestions."
 
         expected = exists(
-            popular_search_suggestion_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
+            popular_search_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region
         )
-        assert (
-            expected
-        ), "Popular search suggestions from the default search engine found between search suggestions."
+        assert expected, "Popular search suggestions from the default search engine found between search suggestions."
 
         # 2. Enter a search term in the URL bar, hover any one-off button and left click on it.
 
@@ -135,15 +97,11 @@ class Test(FirefoxTest):
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
         one_off_button_exists = exists(
-            google_one_off_button_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=top_two_thirds_region,
+            google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=top_two_thirds_region
         )
         assert one_off_button_exists, "The 'Google' one-off button found."
 
-        google_one_off_button_location = find(
-            google_one_off_button_pattern, Screen.LEFT_THIRD
-        )
+        google_one_off_button_location = find(google_one_off_button_pattern, Screen.LEFT_THIRD)
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
@@ -152,9 +110,7 @@ class Test(FirefoxTest):
         # - Firefox takes you to search results using the search provider of the selected one-off button
 
         search_results_available = exists(
-            google_search_results_pattern.similar(0.7),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=Screen.TOP_THIRD,
+            google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_THIRD
         )
         assert search_results_available, "Google search results are displayed."
 
@@ -201,9 +157,7 @@ class Test(FirefoxTest):
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        one_off_button_exists = exists(
-            google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        one_off_button_exists = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_off_button_exists, "The 'Google' one-off button found."
 
         click(google_one_off_button_location, 1)
@@ -211,10 +165,7 @@ class Test(FirefoxTest):
         # The search is executed on using selected engine.
         # Firefox takes you to search results using the search provider of the selected one-off button
 
-        search_results_available = exists(
-            google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        search_results_available = exists(google_search_results_pattern.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT)
         assert search_results_available, (
-            "Google search results are displayed. The search is executed on using "
-            "selected engine."
+            "Google search results are displayed. The search is executed on using " "selected engine."
         )

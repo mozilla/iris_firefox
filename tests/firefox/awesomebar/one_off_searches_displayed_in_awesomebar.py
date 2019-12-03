@@ -15,16 +15,12 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         search_settings_pattern = Pattern("search_settings.png")
-        amazon_one_off_button_pattern = Pattern("amazon_one_off_button.png").similar(
-            0.7
-        )
+        amazon_one_off_button_pattern = Pattern("amazon_one_off_button.png").similar(0.7)
         bing_one_off_button_pattern = Pattern("bing_one_off_button.png")
         duck_duck_go_one_off_button_pattern = Pattern("duck_duck_go_one_off_button.png")
         google_one_off_button_pattern = Pattern("google_one_off_button.png")
         twitter_one_off_button_pattern = Pattern("twitter_one_off_button.png")
-        wikipedia_one_off_button_pattern = Pattern(
-            "wikipedia_one_off_button.png"
-        ).similar(0.6)
+        wikipedia_one_off_button_pattern = Pattern("wikipedia_one_off_button.png").similar(0.6)
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
@@ -32,12 +28,8 @@ class Test(FirefoxTest):
         select_location_bar()
         paste("abc")
 
-        one_off_bar_displayed = exists(
-            this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            one_off_bar_displayed
-        ), "The one-off bar is displayed at the bottom of awesomebar drop-down"
+        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         pattern_list = [
             google_one_off_button_pattern,
@@ -55,11 +47,7 @@ class Test(FirefoxTest):
         for i in range(pattern_list.__len__()):
             if OSHelper.is_mac():
                 expected = region.exists(pattern_list[i].similar(0.7), 10)
-                assert expected, (
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                assert expected, "Element found at position " + i.__str__() + " in the list found."
             else:
                 expected = region.exists(pattern_list[i].similar(0.9), 10)
-                assert expected, (
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                assert expected, "Element found at position " + i.__str__() + " in the list found."

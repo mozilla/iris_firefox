@@ -18,10 +18,10 @@ class Test(FirefoxTest):
         mozilla_tab_icon = Pattern("mozilla_logo_tab.png")
         iris_bookmark_pattern = Pattern("iris_bookmark.png")
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
-        history_today_pattern = Library.LIBRARY_WINDOW_HISTORY_TODAY
+        history_today_pattern = Library.LIBRARY_WINDOW_HISTORY_TODAY.similar(0.7)
         new_tab_pattern = Pattern("new_tab.png")
         privacy_url = "http://www.mozilla.org/en-US/privacy/firefox/"
-        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png")
+        firefox_privacy_logo_pattern = Pattern("firefox_privacy_logo_for_bookmarks.png").similar(0.7)
 
         # Open a page to create some history.
         new_tab()
@@ -48,10 +48,7 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
 
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
@@ -64,11 +61,7 @@ class Test(FirefoxTest):
 
         # Right click on History time range and select the Open All in Tabs button.
 
-        right_click_and_type(
-            history_today_pattern,
-            delay=FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-            keyboard_action="o",
-        )
+        right_click_and_type(history_today_pattern, delay=FirefoxSettings.SHORT_FIREFOX_TIMEOUT, keyboard_action="o")
 
         open_library()
 

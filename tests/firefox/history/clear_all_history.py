@@ -8,17 +8,12 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Clear all the History.",
-        locale=["en-US"],
-        test_case_id="172045",
-        test_suite_id="2000",
+        description="Clear all the History.", locale=["en-US"], test_case_id="172045", test_suite_id="2000"
     )
     def run(self, firefox):
-        history_empty_pattern = Pattern("history_empty.png")
+        searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON.similar(0.9)
         if OSHelper.is_mac():
-            clear_recent_history_last_hour_pattern = (
-                History.CLearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
-            )
+            clear_recent_history_last_hour_pattern = History.ClearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
 
         # Open some pages to create some history.
         new_tab()
@@ -64,7 +59,11 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         # Check that all the history was cleared.
-        expected_4 = exists(history_empty_pattern, 10)
-        assert expected_4, "All the history was cleared successfully."
+        region_left = Screen.LEFT_THIRD
+        try:
+            region_left.wait_vanish(searched_history_logo_pattern, 10)
+            logger.debug("All the history was cleared.")
+        except FindError:
+            raise FindError("All the history was not cleared successfully.")
 
         history_sidebar()

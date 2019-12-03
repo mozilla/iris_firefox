@@ -33,6 +33,8 @@ class FirefoxSettings:
         "extensions.getAddons.cache.enabled": False,
         # Don't install distribution add-ons from the app folder
         "extensions.installDistroAddons": False,
+        # Disable the extensions in private window dialog
+        "extensions.privatebrowsing.notification": True,
         # Don't automatically update add-ons
         "extensions.update.enabled": False,
         # Don't open a dialog to show available add-on updates

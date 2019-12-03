@@ -25,27 +25,18 @@ class Test(FirefoxTest):
 
         navigate("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
 
-        youtube_page_is_downloaded = exists(
-            youtube_autoplay_switch_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        youtube_page_is_downloaded = exists(youtube_autoplay_switch_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert youtube_page_is_downloaded, "Youtube is properly loaded"
 
-        tabs_region = Rectangle(
-            0, 0, Screen.SCREEN_WIDTH // 3, Screen.SCREEN_HEIGHT // 10
-        )
+        tabs_region = Rectangle(0, 0, Screen.SCREEN_WIDTH // 3, Screen.SCREEN_HEIGHT // 10)
 
-        youtube_tab = exists(
-            youtube_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT, tabs_region
-        )
+        youtube_tab = exists(youtube_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT, tabs_region)
         assert youtube_tab, "Youtube tab is available"
 
         youtube_logo_location = find(youtube_logo_pattern, tabs_region)
         logo_height = youtube_logo_pattern.get_size()[1]
         mute_icon_region = Rectangle(
-            youtube_logo_location.x,
-            youtube_logo_location.y - logo_height,
-            Screen.SCREEN_WIDTH // 3,
-            logo_height * 5,
+            youtube_logo_location.x, youtube_logo_location.y - logo_height, Screen.SCREEN_WIDTH // 3, logo_height * 5
         )
 
         right_click(youtube_logo_pattern, click_duration)
@@ -54,30 +45,22 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        tab_muted_icon = exists(
-            tab_muted_pattern, FirefoxSettings.FIREFOX_TIMEOUT, mute_icon_region
-        )
+        tab_muted_icon = exists(tab_muted_pattern, FirefoxSettings.FIREFOX_TIMEOUT, mute_icon_region)
         assert tab_muted_icon, "Tab successfully muted."
 
         firefox.restart()
 
-        click_hamburger_menu_option("Restore")
+        open_hamburger_menu("Restore Previous Session")
 
         youtube_logo_inactive = exists(
-            youtube_logo_inactive_tab_pattern.similar(0.6),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            tabs_region,
+            youtube_logo_inactive_tab_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT, tabs_region
         )
         assert youtube_logo_inactive, "Youtube inactive tab found."
 
         click(youtube_logo_inactive_tab_pattern, click_duration)
 
-        youtube_tab = exists(
-            youtube_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        youtube_tab = exists(youtube_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert youtube_tab, "Youtube tab is active."
 
-        tab_muted_icon = exists(
-            tab_muted_pattern, FirefoxSettings.FIREFOX_TIMEOUT, mute_icon_region
-        )
+        tab_muted_icon = exists(tab_muted_pattern, FirefoxSettings.FIREFOX_TIMEOUT, mute_icon_region)
         assert tab_muted_icon, "Tab is muted after restart."

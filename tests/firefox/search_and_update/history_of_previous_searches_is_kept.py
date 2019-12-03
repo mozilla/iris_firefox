@@ -14,9 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        google_logo_content_search_field_pattern = Pattern(
-            "google_logo_content_search_field.png"
-        )
+        google_logo_content_search_field_pattern = Pattern("google_logo_content_search_field.png")
         search_button_pattern = Pattern("search_button.png")
         history_pattern = Pattern("history_content_search.png")
         history_search_bar_pattern = Pattern("history_search_bar.png")
@@ -81,9 +79,7 @@ class Test(FirefoxTest):
         type(Key.DOWN)
 
         expected = exists(history_pattern, 10)
-        assert (
-            expected is True
-        ), "The previous searches are visible in the content search field."
+        assert expected is True, "The previous searches are visible in the content search field."
 
         select_search_bar()
 

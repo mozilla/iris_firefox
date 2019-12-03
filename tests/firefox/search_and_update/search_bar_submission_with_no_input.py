@@ -14,9 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        add_search_bar_in_toolbar_pattern = Pattern(
-            "add_search_bar_in_toolbar.png"
-        ).similar(0.6)
+        add_search_bar_in_toolbar_pattern = Pattern("add_search_bar_in_toolbar.png").similar(0.6)
         google_search_no_input_pattern = Pattern("google_search_no_input.png")
 
         navigate("about:preferences#search")
@@ -35,7 +33,5 @@ class Test(FirefoxTest):
 
         type(Key.ENTER)
 
-        expected = exists(google_search_no_input_pattern, 10)
-        assert (
-            expected is True
-        ), "The search engine page is opened with no searches performed."
+        expected = exists(google_search_no_input_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert expected is True, "The search engine page is opened with no searches performed."

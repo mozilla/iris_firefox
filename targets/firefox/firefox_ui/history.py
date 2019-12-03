@@ -13,7 +13,7 @@ class History(object):
         RECENTLY_CLOSED_WINDOWS = Pattern("recently_closed_windows.png")
         SHOW_ALL_HISTORY = Pattern("show_all_history.png")
 
-    class CLearRecentHistory(object):
+    class ClearRecentHistory(object):
         CLEAR_ALL_HISTORY_TITLE = Pattern("sanitize_dialog_title.png")
         CLEAR_RECENT_HISTORY_TITLE = Pattern("sanitize_dialog_non_everything_title.png")
 
@@ -26,12 +26,8 @@ class History(object):
 
             # Focused time ranges.
             CLEAR_CHOICE_LAST_HOUR = Pattern("sanitize_duration_choice_last_hour.png")
-            CLEAR_CHOICE_LAST_TWO_HOURS = Pattern(
-                "sanitize_duration_choice_last_two_hours.png"
-            )
-            CLEAR_CHOICE_LAST_FOUR_HOURS = Pattern(
-                "sanitize_duration_choice_last_four_hours.png"
-            )
+            CLEAR_CHOICE_LAST_TWO_HOURS = Pattern("sanitize_duration_choice_last_two_hours.png")
+            CLEAR_CHOICE_LAST_FOUR_HOURS = Pattern("sanitize_duration_choice_last_four_hours.png")
             CLEAR_CHOICE_TODAY = Pattern("sanitize_duration_choice_today.png")
             CLEAR_CHOICE_EVERYTHING = Pattern("sanitize_duration_choice_everything.png")
 

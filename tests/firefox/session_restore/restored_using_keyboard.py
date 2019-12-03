@@ -32,23 +32,15 @@ class Test(FirefoxTest):
         for _ in range(5):
             new_tab()
             navigate(local_url[_])
-            website_loaded = exists(
-                local_url_logo_pattern[_], FirefoxSettings.SITE_LOAD_TIMEOUT
-            )
+            website_loaded = exists(local_url_logo_pattern[_], FirefoxSettings.SITE_LOAD_TIMEOUT)
             assert website_loaded, f"Website {_ + 1} loaded"
 
         [close_tab() for _ in range(4)]
 
-        one_tab_exists = exists(
-            local_url_logo_pattern[0], FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            one_tab_exists
-        ), f"One opened tab left. {len(local_url) - 1} tabs were successfully closed."
+        one_tab_exists = exists(local_url_logo_pattern[0], FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert one_tab_exists, f"One opened tab left. {len(local_url) - 1} tabs were successfully closed."
 
         for _ in range(4):
             undo_close_tab()
-            tab_is_restored = exists(
-                local_url_logo_pattern[_ + 1]
-            )  # +1 as url[0] is one opened tab
+            tab_is_restored = exists(local_url_logo_pattern[_ + 1])  # +1 as url[0] is one opened tab
             assert tab_is_restored, f"Tab {_ + 2} successfully restored"

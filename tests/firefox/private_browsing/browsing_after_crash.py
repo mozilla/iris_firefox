@@ -28,9 +28,7 @@ class Test(FirefoxTest):
         assert private_browsing_window_opened is True, "Private Browsing Window opened"
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        soap_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_label_exists is True, "The page is successfully loaded."
 
         navigate("about:crashparent")
@@ -39,15 +37,11 @@ class Test(FirefoxTest):
 
         if OSHelper.is_windows():
             crash_reporter_icon_pattern = Pattern("crash_reporter_icon.png")
-            crash_reporter_icon_exists = exists(
-                crash_reporter_icon_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-            )
+            crash_reporter_icon_exists = exists(crash_reporter_icon_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
             assert crash_reporter_icon_exists is True, "Crash Reporter icon exists"
             click(crash_reporter_icon_pattern)
 
-        firefox_crashed = exists(
-            restart_firefox_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_crashed = exists(restart_firefox_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_crashed is True, "Firefox crashed."
 
         click(restart_firefox_button_pattern)
@@ -60,14 +54,8 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError("Crash report is not dismissed")
 
-        restore_session_exists = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        restore_session_exists = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert restore_session_exists is True, "Firefox restored"
 
-        wiki_label_exists = exists(
-            soap_wikipedia_header_label_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT
-        )
-        assert (
-            wiki_label_exists is False
-        ), "The Private Browsing window is not restored."
+        wiki_label_exists = exists(soap_wikipedia_header_label_pattern, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
+        assert wiki_label_exists is False, "The Private Browsing window is not restored."

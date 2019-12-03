@@ -18,30 +18,24 @@ class Test(FirefoxTest):
         console_element_picker_pattern = Pattern("console_element_picker.png")
         testsafebrowsing_tab_pattern = Pattern("testsafebrowsing_tab.png")
         mozilla_tab_logo_pattern = Pattern("mozilla_tab_logo.png")
+        console_warning_label_pattern = Pattern("console_warning_label.png")
+        blocked_by_safebrowsing_pattern = Pattern("blocked_by_sb.png")
 
-        home_button_displayed = exists(
-            NavBar.HOME_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        home_button_displayed = exists(NavBar.HOME_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert home_button_displayed, "The Home button displayed"
 
         home_button_location = find(NavBar.HOME_BUTTON)
         home_button_width, home_button_height = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_button_height * 4)
-        warning_frame_location = Location(
-            home_button_location.x, home_button_location.y + home_button_height * 4
-        )
+        warning_frame_location = Location(home_button_location.x, home_button_location.y + home_button_height * 4)
 
         open_web_console()
 
-        web_console_opened = exists(
-            console_element_picker_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        web_console_opened = exists(console_element_picker_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert web_console_opened, "Web Console opened"
 
         console_element_picker_location = find(console_element_picker_pattern)
-        console_element_picker_width, console_element_picker_height = (
-            console_element_picker_pattern.get_size()
-        )
+        console_element_picker_width, console_element_picker_height = console_element_picker_pattern.get_size()
         console_region = Region(
             console_element_picker_location.x,
             console_element_picker_location.y,
@@ -51,16 +45,10 @@ class Test(FirefoxTest):
 
         navigate("https://www.mozilla.org/en-US/")
 
-        mozilla_page_opened = exists(
-            mozilla_tab_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        mozilla_page_opened = exists(mozilla_tab_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_page_opened, "Mozilla page opened"
 
-        no_warnings_displayed = exists(
-            "was blocked by Safe Browsing.",
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            console_region,
-        )
+        no_warnings_displayed = exists(blocked_by_safebrowsing_pattern, FirefoxSettings.FIREFOX_TIMEOUT, console_region)
         assert no_warnings_displayed is False, "No warning page or message"
 
         navigate("http://testsafebrowsing.appspot.com/s/malware_in_iframe.html")
@@ -72,22 +60,27 @@ class Test(FirefoxTest):
 
         click(warning_frame_location)
 
-        edit_select_all()
+        copy_to_clipboard()
 
-        edit_copy()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         text_displayed = get_clipboard().replace("\n", "").replace("\r", "")
         assert (
             "Visiting this website may harm your computer" in text_displayed
         ), "The Red warning page and warning message displayed"
 
-        console_warning_displayed = exists(
-            "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was "
-            + "blocked by Safe Browsing.",
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            console_region,
+        console_warning_label_displayed = exists(console_warning_label_pattern)
+        assert console_warning_label_displayed, "console_warning_label_displayed"
+
+        right_click_and_type(console_warning_label_pattern, Settings.DEFAULT_UI_DELAY, "c")
+
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+
+        console_warning_displayed = "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was " "blocked by Safe Browsing." in get_clipboard().replace(
+            "\n", ""
+        ).replace(
+            "\r", ""
         )
-        assert console_warning_displayed, (
-            "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was "
-            + "blocked by Safe Browsing. warning message displayed"
-        )
+        assert (
+            console_warning_displayed
+        ), "The resource at “http://testsafebrowsing.appspot.com/s/malware.html” was " "blocked by Safe Browsing. warning message displayed"

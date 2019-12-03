@@ -15,16 +15,10 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
 
-        hover_duck_duck_go_one_off_button_pattern = Pattern(
-            "hover_duck_duck_go_one_off_button.png"
-        )
+        hover_duck_duck_go_one_off_button_pattern = Pattern("hover_duck_duck_go_one_off_button.png")
         duck_duck_go_one_off_button_pattern = Pattern("duck_one_click_search.png")
-        search_with_url_autocomplete_pattern = Pattern(
-            "search_with_url_autocomplete.png"
-        )
-        twitter_one_off_button_highlight_pattern = Pattern(
-            "twitter_one_off_button_highlight.png"
-        )
+        search_with_url_autocomplete_pattern = Pattern("search_with_url_autocomplete.png")
+        twitter_one_off_button_highlight_pattern = Pattern("twitter_one_off_button_highlight.png")
         amazon_logo_pattern = Pattern("amazon_logo.png")
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
@@ -32,9 +26,7 @@ class Test(FirefoxTest):
 
         navigate("www.amazon.com")
 
-        amazon_logo_exists = exists(
-            amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        amazon_logo_exists = exists(amazon_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert amazon_logo_exists, "Page successfully loaded, amazon logo found."
 
         change_preference("keyword.enabled", False)
@@ -47,8 +39,7 @@ class Test(FirefoxTest):
             search_with_url_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert search_with_url_autocomplete_exists, (
-            "Search is performed with url autocomplete"
-            " for pages where you have been before."
+            "Search is performed with url autocomplete" " for pages where you have been before."
         )
 
         duck_duck_go_one_off_button_exists = exists(duck_duck_go_one_off_button_pattern)
@@ -61,16 +52,13 @@ class Test(FirefoxTest):
         hover_duck_duck_go_one_off_button_exists = exists(
             hover_duck_duck_go_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            hover_duck_duck_go_one_off_button_exists
-        ), "Mouse is over the 'DuckDuckGo' search engine."
+        assert hover_duck_duck_go_one_off_button_exists, "Mouse is over the 'DuckDuckGo' search engine."
 
         search_with_url_autocomplete_exists = region.exists(
             search_with_url_autocomplete_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert search_with_url_autocomplete_exists, (
-            "The autocomplete is still displayed after"
-            " user hovers an one-off button."
+            "The autocomplete is still displayed after" " user hovers an one-off button."
         )
 
         repeat_key_up(3)
@@ -79,6 +67,4 @@ class Test(FirefoxTest):
         twitter_one_off_button_highlight_exists = region.exists(
             twitter_one_off_button_highlight_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            twitter_one_off_button_highlight_exists
-        ), "The 'Twitter' one-off button is highlighted."
+        assert twitter_one_off_button_highlight_exists, "The 'Twitter' one-off button is highlighted."

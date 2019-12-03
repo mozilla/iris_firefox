@@ -38,7 +38,7 @@ class Test(FirefoxTest):
             DownloadFiles.LIBRARY_DOWNLOADS_20MB,
         ]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)
@@ -58,10 +58,7 @@ class Test(FirefoxTest):
         # Check that all the downloads are successful and displayed in the Downloads category from the Library.
         for pattern in downloads_library_list:
             expected = exists(pattern, 10)
-            assert expected is True, (
-                "%s file found in the Library, Downloads section."
-                % str(pattern.get_filename())
-            )
+            assert expected is True, "%s file found in the Library, Downloads section." % str(pattern.get_filename())
 
         click_window_control("close")
 
@@ -82,10 +79,7 @@ class Test(FirefoxTest):
                 repeat_key_up(3)
 
             expected = exists(pattern, 10)
-            assert expected is True, (
-                "%s file found in the 'about:downloads' page."
-                % str(pattern.get_filename())
-            )
+            assert expected is True, "%s file found in the 'about:downloads' page." % str(pattern.get_filename())
 
         close_tab()
 

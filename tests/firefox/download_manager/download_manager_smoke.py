@@ -2,11 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import (
-    DownloadFiles,
-    downloads_cleanup,
-    download_file,
-)
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file
 from targets.firefox.fx_testcase import *
 
 
@@ -25,28 +21,17 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        navigate(
-            "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/"
-        )
+        navigate("https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-central/")
 
         download_file(DownloadFiles.FIREFOX_INSTALLER.similar(0.8), DownloadFiles.OK)
 
-        expected = exists(
-            NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.8),
-            FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT,
-        )
+        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.8), FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert expected is True, "Downloads button found."
 
-        expected = exists(
-            DownloadManager.DownloadState.COMPLETED,
-            FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT * 2,
-        )
+        expected = exists(DownloadManager.DownloadState.COMPLETED, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT * 2)
         assert expected is True, "Firefox installer download is completed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-        )
+        expected = exists(DownloadManager.DownloadsPanel.OPEN_DOWNLOAD_FOLDER, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Containing folder button is available."
 
         # Navigate to Downloads folder.
@@ -55,18 +40,14 @@ class Test(FirefoxTest):
         if OSHelper.is_linux():
             click(Pattern("linux_folder_icon.png"))
 
-        expected = exists(
-            DownloadManager.DOWNLOADS_FOLDER, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(DownloadManager.DOWNLOADS_FOLDER, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Downloads folder is displayed."
 
         if OSHelper.is_mac():
             time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
             type("2", modifier=KeyModifier.CMD)
 
-        expected = exists(
-            DownloadFiles.FIREFOX_INSTALLER_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(DownloadFiles.FIREFOX_INSTALLER_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Firefox installer is displayed in downloads folder."
 
         click_window_control("close")

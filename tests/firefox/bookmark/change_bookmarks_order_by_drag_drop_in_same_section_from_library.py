@@ -15,20 +15,12 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        library_mozilla_firefox_folder_pattern = Pattern(
-            "library_mozilla_firefox_folder.png"
-        )
+        library_mozilla_firefox_folder_pattern = Pattern("library_mozilla_firefox_folder.png")
         mozilla_about_us_bookmark_pattern = Pattern("library_about_us_bookmark.png")
-        customize_firefox_bookmark_pattern = Pattern(
-            "library_customize_firefox_bookmark.png"
-        )
+        customize_firefox_bookmark_pattern = Pattern("library_customize_firefox_bookmark.png")
         get_involved_bookmark_pattern = Pattern("library_get_involved_bookmark.png")
-        help_and_tutorials_bookmark_pattern = Pattern(
-            "library_help_and_tutorials_bookmark.png"
-        )
-        help_and_tutorial_first_line_pattern = Pattern(
-            "help_and_tutorial_first_line.png"
-        )
+        help_and_tutorials_bookmark_pattern = Pattern("library_help_and_tutorials_bookmark.png").similar(0.7)
+        help_and_tutorial_first_line_pattern = Pattern("help_and_tutorial_first_line.png")
 
         open_library()
 
@@ -39,9 +31,7 @@ class Test(FirefoxTest):
         assert bookmark_menu_folder_exists is True, "Bookmark menu folder exists"
 
         bookmark_menu_folder_location = find(Library.BOOKMARKS_MENU)
-        bookmark_menu_folder_width, bookmark_menu_folder_height = (
-            Library.BOOKMARKS_MENU.get_size()
-        )
+        bookmark_menu_folder_width, bookmark_menu_folder_height = Library.BOOKMARKS_MENU.get_size()
         bookmarks_tree_region = Region(
             bookmark_menu_folder_location.x,
             bookmark_menu_folder_location.y,
@@ -51,9 +41,7 @@ class Test(FirefoxTest):
 
         double_click(Library.BOOKMARKS_MENU)
 
-        mozilla_firefox_folder_exists = exists(
-            library_mozilla_firefox_folder_pattern, region=bookmarks_tree_region
-        )
+        mozilla_firefox_folder_exists = exists(library_mozilla_firefox_folder_pattern, region=bookmarks_tree_region)
         assert mozilla_firefox_folder_exists is True, "Mozilla Firefox folder exists"
 
         click(library_mozilla_firefox_folder_pattern, region=bookmarks_tree_region)
@@ -61,31 +49,19 @@ class Test(FirefoxTest):
         mozilla_customize_firefox_bookmark_exists = exists(
             customize_firefox_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            mozilla_customize_firefox_bookmark_exists is True
-        ), "Customize Firefox bookmark is displayed"
+        assert mozilla_customize_firefox_bookmark_exists is True, "Customize Firefox bookmark is displayed"
 
         mozilla_get_involved_bookmark_exists = exists(get_involved_bookmark_pattern)
-        assert (
-            mozilla_get_involved_bookmark_exists is True
-        ), "Get Involved bookmark is displayed"
+        assert mozilla_get_involved_bookmark_exists is True, "Get Involved bookmark is displayed"
 
-        mozilla_help_and_tutorials_bookmark_exists = exists(
-            help_and_tutorials_bookmark_pattern
-        )
-        assert (
-            mozilla_help_and_tutorials_bookmark_exists is True
-        ), "Help and Tutorials bookmark is displayed"
+        mozilla_help_and_tutorials_bookmark_exists = exists(help_and_tutorials_bookmark_pattern)
+        assert mozilla_help_and_tutorials_bookmark_exists is True, "Help and Tutorials bookmark is displayed"
 
         mozilla_about_us_bookmark_exists = exists(mozilla_about_us_bookmark_pattern)
-        assert (
-            mozilla_about_us_bookmark_exists is True
-        ), "About Us bookmark is displayed"
+        assert mozilla_about_us_bookmark_exists is True, "About Us bookmark is displayed"
 
         help_and_tutorials_location = find(help_and_tutorials_bookmark_pattern)
-        help_and_tutorials_width, help_and_tutorials_height = (
-            help_and_tutorials_bookmark_pattern.get_size()
-        )
+        help_and_tutorials_width, help_and_tutorials_height = help_and_tutorials_bookmark_pattern.get_size()
         first_bookmark_region = Region(
             help_and_tutorials_location.x,
             help_and_tutorials_location.y,
@@ -102,21 +78,15 @@ class Test(FirefoxTest):
 
         location_to_drop = find(get_involved_bookmark_pattern)
 
-        help_and_tutorial_bookmark_position = exists(
-            help_and_tutorial_first_line_pattern
-        )
-        assert (
-            help_and_tutorial_bookmark_position is True
-        ), "Help and tutorial bookmark is placed on the first line"
+        help_and_tutorial_bookmark_position = exists(help_and_tutorial_first_line_pattern)
+        assert help_and_tutorial_bookmark_position is True, "Help and tutorial bookmark is placed on the first line"
 
         drag_drop(help_and_tutorials_location, location_to_drop)
 
         click(library_mozilla_firefox_folder_pattern)
 
         mozilla_customize_firefox_bookmark_exists = exists(
-            customize_firefox_bookmark_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=first_bookmark_region,
+            customize_firefox_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=first_bookmark_region
         )
         assert mozilla_customize_firefox_bookmark_exists is True, (
             "Customize Firefox bookmark is placed on the first "
@@ -128,7 +98,6 @@ class Test(FirefoxTest):
             help_and_tutorials_bookmark_pattern, region=second_bookmark_region
         )
         assert help_and_tutorials_bookmark_replaced is True, (
-            "Help and tutorial is placed on the second line. "
-            "Get Involved is placed on the third line"
+            "Help and tutorial is placed on the second line. " "Get Involved is placed on the third line"
         )
         close_window_control("auxiliary")

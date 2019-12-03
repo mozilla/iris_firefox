@@ -16,9 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_label_exists, "The page is successfully loaded."
 
         full_screen()
@@ -27,9 +25,7 @@ class Test(FirefoxTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         paste("soap")
@@ -37,30 +33,16 @@ class Test(FirefoxTest):
 
         find_next()
 
-        selected_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-        )
-        assert (
-            selected_label_exists
-        ), "The first one has a green background highlighted."
+        selected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert selected_label_exists, "The first one has a green background highlighted."
 
-        unselected_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_XML_LABEL, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        unselected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_XML_LABEL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert unselected_label_exists, "The others are not highlighted."
 
         full_screen()
 
-        selected_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-        )
-        assert (
-            selected_label_exists
-        ), "The first one has a green background highlighted."
+        selected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert selected_label_exists, "The first one has a green background highlighted."
 
-        unselected_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_XML_LABEL, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        unselected_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_XML_LABEL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert unselected_label_exists, "The others are not highlighted."

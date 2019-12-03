@@ -22,32 +22,21 @@ class Test(FirefoxTest):
 
         open_browser_console()
 
-        browser_console_opened = exists(
-            browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        browser_console_opened = exists(browser_console_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_console_opened, "Browser Console opened"
 
         clear_console_icon_displayed = exists(clear_console_icon_pattern)
         assert clear_console_icon_displayed, "Clear console icon displayed"
 
-        clear_console_icon_width, clear_console_icon_height = (
-            clear_console_icon_pattern.get_size()
-        )
+        clear_console_icon_width, clear_console_icon_height = clear_console_icon_pattern.get_size()
 
         click(clear_console_icon_pattern)
 
-        click(
-            clear_console_icon_pattern.target_offset(clear_console_icon_width * 5, 0), 1
-        )
+        click(clear_console_icon_pattern.target_offset(clear_console_icon_width * 5, 0), 1)
 
         type("logs")
 
-        click(
-            clear_console_icon_pattern.target_offset(
-                clear_console_icon_width * 5, clear_console_icon_height * 10
-            ),
-            1,
-        )
+        click(clear_console_icon_pattern.target_offset(clear_console_icon_width * 5, clear_console_icon_height * 10), 1)
 
         paste("print(AppConstants.MOZ_GOOGLE_SAFEBROWSING_API_KEY)")
 
@@ -63,19 +52,12 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        returned_value = (
-            get_clipboard().replace("\n", "").replace("\r", "").replace('"', "")
-        )
+        returned_value = get_clipboard().replace("\n", "").replace("\r", "").replace('"', "")
         assert returned_value.endswith("c5Dovo"), "The returned value ends in: c5Dovo"
 
         click(clear_console_icon_pattern)
 
-        click(
-            clear_console_icon_pattern.target_offset(
-                clear_console_icon_width * 5, clear_console_icon_height * 10
-            ),
-            1,
-        )
+        click(clear_console_icon_pattern.target_offset(clear_console_icon_width * 5, clear_console_icon_height * 10), 1)
 
         paste("print(AppConstants.MOZ_GOOGLE_LOCATION_SERVICE_API_KEY)")
 
@@ -91,9 +73,7 @@ class Test(FirefoxTest):
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        returned_value = (
-            get_clipboard().replace("\n", "").replace("\r", "").replace('"', "")
-        )
+        returned_value = get_clipboard().replace("\n", "").replace("\r", "").replace('"', "")
         assert returned_value.endswith("_rptiQ"), "The returned value ends in: _rptiQ"
 
         close_window_control("auxiliary")

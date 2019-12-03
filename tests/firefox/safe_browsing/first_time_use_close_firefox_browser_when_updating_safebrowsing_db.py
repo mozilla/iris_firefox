@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="50360",
         test_suite_id="69",
         locale=["en-US"],
+        blocked_by={"id": "4232", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
         url_classifier_title_pattern = Pattern("url_classifier_title.png")
@@ -24,15 +25,11 @@ class Test(FirefoxTest):
 
         navigate("about:profiles")
 
-        about_profiles_page_opened = exists(
-            profile_default_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        about_profiles_page_opened = exists(profile_default_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert about_profiles_page_opened, "About profiles page opened"
 
         profile_default_title_location = find(profile_default_title_pattern)
-        profile_default_title_width, profile_default_title_height = (
-            profile_default_title_pattern.get_size()
-        )
+        profile_default_title_width, profile_default_title_height = profile_default_title_pattern.get_size()
         profile_default_region = Region(
             profile_default_title_location.x,
             profile_default_title_location.y,
@@ -40,12 +37,8 @@ class Test(FirefoxTest):
             profile_default_title_height * 9,
         )
 
-        local_directory_row_location = find(
-            local_directory_row_pattern, profile_default_region
-        )
-        local_directory_row_width, local_directory_row_height = (
-            local_directory_row_pattern.get_size()
-        )
+        local_directory_row_location = find(local_directory_row_pattern, profile_default_region)
+        local_directory_row_width, local_directory_row_height = local_directory_row_pattern.get_size()
         local_directory_row_region = Region(
             local_directory_row_location.x,
             local_directory_row_location.y,
@@ -54,9 +47,7 @@ class Test(FirefoxTest):
         )
 
         show_in_button_found = exists(
-            show_in_button_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-            local_directory_row_region,
+            show_in_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT, local_directory_row_region
         )
         assert show_in_button_found, "Show in finder/folder button found"
 
@@ -103,20 +94,14 @@ class Test(FirefoxTest):
 
         navigate("about:url-classifier")
 
-        url_classifier_page_opened = exists(
-            url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            url_classifier_page_opened is True
-        ), "URL Classifier page is successfully opened"
+        url_classifier_page_opened = exists(url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert url_classifier_page_opened is True, "URL Classifier page is successfully opened"
 
         open_find()
 
         paste("Cache")
 
-        providers_displays = exists(
-            google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        providers_displays = exists(google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert providers_displays, "The providers are displayed"
 
         google4_row_location = find(google4_row_pattern)
@@ -136,20 +121,14 @@ class Test(FirefoxTest):
 
         navigate("about:url-classifier")
 
-        url_classifier_page_opened = exists(
-            url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            url_classifier_page_opened is True
-        ), "URL Classifier page is successfully opened"
+        url_classifier_page_opened = exists(url_classifier_title_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert url_classifier_page_opened is True, "URL Classifier page is successfully opened"
 
         open_find()
 
         paste("Cache")
 
-        providers_displays = exists(
-            google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        providers_displays = exists(google4_row_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert providers_displays, "The providers are displayed"
 
         google4_row_location = find(google4_row_pattern)
@@ -164,8 +143,6 @@ class Test(FirefoxTest):
         click(trigger_update_button_pattern, region=google4_row_region)
 
         success_status_displayed = exists(
-            success_status_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
-            google4_row_region,
+            success_status_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT, google4_row_region
         )
         assert success_status_displayed, "Safe browsing v4 DB is updated."

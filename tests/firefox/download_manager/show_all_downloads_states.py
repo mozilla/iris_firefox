@@ -27,7 +27,7 @@ class Test(FirefoxTest):
             DownloadFiles.VERY_LARGE_FILE_1GB,
         ]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         # Wait for the page to be loaded.
         try:
@@ -70,15 +70,11 @@ class Test(FirefoxTest):
         #
         click(NavBar.DOWNLOADS_BUTTON)
         expected = Screen.UPPER_RIGHT_CORNER.exists(
-            DownloadManager.DownloadState.CANCELED.similar(0.9), 10
-        ) or Screen.UPPER_RIGHT_CORNER.exists(
-            DownloadManager.DownloadState.COMPLETED.similar(0.9), 10
-        )
+            DownloadManager.DownloadState.CANCELLED.similar(0.9), 10
+        ) or Screen.UPPER_RIGHT_CORNER.exists(DownloadManager.DownloadState.COMPLETED.similar(0.9), 10)
         remove_file_pattern = (
-            DownloadManager.DownloadState.CANCELED
-            if Screen.UPPER_RIGHT_CORNER.exists(
-                DownloadManager.DownloadState.CANCELED.similar(0.9), 5
-            )
+            DownloadManager.DownloadState.CANCELLED
+            if Screen.UPPER_RIGHT_CORNER.exists(DownloadManager.DownloadState.CANCELLED.similar(0.9), 5)
             else DownloadManager.DownloadState.COMPLETED
         )
 
@@ -88,19 +84,13 @@ class Test(FirefoxTest):
             click(DownloadManager.DownloadsContextMenu.REMOVE_FROM_HISTORY)
             time.sleep(Settings.DEFAULT_UI_DELAY)
 
-            if Screen.UPPER_RIGHT_CORNER.exists(
-                DownloadManager.DownloadState.CANCELED.similar(0.9), 5
-            ):
+            if Screen.UPPER_RIGHT_CORNER.exists(DownloadManager.DownloadState.CANCELLED.similar(0.9), 5):
                 expected = True
-                remove_file_pattern = DownloadManager.DownloadState.CANCELED
-            elif Screen.UPPER_RIGHT_CORNER.exists(
-                DownloadManager.DownloadState.COMPLETED.similar(0.9), 5
-            ):
+                remove_file_pattern = DownloadManager.DownloadState.CANCELLED
+            elif Screen.UPPER_RIGHT_CORNER.exists(DownloadManager.DownloadState.COMPLETED.similar(0.9), 5):
                 expected = True
                 remove_file_pattern = DownloadManager.DownloadState.COMPLETED
-            elif Screen.UPPER_RIGHT_CORNER.exists(
-                DownloadManager.DownloadState.FAILED.similar(0.9), 5
-            ):
+            elif Screen.UPPER_RIGHT_CORNER.exists(DownloadManager.DownloadState.FAILED.similar(0.9), 5):
                 expected = True
                 remove_file_pattern = DownloadManager.DownloadState.FAILED
             else:
@@ -115,9 +105,7 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.DOWNLOAD_TYPE_ICON.similar(0.95), 5) or exists(
             DownloadFiles.DOWNLOAD_TYPE_ICON_ZIP.similar(0.95), 5
         )
-        assert (
-            expected is False
-        ), "There are no downloads displayed in Library, Downloads section."
+        assert expected is False, "There are no downloads displayed in Library, Downloads section."
 
         click_window_control("close")
 

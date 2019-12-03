@@ -24,16 +24,12 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT * 3, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT * 3, tabs_region)
         assert soap_wiki_opened is True, "The test page is opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "StarDialog displayed"
 
         click(Bookmarks.StarDialog.DONE)
@@ -46,11 +42,7 @@ class Test(FirefoxTest):
 
         open_library()
 
-        drag_drop(
-            Library.TITLE,
-            centre_location,
-            duration=FirefoxSettings.FIREFOX_TIMEOUT * 0.3,
-        )
+        drag_drop(Library.TITLE, centre_location, duration=FirefoxSettings.FIREFOX_TIMEOUT * 0.3)
 
         library_opened = exists(Library.TITLE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert library_opened is True, "Library opened"
@@ -60,18 +52,12 @@ class Test(FirefoxTest):
         bookmark_exists = exists(wiki_bookmark_logo_pattern)
         assert bookmark_exists is True, "Previously added bookmark exists in Library"
 
-        drag_drop(
-            soap_wiki_tab_pattern,
-            LocationBar.SEARCH_BAR,
-            duration=FirefoxSettings.FIREFOX_TIMEOUT * 0.3,
-        )
+        drag_drop(soap_wiki_tab_pattern, LocationBar.SEARCH_BAR, duration=FirefoxSettings.FIREFOX_TIMEOUT * 0.3)
 
         soap_wiki_opened_from_bookmarks = exists(
             soap_wiki_tab_pattern, FirefoxSettings.FIREFOX_TIMEOUT * 3, tabs_region
         )
-        assert (
-            soap_wiki_opened_from_bookmarks is True
-        ), "The test page is opened with drag and drop from Library"
+        assert soap_wiki_opened_from_bookmarks is True, "The test page is opened with drag and drop from Library"
 
         open_library()
 

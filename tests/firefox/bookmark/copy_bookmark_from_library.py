@@ -8,10 +8,7 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Copy a bookmark from Library",
-        locale=["en-US"],
-        test_case_id="169265",
-        test_suite_id="2525",
+        description="Copy a bookmark from Library", locale=["en-US"], test_case_id="169265", test_suite_id="2525"
     )
     def run(self, firefox):
         soap_wiki_tab_pattern = Pattern("soap_wiki_tab.png")
@@ -21,16 +18,12 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_wiki_opened is True, "The test page is opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "Stardialog displayed"
 
         click(Bookmarks.StarDialog.DONE)
@@ -41,9 +34,7 @@ class Test(FirefoxTest):
 
         open_library()
 
-        library_opened = exists(
-            Library.OTHER_BOOKMARKS, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        library_opened = exists(Library.OTHER_BOOKMARKS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert library_opened is True, "Library opened"
 
         click(Library.OTHER_BOOKMARKS)
@@ -59,18 +50,12 @@ class Test(FirefoxTest):
         click(copy_option_pattern)
 
         bookmarks_toolbar_folder_exists = exists(Library.BOOKMARKS_TOOLBAR)
-        assert (
-            bookmarks_toolbar_folder_exists is True
-        ), "Bookmarks toolbar folder exists"
+        assert bookmarks_toolbar_folder_exists is True, "Bookmarks toolbar folder exists"
 
         click(Library.BOOKMARKS_TOOLBAR)
 
-        other_bookmarks_width, other_bookmarks_height = (
-            Library.OTHER_BOOKMARKS.get_size()
-        )
-        location_to_paste = find(Library.OTHER_BOOKMARKS).right(
-            other_bookmarks_width * 2
-        )
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
+        location_to_paste = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 2)
 
         right_click(location_to_paste)
 
@@ -80,9 +65,7 @@ class Test(FirefoxTest):
         click(paste_option_pattern)
 
         bookmark_pasted = exists(bookmark_pasted_pattern)
-        assert (
-            bookmark_pasted is True
-        ), "The file from the previous step is pasted in the selected section"
+        assert bookmark_pasted is True, "The file from the previous step is pasted in the selected section"
 
         click(Library.OTHER_BOOKMARKS)
 

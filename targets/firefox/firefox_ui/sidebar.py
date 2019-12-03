@@ -37,7 +37,7 @@ class Sidebar(object):
             VIEW_BY_MOST_VISITED_CHECKED = Pattern("by_most_visited_checked.png")
 
         class Timeline(object):
-            TODAY = Pattern("history_today.png")
+            TODAY = Pattern("history_today.png").similar(0.7)
             YESTERDAY = Pattern("history_yesterday.png")
             LAST_7_DAYS = Pattern("history_last_7_days.png")
             JANUARY = Pattern("history_january.png")
@@ -55,7 +55,7 @@ class Sidebar(object):
 
     class BookmarksSidebar(object):
         SIDEBAR_BOOKMARKS_TITLE = Pattern("sidebar_bookmarks_title.png")
-        SIDEBAR_BOOKMARKS_ICON = Pattern("sidebar_bookmarks_icon.png")
+        SIDEBAR_BOOKMARKS_ICON = Pattern("sidebar_bookmarks_icon.png").similar(0.9)
 
     class SyncedTabsSidebar(object):
         SIDEBAR_SYNCED_TABS_TITLE = Pattern("sidebar_synced_tabs_title.png")

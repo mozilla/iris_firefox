@@ -17,37 +17,28 @@ class Test(FirefoxTest):
     def run(self, firefox):
         google_logo_pattern = Pattern("google_logo.png")
         url_field_pattern = Pattern("url_field.png")
+        report_deceptive_pattern = Pattern("report_deceptive.png")
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.POCKET_IMAGE, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened, "Test site opened"
 
-        click_hamburger_menu_option("Help")
+        open_hamburger_menu("Help")
 
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
         report_deceptive_site_option_exists = exists(
-            "Report Deceptive", FirefoxSettings.FIREFOX_TIMEOUT, Screen.RIGHT_THIRD
+            report_deceptive_pattern, FirefoxSettings.FIREFOX_TIMEOUT, Screen.RIGHT_THIRD
         )
-        assert (
-            report_deceptive_site_option_exists
-        ), '"Report Deceptive Site..." option exists'
+        assert report_deceptive_site_option_exists, '"Report Deceptive Site..." option exists'
 
-        click("Report Deceptive", region=Screen.RIGHT_THIRD)
+        click(report_deceptive_pattern, region=Screen.RIGHT_THIRD)
 
-        report_web_page_loaded = exists(
-            google_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        report_web_page_loaded = exists(google_logo_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert report_web_page_loaded, "Report Web Forgery page is loaded."
 
-        url_field_found = exists(
-            url_field_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            Screen.MIDDLE_THIRD_VERTICAL,
-        )
+        url_field_found = exists(url_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT, Screen.MIDDLE_THIRD_VERTICAL)
         assert url_field_found, "URL field was found"
 
         click(url_field_pattern, region=Screen.MIDDLE_THIRD_VERTICAL)
@@ -55,8 +46,6 @@ class Test(FirefoxTest):
         edit_copy()
         filled_url = get_clipboard()
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3)
-        assert (
-            filled_url in LocalWeb.POCKET_TEST_SITE
-        ), "The deceptive URL is auto filled."
+        assert filled_url in LocalWeb.POCKET_TEST_SITE, "The deceptive URL is auto filled."
 
         # Possibility reporting the phishing website doesn't checked because of re-captcha

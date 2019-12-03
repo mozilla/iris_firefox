@@ -25,12 +25,8 @@ class Test(FirefoxTest):
         cut_option_pattern = Pattern("cut_option.png")
         paste_option_pattern = Pattern("paste_option.png")
         bookmarks_sidebar_menu_pattern = SidebarBookmarks.BOOKMARKS_MENU
-        bookmarks_sidebar_menu_selected_pattern = (
-            SidebarBookmarks.BOOKMARKS_MENU_SELECTED
-        )
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
+        bookmarks_sidebar_menu_selected_pattern = SidebarBookmarks.BOOKMARKS_MENU_SELECTED
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
 
         navigate("about:blank")
 
@@ -41,20 +37,14 @@ class Test(FirefoxTest):
         click(new_folder)
 
         new_folder_window_assert = exists(add_button, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            new_folder_window_assert is True
-        ), "New Folder window is present on the page."
+        assert new_folder_window_assert is True, "New Folder window is present on the page."
 
         paste("moz_bookmark")
 
         click(add_button)
 
-        moz_bookmark_folder_assert = exists(
-            moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            moz_bookmark_folder_assert is True
-        ), "Moz Bookmark folder is present on the page."
+        moz_bookmark_folder_assert = exists(moz_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert moz_bookmark_folder_assert is True, "Moz Bookmark folder is present on the page."
 
         bookmarks_sidebar("open")
 
@@ -64,12 +54,8 @@ class Test(FirefoxTest):
 
         drag_drop(moz_draggable_pattern, moz_bookmark, duration=0.5)
 
-        bookmark_drag_assert = exists(
-            dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_drag_assert is True
-        ), "Moz Bookmark was dragged successfully inside the bookmark folder."
+        bookmark_drag_assert = exists(dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert bookmark_drag_assert is True, "Moz Bookmark was dragged successfully inside the bookmark folder."
 
         type(Key.ESC)
 
@@ -92,17 +78,10 @@ class Test(FirefoxTest):
 
         click(paste_option_pattern)
 
-        pasted_bookmark_folder_assertion = exists(
-            pasted_bookmark_folder, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        pasted_bookmark_folder_assertion = exists(pasted_bookmark_folder, FirefoxSettings.FIREFOX_TIMEOUT)
         assert pasted_bookmark_folder_assertion is True, (
-            "Moz Bookmark has been moved to a different directory,"
-            " cut option works as expected."
+            "Moz Bookmark has been moved to a different directory," " cut option works as expected."
         )
 
-        moz_bookmark_vanish_assert = wait_vanish(
-            moz_bookmark.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            moz_bookmark_vanish_assert is True
-        ), "Moz bookmark folder has been successfully cut."
+        moz_bookmark_vanish_assert = wait_vanish(moz_bookmark.similar(0.9), FirefoxSettings.FIREFOX_TIMEOUT)
+        assert moz_bookmark_vanish_assert is True, "Moz bookmark folder has been successfully cut."

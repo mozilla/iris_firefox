@@ -9,7 +9,7 @@ from targets.firefox.fx_testcase import *
 class Test(FirefoxTest):
     @pytest.mark.details(
         description="Bookmark a page from the 'Most Visited' section using the option from the contextual menu can "
-        "be canceled",
+        "be cancelled",
         locale=["en-US"],
         test_case_id="163397",
         test_suite_id="2525",
@@ -17,10 +17,8 @@ class Test(FirefoxTest):
         exclude=OSPlatform.MAC,
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
-        firefox_menu_bookmarks_toolbar_pattern = Pattern(
-            "firefox_menu_bookmarks_toolbar.png"
-        )
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
+        firefox_menu_bookmarks_toolbar_pattern = Pattern("firefox_menu_bookmarks_toolbar.png")
         firefox_menu_most_visited_pattern = Pattern("firefox_menu_most_visited.png")
         firefox_pocket_bookmark_pattern = Pattern("pocket_most_visited.png")
         bookmark_page_option_pattern = Pattern("context_menu_bookmark_page_option.png")
@@ -31,54 +29,36 @@ class Test(FirefoxTest):
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert firefox_menu_bookmarks_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
 
         bookmarks_toolbar_folder_exists = exists(
-            firefox_menu_bookmarks_toolbar_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            firefox_menu_bookmarks_toolbar_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmarks_toolbar_folder_exists is True
-        ), "Firefox menu > Bookmarks > Bookmarks Toolbar folder exists"
+        assert bookmarks_toolbar_folder_exists is True, "Firefox menu > Bookmarks > Bookmarks Toolbar folder exists"
 
         click(firefox_menu_bookmarks_toolbar_pattern)
 
-        most_visited_folder_exists = exists(
-            firefox_menu_most_visited_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        most_visited_folder_exists = exists(firefox_menu_most_visited_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert most_visited_folder_exists is True, (
-            "Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited "
-            "folder exists"
+            "Firefox menu > Bookmarks > Bookmarks Toolbar > Most Visited " "folder exists"
         )
 
         click(firefox_menu_most_visited_pattern)
 
-        firefox_pocket_bookmark_exists = exists(
-            firefox_pocket_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            firefox_pocket_bookmark_exists is True
-        ), "Most visited websites are displayed."
+        firefox_pocket_bookmark_exists = exists(firefox_pocket_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert firefox_pocket_bookmark_exists is True, "Most visited websites are displayed."
 
         right_click(firefox_pocket_bookmark_pattern, 0)
 
-        bookmark_page_option_exists = exists(
-            bookmark_page_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_page_option_exists is True
-        ), "Open in a New Private Window option exists"
+        bookmark_page_option_exists = exists(bookmark_page_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert bookmark_page_option_exists is True, "Open in a New Private Window option exists"
 
         click(bookmark_page_option_pattern)
 
-        new_bookmark_window_exists = exists(
-            new_window_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        new_bookmark_window_exists = exists(new_window_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert new_bookmark_window_exists is True, "New Bookmark window is displayed"
 
         click_cancel_button()
@@ -91,9 +71,7 @@ class Test(FirefoxTest):
 
         bookmarks_sidebar("open")
 
-        bookmark_menu_folder_exists = exists(
-            SidebarBookmarks.BOOKMARKS_MENU, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmark_menu_folder_exists = exists(SidebarBookmarks.BOOKMARKS_MENU, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmark_menu_folder_exists is True, "Bookmarks Menu folder exists"
 
         click(SidebarBookmarks.BOOKMARKS_MENU)

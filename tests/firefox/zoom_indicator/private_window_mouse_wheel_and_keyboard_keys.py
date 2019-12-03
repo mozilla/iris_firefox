@@ -30,33 +30,19 @@ class Test(FirefoxTest):
         region = create_region_for_url_bar()
         select_location_bar()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
         zoom_with_mouse_wheel(1, ZoomType.IN)
 
         new_region = create_region_for_url_bar()
 
-        expected = exists(
-            urlbar_zoom_button_110_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully increased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully increased, zoom indicator found in the url bar."
 
         restore_zoom()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
         new_reg = create_region_for_hamburger_menu()
@@ -68,22 +54,12 @@ class Test(FirefoxTest):
 
         zoom_with_mouse_wheel(1, ZoomType.OUT)
 
-        expected = exists(
-            urlbar_zoom_button_90_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully decreased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_90_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom level successfully decreased, zoom indicator found in the url bar."
 
         restore_zoom()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
         assert expected, "Zoom indicator not displayed in the url bar after zoom reset."
 
         click(hamburger_menu_pattern)

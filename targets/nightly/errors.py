@@ -5,6 +5,7 @@
 
 class TestRailError(Exception):
     """Exception raised when TestRail Api returns an error."""
+
     def __init__(self, message):
         """Create an exception instance."""
         Exception.__init__(self, message)
@@ -12,6 +13,7 @@ class TestRailError(Exception):
 
 class BugManagerError(Exception):
     """Exception raised when an bug_manager error occurs."""
+
     def __init__(self, message):
         """Create an exception instance."""
         Exception.__init__(self, message)

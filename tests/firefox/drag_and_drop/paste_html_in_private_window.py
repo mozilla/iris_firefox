@@ -15,9 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         paste_html_data_radiobutton_pattern = Pattern("paste_html_data.png")
-        paste_html_data_radiobutton_selected_pattern = Pattern(
-            "paste_html_data_selected.png"
-        )
+        paste_html_data_radiobutton_selected_pattern = Pattern("paste_html_data_selected.png")
         phrase_from_wiki_page_pattern = Pattern("wiki_article_header.png")
         matching_message_pattern = Pattern("matching_message.png")
         not_matching_message_pattern = Pattern("not_matching_message.png")
@@ -25,19 +23,22 @@ class Test(FirefoxTest):
         copy_image_context_menu_pattern = Pattern("copy_image_option.png")
 
         new_private_window()
-        navigate("https://mystor.github.io/dragndrop/")
-        page_opened_in_private_mode = exists(
-            paste_html_data_radiobutton_pattern, Settings.site_load_timeout
+        private_window_pattern_region = Region(
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 10
         )
-        assert (
-            page_opened_in_private_mode
-        ), "Firefox started and page loaded successfully."
+        private_window_opened = exists(
+            PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region
+        )
+        assert private_window_opened, "New Private Window couldn't open"
+
+        navigate("https://mystor.github.io/dragndrop/")
+        page_opened_in_private_mode = exists(paste_html_data_radiobutton_pattern, Settings.site_load_timeout)
+        assert page_opened_in_private_mode, "Firefox started and page loaded successfully."
 
         click(paste_html_data_radiobutton_pattern)
         paste_html_data_selected = exists(paste_html_data_radiobutton_selected_pattern)
         assert paste_html_data_selected, (
-            'The "paste-html-data" changed color to red which indicates '
-            "that it has been selected."
+            'The "paste-html-data" changed color to red which indicates ' "that it has been selected."
         )
 
         new_tab()
@@ -55,17 +56,12 @@ class Test(FirefoxTest):
         drop_stuff_here_area_reachable = scroll_until_pattern_found(
             not_matching_message_pattern, type, (Key.PAGE_DOWN,)
         )
-        assert (
-            drop_stuff_here_area_reachable
-        ), '"Drop stuff here" area is displayed on the page'
+        assert drop_stuff_here_area_reachable, '"Drop stuff here" area is displayed on the page'
 
         edit_paste()
-        matching_message_exists = scroll_until_pattern_found(
-            matching_message_pattern, type, (Key.PAGE_DOWN,)
-        )
+        matching_message_exists = scroll_until_pattern_found(matching_message_pattern, type, (Key.PAGE_DOWN,))
         assert matching_message_exists, (
-            '"Matching" appears under the "Drop Stuff Here" area, the expected result'
-            " is identical to the result."
+            '"Matching" appears under the "Drop Stuff Here" area, the expected result' " is identical to the result."
         )
 
         select_tab("2")
@@ -75,8 +71,7 @@ class Test(FirefoxTest):
         right_click(image_from_wiki_article_pattern)
         copy_image_option_available = exists(copy_image_context_menu_pattern)
         assert copy_image_option_available, (
-            '"Copy Image" option is available in the context menu after right '
-            "clicking at the image"
+            '"Copy Image" option is available in the context menu after right ' "clicking at the image"
         )
 
         click(copy_image_context_menu_pattern)

@@ -16,12 +16,8 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         choose_language_button_pattern = Pattern("choose_button.png")
-        webpage_language_settings_title_pattern = Pattern(
-            "webpage_language_settings_title.png"
-        )
-        request_english_versions_unchecked_pattern = Pattern(
-            "request_english_versions_unchecked.png"
-        )
+        webpage_language_settings_title_pattern = Pattern("webpage_language_settings_title.png")
+        request_english_versions_unchecked_pattern = Pattern("request_english_versions_unchecked.png")
 
         change_preference("privacy.resistFingerprinting", "true")
 
@@ -30,11 +26,7 @@ class Test(FirefoxTest):
         type(Key.TAB)
 
         choose_language_button = scroll_until_pattern_found(
-            choose_language_button_pattern,
-            type,
-            (Key.DOWN,),
-            20,
-            timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT // 2,
+            choose_language_button_pattern, type, (Key.DOWN,), 20, timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT // 2
         )
         assert choose_language_button, "Choose language button found."
 
@@ -43,15 +35,12 @@ class Test(FirefoxTest):
         webpage_language_settings_title = exists(
             webpage_language_settings_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            webpage_language_settings_title
-        ), "Webpage language settings popup loaded."
+        assert webpage_language_settings_title, "Webpage language settings popup loaded."
 
         # Check the 'Request English versions…' checkbox, then uncheck it, then click 'OK'.
 
         request_english_version_unchecked = exists(
-            request_english_versions_unchecked_pattern.similar(0.6),
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            request_english_versions_unchecked_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert request_english_version_unchecked, '"Request English versions..." found.'
 
@@ -92,14 +81,10 @@ class Test(FirefoxTest):
         webpage_language_settings_title = exists(
             webpage_language_settings_title_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            webpage_language_settings_title
-        ), "Webpage language settings popup displayed ."
+        assert webpage_language_settings_title, "Webpage language settings popup displayed ."
 
         request_version_unchecked = find_in_region_from_pattern(
-            request_english_versions_unchecked_pattern,
-            AboutPreferences.UNCHECKED_BOX,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            request_english_versions_unchecked_pattern, AboutPreferences.UNCHECKED_BOX, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert request_version_unchecked, (
             '"Request English versions..." unchecked. NOTE: The build affected '

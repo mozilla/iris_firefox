@@ -11,7 +11,7 @@ class FindToolbar(object):
     FINDBAR_TEXTBOX = Pattern("findbar_textbox.png")
     FIND_PREVIOUS = Pattern("find_previous.png")
     FIND_NEXT = Pattern("find_next.png")
-    HIGHLIGHT = Pattern("highlight.png")
+    HIGHLIGHT = Pattern("highlight.png").similar(0.7)
     FIND_CASE_SENSITIVE = Pattern("find_case_sensitive.png")
     FIND_ENTIRE_WORD = Pattern("find_entire_word.png")
     QUICK_FIND_LABEL = Pattern("quick_find_label.png")

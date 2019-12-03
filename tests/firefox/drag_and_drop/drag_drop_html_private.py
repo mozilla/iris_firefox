@@ -15,9 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         drop_html_data_button_pattern = Pattern("drop_html_data_button.png")
-        drop_html_data_selected_button_pattern = Pattern(
-            "drop_html_data_selected_button.png"
-        )
+        drop_html_data_selected_button_pattern = Pattern("drop_html_data_selected_button.png")
         drop_here_pattern = Pattern("drop_here.png").similar(0.7)
         soap_wiki_tab_pattern = Pattern("soap_wiki_tab.png")
         link_to_drag_drop_pattern = Pattern("link_to_drag_drop.png")
@@ -25,27 +23,25 @@ class Test(FirefoxTest):
         not_matching_message_pattern = Pattern("not_matching_message.png")
 
         new_private_window()
-
-        private_window_opened = exists(PrivateWindow.private_window_pattern)
+        private_window_pattern_region = Region(
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT // 10
+        )
+        private_window_opened = exists(
+            PrivateWindow.private_window_pattern.similar(0.7), region=private_window_pattern_region
+        )
         assert private_window_opened, "New Private Window opened"
 
         navigate("https://mystor.github.io/dragndrop/")
 
-        drop_html_data_button_displayed = exists(
-            drop_html_data_button_pattern, Settings.SITE_LOAD_TIMEOUT
-        )
+        drop_html_data_button_displayed = exists(drop_html_data_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert drop_html_data_button_displayed, "Site downloaded"
 
         click(drop_html_data_button_pattern)
 
-        drop_html_data_selected_button_displayed = exists(
-            drop_html_data_selected_button_pattern
-        )
+        drop_html_data_selected_button_displayed = exists(drop_html_data_selected_button_pattern)
         assert drop_html_data_selected_button_displayed, "Button is selected"
 
-        dropping_area_displayed = scroll_until_pattern_found(
-            not_matching_message_pattern, repeat_key_down, (5,)
-        )
+        dropping_area_displayed = scroll_until_pattern_found(not_matching_message_pattern, repeat_key_down, (5,))
         assert dropping_area_displayed, "The dropping are is displayed"
 
         new_private_window()
@@ -61,22 +57,14 @@ class Test(FirefoxTest):
         home_height, home_width = NavBar.HOME_BUTTON.get_size()
         tabs_region = Region(0, 0, Screen.SCREEN_WIDTH, home_height * 4)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, Settings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened, "Soap wiki page opened"
 
-        point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(
-            Screen.SCREEN_WIDTH // 5
-        )
+        point_to_move_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(Screen.SCREEN_WIDTH // 5)
         if OSHelper.is_mac():
-            location_to_shift_wiki_window = find(
-                soap_wiki_tab_pattern, tabs_region
-            ).right(Screen.SCREEN_WIDTH // 2)
+            location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(Screen.SCREEN_WIDTH // 2)
         else:
-            location_to_shift_wiki_window = find(
-                soap_wiki_tab_pattern, tabs_region
-            ).right(Screen.SCREEN_WIDTH)
+            location_to_shift_wiki_window = find(soap_wiki_tab_pattern, tabs_region).right(Screen.SCREEN_WIDTH)
 
         drag_drop(point_to_move_wiki_window, location_to_shift_wiki_window)
 
@@ -86,9 +74,7 @@ class Test(FirefoxTest):
         soap_wiki_label_location = find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
         paragraph_to_select = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).below(120)
 
-        soap_wiki_label_location_to_drag = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).offset(
-            10, 10
-        )
+        soap_wiki_label_location_to_drag = find(LocalWeb.SOAP_WIKI_SOAP_LABEL).offset(10, 10)
 
         drag_drop(soap_wiki_label_location, paragraph_to_select)
 

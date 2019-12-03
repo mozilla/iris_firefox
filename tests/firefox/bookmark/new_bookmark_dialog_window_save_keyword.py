@@ -27,12 +27,8 @@ class Test(FirefoxTest):
         other_bookmarks_folder_exists = exists(Library.OTHER_BOOKMARKS)
         assert other_bookmarks_folder_exists is True, "Other Bookmarks folder exists"
 
-        other_bookmarks_width, other_bookmarks_height = (
-            Library.OTHER_BOOKMARKS.get_size()
-        )
-        location_for_right_click = find(Library.OTHER_BOOKMARKS).right(
-            other_bookmarks_width * 2
-        )
+        other_bookmarks_width, other_bookmarks_height = Library.OTHER_BOOKMARKS.get_size()
+        location_for_right_click = find(Library.OTHER_BOOKMARKS).right(other_bookmarks_width * 2)
 
         right_click(location_for_right_click)
 
@@ -59,16 +55,12 @@ class Test(FirefoxTest):
         paste("y")
 
         add_button_active = exists(add_button_pattern)
-        assert (
-            add_button_active is True
-        ), "The fields are properly filled and the Add button is active and highlighted."
+        assert add_button_active is True, "The fields are properly filled and the Add button is active and highlighted."
 
         click(add_button_pattern)
 
         bookmark_exists = exists(soap_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            bookmark_exists is True
-        ), "The new bookmark is added in the selected section"
+        assert bookmark_exists is True, "The new bookmark is added in the selected section"
 
         click(Library.TITLE)
 
@@ -78,9 +70,8 @@ class Test(FirefoxTest):
 
         type("y")
 
-        suggestion_exists = exists(
-            keyword_suggestion_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            suggestion_exists is True
-        ), "The keyword search displays as first suggestion the bookmarked website."
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.ENTER)
+
+        suggestion_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert suggestion_exists is True, "The keyword search displays as first suggestion the bookmarked website."

@@ -14,12 +14,8 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        ctrl_tab_cycles_order_checked_pattern = Pattern(
-            "ctrl_tab_cycles_order_checked.png"
-        )
-        ctrl_tab_cycles_order_unchecked_pattern = Pattern(
-            "ctrl_tab_cycles_order_unchecked.png"
-        )
+        ctrl_tab_cycles_order_checked_pattern = Pattern("ctrl_tab_cycles_order_checked.png")
+        ctrl_tab_cycles_order_unchecked_pattern = Pattern("ctrl_tab_cycles_order_unchecked.png")
         ctrl_tab_focus_logo_pattern = Pattern("ctrl_tab_focus_logo.png")
         ctrl_tab_firefox_pattern = Pattern("ctrl_tab_firefox.png")
         ctrl_tab_focus_pattern = Pattern("ctrl_tab_focus.png")
@@ -29,15 +25,12 @@ class Test(FirefoxTest):
         navigate("about:preferences#general")
 
         about_preferences = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert about_preferences, "about:preferences page loaded."
 
         # From "Tabs" check the box for "Ctrl+Tab cycles through tabs in recently used order".
-        ctrl_tab_cycles = exists(
-            ctrl_tab_cycles_order_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        ctrl_tab_cycles = exists(ctrl_tab_cycles_order_unchecked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert ctrl_tab_cycles, '"Ctrl+Tab cycles is checked" option is available.'
 
         click(ctrl_tab_cycles_order_unchecked_pattern)
@@ -45,9 +38,7 @@ class Test(FirefoxTest):
         ctrl_tab_cycles_order_checked = find_in_region_from_pattern(
             ctrl_tab_cycles_order_checked_pattern, AboutPreferences.CHECKED_BOX
         )
-        assert (
-            ctrl_tab_cycles_order_checked
-        ), 'The box for "Ctrl+Tab cycles is checked."'
+        assert ctrl_tab_cycles_order_checked, 'The box for "Ctrl+Tab cycles is checked."'
 
         # Open a few sites and navigate through them in a specific order (remember the order you visited them).
         new_tab()
@@ -100,15 +91,11 @@ class Test(FirefoxTest):
             type(Key.TAB)
 
             try:
-                ctrl_tab_focus_not_active = wait_vanish(
-                    ctrl_tab_focus_active_pattern.similar(0.99)
-                )
+                ctrl_tab_focus_not_active = wait_vanish(ctrl_tab_focus_active_pattern.similar(0.99))
             except FindError:
                 raise APIHelperError("The focus is not shifted between the tabs.")
 
-            assert (
-                ctrl_tab_focus_not_active
-            ), "If you continue to press Tab, the focus is shifted between the tabs."
+            assert ctrl_tab_focus_not_active, "If you continue to press Tab, the focus is shifted between the tabs."
 
         except FindError:
             key_up(Key.CTRL)
@@ -122,6 +109,4 @@ class Test(FirefoxTest):
         assert ctrl_tab_focus_logo is False, "The switcher disappears."
 
         pocket_site = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert (
-            pocket_site
-        ), "Pocket site loaded. The focus is on the last tab that was selected in the switcher. "
+        assert pocket_site, "Pocket site loaded. The focus is on the last tab that was selected in the switcher. "

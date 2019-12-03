@@ -29,30 +29,20 @@ class Test(FirefoxTest):
 
         bookmarks_sidebar("open")
 
-        bookmarks_sidebar_menu_exists = exists(
-            SidebarBookmarks.BOOKMARKS_HEADER, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmarks_sidebar_menu_exists is True
-        ), "Bookmarks Sidebar is correctly displayed."
+        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert bookmarks_sidebar_menu_exists is True, "Bookmarks Sidebar is correctly displayed."
 
-        bookmarks_menu_exists = exists(
-            bookmarks_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        bookmarks_menu_exists = exists(bookmarks_menu_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert bookmarks_menu_exists is True, "Bookmarks menu section exists"
 
         right_click(bookmarks_menu_pattern)
 
-        new_bookmark_option_exists = exists(
-            new_bookmark_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        new_bookmark_option_exists = exists(new_bookmark_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_bookmark_option_exists is True, "New Bookmark option exists"
 
         click(new_bookmark_option_pattern)
 
-        new_bookmark_panel_exists = exists(
-            new_bookmark_panel_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        new_bookmark_panel_exists = exists(new_bookmark_panel_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert new_bookmark_panel_exists is True, "A New Bookmark... window is opened."
 
         type(Key.TAB)
@@ -72,9 +62,5 @@ class Test(FirefoxTest):
 
         click(bookmarks_menu_pattern)
 
-        new_bookmark_created_exists = exists(
-            new_bookmark_created_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            new_bookmark_created_exists is True
-        ), "The new bookmark is added in the selected section."
+        new_bookmark_created_exists = exists(new_bookmark_created_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert new_bookmark_created_exists is True, "The new bookmark is added in the selected section."

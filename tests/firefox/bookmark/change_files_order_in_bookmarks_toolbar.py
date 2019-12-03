@@ -16,13 +16,11 @@ class Test(FirefoxTest):
         exclude=[OSPlatform.MAC, OSPlatform.LINUX],
     )
     def run(self, firefox):
-        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR
+        library_bookmarks_pattern = Library.BOOKMARKS_TOOLBAR.similar(0.7)
         bookmarks_most_visited = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
         mozilla_bookmark_icon_pattern = Pattern("mozilla_bookmark_icon.png")
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
-        bookmark_after_drag_and_drop_pattern = Pattern(
-            "bookmark_after_drag_and_drop.png"
-        )
+        bookmark_after_drag_and_drop_pattern = Pattern("bookmark_after_drag_and_drop.png")
 
         open_firefox_menu()
 
@@ -31,12 +29,7 @@ class Test(FirefoxTest):
         assert library_bookmarks is True, "Library bookmarks button displayed"
 
         library_location_x = find(library_bookmarks_pattern).x
-        find_drop_region = Region(
-            library_location_x,
-            0,
-            width=Screen.SCREEN_WIDTH / 2,
-            height=Screen.SCREEN_HEIGHT,
-        )
+        find_drop_region = Region(library_location_x, 0, width=Screen.SCREEN_WIDTH / 2, height=Screen.SCREEN_HEIGHT)
 
         click(library_bookmarks_pattern)
         mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern)
@@ -44,8 +37,7 @@ class Test(FirefoxTest):
 
         bookmarks_most_visited_exists = exists(bookmarks_most_visited)
         assert bookmarks_most_visited_exists is True, (
-            "Most Visited section and the Folders and websites from the "
-            "Bookmark Toolbar are displayed"
+            "Most Visited section and the Folders and websites from the " "Bookmark Toolbar are displayed"
         )
 
         drop_from_location = find(mozilla_bookmark_icon_pattern)

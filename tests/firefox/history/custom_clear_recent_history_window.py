@@ -17,10 +17,8 @@ class Test(FirefoxTest):
         blocked_by={"id": "1568911", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
-        clear_recent_history_window_pattern = (
-            History.CLearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
-        )
-        clear_now_button_pattern = History.CLearRecentHistory.CLEAR_NOW
+        clear_recent_history_window_pattern = History.ClearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
+        clear_now_button_pattern = History.ClearRecentHistory.CLEAR_NOW
         search_uncheked_box_pattern = Utils.UNCHECKEDBOX
         history_pattern = Sidebar.HistorySidebar.SIDEBAR_HISTORY_TITLE
         searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON
@@ -51,16 +49,16 @@ class Test(FirefoxTest):
             expected = exists(search_uncheked_box_pattern.similar(0.9), 10)
 
         try:
-            wait(History.CLearRecentHistory.TimeRange.LAST_HOUR, 10)
+            wait(History.ClearRecentHistory.TimeRange.LAST_HOUR, 10)
             logger.debug("Last Hour option found.")
-            click(History.CLearRecentHistory.TimeRange.LAST_HOUR)
+            click(History.ClearRecentHistory.TimeRange.LAST_HOUR)
         except FindError:
             raise FindError("Last Hour option NOT found, aborting")
 
         try:
-            wait(History.CLearRecentHistory.TimeRange.EVERYTHING, 10)
+            wait(History.ClearRecentHistory.TimeRange.EVERYTHING, 10)
             logger.debug("Everything option found.")
-            click(History.CLearRecentHistory.TimeRange.EVERYTHING)
+            click(History.ClearRecentHistory.TimeRange.EVERYTHING)
         except FindError:
             raise FindError("Everything option NOT found, aborting")
 
@@ -74,9 +72,7 @@ class Test(FirefoxTest):
 
         # Check that the Clear Recent History window was dismissed properly.
         expected = exists(clear_recent_history_window_pattern.similar(0.9), 10)
-        assert (
-            expected is not True
-        ), "Clear Recent History window was dismissed properly."
+        assert expected is not True, "Clear Recent History window was dismissed properly."
 
         # ASSERTS.
         time.sleep(Settings.DEFAULT_UI_DELAY)
@@ -87,9 +83,7 @@ class Test(FirefoxTest):
         assert expected, "History sidebar is opened."
 
         # Check that the history is empty.
-        region = Screen().new_region(
-            0, 150, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
-        )
+        region = Screen().new_region(0, 150, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
         expected = region.exists(searched_history_logo_pattern, 10)
         assert expected is not True, "History is empty."
@@ -135,9 +129,7 @@ class Test(FirefoxTest):
             saved_logins_window_vanished = wait_vanish(
                 saved_logins_window_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
             )
-            assert (
-                saved_logins_window_vanished is True
-            ), '"Saved Logins" window still displayed.'
+            assert saved_logins_window_vanished is True, '"Saved Logins" window still displayed.'
         except FindError:
             raise FindError('"Saved Logins" window still displayed.')
 
@@ -152,12 +144,7 @@ class Test(FirefoxTest):
         assert expected, '"Manage Cookies and Site Data" window is displayed.'
 
         # Check that the "Manage Cookies and Site Data" window is empty.
-        region = Screen().new_region(
-            0,
-            Screen.SCREEN_HEIGHT / 2 - 100,
-            Screen.SCREEN_WIDTH,
-            Screen.SCREEN_HEIGHT / 2,
-        )
+        region = Screen().new_region(0, Screen.SCREEN_HEIGHT / 2 - 100, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT / 2)
 
         expected = region.exists("ago", 10)
         assert not expected, "Cookies were deleted."
@@ -166,12 +153,8 @@ class Test(FirefoxTest):
         type(Key.ESC)
 
         try:
-            manage_data_window_vanished = wait_vanish(
-                manage_data_title_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-            )
-            assert (
-                manage_data_window_vanished is True
-            ), '"Manage Cookies and Site Data" window is NOT displayed.'
+            manage_data_window_vanished = wait_vanish(manage_data_title_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+            assert manage_data_window_vanished is True, '"Manage Cookies and Site Data" window is NOT displayed.'
         except FindError:
             raise FindError('"Manage Cookies and Site Data" window still displayed.')
 

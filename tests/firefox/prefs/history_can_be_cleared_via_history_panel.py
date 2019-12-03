@@ -17,13 +17,9 @@ class Test(FirefoxTest):
         clear_everything_history_pattern = Pattern("clear_everything_history.png")
         clear_history_button_pattern = Pattern("clear_history_button.png")
         clear_history_today_pattern = Pattern("clear_history_today.png")
-        clear_last_four_hours_history_pattern = Pattern(
-            "clear_last_four_hours_history.png"
-        )
+        clear_last_four_hours_history_pattern = Pattern("clear_last_four_hours_history.png")
         clear_last_hour_history_pattern = Pattern("clear_last_hour_history.png")
-        clear_last_two_hours_history_pattern = Pattern(
-            "clear_last_two_hours_history.png"
-        )
+        clear_last_two_hours_history_pattern = Pattern("clear_last_two_hours_history.png")
         clear_now_button_pattern = Pattern("clear_now_button.png")
         ui_timeout = 1
 
@@ -60,9 +56,7 @@ class Test(FirefoxTest):
         restore_firefox_focus()
 
         navigate("about:preferences#privacy")
-        preferences_privacy_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
+        preferences_privacy_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert preferences_privacy_opened, (
             "The about:preferences page is successfully loaded.The options for "
             + '"Privacy & Security" section are displayed.'
@@ -70,40 +64,26 @@ class Test(FirefoxTest):
 
         paste("Firefox will")
         history_prefs_displayed = exists(clear_history_button_pattern)
-        assert (
-            history_prefs_displayed
-        ), "History section in privacy preferences is displayed"
+        assert history_prefs_displayed, "History section in privacy preferences is displayed"
 
         click(clear_history_button_pattern)
 
         history_purging_settings_opened = exists(clear_last_hour_history_pattern)
-        assert (
-            history_purging_settings_opened
-        ), '"Clear recent history" sub-window is opened'
+        assert history_purging_settings_opened, '"Clear recent history" sub-window is opened'
 
         click(clear_last_hour_history_pattern)
 
-        clear_last_two_hours_history_displayed = exists(
-            clear_last_two_hours_history_pattern
-        )
-        assert (
-            clear_last_two_hours_history_displayed
-        ), "Time range menu is displayed properly"
+        clear_last_two_hours_history_displayed = exists(clear_last_two_hours_history_pattern)
+        assert clear_last_two_hours_history_displayed, "Time range menu is displayed properly"
 
-        clear_last_four_hours_history_displayed = exists(
-            clear_last_four_hours_history_pattern
-        )
-        assert (
-            clear_last_four_hours_history_displayed
-        ), "Time range menu is displayed properly"
+        clear_last_four_hours_history_displayed = exists(clear_last_four_hours_history_pattern)
+        assert clear_last_four_hours_history_displayed, "Time range menu is displayed properly"
 
         clear_history_today_displayed = exists(clear_history_today_pattern)
         assert clear_history_today_displayed, "Time range menu is displayed properly"
 
         clear_everything_history_displayed = exists(clear_everything_history_pattern)
-        assert (
-            clear_everything_history_displayed
-        ), "Time range menu is displayed properly"
+        assert clear_everything_history_displayed, "Time range menu is displayed properly"
 
         click(clear_history_today_pattern)
 
@@ -126,11 +106,7 @@ class Test(FirefoxTest):
         assert history_submenu_opened, "History submenu is opened"
 
         firefox_page_visit_deleted = not exists(LocalWeb.FIREFOX_BOOKMARK, ui_timeout)
-        assert (
-            firefox_page_visit_deleted
-        ), "Firefox local page visit was deleted from history"
+        assert firefox_page_visit_deleted, "Firefox local page visit was deleted from history"
 
         focus_page_visit_deleted = not exists(LocalWeb.FOCUS_BOOKMARK, ui_timeout)
-        assert (
-            focus_page_visit_deleted
-        ), "Focus local page visit was deleted from history"
+        assert focus_page_visit_deleted, "Focus local page visit was deleted from history"

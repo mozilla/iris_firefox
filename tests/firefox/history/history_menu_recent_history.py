@@ -39,10 +39,7 @@ class Test(FirefoxTest):
         # Open History and check if is populated with the recent visited websites.
         open_library_menu("History")
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
 
         expected_5 = right_upper_corner.exists(LocalWeb.POCKET_BOOKMARK, 10)

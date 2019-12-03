@@ -16,16 +16,14 @@ class Test(FirefoxTest):
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
-        view_bookmarks_toolbar = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        bookmarks_toolbar_most_visited_pattern = (
-            SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        )
-        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png")
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
+        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png").similar(0.7)
 
         # Open a page to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
+
+        reset_mouse()
 
         expected_1 = exists(LocalWeb.MOZILLA_LOGO, 10)
         assert expected_1, "Mozilla page loaded successfully."
@@ -48,11 +46,7 @@ class Test(FirefoxTest):
         # Copy the History time range from the History sidebar and paste it to the Bookmarks toolbar.
         right_click_and_type(history_today_sidebar_pattern, keyboard_action="c")
 
-        right_click_and_type(
-            bookmarks_toolbar_most_visited_pattern, keyboard_action="p"
-        )
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action="p")
 
         expected_5 = exists(today_bookmarks_toolbar_pattern)
-        assert (
-            expected_5
-        ), "History time range was copied successfully to the Bookmarks toolbar."
+        assert expected_5, "History time range was copied successfully to the Bookmarks toolbar."

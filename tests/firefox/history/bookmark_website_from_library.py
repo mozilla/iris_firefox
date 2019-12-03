@@ -26,10 +26,7 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
         assert expected, "Iris page is displayed in the History menu list."
@@ -39,9 +36,7 @@ class Test(FirefoxTest):
             logger.debug("Show All History option found.")
             click(show_all_history_pattern)
         except FindError:
-            raise FindError(
-                "Show All History option is not present on the page, aborting."
-            )
+            raise FindError("Show All History option is not present on the page, aborting.")
 
         expected = exists(iris_bookmark_focus_pattern, 10)
         assert expected, "Iris page is displayed in the Recent History list."
@@ -75,8 +70,7 @@ class Test(FirefoxTest):
 
         expected = exists(library_bookmarks_iris_pattern, 10)
         assert expected, (
-            "The website is bookmarked in the Bookmarks Menu folder, with the default name and "
-            "without any tags."
+            "The website is bookmarked in the Bookmarks Menu folder, with the default name and " "without any tags."
         )
 
         click_window_control("close")

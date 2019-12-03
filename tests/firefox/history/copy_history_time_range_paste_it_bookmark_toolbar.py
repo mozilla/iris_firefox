@@ -17,14 +17,10 @@ class Test(FirefoxTest):
         show_all_history_pattern = History.HistoryMenu.SHOW_ALL_HISTORY
         iris_bookmark_pattern = Pattern("iris_bookmark.png")
         iris_bookmark_focus_pattern = Pattern("iris_bookmark_focus.png")
-        bookmarks_toolbar_most_visited_pattern = (
-            SidebarBookmarks.BookmarksToolbar.MOST_VISITED
-        )
-        view_bookmarks_toolbar = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
-        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png")
-        history_today_pattern = Library.HISTORY_TODAY
+        bookmarks_toolbar_most_visited_pattern = SidebarBookmarks.BookmarksToolbar.MOST_VISITED
+        view_bookmarks_toolbar = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
+        today_bookmarks_toolbar_pattern = Pattern("today_bookmarks_toolbar.png").similar(0.7)
+        history_today_pattern = Library.HISTORY_TODAY.similar(0.7)
 
         # Open the Bookmarks toolbar.
         access_bookmarking_tools(view_bookmarks_toolbar)
@@ -36,10 +32,7 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         right_upper_corner = Screen().new_region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
+            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
         )
 
         expected = right_upper_corner.exists(iris_bookmark_pattern, 10)
@@ -50,9 +43,7 @@ class Test(FirefoxTest):
             logger.debug("Show All History option found.")
             click(show_all_history_pattern)
         except FindError:
-            raise FindError(
-                "Show All History option is not present on the page, aborting."
-            )
+            raise FindError("Show All History option is not present on the page, aborting.")
 
         expected = exists(iris_bookmark_focus_pattern, 10)
         assert expected, "Iris page is displayed in the Recent History list."
@@ -61,15 +52,11 @@ class Test(FirefoxTest):
 
         right_click_and_type(history_today_pattern, keyboard_action="c")
 
-        click_window_control("close")
+        close_window_control("auxiliary")
 
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
-        right_click_and_type(
-            bookmarks_toolbar_most_visited_pattern, keyboard_action="p"
-        )
+        right_click_and_type(bookmarks_toolbar_most_visited_pattern, keyboard_action="p")
 
         expected = exists(today_bookmarks_toolbar_pattern)
-        assert (
-            expected
-        ), "History time range was copied successfully to the Bookmarks toolbar."
+        assert expected, "History time range was copied successfully to the Bookmarks toolbar."

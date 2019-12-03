@@ -18,7 +18,7 @@ class NavBar(object):
     LIBRARY_MENU = Pattern("library_button.png")
     SIDEBAR_MENU = Pattern("sidebar_button.png")
     SIDEBAR_MENU_RTL = Pattern("sidebar_button_rtl.png")
-    HAMBURGER_MENU = Pattern("panel_ui_menu_button.png")
+    HAMBURGER_MENU = Pattern("panel_ui_menu_button.png").similar(0.7)
     HAMBURGER_MENU_DARK_THEME = Pattern("panel_ui_menu_button_dark_theme.png")
     MORE_TOOLS = Pattern("more_tools.png")
 
@@ -30,9 +30,7 @@ class NavBar(object):
     ZOOM_OUT = Pattern("zoom_out_button.png")
     ZOOM_IN = Pattern("zoom_in_button.png")
 
-    DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE = Pattern(
-        "default_zoom_level_toolbar_customize_page.png"
-    )
+    DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE = Pattern("default_zoom_level_toolbar_customize_page.png")
     ZOOM_CONTROLS_CUSTOMIZE_PAGE = Pattern("wrapper_zoom_controls.png")
     TOOLBAR = Pattern("toolbar.png")
 

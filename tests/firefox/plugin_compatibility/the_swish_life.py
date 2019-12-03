@@ -21,9 +21,7 @@ class Test(FirefoxTest):
 
         navigate("http://theswishlife.com/")
 
-        window_opened = exists(
-            the_swish_life_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        window_opened = exists(the_swish_life_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert window_opened is True, "The Swish Life home page opened"
 
         page_end()
@@ -34,16 +32,10 @@ class Test(FirefoxTest):
 
         click(fashion_tag_pattern)
 
-        fashion_page_opened = exists(
-            fashion_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        fashion_page_opened = exists(fashion_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert fashion_page_opened is True, 'The "Fashion" page is opened'
 
         click(the_home_button_pattern)
 
-        home_page_label = exists(
-            fashion_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
-        assert (
-            home_page_label is True
-        ), "Return to the Swish Life home page. The website and the browser are stable"
+        home_page_label = exists(fashion_page_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert home_page_label is True, "Return to the Swish Life home page. The website and the browser are stable"

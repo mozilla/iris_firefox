@@ -9,22 +9,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description="This test case checks that navigation to a page without entering the 'http://' protocol "
         "works correctly.",
-        locale=[
-            "en-US",
-            "zh-CN",
-            "es-ES",
-            "fr",
-            "de",
-            "ar",
-            "ru",
-            "ko",
-            "pt-PT",
-            "vi",
-            "pl",
-            "tr",
-            "ro",
-            "ja",
-        ],
+        locale=["en-US", "zh-CN", "es-ES", "fr", "de", "ar", "ru", "ko", "pt-PT", "vi", "pl", "tr", "ro", "ja"],
         test_case_id="117529",
         test_suite_id="1902",
     )

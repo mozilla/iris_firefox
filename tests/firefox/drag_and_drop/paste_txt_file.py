@@ -16,9 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         paste_txt_button_pattern = Pattern("paste_txt_file_button.png")
-        paste_txt_file_selected_button_pattern = Pattern(
-            "paste_txt_file_selected_button.png"
-        )
+        paste_txt_file_selected_button_pattern = Pattern("paste_txt_file_selected_button.png")
         drop_here_pattern = Pattern("drop_here.png")
         not_matching_message_pattern = Pattern("not_matching_message.png")
         matching_message_pattern = Pattern("matching_message_precise.png")
@@ -30,30 +28,21 @@ class Test(FirefoxTest):
 
         navigate("https://mystor.github.io/dragndrop/")
 
-        paste_txt_file_button_displayed = exists(
-            paste_txt_button_pattern, Settings.SITE_LOAD_TIMEOUT
-        )
+        paste_txt_file_button_displayed = exists(paste_txt_button_pattern, Settings.SITE_LOAD_TIMEOUT)
         assert paste_txt_file_button_displayed, "The demo website loaded successfully"
 
         click(paste_txt_button_pattern)
 
         paste_txt_option_selected = exists(paste_txt_file_selected_button_pattern)
         assert paste_txt_option_selected, (
-            "The paste-txt-file changed color to red which indicates that it "
-            "has been selected."
+            "The paste-txt-file changed color to red which indicates that it " "has been selected."
         )
 
-        matching_block_available = scroll_until_pattern_found(
-            not_matching_message_pattern, scroll, (-25,), 20, 1
-        )
-        assert (
-            matching_block_available
-        ), "The drop result verification area is displayed on the page"
+        matching_block_available = scroll_until_pattern_found(not_matching_message_pattern, scroll, (-25,), 20, 1)
+        assert matching_block_available, "The drop result verification area is displayed on the page"
 
         not_matching_message_location = find(not_matching_message_pattern)
-        not_matching_message_width, not_matching_message_height = (
-            not_matching_message_pattern.get_size()
-        )
+        not_matching_message_width, not_matching_message_height = not_matching_message_pattern.get_size()
         not_matching_region = Region(
             not_matching_message_location.x,
             not_matching_message_location.y,
@@ -61,9 +50,7 @@ class Test(FirefoxTest):
             height=not_matching_message_height,
         )
 
-        matching_message_width, matching_message_height = (
-            matching_message_pattern.get_size()
-        )
+        matching_message_width, matching_message_height = matching_message_pattern.get_size()
         matching_region = Region(
             not_matching_message_location.x,
             not_matching_message_location.y,
@@ -80,12 +67,9 @@ class Test(FirefoxTest):
 
         edit_paste()
 
-        matching_message_displayed = exists(
-            matching_message_pattern, region=matching_region
-        )
+        matching_message_displayed = exists(matching_message_pattern, region=matching_region)
         assert matching_message_displayed, (
-            'Matching appears under the "Drop Stuff Here" area and expected'
-            "result is identical to result. "
+            'Matching appears under the "Drop Stuff Here" area and expected' "result is identical to result. "
         )
 
         select_file_in_folder(folderpath, jpg_file_pattern, edit_copy)
@@ -97,12 +81,9 @@ class Test(FirefoxTest):
 
         edit_paste()
 
-        not_matching_message_displayed = exists(
-            not_matching_message_pattern, region=not_matching_region
-        )
+        not_matching_message_displayed = exists(not_matching_message_pattern, region=not_matching_region)
         assert not_matching_message_displayed, (
-            'Not Matching appears under the "Drop Stuff Here" area and '
-            "expected result is different from result."
+            'Not Matching appears under the "Drop Stuff Here" area and ' "expected result is different from result."
         )
 
         type(Key.ESC)

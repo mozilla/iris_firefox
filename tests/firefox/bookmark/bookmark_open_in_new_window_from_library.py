@@ -23,16 +23,12 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened is True, "Soap wiki page opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "StarDialog opened"
 
         click(Bookmarks.StarDialog.DONE)
@@ -53,19 +49,13 @@ class Test(FirefoxTest):
 
         right_click(soap_wiki_tab_pattern)
 
-        open_in_new_window_option_exists = exists(
-            open_in_new_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
+        open_in_new_window_option_exists = exists(open_in_new_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2)
         assert open_in_new_window_option_exists, "Open in New Window option exists"
 
         click(open_in_new_window_pattern)
 
-        soap_wiki_opened_from_bookmarks = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
-        assert (
-            soap_wiki_opened_from_bookmarks is True
-        ), "Soap wiki page opened with Open in a New Window from Library"
+        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
+        assert soap_wiki_opened_from_bookmarks is True, "Soap wiki page opened with Open in a New Window from Library"
 
         new_tab_exists = exists(Tabs.NEW_TAB_NOT_HIGHLIGHTED)
         assert new_tab_exists is False, "New tab is not displayed"

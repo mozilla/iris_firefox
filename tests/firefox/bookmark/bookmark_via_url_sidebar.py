@@ -24,9 +24,7 @@ class Test(FirefoxTest):
         restore_firefox_focus()
         reset_mouse()
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."
 
         bookmarks_sidebar("open")
@@ -40,26 +38,15 @@ class Test(FirefoxTest):
 
         select_location_bar()
 
-        draggable_url_exists = exists(
-            draggable_url_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        draggable_url_exists = exists(draggable_url_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert draggable_url_exists is True, "Draggable url is present on the screen"
 
-        drag_drop(
-            draggable_url_pattern, SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, duration=2
-        )
+        drag_drop(draggable_url_pattern, SidebarBookmarks.BOOKMARKS_TOOLBAR_MENU, duration=2)
 
-        star_shaped_button_assert = exists(
-            bookmark_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            star_shaped_button_assert is True
-        ), "Star-shaped button has changed its color to blue."
+        star_shaped_button_assert = exists(bookmark_selected_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert star_shaped_button_assert is True, "Star-shaped button has changed its color to blue."
 
-        bookmarked_url_assert = exists(
-            moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmarked_url_assert = exists(moz_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmarked_url_assert is True, (
-            "Moz page has been successfully bookmarked via URL onto the "
-            "Bookmarks Sidebar"
+            "Moz page has been successfully bookmarked via URL onto the " "Bookmarks Sidebar"
         )

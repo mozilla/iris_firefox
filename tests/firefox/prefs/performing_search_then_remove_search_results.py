@@ -15,9 +15,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        firefox_data_collection_and_use_pattern = Pattern(
-            "firefox_data_collection_and_use.png"
-        )
+        firefox_data_collection_and_use_pattern = Pattern("firefox_data_collection_and_use.png").similar(0.7)
 
         navigate("about:preferences")
 
@@ -29,16 +27,12 @@ class Test(FirefoxTest):
         firefox_data_collection_and_use = exists(
             firefox_data_collection_and_use_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            firefox_data_collection_and_use
-        ), '"firefox data" Search Results are displayed'
+        assert firefox_data_collection_and_use, '"firefox data" Search Results are displayed'
 
         click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED)
 
         try:
-            search_results_disappear = wait_vanish(
-                firefox_data_collection_and_use_pattern
-            )
+            search_results_disappear = wait_vanish(firefox_data_collection_and_use_pattern)
         except FindError:
             raise FindError("Search results are still on page.")
 

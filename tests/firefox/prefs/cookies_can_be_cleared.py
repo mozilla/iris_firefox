@@ -19,18 +19,12 @@ class Test(FirefoxTest):
         confirm_clear_data_pattern = Pattern("confirm_clear_data.png")
         open_clear_data_window_pattern = Pattern("open_clear_data_window.png")
         zero_bytes_cache_pattern = Pattern("zero_bytes_cache.png")
-        cached_web_content_item_pattern = Pattern(
-            "cached_web_content_item.png"
-        ).similar(0.6)
-        cookies_and_site_data_item_pattern = Pattern(
-            "cookies_and_site_data_item.png"
-        ).similar(0.6)
+        cached_web_content_item_pattern = Pattern("cached_web_content_item.png").similar(0.6)
+        cookies_and_site_data_item_pattern = Pattern("cookies_and_site_data_item.png").similar(0.6)
 
         navigate("about:preferences#privacy")
 
-        preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
         assert preferences_opened, "Preferences page is opened"
 
         open_find()
@@ -45,9 +39,7 @@ class Test(FirefoxTest):
         clear_data_window_opened = exists(clear_data_button_pattern.similar(0.9))
         assert clear_data_window_opened, 'The "Clear Data" subdialog is displayed'
 
-        cached_web_content_item_displayed = exists(
-            cached_web_content_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        cached_web_content_item_displayed = exists(cached_web_content_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert cached_web_content_item_displayed, "Cached Web Content item displayed"
 
         click(cached_web_content_item_pattern)
@@ -55,22 +47,16 @@ class Test(FirefoxTest):
         cached_web_content_item_unselected = find_in_region_from_pattern(
             cached_web_content_item_pattern, AboutPreferences.UNCHECKED_BOX
         )
-        assert (
-            cached_web_content_item_unselected
-        ), "Cached Web Content item can be unselected"
+        assert cached_web_content_item_unselected, "Cached Web Content item can be unselected"
 
         click(cached_web_content_item_pattern)
 
         cached_web_content_item_selected = find_in_region_from_pattern(
             cached_web_content_item_pattern, AboutPreferences.CHECKED_BOX
         )
-        assert (
-            cached_web_content_item_selected
-        ), "Cached Web Content item can be selected"
+        assert cached_web_content_item_selected, "Cached Web Content item can be selected"
 
-        cookies_and_site_data_displayed = exists(
-            cookies_and_site_data_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        cookies_and_site_data_displayed = exists(cookies_and_site_data_item_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert cookies_and_site_data_displayed, "Cookies and Site Data item displayed"
 
         click(cookies_and_site_data_item_pattern)
@@ -78,18 +64,14 @@ class Test(FirefoxTest):
         cookies_and_site_data_unselected = find_in_region_from_pattern(
             cookies_and_site_data_item_pattern, AboutPreferences.UNCHECKED_BOX
         )
-        assert (
-            cookies_and_site_data_unselected
-        ), "Cookies and Site Data item can be unselected"
+        assert cookies_and_site_data_unselected, "Cookies and Site Data item can be unselected"
 
         click(cookies_and_site_data_item_pattern)
 
         cookies_and_site_data_selected = find_in_region_from_pattern(
             cookies_and_site_data_item_pattern, AboutPreferences.CHECKED_BOX
         )
-        assert (
-            cookies_and_site_data_selected
-        ), "Cookies and Site Data item can be selected"
+        assert cookies_and_site_data_selected, "Cookies and Site Data item can be selected"
 
         edit_select_all()
 
@@ -109,9 +91,7 @@ class Test(FirefoxTest):
         click(clear_data_button_pattern)
 
         clear_message_appeared = exists(confirm_clear_data_pattern)
-        assert (
-            clear_message_appeared
-        ), 'The "Clear all cookies and site data" pop-up is displayed'
+        assert clear_message_appeared, 'The "Clear all cookies and site data" pop-up is displayed'
 
         edit_select_all()
 
@@ -130,10 +110,7 @@ class Test(FirefoxTest):
 
         click(confirm_clear_data_pattern)
 
-        data_cleared = exists(
-            zero_bytes_cache_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        data_cleared = exists(zero_bytes_cache_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert data_cleared, (
-            "The pop-up and the subdialog are dismissed and the amount of disk space used is "
-            "changed back to 0 MB"
+            "The pop-up and the subdialog are dismissed and the amount of disk space used is " "changed back to 0 MB"
         )

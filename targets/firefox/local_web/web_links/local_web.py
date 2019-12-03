@@ -40,9 +40,7 @@ class LocalWeb(object):
     MOZILLA_BOOKMARK = Pattern("mozilla_bookmark.png")
     MOZILLA_BOOKMARK_SMALL = Pattern("mozilla_bookmark_small.png")
     MOZILLA_BOOKMARK_HISTORY_SIDEBAR = Pattern("mozilla_bookmark_history_sidebar.png")
-    MOZILLA_BOOKMARK_LIBRARY_HISTORY_LIST = Pattern(
-        "mozilla_bookmark_library_history_list.png"
-    )
+    MOZILLA_BOOKMARK_LIBRARY_HISTORY_LIST = Pattern("mozilla_bookmark_library_history_list.png")
 
     """Local Pocket site."""
     POCKET_TEST_SITE = "http://%s:%s/pocket/" % (_ip_host, _port)
@@ -56,19 +54,17 @@ class LocalWeb(object):
     SOAP_WIKI_TEST_SITE = "http://%s:%s/soap_wiki_test_site/" % (_ip_host, _port)
     SOAP_WIKI_1_OF_2_MATCHES = Pattern("1_of_2_matches.png")
     SOAP_WIKI_2_OF_2_MATCHES = Pattern("2_of_2_matches.png")
-    SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL = Pattern("cleaning_see_selected_label.png")
-    SOAP_WIKI_OPERATING_ALL = Pattern("operating_all.png")
-    SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED = Pattern("operating_all_highlighted.png")
-    SOAP_WIKI_OPERATING_DISPARATE = Pattern("operating_disparate.png")
-    SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED = Pattern(
-        "operating_disparate_highlighted.png"
-    )
+    SOAP_WIKI_CLEANING_SEE_SELECTED_LABEL = Pattern("cleaning_see_selected_label.png").similar(0.7)
+    SOAP_WIKI_OPERATING_ALL = Pattern("operating_all.png").similar(0.7)
+    SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED = Pattern("operating_all_highlighted.png").similar(0.7)
+    SOAP_WIKI_OPERATING_DISPARATE = Pattern("operating_disparate.png").similar(0.7)
+    SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED = Pattern("operating_disparate_highlighted.png")
     SOAP_WIKI_SEE_LABEL = Pattern("see_label.png")
     SOAP_WIKI_SEE_LABEL_UNHIGHLITED = Pattern("see_label_unhighlited.png")
-    SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED = Pattern("soap_envelope_label_selected.png")
+    SOAP_WIKI_SOAP_ENVELOPE_LABEL_SELECTED = Pattern("soap_envelope_label_selected.png").similar(0.6)
     SOAP_WIKI_SOAP_LABEL = Pattern("soap_label.png")
     SOAP_WIKI_SOAP_LINK_HIGHLIGHTED = Pattern("soap_link_highlighted.png")
-    SOAP_WIKI_SOAP_XML_LABEL = Pattern("soap_xml_label.png")
+    SOAP_WIKI_SOAP_XML_LABEL = Pattern("soap_xml_label.png").similar(0.6)
     SOAP_WIKI_TEST_LABEL_PATTERN = Pattern("test_label_pattern.png")
 
     """Local files samples."""
@@ -86,5 +82,5 @@ class LocalWeb(object):
     IRIS_LOGO_ACTIVE_TAB = Pattern("iris_logo_active_tab.png")
     IRIS_LOGO_INACTIVE_TAB = Pattern("iris_logo_inactive_tab.png")
 
-    """Thinkbroadband site"""
-    THINKBROADBAND_TEST_SITE = "http://%s:%s/thinkbroadband/" % (_ip_host, _port)
+    """Download site"""
+    DOWNLOAD_TEST_SITE = "https://irisfirefoxtestfiles.netlify.com"

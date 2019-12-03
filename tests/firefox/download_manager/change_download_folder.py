@@ -2,11 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import (
-    DownloadFiles,
-    downloads_cleanup,
-    download_file,
-)
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file
 from targets.firefox.fx_testcase import *
 
 
@@ -26,7 +22,7 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         # Wait for the page to be loaded.
         try:
@@ -46,9 +42,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#search")
 
         expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
-        assert (
-            expected is True
-        ), "The 'about:preferences#search' page successfully loaded."
+        assert expected is True, "The 'about:preferences#search' page successfully loaded."
 
         expected = exists(AboutPreferences.FIND_IN_OPTIONS, 10)
         assert expected is True, "'Find in Options' search field is displayed."
@@ -86,7 +80,7 @@ class Test(FirefoxTest):
 
         time.sleep(10)
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         # Wait for the page to be loaded.
         try:
@@ -107,9 +101,7 @@ class Test(FirefoxTest):
 
         file_5_mb = find(DownloadFiles.DOWNLOADS_PANEL_5MB_COMPLETED)
         region_5_mb = Region(file_5_mb.x, file_5_mb.y - 10, 500, 50)
-        expected = region_5_mb.exists(
-            DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10
-        )
+        expected = region_5_mb.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
         assert expected is True, "Containing folder icon is available for 5mb file."
 
         region_5_mb.click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)
@@ -136,9 +128,7 @@ class Test(FirefoxTest):
 
         file_10_mb = find(DownloadFiles.DOWNLOADS_PANEL_10MB_COMPLETED)
         region_10_mb = Region(file_10_mb.x, file_10_mb.y - 10, 500, 50)
-        expected = region_10_mb.exists(
-            DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10
-        )
+        expected = region_10_mb.exists(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER, 10)
         assert expected is True, "Containing folder icon is available for 10mb file."
 
         region_10_mb.click(DownloadManager.DownloadsPanel.OPEN_CONTAINING_FOLDER)

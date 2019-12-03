@@ -2,11 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 from targets.firefox.firefox_ui.download_manager import DownloadManager
-from targets.firefox.firefox_ui.helpers.download_manager_utils import (
-    DownloadFiles,
-    downloads_cleanup,
-    download_file,
-)
+from targets.firefox.firefox_ui.helpers.download_manager_utils import DownloadFiles, downloads_cleanup, download_file
 from targets.firefox.fx_testcase import *
 
 
@@ -32,7 +28,7 @@ class Test(FirefoxTest):
             DownloadFiles.EXTRA_SMALL_FILE_5MB,
         ]
 
-        navigate(LocalWeb.THINKBROADBAND_TEST_SITE)
+        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         for pattern in download_files_list:
             download_file(pattern, DownloadFiles.OK)

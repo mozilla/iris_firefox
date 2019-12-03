@@ -20,9 +20,7 @@ class Test(FirefoxTest):
         drag_area_pattern = Pattern("drag_area.png")
         dragged_bookmark_pattern = Pattern("moz_toolbar_dragged_bookmark.png")
         delete = Pattern("delete_bookmark.png")
-        view_bookmarks_toolbar_pattern = (
-            LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
-        )
+        view_bookmarks_toolbar_pattern = LibraryMenu.BookmarksOption.BookmarkingTools.VIEW_BOOKMARKS_TOOLBAR
 
         navigate("about:blank")
 
@@ -36,9 +34,7 @@ class Test(FirefoxTest):
 
         drag_drop(moz_draggable_pattern, drag_area_pattern, duration=0.5)
 
-        bookmark_drag_assert = exists(
-            dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmark_drag_assert = exists(dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmark_drag_assert is True, "Moz Bookmark was dragged successfully."
 
         bookmarks_sidebar("close")
@@ -48,20 +44,12 @@ class Test(FirefoxTest):
         click(delete)
 
         try:
-            deleted_bookmark_assert = wait_vanish(
-                dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-            )
-            assert (
-                deleted_bookmark_assert is True
-            ), "Moz bookmarks was successfully deleted."
+            deleted_bookmark_assert = wait_vanish(dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+            assert deleted_bookmark_assert is True, "Moz bookmarks was successfully deleted."
         except FindError:
             raise FindError("Moz bookmarks was not deleted")
 
         edit_undo()
 
-        undo_bookmark_removal_assert = exists(
-            dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            undo_bookmark_removal_assert is True
-        ), "The removal bookmark action has been successfully undone."
+        undo_bookmark_removal_assert = exists(dragged_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert undo_bookmark_removal_assert is True, "The removal bookmark action has been successfully undone."
