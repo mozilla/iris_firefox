@@ -704,7 +704,7 @@ def open_hamburger_menu(option=None):
             if option is not None:
                 reps = option_list[option]
                 count = 0
-                while (count < reps):
+                while count < reps:
                     time.sleep(0.5)
                     type(Key.TAB)
                     count = count + 1
