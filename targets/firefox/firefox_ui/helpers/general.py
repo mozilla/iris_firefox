@@ -35,6 +35,7 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
+from targets.firefox.firefox_ui.hamburger import HamburgerMenu
 from targets.firefox.settings import FirefoxSettings
 
 INVALID_GENERIC_INPUT = "Invalid input"
@@ -684,13 +685,13 @@ def open_hamburger_menu(option=None):
     region = Screen.UPPER_RIGHT_CORNER
     sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
 
-    option_list = {'Restore Previous Session': 5,
-                   'Customize': 14,
-                   'Print': 17,
-                   'Web Developer': 20,
-                   'Help': 22,
-                   'Exit': 23,
-                   'Quit': 23}
+    option_list = ['Restore Previous Session',
+                   'Customize',
+                   'Print',
+                   'Web Developer',
+                   'Help',
+                   'Exit',
+                   'Quit']
 
     try:
         region.wait(hamburger_menu_pattern, 5)
@@ -702,18 +703,18 @@ def open_hamburger_menu(option=None):
             region.click(hamburger_menu_pattern)
             region.wait(sign_in_to_firefox_pattern, 10)
             if option is not None:
-                reps = option_list[option]
-                count = 0
-                if reps is 22:  # to prevent miss clicking on different option
-                    type(Key.TAB)
-                    type(Key.TAB, KeyModifier.SHIFT)
-                else:
-                    while count < reps:
-                        time.sleep(0.5)
-                        type(Key.TAB)
-                        count = count + 1
-                    time.sleep(1)
-                type(Key.ENTER)
+                if option is "Restore Previous Session":
+                    click(HamburgerMenu.RESTORE_PREVIOUS_SESSION)
+                if option is "Customize":
+                    click(HamburgerMenu.CUSTOMIZE)
+                if option is "Print":
+                    click(HamburgerMenu.PRINT)
+                if option is "Web Developer":
+                    click(HamburgerMenu.WEB_DEVELOPER)
+                if option is "Help":
+                    click(HamburgerMenu.HELP)
+                if (option is "Exit") or (option is "Quit"):
+                    click(HamburgerMenu.EXIT)
         except FindError:
             raise APIHelperError("Can't click the menu button. Aborting test.")
 
