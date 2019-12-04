@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="15267",
         test_suite_id="494",
+        blocked_by={"id": "4283", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         open_addons()

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="107431",
         test_suite_id="1826",
         locales=["en-US"],
+        blocked_by={"id": "4283", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]}
     )
     def run(self, firefox):
         tracking_protection_shield_pattern = Pattern("tracking_protection_shield_activated.png")

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="4268",
         test_suite_id="83",
+        blocked_by={"id": "4283", "platform": OSPlatform.LINUX}
     )
     def run(self, firefox):
         test_bold_pattern = Pattern("test_bold.png").similar(0.7)

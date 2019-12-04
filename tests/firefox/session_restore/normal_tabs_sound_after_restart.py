@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="178002",
         test_suite_id="68",
         locales=Locales.ENGLISH,
+        blocked_by={"id": "4283", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]}
     )
     def run(self, firefox):
         youtube_logo_inactive_tab_pattern = Pattern("youtube_logo_unactive_tab.png")

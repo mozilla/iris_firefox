@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="108258",
         test_suite_id="1902",
+        blocked_by={"id": "4283", "platform": [OSPlatform.WINDOWS, OSPlatform.LINUX]}
     )
     def run(self, firefox):
         google_search_results_pattern = Pattern("google_search_results.png")

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="143655",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON

@@ -10,6 +10,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="4658",
         test_suite_id="102",
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         # Our default timeouts during the scroll has to be Settings.TINY_TIMEOUT

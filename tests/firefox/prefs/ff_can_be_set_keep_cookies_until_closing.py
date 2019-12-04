@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="143636",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4283", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")

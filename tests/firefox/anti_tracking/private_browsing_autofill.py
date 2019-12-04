@@ -14,6 +14,7 @@ class Test(FirefoxTest):
         test_case_id="101666",
         test_suite_id="1826",
         preferences={"extensions.formautofill.available": "on"},
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         name_field_pattern = Pattern("name_field.png").similar(0.6)

@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="161668",
         test_suite_id="2241",
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         recommended_by_pocket_option = Pattern("recommended_by_pocket_option.png")

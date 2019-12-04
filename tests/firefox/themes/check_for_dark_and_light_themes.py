@@ -8,7 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Check for Dark and Light themes.", locale=["en-US"], test_case_id="15266", test_suite_id="494"
+        description="Check for Dark and Light themes.",
+        locale=["en-US"],
+        test_case_id="15266",
+        test_suite_id="494",
+        blocked_by={"id": "4283", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         for i in range(2):

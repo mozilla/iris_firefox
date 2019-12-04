@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="4660",
         test_suite_id="102",
         locale=["en-US"],
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         scroll_content_pattern = Pattern("about_us_content.png")

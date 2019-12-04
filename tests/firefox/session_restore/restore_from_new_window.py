@@ -14,6 +14,7 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH,
         profile=Profiles.BRAND_NEW,
         preferences={"browser.warnOnQuit": False, },
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         new_tab()

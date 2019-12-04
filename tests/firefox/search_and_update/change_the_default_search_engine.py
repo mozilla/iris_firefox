@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="111384",
         test_suite_id="83",
+        blocked_by={"id": "4283", "platform": OSPlatform.LINUX}
     )
     def run(self, firefox):
         bing_search_bar_pattern = Pattern("bing_search_bar.png")

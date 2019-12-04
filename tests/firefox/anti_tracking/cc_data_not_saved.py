@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="101668",
         test_suite_id="1826",
         preferences={"extensions.formautofill.available": "on", "extensions.formautofill.creditCards.available": True},
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern

@@ -12,7 +12,8 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="171440",
         test_suite_id="2241",
-        preferences={'devtools.chrome.enabled': True}
+        preferences={'devtools.chrome.enabled': True},
+        blocked_by={"id": "4283", "platform": [OSPlatform.MAC, OSPlatform.WINDOWS]}
     )
     def run(self, firefox):
         about_preferences_home_url_pattern = Pattern('about_preferences_home_url.png')

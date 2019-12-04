@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="161666",
         test_suite_id="2241",
+        blocked_by={"id": "4283", "platform": OSPlatform.MAC}
     )
     def run(self, firefox):
         top_sites_option_pattern = Pattern("top_sites_option.png")

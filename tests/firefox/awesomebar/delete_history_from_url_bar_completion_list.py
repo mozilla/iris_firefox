@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="117530",
         test_suite_id="1902",
+        blocked_by={"id": "4283", "platform": OSPlatform.LINUX}
     )
     def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK

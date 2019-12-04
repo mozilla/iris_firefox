@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="102",
         locale=["en-US"],
         exclude=OSPlatform.MAC,
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         scroll_content_pattern = Pattern("soap_wiki_print_mode.png")

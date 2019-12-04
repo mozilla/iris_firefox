@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="159259",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         browser_privacy_hover_pattern = Pattern("browser_privacy_hover.png")

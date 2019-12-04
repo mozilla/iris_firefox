@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="108254",
         test_suite_id="1902",
         preferences={"browser.contentblocking.enabled": False},
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK

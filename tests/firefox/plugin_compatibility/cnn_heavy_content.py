@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="125534",
         test_suite_id="2074",
+        blocked_by={"id": "4283", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]}
     )
     def run(self, firefox):
         new_private_browsing_tab_pattern = PrivateWindow.private_window_pattern

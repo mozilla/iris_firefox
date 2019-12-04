@@ -10,6 +10,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="172046",
         test_suite_id="2000",
+        blocked_by={"id": "4283", "platform": OSPlatform.MAC}
     )
     def run(self, firefox):
         checked_box = Utils.CHECKEDBOX

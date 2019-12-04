@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="127276",
         test_suite_id="2085",
+        blocked_by={"id": "4283", "platform": [OSPlatform.LINUX, OSPlatform.WINDOWS]}
     )
     def run(self, firefox):
         first_japan_highlighted_pattern = Pattern("first_japan_highlighted.png")

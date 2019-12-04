@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="143604",
         test_suite_id="2241",
+        blocked_by={"id": "4283", "platform": OSPlatform.MAC}
     )
     def run(self, firefox):
         remember_history_selected_pattern = Pattern("remember_history_selected.png")

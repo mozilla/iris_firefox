@@ -8,7 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="There are no glitches in tab layout.", locale=["en-US"], test_case_id="15268", test_suite_id="494"
+        description="There are no glitches in tab layout.",
+        locale=["en-US"],
+        test_case_id="15268",
+        test_suite_id="494",
+        blocked_by={"id": "4283", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         mozilla_tab_not_focused = Pattern("mozilla_tab_not_focused.png").similar(0.7)

@@ -18,6 +18,7 @@ class Test(FirefoxTest):
             "browser.download.folderList": 2,
             "browser.download.useDownloadDir": True,
         },
+        blocked_by={"id": "4283", "platform": [OSPlatform.WINDOWS, OSPlatform.MAC]}
     )
     def run(self, firefox):
         always_private_pattern = Pattern("always_private.png")

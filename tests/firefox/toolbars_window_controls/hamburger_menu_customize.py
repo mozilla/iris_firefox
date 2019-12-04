@@ -10,6 +10,7 @@ class Test(FirefoxTest):
     @pytest.mark.details(
         description="This is a test case that checks the Hamburger menu > Customize opens the customize page.",
         locale=["en-US"],
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         navigate("about:home")

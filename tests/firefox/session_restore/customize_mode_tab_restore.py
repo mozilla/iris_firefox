@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="116004",
         test_suite_id="68",
         locales=Locales.ENGLISH,
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         browser_console_pattern = Pattern("browser_console_opened.png")

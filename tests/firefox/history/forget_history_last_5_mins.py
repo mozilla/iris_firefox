@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="174072",
         test_suite_id="2000",
+
     )
     def run(self, firefox):
         forget_customize_page_pattern = Pattern("forget_customize_page.png")

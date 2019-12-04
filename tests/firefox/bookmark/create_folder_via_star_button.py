@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="163404",
         test_suite_id="2525",
+        blocked_by={"id": "4283", "platform": OSPlatform.WINDOWS}
     )
     def run(self, firefox):
         bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED

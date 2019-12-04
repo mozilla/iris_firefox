@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="143590",
         test_suite_id="2241",
         locale=["en-US"],
+        blocked_by={"id": "4283", "platform": OSPlatform.LINUX}
     )
     def run(self, firefox):
         preferences_search_pattern = AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN

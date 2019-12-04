@@ -14,6 +14,7 @@ class Test(FirefoxTest):
         test_suite_id="1826",
         locale=["en-US"],
         exclude=[OSPlatform.WINDOWS, OSPlatform.LINUX],
+        blocked_by={"id": "4283", "platform": OSPlatform.MAC}
     )
     def run(self, firefox):
         wiki_soap_history_icon_pattern = Pattern("wiki_soap_history_icon.png")
