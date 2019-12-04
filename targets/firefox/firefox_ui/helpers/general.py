@@ -35,6 +35,7 @@ from targets.firefox.firefox_ui.library_menu import LibraryMenu
 from targets.firefox.firefox_ui.nav_bar import NavBar
 from targets.firefox.firefox_ui.window_controls import MainWindow, AuxiliaryWindow
 from targets.firefox.firefox_ui.location_bar import LocationBar
+from targets.firefox.firefox_ui.hamburger import HamburgerMenu
 from targets.firefox.settings import FirefoxSettings
 
 INVALID_GENERIC_INPUT = "Invalid input"
@@ -684,13 +685,13 @@ def open_hamburger_menu(option=None):
     region = Screen.UPPER_RIGHT_CORNER
     sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
 
-    option_list = {'Restore Previous Session': 5,
-                   'Customize': 14,
-                   'Print': 17,
-                   'Web Developer': 20,
-                   'Help': 22,
-                   'Exit': 23,
-                   'Quit': 23}
+    option_list = ['Restore Previous Session',
+                   'Customize',
+                   'Print',
+                   'Web Developer',
+                   'Help',
+                   'Exit',
+                   'Quit']
 
     try:
         region.wait(hamburger_menu_pattern, 5)
@@ -702,14 +703,39 @@ def open_hamburger_menu(option=None):
             region.click(hamburger_menu_pattern)
             region.wait(sign_in_to_firefox_pattern, 10)
             if option is not None:
-                reps = option_list[option]
-                count = 0
-                while count < reps:
-                    time.sleep(0.5)
-                    type(Key.TAB)
-                    count = count + 1
-                time.sleep(1)
-                type(Key.ENTER)
+                if option is "Restore Previous Session":
+                    restore_option_exists = exists(HamburgerMenu.RESTORE_PREVIOUS_SESSION,
+                                                   FirefoxSettings.FIREFOX_TIMEOUT)
+                    assert restore_option_exists, "Restore option exists is hamburger menu."
+                    click(HamburgerMenu.RESTORE_PREVIOUS_SESSION)
+                if option is "Customize":
+                    customize_option_exists = exists(HamburgerMenu.CUSTOMIZE,
+                                                     FirefoxSettings.FIREFOX_TIMEOUT)
+                    assert customize_option_exists, "Customize option exists is hamburger menu."
+                    click(HamburgerMenu.CUSTOMIZE)
+                if option is "Print":
+                    print_option_exists = exists(HamburgerMenu.PRINT,
+                                                 FirefoxSettings.FIREFOX_TIMEOUT)
+                    assert print_option_exists, "Print option exists is hamburger menu."
+                    click(HamburgerMenu.PRINT)
+                if option is "Web Developer":
+                    web_dev_option_exists = exists(HamburgerMenu.WEB_DEVELOPER,
+                                                   FirefoxSettings.FIREFOX_TIMEOUT)
+                    assert web_dev_option_exists, "Web developer option exists is hamburger menu."
+                    click(HamburgerMenu.WEB_DEVELOPER)
+                if option is "Help":
+                    help_option_exists = exists(HamburgerMenu.HELP,
+                                                FirefoxSettings.FIREFOX_TIMEOUT)
+                    assert help_option_exists, "Help option exists is hamburger menu."
+                    click(HamburgerMenu.HELP)
+                if (option is "Exit") or (option is "Quit"):
+                    if OSHelper.is_mac():
+                        type(Key.Q, KeyModifier.CMD)
+                    else:
+                        exit_option_exists = exists(HamburgerMenu.EXIT,
+                                                    FirefoxSettings.FIREFOX_TIMEOUT)
+                        assert exit_option_exists, "Exit/Quit option exists is hamburger menu."
+                        click(HamburgerMenu.EXIT)
         except FindError:
             raise APIHelperError("Can't click the menu button. Aborting test.")
 
@@ -753,7 +779,7 @@ def open_library_menu(option):
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         try:
             time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-            region.wait(LibraryMenu.BOOKMARKS_OPTION,10)
+            region.wait(LibraryMenu.BOOKMARKS_OPTION, 10)
             option_number_in_library_list = library_option_list[option]
             for _ in range(option_number_in_library_list):
                 time.sleep(0.5)
@@ -982,11 +1008,11 @@ def right_click_and_type(target, delay=None, keyboard_action=None):
 
 
 def scroll_until_pattern_found(
-    image_pattern: Pattern,
-    scroll_function,
-    scroll_params: tuple = tuple(),
-    num_of_scroll_iterations: int = 10,
-    timeout: float = Settings.auto_wait_timeout,
+        image_pattern: Pattern,
+        scroll_function,
+        scroll_params: tuple = tuple(),
+        num_of_scroll_iterations: int = 10,
+        timeout: float = Settings.auto_wait_timeout,
 ):
     """
     Scrolls until specified image pattern is found.
@@ -1130,10 +1156,10 @@ class ZoomType(object):
 
 
 def find_in_region_from_pattern(
-    outer_pattern: Pattern,
-    inner_pattern: Pattern,
-    outer_pattern_timeout=Settings.auto_wait_timeout,
-    inner_pattern_timeout=Settings.auto_wait_timeout,
+        outer_pattern: Pattern,
+        inner_pattern: Pattern,
+        outer_pattern_timeout=Settings.auto_wait_timeout,
+        inner_pattern_timeout=Settings.auto_wait_timeout,
 ):
     """ Finds pattern in region created from another pattern
     :param outer_pattern: Pattern for region creation
