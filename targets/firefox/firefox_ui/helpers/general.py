@@ -704,7 +704,7 @@ def open_hamburger_menu(option=None):
             if option is not None:
                 reps = option_list[option]
                 count = 0
-                if option is 22:  # to prevent miss clicking on different option
+                if reps is 22:  # to prevent miss clicking on different option
                     type(Key.TAB)
                     type(Key.TAB, KeyModifier.SHIFT)
                 else:
