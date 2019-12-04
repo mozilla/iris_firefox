@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="69",
         locale=["en-US"],
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         start_in_safe_mode_button_pattern = Pattern("start_in_safe_mode_button.png")
