@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         about_support_title_pattern = Pattern("about_support_title.png")
         restart_button_pattern = Pattern("restart_button.png")
         copy_raw_data_to_clipboard_pattern = Pattern("about_support_copy_raw_data_button.png")
-        restart_addons_disabled_pattern = Pattern("restart_w_addons_disabled.png")
+        restart_addons_disabled_pattern = Pattern("restart_w_addons_disabled.png").similar(0.7)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
