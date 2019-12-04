@@ -714,7 +714,10 @@ def open_hamburger_menu(option=None):
                 if option is "Help":
                     click(HamburgerMenu.HELP)
                 if (option is "Exit") or (option is "Quit"):
-                    click(HamburgerMenu.EXIT)
+                    if OSHelper.is_mac():
+                        type(Key.Q, KeyModifier.CMD)
+                    else:
+                        click(HamburgerMenu.EXIT)
         except FindError:
             raise APIHelperError("Can't click the menu button. Aborting test.")
 
