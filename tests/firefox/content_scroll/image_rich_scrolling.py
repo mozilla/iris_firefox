@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         image_site_loaded_pattern = Pattern('image_site_loaded.png').similar(0.7)
-        pixbay_site_loaded_pattern = Pattern('pixbay_site_loaded.png')
+        pixbay_site_loaded_pattern = Pattern('pixbay_site_loaded.png').similar(0.7)
 
         mouse_wheel_steps = 200
         if OSHelper.is_windows():
@@ -27,7 +27,10 @@ class Test(FirefoxTest):
         image_site_loaded = exists(image_site_loaded_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert image_site_loaded is True, 'Pixabay images site is properly loaded'
 
-        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 5)  # wait until image content loaded
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG * 4)  # wait until image content loaded
+
+        screen_centre = Location(Screen.SCREEN_WIDTH/2, Screen.SCREEN_HEIGHT/2)
+        hover(screen_centre)
 
         # Scroll by mouse wheel
         bottom_page_button_destinated = scroll_until_pattern_found(pixbay_site_loaded_pattern,
