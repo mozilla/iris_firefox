@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="120124",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         history_sidebar_mozilla_pattern = LocalWeb.MOZILLA_BOOKMARK_SMALL

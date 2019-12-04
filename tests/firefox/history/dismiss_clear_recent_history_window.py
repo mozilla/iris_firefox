@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="172048",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         clear_recent_history_window_pattern = History.ClearRecentHistory.CLEAR_RECENT_HISTORY_TITLE

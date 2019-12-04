@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="68",
         locales=Locales.ENGLISH,
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         new_tab()

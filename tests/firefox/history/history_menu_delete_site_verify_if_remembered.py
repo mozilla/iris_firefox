@@ -1,5 +1,5 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# Licensev. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
@@ -24,14 +24,14 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
-        pocket_page_opened = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert pocket_page_opened, "Pocket page opened"
+        pocket_page_opened = exists(LocalWeb.POCKET_LOGOFirefoxSettings.SITE_LOAD_TIMEOUT)
+        assert pocket_page_opened,"Pocket page opened"
 
         new_tab()
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_page_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
+        mozilla_page_opened = exists(LocalWeb.MOZILLA_LOGOFirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_page_opened, "Mozilla page opened"
 
         new_tab()

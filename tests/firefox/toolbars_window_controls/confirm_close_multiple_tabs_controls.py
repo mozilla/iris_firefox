@@ -13,7 +13,6 @@ class Test(FirefoxTest):
         test_case_id="120468",
         test_suite_id="1998",
         profile=Profiles.BRAND_NEW,
-        preferences={"browser.warnOnQuit": True, "browser.tabs.warnOnClose": True},
     )
     def run(self, firefox):
         close_multiple_tabs_warning_pattern = Pattern("close_multiple_tabs_warning.png")
