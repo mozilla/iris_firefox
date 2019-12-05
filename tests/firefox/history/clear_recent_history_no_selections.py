@@ -21,17 +21,13 @@ class Test(FirefoxTest):
 
         reset_mouse()
 
-        mozilla_logo_exists = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_logo_exists = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_logo_exists, "Mozilla page loaded successfully."
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_logo_exists = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_logo_exists = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_logo_exists, "Firefox page loaded successfully."
 
         # Open the History sidebar.
@@ -43,9 +39,7 @@ class Test(FirefoxTest):
 
         # Uncheck all options to be cleared.
         for step in range(1, 6):
-            checked_box_exists = exists(
-                checked_box, FirefoxSettings.TINY_FIREFOX_TIMEOUT
-            )
+            checked_box_exists = exists(checked_box, FirefoxSettings.TINY_FIREFOX_TIMEOUT)
             if checked_box_exists:
                 assert checked_box_exists, "Checked box number {} exist".format(step)
 

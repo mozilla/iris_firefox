@@ -22,9 +22,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         always_private_pattern = Pattern("always_private.png")
         remember_all_history_pattern = Pattern("remember_history.png")
-        remember_browsing_history_pattern = Pattern(
-            "remember_browsing_download_history.png"
-        )
+        remember_browsing_history_pattern = Pattern("remember_browsing_download_history.png")
         clear_history_closing_pattern = Pattern("clear_history_when_closes.png")
         clear_history_settings_pattern = Pattern("clear_history_settings.png")
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
@@ -33,10 +31,8 @@ class Test(FirefoxTest):
         prefs_unchecked_box_pattern = Pattern("prefs_unchecked_box.png")
         download_pdf_pattern = Pattern("download_pdf_button.png")
         pdf_downloaded_pattern = Pattern("downloaded_pdf.png")
-        clear_browsing_download_pattern = Pattern(
-            "clear_browsing_download.png"
-        ).similar(0.7)
-        clear_form_search_patten = Pattern("clear_form_search.png")
+        clear_browsing_download_pattern = Pattern("clear_browsing_download.png")
+        clear_form_search_patten = Pattern("clear_form_search.png").similar(0.6)
 
         pdf_file = self.get_asset_path("Faust.pdf")
         ui_timeout = 1
@@ -46,8 +42,7 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
         preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert preferences_opened, "Preferences page is opened"
 
@@ -75,9 +70,7 @@ class Test(FirefoxTest):
             always_private_height,
         )
 
-        always_private_unchecked = exists(
-            prefs_unchecked_box_pattern, region=always_private_region
-        )
+        always_private_unchecked = exists(prefs_unchecked_box_pattern, region=always_private_region)
         assert always_private_unchecked, '"Always use private browsing mode" is off'
 
         remember_browsing_displayed = exists(remember_browsing_history_pattern)
@@ -85,9 +78,7 @@ class Test(FirefoxTest):
 
         remember_browsing_history_location = find(remember_browsing_history_pattern)
 
-        remember_browsing_history_width, remember_browsing_history_height = (
-            remember_browsing_history_pattern.get_size()
-        )
+        remember_browsing_history_width, remember_browsing_history_height = remember_browsing_history_pattern.get_size()
         remember_browsing_history_region = Region(
             remember_browsing_history_location.x - box_width * 2,
             remember_browsing_history_location.y,
@@ -95,21 +86,15 @@ class Test(FirefoxTest):
             remember_browsing_history_height,
         )
 
-        remember_browsing_history_checked = exists(
-            prefs_checked_box_pattern, region=remember_browsing_history_region
-        )
-        assert (
-            remember_browsing_history_checked
-        ), '"Always use private browsing mode" is off'
+        remember_browsing_history_checked = exists(prefs_checked_box_pattern, region=remember_browsing_history_region)
+        assert remember_browsing_history_checked, '"Always use private browsing mode" is off'
 
         remember_search_history_displayed = exists(remember_search_history_pattern)
         assert remember_search_history_displayed, '"Remember browsing" is displayed'
 
         remember_search_history_location = find(remember_search_history_pattern)
 
-        remember_search_history_width, remember_search_history_height = (
-            remember_search_history_pattern.get_size()
-        )
+        remember_search_history_width, remember_search_history_height = remember_search_history_pattern.get_size()
         remember_search_history_region = Region(
             remember_search_history_location.x - box_width * 2,
             remember_search_history_location.y,
@@ -117,23 +102,15 @@ class Test(FirefoxTest):
             remember_search_history_height,
         )
 
-        remember_search_history_checked = exists(
-            prefs_checked_box_pattern, region=remember_search_history_region
-        )
-        assert (
-            remember_search_history_checked
-        ), '"Always use private browsing mode" is off'
+        remember_search_history_checked = exists(prefs_checked_box_pattern, region=remember_search_history_region)
+        assert remember_search_history_checked, '"Always use private browsing mode" is off'
 
         clear_history_closing_displayed = exists(clear_history_closing_pattern)
-        assert (
-            clear_history_closing_displayed
-        ), '"Clear history when closed" is displayed'
+        assert clear_history_closing_displayed, '"Clear history when closed" is displayed'
 
         clear_history_closing_location = find(clear_history_closing_pattern)
 
-        clear_history_closing_width, clear_history_closing_height = (
-            clear_history_closing_pattern.get_size()
-        )
+        clear_history_closing_width, clear_history_closing_height = clear_history_closing_pattern.get_size()
         clear_history_closing_region = Region(
             clear_history_closing_location.x - box_width * 2,
             clear_history_closing_location.y,
@@ -141,21 +118,13 @@ class Test(FirefoxTest):
             clear_history_closing_height,
         )
 
-        clear_history_unchecked = exists(
-            prefs_unchecked_box_pattern, region=clear_history_closing_region
-        )
+        clear_history_unchecked = exists(prefs_unchecked_box_pattern, region=clear_history_closing_region)
         assert clear_history_unchecked, '"Clear history" is unchecked'
 
-        click(
-            prefs_unchecked_box_pattern,
-            quick_click_duration,
-            clear_history_closing_region,
-        )
+        click(prefs_unchecked_box_pattern, quick_click_duration, clear_history_closing_region)
 
         clear_history_settings_button_activated = exists(clear_history_settings_pattern)
-        assert (
-            clear_history_settings_button_activated
-        ), "History purging settings button is activated"
+        assert clear_history_settings_button_activated, "History purging settings button is activated"
 
         click(clear_history_settings_pattern, quick_click_duration)
 
@@ -165,16 +134,12 @@ class Test(FirefoxTest):
         clear_browsing_download_checked = find_in_region_from_pattern(
             clear_browsing_download_pattern, AboutPreferences.CHECKED_BOX
         )
-        assert (
-            clear_browsing_download_checked
-        ), '"Clear browsing and download" is checked'
+        assert clear_browsing_download_checked, '"Clear browsing and download" is checked'
 
         settings_still_opened = exists(clear_form_search_patten)
         assert settings_still_opened, "Settings are still opened"
 
-        clear_form_search_checked = find_in_region_from_pattern(
-            clear_form_search_patten, AboutPreferences.CHECKED_BOX
-        )
+        clear_form_search_checked = find_in_region_from_pattern(clear_form_search_patten, AboutPreferences.CHECKED_BOX)
         assert clear_form_search_checked, '"Clear browsing and download" is checked'
 
         click(clear_form_search_patten, quick_click_duration)
@@ -182,9 +147,7 @@ class Test(FirefoxTest):
         clear_form_search_unchecked = find_in_region_from_pattern(
             clear_form_search_patten, AboutPreferences.UNCHECKED_BOX
         )
-        assert (
-            clear_form_search_unchecked
-        ), '"Clear form and search" was successfully unchecked'
+        assert clear_form_search_unchecked, '"Clear form and search" was successfully unchecked'
 
         type(Key.ENTER)
 
@@ -201,9 +164,7 @@ class Test(FirefoxTest):
 
         click(download_pdf_pattern)
 
-        save_file_dialog_exists = exists(
-            DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        save_file_dialog_exists = exists(DownloadDialog.SAVE_FILE_RADIOBUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert save_file_dialog_exists, "Save file dialog opened"
 
         click(DownloadDialog.SAVE_FILE_RADIOBUTTON)

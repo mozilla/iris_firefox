@@ -33,9 +33,7 @@ class Test(FirefoxTest):
 
         # Hover the 'X' button.
         hover(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
-        expected = exists(
-            DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL_HIGHLIGHTED, 10)
         assert expected is True, "The 'X' button is highlighted properly."
 
         # Click the 'X' button.
@@ -49,9 +47,7 @@ class Test(FirefoxTest):
         # Hover the file name.
         hover(DownloadFiles.DOWNLOAD_FILE_NAME_1GB)
         expected = exists(DownloadFiles.DOWNLOAD_CANCELLED, 10)
-        assert (
-            expected is True
-        ), "The status and the source page are properly displayed when hovering the downloaded"
+        assert expected is True, "The status and the source page are properly displayed when hovering the downloaded"
         " file name."
 
     def teardown(self):

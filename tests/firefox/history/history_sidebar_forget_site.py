@@ -13,14 +13,13 @@ class Test(FirefoxTest):
         test_case_id="120132",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
 
-        left_upper_corner = Screen().new_region(
-            0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2
-        )
+        left_upper_corner = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
         # Open a page to create some history.
         new_tab()
@@ -42,19 +41,13 @@ class Test(FirefoxTest):
         click(history_today_sidebar_pattern)
 
         # Forget a page from the History sidebar.
-        expected_4 = left_upper_corner.exists(
-            LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR.similar(0.7), 10
-        )
+        expected_4 = left_upper_corner.exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR.similar(0.7), 10)
         assert expected_4, "Mozilla page is displayed in the History list successfully."
 
-        right_click_and_type(
-            LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action="f"
-        )
+        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action="f")
 
         try:
-            expected_5 = left_upper_corner.wait_vanish(
-                LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10
-            )
+            expected_5 = left_upper_corner.wait_vanish(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10)
             assert expected_5, "Mozilla page was deleted successfully from the history."
         except FindError:
             raise FindError("Mozilla page is still displayed in the history.")
@@ -63,6 +56,4 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR.similar(0.9), 10)
-        assert (
-            expected_6 is not True
-        ), "Mozilla page is not displayed in the Recent History list."
+        assert expected_6 is not True, "Mozilla page is not displayed in the Recent History list."

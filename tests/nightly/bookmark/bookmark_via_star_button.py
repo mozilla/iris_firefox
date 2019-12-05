@@ -7,12 +7,11 @@ from targets.nightly.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Websites can be bookmarked via star-shaped button.',
-        locale=['en-US'],
-        test_case_id='163398',
-        test_suite_id='2525'
+        description="Websites can be bookmarked via star-shaped button.",
+        locale=["en-US"],
+        test_case_id="163398",
+        test_suite_id="2525",
     )
     def run(self, firefox):
         bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
@@ -20,15 +19,16 @@ class Test(FirefoxTest):
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert mozilla_page_assert, 'Mozilla page loaded successfully.'
+        assert mozilla_page_assert, "Mozilla page loaded successfully."
 
         try:
             wait(bookmark_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-            logger.debug('Bookmark star is present on the page.')
+            logger.debug("Bookmark star is present on the page.")
             click(bookmark_button_pattern)
         except FindError:
-            raise FindError('Bookmark star is not present on the page, aborting.')
+            raise FindError("Bookmark star is not present on the page, aborting.")
 
-        page_bookmarked_assert = exists(Bookmarks.StarDialog.NEW_BOOKMARK.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT,
-                                        region=Screen.TOP_THIRD)
-        assert page_bookmarked_assert, 'The page was successfully bookmarked via star button.'
+        page_bookmarked_assert = exists(
+            Bookmarks.StarDialog.NEW_BOOKMARK.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_THIRD
+        )
+        assert page_bookmarked_assert, "The page was successfully bookmarked via star button."

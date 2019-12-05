@@ -25,7 +25,5 @@ class Test(FirefoxTest):
 
         click(bookmark_button_pattern)
 
-        expected = exists(
-            Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(Bookmarks.StarDialog.NEW_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "The bookmark drop down is displayed under the bookmark icon."

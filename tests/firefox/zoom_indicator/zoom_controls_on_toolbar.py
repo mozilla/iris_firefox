@@ -17,8 +17,8 @@ class Test(FirefoxTest):
         url = LocalWeb.FIREFOX_TEST_SITE
         url_bar_default_zoom_level_pattern = LocationBar.URL_BAR_DEFAULT_ZOOM_LEVEL
         zoom_controls_customize_page_pattern = NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE
-        default_zoom_level_toolbar_customize_page_pattern = (
-            NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE
+        default_zoom_level_toolbar_customize_page_pattern = NavBar.DEFAULT_ZOOM_LEVEL_TOOLBAR_CUSTOMIZE_PAGE.similar(
+            0.7
         )
         zoom_reset_button_100_pattern = NavBar.ZOOM_RESET_BUTTON
         zoom_control_toolbar_decrease_pattern = NavBar.ZOOM_OUT
@@ -35,17 +35,13 @@ class Test(FirefoxTest):
         region = create_region_for_url_bar()
 
         expected = exists(
-            url_bar_default_zoom_level_pattern.similar(0.92),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
+            url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT, region=region
         )
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
-        expected = exists(
-            zoom_controls_customize_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(zoom_controls_customize_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Zoom controls found in the 'Customize' page."
 
         drag_drop(zoom_controls_customize_page_pattern, toolbar_pattern, duration=1)
@@ -63,63 +59,33 @@ class Test(FirefoxTest):
 
         new_region = create_region_for_url_bar()
 
-        expected = exists(
-            zoom_reset_button_100_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom controls still displayed in toolbar after the Customize page is closed."
+        expected = exists(zoom_reset_button_100_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom controls still displayed in toolbar after the Customize page is closed."
 
         expected = exists(
-            url_bar_default_zoom_level_pattern.similar(0.92),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
+            url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT, region=new_region
         )
-        assert (
-            expected
-        ), "Zoom indicator not displayed in the url bar for default zoom level."
+        assert expected, "Zoom indicator not displayed in the url bar for default zoom level."
 
         click(zoom_control_toolbar_decrease_pattern)
 
-        expected = exists(
-            zoom_control_90_pattern.similar(0.4),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom controls are correctly displayed in toolbar after zoom level is decreased."
+        expected = exists(zoom_control_90_pattern.similar(0.4), FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom controls are correctly displayed in toolbar after zoom level is decreased."
 
         click(zoom_control_toolbar_increase_pattern)
 
-        expected = exists(
-            zoom_reset_button_100_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
-        )
-        assert (
-            expected
-        ), "Zoom controls are correctly displayed in toolbar after zoom level is increased."
+        expected = exists(zoom_reset_button_100_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom controls are correctly displayed in toolbar after zoom level is increased."
 
         click(zoom_control_toolbar_increase_pattern)
 
-        expected = exists(
-            zoom_control_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region
-        )
-        assert (
-            expected
-        ), "Zoom controls are correctly displayed in toolbar after the second zoom level increase."
+        expected = exists(zoom_control_110_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region)
+        assert expected, "Zoom controls are correctly displayed in toolbar after the second zoom level increase."
 
         expected = exists(
-            url_bar_default_zoom_level_pattern.similar(0.92),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
+            url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT, region=new_region
         )
-        assert (
-            expected
-        ), "Zoom indicator not displayed in the url bar after zoom control is activated in toolbar."
+        assert expected, "Zoom indicator not displayed in the url bar after zoom control is activated in toolbar."
 
         # Decrease the zoom indicator to 100% so that it won't be displayed in the url bar after zoom controls
         # deactivation.
@@ -127,14 +93,9 @@ class Test(FirefoxTest):
 
         new_region_zoom_remove = create_region_for_url_bar()
 
-        expected = exists(
-            zoom_reset_button_100_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region_zoom_remove,
-        )
+        expected = exists(zoom_reset_button_100_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=new_region_zoom_remove)
         assert expected, (
-            "Zoom controls are correctly displayed in toolbar after several zoom level "
-            "increases/decreases."
+            "Zoom controls are correctly displayed in toolbar after several zoom level " "increases/decreases."
         )
 
         restore_firefox_focus()
@@ -142,13 +103,9 @@ class Test(FirefoxTest):
         remove_zoom_indicator_from_toolbar()
 
         expected = exists(
-            url_bar_default_zoom_level_pattern.similar(0.92),
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=new_region,
+            url_bar_default_zoom_level_pattern.similar(0.92), FirefoxSettings.FIREFOX_TIMEOUT, region=new_region
         )
-        assert (
-            expected
-        ), "Zoom indicator not displayed in the url bar after zoom control is removed from toolbar."
+        assert expected, "Zoom indicator not displayed in the url bar after zoom control is removed from toolbar."
 
         time.sleep(FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
 

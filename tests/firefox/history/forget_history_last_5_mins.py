@@ -32,11 +32,9 @@ class Test(FirefoxTest):
         history_sidebar()
 
         expected = exists(history_today_sidebar_pattern, 10)
-        assert (
-            expected
-        ), "Expand history button for 'Today' history is displayed properly."
+        assert expected, "Expand history button for 'Today' history is displayed properly."
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         expected = exists(forget_customize_page_pattern, 10)
         assert expected, "Forget pattern found in the 'Customize' page."
@@ -52,9 +50,7 @@ class Test(FirefoxTest):
         click(forget_toolbar_pattern)
 
         expected = exists(five_minutes_selected_pattern, 10)
-        assert (
-            expected
-        ), "The Forget menu is displayed with the Five minutes option selected by default."
+        assert expected, "The Forget menu is displayed with the Five minutes option selected by default."
 
         expected = exists(forget_button_pattern, 10)
         assert expected, "Forget button found."
@@ -63,9 +59,7 @@ class Test(FirefoxTest):
 
         try:
             expected = wait_vanish(history_today_sidebar_pattern, 10)
-            assert (
-                expected
-            ), "Expand history button for 'Today' history is successfully removed."
+            assert expected, "Expand history button for 'Today' history is successfully removed."
         except FindError:
             raise FindError("Expand history button for 'Today' history is not removed.")
 

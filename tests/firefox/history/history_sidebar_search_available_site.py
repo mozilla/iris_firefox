@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="119440",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
@@ -43,6 +42,4 @@ class Test(FirefoxTest):
         type(Key.TAB)
 
         expected_4 = exists(history_sidebar_focus_pattern.similar(0.7), 10)
-        assert (
-            expected_4 is True
-        ), "Focus page was found in the History list successfully."
+        assert expected_4 is True, "Focus page was found in the History list successfully."

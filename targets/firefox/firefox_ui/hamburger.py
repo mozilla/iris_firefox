@@ -14,6 +14,11 @@ class HamburgerMenu(object):
     HAMBURGER_MENU_ZOOM_INDICATOR = Pattern("appMenu_zoom_controls.png")
     EDIT_BUTTONS_BELOW_ZOOM_BUTTONS = Pattern("edit_buttons_below_zoom_buttons.png")
     HAMBUREGR_MENU = Pattern("panelui_menu_button.png")
-    HAMBURGER_MENU_FIND_IN_PAGE_PATTERN = Pattern(
-        "hamburger_menu_find_in_page_pattern.png"
-    )
+    HAMBURGER_MENU_FIND_IN_PAGE_PATTERN = Pattern("hamburger_menu_find_in_page_pattern.png")
+
+    RESTORE_PREVIOUS_SESSION = Pattern("restore_previous_session.png")
+    CUSTOMIZE = Pattern("hamburger_customize.png")
+    PRINT = Pattern("hamburger_print.png")
+    WEB_DEVELOPER = Pattern("web_developer.png")
+    HELP = Pattern("hamburger_help.png")
+    EXIT = Pattern("hamburger_exit.png")

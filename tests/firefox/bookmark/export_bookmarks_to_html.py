@@ -15,7 +15,7 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        export_bookmarks = Pattern("export_bookmarks_to_html.png")
+        export_bookmarks = Pattern("export_bookmarks_to_html.png").similar(0.7)
         file_format = Pattern("html_file_format.png")
         import_and_backup_button = Library.IMPORT_AND_BACKUP_BUTTON
         save = Pattern("save_button.png")
@@ -25,12 +25,8 @@ class Test(FirefoxTest):
 
         open_library()
 
-        import_and_backup_assert = exists(
-            import_and_backup_button, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            import_and_backup_assert is True
-        ), "Import and Backup button has been found."
+        import_and_backup_assert = exists(import_and_backup_button, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert import_and_backup_assert is True, "Import and Backup button has been found."
 
         click(import_and_backup_button)
 
@@ -39,16 +35,12 @@ class Test(FirefoxTest):
             logger.debug("Export Bookmarks to HTMl file option has been found.")
             click(export_bookmarks)
         except FindError:
-            raise FindError(
-                "Export Bookmarks to HTMl file option is not present on the page, aborting."
-            )
+            raise FindError("Export Bookmarks to HTMl file option is not present on the page, aborting.")
 
         paste("Iris_Bookmarks")
 
         save_auxiliary_window_assert = exists(save, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert (
-            save_auxiliary_window_assert is True
-        ), "Save auxiliary window is present on the page."
+        assert save_auxiliary_window_assert is True, "Save auxiliary window is present on the page."
 
         click(save)
 

@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="118802",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         recent_history_mozilla_pattern = Pattern("recent_history_mozilla.png")
@@ -28,6 +27,4 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         expected_2 = exists(recent_history_mozilla_pattern, 10)
-        assert (
-            expected_2 is True
-        ), "Mozilla page displayed in the History list successfully."
+        assert expected_2 is True, "Mozilla page displayed in the History list successfully."

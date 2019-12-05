@@ -35,10 +35,7 @@ class Test(FirefoxTest):
         fields_location = find(name_field_pattern)
         fields_width, fields_height = name_field_pattern.get_size()
         fields_region = Region(
-            fields_location.x - fields_width,
-            fields_location.y,
-            fields_width * 10,
-            fields_height * 15,
+            fields_location.x - fields_width, fields_location.y, fields_width * 10, fields_height * 15
         )
 
         click(name_field_pattern, region=fields_region)
@@ -63,9 +60,7 @@ class Test(FirefoxTest):
         edit_select_all()
         paste("tags, test")
 
-        keyword_field_displayed = exists(
-            keyword_field_pattern.similar(0.7), region=fields_region
-        )
+        keyword_field_displayed = exists(keyword_field_pattern.similar(0.7), region=fields_region)
         assert keyword_field_displayed is True, "Keywords field is displayed"
 
         click(keyword_field_pattern, region=fields_region)
@@ -100,9 +95,7 @@ class Test(FirefoxTest):
 
         location_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)
-        assert (
-            location_edited == "http://wikipedia.org/"
-        ), "Bookmark's location is edited"
+        assert location_edited == "http://wikipedia.org/", "Bookmark's location is edited"
 
         type(Key.TAB)
 

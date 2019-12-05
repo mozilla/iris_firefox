@@ -16,16 +16,14 @@ class Test(FirefoxTest):
     def run(self, firefox):
         soap_label_pattern = LocalWeb.SOAP_WIKI_SOAP_LABEL
         policy_about_label_pattern = Pattern("policy_about.png")
-        of_4_matches_label_pattern = Pattern("of_4_matches_label.png")
+        of_4_matches_label_pattern = Pattern("of_4_matches_label.png").similar(0.7)
         is_about_label_pattern = Pattern("is_about_label.png")
         help_about_label_pattern = Pattern("help_about_label.png")
-        about_errors_label_pattern = Pattern("about_errors_label.png")
+        about_errors_label_pattern = Pattern("about_errors_label.png").similar(0.7)
 
         # Open Firefox and navigate to a popular website
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        soap_label_exists = exists(
-            soap_label_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_label_exists = exists(soap_label_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_label_exists, "The page is successfully loaded."
 
         # Open the Find Toolbar
@@ -33,52 +31,37 @@ class Test(FirefoxTest):
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         # Search for a term that appears more than once in the page
         type("about", interval=1)
 
-        is_about_label_found = exists(
-            is_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        is_about_label_found = exists(is_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert is_about_label_found, '"is about" label found.'
 
         find_next()
 
-        about_errors_label_found = exists(
-            about_errors_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        about_errors_label_found = exists(about_errors_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert about_errors_label_found, '"about errors" label found.'
 
         find_next()
 
-        help_about_label_found = exists(
-            help_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        help_about_label_found = exists(help_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert help_about_label_found, '"help about" label found.'
 
         find_next()
 
-        policy_about_label_found = exists(
-            policy_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        policy_about_label_found = exists(policy_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert policy_about_label_found, '"policy about" label found.'
 
         find_next()
 
-        is_about_label_found_again = exists(
-            is_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        is_about_label_found_again = exists(is_about_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert is_about_label_found_again, '"is about" label is found again.'
 
         # Inspect if the number of matches items is displayed and it is correct
-        number_of_items_found = exists(
-            of_4_matches_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        number_of_items_found = exists(of_4_matches_label_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert number_of_items_found, (
-            "The number of matches found on the page is displayed and it corresponds "
-            "to the actual number of items"
+            "The number of matches found on the page is displayed and it corresponds " "to the actual number of items"
         )

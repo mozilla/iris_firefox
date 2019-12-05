@@ -60,9 +60,7 @@ class TestRail:
         try:
             test_runs = self.client.send_get("get_runs/%s" % project_id)
         except Exception:
-            raise TestRailError(
-                "Error: no runs found in this specific project %s" % project_name
-            )
+            raise TestRailError("Error: no runs found in this specific project %s" % project_name)
         else:
             return test_runs
 
@@ -95,9 +93,7 @@ class TestRail:
             raise TestRailError("Error: no runs found in this specific project")
         return tests
 
-    def create_test_plan(
-        self, build_id: str, firefox_version: str, test_case_object_list: list
-    ):
+    def create_test_plan(self, build_id: str, firefox_version: str, test_case_object_list: list):
         """Creates a Test Plan and Test Run for all suites that are mapped in a project.
 
         :param build_id:  firefox_build (Ex 20180704003137)
@@ -125,16 +121,12 @@ class TestRail:
 
         payload["name"] = self.run_name
         payload["entries"] = data_array
-        payload["description"] = self.generate_run_description(
-            build_id, firefox_version
-        )
+        payload["description"] = self.generate_run_description(build_id, firefox_version)
 
         project_id = self.get_project_id(self.project_name)
 
         try:
-            test_plan_api_response = self.client.send_post(
-                "add_plan/%s" % project_id, payload
-            )
+            test_plan_api_response = self.client.send_post("add_plan/%s" % project_id, payload)
         except Exception:
             raise TestRailError("Failed to create Test Rail Test Plan")
 
@@ -189,9 +181,7 @@ class TestRail:
                             if (test.blocked_by) is not None:
                                 payload["status_id"] = 2
                                 payload["defects"] = str(test.blocked_by)
-                            elif test_results.__contains__(
-                                "FAILED"
-                            ) or test_results.__contains__("ERROR"):
+                            elif test_results.__contains__("FAILED") or test_results.__contains__("ERROR"):
                                 payload["status_id"] = 5
                             else:
                                 payload["status_id"] = 1
@@ -202,19 +192,12 @@ class TestRail:
 
                         if run_id is not None:
                             try:
-                                self.client.send_post(
-                                    "add_results_for_cases/%s" % run_id, results
-                                )
+                                self.client.send_post("add_results_for_cases/%s" % run_id, results)
                             except Exception:
-                                raise TestRailError(
-                                    "Failed to Update Test_Rail run %s", run.get("name")
-                                )
+                                raise TestRailError("Failed to Update Test_Rail run %s", run.get("name"))
 
                             else:
-                                logger.info(
-                                    "Successfully added test results in test run name: %s"
-                                    % run.get("name")
-                                )
+                                logger.info("Successfully added test results in test run name: %s" % run.get("name"))
                         else:
                             raise TestRailError("Invalid run_id")
                     else:
@@ -247,9 +230,9 @@ class TestRail:
         :param firefox_version: actual version of Firefox (Ex 61.03)
         :return: a string that contain basic firefox build info's
         """
-        run_desc = (
-            "**BUILD INFORMATION**\n*Firefox Build ID*:%s\n*Firefox Version:*%s"
-            % (firefox_build_id, firefox_version)
+        run_desc = "**BUILD INFORMATION**\n*Firefox Build ID*:%s\n*Firefox Version:*%s" % (
+            firefox_build_id,
+            firefox_version,
         )
         return run_desc
 
@@ -260,9 +243,7 @@ class TestRail:
         :return: a list of TestSuiteMap
         """
         test_suite_array = []
-        suite_dictionary = ast.literal_eval(
-            get_config_property("Test_rail", "suite_dictionary")
-        )
+        suite_dictionary = ast.literal_eval(get_config_property("Test_rail", "suite_dictionary"))
         suite_ids = []
         for suite in suite_dictionary:
             suite_ids.append(suite_dictionary.get(suite))
@@ -319,6 +300,4 @@ def report_test_results(app_test):
     )
     test_rail_tests = create_testrail_test_map(app_test.completed_tests)
     test_rail_report = TestRail()
-    test_rail_report.create_test_plan(
-        app_test.values["fx_build_id"], app_test.values["fx_version"], test_rail_tests
-    )
+    test_rail_report.create_test_plan(app_test.values["fx_build_id"], app_test.values["fx_version"], test_rail_tests)

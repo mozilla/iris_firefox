@@ -15,12 +15,8 @@ class Test(FirefoxTest):
         test_suite_id="1902",
     )
     def run(self, firefox):
-        search_with_google_one_off_string_pattern = Pattern(
-            "google_one_off_highlighted.png"
-        )
-        settings_gear_highlighted_pattern = Pattern(
-            "settings_gear_highlighted.png"
-        ).similar(0.9)
+        search_with_google_one_off_string_pattern = Pattern("google_one_off_highlighted.png")
+        settings_gear_highlighted_pattern = Pattern("settings_gear_highlighted.png").similar(0.9)
 
         select_location_bar()
         paste("moz")
@@ -35,9 +31,7 @@ class Test(FirefoxTest):
 
         type(Key.RIGHT)
 
-        one_off_first_highlighted = exists(
-            search_with_google_one_off_string_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        one_off_first_highlighted = exists(search_with_google_one_off_string_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_off_first_highlighted, "The first one-off bar is selected again"
 
         assert scroll_until_pattern_found(
@@ -53,9 +47,5 @@ class Test(FirefoxTest):
         ), "The 'Google' button is highlighted when hitting the LEFT button.."
 
         assert scroll_until_pattern_found(
-            search_with_google_one_off_string_pattern.similar(0.9),
-            type,
-            (Key.LEFT,),
-            20,
-            1,
+            search_with_google_one_off_string_pattern.similar(0.9), type, (Key.LEFT,), 20, 1
         ), "The 'Google' button is highlighted when hitting the LEFT button."

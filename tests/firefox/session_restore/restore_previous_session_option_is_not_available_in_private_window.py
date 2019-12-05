@@ -17,9 +17,7 @@ class Test(FirefoxTest):
         restore_previous_session_pattern = Pattern("restore_previous_session_item.png")
         hamburger_menu_quit_item_pattern = None
         if not OSHelper.is_mac():
-            hamburger_menu_quit_item_pattern = Pattern(
-                "hamburger_menu_quit_item.png"
-            ).similar(0.9)
+            hamburger_menu_quit_item_pattern = Pattern("hamburger_menu_quit_item.png").similar(0.9)
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -55,18 +53,12 @@ class Test(FirefoxTest):
 
         click(NavBar.HAMBURGER_MENU)
 
-        restore_previous_session_item_still_exists = exists(
-            restore_previous_session_pattern
-        )
-        assert (
-            restore_previous_session_item_still_exists
-        ), '"Restore previous session" item exists'
+        restore_previous_session_item_still_exists = exists(restore_previous_session_pattern)
+        assert restore_previous_session_item_still_exists, '"Restore previous session" item exists'
 
         click(restore_previous_session_pattern)
 
-        restore_previous_session_item_still_exists = exists(
-            restore_previous_session_pattern
-        )
+        restore_previous_session_item_still_exists = exists(restore_previous_session_pattern)
         assert (
             restore_previous_session_item_still_exists
         ), "'Restore previous session' item still exists, session wasn't restored"

@@ -4,8 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-moziris = "==0.8.2"
-pre-commit = "==1.18.3"
+moziris = "==0.8.3"
 
 [dev-packages]
 pylint = "*"

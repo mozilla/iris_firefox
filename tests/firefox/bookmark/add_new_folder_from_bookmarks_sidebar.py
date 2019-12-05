@@ -25,39 +25,25 @@ class Test(FirefoxTest):
 
         bookmarks_sidebar("open")
 
-        bookmarks_sidebar_menu_exists = exists(
-            SidebarBookmarks.BOOKMARKS_HEADER, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
-        assert (
-            bookmarks_sidebar_menu_exists is True
-        ), "Bookmarks Sidebar is correctly displayed."
+        bookmarks_sidebar_menu_exists = exists(SidebarBookmarks.BOOKMARKS_HEADER, FirefoxSettings.FIREFOX_TIMEOUT / 2)
+        assert bookmarks_sidebar_menu_exists is True, "Bookmarks Sidebar is correctly displayed."
 
-        bookmarks_menu_exists = exists(
-            bookmarks_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
+        bookmarks_menu_exists = exists(bookmarks_menu_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2)
         assert bookmarks_menu_exists is True, "Bookmarks menu section exists"
 
         right_click(bookmarks_menu_pattern)
 
-        new_folder_option_exists = exists(
-            new_folder_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
+        new_folder_option_exists = exists(new_folder_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2)
         assert new_folder_option_exists is True, "New Folder option exists"
 
         click(new_folder_option_pattern)
 
-        new_folder_panel_exists = exists(
-            new_folder_panel_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
+        new_folder_panel_exists = exists(new_folder_panel_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2)
         assert new_folder_panel_exists is True, "The New Folder window is opened"
 
         type(Key.ENTER)
 
         click(bookmarks_menu_pattern)
 
-        new_folder_created_exists = exists(
-            new_folder_created_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
-        assert (
-            new_folder_created_exists is True
-        ), "The New Folder is correctly created in the selected section."
+        new_folder_created_exists = exists(new_folder_created_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2)
+        assert new_folder_created_exists is True, "The New Folder is correctly created in the selected section."

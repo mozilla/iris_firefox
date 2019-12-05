@@ -29,18 +29,11 @@ except ImportError as e:
     print(bcolors.FAIL + "ERROR" + bcolors.ENDC)
     print(e)
 else:
-    print(
-        bcolors.BOLD
-        + bcolors.OKGREEN
-        + "All libraries imports succeeded."
-        + bcolors.ENDC
-    )
+    print(bcolors.BOLD + bcolors.OKGREEN + "All libraries imports succeeded." + bcolors.ENDC)
 
 
 print("")
-print(
-    "_____________________________________________________________________________________"
-)
+print("_____________________________________________________________________________________")
 print("")
 print(bcolors.OKBLUE + "Testing Mozdownload" + bcolors.ENDC)
 print("")
@@ -61,14 +54,10 @@ else:
     print("")
     print("Version: " + mozdownload.__version__)
     print("")
-    print(
-        bcolors.BOLD + bcolors.OKGREEN + "Mozdownload working correctly." + bcolors.ENDC
-    )
+    print(bcolors.BOLD + bcolors.OKGREEN + "Mozdownload working correctly." + bcolors.ENDC)
 
 
-print(
-    "_____________________________________________________________________________________"
-)
+print("_____________________________________________________________________________________")
 print("")
 print(bcolors.OKBLUE + "Testing Mozrunner" + bcolors.ENDC)
 print("")
@@ -82,14 +71,10 @@ except ImportError as e:
     print(e)
 else:
     print("")
-    print(
-        bcolors.BOLD + bcolors.OKGREEN + "Mozrunner working correctly." + bcolors.ENDC
-    )
+    print(bcolors.BOLD + bcolors.OKGREEN + "Mozrunner working correctly." + bcolors.ENDC)
 
 
-print(
-    "_____________________________________________________________________________________"
-)
+print("_____________________________________________________________________________________")
 print("")
 print(bcolors.OKBLUE + "Testing OpenCV" + bcolors.ENDC)
 print("")
@@ -105,9 +90,7 @@ else:
     print(bcolors.BOLD + bcolors.OKGREEN + "OpenCV working correctly." + bcolors.ENDC)
 
 
-print(
-    "_____________________________________________________________________________________"
-)
+print("_____________________________________________________________________________________")
 print("")
 print(bcolors.OKBLUE + "Testing PyAutoGui" + bcolors.ENDC)
 print("")
@@ -147,14 +130,10 @@ except:
 else:
     print("Version: " + pyautogui.__version__)
     print("")
-    print(
-        bcolors.BOLD + bcolors.OKGREEN + "PyAutoGui working correctly." + bcolors.ENDC
-    )
+    print(bcolors.BOLD + bcolors.OKGREEN + "PyAutoGui working correctly." + bcolors.ENDC)
 
 print("")
-print(
-    "_____________________________________________________________________________________"
-)
+print("_____________________________________________________________________________________")
 print("")
 print(bcolors.OKBLUE + "Testing MSS" + bcolors.ENDC)
 print("")
@@ -181,9 +160,7 @@ else:
     print(bcolors.BOLD + bcolors.OKGREEN + "MSS working correctly." + bcolors.ENDC)
 
 
-print(
-    "_____________________________________________________________________________________"
-)
+print("_____________________________________________________________________________________")
 print("")
 print(bcolors.OKBLUE + "Testing Pytesseract" + bcolors.ENDC)
 print("")
@@ -196,6 +173,4 @@ except (IOError, OSError) as e:
     print(e)
 else:
     print("")
-    print(
-        bcolors.BOLD + bcolors.OKGREEN + "Pytesseract working correctly." + bcolors.ENDC
-    )
+    print(bcolors.BOLD + bcolors.OKGREEN + "Pytesseract working correctly." + bcolors.ENDC)

@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="120130",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
@@ -42,9 +41,7 @@ class Test(FirefoxTest):
         expected_4 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10)
         assert expected_4, "Mozilla page is displayed in the History list successfully."
 
-        right_click_and_type(
-            LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action="d"
-        )
+        right_click_and_type(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, keyboard_action="d")
 
         try:
             expected_5 = wait_vanish(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR, 10)
@@ -56,6 +53,4 @@ class Test(FirefoxTest):
         open_library_menu("History")
 
         expected_6 = exists(LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR.similar(0.9), 5)
-        assert (
-            expected_6 is not True
-        ), "Mozilla page is not displayed in the Recent History list."
+        assert expected_6 is not True, "Mozilla page is not displayed in the Recent History list."

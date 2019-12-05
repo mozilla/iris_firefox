@@ -7,28 +7,27 @@ from targets.firefox.fx_testcase import *
 
 
 class Test(FirefoxTest):
-
     @pytest.mark.details(
-        description='Firefox can be successfully set to accept third-party cookies and site data',
-        test_case_id='143653',
-        test_suite_id='2241',
-        locale=['en-US'],
+        description="Firefox can be successfully set to accept third-party cookies and site data",
+        test_case_id="143653",
+        test_suite_id="2241",
+        locale=["en-US"],
     )
     def run(self, firefox):
         save_changes_button_pattern = AboutPreferences.Privacy.Exceptions.SAVE_CHANGES_BUTTON
 
-        browser_privacy_hover_pattern = Pattern('browser_privacy_hover.png')
-        standard_security_level_pattern = Pattern('standard_sec_level.png')
-        manage_data_button_pattern = Pattern('manage_data_button.png')
+        browser_privacy_hover_pattern = Pattern("browser_privacy_hover.png")
+        standard_security_level_pattern = Pattern("standard_sec_level.png")
+        manage_data_button_pattern = Pattern("manage_data_button.png")
         manage_permissions_pattern = Pattern("manage_permissions.png")
         empty_dialog_pattern = Pattern("empty_permissions_list.png")
         empty_sites_pattern = Pattern("empty_site_list.png")
         allow_button_pattern = Pattern("allow_button.png")
         reddit_tab_loaded_pattern = Pattern("reddit_tab_loaded.png")
-        remove_all_button_pattern = Pattern('remove_all_button.png')
-        clear_now_dialog_button_pattern = Pattern('clear_now_button.png')
-        cookies_cleared_pattern = Pattern('cookies_are_fully_cleared.png')
-        reddit_label_in_list_pattern = Pattern('reddit_label_in_list.png')
+        remove_all_button_pattern = Pattern("remove_all_button.png")
+        clear_now_dialog_button_pattern = Pattern("clear_now_button.png")
+        cookies_cleared_pattern = Pattern("cookies_are_fully_cleared.png")
+        reddit_label_in_list_pattern = Pattern("reddit_label_in_list.png")
 
         scroll_length = Screen.SCREEN_WIDTH // 3
         if OSHelper.is_linux():
@@ -36,19 +35,20 @@ class Test(FirefoxTest):
         if OSHelper.is_mac():
             scroll_length = 10
 
-        navigate('about:preferences#privacy')
+        navigate("about:preferences#privacy")
 
         browser_privacy_label_exists = exists(browser_privacy_hover_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert browser_privacy_label_exists, "Privacy page is loaded"
 
         standard_security_level_exists = exists(standard_security_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
-        assert standard_security_level_exists, "The option \"Standard\" is set"
+        assert standard_security_level_exists, 'The option "Standard" is set'
 
         hover(browser_privacy_hover_pattern)
 
-        manage_data_button_found = scroll_until_pattern_found(manage_data_button_pattern, scroll, (-scroll_length,),
-                                                              timeout=1)
-        assert manage_data_button_found, 'Manage data can be opened'
+        manage_data_button_found = scroll_until_pattern_found(
+            manage_data_button_pattern, scroll, (-scroll_length,), timeout=1
+        )
+        assert manage_data_button_found, "Manage data can be opened"
 
         time.sleep(Settings.DEFAULT_UI_DELAY)  # to prevent clicking on wrong location due to fast execution
         click(manage_data_button_pattern)
@@ -87,9 +87,10 @@ class Test(FirefoxTest):
         click(NavBar.RELOAD_BUTTON)
         hover(browser_privacy_hover_pattern)
 
-        manage_data_button_found = scroll_until_pattern_found(manage_data_button_pattern, scroll, (-scroll_length,),
-                                                              timeout=1)
-        assert manage_data_button_found, 'Manage data can be opened'
+        manage_data_button_found = scroll_until_pattern_found(
+            manage_data_button_pattern, scroll, (-scroll_length,), timeout=1
+        )
+        assert manage_data_button_found, "Manage data can be opened"
 
         time.sleep(Settings.DEFAULT_UI_DELAY)  # to prevent clicking on wrong location due to fast execution
         click(manage_data_button_pattern)
@@ -106,7 +107,7 @@ class Test(FirefoxTest):
             raise
 
         save_changes_button_exists = exists(save_changes_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
-        assert save_changes_button_exists, 'Save button is shown'
+        assert save_changes_button_exists, "Save button is shown"
 
         click(save_changes_button_pattern)
 

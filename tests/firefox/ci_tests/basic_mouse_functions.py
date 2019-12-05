@@ -20,16 +20,10 @@ class Test(FirefoxTest):
         else:
             if mouse_position[0] == 300 and mouse_position[1] == 300:
                 logger.debug(
-                    "Mouse successfully moved to position ({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
+                    "Mouse successfully moved to position ({}, {}).".format(mouse_position[0], mouse_position[1])
                 )
             else:
-                logger.error(
-                    "Invalid mouse position: ({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
-                )
+                logger.error("Invalid mouse position: ({}, {}).".format(mouse_position[0], mouse_position[1]))
                 exit(1)
 
         try:
@@ -40,16 +34,10 @@ class Test(FirefoxTest):
         else:
             if mouse_position[0] == 300 and mouse_position[1] == 700:
                 logger.debug(
-                    "Mouse successfully changed to position ({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
+                    "Mouse successfully changed to position ({}, {}).".format(mouse_position[0], mouse_position[1])
                 )
             else:
-                logger.error(
-                    "Invalid mouse position: ({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
-                )
+                logger.error("Invalid mouse position: ({}, {}).".format(mouse_position[0], mouse_position[1]))
                 exit(1)
 
         try:
@@ -61,16 +49,10 @@ class Test(FirefoxTest):
         else:
             if mouse_position[0] == 300 and mouse_position[1] == 750:
                 logger.debug(
-                    "Mouse successfully moved to position ({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
+                    "Mouse successfully moved to position ({}, {}).".format(mouse_position[0], mouse_position[1])
                 )
             else:
-                logger.error(
-                    "Invalid mouse position: ({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
-                )
+                logger.error("Invalid mouse position: ({}, {}).".format(mouse_position[0], mouse_position[1]))
                 exit(1)
 
         try:
@@ -82,14 +64,8 @@ class Test(FirefoxTest):
         else:
             if mouse_position[0] == 400 and mouse_position[1] == 400:
                 logger.debug(
-                    "Mouse successfully moved to position ({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
+                    "Mouse successfully moved to position ({}, {}).".format(mouse_position[0], mouse_position[1])
                 )
             else:
-                logger.error(
-                    "Invalid mouse position:({}, {}).".format(
-                        mouse_position[0], mouse_position[1]
-                    )
-                )
+                logger.error("Invalid mouse position:({}, {}).".format(mouse_position[0], mouse_position[1]))
                 exit(1)

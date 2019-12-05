@@ -15,29 +15,22 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        soap_label_exists = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert soap_label_exists, "The page is successfully loaded."
 
         open_find()
         edit_select_all()
         edit_delete()
 
-        find_toolbar_opened = exists(
-            FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        find_toolbar_opened = exists(FindToolbar.FINDBAR_TEXTBOX, FirefoxSettings.FIREFOX_TIMEOUT)
         assert find_toolbar_opened, "Find Toolbar is opened."
 
         type("operating")
 
         operating_disparate_highlighted_displayed = exists(
-            LocalWeb.SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            LocalWeb.SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        operating_all_displayed = exists(
-            LocalWeb.SOAP_WIKI_OPERATING_ALL, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        operating_all_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_ALL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert operating_disparate_highlighted_displayed and operating_all_displayed, (
             "All the matching words/characters are found. The first one has a green "
             + "background highlighted, and the others are not highlighted."
@@ -45,23 +38,17 @@ class Test(FirefoxTest):
 
         find_next()
 
-        operating_disparate_displayed = exists(
-            LocalWeb.SOAP_WIKI_OPERATING_DISPARATE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        operating_disparate_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_DISPARATE, FirefoxSettings.FIREFOX_TIMEOUT)
         operating_all_highlighted_displayed = exists(
-            LocalWeb.SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            LocalWeb.SOAP_WIKI_OPERATING_ALL_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
 
         find_previous()
 
         operating_disparate_highlighted_displayed = exists(
-            LocalWeb.SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            LocalWeb.SOAP_WIKI_OPERATING_DISPARATE_HIGHLIGHTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        operating_all_displayed = exists(
-            LocalWeb.SOAP_WIKI_OPERATING_ALL, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        operating_all_displayed = exists(LocalWeb.SOAP_WIKI_OPERATING_ALL, FirefoxSettings.FIREFOX_TIMEOUT)
         assert (
             operating_disparate_displayed
             and operating_all_highlighted_displayed
@@ -71,15 +58,11 @@ class Test(FirefoxTest):
 
         find_next()
 
-        two_of_two_matches_displayed = exists(
-            LocalWeb.SOAP_WIKI_2_OF_2_MATCHES, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        two_of_two_matches_displayed = exists(LocalWeb.SOAP_WIKI_2_OF_2_MATCHES, FirefoxSettings.FIREFOX_TIMEOUT)
 
         find_previous()
 
-        one_of_two_matches_displayed = exists(
-            LocalWeb.SOAP_WIKI_1_OF_2_MATCHES, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        one_of_two_matches_displayed = exists(LocalWeb.SOAP_WIKI_1_OF_2_MATCHES, FirefoxSettings.FIREFOX_TIMEOUT)
         assert (
             one_of_two_matches_displayed and two_of_two_matches_displayed
         ), "The number of the highlighted item changes when navigating."

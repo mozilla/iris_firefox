@@ -14,26 +14,16 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        change_search_settings_pattern = Pattern("change_search_settings.png").similar(
-            0.6
-        )
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        ).similar(0.6)
+        change_search_settings_pattern = Pattern("change_search_settings.png").similar(0.6)
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png").similar(0.6)
         amazon_search_bar_pattern = Pattern("amazon_search_bar.png")
         bing_search_bar_pattern = Pattern("bing_search_bar.png")
         search_engine_pattern = Pattern("search_engine.png")
         amazon_bing_pattern = Pattern("amazon_bing.png")
-        amazon_bing_location_bar_pattern = Pattern(
-            "amazon_bing_location_bar.png"
-        ).similar(0.6)
+        amazon_bing_location_bar_pattern = Pattern("amazon_bing_location_bar.png").similar(0.6)
         amazon_bing_content_search_pattern = Pattern("amazon_bing_content_search.png")
-        google_logo_content_search_field_pattern = Pattern(
-            "google_logo_content_search_field.png"
-        )
-        amazon_bing_search_bar_pattern = Pattern("amazon_bing_search_bar.png").similar(
-            0.6
-        )
+        google_logo_content_search_field_pattern = Pattern("google_logo_content_search_field.png")
+        amazon_bing_search_bar_pattern = Pattern("amazon_bing_search_bar.png").similar(0.6)
 
         # Enable the search bar.
         change_preference("browser.search.widget.inNavBar", True)
@@ -42,9 +32,7 @@ class Test(FirefoxTest):
         type(Key.DOWN)
 
         expected = exists(change_search_settings_pattern, 10)
-        assert (
-            expected is True
-        ), "The 'Change Search Settings' button found in the page."
+        assert expected is True, "The 'Change Search Settings' button found in the page."
 
         click(change_search_settings_pattern)
 
@@ -79,9 +67,7 @@ class Test(FirefoxTest):
         type("test", interval=0.25)
 
         expected = exists(amazon_bing_location_bar_pattern, 10)
-        assert (
-            expected is True
-        ), "The search engine is placed correctly in location bar."
+        assert expected is True, "The search engine is placed correctly in location bar."
 
         new_tab()
         expected = exists(google_logo_content_search_field_pattern, 10)
@@ -91,9 +77,7 @@ class Test(FirefoxTest):
         type(Key.DOWN)
 
         expected = exists(amazon_bing_content_search_pattern, 10)
-        assert (
-            expected is True
-        ), "The search engine is placed correctly in content search field."
+        assert expected is True, "The search engine is placed correctly in content search field."
 
         select_search_bar()
         type(Key.DOWN)

@@ -20,27 +20,20 @@ class Test(FirefoxTest):
 
         open_bookmarks_toolbar()
 
-        bookmarks_folder_available_in_toolbar = exists(
-            getting_started_toolbar_bookmark_pattern
-        )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        bookmarks_folder_available_in_toolbar = exists(getting_started_toolbar_bookmark_pattern)
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         right_click(getting_started_toolbar_bookmark_pattern)
 
         delete_option_available = exists(bookmark_delete_option)
         assert delete_option_available is True, (
-            "'Delete' option in available in context menu after right-click "
-            "at the bookmark in toolbar."
+            "'Delete' option in available in context menu after right-click " "at the bookmark in toolbar."
         )
 
         click(bookmark_delete_option)
 
         try:
             bookmark_deleted = wait_vanish(getting_started_toolbar_bookmark_pattern)
-            assert (
-                bookmark_deleted is True
-            ), "The bookmark is deleted from the 'Bookmarks Toolbar' section."
+            assert bookmark_deleted is True, "The bookmark is deleted from the 'Bookmarks Toolbar' section."
         except FindError:
             raise FindError(" The website is not deleted from the list.")

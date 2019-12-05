@@ -34,22 +34,16 @@ class Test(FirefoxTest):
         # Settings.type_delay
 
         default_type_delay = Settings.type_delay
-        assert (
-            Settings.DEFAULT_TYPE_DELAY == default_type_delay
-        ), "Default type_delay should be 0"
+        assert Settings.DEFAULT_TYPE_DELAY == default_type_delay, "Default type_delay should be 0"
 
         Settings.type_delay = 2
         assert Settings.type_delay == 1, "type_delay greater than 1 is defaulted to 1"
         type("Test")
-        assert (
-            Settings.type_delay == 0
-        ), "type_delay should be defaulted to 0 after type action"
+        assert Settings.type_delay == 0, "type_delay should be defaulted to 0 after type action"
 
         updated_type_delay = 0.125
         Settings.type_delay = updated_type_delay
-        assert (
-            updated_type_delay == Settings.type_delay
-        ), "Updated value for type_delay should be equal to {}".format(
+        assert updated_type_delay == Settings.type_delay, "Updated value for type_delay should be equal to {}".format(
             updated_type_delay
         )
 
@@ -76,9 +70,7 @@ class Test(FirefoxTest):
         # Settings.click_delay
 
         default_click_delay = Settings.click_delay
-        assert (
-            Settings.DEFAULT_CLICK_DELAY == default_click_delay
-        ), "Default click_delay should be equal to {}".format(
+        assert Settings.DEFAULT_CLICK_DELAY == default_click_delay, "Default click_delay should be equal to {}".format(
             Settings.DEFAULT_CLICK_DELAY
         )
 
@@ -112,9 +104,7 @@ class Test(FirefoxTest):
         )
 
         Settings.min_similarity = 2
-        assert (
-            Settings.min_similarity == 1
-        ), "min_similarity greater than 1 is defaulted to 1"
+        assert Settings.min_similarity == 1, "min_similarity greater than 1 is defaulted to 1"
 
         Settings.min_similarity = Settings.DEFAULT_MIN_SIMILARITY
 
@@ -161,9 +151,7 @@ class Test(FirefoxTest):
         )
 
         expected_duration = end_time - start_time >= total_duration
-        assert (
-            expected_duration
-        ), "Total duration for dragDrop should be equal or greater than {}seconds".format(
+        assert expected_duration, "Total duration for dragDrop should be equal or greater than {}seconds".format(
             total_duration
         )
 
@@ -212,8 +200,7 @@ class Test(FirefoxTest):
 
         default_observe_min_changed_pixels = Settings.observe_min_changed_pixels
         assert (
-            Settings.DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
-            == default_observe_min_changed_pixels
+            Settings.DEFAULT_OBSERVE_MIN_CHANGED_PIXELS == default_observe_min_changed_pixels
         ), "Default observe_min_changed_pixels should be equal to {}".format(
             Settings.DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
         )
@@ -226,6 +213,4 @@ class Test(FirefoxTest):
             updated_observe_min_changed_pixels
         )
 
-        Settings.observe_min_changed_pixels = (
-            Settings.DEFAULT_OBSERVE_MIN_CHANGED_PIXELS
-        )
+        Settings.observe_min_changed_pixels = Settings.DEFAULT_OBSERVE_MIN_CHANGED_PIXELS

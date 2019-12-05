@@ -27,9 +27,7 @@ class Test(FirefoxTest):
         # Mousewheel scrolling preference is 200
         change_preference("mousewheel.default.delta_multiplier_y", "200")
 
-        same_value_exists = check_preference(
-            "mousewheel.default.delta_multiplier_y", "200"
-        )
+        same_value_exists = check_preference("mousewheel.default.delta_multiplier_y", "200")
         assert same_value_exists is True, "The value is changed to 200"
 
         close_tab()
@@ -42,56 +40,38 @@ class Test(FirefoxTest):
         click(location_to_open)
 
         # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(
-            scroll_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        before_scroll_content_exists = exists(scroll_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert before_scroll_content_exists is True, (
-            "Content before scrolling using mouse wheel "
-            "with preference equals 200 is on the page"
+            "Content before scrolling using mouse wheel " "with preference equals 200 is on the page"
         )
         click(scroll_content_pattern)
 
         after_scroll_content_exists = scroll_until_pattern_found(
-            after_scroll_content_pattern,
-            Mouse().scroll,
-            (None, -value),
-            100,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
+            after_scroll_content_pattern, Mouse().scroll, (None, -value), 100, FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3
         )
         assert after_scroll_content_exists is True, (
-            "Scroll Down using mouse wheel is successful"
-            " with mousewheel preference equals 200."
+            "Scroll Down using mouse wheel is successful" " with mousewheel preference equals 200."
         )
 
         after_scroll_content_exists = scroll_until_pattern_found(
-            scroll_content_pattern,
-            Mouse().scroll,
-            (None, value),
-            100,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
+            scroll_content_pattern, Mouse().scroll, (None, value), 100, FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3
         )
         assert after_scroll_content_exists is True, (
-            "Scroll Up using mouse wheel is successful"
-            "with mousewheel preference equals 200."
+            "Scroll Up using mouse wheel is successful" "with mousewheel preference equals 200."
         )
 
         # Mousewheel scrolling preference is 50
         change_preference("mousewheel.default.delta_multiplier_y", "50")
 
-        same_value_exists = check_preference(
-            "mousewheel.default.delta_multiplier_y", "50"
-        )
+        same_value_exists = check_preference("mousewheel.default.delta_multiplier_y", "50")
         assert same_value_exists is True, "The value is changed to 50"
 
         close_tab()
 
         # Scroll up and down using mouse wheel
-        before_scroll_content_exists = exists(
-            scroll_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        before_scroll_content_exists = exists(scroll_content_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert before_scroll_content_exists is True, (
-            "Content before scrolling using mouse wheel"
-            " with preference equals 50 is on the page"
+            "Content before scrolling using mouse wheel" " with preference equals 50 is on the page"
         )
         click(scroll_content_pattern)
 
@@ -103,26 +83,18 @@ class Test(FirefoxTest):
             FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
         )
         assert after_scroll_content_exists is True, (
-            "Scroll Down using mouse wheel is successful"
-            " with mousewheel preference equals 50."
+            "Scroll Down using mouse wheel is successful" " with mousewheel preference equals 50."
         )
 
         after_scroll_content_exists = scroll_until_pattern_found(
-            scroll_content_pattern,
-            Mouse().scroll,
-            (None, value * 2),
-            100,
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3,
+            scroll_content_pattern, Mouse().scroll, (None, value * 2), 100, FirefoxSettings.TINY_FIREFOX_TIMEOUT / 3
         )
         assert after_scroll_content_exists is True, (
-            "Scroll Up using mouse wheel is successful"
-            " with mousewheel preference equals 50."
+            "Scroll Up using mouse wheel is successful" " with mousewheel preference equals 50."
         )
 
         # Set the default params to mousewheel
         change_preference("mousewheel.default.delta_multiplier_y", "100")
 
-        same_value_exists = check_preference(
-            "mousewheel.default.delta_multiplier_y", "100"
-        )
+        same_value_exists = check_preference("mousewheel.default.delta_multiplier_y", "100")
         assert same_value_exists is True, "The value is changed to default value"

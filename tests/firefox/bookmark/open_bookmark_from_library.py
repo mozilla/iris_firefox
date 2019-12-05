@@ -22,9 +22,7 @@ class Test(FirefoxTest):
 
         open_library()
 
-        bookmarks_menu_library_assert = exists(
-            library_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmarks_menu_library_assert = exists(library_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmarks_menu_library_assert is True, "Bookmarks menu has been found."
 
         click(library_bookmarks_pattern)
@@ -32,12 +30,8 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         type(Key.DOWN)
 
-        library_bookmark_assert = exists(
-            moz_library_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            library_bookmark_assert is True
-        ), "Moz bookmark can be accessed from Library section."
+        library_bookmark_assert = exists(moz_library_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert library_bookmark_assert is True, "Moz bookmark can be accessed from Library section."
 
         click(moz_library_pattern)
         type(Key.ENTER)
@@ -46,7 +40,5 @@ class Test(FirefoxTest):
             change_window_view()
             click_window_control("close")
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
         assert mozilla_page_assert is True, "Mozilla page loaded successfully."

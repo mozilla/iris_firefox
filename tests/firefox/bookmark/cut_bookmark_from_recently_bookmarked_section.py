@@ -21,23 +21,17 @@ class Test(FirefoxTest):
         firefox_bookmark_cut_pattern = Pattern("firefox_bookmark_cut.png")
 
         library_button_exists = exists(NavBar.LIBRARY_MENU)
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION)
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         recently_firefox_bookmark_exists = exists(LocalWeb.FIREFOX_BOOKMARK)
-        assert (
-            recently_firefox_bookmark_exists is True
-        ), "Firefox bookmark exists in recently bookmarked section"
+        assert recently_firefox_bookmark_exists is True, "Firefox bookmark exists in recently bookmarked section"
 
         right_click(LocalWeb.FIREFOX_BOOKMARK)
 
@@ -47,9 +41,7 @@ class Test(FirefoxTest):
         click(cut_option_pattern)
 
         firefox_bookmark_cut_exists = exists(firefox_bookmark_cut_pattern)
-        assert (
-            firefox_bookmark_cut_exists is True
-        ), "The selected bookmark is grayed out"
+        assert firefox_bookmark_cut_exists is True, "The selected bookmark is grayed out"
 
         open_library()
 
@@ -68,8 +60,7 @@ class Test(FirefoxTest):
 
         firefox_bookmark_cut_exists = exists(LocalWeb.FIREFOX_BOOKMARK)
         assert firefox_bookmark_cut_exists is True, (
-            "The bookmark is correctly added in the selected section and "
-            "deleted from the previous one."
+            "The bookmark is correctly added in the selected section and " "deleted from the previous one."
         )
 
         close_window_control("auxiliary")
@@ -77,13 +68,9 @@ class Test(FirefoxTest):
         click(NavBar.LIBRARY_MENU)
 
         bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION)
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
         recently_firefox_bookmark_not_exists = exists(LocalWeb.FIREFOX_BOOKMARK)
-        assert (
-            recently_firefox_bookmark_not_exists is True
-        ), "Firefox bookmark cut from recently bookmarked section"
+        assert recently_firefox_bookmark_not_exists is True, "Firefox bookmark cut from recently bookmarked section"

@@ -15,12 +15,8 @@ class Test(FirefoxTest):
         blocked_by={"id": "1488708", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
-        search_with_google_one_off_string_pattern = Pattern(
-            "search_with_Google_one_off_string.png"
-        )
-        search_with_wikipedia_one_off_string_pattern = Pattern(
-            "search_with_Wikipedia_one_off_string.png"
-        )
+        search_with_google_one_off_string_pattern = Pattern("search_with_Google_one_off_string.png")
+        search_with_wikipedia_one_off_string_pattern = Pattern("search_with_Wikipedia_one_off_string.png")
         settings_gear_highlighted_pattern = Pattern("settings_gear_highlighted.png")
         moz_search_wikipedia_pattern = Pattern("moz_search_wikipedia.png")
 
@@ -41,9 +37,7 @@ class Test(FirefoxTest):
         key_up(Key.ALT)
 
         expected = region.exists(search_with_wikipedia_one_off_string_pattern, 10)
-        assert (
-            expected
-        ), "Wikipedia is the first one-off in focus when navigating with 'ALT and arrow UP keys."
+        assert expected, "Wikipedia is the first one-off in focus when navigating with 'ALT and arrow UP keys."
 
         expected = not region.exists(settings_gear_highlighted_pattern, 5)
         assert expected, "Settings gear icon is not in focus."
@@ -75,9 +69,7 @@ class Test(FirefoxTest):
         key_up(Key.ALT)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert (
-            expected
-        ), "Google is the first one-off in focus when navigating with ALT and arrow DOWN keys."
+        assert expected, "Google is the first one-off in focus when navigating with ALT and arrow DOWN keys."
 
         expected = not region.exists(settings_gear_highlighted_pattern, 5)
         assert expected, "Settings gear icon is not in focus."
@@ -112,10 +104,7 @@ class Test(FirefoxTest):
         key_up(Key.ALT)
 
         expected = region.exists(search_with_google_one_off_string_pattern, 10)
-        assert expected, (
-            "Google' is the first one-off in focus when navigating with 'ALT' and arrow "
-            "DOWN keys."
-        )
+        assert expected, "Google' is the first one-off in focus when navigating with 'ALT' and arrow " "DOWN keys."
 
         max_attempts = 10
 

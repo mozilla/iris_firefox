@@ -34,10 +34,7 @@ class Test(FirefoxTest):
         assert expected is True, "Private window successfully loaded."
         type(text="o")
 
-        download_files_list = [
-            DownloadFiles.VERY_LARGE_FILE_1GB,
-            DownloadFiles.EXTRA_LARGE_FILE_512MB,
-        ]
+        download_files_list = [DownloadFiles.VERY_LARGE_FILE_1GB, DownloadFiles.EXTRA_LARGE_FILE_512MB]
 
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 

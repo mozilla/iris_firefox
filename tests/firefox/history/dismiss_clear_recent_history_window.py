@@ -12,15 +12,10 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="172048",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
-        clear_recent_history_window_pattern = (
-            History.ClearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
-        )
-        dismiss_clear_recent_history_window_button_pattern = (
-            History.ClearRecentHistory.CANCEL
-        )
+        clear_recent_history_window_pattern = History.ClearRecentHistory.CLEAR_RECENT_HISTORY_TITLE
+        dismiss_clear_recent_history_window_button_pattern = History.ClearRecentHistory.CANCEL
 
         # Open the 'Clear Recent History' window and uncheck all the items.
         for step in open_clear_recent_history_window():
@@ -37,8 +32,6 @@ class Test(FirefoxTest):
         # Check that the Clear Recent History window was dismissed properly.
         try:
             expected = wait_vanish(clear_recent_history_window_pattern.similar(0.9), 10)
-            assert (
-                expected is True
-            ), "Clear Recent History window was dismissed properly."
+            assert expected is True, "Clear Recent History window was dismissed properly."
         except FindError:
             raise FindError("Clear Recent History window was NOT dismissed properly.")

@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="120129",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
@@ -37,15 +36,8 @@ class Test(FirefoxTest):
         assert expected_4 is True, "Expand history button displayed properly."
 
         history_today_location = find(history_today_sidebar_pattern)
-        history_today_width, history_today_height = (
-            history_today_sidebar_pattern.get_size()
-        )
-        history_sidebar_region = Region(
-            0,
-            history_today_location.y,
-            history_today_width * 3,
-            history_today_height * 10,
-        )
+        history_today_width, history_today_height = history_today_sidebar_pattern.get_size()
+        history_sidebar_region = Region(0, history_today_location.y, history_today_width * 3, history_today_height * 10)
 
         click(history_today_sidebar_pattern)
 

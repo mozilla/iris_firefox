@@ -14,20 +14,14 @@ class Test(FirefoxTest):
         test_suite_id="2525",
     )
     def run(self, firefox):
-        firefox_menu_bookmarks_pattern = Pattern("firefox_menu_bookmarks.png")
-        mozilla_firefox_predefined_bookmarks_pattern = Pattern(
-            "mozilla_firefox_predefined_bookmarks.png"
-        )
+        firefox_menu_bookmarks_pattern = Pattern("bookmarks_top_menu.png")
+        mozilla_firefox_predefined_bookmarks_pattern = Pattern("mozilla_firefox_predefined_bookmarks.png")
         open_all_in_tabs_pattern = Pattern("open_all_in_tabs.png")
-        mozilla_firefox_bookmarks_folder_pattern = Pattern(
-            "mozilla_firefox_bookmarks_folder.png"
-        )
+        mozilla_firefox_bookmarks_folder_pattern = Pattern("mozilla_firefox_bookmarks_folder.png")
 
         open_firefox_menu()
 
-        firefox_menu_bookmarks_exists = exists(
-            firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        firefox_menu_bookmarks_exists = exists(firefox_menu_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert firefox_menu_bookmarks_exists is True, "Firefox menu > Bookmarks exists"
 
         click(firefox_menu_bookmarks_pattern)
@@ -41,16 +35,13 @@ class Test(FirefoxTest):
         click(mozilla_firefox_bookmarks_folder_pattern)
 
         mozilla_firefox_predefined_bookmarks_exists = exists(
-            mozilla_firefox_predefined_bookmarks_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            mozilla_firefox_predefined_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert mozilla_firefox_predefined_bookmarks_exists is True, (
             "Predefined Mozilla Firefox related bookmarks " "displayed"
         )
 
         open_all_in_tabs_button_displayed = exists(open_all_in_tabs_pattern)
-        assert (
-            open_all_in_tabs_button_displayed is True
-        ), "Open All in Tabs button is displayed"
+        assert open_all_in_tabs_button_displayed is True, "Open All in Tabs button is displayed"
 
         restore_firefox_focus()

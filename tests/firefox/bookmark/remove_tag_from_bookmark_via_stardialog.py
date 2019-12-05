@@ -17,34 +17,24 @@ class Test(FirefoxTest):
     def run(self, firefox):
         iris_tag_pattern = Pattern("iris_tag.png")
         if OSHelper.is_mac():
-            tags_expander_closed_pattern = Pattern("tags_expander_closed.png").similar(
-                0.95
-            )
+            tags_expander_closed_pattern = Pattern("tags_expander_closed.png").similar(0.95)
         else:
             tags_expander_closed_pattern = Bookmarks.StarDialog.PANEL_TAGS_EXPANDER
 
         navigate(LocalWeb.FOCUS_TEST_SITE)
 
-        test_site_opened = exists(
-            LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        test_site_opened = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert test_site_opened is True, "Previously bookmarked Focus website is opened"
 
-        stardialog_region = Region(
-            Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT
-        )
+        stardialog_region = Region(Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT)
 
-        star_button_exists = exists(
-            LocationBar.STAR_BUTTON_STARRED, region=stardialog_region
-        )
+        star_button_exists = exists(LocationBar.STAR_BUTTON_STARRED, region=stardialog_region)
         assert star_button_exists is True, "Star button is displayed"
 
         click(LocationBar.STAR_BUTTON_STARRED, region=stardialog_region)
 
         edit_stardialog_displayed = exists(
-            Bookmarks.StarDialog.EDIT_THIS_BOOKMARK,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=stardialog_region,
+            Bookmarks.StarDialog.EDIT_THIS_BOOKMARK, FirefoxSettings.FIREFOX_TIMEOUT, region=stardialog_region
         )
         assert edit_stardialog_displayed is True, (
             "The Edit This Bookmark popup is displayed under the star-shaped " "icon."
@@ -54,7 +44,7 @@ class Test(FirefoxTest):
         assert tags_field_exists is True, "The Tags field exists"
 
         click(Bookmarks.StarDialog.TAGS_FIELD)
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         paste("iris")
 
         done_button_exists = exists(Bookmarks.StarDialog.DONE)
@@ -65,9 +55,7 @@ class Test(FirefoxTest):
         click(LocationBar.STAR_BUTTON_STARRED)
 
         tags_expander_exists = exists(
-            tags_expander_closed_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=stardialog_region,
+            tags_expander_closed_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=stardialog_region
         )
         assert tags_expander_exists is True, "Tags expander exists"
 
@@ -83,17 +71,13 @@ class Test(FirefoxTest):
         click(LocationBar.STAR_BUTTON_STARRED)
 
         tags_expander_exists_second = exists(
-            tags_expander_closed_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=stardialog_region,
+            tags_expander_closed_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=stardialog_region
         )
         assert tags_expander_exists_second is True, "Tags expander exists"
 
         click(tags_expander_closed_pattern)
 
         iris_tag_removed = exists(iris_tag_pattern)
-        assert (
-            iris_tag_removed is False
-        ), "The tag is successfully removed from that bookmark."
+        assert iris_tag_removed is False, "The tag is successfully removed from that bookmark."
 
         restore_firefox_focus()

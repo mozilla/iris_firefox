@@ -23,23 +23,22 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened is True, "Test page is opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "StarDialog opened"
 
         click(Bookmarks.StarDialog.DONE)
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         new_tab()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         previous_tab()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         close_tab()
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         open_library()
 
@@ -53,9 +52,7 @@ class Test(FirefoxTest):
 
         right_click(soap_wiki_tab_pattern)
 
-        open_option_exists = exists(
-            open_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2
-        )
+        open_option_exists = exists(open_option_pattern, FirefoxSettings.FIREFOX_TIMEOUT / 2)
         assert open_option_exists is True, "Open option exists"
 
         click(open_option_pattern)
@@ -63,14 +60,11 @@ class Test(FirefoxTest):
         iris_tab_not_displayed = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)
         assert iris_tab_not_displayed is False, "There are no additional tabs created"
 
-        soap_wiki_opened_from_bookmarks = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
-        assert (
-            soap_wiki_opened_from_bookmarks is True
-        ), "The selected bookmark page is opened in the current tab."
+        soap_wiki_opened_from_bookmarks = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
+        assert soap_wiki_opened_from_bookmarks is True, "The selected bookmark page is opened in the current tab."
 
         open_library()
-
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         click(Library.TITLE)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         close_window_control("auxiliary")

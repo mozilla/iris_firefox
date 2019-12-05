@@ -31,7 +31,7 @@ class Test(FirefoxTest):
             DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED,
         ]
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button is available."
@@ -49,9 +49,7 @@ class Test(FirefoxTest):
             download_file(pattern, DownloadFiles.OK)
 
         expected = exists(NavBar.CUSTOM_DOWNLOADS_BUTTON_BLUE, 30)
-        assert (
-            expected is True
-        ), "Download button turns blue when download is completed."
+        assert expected is True, "Download button turns blue when download is completed."
 
         open_downloads()
 
@@ -64,10 +62,7 @@ class Test(FirefoxTest):
         # Check that all downloads are displayed in Downloads category.
         for pattern in downloads_library_list:
             expected = exists(pattern, 50)
-            assert expected is True, (
-                "%s file found in the Library, Downloads section."
-                % str(pattern.get_filename())
-            )
+            assert expected is True, "%s file found in the Library, Downloads section." % str(pattern.get_filename())
 
         click_window_control("close")
 

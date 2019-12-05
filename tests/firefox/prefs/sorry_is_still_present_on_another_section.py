@@ -20,25 +20,18 @@ class Test(FirefoxTest):
         navigate("about:preferences")
 
         page_loaded = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert page_loaded, "about:preferences page loaded"
 
         paste("asdasdasd")
 
-        no_results_in_preferences = exists(
-            no_results_in_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            no_results_in_preferences
-        ), '"Sorry! There are no results in Options for..." message is displayed'
+        no_results_in_preferences = exists(no_results_in_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert no_results_in_preferences, '"Sorry! There are no results in Options for..." message is displayed'
 
         click(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
 
-        no_results_in_preferences = exists(
-            no_results_in_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        no_results_in_preferences = exists(no_results_in_preferences_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert no_results_in_preferences, (
             'The "Sorry! There are no results in Options for..." message disappears and'
             + " only the content of the selected section is displayed. \nNOTE: In the "

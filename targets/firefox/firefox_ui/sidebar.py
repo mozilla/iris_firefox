@@ -55,7 +55,7 @@ class Sidebar(object):
 
     class BookmarksSidebar(object):
         SIDEBAR_BOOKMARKS_TITLE = Pattern("sidebar_bookmarks_title.png")
-        SIDEBAR_BOOKMARKS_ICON = Pattern("sidebar_bookmarks_icon.png")
+        SIDEBAR_BOOKMARKS_ICON = Pattern("sidebar_bookmarks_icon.png").similar(0.9)
 
     class SyncedTabsSidebar(object):
         SIDEBAR_SYNCED_TABS_TITLE = Pattern("sidebar_synced_tabs_title.png")

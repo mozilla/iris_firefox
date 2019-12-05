@@ -18,29 +18,18 @@ class Test(FirefoxTest):
         bookmarks_menu_pattern = LibraryMenu.BOOKMARKS_OPTION
         menu_bookmark_pattern = Pattern("moz_bookmark_from_menu.png")
 
-        right_upper_corner = Region(
-            Screen.SCREEN_WIDTH / 2,
-            0,
-            Screen.SCREEN_WIDTH / 2,
-            Screen.SCREEN_HEIGHT / 2,
-        )
+        right_upper_corner = Region(Screen.SCREEN_WIDTH / 2, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
         navigate("about:blank")
 
-        open_library_menu(bookmarks_menu_pattern)
+        open_library_menu("Bookmarks")
 
         moz_bookmark_menu_right_corner_assert = right_upper_corner.exists(
             menu_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
-        assert (
-            moz_bookmark_menu_right_corner_assert is True
-        ), "Moz bookmark can be accessed from the Bookmarks Menu."
+        assert moz_bookmark_menu_right_corner_assert is True, "Moz bookmark can be accessed from the Bookmarks Menu."
 
         right_upper_corner.click(menu_bookmark_pattern)
 
-        mozilla_page_assert = exists(
-            LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            mozilla_page_assert is True
-        ), "Mozilla page has been successfully accessed from the Bookmarks Menu."
+        mozilla_page_assert = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert mozilla_page_assert is True, "Mozilla page has been successfully accessed from the Bookmarks Menu."

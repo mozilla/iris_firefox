@@ -17,7 +17,7 @@ class Test(FirefoxTest):
         folder_in_bookmarks_pattern = Pattern("folder_in_bookmarks_toolbar.png")
         mozilla_bookmark_icon_pattern = Pattern("mozilla_bookmark_icon.png")
         if OSHelper.is_linux():
-            new_folder_window_pattern = Pattern("new_folder_bookmark.png")
+            new_folder_window_pattern = Pattern("new_folder_bookmark.png").similar(0.7)
 
         home_button_displayed = exists(NavBar.HOME_BUTTON)
         assert home_button_displayed is True, "Home button displayed"
@@ -29,16 +29,14 @@ class Test(FirefoxTest):
             0, home_button_location.y, Screen.SCREEN_WIDTH, Screen.SCREEN_HEIGHT / 5
         )
 
-        mozilla_bookmark_icon = exists(
-            mozilla_bookmark_icon_pattern, region=proper_mozilla_bookmark_icon_region
-        )
+        mozilla_bookmark_icon = exists(mozilla_bookmark_icon_pattern, region=proper_mozilla_bookmark_icon_region)
         assert mozilla_bookmark_icon is True, "Mozilla bookmark icon displayed"
 
         right_click(mozilla_bookmark_icon_pattern)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         #  select Create new folder
         type("f")
-        type(Key.ENTER)
 
         if OSHelper.is_linux():
             new_bookmark_window_opened = exists(new_folder_window_pattern)

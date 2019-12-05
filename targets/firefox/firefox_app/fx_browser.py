@@ -29,10 +29,7 @@ from moziris.util.arg_parser import get_core_args
 from moziris.util.path_manager import PathManager
 from moziris.util.system import shutdown_process
 from targets.firefox.firefox_ui.helpers.general import confirm_firefox_launch
-from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import (
-    maximize_window,
-    quit_firefox,
-)
+from targets.firefox.firefox_ui.helpers.keyboard_shortcuts import maximize_window, quit_firefox
 from targets.firefox.settings import FirefoxSettings
 
 
@@ -93,13 +90,7 @@ class FirefoxProfile(MozProfile):
         :param path:
         :return:
         """
-        staged_profiles = os.path.join(
-            PathManager.get_module_dir(),
-            "targets",
-            "firefox",
-            "firefox_app",
-            "profiles",
-        )
+        staged_profiles = os.path.join(PathManager.get_module_dir(), "targets", "firefox", "firefox_app", "profiles")
 
         sz_bin = find_executable("7z")
         logger.debug('Using 7zip executable at "%s"' % sz_bin)
@@ -116,10 +107,7 @@ class FirefoxProfile(MozProfile):
         logger.debug("7zip succeeded: %s" % repr(output))
 
         from_directory = os.path.join(staged_profiles, profile_name.value)
-        to_directory = "%s_%s" % (
-            path,
-            datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
-        )
+        to_directory = "%s_%s" % (path, datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
 
         if os.path.exists(path):
             try:
@@ -147,13 +135,11 @@ class FirefoxProfile(MozProfile):
             try:
                 shutil.rmtree(resource_fork_folder)
             except WindowsError:
-                logger.debug(
-                    "Error, can't remove orphaned directory, leaving in place."
-                )
+                logger.debug("Error, can't remove orphaned directory, leaving in place.")
 
         return to_directory
 
-    def make_profile(profile_type: Profiles = None, preferences: dict = None):
+    def make_profile(profile_type: Profiles = None, prefs: dict = None):
         """Internal-only method used to create profiles on disk.
 
         :param profile_type: Profiles.BRAND_NEW, Profiles.LIKE_NEW, Profiles.TEN_BOOKMARKS, Profiles.DEFAULT
@@ -162,29 +148,25 @@ class FirefoxProfile(MozProfile):
         if profile_type is None:
             profile_type = Profiles.DEFAULT
 
-        if preferences is None:
-            if profile_type is Profiles.BRAND_NEW:
-                preferences = FirefoxSettings.DEFAULT_FX_PREFS
-            else:
-                preferences = {}
+        if profile_type is Profiles.BRAND_NEW:
+            preferences = {}
+        else:
+            preferences = FirefoxSettings.DEFAULT_FX_PREFS
+
+        if prefs is not None:
+            for pref in prefs:
+                preferences[pref] = prefs[pref]
 
         test_root = PathManager.get_current_tests_directory()
         current_test = os.environ.get("CURRENT_TEST")
         test_path = current_test.split(test_root)[1].split(".py")[0][1:]
-        profile_path = os.path.join(
-            PathManager.get_current_run_dir(), test_path, "profile"
-        )
+        profile_path = os.path.join(PathManager.get_current_run_dir(), test_path, "profile")
 
         if profile_type is Profiles.BRAND_NEW:
             logger.debug("Creating brand new profile: %s" % profile_path)
         elif profile_type in (Profiles.LIKE_NEW, Profiles.TEN_BOOKMARKS):
-            logger.debug(
-                "Creating new profile from %s staged profile."
-                % profile_type.value.upper()
-            )
-            profile_path = FirefoxProfile._get_staged_profile(
-                profile_type, profile_path
-            )
+            logger.debug("Creating new profile from %s staged profile." % profile_type.value.upper())
+            profile_path = FirefoxProfile._get_staged_profile(profile_type, profile_path)
         else:
             raise ValueError("No profile found: %s" % profile_type.value)
 
@@ -239,19 +221,14 @@ class FirefoxApp:
         if version == "local":
             candidate = PathManager.get_local_firefox_path()
             if candidate is None:
-                logger.critical(
-                    "Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/"
-                )
+                logger.critical("Firefox not found. Please download if from https://www.mozilla.org/en-US/firefox/new/")
             return candidate
         elif os.path.isfile(version):
             return version
         else:
             try:
                 s_t, s_d = _get_scraper_details(
-                    version,
-                    CHANNELS,
-                    os.path.join(PathManager.get_working_dir(), "cache"),
-                    locale,
+                    version, CHANNELS, os.path.join(PathManager.get_working_dir(), "cache"), locale
                 )
 
                 scraper = FactoryScraper(s_t, **s_d)
@@ -260,20 +237,13 @@ class FirefoxApp:
                 install_dir = install(
                     src=firefox_dmg,
                     dest=os.path.join(
-                        PathManager.get_temp_dir(),
-                        "firefox{}{}".format(
-                            normalize_str(version), normalize_str(locale)
-                        ),
+                        PathManager.get_temp_dir(), "firefox{}{}".format(normalize_str(version), normalize_str(locale))
                     ),
                 )
 
                 return get_binary(install_dir, "Firefox")
             except errors.NotFoundError:
-                logger.critical(
-                    "Specified build {} has not been found. Closing Iris ...".format(
-                        version
-                    )
-                )
+                logger.critical("Specified build {} has not been found. Closing Iris ...".format(version))
         return None
 
 
@@ -314,15 +284,10 @@ class FXRunner:
         logger.debug("Creating Firefox runner ...")
         try:
             runner = FirefoxRunner(
-                binary=self.application.path,
-                profile=self.profile,
-                cmdargs=args,
-                process_args=process_args,
+                binary=self.application.path, profile=self.profile, cmdargs=args, process_args=process_args
             )
             logger.debug("Firefox runner successfully created.")
-            logger.debug(
-                'Running Firefox with command: "%s"' % ",".join(runner.command)
-            )
+            logger.debug('Running Firefox with command: "%s"' % ",".join(runner.command))
         except run_errors.RunnerNotStartedError:
             raise APIHelperError("Error creating Firefox runner.")
 
@@ -376,10 +341,7 @@ class FXRunner:
                         process.terminate()
 
                 except psutil.NoSuchProcess:
-                    logger.debug(
-                        "Failed to find and close Firefox PID: %s"
-                        % FXRunner.process.pid
-                    )
+                    logger.debug("Failed to find and close Firefox PID: %s" % FXRunner.process.pid)
                     # shutdown_process('firefox')
         else:
 
@@ -456,9 +418,7 @@ def _get_latest_scraper_details(channel: str) -> tuple:
         return "candidate", {"version": channel}
 
 
-def _get_scraper_details(
-    version: str, channels: tuple, destination: str, locale: str
-) -> tuple:
+def _get_scraper_details(version: str, channels: tuple, destination: str, locale: str) -> tuple:
     """Generate scraper details from version.
 
     :param version: Can be a Firefox version (ex: 55.0, 55.0b3, etc.) or one of the following options:
@@ -472,19 +432,9 @@ def _get_scraper_details(
         version = _map_latest_release_options(version)
 
         if version == "nightly":
-            return (
-                "daily",
-                {
-                    "branch": "mozilla-central",
-                    "destination": destination,
-                    "locale": locale,
-                },
-            )
+            return ("daily", {"branch": "mozilla-central", "destination": destination, "locale": locale})
         else:
-            return (
-                "candidate",
-                {"version": version, "destination": destination, "locale": locale},
-            )
+            return ("candidate", {"version": version, "destination": destination, "locale": locale})
     else:
         if "-dev" in version:
             return (
@@ -498,20 +448,10 @@ def _get_scraper_details(
             )
 
         elif not _has_letters(version) or any(x in version for x in ("b", "esr")):
-            return (
-                "candidate",
-                {"version": version, "destination": destination, "locale": locale},
-            )
+            return ("candidate", {"version": version, "destination": destination, "locale": locale})
         else:
             logger.warning("Version not recognized. Getting latest nightly build ...")
-            return (
-                "daily",
-                {
-                    "branch": "mozilla-central",
-                    "destination": destination,
-                    "locale": locale,
-                },
-            )
+            return ("daily", {"branch": "mozilla-central", "destination": destination, "locale": locale})
 
 
 def get_version_from_path(path: str) -> str:
@@ -593,11 +533,7 @@ class FirefoxUtils:
         latest_path = FactoryScraper(latest_type, **latest_scraper_details).filename
 
         latest_version = get_version_from_path(latest_path)
-        logger.info(
-            "Latest available version for {} channel is: {}".format(
-                channel, latest_version
-            )
-        )
+        logger.info("Latest available version for {} channel is: {}".format(channel, latest_version))
         return latest_version
 
     @staticmethod
@@ -608,9 +544,7 @@ class FirefoxUtils:
         pref_file = os.path.join(base_path, "defaults", "pref", "channel-prefs.js")
         file_data = 'pref("app.update.channel", "%s");' % channel_name
         if os.path.exists(pref_file):
-            logger.debug(
-                "Updating Firefox channel-prefs.js file for channel: %s" % channel_name
-            )
+            logger.debug("Updating Firefox channel-prefs.js file for channel: %s" % channel_name)
             with open(pref_file, "w") as f:
                 f.write(file_data)
                 f.close()

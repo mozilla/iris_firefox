@@ -42,31 +42,23 @@ class Test(FirefoxTest):
             click(bookmarks_menu_pattern.target_offset(0, bookmarks_menu_height))
 
         bookmarks_folder_located = exists(firefox_bookmarks_folder_pattern)
-        assert (
-            bookmarks_folder_located is True
-        ), "Mozilla Firefox bookmarks folder is found"
+        assert bookmarks_folder_located is True, "Mozilla Firefox bookmarks folder is found"
 
         double_click(firefox_bookmarks_folder_pattern)
 
         default_bookmarks_displayed = exists(customize_firefox_bookmark_pattern)
-        assert (
-            default_bookmarks_displayed is True
-        ), "Default bookmarks list is displayed"
+        assert default_bookmarks_displayed is True, "Default bookmarks list is displayed"
 
         if OSHelper.is_windows():
             right_click(customize_firefox_bookmark_pattern)
             bookmark_dropdown_menu_opened = exists(bookmark_properties_pattern)
-            assert (
-                bookmark_dropdown_menu_opened is True
-            ), "Bookmark dropdown menu is opened"
+            assert bookmark_dropdown_menu_opened is True, "Bookmark dropdown menu is opened"
             click(bookmark_properties_pattern)
         else:
             click(customize_firefox_bookmark_pattern)
 
         bookmark_properties_displayed = exists(name_bookmark_field_pattern)
-        assert (
-            bookmark_properties_displayed is True
-        ), "Bookmark properties are displayed"
+        assert bookmark_properties_displayed is True, "Bookmark properties are displayed"
 
         click(name_bookmark_field_pattern)
         edit_select_all()
@@ -79,19 +71,13 @@ class Test(FirefoxTest):
             click(firefox_bookmarks_folder_pattern)
 
         edited_bookmark_located = exists(edited_bookmark_pattern)
-        assert (
-            edited_bookmark_located is True
-        ), "Edited bookmark is located among default"
+        assert edited_bookmark_located is True, "Edited bookmark is located among default"
 
         no_original_bookmark_located = not exists(customize_firefox_bookmark_pattern)
-        assert (
-            no_original_bookmark_located is True
-        ), 'Default "Custom Firefox" bookmark isn\'t found'
+        assert no_original_bookmark_located is True, 'Default "Custom Firefox" bookmark isn\'t found'
 
         if OSHelper.is_windows():
-            click(
-                NavBar.HAMBURGER_MENU
-            )  # Is's required for correct process termination
+            click(NavBar.HAMBURGER_MENU)  # Is's required for correct process termination
             restore_firefox_focus()
         else:
             close_tab()

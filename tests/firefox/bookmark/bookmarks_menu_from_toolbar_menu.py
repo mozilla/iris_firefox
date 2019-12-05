@@ -20,36 +20,24 @@ class Test(FirefoxTest):
         show_all_bookmarks_pattern = Pattern("show_all_bookmarks_button.png")
         recently_bookmarked_label_pattern = Pattern("recently_bookmarked_label.png")
 
-        library_button_exists = exists(
-            NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            library_button_exists is True
-        ), "View history, saved bookmarks and more section exists"
+        library_button_exists = exists(NavBar.LIBRARY_MENU, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert library_button_exists is True, "View history, saved bookmarks and more section exists"
 
         click(NavBar.LIBRARY_MENU)
 
-        bookmarks_menu_option_exists = exists(
-            LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmarks_menu_option_exists is True
-        ), "The Bookmarks menu is correctly displayed"
+        bookmarks_menu_option_exists = exists(LibraryMenu.BOOKMARKS_OPTION, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert bookmarks_menu_option_exists is True, "The Bookmarks menu is correctly displayed"
 
         click(LibraryMenu.BOOKMARKS_OPTION)
 
-        back_button_exists = exists(
-            Utils.LIBRARY_BACK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        back_button_exists = exists(Utils.LIBRARY_BACK_BUTTON, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert back_button_exists is True, "Back button is displayed"
 
         bookmarks_title_exists = exists(bookmarks_title_pattern)
         assert bookmarks_title_exists is True, "Bookmarks title is displayed"
 
         bookmark_this_page_exists = exists(bookmark_this_page_pattern)
-        assert (
-            bookmark_this_page_exists is True
-        ), "Bookmark this page button is displayed"
+        assert bookmark_this_page_exists is True, "Bookmark this page button is displayed"
 
         bookmarking_tools_exists = exists(LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS)
         assert bookmarking_tools_exists is True, "Bookmarking Tools button is displayed"
@@ -58,11 +46,7 @@ class Test(FirefoxTest):
         assert search_bookmarks_exists is True, "Search Bookmarks button is displayed"
 
         recently_bookmarked_label_exists = exists(recently_bookmarked_label_pattern)
-        assert (
-            recently_bookmarked_label_exists is True
-        ), "Recently bookmarked section is displayed"
+        assert recently_bookmarked_label_exists is True, "Recently bookmarked section is displayed"
 
         show_all_bookmarks_exists = exists(show_all_bookmarks_pattern)
-        assert (
-            show_all_bookmarks_exists is True
-        ), "Show all bookmarks button is displayed"
+        assert show_all_bookmarks_exists is True, "Show all bookmarks button is displayed"

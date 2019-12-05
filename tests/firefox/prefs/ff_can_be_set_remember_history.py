@@ -18,18 +18,12 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
-        assert (
-            preferences_opened
-        ), "Preferences page is successfully displayed on privacy block"
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        assert preferences_opened, "Preferences page is successfully displayed on privacy block"
 
         paste("firefox will")
         remember_history_menu_found = exists(remember_history_selected_pattern)
-        assert (
-            remember_history_menu_found
-        ), "History menu found, Firefox already set to remember history"
+        assert remember_history_menu_found, "History menu found, Firefox already set to remember history"
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
         firefox_site_loaded = exists(LocalWeb.FIREFOX_LOGO, Settings.site_load_timeout)

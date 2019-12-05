@@ -35,17 +35,13 @@ def access_and_check_pattern(access_pattern, msg, check_pattern=None, access_typ
         if access_type and access_type == "click":
             click(access_pattern)
     except FindError:
-        raise APIHelperError(
-            "Can't find the %s pattern, aborting." % access_pattern.get_filename()
-        )
+        raise APIHelperError("Can't find the %s pattern, aborting." % access_pattern.get_filename())
 
     if check_pattern:
         try:
             exists = wait(check_pattern, 15)
             logger.debug("%s pattern has been found." % check_pattern.get_filename())
         except FindError:
-            raise APIHelperError(
-                "Can't find the %s option, aborting." % check_pattern.get_filename()
-            )
+            raise APIHelperError("Can't find the %s option, aborting." % check_pattern.get_filename())
 
     return Step(exists, "%s was accessed and displayed properly." % msg)

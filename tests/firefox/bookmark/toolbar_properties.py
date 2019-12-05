@@ -22,72 +22,50 @@ class Test(FirefoxTest):
 
         open_bookmarks_toolbar()
 
-        bookmarks_folder_available_in_toolbar = exists(
-            getting_started_toolbar_bookmark_pattern
-        )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        bookmarks_folder_available_in_toolbar = exists(getting_started_toolbar_bookmark_pattern)
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         right_click(getting_started_toolbar_bookmark_pattern)
 
-        properties_option_available = exists(
-            bookmark_properties_option, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        properties_option_available = exists(bookmark_properties_option, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert properties_option_available is True, (
-            "'Properties' option in available in context menu after "
-            "right-click at the bookmark in toolbar."
+            "'Properties' option in available in context menu after " "right-click at the bookmark in toolbar."
         )
 
         click(bookmark_properties_option)
 
-        properties_opened = exists(
-            properties_popup_save_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            properties_opened is True
-        ), "Properties for 'Getting Started' window is opened."
+        properties_opened = exists(properties_popup_save_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert properties_opened is True, "Properties for 'Getting Started' window is opened."
 
         paste("New Name")
 
         [type(Key.TAB) for _ in range(2)]
 
-        type('Tag')
+        type("Tag")
 
         if OSHelper.is_mac():
             type(Key.TAB)
         else:
             [type(Key.TAB) for _ in range(2)]
 
-        type('keyword')
+        type("keyword")
 
         type(Key.ENTER)
 
-        bookmarks_folder_available_in_toolbar = exists(
-            renamed_toolbar_bookmark_pattern
-        )
-        assert (
-            bookmarks_folder_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        bookmarks_folder_available_in_toolbar = exists(renamed_toolbar_bookmark_pattern)
+        assert bookmarks_folder_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         right_click(renamed_toolbar_bookmark_pattern)
 
-        properties_option_available = exists(
-            bookmark_properties_option, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        properties_option_available = exists(bookmark_properties_option, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert properties_option_available is True, (
-            "'Properties' option in available in context menu after "
-            "right-click at the bookmark in toolbar."
+            "'Properties' option in available in context menu after " "right-click at the bookmark in toolbar."
         )
 
         click(bookmark_properties_option)
 
-        properties_opened = exists(
-            properties_popup_save_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            properties_opened is True
-        ), "Properties for 'Getting Started' window is opened."
+        properties_opened = exists(properties_popup_save_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert properties_opened is True, "Properties for 'Getting Started' window is opened."
 
         name_is_edited = copy_to_clipboard()
         time.sleep(Settings.DEFAULT_UI_DELAY)

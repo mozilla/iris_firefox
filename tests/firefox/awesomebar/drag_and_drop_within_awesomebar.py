@@ -23,9 +23,7 @@ class Test(FirefoxTest):
         url = LocalWeb.FOCUS_TEST_SITE
 
         navigate(url)
-        assert exists(
-            LocalWeb.FOCUS_LOGO, 10
-        ), "Page successfully loaded, focus logo found."
+        assert exists(LocalWeb.FOCUS_LOGO, 10), "Page successfully loaded, focus logo found."
 
         try:
             wait(text_to_be_highlighted, 10)
@@ -49,6 +47,4 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError("Selected text could not be dragged and dropped, aborting.")
 
-        assert exists(
-            google_text_search.similar(0.6), 10
-        ), "Google search successfully done."
+        assert exists(google_text_search.similar(0.6), 10), "Google search successfully done."

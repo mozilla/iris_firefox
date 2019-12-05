@@ -23,32 +23,24 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 
-        firefox_test_site_opened = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        firefox_test_site_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert firefox_test_site_opened is True, "Firefox Test page opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "Bookmark page dialog displayed"
 
         click(Bookmarks.StarDialog.DONE)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
 
-        soap_wiki_opened = exists(
-            soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region
-        )
+        soap_wiki_opened = exists(soap_wiki_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert soap_wiki_opened is True, "The test page is opened"
 
         bookmark_page()
 
-        stardialog_displayed = exists(
-            Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        stardialog_displayed = exists(Bookmarks.StarDialog.DONE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert stardialog_displayed is True, "Bookmark page dialog displayed"
 
         click(Bookmarks.StarDialog.DONE)
@@ -81,9 +73,7 @@ class Test(FirefoxTest):
         assert bookmarks_highlighted is True, "Bookmarks are highlighted"
 
         bookmarks_toolbar_folder_exists = exists(Library.BOOKMARKS_TOOLBAR)
-        assert (
-            bookmarks_toolbar_folder_exists is True
-        ), "Bookmarks toolbar folder exists"
+        assert bookmarks_toolbar_folder_exists is True, "Bookmarks toolbar folder exists"
 
         drag_drop(bookmarks_highlighted_pattern, Library.BOOKMARKS_TOOLBAR)
 
@@ -92,9 +82,7 @@ class Test(FirefoxTest):
         click(Library.BOOKMARKS_TOOLBAR)
 
         bookmarks_moved = exists(bookmarks_moved_pattern)
-        assert (
-            bookmarks_moved is True
-        ), "Bookmarks are correctly moved in the selected section."
+        assert bookmarks_moved is True, "Bookmarks are correctly moved in the selected section."
 
         click(Library.TITLE)
 

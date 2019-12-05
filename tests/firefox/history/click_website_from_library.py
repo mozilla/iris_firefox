@@ -21,13 +21,9 @@ class Test(FirefoxTest):
         # Open History and check if it is populated with the Iris page.
         open_library_menu("History")
 
-        right_upper_corner = Region(
-            Screen().width / 2, 0, Screen().width / 2, Screen().height / 2
-        )
+        right_upper_corner = Region(Screen().width / 2, 0, Screen().width / 2, Screen().height / 2)
 
-        expected = right_upper_corner.exists(
-            iris_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = right_upper_corner.exists(iris_bookmark_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Iris page is displayed in the History menu list."
 
         click(show_all_history_pattern)

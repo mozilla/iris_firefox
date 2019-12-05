@@ -15,14 +15,12 @@ class Test(FirefoxTest):
         profile=Profiles.TEN_BOOKMARKS,
     )
     def run(self, firefox):
-        bookmarks_toolbar_menu_option_pattern = Pattern(
-            "bookmarks_toolbar_menu_option.png"
-        )
+        bookmarks_toolbar_menu_option_pattern = Pattern("bookmarks_toolbar_menu_option.png")
         iris_tab_pattern = Pattern("iris_tab.png")
         getting_started_toolbar_bookmark_pattern = Pattern("toolbar_bookmark_icon.png")
         copy_option_pattern = Pattern("copy_option.png")
         paste_option_pattern = Pattern("paste_option.png")
-        two_identical_bookmarks_pattern = Pattern("bookmark_copied.png")
+        two_identical_bookmarks_pattern = Pattern("bookmark_copied.png").similar(0.6)
 
         area_to_click = find(iris_tab_pattern)
         area_to_click.x += 300
@@ -40,17 +38,12 @@ class Test(FirefoxTest):
         click(bookmarks_toolbar_menu_option_pattern)
 
         bookmark_available_in_toolbar = exists(
-            getting_started_toolbar_bookmark_pattern,
-            FirefoxSettings.SHORT_FIREFOX_TIMEOUT,
+            getting_started_toolbar_bookmark_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
         )
-        assert (
-            bookmark_available_in_toolbar is True
-        ), "The 'Bookmarks Toolbar' is enabled."
+        assert bookmark_available_in_toolbar is True, "The 'Bookmarks Toolbar' is enabled."
 
         right_click(getting_started_toolbar_bookmark_pattern)
-        cut_option_available_in_context_menu = exists(
-            copy_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        cut_option_available_in_context_menu = exists(copy_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         assert cut_option_available_in_context_menu is True, (
             "'Copy' option is available after right " "click at the bookmark icon"
         )
@@ -58,9 +51,7 @@ class Test(FirefoxTest):
         click(copy_option_pattern)
         try:
             context_menu_closed = wait_vanish(paste_option_pattern)
-            assert (
-                context_menu_closed is True
-            ), "Context menu successfully closed after copying the bookmark"
+            assert context_menu_closed is True, "Context menu successfully closed after copying the bookmark"
         except FindError:
             raise FindError("Context menu didn't close while copying the bookmark")
 
@@ -70,18 +61,10 @@ class Test(FirefoxTest):
 
         right_click(area_to_paste)
 
-        paste_option_available = exists(
-            paste_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            paste_option_available is True
-        ), "'Paste' option is available after right click at the toolbar"
+        paste_option_available = exists(paste_option_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert paste_option_available is True, "'Paste' option is available after right click at the toolbar"
 
         click(paste_option_pattern)
 
-        bookmark_copied = exists(
-            two_identical_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
-        assert (
-            bookmark_copied is True
-        ), "The item is correctly pasted in the select section."
+        bookmark_copied = exists(two_identical_bookmarks_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+        assert bookmark_copied is True, "The item is correctly pasted in the select section."

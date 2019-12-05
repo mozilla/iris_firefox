@@ -13,16 +13,13 @@ class Test(FirefoxTest):
         test_case_id="119446",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         history_today_sidebar_pattern = Sidebar.HistorySidebar.Timeline.TODAY
         history_sidebar_view_button_pattern = Sidebar.HistorySidebar.VIEW_BUTTON
-        history_sidebar_sort_by_date_pattern = (
-            Sidebar.HistorySidebar.ViewBy.VIEW_BY_DATE_CHECKED
-        )
-        history_sidebar_items_sort_by_date_pattern = Pattern(
-            "history_sidebar_items_sort_by_date.png"
-        )
+        history_sidebar_sort_by_date_pattern = Sidebar.HistorySidebar.ViewBy.VIEW_BY_DATE_CHECKED
+        history_sidebar_items_sort_by_date_pattern = Pattern("history_sidebar_items_sort_by_date.png")
 
         # Open some pages to create some history.
         navigate(LocalWeb.MOZILLA_TEST_SITE)
@@ -69,9 +66,7 @@ class Test(FirefoxTest):
         click(history_sidebar_view_button_pattern)
 
         expected_8 = exists(history_sidebar_sort_by_date_pattern, 10)
-        assert (
-            expected_8 is True
-        ), "Default sorting option - sort by date - is selected properly."
+        assert expected_8 is True, "Default sorting option - sort by date - is selected properly."
 
         click(history_sidebar_sort_by_date_pattern)
 

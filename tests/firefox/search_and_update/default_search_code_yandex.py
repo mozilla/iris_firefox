@@ -34,10 +34,7 @@ class Test(FirefoxTest):
         test_case_id="218336",
         test_suite_id="83",
         profile=Profiles.BRAND_NEW,
-        preferences={
-            "browser.search.region": fx_region_code,
-            "browser.search.cohort": "jan18-1",
-        },
+        preferences={"browser.search.region": fx_region_code, "browser.search.cohort": "jan18-1"},
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
@@ -47,18 +44,12 @@ class Test(FirefoxTest):
         change_preference("browser.search.widget.inNavBar", True)
         change_preference("browser.tabs.warnOnClose", True)
 
-        default_search_engine_yandex_pattern = Pattern(
-            "default_search_engine_yandex.png"
-        )
-        yandex_logo_content_search_field_pattern = Pattern(
-            "yandex_logo_content_search_field.png"
-        )
+        default_search_engine_yandex_pattern = Pattern("default_search_engine_yandex.png")
+        yandex_logo_content_search_field_pattern = Pattern("yandex_logo_content_search_field.png")
 
         navigate("about:preferences#search")
 
-        expected = exists(
-            default_search_engine_yandex_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(default_search_engine_yandex_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Yandex is the default search engine."
 
         # Perform a search using the awesome bar and then clear the content from it.
@@ -70,8 +61,7 @@ class Test(FirefoxTest):
         url_text = copy_to_clipboard()
 
         assert "/search/?text=test&clid=2186621" in url_text, (
-            "Client search code is correct for searches from"
-            "awesomebar, region " + fx_region_code + "."
+            "Client search code is correct for searches from" "awesomebar, region " + fx_region_code + "."
         )
 
         select_location_bar()
@@ -86,8 +76,7 @@ class Test(FirefoxTest):
         url_text = copy_to_clipboard()
 
         assert "/search/?text=test&clid=2186618" in url_text, (
-            "Client search code is correct for searches from "
-            "search bar, region " + fx_region_code + "."
+            "Client search code is correct for searches from " "search bar, region " + fx_region_code + "."
         )
 
         # Highlight some text and right click it.
@@ -107,15 +96,12 @@ class Test(FirefoxTest):
         url_text = copy_to_clipboard()
 
         assert "/search/?text=Focus&clid=2186623" in url_text, (
-            "Client search code is correct for searches "
-            "with context menu, region " + fx_region_code + "."
+            "Client search code is correct for searches " "with context menu, region " + fx_region_code + "."
         )
 
         # Perform a search from about:newtab page, content search field.
         new_tab()
-        expected = exists(
-            yandex_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(yandex_logo_content_search_field_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Yandex logo from content search field found."
 
         click(yandex_logo_content_search_field_pattern)
@@ -128,6 +114,5 @@ class Test(FirefoxTest):
         url_text = copy_to_clipboard()
 
         assert "/search/?text=beats&clid=2186620" in url_text, (
-            "Client search code is correct for searches "
-            "from content search field, region " + fx_region_code + "."
+            "Client search code is correct for searches " "from content search field, region " + fx_region_code + "."
         )

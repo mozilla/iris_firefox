@@ -34,7 +34,7 @@ class Test(FirefoxTest):
             DownloadFiles.LIBRARY_DOWNLOADS_5MB_HIGHLIGHTED,
         ]
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button is available."
@@ -42,9 +42,7 @@ class Test(FirefoxTest):
         expected = exists(CustomizePage.OVERFLOW_MENU_ICON, 10)
         assert expected is True, "Overflow menu drop area is displayed."
 
-        drag_drop(
-            NavBar.DOWNLOADS_BUTTON, CustomizePage.OVERFLOW_MENU_ICON, duration=0.5
-        )
+        drag_drop(NavBar.DOWNLOADS_BUTTON, CustomizePage.OVERFLOW_MENU_ICON, duration=0.5)
 
         expected = exists(Library.DOWNLOADS, 10)
         assert expected is True, "Download option is placed in Overflow menu."
@@ -72,15 +70,9 @@ class Test(FirefoxTest):
         click(NavBar.MORE_TOOLS)
 
         download_option = find(MoreTools.DOWNLOADS_OPTION)
-        region_download_button_blue = Region(
-            download_option.x - 50, download_option.y - 20, 100, 100
-        )
-        expected = region_download_button_blue.exists(
-            NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.99), 30
-        )
-        assert (
-            expected is True
-        ), "Download button turns blue in the overflow menu when download is completed."
+        region_download_button_blue = Region(download_option.x - 50, download_option.y - 20, 100, 100)
+        expected = region_download_button_blue.exists(NavBar.DOWNLOADS_BUTTON_BLUE.similar(0.99), 30)
+        assert expected is True, "Download button turns blue in the overflow menu when download is completed."
 
         open_downloads()
 
@@ -90,10 +82,7 @@ class Test(FirefoxTest):
         # Check that all downloads are displayed in Downloads category.
         for pattern in downloads_library_list:
             expected = exists(pattern, 50)
-            assert expected is True, (
-                "%s file found in the Library, Downloads section."
-                % str(pattern.get_filename())
-            )
+            assert expected is True, "%s file found in the Library, Downloads section." % str(pattern.get_filename())
 
         click_window_control("close")
         close_window()

@@ -35,26 +35,17 @@ class Test(FirefoxTest):
 
         try:
             if OSHelper.is_mac():
-                full_screen_on = wait_vanish(
-                    MainWindow.UNHOVERED_MAIN_RED_CONTROL,
-                    FirefoxSettings.FIREFOX_TIMEOUT,
-                )
+                full_screen_on = wait_vanish(MainWindow.UNHOVERED_MAIN_RED_CONTROL, FirefoxSettings.FIREFOX_TIMEOUT)
             else:
-                full_screen_on = wait_vanish(
-                    MainWindow.CLOSE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT
-                )
+                full_screen_on = wait_vanish(MainWindow.CLOSE_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
             assert full_screen_on is True, "Full screen on"
         except FindError:
             raise FindError("Not entered full screen mode")
 
-        page_content_displayed = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        page_content_displayed = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert page_content_displayed is True, "Page content displayed."
 
-        click(
-            find(LocalWeb.SOAP_WIKI_SOAP_LABEL)
-        )  # Clicking pattern may cause link clicking
+        click(find(LocalWeb.SOAP_WIKI_SOAP_LABEL))  # Clicking pattern may cause link clicking
 
         # Mouse scroll
 
@@ -68,15 +59,9 @@ class Test(FirefoxTest):
         assert mouse_scroll_done is True, "Mouse scroll down done"
 
         returned_home_mouse_scroll = scroll_until_pattern_found(
-            soap_article_title,
-            Mouse().scroll,
-            (0, scroll_length),
-            20,
-            timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+            soap_article_title, Mouse().scroll, (0, scroll_length), 20, timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
         )
-        assert (
-            returned_home_mouse_scroll is True
-        ), "Returned to page top using mouse scroll."
+        assert returned_home_mouse_scroll is True, "Returned to page top using mouse scroll."
 
         # arrows scroll
         arrows_scroll_done = scroll_until_pattern_found(
@@ -98,37 +83,23 @@ class Test(FirefoxTest):
 
         # space key scroll
         arrows_scroll_done = scroll_until_pattern_found(
-            wikimedia_logo_pattern,
-            type,
-            (Key.SPACE,),
-            timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+            wikimedia_logo_pattern, type, (Key.SPACE,), timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
         )
         assert arrows_scroll_done is True, '"Space" scroll done'
 
         returned_home_shift_space = scroll_until_pattern_found(
-            soap_article_title,
-            type,
-            (Key.SPACE, KeyModifier.SHIFT),
-            timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+            soap_article_title, type, (Key.SPACE, KeyModifier.SHIFT), timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
         )
-        assert (
-            returned_home_shift_space is True
-        ), 'Returned to page top using "Shift+Space".'
+        assert returned_home_shift_space is True, 'Returned to page top using "Shift+Space".'
 
         # page down/up scroll
         page_down_scroll_done = scroll_until_pattern_found(
-            wikimedia_logo_pattern,
-            type,
-            (Key.PAGE_DOWN,),
-            timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+            wikimedia_logo_pattern, type, (Key.PAGE_DOWN,), timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
         )
         assert page_down_scroll_done is True, '"Space" scroll done'
 
         returned_home_page_up = scroll_until_pattern_found(
-            soap_article_title,
-            type,
-            (Key.PAGE_UP,),
-            timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+            soap_article_title, type, (Key.PAGE_UP,), timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
         )
         assert returned_home_page_up is True, 'Returned to page top using "Page Up".'
 
@@ -151,16 +122,10 @@ class Test(FirefoxTest):
 
         if OSHelper.is_mac():
             returned_home_ctrl_up = scroll_until_pattern_found(
-                soap_article_title,
-                type,
-                (Key.UP, KeyModifier.CMD),
-                timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+                soap_article_title, type, (Key.UP, KeyModifier.CMD), timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
             )
         else:
             returned_home_ctrl_up = scroll_until_pattern_found(
-                soap_article_title,
-                type,
-                (Key.UP, KeyModifier.CTRL),
-                timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2,
+                soap_article_title, type, (Key.UP, KeyModifier.CTRL), timeout=FirefoxSettings.TINY_FIREFOX_TIMEOUT / 2
             )
         assert returned_home_ctrl_up is True, 'Returned to page top using "Ctrl+Up".'

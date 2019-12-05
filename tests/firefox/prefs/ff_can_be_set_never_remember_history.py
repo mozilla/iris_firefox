@@ -21,18 +21,12 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#privacy")
 
-        preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
-        )
-        assert (
-            preferences_opened
-        ), "Preferences page is successfully displayed on privacy block"
+        preferences_opened = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED)
+        assert preferences_opened, "Preferences page is successfully displayed on privacy block"
 
         paste("firefox will")
         remember_history_menu_found = exists(remember_history_selected_pattern)
-        assert (
-            remember_history_menu_found
-        ), "History menu found, Firefox already set to remember history"
+        assert remember_history_menu_found, "History menu found, Firefox already set to remember history"
 
         click(remember_history_selected_pattern)
 
@@ -46,9 +40,9 @@ class Test(FirefoxTest):
 
         click(restart_browser_pattern)
 
-        browser_relaunched = exists(
-            NavBar.LIBRARY_MENU, Settings.site_load_timeout
-        ) and exists(NavBar.SIDEBAR_MENU, Settings.site_load_timeout)
+        browser_relaunched = exists(NavBar.LIBRARY_MENU, Settings.site_load_timeout) and exists(
+            NavBar.SIDEBAR_MENU, Settings.site_load_timeout
+        )
         assert browser_relaunched, "Browser is relaunched"
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -76,19 +70,13 @@ class Test(FirefoxTest):
         hist = exists(History.HistoryMenu.VIEW_HISTORY_SIDEBAR)
         assert hist, "History submenu is opened"
 
-        firefox_page_visited = not exists(
-            LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout
-        )
+        firefox_page_visited = not exists(LocalWeb.FIREFOX_BOOKMARK.similar(0.9), ui_timeout)
         assert firefox_page_visited, "Firefox local page visit was saved in history"
 
-        focus_page_visited = not exists(
-            LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout
-        )
+        focus_page_visited = not exists(LocalWeb.FOCUS_BOOKMARK.similar(0.9), ui_timeout)
         assert focus_page_visited, "Focus local page visit was saved in history"
 
-        pocket_page_visited = not exists(
-            LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout
-        )
+        pocket_page_visited = not exists(LocalWeb.POCKET_BOOKMARK.similar(0.9), ui_timeout)
         assert pocket_page_visited, "Pocket local page visit was saved in history"
 
         restore_firefox_focus()

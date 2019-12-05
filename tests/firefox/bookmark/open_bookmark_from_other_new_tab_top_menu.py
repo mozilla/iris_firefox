@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png")
         open_bookmark_new_tab_pattern = Pattern("open_bookmark_in_new_tab.png")
-        other_bookmarks_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_pattern = Pattern("other_bookmarks.png").similar(0.7)
 
         open_firefox_menu()
 
@@ -37,9 +37,7 @@ class Test(FirefoxTest):
         click(other_bookmarks_pattern)
 
         firefox_bookmark_top_menu_located = exists(firefox_bookmark_top_menu_pattern)
-        assert (
-            firefox_bookmark_top_menu_located is True
-        ), "Bookmarks are displayed in top menu"
+        assert firefox_bookmark_top_menu_located is True, "Bookmarks are displayed in top menu"
 
         # Required to guarantee bookmarks list will not disappear
         firefox_bookmark_item_location = find(firefox_bookmark_top_menu_pattern)
@@ -55,9 +53,7 @@ class Test(FirefoxTest):
 
         click(open_bookmark_new_tab_pattern)
 
-        webpage_opened = exists(
-            LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        webpage_opened = exists(LocalWeb.FIREFOX_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert webpage_opened is True, "Expected webpage is opened"
 
         opened_in_new_tab = exists(LocalWeb.IRIS_LOGO_INACTIVE_TAB)

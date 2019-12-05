@@ -14,10 +14,8 @@ class Test(FirefoxTest):
         locale=["en-US"],
     )
     def run(self, firefox):
-        text_editor_title_pattern = Pattern("text_editor_title.png")
-        check_your_spelling_unchecked_pattern = Pattern(
-            "check_your_spelling_unchecked.png"
-        ).similar(0.65)
+        text_editor_title_pattern = Pattern("text_editor_title.png").similar(0.7)
+        check_your_spelling_unchecked_pattern = Pattern("check_your_spelling_unchecked.png").similar(0.65)
         check_your_spelling_checked_pattern = Pattern("check_your_spelling_checked.png")
         word_underlined_red_pattern = Pattern("word_underlined_red.png")
         text_editor_page = self.get_asset_path("editor.html")
@@ -25,8 +23,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#general")
 
         page_loaded = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.SITE_LOAD_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.SITE_LOAD_TIMEOUT
         )
         assert page_loaded, "about:preferences page loaded"
 
@@ -35,9 +32,7 @@ class Test(FirefoxTest):
         text_editor_loaded = exists(text_editor_title_pattern)
         assert text_editor_loaded, "Text editor page loaded."
 
-        screen_center_location = Location(
-            Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2
-        )
+        screen_center_location = Location(Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT // 2)
 
         click(screen_center_location)
 
@@ -56,10 +51,7 @@ class Test(FirefoxTest):
 
         navigate("about:preferences#general")
 
-        page_loaded = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-        )
+        page_loaded = exists(AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_NOT_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert page_loaded, "about:preferences#general page loaded."
 
         type("language")
@@ -89,8 +81,7 @@ class Test(FirefoxTest):
         paste("test   ttteeesssttt ")
 
         wrong_spelled_word_underlined_red = exists(
-            word_underlined_red_pattern.similar(0.9),
-            FirefoxSettings.TINY_FIREFOX_TIMEOUT,
+            word_underlined_red_pattern.similar(0.9), FirefoxSettings.TINY_FIREFOX_TIMEOUT
         )
         assert wrong_spelled_word_underlined_red is False, (
             "The word that was spelled wrong is underlined with a red " "squiggly line."

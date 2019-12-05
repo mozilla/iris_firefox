@@ -16,7 +16,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         empty_folder_stub_pattern = Pattern("empty_folder.png")
-        other_bookmarks_item_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_item_pattern = Pattern("other_bookmarks.png").similar(0.7)
 
         open_firefox_menu()
 
@@ -26,9 +26,7 @@ class Test(FirefoxTest):
         click(bookmarks_top_menu_pattern)
 
         bookmarks_dropdown_displayed = exists(other_bookmarks_item_pattern)
-        assert (
-            bookmarks_dropdown_displayed is True
-        ), "Bookmarks menu is properly displayed"
+        assert bookmarks_dropdown_displayed is True, "Bookmarks menu is properly displayed"
 
         click(other_bookmarks_item_pattern)
 

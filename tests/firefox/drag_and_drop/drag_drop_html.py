@@ -30,9 +30,7 @@ class Test(FirefoxTest):
         click(drop_html_unfollowed_pattern)
 
         drop_html_activated = exists(drop_html_inactive_pattern)
-        assert (
-            drop_html_activated
-        ), "The drop-html-data changed color to red which indicates that it has been selected."
+        assert drop_html_activated, "The drop-html-data changed color to red which indicates that it has been selected."
 
         type(Key.END)
 
@@ -44,11 +42,7 @@ class Test(FirefoxTest):
         if not OSHelper.is_mac():
             minimize_window()
             new_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).right(offset)
-            start_x = (
-                Screen.SCREEN_WIDTH // 5
-                if OSHelper.is_windows()
-                else Screen.SCREEN_WIDTH // 4
-            )
+            start_x = Screen.SCREEN_WIDTH // 5 if OSHelper.is_windows() else Screen.SCREEN_WIDTH // 4
             start_position = Location(start_x, Screen.SCREEN_HEIGHT // 18)
 
             drag_drop(new_tab_location, start_position)
@@ -59,16 +53,12 @@ class Test(FirefoxTest):
 
         click(browser_console_title_pattern)
 
-        paste(
-            f"window.resizeTo({Screen.SCREEN_WIDTH * 4 // 7}, {Screen.SCREEN_HEIGHT * 8 // 9})"
-        )
+        paste(f"window.resizeTo({Screen.SCREEN_WIDTH * 4 // 7}, {Screen.SCREEN_HEIGHT * 8 // 9})")
         type(Key.ENTER)
         close_tab()
 
         opened_tab_location = find(Tabs.NEW_TAB_HIGHLIGHTED).right(offset)
-        new_window_drop_location = Location(
-            Screen.SCREEN_WIDTH * 3 // 4, Screen.SCREEN_HEIGHT // 20
-        )
+        new_window_drop_location = Location(Screen.SCREEN_WIDTH * 3 // 4, Screen.SCREEN_HEIGHT // 20)
 
         drag_drop(opened_tab_location, new_window_drop_location)
 
@@ -78,9 +68,7 @@ class Test(FirefoxTest):
         click(Tabs.NEW_TAB_HIGHLIGHTED)
 
         navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
-        wiki_page_loaded = exists(
-            LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT
-        )
+        wiki_page_loaded = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, Settings.DEFAULT_HEAVY_SITE_LOAD_TIMEOUT)
         assert wiki_page_loaded, "Wiki webpage successfully is loaded."
 
         # Selecting paragraph by triple click on location (pattern click doesn't select)
@@ -92,25 +80,17 @@ class Test(FirefoxTest):
 
         paragraph.offset(paragraph_x // 2, paragraph_y // 2)
 
-        drop_position_offset_x, drop_position_offset_y = (
-            drop_not_matching_pattern.get_size()
-        )
+        drop_position_offset_x, drop_position_offset_y = drop_not_matching_pattern.get_size()
         drop_html_position = find(drop_not_matching_pattern)
-        drop_html_position.offset(
-            drop_position_offset_x * 2, -drop_position_offset_y * 5
-        )
+        drop_html_position.offset(drop_position_offset_x * 2, -drop_position_offset_y * 5)
 
         drag_drop(paragraph, drop_html_position)
 
         drop_verified = exists(drop_verified_pattern)
         assert drop_verified, '"Matching" appears under the "Drop Stuff Here" area.'
         matched_size_x, matched_size_y = drop_verified_pattern.get_size()
-        result_region_location = find(drop_verified_pattern).offset(
-            matched_size_x // 2, matched_size_y
-        )
-        result_region = Rectangle(
-            result_region_location.x, 0, Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT
-        )
+        result_region_location = find(drop_verified_pattern).offset(matched_size_x // 2, matched_size_y)
+        result_region = Rectangle(result_region_location.x, 0, Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT)
 
         correct_result_displayed = exists(correct_result_pattern, region=result_region)
         assert correct_result_displayed, "Actual and expected drop results are equal."

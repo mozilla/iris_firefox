@@ -22,15 +22,11 @@ class Test(FirefoxTest):
         },
     )
     def run(self, firefox):
-        potentially_unwanted_file_download_library = Pattern(
-            "potentially_unwanted_file_download_library.png"
-        )
+        potentially_unwanted_file_download_library = Pattern("potentially_unwanted_file_download_library.png")
 
         navigate("https://testsafebrowsing.appspot.com")
 
-        expected = exists(
-            DownloadFiles.POTENTIALLY_UNWANTED, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        expected = exists(DownloadFiles.POTENTIALLY_UNWANTED, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected is True, "Potentially unwanted file has been found."
 
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
@@ -38,9 +34,7 @@ class Test(FirefoxTest):
         download_file(
             DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0),
             DownloadFiles.OK,
-            expect_accept_download_available=False
-            if (OSHelper.get_os() == OSPlatform.WINDOWS)
-            else True,
+            expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
         )
 
         expected = exists(DownloadManager.DownloadsPanel.UNWANTED_DOWNLOAD_ICON, 10)
@@ -54,34 +48,22 @@ class Test(FirefoxTest):
         expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.HEADER, 10)
         assert expected is True, "Download details header is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DOWNLOAD_TITLE, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DOWNLOAD_TITLE, 10)
         assert expected is True, "Download details title is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DETAILS_1, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_DETAILS_1, 10)
         assert expected is True, "Download details 1 are displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.BLOCKED_DETAILS_2, 10)
         assert expected is True, "Download details 2 are displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_BADGE, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.UNWANTED_BADGE, 10)
         assert expected is True, "Download details unwanted icon is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.OPEN_FILE_BUTTON, 10)
         assert expected is True, "Open file button is displayed."
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, "Remove file button is displayed."
 
         # Open the unwanted file.
@@ -119,9 +101,7 @@ class Test(FirefoxTest):
 
         type(Key.ESC)
 
-        download_image_site_loaded = exists(
-            LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        download_image_site_loaded = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert download_image_site_loaded, "Focus site loaded"
 
         download_file(LocalWeb.FOCUS_LOGO, DownloadFiles.OK)
@@ -132,9 +112,7 @@ class Test(FirefoxTest):
         download_file(
             DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0),
             DownloadFiles.OK,
-            expect_accept_download_available=False
-            if (OSHelper.get_os() == OSPlatform.WINDOWS)
-            else True,
+            expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
         )
 
         expected = exists(NavBar.UNWANTED_DOWNLOADS_BUTTON, 10)
@@ -145,9 +123,7 @@ class Test(FirefoxTest):
 
         click(DownloadManager.DownloadsPanel.ADD_REMOVE_DOWNLOADS_ARROW)
 
-        expected = exists(
-            DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10
-        )
+        expected = exists(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 10)
         assert expected is True, "Remove file button is displayed."
 
         click(DownloadManager.DownloadsPanel.DownloadDetails.REMOVE_FILE_BUTTON, 1)
@@ -161,9 +137,7 @@ class Test(FirefoxTest):
         click(NavBar.DOWNLOADS_BUTTON)
 
         potentially_unwanted_file = exists(potentially_unwanted_file_download_library)
-        assert (
-            potentially_unwanted_file is False
-        ), "Potentially unwanted file is deleted from the Panel"
+        assert potentially_unwanted_file is False, "Potentially unwanted file is deleted from the Panel"
 
     def teardown(self):
         downloads_cleanup()

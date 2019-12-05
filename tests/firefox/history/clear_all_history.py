@@ -8,19 +8,12 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Clear all the History.",
-        locale=["en-US"],
-        test_case_id="172045",
-        test_suite_id="2000",
+        description="Clear all the History.", locale=["en-US"], test_case_id="172045", test_suite_id="2000"
     )
     def run(self, firefox):
-        searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON.similar(
-            0.9
-        )
+        searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON.similar(0.9)
         if OSHelper.is_mac():
-            clear_recent_history_last_hour_pattern = (
-                History.ClearRecentHistory.TimeRange.CLEAR_CHOICE_LAST_HOUR
-            )
+            selector_button_pattern = Pattern("sanitize_dialog_selector_button.png").similar(0.6)
 
         # Open some pages to create some history.
         new_tab()
@@ -43,7 +36,9 @@ class Test(FirefoxTest):
         for step in open_clear_recent_history_window():
             assert step.resolution, step.message
         if OSHelper.is_mac():
-            click(clear_recent_history_last_hour_pattern)
+            expected_3 = exists(selector_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
+            assert expected_3, "Sanitize dialog duration selector button found."
+            click(selector_button_pattern)
             for i in range(4):
                 type(Key.DOWN)
             type(Key.ENTER)

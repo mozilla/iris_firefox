@@ -20,7 +20,7 @@ class Test(FirefoxTest):
         bookmarks_top_menu_pattern = Pattern("bookmarks_top_menu.png")
         firefox_bookmark_top_menu_pattern = Pattern("firefox_bookmark_top_menu.png")
         folder_bookmarks_top_menu_pattern = Pattern("folder_bookmarks_top_menu.png")
-        other_bookmarks_top_menu_pattern = Pattern("other_bookmarks.png")
+        other_bookmarks_top_menu_pattern = Pattern("other_bookmarks.png").similar(0.7)
         name_bookmark_field_pattern = Pattern("name_bookmark_field.png")
         new_folder_pattern = Pattern("new_folder.png")
 
@@ -82,9 +82,7 @@ class Test(FirefoxTest):
         click(other_bookmarks_top_menu_pattern)
 
         folder_saved = exists(folder_bookmarks_top_menu_pattern)
-        assert (
-            folder_saved is True
-        ), "The new folder is available in the Other Bookmarks section."
+        assert folder_saved is True, "The new folder is available in the Other Bookmarks section."
 
         click(NavBar.HAMBURGER_MENU)
 

@@ -17,9 +17,7 @@ class Test(FirefoxTest):
         remember_history_pattern = Pattern("remember_history.png")
         custom_history_settings_pattern = Pattern("custom_history_settings.png")
         remember_search_history_pattern = Pattern("remember_search_history.png")
-        search_history_unticked_pattern = Pattern(
-            "remember_search_history_unticked.png"
-        )
+        search_history_unticked_pattern = Pattern("remember_search_history_unticked.png")
         add_search_bar_pattern = Pattern("add_search_bar.png").similar(0.6)
         search_tab_pattern = Pattern("google_tab.png")
         search_bar_not_empty_pattern = Pattern("search_bar_not_empty.png")
@@ -34,8 +32,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#privacy")
 
         preferences_opened = exists(
-            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED,
-            FirefoxSettings.FIREFOX_TIMEOUT,
+            AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert preferences_opened, "The page is successfully displayed."
 
@@ -46,9 +43,7 @@ class Test(FirefoxTest):
         click(remember_history_pattern)
 
         history_dropdown_opened = exists(custom_history_settings_pattern)
-        assert (
-            history_dropdown_opened
-        ), "The option is successfully selected and remembered."
+        assert history_dropdown_opened, "The option is successfully selected and remembered."
 
         click(custom_history_settings_pattern)
 
@@ -60,32 +55,24 @@ class Test(FirefoxTest):
         navigate("about:preferences#search")
 
         search_preferences_opened = exists(add_search_bar_pattern)
-        assert (
-            search_preferences_opened
-        ), "The about:preferences#search page is successfully displayed."
+        assert search_preferences_opened, "The about:preferences#search page is successfully displayed."
 
         click(add_search_bar_pattern)
 
         search_bar_appeared = exists(LocationBar.SEARCH_BAR)
-        assert (
-            search_bar_appeared
-        ), "The search bar is successfully added in the toolbar."
+        assert search_bar_appeared, "The search bar is successfully added in the toolbar."
 
         click(LocationBar.SEARCH_BAR)
 
         paste("random")
         type(Key.ENTER)
 
-        search_done = exists(
-            search_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT
-        )
+        search_done = exists(search_tab_pattern, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert search_done, "The Search is successfully performed."
 
         new_tab()
 
-        search_bar_is_not_empty = exists(
-            search_bar_not_empty_pattern.similar(0.7), region=Screen.TOP_HALF
-        )
+        search_bar_is_not_empty = exists(search_bar_not_empty_pattern.similar(0.7), region=Screen.TOP_HALF)
         assert search_bar_is_not_empty, "Search button isn't empty"
 
         if OSHelper.is_linux():
@@ -98,9 +85,7 @@ class Test(FirefoxTest):
 
         paste("r")
         previously_searched_not_saved = not exists(search_form_suggestion_pattern)
-        assert (
-            previously_searched_not_saved
-        ), "The previously searched word is not saved."
+        assert previously_searched_not_saved, "The previously searched word is not saved."
 
         navigate(form_address)
         name_form_displayed = exists(name_form_pattern)
@@ -120,9 +105,7 @@ class Test(FirefoxTest):
 
         navigate(form_address)
 
-        save_login_button = exists(
-            save_login_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT
-        )
+        save_login_button = exists(save_login_button_pattern, FirefoxSettings.SHORT_FIREFOX_TIMEOUT)
         if save_login_button:
             type(Key.ESC)
 

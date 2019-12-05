@@ -15,7 +15,7 @@ class CustomizePage(object):
 
 
 def auto_hide_download_button():
-    click_hamburger_menu_option("Customize...")
+    open_hamburger_menu("Customize")
 
     try:
         wait(NavBar.DOWNLOADS_BUTTON, 10)

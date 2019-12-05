@@ -12,7 +12,6 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="120123",
         test_suite_id="2000",
-        profile=Profiles.BRAND_NEW,
     )
     def run(self, firefox):
         history_sidebar_mozilla_pattern = LocalWeb.MOZILLA_BOOKMARK_HISTORY_SIDEBAR
@@ -41,10 +40,7 @@ class Test(FirefoxTest):
 
         # Bookmark a page from the History sidebar.
         history_sidebar_region = Screen().new_region(
-            0,
-            image_find(NavBar.HOME_BUTTON).y,
-            Screen.SCREEN_WIDTH / 4,
-            Screen.SCREEN_HEIGHT / 3,
+            0, image_find(NavBar.HOME_BUTTON).y, Screen.SCREEN_WIDTH / 4, Screen.SCREEN_HEIGHT / 3
         )
         expected_4 = history_sidebar_region.exists(history_sidebar_mozilla_pattern, 10)
         assert expected_4, "Mozilla page is displayed in the History list successfully."
@@ -73,8 +69,6 @@ class Test(FirefoxTest):
         click(library_expand_bookmarks_menu_pattern)
 
         expected_8 = exists(library_bookmarks_mozilla_pattern, 10)
-        assert (
-            expected_8
-        ), "Mozilla page is bookmarked with default name and without tags."
+        assert expected_8, "Mozilla page is bookmarked with default name and without tags."
 
         click_window_control("close")

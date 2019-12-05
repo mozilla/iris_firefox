@@ -12,27 +12,18 @@ class Test(FirefoxTest):
         locale=["en-US"],
         test_case_id="101668",
         test_suite_id="1826",
-        preferences={
-            "extensions.formautofill.available": "on",
-            "extensions.formautofill.creditCards.available": True,
-        },
+        preferences={"extensions.formautofill.available": "on", "extensions.formautofill.creditCards.available": True},
     )
     def run(self, firefox):
         private_browsing_image_pattern = PrivateWindow.private_window_pattern
         visa_logo_pattern = Pattern("visa_logo.png")
         card_number_field_pattern = Pattern("card_number_field.png").similar(0.6)
-        expiration_month_field_pattern = Pattern("expiration_month_field.png").similar(
-            0.6
-        )
-        expiration_year_field_pattern = Pattern("expiration_year_field.png").similar(
-            0.6
-        )
+        expiration_month_field_pattern = Pattern("expiration_month_field.png").similar(0.6)
+        expiration_year_field_pattern = Pattern("expiration_year_field.png").similar(0.6)
         csc_field_pattern = Pattern("csc_field.png").similar(0.6)
         submit_button_pattern = Pattern("submit_button.png").similar(0.6)
         entered_csc_pattern = Pattern("entered_csc.png").similar(0.6)
-        saved_credit_cards_button_pattern = Pattern(
-            "saved_credit_cards_button.png"
-        ).similar(0.6)
+        saved_credit_cards_button_pattern = Pattern("saved_credit_cards_button.png").similar(0.6)
         name_field_pattern = Pattern("name_field.png").similar(0.6)
 
         change_preference("browser.search.region", "US")
@@ -43,9 +34,7 @@ class Test(FirefoxTest):
         page_opened_in_private_browsing_mode = exists(
             private_browsing_image_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
         ) and exists(submit_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
-        assert (
-            page_opened_in_private_browsing_mode
-        ), "Test page is opened in a new private window."
+        assert page_opened_in_private_browsing_mode, "Test page is opened in a new private window."
 
         input_data = {
             name_field_pattern: ["Maria", "Name"],
@@ -67,23 +56,15 @@ class Test(FirefoxTest):
 
         left_half_region = Region(0, 0, Screen.SCREEN_WIDTH // 2, Screen.SCREEN_HEIGHT)
         try:
-            entered_csc_on_page = wait_vanish(
-                entered_csc_pattern, region=left_half_region
-            )
-            assert (
-                entered_csc_on_page
-            ), "Credit Card Information is successfully entered and submitted."
+            entered_csc_on_page = wait_vanish(entered_csc_pattern, region=left_half_region)
+            assert entered_csc_on_page, "Credit Card Information is successfully entered and submitted."
         except FindError:
-            raise FindError(
-                "Entered data did not vanish after clicking the 'Submit button'"
-            )
+            raise FindError("Entered data did not vanish after clicking the 'Submit button'")
 
         close_window()
 
         private_browsing_image_exists = exists(private_browsing_image_pattern)
-        assert (
-            private_browsing_image_exists is not True
-        ), "Normal browsing session is displayed"
+        assert private_browsing_image_exists is not True, "Normal browsing session is displayed"
 
         navigate("about:preferences#privacy")
 
@@ -95,14 +76,11 @@ class Test(FirefoxTest):
         type("Autofill")
 
         saved_credit_cards_button_exists = exists(saved_credit_cards_button_pattern)
-        assert (
-            saved_credit_cards_button_exists
-        ), "'Saved credit cards' button is displayed on the page"
+        assert saved_credit_cards_button_exists, "'Saved credit cards' button is displayed on the page"
 
         click(saved_credit_cards_button_pattern)
 
         visa_logo_exists = exists(visa_logo_pattern)
         assert visa_logo_exists is not True, (
-            "The submitted credentials in the private session are not displayed "
-            "inside the Saved CCs panel."
+            "The submitted credentials in the private session are not displayed " "inside the Saved CCs panel."
         )

@@ -21,16 +21,12 @@ class Test(FirefoxTest):
 
         new_tab()
         navigate(test_urls[0])
-        first_website_loaded = exists(
-            logo_patterns[0], FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        first_website_loaded = exists(logo_patterns[0], FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert first_website_loaded, "First tab is successfully loaded."
 
         new_tab()
         navigate(test_urls[1])
-        second_website_loaded = exists(
-            logo_patterns[1], FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        second_website_loaded = exists(logo_patterns[1], FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert second_website_loaded, "Second tab is successfully loaded."
 
         close_tab()
@@ -39,19 +35,13 @@ class Test(FirefoxTest):
             assert second_tab_closed, "Second tab successfully closed."
         except FindError:
             raise FindError("Second tab is still open")
-        first_tab_is_active = exists(
-            firefox_local_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        first_tab_is_active = exists(firefox_local_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert first_tab_is_active, "First tab is active."
 
         right_click(firefox_local_tab_pattern)
-        context_menu_exists = exists(
-            undo_close_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        context_menu_exists = exists(undo_close_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert context_menu_exists, "Undo Close Tab option exists."
 
         click(undo_close_tab_pattern)
-        second_website_loaded = exists(
-            logo_patterns[1], FirefoxSettings.SITE_LOAD_TIMEOUT
-        )
+        second_website_loaded = exists(logo_patterns[1], FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert second_website_loaded, "The previously closed tab is reopened."

@@ -68,9 +68,7 @@ class Test(FirefoxTest):
 
         expected = exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert expected is True, "Progress information is displayed."
-        expected = exists(
-            DownloadManager.DownloadState.SPEED_PER_SECOND.similar(0.75), 10
-        )
+        expected = exists(DownloadManager.DownloadState.SPEED_PER_SECOND.similar(0.75), 10)
         assert expected is True, "Speed information is displayed."
 
         expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)

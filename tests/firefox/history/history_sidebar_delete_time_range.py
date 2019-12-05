@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="120134",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         search_history_box_pattern = Sidebar.HistorySidebar.SEARCH_BOX
@@ -37,6 +38,4 @@ class Test(FirefoxTest):
         right_click_and_type(history_today_sidebar_pattern, keyboard_action="d")
 
         expected_4 = exists(history_today_sidebar_pattern, 5)
-        assert (
-            expected_4 is not True
-        ), "Time range was deleted successfully from the history sidebar."
+        assert expected_4 is not True, "Time range was deleted successfully from the history sidebar."

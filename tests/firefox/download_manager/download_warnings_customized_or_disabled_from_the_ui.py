@@ -30,9 +30,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#search")
 
         expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
-        assert (
-            expected is True
-        ), "The 'about:preferences#search' page successfully loaded."
+        assert expected is True, "The 'about:preferences#search' page successfully loaded."
 
         expected = exists(AboutPreferences.FIND_IN_OPTIONS, 10)
         assert expected is True, "'Find in Options' search field is displayed."
@@ -41,16 +39,12 @@ class Test(FirefoxTest):
         paste("dangerous")
 
         expected = exists(AboutPreferences.DECEPTIVE_CONTENT_AND_DANGEROUS_SOFTWARE, 10)
-        assert (
-            expected is True
-        ), "Deceptive content and dangerous software section is displayed."
+        assert expected is True, "Deceptive content and dangerous software section is displayed."
 
         expected = exists(AboutPreferences.BLOCK_DANGEROUS_DOWNLOADS, 10)
         assert expected is True, "'Block dangerous downloads' option is available."
         expected = exists(AboutPreferences.WARN_UNWANTED_UNCOMMON_SOFTWARE, 10)
-        assert (
-            expected is True
-        ), "'Warm you about unwanted and uncommon software' option is available."
+        assert expected is True, "'Warm you about unwanted and uncommon software' option is available."
 
         option_1 = find(AboutPreferences.BLOCK_DANGEROUS_AND_DECEPTIVE_CONTENT)
         region_option_1 = Region(option_1.x - 100, option_1.y - 10, 500, 40)
@@ -59,9 +53,7 @@ class Test(FirefoxTest):
             click(AboutPreferences.BLOCK_DANGEROUS_AND_DECEPTIVE_CONTENT)
 
         expected = region_option_1.exists(AboutPreferences.UNCHECKED_BOX, 10)
-        assert (
-            expected is True
-        ), "'Block dangerous and deceptive content' option is unchecked."
+        assert expected is True, "'Block dangerous and deceptive content' option is unchecked."
 
         # expected = exists(AboutPreferences.BLOCK_DANGEROUS_DOWNLOADS_GRAYED_OUT.exact(), 10)
         # assert_true(self, expected, '\'Block dangerous downloads\' option is grayed out.')
@@ -72,101 +64,61 @@ class Test(FirefoxTest):
 
         # Download all items from Desktop Download Warning.
         expected = exists(DownloadFiles.MALICIOUS, 10)
-        assert (
-            expected is True
-        ), "'\"malicious\" warning, based on content' link has been found."
+        assert expected is True, "'\"malicious\" warning, based on content' link has been found."
         width, height = DownloadFiles.MALICIOUS.get_size()
-        download_file(
-            DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK
-        )
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_CONTENT_COMPLETED, 10)
-        assert (
-            expected is True
-        ), "'\"malicious\" warning, based on content' download file is completed."
+        assert expected is True, "'\"malicious\" warning, based on content' download file is completed."
 
         expected = exists(DownloadFiles.MALICIOUS_HTTPS, 10)
-        assert (
-            expected is True
-        ), "'\"malicious\" warning, based on content with https' link has been found."
+        assert expected is True, "'\"malicious\" warning, based on content with https' link has been found."
         width, height = DownloadFiles.MALICIOUS_HTTPS.get_size()
-        download_file(
-            DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_CONTENT1_COMPLETED, 10)
-        assert (
-            expected is True
-        ), "'\"malicious\" warning, based on content with https' download file is completed."
+        assert expected is True, "'\"malicious\" warning, based on content with https' download file is completed."
 
         expected = exists(DownloadFiles.DANGEROUS_HOST_WARNING, 10)
         assert expected is True, "'\"dangerous host\" warning' link has been found."
         width, height = DownloadFiles.DANGEROUS_HOST_WARNING.get_size()
-        download_file(
-            DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
-        expected = exists(
-            DownloadFiles.DOWNLOADS_PANEL_BADREP_COMPLETED.similar(0.7), 10
-        )
-        assert (
-            expected is True
-        ), "'\"dangerous host\" warning' download file is completed."
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_BADREP_COMPLETED.similar(0.7), 10)
+        assert expected is True, "'\"dangerous host\" warning' download file is completed."
 
         expected = exists(DownloadFiles.UNCOMMON, 10)
         assert expected is True, "'\"uncommon\" warning, for .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON.get_size()
-        download_file(
-            DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK
-        )
+        download_file(DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
-        expected = exists(
-            DownloadFiles.DOWNLOADS_PANEL_UNKNOWN_COMPLETED.similar(0.75), 10
-        )
-        assert (
-            expected is True
-        ), "'\"uncommon\" warning, for .exe' download file is completed."
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_UNKNOWN_COMPLETED.similar(0.75), 10)
+        assert expected is True, "'\"uncommon\" warning, for .exe' download file is completed."
 
         expected = exists(DownloadFiles.UNCOMMON_HTTPS, 10)
-        assert (
-            expected is True
-        ), "'\"uncommon\" warning, for https .exe' link has been found."
+        assert expected is True, "'\"uncommon\" warning, for https .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
-        download_file(
-            DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_UNKNOWN1_COMPLETED, 10)
-        assert (
-            expected is True
-        ), "'\"uncommon\" warning, for https .exe' download file is completed."
+        assert expected is True, "'\"uncommon\" warning, for https .exe' download file is completed."
 
         expected = exists(DownloadFiles.POTENTIALLY_UNWANTED, 10)
-        assert (
-            expected is True
-        ), "'\"potentially unwanted app\" warning, for .exe' link has been found."
+        assert expected is True, "'\"potentially unwanted app\" warning, for .exe' link has been found."
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
-        download_file(
-            DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_PUA_COMPLETED.similar(0.75), 10)
-        assert (
-            expected is True
-        ), "'\"potentially unwanted app\" warning, for .exe' download file is completed."
+        assert expected is True, "'\"potentially unwanted app\" warning, for .exe' download file is completed."
 
         # Clear All Downloads
         click(DownloadManager.SHOW_ALL_DOWNLOADS)
@@ -180,9 +132,7 @@ class Test(FirefoxTest):
         navigate("about:preferences#search")
 
         expected = exists(AboutPreferences.ABOUT_PREFERENCE_SEARCH_PAGE_PATTERN, 10)
-        assert (
-            expected is True
-        ), "The 'about:preferences#search' page successfully loaded."
+        assert expected is True, "The 'about:preferences#search' page successfully loaded."
 
         expected = exists(AboutPreferences.FIND_IN_OPTIONS, 10)
         assert expected is True, "'Find in Options' search field is displayed."
@@ -191,40 +141,28 @@ class Test(FirefoxTest):
         paste("dangerous")
 
         expected = exists(AboutPreferences.DECEPTIVE_CONTENT_AND_DANGEROUS_SOFTWARE, 10)
-        assert (
-            expected is True
-        ), "'Deceptive content and dangerous software' section is displayed."
+        assert expected is True, "'Deceptive content and dangerous software' section is displayed."
 
         expected = region_option_1.exists(AboutPreferences.UNCHECKED_BOX, 10)
-        assert (
-            expected is True
-        ), "'Block dangerous and deceptive content' option is unchecked."
+        assert expected is True, "'Block dangerous and deceptive content' option is unchecked."
 
         click(AboutPreferences.BLOCK_DANGEROUS_AND_DECEPTIVE_CONTENT)
         expected = region_option_1.exists(AboutPreferences.CHECKED_BOX, 10)
-        assert (
-            expected is True
-        ), "'Block dangerous and deceptive content' option is checked."
+        assert expected is True, "'Block dangerous and deceptive content' option is checked."
 
         option_2 = find(AboutPreferences.WARN_UNWANTED_UNCOMMON_SOFTWARE)
         click(AboutPreferences.WARN_UNWANTED_UNCOMMON_SOFTWARE)
         region_option_2 = Region(option_2.x - 100, option_2.y - 10, 500, 40)
         expected = region_option_2.exists(AboutPreferences.UNCHECKED_BOX, 10)
-        assert (
-            expected is True
-        ), "'Warn you about unwanted and uncommon software' option is unchecked."
+        assert expected is True, "'Warn you about unwanted and uncommon software' option is unchecked."
 
         navigate("http://testsafebrowsing.appspot.com/")
 
         # Download all items from Desktop Download Warning.
         expected = exists(DownloadFiles.MALICIOUS, 10)
-        assert (
-            expected is True
-        ), "'\"malicious\" warning, based on content' link has been found."
+        assert expected is True, "'\"malicious\" warning, based on content' link has been found."
         width, height = DownloadFiles.MALICIOUS.get_size()
-        download_file(
-            DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK
-        )
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, "Malicious downloads button is displayed."
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
@@ -232,45 +170,27 @@ class Test(FirefoxTest):
         assert expected is True, "Downloads panel is displayed."
         downloaded_file = find(DownloadFiles.LIBRARY_DOWNLOADS_CONTENT_RED)
         region_file = Region(downloaded_file.x - 100, downloaded_file.y - 35, 500, 90)
-        expected = region_file.exists(
-            DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10
-        )
-        assert (
-            expected is True
-        ), "Blocked download icon is displayed and file download is highlighted red."
+        expected = region_file.exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
+        assert expected is True, "Blocked download icon is displayed and file download is highlighted red."
 
         expected = exists(DownloadFiles.MALICIOUS_HTTPS, 10)
-        assert (
-            expected is True
-        ), "'\"malicious\" warning, based on content with https' link has been found."
+        assert expected is True, "'\"malicious\" warning, based on content with https' link has been found."
         width, height = DownloadFiles.MALICIOUS_HTTPS.get_size()
-        download_file(
-            DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, "Malicious downloads button is displayed."
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
         expected = exists(DownloadManager.SHOW_ALL_DOWNLOADS, 10)
         assert expected is True, "Downloads panel is displayed."
-        downloaded_file = find(
-            DownloadFiles.LIBRARY_DOWNLOADS_CONTENT1_RED.similar(0.7)
-        )
+        downloaded_file = find(DownloadFiles.LIBRARY_DOWNLOADS_CONTENT1_RED.similar(0.7))
         region_file = Region(downloaded_file.x - 100, downloaded_file.y - 35, 500, 90)
-        expected = region_file.exists(
-            DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10
-        )
-        assert (
-            expected is True
-        ), "Blocked download icon is displayed and file download is highlighted red."
+        expected = region_file.exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
+        assert expected is True, "Blocked download icon is displayed and file download is highlighted red."
 
         expected = exists(DownloadFiles.DANGEROUS_HOST_WARNING, 10)
         assert expected is True, "'\"dangerous host\" warning' link has been found."
         width, height = DownloadFiles.DANGEROUS_HOST_WARNING.get_size()
-        download_file(
-            DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, 10)
         assert expected is True, "Malicious downloads button is displayed."
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
@@ -278,62 +198,38 @@ class Test(FirefoxTest):
         assert expected is True, "Downloads panel is displayed."
         downloaded_file = find(DownloadFiles.LIBRARY_DOWNLOADS_BADREP_RED.similar(0.7))
         region_file = Region(downloaded_file.x - 100, downloaded_file.y - 35, 500, 90)
-        expected = region_file.exists(
-            DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10
-        )
-        assert (
-            expected is True
-        ), "Blocked download icon is displayed and file download is highlighted red."
+        expected = region_file.exists(DownloadManager.DownloadsPanel.BLOCKED_DOWNLOAD_ICON, 10)
+        assert expected is True, "Blocked download icon is displayed and file download is highlighted red."
 
         expected = exists(DownloadFiles.UNCOMMON, 10)
         assert expected is True, "'\"uncommon\" warning, for .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON.get_size()
-        download_file(
-            DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK
-        )
+        download_file(DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
-        expected = exists(
-            DownloadFiles.DOWNLOADS_PANEL_UNKNOWN_COMPLETED.similar(0.75), 10
-        )
-        assert (
-            expected is True
-        ), "'\"uncommon\" warning, for .exe' download file is completed."
+        expected = exists(DownloadFiles.DOWNLOADS_PANEL_UNKNOWN_COMPLETED.similar(0.75), 10)
+        assert expected is True, "'\"uncommon\" warning, for .exe' download file is completed."
 
         expected = exists(DownloadFiles.UNCOMMON_HTTPS, 10)
-        assert (
-            expected is True
-        ), "'\"uncommon\" warning, for https .exe' link has been found."
+        assert expected is True, "'\"uncommon\" warning, for https .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
-        download_file(
-            DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_UNKNOWN1_COMPLETED, 10)
-        assert (
-            expected is True
-        ), "'\"uncommon\" warning, for https .exe' download file is completed."
+        assert expected is True, "'\"uncommon\" warning, for https .exe' download file is completed."
 
         expected = exists(DownloadFiles.POTENTIALLY_UNWANTED, 10)
-        assert (
-            expected is True
-        ), "'\"potentially unwanted app\" warning, for .exe' link has been found."
+        assert expected is True, "'\"potentially unwanted app\" warning, for .exe' link has been found."
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
-        download_file(
-            DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0),
-            DownloadFiles.OK,
-        )
+        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
         expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_PUA_COMPLETED.similar(0.75), 10)
-        assert (
-            expected is True
-        ), "'\"potentially unwanted app\" warning, for .exe' download file is completed."
+        assert expected is True, "'\"potentially unwanted app\" warning, for .exe' download file is completed."
 
     def teardown(self):
         downloads_cleanup()

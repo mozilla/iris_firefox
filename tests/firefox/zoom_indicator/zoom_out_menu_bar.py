@@ -25,20 +25,12 @@ class Test(FirefoxTest):
 
         select_location_bar()
 
-        expected = exists(
-            url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(url_bar_default_zoom_level_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Zoom indicator not displayed by default in the url bar."
 
         select_zoom_menu_option(Option.ZOOM_OUT)
 
         region = create_region_for_url_bar()
 
-        expected = exists(
-            urlbar_zoom_button_90_pattern,
-            FirefoxSettings.FIREFOX_TIMEOUT,
-            region=region,
-        )
-        assert (
-            expected
-        ), "Zoom level successfully decreased, zoom indicator found in the url bar."
+        expected = exists(urlbar_zoom_button_90_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=region)
+        assert expected, "Zoom level successfully decreased, zoom indicator found in the url bar."

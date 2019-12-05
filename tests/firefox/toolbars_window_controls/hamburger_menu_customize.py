@@ -14,9 +14,7 @@ class Test(FirefoxTest):
     def run(self, firefox):
         navigate("about:home")
 
-        click_hamburger_menu_option("Customize...")
+        open_hamburger_menu("Customize")
 
-        assert exists(
-            NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE, 10
-        ), "'Customize' page present."
+        assert exists(NavBar.ZOOM_CONTROLS_CUSTOMIZE_PAGE, 10), "'Customize' page present."
         close_customize_page()

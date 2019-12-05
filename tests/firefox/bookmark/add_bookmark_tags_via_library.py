@@ -24,9 +24,7 @@ class Test(FirefoxTest):
 
         open_library()
 
-        bookmarks_menu_library_assert = exists(
-            library_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        bookmarks_menu_library_assert = exists(library_bookmarks_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert bookmarks_menu_library_assert is True, "Bookmarks menu has been found."
 
         click(library_bookmarks_pattern)
@@ -34,12 +32,8 @@ class Test(FirefoxTest):
         type(Key.ENTER)
         type(Key.DOWN)
 
-        library_bookmark_assert = exists(
-            moz_library_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            library_bookmark_assert is True
-        ), "Moz bookmark is present in the Library section."
+        library_bookmark_assert = exists(moz_library_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert library_bookmark_assert is True, "Moz bookmark is present in the Library section."
 
         click(moz_library_pattern)
 
@@ -58,9 +52,5 @@ class Test(FirefoxTest):
 
         paste("Iris")
 
-        tagged_bookmark_assert = exists(
-            moz_tagged_bookmark, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            tagged_bookmark_assert is True
-        ), "Moz bookmark has been successfully tagged via library."
+        tagged_bookmark_assert = exists(moz_tagged_bookmark, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert tagged_bookmark_assert is True, "Moz bookmark has been successfully tagged via library."

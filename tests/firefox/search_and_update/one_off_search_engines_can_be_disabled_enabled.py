@@ -14,12 +14,8 @@ class Test(FirefoxTest):
         test_suite_id="83",
     )
     def run(self, firefox):
-        change_search_settings_pattern = Pattern("change_search_settings.png").similar(
-            0.6
-        )
-        about_preferences_search_page_pattern = Pattern(
-            "about_preferences_search_page.png"
-        ).similar(0.6)
+        change_search_settings_pattern = Pattern("change_search_settings.png").similar(0.6)
+        about_preferences_search_page_pattern = Pattern("about_preferences_search_page.png").similar(0.6)
         amazon_search_bar_pattern = Pattern("amazon_search_bar.png")
         bing_search_bar_pattern = Pattern("bing_search_bar.png")
         duckduckgo_search_bar_pattern = Pattern("duckduckgo_search_bar.png")
@@ -30,28 +26,18 @@ class Test(FirefoxTest):
         # Enable the search bar.
         change_preference("browser.search.widget.inNavBar", True)
 
-        pattern_list = [
-            amazon_search_bar_pattern,
-            bing_search_bar_pattern,
-            duckduckgo_search_bar_pattern,
-        ]
+        pattern_list = [amazon_search_bar_pattern, bing_search_bar_pattern, duckduckgo_search_bar_pattern]
 
         # Navigate to the 'about:preferences#search' page.
         select_search_bar()
         type(Key.DOWN)
 
-        expected = exists(
-            change_search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
-        assert (
-            expected is True
-        ), "The 'Change Search Settings' button found in the page."
+        expected = exists(change_search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        assert expected is True, "The 'Change Search Settings' button found in the page."
 
         click(change_search_settings_pattern)
 
-        expected = exists(
-            about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The 'about:preferences#search' page opened."
 
         # Deselect several search engines from the One-click search engines list.
@@ -71,9 +57,7 @@ class Test(FirefoxTest):
             time.sleep(Settings.DEFAULT_UI_DELAY)
 
         try:
-            expected = wait_vanish(
-                check_engine_pattern, Settings.DEFAULT_UI_DELAY, region
-            )
+            expected = wait_vanish(check_engine_pattern, Settings.DEFAULT_UI_DELAY, region)
             assert expected is True, "Each search engine is unchecked."
         except FindError:
             raise FindError("There are search engines still checked.")
@@ -88,16 +72,10 @@ class Test(FirefoxTest):
         for i in range(pattern_list.__len__()):
             try:
                 expected = wait_vanish(pattern_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
-                assert expected is True, (
-                    "Element found at position "
-                    + i.__str__()
-                    + " in the list not found."
-                )
+                assert expected is True, "Element found at position " + i.__str__() + " in the list not found."
 
             except FindError:
-                raise FindError(
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                raise FindError("Element found at position " + i.__str__() + " in the list found.")
 
         new_private_window()
 
@@ -107,16 +85,10 @@ class Test(FirefoxTest):
         for i in range(pattern_list.__len__()):
             try:
                 expected = wait_vanish(pattern_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
-                assert expected is True, (
-                    "Element found at position "
-                    + i.__str__()
-                    + " in the list not found."
-                )
+                assert expected is True, "Element found at position " + i.__str__() + " in the list not found."
 
             except FindError:
-                raise FindError(
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                raise FindError("Element found at position " + i.__str__() + " in the list found.")
 
         close_window()
 
@@ -126,9 +98,7 @@ class Test(FirefoxTest):
 
         click(change_search_settings_pattern)
 
-        expected = exists(
-            about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT
-        )
+        expected = exists(about_preferences_search_page_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The 'about:preferences#search' page opened."
 
         type(Key.TAB)
@@ -152,19 +122,11 @@ class Test(FirefoxTest):
 
         for i in range(pattern_list.__len__()):
             try:
-                expected = region.exists(
-                    pattern_list[i], FirefoxSettings.FIREFOX_TIMEOUT
-                )
-                assert expected is True, (
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                expected = region.exists(pattern_list[i], FirefoxSettings.FIREFOX_TIMEOUT)
+                assert expected is True, "Element found at position " + i.__str__() + " in the list found."
 
             except FindError:
-                raise FindError(
-                    "Element found at position "
-                    + i.__str__()
-                    + " in the list not found."
-                )
+                raise FindError("Element found at position " + i.__str__() + " in the list not found.")
 
         new_private_window()
 
@@ -174,16 +136,10 @@ class Test(FirefoxTest):
         for i in range(pattern_list.__len__()):
             try:
                 expected = region.exists(pattern_list[i], 10)
-                assert expected is True, (
-                    "Element found at position " + i.__str__() + " in the list found."
-                )
+                assert expected is True, "Element found at position " + i.__str__() + " in the list found."
 
             except FindError:
-                raise FindError(
-                    "Element found at position "
-                    + i.__str__()
-                    + " in the list not found."
-                )
+                raise FindError("Element found at position " + i.__str__() + " in the list not found.")
 
         close_window()
 
