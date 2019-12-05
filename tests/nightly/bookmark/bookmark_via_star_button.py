@@ -15,6 +15,7 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         bookmark_button_pattern = LocationBar.STAR_BUTTON_UNSTARRED
+        page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK.similar(0.7)
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -28,7 +29,5 @@ class Test(FirefoxTest):
         except FindError:
             raise FindError("Bookmark star is not present on the page, aborting.")
 
-        page_bookmarked_assert = exists(
-            Bookmarks.StarDialog.NEW_BOOKMARK.similar(0.7), FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_THIRD
-        )
+        page_bookmarked_assert = exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert page_bookmarked_assert, "The page was successfully bookmarked via star button."

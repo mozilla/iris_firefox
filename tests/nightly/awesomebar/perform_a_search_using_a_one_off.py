@@ -20,7 +20,9 @@ class Test(FirefoxTest):
         search_suggestion_history_pattern = Pattern("search_suggestion_history.png").similar(0.7)
         popular_search_suggestion_pattern = Pattern("popular_search_suggestion.png").similar(0.7)
         google_one_off_button_pattern = Pattern("google_one_off_button.png").similar(0.9)
-        google_search_results_pattern = Pattern("google_search_results.png")
+        google_search_results_pattern = Pattern("google_search_results.png").similar(0.6)
+
+        region = Screen.TOP_THIRD
 
         new_tab()
 
@@ -31,7 +33,7 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        expected = exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_THIRD)
+        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Page was bookmarked."
 
         close_tab()
@@ -79,7 +81,5 @@ class Test(FirefoxTest):
         click(google_one_off_button_pattern)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = exists(
-            google_search_results_pattern.similar(0.6), FirefoxSettings.SITE_LOAD_TIMEOUT, region=Screen.TOP_THIRD
-        )
+        expected = region.exists(google_search_results_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Google search results are displayed."

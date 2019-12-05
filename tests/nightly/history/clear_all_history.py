@@ -8,7 +8,10 @@ from targets.nightly.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Clear all of the browser history.", locale=["en-US"], test_case_id="172045", test_suite_id="2000"
+        description="Clear all of the browser history.",
+        locale=["en-US"],
+        test_case_id="172045",
+        test_suite_id="2000",
     )
     def run(self, firefox):
         searched_history_logo_pattern = Sidebar.HistorySidebar.EXPLORED_HISTORY_ICON.similar(0.9)
