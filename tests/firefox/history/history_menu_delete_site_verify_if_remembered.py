@@ -24,14 +24,14 @@ class Test(FirefoxTest):
 
         navigate(LocalWeb.POCKET_TEST_SITE)
 
-        pocket_page_opened = exists(LocalWeb.POCKET_LOGOFirefoxSettings.SITE_LOAD_TIMEOUT)
+        pocket_page_opened = exists(LocalWeb.POCKET_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert pocket_page_opened,"Pocket page opened"
 
         new_tab()
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
-        mozilla_page_opened = exists(LocalWeb.MOZILLA_LOGOFirefoxSettings.SITE_LOAD_TIMEOUT)
+        mozilla_page_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert mozilla_page_opened, "Mozilla page opened"
 
         new_tab()
