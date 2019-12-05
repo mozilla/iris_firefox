@@ -24,7 +24,7 @@ class Test(FirefoxTest):
         google_on_off_button_private_window_pattern = Pattern("google_on_off_button_private_window.png")
         magnifying_glass_pattern = Pattern("magnifying_glass.png").similar(0.7)
         test_pattern = Pattern("test.png")
-        this_time_search_with_pattern = Pattern("this_time_search_with.png")
+        google_one_off_button_pattern = Pattern("google_one_off_button.png").similar(0.9)
 
         region = Region(0, 0, Screen().width, 2 * Screen().height / 3)
 
@@ -38,7 +38,7 @@ class Test(FirefoxTest):
         select_location_bar()
         paste("moz")
 
-        one_off_bar_displayed = exists(this_time_search_with_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
+        one_off_bar_displayed = exists(google_one_off_button_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert one_off_bar_displayed, "The one-off bar is displayed at the bottom of awesomebar drop-down"
 
         search_settings_button_displayed = region.exists(search_settings_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
