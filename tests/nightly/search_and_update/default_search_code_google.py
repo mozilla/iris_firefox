@@ -38,7 +38,9 @@ class Test(FirefoxTest):
         test_case_id="218333",
         test_suite_id="83",
         profile=Profiles.BRAND_NEW,
-        preferences={"browser.search.region": fx_region_code, "browser.search.cohort": "nov17-1"},
+        preferences={"browser.search.region": fx_region_code,
+                     "browser.search.cohort": "nov17-1",
+                     "browser.warnOnQuit": False,},
     )
     def run(self, firefox):
         url = LocalWeb.FOCUS_TEST_SITE
@@ -46,7 +48,6 @@ class Test(FirefoxTest):
         text_pattern_selected = Pattern("focus_text_selected.png")
 
         change_preference("browser.search.widget.inNavBar", True)
-        change_preference("browser.tabs.warnOnClose", True)
 
         default_search_engine_google_pattern = Pattern("default_search_engine_google.png").similar(0.6)
         google_logo_content_search_field_pattern = Pattern("google_logo_content_search_field.png")
