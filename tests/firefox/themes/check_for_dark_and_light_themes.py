@@ -21,13 +21,13 @@ class Test(FirefoxTest):
 
             click(AboutAddons.THEMES)
 
-            expected = exists(AboutAddons.Themes.DARK_THEME, 10)
+            expected = exists(AboutAddons.Themes.DARK_THEME.similar(0.6), 10)
             assert expected is True, "Dark theme option found in the page."
 
-            expected = exists(AboutAddons.Themes.LIGHT_THEME, 10)
-            assert expected is True, "Dark theme option found in the page."
+            expected = exists(AboutAddons.Themes.LIGHT_THEME.similar(0.6), 10)
+            assert expected is True, "Light theme option found in the page."
 
-            expected = exists(AboutAddons.Themes.DEFAULT_THEME, 10)
-            assert expected is True, "Dark theme option found in the page."
+            expected = exists(AboutAddons.Themes.DEFAULT_THEME.similar(0.6), 10)
+            assert expected is True, "Default theme option found in the page."
 
         close_window()
