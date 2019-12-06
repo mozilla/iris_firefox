@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         dialog_pattern = Pattern("download_dialog.png")
 
         navigate(PathManager.get_web_asset_dir("moz.pdf"))
-        assert exists(test_pdf_pattern, 10), "The test PDF is present."
+        assert exists(test_pdf_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT), "The test PDF is present."
 
         click(download_button_pattern)
         assert exists(dialog_pattern, 10), "Download dialog is present."
