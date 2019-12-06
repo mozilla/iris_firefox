@@ -38,7 +38,12 @@ class Test(FirefoxTest):
 
         restore_firefox_focus()
 
-        open_hamburger_menu("Restore Previous Session")
+        click(HamburgerMenu.HAMBUREGR_MENU)
+
+        restore_option_exists = exists(HamburgerMenu.RESTORE_PREVIOUS_SESSION,
+                                       FirefoxSettings.FIREFOX_TIMEOUT)
+        assert restore_option_exists, "Restore option exists is hamburger menu."
+        click(HamburgerMenu.RESTORE_PREVIOUS_SESSION)
         time.sleep(Settings.DEFAULT_SYSTEM_DELAY)
 
         next_tab()
