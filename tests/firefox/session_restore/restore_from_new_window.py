@@ -26,9 +26,14 @@ class Test(FirefoxTest):
         website_two_loaded = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert website_two_loaded, "Page 2 successfully loaded, mozilla logo found."
 
-        firefox.restart()
+        firefox.restart(image=LocalWeb.IRIS_LOGO)
 
-        open_hamburger_menu("Restore Previous Session")
+        click(HamburgerMenu.HAMBUREGR_MENU)
+
+        restore_option_exists = exists(HamburgerMenu.RESTORE_PREVIOUS_SESSION,
+                                       FirefoxSettings.FIREFOX_TIMEOUT)
+        assert restore_option_exists, "Restore option exists is hamburger menu."
+        click(HamburgerMenu.RESTORE_PREVIOUS_SESSION)
 
         select_tab("5")
         website_one_loaded = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
