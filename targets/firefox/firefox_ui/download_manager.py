@@ -19,7 +19,7 @@ class DownloadManager(object):
         DOWNLOAD_RETRY_HIGHLIGHTED = Pattern("download_retry_highlighted.png").similar(0.95)
         DOWNLOAD_CANCEL = Pattern("download_cancel.png").similar(0.95)
         DOWNLOAD_CANCEL_HIGHLIGHTED = Pattern("download_cancel_highlighted.png").similar(0.95)
-        NO_DOWNLOADS_FOR_THIS_SESSION = Pattern("empty_downloads.png")
+        NO_DOWNLOADS_FOR_THIS_SESSION = Pattern("empty_downloads.png").similar(0.7)
         OPEN_DOWNLOAD_FOLDER = Pattern("download_button_open_containing_folder.png")
         OPEN_CONTAINING_FOLDER = Pattern("open_containing_folder.png")
         TIME_LEFT = Pattern("time_left.png")

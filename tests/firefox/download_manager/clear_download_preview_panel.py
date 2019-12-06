@@ -29,10 +29,10 @@ class Test(FirefoxTest):
 
         download_file(file_to_download, DownloadFiles.OK)
 
-        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON_BLUE, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Downloads button found."
 
-        expected = exists(DownloadManager.DownloadState.COMPLETED, 10)
+        expected = exists(DownloadManager.DownloadState.COMPLETED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Completed information is displayed."
 
         right_click(DownloadManager.DownloadState.COMPLETED)
@@ -42,10 +42,10 @@ class Test(FirefoxTest):
         auto_hide_download_button()
         time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
         # Check that all of the downloads were cleared.
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, 10)
+        expected = exists(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Downloads button has been found."
         click(DownloadManager.DownloadsPanel.DOWNLOADS_BUTTON)
-        expected = exists(DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, 10)
+        expected = exists(DownloadManager.DownloadsPanel.NO_DOWNLOADS_FOR_THIS_SESSION, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "All downloads were cleared."
 
     def teardown(self):
