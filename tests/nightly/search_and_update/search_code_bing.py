@@ -32,7 +32,9 @@ class Test(FirefoxTest):
         assert default_search_engine_dropdown_exists is True, "Default search engine dropdown exists"
 
         click(default_search_engine_dropdown_pattern)
-        repeat_key_down(1)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
+        type(Key.DOWN)
+        time.sleep(Settings.DEFAULT_UI_DELAY)
         type(Key.ENTER)
         time.sleep(Settings.DEFAULT_UI_DELAY)
 
@@ -46,4 +48,8 @@ class Test(FirefoxTest):
         select_location_bar()
         url_text = copy_to_clipboard()
 
-        assert "pc=MOZI&form=MOZLBR" in url_text, "The resulted URL contains the 'pc=MOZI&form=MOZLBR' string."
+        assert "https://www.bing.com/search?" in url_text, \
+               "The search URL contains the bing domain search 'https://www.bing.com/search?'."
+        assert "form=MOZLBR" in url_text, "The search URL contains the form paramater 'form=MOZLBR'."
+        assert "pc=MOZI" in url_text, "The search URL contains the pc paramater 'pc=MOZI'."
+        assert "q=test" in url_text, "The search URL contains the query paramater 'q=test'."
