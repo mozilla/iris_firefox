@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_suite_id="102",
         locales=["en-US"],
         preferences={"devtools.chrome.enabled": True},
+        blocked_by={"id": "4656", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         resizing_confirmed_pattern = Pattern("resizing_confirmed.png")
