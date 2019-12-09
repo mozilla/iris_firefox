@@ -379,6 +379,7 @@ def close_tab():
         type(text="w", modifier=KeyModifier.CMD)
     else:
         type(text="w", modifier=KeyModifier.CTRL)
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def close_window():
@@ -387,6 +388,7 @@ def close_window():
         type(text="w", modifier=[KeyModifier.CMD, KeyModifier.SHIFT])
     else:
         type(text="w", modifier=[KeyModifier.CTRL, KeyModifier.SHIFT])
+    time.sleep(Settings.DEFAULT_UI_DELAY)
 
 
 def force_close():

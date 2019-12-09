@@ -8,7 +8,11 @@ from targets.firefox.fx_testcase import *
 
 class Test(FirefoxTest):
     @pytest.mark.details(
-        description="Search suggestions can be disabled.", locale=["en-US"], test_case_id="4273", test_suite_id="83"
+        description="Search suggestions can be disabled.",
+        locale=["en-US"],
+        test_case_id="4273",
+        test_suite_id="83",
+        blocked_by={"id": "4309", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         provide_search_suggestions_checked_pattern = Pattern("provide_search_suggestions_checked.png")

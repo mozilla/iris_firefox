@@ -12,12 +12,8 @@ class Test(FirefoxTest):
         test_case_id="114837",
         test_suite_id="68",
         locales=Locales.ENGLISH,
-        blocked_by={"id": "issue_4118", "platform": OSPlatform.LINUX},
     )
     def run(self, firefox):
-        hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-        restore_option_pattern = Pattern("restore_option.png").similar(0.9)
-
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
         test_site_opened = exists(LocalWeb.MOZILLA_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)

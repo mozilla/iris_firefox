@@ -15,12 +15,16 @@ class Test(FirefoxTest):
     )
     def run(self, firefox):
         page_bookmarked_pattern = Bookmarks.StarDialog.NEW_BOOKMARK
-        search_suggestion_bookmarked_tab_pattern = Pattern("search_suggestion_bookmarked_tab.png").similar(0.6)
-        search_suggestion_opened_tab_pattern = Pattern("search_suggestion_opened_tab.png").similar(0.6)
-        search_suggestion_history_pattern = Pattern("search_suggestion_history.png").similar(0.6)
-        popular_search_suggestion_pattern = Pattern("popular_search_suggestion.png").similar(0.6)
+        search_suggestion_bookmarked_tab_pattern = Pattern("search_suggestion_bookmarked_tab.png").similar(0.7)
+        search_suggestion_opened_tab_pattern = Pattern("search_suggestion_opened_tab.png").similar(0.7)
+        search_suggestion_history_pattern = Pattern("search_suggestion_history.png").similar(0.7)
+        popular_search_suggestion_pattern = Pattern("popular_search_suggestion.png").similar(0.7)
         google_one_off_button_pattern = Pattern("google_one_off_button.png").similar(0.9)
-        google_search_results_pattern = Pattern("google_search_results.png")
+        google_search_results_pattern = Pattern("google_search_results.png").similar(0.6)
+
+        region = Screen.TOP_THIRD
+
+        new_tab()
 
         navigate(LocalWeb.MOZILLA_TEST_SITE)
 
@@ -29,8 +33,10 @@ class Test(FirefoxTest):
 
         bookmark_page()
 
-        expected = exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT, region=Screen.TOP_THIRD)
+        expected = region.exists(page_bookmarked_pattern, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected, "Page was bookmarked."
+
+        close_tab()
 
         new_tab()
         navigate(LocalWeb.FIREFOX_TEST_SITE)
@@ -44,23 +50,24 @@ class Test(FirefoxTest):
         expected = exists(LocalWeb.FOCUS_LOGO, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Focus page loaded successfully."
 
+        close_tab()
+
         new_tab()
-        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         select_location_bar()
-        paste("m")
+        type("m")
 
         expected = exists(search_suggestion_bookmarked_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Bookmarked page found between search suggestions."
 
         select_location_bar()
-        paste("fi")
+        type("fi")
 
         expected = exists(search_suggestion_opened_tab_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Opened tab found between search suggestions."
 
         select_location_bar()
-        paste("f")
+        type("f")
 
         expected = exists(search_suggestion_history_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Web pages from personal browsing history found between search suggestions."
@@ -74,7 +81,5 @@ class Test(FirefoxTest):
         click(google_one_off_button_pattern)
         time.sleep(FirefoxSettings.TINY_FIREFOX_TIMEOUT)
 
-        expected = exists(
-            google_search_results_pattern.similar(0.6), FirefoxSettings.SITE_LOAD_TIMEOUT, region=Screen.TOP_THIRD
-        )
+        expected = region.exists(google_search_results_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT)
         assert expected, "Google search results are displayed."
