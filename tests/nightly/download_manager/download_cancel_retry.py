@@ -35,7 +35,7 @@ class Test(FirefoxTest):
         expected = region.exists(NavBar.DOWNLOADS_BUTTON, 10)
         assert expected is True, "Downloads button is displayed."
         region.click(NavBar.DOWNLOADS_BUTTON)
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
         assert expected is True, "Cancel button is displayed."
@@ -52,12 +52,14 @@ class Test(FirefoxTest):
 
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY, 10)
         assert expected is True, "Retry button is displayed."
-        time.sleep(Settings.DEFAULT_UI_DELAY)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
         region.click(DownloadManager.DownloadsPanel.DOWNLOAD_RETRY)
         Mouse().move(Location(Screen.SCREEN_WIDTH / 4 + 100, Screen.SCREEN_HEIGHT / 4))
         expected = region.exists(DownloadManager.DownloadState.PROGRESS, 10)
         assert expected is True, "Download was restarted."
+        assert expected is True, "Retry button is displayed."
+        time.sleep(Settings.DEFAULT_UI_DELAY)
 
         # Cancel 'in progress' download.
         expected = region.exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
