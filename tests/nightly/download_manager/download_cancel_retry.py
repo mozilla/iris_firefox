@@ -28,7 +28,7 @@ class Test(FirefoxTest):
         download_cancelled_pattern = DownloadManager.DownloadState.CANCELLED.similar(0.6)
         region = Screen.TOP_THIRD
 
-        navigate(LocalWeb.DOWNLOAD_TEST_SITE)
+        navigate('https://irisfirefoxtestfiles.netlify.com')
 
         download_file(file_to_download, DownloadFiles.OK)
 
