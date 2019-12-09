@@ -19,7 +19,7 @@ class Test(FirefoxTest):
         twitter_one_off_button_highlight_pattern = Pattern("twitter_one_off_button_highlight.png")
         new_tab_twitter_search_results_pattern = Pattern("new_tab_twitter_search_results.png").similar(0.6)
         new_tab_twitter_search_results_pattern2 = Pattern("new_tab_twitter_search_results_2.png").similar(0.6)
-        google_on_off_button_private_window_pattern = Pattern("google_on_off_button_private_window.png")
+        google_one_off_button_private_window_pattern = Pattern("google_one_off_button_private_window.png")
         magnifying_glass_pattern = Pattern("magnifying_glass.png").similar(0.7)
         test_pattern = Pattern("test.png")
         this_time_search_with_pattern = Pattern("this_time_search_with.png")
@@ -67,7 +67,7 @@ class Test(FirefoxTest):
         paste("test")
 
         google_button_found = region.exists(
-            google_on_off_button_private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
+            google_one_off_button_private_window_pattern, FirefoxSettings.FIREFOX_TIMEOUT
         )
         assert google_button_found, "The'Google' one-off button found."
 
@@ -76,7 +76,7 @@ class Test(FirefoxTest):
         else:
             key_down(Key.CTRL)
 
-        click(google_on_off_button_private_window_pattern)
+        click(google_one_off_button_private_window_pattern)
 
         if OSHelper.is_mac():
             key_up(Key.CMD)
