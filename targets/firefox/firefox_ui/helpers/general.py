@@ -674,16 +674,14 @@ def open_directory(directory):
         os.system('open "' + directory + '"')
 
 
-def open_hamburger_menu(option=None):
-    """Open a specific option from the hamburger menu. If no option is given, just open the menu.
+def open_hamburger_menu(option):
+    """
+    Opens a specific option from the hamburger menu. If no option is given, just open the menu.
     In that case, the calling test must close the menu on its own.
 
     :param option: Hamburger menu option to be selected.
     :return: None.
     """
-    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
-    region = Screen.UPPER_RIGHT_CORNER
-    sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
 
     option_list = ['Restore Previous Session',
                    'Customize',
@@ -693,8 +691,15 @@ def open_hamburger_menu(option=None):
                    'Exit',
                    'Quit']
 
+    if not isinstance(option, str) or option not in option_list:
+        raise ValueError(INVALID_GENERIC_INPUT)
+
+    hamburger_menu_pattern = NavBar.HAMBURGER_MENU
+    region = Screen.UPPER_RIGHT_CORNER
+    sign_in_to_firefox_pattern = Pattern("sign_in_to_firefox.png")
+
     try:
-        region.wait(hamburger_menu_pattern, 5)
+        region.wait(hamburger_menu_pattern, 10)
         logger.debug("Hamburger menu found.")
     except FindError:
         raise APIHelperError('Can\'t find the "hamburger menu" in the page, aborting test.')
@@ -702,40 +707,39 @@ def open_hamburger_menu(option=None):
         try:
             region.click(hamburger_menu_pattern)
             region.wait(sign_in_to_firefox_pattern, 10)
-            if option is not None:
-                if option is "Restore Previous Session":
-                    restore_option_exists = exists(HamburgerMenu.RESTORE_PREVIOUS_SESSION,
-                                                   FirefoxSettings.FIREFOX_TIMEOUT)
-                    assert restore_option_exists, "Restore option exists is hamburger menu."
-                    click(HamburgerMenu.RESTORE_PREVIOUS_SESSION)
-                if option is "Customize":
-                    customize_option_exists = exists(HamburgerMenu.CUSTOMIZE,
-                                                     FirefoxSettings.FIREFOX_TIMEOUT)
-                    assert customize_option_exists, "Customize option exists is hamburger menu."
-                    click(HamburgerMenu.CUSTOMIZE)
-                if option is "Print":
-                    print_option_exists = exists(HamburgerMenu.PRINT,
+            if option == "Restore Previous Session":
+                restore_option_exists = exists(HamburgerMenu.RESTORE_PREVIOUS_SESSION,
+                                               FirefoxSettings.FIREFOX_TIMEOUT)
+                assert restore_option_exists, "Restore option exists is hamburger menu."
+                click(HamburgerMenu.RESTORE_PREVIOUS_SESSION)
+            elif option == "Customize":
+                customize_option_exists = exists(HamburgerMenu.CUSTOMIZE,
                                                  FirefoxSettings.FIREFOX_TIMEOUT)
-                    assert print_option_exists, "Print option exists is hamburger menu."
-                    click(HamburgerMenu.PRINT)
-                if option is "Web Developer":
-                    web_dev_option_exists = exists(HamburgerMenu.WEB_DEVELOPER,
-                                                   FirefoxSettings.FIREFOX_TIMEOUT)
-                    assert web_dev_option_exists, "Web developer option exists is hamburger menu."
-                    click(HamburgerMenu.WEB_DEVELOPER)
-                if option is "Help":
-                    help_option_exists = exists(HamburgerMenu.HELP,
+                assert customize_option_exists, "Customize option exists is hamburger menu."
+                click(HamburgerMenu.CUSTOMIZE)
+            elif option == "Print":
+                print_option_exists = exists(HamburgerMenu.PRINT,
+                                             FirefoxSettings.FIREFOX_TIMEOUT)
+                assert print_option_exists, "Print option exists is hamburger menu."
+                click(HamburgerMenu.PRINT)
+            elif option == "Web Developer":
+                web_dev_option_exists = exists(HamburgerMenu.WEB_DEVELOPER,
+                                               FirefoxSettings.FIREFOX_TIMEOUT)
+                assert web_dev_option_exists, "Web developer option exists is hamburger menu."
+                click(HamburgerMenu.WEB_DEVELOPER)
+            elif option == "Help":
+                help_option_exists = exists(HamburgerMenu.HELP,
+                                            FirefoxSettings.FIREFOX_TIMEOUT)
+                assert help_option_exists, "Help option exists is hamburger menu."
+                click(HamburgerMenu.HELP)
+            elif (option == "Exit") or (option == "Quit"):
+                if OSHelper.is_mac():
+                    type(Key.Q, KeyModifier.CMD)
+                else:
+                    exit_option_exists = exists(HamburgerMenu.EXIT,
                                                 FirefoxSettings.FIREFOX_TIMEOUT)
-                    assert help_option_exists, "Help option exists is hamburger menu."
-                    click(HamburgerMenu.HELP)
-                if (option is "Exit") or (option is "Quit"):
-                    if OSHelper.is_mac():
-                        type(Key.Q, KeyModifier.CMD)
-                    else:
-                        exit_option_exists = exists(HamburgerMenu.EXIT,
-                                                    FirefoxSettings.FIREFOX_TIMEOUT)
-                        assert exit_option_exists, "Exit/Quit option exists is hamburger menu."
-                        click(HamburgerMenu.EXIT)
+                    assert exit_option_exists, "Exit/Quit option exists is hamburger menu."
+                    click(HamburgerMenu.EXIT)
         except FindError:
             raise APIHelperError("Can't click the menu button. Aborting test.")
 
