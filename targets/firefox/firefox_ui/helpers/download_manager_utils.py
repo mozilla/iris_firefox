@@ -210,9 +210,6 @@ def download_file(file_to_download, accept_download, max_number_of_attempts=20, 
     except FindError:
         raise APIHelperError("The 'Save file' option is not present in the page, aborting.")
 
-    if OSHelper.is_windows():
-        expect_accept_download_available = False
-
     if expect_accept_download_available:
         accept_download_button = exists(accept_download, FirefoxSettings.FIREFOX_TIMEOUT)
         if accept_download_button:

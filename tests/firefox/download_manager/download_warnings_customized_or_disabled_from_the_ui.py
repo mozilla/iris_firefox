@@ -66,14 +66,18 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.MALICIOUS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"malicious\" warning, based on content' link has been found."
         width, height = DownloadFiles.MALICIOUS.get_size()
-        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(DownloadFiles.DOWNLOADS_PANEL_CONTENT_COMPLETED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"malicious\" warning, based on content' download file is completed."
 
         expected = exists(DownloadFiles.MALICIOUS_HTTPS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"malicious\" warning, based on content with https' link has been found."
         width, height = DownloadFiles.MALICIOUS_HTTPS.get_size()
-        download_file(DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
@@ -83,7 +87,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.DANGEROUS_HOST_WARNING, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"dangerous host\" warning' link has been found."
         width, height = DownloadFiles.DANGEROUS_HOST_WARNING.get_size()
-        download_file(DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
@@ -93,7 +99,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.UNCOMMON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"uncommon\" warning, for .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON.get_size()
-        download_file(DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
@@ -104,7 +112,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.UNCOMMON_HTTPS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"uncommon\" warning, for https .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
-        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
@@ -114,7 +124,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.POTENTIALLY_UNWANTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"potentially unwanted app\" warning, for .exe' link has been found."
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
-        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
@@ -163,7 +175,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.MALICIOUS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"malicious\" warning, based on content' link has been found."
         width, height = DownloadFiles.MALICIOUS.get_size()
-        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.MALICIOUS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Malicious downloads button is displayed."
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
@@ -178,7 +192,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.MALICIOUS_HTTPS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"malicious\" warning, based on content with https' link has been found."
         width, height = DownloadFiles.MALICIOUS_HTTPS.get_size()
-        download_file(DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.MALICIOUS_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Malicious downloads button is displayed."
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
@@ -193,7 +209,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.DANGEROUS_HOST_WARNING, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"dangerous host\" warning' link has been found."
         width, height = DownloadFiles.DANGEROUS_HOST_WARNING.get_size()
-        download_file(DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.DANGEROUS_HOST_WARNING.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.SEVERE_DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Malicious downloads button is displayed."
         click(NavBar.SEVERE_DOWNLOADS_BUTTON)
@@ -208,7 +226,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.UNCOMMON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"uncommon\" warning, for .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON.get_size()
-        download_file(DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
@@ -219,7 +239,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.UNCOMMON_HTTPS, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"uncommon\" warning, for https .exe' link has been found."
         width, height = DownloadFiles.UNCOMMON_HTTPS.get_size()
-        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.UNCOMMON_HTTPS.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
@@ -229,7 +251,9 @@ class Test(FirefoxTest):
         expected = exists(DownloadFiles.POTENTIALLY_UNWANTED, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "'\"potentially unwanted app\" warning, for .exe' link has been found."
         width, height = DownloadFiles.POTENTIALLY_UNWANTED.get_size()
-        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK)
+        download_file(DownloadFiles.POTENTIALLY_UNWANTED.target_offset(width / 2 + 10, 0), DownloadFiles.OK,
+                      expect_accept_download_available=False if (OSHelper.get_os() == OSPlatform.WINDOWS) else True,
+                      )
         expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Download button found in the page."
         click(NavBar.DOWNLOADS_BUTTON)
