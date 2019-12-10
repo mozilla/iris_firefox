@@ -50,7 +50,7 @@ def access_bookmarking_tools(option):
     """
 
     bookmarking_tools_pattern = LibraryMenu.BookmarksOption.BOOKMARKING_TOOLS
-    open_library_menu(LibraryMenu.BOOKMARKS_OPTION)
+    open_library_menu("Bookmarks")
 
     try:
         wait(bookmarking_tools_pattern, 10)
@@ -736,7 +736,7 @@ def open_hamburger_menu(option=None):
             if option is not None:
                 reps = option_list[option]
                 count = 0
-                while (count < reps):
+                while count < reps:
                     time.sleep(0.5)
                     type(Key.TAB)
                     count = count + 1
@@ -747,14 +747,21 @@ def open_hamburger_menu(option=None):
 
 
 def open_library_menu(option):
-    """Open the Library menu with an option as argument.
+    """Open a specific option from 'Library' menu with an option as an argument.
 
-    :param option: Library menu option.
-    :return: Custom region created for a more efficient and accurate image
-    pattern search.
+    :param option: Library menu option to be selected.
+    :return: None
     """
 
     library_menu_pattern = NavBar.LIBRARY_MENU
+
+    library_option_list = {
+        'Bookmarks': 1,
+        'View Pocket List': 2,
+        'History': 3,
+        'Downloads': 4,
+        'Synced Tabs': 5
+    }
 
     if OSHelper.is_windows():
         value = 5
@@ -778,10 +785,14 @@ def open_library_menu(option):
         time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
         try:
             time.sleep(Settings.DEFAULT_UI_DELAY_SHORT)
-            region.wait(option, 10)
-            logger.debug("Option found.")
-            region.click(option)
-            return region
+            region.wait(LibraryMenu.BOOKMARKS_OPTION,10)
+            option_number_in_library_list = library_option_list[option]
+            for _ in range(option_number_in_library_list):
+                time.sleep(0.5)
+                type(Key.TAB)
+            time.sleep(1)
+            type(Key.ENTER)
+
         except FindError:
             raise APIHelperError("Can't find the option in the page, aborting test.")
 

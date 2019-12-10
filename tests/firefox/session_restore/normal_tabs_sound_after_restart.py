@@ -15,9 +15,8 @@ class Test(FirefoxTest):
         locales=Locales.ENGLISH,
     )
     def run(self, firefox):
-        youtube_logo_inactive_tab_pattern = Pattern("youtube_logo_unactive_tab.png")
         youtube_autoplay_switch_pattern = Pattern("youtube_autoplay_switch.png")
-        youtube_logo_pattern = Pattern("youtube_logo.png")
+        youtube_logo_pattern = Pattern("youtube_logo.png").similar(0.7)
         tab_muted_pattern = Pattern("tab_muted.png")
 
         mute_tab = 2
@@ -50,14 +49,13 @@ class Test(FirefoxTest):
 
         firefox.restart()
 
-        open_hamburger_menu("Restore Previous Session")
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
 
-        youtube_logo_inactive = exists(
-            youtube_logo_inactive_tab_pattern.similar(0.6), FirefoxSettings.FIREFOX_TIMEOUT, tabs_region
-        )
-        assert youtube_logo_inactive, "Youtube inactive tab found."
+        open_hamburger_menu('Restore Previous Session')
 
-        click(youtube_logo_inactive_tab_pattern, click_duration)
+        time.sleep(Settings.DEFAULT_UI_DELAY_LONG)
+
+        next_tab()
 
         youtube_tab = exists(youtube_logo_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT, tabs_region)
         assert youtube_tab, "Youtube tab is active."

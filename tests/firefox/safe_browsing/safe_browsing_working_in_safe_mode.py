@@ -13,13 +13,14 @@ class Test(FirefoxTest):
         test_suite_id="69",
         locale=["en-US"],
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, "browser.shell.checkDefaultBrowser": False, },
     )
     def run(self, firefox):
         start_in_safe_mode_button_pattern = Pattern("start_in_safe_mode_button.png")
         about_support_title_pattern = Pattern("about_support_title.png")
         restart_button_pattern = Pattern("restart_button.png")
         copy_raw_data_to_clipboard_pattern = Pattern("about_support_copy_raw_data_button.png")
-        restart_addons_disabled_pattern = Pattern("restart_w_addons_disabled.png")
+        restart_addons_disabled_pattern = Pattern("restart_w_addons_disabled.png").similar(0.7)
 
         navigate(LocalWeb.FIREFOX_TEST_SITE)
 

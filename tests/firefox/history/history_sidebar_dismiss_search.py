@@ -13,6 +13,7 @@ class Test(FirefoxTest):
         test_case_id="119442",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
+        preferences={"browser.warnOnQuit": False, },
     )
     def run(self, firefox):
         history_sidebar_focus_pattern = Pattern("history_sidebar_focus.png").similar(0.7)

@@ -11,8 +11,7 @@ class Test(FirefoxTest):
         description="[First Time User] Close Firefox browser when updating safebrowsing DB",
         test_case_id="50360",
         test_suite_id="69",
-        locale=["en-US"],
-        blocked_by={"id": "4232", "platform": OSPlatform.ALL},
+        locale=["en-US"]
     )
     def run(self, firefox):
         url_classifier_title_pattern = Pattern("url_classifier_title.png")

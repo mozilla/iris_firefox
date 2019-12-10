@@ -13,7 +13,9 @@ class Test(FirefoxTest):
         test_case_id="172047",
         test_suite_id="2000",
         profile=Profiles.BRAND_NEW,
-        preferences={"datareporting.policy.firstRunURL": ""},
+        preferences={"datareporting.policy.firstRunURL": "",
+                     "browser.warnOnQuit": False,
+                     },
         blocked_by={"id": "1568911", "platform": OSPlatform.ALL},
     )
     def run(self, firefox):
