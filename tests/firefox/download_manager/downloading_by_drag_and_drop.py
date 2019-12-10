@@ -24,14 +24,14 @@ class Test(FirefoxTest):
         # Enable the download button in the nav bar.
         auto_hide_download_button()
 
-        expected = exists(NavBar.DOWNLOADS_BUTTON, 10)
+        expected = exists(NavBar.DOWNLOADS_BUTTON, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "Downloads button successfully activated in the nav bar."
 
         navigate(LocalWeb.DOWNLOAD_TEST_SITE)
 
         # Wait for the page to be loaded.
         try:
-            wait(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+            wait(DownloadFiles.VERY_LARGE_FILE_1GB, FirefoxSettings.FIREFOX_TIMEOUT)
             logger.debug("File is present in the page.")
         except FindError:
             raise FindError("File is not present in the page.")
@@ -42,20 +42,14 @@ class Test(FirefoxTest):
         while max_attempts > 0:
             if exists(DownloadFiles.VERY_LARGE_FILE_1GB, 2):
                 # Wait a moment to ensure button can be grabbed for drag operation
-                expected = exists(DownloadFiles.VERY_LARGE_FILE_1GB, 10)
+                expected = exists(DownloadFiles.VERY_LARGE_FILE_1GB, FirefoxSettings.FIREFOX_TIMEOUT)
                 assert expected is True, "Downloads button successfully activated in the nav bar."
                 drag_drop(DownloadFiles.VERY_LARGE_FILE_1GB, NavBar.DOWNLOADS_BUTTON, duration=2)
                 max_attempts = 0
             max_attempts -= 1
 
-        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, 10)
+        expected = exists(DownloadFiles.DOWNLOAD_FILE_NAME_1GB, FirefoxSettings.FIREFOX_TIMEOUT)
         assert expected is True, "The downloaded file name is properly displayed in the Downloads panel."
-
-        # Cancel the download.
-        expected = exists(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL, 10)
-        assert expected is True, "The 'X' button is found in the Downloads panel."
-
-        click(DownloadManager.DownloadsPanel.DOWNLOAD_CANCEL)
 
     def teardown(self):
         downloads_cleanup()
