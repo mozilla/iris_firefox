@@ -65,6 +65,7 @@ class Test(FirefoxTest):
         assert restart_button_displayed, "Restart button displayed"
 
         click(restart_button_pattern)
+        click(restart_button_pattern.target_offset(20, 2))
 
         start_in_safe_mode_button_displayed = exists(
             start_in_safe_mode_button_pattern, FirefoxSettings.SITE_LOAD_TIMEOUT
