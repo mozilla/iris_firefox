@@ -21,6 +21,8 @@ class Test(FirefoxTest):
 
         left_upper_corner = Screen().new_region(0, 0, Screen.SCREEN_WIDTH / 2, Screen.SCREEN_HEIGHT / 2)
 
+        new_tab()  # prevent browser closing (useful if update tab is not shown)
+
         # Open some pages to create some history.
         close_tab()
         new_tab()
