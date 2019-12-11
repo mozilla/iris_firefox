@@ -12,6 +12,7 @@ class Test(FirefoxTest):
         test_case_id="3929",
         test_suite_id="65",
         locales=Locales.ENGLISH,
+        blocked_by={"id": "3929", "platform": OSPlatform.ALL}
     )
     def run(self, firefox):
         actual_size_zoom_level_option_pattern = Pattern("actual_size_zoom_level_option.png")
