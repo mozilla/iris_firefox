@@ -73,6 +73,7 @@ class Test(FirefoxTest):
         assert restart_browser, "Restart browser button available"
 
         click(restart_browser_pattern)
+        click(restart_browser_pattern.target_offset(20, 2))
 
         firefox_restarted = exists(Tabs.NEW_TAB_HIGHLIGHTED, FirefoxSettings.HEAVY_SITE_LOAD_TIMEOUT)
         assert firefox_restarted, "Firefox is successfully restarted."
