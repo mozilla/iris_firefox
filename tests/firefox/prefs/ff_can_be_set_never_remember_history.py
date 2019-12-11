@@ -39,6 +39,7 @@ class Test(FirefoxTest):
         assert restart_browser_opened, "restart_browser_pattern"
 
         click(restart_browser_pattern)
+        click(restart_browser_pattern.target_offset(10, 2))
 
         browser_relaunched = exists(NavBar.LIBRARY_MENU, Settings.site_load_timeout) and exists(
             NavBar.SIDEBAR_MENU, Settings.site_load_timeout
